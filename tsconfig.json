@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "target": "esnext",
+        "noImplicitAny": true,
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        // do not check types in node_modules folder
+        "sourceMap": true,
+        "outDir": "dist",
+        "baseUrl": ".",
+        "typeRoots": [
+            "@types",
+            "/node_modules/@types"
+        ]
+    }
+}

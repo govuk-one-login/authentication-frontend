@@ -1,0 +1,10 @@
+.idea/
+.vscode/
+src/
+test/
+@types/
+Dockerfile
+.dockerignore
+logs.json
+.eslintignore
+.eslintrc.js

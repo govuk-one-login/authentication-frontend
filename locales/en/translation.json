@@ -1,0 +1,44 @@
+{
+  "general": {
+    "pageTitle": "GOV.UK Sign in",
+    "errorPrefix": "Error",
+    "back": "Back",
+    "continueButton": "Continue",
+    "confirmChangeButton": "Confirm change and continue",
+    "warning": "Warning",
+    "errorSummaryTitle": "There is a problem",
+    "phaseBanner": {
+      "tag": "alpha",
+      "content": "This is a new service – your {{-openLink}}feedback{{-closeLink}} will help us to improve it. // {{ target  }} //"
+    },
+    "yes": "Yes",
+    "no": "No",
+    "footer": {
+    },
+    "cookie": {
+      "cookieText": "GOV.UK uses cookies to make the site simpler.",
+      "cookieLink": "#",
+      "cookieLinkText": "Find out more about cookies"
+    },
+    "language": {
+      "english": "English",
+      "welsh": "Cymraeg (Welsh)"
+    }
+  },
+  "pages": {
+      "enter-email": {
+        "title": "Please enter the following information",
+        "header": "Please enter the following information",
+        "info": "Entering the information below will help us start to verify your identity. You may be asked additional questions as part of this process.",
+        "email": {
+          "label": "Email",
+          "validationError": {
+            "required": "Enter your email address",
+            "length": "Email address must be 256 characters or fewer",
+            "email": "Enter an email address in the correct format, like name@example.com"
+          }
+        }
+      }
+    }
+}
+
