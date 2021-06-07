@@ -12,6 +12,8 @@ import {accessibilityStatementGet, privacyStatementGet, termsConditionsGet} from
 
 const router = express.Router();
 
+router.get("/", csrfMiddleware, enterEmailGet);
+
 router.get(pathName.ENTER_EMAIL, csrfMiddleware, enterEmailGet);
 
 router.post(

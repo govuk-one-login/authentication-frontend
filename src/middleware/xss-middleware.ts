@@ -6,11 +6,11 @@ const { JSDOM } = require("jsdom");
 const window = new JSDOM("").window;
 const DOMPurify = createDOMPurify(window);
 
-const xssMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
+export function xssMiddleware(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): void {
   if (req.body) {
     Object.keys(req.body).forEach((formParameter) => {
       req.body[formParameter] = DOMPurify.sanitize(req.body[formParameter], {
@@ -20,6 +20,4 @@ const xssMiddleware = (
   }
 
   next();
-};
-
-export { xssMiddleware };
+}

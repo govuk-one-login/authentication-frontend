@@ -1,4 +1,7 @@
 import {LOCALE} from "../app.constants";
+import path from "path";
+
+const { NODE_ENV } = process.env
 
 export const i18nextConfigurationOptions = {
   debug: false,
@@ -6,7 +9,7 @@ export const i18nextConfigurationOptions = {
   preload: [LOCALE.EN],
   supportedLngs: [LOCALE.EN, LOCALE.CY],
   backend: {
-    loadPath: `locales/{{lng}}/{{ns}}.json`,
+    loadPath: path.join(__dirname, '../locales/{{lng}}/{{ns}}.json'),
   },
   detection: {
     lookupCookie: "lng",
@@ -16,4 +19,5 @@ export const i18nextConfigurationOptions = {
     ignoreCase: true,
     cookieSecure: false,
   },
+  autoReload: NODE_ENV !== 'production'
 };

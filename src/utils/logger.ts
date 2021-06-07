@@ -61,8 +61,7 @@ export default class Logger implements ILogger {
   }
 }
 
-export const getLogLabel = (path: string): string => {
+export function getLogLabel(path: string): string {
   const paths: string[] = path.split("\\").pop().split("/");
   return paths[paths.length - 2] + "/" + paths[paths.length - 1];
-};
-
+}

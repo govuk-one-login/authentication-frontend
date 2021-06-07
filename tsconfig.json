@@ -3,7 +3,7 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "resolveJsonModule": true,
-        "target": "esnext",
+        "target": "es2020",
         "noImplicitAny": true,
         "moduleResolution": "node",
         "skipLibCheck": true,
@@ -15,5 +15,9 @@
             "@types",
             "/node_modules/@types"
         ]
-    }
+    },
+    "exclude": [
+        "tests",
+        "coverage"
+    ]
 }

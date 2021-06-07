@@ -10,7 +10,6 @@ const logLabel: string = getLogLabel(__filename);
 
 const server = http.createServer(app);
 
-
 server
   .listen(port, () => {
     logger.info(`Server listening on port ${port}`, logLabel);

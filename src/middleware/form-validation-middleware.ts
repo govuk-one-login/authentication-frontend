@@ -14,11 +14,11 @@ const validationErrorFormatter = ({
   };
 };
 
-export const validateBodyMiddleware = (template: string) => {
+export function validateBodyMiddleware(template: string) {
   return (req: Request, res: Response, next: NextFunction): any => {
     const errors = validationResult(req)
-      .formatWith(validationErrorFormatter)
-      .mapped();
+        .formatWith(validationErrorFormatter)
+        .mapped();
 
     if (Object.keys(errors).length !== 0) {
       return res.render(template, {
@@ -30,4 +30,4 @@ export const validateBodyMiddleware = (template: string) => {
     }
     next();
   };
-};
+}

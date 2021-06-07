@@ -1,0 +1,76 @@
+resource_types:
+  - name: cf-cli
+    type: docker-image
+    source:
+      repository: nulldriver/cf-cli-resource
+
+resources:
+  - name: di-authentication-frontend
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/alphagov/di-authentication-frontend.git
+      ignore_paths:
+        - ci/pipeline.yaml
+      branch: task/base
+
+  - name: pipeline-src
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/alphagov/di-authentication-frontend.git
+      paths:
+        - ci/pipeline.yaml
+      branch: main
+
+  - name: di-authentication-frontend-upload
+    type: cf-cli
+    icon: cloud-upload
+    source:
+      api: https://api.london.cloud.service.gov.uk
+      username: ((cf-username))
+      password: ((cf-password))
+      org: gds-digital-identity-authentication
+      space: build
+
+jobs:
+  - name: update-pipeline
+    plan:
+      - get: pipeline-src
+        trigger: true
+      - set_pipeline: di-authentication-frontend
+        file: pipeline-src/ci/pipeline.yaml
+  
+  - name: deploy-app
+    plan:
+    - get: di-authentication-frontend
+      trigger: true
+    - task: build
+      config:
+        platform: linux
+        image_resource:
+          type: registry-image
+          source:
+            repository: node
+            tag: 15.14.0-alpine
+        inputs:
+          - name: di-authentication-frontend
+        outputs:
+          - name: di-authentication-frontend-zip
+        run:
+          path: sh
+          args:
+            - -euc
+            - |
+              apk add zip
+              cd di-authentication-frontend
+              yarn install && yarn build
+              zip di-authentication-frontend.zip -r package.json yarn.lock dist
+              cp di-authentication-frontend.zip ../di-authentication-frontend-zip/
+    - put: di-authentication-frontend-upload
+      params:
+        command: push
+        manifest: di-authentication-frontend/manifest.yml
+        path: di-authentication-frontend-zip/di-authentication-frontend.zip
+
+

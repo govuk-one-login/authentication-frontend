@@ -4,24 +4,24 @@ import Logger, { getLogLabel } from "./utils/logger";
 
 const logLabel: string = getLogLabel(__filename);
 
-const pageNotFoundHandler = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
+export function pageNotFoundHandler(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): void {
   if (res.headersSent) {
     return next();
   }
   res.status(httpStatusCodes.NOT_FOUND);
   res.render("errors/404.html");
-};
+}
 
-const serverErrorHandler = (
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
+export function serverErrorHandler(
+    err: any,
+    req: Request,
+    res: Response,
+    next: NextFunction
+): void {
   const logger: Logger = req.app.locals.logger;
 
   if (err.code === "EBADCSRFTOKEN") {
@@ -41,6 +41,4 @@ const serverErrorHandler = (
 
   res.status(httpStatusCodes.INTERNAL_SERVER_ERROR);
   res.render("errors/500.html");
-};
-
-export { pageNotFoundHandler, serverErrorHandler };
+}

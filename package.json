@@ -9,29 +9,24 @@
   "license": "ISC",
   "scripts": {
     "build-ts": "tsc",
-    "build": "yarn run build-sass && yarn run build-ts && yarn run lint && yarn run copy-files-build",
-    "build-sass": "rm -rf dist/public/style.css && sass src/assets/scss/application.scss dist/src/public/style.css",
+    "build": "yarn run build-sass && yarn run build-ts && yarn run copy-build",
+    "build-sass": "rm -rf dist/public/style.css && sass --no-source-map src/assets/scss/application.scss dist/public/style.css",
     "dev": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\"",
     "copy-locales": "cp -R locales dist/",
     "copy-static-files": "cp -R static dist/",
     "copy-views": "cp -R src/views dist/",
-    "copy-files-build": "yarn run copy-locales && yarn run copy-static-files && yarn copy-views",
+    "copy-build": "mkdir dist && yarn run copy-locales && yarn run copy-static-files && yarn copy-views",
     "start": "yarn run serve",
-    "serve": "node dist/src/server.js",
-    "watch-node": "nodemon dist/src/server.js",
+    "serve": "node dist/server.js",
+    "watch-node": "nodemon dist/server.js",
     "watch-ts": "tsc -w",
-    "watch-sass": "sass --watch src/assets/scss/application.scss dist/src/public/style.css",
+    "watch-sass": "sass --watch src/assets/scss/application.scss dist/public/style.css",
     "depcheck": "depcheck",
     "lint": "eslint . --ext .ts,.js",
-    "test": "yarn precompile && yarn test:unit",
-    "test:unit": "rm -rf test/coverage && cross-env NODE_ENV=test nyc mocha --exit --recursive \"test/unit/**/*.test.ts\" --recursive \"app/**/*.test.ts\"",
-    "test:coverage": "nyc report"
-  },
-  "nyc": {
-    "exclude": [
-      "app/features/**/__tests__/",
-      "app/features/**/index.ts"
-    ]
+    "test": "yarn test:unit",
+    "test:unit": "rm -rf tests/coverage && NODE_ENV=test nyc mocha --exit --recursive \"tests/unit/**/*.test.ts\"",
+    "test:coverage": "nyc report",
+    "clean": "rm -rf dist node_modules"
   },
   "husky": {
     "hooks": {
