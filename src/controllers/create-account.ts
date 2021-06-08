@@ -1,40 +1,55 @@
-import {NextFunction, Request, Response} from "express";
-import { check } from "express-validator";
+import {Request, Response} from "express";
+import {check} from "express-validator";
 import {UserService} from "../services/user-service";
+import {ExpressRouteFunc} from "../types/express";
+import {getUserService} from "../services/service-injection";
+import {containsNumber} from "../utils/string-utils";
 
-type ExpressRouteFunc = (req: Request, res: Response, next?: NextFunction) => void | Promise<void>;
-
-export function createPasswordValidationRules() {
+export function createPasswordValidationSchema() {
     return [
         check("password")
-            .isAlphanumeric()
+            .trim()
+            .notEmpty()
             .withMessage((value, {req}) => {
-                return req.t("no numbers", {value});
-            }),
-        check("password")
-            .isEmpty()
-            .withMessage((value, {req}) => {
-                return req.t("empty", {value});
-            }),
-        check("password")
+                return req.t("pages.createPassword.password.validationError.required", {value});
+            })
             .isLength({min: 8})
             .withMessage((value, {req}) => {
-                return req.t("not length", {value});
+                return req.t("pages.createPassword.password.validationError.length", {value});
+            })
+            .custom((value, { req }) => {
+                if (!containsNumber(value)) {
+                    throw new Error(req.t("pages.createPassword.password.validationError.alphaNumeric"));
+                }
+                return true;
+            }),
+        check('confirm-password')
+            .trim()
+            .notEmpty()
+            .withMessage((value, {req}) => {
+                return req.t("pages.createPassword.confirmPassword.validationError.required", {value});
+            })
+            .custom((value, { req }) => {
+                if (value !== req.body['password']) {
+                    throw new Error(req.t("pages.createPassword.confirmPassword.validationError.matches"));
+                }
+                return true;
             })
     ];
 }
 
-export function enterPasswordGet(req: Request, res: Response): void {
+export function createAccountGet(req: Request, res: Response): void {
     res.render("create-account.html");
 }
 
-export function enterPasswordPost(userService: UserService): ExpressRouteFunc {
+export function  createAccountPost(userService: UserService = getUserService()): ExpressRouteFunc {
     return async function (req: Request, res: Response) {
         const result = await userService.addUser(req.body["email"], req.body["password"]);
-        res.redirect("create-2fa");
+        return res.redirect("create-2fa");
     }
 }
 
 export function verifyEmailGet(req: Request, res: Response): void {
     res.render("verify-email.html");
 }
+

@@ -3,9 +3,9 @@ import { router } from "./routes";
 import cookieParser from "cookie-parser";
 import csurf from "csurf";
 
-import { pageNotFoundHandler, serverErrorHandler } from "./error-handlers";
+import { pageNotFoundHandler, serverErrorHandler } from "./error-handler";
 
-import { xssMiddleware } from "./middleware/xss-middleware";
+import { sanitizeRequestMiddleware } from "./middleware/sanitize-request-middleware";
 import i18nextMiddleware from "i18next-http-middleware";
 import * as path from "path";
 import bodyParser from "body-parser";
@@ -41,7 +41,6 @@ function createApp(): express.Application {
   app.set("view engine", configureNunjucks(app, APP_VIEWS));
 
   app.use(helmet(helmetConfiguration));
-  app.locals.logger = new Logger();
 
   i18next
       .use(Backend)
@@ -53,13 +52,15 @@ function createApp(): express.Application {
   app.use(cookieParser());
   app.use(csurf({cookie: true}));
 
-  app.post("*", xssMiddleware);
+  app.post("*", sanitizeRequestMiddleware);
   app.use(setHtmlLangMiddleware);
 
   app.use(router);
 
   app.use(pageNotFoundHandler);
   app.use(serverErrorHandler);
+
+  app.locals.logger = new Logger();
 
   return app;
 }

@@ -1,46 +1,36 @@
-import {winstonLogger} from "./winston";
+import winstonLogger from "../config/logging/winston";
+import {ApplicationLogger, ApplicationLoggerPayload, SEVERITY} from "../config/logging/interface";
 
-enum SEVERITY {
-  DEBUG = 0,
-  INFO = 1,
-  WARN = 2,
-  ERROR = 3
-}
-
-interface ILoggerPayload {
-  user_agent?: any;
-  error?: any;
-}
-
-interface ILogger {
-  error: (message: string, label: string, payload?: ILoggerPayload) => void;
-  debug: (message: string, label: string, payload?: ILoggerPayload) => void;
-  warn: (message: string, label: string, payload?: ILoggerPayload) => void;
-  info: (message: string, label: string, payload?: ILoggerPayload) => void;
-}
-
-export default class Logger implements ILogger {
-  error(message: string, label: string, payload?: ILoggerPayload): void {
+export default class Logger implements ApplicationLogger {
+  error(message: string, label: string, payload?: ApplicationLoggerPayload): void {
     this.console(message, label, SEVERITY.ERROR, payload);
   }
 
-  debug(message: string, label: string, payload?: ILoggerPayload): void {
+  debug(message: string, label: string, payload?: ApplicationLoggerPayload): void {
     this.console(message, label, SEVERITY.DEBUG, payload);
   }
 
-  warn(message: string, label: string, payload?: ILoggerPayload): void {
+  warn(message: string, label: string, payload?: ApplicationLoggerPayload): void {
     this.console(message, label, SEVERITY.WARN, payload);
   }
 
-  info(message: string, label: string, payload?: ILoggerPayload): void {
+  info(message: string, label: string, payload?: ApplicationLoggerPayload): void {
     this.console(message, label, SEVERITY.INFO, payload);
   }
 
-  console(
+  request(message: string, label: string, payload?: ApplicationLoggerPayload): void {
+    this.console(message, label, SEVERITY.INFO, payload);
+  }
+
+  audit(message: string, label: string, payload?: ApplicationLoggerPayload): void {
+    this.console(message, label, SEVERITY.INFO, payload);
+  }
+
+  private console(
     message: string,
     label: string,
     severity: SEVERITY,
-    payload: ILoggerPayload
+    payload: ApplicationLoggerPayload
   ): void {
     switch (severity) {
       case SEVERITY.DEBUG:
