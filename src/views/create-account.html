@@ -1,0 +1,62 @@
+{% extends "base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block content %}
+
+{{ govukErrorSummary({
+titleText: 'general.errorSummaryTitle' | translate,
+errorList: errorList
+}) if (errorList) }}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">Create your GOV.UK account password</h1>
+<div class="govuk-inset-text">
+    A GOV.UK Account is separate from other government accounts (for example a personal tax account or Government Gateway).
+</div>
+<p class="govuk-body">A GOV.UK Account will:</p>
+<ul class="govuk-list govuk-list--bullet">
+    <li>let you reuse and share your data to ensure that government services are quicker to interact with</li>
+    <li>suggest GOV.UK guidance and information that is relevant to you</li>
+    <li>tell you when content you're interested in has been updated</li>
+    <li>help you set up reminders for tasks you may need to complete later</li>
+</ul>
+<h2 class="govuk-heading-m">
+    What you need to create a GOV.UK Account
+</h2>
+<ul class="govuk-list govuk-list--bullet">
+    <li>an email address</li>
+    <li>a working UK phone number with signal, so we can send you a security code</li>
+</ul>
+<br />
+<h2 class="govuk-heading-s">
+    To sign in or create an account, enter your email address
+</h2>
+<form action="/enter-email" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+{{ govukInput({
+    label: {
+        text: 'pages.enter-email.email.label' | translate,
+        classes: "govuk-label--l",
+        isPageHeading: true
+    },
+    id: "email",
+    name: "email",
+    value: email,
+    errorMessage: {
+        text: errors['email'].text
+    } if (errors['email'])})
+}}
+
+{{ govukButton({
+    "text": button_text|default("Continue", true),
+    "type": "Submit",
+    "preventDoubleClick": true
+}) }}
+
+</form>
+
+{% endblock %}
+
