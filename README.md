@@ -49,7 +49,7 @@ TBA
 yarn dev
 ```
 
-Starts a nodemon server serving the files from the `app/`
+Starts a nodemon server serving the files from the `dist/`
 directory.
 
 ### Build
@@ -59,10 +59,6 @@ directory.
 ```shell script
 yarn build
 ```
-
-This will build the application using webpack and
-`webpack/webpack.prod.js` configurations, generating
-a build directory in the root directory.
 
 ### Start
 
@@ -77,8 +73,7 @@ the build directory.
 
 ## Testing
 
-The unit tests have been written with Mocha. The end to end tests are using CodeceptJS with Gherkin due
-to a better cross-browser testing support.
+The unit tests have been written with Mocha.
 
 ### Unit
 
@@ -88,7 +83,7 @@ to a better cross-browser testing support.
 yarn test:unit
 ```
 
-Runs all unit tests found in the `test/unit/` directory
+Runs all unit tests found in the `tests/unit/` directory
 using mocha.
 
 ### Coverage
