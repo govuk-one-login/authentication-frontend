@@ -12,7 +12,7 @@ resources:
       uri: https://github.com/alphagov/di-authentication-frontend.git
       ignore_paths:
         - ci/pipeline.yaml
-      branch: task/base
+      branch: main
 
   - name: pipeline-src
     type: git
@@ -72,5 +72,4 @@ jobs:
         command: push
         manifest: di-authentication-frontend/manifest.yml
         path: di-authentication-frontend-zip/di-authentication-frontend.zip
-
 

@@ -6,5 +6,3 @@ build
 # don't lint nyc coverage output
 functional-output
 coverage
-# leave these for their own project file 
-test/e2e-test-env
