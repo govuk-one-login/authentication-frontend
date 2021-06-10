@@ -6,7 +6,7 @@ const { JSDOM } = require("jsdom");
 const window = new JSDOM("").window;
 const DOMPurify = createDOMPurify(window);
 
-export function xssMiddleware(
+export function sanitizeRequestMiddleware(
     req: Request,
     res: Response,
     next: NextFunction

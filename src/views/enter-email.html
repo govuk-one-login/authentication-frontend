@@ -2,6 +2,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
 {% block content %}
 
@@ -10,27 +11,29 @@ titleText: 'general.errorSummaryTitle' | translate,
 errorList: errorList
 }) if (errorList) }}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">Sign in to or create your GOV.UK Account</h1>
-<div class="govuk-inset-text">
-    A GOV.UK Account is separate from other government accounts (for example a personal tax account or Government Gateway).
-</div>
-<p class="govuk-body">A GOV.UK Account will:</p>
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterEmail.header' | translate}}</h1>
+
+{{ govukInsetText({
+    text: 'pages.enterEmail.text' | translate
+  }) }}
+
+<p class="govuk-body">{{'pages.enterEmail.details.summary' | translate}}</p>
 <ul class="govuk-list govuk-list--bullet">
-    <li>let you reuse and share your data to ensure that government services are quicker to interact with</li>
-    <li>suggest GOV.UK guidance and information that is relevant to you</li>
-    <li>tell you when content you're interested in has been updated</li>
-    <li>help you set up reminders for tasks you may need to complete later</li>
+    <li>{{'pages.enterEmail.details.bulletPoint1' | translate}}</li>
+    <li>{{'pages.enterEmail.details.bulletPoint2' | translate}}</li>
+    <li>{{'pages.enterEmail.details.bulletPoint3' | translate}}</li>
+    <li>{{'pages.enterEmail.details.bulletPoint4' | translate}}</li>
 </ul>
 <h2 class="govuk-heading-m">
-    What you need to create a GOV.UK Account
+    {{'pages.enterEmail.whatYouNeed.summary' | translate}}
 </h2>
 <ul class="govuk-list govuk-list--bullet">
-    <li>an email address</li>
-    <li>a working UK phone number with signal, so we can send you a security code</li>
+    <li>{{'pages.enterEmail.whatYouNeed.bulletPoint1' | translate}}</li>
+    <li>{{'pages.enterEmail.whatYouNeed.bulletPoint2' | translate}}</li>
 </ul>
 <br />
 <h2 class="govuk-heading-s">
-    To sign in or create an account, enter your email address
+    {{'pages.enterEmail.email.text' | translate}}
 </h2>
 <form action="/enter-email" method="post" novalidate>
 
@@ -38,9 +41,7 @@ errorList: errorList
 
 {{ govukInput({
     label: {
-        text: 'pages.enter-email.email.label' | translate,
-        classes: "govuk-label--l",
-        isPageHeading: true
+        text: 'pages.enterEmail.email.label' | translate
     },
     id: "email",
     name: "email",

@@ -1,14 +1,13 @@
 {
   "general": {
     "pageTitle": "GOV.UK Sign in",
+    "serviceName": "Sign in to or create your GOV.UK Account",
     "errorPrefix": "Error",
     "back": "Back",
-    "continueButton": "Continue",
-    "confirmChangeButton": "Confirm change and continue",
     "warning": "Warning",
     "errorSummaryTitle": "There is a problem",
     "phaseBanner": {
-      "tag": "alpha",
+      "tag": "beta",
       "content": "This is a new service – your {{-openLink}}feedback{{-closeLink}} will help us to improve it. // {{ target  }} //"
     },
     "yes": "Yes",
@@ -23,22 +22,82 @@
     "language": {
       "english": "English",
       "welsh": "Cymraeg (Welsh)"
+    },
+    "continue": {
+      "label": "Continue"
     }
   },
   "pages": {
-      "enter-email": {
-        "title": "Please enter the following information",
-        "header": "Please enter the following information",
-        "info": "Entering the information below will help us start to verify your identity. You may be asked additional questions as part of this process.",
-        "email": {
-          "label": "Email",
-          "validationError": {
-            "required": "Enter your email address",
-            "length": "Email address must be 256 characters or fewer",
-            "email": "Enter an email address in the correct format, like name@example.com"
-          }
+    "enterEmail": {
+      "title": "Sign in to or create your GOV.UK Account",
+      "header": "Sign in to or create your GOV.UK Account",
+      "text": "A GOV.UK Account is separate from other government accounts (for example a personal tax account or Government Gateway).",
+      "email": {
+        "label": "Email address",
+        "text": "To sign in or create an account, enter your email address",
+        "validationError": {
+          "required": "Enter your email address",
+          "length": "Email address must be 256 characters or fewer",
+          "email": "Enter an email address in the correct format, like name@example.com"
         }
+      },
+      "details" : {
+        "summary": "A GOV.UK Account will:",
+        "bulletPoint1": "let you reuse and share your data to ensure that government services are quicker to interact with",
+        "bulletPoint2": "suggest GOV.UK guidance and information that is relevant to you",
+        "bulletPoint3": "tell you when content you're interested in has been updated",
+        "bulletPoint4": "help you set up reminders for tasks you may need to complete later"
+      },
+      "whatYouNeed" : {
+        "summary": "What you need to create a GOV.UK Account",
+        "bulletPoint1": "an email address",
+        "bulletPoint2": "a working UK phone number with signal, so we can send you a security code"
+      }
+    },
+    "enterPassword": {
+      "title": "Sign in to or create your GOV.UK Account",
+      "header": "Enter your GOV.UK account password",
+      "info": "Entering the information below will help us start to verify your identity. You may be asked additional questions as part of this process.",
+      "password": {
+        "label": "Enter your password",
+        "validationError": {
+          "required": "Enter your password"
+        }
+      },
+      "securePasswordDetails" : {
+        "summary": "I've forgotten my password",
+        "text": "Put something useful here"
+      }
+    },
+    "createPassword": {
+      "title": "Create your GOV.UK account password",
+      "header": "Create your GOV.UK account password",
+      "password": {
+        "label": "Enter a password",
+        "hint": "It needs to be at least 8 characters long and must include at least one number",
+        "validationError": {
+          "required": "Enter your password",
+          "length": "Your password must be 8 characters or more",
+          "alphaNumeric": "Your password must include a number"
+        }
+      },
+      "confirmPassword": {
+        "label": "Retype password",
+        "validationError": {
+          "required": "Retype your password",
+          "matches": "Enter the same password in both fields"
+        }
+      },
+      "securePasswordDetails": {
+        "summary": "How to create a secure password",
+        "text": "A good way to create a secure and memorable password is to use 3 random words. You can use numbers, symbols and spaces."
+      },
+      "termsOfUse": {
+        "heading": "Agree to our terms of use",
+        "paragraph1": "We will collect and save your information securely. We will not share your personal information without your consent.",
+        "paragraph2": "By continuing, you confirm that you agree to our <a href=\"/privacy-statement\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\"> privacy notice</a> and our <a href=\"/terms-and-conditions\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">terms and conditions</a>."
       }
     }
+  }
 }
 

@@ -17,7 +17,6 @@ export const i18nextConfigurationOptions = {
     order: ["querystring", "cookie"],
     caches: ["cookie"],
     ignoreCase: true,
-    cookieSecure: false,
-  },
-  autoReload: NODE_ENV !== 'production'
+    cookieSecure: NODE_ENV === 'production',
+  }
 };

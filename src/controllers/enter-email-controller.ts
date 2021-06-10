@@ -1,33 +1,33 @@
-import {NextFunction, Request, Response} from "express";
+import {Request, Response} from "express";
 import {check} from "express-validator";
 import {UserService} from "../services/user-service";
 import {getUserService} from "../services/service-injection";
+import {PATH_NAMES} from "../app.constants";
+import {ExpressRouteFunc} from "../types/express";
 
-type ExpressRouteFunc = (req: Request, res: Response, next?: NextFunction) => void | Promise<void>;
+export const ENTER_EMAIL_TEMPLATE="enter-email.html";
 
-export function enterEmailValidationRules() {
+export function enterEmailValidationSchema() {
     return [
         check("email")
-            .not()
-            .isEmpty()
+            .trim()
+            .notEmpty()
             .withMessage((value, {req}) => {
-                return req.t("pages.enter-email.email.validationError.required", {value});
-            }),
-        check("email")
+                return req.t("pages.enterEmail.email.validationError.required", {value});
+            })
             .isLength({max: 256})
             .withMessage((value, {req}) => {
-                return req.t("pages.enter-email.email.validationError.length", {value});
-            }),
-        check("email")
+                return req.t("pages.enterEmail.email.validationError.length", {value});
+            })
             .isEmail()
             .withMessage((value, {req}) => {
-                return req.t("pages.enter-email.email.validationError.email", {value});
+                return req.t("pages.enterEmail.email.validationError.email", {value});
             })
     ];
 }
 
 export function enterEmailGet(req: Request, res: Response): void {
-    res.render("enter-email.html");
+    res.render(ENTER_EMAIL_TEMPLATE);
 }
 
 export function enterEmailPost(userService: UserService = getUserService()): ExpressRouteFunc {
@@ -35,12 +35,9 @@ export function enterEmailPost(userService: UserService = getUserService()): Exp
         const result = await userService.useEmailExists(req.body["email"]);
 
         if (result) {
-            res.redirect("enter-password");
+            return res.redirect(PATH_NAMES.ENTER_PASSWORD);
         }
-
-        //TODO needs to send email for new account creation
-
-        res.redirect("verify-email");
+        return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
     }
 }
 
