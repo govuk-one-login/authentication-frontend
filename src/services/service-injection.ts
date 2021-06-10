@@ -1,6 +1,6 @@
-import {UserService} from "./user-service";
-import * as dynamoUserService from "./dynamo-user-service"
+import {AuthenticationServiceInterface} from "./authentication-service.interface";
+import * as authService from "./authentication-service"
 
-export function getUserService(): UserService {
-    return dynamoUserService;
+export function getUserService(): AuthenticationServiceInterface {
+    return authService;
 }

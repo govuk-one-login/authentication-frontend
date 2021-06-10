@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {check} from "express-validator";
-import {UserService} from "../services/user-service";
+import {AuthenticationServiceInterface} from "../services/authentication-service.interface";
 import {ExpressRouteFunc} from "../types/express";
 import {getUserService} from "../services/service-injection";
 import {containsNumber} from "../utils/string-utils";
@@ -43,9 +43,8 @@ export function createAccountGet(req: Request, res: Response): void {
     res.render("create-account.html");
 }
 
-export function  createAccountPost(userService: UserService = getUserService()): ExpressRouteFunc {
+export function  createAccountPost(userService: AuthenticationServiceInterface = getUserService()): ExpressRouteFunc {
     return async function (req: Request, res: Response) {
-        const result = await userService.addUser(req.body["email"], req.body["password"]);
         return res.redirect(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);
     }
 }

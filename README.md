@@ -39,7 +39,11 @@ Installs the dependencies required to run the application.
 
 ### Environment variables
 
-TBA
+Create a copy of the .env.sample file and rename it .env and fill in below values:
+
+```
+API_BASE_URL=
+```
 
 ### Development
 

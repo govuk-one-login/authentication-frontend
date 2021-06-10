@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { HTTP_STATUS_CODES } from "./app.constants";
+import {ERROR_MESSAGES, HTTP_STATUS_CODES} from "./app.constants";
 import Logger, { getLogLabel } from "./utils/logger";
 
 const logLabel: string = getLogLabel(__filename);
@@ -12,6 +12,7 @@ export function pageNotFoundHandler(
   if (res.headersSent) {
     return next();
   }
+
   res.status(HTTP_STATUS_CODES.NOT_FOUND);
   res.render("errors/404.html");
 }
@@ -26,7 +27,7 @@ export function serverErrorHandler(
 
   if (err.code === "EBADCSRFTOKEN") {
     if (logger) {
-      logger.warn("form tampered with", logLabel, {});
+      logger.warn(ERROR_MESSAGES.INVALID_CSRF_TOKEN, logLabel, {});
     }
 
     res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR);

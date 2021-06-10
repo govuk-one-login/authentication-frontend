@@ -28,4 +28,4 @@ if [ ${running_count} -ne 0 ]; then
 fi
 
 echo "Starting di-auth-frontend-dev in frontend..."
-docker run --name di-auth-frontend-dev -dp 3000:3000  -w /app -v "$(pwd):/app"  node:15-alpine sh -c "yarn install && yarn run copy-build && yarn run dev"
+docker run --name di-auth-frontend-dev -dp 3000:3000 --env API_BASE_URL=${API_BASE_URL} -w /app -v "$(pwd):/app"  node:15-alpine sh -c "yarn install && yarn run copy-build && yarn run dev"
