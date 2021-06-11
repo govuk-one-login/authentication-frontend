@@ -19,6 +19,7 @@ import {
     termsConditionsGet
 } from "./controllers/footer-pages-controller";
 import {createAccountGet, createAccountPost, createPasswordValidationSchema} from "./controllers/create-account";
+import {enterPhoneNumberGet} from "./controllers/enter-phone-number-controller"
 
 const router = express.Router();
 
@@ -52,10 +53,11 @@ router.post(
     createAccountPost()
 );
 
+router.get(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER, csrfMiddleware, enterPhoneNumberGet);
+
 //footer pages
 router.get(PATH_NAMES.ACCESSIBILITY_STATEMENT, accessibilityStatementGet);
 router.get(PATH_NAMES.PRIVACY_POLICY, privacyStatementGet);
 router.get(PATH_NAMES.TERMS_AND_CONDITIONS, termsConditionsGet);
 
 export {router};
-

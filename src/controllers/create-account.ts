@@ -4,6 +4,7 @@ import {UserService} from "../services/user-service";
 import {ExpressRouteFunc} from "../types/express";
 import {getUserService} from "../services/service-injection";
 import {containsNumber} from "../utils/string-utils";
+import {PATH_NAMES} from "../app.constants"
 
 export function createPasswordValidationSchema() {
     return [
@@ -45,7 +46,7 @@ export function createAccountGet(req: Request, res: Response): void {
 export function  createAccountPost(userService: UserService = getUserService()): ExpressRouteFunc {
     return async function (req: Request, res: Response) {
         const result = await userService.addUser(req.body["email"], req.body["password"]);
-        return res.redirect("create-2fa");
+        return res.redirect(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);
     }
 }
 
