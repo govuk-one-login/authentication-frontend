@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {describe} from 'mocha';
 import {sinon} from "../utils/testUtils";
-import {pageNotFoundHandler} from "../../src/error-handlers";
+import {pageNotFoundHandler} from "../../src/error-handler";
 import {NextFunction} from "express";
 
 describe("Error handlers", () => {
