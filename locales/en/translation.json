@@ -97,6 +97,20 @@
         "paragraph1": "We will collect and save your information securely. We will not share your personal information without your consent.",
         "paragraph2": "By continuing, you confirm that you agree to our <a href=\"/privacy-statement\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\"> privacy notice</a> and our <a href=\"/terms-and-conditions\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">terms and conditions</a>."
       }
+    },
+    "enterPhoneNumber": {
+      "title": "Create a GOV.UK Account",
+      "header": "Enter your phone number",
+      "info": {
+          "paragraph1": "This is the number we will send 6-digit security codes to.",
+          "paragraph2": "It can be either a mobile or landline, but it needs to be a UK number, with signal."
+      },
+      "phoneNumber": {
+        "label": "UK phone number",
+        "validationError": {
+          "required": "Enter a UK phone number"
+        }
+      }
     }
   }
 }
