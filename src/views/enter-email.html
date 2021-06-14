@@ -6,10 +6,7 @@
 
 {% block content %}
 
-{{ govukErrorSummary({
-titleText: 'general.errorSummaryTitle' | translate,
-errorList: errorList
-}) if (errorList) }}
+{% include "errors/errorSummary.njk" %}
 
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterEmail.header' | translate}}</h1>
 
