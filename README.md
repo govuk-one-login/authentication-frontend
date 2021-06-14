@@ -73,7 +73,15 @@ the build directory.
 
 ## Testing
 
-The unit tests have been written with Mocha.
+The unit tests have been written with Mocha and Supertest.
+
+If the app is run in a container then the tests are run there too:
+
+```shell script
+docker exec -it frontend-container-name /bin/sh
+
+# yarn run test:unit
+```
 
 ### Unit
 
