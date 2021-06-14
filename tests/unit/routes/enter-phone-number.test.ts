@@ -1,15 +1,14 @@
-const assert = require("assert");
-
 import request from "supertest";
 import { createApp } from "../../../src/app";
 
 describe("Unit testing the /enter-phone-number GET route", () => {
-  it("should return OK status", () => {
-    const app = createApp();
-    return request(app)
+  it("should return OK status", (done) => {
+    request(createApp())
       .get("/enter-phone-number")
-      .then(function (response) {
-        assert.equal(response.status, 200);
+      .expect(200)
+      .end(function (err, res) {
+        if (err) return done(err);
+        return done();
       });
   });
 });
