@@ -1,8 +1,7 @@
-
-import {createLogger, transports} from "winston";
-import { getLogLevel } from "../../config";
+import { createLogger, transports } from "winston";
+import {getLogLevel, getNodeEnv} from "../../config";
 import * as config from "../../config";
-import {getConsoleLogFormat, logFormat} from "./formatting";
+import { getConsoleLogFormat, logFormat } from "./formatting";
 
 const LOG_PATH = process.cwd() + config.getLogFilePath();
 
@@ -27,7 +26,7 @@ const logger = createLogger({
   defaultMeta: { service: "di-auth", "log-path": LOG_PATH },
   level: getLogLevel(),
   transports:
-      process.env.NODE_ENV == "development" ? devTransports : otherTransports,
+      config.getNodeEnv() == "development" ? devTransports : otherTransports,
 });
 
 export default logger;

@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
 export function setHtmlLangMiddleware(
-    req: Request,
-    res: Response,
-    next: NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): void {
   if (req.i18n) {
     res.locals.htmlLang = req.i18n.language;

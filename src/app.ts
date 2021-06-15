@@ -19,22 +19,23 @@ import { setHtmlLangMiddleware } from "./middleware/html-lang-middleware";
 import i18next from "i18next";
 import Backend from "i18next-fs-backend";
 
+import * as dotenv from "dotenv";
+dotenv.config();
+
 const APP_VIEWS = [
-  path.join(__dirname, '/views'),
-  path.resolve("node_modules/govuk-frontend/")
-]
+  path.join(__dirname, "/views"),
+  path.resolve("node_modules/govuk-frontend/"),
+];
 
 function createApp(): express.Application {
   const app: express.Application = express();
 
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({extended: false}));
+  app.use(bodyParser.urlencoded({ extended: false }));
 
   app.use(
-      "/assets",
-      express.static(
-          path.resolve("node_modules/govuk-frontend/govuk/assets")
-      )
+    "/assets",
+    express.static(path.resolve("node_modules/govuk-frontend/govuk/assets"))
   );
 
   app.use("/public", express.static(path.join(__dirname, "public")));
@@ -43,14 +44,14 @@ function createApp(): express.Application {
   app.use(helmet(helmetConfiguration));
 
   i18next
-      .use(Backend)
-      .use(i18nextMiddleware.LanguageDetector)
-      .init(i18nextConfigurationOptions);
+    .use(Backend)
+    .use(i18nextMiddleware.LanguageDetector)
+    .init(i18nextConfigurationOptions);
 
-  app.use(i18nextMiddleware.handle(i18next, {removeLngFromUrl: false}));
+  app.use(i18nextMiddleware.handle(i18next, { removeLngFromUrl: false }));
 
   app.use(cookieParser());
-  app.use(csurf({cookie: true}));
+  app.use(csurf({ cookie: true }));
 
   app.post("*", sanitizeRequestMiddleware);
   app.use(setHtmlLangMiddleware);

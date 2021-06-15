@@ -7,9 +7,9 @@ const window = new JSDOM("").window;
 const DOMPurify = createDOMPurify(window);
 
 export function sanitizeRequestMiddleware(
-    req: Request,
-    res: Response,
-    next: NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): void {
   if (req.body) {
     Object.keys(req.body).forEach((formParameter) => {

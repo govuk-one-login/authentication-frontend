@@ -13,7 +13,7 @@ export const PATH_NAMES = {
 export const HTTP_STATUS_CODES = {
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
-  BAD_REQUEST: 400
+  BAD_REQUEST: 400,
 };
 
 export enum LOCALE {
@@ -28,4 +28,4 @@ export const API_ENDPOINTS = {
 export const ERROR_MESSAGES = {
   FAILED_HTTP_REQUEST: "Failed HTTP request",
   INVALID_CSRF_TOKEN: "Invalid CSRF token",
-}
+};
