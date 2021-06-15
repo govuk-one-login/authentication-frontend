@@ -40,7 +40,7 @@ jobs:
         trigger: true
       - set_pipeline: di-authentication-frontend
         file: pipeline-src/ci/pipeline.yaml
-  
+
   - name: deploy-app
     plan:
     - get: di-authentication-frontend
@@ -72,4 +72,5 @@ jobs:
         command: push
         manifest: di-authentication-frontend/manifest.yml
         path: di-authentication-frontend-zip/di-authentication-frontend.zip
-
+        environment_variables:
+          API_BASE_URL: ((api-base-url))
