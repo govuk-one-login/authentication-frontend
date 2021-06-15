@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
-import {HTTP_STATUS_CODES} from "../app.constants";
+import { HTTP_STATUS_CODES } from "../app.constants";
 
 const validationErrorFormatter = ({
   msg,
@@ -18,8 +18,8 @@ const validationErrorFormatter = ({
 export function validateBodyMiddleware(template: string) {
   return (req: Request, res: Response, next: NextFunction): any => {
     const errors = validationResult(req)
-        .formatWith(validationErrorFormatter)
-        .mapped();
+      .formatWith(validationErrorFormatter)
+      .mapped();
 
     if (Object.keys(errors).length !== 0) {
       res.status(HTTP_STATUS_CODES.BAD_REQUEST);

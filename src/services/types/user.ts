@@ -1,4 +1,4 @@
 export type User = {
-    email: string;
-    doesUserExist: boolean;
+  email: string;
+  doesUserExist: boolean;
 };

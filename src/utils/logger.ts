@@ -1,28 +1,56 @@
 import winstonLogger from "../config/logging/winston";
-import {ApplicationLogger, ApplicationLoggerPayload, SEVERITY} from "../config/logging/interface";
+import {
+  ApplicationLogger,
+  ApplicationLoggerPayload,
+  SEVERITY,
+} from "../config/logging/interface";
 
 export default class Logger implements ApplicationLogger {
-  error(message: string, label: string, payload?: ApplicationLoggerPayload): void {
+  error(
+    message: string,
+    label: string,
+    payload?: ApplicationLoggerPayload
+  ): void {
     this.console(message, label, SEVERITY.ERROR, payload);
   }
 
-  debug(message: string, label: string, payload?: ApplicationLoggerPayload): void {
+  debug(
+    message: string,
+    label: string,
+    payload?: ApplicationLoggerPayload
+  ): void {
     this.console(message, label, SEVERITY.DEBUG, payload);
   }
 
-  warn(message: string, label: string, payload?: ApplicationLoggerPayload): void {
+  warn(
+    message: string,
+    label: string,
+    payload?: ApplicationLoggerPayload
+  ): void {
     this.console(message, label, SEVERITY.WARN, payload);
   }
 
-  info(message: string, label: string, payload?: ApplicationLoggerPayload): void {
+  info(
+    message: string,
+    label: string,
+    payload?: ApplicationLoggerPayload
+  ): void {
     this.console(message, label, SEVERITY.INFO, payload);
   }
 
-  request(message: string, label: string, payload?: ApplicationLoggerPayload): void {
+  request(
+    message: string,
+    label: string,
+    payload?: ApplicationLoggerPayload
+  ): void {
     this.console(message, label, SEVERITY.INFO, payload);
   }
 
-  audit(message: string, label: string, payload?: ApplicationLoggerPayload): void {
+  audit(
+    message: string,
+    label: string,
+    payload?: ApplicationLoggerPayload
+  ): void {
     this.console(message, label, SEVERITY.INFO, payload);
   }
 

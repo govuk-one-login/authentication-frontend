@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import {ERROR_MESSAGES, HTTP_STATUS_CODES} from "./app.constants";
+import { ERROR_MESSAGES, HTTP_STATUS_CODES } from "./app.constants";
 import Logger, { getLogLabel } from "./utils/logger";
 
 const logLabel: string = getLogLabel(__filename);
 
 export function pageNotFoundHandler(
-    req: Request,
-    res: Response,
-    next: NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): void {
   if (res.headersSent) {
     return next();
@@ -18,10 +18,10 @@ export function pageNotFoundHandler(
 }
 
 export function serverErrorHandler(
-    err: any,
-    req: Request,
-    res: Response,
-    next: NextFunction
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): void {
   const logger: Logger = req.app.locals.logger;
 
