@@ -9,3 +9,11 @@ export function getLogLevel(): string {
 export function enableAnsiLog(): boolean {
   return process.env.ANSI_LOG === "true";
 }
+
+export function apiBaseUrl(): string {
+  return process.env.API_BASE_URL;
+}
+
+export function getNodeEnv(): string {
+  return process.env.NODE_ENV || "development";
+}

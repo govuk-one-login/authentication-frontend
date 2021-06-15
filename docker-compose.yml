@@ -9,6 +9,7 @@ services:
     - 3000:3000
     environment:
       - ENVIRONMENT="development"
+      - API_BASE_URL=""
     restart: on-failure
     networks:
       - di-net

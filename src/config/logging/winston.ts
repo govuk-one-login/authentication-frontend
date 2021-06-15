@@ -23,9 +23,11 @@ const otherTransports = [
   }),
 ];
 
-export default createLogger({
+const logger = createLogger({
   defaultMeta: { service: "di-auth", "log-path": LOG_PATH },
   level: getLogLevel(),
   transports:
-    process.env.NODE_ENV == "development" ? devTransports : otherTransports,
+      process.env.NODE_ENV == "development" ? devTransports : otherTransports,
 });
+
+export default logger;
