@@ -7,9 +7,9 @@ import { ExpressRouteFunc } from "../types/express";
 import { error } from "winston";
 import { validateBodyMiddleware } from "../middleware/form-validation-middleware";
 
-export const ENTER_EMAIL_TEMPLATE = "enter-email.html";
+const ENTER_EMAIL_TEMPLATE = "enter-email.html";
 
-export function enterEmailValidationSchema() {
+export function validateEnterEmailRequest() {
   return [
     body("email")
       .trim()
@@ -29,6 +29,7 @@ export function enterEmailValidationSchema() {
       .withMessage((value, { req }) => {
         return req.t("pages.enterEmail.email.validationError.email", { value });
       }),
+      validateBodyMiddleware(ENTER_EMAIL_TEMPLATE)
   ];
 }
 

@@ -1,16 +1,14 @@
 import * as express from "express";
 import {
-  ENTER_EMAIL_TEMPLATE,
   enterEmailGet,
   enterEmailPost,
-  enterEmailValidationSchema,
+  validateEnterEmailRequest,
 } from "./controllers/enter-email-controller";
 import { PATH_NAMES } from "./app.constants";
-import { validateBodyMiddleware } from "./middleware/form-validation-middleware";
 import {
   enterPasswordGet,
   enterPasswordPost,
-  enterPasswordValidationSchema,
+  validateEnterPasswordRequest,
 } from "./controllers/enter-password-controller";
 import { csrfMiddleware } from "./middleware/csrf-middleware";
 import {
@@ -21,9 +19,9 @@ import {
 import {
   createAccountGet,
   createAccountPost,
-  createPasswordValidationSchema,
-} from "./controllers/create-account";
-import { enterPhoneNumberGet } from "./controllers/enter-phone-number-controller";
+  validateCreatePasswordRequest,
+} from "./controllers/register-create-password-controller";
+import { enterPhoneNumberGet } from "./controllers/register-enter-phone-number-controller";
 
 const router = express.Router();
 
@@ -34,22 +32,20 @@ router.get(PATH_NAMES.ENTER_EMAIL, csrfMiddleware, enterEmailGet);
 router.post(
   PATH_NAMES.ENTER_EMAIL,
   csrfMiddleware,
-  enterEmailValidationSchema(),
-  validateBodyMiddleware(ENTER_EMAIL_TEMPLATE),
+  validateEnterEmailRequest(),
   enterEmailPost()
 );
 
 router.get(
   PATH_NAMES.ENTER_PASSWORD,
   csrfMiddleware,
-  enterPasswordValidationSchema(),
+  validateEnterPasswordRequest(),
   enterPasswordGet
 );
 router.post(
   PATH_NAMES.ENTER_PASSWORD,
   csrfMiddleware,
-  enterPasswordValidationSchema(),
-  validateBodyMiddleware("enter-password.html"),
+  validateEnterPasswordRequest(),
   enterPasswordPost
 );
 
@@ -61,8 +57,7 @@ router.get(
 router.post(
   PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
   csrfMiddleware,
-  createPasswordValidationSchema(),
-  validateBodyMiddleware("create-account.html"),
+  validateCreatePasswordRequest(),
   createAccountPost()
 );
 

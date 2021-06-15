@@ -1,14 +1,17 @@
 import { Request, Response } from "express";
-import { check } from "express-validator";
+import {body} from "express-validator";
 import { AuthenticationServiceInterface } from "../services/authentication-service.interface";
 import { ExpressRouteFunc } from "../types/express";
 import { getUserService } from "../services/service-injection";
 import { containsNumber } from "../utils/string-utils";
 import { PATH_NAMES } from "../app.constants";
+import {validateBodyMiddleware} from "../middleware/form-validation-middleware";
 
-export function createPasswordValidationSchema() {
+const CREATE_PASSWORD_TEMPLATE = "create-account.html";
+
+export function validateCreatePasswordRequest() {
   return [
-    check("password")
+    body("password")
       .trim()
       .notEmpty()
       .withMessage((value, { req }) => {
@@ -30,7 +33,7 @@ export function createPasswordValidationSchema() {
         }
         return true;
       }),
-    check("confirm-password")
+    body("confirm-password")
       .trim()
       .notEmpty()
       .withMessage((value, { req }) => {
@@ -49,11 +52,12 @@ export function createPasswordValidationSchema() {
         }
         return true;
       }),
+      validateBodyMiddleware(CREATE_PASSWORD_TEMPLATE)
   ];
 }
 
 export function createAccountGet(req: Request, res: Response): void {
-  res.render("create-account.html");
+  res.render(CREATE_PASSWORD_TEMPLATE);
 }
 
 export function createAccountPost(
@@ -62,8 +66,4 @@ export function createAccountPost(
   return async function (req: Request, res: Response) {
     return res.redirect(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);
   };
-}
-
-export function verifyEmailGet(req: Request, res: Response): void {
-  res.render("verify-email.html");
 }

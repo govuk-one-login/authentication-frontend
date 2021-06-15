@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
-import { check } from "express-validator";
+import { body } from "express-validator";
+import {validateBodyMiddleware} from "../middleware/form-validation-middleware";
 
-export function enterPasswordValidationSchema() {
+const ENTER_PASSWORD_TEMPLATE_NAME = "enter-password.html"
+
+export function validateEnterPasswordRequest() {
   return [
-    check("password")
+    body("password")
       .trim()
       .notEmpty()
       .withMessage((value, { req }) => {
@@ -11,11 +14,12 @@ export function enterPasswordValidationSchema() {
           value,
         });
       }),
+      validateBodyMiddleware(ENTER_PASSWORD_TEMPLATE_NAME)
   ];
 }
 
 export function enterPasswordGet(req: Request, res: Response): void {
-  res.render("enter-password.html");
+  res.render(ENTER_PASSWORD_TEMPLATE_NAME);
 }
 
 export function enterPasswordPost(req: Request, res: Response): void {
