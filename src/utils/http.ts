@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig} from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { getApiBaseUrl } from "../config";
 import Logger, { getLogLabel } from "./logger";
 

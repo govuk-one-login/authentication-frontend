@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { body } from "express-validator";
-import {validateBodyMiddleware} from "../middleware/form-validation-middleware";
+import { validateBodyMiddleware } from "../middleware/form-validation-middleware";
 
 const ENTER_PHONE_NUMBER_TEMPLATE: string = "enter-phone-number.html";
 
@@ -15,7 +15,7 @@ export function validateEnterPhoneNumberRequest() {
           { value }
         );
       }),
-      validateBodyMiddleware(ENTER_PHONE_NUMBER_TEMPLATE)
+    validateBodyMiddleware(ENTER_PHONE_NUMBER_TEMPLATE),
   ];
 }
 

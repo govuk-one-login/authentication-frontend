@@ -16,15 +16,27 @@ import {
   privacyStatementGet,
   termsConditionsGet,
 } from "./controllers/footer-pages-controller";
-import {createAccountGet, createAccountPost, createPasswordValidationSchema} from "./controllers/create-account";
-import {enterPhoneNumberGet} from "./controllers/enter-phone-number-controller"
-import {createSessionMiddleware, validateSessionMiddleware} from "./middleware/session-middleware";
+import {
+  createAccountGet,
+  createAccountPost,
+  createPasswordValidationSchema,
+} from "./controllers/create-account";
+import { enterPhoneNumberGet } from "./controllers/enter-phone-number-controller";
+import {
+  createSessionMiddleware,
+  validateSessionMiddleware,
+} from "./middleware/session-middleware";
 
 const basicMiddlewarePipeline = [validateSessionMiddleware, csrfMiddleware];
 
 const router = express.Router();
 
-router.get("/", createSessionMiddleware, basicMiddlewarePipeline, enterEmailGet);
+router.get(
+  "/",
+  createSessionMiddleware,
+  basicMiddlewarePipeline,
+  enterEmailGet
+);
 
 router.get(PATH_NAMES.ENTER_EMAIL, basicMiddlewarePipeline, enterEmailGet);
 
