@@ -4,6 +4,7 @@ import { AuthenticationServiceInterface } from "../services/authentication-servi
 import { getUserService } from "../services/service-injection";
 import { PATH_NAMES } from "../app.constants";
 import { ExpressRouteFunc } from "../types/express";
+import { validateBodyMiddleware } from "../middleware/form-validation-middleware";
 
 const ENTER_EMAIL_TEMPLATE = "enter-email.html";
 

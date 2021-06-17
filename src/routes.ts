@@ -18,10 +18,9 @@ import {
 } from "./controllers/footer-pages-controller";
 import {
   createAccountGet,
-  createAccountPost,
-  createPasswordValidationSchema,
-} from "./controllers/create-account";
-import { enterPhoneNumberGet } from "./controllers/enter-phone-number-controller";
+  createAccountPost, validateCreatePasswordRequest,
+} from "./controllers/register-create-password-controller";
+import { enterPhoneNumberGet } from "./controllers/register-enter-phone-number-controller";
 import {
   createSessionMiddleware,
   validateSessionMiddleware,
