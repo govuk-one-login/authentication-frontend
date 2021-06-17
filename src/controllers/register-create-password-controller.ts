@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { body } from "express-validator";
 import { AuthenticationServiceInterface } from "../services/authentication-service.interface";
 import { ExpressRouteFunc } from "../types/express";
@@ -63,7 +63,20 @@ export function createAccountGet(req: Request, res: Response): void {
 export function createAccountPost(
   userService: AuthenticationServiceInterface = getUserService()
 ): ExpressRouteFunc {
-  return async function (req: Request, res: Response) {
-    return res.redirect(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);
+  return async function (req: Request, res: Response, next: NextFunction) {
+    try {
+      if (
+        await userService.signUpUser(
+          req.session.user.email,
+          req.body["password"]
+        )
+      ) {
+        return res.redirect(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);
+      }
+
+      return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
+    } catch (err) {
+      next(err);
+    }
   };
 }

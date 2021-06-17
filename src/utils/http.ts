@@ -25,9 +25,8 @@ class Http {
   }
 
   private injectCustomHeaders(config: AxiosRequestConfig): AxiosRequestConfig {
-    //TODO this needs implementing
-    config.headers["Session-Id"] = "123456";
-    return config; //TODO basic auth for api
+    //TODO basic auth for api
+    return config;
   }
 
   initHttp() {
