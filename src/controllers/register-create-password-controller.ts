@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import {body} from "express-validator";
+import { body } from "express-validator";
 import { AuthenticationServiceInterface } from "../services/authentication-service.interface";
 import { ExpressRouteFunc } from "../types/express";
 import { getUserService } from "../services/service-injection";
 import { containsNumber } from "../utils/string-utils";
 import { PATH_NAMES } from "../app.constants";
-import {validateBodyMiddleware} from "../middleware/form-validation-middleware";
+import { validateBodyMiddleware } from "../middleware/form-validation-middleware";
 
 const CREATE_PASSWORD_TEMPLATE = "create-account.html";
 
@@ -52,7 +52,7 @@ export function validateCreatePasswordRequest() {
         }
         return true;
       }),
-      validateBodyMiddleware(CREATE_PASSWORD_TEMPLATE)
+    validateBodyMiddleware(CREATE_PASSWORD_TEMPLATE),
   ];
 }
 

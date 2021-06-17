@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { body } from "express-validator";
-import {validateBodyMiddleware} from "../middleware/form-validation-middleware";
+import { validateBodyMiddleware } from "../middleware/form-validation-middleware";
 
-const ENTER_PASSWORD_TEMPLATE_NAME = "enter-password.html"
+const ENTER_PASSWORD_TEMPLATE_NAME = "enter-password.html";
 
 export function validateEnterPasswordRequest() {
   return [
@@ -14,7 +14,7 @@ export function validateEnterPasswordRequest() {
           value,
         });
       }),
-      validateBodyMiddleware(ENTER_PASSWORD_TEMPLATE_NAME)
+    validateBodyMiddleware(ENTER_PASSWORD_TEMPLATE_NAME),
   ];
 }
 

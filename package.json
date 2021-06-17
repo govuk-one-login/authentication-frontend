@@ -26,12 +26,18 @@
     "test": "yarn test:unit",
     "test:unit": "rm -rf tests/coverage && NODE_ENV=development nyc mocha --timeout 10000 --exit --recursive --require ts-node/register \"tests/unit/**/*.test.ts\"",
     "test:coverage": "nyc report",
-    "clean": "rm -rf dist node_modules"
+    "clean": "rm -rf dist node_modules",
+    "pretty": "prettier --write \"src/**/*.{ts,json}\""
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true
   },
   "dependencies": {
     "axios": "^0.21.1",

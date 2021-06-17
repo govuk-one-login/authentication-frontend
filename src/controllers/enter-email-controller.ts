@@ -27,7 +27,7 @@ export function validateEnterEmailRequest() {
       .withMessage((value, { req }) => {
         return req.t("pages.enterEmail.email.validationError.email", { value });
       }),
-      validateBodyMiddleware(ENTER_EMAIL_TEMPLATE)
+    validateBodyMiddleware(ENTER_EMAIL_TEMPLATE),
   ];
 }
 
@@ -53,4 +53,3 @@ export function enterEmailPost(
     }
   };
 }
-

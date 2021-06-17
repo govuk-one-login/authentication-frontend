@@ -38,7 +38,7 @@ export function serverErrorHandler(
     return next(err);
   }
 
-  logger.error(err, logLabel, {error: err});
+  logger.error(err, logLabel, { error: err });
 
   if (res.statusCode == HTTP_STATUS_CODES.SESSION_TIMEOUT) {
     return res.render("errors/session-expired.html");

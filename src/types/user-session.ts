@@ -1,5 +1,5 @@
 export interface UserSession {
-    sessionId:string
-    scope:string
-    email?: string
+  sessionId: string;
+  scope: string;
+  email?: string;
 }
