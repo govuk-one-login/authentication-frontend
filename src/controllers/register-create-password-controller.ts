@@ -65,8 +65,10 @@ export function createAccountPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
+      const sessionId = req.session.user.sessionId;
       if (
         await userService.signUpUser(
+          sessionId,
           req.session.user.email,
           req.body["password"]
         )

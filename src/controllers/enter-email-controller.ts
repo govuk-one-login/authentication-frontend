@@ -42,10 +42,11 @@ export function enterEmailPost(
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
       const email = req.body["email"];
+      const sessionId = req.session.user.sessionId;
 
       req.session.user.email = email;
 
-      if (await userService.userExists(email)) {
+      if (await userService.userExists(sessionId, email)) {
         return res.redirect(PATH_NAMES.ENTER_PASSWORD);
       }
       return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
