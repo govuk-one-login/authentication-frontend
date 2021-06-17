@@ -27,6 +27,24 @@
       "label": "Continue"
     }
   },
+  "error": {
+    "error404": {
+      "title": "Page not found",
+      "header": "Page not found"
+    },
+    "error500": {
+      "title": "Sorry, there is a problem with this service",
+      "header": "Sorry, there is a problem with this service"
+    },
+    "timeoutError": {
+      "title": "Session timed out",
+      "header": "Session timed out",
+      "content": {
+        "paragraph1": "Your session has timed out due to inactivity.",
+        "paragraph2": "add another line here"
+      }
+    }
+  },
   "pages": {
     "enterEmail": {
       "title": "Sign in to or create your GOV.UK Account",

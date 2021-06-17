@@ -1,5 +1,5 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { apiBaseUrl } from "../config";
+import axios, { AxiosInstance, AxiosRequestConfig} from "axios";
+import { getApiBaseUrl } from "../config";
 import Logger, { getLogLabel } from "./logger";
 
 const logger: Logger = new Logger();
@@ -32,7 +32,7 @@ class Http {
 
   initHttp() {
     const http = axios.create({
-      baseURL: apiBaseUrl(),
+      baseURL: getApiBaseUrl(),
       headers: this.headers,
     });
 

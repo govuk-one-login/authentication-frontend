@@ -5,5 +5,6 @@ declare namespace Express {
     };
     t: TFunction;
     csrfToken?: () => string;
+    session: any;
   }
 }

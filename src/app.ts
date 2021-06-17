@@ -22,10 +22,19 @@ import Backend from "i18next-fs-backend";
 import * as dotenv from "dotenv";
 dotenv.config();
 
+import cookieSession from "cookie-session";
+import { getSessionExpiry, getSessionSecret } from "./config";
+
 const APP_VIEWS = [
   path.join(__dirname, "/views"),
   path.resolve("node_modules/govuk-frontend/"),
 ];
+
+const SESSION_COOKIE_OPTIONS = {
+  name: "session",
+  keys: [getSessionSecret()],
+  maxAge: getSessionExpiry(),
+};
 
 function createApp(): express.Application {
   const app: express.Application = express();
@@ -49,6 +58,8 @@ function createApp(): express.Application {
     .init(i18nextConfigurationOptions);
 
   app.use(i18nextMiddleware.handle(i18next, { removeLngFromUrl: false }));
+
+  app.use(cookieSession(SESSION_COOKIE_OPTIONS));
 
   app.use(cookieParser());
   app.use(csurf({ cookie: true }));
