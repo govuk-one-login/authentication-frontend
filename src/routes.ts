@@ -16,35 +16,34 @@ import {
   privacyStatementGet,
   termsConditionsGet,
 } from "./controllers/footer-pages-controller";
-import {
-  createAccountGet,
-  createAccountPost,
-  validateCreatePasswordRequest,
-} from "./controllers/register-create-password-controller";
-import { enterPhoneNumberGet } from "./controllers/register-enter-phone-number-controller";
+import {createAccountGet, createAccountPost, createPasswordValidationSchema} from "./controllers/create-account";
+import {enterPhoneNumberGet} from "./controllers/enter-phone-number-controller"
+import {createSessionMiddleware, validateSessionMiddleware} from "./middleware/session-middleware";
+
+const basicMiddlewarePipeline = [validateSessionMiddleware, csrfMiddleware];
 
 const router = express.Router();
 
-router.get("/", csrfMiddleware, enterEmailGet);
+router.get("/", createSessionMiddleware, basicMiddlewarePipeline, enterEmailGet);
 
-router.get(PATH_NAMES.ENTER_EMAIL, csrfMiddleware, enterEmailGet);
+router.get(PATH_NAMES.ENTER_EMAIL, basicMiddlewarePipeline, enterEmailGet);
 
 router.post(
   PATH_NAMES.ENTER_EMAIL,
-  csrfMiddleware,
+  basicMiddlewarePipeline,
   validateEnterEmailRequest(),
   enterEmailPost()
 );
 
 router.get(
   PATH_NAMES.ENTER_PASSWORD,
-  csrfMiddleware,
+  basicMiddlewarePipeline,
   validateEnterPasswordRequest(),
   enterPasswordGet
 );
 router.post(
   PATH_NAMES.ENTER_PASSWORD,
-  csrfMiddleware,
+  basicMiddlewarePipeline,
   validateEnterPasswordRequest(),
   enterPasswordPost
 );

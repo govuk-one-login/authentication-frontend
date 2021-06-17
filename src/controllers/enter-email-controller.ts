@@ -4,8 +4,6 @@ import { AuthenticationServiceInterface } from "../services/authentication-servi
 import { getUserService } from "../services/service-injection";
 import { PATH_NAMES } from "../app.constants";
 import { ExpressRouteFunc } from "../types/express";
-import { error } from "winston";
-import { validateBodyMiddleware } from "../middleware/form-validation-middleware";
 
 const ENTER_EMAIL_TEMPLATE = "enter-email.html";
 
@@ -42,13 +40,17 @@ export function enterEmailPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
-      if (await userService.userExists(req.body["email"])) {
+      const email = req.body["email"];
+
+      req.session.user.email = email;
+
+      if (await userService.userExists(email)) {
         return res.redirect(PATH_NAMES.ENTER_PASSWORD);
       }
-
       return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
     } catch (err) {
       next(err);
     }
   };
 }
+
