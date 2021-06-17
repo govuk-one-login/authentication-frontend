@@ -1,4 +1,4 @@
 export interface AuthenticationServiceInterface {
-  userExists: (emailAddress: string) => Promise<boolean>;
-  signUpUser: (emailAddress: string, password: string) => Promise<boolean>;
+  userExists: (sessionId: string, emailAddress: string) => Promise<boolean>;
+  signUpUser: (sessionId: string, emailAddress: string, password: string) => Promise<boolean>;
 }

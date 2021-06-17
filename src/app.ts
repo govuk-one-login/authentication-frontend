@@ -39,6 +39,8 @@ const SESSION_COOKIE_OPTIONS = {
 function createApp(): express.Application {
   const app: express.Application = express();
 
+  console.log("API_BASE_URL", process.env.API_BASE_URL);
+
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
 

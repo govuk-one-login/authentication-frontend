@@ -23,7 +23,7 @@ export function validateSessionMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  if (req.session.isPopulated && isSessionValid(req.session.user)) {
+  if (isSessionValid(req.session.user)) {
     return next();
   }
 

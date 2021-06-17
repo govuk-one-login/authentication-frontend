@@ -30,5 +30,5 @@ export const API_ENDPOINTS = {
 export const ERROR_MESSAGES = {
   FAILED_HTTP_REQUEST: "Failed HTTP request",
   INVALID_CSRF_TOKEN: "Invalid CSRF token",
-  INVALID_SESSION: "Invalid sessions",
+  INVALID_SESSION: "Invalid session",
 };

@@ -49,7 +49,6 @@ router.post(
 router.get(
   PATH_NAMES.ENTER_PASSWORD,
   basicMiddlewarePipeline,
-  validateEnterPasswordRequest(),
   enterPasswordGet
 );
 router.post(
