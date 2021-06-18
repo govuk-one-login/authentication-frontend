@@ -6,7 +6,8 @@ export enum SEVERITY {
 }
 
 export interface ApplicationLoggerPayload {
-  user_agent?: any;
+  sessionId?: string;
+  userAgent?: any;
   error?: any;
 }
 

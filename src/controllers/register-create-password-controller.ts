@@ -3,7 +3,7 @@ import { body } from "express-validator";
 import { AuthenticationServiceInterface } from "../services/authentication-service.interface";
 import { ExpressRouteFunc } from "../types/express";
 import { getUserService } from "../services/service-injection";
-import { containsNumber } from "../utils/string-utils";
+import { containsNumber } from "../utils/string-helpers";
 import { PATH_NAMES } from "../app.constants";
 import { validateBodyMiddleware } from "../middleware/form-validation-middleware";
 
@@ -65,7 +65,7 @@ export function createAccountPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const sessionId = req.session.user.sessionId;
+      const sessionId = req.session.user.id;
       if (
         await userService.signUpUser(
           sessionId,

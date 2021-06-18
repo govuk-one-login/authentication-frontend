@@ -1,4 +1,6 @@
 import request from "supertest";
+import { describe } from "mocha";
+
 import { createApp } from "../../../src/app";
 
 describe("Unit testing the /enter-phone-number GET route", () => {

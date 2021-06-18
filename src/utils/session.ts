@@ -1,14 +1,14 @@
 import { UserSession } from "../types/user-session";
 
-export function createSession(sessionId: any, scope: any): UserSession {
+export function createSession(id: any, scope: any): UserSession {
   return {
-    sessionId,
+    id,
     scope,
   };
 }
 
 export function isSessionValid(session: UserSession): boolean {
-  return session && Object.keys(session).length > 0 && hasValues(session);
+  return session != null && (Object.keys(session).length > 0 && hasValues(session));
 }
 
 function hasValues(obj: UserSession) {

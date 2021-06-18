@@ -23,7 +23,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 import cookieSession from "cookie-session";
-import { getSessionExpiry, getSessionSecret } from "./config";
+import {getNodeEnv, getSessionExpiry, getSessionSecret} from "./config";
 
 const APP_VIEWS = [
   path.join(__dirname, "/views"),
@@ -34,12 +34,12 @@ const SESSION_COOKIE_OPTIONS = {
   name: "session",
   keys: [getSessionSecret()],
   maxAge: getSessionExpiry(),
+  signed: getNodeEnv() === 'production' ? true : false,
+  sameSite: true,
 };
 
 function createApp(): express.Application {
   const app: express.Application = express();
-
-  console.log("API_BASE_URL", process.env.API_BASE_URL);
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));

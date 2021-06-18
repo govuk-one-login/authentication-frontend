@@ -15,7 +15,8 @@ export const HTTP_STATUS_CODES = {
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
   BAD_REQUEST: 400,
-  SESSION_TIMEOUT: 401,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
 };
 
 export enum LOCALE {
@@ -32,4 +33,8 @@ export const ERROR_MESSAGES = {
   FAILED_HTTP_REQUEST: "Failed HTTP request",
   INVALID_CSRF_TOKEN: "Invalid CSRF token",
   INVALID_SESSION: "Invalid session",
+  INVALID_HTTP_REQUEST: "Invalid HTTP request",
+  FORBIDDEN: "Unauthorized HTTP request",
+  INTERNAL_SERVER_ERROR: "Internal server error",
+  PAGE_NOT_FOUND: "Request page not found",
 };
