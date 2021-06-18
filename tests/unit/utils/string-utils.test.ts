@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { containsNumber } from "../../../src/utils/string-utils";
+import { containsNumber } from "../../../src/utils/string-helpers";
 
-describe("string-utils", () => {
+describe("string-helpers", () => {
   describe("containsNumber", () => {
     it("should return false when string contains no numeric characters", () => {
       expect(containsNumber("test")).to.equal(false);

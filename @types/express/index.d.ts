@@ -1,5 +1,6 @@
 declare namespace Express {
   interface Request {
+    useragent?: any;
     i18n?: {
       language?: string;
     };

@@ -42,7 +42,10 @@ Installs the dependencies required to run the application.
 Create a copy of the .env.sample file and rename it .env and fill in below values:
 
 ```
+ENVIRONMENT=development
 API_BASE_URL=
+SESSION_EXPIRY=
+SESSION_SECRET=
 ```
 
 ### Development

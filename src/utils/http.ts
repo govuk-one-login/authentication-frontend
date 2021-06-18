@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { getApiBaseUrl } from "../config";
 import Logger, { getLogLabel } from "./logger";
+import { ERROR_MESSAGES, HTTP_STATUS_CODES } from "../app.constants";
 
 const logger: Logger = new Logger();
 const logLabel: string = getLogLabel(__filename);
@@ -20,7 +21,29 @@ class Http {
   }
 
   private handleError(error: any) {
-    logger.error("failed http request", logLabel);
+    const { response } = error;
+    let errorMessage: string;
+
+    switch (response.status) {
+      case HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR: {
+        errorMessage = ERROR_MESSAGES.INVALID_HTTP_REQUEST;
+        break;
+      }
+      case HTTP_STATUS_CODES.UNAUTHORIZED: {
+        errorMessage = ERROR_MESSAGES.INVALID_SESSION;
+        break;
+      }
+      case HTTP_STATUS_CODES.FORBIDDEN: {
+        errorMessage = ERROR_MESSAGES.FORBIDDEN;
+        break;
+      }
+      default:
+        errorMessage = ERROR_MESSAGES.INVALID_HTTP_REQUEST;
+    }
+
+    const {data} = response;
+    logger.error(errorMessage, logLabel, { error: JSON.stringify(data) });
+
     return Promise.reject(error);
   }
 
@@ -41,10 +64,7 @@ class Http {
 
     http.interceptors.response.use(
       (response) => response,
-      (error) => {
-        const { response } = error;
-        return this.handleError(response);
-      }
+      (error) => this.handleError(error)
     );
 
     this.instance = http;

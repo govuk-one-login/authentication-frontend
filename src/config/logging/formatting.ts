@@ -1,4 +1,4 @@
-import { format, transports } from "winston";
+import { format } from "winston";
 import path from "path";
 
 export const logFormat = format.combine(
@@ -12,25 +12,26 @@ export const logFormat = format.combine(
       process_id: process.pid,
       "log-path": info["log-path"],
       severity: info.level,
+      session_id: info.sessionId,
       body: {
         subject: info.stack ? info.name : info.message,
         stack: info.stack,
         label: info.label,
-        user_agent: info.user_agent
+        error: info.error,
+        user_agent: info.userAgent
           ? {
-              browser: info.user_agent.browser,
-              version: info.user_agent.version,
-              os: info.user_agent.os,
-              platform: info.user_agent.platform,
-              source: info.user_agent.source,
-              isDesktop: info.user_agent.isDesktop,
-              isMobile: info.user_agent.isMobile,
-              isTablet: info.user_agent.isTablet,
-              isCurl: info.user_agent.isCurl,
-              isBot: info.user_agent.isBot,
+              browser: info.userAgent.browser,
+              version: info.userAgent.version,
+              os: info.userAgent.os,
+              platform: info.userAgent.platform,
+              source: info.userAgent.source,
+              isDesktop: info.userAgent.isDesktop,
+              isMobile: info.userAgent.isMobile,
+              isTablet: info.userAgent.isTablet,
+              isCurl: info.userAgent.isCurl,
+              isBot: info.userAgent.isBot,
             }
           : undefined,
-        declaration: info.declaration,
       },
     };
     return JSON.stringify(formattedInfo);

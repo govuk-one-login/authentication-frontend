@@ -1,8 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { ERROR_MESSAGES, HTTP_STATUS_CODES } from "./app.constants";
 import Logger, { getLogLabel } from "./utils/logger";
+import { isSessionValid } from "./utils/session";
+import { UserSession } from "./types/user-session";
 
 const logLabel: string = getLogLabel(__filename);
+
+function getSessionId(session: UserSession) {
+  return isSessionValid(session) ? session.id : undefined;
+}
 
 export function pageNotFoundHandler(
   req: Request,
@@ -11,6 +17,12 @@ export function pageNotFoundHandler(
 ): void {
   if (res.headersSent) {
     return next();
+  }
+  const logger: Logger = req.app.locals.logger;
+  if (logger) {
+    logger.warn(ERROR_MESSAGES.PAGE_NOT_FOUND, logLabel, {
+      sessionId: getSessionId(req.session.user),
+    });
   }
 
   res.status(HTTP_STATUS_CODES.NOT_FOUND);
@@ -27,7 +39,10 @@ export function serverErrorHandler(
 
   if (err.code === "EBADCSRFTOKEN") {
     if (logger) {
-      logger.warn(ERROR_MESSAGES.INVALID_CSRF_TOKEN, logLabel, {});
+      logger.warn(ERROR_MESSAGES.INVALID_CSRF_TOKEN, logLabel, {
+        sessionId: getSessionId(req.session.user),
+        userAgent: req.useragent,
+      });
     }
 
     res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR);
@@ -38,9 +53,12 @@ export function serverErrorHandler(
     return next(err);
   }
 
-  logger.error(err, logLabel, { error: err });
+  logger.error(ERROR_MESSAGES.INTERNAL_SERVER_ERROR, logLabel, {
+    sessionId: getSessionId(req.session.user),
+    userAgent: req.useragent,
+  });
 
-  if (res.statusCode == HTTP_STATUS_CODES.SESSION_TIMEOUT) {
+  if (res.statusCode == HTTP_STATUS_CODES.UNAUTHORIZED) {
     return res.render("errors/session-expired.html");
   }
 

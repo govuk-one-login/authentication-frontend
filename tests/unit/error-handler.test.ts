@@ -8,7 +8,7 @@ describe("Error handlers", () => {
   describe("pageNotFoundHandler", () => {
     it("should render 404 view", () => {
       const status = sinon.fake();
-      const req: any = {};
+      const req: any = {app:{locals:{}}};
       const res: any = { render: sinon.fake(), status };
       const nextFunction: NextFunction = sinon.fake();
 

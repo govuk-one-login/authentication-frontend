@@ -10,6 +10,8 @@ services:
     environment:
       - ENVIRONMENT="development"
       - API_BASE_URL=""
+      - SESSION_EXPIRY=""
+      - SESSION_SECRET=""
     restart: on-failure
     networks:
       - di-net

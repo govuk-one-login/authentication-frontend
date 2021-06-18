@@ -42,7 +42,7 @@ export function enterEmailPost(
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
       const email = req.body["email"];
-      const sessionId = req.session.user.sessionId;
+      const sessionId = req.session.user.id;
 
       req.session.user.email = email;
 
