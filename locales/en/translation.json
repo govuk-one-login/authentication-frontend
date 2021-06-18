@@ -94,7 +94,8 @@
         "hint": "It needs to be at least 8 characters long and must include at least one number",
         "validationError": {
           "required": "Enter your password",
-          "length": "Your password must be 8 characters or more",
+          "minLength": "Your password must be 8 characters or more",
+          "maxLength": "Your password must be less than 256 characters",
           "alphaNumeric": "Your password must include a number"
         }
       },
