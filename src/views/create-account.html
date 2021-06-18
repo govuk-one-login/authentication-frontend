@@ -16,9 +16,9 @@
 
 {{ govukInput({
     label: {
-        text: 'pages.createPassword.password.label' | translate
+        text: 'pages.createPassword.password.label' | translate,
+        classes: "govuk-label--s"
     },
-    classes: "govuk-!-width-two-thirds",
     hint: {
       text: 'pages.createPassword.password.hint' | translate
     },
@@ -34,10 +34,8 @@
 {{ govukInput({
     label: {
         text: 'pages.createPassword.confirmPassword.label' | translate,
-        classes: "govuk-heading-s",
-        isPageHeading: true
+        classes: "govuk-label--s"
     },
-    classes: "govuk-!-width-two-thirds",
     id: "confirm-password",
     name: "confirm-password",
     type: "password",
