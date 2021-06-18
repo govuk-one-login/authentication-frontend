@@ -73,9 +73,12 @@ export function createAccountPost(
           req.body["password"]
         )
       ) {
-        return res.redirect(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);
+        if (req.session.user.email.includes("no2fa")) {
+          return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL);
+        } else {
+          return res.redirect(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);
+        }
       }
-
       return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
     } catch (err) {
       next(err);

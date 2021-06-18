@@ -25,6 +25,7 @@ import {
   createSessionMiddleware,
   validateSessionMiddleware,
 } from "./middleware/session-middleware";
+import {registerAccountCreatedGet, registerAccountCreatedPost} from "./controllers/register-account-created-controller";
 
 const basicMiddlewarePipeline = [validateSessionMiddleware, csrfMiddleware];
 
@@ -74,6 +75,17 @@ router.get(
   PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
   csrfMiddleware,
   enterPhoneNumberGet
+);
+
+router.get(
+  PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL,
+  basicMiddlewarePipeline,
+  registerAccountCreatedGet
+);
+router.post(
+  PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL,
+  basicMiddlewarePipeline,
+  registerAccountCreatedPost
 );
 
 //footer pages
