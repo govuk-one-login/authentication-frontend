@@ -8,6 +8,7 @@ export const PATH_NAMES = {
   CREATE_ACCOUNT_CHECK_EMAIL: "/check-email",
   CREATE_ACCOUNT_SET_PASSWORD: "/create-password",
   CREATE_ACCOUNT_ENTER_PHONE_NUMBER: "/enter-phone-number",
+  CREATE_ACCOUNT_SUCCESSFUL: "/account-created"
 };
 
 export const HTTP_STATUS_CODES = {

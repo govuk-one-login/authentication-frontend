@@ -12,8 +12,7 @@
     },
     "yes": "Yes",
     "no": "No",
-    "footer": {
-    },
+    "footer": {},
     "cookie": {
       "cookieText": "GOV.UK uses cookies to make the site simpler.",
       "cookieLink": "#",
@@ -59,14 +58,14 @@
           "email": "Enter an email address in the correct format, like name@example.com"
         }
       },
-      "details" : {
+      "details": {
         "summary": "A GOV.UK Account will:",
         "bulletPoint1": "let you reuse and share your data to ensure that government services are quicker to interact with",
         "bulletPoint2": "suggest GOV.UK guidance and information that is relevant to you",
         "bulletPoint3": "tell you when content you're interested in has been updated",
         "bulletPoint4": "help you set up reminders for tasks you may need to complete later"
       },
-      "whatYouNeed" : {
+      "whatYouNeed": {
         "summary": "What you need to create a GOV.UK Account",
         "bulletPoint1": "an email address",
         "bulletPoint2": "a working UK phone number with signal, so we can send you a security code"
@@ -82,7 +81,7 @@
           "required": "Enter your password"
         }
       },
-      "securePasswordDetails" : {
+      "securePasswordDetails": {
         "summary": "I've forgotten my password",
         "text": "Put something useful here"
       }
@@ -120,8 +119,8 @@
       "title": "Create a GOV.UK Account",
       "header": "Enter your phone number",
       "info": {
-          "paragraph1": "This is the number we will send 6-digit security codes to.",
-          "paragraph2": "It can be either a mobile or landline, but it needs to be a UK number, with signal."
+        "paragraph1": "This is the number we will send 6-digit security codes to.",
+        "paragraph2": "It can be either a mobile or landline, but it needs to be a UK number, with signal."
       },
       "phoneNumber": {
         "label": "UK phone number",
@@ -129,7 +128,17 @@
           "required": "Enter a UK phone number"
         }
       }
+    },
+    "registerAccountCreated": {
+      "title": "You have successfully created your GOV.UK Account",
+      "header": "You have successfully created your GOV.UK Account",
+      "info": {
+        "heading": "A GOV.UK Account will:",
+        "bulletPoint1": "let you reuse and share your data to ensure that government services are quicker to interact with",
+        "bulletPoint2": "suggest GOV.UK guidance and information that is relevant to you",
+        "bulletPoint3": "tell you when content you're interested in has been updated",
+        "bulletPoint4": "help you set up reminders for tasks you may need to complete later"
+      }
     }
   }
 }
-
