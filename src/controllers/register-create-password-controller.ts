@@ -21,7 +21,13 @@ export function validateCreatePasswordRequest() {
       })
       .isLength({ min: 8 })
       .withMessage((value, { req }) => {
-        return req.t("pages.createPassword.password.validationError.length", {
+        return req.t("pages.createPassword.password.validationError.minLength", {
+          value,
+        });
+      })
+      .isLength({ max: 256 })
+      .withMessage((value, { req }) => {
+        return req.t("pages.createPassword.password.validationError.maxLength", {
           value,
         });
       })
