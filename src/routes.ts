@@ -18,14 +18,19 @@ import {
 } from "./controllers/footer-pages-controller";
 import {
   createAccountGet,
-  createAccountPost, validateCreatePasswordRequest,
+  createAccountPost,
+  validateCreatePasswordRequest,
 } from "./controllers/register-create-password-controller";
 import { enterPhoneNumberGet } from "./controllers/register-enter-phone-number-controller";
 import {
   createSessionMiddleware,
   validateSessionMiddleware,
 } from "./middleware/session-middleware";
-import {registerAccountCreatedGet, registerAccountCreatedPost} from "./controllers/register-account-created-controller";
+import {
+  registerAccountCreatedGet,
+  registerAccountCreatedPost,
+} from "./controllers/register-account-created-controller";
+import { checkYourEmailGet } from "./controllers/check-your-email-controller";
 
 const basicMiddlewarePipeline = [validateSessionMiddleware, csrfMiddleware];
 
@@ -45,6 +50,12 @@ router.post(
   basicMiddlewarePipeline,
   validateEnterEmailRequest(),
   enterEmailPost()
+);
+
+router.get(
+  PATH_NAMES.CHECK_YOUR_EMAIL,
+  basicMiddlewarePipeline,
+  checkYourEmailGet
 );
 
 router.get(

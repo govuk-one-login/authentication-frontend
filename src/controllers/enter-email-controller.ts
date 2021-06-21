@@ -3,6 +3,7 @@ import { body } from "express-validator";
 import { AuthenticationServiceInterface } from "../services/authentication-service.interface";
 import { getUserService } from "../services/service-injection";
 import { PATH_NAMES } from "../app.constants";
+import { NOTIFICATION_TYPES } from "../app.constants";
 import { ExpressRouteFunc } from "../types/express";
 import { validateBodyMiddleware } from "../middleware/form-validation-middleware";
 
@@ -48,8 +49,14 @@ export function enterEmailPost(
 
       if (await userService.userExists(sessionId, email)) {
         return res.redirect(PATH_NAMES.ENTER_PASSWORD);
+      } else {
+        await userService.sendNotification(
+          sessionId,
+          email,
+          NOTIFICATION_TYPES.VERIFY_EMAIL
+        );
+        return res.redirect(PATH_NAMES.CHECK_YOUR_EMAIL);
       }
-      return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
     } catch (err) {
       next(err);
     }
