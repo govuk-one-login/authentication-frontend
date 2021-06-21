@@ -4,11 +4,12 @@ export const PATH_NAMES = {
   PRIVACY_POLICY: "/privacy-statement",
   COOKIES_POLICY: "/cookies",
   ENTER_EMAIL: "/enter-email",
+  CHECK_YOUR_EMAIL: "/check-your-email",
   ENTER_PASSWORD: "/enter-password",
   CREATE_ACCOUNT_CHECK_EMAIL: "/check-email",
   CREATE_ACCOUNT_SET_PASSWORD: "/create-password",
   CREATE_ACCOUNT_ENTER_PHONE_NUMBER: "/enter-phone-number",
-  CREATE_ACCOUNT_SUCCESSFUL: "/account-created"
+  CREATE_ACCOUNT_SUCCESSFUL: "/account-created",
 };
 
 export const HTTP_STATUS_CODES = {
@@ -27,6 +28,7 @@ export enum LOCALE {
 export const API_ENDPOINTS = {
   USER_EXISTS: "/userexists",
   SIGNUP_USER: "/signup",
+  SEND_NOTIFICATION: "/send-notification",
 };
 
 export const ERROR_MESSAGES = {
@@ -38,3 +40,11 @@ export const ERROR_MESSAGES = {
   INTERNAL_SERVER_ERROR: "Internal server error",
   PAGE_NOT_FOUND: "Request page not found",
 };
+
+export const USER_STATE = {
+  REQUIRES_TWO_FACTOR: "2fa",
+};
+
+export enum NOTIFICATION_TYPE {
+  VERIFY_EMAIL = "VERIFY_EMAIL",
+}

@@ -18,6 +18,8 @@
     },
     "exclude": [
         "tests",
-        "coverage"
+        "coverage",
+        "src/components/**/tests"
     ]
 }
+

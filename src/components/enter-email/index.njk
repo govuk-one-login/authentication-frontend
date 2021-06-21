@@ -1,0 +1,60 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterEmail.header' | translate}}</h1>
+
+{{ govukInsetText({
+    text: 'pages.enterEmail.text' | translate
+  }) }}
+
+<p class="govuk-body">{{'pages.enterEmail.details.summary' | translate}}</p>
+<ul class="govuk-list govuk-list--bullet">
+    <li>{{'pages.enterEmail.details.bulletPoint1' | translate}}</li>
+    <li>{{'pages.enterEmail.details.bulletPoint2' | translate}}</li>
+    <li>{{'pages.enterEmail.details.bulletPoint3' | translate}}</li>
+    <li>{{'pages.enterEmail.details.bulletPoint4' | translate}}</li>
+</ul>
+<h2 class="govuk-heading-m">
+    {{'pages.enterEmail.whatYouNeed.summary' | translate}}
+</h2>
+<ul class="govuk-list govuk-list--bullet">
+    <li>{{'pages.enterEmail.whatYouNeed.bulletPoint1' | translate}}</li>
+    <li>{{'pages.enterEmail.whatYouNeed.bulletPoint2' | translate}}</li>
+</ul>
+<br />
+<h2 class="govuk-heading-s">
+    {{'pages.enterEmail.email.text' | translate}}
+</h2>
+<form action="/enter-email" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+{{ govukInput({
+    label: {
+        text: 'pages.enterEmail.email.label' | translate
+    },
+    id: "email",
+    name: "email",
+    value: email,
+    errorMessage: {
+        text: errors['email'].text
+    } if (errors['email'])})
+}}
+
+{{ govukButton({
+    "text": button_text|default("Continue", true),
+    "type": "Submit",
+    "preventDoubleClick": true
+}) }}
+
+</form>
+
+{% endblock %}
+

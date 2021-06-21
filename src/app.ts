@@ -1,9 +1,6 @@
 import express from "express";
-import { router } from "./routes";
 import cookieParser from "cookie-parser";
 import csurf from "csurf";
-
-import { pageNotFoundHandler, serverErrorHandler } from "./error-handler";
 
 import { sanitizeRequestMiddleware } from "./middleware/sanitize-request-middleware";
 import i18nextMiddleware from "i18next-http-middleware";
@@ -19,24 +16,45 @@ import { setHtmlLangMiddleware } from "./middleware/html-lang-middleware";
 import i18next from "i18next";
 import Backend from "i18next-fs-backend";
 
+import cookieSession from "cookie-session";
+import { getNodeEnv, getSessionExpiry, getSessionSecret } from "./config";
+import { logErrorMiddleware } from "./middleware/log-error-middleware";
+import { enterEmailRouter } from "./components/enter-email/enter-email-routes";
+import { enterPasswordRouter } from "./components/enter-password/enter-password-routes";
+import { footerRouter } from "./components/footer/footer-pages-routes";
+import { registerAccountCreatedRouter } from "./components/register-account-created/register_account-created-routes";
+import { registerCreatePasswordRouter } from "./components/register-create-password/register-create-password-routes";
+import { registerAccountPhoneNumberRouter } from "./components/register-enter-phone-number/register-enter-phone-number-routes";
+
 import * as dotenv from "dotenv";
+import { registerVerifyEmailRouter } from "./components/register-verify-email/register-verify-email-routes";
+import { pageNotFoundHandler } from "./handlers/page-not-found-handler";
+import { timeoutHandler } from "./handlers/timeout-handler";
+import { serverErrorHandler } from "./handlers/internal-server-error-handler";
 dotenv.config();
 
-import cookieSession from "cookie-session";
-import {getNodeEnv, getSessionExpiry, getSessionSecret} from "./config";
-
 const APP_VIEWS = [
-  path.join(__dirname, "/views"),
+  "src/components",
   path.resolve("node_modules/govuk-frontend/"),
 ];
 
 const SESSION_COOKIE_OPTIONS = {
-  name: "session",
+  name: "aps",
   keys: [getSessionSecret()],
   maxAge: getSessionExpiry(),
-  signed: getNodeEnv() === 'production' ? true : false,
+  signed: getNodeEnv() === "production" ? true : false,
   sameSite: true,
 };
+
+function registerRoutes(app: express.Application) {
+  app.use(enterEmailRouter);
+  app.use(enterPasswordRouter);
+  app.use(registerVerifyEmailRouter);
+  app.use(registerCreatePasswordRouter);
+  app.use(registerAccountPhoneNumberRouter);
+  app.use(registerAccountCreatedRouter);
+  app.use(footerRouter);
+}
 
 function createApp(): express.Application {
   const app: express.Application = express();
@@ -69,9 +87,11 @@ function createApp(): express.Application {
   app.post("*", sanitizeRequestMiddleware);
   app.use(setHtmlLangMiddleware);
 
-  app.use(router);
+  registerRoutes(app);
 
+  app.use(logErrorMiddleware);
   app.use(pageNotFoundHandler);
+  app.use(timeoutHandler);
   app.use(serverErrorHandler);
 
   app.locals.logger = new Logger();

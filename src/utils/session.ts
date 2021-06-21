@@ -1,4 +1,4 @@
-import { UserSession } from "../types/user-session";
+import { UserSession } from "../types";
 
 export function createSession(id: any, scope: any): UserSession {
   return {
@@ -8,7 +8,9 @@ export function createSession(id: any, scope: any): UserSession {
 }
 
 export function isSessionValid(session: UserSession): boolean {
-  return session != null && (Object.keys(session).length > 0 && hasValues(session));
+  return (
+    session != null && Object.keys(session).length > 0 && hasValues(session)
+  );
 }
 
 function hasValues(obj: UserSession) {
