@@ -27,6 +27,7 @@ export enum LOCALE {
 export const API_ENDPOINTS = {
   USER_EXISTS: "/userexists",
   SIGNUP_USER: "/signup",
+  SEND_NOTIFICATION: "/send-notification"
 };
 
 export const ERROR_MESSAGES = {
@@ -38,3 +39,7 @@ export const ERROR_MESSAGES = {
   INTERNAL_SERVER_ERROR: "Internal server error",
   PAGE_NOT_FOUND: "Request page not found",
 };
+
+export const NOTIFICATION_TYPES = {
+  VERIFY_EMAIL: "VERIFY_EMAIL"
+}
