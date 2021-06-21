@@ -4,6 +4,7 @@ export const PATH_NAMES = {
   PRIVACY_POLICY: "/privacy-statement",
   COOKIES_POLICY: "/cookies",
   ENTER_EMAIL: "/enter-email",
+  CHECK_YOUR_EMAIL: "/check-your-email",
   ENTER_PASSWORD: "/enter-password",
   CREATE_ACCOUNT_CHECK_EMAIL: "/check-email",
   CREATE_ACCOUNT_SET_PASSWORD: "/create-password",

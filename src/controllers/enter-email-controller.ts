@@ -50,9 +50,12 @@ export function enterEmailPost(
       if (await userService.userExists(sessionId, email)) {
         return res.redirect(PATH_NAMES.ENTER_PASSWORD);
       } else {
-        await userService.sendNotification(sessionId, email, NOTIFICATION_TYPES.VERIFY_EMAIL);
-        // TODO: redirect to the 'check email' page once created.
-        return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
+        await userService.sendNotification(
+          sessionId,
+          email,
+          NOTIFICATION_TYPES.VERIFY_EMAIL
+        );
+        return res.redirect(PATH_NAMES.CHECK_YOUR_EMAIL);
       }
     } catch (err) {
       next(err);
