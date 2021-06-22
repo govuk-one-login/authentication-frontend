@@ -7,6 +7,8 @@ import { AuthenticationServiceInterface } from "../../../services/authentication
 import { createPasswordPost, createPasswordGet } from "../register-create-password-controller";
 import { UserSession } from "../../../types";
 import { USER_STATE } from "../../../app.constants";
+import { ERROR_MESSAGES } from "../../../app.constants";
+
 
 describe("register-create-password controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -74,22 +76,32 @@ describe("register-create-password controller", () => {
     });
 
     it("should throw invalid session error when session not populated", async () => {
+      const fakeUserAuthService: AuthenticationServiceInterface = {
+        userExists: sandbox.fake(),
+        signUpUser: sandbox.fake.returns(""),
+      };
+
+      req.body.password = "password1";
       req.session = undefined;
 
       await expect(
-        createPasswordPost(null)(req as Request, res as Response, next)
+        createPasswordPost(fakeUserAuthService)(req as Request, res as Response, next)
       );
 
       expect(next).to.have.been.calledOnce;
+      expect(next).to.have.been.calledWithMatch(sinon.match.instanceOf(TypeError));
+      expect(next).to.have.been.calledWithMatch(sinon.match.has("message", "Cannot read property 'user' of undefined"));
     });
 
     it("should call next with error when api throws error", async () => {
+      const error = new Error("error");
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake(),
-        signUpUser: sandbox.fake.throws(Error("error")),
+        signUpUser: sandbox.fake.throws(error),
       };
 
-      req.body.email = "test.test.com";
+      req.body.password = "password1";
+      req.session.user.email = "joe.bloggs@test.com";
       req.session.user.id = "test.test.com";
 
       await createPasswordPost(fakeUserAuthService)(
@@ -98,7 +110,7 @@ describe("register-create-password controller", () => {
         next
       );
 
-      expect(next).to.be.calledOnce;
+      expect(next).to.have.calledWith(error);
     });
 
   });
