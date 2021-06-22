@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: daily
+      time: "03:00"
+    open-pull-requests-limit: 10
+    target-branch: main
+    labels:
+    - dependabot
+    ignore:
+      - dependency-name: "node"
+        versions: ["16.x", "17.x","18.x"]
+    commit-message:
+      prefix: BAU
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "03:00"
+    open-pull-requests-limit: 10
+    target-branch: main
+    labels:
+    - dependabot
+    commit-message:
+      prefix: BAU
