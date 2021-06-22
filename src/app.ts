@@ -29,7 +29,6 @@ import { registerAccountPhoneNumberRouter } from "./components/register-enter-ph
 import * as dotenv from "dotenv";
 import { registerVerifyEmailRouter } from "./components/register-verify-email/register-verify-email-routes";
 import { pageNotFoundHandler } from "./handlers/page-not-found-handler";
-import { timeoutHandler } from "./handlers/timeout-handler";
 import { serverErrorHandler } from "./handlers/internal-server-error-handler";
 dotenv.config();
 
@@ -90,9 +89,8 @@ function createApp(): express.Application {
   registerRoutes(app);
 
   app.use(logErrorMiddleware);
-  app.use(pageNotFoundHandler);
-  app.use(timeoutHandler);
   app.use(serverErrorHandler);
+  app.use(pageNotFoundHandler);
 
   app.locals.logger = new Logger();
 
