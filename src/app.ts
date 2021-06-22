@@ -34,7 +34,7 @@ import { serverErrorHandler } from "./handlers/internal-server-error-handler";
 dotenv.config();
 
 const APP_VIEWS = [
-  "src/components",
+  path.join(__dirname, "components"),
   path.resolve("node_modules/govuk-frontend/"),
 ];
 
