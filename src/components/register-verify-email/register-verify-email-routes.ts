@@ -15,7 +15,7 @@ router.get(
   registerVerifyEmailGet
 );
 
-router.get(
+router.post(
   PATH_NAMES.CHECK_YOUR_EMAIL,
   basicMiddlewarePipeline,
   validateVerifyEmailRequest(),

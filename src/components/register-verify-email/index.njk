@@ -1,5 +1,6 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
@@ -8,12 +9,37 @@
 
 {% include "common/errors/errorSummary.njk" %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">Check your email</h1>
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.verifyEmail.header' | translate}}</h1>
 
-<form action="/enter-email-code" method="post" novalidate>
+{{ govukInsetText({
+    text: 'pages.verifyEmail.text' | translate
+  }) }}
+
+<p class="govuk-body">{{'pages.verifyEmail.info.paragraph1' | translate}}</p>
+<p class="govuk-body">{{'pages.verifyEmail.info.paragraph2' | translate}}</p>
+<p class="govuk-body">{{'pages.verifyEmail.info.paragraph3' | translate}}</p>
+
+<form action="/check-your-email" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+{{ govukInput({
+    label: {
+        text: 'pages.verifyEmail.code.label' | translate,
+        classes: "govuk-label--s"
+    },
+    id: "code",
+    name: "code",
+    value: code,
+    errorMessage: {
+        text: errors['code'].text
+    } if (errors['code'])})
+}}
 
+{{ govukButton({
+    "text": button_text|default("Continue", true),
+    "type": "Submit",
+    "preventDoubleClick": true
+}) }}
 
 </form>
 

@@ -140,6 +140,24 @@
         "bulletPoint3": "tell you when content you're interested in has been updated",
         "bulletPoint4": "help you set up reminders for tasks you may need to complete later"
       }
+    },
+    "verifyEmail": {
+      "title": "Check your email",
+      "header": "Check your email",
+      "text": "We have sent an email to: ",
+      "info": {
+        "paragraph1": "Follow the link in the email to activate your GOV.UK account. You will need to create a password for your account.",
+        "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
+        "paragraph3": "You can enter your email address again if you got it wrong."
+      },
+      "code": {
+        "label": "Enter the 6 digit security code",
+        "validationError": {
+          "required": "Required",
+          "maxLength": "Max length",
+          "minLength": "Min length"
+        }
+      }
     }
   }
 }
