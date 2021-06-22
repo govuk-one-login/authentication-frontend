@@ -1,0 +1,45 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPassword.header' | translate}}</h1>
+
+<form action="/enter-password" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+{{ govukInput({
+    label: {
+        text: 'pages.enterPassword.password.label' | translate
+    },
+    classes: "govuk-!-width-two-thirds",
+    id: "password",
+    name: "password",
+    type: "password",
+    spellcheck: false,
+    errorMessage: {
+        text: errors['password'].text
+    } if (errors['password'])})
+}}
+
+{{ govukDetails({
+    summaryText: 'pages.enterPassword.securePasswordDetails.summary' | translate,
+    text: 'pages.enterPassword.securePasswordDetails.text' | translate
+  }) }}
+
+{{ govukButton({
+    "text": button_text|default('general.continue.label' | translate, true),
+    "type": "Submit",
+    "preventDoubleClick": true
+}) }}
+
+</form>
+
+{% endblock %}
+

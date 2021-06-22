@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { createSession, isSessionValid } from "../../../src/utils/session";
-import { UserSession } from "../../../src/types/user-session";
+import { UserSession } from "../../../src/types";
 
 describe("session", () => {
   describe("isSessionValid", () => {

@@ -16,6 +16,12 @@ class Http {
     "X-Requested-With": "XMLHttpRequest",
   };
 
+  private _sessionId: string;
+
+  set sessionId(sessionId: string) {
+    this._sessionId = sessionId;
+  }
+
   get client(): AxiosInstance {
     return this.instance || this.initHttp();
   }
@@ -41,7 +47,7 @@ class Http {
         errorMessage = ERROR_MESSAGES.INVALID_HTTP_REQUEST;
     }
 
-    const {data} = response;
+    const { data } = response;
     logger.error(errorMessage, logLabel, { error: JSON.stringify(data) });
 
     return Promise.reject(error);
@@ -49,6 +55,11 @@ class Http {
 
   private injectCustomHeaders(config: AxiosRequestConfig): AxiosRequestConfig {
     //TODO basic auth for api
+    if (this._sessionId) {
+      config.headers = {
+        "Session-Id": this._sessionId,
+      };
+    }
     return config;
   }
 

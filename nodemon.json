@@ -1,6 +1,6 @@
 {
-  "watch": ["src/**/*", "views/**/*", "locales/**/*"],
-  "ext": "ts,js,json,html,css,scss",
+  "watch": ["src/**/*", "locales/**/*"],
+  "ext": "ts,js,json,njk,css,scss",
   "restartable": "rs",
   "ignore": [".git", "node_modules/**/node_modules"],
   "verbose": true,
@@ -8,6 +8,6 @@
     "NODE_ENV": "development"
   },
   "events": {
-    "restart": "cp -R src/views dist/ && cp -R locales dist/"
+    "restart": "yarn run copy-build"
   }
 }

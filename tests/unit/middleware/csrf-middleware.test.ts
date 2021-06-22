@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import { csrfMiddleware } from "../../../src/middleware/csrf-middleware";
 import { NextFunction } from "express";
-import { sinon } from "../../utils/testUtils";
+import { sinon } from "../../utils/test-utils";
 
 describe("CSRF middleware", () => {
   it("should add csrf token to request locals", () => {
