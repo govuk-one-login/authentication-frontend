@@ -23,11 +23,20 @@
     "watch-sass": "sass --watch src/assets/scss/application.scss dist/public/style.css",
     "depcheck": "depcheck",
     "lint": "eslint . --ext .ts,.js",
-    "test": "yarn test:unit",
-    "test:unit": "rm -rf tests/coverage && NODE_ENV=development nyc mocha --timeout 10000 --exit --recursive --require ts-node/register \"tests/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
+    "test:integration": "rm -rf tests/coverage && NODE_ENV=development nyc mocha \"src/**/*-integration.test.ts\"",
+    "test:unit": "rm -rf tests/coverage && NODE_ENV=development nyc mocha --exclude \"src/**/*-integration.test.ts\"  \"tests/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
+    "test": "rm -rf tests/coverage && NODE_ENV=development nyc mocha  \"tests/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
     "test:coverage": "nyc report",
-    "clean": "rm -rf dist node_modules",
+    "clean": "rm -rf dist node_modules logs.json",
     "pretty": "prettier --write \"src/**/*.{ts,json}\""
+  },
+  "mocha": {
+    "diff": true,
+    "extension": ["js","ts"],
+    "timeout": 20000,
+    "recursive": true,
+    "require": ["ts-node/register"],
+    "exit": true
   },
   "husky": {
     "hooks": {
@@ -90,6 +99,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "husky": "^6.0.0",
     "mocha": "^8.4.0",
+    "nock":"^13.1.0",
     "nodemon": "^2.0.7",
     "nyc": "^15.1.0",
     "pino-pretty": "^5.0.2",

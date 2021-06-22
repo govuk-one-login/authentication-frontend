@@ -5,7 +5,7 @@ import * as sessionMiddleware from "../../../middleware/session-middleware";
 
 const { JSDOM } = require("jsdom");
 
-describe("GET /enter-email", () => {
+describe("Integration:: GET /enter-email", () => {
   let sandbox: sinon.SinonSandbox;
   let token: string;
   let cookies: string;

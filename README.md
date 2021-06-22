@@ -95,6 +95,15 @@ yarn test:unit
 Runs all unit tests found in the `tests/unit/` directory
 using mocha.
 
+### Integration tests
+
+> To run the integration tests
+
+```shell script
+yarn test:integration
+```
+
+
 ### Install dependencies
 
 > To install dependencies, run yarn install
