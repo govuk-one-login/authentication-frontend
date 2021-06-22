@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { expect, sinon } from "../../utils/testUtils";
+import { expect, sinon } from "../../utils/test-utils";
 import { describe } from "mocha";
 import {
   createSessionMiddleware,
@@ -20,8 +20,8 @@ describe("session-middleware", () => {
     sandbox = sinon.createSandbox();
     req = {
       session: {} as any,
-    } as Partial<Request>;
-    res = { status: sandbox.stub() } as Partial<Response>;
+    };
+    res = { status: sandbox.stub() };
     next = sandbox.fake();
 
     createSessionStub = sandbox.stub(sessionHelper, "createSession");

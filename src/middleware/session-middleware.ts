@@ -7,12 +7,10 @@ export function createSessionMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  if (
-    Object.keys(req.query).length > 0 &&
-    req.query["id"] &&
-    req.query.scope
-  ) {
-    req.session.user = createSession(req.query["id"], req.query.scope);
+  const id = req.query["id"];
+  const scope = req.query.scope;
+  if (Object.keys(req.query).length > 0 && id && scope) {
+    req.session.user = createSession(id, scope);
   }
 
   next();
@@ -23,7 +21,7 @@ export function validateSessionMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  if (isSessionValid(req.session.user)) {
+  if (req.cookies.aps != null || isSessionValid(req.session.user)) {
     return next();
   }
 

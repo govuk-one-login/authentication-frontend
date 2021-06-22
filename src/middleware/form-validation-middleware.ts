@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { HTTP_STATUS_CODES } from "../app.constants";
 
-const validationErrorFormatter = ({
+export const validationErrorFormatter = ({
   msg,
   param,
 }: {
