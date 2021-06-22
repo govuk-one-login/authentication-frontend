@@ -3,13 +3,20 @@ import { http } from "../utils/http";
 
 export async function sendNotification(
   sessionId: string,
-  emailAddress: string,
+  email: string,
   notificationType: NOTIFICATION_TYPE
 ): Promise<void> {
-  http.sessionId = sessionId;
-
-  await http.client.post<void>(API_ENDPOINTS.SEND_NOTIFICATION, {
-    email: emailAddress,
-    notificationType: notificationType,
-  });
+  const config = {
+    headers: {
+      "Session-Id": sessionId,
+    },
+  };
+  await http.client.post<string>(
+    API_ENDPOINTS.SEND_NOTIFICATION,
+    {
+      email: email,
+      notificationType: notificationType,
+    },
+    config
+  );
 }

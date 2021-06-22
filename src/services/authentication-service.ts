@@ -7,13 +7,17 @@ export async function userExists(
   sessionId: string,
   emailAddress: string
 ): Promise<boolean> {
-  http.sessionId = sessionId;
-
+  const config = {
+    headers: {
+      "Session-Id": sessionId,
+    },
+  };
   const { data } = await http.client.post<UserExists>(
     API_ENDPOINTS.USER_EXISTS,
     {
       email: emailAddress,
-    }
+    },
+    config
   );
 
   return data.doesUserExist;
@@ -24,14 +28,19 @@ export async function signUpUser(
   emailAddress: string,
   password: string
 ): Promise<string> {
-  http.sessionId = sessionId;
+  const config = {
+    headers: {
+      "Session-Id": sessionId,
+    },
+  };
 
   const { data } = await http.client.post<UserSignup>(
     API_ENDPOINTS.SIGNUP_USER,
     {
       email: emailAddress,
       password: password,
-    }
+    },
+    config
   );
   return data.state;
 }
