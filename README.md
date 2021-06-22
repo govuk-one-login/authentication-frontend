@@ -1,21 +1,6 @@
 # di-authentication-frontend
 
-- [Installation](#installation)
-    - [Clone](#clone)
-    - [Install Dependencies](#install-dependencies)
-- [Run Web App](#run-web-app)
-    - [Development](#development)
-    - [Build](#build)
-    - [Start](#start)
-- [Testing](#testing)
-    - [Unit](#unit)
-    - [Coverage](#coverage)
-    - [Linting](#linting)
-- [License](#license)
-
-## Installation
-
-### Clone
+## Clone the repo
 
 > Clone this repo to your local machine
 
@@ -25,28 +10,49 @@ git@github.com:alphagov/di-authentication-frontend.git
 
 Clones the repository to the `<your_folder_name` directory.
 
-### Install dependencies
+## Running the app in Docker
 
-> To install dependencies, run yarn install
+Before you can run the frontend app against the backend you will need to configure some environment variables.
 
-```shell script
-yarn install
-```
-
-Installs the dependencies required to run the application.
-
-## Run web app
-
-### Environment variables
+### Set the Environment variables
 
 Create a copy of the .env.sample file and rename it .env and fill in below values:
 
 ```
 ENVIRONMENT=development
 API_BASE_URL=
-SESSION_EXPIRY=
-SESSION_SECRET=
+SESSION_EXPIRY=300000
+SESSION_SECRET=123456
 ```
+
+You can find the `API_BASE_URL` in [Concourse](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-api) under the outputs within the deloy-lambda job.
+
+Run the `startup.sh` script.
+
+To find out if the application has started, open a console window on the docker container and view the logs. If the server has started successfully you will see this message `Server listening on port 3000`.
+
+Run the `session-start-local.sh` to start a session so that you can successfully call the backend.
+
+Changes made locally will automatically be deployed after a few seconds. You should check the docker console to check that your changes have been picked up.
+
+### Running the tests
+
+The unit tests have been written with Mocha and Supertest.
+
+If the app is run in a container then the tests are run there too:
+
+```shell script
+docker exec -it di-auth-frontend-dev /bin/sh
+
+# yarn run test:unit
+```
+
+### Restarting the app
+
+You can restart the app by re-running the `startup.sh` script.
+
+## Other useful yarn commands
+
 
 ### Development
 
@@ -78,19 +84,7 @@ yarn start
 Starts a node server pointing to the entry point found in
 the build directory.
 
-## Testing
-
-The unit tests have been written with Mocha and Supertest.
-
-If the app is run in a container then the tests are run there too:
-
-```shell script
-docker exec -it frontend-container-name /bin/sh
-
-# yarn run test:unit
-```
-
-### Unit
+### Unit tests
 
 > To run the unit tests
 
@@ -100,6 +94,16 @@ yarn test:unit
 
 Runs all unit tests found in the `tests/unit/` directory
 using mocha.
+
+### Install dependencies
+
+> To install dependencies, run yarn install
+
+```shell script
+yarn install
+```
+
+Installs the dependencies required to run the application.
 
 ### Coverage
 
