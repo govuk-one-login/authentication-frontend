@@ -63,7 +63,7 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.18",
+    "@types/chai": "^4.2.19",
     "@types/chai-as-promised": "^7.1.4",
     "@types/cookie-session": "^2.0.42",
     "@types/cookie-parser": "^1.4.2",
