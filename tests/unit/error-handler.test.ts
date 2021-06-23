@@ -4,7 +4,6 @@ import { sinon } from "../utils/test-utils";
 import { NextFunction, Request, Response } from "express";
 import { pageNotFoundHandler } from "../../src/handlers/page-not-found-handler";
 import { serverErrorHandler } from "../../src/handlers/internal-server-error-handler";
-import { timeoutHandler } from "../../src/handlers/timeout-handler";
 
 describe("Error handlers", () => {
   let sandbox: sinon.SinonSandbox;
@@ -54,14 +53,12 @@ describe("Error handlers", () => {
       expect(res.status).to.have.been.calledOnceWith(500);
       expect(res.render).to.have.been.calledOnceWith("common/errors/500.njk");
     });
-  });
 
-  describe("timeoutHandler", () => {
-    it("should render timeout view when unauthorised error", () => {
+    it("should render timeout view when no session", () => {
       const err = new Error("timeout");
       res.statusCode = 401;
 
-      timeoutHandler(err, req as Request, res as Response, next);
+      serverErrorHandler(err, req as Request, res as Response, next);
 
       expect(res.render).to.have.been.calledOnceWith(
         "common/errors/session-expired.njk"

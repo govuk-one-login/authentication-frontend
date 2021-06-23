@@ -28,9 +28,9 @@ if [ $LOCAL == "1" ]; then
   echo "Starting di-auth-frontend-dev on local..."
   yarn install && yarn run copy-build && yarn run dev
 else
-  running_count=$(docker ps --filter status=running | grep "di-auth-frontend-dev" | wc -l | awk '{ print $1 }')
+  running_count=$(docker ps -a | grep "di-auth-frontend-dev" | wc -l | awk '{ print $1 }')
   if [ ${running_count} -ne 0 ]; then
-    echo "Stopping di-auth-frontend-dev..."
+    echo "Restarting di-auth-frontend-dev..."
     docker stop di-auth-frontend-dev
     docker rm di-auth-frontend-dev --force
   fi
