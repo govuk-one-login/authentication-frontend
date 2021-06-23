@@ -22,7 +22,7 @@ lib-cov
 coverage
 *.lcov
 
-# nyc tests coverage
+# nyc test coverage
 .nyc_output
 
 # Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
@@ -109,7 +109,7 @@ public
 .DS_Store
 dump.rdb
 build
-tests/coverage
+test/coverage
 functional-output
 output
 _output

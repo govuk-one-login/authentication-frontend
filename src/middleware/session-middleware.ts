@@ -21,10 +21,11 @@ export function validateSessionMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  if (req.cookies.aps != null || isSessionValid(req.session.user)) {
+  if (isSessionValid(req.session.user)) {
     return next();
   }
 
+  res.clearCookie("aps");
   res.status(401);
   next(new Error(ERROR_MESSAGES.INVALID_SESSION));
 }

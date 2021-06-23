@@ -1,3 +1,3 @@
 export interface UserSignup {
-  state: string;
-};
+  sessionState: string;
+}

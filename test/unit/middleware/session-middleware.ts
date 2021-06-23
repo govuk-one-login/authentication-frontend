@@ -6,7 +6,6 @@ import {
   validateSessionMiddleware,
 } from "../../../src/middleware/session-middleware";
 import * as sessionHelper from "../../../src/utils/session";
-import { createSession } from "../../../src/utils/session";
 
 describe("session-middleware", () => {
   let sandbox: sinon.SinonSandbox;

@@ -13,6 +13,7 @@ const server = http.createServer(app);
 server
   .listen(port, () => {
     logger.info(`Server listening on port ${port}`, logLabel);
+    app.emit("appStarted");
   })
   .on("error", (error: Error) => {
     logger.error(

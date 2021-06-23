@@ -1,6 +1,6 @@
 (function (w) {
   "use strict";
-  function appInit(gaTrackingId) {
+  function appInit() {
     //TODO implement
     // if (w.GOVUKFrontend) {
     //     w.GOVUKFrontend.initAll();
@@ -14,4 +14,4 @@
     // w.GOVUK.Modules.CookieBanner.init(document.querySelector('[data-module="cookie-banner"]'));
   }
   w.appInit = appInit;
-})(window);
+})();

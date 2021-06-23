@@ -1,8 +1,9 @@
 import { body } from "express-validator";
 import { containsNumber } from "../../utils/strings";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
+import { ValidationChainFunc } from "../../types";
 
-export function validateCreatePasswordRequest() {
+export function validateCreatePasswordRequest(): ValidationChainFunc {
   return [
     body("password")
       .notEmpty()

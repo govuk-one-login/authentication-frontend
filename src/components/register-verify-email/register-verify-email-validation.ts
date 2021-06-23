@@ -1,7 +1,8 @@
 import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
+import { ValidationChainFunc } from "../../types";
 
-export function validateVerifyEmailRequest() {
+export function validateVerifyEmailRequest(): ValidationChainFunc {
   return [
     body("code")
       .notEmpty()

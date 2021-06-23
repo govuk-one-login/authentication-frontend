@@ -1,14 +1,15 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../tests/utils/test-utils";
+import { sinon } from "../../../../test/utils/test-utils";
 import { NextFunction, Request, Response } from "express";
 import { AuthenticationServiceInterface } from "../../../services/authentication-service.interface";
-import { createPasswordPost, createPasswordGet } from "../register-create-password-controller";
+import {
+  createPasswordPost,
+  createPasswordGet,
+} from "../register-create-password-controller";
 import { UserSession } from "../../../types";
 import { USER_STATE } from "../../../app.constants";
-import { ERROR_MESSAGES } from "../../../app.constants";
-
 
 describe("register-create-password controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -32,7 +33,9 @@ describe("register-create-password controller", () => {
     it("should render create password view", () => {
       createPasswordGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("register-create-password/index.njk");
+      expect(res.render).to.have.calledWith(
+        "register-create-password/index.njk"
+      );
     });
   });
 
@@ -85,12 +88,20 @@ describe("register-create-password controller", () => {
       req.session = undefined;
 
       await expect(
-        createPasswordPost(fakeUserAuthService)(req as Request, res as Response, next)
+        createPasswordPost(fakeUserAuthService)(
+          req as Request,
+          res as Response,
+          next
+        )
       );
 
       expect(next).to.have.been.calledOnce;
-      expect(next).to.have.been.calledWithMatch(sinon.match.instanceOf(TypeError));
-      expect(next).to.have.been.calledWithMatch(sinon.match.has("message", "Cannot read property 'user' of undefined"));
+      expect(next).to.have.been.calledWithMatch(
+        sinon.match.instanceOf(TypeError)
+      );
+      expect(next).to.have.been.calledWithMatch(
+        sinon.match.has("message", "Cannot read property 'user' of undefined")
+      );
     });
 
     it("should throw error when api returns error", async () => {
@@ -112,6 +123,5 @@ describe("register-create-password controller", () => {
 
       expect(next).to.have.calledWith(error);
     });
-
   });
 });
