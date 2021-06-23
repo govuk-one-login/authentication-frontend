@@ -75,7 +75,7 @@ describe("register-create-password controller", () => {
       expect(res.redirect).to.have.calledWith("/account-created");
     });
 
-    it("should throw invalid session error when session not populated", async () => {
+    it("should throw error when session is not populated", async () => {
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake(),
         signUpUser: sandbox.fake.returns(""),
@@ -93,7 +93,7 @@ describe("register-create-password controller", () => {
       expect(next).to.have.been.calledWithMatch(sinon.match.has("message", "Cannot read property 'user' of undefined"));
     });
 
-    it("should call next with error when api throws error", async () => {
+    it("should throw error when api returns error", async () => {
       const error = new Error("error");
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake(),

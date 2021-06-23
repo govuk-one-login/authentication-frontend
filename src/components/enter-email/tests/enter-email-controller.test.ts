@@ -77,9 +77,10 @@ describe("enter-email controller", () => {
       expect(fakeUserAuthService.userExists).to.have.calledOnce;
     });
 
-    it("should call next with error when api throws error", async () => {
+    it("should throw error when api throws error", async () => {
+      const error = new Error("error");
       const fakeUserAuthService: AuthenticationServiceInterface = {
-        userExists: sandbox.fake.throws(Error("error")),
+        userExists: sandbox.fake.throws(error),
         signUpUser: sandbox.fake(),
       };
 
@@ -92,17 +93,25 @@ describe("enter-email controller", () => {
         next
       );
 
-      expect(next).to.be.calledOnce;
+      expect(next).to.have.calledWith(error);
     });
 
-    it("should throw invalid session error when session not populated", async () => {
+    it("should throw error when session is not populated", async () => {
+      const fakeUserAuthService: AuthenticationServiceInterface = {
+        userExists: sandbox.fake.returns(""),
+        signUpUser: sandbox.fake(),
+      };
+
+      req.body.email = "test.test.com";
       req.session = undefined;
 
       await expect(
-        enterEmailPost(null, null)(req as Request, res as Response, next)
+        enterEmailPost(fakeUserAuthService, null)(req as Request, res as Response, next)
       );
 
       expect(next).to.have.been.calledOnce;
+      expect(next).to.have.been.calledWithMatch(sinon.match.instanceOf(TypeError));
+      expect(next).to.have.been.calledWithMatch(sinon.match.has("message", "Cannot read property 'user' of undefined"));
     });
   });
 });
