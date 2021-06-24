@@ -8,7 +8,7 @@ export const i18nextConfigurationOptions = {
   preload: [LOCALE.EN],
   supportedLngs: [LOCALE.EN, LOCALE.CY],
   backend: {
-    loadPath: path.resolve(__dirname, "../../locales/{{lng}}/{{ns}}.json"),
+    loadPath: path.join(__dirname, "../../locales/{{lng}}/{{ns}}.json"),
     allowMultiLoading: true,
   },
   detection: {
