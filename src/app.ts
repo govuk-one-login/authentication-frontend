@@ -73,7 +73,11 @@ function createApp(): express.Application {
   i18next
     .use(Backend)
     .use(i18nextMiddleware.LanguageDetector)
-    .init(i18nextConfigurationOptions);
+    .init(
+      i18nextConfigurationOptions(
+        path.resolve("././locales/{{lng}}/{{ns}}.json")
+      )
+    );
 
   app.use(i18nextMiddleware.handle(i18next));
 
