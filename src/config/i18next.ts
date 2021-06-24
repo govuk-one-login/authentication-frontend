@@ -1,5 +1,4 @@
 import { LOCALE } from "../app.constants";
-import path from "path";
 
 export const i18nextConfigurationOptions = {
   debug: false,
@@ -8,7 +7,7 @@ export const i18nextConfigurationOptions = {
   preload: [LOCALE.EN],
   supportedLngs: [LOCALE.EN, LOCALE.CY],
   backend: {
-    loadPath: path.join(__dirname, "../../locales/{{lng}}/{{ns}}.json"),
+    loadPath: "./locales/{{lng}}/{{ns}}.json",
     allowMultiLoading: true,
   },
   detection: {
