@@ -146,9 +146,10 @@
       "header": "Check your email",
       "text": "We have sent an email to: ",
       "info": {
-        "paragraph1": "Follow the link in the email to activate your GOV.UK account. You will need to create a password for your account.",
-        "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
-        "paragraph3": "You can enter your email address again if you got it wrong."
+        "paragraph1": "The email contains a 6-digit security code.",
+        "paragraph2": "Once you have opened the email and retrieved the code, return to this page and enter the security code sent below to activate your account.",
+        "paragraph3": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
+        "paragraph4": "You can <a href=\"/enter-email\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">enter your email address again</a> if you got it wrong."
       },
       "code": {
         "label": "Enter the 6 digit security code",

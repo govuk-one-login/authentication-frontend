@@ -12,12 +12,13 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.verifyEmail.header' | translate}}</h1>
 
 {{ govukInsetText({
-    text: 'pages.verifyEmail.text' | translate
+    html: 'pages.verifyEmail.text' | translate + '<span class="govuk-body govuk-!-font-weight-bold">' + email + '</span>'
   }) }}
 
 <p class="govuk-body">{{'pages.verifyEmail.info.paragraph1' | translate}}</p>
 <p class="govuk-body">{{'pages.verifyEmail.info.paragraph2' | translate}}</p>
 <p class="govuk-body">{{'pages.verifyEmail.info.paragraph3' | translate}}</p>
+<p class="govuk-body">{{'pages.verifyEmail.info.paragraph4' | translate | replace("#SOMETHING", '<a class="govuk-link" href="enter-email" rel="noreferrer noopener" target="_blank">enter your email address again</a>') | safe }}</p>
 
 <form action="/check-your-email" method="post" novalidate>
 
