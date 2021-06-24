@@ -75,7 +75,7 @@ function createApp(): express.Application {
     .use(i18nextMiddleware.LanguageDetector)
     .init(
       i18nextConfigurationOptions(
-        path.resolve("././locales/{{lng}}/{{ns}}.json")
+        path.join(__dirname, "locales/{{lng}}/{{ns}}.json")
       )
     );
 

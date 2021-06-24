@@ -1,8 +1,10 @@
 import { LOCALE } from "../app.constants";
 
-export function i18nextConfigurationOptions(path: string) {
+export function i18nextConfigurationOptions(
+  path: string
+): Record<string, unknown> {
   return {
-    debug: true,
+    debug: false,
     fallbackLng: LOCALE.EN,
     lng: LOCALE.EN,
     preload: [LOCALE.EN],
