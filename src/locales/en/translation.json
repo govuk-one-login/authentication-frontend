@@ -1,8 +1,10 @@
 {
   "general": {
+    "provider": "GOV.UK",
+    "serviceName": "GOV.UK Sign in",
     "pageTitle": "GOV.UK Sign in",
     "serviceName": "Sign in to or create your GOV.UK Account",
-    "errorPrefix": "Error",
+    "errorTitlePrefix": "Error",
     "back": "Back",
     "warning": "Warning",
     "errorSummaryTitle": "There is a problem",
@@ -149,7 +151,9 @@
         "paragraph1": "The email contains a 6-digit security code.",
         "paragraph2": "Once you have opened the email and retrieved the code, return to this page and enter the security code sent below to activate your account.",
         "paragraph3": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
-        "paragraph4": "You can <a href=\"/enter-email\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">enter your email address again</a> if you got it wrong."
+        "paragraph4Start": "You can ",
+        "enterEmailLink": "enter your email address again",
+        "paragraph4End": " if you got it wrong."
       },
       "code": {
         "label": "Enter the 6 digit security code",

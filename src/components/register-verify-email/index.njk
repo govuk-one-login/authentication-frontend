@@ -5,6 +5,8 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
+{% set pageTitleName = 'pages.verifyEmail.title' | translate %}
+
 {% block content %}
 
 {% include "common/errors/errorSummary.njk" %}
@@ -18,7 +20,10 @@
 <p class="govuk-body">{{'pages.verifyEmail.info.paragraph1' | translate}}</p>
 <p class="govuk-body">{{'pages.verifyEmail.info.paragraph2' | translate}}</p>
 <p class="govuk-body">{{'pages.verifyEmail.info.paragraph3' | translate}}</p>
-<p class="govuk-body">{{'pages.verifyEmail.info.paragraph4' | translate | replace("#SOMETHING", '<a class="govuk-link" href="enter-email" rel="noreferrer noopener" target="_blank">enter your email address again</a>') | safe }}</p>
+<p class="govuk-body">{{'pages.verifyEmail.info.paragraph4Start' | translate }}
+    <a href="/enter-email" class="govuk-link" rel="noreferrer noopener" target="_blank">{{'pages.verifyEmail.info.enterEmailLink' | translate }}</a>
+    {{'pages.verifyEmail.info.paragraph4End' | translate }}
+</p>
 
 <form action="/check-your-email" method="post" novalidate>
 
