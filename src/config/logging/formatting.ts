@@ -1,5 +1,6 @@
 import { format } from "winston";
 import path from "path";
+import { Format } from "logform";
 
 export const logFormat = format.combine(
   format.timestamp(),
@@ -49,9 +50,8 @@ const consoleLogFormat = format.combine(
   })
 );
 
-export function getConsoleLogFormat(isAnsiLogging: boolean) {
-  if (isAnsiLogging) {
-    return format.combine(consoleLogFormat, format.colorize({ all: true }));
-  }
-  return consoleLogFormat;
+export function getConsoleLogFormat(isAnsiLogging: boolean): Format {
+  return isAnsiLogging
+    ? format.combine(consoleLogFormat, format.colorize({ all: true }))
+    : consoleLogFormat;
 }

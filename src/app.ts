@@ -30,6 +30,7 @@ import * as dotenv from "dotenv";
 import { registerVerifyEmailRouter } from "./components/register-verify-email/register-verify-email-routes";
 import { pageNotFoundHandler } from "./handlers/page-not-found-handler";
 import { serverErrorHandler } from "./handlers/internal-server-error-handler";
+import { csrfMiddleware } from "./middleware/csrf-middleware";
 dotenv.config();
 
 const APP_VIEWS = [
@@ -39,10 +40,10 @@ const APP_VIEWS = [
 
 const SESSION_COOKIE_OPTIONS = {
   name: "aps",
-  keys: [getSessionSecret()],
+  secret: getSessionSecret(),
   maxAge: getSessionExpiry(),
   signed: getNodeEnv() === "production" ? true : false,
-  sameSite: true,
+  sameSite: getNodeEnv() === "production" ? true : false,
 };
 
 function registerRoutes(app: express.Application) {
@@ -69,21 +70,21 @@ function createApp(): express.Application {
   app.use("/public", express.static(path.join(__dirname, "public")));
   app.set("view engine", configureNunjucks(app, APP_VIEWS));
 
-  app.use(helmet(helmetConfiguration));
-
   i18next
     .use(Backend)
     .use(i18nextMiddleware.LanguageDetector)
     .init(i18nextConfigurationOptions);
 
-  app.use(i18nextMiddleware.handle(i18next, { removeLngFromUrl: false }));
+  app.use(i18nextMiddleware.handle(i18next));
 
+  app.use(helmet(helmetConfiguration));
   app.use(cookieSession(SESSION_COOKIE_OPTIONS));
 
   app.use(cookieParser());
   app.use(csurf({ cookie: true }));
 
   app.post("*", sanitizeRequestMiddleware);
+  app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
 
   registerRoutes(app);

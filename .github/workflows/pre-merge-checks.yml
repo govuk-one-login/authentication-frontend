@@ -8,7 +8,7 @@ on:
       - synchronize
 
 jobs:
-  unit-tests:
+  run-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,5 +20,12 @@ jobs:
         run: yarn install
       - name: Build app
         run: yarn build
-      - name: Run tests
+      - name: Run unit tests
         run: yarn test:unit
+      - name: Run integration tests
+        run: yarn test:integration
+      - name: Run lint
+        run: yarn lint
+    env:
+      ENVIRONMENT: DEVELOPMENT
+      API_BASE_URL: http://localhost:6000/api

@@ -1,5 +1,5 @@
 import { createLogger, transports } from "winston";
-import { getLogLevel, getNodeEnv } from "../../config";
+import { getLogLevel } from "../../config";
 import * as config from "../../config";
 import { getConsoleLogFormat, logFormat } from "./formatting";
 

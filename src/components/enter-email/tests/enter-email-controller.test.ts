@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../tests/utils/test-utils";
+import { sinon } from "../../../../test/utils/test-utils";
 import { NextFunction, Request, Response } from "express";
 import { AuthenticationServiceInterface } from "../../../services/authentication-service.interface";
 import { enterEmailGet, enterEmailPost } from "../enter-email-controller";

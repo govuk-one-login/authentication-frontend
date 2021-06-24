@@ -42,5 +42,5 @@ export async function signUpUser(
     },
     config
   );
-  return data.state;
+  return data.sessionState;
 }

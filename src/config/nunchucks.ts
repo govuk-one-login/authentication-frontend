@@ -1,6 +1,5 @@
 import express from "express";
 import * as nunjucks from "nunjucks";
-import path from "path";
 import i18next from "i18next";
 import { Environment } from "nunjucks";
 
