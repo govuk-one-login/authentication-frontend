@@ -148,12 +148,11 @@
       "header": "Check your email",
       "text": "We have sent an email to: ",
       "info": {
-        "paragraph1": "The email contains a 6-digit security code.",
-        "paragraph2": "Once you have opened the email and retrieved the code, return to this page and enter the security code sent below to activate your account.",
-        "paragraph3": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
-        "paragraph4Start": "You can ",
+        "paragraph1": "Once you have opened the email and got the code, come back to this page and enter the security code below.",
+        "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
+        "paragraph3Start": "You can ",
         "enterEmailLink": "enter your email address again",
-        "paragraph4End": " if you got it wrong."
+        "paragraph3End": " if you got it wrong."
       },
       "code": {
         "label": "Enter the 6 digit security code",
