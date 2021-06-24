@@ -18,6 +18,21 @@
   <![endif]-->
 {% endblock %}
 
+{% block pageTitle %}
+    {% if error or errors %}
+        {{ 'general.errorTitlePrefix' | translate }}
+        -
+    {% endif %}
+    {% if pageTitleName %}
+        {{ pageTitleName }}
+        -
+    {% endif %}
+    {{ 'general.serviceName' | translate }}
+    -
+    {{ 'general.provider' | translate }}
+{% endblock %}
+
+
 {% block header %}
   {{ govukHeader({
   homepageUrl: "#",
