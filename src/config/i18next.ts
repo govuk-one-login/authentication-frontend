@@ -2,7 +2,7 @@ import { LOCALE } from "../app.constants";
 
 export function i18nextConfigurationOptions(path: string) {
   return {
-    debug: false,
+    debug: true,
     fallbackLng: LOCALE.EN,
     lng: LOCALE.EN,
     preload: [LOCALE.EN],
