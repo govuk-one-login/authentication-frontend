@@ -26,7 +26,7 @@ export enum LOCALE {
 }
 
 export const API_ENDPOINTS = {
-  USER_EXISTS: "/userexists",
+  USER_EXISTS: "/user-exists",
   SIGNUP_USER: "/signup",
   SEND_NOTIFICATION: "/send-notification",
 };
