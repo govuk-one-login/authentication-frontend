@@ -29,6 +29,7 @@ export const API_ENDPOINTS = {
   USER_EXISTS: "/user-exists",
   SIGNUP_USER: "/signup",
   SEND_NOTIFICATION: "/send-notification",
+  VERIFY_CODE: "/verify-code",
 };
 
 export const ERROR_MESSAGES = {
@@ -44,6 +45,7 @@ export const ERROR_MESSAGES = {
 export const USER_STATE = {
   REQUIRES_TWO_FACTOR: "TWO_FACTOR_REQUIRED",
   USER_NOT_FOUND: "USER_NOT_FOUND",
+  EMAIL_CODE_VERIFIED: "EMAIL_CODE_VERIFIED",
 };
 
 export enum NOTIFICATION_TYPE {

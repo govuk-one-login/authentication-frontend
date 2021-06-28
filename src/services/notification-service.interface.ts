@@ -6,4 +6,10 @@ export interface NotificationServiceInterface {
     email: string,
     notificationType: NOTIFICATION_TYPE
   ) => Promise<void>;
+
+  verifyCode: (
+    sessionId: string,
+    code: string,
+    notificationType: NOTIFICATION_TYPE
+  ) => Promise<boolean>;
 }

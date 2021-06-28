@@ -8,7 +8,7 @@ import { enterEmailGet, enterEmailPost } from "../enter-email-controller";
 import { UserSession } from "../../../types";
 import { NotificationServiceInterface } from "../../../services/notification-service.interface";
 
-describe("enter-email controller", () => {
+describe("enter email controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -19,7 +19,7 @@ describe("enter-email controller", () => {
 
     req = { body: {}, session: { user: {} as UserSession } };
     res = { render: sandbox.fake(), redirect: sandbox.fake() };
-    next = sinon.spy();
+    next = sandbox.spy();
   });
 
   afterEach(() => {
@@ -53,7 +53,7 @@ describe("enter-email controller", () => {
       expect(res.redirect).to.have.calledWith("/enter-password");
     });
 
-    it("should redirect to verify-email when no account exists", async () => {
+    it("should redirect to /verify-email when no account exists", async () => {
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake.returns(false),
         signUpUser: sandbox.fake(),
@@ -61,6 +61,7 @@ describe("enter-email controller", () => {
 
       const fakeNotificationService: NotificationServiceInterface = {
         sendNotification: sandbox.fake(),
+        verifyCode: sandbox.fake(),
       };
 
       req.body.email = "test.test.com";
@@ -106,12 +107,20 @@ describe("enter-email controller", () => {
       req.session = undefined;
 
       await expect(
-        enterEmailPost(fakeUserAuthService, null)(req as Request, res as Response, next)
+        enterEmailPost(fakeUserAuthService, null)(
+          req as Request,
+          res as Response,
+          next
+        )
       );
 
       expect(next).to.have.been.calledOnce;
-      expect(next).to.have.been.calledWithMatch(sinon.match.instanceOf(TypeError));
-      expect(next).to.have.been.calledWithMatch(sinon.match.has("message", "Cannot read property 'user' of undefined"));
+      expect(next).to.have.been.calledWithMatch(
+        sinon.match.instanceOf(TypeError)
+      );
+      expect(next).to.have.been.calledWithMatch(
+        sinon.match.has("message", "Cannot read property 'user' of undefined")
+      );
     });
   });
 });
