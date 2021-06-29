@@ -94,7 +94,7 @@ describe("Integration::enter email", () => {
       .expect(400, done);
   });
 
-  it("should redirect to enter password page when email address exists", (done) => {
+  it("should redirect to /enter-password page when email address exists", (done) => {
     nock(baseApi).post("/user-exists").once().reply(200, {
       email: "test@test.com",
       doesUserExist: true,
@@ -113,7 +113,7 @@ describe("Integration::enter email", () => {
       .expect(302, done);
   });
 
-  it("should redirect to check your email when email address not found", (done) => {
+  it("should redirect to /check-your-email when email address not found", (done) => {
     nock(baseApi)
       .post("/user-exists")
       .once()

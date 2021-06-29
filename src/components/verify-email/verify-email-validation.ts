@@ -1,6 +1,7 @@
 import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
+import { containsNumbersOnly } from "../../utils/strings";
 
 export function validateVerifyEmailRequest(): ValidationChainFunc {
   return [
@@ -22,7 +23,15 @@ export function validateVerifyEmailRequest(): ValidationChainFunc {
         return req.t("pages.verifyEmail.code.validationError.minLength", {
           value,
         });
+      })
+      .custom((value, { req }) => {
+        if (!containsNumbersOnly(value)) {
+          throw new Error(
+            req.t("pages.verifyEmail.code.validationError.invalidFormat")
+          );
+        }
+        return true;
       }),
-    validateBodyMiddleware("register-verify-email/index.njk"),
+    validateBodyMiddleware("verify-email/index.njk"),
   ];
 }

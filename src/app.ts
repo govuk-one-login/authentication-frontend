@@ -27,7 +27,7 @@ import { registerCreatePasswordRouter } from "./components/register-create-passw
 import { registerAccountPhoneNumberRouter } from "./components/register-enter-phone-number/register-enter-phone-number-routes";
 
 import * as dotenv from "dotenv";
-import { registerVerifyEmailRouter } from "./components/register-verify-email/register-verify-email-routes";
+import { verifyEmailRouter } from "./components/verify-email/verify-email-routes";
 import { pageNotFoundHandler } from "./handlers/page-not-found-handler";
 import { serverErrorHandler } from "./handlers/internal-server-error-handler";
 import { csrfMiddleware } from "./middleware/csrf-middleware";
@@ -49,7 +49,7 @@ const SESSION_COOKIE_OPTIONS = {
 function registerRoutes(app: express.Application) {
   app.use(enterEmailRouter);
   app.use(enterPasswordRouter);
-  app.use(registerVerifyEmailRouter);
+  app.use(verifyEmailRouter);
   app.use(registerCreatePasswordRouter);
   app.use(registerAccountPhoneNumberRouter);
   app.use(registerAccountCreatedRouter);

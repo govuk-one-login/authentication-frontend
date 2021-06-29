@@ -27,6 +27,7 @@
 <form action="/check-your-email" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="email" value="{{email}}"/>
 {{ govukInput({
     label: {
         text: 'pages.verifyEmail.code.label' | translate,
@@ -49,3 +50,5 @@
 </form>
 
 {% endblock %}
+
+
