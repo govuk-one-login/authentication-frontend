@@ -78,7 +78,7 @@
     "@types/csurf": "^1.11.1",
     "@types/express": "^4.17.12",
     "@types/i18next-fs-backend": "^1.0.0",
-    "@types/node": "^15.12.1",
+    "@types/node": "^15.12.5",
     "@types/nunjucks": "^3.1.4",
     "@types/mocha": "^8.2.2",
     "@types/nock": "^11.1.0",
