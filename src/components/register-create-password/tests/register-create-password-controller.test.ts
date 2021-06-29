@@ -44,6 +44,7 @@ describe("register-create-password controller", () => {
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake(),
         signUpUser: sandbox.fake.returns(USER_STATE.REQUIRES_TWO_FACTOR),
+        logInUser: sandbox.fake(),
       };
 
       req.body.password = "password1";
@@ -63,6 +64,7 @@ describe("register-create-password controller", () => {
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake(),
         signUpUser: sandbox.fake.returns(""),
+        logInUser: sandbox.fake(),
       };
 
       req.body.password = "password1";
@@ -82,6 +84,7 @@ describe("register-create-password controller", () => {
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake(),
         signUpUser: sandbox.fake.returns(""),
+        logInUser: sandbox.fake(),
       };
 
       req.body.password = "password1";
@@ -109,6 +112,7 @@ describe("register-create-password controller", () => {
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake(),
         signUpUser: sandbox.fake.throws(error),
+        logInUser: sandbox.fake(),
       };
 
       req.body.password = "password1";
