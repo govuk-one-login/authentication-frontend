@@ -1,6 +1,7 @@
 import { API_ENDPOINTS } from "../app.constants";
 import { http } from "../utils/http";
 import { UserExists } from "./types/user-exists";
+import { UserLogin } from "./types/user-login";
 import { UserSignup } from "./types/user-signup";
 
 export async function userExists(
@@ -36,6 +37,28 @@ export async function signUpUser(
 
   const { data } = await http.client.post<UserSignup>(
     API_ENDPOINTS.SIGNUP_USER,
+    {
+      email: emailAddress,
+      password: password,
+    },
+    config
+  );
+  return data.sessionState;
+}
+
+export async function logInUser(
+  sessionId: string,
+  emailAddress: string,
+  password: string
+): Promise<string> {
+  const config = {
+    headers: {
+      "Session-Id": sessionId,
+    },
+  };
+
+  const { data } = await http.client.post<UserLogin>(
+    API_ENDPOINTS.LOG_IN_USER,
     {
       email: emailAddress,
       password: password,

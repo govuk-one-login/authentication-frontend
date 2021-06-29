@@ -20,7 +20,7 @@ router.post(
   PATH_NAMES.ENTER_PASSWORD,
   basicMiddlewarePipeline,
   validateEnterPasswordRequest(),
-  enterPasswordPost
+  enterPasswordPost()
 );
 
 export { router as enterPasswordRouter };

@@ -10,6 +10,7 @@ export const PATH_NAMES = {
   CREATE_ACCOUNT_SET_PASSWORD: "/create-password",
   CREATE_ACCOUNT_ENTER_PHONE_NUMBER: "/enter-phone-number",
   CREATE_ACCOUNT_SUCCESSFUL: "/account-created",
+  LOG_IN_ENTER_PHONE_NUMBER: "/enter-phone-number",
 };
 
 export const HTTP_STATUS_CODES = {
@@ -30,6 +31,7 @@ export const API_ENDPOINTS = {
   SIGNUP_USER: "/signup",
   SEND_NOTIFICATION: "/send-notification",
   VERIFY_CODE: "/verify-code",
+  LOG_IN_USER: "/login",
 };
 
 export const ERROR_MESSAGES = {

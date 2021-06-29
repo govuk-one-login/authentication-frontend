@@ -5,4 +5,9 @@ export interface AuthenticationServiceInterface {
     emailAddress: string,
     password: string
   ) => Promise<string>;
+  logInUser: (
+    sessionId: string,
+    emailAddress: string,
+    password: string
+  ) => Promise<string>;
 }
