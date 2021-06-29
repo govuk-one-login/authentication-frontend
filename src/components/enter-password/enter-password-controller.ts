@@ -19,11 +19,9 @@ export function enterPasswordPost(
         req.body["password"]
       );
 
-      if (userState !== USER_STATE.REQUIRES_TWO_FACTOR) {
-        return res.redirect(PATH_NAMES.LOG_IN_ENTER_PHONE_NUMBER);  // FIXME: Ought to go to the service.
+      if (userState === USER_STATE.AUTHENTICATED) {
+        return res.redirect(PATH_NAMES.LOG_IN_ENTER_PHONE_NUMBER); // FIXME: Ought to go to the service.
       }
-
-      return res.redirect(PATH_NAMES.LOG_IN_ENTER_PHONE_NUMBER);
     } catch (error) {
       next(error);
     }
