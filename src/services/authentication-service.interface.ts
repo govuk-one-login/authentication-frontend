@@ -9,5 +9,5 @@ export interface AuthenticationServiceInterface {
     sessionId: string,
     emailAddress: string,
     password: string
-  ) => Promise<string>;
+  ) => Promise<boolean>;
 }

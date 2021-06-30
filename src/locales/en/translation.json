@@ -81,7 +81,7 @@
         "label": "Password",
         "validationError": {
           "required": "Enter your password",
-          "invalidPassword": "Password is incorrect"
+          "incorrectPassword": "Enter the correct password"
         }
       },
       "forgottenPassword": {

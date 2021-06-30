@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from "../app.constants";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, USER_STATE } from "../app.constants";
 import { http } from "../utils/http";
 import { UserExists } from "./types/user-exists";
 import { UserLogin } from "./types/user-login";
@@ -50,10 +50,16 @@ export async function logInUser(
   sessionId: string,
   emailAddress: string,
   password: string
-): Promise<string> {
+): Promise<boolean> {
   const config = {
     headers: {
       "Session-Id": sessionId,
+    },
+    validateStatus: function (status: any) {
+      return (
+        status === HTTP_STATUS_CODES.OK ||
+        status === HTTP_STATUS_CODES.UNAUTHORIZED
+      );
     },
   };
 
@@ -65,5 +71,5 @@ export async function logInUser(
     },
     config
   );
-  return data.sessionState;
+  return data.sessionState && data.sessionState === USER_STATE.AUTHENTICATED;
 }

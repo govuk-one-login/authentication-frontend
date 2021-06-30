@@ -55,9 +55,7 @@ describe("enter password controller", () => {
         next
       );
 
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.LOG_IN_ENTER_PHONE_NUMBER
-      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
     });
 
     it("should throw error when api throws error", async () => {

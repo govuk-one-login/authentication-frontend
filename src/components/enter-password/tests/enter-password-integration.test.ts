@@ -73,14 +73,32 @@ describe("Integration::enter password", () => {
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
+        expect($("#password-error").text()).to.contains("Enter your password");
+      })
+      .expect(400, done);
+  });
+
+  it("should return validation error when password is incorrect", (done) => {
+    nock(baseApi).post("/login").once().reply(401);
+
+    request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        password: "pasasd",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
         expect($("#password-error").text()).to.contains(
-          "Enter your password"
+          "Enter the correct password"
         );
       })
       .expect(400, done);
   });
 
-  it("should redirect to /enter-phone-number page when password is correct", (done) => {
+  it("should redirect to /check-your-phone page when password is correct", (done) => {
     nock(baseApi).post("/login").once().reply(200, {
       sessionState: USER_STATE.AUTHENTICATED,
     });
@@ -93,7 +111,7 @@ describe("Integration::enter password", () => {
         _csrf: token,
         password: "password",
       })
-      .expect("Location", "/enter-phone-number")
+      .expect("Location", "/check-your-phone")
       .expect(302, done);
   });
 });
