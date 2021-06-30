@@ -5,7 +5,7 @@ import Logger, { getLogLabel } from "./logger";
 const logger: Logger = new Logger();
 const logLabel: string = getLogLabel(__filename);
 
-class Http {
+export class Http {
   private instance: AxiosInstance;
 
   private headers: Readonly<Record<string, string | boolean>> = {

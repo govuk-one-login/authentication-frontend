@@ -3,13 +3,13 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { AuthenticationServiceInterface } from "../../../services/authentication-service.interface";
 import {
   createPasswordPost,
   createPasswordGet,
 } from "../create-password-controller";
 import { UserSession } from "../../../types";
 import { USER_STATE } from "../../../app.constants";
+import { CreatePasswordServiceInterface } from "../types";
 
 describe("create-password controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -37,10 +37,8 @@ describe("create-password controller", () => {
 
   describe("createPasswordPost", () => {
     it("should redirect to enter-phone-number when 2 factor is required", async () => {
-      const fakeUserAuthService: AuthenticationServiceInterface = {
-        userExists: sandbox.fake(),
+      const fakeService: CreatePasswordServiceInterface = {
         signUpUser: sandbox.fake.returns(USER_STATE.REQUIRES_TWO_FACTOR),
-        logInUser: sandbox.fake(),
       };
 
       req.body.password = "password1";
@@ -49,20 +47,15 @@ describe("create-password controller", () => {
         email: "joe.bloggs@test.com",
       };
 
-      await createPasswordPost(fakeUserAuthService)(
-        req as Request,
-        res as Response
-      );
+      await createPasswordPost(fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith("/enter-phone-number");
-      expect(fakeUserAuthService.signUpUser).to.have.been.calledOnce;
+      expect(fakeService.signUpUser).to.have.been.calledOnce;
     });
 
     it("should redirect to account-created when 2 factor is not required", async () => {
-      const fakeUserAuthService: AuthenticationServiceInterface = {
-        userExists: sandbox.fake(),
+      const fakeService: CreatePasswordServiceInterface = {
         signUpUser: sandbox.fake.returns(""),
-        logInUser: sandbox.fake(),
       };
 
       req.body.password = "password1";
@@ -71,39 +64,32 @@ describe("create-password controller", () => {
         email: "joe.bloggs@test.com",
       };
 
-      await createPasswordPost(fakeUserAuthService)(
-        req as Request,
-        res as Response
-      );
+      await createPasswordPost(fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith("/account-created");
-      expect(fakeUserAuthService.signUpUser).to.have.been.calledOnce;
+      expect(fakeService.signUpUser).to.have.been.calledOnce;
     });
 
     it("should throw error when session is not populated", async () => {
-      const fakeUserAuthService: AuthenticationServiceInterface = {
-        userExists: sandbox.fake(),
-        signUpUser: sandbox.fake.returns(""),
-        logInUser: sandbox.fake(),
+      const fakeService: CreatePasswordServiceInterface = {
+        signUpUser: sandbox.fake(),
       };
 
       req.body.password = "password1";
       req.session = undefined;
 
       await expect(
-        createPasswordPost(fakeUserAuthService)(req as Request, res as Response)
+        createPasswordPost(fakeService)(req as Request, res as Response)
       ).to.be.rejectedWith(
         TypeError,
         "Cannot read property 'user' of undefined"
       );
-      expect(fakeUserAuthService.signUpUser).to.have.not.been.called;
+      expect(fakeService.signUpUser).to.have.not.been.called;
     });
 
     it("should throw error when password field is not in body", async () => {
-      const fakeUserAuthService: AuthenticationServiceInterface = {
-        userExists: sandbox.fake(),
-        signUpUser: sandbox.fake.returns(""),
-        logInUser: sandbox.fake(),
+      const fakeService: CreatePasswordServiceInterface = {
+        signUpUser: sandbox.fake(),
       };
 
       req.body = undefined;
@@ -113,20 +99,18 @@ describe("create-password controller", () => {
       };
 
       await expect(
-        createPasswordPost(fakeUserAuthService)(req as Request, res as Response)
+        createPasswordPost(fakeService)(req as Request, res as Response)
       ).to.be.rejectedWith(
         TypeError,
         "Cannot read property 'password' of undefined"
       );
-      expect(fakeUserAuthService.signUpUser).to.have.not.been.called;
+      expect(fakeService.signUpUser).to.have.not.been.called;
     });
 
     it("should throw error when API call returns error", async () => {
       const error = new Error("Internal server error");
-      const fakeUserAuthService: AuthenticationServiceInterface = {
-        userExists: sandbox.fake(),
+      const fakeService: CreatePasswordServiceInterface = {
         signUpUser: sandbox.fake.throws(error),
-        logInUser: sandbox.fake(),
       };
 
       req.body.password = "password1";
@@ -136,9 +120,9 @@ describe("create-password controller", () => {
       };
 
       await expect(
-        createPasswordPost(fakeUserAuthService)(req as Request, res as Response)
+        createPasswordPost(fakeService)(req as Request, res as Response)
       ).to.be.rejectedWith(Error, "Internal server error");
-      expect(fakeUserAuthService.signUpUser).to.have.been.called;
+      expect(fakeService.signUpUser).to.have.been.called;
     });
   });
 });

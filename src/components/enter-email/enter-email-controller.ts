@@ -1,20 +1,15 @@
 import { Request, Response } from "express";
-import { AuthenticationServiceInterface } from "../../services/authentication-service.interface";
-import { NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants";
-import {
-  getNotificationService,
-  getUserService,
-} from "../../services/service-injection";
-import { NotificationServiceInterface } from "../../services/notification-service.interface";
+import { PATH_NAMES } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
+import { enterEmailService } from "./enter-email-service";
+import { EnterEmailServiceInterface } from "./types";
 
 export function enterEmailGet(req: Request, res: Response): void {
   res.render("enter-email/index.njk");
 }
 
 export function enterEmailPost(
-  userService: AuthenticationServiceInterface = getUserService(),
-  notificationService: NotificationServiceInterface = getNotificationService()
+  service: EnterEmailServiceInterface = enterEmailService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const email = req.body.email;
@@ -22,15 +17,11 @@ export function enterEmailPost(
 
     req.session.user.email = email;
 
-    if (await userService.userExists(sessionId, email)) {
+    if (await service.userExists(sessionId, email)) {
       return res.redirect(PATH_NAMES.ENTER_PASSWORD);
     }
 
-    await notificationService.sendNotification(
-      sessionId,
-      email,
-      NOTIFICATION_TYPE.VERIFY_EMAIL
-    );
+    await service.sendEmailVerificationNotification(sessionId, email);
 
     res.redirect(PATH_NAMES.CHECK_YOUR_EMAIL);
   };
