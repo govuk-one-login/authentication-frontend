@@ -161,7 +161,7 @@
           "maxLength": "Enter the security code using only 6 digits",
           "minLength": "Enter the security code using only 6 digits",
           "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "Enter a valid security code"
+          "invalidCode": "The security code you’ve entered is not correct, try entering it again or get a new security code."
         }
       }
     }

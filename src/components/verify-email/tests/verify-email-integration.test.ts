@@ -162,7 +162,7 @@ describe("Integration:: verify email", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains(
-          "Enter a valid security code"
+          "The security code you’ve entered is not correct, try entering it again or get a new security code."
         );
       })
       .expect(400, done);
