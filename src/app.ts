@@ -31,6 +31,7 @@ import { verifyEmailRouter } from "./components/verify-email/verify-email-routes
 import { pageNotFoundHandler } from "./handlers/page-not-found-handler";
 import { serverErrorHandler } from "./handlers/internal-server-error-handler";
 import { csrfMiddleware } from "./middleware/csrf-middleware";
+import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-route";
 dotenv.config();
 
 const APP_VIEWS = [
@@ -54,6 +55,7 @@ function registerRoutes(app: express.Application) {
   app.use(registerAccountPhoneNumberRouter);
   app.use(registerAccountCreatedRouter);
   app.use(footerRouter);
+  app.use(checkYourPhoneRouter);
 }
 
 function createApp(): express.Application {

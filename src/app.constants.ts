@@ -11,6 +11,7 @@ export const PATH_NAMES = {
   CREATE_ACCOUNT_ENTER_PHONE_NUMBER: "/enter-phone-number",
   CREATE_ACCOUNT_SUCCESSFUL: "/account-created",
   LOG_IN_ENTER_PHONE_NUMBER: "/enter-phone-number",
+  CHECK_YOUR_PHONE: "/check-your-phone",
 };
 
 export const HTTP_STATUS_CODES = {
@@ -19,6 +20,7 @@ export const HTTP_STATUS_CODES = {
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
+  OK: 200,
 };
 
 export enum LOCALE {

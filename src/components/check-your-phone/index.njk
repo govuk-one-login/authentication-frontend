@@ -1,0 +1,46 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set pageTitleName = 'pages.checkYourPhone.title' | translate %}
+
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.checkYourPhone.header' | translate}}</h1>
+
+<p class="govuk-body">{{'pages.checkYourPhone.info.paragraph' | translate}}</p>
+
+<form action="/enter-phone-number" method="post" novalidate>
+
+  <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+  {{ govukInput({
+  label: {
+  text: 'pages.checkYourPhone.code.label' | translate
+  },
+  classes: "govuk-!-width-two-thirds govuk-!-font-weight-bold",
+  id: "code",
+  name: "code",
+  type: "number",
+  errorMessage: {
+  text: errors['code'].text
+  } if (errors['code'])})
+  }}
+
+
+  {{ govukButton({
+  "text": button_text|default('general.continue.label' | translate, true),
+  "type": "Submit",
+  "preventDoubleClick": true
+  }) }}
+
+</form>
+
+ <a href="/#" class="govuk-link" rel="noreferrer noopener" target="_blank">{{'pages.checkYourPhone.info.requestCodeLink' | translate }}</a>
+
+{% endblock %}
+
