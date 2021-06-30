@@ -39,6 +39,7 @@ describe("enter email controller", () => {
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake.returns(true),
         signUpUser: sandbox.fake(),
+        logInUser: sandbox.fake()
       };
 
       req.body.email = "test.test.com";
@@ -57,6 +58,7 @@ describe("enter email controller", () => {
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake.returns(false),
         signUpUser: sandbox.fake(),
+        logInUser: sandbox.fake()
       };
 
       const fakeNotificationService: NotificationServiceInterface = {
@@ -83,6 +85,7 @@ describe("enter email controller", () => {
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake.throws(error),
         signUpUser: sandbox.fake(),
+        logInUser: sandbox.fake()
       };
 
       req.body.email = "test.test.com";
@@ -101,6 +104,7 @@ describe("enter email controller", () => {
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake.returns(""),
         signUpUser: sandbox.fake(),
+        logInUser: sandbox.fake()
       };
 
       req.body.email = "test.test.com";

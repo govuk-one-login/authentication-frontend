@@ -1,6 +1,18 @@
 import { Response, Request } from "express";
 import { HTTP_STATUS_CODES } from "../app.constants";
 
+export function formatValidationError(
+  key: string,
+  validationMessage: string
+): { [k: string]: any } {
+  const error: { [k: string]: any } = {};
+  error[key] = {
+    text: validationMessage,
+    href: `#${key}`,
+  };
+  return error;
+}
+
 export function renderBadRequest(
   res: Response,
   req: Request,

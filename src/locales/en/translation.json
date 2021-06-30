@@ -1,9 +1,9 @@
 {
   "general": {
     "provider": "GOV.UK",
-    "serviceName": "GOV.UK Sign in",
     "pageTitle": "GOV.UK Sign in",
     "serviceName": "Sign in to or create your GOV.UK Account",
+    "serviceNameTitle": "GOV.UK Account",
     "errorTitlePrefix": "Error",
     "back": "Back",
     "warning": "Warning",
@@ -74,18 +74,18 @@
       }
     },
     "enterPassword": {
-      "title": "Sign in to or create your GOV.UK Account",
-      "header": "Enter your GOV.UK account password",
-      "info": "Entering the information below will help us start to verify your identity. You may be asked additional questions as part of this process.",
+      "title": "Enter your password",
+      "header": "Enter your password",
+      "info": "Enter your password to sign in",
       "password": {
-        "label": "Enter your password",
+        "label": "Password",
         "validationError": {
-          "required": "Enter your password"
+          "required": "Enter your password",
+          "incorrectPassword": "Enter the correct password"
         }
       },
-      "securePasswordDetails": {
-        "summary": "I've forgotten my password",
-        "text": "Put something useful here"
+      "forgottenPassword": {
+        "text": "I've forgotten my password"
       }
     },
     "createPassword": {
@@ -162,6 +162,24 @@
           "minLength": "Enter the security code using only 6 digits",
           "invalidFormat": "Enter the security code using only 6 digits",
           "invalidCode": "The security code you’ve entered is not correct, try entering it again or get a new security code."
+        }
+      }
+    },
+    "checkYourPhone": {
+      "title": "Check your phone",
+      "header": "Check your [mobile] phone",
+      "info": {
+        "paragraph": "We sent a code to the [mobile] number you registered.",
+        "requestCodeLink": "I didn't receive my code"
+      },
+      "code": {
+        "label": "Enter the 6 digit security code",
+        "validationError": {
+          "required": "Enter the security code",
+          "maxLength": "Enter the security code using only 6 digits",
+          "minLength": "Enter the security code using only 6 digits",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "Enter a valid security code"
         }
       }
     }

@@ -10,6 +10,8 @@ export const PATH_NAMES = {
   CREATE_ACCOUNT_SET_PASSWORD: "/create-password",
   CREATE_ACCOUNT_ENTER_PHONE_NUMBER: "/enter-phone-number",
   CREATE_ACCOUNT_SUCCESSFUL: "/account-created",
+  LOG_IN_ENTER_PHONE_NUMBER: "/enter-phone-number",
+  CHECK_YOUR_PHONE: "/check-your-phone",
 };
 
 export const HTTP_STATUS_CODES = {
@@ -18,6 +20,7 @@ export const HTTP_STATUS_CODES = {
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
+  OK: 200,
 };
 
 export enum LOCALE {
@@ -30,6 +33,7 @@ export const API_ENDPOINTS = {
   SIGNUP_USER: "/signup",
   SEND_NOTIFICATION: "/send-notification",
   VERIFY_CODE: "/verify-code",
+  LOG_IN_USER: "/login",
 };
 
 export const ERROR_MESSAGES = {
@@ -46,6 +50,7 @@ export const USER_STATE = {
   REQUIRES_TWO_FACTOR: "TWO_FACTOR_REQUIRED",
   USER_NOT_FOUND: "USER_NOT_FOUND",
   EMAIL_CODE_VERIFIED: "EMAIL_CODE_VERIFIED",
+  AUTHENTICATED: "AUTHENTICATED",
 };
 
 export enum NOTIFICATION_TYPE {

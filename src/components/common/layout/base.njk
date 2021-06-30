@@ -27,16 +27,13 @@
         {{ pageTitleName }}
         -
     {% endif %}
-    {{ 'general.serviceName' | translate }}
-    -
-    {{ 'general.provider' | translate }}
+    {{ 'general.serviceNameTitle' | translate }}
 {% endblock %}
 
 
 {% block header %}
   {{ govukHeader({
   homepageUrl: "#",
-  serviceName: 'general.serviceName' | translate,
   serviceUrl: "#"
 }) }}
 {% endblock %}
