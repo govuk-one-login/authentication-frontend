@@ -4,6 +4,8 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
+{% set pageTitleName = 'pages.enterPassword.title' | translate %}
+
 {% block content %}
 
 {% include "common/errors/errorSummary.njk" %}
@@ -13,6 +15,8 @@
 <form action="/enter-password" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+<p class="govuk-body">{{'pages.enterPassword.info' | translate}}</p>
 
 {{ govukInput({
     label: {
@@ -28,10 +32,9 @@
     } if (errors['password'])})
 }}
 
-{{ govukDetails({
-    summaryText: 'pages.enterPassword.securePasswordDetails.summary' | translate,
-    text: 'pages.enterPassword.securePasswordDetails.text' | translate
-  }) }}
+<p class="govuk-body">
+    <a href="" class="govuk-link" rel="noreferrer noopener" target="_blank">{{'pages.enterPassword.forgottenPassword.text' | translate }}</a>
+</p>
 
 {{ govukButton({
     "text": button_text|default('general.continue.label' | translate, true),

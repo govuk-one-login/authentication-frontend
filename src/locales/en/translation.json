@@ -1,7 +1,6 @@
 {
   "general": {
     "provider": "GOV.UK",
-    "serviceName": "GOV.UK Sign in",
     "pageTitle": "GOV.UK Sign in",
     "serviceName": "Sign in to or create your GOV.UK Account",
     "errorTitlePrefix": "Error",
@@ -74,18 +73,17 @@
       }
     },
     "enterPassword": {
-      "title": "Sign in to or create your GOV.UK Account",
-      "header": "Enter your GOV.UK account password",
-      "info": "Entering the information below will help us start to verify your identity. You may be asked additional questions as part of this process.",
+      "title": "Enter your password",
+      "header": "Enter your password",
+      "info": "Enter your password to sign in",
       "password": {
-        "label": "Enter your password",
+        "label": "Password",
         "validationError": {
           "required": "Enter your password"
         }
       },
-      "securePasswordDetails": {
-        "summary": "I've forgotten my password",
-        "text": "Put something useful here"
+      "forgottenPassword": {
+        "text": "I've forgotten my password"
       }
     },
     "createPassword": {
