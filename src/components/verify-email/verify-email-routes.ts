@@ -3,6 +3,7 @@ import { PATH_NAMES } from "../../app.constants";
 import { verifyEmailGet, verifyEmailPost } from "./verify-email-controller";
 import { validateVerifyEmailRequest } from "./verify-email-validation";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
+import { asyncHandler } from "../../utils/async";
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router.post(
   PATH_NAMES.CHECK_YOUR_EMAIL,
   validateSessionMiddleware,
   validateVerifyEmailRequest(),
-  verifyEmailPost()
+  asyncHandler(verifyEmailPost())
 );
 
 export { router as verifyEmailRouter };

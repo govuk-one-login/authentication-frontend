@@ -2,24 +2,23 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { AuthenticationServiceInterface } from "../../../services/authentication-service.interface";
 import { enterEmailGet, enterEmailPost } from "../enter-email-controller";
 import { UserSession } from "../../../types";
 import { NotificationServiceInterface } from "../../../services/notification-service.interface";
+import { createPasswordPost } from "../../create-password/create-password-controller";
 
 describe("enter email controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
-  let next: NextFunction;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
     req = { body: {}, session: { user: {} as UserSession } };
     res = { render: sandbox.fake(), redirect: sandbox.fake() };
-    next = sandbox.spy();
   });
 
   afterEach(() => {
@@ -43,14 +42,14 @@ describe("enter email controller", () => {
       };
 
       req.body.email = "test.test.com";
-      req.session.user.id = "test.test.com";
+      req.session.user.id = "dsad.dds";
 
       await enterEmailPost(fakeUserAuthService, null)(
         req as Request,
-        res as Response,
-        next
+        res as Response
       );
 
+      expect(fakeUserAuthService.userExists).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith("/enter-password");
     });
 
@@ -67,37 +66,42 @@ describe("enter email controller", () => {
       };
 
       req.body.email = "test.test.com";
-      req.session.user.id = "test.test.com";
+      req.session.user.id = "sadl990asdald";
 
       await enterEmailPost(fakeUserAuthService, fakeNotificationService)(
         req as Request,
-        res as Response,
-        next
+        res as Response
       );
 
       expect(res.redirect).to.have.calledWith("/check-your-email");
-      expect(fakeNotificationService.sendNotification).to.have.calledOnce;
-      expect(fakeUserAuthService.userExists).to.have.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+      expect(fakeUserAuthService.userExists).to.have.been.calledOnce;
     });
 
-    it("should throw error when api throws error", async () => {
-      const error = new Error("error");
+    it("should throw error when API call throws error", async () => {
+      const error = new Error("Internal server error");
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake.throws(error),
         signUpUser: sandbox.fake(),
         logInUser: sandbox.fake(),
       };
 
+      const fakeNotificationService: NotificationServiceInterface = {
+        sendNotification: sandbox.fake(),
+        verifyCode: sandbox.fake(),
+      };
+
       req.body.email = "test.test.com";
-      req.session.user.id = "test.test.com";
+      req.session.user.id = "231dccsd";
 
-      await enterEmailPost(fakeUserAuthService, null)(
-        req as Request,
-        res as Response,
-        next
-      );
-
-      expect(next).to.have.calledWith(error);
+      await expect(
+        enterEmailPost(fakeUserAuthService, null)(
+          req as Request,
+          res as Response
+        )
+      ).to.be.rejectedWith(Error, "Internal server error");
+      expect(fakeUserAuthService.userExists).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).not.to.been.called;
     });
 
     it("should throw error when session is not populated", async () => {
@@ -107,24 +111,26 @@ describe("enter email controller", () => {
         logInUser: sandbox.fake(),
       };
 
+      const fakeNotificationService: NotificationServiceInterface = {
+        sendNotification: sandbox.fake(),
+        verifyCode: sandbox.fake(),
+      };
+
       req.body.email = "test.test.com";
       req.session = undefined;
 
       await expect(
-        enterEmailPost(fakeUserAuthService, null)(
+        enterEmailPost(fakeUserAuthService, fakeNotificationService)(
           req as Request,
-          res as Response,
-          next
+          res as Response
         )
+      ).to.be.rejectedWith(
+        TypeError,
+        "Cannot read property 'user' of undefined"
       );
 
-      expect(next).to.have.been.calledOnce;
-      expect(next).to.have.been.calledWithMatch(
-        sinon.match.instanceOf(TypeError)
-      );
-      expect(next).to.have.been.calledWithMatch(
-        sinon.match.has("message", "Cannot read property 'user' of undefined")
-      );
+      expect(fakeUserAuthService.userExists).not.to.been.called;
+      expect(fakeNotificationService.sendNotification).not.to.been.called;
     });
   });
 });

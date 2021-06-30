@@ -7,6 +7,7 @@ import {
 } from "./enter-password-controller";
 import { validateEnterPasswordRequest } from "./enter-password-validation";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
+import { asyncHandler } from "../../utils/async";
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ router.post(
   PATH_NAMES.ENTER_PASSWORD,
   validateSessionMiddleware,
   validateEnterPasswordRequest(),
-  enterPasswordPost()
+  asyncHandler(enterPasswordPost())
 );
 
 export { router as enterPasswordRouter };

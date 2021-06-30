@@ -6,6 +6,7 @@ import {
   createPasswordPost,
 } from "./create-password-controller";
 import { validateCreatePasswordRequest } from "./create-password-validation";
+import { asyncHandler } from "../../utils/async";
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.post(
   PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
   validateSessionMiddleware,
   validateCreatePasswordRequest(),
-  createPasswordPost()
+  asyncHandler(createPasswordPost())
 );
 
 export { router as registerCreatePasswordRouter };

@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { AuthenticationServiceInterface } from "../../../services/authentication-service.interface";
 import {
   createPasswordPost,
@@ -15,14 +15,12 @@ describe("create-password controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
-  let next: NextFunction;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
     req = { body: {}, session: { user: {} as UserSession } };
     res = { render: sandbox.fake(), redirect: sandbox.fake() };
-    next = sinon.spy();
   });
 
   afterEach(() => {
@@ -46,16 +44,18 @@ describe("create-password controller", () => {
       };
 
       req.body.password = "password1";
-      req.session.user.email = "joe.bloggs@test.com";
-      req.session.user.id = "test.test.com";
+      req.session.user = {
+        id: "12-d0dasdk4d",
+        email: "joe.bloggs@test.com",
+      };
 
       await createPasswordPost(fakeUserAuthService)(
         req as Request,
-        res as Response,
-        next
+        res as Response
       );
 
       expect(res.redirect).to.have.calledWith("/enter-phone-number");
+      expect(fakeUserAuthService.signUpUser).to.have.been.calledOnce;
     });
 
     it("should redirect to account-created when 2 factor is not required", async () => {
@@ -66,16 +66,18 @@ describe("create-password controller", () => {
       };
 
       req.body.password = "password1";
-      req.session.user.email = "joe.bloggs@test.com";
-      req.session.user.id = "test.test.com";
+      req.session.user = {
+        id: "12-d0dasdk",
+        email: "joe.bloggs@test.com",
+      };
 
       await createPasswordPost(fakeUserAuthService)(
         req as Request,
-        res as Response,
-        next
+        res as Response
       );
 
       expect(res.redirect).to.have.calledWith("/account-created");
+      expect(fakeUserAuthService.signUpUser).to.have.been.calledOnce;
     });
 
     it("should throw error when session is not populated", async () => {
@@ -89,24 +91,38 @@ describe("create-password controller", () => {
       req.session = undefined;
 
       await expect(
-        createPasswordPost(fakeUserAuthService)(
-          req as Request,
-          res as Response,
-          next
-        )
+        createPasswordPost(fakeUserAuthService)(req as Request, res as Response)
+      ).to.be.rejectedWith(
+        TypeError,
+        "Cannot read property 'user' of undefined"
       );
-
-      expect(next).to.have.been.calledOnce;
-      expect(next).to.have.been.calledWithMatch(
-        sinon.match.instanceOf(TypeError)
-      );
-      expect(next).to.have.been.calledWithMatch(
-        sinon.match.has("message", "Cannot read property 'user' of undefined")
-      );
+      expect(fakeUserAuthService.signUpUser).to.have.not.been.called;
     });
 
-    it("should throw error when api returns error", async () => {
-      const error = new Error("error");
+    it("should throw error when password field is not in body", async () => {
+      const fakeUserAuthService: AuthenticationServiceInterface = {
+        userExists: sandbox.fake(),
+        signUpUser: sandbox.fake.returns(""),
+        logInUser: sandbox.fake(),
+      };
+
+      req.body = undefined;
+      req.session.user = {
+        id: "12-d0dasdk",
+        email: "joe.bloggs@test.com",
+      };
+
+      await expect(
+        createPasswordPost(fakeUserAuthService)(req as Request, res as Response)
+      ).to.be.rejectedWith(
+        TypeError,
+        "Cannot read property 'password' of undefined"
+      );
+      expect(fakeUserAuthService.signUpUser).to.have.not.been.called;
+    });
+
+    it("should throw error when API call returns error", async () => {
+      const error = new Error("Internal server error");
       const fakeUserAuthService: AuthenticationServiceInterface = {
         userExists: sandbox.fake(),
         signUpUser: sandbox.fake.throws(error),
@@ -114,16 +130,15 @@ describe("create-password controller", () => {
       };
 
       req.body.password = "password1";
-      req.session.user.email = "joe.bloggs@test.com";
-      req.session.user.id = "test.test.com";
+      req.session.user = {
+        id: "12-d0dasdk3d",
+        email: "joe.bloggs@test.com",
+      };
 
-      await createPasswordPost(fakeUserAuthService)(
-        req as Request,
-        res as Response,
-        next
-      );
-
-      expect(next).to.have.calledWith(error);
+      await expect(
+        createPasswordPost(fakeUserAuthService)(req as Request, res as Response)
+      ).to.be.rejectedWith(Error, "Internal server error");
+      expect(fakeUserAuthService.signUpUser).to.have.been.called;
     });
   });
 });

@@ -93,6 +93,7 @@ describe("session-middleware", () => {
       expect(next).to.be.called;
       expect(validateSessionStub).to.be.calledWith(req.session.user);
     });
+
     it("should call next with error when invalid session", () => {
       validateSessionMiddleware(req as Request, res as Response, next);
 

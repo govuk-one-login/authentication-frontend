@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { AuthenticationServiceInterface } from "../../../services/authentication-service.interface";
 import {
   enterPasswordGet,
@@ -10,19 +10,18 @@ import {
 } from "../enter-password-controller";
 import { UserSession } from "../../../types";
 import { PATH_NAMES, USER_STATE } from "../../../app.constants";
+import { createPasswordPost } from "../../create-password/create-password-controller";
 
 describe("enter password controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
-  let next: NextFunction;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
     req = { body: {}, session: { user: {} as UserSession } };
     res = { render: sandbox.fake(), redirect: sandbox.fake() };
-    next = sandbox.spy();
   });
 
   afterEach(() => {
@@ -45,38 +44,38 @@ describe("enter password controller", () => {
         logInUser: sandbox.fake.returns(USER_STATE.AUTHENTICATED),
       };
 
-      req.session.user.email = "test.test.com";
-      req.session.user.id = "test.test.com";
+      req.session.user = {
+        id: "12-d0dasdk",
+        email: "joe.bloggs@test.com",
+      };
       req.body["password"] = "password";
 
       await enterPasswordPost(fakeUserAuthService)(
         req as Request,
-        res as Response,
-        next
+        res as Response
       );
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
     });
 
-    it("should throw error when api throws error", async () => {
-      const error = new Error("error");
+    it("should throw error when API call throws error", async () => {
+      const error = new Error("Internal server error");
       const fakeUserAuthService: AuthenticationServiceInterface = {
-        userExists: sandbox.fake.throws(error),
+        userExists: sandbox.fake(),
         signUpUser: sandbox.fake(),
         logInUser: sandbox.fake.throws(error),
       };
 
-      req.session.user.email = "test.test.com";
-      req.session.user.id = "test.test.com";
+      req.session.user = {
+        id: "12-d0dasdk",
+        email: "joe.bloggs@test.com",
+      };
       req.body["password"] = "password";
 
-      await enterPasswordPost(fakeUserAuthService)(
-        req as Request,
-        res as Response,
-        next
-      );
-
-      expect(next).to.have.calledWith(error);
+      await expect(
+        enterPasswordPost(fakeUserAuthService)(req as Request, res as Response)
+      ).to.be.rejectedWith(Error, "Internal server error");
+      expect(fakeUserAuthService.logInUser).to.have.been.calledOnce;
     });
   });
 });

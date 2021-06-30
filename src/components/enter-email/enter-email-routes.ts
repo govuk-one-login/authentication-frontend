@@ -4,6 +4,7 @@ import { validateEnterEmailRequest } from "./enter-email-validation";
 import { enterEmailPost, enterEmailGet } from "./enter-email-controller";
 import * as express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
+import { asyncHandler } from "../../utils/async";
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ router.post(
   PATH_NAMES.ENTER_EMAIL,
   validateSessionMiddleware,
   validateEnterEmailRequest(),
-  enterEmailPost()
+  asyncHandler(enterEmailPost())
 );
 
 export { router as enterEmailRouter };
