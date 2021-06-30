@@ -1,20 +1,20 @@
 import * as express from "express";
 import { PATH_NAMES } from "../../app.constants";
-import { basicMiddlewarePipeline } from "../../middleware/middleware-pipeline";
 import { verifyEmailGet, verifyEmailPost } from "./verify-email-controller";
 import { validateVerifyEmailRequest } from "./verify-email-validation";
+import { validateSessionMiddleware } from "../../middleware/session-middleware";
 
 const router = express.Router();
 
 router.get(
   PATH_NAMES.CHECK_YOUR_EMAIL,
-  basicMiddlewarePipeline,
+  validateSessionMiddleware,
   verifyEmailGet
 );
 
 router.post(
   PATH_NAMES.CHECK_YOUR_EMAIL,
-  basicMiddlewarePipeline,
+  validateSessionMiddleware,
   validateVerifyEmailRequest(),
   verifyEmailPost()
 );

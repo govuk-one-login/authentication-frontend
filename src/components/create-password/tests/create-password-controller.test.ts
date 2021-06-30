@@ -7,11 +7,11 @@ import { AuthenticationServiceInterface } from "../../../services/authentication
 import {
   createPasswordPost,
   createPasswordGet,
-} from "../register-create-password-controller";
+} from "../create-password-controller";
 import { UserSession } from "../../../types";
 import { USER_STATE } from "../../../app.constants";
 
-describe("register-create-password controller", () => {
+describe("create-password controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -33,9 +33,7 @@ describe("register-create-password controller", () => {
     it("should render create password view", () => {
       createPasswordGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "register-create-password/index.njk"
-      );
+      expect(res.render).to.have.calledWith("create-password/index.njk");
     });
   });
 

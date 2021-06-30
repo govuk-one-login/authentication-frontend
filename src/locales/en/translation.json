@@ -132,7 +132,7 @@
         }
       }
     },
-    "registerAccountCreated": {
+    "accountCreated": {
       "title": "You have successfully created your GOV.UK Account",
       "header": "You have successfully created your GOV.UK Account",
       "info": {

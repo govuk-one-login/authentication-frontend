@@ -22,16 +22,17 @@ import { logErrorMiddleware } from "./middleware/log-error-middleware";
 import { enterEmailRouter } from "./components/enter-email/enter-email-routes";
 import { enterPasswordRouter } from "./components/enter-password/enter-password-routes";
 import { footerRouter } from "./components/footer/footer-pages-routes";
-import { registerAccountCreatedRouter } from "./components/register-account-created/register_account-created-routes";
-import { registerCreatePasswordRouter } from "./components/register-create-password/register-create-password-routes";
-import { registerAccountPhoneNumberRouter } from "./components/register-enter-phone-number/register-enter-phone-number-routes";
+import { registerAccountCreatedRouter } from "./components/account-created/account-created-routes";
+import { registerCreatePasswordRouter } from "./components/create-password/create-password-routes";
+import { registerAccountPhoneNumberRouter } from "./components/enter-phone-number/enter-phone-number-routes";
 
 import * as dotenv from "dotenv";
 import { verifyEmailRouter } from "./components/verify-email/verify-email-routes";
 import { pageNotFoundHandler } from "./handlers/page-not-found-handler";
 import { serverErrorHandler } from "./handlers/internal-server-error-handler";
 import { csrfMiddleware } from "./middleware/csrf-middleware";
-import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-route";
+import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-routes";
+import { landingRouter } from "./components/landing/landing-route";
 dotenv.config();
 
 const APP_VIEWS = [
@@ -48,6 +49,7 @@ const SESSION_COOKIE_OPTIONS = {
 };
 
 function registerRoutes(app: express.Application) {
+  app.use(landingRouter);
   app.use(enterEmailRouter);
   app.use(enterPasswordRouter);
   app.use(verifyEmailRouter);

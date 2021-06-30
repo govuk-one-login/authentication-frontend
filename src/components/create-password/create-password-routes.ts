@@ -1,22 +1,22 @@
 import { PATH_NAMES } from "../../app.constants";
 import * as express from "express";
-import { basicMiddlewarePipeline } from "../../middleware/middleware-pipeline";
+import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import {
   createPasswordGet,
   createPasswordPost,
-} from "./register-create-password-controller";
-import { validateCreatePasswordRequest } from "./register-create-password-validation";
+} from "./create-password-controller";
+import { validateCreatePasswordRequest } from "./create-password-validation";
 
 const router = express.Router();
 
 router.get(
   PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
-  basicMiddlewarePipeline,
+  validateSessionMiddleware,
   createPasswordGet
 );
 router.post(
   PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
-  basicMiddlewarePipeline,
+  validateSessionMiddleware,
   validateCreatePasswordRequest(),
   createPasswordPost()
 );

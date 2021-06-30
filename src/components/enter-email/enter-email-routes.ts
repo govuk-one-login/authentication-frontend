@@ -3,22 +3,22 @@ import { createSessionMiddleware } from "../../middleware/session-middleware";
 import { validateEnterEmailRequest } from "./enter-email-validation";
 import { enterEmailPost, enterEmailGet } from "./enter-email-controller";
 import * as express from "express";
-import { basicMiddlewarePipeline } from "../../middleware/middleware-pipeline";
+import { validateSessionMiddleware } from "../../middleware/session-middleware";
 
 const router = express.Router();
 
 router.get(
   "/",
   createSessionMiddleware,
-  basicMiddlewarePipeline,
+  validateSessionMiddleware,
   enterEmailGet
 );
 
-router.get(PATH_NAMES.ENTER_EMAIL, basicMiddlewarePipeline, enterEmailGet);
+router.get(PATH_NAMES.ENTER_EMAIL, validateSessionMiddleware, enterEmailGet);
 
 router.post(
   PATH_NAMES.ENTER_EMAIL,
-  basicMiddlewarePipeline,
+  validateSessionMiddleware,
   validateEnterEmailRequest(),
   enterEmailPost()
 );

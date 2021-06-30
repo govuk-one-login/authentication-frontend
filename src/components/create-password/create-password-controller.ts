@@ -5,7 +5,7 @@ import { PATH_NAMES, USER_STATE } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 
 export function createPasswordGet(req: Request, res: Response): void {
-  res.render("register-create-password/index.njk");
+  res.render("create-password/index.njk");
 }
 
 export function createPasswordPost(

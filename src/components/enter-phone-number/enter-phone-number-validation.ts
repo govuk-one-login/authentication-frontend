@@ -12,6 +12,6 @@ export function validateEnterPhoneNumberRequest(): ValidationChainFunc {
           { value }
         );
       }),
-    validateBodyMiddleware("register-enter-phone-number/index.njk"),
+    validateBodyMiddleware("enter-phone-number/index.njk"),
   ];
 }
