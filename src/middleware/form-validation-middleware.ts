@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { renderBadRequest } from "../utils/validation";
+import { isObjectEmpty, renderBadRequest } from "../utils/validation";
 
 export const validationErrorFormatter = ({
   msg,
@@ -21,7 +21,7 @@ export function validateBodyMiddleware(template: string) {
       .formatWith(validationErrorFormatter)
       .mapped();
 
-    if (Object.keys(errors).length !== 0) {
+    if (!isObjectEmpty(errors)) {
       return renderBadRequest(res, req, template, errors);
     }
     next();

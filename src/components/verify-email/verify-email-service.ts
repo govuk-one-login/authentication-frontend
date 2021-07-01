@@ -1,4 +1,4 @@
-import { Http, http } from "../../utils/http";
+import { getBaseRequestConfig, Http, http } from "../../utils/http";
 import {
   API_ENDPOINTS,
   NOTIFICATION_TYPE,
@@ -13,18 +13,13 @@ export function verifyEmailService(
     sessionId: string,
     code: string
   ): Promise<boolean> {
-    const config = {
-      headers: {
-        "Session-Id": sessionId,
-      },
-    };
-    const { data } = await http.client.post<VerifyCode>(
+    const { data } = await axios.client.post<VerifyCode>(
       API_ENDPOINTS.VERIFY_CODE,
       {
         code: code,
         notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
       },
-      config
+      getBaseRequestConfig(sessionId)
     );
 
     return (

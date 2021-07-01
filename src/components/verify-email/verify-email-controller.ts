@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants";
+import { PATH_NAMES } from "../../app.constants";
 import {
   formatValidationError,
   renderBadRequest,

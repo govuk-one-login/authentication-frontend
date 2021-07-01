@@ -1,4 +1,4 @@
-import { Http, http } from "../../utils/http";
+import { getBaseRequestConfig, Http, http } from "../../utils/http";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
@@ -14,16 +14,12 @@ export function enterPasswordService(
     emailAddress: string,
     password: string
   ): Promise<boolean> {
-    const config = {
-      headers: {
-        "Session-Id": sessionId,
-      },
-      validateStatus: function (status: any) {
-        return (
-          status === HTTP_STATUS_CODES.OK ||
-          status === HTTP_STATUS_CODES.UNAUTHORIZED
-        );
-      },
+    const config = getBaseRequestConfig(sessionId);
+    config.validateStatus = function (status: any) {
+      return (
+        status === HTTP_STATUS_CODES.OK ||
+        status === HTTP_STATUS_CODES.UNAUTHORIZED
+      );
     };
 
     const { data } = await axios.client.post<UserLogin>(
