@@ -1,5 +1,4 @@
 import { PATH_NAMES } from "../../app.constants";
-import { createSessionMiddleware } from "../../middleware/session-middleware";
 import { validateEnterEmailRequest } from "./enter-email-validation";
 import { enterEmailPost, enterEmailGet } from "./enter-email-controller";
 import * as express from "express";
@@ -10,7 +9,6 @@ const router = express.Router();
 
 router.get(
   "/",
-  createSessionMiddleware,
   validateSessionMiddleware,
   enterEmailGet
 );

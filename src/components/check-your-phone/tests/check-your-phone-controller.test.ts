@@ -3,10 +3,10 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
+import { checkYourPhoneGet } from "../check-your-phone-controller";
 import { UserSession } from "../../../types";
-import { enterPhoneNumberGet } from "../enter-phone-number-controller";
 
-describe("enter phone number controller", () => {
+describe("check your phone controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -22,11 +22,11 @@ describe("enter phone number controller", () => {
     sandbox.restore();
   });
 
-  describe("enterPhoneNumberGet", () => {
-    it("should render enter phone number view", () => {
-      enterPhoneNumberGet(req as Request, res as Response);
+  describe("checkYourPhoneGet", () => {
+    it("should render check your phone view", () => {
+      checkYourPhoneGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("enter-phone-number/index.njk");
+      expect(res.render).to.have.calledWith("check-your-phone/index.njk");
     });
   });
 });
