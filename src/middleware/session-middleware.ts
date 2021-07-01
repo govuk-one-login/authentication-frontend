@@ -26,6 +26,7 @@ export function validateSessionMiddleware(
   }
 
   res.clearCookie("aps");
+  res.clearCookie("aps.sig");
   res.status(401);
   next(new Error(ERROR_MESSAGES.INVALID_SESSION));
 }

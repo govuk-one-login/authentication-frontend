@@ -27,5 +27,6 @@ jobs:
       - name: Run lint
         run: yarn lint
     env:
-      ENVIRONMENT: DEVELOPMENT
+      ENVIRONMENT: development
       API_BASE_URL: http://localhost:6000/api
+      SESSION_SECRET: secret

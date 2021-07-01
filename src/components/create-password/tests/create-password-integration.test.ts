@@ -43,6 +43,7 @@ describe("Integration::register create password", () => {
 
   after(() => {
     sandbox.restore();
+    app = undefined;
   });
 
   it("should return create password page", (done) => {

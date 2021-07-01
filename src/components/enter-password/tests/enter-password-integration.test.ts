@@ -46,6 +46,7 @@ describe("Integration::enter password", () => {
 
   after(() => {
     sandbox.restore();
+    app = undefined;
   });
 
   it("should return enter password page", (done) => {
