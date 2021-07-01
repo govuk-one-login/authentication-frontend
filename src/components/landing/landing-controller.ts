@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { PATH_NAMES } from "../../app.constants";
+import { HTTP_STATUS_CODES, PATH_NAMES } from "../../app.constants";
 
 export function landingGet(req: Request, res: Response): void {
-  res.redirect(PATH_NAMES.ENTER_EMAIL);
+  res.redirect(HTTP_STATUS_CODES.REDIRECT, PATH_NAMES.ENTER_EMAIL);
 }

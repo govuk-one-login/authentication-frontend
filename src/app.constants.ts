@@ -21,6 +21,7 @@ export const HTTP_STATUS_CODES = {
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   OK: 200,
+  REDIRECT: 303,
 };
 
 export enum LOCALE {
