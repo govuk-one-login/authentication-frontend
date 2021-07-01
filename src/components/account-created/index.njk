@@ -2,7 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-
+{% set pageTitleName = 'pages.accountCreated.title' | translate %}
 {% block content %}
 
 {% include "common/errors/errorSummary.njk" %}
@@ -12,17 +12,17 @@
     <input type="hidden" name="_csrf" value="{{csrfToken}}" />
 
     {{ govukPanel({
-        titleText: 'pages.registerAccountCreated.header' | translate
+        titleText: 'pages.accountCreated.header' | translate
     }) }}
 
     <br>
 
-    <p class="govuk-body">{{'pages.registerAccountCreated.info.heading' | translate}}</p>
+    <p class="govuk-body">{{'pages.accountCreated.info.heading' | translate}}</p>
     <ul class="govuk-list govuk-list--bullet">
-        <li>{{'pages.registerAccountCreated.info.bulletPoint1' | translate}}</li>
-        <li>{{'pages.registerAccountCreated.info.bulletPoint2' | translate}}</li>
-        <li>{{'pages.registerAccountCreated.info.bulletPoint3' | translate}}</li>
-        <li>{{'pages.registerAccountCreated.info.bulletPoint4' | translate}}</li>
+        <li>{{'pages.accountCreated.info.bulletPoint1' | translate}}</li>
+        <li>{{'pages.accountCreated.info.bulletPoint2' | translate}}</li>
+        <li>{{'pages.accountCreated.info.bulletPoint3' | translate}}</li>
+        <li>{{'pages.accountCreated.info.bulletPoint4' | translate}}</li>
     </ul>
 
     <br>

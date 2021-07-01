@@ -56,6 +56,6 @@ export function validateCreatePasswordRequest(): ValidationChainFunc {
         }
         return true;
       }),
-    validateBodyMiddleware("register-create-password/index.njk"),
+    validateBodyMiddleware("create-password/index.njk"),
   ];
 }

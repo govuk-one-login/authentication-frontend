@@ -6,21 +6,22 @@ import {
   enterPasswordPost,
 } from "./enter-password-controller";
 import { validateEnterPasswordRequest } from "./enter-password-validation";
-import { basicMiddlewarePipeline } from "../../middleware/middleware-pipeline";
+import { validateSessionMiddleware } from "../../middleware/session-middleware";
+import { asyncHandler } from "../../utils/async";
 
 const router = express.Router();
 
 router.get(
   PATH_NAMES.ENTER_PASSWORD,
-  basicMiddlewarePipeline,
+  validateSessionMiddleware,
   enterPasswordGet
 );
 
 router.post(
   PATH_NAMES.ENTER_PASSWORD,
-  basicMiddlewarePipeline,
+  validateSessionMiddleware,
   validateEnterPasswordRequest(),
-  enterPasswordPost()
+  asyncHandler(enterPasswordPost())
 );
 
 export { router as enterPasswordRouter };

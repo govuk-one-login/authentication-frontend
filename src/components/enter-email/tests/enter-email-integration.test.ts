@@ -137,4 +137,26 @@ describe("Integration::enter email", () => {
       .expect("Location", "/check-your-email")
       .expect(302, done);
   });
+
+  it("should return internal server error when /user-exists API call response is 500", (done) => {
+    nock(baseApi)
+      .post("/user-exists")
+      .once()
+      .reply(500, {
+        message: "Internal Server error",
+      })
+      .post("/send-notification")
+      .once()
+      .reply(200, {});
+
+    request(app)
+      .post("/enter-email")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        email: "test@test.com",
+      })
+      .expect(500, done);
+  });
 });

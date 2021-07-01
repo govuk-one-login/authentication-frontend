@@ -13,8 +13,7 @@
     },
     "yes": "Yes",
     "no": "No",
-    "footer": {
-    },
+    "footer": {},
     "cookie": {
       "cookieText": "GOV.UK uses cookies to make the site simpler.",
       "cookieLink": "#",
@@ -41,4 +40,3 @@
     }
   }
 }
-

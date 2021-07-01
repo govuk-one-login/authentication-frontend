@@ -4,19 +4,19 @@ import * as express from "express";
 import {
   registerAccountCreatedGet,
   registerAccountCreatedPost,
-} from "./register-account-created-controller";
-import { basicMiddlewarePipeline } from "../../middleware/middleware-pipeline";
+} from "./account-created-controller";
+import { validateSessionMiddleware } from "../../middleware/session-middleware";
 
 const router = express.Router();
 
 router.get(
   PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL,
-  basicMiddlewarePipeline,
+  validateSessionMiddleware,
   registerAccountCreatedGet
 );
 router.post(
   PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL,
-  basicMiddlewarePipeline,
+  validateSessionMiddleware,
   registerAccountCreatedPost
 );
 

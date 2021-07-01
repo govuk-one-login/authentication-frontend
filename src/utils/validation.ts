@@ -1,6 +1,10 @@
 import { Response, Request } from "express";
 import { HTTP_STATUS_CODES } from "../app.constants";
 
+export const isObjectEmpty = (obj: Record<string, unknown>): boolean => {
+  return Object.keys(obj).length === 0;
+};
+
 export function formatValidationError(
   key: string,
   validationMessage: string
