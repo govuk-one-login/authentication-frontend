@@ -119,16 +119,19 @@
       }
     },
     "enterPhoneNumber": {
-      "title": "Create a GOV.UK Account",
-      "header": "Enter your phone number",
+      "title": "Enter your phone number",
+      "header": "Enter your mobile phone number",
       "info": {
-        "paragraph1": "This is the number we will send 6-digit security codes to.",
-        "paragraph2": "It can be either a mobile or landline, but it needs to be a UK number, with signal."
+        "paragraph1": "We will send a 6 digit security code to the number you give us.",
+        "paragraph2": "You must use a UK mobile phone number."
       },
       "phoneNumber": {
         "label": "UK phone number",
         "validationError": {
-          "required": "Enter a UK phone number"
+          "required": "Enter a UK phone number",
+          "international": "Enter a UK phone number",
+          "length": "Enter a UK phone number, like 01632 960000 or 07700 900000",
+          "numeric": "Phone number must only include numbers"
         }
       }
     },
