@@ -12,7 +12,7 @@ resources:
       uri: https://github.com/alphagov/di-authentication-frontend.git
       ignore_paths:
         - ci/pipeline.yaml
-      branch: main
+      branch: task/bau-fix-redirect
 
   - name: pipeline-src
     type: git
@@ -21,7 +21,7 @@ resources:
       uri: https://github.com/alphagov/di-authentication-frontend.git
       paths:
         - ci/pipeline.yaml
-      branch: main
+      branch: task/bau-fix-redirect
 
   - name: di-authentication-frontend-upload
     type: cf-cli
