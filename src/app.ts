@@ -23,8 +23,8 @@ import { enterEmailRouter } from "./components/enter-email/enter-email-routes";
 import { enterPasswordRouter } from "./components/enter-password/enter-password-routes";
 import { footerRouter } from "./components/footer/footer-pages-routes";
 import { registerAccountCreatedRouter } from "./components/account-created/account-created-routes";
-import { registerCreatePasswordRouter } from "./components/create-password/create-password-routes";
-import { registerAccountPhoneNumberRouter } from "./components/enter-phone-number/enter-phone-number-routes";
+import { createPasswordRouter } from "./components/create-password/create-password-routes";
+import { enterPhoneNumberRouter } from "./components/enter-phone-number/enter-phone-number-routes";
 
 import * as dotenv from "dotenv";
 import { verifyEmailRouter } from "./components/verify-email/verify-email-routes";
@@ -48,8 +48,8 @@ function registerRoutes(app: express.Application) {
   app.use(enterEmailRouter);
   app.use(enterPasswordRouter);
   app.use(verifyEmailRouter);
-  app.use(registerCreatePasswordRouter);
-  app.use(registerAccountPhoneNumberRouter);
+  app.use(createPasswordRouter);
+  app.use(enterPhoneNumberRouter);
   app.use(registerAccountCreatedRouter);
   app.use(footerRouter);
   app.use(checkYourPhoneRouter);

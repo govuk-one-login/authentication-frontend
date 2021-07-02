@@ -22,4 +22,4 @@ router.post(
   enterPhoneNumberPost
 );
 
-export { router as registerAccountPhoneNumberRouter };
+export { router as enterPhoneNumberRouter };

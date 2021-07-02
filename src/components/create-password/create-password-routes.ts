@@ -22,4 +22,4 @@ router.post(
   asyncHandler(createPasswordPost())
 );
 
-export { router as registerCreatePasswordRouter };
+export { router as createPasswordRouter };

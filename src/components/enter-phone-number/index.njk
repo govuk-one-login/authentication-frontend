@@ -8,32 +8,36 @@
 
 {% include "common/errors/errorSummary.njk" %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.header' | translate}}</h1>
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.header' |
+  translate}}</h1>
 
 <form action="/enter-phone-number" method="post" novalidate>
 
-<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+  <input type="hidden" name="_csrf" value="{{csrfToken}}" />
 
-{{ govukInput({
-    label: {
-        text: 'pages.enterPhoneNumber.phoneNumber.label' | translate
-    },
-    classes: "govuk-!-width-two-thirds",
-    id: "phoneNumber",
-    name: "phoneNumber",
-    type: "tel",
-    autocomplete: "tel",
-    errorMessage: {
-        text: errors['phoneNumber'].text
-    } if (errors['phoneNumber'])})
-}}
+  <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph1' | translate}}</p>
+  <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph2' | translate}}</p>
+
+  {{ govukInput({
+  label: {
+  text: 'pages.enterPhoneNumber.phoneNumber.label' | translate
+  },
+  classes: "govuk-!-width-two-thirds",
+  id: "phoneNumber",
+  name: "phoneNumber",
+  type: "tel",
+  autocomplete: "tel",
+  errorMessage: {
+  text: errors['phoneNumber'].text
+  } if (errors['phoneNumber'])})
+  }}
 
 
-{{ govukButton({
-    "text": button_text|default('general.continue.label' | translate, true),
-    "type": "Submit",
-    "preventDoubleClick": true
-}) }}
+  {{ govukButton({
+  "text": button_text|default('general.continue.label' | translate, true),
+  "type": "Submit",
+  "preventDoubleClick": true
+  }) }}
 
 </form>
 
