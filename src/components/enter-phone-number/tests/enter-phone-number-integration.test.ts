@@ -10,6 +10,7 @@ describe("Integration::enter phone number", () => {
   let token: string | string[];
   let cookies: string;
   let app: any;
+  let baseApi: string;
 
   before(() => {
     sandbox = sinon.createSandbox();
@@ -19,11 +20,13 @@ describe("Integration::enter phone number", () => {
         req.session.user = {
           id: "12sadjk",
           scope: "openid",
+          email: "test@test.com",
         };
         next();
       });
 
     app = require("../../../app").createApp();
+    baseApi = process.env.API_BASE_URL;
 
     request(app)
       .get("/enter-phone-number")
@@ -147,6 +150,16 @@ describe("Integration::enter phone number", () => {
   });
 
   it("should redirect to /check-your-phone page when valid UK phone number entered", (done) => {
+    nock(baseApi)
+      .post("/update-profile")
+      .once()
+      .reply(200, {
+        sessionState: "ADDED_UNVERIFIED_PHONE_NUMBER",
+      })
+      .post("/send-notification")
+      .once()
+      .reply(200, {});
+
     request(app)
       .post("/enter-phone-number")
       .type("form")
@@ -157,5 +170,27 @@ describe("Integration::enter phone number", () => {
       })
       .expect("Location", "/check-your-phone")
       .expect(302, done);
+  });
+
+  it("should return internal server error if /update-profile api call fails", (done) => {
+    nock(baseApi)
+      .post("/update-profile")
+      .once()
+      .reply(500, {
+        sessionState: "done",
+      })
+      .post("/send-notification")
+      .once()
+      .reply(200, {});
+
+    request(app)
+      .post("/enter-phone-number")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        phoneNumber: "07738394991",
+      })
+      .expect(500, done);
   });
 });
