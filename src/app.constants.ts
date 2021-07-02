@@ -57,3 +57,8 @@ export const USER_STATE = {
 export enum NOTIFICATION_TYPE {
   VERIFY_EMAIL = "VERIFY_EMAIL",
 }
+
+export const ENVIRONMENT_NAME = {
+  PROD: "production",
+  DEV: "development",
+};

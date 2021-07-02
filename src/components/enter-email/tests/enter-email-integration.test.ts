@@ -42,6 +42,7 @@ describe("Integration::enter email", () => {
 
   after(() => {
     sandbox.restore();
+    app = undefined;
   });
 
   it("should return enter email page", (done) => {

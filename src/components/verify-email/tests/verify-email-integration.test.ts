@@ -43,6 +43,7 @@ describe("Integration:: verify email", () => {
 
   after(() => {
     sandbox.restore();
+    app = undefined;
   });
 
   it("should return verify email page", (done) => {

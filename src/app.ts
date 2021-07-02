@@ -33,20 +33,15 @@ import { serverErrorHandler } from "./handlers/internal-server-error-handler";
 import { csrfMiddleware } from "./middleware/csrf-middleware";
 import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-routes";
 import { landingRouter } from "./components/landing/landing-route";
+import { getCSRFCookieOptions, getSessionCookieOptions } from "./config/cookie";
+import { ENVIRONMENT_NAME } from "./app.constants";
+
 dotenv.config();
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
   path.resolve("node_modules/govuk-frontend/"),
 ];
-
-const SESSION_COOKIE_OPTIONS = {
-  name: "aps",
-  secret: getSessionSecret(),
-  maxAge: getSessionExpiry(),
-  signed: getNodeEnv() === "production" ? true : false,
-  sameSite: getNodeEnv() === "production" ? true : false,
-};
 
 function registerRoutes(app: express.Application) {
   app.use(landingRouter);
@@ -62,6 +57,9 @@ function registerRoutes(app: express.Application) {
 
 function createApp(): express.Application {
   const app: express.Application = express();
+  const isProduction = getNodeEnv() === ENVIRONMENT_NAME.PROD;
+
+  app.enable("trust proxy");
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
@@ -84,12 +82,19 @@ function createApp(): express.Application {
     );
 
   app.use(i18nextMiddleware.handle(i18next));
-
   app.use(helmet(helmetConfiguration));
-  app.use(cookieSession(SESSION_COOKIE_OPTIONS));
 
+  app.use(
+    cookieSession(
+      getSessionCookieOptions(
+        isProduction,
+        getSessionExpiry(),
+        getSessionSecret()
+      )
+    )
+  );
   app.use(cookieParser());
-  app.use(csurf({ cookie: true }));
+  app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
 
   app.post("*", sanitizeRequestMiddleware);
   app.use(csrfMiddleware);
