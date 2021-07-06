@@ -21,7 +21,7 @@ import { getNodeEnv, getSessionExpiry, getSessionSecret } from "./config";
 import { logErrorMiddleware } from "./middleware/log-error-middleware";
 import { enterEmailRouter } from "./components/enter-email/enter-email-routes";
 import { enterPasswordRouter } from "./components/enter-password/enter-password-routes";
-import { footerRouter } from "./components/footer/footer-pages-routes";
+import { footerRouter } from "./components/common/footer/footer-pages-routes";
 import { registerAccountCreatedRouter } from "./components/account-created/account-created-routes";
 import { createPasswordRouter } from "./components/create-password/create-password-routes";
 import { enterPhoneNumberRouter } from "./components/enter-phone-number/enter-phone-number-routes";
@@ -35,6 +35,7 @@ import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-p
 import { landingRouter } from "./components/landing/landing-route";
 import { getCSRFCookieOptions, getSessionCookieOptions } from "./config/cookie";
 import { ENVIRONMENT_NAME } from "./app.constants";
+import { cookiesRouter } from "./components/common/cookies/cookies-routes";
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ function registerRoutes(app: express.Application) {
   app.use(enterPhoneNumberRouter);
   app.use(registerAccountCreatedRouter);
   app.use(footerRouter);
+  app.use(cookiesRouter);
   app.use(checkYourPhoneRouter);
 }
 

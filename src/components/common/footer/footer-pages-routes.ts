@@ -1,4 +1,4 @@
-import { PATH_NAMES } from "../../app.constants";
+import { PATH_NAMES } from "../../../app.constants";
 import {
   accessibilityStatementGet,
   privacyStatementGet,

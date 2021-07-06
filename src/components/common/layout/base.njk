@@ -57,7 +57,31 @@
       </div>
 {% endblock %}
 
+{% block footer %}
+    {{ govukFooter({
+      meta: {
+        items: [
+          {
+            href: "/accessibility-statement",
+            text: 'general.footer.accessibilityStatement.linkText' | translate
+          },
+          {
+            href: "/cookies",
+            text: 'general.footer.cookies.linkText' | translate
+          },
+          {
+            href: "/terms-and-conditions",
+            text: 'general.footer.terms.linkText' | translate
+          },
+          {
+              href: "/privacy-statement",
+              text: 'general.footer.privacy.linkText' | translate
+          }
+        ]
+      }
+    }) }}
+    {% endblock %}
+
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-
 {% endblock %}
