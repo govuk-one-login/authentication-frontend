@@ -188,11 +188,17 @@
     },
     "checkYourPhone": {
       "title": "Check your phone",
-      "header": "Check your [mobile] phone",
+      "header": "Check your phone",
       "info": {
-        "paragraph": "We sent a code to the [mobile] number you registered.",
-        "requestCodeLink": "I didn't receive my code"
+        "paragraph": "We sent a code to the [mobile] number you registered."
       },
+      "resend": {
+        "link": "Enter your phone number again",
+        "paragraph1": "if you:",
+        "listItem1": "didn't receive a code",
+        "listItem2": "need a new code"
+      },
+
       "code": {
         "label": "Enter the 6 digit security code",
         "validationError": {
@@ -200,7 +206,7 @@
           "maxLength": "Enter the security code using only 6 digits",
           "minLength": "Enter the security code using only 6 digits",
           "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "Enter a valid security code"
+          "invalidCode": "The security code you’ve entered is not correct, try entering it again or get a new security code."
         }
       }
     }
