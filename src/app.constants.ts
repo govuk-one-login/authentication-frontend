@@ -12,6 +12,7 @@ export const PATH_NAMES = {
   CREATE_ACCOUNT_SUCCESSFUL: "/account-created",
   LOG_IN_ENTER_PHONE_NUMBER: "/enter-phone-number",
   CHECK_YOUR_PHONE: "/check-your-phone",
+  SECURITY_CODE_EXPIRED: "/security-code-expired"
 };
 
 export const HTTP_STATUS_CODES = {

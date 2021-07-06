@@ -209,6 +209,15 @@
           "invalidCode": "The security code you’ve entered is not correct, try entering it again or get a new security code."
         }
       }
+    },
+    "securityCodeExpired": {
+      "title": "Security code entered incorrectly",
+      "header": "Security code entered incorrectly",
+      "info": {
+        "paragraph1": "You entered the wrong security code too many times.",
+        "paragraph2": "You need to wait 15 minutes.",
+        "paragraph3": "You can then enter your email again and get a new code."
+      }
     }
   }
 }
