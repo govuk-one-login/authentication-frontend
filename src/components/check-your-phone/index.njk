@@ -10,13 +10,14 @@
 
 {% include "common/errors/errorSummary.njk" %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.checkYourPhone.header' | translate}}</h1>
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.checkYourPhone.header' | translate }}</h1>
 
-<p class="govuk-body">{{'pages.checkYourPhone.info.paragraph' | translate}}</p>
+<p class="govuk-body">{{'pages.checkYourPhone.info.paragraph' | translate | replace("[mobile]", phoneNumber )}}</p>
 
-<form action="/enter-phone-number" method="post" novalidate>
+<form action="/check-your-phone" method="post" novalidate>
 
   <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+  <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
 
   {{ govukInput({
   label: {
@@ -31,6 +32,11 @@
   } if (errors['code'])})
   }}
 
+    <p class="govuk-body"> <a href="/enter-phone-number" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.resend.link' | translate }}</a> {{ 'pages.checkYourPhone.resend.paragraph1' | translate}}</p>
+    <ul class="govuk-list govuk-list--bullet">
+     <li>{{ 'pages.checkYourPhone.resend.listItem1' | translate}}</li>
+     <li>{{ 'pages.checkYourPhone.resend.listItem2' | translate}}</li>
+    </ul>
 
   {{ govukButton({
   "text": button_text|default('general.continue.label' | translate, true),
@@ -40,7 +46,4 @@
 
 </form>
 
- <a href="/#" class="govuk-link" rel="noreferrer noopener" target="_blank">{{'pages.checkYourPhone.info.requestCodeLink' | translate }}</a>
-
 {% endblock %}
-

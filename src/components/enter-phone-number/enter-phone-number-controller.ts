@@ -12,7 +12,7 @@ export function enterPhoneNumberPost(
   service: EnterPhoneNumberServiceInterface = enterPhoneNumberService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const phoneNumber = req.body.phoneNumber;
+    const phoneNumber = (req.session.user.phoneNumber = req.body.phoneNumber);
     const { email, id } = req.session.user;
 
     if (await service.updateProfile(id, email, phoneNumber)) {

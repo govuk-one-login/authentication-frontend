@@ -18,6 +18,5 @@ export function getCSRFCookieOptions(isProdEnv: boolean): CookieOptions {
   return {
     httpOnly: isProdEnv,
     secure: isProdEnv,
-    sameSite: isProdEnv ? "strict" : "none",
   };
 }
