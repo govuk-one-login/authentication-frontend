@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { PATH_NAMES } from "../../app.constants";
+import { PATH_NAMES, USER_STATE } from "../../app.constants";
 import {
   formatValidationError,
   renderBadRequest,
@@ -23,10 +23,12 @@ export function checkYourPhonePost(
     const code = req.body["code"];
     const sessionId = req.session.user.id;
 
-    const isValidCode = await service.verifyPhoneNumber(sessionId, code);
+    const userState = await service.verifyPhoneNumber(sessionId, code);
 
-    if (isValidCode) {
+    if (userState == USER_STATE.PHONE_NUMBER_VERIFIED) {
       return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL);
+    } else if (userState == USER_STATE.PHONE_NUMBER_CODE_MAX_RETRIES_REACHED) {
+      return res.redirect(PATH_NAMES.SECURITY_CODE_EXPIRED);
     }
 
     const error = formatValidationError(
