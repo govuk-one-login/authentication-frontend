@@ -45,7 +45,7 @@ describe("check your phone controller", () => {
   describe("checkYourPhonePost", () => {
     it("should redirect to /create-password when valid code entered", async () => {
       const fakeService: CheckYourPhoneNumberService = {
-        verifyPhoneNumber: sandbox.fake.returns(true),
+        verifyPhoneNumber: sandbox.fake.returns("PHONE_NUMBER_CODE_VERIFIED"),
       };
 
       req.body.code = "123456";
@@ -70,5 +70,20 @@ describe("check your phone controller", () => {
       expect(fakeService.verifyPhoneNumber).to.have.been.calledOnce;
       expect(res.render).to.have.been.calledWith("check-your-phone/index.njk");
     });
+
+    it("should redirect to security code expired when invalid code entered more than max retries", async () => {
+      const fakeService: CheckYourPhoneNumberService = {
+        verifyPhoneNumber: sandbox.fake.returns("PHONE_NUMBER_CODE_MAX_RETRIES_REACHED"),
+      };
+      req.t = sandbox.fake.returns("translated string");
+      req.body.code = "678988";
+      req.session.user.id = "123456-djjad";
+
+      await checkYourPhonePost(fakeService)(req as Request, res as Response);
+
+      expect(fakeService.verifyPhoneNumber).to.have.been.calledOnce;
+      expect(res.redirect).to.have.been.calledWith("/security-code-expired");
+    });
+
   });
 });

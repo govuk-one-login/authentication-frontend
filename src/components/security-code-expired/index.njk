@@ -1,0 +1,30 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% set pageTitleName = 'pages.accountCreated.title' | translate %}
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+<form action="/enter-phone-number" method="post" novalidate>
+
+    <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeExpired.header' | translate }}</h1>
+
+    <br>
+
+    <p class="govuk-body">{{'pages.securityCodeExpired.info.paragraph1' | translate}}</p>
+    <p class="govuk-body">{{'pages.securityCodeExpired.info.paragraph2' | translate}}</p>
+    <p class="govuk-body">{{'pages.securityCodeExpired.info.paragraph3' | translate}}</p>
+
+    <br>
+
+    {{ govukButton({
+        "text": button_text|default('general.continue.label' | translate, true),
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+
+</form>
+
+{% endblock %}

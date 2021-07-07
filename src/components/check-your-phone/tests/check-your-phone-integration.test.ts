@@ -169,4 +169,22 @@ describe("Integration:: check your phone", () => {
       })
       .expect(400, done);
   });
+
+  it("should redirect to security code expired when incorrect code has been entered 5 times", (done) => {
+    nock(baseApi).post("/verify-code").times(6).reply(200, {
+      sessionState: "PHONE_NUMBER_CODE_MAX_RETRIES_REACHED",
+    });
+
+    request(app)
+      .post("/check-your-phone")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123455",
+      })
+      .expect("Location", "/security-code-expired")
+      .expect(302, done);
+  });
+
 });

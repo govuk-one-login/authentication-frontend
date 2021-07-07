@@ -2,7 +2,6 @@ import { getBaseRequestConfig, Http, http } from "../../utils/http";
 import {
   API_ENDPOINTS,
   NOTIFICATION_TYPE,
-  USER_STATE,
 } from "../../app.constants";
 import { VerifyCode } from "../verify-email/types";
 import { CheckYourPhoneNumberService } from "./types";
@@ -13,7 +12,7 @@ export function checkYourPhoneService(
   const verifyPhoneNumber = async function (
     sessionId: string,
     code: string
-  ): Promise<boolean> {
+  ): Promise<string> {
     const { data } = await axios.client.post<VerifyCode>(
       API_ENDPOINTS.VERIFY_CODE,
       {
@@ -22,11 +21,7 @@ export function checkYourPhoneService(
       },
       getBaseRequestConfig(sessionId)
     );
-
-    return (
-      data.sessionState &&
-      data.sessionState === USER_STATE.PHONE_NUMBER_VERIFIED
-    );
+    return data.sessionState;
   };
 
   return {

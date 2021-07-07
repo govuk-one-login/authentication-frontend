@@ -1,3 +1,3 @@
 export interface CheckYourPhoneNumberService {
-  verifyPhoneNumber: (sessionId: string, code: string) => Promise<boolean>;
+  verifyPhoneNumber: (sessionId: string, code: string) => Promise<string>;
 }

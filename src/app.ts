@@ -36,6 +36,7 @@ import { landingRouter } from "./components/landing/landing-route";
 import { getCSRFCookieOptions, getSessionCookieOptions } from "./config/cookie";
 import { ENVIRONMENT_NAME } from "./app.constants";
 import { cookiesRouter } from "./components/common/cookies/cookies-routes";
+import { securityCodeExpiredRouter } from "./components/security-code-expired/security-code-expired-routes";
 
 dotenv.config();
 
@@ -55,6 +56,7 @@ function registerRoutes(app: express.Application) {
   app.use(footerRouter);
   app.use(cookiesRouter);
   app.use(checkYourPhoneRouter);
+  app.use(securityCodeExpiredRouter);
 }
 
 function createApp(): express.Application {
