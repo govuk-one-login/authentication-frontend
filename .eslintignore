@@ -5,3 +5,5 @@ dist
 # don't lint nyc coverage output
 functional-output
 coverage
+# ignore front-end js
+src/assets/javascript
