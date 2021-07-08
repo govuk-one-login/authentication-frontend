@@ -7,11 +7,7 @@ import { asyncHandler } from "../../utils/async";
 
 const router = express.Router();
 
-router.get(
-  "/",
-  validateSessionMiddleware,
-  enterEmailGet
-);
+router.get("/", validateSessionMiddleware, enterEmailGet);
 
 router.get(PATH_NAMES.ENTER_EMAIL, validateSessionMiddleware, enterEmailGet);
 

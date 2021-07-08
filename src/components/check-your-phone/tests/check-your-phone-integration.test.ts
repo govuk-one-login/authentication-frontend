@@ -186,5 +186,4 @@ describe("Integration:: check your phone", () => {
       .expect("Location", "/security-code-expired")
       .expect(302, done);
   });
-
 });

@@ -59,9 +59,7 @@ function registerRoutes(app: express.Application) {
 function createApp(): express.Application {
   const app: express.Application = express();
   const isProduction = getNodeEnv() === ENVIRONMENT_NAME.PROD;
-
-  console.log(process.env.API_BASE_URL);
-
+  
   app.enable("trust proxy");
 
   app.use(bodyParser.json());

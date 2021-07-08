@@ -2,7 +2,9 @@ import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 import {
-  containsNumbersOrSpacesOnly, containsUKMobileNumber, lengthInRangeWithoutSpaces,
+  containsNumbersOrSpacesOnly,
+  containsUKMobileNumber,
+  lengthInRangeWithoutSpaces,
 } from "../../utils/phone-number";
 
 export function validateEnterPhoneNumberRequest(): ValidationChainFunc {
@@ -26,9 +28,7 @@ export function validateEnterPhoneNumberRequest(): ValidationChainFunc {
       .custom((value, { req }) => {
         if (!lengthInRangeWithoutSpaces(value, 10, 11)) {
           throw new Error(
-            req.t(
-              "pages.enterPhoneNumber.phoneNumber.validationError.length"
-            )
+            req.t("pages.enterPhoneNumber.phoneNumber.validationError.length")
           );
         }
         return true;
