@@ -17,6 +17,4 @@ export function serverErrorHandler(
 
   res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR);
   res.render("common/errors/500.njk");
-
-  next(err);
 }
