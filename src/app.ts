@@ -26,7 +26,6 @@ import { registerAccountCreatedRouter } from "./components/account-created/accou
 import { createPasswordRouter } from "./components/create-password/create-password-routes";
 import { enterPhoneNumberRouter } from "./components/enter-phone-number/enter-phone-number-routes";
 
-import * as dotenv from "dotenv";
 import { verifyEmailRouter } from "./components/verify-email/verify-email-routes";
 import { pageNotFoundHandler } from "./handlers/page-not-found-handler";
 import { serverErrorHandler } from "./handlers/internal-server-error-handler";
@@ -37,8 +36,6 @@ import { getCSRFCookieOptions, getSessionCookieOptions } from "./config/cookie";
 import { ENVIRONMENT_NAME } from "./app.constants";
 import { cookiesRouter } from "./components/common/cookies/cookies-routes";
 import { securityCodeExpiredRouter } from "./components/security-code-expired/security-code-expired-routes";
-
-dotenv.config();
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -62,7 +59,7 @@ function registerRoutes(app: express.Application) {
 function createApp(): express.Application {
   const app: express.Application = express();
   const isProduction = getNodeEnv() === ENVIRONMENT_NAME.PROD;
-
+  
   app.enable("trust proxy");
 
   app.use(bodyParser.json());

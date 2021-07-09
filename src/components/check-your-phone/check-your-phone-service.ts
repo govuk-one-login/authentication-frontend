@@ -1,8 +1,5 @@
 import { getBaseRequestConfig, Http, http } from "../../utils/http";
-import {
-  API_ENDPOINTS,
-  NOTIFICATION_TYPE,
-} from "../../app.constants";
+import { API_ENDPOINTS, NOTIFICATION_TYPE } from "../../app.constants";
 import { VerifyCode } from "../verify-email/types";
 import { CheckYourPhoneNumberService } from "./types";
 

@@ -73,7 +73,9 @@ describe("check your phone controller", () => {
 
     it("should redirect to security code expired when invalid code entered more than max retries", async () => {
       const fakeService: CheckYourPhoneNumberService = {
-        verifyPhoneNumber: sandbox.fake.returns("PHONE_NUMBER_CODE_MAX_RETRIES_REACHED"),
+        verifyPhoneNumber: sandbox.fake.returns(
+          "PHONE_NUMBER_CODE_MAX_RETRIES_REACHED"
+        ),
       };
       req.t = sandbox.fake.returns("translated string");
       req.body.code = "678988";
@@ -84,6 +86,5 @@ describe("check your phone controller", () => {
       expect(fakeService.verifyPhoneNumber).to.have.been.calledOnce;
       expect(res.redirect).to.have.been.calledWith("/security-code-expired");
     });
-
   });
 });

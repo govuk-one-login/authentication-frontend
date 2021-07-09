@@ -1,9 +1,7 @@
 import { PATH_NAMES } from "../../app.constants";
 
 import * as express from "express";
-import {
-  securityCodeExpiredGet,
-} from "./security-code-expired-controller";
+import { securityCodeExpiredGet } from "./security-code-expired-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 
 const router = express.Router();
