@@ -26,11 +26,11 @@
         "linkViewCookiesText": "View cookies",
         "cookieBannerHideLink": "Hide this message",
         "cookeBannerAccept": {
-          "paragraph1": "You’ve accepted additional cookies. You can",
+          "paragraph1": "You’ve accepted additional cookies. You can ",
           "paragraph2": " at any time."
         },
         "cookeBannerReject": {
-          "paragraph1": "You’ve rejected additional cookies. You can",
+          "paragraph1": "You’ve rejected additional cookies. You can ",
           "paragraph2": " at any time."
         },
         "changeCookiePreferencesLink": "change your cookie settings"
