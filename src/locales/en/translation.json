@@ -16,6 +16,25 @@
     "no": "No",
     "footer": {},
     "cookie": {
+      "cookieBanner": {
+        "title": "Cookies on GOV.UK Account",
+        "heading": "Cookies on GOV.UK Account",
+        "paragraph1": "We use some essential cookies to make this service work.",
+        "paragraph2": "We’d also like to use analytics cookies so we can understand how you use the service and make improvements.",
+        "buttonAcceptText": "Accept analytics cookies",
+        "buttonRejectText": "Reject analytics cookies",
+        "linkViewCookiesText": "View cookies",
+        "cookieBannerHideLink": "Hide this message",
+        "cookeBannerAccept": {
+          "paragraph1": "You’ve accepted additional cookies. You can",
+          "paragraph2": " at any time."
+        },
+        "cookeBannerReject": {
+          "paragraph1": "You’ve rejected additional cookies. You can",
+          "paragraph2": " at any time."
+        },
+        "changeCookiePreferencesLink": "change your cookie settings"
+      },
       "cookieText": "GOV.UK uses cookies to make the site simpler.",
       "cookieLink": "#",
       "cookieLinkText": "Find out more about cookies"
