@@ -317,6 +317,11 @@
         "yesRadioButton": "Yes",
         "noRadioButton": "No",
         "saveButton": "Save cookie settings"
+      },
+      "successBanner": {
+        "header": "Your cookie settings were saved",
+        "paragraph1": "Other government services may set additional cookies and, if so, will have their own cookie policy and banner.",
+        "linkText": "Go back to the page you were looking at"
       }
     }
   }

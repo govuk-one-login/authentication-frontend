@@ -2,13 +2,31 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
-{% set pageTitleName = 'general.footer.cookies.pageTitle' | translate %}
+{% set pageTitleName = 'pages.cookiePolicy.title' | translate %}
 
 {% block content %}
 
+{% set html %}
+<h3 class="govuk-notification-banner__heading">
+  {{ 'pages.cookiePolicy.successBanner.header' | translate }}
+</h3>
+<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
+<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
+{% endset %}
+
+{{ govukNotificationBanner({
+  html: html,
+  type: 'success',
+  attributes: {
+    "id": "save-success-banner",
+    "hidden": true
+  }
+}) }}
+
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'general.footer.cookies.pageTitle' | translate }}
+  {{ 'pages.cookiePolicy.header' | translate }}
 </h1>
 
 <p class="govuk-body">{{'pages.cookiePolicy.info.paragraph1' | translate}}</p>
@@ -176,6 +194,9 @@
 {{ govukRadios({
   idPrefix: "cookie-preferences",
   name: "cookie-preferences",
+  attributes: {
+    "id": "radio-cookie-preferences"
+  },
   fieldset: {
     legend: {
       text: 'pages.cookiePolicy.settings.header' | translate,
@@ -185,20 +206,25 @@
   },
   items: [
     {
-      value: "yes",
-      text: 'pages.cookiePolicy.settings.yesRadioButton' | translate
+      value: "true",
+      text: 'pages.cookiePolicy.settings.yesRadioButton' | translate,
+      id: "policy-cookies-accepted"
     },
     {
-      value: "no",
-      text: 'pages.cookiePolicy.settings.noRadioButton' | translate
+      value: "false",
+      text: 'pages.cookiePolicy.settings.noRadioButton' | translate,
+      id: "policy-cookies-rejected"
     }
   ]
 }) }}
 
 {{ govukButton({
   "text": 'pages.cookiePolicy.settings.saveButton' | translate,
-  "type": "Submit",
-  "preventDoubleClick": true
+  "type": "Button",
+  "preventDoubleClick": true,
+  attributes: {
+    "id": "save-cookie-settings"
+  }
 }) }}
 
 {% endblock %}
