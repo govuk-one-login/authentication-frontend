@@ -1,11 +1,94 @@
 {% extends "common/layout/base.njk" %}
 
-{% set pageTitleName = 'general.footer.accessibilityStatement.pageTitle' | translate %}
+{% set pageTitleName = 'pages.accessibilityStatement.title' | translate %}
 
 {% block content %}
 
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  Accessibility
+  {{'pages.accessibilityStatement.header' | translate}}
 </h1>
+
+<p class="govuk-body">{{'pages.accessibilityStatement.content.paragraph1' | translate}}</p>
+<p class="govuk-body">{{'pages.accessibilityStatement.content.paragraph2' | translate}}
+  <a href="{{'pages.accessibilityStatement.content.linkHref' | translate}}" class="govuk-link">
+    {{'pages.accessibilityStatement.content.linkText' | translate}}
+  </a>
+</p>
+<p class="govuk-body">{{'pages.accessibilityStatement.content.paragraph3' | translate}}</p>
+
+
+<h2 class="govuk-heading-m">
+  {{'pages.accessibilityStatement.section1.header' | translate}}
+</h2>
+
+<p class="govuk-body">{{'pages.accessibilityStatement.section1.paragraph1' | translate}}</p>
+<ul class="govuk-list govuk-list--bullet">
+  <li>{{'pages.accessibilityStatement.section1.bulletPoint1' | translate}}</li>
+  <li>{{'pages.accessibilityStatement.section1.bulletPoint2' | translate}}</li>
+  <li>{{'pages.accessibilityStatement.section1.bulletPoint3' | translate}}</li>
+  <li>{{'pages.accessibilityStatement.section1.bulletPoint4' | translate}}</li>
+  <li>{{'pages.accessibilityStatement.section1.bulletPoint5' | translate}}</li>
+</ul>
+<p class="govuk-body">{{'pages.accessibilityStatement.section1.paragraph2' | translate}}</p>
+<p class="govuk-body">
+  <a href="{{'pages.accessibilityStatement.section1.linkHref' | translate}}" class="govuk-link">
+    {{'pages.accessibilityStatement.section1.linkText' | translate}}
+  </a>
+  {{'pages.accessibilityStatement.section1.paragraph3' | translate}}
+</p>
+
+
+<h2 class="govuk-heading-m">
+  {{'pages.accessibilityStatement.section2.header' | translate}}
+</h2>
+<p class="govuk-body">{{'pages.accessibilityStatement.section2.paragraph1' | translate}}</p>
+<p class="govuk-body">{{'pages.accessibilityStatement.section2.paragraph2' | translate}}</p>
+
+
+<h2 class="govuk-heading-m">
+  {{'pages.accessibilityStatement.section3.header' | translate}}
+</h2>
+<p class="govuk-body">{{'pages.accessibilityStatement.section3.paragraph1' | translate}}</p>
+
+<h3 class="govuk-heading-s">
+  {{'pages.accessibilityStatement.section3.subHeader' | translate}}
+</h3>
+<p class="govuk-body">{{'pages.accessibilityStatement.section3.paragraph2' | translate}}</p>
+<p class="govuk-body">
+  {{'pages.accessibilityStatement.section3.paragraph3' | translate}}
+  <a href="{{'pages.accessibilityStatement.section3.linkHref' | translate}}" class="govuk-link">
+    {{'pages.accessibilityStatement.section3.linkText' | translate}}
+  </a>
+</p>
+
+
+<h2 class="govuk-heading-m">
+  {{'pages.accessibilityStatement.section4.header' | translate}}
+</h2>
+<p class="govuk-body">{{'pages.accessibilityStatement.section4.paragraph1' | translate}}</p>
+
+<h3 class="govuk-heading-s">
+  {{'pages.accessibilityStatement.section4.subHeader' | translate}}
+</h3>
+<p class="govuk-body">
+  {{'pages.accessibilityStatement.section4.paragraph2' | translate}}
+  <a href="{{'pages.accessibilityStatement.section4.linkHref' | translate}}" class="govuk-link">
+    {{'pages.accessibilityStatement.section4.linkText' | translate}}
+  </a>
+  {{'pages.accessibilityStatement.section4.paragraph3' | translate}}
+</p>
+
+
+<h2 class="govuk-heading-m">
+  {{'pages.accessibilityStatement.section5.header' | translate}}
+</h2>
+<p class="govuk-body">{{'pages.accessibilityStatement.section5.paragraph1' | translate}}</p>
+<p class="govuk-body">{{'pages.accessibilityStatement.section5.paragraph2' | translate}}</p>
+<p class="govuk-body">{{'pages.accessibilityStatement.section5.paragraph3' | translate}}</p>
+<p class="govuk-body">{{'pages.accessibilityStatement.section5.paragraph4' | translate}}
+  <a href="{{'pages.accessibilityStatement.section5.linkHref' | translate}}" class="govuk-link">
+    {{'pages.accessibilityStatement.section5.linkText' | translate}}
+  </a>
+</p>
 
 {% endblock %}

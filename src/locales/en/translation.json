@@ -323,6 +323,62 @@
         "paragraph1": "Other government services may set additional cookies and, if so, will have their own cookie policy and banner.",
         "linkText": "Go back to the page you were looking at"
       }
+    },
+    "accessibilityStatement": {
+      "title": "Accessibility statement",
+      "header": "Accessibility statement for GOV.UK Sign in",
+      "content": {
+        "paragraph1": "This accessibility statement applies to xxxx.",
+        "paragraph2": "This service is part of the wider GOV.UK website. There’s a separate ",
+        "linkText": "accessibility statement for the main GOV.UK website.",
+        "linkHref": "https://www.gov.uk/help/accessibility-statement",
+        "paragraph3": "This service is run by the Government Digital Service (GDS)."
+      },
+      "section1": {
+        "header": "Using this service",
+        "paragraph1": "We want as many people as possible to be able to use this website. This means you should be able to:",
+        "bulletPoint1": "change colours, contrast levels and fonts",
+        "bulletPoint2": "zoom in up to 300% without the text spilling off the screen",
+        "bulletPoint3": "get from the start of the service to the end using just a keyboard",
+        "bulletPoint4": "get from the start of the service to the end using speech recognition software",
+        "bulletPoint5": "listen to most of the service using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)",
+        "paragraph2": "We’ve also made the website text as simple as possible to understand.",
+        "linkText": "AbilityNet",
+        "linkHref": "https://mcmw.abilitynet.org.uk/",
+        "paragraph3": "has advice on making your device easier to use if you have a disability."
+      },
+      "section2": {
+        "header": "What to do if you have difficulty using this service",
+        "paragraph1": "If you have difficulty using this service, contact xxxx.",
+        "paragraph2": "If you need any part of this service in a different format like large print, audio recording or braille, contact xxxxx."
+      },
+      "section3": {
+        "header": "Report accessibility problems with this service",
+        "paragraph1": "We’re always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we’re not meeting accessibility requirements, contact xxxx.",
+        "subHeader": "Enforcement procedure",
+        "paragraph2": "The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’).",
+        "paragraph3": "If you’re not happy with how we respond to your complaint, ",
+        "linkText": "contact the Equality Advisory and Support Service (EASS).",
+        "linkHref": "https://www.equalityadvisoryservice.com/"
+      },
+      "section4": {
+        "header": "Technical information about this service’s accessibility",
+        "paragraph1": "GDS is committed to making its website accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.",
+        "subHeader": "Compliance status",
+        "paragraph2": "This service is compliant with the ",
+        "linkText": "Web Content Accessibility Guidelines version 2.1",
+        "linkHref": "https://www.w3.org/TR/WCAG21/",
+        "paragraph3": " AA standard."
+      },
+      "section5": {
+        "header": "How we tested this service",
+        "paragraph1": "This statement was prepared on [date when it was first published]. It was last reviewed on [date when it was last reviewed].",
+        "paragraph2": "This service was last tested on [date] and was checked for compliance with WCAG 2.1 AA. The test was carried out by xxxxxx.",
+        "paragraph3": "We tested it by xxxxx.",
+        "paragraph4": "You can ",
+        "linkText": "read the full accessibility test report [add link to report].",
+        "linkHref": ""
+      }
     }
   }
 }
