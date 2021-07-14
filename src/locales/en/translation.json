@@ -217,7 +217,6 @@
         "listItem1": "didn't receive a code",
         "listItem2": "need a new code"
       },
-
       "code": {
         "label": "Enter the 6 digit security code",
         "validationError": {
@@ -236,6 +235,93 @@
         "paragraph1": "You entered the wrong security code too many times.",
         "paragraph2": "You need to wait 15 minutes.",
         "paragraph3": "You can then enter your phone number again and get a new code."
+      }
+    },
+    "cookiePolicy": {
+      "title": "Cookies",
+      "header": "Cookies",
+      "info": {
+        "paragraph1": "GOV.UK Sign in puts small files (known as ‘cookies’) on to your phone, tablet or computer when you use the service.",
+        "paragraph2": "We use these cookies to make the service work.",
+        "paragraph3": "We may also use analytics cookies to learn about how you use the service. Analytics cookies are optional.",
+        "paragraph4": "Cookies aren’t used to identify you personally.",
+        "paragraph5": "Find out more about",
+        "linkHref": "https://ico.org.uk/your-data-matters/online/cookies/",
+        "linkText": "how to manage cookies",
+        "paragraph6": " on the Information Commissioner’s Office (ICO) website."
+      },
+      "essential": {
+        "header": "Essential cookies",
+        "info": {
+          "paragraph1": "We use essential cookies to make the service work as it should.",
+          "table": {
+            "headers": {
+              "col1": "Name",
+              "col2": "Purpose",
+              "col3": "Expires"
+            },
+            "rows": {
+              "row1": {
+                "col2": "Remembers whether you chose to use the service in English or Welsh",
+                "col3": "1 year"
+              },
+              "row2": {
+                "col2": "Stores session data",
+                "col3": "24 hours"
+              },
+              "row3": {
+                "col2": "Stores session data",
+                "col3": "24 hours"
+              },
+              "row4": {
+                "col2": "To keep the service secure (security for pages that include forms)",
+                "col3": "When you close your browser"
+              },
+              "row5": {
+                "col2": "Saves your cookie consent settings",
+                "col3": "1 year"
+              }
+            }
+          }
+        }
+      },
+      "analytics": {
+        "header": "Analytics cookies (optional)",
+        "info": {
+          "paragraph1": "With your permission, we use Google Analytics to help us understand how you use the service. We do this to help us improve the services for our users.",
+          "paragraph2": "Google Analytics stores anonymised information about:",
+          "bulletPoint1": "how you got to GOV.UK Sign in",
+          "bulletPoint2": "the pages you visit and how long you spend on them",
+          "bulletPoint3": "any errors you see while using GOV.UK Sign in"
+        },
+        "table": {
+          "headers": {
+            "col1": "Name",
+            "col2": "Purpose",
+            "col3": "Expires"
+          },
+          "rows": {
+            "row1": {
+              "col2": "Helps us count how many people visit GOV.UK Account by checking if you’ve visited before",
+              "col3": "2 years"
+            },
+            "row2": {
+              "col2": "Helps us count how many people visit GOV.UK Account by checking if you’ve visited before",
+              "col3": "24 hours"
+            }
+          }
+        }
+      },
+      "settings": {
+        "header": "Do you want to accept analytics cookies?",
+        "yesRadioButton": "Yes",
+        "noRadioButton": "No",
+        "saveButton": "Save cookie settings"
+      },
+      "successBanner": {
+        "header": "Your cookie settings were saved",
+        "paragraph1": "Other government services may set additional cookies and, if so, will have their own cookie policy and banner.",
+        "linkText": "Go back to the page you were looking at"
       }
     }
   }
