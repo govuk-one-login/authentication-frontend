@@ -56,14 +56,14 @@ window.govSigin = window.govSigin ?? {};
     });
   }
 
-  function setCookie(n, v) {
+  function setCookie(name, value) {
     var currentDate = new Date();
     var expiryDate = new Date(
       currentDate.setMonth(currentDate.getMonth() + 12),
     );
     document.cookie =
-      n + "=" +
-      JSON.stringify(v) +
+      name + "=" +
+      JSON.stringify(value) +
       "; expires=" +
       expiryDate +
       "; path=/; Secure";
@@ -82,7 +82,7 @@ window.govSigin = window.govSigin ?? {};
   }
 
   function cookiesPageInit() {
-    var cookie = getCookie(COOKIES_PREFERENCES_SET);
+    var cookie = getCookieValue(COOKIES_PREFERENCES_SET);
     var analyticsValue = false;
 
     if (!cookie) {
@@ -112,12 +112,12 @@ window.govSigin = window.govSigin ?? {};
     );
   }
 
-  function getCookie(n) {
-    var c = document.cookie
+  function getCookieValue(cookieName) {
+    var cookie = document.cookie
       .split("; ")
-      .find(row => row.startsWith(n + "="));
-    if (c) {
-      return c.split("=")[1];
+      .find(row => row.startsWith(cookieName + "="));
+    if (cookie) {
+      return cookie.split("=")[1];
     } else {
       return null;
     }
