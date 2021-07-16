@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { containsNumber } from "../../../src/utils/strings";
+import { containsNumber, redactPhoneNumber } from "../../../src/utils/strings";
 
 describe("string-helpers", () => {
   describe("containsNumber", () => {
@@ -38,6 +38,16 @@ describe("string-helpers", () => {
     });
     it("should return true when string contains numeric characters only", () => {
       expect(containsNumber("123456")).to.equal(true);
+    });
+  });
+
+  describe("obfuscatePhoneNumber", () => {
+    it("should return obfuscated phone number when valid phone number", () => {
+      expect(redactPhoneNumber("07700900796")).to.equal("*******0796");
+    });
+
+    it("should return undefined when phone number is is empty", () => {
+      expect(redactPhoneNumber("")).to.equal(undefined);
     });
   });
 });

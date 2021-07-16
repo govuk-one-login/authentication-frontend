@@ -1,4 +1,5 @@
 export interface UserLogin {
+  redactedPhoneNumber: string;
   sessionState: string;
 }
 
@@ -7,5 +8,5 @@ export interface EnterPasswordServiceInterface {
     sessionId: string,
     email: string,
     password: string
-  ) => Promise<boolean>;
+  ) => Promise<UserLogin>;
 }

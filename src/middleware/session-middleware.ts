@@ -10,7 +10,7 @@ export function createSessionMiddleware(
   const id = req.query["id"];
   const scope = req.query.scope;
   if (Object.keys(req.query).length > 0 && id && scope) {
-    req.session.user = createSession(id, scope);
+    req.session.user = createSession(id as string, scope as string);
   }
 
   next();

@@ -3,14 +3,11 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import {
-  checkYourPhoneGet,
-  checkYourPhonePost,
-} from "../check-your-phone-controller";
+import { enterMfaGet, enterMfaPost } from "../enter-mfa-controller";
 import { UserSession } from "../../../types";
 import { VerifyCodeInterface } from "../../common/verify-code/types";
 
-describe("check your phone controller", () => {
+describe("enter mfa controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -34,41 +31,42 @@ describe("check your phone controller", () => {
     sandbox.restore();
   });
 
-  describe("checkYourPhoneGet", () => {
-    it("should render check your phone view", () => {
-      checkYourPhoneGet(req as Request, res as Response);
+  describe("enterMfaGet", () => {
+    it("should render enter mfa code view", () => {
+      enterMfaGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("check-your-phone/index.njk");
+      expect(res.render).to.have.calledWith("enter-mfa/index.njk");
     });
   });
 
-  describe("checkYourPhonePost", () => {
-    it("should redirect to /create-password when valid code entered", async () => {
+  describe("enterMfaPost", () => {
+    it("should redirect to /auth-code when valid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake.returns("PHONE_NUMBER_CODE_VERIFIED"),
+        verifyCode: sandbox.fake.returns("MFA_CODE_VERIFIED"),
       };
 
       req.body.code = "123456";
       req.session.user.id = "123456-djjad";
 
-      await checkYourPhonePost(fakeService)(req as Request, res as Response);
+      await enterMfaPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
-      expect(res.redirect).to.have.calledWith("/account-created");
+      expect(res.redirect).to.have.calledWith("/auth-code");
     });
 
     it("should return error when invalid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake.returns(false),
+        verifyCode: sandbox.fake(),
       };
+
       req.t = sandbox.fake.returns("translated string");
       req.body.code = "678988";
       req.session.user.id = "123456-djjad";
 
-      await checkYourPhonePost(fakeService)(req as Request, res as Response);
+      await enterMfaPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
-      expect(res.render).to.have.been.calledWith("check-your-phone/index.njk");
+      expect(res.render).to.have.been.calledWith("enter-mfa/index.njk");
     });
 
     it("should redirect to security code expired when invalid code entered more than max retries", async () => {
@@ -82,7 +80,7 @@ describe("check your phone controller", () => {
       req.body.code = "678988";
       req.session.user.id = "123456-djjad";
 
-      await checkYourPhonePost(fakeService)(req as Request, res as Response);
+      await enterMfaPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.been.calledWith("/security-code-expired");

@@ -10,6 +10,7 @@ import {
 import { UserSession } from "../../../types";
 import { PATH_NAMES, USER_STATE } from "../../../app.constants";
 import { EnterPasswordServiceInterface } from "../types";
+import { MfaServiceInterface } from "../../common/mfa/types";
 
 describe("enter password controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -38,7 +39,14 @@ describe("enter password controller", () => {
   describe("enterPasswordPost", () => {
     it("should redirect to enter-code when the password is correct", async () => {
       const fakeService: EnterPasswordServiceInterface = {
-        loginUser: sandbox.fake.returns(USER_STATE.AUTHENTICATED),
+        loginUser: sandbox.fake.returns({
+          sessionState: USER_STATE.AUTHENTICATED,
+          redactedPhoneNumber: "******3456",
+        }),
+      };
+
+      const fakeMfaService: MfaServiceInterface = {
+        sendMfaCode: sandbox.fake(),
       };
 
       req.session.user = {
@@ -47,15 +55,22 @@ describe("enter password controller", () => {
       };
       req.body["password"] = "password";
 
-      await enterPasswordPost(fakeService)(req as Request, res as Response);
+      await enterPasswordPost(fakeService, fakeMfaService)(
+        req as Request,
+        res as Response
+      );
 
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
     });
 
     it("should throw error when API call throws error", async () => {
       const error = new Error("Internal server error");
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sandbox.fake.throws(error),
+      };
+
+      const fakeMfaService: MfaServiceInterface = {
+        sendMfaCode: sandbox.fake(),
       };
 
       req.session.user = {
@@ -65,7 +80,10 @@ describe("enter password controller", () => {
       req.body["password"] = "password";
 
       await expect(
-        enterPasswordPost(fakeService)(req as Request, res as Response)
+        enterPasswordPost(fakeService, fakeMfaService)(
+          req as Request,
+          res as Response
+        )
       ).to.be.rejectedWith(Error, "Internal server error");
       expect(fakeService.loginUser).to.have.been.calledOnce;
     });
