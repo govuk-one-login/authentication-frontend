@@ -36,6 +36,9 @@ import { getCSRFCookieOptions, getSessionCookieOptions } from "./config/cookie";
 import { ENVIRONMENT_NAME } from "./app.constants";
 import { cookiesRouter } from "./components/common/cookies/cookies-routes";
 import { securityCodeExpiredRouter } from "./components/security-code-expired/security-code-expired-routes";
+import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes";
+import { authCodeRouter } from "./components/auth-code/auth-code-routes";
+import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-code-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -54,12 +57,15 @@ function registerRoutes(app: express.Application) {
   app.use(cookiesRouter);
   app.use(checkYourPhoneRouter);
   app.use(securityCodeExpiredRouter);
+  app.use(enterMfaRouter);
+  app.use(authCodeRouter);
+  app.use(resendMfaCodeRouter);
 }
 
 function createApp(): express.Application {
   const app: express.Application = express();
   const isProduction = getNodeEnv() === ENVIRONMENT_NAME.PROD;
-  
+
   app.enable("trust proxy");
 
   app.use(bodyParser.json());

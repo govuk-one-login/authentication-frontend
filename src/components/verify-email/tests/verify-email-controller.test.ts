@@ -5,7 +5,7 @@ import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 import { verifyEmailGet, verifyEmailPost } from "../verify-email-controller";
 import { UserSession } from "../../../types";
-import { VerifyEmailServiceInterface } from "../types";
+import { VerifyCodeInterface } from "../../common/verify-code/types";
 
 describe("verify email controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -41,8 +41,8 @@ describe("verify email controller", () => {
 
   describe("verifyEmailPost", () => {
     it("should redirect to /create-password when valid code entered", async () => {
-      const fakeService: VerifyEmailServiceInterface = {
-        verifyEmailCode: sandbox.fake.returns(true),
+      const fakeService: VerifyCodeInterface = {
+        verifyCode: sandbox.fake.returns("EMAIL_CODE_VERIFIED"),
       };
 
       req.body.code = "123456";
@@ -50,13 +50,13 @@ describe("verify email controller", () => {
 
       await verifyEmailPost(fakeService)(req as Request, res as Response);
 
-      expect(fakeService.verifyEmailCode).to.have.been.calledOnce;
+      expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith("/create-password");
     });
 
     it("should return error when invalid code", async () => {
-      const fakeService: VerifyEmailServiceInterface = {
-        verifyEmailCode: sandbox.fake.returns(false),
+      const fakeService: VerifyCodeInterface = {
+        verifyCode: sandbox.fake.returns(false),
       };
       req.t = sandbox.fake.returns("translated string");
       req.body.code = "678988";
@@ -64,7 +64,7 @@ describe("verify email controller", () => {
 
       await verifyEmailPost(fakeService)(req as Request, res as Response);
 
-      expect(fakeService.verifyEmailCode).to.have.been.calledOnce;
+      expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.render).to.have.been.calledWith("verify-email/index.njk");
     });
   });

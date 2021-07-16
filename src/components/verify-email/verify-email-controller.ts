@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { PATH_NAMES } from "../../app.constants";
+import { NOTIFICATION_TYPE, PATH_NAMES, USER_STATE } from "../../app.constants";
 import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation";
-import { verifyEmailService } from "./verify-email-service";
-import { VerifyEmailServiceInterface } from "./types";
+import { VerifyCodeInterface } from "../common/verify-code/types";
+import { codeService } from "../common/verify-code/verify-code-service";
 
 const TEMPLATE_NAME = "verify-email/index.njk";
 
@@ -17,15 +17,19 @@ export function verifyEmailGet(req: Request, res: Response): void {
 }
 
 export function verifyEmailPost(
-  service: VerifyEmailServiceInterface = verifyEmailService()
+  service: VerifyCodeInterface = codeService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const code = req.body["code"];
     const sessionId = req.session.user.id;
 
-    const isValidCode = await service.verifyEmailCode(sessionId, code);
+    const userState = await service.verifyCode(
+      sessionId,
+      code,
+      NOTIFICATION_TYPE.VERIFY_EMAIL
+    );
 
-    if (isValidCode) {
+    if (userState === USER_STATE.EMAIL_CODE_VERIFIED) {
       return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
     }
 

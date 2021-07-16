@@ -1,9 +1,5 @@
 import { getBaseRequestConfig, Http, http } from "../../utils/http";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  USER_STATE,
-} from "../../app.constants";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants";
 import { EnterPasswordServiceInterface, UserLogin } from "./types";
 
 export function enterPasswordService(
@@ -13,7 +9,7 @@ export function enterPasswordService(
     sessionId: string,
     emailAddress: string,
     password: string
-  ): Promise<boolean> {
+  ): Promise<UserLogin> {
     const config = getBaseRequestConfig(sessionId);
     config.validateStatus = function (status: any) {
       return (
@@ -30,7 +26,7 @@ export function enterPasswordService(
       },
       config
     );
-    return data.sessionState && data.sessionState === USER_STATE.AUTHENTICATED;
+    return data;
   };
 
   return {

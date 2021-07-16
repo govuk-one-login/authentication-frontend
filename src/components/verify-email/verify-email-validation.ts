@@ -1,37 +1,15 @@
-import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
-import { containsNumbersOnly } from "../../utils/strings";
+import { validateCode } from "../common/verify-code/verify-code-validation";
 
 export function validateVerifyEmailRequest(): ValidationChainFunc {
   return [
-    body("code")
-      .notEmpty()
-      .withMessage((value, { req }) => {
-        return req.t("pages.verifyEmail.code.validationError.required", {
-          value,
-        });
-      })
-      .isLength({ max: 6 })
-      .withMessage((value, { req }) => {
-        return req.t("pages.verifyEmail.code.validationError.maxLength", {
-          value,
-        });
-      })
-      .isLength({ min: 6 })
-      .withMessage((value, { req }) => {
-        return req.t("pages.verifyEmail.code.validationError.minLength", {
-          value,
-        });
-      })
-      .custom((value, { req }) => {
-        if (!containsNumbersOnly(value)) {
-          throw new Error(
-            req.t("pages.verifyEmail.code.validationError.invalidFormat")
-          );
-        }
-        return true;
-      }),
+    validateCode({
+      requiredKey: "pages.verifyEmail.code.validationError.required",
+      maxLengthKey: "pages.verifyEmail.code.validationError.maxLength",
+      minLengthKey: "pages.verifyEmail.code.validationError.minLength",
+      numbersOnlyKey: "pages.verifyEmail.code.validationError.invalidFormat",
+    }),
     validateBodyMiddleware("verify-email/index.njk"),
   ];
 }

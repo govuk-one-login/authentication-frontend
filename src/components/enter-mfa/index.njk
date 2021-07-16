@@ -1,0 +1,48 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set pageTitleName = 'pages.enterMfa.title' | translate %}
+
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterMfa.header' | translate }}</h1>
+
+<p class="govuk-body">{{'pages.enterMfa.info.paragraph' | translate | replace("[mobile]", phoneNumber )}}</p>
+
+<form action="/enter-code" method="post" novalidate>
+
+  <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+  {{ govukInput({
+  label: {
+  text: 'pages.enterMfa.code.label' | translate
+  },
+  classes: "govuk-!-width-two-thirds govuk-!-font-weight-bold",
+  id: "code",
+  name: "code",
+  type: "number",
+  errorMessage: {
+  text: errors['code'].text
+  } if (errors['code'])})
+  }}
+
+    <p class="govuk-body"> <a href="/resend-code" class="govuk-link" rel="noreferrer">{{'pages.enterMfa.resend.link' | translate }}</a> {{ 'pages.enterMfa.resend.paragraph1' | translate}}</p>
+    <ul class="govuk-list govuk-list--bullet">
+     <li>{{ 'pages.enterMfa.resend.listItem1' | translate}}</li>
+     <li>{{ 'pages.enterMfa.resend.listItem2' | translate}}</li>
+    </ul>
+
+  {{ govukButton({
+  "text": button_text|default('general.continue.label' | translate, true),
+  "type": "Submit",
+  "preventDoubleClick": true
+  }) }}
+
+</form>
+
+{% endblock %}

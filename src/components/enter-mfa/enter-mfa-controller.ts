@@ -8,15 +8,15 @@ import {
 import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 
-const TEMPLATE_NAME = "check-your-phone/index.njk";
+const TEMPLATE_NAME = "enter-mfa/index.njk";
 
-export function checkYourPhoneGet(req: Request, res: Response): void {
+export function enterMfaGet(req: Request, res: Response): void {
   res.render(TEMPLATE_NAME, {
     phoneNumber: req.session.user.phoneNumber,
   });
 }
 
-export function checkYourPhonePost(
+export function enterMfaPost(
   service: VerifyCodeInterface = codeService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
@@ -26,18 +26,18 @@ export function checkYourPhonePost(
     const userState = await service.verifyCode(
       sessionId,
       code,
-      NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER
+      NOTIFICATION_TYPE.MFA_SMS
     );
 
-    if (userState == USER_STATE.PHONE_NUMBER_VERIFIED) {
-      return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL);
+    if (userState == USER_STATE.MFA_CODE_VERIFIED) {
+      return res.redirect(PATH_NAMES.AUTH_CODE);
     } else if (userState == USER_STATE.PHONE_NUMBER_CODE_MAX_RETRIES_REACHED) {
       return res.redirect(PATH_NAMES.SECURITY_CODE_EXPIRED);
     }
 
     const error = formatValidationError(
       "code",
-      req.t("pages.checkYourPhone.code.validationError.invalidCode")
+      req.t("pages.enterMfa.code.validationError.invalidCode")
     );
 
     renderBadRequest(res, req, TEMPLATE_NAME, error);

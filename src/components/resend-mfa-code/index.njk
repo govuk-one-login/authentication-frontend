@@ -1,0 +1,20 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% set pageTitleName = 'pages.resendMfaCode.title' | translate %}
+{% block content %}
+
+<form action="/resend-code" method="post" novalidate>
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resendMfaCode.header' | translate }}</h1>
+    <p class="govuk-body">{{'pages.resendMfaCode.phoneNumber' | translate | replace("[mobile]", phoneNumber )}}</p>
+    <p class="govuk-body">{{'pages.resendMfaCode.message' | translate}}</p>
+    {{ govukButton({
+        "text": button_text|default('pages.resendMfaCode.continue' | translate, true),
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+
+</form>
+
+{% endblock %}

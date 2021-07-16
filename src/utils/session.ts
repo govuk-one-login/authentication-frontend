@@ -1,6 +1,6 @@
 import { UserSession } from "../types";
 
-export function createSession(id: any, scope: any): UserSession {
+export function createSession(id: string, scope: string): UserSession {
   return {
     id,
     scope,

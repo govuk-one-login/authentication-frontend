@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
 import { getApiBaseUrl } from "../config";
 import Logger, { getLogLabel } from "./logger";
 
@@ -28,11 +28,15 @@ export class Http {
     return this.instance || this.initHttp();
   }
 
-  private handleError(error: any) {
+  private handleError(error: AxiosError) {
     const { response } = error;
-
     const { data } = response;
-    logger.error(error.message, logLabel, { error: JSON.stringify(data) });
+
+    if (data) {
+      logger.error(error.message, logLabel, { error: JSON.stringify(data) });
+    } else {
+      logger.error(error.message, logLabel);
+    }
 
     return Promise.reject(error);
   }

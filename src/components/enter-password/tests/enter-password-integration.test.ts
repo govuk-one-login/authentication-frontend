@@ -99,10 +99,16 @@ describe("Integration::enter password", () => {
       .expect(400, done);
   });
 
-  it("should redirect to /check-your-phone page when password is correct", (done) => {
-    nock(baseApi).post("/login").once().reply(200, {
-      sessionState: USER_STATE.AUTHENTICATED,
-    });
+  it("should redirect to /enter-code page when password is correct", (done) => {
+    nock(baseApi)
+      .post("/login")
+      .once()
+      .reply(200, {
+        sessionState: USER_STATE.AUTHENTICATED,
+      })
+      .post("/mfa")
+      .once()
+      .reply(200);
 
     request(app)
       .post(ENDPOINT)
@@ -112,7 +118,7 @@ describe("Integration::enter password", () => {
         _csrf: token,
         password: "password",
       })
-      .expect("Location", "/check-your-phone")
+      .expect("Location", "/enter-code")
       .expect(302, done);
   });
 });

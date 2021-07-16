@@ -12,7 +12,10 @@ export const PATH_NAMES = {
   CREATE_ACCOUNT_SUCCESSFUL: "/account-created",
   LOG_IN_ENTER_PHONE_NUMBER: "/enter-phone-number",
   CHECK_YOUR_PHONE: "/check-your-phone",
+  ENTER_MFA: "/enter-code",
   SECURITY_CODE_EXPIRED: "/security-code-expired",
+  AUTH_CODE: "/auth-code",
+  RESEND_MFA_CODE: "/resend-code",
 };
 
 export const HTTP_STATUS_CODES = {
@@ -37,6 +40,7 @@ export const API_ENDPOINTS = {
   VERIFY_CODE: "/verify-code",
   LOG_IN_USER: "/login",
   UPDATE_PROFILE: "/update-profile",
+  MFA: "/mfa",
 };
 
 export const ERROR_MESSAGES = {
@@ -56,13 +60,16 @@ export const USER_STATE = {
   AUTHENTICATED: "AUTHENTICATED",
   ADDED_UNVERIFIED_PHONE_NUMBER: "ADDED_UNVERIFIED_PHONE_NUMBER",
   PHONE_NUMBER_VERIFIED: "PHONE_NUMBER_CODE_VERIFIED",
+  MFA_CODE_VERIFIED: "MFA_CODE_VERIFIED",
   PHONE_NUMBER_CODE_MAX_RETRIES_REACHED:
     "PHONE_NUMBER_CODE_MAX_RETRIES_REACHED",
+  MFA_CODE_SENT: "MFA_CODE_SENT",
 };
 
 export enum NOTIFICATION_TYPE {
   VERIFY_EMAIL = "VERIFY_EMAIL",
   VERIFY_PHONE_NUMBER = "VERIFY_PHONE_NUMBER",
+  MFA_SMS = "MFA_SMS",
 }
 
 export const ENVIRONMENT_NAME = {
