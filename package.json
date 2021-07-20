@@ -81,7 +81,7 @@
     "@types/nunjucks": "^3.1.4",
     "@types/mocha": "^8.2.3",
     "@types/nock": "^11.1.0",
-    "@types/pino": "^6.3.8",
+    "@types/pino": "^6.3.9",
     "@types/pino-http": "^5.4.1",
     "@types/pino-pretty": "^4.7.0",
     "@types/sinon": "^10.0.2",
