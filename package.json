@@ -71,7 +71,7 @@
   "devDependencies": {
     "@types/chai": "^4.2.21",
     "@types/chai-as-promised": "^7.1.4",
-    "@types/cheerio": "^0.22.29",
+    "@types/cheerio": "^0.22.30",
     "@types/cookie-session": "^2.0.42",
     "@types/cookie-parser": "^1.4.2",
     "@types/csurf": "^1.11.1",
