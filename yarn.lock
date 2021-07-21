@@ -422,10 +422,10 @@
     "@types/qs" "*"
     "@types/range-parser" "*"
 
-"@types/express@*", "@types/express@^4.17.12":
-  version "4.17.12"
-  resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.12.tgz#4bc1bf3cd0cfe6d3f6f2853648b40db7d54de350"
-  integrity sha512-pTYas6FrP15B1Oa0bkN5tQMNqOcVXa9j4FTFtO8DWI9kppKib+6NJtfTOOLcwxuuYvcX2+dVG6et1SxW/Kc17Q==
+"@types/express@*", "@types/express@^4.17.13":
+  version "4.17.13"
+  resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.13.tgz#a76e2995728999bab51a33fabce1d705a3709034"
+  integrity sha512-6bSZTPaTIACxn48l50SR+axgrqm6qXFIxrdAKaG6PaJk3+zuUr35hBlgT7vOmJcum+OEaIBLtHV/qloEAFITeA==
   dependencies:
     "@types/body-parser" "*"
     "@types/express-serve-static-core" "^4.17.18"
@@ -454,10 +454,10 @@
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-1.3.2.tgz#93e25bf9ee75fe0fd80b594bc4feb0e862111b5a"
   integrity sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==
 
-"@types/mocha@^8.2.2":
-  version "8.2.2"
-  resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-8.2.2.tgz#91daa226eb8c2ff261e6a8cbf8c7304641e095e0"
-  integrity sha512-Lwh0lzzqT5Pqh6z61P3c3P5nm6fzQK/MMHl9UKeneAeInVflBSz1O2EkX6gM6xfJd7FBXBY5purtLx7fUiZ7Hw==
+"@types/mocha@^8.2.3":
+  version "8.2.3"
+  resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-8.2.3.tgz#bbeb55fbc73f28ea6de601fbfa4613f58d785323"
+  integrity sha512-ekGvFhFgrc2zYQoX4JeZPmVzZxw6Dtllga7iGHzfbYIYkAMUx/sAFP2GdFpLff+vdHXu5fl7WX9AT+TtqYcsyw==
 
 "@types/nock@^11.1.0":
   version "11.1.0"
@@ -1594,10 +1594,10 @@ domhandler@^4.0.0, domhandler@^4.2.0:
   dependencies:
     domelementtype "^2.2.0"
 
-dompurify@^2.2.9:
-  version "2.2.9"
-  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.2.9.tgz#4b42e244238032d9286a0d2c87b51313581d9624"
-  integrity sha512-+9MqacuigMIZ+1+EwoEltogyWGFTJZWU3258Rupxs+2CGs4H914G9er6pZbsme/bvb5L67o2rade9n21e4RW/w==
+dompurify@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.3.0.tgz#07bb39515e491588e5756b1d3e8375b5964814e2"
+  integrity sha512-VV5C6Kr53YVHGOBKO/F86OYX6/iLTw2yVSI721gKetxpHCK/V5TaLEf9ODjRgl1KLSWRMY6cUhAbv/c+IUnwQw==
 
 domutils@^2.5.2, domutils@^2.6.0, domutils@^2.7.0:
   version "2.7.0"
@@ -1949,10 +1949,10 @@ fast-redact@^3.0.0:
   resolved "https://registry.yarnpkg.com/fast-redact/-/fast-redact-3.0.1.tgz#d6015b971e933d03529b01333ba7f22c29961e92"
   integrity sha512-kYpn4Y/valC9MdrISg47tZOpYBNoTXKgT9GYXFpHN/jYFs+lFkPoisY+LcBODdKVMY96ATzvzsWv+ES/4Kmufw==
 
-fast-safe-stringify@^2.0.4, fast-safe-stringify@^2.0.7:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/fast-safe-stringify/-/fast-safe-stringify-2.0.7.tgz#124aa885899261f68aedb42a7c080de9da608743"
-  integrity sha512-Utm6CdzT+6xsDk2m8S6uL8VHxNwI6Jub+e9NYTcAms28T84pTa25GJQV9j0CY0N1rM8hK4x6grpF2BQf+2qwVA==
+fast-safe-stringify@^2.0.4, fast-safe-stringify@^2.0.7, fast-safe-stringify@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/fast-safe-stringify/-/fast-safe-stringify-2.0.8.tgz#dc2af48c46cf712b683e849b2bbd446b32de936f"
+  integrity sha512-lXatBjf3WPjmWD6DpIZxkeSsCOwqI0maYMpgDlx8g4U2qi4lbjA9oH/HD2a87G+KfsUmo5WbJFmqBZlPxtptag==
 
 fast-url-parser@^1.1.3:
   version "1.1.3"
@@ -3439,13 +3439,13 @@ pino-std-serializers@^3.1.0:
   resolved "https://registry.yarnpkg.com/pino-std-serializers/-/pino-std-serializers-3.2.0.tgz#b56487c402d882eb96cd67c257868016b61ad671"
   integrity sha512-EqX4pwDPrt3MuOAAUBMU0Tk5kR/YcCM5fNPEzgCO2zJ5HfX0vbiH9HbJglnyeQsN96Kznae6MWD47pZB5avTrg==
 
-pino@^6.0.0, pino@^6.11.3:
-  version "6.11.3"
-  resolved "https://registry.yarnpkg.com/pino/-/pino-6.11.3.tgz#0c02eec6029d25e6794fdb6bbea367247d74bc29"
-  integrity sha512-drPtqkkSf0ufx2gaea3TryFiBHdNIdXKf5LN0hTM82SXI4xVIve2wLwNg92e1MT6m3jASLu6VO7eGY6+mmGeyw==
+pino@^6.0.0, pino@^6.12.0:
+  version "6.12.0"
+  resolved "https://registry.yarnpkg.com/pino/-/pino-6.12.0.tgz#2281521620d70eeff519039467352d656f46735e"
+  integrity sha512-5NGopOcUusGuklGHVVv9az0Hv/Dj3urHhD3G+zhl5pBGIRYAeGCi/Ej6YCl16Q2ko28cmYiJz+/qRoJiwy62Rw==
   dependencies:
     fast-redact "^3.0.0"
-    fast-safe-stringify "^2.0.7"
+    fast-safe-stringify "^2.0.8"
     flatstr "^1.0.12"
     pino-std-serializers "^3.1.0"
     quick-format-unescaped "^4.0.3"
