@@ -16,10 +16,10 @@ export function enterPasswordGet(req: Request, res: Response): void {
   res.render("enter-password/index.njk");
 }
 
-function isUserAuthenticated(userLogin: UserLogin) {
+function isUserLoggedIn(userLogin: UserLogin) {
   return (
     userLogin.sessionState &&
-    userLogin.sessionState === USER_STATE.AUTHENTICATED
+    userLogin.sessionState === USER_STATE.LOGGED_IN
   );
 }
 
@@ -31,7 +31,7 @@ export function enterPasswordPost(
     const { id, email } = req.session.user;
     const userLogin = await service.loginUser(id, email, req.body["password"]);
 
-    if (isUserAuthenticated(userLogin)) {
+    if (isUserLoggedIn(userLogin)) {
       req.session.user.phoneNumber = userLogin.redactedPhoneNumber;
       await mfaCodeService.sendMfaCode(id, email);
       return res.redirect(PATH_NAMES.ENTER_MFA);
