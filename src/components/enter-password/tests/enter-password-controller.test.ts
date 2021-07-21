@@ -40,7 +40,7 @@ describe("enter password controller", () => {
     it("should redirect to enter-code when the password is correct", async () => {
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sandbox.fake.returns({
-          sessionState: USER_STATE.AUTHENTICATED,
+          sessionState: USER_STATE.LOGGED_IN,
           redactedPhoneNumber: "******3456",
         }),
       };
