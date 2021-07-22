@@ -267,6 +267,12 @@
       "message": "Text messages can sometimes take a few minutes to arrive",
       "phoneNumber": "We'll send a new code to [mobile]"
     },
+    "signedOut": {
+      "title": "You have signed out",
+      "header": "You have signed out",
+      "buttonHref": "https://www.gov.uk/",
+      "buttonText": "Return to the GOV.UK homepage"
+    },
     "cookiePolicy": {
       "title": "Cookies",
       "header": "Cookies",
