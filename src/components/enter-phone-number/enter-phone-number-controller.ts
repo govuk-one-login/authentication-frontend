@@ -13,10 +13,10 @@ export function enterPhoneNumberPost(
   service: EnterPhoneNumberServiceInterface = enterPhoneNumberService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const phoneNumber = (req.session.user.phoneNumber = redactPhoneNumber(
-      req.body.phoneNumber
-    ));
+    const phoneNumber = req.body.phoneNumber;
     const { email, id } = req.session.user;
+
+    req.session.user.phoneNumber = redactPhoneNumber(phoneNumber);
 
     if (await service.updateProfile(id, email, phoneNumber)) {
       await service.sendPhoneVerificationNotification(id, email, phoneNumber);

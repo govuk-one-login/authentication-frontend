@@ -54,6 +54,7 @@ describe("enter phone number controller", () => {
       expect(fakeService.sendPhoneVerificationNotification).to.have.been
         .calledOnce;
       expect(res.redirect).to.have.calledWith("/check-your-phone");
+      expect(req.session.user.phoneNumber).to.be.eq("*******3990");
     });
 
     it("should throw error when API call to /update-profile throws error", async () => {
