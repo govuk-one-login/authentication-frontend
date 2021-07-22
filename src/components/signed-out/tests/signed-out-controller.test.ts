@@ -14,8 +14,8 @@ describe("signed out controller", () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
-    req = { body: {}, session: { user: {} as UserSession } };
-    res = { render: sandbox.fake(), redirect: sandbox.fake() };
+    req = { body: {}, session: { user: {} as UserSession }, cookies: { "aps": "123", "cookies_preferences_set": "abc", "lng": "en", "gs": "xyz" } };
+    res = { render: sandbox.fake(), redirect: sandbox.fake(), clearCookie: sandbox.fake() };
   });
 
   afterEach(() => {
@@ -23,10 +23,14 @@ describe("signed out controller", () => {
   });
 
   describe("signedOutGet", () => {
-    it("should render the signed out page", () => {
+    it("should render the signed out page and delete cookies unrelated to user preferences", () => {
       signedOutGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("signed-out/index.njk");
+      expect(res.clearCookie).to.have.calledWith("aps");
+      expect(res.clearCookie).not.to.have.calledWith("cookies_preferences_set");
+      expect(res.clearCookie).not.to.have.calledWith("lng");
+      expect(res.clearCookie).to.have.calledWith("gs");
     });
   });
 });
