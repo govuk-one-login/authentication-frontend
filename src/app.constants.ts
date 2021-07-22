@@ -16,6 +16,7 @@ export const PATH_NAMES = {
   SECURITY_CODE_EXPIRED: "/security-code-expired",
   AUTH_CODE: "/auth-code",
   RESEND_MFA_CODE: "/resend-code",
+  SIGNED_OUT: "/signed-out",
 };
 
 export const HTTP_STATUS_CODES = {

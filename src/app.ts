@@ -39,6 +39,7 @@ import { securityCodeExpiredRouter } from "./components/security-code-expired/se
 import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes";
 import { authCodeRouter } from "./components/auth-code/auth-code-routes";
 import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-code-routes";
+import { signedOutRouter } from "./components/signed-out/signed-out-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -60,6 +61,7 @@ function registerRoutes(app: express.Application) {
   app.use(enterMfaRouter);
   app.use(authCodeRouter);
   app.use(resendMfaCodeRouter);
+  app.use(signedOutRouter);
 }
 
 function createApp(): express.Application {
