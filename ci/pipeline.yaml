@@ -23,6 +23,13 @@ resources:
         - ci/pipeline.yaml
       branch: main
 
+  - name: di-authentication-acceptance-tests
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/alphagov/di-authentication-acceptance-tests.git
+      branch: main
+
   - name: di-authentication-frontend-upload
     type: cf-cli
     icon: cloud-upload
@@ -42,6 +49,9 @@ jobs:
         file: pipeline-src/ci/pipeline.yaml
 
   - name: deploy-app
+    serial: true
+    serial_groups:
+      - selenium-tests
     plan:
     - get: di-authentication-frontend
       trigger: true
@@ -76,3 +86,113 @@ jobs:
           API_BASE_URL: ((build-api-base-url))
           SESSION_EXPIRY: ((build-session-expiry))
           SESSION_SECRET: ((build-session-secret))
+
+  - name: acceptance-tests
+    serial: true
+    serial_groups:
+      - selenium-tests
+    ensure:
+      do:
+        - task: tear-down-selenium
+          config:
+            platform: linux
+            image_resource:
+              type: registry-image
+              source:
+                repository: governmentpaas/cf-cli
+                tag: "3aa9f06a02907743df5eda0a9ad1b91b2837771b1cd8795e5deb548b9ae425f4"  # pragma: allowlist secret
+            inputs:
+              - name: di-authentication-acceptance-tests
+            params:
+              CF_USERNAME: ((cf-username))
+              CF_PASSWORD: ((cf-password))
+              CF_API_URL: https://api.london.cloud.service.gov.uk
+              CF_ORG_NAME: gds-digital-identity-authentication
+              CF_SPACE_NAME: build
+            run:
+              path: bash
+              args:
+                - -eu
+                - -c
+                - |
+                  echo "Logging in to CloudFoundry..."
+                  cf login -a "${CF_API_URL}" -u "${CF_USERNAME}" -p "${CF_PASSWORD}" -o "${CF_ORG_NAME}" -s "${CF_SPACE_NAME}"
+
+                  cf unbind-route-service -f london.cloudapps.digital selenium-build-route-service --hostname selenium-build
+                  cf delete-service -f selenium-build-route-service
+                  cf delete -f selenium-build-route-service-app
+                  cf delete -f selenium-build
+                  cf delete-route -f london.cloudapps.digital --hostname selenium-build
+
+    plan:
+      - get: di-authentication-acceptance-tests
+        trigger: true
+      - get: di-authentication-frontend
+        trigger: true
+        passed:
+          - deploy-app
+      - task: deploy-selenium
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: governmentpaas/cf-cli
+              tag: "3aa9f06a02907743df5eda0a9ad1b91b2837771b1cd8795e5deb548b9ae425f4"  # pragma: allowlist secret
+          inputs:
+            - name: di-authentication-acceptance-tests
+          params:
+            CF_USERNAME: ((cf-username))
+            CF_PASSWORD: ((cf-password))
+            CF_API_URL: https://api.london.cloud.service.gov.uk
+            CF_ORG_NAME: gds-digital-identity-authentication
+            CF_SPACE_NAME: build
+            CONCOURSE_EGRESS_IPS: ((readonly_egress_ips))
+          run:
+            path: bash
+            args:
+              - -eu
+              - -c
+              - |
+                echo "Logging in to CloudFoundry..."
+                cf login -a "${CF_API_URL}" -u "${CF_USERNAME}" -p "${CF_PASSWORD}" -o "${CF_ORG_NAME}" -s "${CF_SPACE_NAME}"
+
+                echo "Allowed IPs"
+                echo "${CONCOURSE_EGRESS_IPS}"
+
+                IFS="," read -ra IPS <<< "$CONCOURSE_EGRESS_IPS"
+
+                NGINX_ALLOW_STATEMENTS=""
+                for addr in "${IPS[@]}";
+                  do NGINX_ALLOW_STATEMENTS="$NGINX_ALLOW_STATEMENTS allow $addr/32;";
+                done;
+                echo "${NGINX_ALLOW_STATEMENTS}"
+
+                cd di-authentication-acceptance-tests/nginx
+
+                cf push --var app-name="selenium-build-route-service-app" --var allowed-ips="${NGINX_ALLOW_STATEMENTS}"
+
+                cf create-user-provided-service selenium-build-route-service -r https://selenium-build-route-service-app.london.cloudapps.digital
+                cf bind-route-service london.cloudapps.digital selenium-build-route-service --hostname selenium-build
+
+      - task: test
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: gradle
+              tag: 7.1.1-jdk16
+          inputs:
+            - name: di-authentication-acceptance-tests
+          params:
+            SELENIUM_URL: https://selenium-build.london.cloudapps.digital/wd/hub
+            IDP_URL: https://di-authentication-frontend.london.cloudapps.digital
+            RP_URL: https://di-auth-stub-relying-party-build.london.cloudapps.digital
+          run:
+            path: /bin/bash
+            args:
+              - -euc
+              - |
+                cd di-authentication-acceptance-tests
+                gradle --no-daemon cucumber
