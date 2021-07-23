@@ -104,7 +104,7 @@ describe("Integration::enter password", () => {
       .post("/login")
       .once()
       .reply(200, {
-        sessionState: USER_STATE.AUTHENTICATED,
+        sessionState: USER_STATE.LOGGED_IN,
       })
       .post("/mfa")
       .once()

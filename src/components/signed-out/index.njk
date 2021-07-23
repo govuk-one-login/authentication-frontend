@@ -1,0 +1,19 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitleName = 'pages.signedOut.title' | translate %}
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}" />
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.signedOut.header' | translate }}</h1>
+
+{{ govukButton({
+  "text": button_text|default('pages.signedOut.buttonText' | translate, true),
+  "type": "Submit",
+  "href": 'pages.signedOut.buttonHref' | translate
+}) }}
+
+{% endblock %}
