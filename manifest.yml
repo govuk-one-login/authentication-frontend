@@ -9,4 +9,4 @@ applications:
     env:
       NODE_ENV: "production"
     routes:
-      - ((route_name))
+      - route: ((route_name))
