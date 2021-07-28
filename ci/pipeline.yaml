@@ -81,6 +81,8 @@ jobs:
       params:
         command: push
         manifest: di-authentication-frontend/manifest.yml
+        vars:
+          route_name: front.build.auth.ida.digital.cabinet-office.gov.uk
         path: di-authentication-frontend-zip/di-authentication-frontend.zip
         environment_variables:
           API_BASE_URL: ((build-api-base-url))

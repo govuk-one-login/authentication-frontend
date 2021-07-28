@@ -8,4 +8,5 @@ applications:
       - nodejs_buildpack
     env:
       NODE_ENV: "production"
-
+    routes:
+      - ((route_name))
