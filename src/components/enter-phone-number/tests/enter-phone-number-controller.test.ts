@@ -19,7 +19,7 @@ describe("enter phone number controller", () => {
     sandbox = sinon.createSandbox();
 
     req = { body: {}, session: { user: {} as UserSession } };
-    res = { render: sandbox.fake(), redirect: sandbox.fake() };
+    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
   });
 
   afterEach(() => {
@@ -41,11 +41,10 @@ describe("enter phone number controller", () => {
         updateProfile: sandbox.fake.returns(true),
       };
 
+      res.locals.sessionId = "123456-djjad";
       req.body.phoneNumber = "07738393990";
       req.session.user = {
-        sessionId: "dadll-33",
         email: "test@test.com",
-        scope: "openid",
       };
 
       await enterPhoneNumberPost(fakeService)(req as Request, res as Response);
@@ -65,7 +64,7 @@ describe("enter phone number controller", () => {
       };
 
       req.body.email = "test.test.com";
-      req.session.user.id = "231dccsd";
+      res.locals.sessionId = "123456-djjad";
 
       await expect(
         enterPhoneNumberPost(fakeService)(req as Request, res as Response)
@@ -84,7 +83,7 @@ describe("enter phone number controller", () => {
       };
 
       req.body.email = "test.test.com";
-      req.session.user.id = "231dccsd";
+      res.locals.sessionId = "123456-djjad";
 
       await expect(
         enterPhoneNumberPost(fakeService)(req as Request, res as Response)
@@ -124,9 +123,7 @@ describe("enter phone number controller", () => {
 
       req.body.phoneNumber = "07738393990";
       req.session.user = {
-        sessionId: "dadll-33",
         email: "test@test.com",
-        scope: "openid",
       };
 
       await expect(

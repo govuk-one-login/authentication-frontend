@@ -21,7 +21,7 @@ export function checkYourPhonePost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const code = req.body["code"];
-    const sessionId = req.session.user.id;
+    const sessionId = res.locals.sessionId;
 
     const userState = await service.verifyCode(
       sessionId,

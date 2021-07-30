@@ -27,6 +27,7 @@ describe("resend mfa controller", () => {
       render: sandbox.fake(),
       redirect: sandbox.fake(),
       status: sandbox.fake(),
+      locals: {},
     };
   });
 
@@ -48,8 +49,8 @@ describe("resend mfa controller", () => {
         sendMfaCode: sandbox.fake(),
       };
 
+      res.locals.sessionId = "123456-djjad";
       req.session.user = {
-        id: "123456-djjad",
         email: "test@test.com",
       };
 

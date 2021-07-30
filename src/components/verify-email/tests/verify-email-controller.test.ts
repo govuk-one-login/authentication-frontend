@@ -24,6 +24,7 @@ describe("verify email controller", () => {
       render: sandbox.fake(),
       redirect: sandbox.fake(),
       status: sandbox.fake(),
+      locals: {},
     };
   });
 

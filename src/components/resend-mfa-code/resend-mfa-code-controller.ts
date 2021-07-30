@@ -14,7 +14,8 @@ export function resendMfaCodePost(
   service: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { id, email } = req.session.user;
+    const { email } = req.session.user;
+    const id = res.locals.sessionId;
     await service.sendMfaCode(id, email);
     res.redirect(PATH_NAMES.ENTER_MFA);
   };

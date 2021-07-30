@@ -21,7 +21,7 @@ describe("enter password controller", () => {
     sandbox = sinon.createSandbox();
 
     req = { body: {}, session: { user: {} as UserSession } };
-    res = { render: sandbox.fake(), redirect: sandbox.fake() };
+    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
   });
 
   afterEach(() => {
@@ -49,8 +49,8 @@ describe("enter password controller", () => {
         sendMfaCode: sandbox.fake(),
       };
 
+      res.locals.sessionId = "123456-djjad";
       req.session.user = {
-        id: "12-d0dasdk",
         email: "joe.bloggs@test.com",
       };
       req.body["password"] = "password";
@@ -73,8 +73,8 @@ describe("enter password controller", () => {
         sendMfaCode: sandbox.fake(),
       };
 
+      res.locals.sessionId = "123456-djjad";
       req.session.user = {
-        id: "12-d0dasdk",
         email: "joe.bloggs@test.com",
       };
       req.body["password"] = "password";
