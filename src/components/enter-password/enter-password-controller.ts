@@ -18,8 +18,7 @@ export function enterPasswordGet(req: Request, res: Response): void {
 
 function isUserLoggedIn(userLogin: UserLogin) {
   return (
-    userLogin.sessionState &&
-    userLogin.sessionState === USER_STATE.LOGGED_IN
+    userLogin.sessionState && userLogin.sessionState === USER_STATE.LOGGED_IN
   );
 }
 
@@ -28,7 +27,8 @@ export function enterPasswordPost(
   mfaCodeService: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { id, email } = req.session.user;
+    const { email } = req.session.user;
+    const id = res.locals.sessionId;
     const userLogin = await service.loginUser(id, email, req.body["password"]);
 
     if (isUserLoggedIn(userLogin)) {

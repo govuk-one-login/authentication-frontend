@@ -20,7 +20,7 @@ describe("create-password controller", () => {
     sandbox = sinon.createSandbox();
 
     req = { body: {}, session: { user: {} as UserSession } };
-    res = { render: sandbox.fake(), redirect: sandbox.fake() };
+    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
   });
 
   afterEach(() => {

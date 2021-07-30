@@ -40,6 +40,7 @@ import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes";
 import { authCodeRouter } from "./components/auth-code/auth-code-routes";
 import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-code-routes";
 import { signedOutRouter } from "./components/signed-out/signed-out-routes";
+import { getSessionIdMiddleware } from "./middleware/session-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -105,6 +106,7 @@ function createApp(): express.Application {
   app.use(cookieParser());
   app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
 
+  app.use(getSessionIdMiddleware);
   app.post("*", sanitizeRequestMiddleware);
   app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);

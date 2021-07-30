@@ -7,32 +7,27 @@
 
 {% include "common/errors/errorSummary.njk" %}
 
-<form action="/account-created" method="post" novalidate>
 
-    <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+{{ govukPanel({
+    titleText: 'pages.accountCreated.header' | translate
+}) }}
 
-    {{ govukPanel({
-        titleText: 'pages.accountCreated.header' | translate
-    }) }}
+<br>
 
-    <br>
+<p class="govuk-body">{{'pages.accountCreated.info.heading' | translate}}</p>
+<ul class="govuk-list govuk-list--bullet">
+    <li>{{'pages.accountCreated.info.bulletPoint1' | translate}}</li>
+    <li>{{'pages.accountCreated.info.bulletPoint2' | translate}}</li>
+    <li>{{'pages.accountCreated.info.bulletPoint3' | translate}}</li>
+    <li>{{'pages.accountCreated.info.bulletPoint4' | translate}}</li>
+</ul>
 
-    <p class="govuk-body">{{'pages.accountCreated.info.heading' | translate}}</p>
-    <ul class="govuk-list govuk-list--bullet">
-        <li>{{'pages.accountCreated.info.bulletPoint1' | translate}}</li>
-        <li>{{'pages.accountCreated.info.bulletPoint2' | translate}}</li>
-        <li>{{'pages.accountCreated.info.bulletPoint3' | translate}}</li>
-        <li>{{'pages.accountCreated.info.bulletPoint4' | translate}}</li>
-    </ul>
+<br>
 
-    <br>
+{{ govukButton({
+    "text": button_text|default('general.continue.label' | translate, true),
+    "href": linkUrl
+}) }}
 
-    {{ govukButton({
-        "text": button_text|default('general.continue.label' | translate, true),
-        "type": "Submit",
-        "preventDoubleClick": true
-    }) }}
-
-</form>
 
 {% endblock %}

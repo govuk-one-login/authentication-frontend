@@ -14,7 +14,8 @@ export function enterPhoneNumberPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const phoneNumber = req.body.phoneNumber;
-    const { email, id } = req.session.user;
+    const { email } = req.session.user;
+    const id = res.locals.sessionId;
 
     req.session.user.phoneNumber = redactPhoneNumber(phoneNumber);
 

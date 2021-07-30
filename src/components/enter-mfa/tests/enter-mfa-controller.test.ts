@@ -24,6 +24,7 @@ describe("enter mfa controller", () => {
       render: sandbox.fake(),
       redirect: sandbox.fake(),
       status: sandbox.fake(),
+      locals: {},
     };
   });
 
@@ -46,7 +47,7 @@ describe("enter mfa controller", () => {
       };
 
       req.body.code = "123456";
-      req.session.user.id = "123456-djjad";
+      res.locals.sessionId = "123456-djjad";
 
       await enterMfaPost(fakeService)(req as Request, res as Response);
 
@@ -61,7 +62,7 @@ describe("enter mfa controller", () => {
 
       req.t = sandbox.fake.returns("translated string");
       req.body.code = "678988";
-      req.session.user.id = "123456-djjad";
+      res.locals.sessionId = "123456-djjad";
 
       await enterMfaPost(fakeService)(req as Request, res as Response);
 
@@ -78,7 +79,7 @@ describe("enter mfa controller", () => {
 
       req.t = sandbox.fake.returns("translated string");
       req.body.code = "678988";
-      req.session.user.id = "123456-djjad";
+      res.locals.sessionId = "123456-djjad";
 
       await enterMfaPost(fakeService)(req as Request, res as Response);
 

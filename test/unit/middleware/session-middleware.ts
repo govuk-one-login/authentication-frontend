@@ -2,29 +2,25 @@ import { NextFunction, Request, Response } from "express";
 import { expect, sinon } from "../../utils/test-utils";
 import { describe } from "mocha";
 import {
-  createSessionMiddleware,
+  getSessionIdMiddleware,
+  initialiseSessionMiddleware,
   validateSessionMiddleware,
 } from "../../../src/middleware/session-middleware";
-import * as sessionHelper from "../../../src/utils/session";
 
 describe("session-middleware", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: NextFunction;
-  let createSessionStub: any;
-  let validateSessionStub: any;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
     req = {
       session: {} as any,
+      cookies: {} as any,
     };
-    res = { status: sandbox.stub() };
+    res = { status: sandbox.stub(), locals: {} };
     next = sandbox.fake();
-
-    createSessionStub = sandbox.stub(sessionHelper, "createSession");
-    validateSessionStub = sandbox.stub(sessionHelper, "isSessionValid");
   });
 
   afterEach(() => {
@@ -32,66 +28,39 @@ describe("session-middleware", () => {
   });
 
   describe("createSessionMiddleware", () => {
-    it("should create session when correct query params provided", () => {
-      req.query = {
-        id: "de438203-98aa-46ee-883d-b42367ff4a2a",
-        scope: "openid email",
-      };
-      createSessionStub.returns({
-        id: "12-9SADKASD-ASD",
-        scope: "openid",
-      });
-
-      createSessionMiddleware(req as Request, res as Response, next);
+    it("should create an empty session", () => {
+      initialiseSessionMiddleware(req as Request, res as Response, next);
 
       expect(req.session).to.have.property("user");
-      expect(req.session.user).to.have.property("id");
-      expect(req.session.user).to.have.property("scope");
-      expect(createSessionStub).to.be.calledOnce;
       expect(next).to.be.calledOnce;
     });
+  });
 
-    it("should not create a session when session-id query param not provided", () => {
-      req.query = { test: "-b42367ff4a2a", scope: "openid email" };
+  describe("getSessionIdMiddleware", () => {
+    it("should add session id to response when cookie present", () => {
+      req.cookies = { gs: "tsIAHDy103zhcxbQq0" };
+      getSessionIdMiddleware(req as Request, res as Response, next);
 
-      createSessionMiddleware(req as Request, res as Response, next);
-
-      expect(req.session).to.not.have.property("user");
-      expect(createSessionStub).not.be.calledOnce;
+      expect(res.locals).to.have.property("sessionId");
       expect(next).to.be.calledOnce;
     });
+    it("should not have session id on response when no session cookie present", () => {
+      req.cookies = undefined;
 
-    it("should not create a session when scope query param not provided", () => {
-      req.query = { "session-id": "-b42367ff4a2a", hope: "test" };
+      getSessionIdMiddleware(req as Request, res as Response, next);
 
-      createSessionMiddleware(req as Request, res as Response, next);
-
-      expect(req.session).to.not.have.property("user");
-      expect(createSessionStub).not.be.calledOnce;
-      expect(next).to.be.calledOnce;
-    });
-
-    it("should not create a session when no query params present", () => {
-      req.query = {};
-      createSessionMiddleware(req as Request, res as Response, next);
-
-      expect(req.session).to.not.have.property("user");
-      expect(createSessionStub).not.be.called;
+      expect(res.locals).is.empty;
       expect(next).to.be.calledOnce;
     });
   });
 
   describe("validateSessionMiddleware", () => {
     it("should call next when valid session", () => {
-      req.session = {
-        user: { id: "test", scope: "openid" },
-      };
-      validateSessionStub.returns(true);
-
+      req.cookies = { gs: "tsIAHDy103zhcxbQq0", aps: "eyJ1c2VyIjp7fX0" };
+      res.locals.sessionId = "sdam$$LLDD";
       validateSessionMiddleware(req as Request, res as Response, next);
 
       expect(next).to.be.called;
-      expect(validateSessionStub).to.be.calledWith(req.session.user);
     });
 
     it("should call next with error when invalid session", () => {

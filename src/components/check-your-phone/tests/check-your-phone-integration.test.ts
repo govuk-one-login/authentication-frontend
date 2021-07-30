@@ -17,11 +17,10 @@ describe("Integration:: check your phone", () => {
     sandbox
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
+        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user = {
-          id: "12sadjk",
-          scope: "openid",
           email: "test@test.com",
-          phoneNumber: "07838397867",
+          phoneNumber: "******7867",
         };
         next();
       });

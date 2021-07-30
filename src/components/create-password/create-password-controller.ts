@@ -13,7 +13,7 @@ export function createPasswordPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const userState = await service.signUpUser(
-      req.session.user.id,
+      res.locals.sessionId,
       req.session.user.email,
       req.body.password
     );
