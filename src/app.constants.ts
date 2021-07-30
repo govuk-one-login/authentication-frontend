@@ -42,6 +42,7 @@ export const API_ENDPOINTS = {
   LOG_IN_USER: "/login",
   UPDATE_PROFILE: "/update-profile",
   MFA: "/mfa",
+  AUTH_CODE: "/auth-code",
 };
 
 export const ERROR_MESSAGES = {
