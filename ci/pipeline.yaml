@@ -189,7 +189,7 @@ jobs:
             - name: di-authentication-acceptance-tests
           params:
             SELENIUM_URL: https://selenium-build.london.cloudapps.digital/wd/hub
-            IDP_URL: https://di-authentication-frontend.london.cloudapps.digital
+            IDP_URL: https://front.build.auth.ida.digital.cabinet-office.gov.uk
             RP_URL: https://di-auth-stub-relying-party-build.london.cloudapps.digital
           run:
             path: /bin/bash
