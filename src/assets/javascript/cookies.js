@@ -1,6 +1,6 @@
 window.govSigin = window.govSigin ?? {};
 
-(function(w) {
+(function (w) {
   "use strict";
 
   var COOKIES_PREFERENCES_SET = "cookies_preferences_set";
@@ -10,8 +10,8 @@ window.govSigin = window.govSigin ?? {};
   var hideCookieBanner = document.querySelectorAll(".cookie-hide-button");
   var cookieBannerContainer = document.querySelector(".govuk-cookie-banner");
   var cookieBanner = document.querySelector("#cookies-banner-main");
-  var acceptCookies = document.querySelector("button[name=\"cookiesAccept\"]");
-  var rejectCookies = document.querySelector("button[name=\"cookiesReject\"]");
+  var acceptCookies = document.querySelector('button[name="cookiesAccept"]');
+  var rejectCookies = document.querySelector('button[name="cookiesReject"]');
   var cookiePreferencesExist =
     document.cookie.indexOf(COOKIES_PREFERENCES_SET + "=") > -1;
 
@@ -27,31 +27,32 @@ window.govSigin = window.govSigin ?? {};
 
     acceptCookies.addEventListener(
       "click",
-      function(event) {
+      function (event) {
         event.preventDefault();
-        setCookie(COOKIES_PREFERENCES_SET, { "analytics": true });
+        setCookie(COOKIES_PREFERENCES_SET, { analytics: true });
         showElement(cookiesAccepted);
         hideElement(cookieBanner);
-      }.bind(this),
+      }.bind(this)
     );
 
     rejectCookies.addEventListener(
       "click",
-      function(event) {
+      function (event) {
         event.preventDefault();
-        setCookie(COOKIES_PREFERENCES_SET, { "analytics": false });
+        setCookie(COOKIES_PREFERENCES_SET, { analytics: false });
         showElement(cookiesRejected);
         hideElement(cookieBanner);
-      }.bind(this),
+      }.bind(this)
     );
 
-    hideCookieBanner.forEach((element) => {
+    const hideButtons = Array.prototype.slice.call(hideCookieBanner);
+    hideButtons.forEach(function (element) {
       element.addEventListener(
         "click",
-        function(event) {
+        function (event) {
           event.preventDefault();
           hideElement(cookieBannerContainer);
-        }.bind(this),
+        }.bind(this)
       );
     });
   }
@@ -59,10 +60,11 @@ window.govSigin = window.govSigin ?? {};
   function setCookie(name, value) {
     var currentDate = new Date();
     var expiryDate = new Date(
-      currentDate.setMonth(currentDate.getMonth() + 12),
+      currentDate.setMonth(currentDate.getMonth() + 12)
     );
     document.cookie =
-      name + "=" +
+      name +
+      "=" +
       JSON.stringify(value) +
       "; expires=" +
       expiryDate +
@@ -86,41 +88,46 @@ window.govSigin = window.govSigin ?? {};
     var analyticsValue = false;
 
     if (!cookie) {
-      setCookie(COOKIES_PREFERENCES_SET, { "analytics": false });
+      setCookie(COOKIES_PREFERENCES_SET, { analytics: false });
     } else {
       analyticsValue = JSON.parse(cookie).analytics;
     }
 
     document.querySelector("#policy-cookies-accepted").checked = analyticsValue;
-    document.querySelector("#policy-cookies-rejected").checked = !analyticsValue;
+    document.querySelector("#policy-cookies-rejected").checked =
+      !analyticsValue;
     document.querySelector("#save-cookie-settings").addEventListener(
       "click",
-      function(event) {
+      function (event) {
         event.preventDefault();
-        var selectedPreference = document.querySelector("#radio-cookie-preferences input[type=\"radio\"]:checked").value;
-        setCookie(COOKIES_PREFERENCES_SET, { "analytics": selectedPreference === "true" });
+        var selectedPreference = document.querySelector(
+          '#radio-cookie-preferences input[type="radio"]:checked'
+        ).value;
+        setCookie(COOKIES_PREFERENCES_SET, {
+          analytics: selectedPreference === "true",
+        });
         showElement(document.querySelector("#save-success-banner"));
         window.scrollTo(0, 0);
-      }.bind(this),
+      }.bind(this)
     );
     document.querySelector("#go-back-link").addEventListener(
       "click",
-      function(event) {
+      function (event) {
         event.preventDefault();
         window.history.back();
-      }.bind(this),
+      }.bind(this)
     );
   }
 
   function getCookieValue(cookieName) {
-    var cookie = document.cookie
-      .split("; ")
-      .find(row => row.startsWith(cookieName + "="));
-    if (cookie) {
-      return cookie.split("=")[1];
-    } else {
-      return null;
+    const cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+      const name = cookies[i].split("=")[0].toLowerCase().trim();
+      if (name.indexOf(cookieName) !== -1) {
+        return cookies[i].split("=")[1];
+      }
     }
+    return undefined;
   }
 
   w.govSigin.CookieBanner = init;
