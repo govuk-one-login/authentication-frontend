@@ -17,6 +17,7 @@ export function getSessionIdMiddleware(
 ): void {
   if (req.cookies && req.cookies["gs"]) {
     res.locals.sessionId = req.cookies["gs"].split(".")[0];
+    res.locals.clientSessionId = req.cookies["gs"].split(".")[1];
   }
   next();
 }
