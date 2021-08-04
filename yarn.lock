@@ -1827,10 +1827,10 @@ express-pino-logger@^6.0.0:
   dependencies:
     pino-http "^5.3.0"
 
-express-validator@^6.12.0:
-  version "6.12.0"
-  resolved "https://registry.yarnpkg.com/express-validator/-/express-validator-6.12.0.tgz#a9cd49b3fe4c470abb615ae2e7dd111053c25f66"
-  integrity sha512-lcQAdVeAO+pBbHD33nIsDsd+QPakLX08tJ82iEsXj6ezyWCfYjE9RY/g9SVq5z4G0NaIkH8039Oe4r0G92DRyA==
+express-validator@^6.12.1:
+  version "6.12.1"
+  resolved "https://registry.yarnpkg.com/express-validator/-/express-validator-6.12.1.tgz#2ff698ff6f9af436cb08913b5b26849e43f34031"
+  integrity sha512-olpTAv0ZB5IhNuDQ2rodKAuJsewgFgLIsczJMAWD6T0Yvxsa+j/Hk61jl8e26lAq+oJr6hUqPRjdlOBKhFlWeQ==
   dependencies:
     lodash "^4.17.21"
     validator "^13.5.2"
