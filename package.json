@@ -79,7 +79,7 @@
     "@types/express": "^4.17.13",
     "@types/i18next-fs-backend": "^1.0.0",
     "@types/node": "^15.14.3",
-    "@types/nunjucks": "^3.1.4",
+    "@types/nunjucks": "^3.1.5",
     "@types/mocha": "^8.2.3",
     "@types/nock": "^11.1.0",
     "@types/pino": "^6.3.8",
