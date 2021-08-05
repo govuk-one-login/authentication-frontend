@@ -163,7 +163,7 @@ describe("Integration:: enter mfa", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains(
-          "The security code you’ve entered is not correct, try entering it again or get a new security code."
+          " The security code you entered is not correct, or may have expired, try entering it again or request a new security code."
         );
       })
       .expect(400, done);

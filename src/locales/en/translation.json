@@ -133,15 +133,15 @@
         "hint": "It needs to be at least 8 characters long and must include at least one number",
         "validationError": {
           "required": "Enter your password",
-          "minLength": "Your password must be 8 characters or more",
+          "minLength": "Your password must be at least 8 characters long and must include a number",
           "maxLength": "Your password must be less than 256 characters",
-          "alphaNumeric": "Your password must include a number"
+          "alphaNumeric": "Your password must be at least 8 characters long and must include a number"
         }
       },
       "confirmPassword": {
         "label": "Retype password",
         "validationError": {
-          "required": "Retype your password",
+          "required": "Re-type your password",
           "matches": "Enter the same password in both fields"
         }
       },
@@ -167,8 +167,8 @@
         "validationError": {
           "required": "Enter a UK phone number",
           "international": "Enter a UK phone number",
-          "length": "Enter a UK phone number, like 01632 960000 or 07700 900000",
-          "numeric": "Phone number must only include numbers"
+          "length": "Enter a UK phone number, like 07700 900000",
+          "numeric": "Enter a UK Phone number using numbers only"
         }
       }
     },
@@ -201,7 +201,7 @@
           "maxLength": "Enter the security code using only 6 digits",
           "minLength": "Enter the security code using only 6 digits",
           "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you’ve entered is not correct, try entering it again or get a new security code."
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new security code."
         }
       }
     },
@@ -224,7 +224,7 @@
           "maxLength": "Enter the security code using only 6 digits",
           "minLength": "Enter the security code using only 6 digits",
           "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you’ve entered is not correct, try entering it again or get a new security code."
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new security code."
         }
       }
     },
@@ -256,7 +256,7 @@
           "maxLength": "Enter the security code using only 6 digits",
           "minLength": "Enter the security code using only 6 digits",
           "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you’ve entered is not correct, try entering it again or get a new security code."
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new security code."
         }
       }
     },
