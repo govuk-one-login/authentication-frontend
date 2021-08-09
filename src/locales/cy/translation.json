@@ -1,20 +1,40 @@
 {
   "general": {
+    "provider": "GOV.UK",
     "pageTitle": "GOV.UK Sign in",
-    "errorPrefix": "Error",
+    "serviceName": "Sign in to or create your GOV.UK Account",
+    "serviceNameTitle": "GOV.UK Account",
+    "errorTitlePrefix": "Error",
     "back": "Back",
-    "continueButton": "Continue",
-    "confirmChangeButton": "Confirm change and continue",
     "warning": "Warning",
     "errorSummaryTitle": "There is a problem",
     "phaseBanner": {
-      "tag": "alpha",
+      "tag": "beta",
       "content": "This is a new service – your {{-openLink}}feedback{{-closeLink}} will help us to improve it. // {{ target  }} //"
     },
     "yes": "Yes",
     "no": "No",
     "footer": {},
     "cookie": {
+      "cookieBanner": {
+        "title": "Cookies on GOV.UK Account",
+        "heading": "Cookies on GOV.UK Account",
+        "paragraph1": "We use some essential cookies to make this service work.",
+        "paragraph2": "We’d also like to use analytics cookies so we can understand how you use the service and make improvements.",
+        "buttonAcceptText": "Accept analytics cookies",
+        "buttonRejectText": "Reject analytics cookies",
+        "linkViewCookiesText": "View cookies",
+        "cookieBannerHideLink": "Hide this message",
+        "cookeBannerAccept": {
+          "paragraph1": "You’ve accepted additional cookies. You can ",
+          "paragraph2": " at any time."
+        },
+        "cookeBannerReject": {
+          "paragraph1": "You’ve rejected additional cookies. You can ",
+          "paragraph2": " at any time."
+        },
+        "changeCookiePreferencesLink": "change your cookie settings"
+      },
       "cookieText": "GOV.UK uses cookies to make the site simpler.",
       "cookieLink": "#",
       "cookieLinkText": "Find out more about cookies"
@@ -22,21 +42,172 @@
     "language": {
       "english": "English",
       "welsh": "Cymraeg (Welsh)"
+    },
+    "continue": {
+      "label": "Continue"
+    },
+    "footer": {
+      "accessibilityStatement": {
+        "pageTitle": "Accessibility statement",
+        "linkText": "Accessibility statement"
+      },
+      "cookies": {
+        "pageTitle": "Cookie Policy",
+        "linkText": "Cookies"
+      },
+      "terms": {
+        "pageTitle": "Terms and conditions",
+        "linkText": "Terms and conditions"
+      },
+      "privacy": {
+        "pageTitle": "Privacy notice",
+        "linkText": "Privacy notice"
+      }
     }
   },
   "pages": {
-    "enter-email": {
-      "title": "Please enter the following information",
-      "header": "Please enter the following information",
-      "info": "Entering the information below will help us start to verify your identity. You may be asked additional questions as part of this process.",
-      "email": {
-        "label": "Email",
+    "enterPassword": {
+      "title": "Enter your password",
+      "header": "Enter your password",
+      "info": "Enter your password to sign in",
+      "password": {
+        "label": "Password",
         "validationError": {
-          "required": "Enter your email address",
-          "length": "Email address must be 256 characters or fewer",
-          "email": "Enter an email address in the correct format, like name@example.com"
+          "required": "Enter your password",
+          "incorrectPassword": "Enter the correct password"
+        }
+      },
+      "forgottenPassword": {
+        "text": "I've forgotten my password"
+      }
+    },
+    "createPassword": {
+      "title": "Create your GOV.UK account password",
+      "header": "Create your GOV.UK account password",
+      "password": {
+        "label": "Enter a password",
+        "hint": "It needs to be at least 8 characters long and must include at least one number",
+        "validationError": {
+          "required": "Enter your password",
+          "minLength": "Your password must be at least 8 characters long and must include a number",
+          "maxLength": "Your password must be less than 256 characters",
+          "alphaNumeric": "Your password must be at least 8 characters long and must include a number"
+        }
+      },
+      "confirmPassword": {
+        "label": "Retype password",
+        "validationError": {
+          "required": "Re-type your password",
+          "matches": "Enter the same password in both fields"
+        }
+      },
+      "securePasswordDetails": {
+        "summary": "How to create a secure password",
+        "text": "A good way to create a secure and memorable password is to use 3 random words. You can use numbers, symbols and spaces."
+      },
+      "termsOfUse": {
+        "heading": "Agree to our terms of use",
+        "paragraph1": "We will collect and save your information securely. We will not share your personal information without your consent.",
+        "paragraph2": "By continuing, you confirm that you agree to our <a href=\"/privacy-statement\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\"> privacy notice</a> and our <a href=\"/terms-and-conditions\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">terms and conditions</a>."
+      }
+    },
+    "enterPhoneNumber": {
+      "title": "Enter your phone number",
+      "header": "Enter your mobile phone number",
+      "info": {
+        "paragraph1": "We will send a 6 digit security code to the number you give us.",
+        "paragraph2": "You must use a UK mobile phone number."
+      },
+      "phoneNumber": {
+        "label": "UK phone number",
+        "validationError": {
+          "required": "Enter a UK phone number",
+          "international": "Enter a UK phone number",
+          "length": "Enter a UK phone number, like 07700 900000",
+          "numeric": "Enter a UK Phone number using numbers only"
         }
       }
+    },
+    "verifyEmail": {
+      "title": "Check your email",
+      "header": "Check your email",
+      "text": "We have sent an email to: ",
+      "info": {
+        "paragraph1": "Once you have opened the email and got the code, come back to this page and enter the security code below.",
+        "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
+        "paragraph3Start": "You can ",
+        "enterEmailLink": "enter your email address again",
+        "paragraph3End": " if you got it wrong."
+      },
+      "code": {
+        "label": "Enter the 6 digit security code",
+        "validationError": {
+          "required": "Enter the security code",
+          "maxLength": "Enter the security code using only 6 digits",
+          "minLength": "Enter the security code using only 6 digits",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new security code."
+        }
+      }
+    },
+    "checkYourPhone": {
+      "title": "Check your phone",
+      "header": "Check your phone",
+      "info": {
+        "paragraph": "We sent a code to the [mobile] number you registered."
+      },
+      "resend": {
+        "link": "Request a new code",
+        "paragraph1": "if you:",
+        "listItem1": "didn't receive a code",
+        "listItem2": "need a new code"
+      },
+      "code": {
+        "label": "Enter the 6 digit security code",
+        "validationError": {
+          "required": "Enter the security code",
+          "maxLength": "Enter the security code using only 6 digits",
+          "minLength": "Enter the security code using only 6 digits",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new security code."
+        }
+      }
+    },
+    "enterMfa": {
+      "title": "Check your phone",
+      "header": "Check your phone",
+      "info": {
+        "paragraph": "We sent a code to the [mobile] number you registered."
+      },
+      "resend": {
+        "link": "Request a new code",
+        "paragraph1": "if you:",
+        "listItem1": "didn't receive a code",
+        "listItem2": "need a new code"
+      },
+      "code": {
+        "label": "Enter the 6 digit security code",
+        "validationError": {
+          "required": "Enter the security code",
+          "maxLength": "Enter the security code using only 6 digits",
+          "minLength": "Enter the security code using only 6 digits",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new security code."
+        }
+      }
+    },
+    "resendMfaCode": {
+      "title": "Request a new security code",
+      "header": "Request a new security code",
+      "continue": "Send a new  code",
+      "message": "Text messages can sometimes take a few minutes to arrive",
+      "phoneNumber": "We'll send a new code to [mobile]"
+    },
+    "signedOut": {
+      "title": "You have signed out",
+      "header": "You have signed out",
+      "buttonHref": "https://www.gov.uk/",
+      "buttonText": "Return to the GOV.UK homepage"
     }
   }
 }
