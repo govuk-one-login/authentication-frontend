@@ -9,9 +9,9 @@ services:
     - 3000:3000
     environment:
       - ENVIRONMENT="development"
-      - API_BASE_URL=""
-      - SESSION_EXPIRY=""
-      - SESSION_SECRET=""
+      - API_BASE_URL="https://rkmnti7z55.execute-api.eu-west-2.amazonaws.com/test"
+      - SESSION_EXPIRY="1800000"
+      - SESSION_SECRET="secret"
     restart: on-failure
     networks:
       - di-net
