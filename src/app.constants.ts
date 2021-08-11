@@ -13,6 +13,7 @@ export const PATH_NAMES = {
   LOG_IN_ENTER_PHONE_NUMBER: "/enter-phone-number",
   CHECK_YOUR_PHONE: "/check-your-phone",
   SHARE_INFO: "/share-info",
+  UPDATED_TERMS_AND_CONDITIONS: "/updated-terms-and-conditions",
   ENTER_MFA: "/enter-code",
   SECURITY_CODE_EXPIRED: "/security-code-expired",
   AUTH_CODE: "/auth-code",
@@ -70,6 +71,7 @@ export const USER_STATE = {
     "PHONE_NUMBER_CODE_MAX_RETRIES_REACHED",
   MFA_CODE_SENT: "MFA_CODE_SENT",
   ADDED_CONSENT: "ADDED_CONSENT",
+  UPDATED_TERMS_AND_CONDITIONS: "UPDATED_TERMS_AND_CONDITIONS"
 };
 
 export enum NOTIFICATION_TYPE {

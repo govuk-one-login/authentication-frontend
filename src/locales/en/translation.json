@@ -306,6 +306,22 @@
         }
       }
     },
+    "updatedTermsAndConds": {
+      "title": "GOV.UK account terms of use update",
+      "paragraph1": {
+        "text": "We've updated our ",
+        "and": "and",
+        "termsAndConditionsHref": "terms-and-conditions",
+        "termsAndConditionsText": "terms and conditions",
+        "privacyNoticeHref": "privacy-statement",
+        "privacyNoticeText": "privacy notice",
+        "cookiesPolicyHref": "cookies",
+        "cookiesPolicyText": "cookies policy"
+      },
+      "paragraph2": "By continuing you agree to our updated terms of use.",
+      "agreeAndContinue": "Agree and continue",
+      "doNotAgree": "I do not agree"
+    },
     "cookiePolicy": {
       "title": "Cookies",
       "header": "Cookies",
