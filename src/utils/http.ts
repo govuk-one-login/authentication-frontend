@@ -21,6 +21,16 @@ export function getBaseRequestConfig(sessionId: string): AxiosRequestConfig {
   };
 }
 
+export function getBaseRequestConfigWithClientSession(sessionId: string, clientSessionId: string): AxiosRequestConfig {
+  return {
+    headers: {
+      "Session-Id": sessionId,
+      "Client-Session-Id": clientSessionId,
+    },
+    proxy: false,
+  };
+}
+
 export class Http {
   private instance: AxiosInstance;
 
