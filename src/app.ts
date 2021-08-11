@@ -1,6 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import csurf from "csurf";
+import { loggerMiddleware } from "./utils/logger";
 
 import { sanitizeRequestMiddleware } from "./middleware/sanitize-request-middleware";
 import i18nextMiddleware from "i18next-http-middleware";
@@ -8,7 +9,6 @@ import * as path from "path";
 import bodyParser from "body-parser";
 import { configureNunjucks } from "./config/nunchucks";
 import { i18nextConfigurationOptions } from "./config/i18next";
-import Logger from "./utils/logger";
 import { helmetConfiguration } from "./config/helmet";
 import helmet from "helmet";
 
@@ -73,6 +73,8 @@ function createApp(): express.Application {
 
   app.enable("trust proxy");
 
+  app.use(loggerMiddleware);
+
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -118,8 +120,6 @@ function createApp(): express.Application {
   app.use(logErrorMiddleware);
   app.use(serverErrorHandler);
   app.use(pageNotFoundHandler);
-
-  app.locals.logger = new Logger();
 
   return app;
 }
