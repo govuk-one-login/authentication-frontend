@@ -81,8 +81,11 @@
       }
     },
     "error500": {
-      "title": "Sorry, there is a problem with this service",
-      "header": "Sorry, there is a problem with this service"
+      "title": "Sorry, there is a problem with the service",
+      "header": "Sorry, there is a problem with the service",
+      "content": {
+        "paragraph1": "Try again later."
+      }
     },
     "timeoutError": {
       "title": "You have been signed out",
