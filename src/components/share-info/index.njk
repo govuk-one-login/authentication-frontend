@@ -1,0 +1,77 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% set pageTitleName = 'pages.shareInfo.title' | translate %}
+
+{% block content %}
+
+{% set html %}
+<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
+<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
+{% endset %}
+
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+  {{ 'pages.shareInfo.header' | translate }}
+</h1>
+
+<h2 class="govuk-body-l">{{ clientInfo.client_name }}</h2>
+<p class="govuk-body">{{'pages.shareInfo.bulletPointSectionHeader' | translate}}</p>
+
+<ul class="govuk-list govuk-list--bullet">
+    {% for scope in prettyScopes %}
+        <li>
+            {{ scope }}
+        </li>
+    {% endfor %}
+</ul>
+
+<p class="govuk-body">{{'pages.shareInfo.paragraph1' | translate}}</p>
+<p class="govuk-body">{{'pages.shareInfo.paragraph2' | translate}}</p>
+<p class="govuk-body">{{'pages.shareInfo.paragraph3' | translate}}</p>
+
+<h2 class="govuk-heading-s">{{'pages.shareInfo.essentialHeader' | translate}}</h2>
+
+<form action="/share-info" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+{{ govukRadios({
+  idPrefix: "share-info",
+  name: "consentValue",
+  attributes: {
+    "id": "radio-share-info-preferences"
+  },
+  fieldset: {
+    legend: {
+      text: 'pages.shareInfo.radios.shareMy' | translate,
+      isPageHeading: false,
+      classes: "govuk-body"
+    }
+  },
+  items: [
+    {
+      checked: "false",
+      text: 'pages.shareInfo.radios.radioText.agree' | translate,
+      id: "share-info-accepted",
+      value: "true"
+    },
+    {
+      checked: "true",
+      text: 'pages.shareInfo.radios.radioText.doNotAgree' | translate,
+      id: "share-info-rejected",
+      value: "false"
+    }
+  ]
+}) }}
+
+{{ govukButton({
+  "text": 'pages.shareInfo.continue' | translate,
+  "type": "Submit",
+  "preventDoubleClick": true
+}) }}
+
+</form>
+
+{% endblock %}
