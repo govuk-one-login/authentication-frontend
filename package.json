@@ -61,7 +61,7 @@
     "i18next": "^20.3.5",
     "i18next-fs-backend": "^1.1.1",
     "i18next-http-middleware": "^3.1.4",
-    "jsdom": "^16.6.0",
+    "jsdom": "^16.7.0",
     "nunjucks": "^3.2.3",
     "libphonenumber-js": "^1.9.23",
     "prettier": "^2.3.2",
