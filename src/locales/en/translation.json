@@ -68,7 +68,17 @@
   "error": {
     "error404": {
       "title": "Page not found",
-      "header": "Page not found"
+      "header": "Page not found",
+      "content": {
+        "paragraph1": "If you typed the web address, check it is correct.",
+        "paragraph2": "If you pasted the web address, check you copied the entire address.",
+        "paragraph3Start": "Go back to ",
+        "yourAccountLink": "#",
+        "yourAccountLinkText": "your account",
+        "paragraph3Middle": " or to the ",
+        "govUKHomepageLink": "https://www.gov.uk/",
+        "govUKHomepageLinkText": "GOV.UK homepage."
+      }
     },
     "error500": {
       "title": "Sorry, there is a problem with this service",
