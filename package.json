@@ -9,24 +9,25 @@
   "license": "ISC",
   "scripts": {
     "build-ts": "tsc",
-    "build": "yarn run build-sass && yarn run build-ts && yarn run copy-build",
-    "build-sass": "rm -rf dist/public/style.css && sass --no-source-map src/assets/scss/application.scss dist/public/style.css",
+    "build": "yarn build-sass && yarn build-ts && yarn minfiy-build-js && yarn copy-assets",
+    "build-sass": "rm -rf dist/public/style.css && sass --no-source-map src/assets/scss/application.scss dist/public/style.css --style compressed",
+    "clean": "rm -rf dist node_modules logs.json",
+    "copy-assets": "mkdir -p dist && copyfiles -u 1 src/**/*.njk dist/ src/locales/**/** dist/ && copyfiles -a static/* && copyfiles -u 3 src/assets/javascript/*.js dist/public/scripts",
     "dev": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\"",
     "dummy-server": "node dev-app.js",
-    "test:audit": "yarn audit",
-    "copy-build": "mkdir -p dist && copyfiles -u 1 src/**/*.njk dist/ src/locales/**/** dist/ && copyfiles -a static/* && copyfiles -u 3 src/assets/javascript/*.js dist/public/scripts",
-    "start": "node dist/server.js",
-    "watch-node": "nodemon -r dotenv/config dist/server.js",
-    "watch-ts": "tsc -w",
-    "watch-sass": "sass --watch src/assets/scss/application.scss dist/public/style.css",
     "depcheck": "depcheck",
     "lint": "eslint . --ext .ts,.js",
+    "minfiy-build-js": "uglifyjs src/assets/javascript/application.js -o src/assets/javascript/application.js -c -m && uglifyjs src/assets/javascript/cookies.js -o src/assets/javascript/cookies.js -c -m",
+    "pretty": "prettier --write \"src/**/*.{ts,json}\"",
+    "start": "node dist/server.js",
+    "test:audit": "yarn audit",
     "test:integration": "rm -rf test/coverage && NODE_ENV=development nyc mocha -r dotenv/config  \"src/**/*-integration.test.ts\"",
     "test:unit": "rm -rf test/coverage && NODE_ENV=development nyc mocha -r dotenv/config --exclude \"src/**/*-integration.test.ts\"  \"test/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
     "test": "rm -rf test/coverage && NODE_ENV=development nyc mocha -r dotenv/config  \"test/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
     "test:coverage": "nyc report",
-    "clean": "rm -rf dist node_modules logs.json",
-    "pretty": "prettier --write \"src/**/*.{ts,json}\""
+    "watch-node": "nodemon -r dotenv/config dist/server.js",
+    "watch-ts": "tsc -w",
+    "watch-sass": "sass --watch src/assets/scss/application.scss dist/public/style.css"
   },
   "mocha": {
     "diff": true,
@@ -110,6 +111,7 @@
     "sinon-chai": "^3.7.0",
     "supertest": "^6.1.3",
     "ts-node": "^10.0.0",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "uglify-js": "^3.14.1"
   }
 }

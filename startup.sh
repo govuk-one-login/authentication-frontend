@@ -35,5 +35,5 @@ else
     docker rm di-auth-frontend-dev --force
   fi
   echo "Starting di-auth-frontend-dev in docker..."
-  docker run --name di-auth-frontend-dev -dp 3000:3000 -w /app -v "$(pwd):/app"  node:15-alpine sh -c "yarn install && yarn copy-build && yarn dev"
+  docker run --name di-auth-frontend-dev -dp 3000:3000 -w /app -v "$(pwd):/app"  node:15-alpine sh -c "yarn install && yarn copy-assets && yarn dev"
 fi
