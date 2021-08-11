@@ -8,5 +8,8 @@ applications:
       - nodejs_buildpack
     env:
       NODE_ENV: "production"
+      API_BASE_URL: ((api_base_url))
+      SESSION_EXPIRY: ((session_expiry))
+      SESSION_SECRET: ((session_secret))
     routes:
       - route: ((route_name))
