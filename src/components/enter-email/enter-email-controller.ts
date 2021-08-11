@@ -13,7 +13,7 @@ export function enterEmailPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const email = req.body.email;
-    const sessionId = req.session.user.id;
+    const sessionId = res.locals.sessionId;
 
     req.session.user.email = email;
 

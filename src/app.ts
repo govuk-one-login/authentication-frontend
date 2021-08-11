@@ -1,6 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import csurf from "csurf";
+import { loggerMiddleware } from "./utils/logger";
 
 import { sanitizeRequestMiddleware } from "./middleware/sanitize-request-middleware";
 import i18nextMiddleware from "i18next-http-middleware";
@@ -8,7 +9,6 @@ import * as path from "path";
 import bodyParser from "body-parser";
 import { configureNunjucks } from "./config/nunchucks";
 import { i18nextConfigurationOptions } from "./config/i18next";
-import Logger from "./utils/logger";
 import { helmetConfiguration } from "./config/helmet";
 import helmet from "helmet";
 
@@ -40,6 +40,8 @@ import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes";
 import { authCodeRouter } from "./components/auth-code/auth-code-routes";
 import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-code-routes";
 import { signedOutRouter } from "./components/signed-out/signed-out-routes";
+import { getSessionIdMiddleware } from "./middleware/session-middleware";
+import { shareInfoRouter } from "./components/share-info/share-info-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -62,6 +64,7 @@ function registerRoutes(app: express.Application) {
   app.use(authCodeRouter);
   app.use(resendMfaCodeRouter);
   app.use(signedOutRouter);
+  app.use(shareInfoRouter);
 }
 
 function createApp(): express.Application {
@@ -69,6 +72,8 @@ function createApp(): express.Application {
   const isProduction = getNodeEnv() === ENVIRONMENT_NAME.PROD;
 
   app.enable("trust proxy");
+
+  app.use(loggerMiddleware);
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
@@ -105,6 +110,7 @@ function createApp(): express.Application {
   app.use(cookieParser());
   app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
 
+  app.use(getSessionIdMiddleware);
   app.post("*", sanitizeRequestMiddleware);
   app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
@@ -114,8 +120,6 @@ function createApp(): express.Application {
   app.use(logErrorMiddleware);
   app.use(serverErrorHandler);
   app.use(pageNotFoundHandler);
-
-  app.locals.logger = new Logger();
 
   return app;
 }

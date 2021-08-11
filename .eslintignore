@@ -7,3 +7,4 @@ functional-output
 coverage
 # ignore front-end js
 src/assets/javascript
+dev-app.js

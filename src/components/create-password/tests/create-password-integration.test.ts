@@ -17,9 +17,8 @@ describe("Integration::register create password", () => {
     sandbox
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
+        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user = {
-          id: "12sadjk",
-          scope: "openid",
           email: "test@test.com",
         };
         next();
@@ -75,7 +74,7 @@ describe("Integration::register create password", () => {
         const $ = cheerio.load(res.text);
         expect($("#password-error").text()).to.contains("Enter your password");
         expect($("#confirm-password-error").text()).to.contains(
-          "Retype your password"
+          "Re-type your password"
         );
       })
       .expect(400, done);
@@ -113,7 +112,7 @@ describe("Integration::register create password", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#password-error").text()).to.contains(
-          "Your password must be 8 characters or more"
+          "Your password must be at least 8 characters long and must include a number"
         );
       })
       .expect(400, done);
@@ -132,7 +131,7 @@ describe("Integration::register create password", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#password-error").text()).to.contains(
-          "Your password must include a number"
+          "Your password must be at least 8 characters long and must include a number"
         );
       })
       .expect(400, done);

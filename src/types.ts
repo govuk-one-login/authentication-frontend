@@ -1,8 +1,6 @@
 import { ValidationChain } from "express-validator";
 
 export interface UserSession {
-  id: string;
-  scope: string;
   email?: string;
   phoneNumber?: string;
 }

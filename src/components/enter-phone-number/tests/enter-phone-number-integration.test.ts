@@ -17,9 +17,8 @@ describe("Integration::enter phone number", () => {
     sandbox
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
+        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user = {
-          id: "12sadjk",
-          scope: "openid",
           email: "test@test.com",
         };
         next();
@@ -107,7 +106,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#phoneNumber-error").text()).to.contains(
-          "Phone number must only include numbers"
+          "Enter a UK Phone number using numbers only"
         );
       })
       .expect(400, done);
@@ -125,7 +124,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#phoneNumber-error").text()).to.contains(
-          "Enter a UK phone number, like 01632 960000 or 07700 900000"
+          "Enter a UK phone number, like 07700 900000"
         );
       })
       .expect(400, done);
@@ -143,7 +142,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#phoneNumber-error").text()).to.contains(
-          "Enter a UK phone number, like 01632 960000 or 07700 900000"
+          "Enter a UK phone number, like 07700 900000"
         );
       })
       .expect(400, done);

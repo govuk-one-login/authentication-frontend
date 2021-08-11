@@ -12,6 +12,7 @@ export const PATH_NAMES = {
   CREATE_ACCOUNT_SUCCESSFUL: "/account-created",
   LOG_IN_ENTER_PHONE_NUMBER: "/enter-phone-number",
   CHECK_YOUR_PHONE: "/check-your-phone",
+  SHARE_INFO: "/share-info",
   ENTER_MFA: "/enter-code",
   SECURITY_CODE_EXPIRED: "/security-code-expired",
   AUTH_CODE: "/auth-code",
@@ -42,6 +43,8 @@ export const API_ENDPOINTS = {
   LOG_IN_USER: "/login",
   UPDATE_PROFILE: "/update-profile",
   MFA: "/mfa",
+  AUTH_CODE: "/auth-code",
+  CLIENT_INFO: "/client-info",
 };
 
 export const ERROR_MESSAGES = {
@@ -66,6 +69,7 @@ export const USER_STATE = {
   PHONE_NUMBER_CODE_MAX_RETRIES_REACHED:
     "PHONE_NUMBER_CODE_MAX_RETRIES_REACHED",
   MFA_CODE_SENT: "MFA_CODE_SENT",
+  ADDED_CONSENT: "ADDED_CONSENT",
 };
 
 export enum NOTIFICATION_TYPE {

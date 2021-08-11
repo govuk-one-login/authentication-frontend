@@ -31,10 +31,10 @@ describe("auth code controller", () => {
   });
 
   describe("authCodeGet", () => {
-    it("should render auth code view", () => {
+    it("should redirect to auth code API endpoint", () => {
       authCodeGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("auth-code/index.njk");
+      expect(res.redirect).to.have.been.calledOnce;
     });
   });
 });

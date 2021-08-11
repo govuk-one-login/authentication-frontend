@@ -16,7 +16,7 @@ describe("enter email controller", () => {
     sandbox = sinon.createSandbox();
 
     req = { body: {}, session: { user: {} as UserSession } };
-    res = { render: sandbox.fake(), redirect: sandbox.fake() };
+    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
   });
 
   afterEach(() => {
@@ -39,7 +39,7 @@ describe("enter email controller", () => {
       };
 
       req.body.email = "test.test.com";
-      req.session.user.id = "dsad.dds";
+      res.locals.sessionId = "dsad.dds";
 
       await enterEmailPost(fakeService)(req as Request, res as Response);
 
@@ -54,7 +54,7 @@ describe("enter email controller", () => {
       };
 
       req.body.email = "test.test.com";
-      req.session.user.id = "sadl990asdald";
+      res.locals.sessionId = "sadl990asdald";
 
       await enterEmailPost(fakeService)(req as Request, res as Response);
 
@@ -72,7 +72,7 @@ describe("enter email controller", () => {
       };
 
       req.body.email = "test.test.com";
-      req.session.user.id = "231dccsd";
+      res.locals.sessionId = "231dccsd";
 
       await expect(
         enterEmailPost(fakeService)(req as Request, res as Response)

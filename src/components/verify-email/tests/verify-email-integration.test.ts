@@ -17,9 +17,8 @@ describe("Integration:: verify email", () => {
     sandbox
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
+        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user = {
-          id: "12sadjk",
-          scope: "openid",
           email: "test@test.com",
         };
         next();
@@ -163,7 +162,7 @@ describe("Integration:: verify email", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains(
-          "The security code you’ve entered is not correct, try entering it again or get a new security code."
+          "The security code you entered is not correct, or may have expired, try entering it again or request a new security code."
         );
       })
       .expect(400, done);

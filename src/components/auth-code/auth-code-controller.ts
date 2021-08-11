@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
+import { getApiBaseUrl } from "../../config";
+import { API_ENDPOINTS } from "../../app.constants";
 
 export function authCodeGet(req: Request, res: Response): void {
-  res.render("auth-code/index.njk");
+  const authCodeUrl = getApiBaseUrl() + API_ENDPOINTS.AUTH_CODE;
+  res.redirect(authCodeUrl);
 }

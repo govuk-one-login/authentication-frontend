@@ -27,6 +27,7 @@ describe("check your phone controller", () => {
       render: sandbox.fake(),
       redirect: sandbox.fake(),
       status: sandbox.fake(),
+      locals: {},
     };
   });
 
@@ -49,7 +50,7 @@ describe("check your phone controller", () => {
       };
 
       req.body.code = "123456";
-      req.session.user.id = "123456-djjad";
+      res.locals.sessionId = "123456-djjad";
 
       await checkYourPhonePost(fakeService)(req as Request, res as Response);
 
@@ -63,7 +64,7 @@ describe("check your phone controller", () => {
       };
       req.t = sandbox.fake.returns("translated string");
       req.body.code = "678988";
-      req.session.user.id = "123456-djjad";
+      res.locals.sessionId = "123456-djjad";
 
       await checkYourPhonePost(fakeService)(req as Request, res as Response);
 
@@ -80,7 +81,7 @@ describe("check your phone controller", () => {
 
       req.t = sandbox.fake.returns("translated string");
       req.body.code = "678988";
-      req.session.user.id = "123456-djjad";
+      res.locals.sessionId = "123456-djjad";
 
       await checkYourPhonePost(fakeService)(req as Request, res as Response);
 
