@@ -143,8 +143,8 @@
       }
     },
     "createPassword": {
-      "title": "Create your GOV.UK account password",
-      "header": "Create your GOV.UK account password",
+      "title": "Create your password",
+      "header": "Create your password",
       "password": {
         "label": "Enter a password",
         "hint": "It needs to be at least 8 characters long and must include at least one number",
@@ -190,7 +190,7 @@
       }
     },
     "accountCreated": {
-      "title": "You have successfully created your GOV.UK Account",
+      "title": "Account created",
       "header": "You have successfully created your GOV.UK Account",
       "info": {
         "heading": "A GOV.UK Account will:",
@@ -285,7 +285,7 @@
       "phoneNumber": "We'll send a new code to [mobile]"
     },
     "signedOut": {
-      "title": "You have signed out",
+      "title": "Signed out",
       "header": "You have signed out",
       "buttonHref": "https://www.gov.uk/",
       "buttonText": "Return to the GOV.UK homepage"
