@@ -1,4 +1,8 @@
-import { getBaseRequestConfigWithClientSession, Http, http } from "../../utils/http";
+import {
+  getBaseRequestConfigWithClientSession,
+  Http,
+  http,
+} from "../../utils/http";
 import { API_ENDPOINTS, USER_STATE } from "../../app.constants";
 
 import {
@@ -33,7 +37,7 @@ export function shareInfoService(
 
   const clientInfo = async function (
     sessionId: string,
-    clientSessionId: string,
+    clientSessionId: string
   ): Promise<ClientInfoResponse> {
     const { data } = await axios.client.get<ClientInfoResponse>(
       API_ENDPOINTS.CLIENT_INFO,
@@ -47,4 +51,3 @@ export function shareInfoService(
     clientInfo,
   };
 }
-

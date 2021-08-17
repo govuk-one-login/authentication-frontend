@@ -85,8 +85,8 @@ describe("share-info controller", () => {
       };
 
       await expect(
-          shareInfoPost(fakeService)(req as Request, res as Response
-      )).to.be.rejectedWith(Error, "Unable to update user profile");
+        shareInfoPost(fakeService)(req as Request, res as Response)
+      ).to.be.rejectedWith(Error, "Unable to update user profile");
 
       expect(fakeService.updateProfile).to.have.been.calledOnce;
     });

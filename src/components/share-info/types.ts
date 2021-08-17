@@ -5,7 +5,10 @@ export interface ShareInfoServiceInterface {
     email: string,
     consentValue: boolean
   ) => Promise<boolean>;
-  clientInfo: (sessionId: string, clientSessionId: string) => Promise<ClientInfoResponse>;
+  clientInfo: (
+    sessionId: string,
+    clientSessionId: string
+  ) => Promise<ClientInfoResponse>;
 }
 
 export interface UpdateUserProfile {

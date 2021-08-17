@@ -18,14 +18,13 @@ export function getBaseRequestConfig(sessionId: string): AxiosRequestConfig {
   };
 }
 
-export function getBaseRequestConfigWithClientSession(sessionId: string, clientSessionId: string): AxiosRequestConfig {
-  return {
-    headers: {
-      "Session-Id": sessionId,
-      "Client-Session-Id": clientSessionId,
-    },
-    proxy: false,
-  };
+export function getBaseRequestConfigWithClientSession(
+  sessionId: string,
+  clientSessionId: string
+): AxiosRequestConfig {
+  const config = getBaseRequestConfig(sessionId);
+  config.headers["Client-Session-Id"] = clientSessionId;
+  return config;
 }
 
 export class Http {

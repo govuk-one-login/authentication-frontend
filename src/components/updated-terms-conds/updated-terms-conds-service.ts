@@ -1,4 +1,9 @@
-import {getBaseRequestConfig, getBaseRequestConfigWithClientSession, Http, http} from "../../utils/http";
+import {
+  getBaseRequestConfig,
+  getBaseRequestConfigWithClientSession,
+  Http,
+  http,
+} from "../../utils/http";
 import { API_ENDPOINTS, USER_STATE } from "../../app.constants";
 
 import {
@@ -24,7 +29,7 @@ export function updateTermsAndCondsService(
         profileInformation: updatedTermsAndCondsValue,
         updateProfileType: UPDATE_TERMS_AND_CONDS,
       },
-        getBaseRequestConfig(sessionId)
+      getBaseRequestConfig(sessionId)
     );
 
     return data.sessionState === USER_STATE.UPDATED_TERMS_AND_CONDITIONS;
@@ -32,12 +37,13 @@ export function updateTermsAndCondsService(
 
   const clientInfo = async function (
     sessionId: string,
-    clientSessionId: string,
+    clientSessionId: string
   ): Promise<ClientInfoResponse> {
     const { data } = await axios.client.get<ClientInfoResponse>(
       API_ENDPOINTS.CLIENT_INFO,
       getBaseRequestConfigWithClientSession(sessionId, clientSessionId)
     );
+
     return data;
   };
 
@@ -46,4 +52,3 @@ export function updateTermsAndCondsService(
     clientInfo,
   };
 }
-
