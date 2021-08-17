@@ -291,20 +291,36 @@
     "shareInfo": {
       "title": "Share information from your GOV.UK account",
       "header": "Share information from your GOV.UK account",
-      "continue" : "Continue",
-      "bulletPointSectionHeader" : "This service needs to use your:",
-      "paragraph1" : "You added this information to your GOV.UK Account when you created the account. You can choose to share it with the service instead of entering it when you use the service.",
-      "paragraph2" : "The service will only use this information to contact you about the service. It won't share your information with anyone else. It will keep your information for as long as it needs to or the law requires it to.",
-      "paragraph3" : "If you choose not to share information from your GOV.UK Account, you may still be asked for that information as you use the service. For example if you choose not to share your email address or phone number and the service needs a way to contact you.",
-      "essentialHeader" : "Do you want to share information from your GOV.UK account?",
-      "radios" : {
-        "shareMy" : "Do you consent to sharing your email address and phone number:",
-        "radioText" : {
-          "agree" : "I agree",
-          "doNotAgree" : "I do not agree",
-          "error" : "You must select an option"
+      "continue": "Continue",
+      "bulletPointSectionHeader": "This service needs to use your:",
+      "paragraph1": "You added this information to your GOV.UK Account when you created the account. You can choose to share it with the service instead of entering it when you use the service.",
+      "paragraph2": "The service will only use this information to contact you about the service. It won't share your information with anyone else. It will keep your information for as long as it needs to or the law requires it to.",
+      "paragraph3": "If you choose not to share information from your GOV.UK Account, you may still be asked for that information as you use the service. For example if you choose not to share your email address or phone number and the service needs a way to contact you.",
+      "essentialHeader": "Do you want to share information from your GOV.UK account?",
+      "radios": {
+        "shareMy": "Do you consent to sharing your email address and phone number:",
+        "radioText": {
+          "agree": "I agree",
+          "doNotAgree": "I do not agree",
+          "error": "You must select an option"
         }
       }
+    },
+    "updatedTermsAndConds": {
+      "title": "GOV.UK account terms of use update",
+      "paragraph1": {
+        "text": "We've updated our ",
+        "and": "and",
+        "termsAndConditionsHref": "terms-and-conditions",
+        "termsAndConditionsText": "terms and conditions",
+        "privacyNoticeHref": "privacy-statement",
+        "privacyNoticeText": "privacy notice",
+        "cookiesPolicyHref": "cookies",
+        "cookiesPolicyText": "cookies policy"
+      },
+      "paragraph2": "By continuing you agree to our updated terms of use.",
+      "agreeAndContinue": "Agree and continue",
+      "doNotAgree": "I do not agree"
     },
     "cookiePolicy": {
       "title": "Cookies",

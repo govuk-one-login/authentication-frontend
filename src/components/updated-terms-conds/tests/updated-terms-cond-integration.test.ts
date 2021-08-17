@@ -1,11 +1,22 @@
 import request from "supertest";
-import { describe } from "mocha";
+import { beforeEach, describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
 
-describe("Integration:: resend mfa code", () => {
+function nockClientInfo(baseApi: string) {
+  nock(baseApi)
+    .get("/client-info")
+    .reply(200, {
+      clientId: "0wmWMtSCIRmNtbi_UaenAkt9D7o",
+      clientName: "testclient",
+      scopes: ["openid", "email", "phone"],
+      redirectUri: "http://localhost:5000/callback",
+    });
+}
+
+describe("Integration:: updated-terms-code", () => {
   let sandbox: sinon.SinonSandbox;
   let token: string | string[];
   let cookies: string;
@@ -21,18 +32,22 @@ describe("Integration:: resend mfa code", () => {
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+        res.locals.clientSessionId = "tDy103saszhcxbQq0-mjdzU33d";
         req.session.user = {
           email: "test@test.com",
           phoneNumber: "******7867",
         };
+        req.session.redirectUri = "http://localhost:5000/callback";
         next();
       });
 
     app = require("../../../app").createApp();
     baseApi = process.env.API_BASE_URL;
 
+    nockClientInfo(baseApi);
+
     request(app)
-      .get("/resend-code")
+      .get("/updated-terms-and-conditions")
       .end((err, res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
@@ -49,48 +64,55 @@ describe("Integration:: resend mfa code", () => {
     app = undefined;
   });
 
-  it("should return resend mfda code page", (done) => {
-    request(app).get("/resend-code").expect(200, done);
+  it("should return update terms and conditions page", (done) => {
+    nockClientInfo(baseApi);
+    request(app).get("/updated-terms-and-conditions").expect(200, done);
   });
 
   it("should return error when csrf not present", (done) => {
     request(app)
-      .post("/resend-code")
+      .post("/updated-terms-and-conditions")
       .type("form")
       .send({
-        code: "123456",
+        acceptOrReject: "reject",
       })
       .expect(500, done);
   });
 
-  it("should redirect to /enter-code when new code requested", (done) => {
-    nock(baseApi).post("/mfa").once().reply(200, {
-      sessionState: "MFA_CODE_SENT",
+  it("should redirect to /auth_code when terms accepted", (done) => {
+    nock(baseApi).post("/update-profile").once().reply(200, {
+      sessionState: "UPDATED_TERMS_AND_CONDITIONS",
     });
 
     request(app)
-      .post("/resend-code")
+      .post("/updated-terms-and-conditions")
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
+        acceptOrReject: "accept",
       })
-      .expect("Location", "/enter-code")
+      .expect("Location", "/auth-code")
       .expect(302, done);
   });
 
-  it("should return 500 error screen when API call fails", (done) => {
-    nock(baseApi).post("/mfa").once().reply(500, {
-      errorCode: "1234",
+  it("should redirect to service url when terms rejected", (done) => {
+    nock(baseApi).post("/update-profile").once().reply(200, {
+      sessionState: "UPDATED_TERMS_AND_CONDITIONS",
     });
 
     request(app)
-      .post("/resend-code")
+      .post("/updated-terms-and-conditions")
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
+        acceptOrReject: "reject",
       })
-      .expect(500, done);
+      .expect(
+        "Location",
+        "http://localhost:5000/callback?error_code=rejectedTermsAndConditions"
+      )
+      .expect(302, done);
   });
 });

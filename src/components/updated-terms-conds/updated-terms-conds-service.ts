@@ -1,4 +1,5 @@
 import {
+  getBaseRequestConfig,
   getBaseRequestConfigWithClientSession,
   Http,
   http,
@@ -7,32 +8,31 @@ import { API_ENDPOINTS, USER_STATE } from "../../app.constants";
 
 import {
   ClientInfoResponse,
-  ShareInfoServiceInterface,
+  UpdateTermsAndCondsServiceInterface,
   UpdateUserProfile,
 } from "./types";
 
-const UPDATE_TYPE_CAPTURE_CONSENT = "CAPTURE_CONSENT";
+const UPDATE_TERMS_AND_CONDS = "UPDATE_TERMS_CONDS";
 
-export function shareInfoService(
+export function updateTermsAndCondsService(
   axios: Http = http
-): ShareInfoServiceInterface {
+): UpdateTermsAndCondsServiceInterface {
   const updateProfile = async function (
     sessionId: string,
-    clientSessionId: string,
     email: string,
-    consent: boolean
+    updatedTermsAndCondsValue: boolean
   ): Promise<boolean> {
     const { data } = await axios.client.post<UpdateUserProfile>(
       API_ENDPOINTS.UPDATE_PROFILE,
       {
         email,
-        profileInformation: consent,
-        updateProfileType: UPDATE_TYPE_CAPTURE_CONSENT,
+        profileInformation: updatedTermsAndCondsValue,
+        updateProfileType: UPDATE_TERMS_AND_CONDS,
       },
-      getBaseRequestConfigWithClientSession(sessionId, clientSessionId)
+      getBaseRequestConfig(sessionId)
     );
 
-    return data.sessionState === USER_STATE.ADDED_CONSENT;
+    return data.sessionState === USER_STATE.UPDATED_TERMS_AND_CONDITIONS;
   };
 
   const clientInfo = async function (
@@ -43,6 +43,7 @@ export function shareInfoService(
       API_ENDPOINTS.CLIENT_INFO,
       getBaseRequestConfigWithClientSession(sessionId, clientSessionId)
     );
+
     return data;
   };
 

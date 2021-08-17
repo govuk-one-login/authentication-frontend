@@ -3,8 +3,8 @@ import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
-import * as sessionMiddleware from "../../../middleware/session-middleware";
 import { USER_STATE } from "../../../app.constants";
+import decache from "decache";
 
 describe("Integration::enter password", () => {
   let sandbox: sinon.SinonSandbox;
@@ -16,6 +16,9 @@ describe("Integration::enter password", () => {
   const ENDPOINT = "/enter-password";
 
   before(() => {
+    decache("../../../app");
+    decache("../../../middleware/session-middleware");
+    const sessionMiddleware = require("../../../middleware/session-middleware");
     sandbox = sinon.createSandbox();
     sandbox
       .stub(sessionMiddleware, "validateSessionMiddleware")

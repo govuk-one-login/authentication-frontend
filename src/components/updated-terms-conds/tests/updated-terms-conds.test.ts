@@ -3,9 +3,12 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { shareInfoGet, shareInfoPost } from "../share-info-controller";
+import {
+  updatedTermsCondsGet,
+  updatedTermsCondsPost,
+} from "../updated-terms-conds-controller";
 import { UserSession } from "../../../types";
-import { ShareInfoServiceInterface } from "../types";
+import { UpdateTermsAndCondsServiceInterface } from "../types";
 
 describe("share-info controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -32,9 +35,9 @@ describe("share-info controller", () => {
     sandbox.restore();
   });
 
-  describe("shareInfoGet", () => {
-    it("should render share-info page", async () => {
-      const fakeService: ShareInfoServiceInterface = {
+  describe("updatedTermsCondsGet", () => {
+    it("should render updated-terms-conds page", async () => {
+      const fakeService: UpdateTermsAndCondsServiceInterface = {
         updateProfile: sandbox.fake(),
         clientInfo: sandbox.fake.returns({ scopes: ["openid", "profile"] }),
       };
@@ -42,53 +45,55 @@ describe("share-info controller", () => {
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
 
-      await shareInfoGet(fakeService)(req as Request, res as Response);
+      await updatedTermsCondsGet(fakeService)(req as Request, res as Response);
 
       expect(fakeService.clientInfo).to.be.calledOnce;
-      expect(res.render).to.have.calledWith("share-info/index.njk");
+      expect(res.render).to.have.calledWith("updated-terms-conds/index.njk");
     });
   });
 
-  describe("shareInfoPost", () => {
-    it("should redirect to /auth-code when succesfully", async () => {
-      const fakeService: ShareInfoServiceInterface = {
+  describe("updatedTermsCondsPost", () => {
+    it("should redirect to /auth-code when acceptOrReject has value accept", async () => {
+      const fakeService: UpdateTermsAndCondsServiceInterface = {
         updateProfile: sandbox.fake.returns(true),
         clientInfo: sandbox.fake.returns({ scopes: ["openid", "profile"] }),
       };
 
-      req.body.consentValue = true;
+      req.body.acceptOrReject = "accept";
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
       req.session.user = {
         email: "test@test.com",
       };
 
-      await shareInfoPost(fakeService)(req as Request, res as Response);
+      await updatedTermsCondsPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.updateProfile).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith("/auth-code");
     });
   });
 
-  describe("shareInfoPostError", () => {
-    it("should throw error when update profile returns false", async () => {
-      const fakeService: ShareInfoServiceInterface = {
-        updateProfile: sandbox.fake.returns(false),
+  describe("updatedTermsCondsPost", () => {
+    it("should redirect to redirectUri with error code param when acceptOrReject has value reject", async () => {
+      const fakeService: UpdateTermsAndCondsServiceInterface = {
+        updateProfile: sandbox.fake.returns(true),
         clientInfo: sandbox.fake.returns({ scopes: ["openid", "profile"] }),
       };
 
-      req.body.consentValue = true;
+      req.session.redirectUri = "http://test.test";
+      req.body.acceptOrReject = "reject";
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
       req.session.user = {
         email: "test@test.com",
       };
 
-      await expect(
-        shareInfoPost(fakeService)(req as Request, res as Response)
-      ).to.be.rejectedWith(Error, "Unable to update user profile");
+      await updatedTermsCondsPost(fakeService)(req as Request, res as Response);
 
-      expect(fakeService.updateProfile).to.have.been.calledOnce;
+      expect(fakeService.updateProfile).not.to.been.called;
+      expect(res.redirect).to.have.calledWith(
+        "http://test.test?error_code=rejectedTermsAndConditions"
+      );
     });
   });
 });

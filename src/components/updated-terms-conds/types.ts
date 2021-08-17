@@ -1,9 +1,8 @@
-export interface ShareInfoServiceInterface {
+export interface UpdateTermsAndCondsServiceInterface {
   updateProfile: (
     sessionId: string,
-    clientSessionId: string,
     email: string,
-    consentValue: boolean
+    updatedTermsAndCondsValue: boolean
   ) => Promise<boolean>;
   clientInfo: (
     sessionId: string,
@@ -19,4 +18,5 @@ export interface ClientInfoResponse {
   clientId: string;
   clientName: string;
   scopes: string[];
+  redirectUri: string;
 }
