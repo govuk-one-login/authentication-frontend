@@ -26,7 +26,14 @@ export function shareInfoPost(
     const sessionId = res.locals.sessionId;
     const clientSessionId = res.locals.clientSessionId;
 
-    if (await service.updateProfile(sessionId, clientSessionId, email, consentValue)) {
+    if (
+      await service.updateProfile(
+        sessionId,
+        clientSessionId,
+        email,
+        consentValue
+      )
+    ) {
       res.redirect(PATH_NAMES.AUTH_CODE);
     } else {
       throw new Error("Unable to update user profile");
@@ -37,8 +44,12 @@ export function shareInfoPost(
 function mapScopes(scopes: string[]) {
   const returnScopes: any[] = [];
   scopes.forEach(function (item) {
-    if (item === "email") { returnScopes.push("email address"); }
-    if (item === "phone") { returnScopes.push("phone number"); }
+    if (item === "email") {
+      returnScopes.push("email address");
+    }
+    if (item === "phone") {
+      returnScopes.push("phone number");
+    }
   });
   return returnScopes;
 }

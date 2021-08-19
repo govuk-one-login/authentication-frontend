@@ -1,24 +1,25 @@
 import { PATH_NAMES } from "../../app.constants";
 
 import * as express from "express";
-import { shareInfoGet, shareInfoPost } from "./share-info-controller";
+import {
+  updatedTermsCondsGet,
+  updatedTermsCondsPost,
+} from "./updated-terms-conds-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { asyncHandler } from "../../utils/async";
-import { validateShareInfoRequest } from "./share-info-validation";
 
 const router = express.Router();
 
 router.get(
-  PATH_NAMES.SHARE_INFO,
+  PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS,
   validateSessionMiddleware,
-  asyncHandler(shareInfoGet())
+  asyncHandler(updatedTermsCondsGet())
 );
 
 router.post(
-  PATH_NAMES.SHARE_INFO,
+  PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS,
   validateSessionMiddleware,
-  validateShareInfoRequest(),
-  asyncHandler(shareInfoPost())
+  asyncHandler(updatedTermsCondsPost())
 );
 
-export { router as shareInfoRouter };
+export { router as updatedTermsCondsRouter };

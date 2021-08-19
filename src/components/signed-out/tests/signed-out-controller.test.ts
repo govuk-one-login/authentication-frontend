@@ -14,8 +14,21 @@ describe("signed out controller", () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
-    req = { body: {}, session: { user: {} as UserSession }, cookies: { "aps": "123", "cookies_preferences_set": "abc", "lng": "en", "gs": "xyz" } };
-    res = { render: sandbox.fake(), redirect: sandbox.fake(), clearCookie: sandbox.fake() };
+    req = {
+      body: {},
+      session: { user: {} as UserSession },
+      cookies: {
+        aps: "123",
+        cookies_preferences_set: "abc",
+        lng: "en",
+        gs: "xyz",
+      },
+    };
+    res = {
+      render: sandbox.fake(),
+      redirect: sandbox.fake(),
+      clearCookie: sandbox.fake(),
+    };
   });
 
   afterEach(() => {

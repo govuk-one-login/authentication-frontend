@@ -1,15 +1,25 @@
 {% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
 {% set pageTitleName = 'error.timeoutError.title' | translate %}
-{% set pageHeader = 'error.timeoutError.header' | translate %}
-{% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% block content %}
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-xl">{{ 'error.timeoutError.header' | translate }}</h1>
+        <h1 class="govuk-heading-l">{{ 'error.timeoutError.header' | translate }}</h1>
         <p class="govuk-body">{{ 'error.timeoutError.content.paragraph1' | translate }}</p>
         <p class="govuk-body">{{ 'error.timeoutError.content.paragraph2' | translate }}</p>
     </div>
 </div>
-{% endblock %}
 
+{{ govukButton({
+"text": button_text|default('error.timeoutError.content.signInButtonText' | translate, true),
+"type": "Submit",
+"href": 'error.timeoutError.content.signInButtonHRef' | translate
+}) }}
+
+<p class="govuk-body">
+    <a href="{{'error.timeoutError.content.govUKHomepageLink' | translate }}" class="govuk-link">{{'error.timeoutError.content.govUKHomepageLinkText' | translate }}</a>
+</p>
+
+{% endblock %}

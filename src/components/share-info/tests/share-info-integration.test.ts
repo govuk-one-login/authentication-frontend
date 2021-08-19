@@ -3,17 +3,14 @@ import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
-import { USER_STATE } from "../../../app.constants";
 import decache from "decache";
 
-describe("Integration::enter password", () => {
+describe("Integration::share info", () => {
   let sandbox: sinon.SinonSandbox;
   let token: string | string[];
   let cookies: string;
   let app: any;
   let baseApi: string;
-
-  const ENDPOINT = "/enter-password";
 
   before(() => {
     decache("../../../app");
@@ -24,8 +21,9 @@ describe("Integration::enter password", () => {
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+        res.locals.clientSessionId = "csy103saszhcxbQq0-mjdzU854";
         req.session.user = {
-          email: "joe.bloggs@digital.cabinet-office.gov.uk",
+          email: "test@test.com",
         };
         next();
       });
@@ -33,8 +31,17 @@ describe("Integration::enter password", () => {
     app = require("../../../app").createApp();
     baseApi = process.env.API_BASE_URL;
 
+    nock(baseApi)
+      .get("/client-info")
+      .once()
+      .reply(200, {
+        clientId: "client_test",
+        clientName: "client_test_name",
+        scopes: ["email", "phone"],
+      });
+
     request(app)
-      .get(ENDPOINT)
+      .get("/share-info")
       .end((err, res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
@@ -51,76 +58,88 @@ describe("Integration::enter password", () => {
     app = undefined;
   });
 
-  it("should return enter password page", (done) => {
-    request(app).get(ENDPOINT).expect(200, done);
+  it("should return share info page", (done) => {
+    nock(baseApi)
+      .get("/client-info")
+      .once()
+      .reply(200, {
+        clientId: "client_test",
+        clientName: "client_test_name",
+        scopes: ["email", "phone"],
+      });
+    request(app).get("/share-info").expect(200, done);
   });
 
   it("should return error when csrf not present", (done) => {
     request(app)
-      .post(ENDPOINT)
+      .post("/share-info")
       .type("form")
       .send({
-        password: "password",
+        consentValue: "true",
       })
       .expect(500, done);
   });
 
-  it("should return validation error when password not entered", (done) => {
+  it("should return validation error when consentValue not selected", (done) => {
     request(app)
-      .post(ENDPOINT)
+      .post("/share-info")
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
-        password: "",
+        consentValue: undefined,
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
-        expect($("#password-error").text()).to.contains("Enter your password");
-      })
-      .expect(400, done);
-  });
-
-  it("should return validation error when password is incorrect", (done) => {
-    nock(baseApi).post("/login").once().reply(401);
-
-    request(app)
-      .post(ENDPOINT)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        password: "pasasd",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#password-error").text()).to.contains(
-          "Enter the correct password"
+        expect($("#share-info-error").text()).to.contains(
+          "Select if you want to share your email address and phone number or not"
         );
       })
       .expect(400, done);
   });
 
-  it("should redirect to /enter-code page when password is correct", (done) => {
+  it("should redirect to /auth-code page when consentValue valid", (done) => {
     nock(baseApi)
-      .post("/login")
+      .post("/update-profile")
       .once()
       .reply(200, {
-        sessionState: USER_STATE.LOGGED_IN,
-      })
-      .post("/mfa")
-      .once()
-      .reply(200);
+        sessionState: "ADDED_CONSENT",
+      });
 
     request(app)
-      .post(ENDPOINT)
+      .post("/share-info")
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
-        password: "password",
+        consentValue: "true",
       })
-      .expect("Location", "/enter-code")
+      .expect("Location", "/auth-code")
       .expect(302, done);
+  });
+
+  it("should return internal server error when /update-profile API call response is 500", (done) => {
+    nock(baseApi)
+      .post("/update-profile")
+      .once()
+      .reply(500, {});
+
+    request(app)
+      .post("/share-info")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        consentValue: "true",
+      })
+      .expect(500, done);
+  });
+
+  it("should return internal server error when /client-info API call response is 500", (done) => {
+    nock(baseApi)
+      .get("/client-info")
+      .once()
+      .reply(500, {});
+    request(app).get("/share-info").expect(500, done);
   });
 });

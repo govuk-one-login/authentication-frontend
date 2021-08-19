@@ -42,6 +42,7 @@ import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-cod
 import { signedOutRouter } from "./components/signed-out/signed-out-routes";
 import { getSessionIdMiddleware } from "./middleware/session-middleware";
 import { shareInfoRouter } from "./components/share-info/share-info-routes";
+import { updatedTermsCondsRouter } from "./components/updated-terms-conds/updated-terms-conds-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -65,6 +66,7 @@ function registerRoutes(app: express.Application) {
   app.use(resendMfaCodeRouter);
   app.use(signedOutRouter);
   app.use(shareInfoRouter);
+  app.use(updatedTermsCondsRouter);
 }
 
 function createApp(): express.Application {

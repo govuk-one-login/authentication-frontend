@@ -26,7 +26,7 @@ fi
 
 if [ $LOCAL == "1" ]; then
   echo "Starting di-auth-frontend-dev on local..."
-  yarn install && yarn run copy-build && yarn run dev
+  yarn install && yarn copy-assets && yarn dev
 else
   running_count=$(docker ps -a | grep "di-auth-frontend-dev" | wc -l | awk '{ print $1 }')
   if [ ${running_count} -ne 0 ]; then

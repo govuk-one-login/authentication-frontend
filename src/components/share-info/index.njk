@@ -52,18 +52,19 @@
   },
   items: [
     {
-      checked: "false",
       text: 'pages.shareInfo.radios.radioText.agree' | translate,
       id: "share-info-accepted",
       value: "true"
     },
     {
-      checked: "true",
       text: 'pages.shareInfo.radios.radioText.doNotAgree' | translate,
       id: "share-info-rejected",
       value: "false"
     }
-  ]
+  ],
+  errorMessage: {
+  text: errors['consentValue'].text
+  } if (errors['consentValue'])
 }) }}
 
 {{ govukButton({

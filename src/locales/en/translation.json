@@ -68,18 +68,33 @@
   "error": {
     "error404": {
       "title": "Page not found",
-      "header": "Page not found"
+      "header": "Page not found",
+      "content": {
+        "paragraph1": "If you typed the web address, check it is correct.",
+        "paragraph2": "If you pasted the web address, check you copied the entire address.",
+        "backToYourAccountButtonLink": "#",
+        "backToYourAccountButtonText": "Go back to your account",
+        "govUKHomepageLink": "https://www.gov.uk/",
+        "govUKHomepageLinkText": "Go to the GOV.UK homepage"
+      }
     },
     "error500": {
-      "title": "Sorry, there is a problem with this service",
-      "header": "Sorry, there is a problem with this service"
+      "title": "There's a problem with this service",
+      "header": "Sorry, there's a problem with this service",
+      "content": {
+        "paragraph1": "Try again later."
+      }
     },
     "timeoutError": {
-      "title": "Session timed out",
-      "header": "Session timed out",
+      "title": "You've been signed out",
+      "header": "You have been signed out",
       "content": {
-        "paragraph1": "Your session has timed out due to inactivity.",
-        "paragraph2": "add another line here"
+        "paragraph1": "You’ve been signed out because you did not use your account for 30 minutes or more.",
+        "paragraph2": "This is to keep your account and your information secure.",
+        "signInButtonText": "Sign in",
+        "signInButtonHRef": "#",
+        "govUKHomepageLink": "https://www.gov.uk/",
+        "govUKHomepageLinkText": "Go to the GOV.UK homepage"
       }
     }
   },
@@ -126,8 +141,8 @@
       }
     },
     "createPassword": {
-      "title": "Create your GOV.UK account password",
-      "header": "Create your GOV.UK account password",
+      "title": "Create your password",
+      "header": "Create your password",
       "password": {
         "label": "Enter a password",
         "hint": "It needs to be at least 8 characters long and must include at least one number",
@@ -173,7 +188,7 @@
       }
     },
     "accountCreated": {
-      "title": "You have successfully created your GOV.UK Account",
+      "title": "Account created",
       "header": "You have successfully created your GOV.UK Account",
       "info": {
         "heading": "A GOV.UK Account will:",
@@ -268,7 +283,7 @@
       "phoneNumber": "We'll send a new code to [mobile]"
     },
     "signedOut": {
-      "title": "You have signed out",
+      "title": "Signed out",
       "header": "You have signed out",
       "buttonHref": "https://www.gov.uk/",
       "buttonText": "Return to the GOV.UK homepage"
@@ -278,18 +293,34 @@
       "header": "Share information from your GOV.UK account",
       "continue" : "Continue",
       "bulletPointSectionHeader" : "This service needs to use your:",
-      "paragraph1" : "You added this information to your GOV.UK Account when you created the account. You can choose to share it with the service instead of entering it when you use the service.",
+      "paragraph1" : "You added this information to your GOV.UK account when you created the account. You can choose to share it with the service instead of entering it when you use the service.",
       "paragraph2" : "The service will only use this information to contact you about the service. It won't share your information with anyone else. It will keep your information for as long as it needs to or the law requires it to.",
-      "paragraph3" : "If you choose not to share information from your GOV.UK Account, you may still be asked for that information as you use the service. For example if you choose not to share your email address or phone number and the service needs a way to contact you.",
+      "paragraph3" : "If you choose not to share information from your GOV.UK account, you may still be asked for that information as you use the service. For example if you choose not to share your email address and phone number and the service needs a way to contact you.",
       "essentialHeader" : "Do you want to share information from your GOV.UK account?",
       "radios" : {
-        "shareMy" : "Do you consent to sharing your email address and phone number:",
+        "shareMy" : "Do you want to share information from your GOV.UK account?",
         "radioText" : {
-          "agree" : "I agree",
-          "doNotAgree" : "I do not agree",
-          "error" : "You must select an option"
+          "agree" : "Share my email address and phone number",
+          "doNotAgree" : "Do not share my email address and phone number",
+          "errorMessage" : "Select if you want to share your email address and phone number or not"
         }
       }
+    },
+    "updatedTermsAndConds": {
+      "title": "GOV.UK account terms of use update",
+      "paragraph1": {
+        "text": "We've updated our ",
+        "and": "and",
+        "termsAndConditionsHref": "terms-and-conditions",
+        "termsAndConditionsText": "terms and conditions",
+        "privacyNoticeHref": "privacy-statement",
+        "privacyNoticeText": "privacy notice",
+        "cookiesPolicyHref": "cookies",
+        "cookiesPolicyText": "cookies policy"
+      },
+      "paragraph2": "By continuing you agree to our updated terms of use.",
+      "agreeAndContinue": "Agree and continue",
+      "doNotAgree": "I do not agree"
     },
     "cookiePolicy": {
       "title": "Cookies",
