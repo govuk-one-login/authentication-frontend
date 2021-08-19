@@ -497,10 +497,10 @@
   resolved "https://registry.yarnpkg.com/@types/nunjucks/-/nunjucks-3.1.5.tgz#e0782333b75b4ff9ac9213aa160ca8c5132eaf57"
   integrity sha512-0zEdmQNNvQ+xyV9kqQvAV93UVroTwhE78toVUDT0GBnGcW2jQBZnB4al9qq2LqI5qHOqROy/DvvAY/UwrbvV1A==
 
-"@types/pino-http@^5.4.1":
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/@types/pino-http/-/pino-http-5.4.2.tgz#9575091800733cfbe89429e6cfa6171cb64c0aaa"
-  integrity sha512-bHEWyfaLUcUzk1axkfx/L6Xvi8Ip/dQ3Skpe6FDrdPl1SAsL4+gWcolpGNmmpO1ZsGTqB10EUYl4PXIgGeSKWA==
+"@types/pino-http@^5.4.3":
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/@types/pino-http/-/pino-http-5.4.3.tgz#4ad1ef6279066f771043c789560080577acf4ad1"
+  integrity sha512-LbptcG7tO4RmA440ettbZwMEXo1gGRiXV+YsCVbFx4YoIHNmyWpHtpnSBefILgvpMHof6b4Dv5tCikDTgccNtA==
   dependencies:
     "@types/pino" "*"
 
