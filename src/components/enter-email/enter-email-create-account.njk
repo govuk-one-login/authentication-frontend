@@ -1,0 +1,43 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% set pageTitleName = 'pages.enterEmailCreateAccount.title' | translate %}
+
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterEmailCreateAccount.header' | translate}}</h1>
+
+<p class="govuk-body">{{'pages.enterEmailCreateAccount.text' | translate}}</p>
+
+<form action="/enter-email" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+{{ govukInput({
+    label: {
+        text: 'pages.enterEmailCreateAccount.email.label' | translate
+    },
+    id: "email",
+    name: "email",
+    value: email,
+    errorMessage: {
+        text: errors['email'].text
+    } if (errors['email'])})
+}}
+
+{{ govukButton({
+    "text": button_text|default("Continue", true),
+    "type": "Submit",
+    "preventDoubleClick": true
+}) }}
+
+</form>
+
+{% endblock %}
+
+
