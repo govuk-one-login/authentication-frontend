@@ -2,7 +2,9 @@ import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 
-export function validateEnterEmailRequest(): ValidationChainFunc {
+export function validateEnterEmailRequest(
+  template = "enter-email/enter-email-existing-account.njk"
+): ValidationChainFunc {
   return [
     body("email")
       .notEmpty()
@@ -21,6 +23,6 @@ export function validateEnterEmailRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t("pages.enterEmail.email.validationError.email", { value });
       }),
-    validateBodyMiddleware("enter-email/index.njk"),
+    validateBodyMiddleware(template),
   ];
 }

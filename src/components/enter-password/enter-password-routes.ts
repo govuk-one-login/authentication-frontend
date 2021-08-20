@@ -6,7 +6,7 @@ import {
   enterPasswordGet,
   enterPasswordPost,
 } from "./enter-password-controller";
-import { validateEnterPasswordRequest } from "./enter-password-validation";
+import { validateEnterPasswordAccountExistsRequest, validateEnterPasswordRequest } from "./enter-password-validation";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { asyncHandler } from "../../utils/async";
 
@@ -29,6 +29,13 @@ router.post(
   validateSessionMiddleware,
   validateEnterPasswordRequest(),
   asyncHandler(enterPasswordPost())
+);
+
+router.post(
+  PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS,
+  validateSessionMiddleware,
+  validateEnterPasswordAccountExistsRequest(),
+  asyncHandler(enterPasswordPost(true))
 );
 
 export { router as enterPasswordRouter };

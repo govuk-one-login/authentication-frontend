@@ -1,0 +1,44 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% set pageTitleName = 'pages.accountNotFoundOptional.title' | translate %}
+
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.accountNotFoundOptional.header' | translate}}</h1>
+
+<form action="/account-not-found" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+<p class="govuk-body">
+{{ 'pages.accountNotFoundOptional.paragraph1' | translate }}
+</p>
+
+{% set insetTextHtml %}
+<p class="govuk-body">{{'pages.accountNotFoundOptional.insetText1' | translate}}</p>
+<p class="govuk-body">{{'pages.accountNotFoundOptional.insetText2' | translate}}</p>
+<p class="govuk-body">{{'pages.accountNotFoundOptional.insetText3' | translate}}</p>
+{% endset %}
+
+{{ govukInsetText({
+    html: insetTextHtml
+  }) }}
+
+{{ govukButton({
+    "text": button_text|default('pages.accountNotFoundOptional.createAccountButtonText' | translate, true),
+    "type": "Submit",
+    "preventDoubleClick": true
+}) }}
+
+<p class="govuk-body">
+    <a href="/enter-email" class="govuk-link" rel="noreferrer noopener">{{'pages.accountNotFoundOptional.tryAnotherLinkText' | translate }}</a>
+</p>
+
+</form>
+
+{% endblock %}
+

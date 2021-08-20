@@ -24,10 +24,22 @@ describe("enter email controller", () => {
   });
 
   describe("enterEmailGet", () => {
-    it("should render enter email view", () => {
+    it("should render enter email create account view when user selected create account", () => {
+
+      req.session.user.createAccount = true;
+
       enterEmailGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("enter-email/index.njk");
+      expect(res.render).to.have.calledWith("enter-email/enter-email-create-account.njk");
+    });
+  });
+
+  describe("enterEmailGet", () => {
+    it("should render enter email create account view when user selected sign in", () => {
+
+      enterEmailGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith("enter-email/enter-email-existing-account.njk");
     });
   });
 
@@ -47,7 +59,7 @@ describe("enter email controller", () => {
       expect(res.redirect).to.have.calledWith("/enter-password");
     });
 
-    it("should redirect to /verify-email when no account exists", async () => {
+    it("should redirect to /account-not-found when no account exists", async () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sandbox.fake.returns(false),
         sendEmailVerificationNotification: sandbox.fake(),
@@ -58,9 +70,7 @@ describe("enter email controller", () => {
 
       await enterEmailPost(fakeService)(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith("/check-your-email");
-      expect(fakeService.sendEmailVerificationNotification).to.have.been
-        .calledOnce;
+      expect(res.redirect).to.have.calledWith("/account-not-found");
       expect(fakeService.userExists).to.have.been.calledOnce;
     });
 

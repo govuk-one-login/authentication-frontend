@@ -55,7 +55,7 @@ describe("enter password controller", () => {
       };
       req.body["password"] = "password";
 
-      await enterPasswordPost(fakeService, fakeMfaService)(
+      await enterPasswordPost(false, fakeService, fakeMfaService)(
         req as Request,
         res as Response
       );
@@ -80,7 +80,7 @@ describe("enter password controller", () => {
       req.body["password"] = "password";
 
       await expect(
-        enterPasswordPost(fakeService, fakeMfaService)(
+        enterPasswordPost(false, fakeService, fakeMfaService)(
           req as Request,
           res as Response
         )
