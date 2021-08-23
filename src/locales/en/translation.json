@@ -308,6 +308,7 @@
     },
     "updatedTermsAndConds": {
       "title": "GOV.UK account terms of use update",
+      "header": "GOV.UK account terms of use update",
       "paragraph1": {
         "text": "We've updated our ",
         "and": "and",
@@ -321,6 +322,22 @@
       "paragraph2": "By continuing you agree to our updated terms of use.",
       "agreeAndContinue": "Agree and continue",
       "doNotAgree": "I do not agree"
+    },
+    "updatedTermsAndCondsMandatory": {
+      "title": "Agree to the updated terms of use to continue",
+      "header": "Agree to the updated terms of use to continue",
+      "paragraph": "You need to agree to our updated terms of use to use this service.",
+      "agreeAndContinue": "Agree and continue",
+      "goBackToService": "Go back to "
+    },
+    "updatedTermsAndCondsOptional": {
+      "title": "Agree to the updated terms of use to save your progress",
+      "header": "Agree to the updated terms of use to save your progress",
+      "paragraph1": "You need to agree to our updated terms of use to save your progress.",
+      "paragraph2": "You can still complete your ",
+      "paragraph2Continued": " without saving it.",
+      "agreeAndContinue": "Agree and continue",
+      "goBackToService": "Complete your "
     },
     "cookiePolicy": {
       "title": "Cookies",

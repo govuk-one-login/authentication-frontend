@@ -14,6 +14,8 @@ export const PATH_NAMES = {
   CHECK_YOUR_PHONE: "/check-your-phone",
   SHARE_INFO: "/share-info",
   UPDATED_TERMS_AND_CONDITIONS: "/updated-terms-and-conditions",
+  UPDATED_TERMS_AND_CONDITIONS_MANDATORY: "/updated-terms-and-conditions-mandatory",
+  UPDATED_TERMS_AND_CONDITIONS_OPTIONAL: "/updated-terms-and-conditions-optional",
   ENTER_MFA: "/enter-code",
   SECURITY_CODE_EXPIRED: "/security-code-expired",
   AUTH_CODE: "/auth-code",

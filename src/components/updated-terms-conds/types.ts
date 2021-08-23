@@ -19,4 +19,6 @@ export interface ClientInfoResponse {
   clientName: string;
   scopes: string[];
   redirectUri: string;
+  serviceType: string;
+  state: string;
 }
