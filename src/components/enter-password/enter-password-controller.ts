@@ -16,6 +16,10 @@ export function enterPasswordGet(req: Request, res: Response): void {
   res.render("enter-password/index.njk");
 }
 
+export function enterPasswordAccountExistsGet(req: Request, res: Response): void {
+  res.render("enter-password/enter-password-account-exists.njk", { email: "replace.me@anymail.com"});
+}
+
 function isUserLoggedIn(userLogin: UserLogin) {
   return (
     userLogin.sessionState && userLogin.sessionState === USER_STATE.LOGGED_IN

@@ -43,6 +43,8 @@ import { signedOutRouter } from "./components/signed-out/signed-out-routes";
 import { getSessionIdMiddleware } from "./middleware/session-middleware";
 import { shareInfoRouter } from "./components/share-info/share-info-routes";
 import { updatedTermsCondsRouter } from "./components/updated-terms-conds/updated-terms-conds-routes";
+import { signInOrCreateRouter } from "./components/sign-in-or-create/sign-in-or-create-routes";
+import { accountNotFoundRouter } from "./components/account-not-found/account-not-found-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -51,7 +53,9 @@ const APP_VIEWS = [
 
 function registerRoutes(app: express.Application) {
   app.use(landingRouter);
+  app.use(signInOrCreateRouter);
   app.use(enterEmailRouter);
+  app.use(accountNotFoundRouter);
   app.use(enterPasswordRouter);
   app.use(verifyEmailRouter);
   app.use(createPasswordRouter);

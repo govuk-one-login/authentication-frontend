@@ -5,8 +5,17 @@ import { enterEmailService } from "./enter-email-service";
 import { EnterEmailServiceInterface } from "./types";
 
 export function enterEmailGet(req: Request, res: Response): void {
-  res.render("enter-email/index.njk");
+    res.render("enter-email/index.njk");
 }
+
+export function enterEmailCreateAccountGet(req: Request, res: Response): void {
+  res.render("enter-email/enter-email-create-account.njk");
+}
+
+export function enterEmailExistingAccountGet(req: Request, res: Response): void {
+  res.render("enter-email/enter-email-existing-account.njk");
+}
+
 
 export function enterEmailPost(
   service: EnterEmailServiceInterface = enterEmailService()

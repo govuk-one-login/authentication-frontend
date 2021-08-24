@@ -99,6 +99,52 @@
     }
   },
   "pages": {
+    "signInOrCreate": {
+      "title": "Sign in or create an account",
+      "header": "Sign in or create a GOV.UK account",
+      "paragraph1": "You need a GOV.UK account to do this.  If you don't have a GOV.UK account, you can create one.",
+      "paragraph2": "The GOV.UK account is new.  It's separate from other government accounts, such as your personal tax account, or Government Gateway.",
+      "moreAbout": {
+        "header": "More about GOV.UK accounts",
+        "paragraph1": "GOV.UK account is a new account that we're starting to use for some government services.",
+        "paragraph2": "Other services use different accounts, such as Government Gateway or your Universal Credit account.",
+        "paragraph3": "In the future, you'll be able to use your GOV.UK account for all government services.  For now, you need different accounts for different services."
+      },
+      "existingAccountRadios": {
+          "createAccountText": "Create an account",
+          "createAccountHintText": "You'll need an email address and a UK mobile phone number.  It will take no more than 5 minutes.",
+          "signInText": "Sign in",
+          "errorMessage": "Select an option"
+        },
+      "continueButtonText": "Continue"
+    
+    },
+    "enterEmailCreateAccount": {
+      "title": "Enter your email",
+      "header": "Enter your email address",
+      "text": "Enter your email address to create an account.",
+      "email": {
+        "label": "Email address",
+        "validationError": {
+          "required": "Enter your email address",
+          "length": "Email address must be 256 characters or fewer",
+          "email": "Enter an email address in the correct format, like name@example.com"
+        }
+      }
+    },
+    "enterEmailExistingAccount": {
+      "title": "Sign in",
+      "header": "Enter your email address",
+      "text": "Enter your email address to sign in to your account.",
+      "email": {
+        "label": "Email address",
+        "validationError": {
+          "required": "Enter your email address",
+          "length": "Email address must be 256 characters or fewer",
+          "email": "Enter an email address in the correct format, like name@example.com"
+        }
+      }
+    },
     "enterEmail": {
       "title": "Sign in to or create your GOV.UK Account",
       "header": "Sign in to or create your GOV.UK Account",
@@ -125,10 +171,38 @@
         "bulletPoint2": "a working UK phone number with signal, so we can send you a security code"
       }
     },
+    "accountNotFound": {
+      "title": "Account not found",
+      "header": "No GOV.UK account found",
+      "paragraph1": "We could not find a GOV.UK account using this email address.",
+      "insetText1": "You may have other government accounts such as Government Gateway or your personal tax account.",
+      "insetText2": "The GOV.UK account is separate from these other government accounts.",
+      "insetText3": "You need to create a GOV.UK account, even if you have another government account.",
+      "createAccountButtonText": "Create a GOV.UK account",
+      "createAccountButtonHref": "/enter-email-create-account",
+      "tryAnotherLinkText": "Try another email address",
+      "tryAnotherLinkHref": "/enter-email-existing-account"
+    },
     "enterPassword": {
       "title": "Enter your password",
       "header": "Enter your password",
       "info": "Enter your password to sign in",
+      "password": {
+        "label": "Password",
+        "validationError": {
+          "required": "Enter your password",
+          "incorrectPassword": "Enter the correct password"
+        }
+      },
+      "forgottenPassword": {
+        "text": "I've forgotten my password"
+      }
+    },
+    "enterPasswordAccountExists": {
+      "title": "You have a GOV.UK account",
+      "header": "You have a GOV.UK account",
+      "paragraph1": "There's already a GOV.UK account using this email address.",
+      "info": "Enter your password to sign in.",
       "password": {
         "label": "Password",
         "validationError": {
