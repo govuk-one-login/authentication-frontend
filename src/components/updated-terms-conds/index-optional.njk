@@ -1,0 +1,42 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% set pageTitleName = 'pages.updatedTermsAndCondsOptional.title' | translate %}
+{% set rowClasses = 'interrupt-screen' %}
+{% block content %}
+
+<h1 class="govuk-white-text govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.updatedTermsAndCondsOptional.header' | translate}}</h1>
+
+<p class="govuk-body govuk-white-text">
+    {{ 'pages.updatedTermsAndCondsOptional.paragraph1' | translate }}
+</p>
+
+<p class="govuk-body govuk-white-text">
+    {{ 'pages.updatedTermsAndCondsOptional.paragraph2' | translate + clientInfo.client_name + 'pages.updatedTermsAndCondsOptional.paragraph2Continued' | translate }}
+</p>
+
+<form action="/updated-terms-and-conditions" method="post" novalidate>
+
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+    {{ govukButton({
+        "text": 'pages.updatedTermsAndCondsOptional.agreeAndContinue' | translate,
+        "type": "Submit",
+        "preventDoubleClick": true,
+        classes: 'govuk-blue-text govuk-white-button inverted-button',
+        "name": "acceptOrReject",
+        "value": "accept"
+    }) }}
+
+    <br />
+    {{ govukButton({
+        "text": 'pages.updatedTermsAndCondsOptional.goBackToService' | translate + clientInfo.client_name,
+        "type": "Submit",
+        "preventDoubleClick": true,
+        classes: 'govuk-btn-link inverted-button-link',
+        "name": "acceptOrReject",
+        "value": "reject"
+    }) }}
+
+</form>
+{% endblock %}

@@ -5,6 +5,8 @@
 {% set rowClasses = 'interrupt-screen' %}
 {% block content %}
 
+<h1 class="govuk-white-text govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.updatedTermsAndConds.header' | translate}}</h1>
+
 <p class="govuk-body govuk-white-text">
     {{ 'pages.updatedTermsAndConds.paragraph1.text' | translate }}
     <a class="govuk-white-text"
@@ -25,7 +27,7 @@
         "text": 'pages.updatedTermsAndConds.agreeAndContinue' | translate,
         "type": "Submit",
         "preventDoubleClick": true,
-        classes: 'govuk-blue-text govuk-white-button',
+        classes: 'govuk-blue-text govuk-white-button inverted-button',
         "name": "acceptOrReject",
         "value": "accept"
     }) }}
@@ -35,7 +37,7 @@
         "text": 'pages.updatedTermsAndConds.doNotAgree' | translate,
         "type": "Submit",
         "preventDoubleClick": true,
-        classes: 'govuk-btn-link',
+        classes: 'govuk-btn-link inverted-button-link',
         "name": "acceptOrReject",
         "value": "reject"
     }) }}

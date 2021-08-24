@@ -13,6 +13,7 @@ function nockClientInfo(baseApi: string) {
       clientName: "testclient",
       scopes: ["openid", "email", "phone"],
       redirectUri: "http://localhost:5000/callback",
+      state: "test"
     });
 }
 
@@ -69,6 +70,16 @@ describe("Integration:: updated-terms-code", () => {
     request(app).get("/updated-terms-and-conditions").expect(200, done);
   });
 
+    it("should return update terms and conditions optional page", (done) => {
+        nockClientInfo(baseApi);
+        request(app).get("/updated-terms-and-conditions-optional").expect(200, done);
+    });
+
+    it("should return update terms and conditions mandatory page", (done) => {
+        nockClientInfo(baseApi);
+        request(app).get("/updated-terms-and-conditions-mandatory").expect(200, done);
+    });
+
   it("should return error when csrf not present", (done) => {
     request(app)
       .post("/updated-terms-and-conditions")
@@ -111,7 +122,7 @@ describe("Integration:: updated-terms-code", () => {
       })
       .expect(
         "Location",
-        "http://localhost:5000/callback?error_code=rejectedTermsAndConditions"
+        "http://localhost:5000/callback?error_code=rejectedTermsAndConditions&state=test"
       )
       .expect(302, done);
   });
