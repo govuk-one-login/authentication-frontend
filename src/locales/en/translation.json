@@ -143,7 +143,7 @@
     "enterEmailExistingAccount": {
       "title": "Sign in",
       "header": "Enter your email address",
-      "text": "Enter your email address to sign in to your account.",
+      "text": "Enter your email address to sign in.",
       "email": {
         "label": "Email address",
         "validationError": {
