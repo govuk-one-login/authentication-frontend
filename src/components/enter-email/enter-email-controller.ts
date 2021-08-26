@@ -5,17 +5,11 @@ import { enterEmailService } from "./enter-email-service";
 import { EnterEmailServiceInterface } from "./types";
 
 export function enterEmailGet(req: Request, res: Response): void {
-    res.render("enter-email/index.njk");
+  if (req.session.user.createAccount) {
+    return res.render("enter-email/enter-email-create-account.njk");
+  }
+  return res.render("enter-email/enter-email-existing-account.njk");
 }
-
-export function enterEmailCreateAccountGet(req: Request, res: Response): void {
-  res.render("enter-email/enter-email-create-account.njk");
-}
-
-export function enterEmailExistingAccountGet(req: Request, res: Response): void {
-  res.render("enter-email/enter-email-existing-account.njk");
-}
-
 
 export function enterEmailPost(
   service: EnterEmailServiceInterface = enterEmailService()
@@ -23,15 +17,31 @@ export function enterEmailPost(
   return async function (req: Request, res: Response) {
     const email = req.body.email;
     const sessionId = res.locals.sessionId;
-
     req.session.user.email = email;
 
     if (await service.userExists(sessionId, email)) {
-      return res.redirect(PATH_NAMES.ENTER_PASSWORD);
+      res.redirect(PATH_NAMES.ENTER_PASSWORD);
     }
 
-    await service.sendEmailVerificationNotification(sessionId, email);
+    return res.redirect(PATH_NAMES.ACCOUNT_NOT_FOUND);
+  };
+}
 
-    res.redirect(PATH_NAMES.CHECK_YOUR_EMAIL);
+export function enterEmailCreatePost(
+  service: EnterEmailServiceInterface = enterEmailService()
+): ExpressRouteFunc {
+  return async function (req: Request, res: Response) {
+    const email = req.body.email;
+    const sessionId = res.locals.sessionId;
+
+    req.session.user.email = email;
+    const hasAccount = await service.userExists(sessionId, email);
+
+    if (hasAccount) {
+      res.redirect("/enter-password-account-exists");
+    } else {
+      await service.sendEmailVerificationNotification(sessionId, email);
+      res.redirect(PATH_NAMES.CHECK_YOUR_EMAIL);
+    }
   };
 }

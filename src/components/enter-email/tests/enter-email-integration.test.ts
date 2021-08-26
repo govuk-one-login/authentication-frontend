@@ -115,7 +115,7 @@ describe("Integration::enter email", () => {
       .expect(302, done);
   });
 
-  it("should redirect to /check-your-email when email address not found", (done) => {
+  it("should redirect to /account-not-found when email address not found", (done) => {
     nock(baseApi)
       .post("/user-exists")
       .once()
@@ -136,7 +136,7 @@ describe("Integration::enter email", () => {
         _csrf: token,
         email: "test@test.com",
       })
-      .expect("Location", "/check-your-email")
+      .expect("Location", "/account-not-found")
       .expect(302, done);
   });
 

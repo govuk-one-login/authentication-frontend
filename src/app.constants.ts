@@ -5,9 +5,11 @@ export const PATH_NAMES = {
   COOKIES_POLICY: "/cookies",
   SIGN_IN_OR_CREATE: "/sign-in-or-create",
   ENTER_EMAIL: "/enter-email",
+  ENTER_EMAIL_POST_CREATE: "/enter-email-create",
   ACCOUNT_NOT_FOUND: "/account-not-found",
   CHECK_YOUR_EMAIL: "/check-your-email",
   ENTER_PASSWORD: "/enter-password",
+  ENTER_PASSWORD_ACCOUNT_EXISTS: "/enter-password-account-exists",
   CREATE_ACCOUNT_CHECK_EMAIL: "/check-email",
   CREATE_ACCOUNT_SET_PASSWORD: "/create-password",
   CREATE_ACCOUNT_ENTER_PHONE_NUMBER: "/enter-phone-number",
@@ -77,6 +79,11 @@ export const USER_STATE = {
   ADDED_CONSENT: "ADDED_CONSENT",
   UPDATED_TERMS_AND_CONDITIONS: "UPDATED_TERMS_AND_CONDITIONS",
 };
+
+export const SERVICE_TYPE = {
+  MANDATORY: "MANDATORY",
+  OPTIONAL: "OPTIONAL",
+}
 
 export enum NOTIFICATION_TYPE {
   VERIFY_EMAIL = "VERIFY_EMAIL",

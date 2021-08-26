@@ -14,3 +14,16 @@ export function validateEnterPasswordRequest(): ValidationChainFunc {
     validateBodyMiddleware("enter-password/index.njk"),
   ];
 }
+
+export function validateEnterPasswordAccountExistsRequest(): ValidationChainFunc {
+  return [
+    body("password")
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t("pages.enterPasswordAccountExists.password.validationError.required", {
+          value,
+        });
+      }),
+    validateBodyMiddleware("enter-password/enter-password-account-exists.njk"),
+  ];
+}

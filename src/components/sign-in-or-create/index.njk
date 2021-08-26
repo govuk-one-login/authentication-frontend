@@ -4,19 +4,36 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
-{% set pageTitleName = 'pages.signInOrCreate.title' | translate %}
+{% if serviceType === 'OPTIONAL'  %}
+  {% set pageTitleVariableName = 'pages.signInOrCreate.optional.title' %}
+{% endif %}
+{% if serviceType === 'MANDATORY'  %}
+  {% set pageTitleVariableName = 'pages.signInOrCreate.mandatory.title' %}
+{% endif %}
+
+{% set pageTitleName = pageTitleVariableName | translate %}
 
 {% block content %}
 
 {% include "common/errors/errorSummary.njk" %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.signInOrCreate.header' | translate}}</h1>
+{% if serviceType === 'OPTIONAL' %}
 
-<p class="govuk-body">{{'pages.signInOrCreate.paragraph1' | translate}}</p>
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.signInOrCreate.optional.header' | translate}}</h1>
+  <p class="govuk-body">{{'pages.signInOrCreate.optional.paragraph1' | translate}}</p>
+  {{ govukInsetText({
+    text: 'pages.signInOrCreate.optional.paragraph2' | translate
+  }) }}
 
-{{ govukInsetText({
-    text: 'pages.signInOrCreate.paragraph2' | translate
-}) }}
+{% else %}
+
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.signInOrCreate.mandatory.header' | translate}}</h1>
+  <p class="govuk-body">{{'pages.signInOrCreate.mandatory.paragraph1' | translate}}</p>
+  {{ govukInsetText({
+    text: 'pages.signInOrCreate.mandatory.paragraph2' | translate
+  }) }}
+
+{% endif %}
 
 {% set moreAboutTextHtml %}
 <p class="govuk-body">{{'pages.signInOrCreate.moreAbout.paragraph1' | translate}}</p>

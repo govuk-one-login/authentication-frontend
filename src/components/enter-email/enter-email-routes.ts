@@ -1,6 +1,10 @@
 import { PATH_NAMES } from "../../app.constants";
 import { validateEnterEmailRequest } from "./enter-email-validation";
-import { enterEmailPost, enterEmailGet, enterEmailCreateAccountGet, enterEmailExistingAccountGet } from "./enter-email-controller";
+import {
+  enterEmailPost,
+  enterEmailGet,
+  enterEmailCreatePost,
+} from "./enter-email-controller";
 import * as express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { asyncHandler } from "../../utils/async";
@@ -11,14 +15,18 @@ router.get("/", validateSessionMiddleware, enterEmailGet);
 
 router.get(PATH_NAMES.ENTER_EMAIL, validateSessionMiddleware, enterEmailGet);
 
-router.get("/enter-email-create-account", validateSessionMiddleware, enterEmailCreateAccountGet);
-router.get("/enter-email-existing-account", validateSessionMiddleware, enterEmailExistingAccountGet);
-
 router.post(
   PATH_NAMES.ENTER_EMAIL,
   validateSessionMiddleware,
   validateEnterEmailRequest(),
   asyncHandler(enterEmailPost())
+);
+
+router.post(
+  PATH_NAMES.ENTER_EMAIL_POST_CREATE,
+  validateSessionMiddleware,
+  validateEnterEmailRequest("enter-email/enter-email-create-account.njk"),
+  asyncHandler(enterEmailCreatePost())
 );
 
 export { router as enterEmailRouter };
