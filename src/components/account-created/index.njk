@@ -2,11 +2,11 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% set pageTitleName = 'pages.accountCreated.title' | translate %}
 {% block content %}
 
 {% include "common/errors/errorSummary.njk" %}
-
 
 {{ govukPanel({
     titleText: 'pages.accountCreated.header' | translate
@@ -14,20 +14,45 @@
 
 <br>
 
-<p class="govuk-body">{{'pages.accountCreated.info.heading' | translate}}</p>
-<ul class="govuk-list govuk-list--bullet">
-    <li>{{'pages.accountCreated.info.bulletPoint1' | translate}}</li>
-    <li>{{'pages.accountCreated.info.bulletPoint2' | translate}}</li>
-    <li>{{'pages.accountCreated.info.bulletPoint3' | translate}}</li>
-    <li>{{'pages.accountCreated.info.bulletPoint4' | translate}}</li>
-</ul>
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.accountCreated.subHeader' | translate}}</h1>
 
-<br>
+<p class="govuk-body">{{'pages.accountCreated.info.paragraph1' | translate}}</p>
+<p class="govuk-body">{{'pages.accountCreated.info.paragraph2' | translate}}</p>
+<p class="govuk-body">{{'pages.accountCreated.info.paragraph3' | translate}}</p>
 
-{{ govukButton({
-    "text": button_text|default('general.continue.label' | translate, true),
-    "href": linkUrl
-}) }}
+{% if serviceType === 'MANDATORY' %}
+    {{ govukInsetText({
+      text: 'pages.accountCreated.inset' | translate + clientName + 'pages.accountCreated.insetContinued' | translate,
+      classes: "govuk-bold"
+    }) }}
 
+    <p class="govuk-body">{{'pages.accountCreated.info.paragraph4' | translate}}</p>
+
+    {{ govukButton({
+        "text": button_text|default('pages.accountCreated.signOut' | translate, true),
+        "href": linkUrl
+    }) }}
+
+    <br>
+
+    <a href="/auth-code" class="govuk-link">
+        {{'pages.accountCreated.continueReport' | translate}}
+    </a>
+{% endif %}
+
+{% if serviceType === 'OPTIONAL' %}
+    <h1 class="govuk-body govuk-bold">{{'pages.accountCreated.progressSaved' | translate}}</h1>
+
+    {{ govukButton({
+        "text": button_text|default('pages.accountCreated.continue' | translate, true),
+        "href": linkUrl
+    }) }}
+
+    <br>
+
+    <a href="/auth-code" class="govuk-link">
+        {{'pages.accountCreated.signOut' | translate}}
+    </a>
+{% endif %}
 
 {% endblock %}

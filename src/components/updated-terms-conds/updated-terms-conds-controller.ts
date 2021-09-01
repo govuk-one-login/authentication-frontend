@@ -24,7 +24,7 @@ export function updatedTermsCondsMandatoryGet(
         req.session.redirectUri = clientInfo.redirectUri;
         req.session.state = clientInfo.state;
 
-        const view = clientInfo.serviceType === "mandatory" ? "index-mandatory.njk" : "index.njk";
+        const view = clientInfo.serviceType === "MANDATORY" ? "index-mandatory.njk" : "index.njk";
 
         return res.render("updated-terms-conds/" + view);
     };
@@ -38,7 +38,7 @@ export function updatedTermsCondsOptionalGet(
         req.session.redirectUri = clientInfo.redirectUri;
         req.session.state = clientInfo.state;
 
-        const view = clientInfo.serviceType === "optional" ? "index-optional.njk" : "index.njk";
+        const view = clientInfo.serviceType === "OPTIONAL" ? "index-optional.njk" : "index.njk";
 
         return res.render("updated-terms-conds/" + view);
     };
