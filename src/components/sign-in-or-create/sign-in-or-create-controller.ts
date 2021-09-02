@@ -11,8 +11,9 @@ export function signInOrCreateGet(
     const sessionId = res.locals.sessionId;
     const clientSessionId = res.locals.clientSessionId;
     const clientInfo = await service.clientInfo(sessionId, clientSessionId);
-    if (clientInfo.service_type) {
+    if (clientInfo.service_type && clientInfo.clientName) {
       req.session.serviceType = clientInfo.service_type;
+      req.session.clientName = clientInfo.clientName;
     } else {
       req.session.serviceType = SERVICE_TYPE.MANDATORY;
     }
