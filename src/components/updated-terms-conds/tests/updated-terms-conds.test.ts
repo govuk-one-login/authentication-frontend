@@ -56,7 +56,7 @@ describe("share-info controller", () => {
     it("should render updated-terms-conds-mandatory page", async () => {
       const fakeService: UpdateTermsAndCondsServiceInterface = {
         updateProfile: sandbox.fake(),
-        clientInfo: sandbox.fake.returns({ scopes: ["openid", "profile"], serviceType: "mandatory" }),
+        clientInfo: sandbox.fake.returns({ scopes: ["openid", "profile"], serviceType: "MANDATORY" }),
       };
 
       res.locals.sessionId = "s-123456-djjad";
@@ -73,7 +73,7 @@ describe("share-info controller", () => {
     it("should render updated-terms-conds-optional page", async () => {
       const fakeService: UpdateTermsAndCondsServiceInterface = {
         updateProfile: sandbox.fake(),
-        clientInfo: sandbox.fake.returns({ scopes: ["openid", "profile"], serviceType: "optional" }),
+        clientInfo: sandbox.fake.returns({ scopes: ["openid", "profile"], serviceType: "OPTIONAL" }),
       };
 
       res.locals.sessionId = "s-123456-djjad";

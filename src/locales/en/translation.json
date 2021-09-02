@@ -283,13 +283,19 @@
     "accountCreated": {
       "title": "Account created",
       "header": "You have successfully created your GOV.UK Account",
+      "subHeader": "What happens next",
       "info": {
-        "heading": "A GOV.UK Account will:",
-        "bulletPoint1": "let you reuse and share your data to ensure that government services are quicker to interact with",
-        "bulletPoint2": "suggest GOV.UK guidance and information that is relevant to you",
-        "bulletPoint3": "tell you when content you're interested in has been updated",
-        "bulletPoint4": "help you set up reminders for tasks you may need to complete later"
-      }
+        "paragraph1": "At the moment you can only use this account to save your progress on applications or services and finish them later.",
+        "paragraph2": "In the future, you will be able to use your GOV.UK account to sign in to other government services. It will take a few years for this to happen.",
+        "paragraph3": "For now, you'll need to use different accounts for different government services.",
+        "paragraph4": "We've sent you an email so you can complete it later."
+      },
+      "inset": "Your progress on ",
+      "insetContinued": " has been saved.",
+      "continue": "Continue",
+      "signOut": "Sign out",
+      "continueReport": "Continue your report",
+      "progressSaved": "Your progress has been saved."
     },
     "verifyEmail": {
       "title": "Check your email",
