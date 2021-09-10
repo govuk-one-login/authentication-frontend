@@ -5,9 +5,7 @@ import {
 } from "../../utils/http";
 import { API_ENDPOINTS } from "../../app.constants";
 
-import {
-  ClientInfoResponse, SignInOrCreateServiceInterface,
-} from "./types";
+import { ClientInfoResponse, SignInOrCreateServiceInterface } from "./types";
 
 export function signInOrCreateService(
   axios: Http = http

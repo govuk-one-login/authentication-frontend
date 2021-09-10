@@ -20,9 +20,12 @@ export function validateEnterPasswordAccountExistsRequest(): ValidationChainFunc
     body("password")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t("pages.enterPasswordAccountExists.password.validationError.required", {
-          value,
-        });
+        return req.t(
+          "pages.enterPasswordAccountExists.password.validationError.required",
+          {
+            value,
+          }
+        );
       }),
     validateBodyMiddleware("enter-password/enter-password-account-exists.njk"),
   ];

@@ -5,9 +5,9 @@ import { signInOrCreateService } from "./sign-in-or-create-service";
 import { SERVICE_TYPE } from "../../app.constants";
 
 export function signInOrCreateGet(
-  service: SignInOrCreateServiceInterface = signInOrCreateService(),
+  service: SignInOrCreateServiceInterface = signInOrCreateService()
 ): ExpressRouteFunc {
-  return async function(req: Request, res: Response) {
+  return async function (req: Request, res: Response) {
     const sessionId = res.locals.sessionId;
     const clientSessionId = res.locals.clientSessionId;
     const clientInfo = await service.clientInfo(sessionId, clientSessionId);

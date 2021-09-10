@@ -6,7 +6,10 @@ import {
   enterPasswordGet,
   enterPasswordPost,
 } from "./enter-password-controller";
-import { validateEnterPasswordAccountExistsRequest, validateEnterPasswordRequest } from "./enter-password-validation";
+import {
+  validateEnterPasswordAccountExistsRequest,
+  validateEnterPasswordRequest,
+} from "./enter-password-validation";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { asyncHandler } from "../../utils/async";
 

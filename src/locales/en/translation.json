@@ -119,13 +119,12 @@
         "paragraph3": "In the future, you'll be able to use your GOV.UK account for all government services.  For now, you need different accounts for different services."
       },
       "existingAccountRadios": {
-          "createAccountText": "Create an account",
-          "createAccountHintText": "You'll need an email address and a UK mobile phone number.  It will take no more than 5 minutes.",
-          "signInText": "Sign in",
-          "errorMessage": "Select an option"
-        },
+        "createAccountText": "Create an account",
+        "createAccountHintText": "You'll need an email address and a UK mobile phone number.  It will take no more than 5 minutes.",
+        "signInText": "Sign in",
+        "errorMessage": "Select an option"
+      },
       "continueButtonText": "Continue"
-    
     },
     "enterEmailCreateAccount": {
       "title": "Enter your email",
@@ -390,18 +389,18 @@
     "shareInfo": {
       "title": "Share information from your GOV.UK account",
       "header": "Share information from your GOV.UK account",
-      "continue" : "Continue",
-      "bulletPointSectionHeader" : "This service needs to use your:",
-      "paragraph1" : "You added this information to your GOV.UK account when you created the account. You can choose to share it with the service instead of entering it when you use the service.",
-      "paragraph2" : "The service will only use this information to contact you about the service. It won't share your information with anyone else. It will keep your information for as long as it needs to or the law requires it to.",
-      "paragraph3" : "If you choose not to share information from your GOV.UK account, you may still be asked for that information as you use the service. For example if you choose not to share your email address and phone number and the service needs a way to contact you.",
-      "essentialHeader" : "Do you want to share information from your GOV.UK account?",
-      "radios" : {
-        "shareMy" : "Do you want to share information from your GOV.UK account?",
-        "radioText" : {
-          "agree" : "Share my email address and phone number",
-          "doNotAgree" : "Do not share my email address and phone number",
-          "errorMessage" : "Select if you want to share your email address and phone number or not"
+      "continue": "Continue",
+      "bulletPointSectionHeader": "This service needs to use your:",
+      "paragraph1": "You added this information to your GOV.UK account when you created the account. You can choose to share it with the service instead of entering it when you use the service.",
+      "paragraph2": "The service will only use this information to contact you about the service. It won't share your information with anyone else. It will keep your information for as long as it needs to or the law requires it to.",
+      "paragraph3": "If you choose not to share information from your GOV.UK account, you may still be asked for that information as you use the service. For example if you choose not to share your email address and phone number and the service needs a way to contact you.",
+      "essentialHeader": "Do you want to share information from your GOV.UK account?",
+      "radios": {
+        "shareMy": "Do you want to share information from your GOV.UK account?",
+        "radioText": {
+          "agree": "Share my email address and phone number",
+          "doNotAgree": "Do not share my email address and phone number",
+          "errorMessage": "Select if you want to share your email address and phone number or not"
         }
       }
     },

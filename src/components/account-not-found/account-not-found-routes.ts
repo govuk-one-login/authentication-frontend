@@ -1,9 +1,11 @@
 import { PATH_NAMES } from "../../app.constants";
 import * as express from "express";
-import { accountNotFoundGet, accountNotFoundPost } from "./account-not-found-controller";
+import {
+  accountNotFoundGet,
+  accountNotFoundPost,
+} from "./account-not-found-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { asyncHandler } from "../../utils/async";
-
 
 const router = express.Router();
 
