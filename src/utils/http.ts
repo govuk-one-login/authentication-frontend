@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
-import { getApiBaseUrl } from "../config";
+import { getApiBaseUrl, getApiKey} from "../config";
 import { logger } from "./logger";
 
 const headers: Readonly<Record<string, string | boolean>> = {
@@ -13,6 +13,7 @@ export function getBaseRequestConfig(sessionId: string): AxiosRequestConfig {
   return {
     headers: {
       "Session-Id": sessionId,
+      "X-API-Key": getApiKey,
     },
     proxy: false,
   };
@@ -47,22 +48,11 @@ export class Http {
     return Promise.reject(error);
   }
 
-  private static injectCustomHeaders(
-    config: AxiosRequestConfig
-  ): AxiosRequestConfig {
-    //TODO basic auth for api
-    return config;
-  }
-
   private initHttp() {
     const http = axios.create({
       baseURL: getApiBaseUrl(),
       headers: headers,
     });
-
-    http.interceptors.request.use(Http.injectCustomHeaders, (error) =>
-      Promise.reject(error)
-    );
 
     http.interceptors.response.use(
       (response) => response,

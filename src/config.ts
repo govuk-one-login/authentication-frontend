@@ -17,3 +17,7 @@ export function getSessionExpiry(): number {
 export function getSessionSecret(): string {
   return process.env.SESSION_SECRET;
 }
+
+export function getApiKey(): string {
+  return process.env.API_KEY;
+}
