@@ -7,9 +7,12 @@ export function validateSignInOrCreateRequest(): ValidationChainFunc {
     body("createAccount")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t("pages.signInOrCreate.existingAccountRadios.errorMessage", {
-          value,
-        });
+        return req.t(
+          "pages.signInOrCreate.existingAccountRadios.errorMessage",
+          {
+            value,
+          }
+        );
       }),
     validateBodyMiddleware("sign-in-or-create/index.njk"),
   ];

@@ -55,10 +55,11 @@ describe("enter password controller", () => {
       };
       req.body["password"] = "password";
 
-      await enterPasswordPost(false, fakeService, fakeMfaService)(
-        req as Request,
-        res as Response
-      );
+      await enterPasswordPost(
+        false,
+        fakeService,
+        fakeMfaService
+      )(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
     });
@@ -80,10 +81,11 @@ describe("enter password controller", () => {
       req.body["password"] = "password";
 
       await expect(
-        enterPasswordPost(false, fakeService, fakeMfaService)(
-          req as Request,
-          res as Response
-        )
+        enterPasswordPost(
+          false,
+          fakeService,
+          fakeMfaService
+        )(req as Request, res as Response)
       ).to.be.rejectedWith(Error, "Internal server error");
       expect(fakeService.loginUser).to.have.been.calledOnce;
     });

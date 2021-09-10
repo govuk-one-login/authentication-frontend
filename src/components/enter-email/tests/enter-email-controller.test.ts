@@ -25,21 +25,23 @@ describe("enter email controller", () => {
 
   describe("enterEmailGet", () => {
     it("should render enter email create account view when user selected create account", () => {
-
       req.session.user.createAccount = true;
 
       enterEmailGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("enter-email/enter-email-create-account.njk");
+      expect(res.render).to.have.calledWith(
+        "enter-email/enter-email-create-account.njk"
+      );
     });
   });
 
   describe("enterEmailGet", () => {
     it("should render enter email create account view when user selected sign in", () => {
-
       enterEmailGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("enter-email/enter-email-existing-account.njk");
+      expect(res.render).to.have.calledWith(
+        "enter-email/enter-email-existing-account.njk"
+      );
     });
   });
 

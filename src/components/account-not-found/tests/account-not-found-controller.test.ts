@@ -4,7 +4,10 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 import { UserSession } from "../../../types";
-import { accountNotFoundGet, accountNotFoundPost } from "../account-not-found-controller";
+import {
+  accountNotFoundGet,
+  accountNotFoundPost,
+} from "../account-not-found-controller";
 import { SERVICE_TYPE } from "../../../app.constants";
 import { AccountNotFoundServiceInterface } from "../types";
 
@@ -25,18 +28,21 @@ describe("sign in or create controller", () => {
   });
 
   describe("accountNotFoundGet", () => {
-
     it("should render the account not found mandatory view when serviceType undefined", () => {
       accountNotFoundGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("account-not-found/account-not-found-mandatory.njk");
+      expect(res.render).to.have.calledWith(
+        "account-not-found/account-not-found-mandatory.njk"
+      );
     });
 
     it("should render the account not found optional view when serviceType optional", () => {
       req.session.serviceType = SERVICE_TYPE.OPTIONAL;
       accountNotFoundGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("account-not-found/account-not-found-optional.njk");
+      expect(res.render).to.have.calledWith(
+        "account-not-found/account-not-found-optional.njk"
+      );
     });
 
     it("should redirect to /check-your-email when no account exists", async () => {
@@ -50,10 +56,8 @@ describe("sign in or create controller", () => {
       await accountNotFoundPost(fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith("/check-your-email");
-      expect(fakeService.sendEmailVerificationNotification).to.have.been.calledOnce;
+      expect(fakeService.sendEmailVerificationNotification).to.have.been
+        .calledOnce;
     });
-
   });
-
-  
 });

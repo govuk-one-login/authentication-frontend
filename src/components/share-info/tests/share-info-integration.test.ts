@@ -99,12 +99,9 @@ describe("Integration::share info", () => {
   });
 
   it("should redirect to /auth-code page when consentValue valid", (done) => {
-    nock(baseApi)
-      .post("/update-profile")
-      .once()
-      .reply(200, {
-        sessionState: "ADDED_CONSENT",
-      });
+    nock(baseApi).post("/update-profile").once().reply(200, {
+      sessionState: "ADDED_CONSENT",
+    });
 
     request(app)
       .post("/share-info")
@@ -119,10 +116,7 @@ describe("Integration::share info", () => {
   });
 
   it("should return internal server error when /update-profile API call response is 500", (done) => {
-    nock(baseApi)
-      .post("/update-profile")
-      .once()
-      .reply(500, {});
+    nock(baseApi).post("/update-profile").once().reply(500, {});
 
     request(app)
       .post("/share-info")
@@ -136,10 +130,7 @@ describe("Integration::share info", () => {
   });
 
   it("should return internal server error when /client-info API call response is 500", (done) => {
-    nock(baseApi)
-      .get("/client-info")
-      .once()
-      .reply(500, {});
+    nock(baseApi).get("/client-info").once().reply(500, {});
     request(app).get("/share-info").expect(500, done);
   });
 });

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
-import { getApiBaseUrl, getApiKey} from "../config";
+import { getApiBaseUrl, getApiKey } from "../config";
 import { logger } from "./logger";
 
 const headers: Readonly<Record<string, string | boolean>> = {
@@ -13,7 +13,7 @@ export function getBaseRequestConfig(sessionId: string): AxiosRequestConfig {
   return {
     headers: {
       "Session-Id": sessionId,
-      "X-API-Key": getApiKey,
+      "X-API-Key": getApiKey(),
     },
     proxy: false,
   };
@@ -37,7 +37,7 @@ export class Http {
 
   private static handleError(error: AxiosError) {
     const { response } = error;
-    const { data } = response;
+    const { data } = response || {};
 
     if (data) {
       logger.error(error.message, { error: JSON.stringify(data) });

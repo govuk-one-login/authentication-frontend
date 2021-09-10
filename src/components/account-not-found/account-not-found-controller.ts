@@ -10,7 +10,7 @@ export function accountNotFoundGet(req: Request, res: Response): void {
     res.render("account-not-found/account-not-found-optional.njk");
   } else {
     res.render("account-not-found/account-not-found-mandatory.njk", {
-      email: req.session.user.email
+      email: req.session.user.email,
     });
   }
 }
@@ -19,11 +19,10 @@ export function accountNotFoundPost(
   service: AccountNotFoundServiceInterface = accountNotFoundService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    
-  const email = req.session.user.email; 
-  const sessionId = res.locals.sessionId;
+    const email = req.session.user.email;
+    const sessionId = res.locals.sessionId;
 
-  await service.sendEmailVerificationNotification(sessionId, email);
-  res.redirect(PATH_NAMES.CHECK_YOUR_EMAIL);
-}
+    await service.sendEmailVerificationNotification(sessionId, email);
+    res.redirect(PATH_NAMES.CHECK_YOUR_EMAIL);
+  };
 }

@@ -4,7 +4,9 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 import {
-  updatedTermsCondsGet, updatedTermsCondsMandatoryGet, updatedTermsCondsOptionalGet,
+  updatedTermsCondsGet,
+  updatedTermsCondsMandatoryGet,
+  updatedTermsCondsOptionalGet,
   updatedTermsCondsPost,
 } from "../updated-terms-conds-controller";
 import { UserSession } from "../../../types";
@@ -56,16 +58,24 @@ describe("share-info controller", () => {
     it("should render updated-terms-conds-mandatory page", async () => {
       const fakeService: UpdateTermsAndCondsServiceInterface = {
         updateProfile: sandbox.fake(),
-        clientInfo: sandbox.fake.returns({ scopes: ["openid", "profile"], serviceType: "MANDATORY" }),
+        clientInfo: sandbox.fake.returns({
+          scopes: ["openid", "profile"],
+          serviceType: "MANDATORY",
+        }),
       };
 
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
 
-      await updatedTermsCondsMandatoryGet(fakeService)(req as Request, res as Response);
+      await updatedTermsCondsMandatoryGet(fakeService)(
+        req as Request,
+        res as Response
+      );
 
       expect(fakeService.clientInfo).to.be.calledOnce;
-      expect(res.render).to.have.calledWith("updated-terms-conds/index-mandatory.njk");
+      expect(res.render).to.have.calledWith(
+        "updated-terms-conds/index-mandatory.njk"
+      );
     });
   });
 
@@ -73,16 +83,24 @@ describe("share-info controller", () => {
     it("should render updated-terms-conds-optional page", async () => {
       const fakeService: UpdateTermsAndCondsServiceInterface = {
         updateProfile: sandbox.fake(),
-        clientInfo: sandbox.fake.returns({ scopes: ["openid", "profile"], serviceType: "OPTIONAL" }),
+        clientInfo: sandbox.fake.returns({
+          scopes: ["openid", "profile"],
+          serviceType: "OPTIONAL",
+        }),
       };
 
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
 
-      await updatedTermsCondsOptionalGet(fakeService)(req as Request, res as Response);
+      await updatedTermsCondsOptionalGet(fakeService)(
+        req as Request,
+        res as Response
+      );
 
       expect(fakeService.clientInfo).to.be.calledOnce;
-      expect(res.render).to.have.calledWith("updated-terms-conds/index-optional.njk");
+      expect(res.render).to.have.calledWith(
+        "updated-terms-conds/index-optional.njk"
+      );
     });
   });
 
@@ -111,7 +129,10 @@ describe("share-info controller", () => {
     it("should redirect to redirectUri with error code param when acceptOrReject has value reject", async () => {
       const fakeService: UpdateTermsAndCondsServiceInterface = {
         updateProfile: sandbox.fake.returns(true),
-        clientInfo: sandbox.fake.returns({ scopes: ["openid", "profile"], state: "test" }),
+        clientInfo: sandbox.fake.returns({
+          scopes: ["openid", "profile"],
+          state: "test",
+        }),
       };
 
       req.session.redirectUri = "http://test.test";

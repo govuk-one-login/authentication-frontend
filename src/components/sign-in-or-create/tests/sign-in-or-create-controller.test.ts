@@ -37,6 +37,4 @@ describe("sign in or create controller", () => {
       expect(res.render).to.have.calledWith("sign-in-or-create/index.njk");
     });
   });
-
-  
 });
