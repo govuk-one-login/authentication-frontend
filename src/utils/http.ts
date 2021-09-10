@@ -54,6 +54,10 @@ export class Http {
       headers: headers,
     });
 
+  http.interceptors.request.use((error) =>
+    Promise.reject(error)
+  );
+
     http.interceptors.response.use(
       (response) => response,
       (error) => Http.handleError(error)
