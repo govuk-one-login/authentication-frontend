@@ -1,0 +1,18 @@
+{% extends "common/layout/base.njk" %}
+{% set pageTitleName = 'pages.resetPasswordCheckEmail.title' | translate %}
+{% block content %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resetPasswordCheckEmail.header' | translate}}</h1>
+
+<p class="govuk-body">
+    {{'pages.resetPasswordCheckEmail.paragraph1' | translate}}
+    {{email}}.
+    {{'pages.resetPasswordCheckEmail.paragraph2' | translate}}
+</p>
+<p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph3' | translate}}</p>
+
+<p class="govuk-body">
+    <a href="/reset-password-check-email" class="govuk-link" rel="noreferrer noopener">{{'pages.resetPasswordCheckEmail.sendAnotherEmailLinkText' | translate }}</a>
+</p>
+
+{% endblock %}`
