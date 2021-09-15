@@ -10,6 +10,7 @@ export const PATH_NAMES = {
   CHECK_YOUR_EMAIL: "/check-your-email",
   ENTER_PASSWORD: "/enter-password",
   ENTER_PASSWORD_ACCOUNT_EXISTS: "/enter-password-account-exists",
+  RESET_PASSWORD_CHECK_EMAIL: "/reset-password-check-email",
   CREATE_ACCOUNT_CHECK_EMAIL: "/check-email",
   CREATE_ACCOUNT_SET_PASSWORD: "/create-password",
   CREATE_ACCOUNT_ENTER_PHONE_NUMBER: "/enter-phone-number",

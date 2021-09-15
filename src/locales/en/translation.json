@@ -232,6 +232,14 @@
         "text": "I've forgotten my password"
       }
     },
+    "resetPasswordCheckEmail": {
+      "title": "Check your email",
+      "header": "Check your email",
+      "paragraph1": "We sent an email to ",
+      "paragraph2": "Use the link in the email to reset your password.",
+      "paragraph3": "The link will expire after 15 minutes.",
+      "sendAnotherEmailLinkText": "Send another email"
+    },
     "createPassword": {
       "title": "Create your password",
       "header": "Create your password",

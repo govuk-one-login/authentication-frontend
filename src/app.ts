@@ -45,6 +45,7 @@ import { shareInfoRouter } from "./components/share-info/share-info-routes";
 import { updatedTermsCondsRouter } from "./components/updated-terms-conds/updated-terms-conds-routes";
 import { signInOrCreateRouter } from "./components/sign-in-or-create/sign-in-or-create-routes";
 import { accountNotFoundRouter } from "./components/account-not-found/account-not-found-routes";
+import { resetPasswordCheckEmailRouter } from "./components/reset-password-check-email/reset-password-check-email-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -57,6 +58,7 @@ function registerRoutes(app: express.Application) {
   app.use(enterEmailRouter);
   app.use(accountNotFoundRouter);
   app.use(enterPasswordRouter);
+  app.use(resetPasswordCheckEmailRouter);
   app.use(verifyEmailRouter);
   app.use(createPasswordRouter);
   app.use(enterPhoneNumberRouter);
