@@ -3,6 +3,20 @@
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 
 {% block head %}
+    <script>
+      dataLayer = [{
+        'gtm.allowlist': ['google'],
+        'gtm.blocklist': ['nonGoogleScripts', 'nonGoogleIframes', 'nonGooglePixels', 'customScripts', 'customPixels' ]
+      }];
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    ';
+    })(window,document,'script','dataLayer','GTM-TK92W68');</script>
+    <!-- End Google Tag Manager -->
+
   <!--[if !IE 8]><!-->
     <link href="/public/style.css" rel="stylesheet">
   <!--<![endif]-->
@@ -33,7 +47,11 @@
 {% endblock %}
 
 {% block bodyStart %}
- {% include 'common/layout/banner.njk' %}
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    {% include 'common/layout/banner.njk' %}
 {% endblock %}
 
 {% block header %}
