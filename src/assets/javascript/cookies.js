@@ -134,18 +134,7 @@ var cookies = function (trackingId) {
   }
 
   function initGtm() {
-    window.dataLayer = [
-      {
-        "gtm.allowlist": ["google"],
-        "gtm.blocklist": [
-          "nonGoogleScripts",
-          "nonGoogleIframes",
-          "nonGooglePixels",
-          "customScripts",
-          "customPixels",
-        ],
-      },
-    ];
+    window.dataLayer = window.dataLayer || [];
 
     function gtag() {
       dataLayer.push(arguments);
