@@ -55,6 +55,7 @@ export const API_ENDPOINTS = {
   MFA: "/mfa",
   AUTH_CODE: "/auth-code",
   CLIENT_INFO: "/client-info",
+  RESET_PASSWORD_REQUEST: "/reset-password-request",
 };
 
 export const ERROR_MESSAGES = {
