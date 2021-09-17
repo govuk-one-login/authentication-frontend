@@ -134,16 +134,24 @@ var cookies = function (trackingId) {
   }
 
   function initGtm() {
-    window.dataLayer = window.dataLayer || [];
+    window.dataLayer = [
+      {
+        "gtm.allowlist": ["google"],
+        "gtm.blocklist": [
+          "nonGoogleScripts",
+          "nonGoogleIframes",
+          "nonGooglePixels",
+          "customScripts",
+          "customPixels",
+        ],
+      },
+    ];
 
-    function gtag() {
-      dataLayer.push(arguments);
+    function gtag(obj) {
+      dataLayer.push(obj);
     }
 
-    gtag({
-      "gtm.start": new Date().getTime(),
-      event: "gtm.js",
-    });
+    gtag({ "gtm.start": new Date().getTime(), event: "gtm.js" });
   }
 
   function getCookie(name) {
