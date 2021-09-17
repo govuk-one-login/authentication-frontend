@@ -1,9 +1,17 @@
 (function (w) {
   "use strict";
-  function appInit() {
-    window.govSigin.CookieBanner();
-  }
-  w.appInit = appInit;
-})(window);
+  function appInit(trackingId) {
+    var cookies = window.GOVSignIn.Cookies(trackingId);
 
-window.appInit();
+    if (cookies.hasConsentForAnalytics()) {
+      cookies.initAnalytics();
+    }
+
+    if (cookies.isOnCookiesPage()) {
+      cookies.cookiesPageInit();
+    } else {
+      cookies.cookieBannerInit();
+    }
+  }
+  w.GOVSignIn.appInit = appInit;
+})(window);

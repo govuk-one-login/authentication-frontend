@@ -46,6 +46,7 @@ import { updatedTermsCondsRouter } from "./components/updated-terms-conds/update
 import { signInOrCreateRouter } from "./components/sign-in-or-create/sign-in-or-create-routes";
 import { accountNotFoundRouter } from "./components/account-not-found/account-not-found-routes";
 import { resetPasswordCheckEmailRouter } from "./components/reset-password-check-email/reset-password-check-email-routes";
+import { setLocalVarsMiddleware } from "./middleware/set-local-vars-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -93,6 +94,7 @@ function createApp(): express.Application {
 
   app.use("/public", express.static(path.join(__dirname, "public")));
   app.set("view engine", configureNunjucks(app, APP_VIEWS));
+  app.use(setLocalVarsMiddleware);
 
   i18next
     .use(Backend)

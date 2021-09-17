@@ -21,3 +21,7 @@ export function getSessionSecret(): string {
 export function getApiKey(): string {
   return process.env.API_KEY;
 }
+
+export function getGtmId(): string {
+  return process.env.GTM_ID;
+}
