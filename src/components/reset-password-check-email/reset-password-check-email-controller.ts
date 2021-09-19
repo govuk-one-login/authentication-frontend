@@ -9,9 +9,19 @@ export function resetPasswordCheckEmailGet(
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
     const sessionId = res.locals.sessionId;
-    await service.resetPasswordRequest(email, sessionId);
-    res.render("reset-password-check-email/index.njk", {
-      email,
-    });
+    const result = await service.resetPasswordRequest(email, sessionId);
+
+    if (result.success) {
+      return res.render("reset-password-check-email/index.njk", {
+        email,
+      });
+    }
+
+    const errorTemplate =
+      result.code === "1022"
+        ? "reset-password-check-email/index-exceeded-request-count.njk"
+        : "reset-password-check-email/index-request-attempt-blocked.njk";
+
+    return res.render(errorTemplate);
   };
 }

@@ -21,3 +21,16 @@ export type ValidationChainFunc = (
       next: express.NextFunction
     ) => any)
 )[];
+
+export interface ApiResponse {
+  code?: string;
+  message?: string;
+  sessionState: string;
+}
+
+export interface ApiResponseResult {
+  success: boolean;
+  code?: string;
+  message?: string;
+  sessionState?: string;
+}

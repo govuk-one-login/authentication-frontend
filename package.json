@@ -25,7 +25,7 @@
     "test:unit": "rm -rf test/coverage && NODE_ENV=development nyc mocha -r dotenv/config --exclude \"src/**/*-integration.test.ts\"  \"test/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
     "test": "rm -rf test/coverage && NODE_ENV=development nyc mocha -r dotenv/config  \"test/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
     "test:coverage": "nyc report",
-    "watch-node": "nodemon -r dotenv/config dist/server.js | pino-pretty",
+    "watch-node": "nodemon -r dotenv/config --inspect=0.0.0.0:9229 dist/server.js | pino-pretty",
     "watch-ts": "tsc -w",
     "watch-sass": "sass --watch src/assets/scss/application.scss dist/public/style.css"
   },

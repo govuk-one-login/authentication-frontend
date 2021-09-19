@@ -1,0 +1,62 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% set pageTitleName = 'pages.resetPassword.title' | translate %}
+
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resetPassword.header' | translate}}</h1>
+
+<form action="/reset-password" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="code" value="{{code}}"/>
+
+{{ govukInput({
+    label: {
+        text: 'pages.resetPassword.password.label' | translate
+    },
+    hint: {
+      text: 'pages.resetPassword.password.hint' | translate
+    },
+    id: "password",
+    name: "password",
+    type: "password",
+    spellcheck: false,
+    errorMessage: {
+        text: errors['password'].text
+    } if (errors['password'])})
+}}
+
+{{ govukInput({
+    label: {
+        text: 'pages.resetPassword.confirmPassword.label' | translate
+    },
+    id: "confirm-password",
+    name: "confirm-password",
+    type: "password",
+    spellcheck: false,
+    errorMessage: {
+        text: errors['confirm-password'].text
+    } if (errors['confirm-password'])})
+}}
+{{ govukDetails({
+  summaryText: 'pages.resetPassword.securePasswordDetails.summary' | translate,
+  text: 'pages.resetPassword.securePasswordDetails.text' | translate
+}) }}
+
+{{ govukButton({
+    "text": button_text|default("Continue", true),
+    "type": "Submit",
+    "preventDoubleClick": true
+}) }}
+
+</form>
+
+{% endblock %}
+

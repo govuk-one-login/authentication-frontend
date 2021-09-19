@@ -1,0 +1,15 @@
+FROM node:15.14.0-alpine
+
+ENV NODE_ENV "development"
+ENV PORT 2000
+
+USER node
+WORKDIR /home/node/app
+COPY --chown=node:node . .
+
+RUN yarn install
+
+EXPOSE $PORT
+
+CMD ["yarn", "dummy-server"]
+

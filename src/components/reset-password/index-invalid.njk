@@ -1,0 +1,20 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% set pageTitleName = 'pages.resetPasswordInvalidLink.title' | translate %}
+
+{% block content %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resetPasswordInvalidLink.header' | translate}}</h1>
+
+<p class="govuk-body">
+    {{'pages.resetPasswordInvalidLink.info.paragraph1' | translate}}
+</p>
+
+<p class="govuk-body">
+    {{'pages.resetPasswordInvalidLink.info.paragraph2Start' | translate}}
+    <a href="https://gov.uk" class="govuk-link" rel="noreferrer noopener">{{'pages.resetPasswordInvalidLink.info.link' | translate }}</a>
+    {{'pages.resetPasswordInvalidLink.info.paragraph2End' | translate}}
+</p>
+
+{% endblock %}
