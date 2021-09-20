@@ -73,7 +73,7 @@ describe("enter mfa controller", () => {
     it("should redirect to security code expired when invalid code entered more than max retries", async () => {
       const fakeService: VerifyCodeInterface = {
         verifyCode: sandbox.fake.returns(
-          "PHONE_NUMBER_CODE_MAX_RETRIES_REACHED"
+          "MFA_CODE_MAX_RETRIES_REACHED"
         ),
       };
 
