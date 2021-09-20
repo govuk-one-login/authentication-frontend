@@ -31,7 +31,7 @@ export function enterMfaPost(
 
     if (userState == USER_STATE.MFA_CODE_VERIFIED) {
       return res.redirect(PATH_NAMES.AUTH_CODE);
-    } else if (userState == USER_STATE.PHONE_NUMBER_CODE_MAX_RETRIES_REACHED) {
+    } else if (userState == USER_STATE.MFA_CODE_MAX_RETRIES_REACHED) {
       return res.redirect(PATH_NAMES.SECURITY_CODE_EXPIRED);
     }
 

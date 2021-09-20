@@ -174,7 +174,7 @@ describe("Integration:: enter mfa", () => {
 
   it("should redirect to security code expired when incorrect code has been entered 5 times", (done) => {
     nock(baseApi).post("/verify-code").times(6).reply(200, {
-      sessionState: "PHONE_NUMBER_CODE_MAX_RETRIES_REACHED",
+      sessionState: "MFA_CODE_MAX_RETRIES_REACHED",
     });
 
     request(app)
