@@ -47,6 +47,8 @@ import { signInOrCreateRouter } from "./components/sign-in-or-create/sign-in-or-
 import { accountNotFoundRouter } from "./components/account-not-found/account-not-found-routes";
 import { resetPasswordCheckEmailRouter } from "./components/reset-password-check-email/reset-password-check-email-routes";
 import { setLocalVarsMiddleware } from "./middleware/set-local-vars-middleware";
+import { resetPasswordRouter } from "./components/reset-password/reset-password-routes";
+import { noCacheMiddleware } from "./middleware/no-cache-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -74,6 +76,7 @@ function registerRoutes(app: express.Application) {
   app.use(signedOutRouter);
   app.use(shareInfoRouter);
   app.use(updatedTermsCondsRouter);
+  app.use(resetPasswordRouter);
 }
 
 function createApp(): express.Application {
@@ -86,6 +89,7 @@ function createApp(): express.Application {
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(noCacheMiddleware);
 
   app.use(
     "/assets",

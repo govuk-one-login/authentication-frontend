@@ -27,7 +27,10 @@ describe("reset password check email controller", () => {
   describe("resetPasswordCheckEmailGet", () => {
     it("should render reset password check email view", async () => {
       const fakeService: ResetPasswordCheckEmailServiceInterface = {
-        resetPasswordRequest: sandbox.fake.returns({}),
+        resetPasswordRequest: sandbox.fake.returns({
+          success: true,
+          sessionState: "RESET_PASSWORD_LINK_SENT",
+        }),
       };
 
       res.locals.sessionId = "s-123456-djjad";

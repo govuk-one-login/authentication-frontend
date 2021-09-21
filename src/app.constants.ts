@@ -11,6 +11,9 @@ export const PATH_NAMES = {
   ENTER_PASSWORD: "/enter-password",
   ENTER_PASSWORD_ACCOUNT_EXISTS: "/enter-password-account-exists",
   RESET_PASSWORD_CHECK_EMAIL: "/reset-password-check-email",
+  RESET_PASSWORD: "/reset-password",
+  RESET_PASSWORD_EXPIRED_LINK: "/reset-password-expired-link",
+  RESET_PASSWORD_CONFIRMATION: "/reset-password-confirmed",
   CREATE_ACCOUNT_CHECK_EMAIL: "/check-email",
   CREATE_ACCOUNT_SET_PASSWORD: "/create-password",
   CREATE_ACCOUNT_ENTER_PHONE_NUMBER: "/enter-phone-number",
@@ -56,6 +59,7 @@ export const API_ENDPOINTS = {
   AUTH_CODE: "/auth-code",
   CLIENT_INFO: "/client-info",
   RESET_PASSWORD_REQUEST: "/reset-password-request",
+  RESET_PASSWORD: "/reset-password",
 };
 
 export const ERROR_MESSAGES = {
@@ -84,6 +88,7 @@ export const USER_STATE = {
   MFA_CODE_SENT: "MFA_CODE_SENT",
   ADDED_CONSENT: "ADDED_CONSENT",
   UPDATED_TERMS_AND_CONDITIONS: "UPDATED_TERMS_AND_CONDITIONS",
+  RESET_PASSWORD_LINK_SENT: "RESET_PASSWORD_LINK_SENT",
 };
 
 export const SERVICE_TYPE = {

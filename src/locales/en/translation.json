@@ -587,6 +587,69 @@
         "linkText": "read the full accessibility test report [add link to report].",
         "linkHref": ""
       }
-    }
+    },
+    "resetPassword": {
+      "title": "Reset your password",
+      "header": "Reset your password",
+      "password": {
+        "label": "Enter a new password",
+        "hint": "It must be at least 8 characters long and must include at least one number.",
+        "validationError": {
+          "required": "Enter your password",
+          "minLength": "Your password must be at least 8 characters long and must include a number",
+          "maxLength": "Your password must be less than 256 characters",
+          "alphaNumeric": "Your password must be at least 8 characters long and must include a number"
+        }
+      },
+      "confirmPassword": {
+        "label": "Re-type new password",
+        "validationError": {
+          "required": "Re-type your password",
+          "matches": "Enter the same password in both fields"
+        }
+      },
+      "securePasswordDetails": {
+        "summary": "How to create a secure password",
+        "text": "A good way to create a secure and memorable password is to use 3 random words. You can use numbers, symbols and spaces."
+      }
+    },
+    "resetPasswordConfirmation": {
+      "title": "You’ve reset your password",
+      "header": "You’ve reset your password",
+      "summary": "Return to the service you were trying to access and sign in again."
+    },
+    "resetPasswordInvalidLink": {
+    "title": "That link has expired",
+      "header": "That link has expired",
+      "info":{
+        "paragraph1": "It’s been more than 15 minutes since it was sent.",
+        "paragraph2Start": "You’ll need to ",
+        "link": "go back to the GOV.UK homepage",
+        "paragraph2End": " and start what you were doing again."
+      }
+    },
+    "resetPasswordExpiredLink": {
+      "title": "You can’t reset your password at the moment",
+      "header": "You can’t reset your password at the moment",
+      "info":{
+        "paragraph1": "This is because it’s been more than 15 minutes since we sent you the link to reset it.",
+        "paragraph2Start": "You’ll need to ",
+        "link": "go back to the GOV.UK homepage",
+        "paragraph2End": " and start what you were doing again."
+      }
+    },
+    "resetPasswordCountExceeded": {
+    "title": "You requested too many password resets",
+    "header": "You requested too many password resets",
+    "paragraph1": "You need to wait 15 minutes.",
+    "paragraph2": "You can then request a new password reset."
+  },
+  "resetPasswordAttemptBlocked": {
+    "title": "You cannot request a password reset at the moment",
+    "header": "You cannot request a password reset at the moment",
+    "paragraph1": "This is because you have requested a password reset too many times",
+    "paragraph2": "You can try again after 15 minutes have passed."
   }
 }
+}
+
