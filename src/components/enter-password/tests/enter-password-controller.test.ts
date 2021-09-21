@@ -64,6 +64,28 @@ describe("enter password controller", () => {
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
     });
 
+    it("should redirect to auth code when mfa is not required", async () => {
+      const fakeService: EnterPasswordServiceInterface = {
+        loginUser: sandbox.fake.returns({
+          sessionState: USER_STATE.AUTHENTICATED,
+          redactedPhoneNumber: "******3456",
+        }),
+      };
+
+      res.locals.sessionId = "123456-djjad";
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      req.body["password"] = "password";
+
+      await enterPasswordPost(
+        false,
+        fakeService
+      )(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
+    });
+
     it("should throw error when API call throws error", async () => {
       const error = new Error("Internal server error");
       const fakeService: EnterPasswordServiceInterface = {

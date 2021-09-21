@@ -53,23 +53,6 @@ describe("create-password controller", () => {
       expect(fakeService.signUpUser).to.have.been.calledOnce;
     });
 
-    it("should redirect to account-created when 2 factor is not required", async () => {
-      const fakeService: CreatePasswordServiceInterface = {
-        signUpUser: sandbox.fake.returns(""),
-      };
-
-      req.body.password = "password1";
-      req.session.user = {
-        id: "12-d0dasdk",
-        email: "joe.bloggs@test.com",
-      };
-
-      await createPasswordPost(fakeService)(req as Request, res as Response);
-
-      expect(res.redirect).to.have.calledWith("/account-created");
-      expect(fakeService.signUpUser).to.have.been.calledOnce;
-    });
-
     it("should throw error when session is not populated", async () => {
       const fakeService: CreatePasswordServiceInterface = {
         signUpUser: sandbox.fake(),
