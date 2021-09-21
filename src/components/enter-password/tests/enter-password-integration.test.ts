@@ -123,4 +123,24 @@ describe("Integration::enter password", () => {
       .expect("Location", "/enter-code")
       .expect(302, done);
   });
+
+  it("should redirect to auth-code page when password is correct", (done) => {
+    nock(baseApi)
+      .post("/login")
+      .once()
+      .reply(200, {
+        sessionState: USER_STATE.AUTHENTICATED,
+      })
+
+    request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        password: "password",
+      })
+      .expect("Location", "/auth-code")
+      .expect(302, done);
+  });
 });
