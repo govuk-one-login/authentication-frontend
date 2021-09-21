@@ -50,6 +50,7 @@ describe("enter password controller", () => {
       };
 
       res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
@@ -73,6 +74,7 @@ describe("enter password controller", () => {
       };
 
       res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
@@ -97,6 +99,7 @@ describe("enter password controller", () => {
       };
 
       res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
       req.session.user = {
         email: "joe.bloggs@test.com",
       };

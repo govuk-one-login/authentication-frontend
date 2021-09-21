@@ -53,7 +53,8 @@ export function enterPasswordPost(
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
     const id = res.locals.sessionId;
-    const userLogin = await service.loginUser(id, email, req.body["password"]);
+    const clientSessionId = res.locals.clientSessionId;
+    const userLogin = await service.loginUser(id, email, req.body["password"], clientSessionId);
 
     if (isUserLoggedIn(userLogin)) {
       req.session.user.phoneNumber = userLogin.redactedPhoneNumber;
