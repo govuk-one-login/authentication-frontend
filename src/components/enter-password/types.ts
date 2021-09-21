@@ -7,6 +7,7 @@ export interface EnterPasswordServiceInterface {
   loginUser: (
     sessionId: string,
     email: string,
-    password: string
+    password: string,
+    clientSessionId: string
   ) => Promise<UserLogin>;
 }
