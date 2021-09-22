@@ -80,10 +80,10 @@ describe("enter password controller", () => {
       };
       req.body["password"] = "password";
 
-      await enterPasswordPost(
-        false,
-        fakeService
-      )(req as Request, res as Response);
+      await enterPasswordPost(false, fakeService)(
+        req as Request,
+        res as Response
+      );
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
     });

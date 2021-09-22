@@ -3,6 +3,7 @@ import { PATH_NAMES } from "../../app.constants";
 import * as express from "express";
 import {
   enterPasswordAccountExistsGet,
+  enterPasswordAccountLockedGet,
   enterPasswordGet,
   enterPasswordPost,
 } from "./enter-password-controller";
@@ -22,9 +23,15 @@ router.get(
 );
 
 router.get(
-  "/enter-password-account-exists",
+  PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS,
   validateSessionMiddleware,
   enterPasswordAccountExistsGet
+);
+
+router.get(
+  PATH_NAMES.ACCOUNT_LOCKED,
+  validateSessionMiddleware,
+  enterPasswordAccountLockedGet
 );
 
 router.post(

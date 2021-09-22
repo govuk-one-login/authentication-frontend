@@ -6,7 +6,7 @@ import {
   renderBadRequest,
 } from "../../utils/validation";
 import { enterPasswordService } from "./enter-password-service";
-import { EnterPasswordServiceInterface, UserLogin } from "./types";
+import { EnterPasswordServiceInterface } from "./types";
 import { MfaServiceInterface } from "../common/mfa/types";
 import { mfaService } from "../common/mfa/mfa-service";
 
@@ -15,12 +15,19 @@ const ENTER_PASSWORD_VALIDATION_KEY =
   "pages.enterPassword.password.validationError.incorrectPassword";
 
 const ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE =
-  "enter-password/enter-password-account-exists.njk";
+  "enter-password/index-account-exists.njk";
 const ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY =
   "pages.enterPasswordAccountExists.password.validationError.incorrectPassword";
 
 export function enterPasswordGet(req: Request, res: Response): void {
   res.render(ENTER_PASSWORD_TEMPLATE);
+}
+
+export function enterPasswordAccountLockedGet(
+  req: Request,
+  res: Response
+): void {
+  res.render("enter-password/index-account-locked.njk");
 }
 
 export function enterPasswordAccountExistsGet(
@@ -33,18 +40,6 @@ export function enterPasswordAccountExistsGet(
   });
 }
 
-function isUserLoggedIn(userLogin: UserLogin) {
-  return (
-    userLogin.sessionState && userLogin.sessionState === USER_STATE.LOGGED_IN
-  );
-}
-
-function isUserDoesNotRequireMfa(userLogin: UserLogin) {
-  return (
-    userLogin.sessionState && userLogin.sessionState === USER_STATE.AUTHENTICATED
-  );
-}
-
 export function enterPasswordPost(
   fromAccountExists = false,
   service: EnterPasswordServiceInterface = enterPasswordService(),
@@ -52,44 +47,46 @@ export function enterPasswordPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
-    const id = res.locals.sessionId;
-    const clientSessionId = res.locals.clientSessionId;
-    const userLogin = await service.loginUser(id, email, req.body["password"], clientSessionId);
+    const { sessionId, clientSessionId } = res.locals;
 
-    if (isUserLoggedIn(userLogin)) {
+    const userLogin = await service.loginUser(
+      sessionId,
+      email,
+      req.body["password"],
+      clientSessionId
+    );
+
+    if (userLogin.sessionState === USER_STATE.ACCOUNT_LOCKED) {
+      return res.redirect(PATH_NAMES.ACCOUNT_LOCKED);
+    }
+
+    if (userLogin.sessionState === USER_STATE.LOGGED_IN) {
       req.session.user.phoneNumber = userLogin.redactedPhoneNumber;
-      await mfaCodeService.sendMfaCode(id, email);
+      await mfaCodeService.sendMfaCode(sessionId, email);
       return res.redirect(PATH_NAMES.ENTER_MFA);
     }
 
-    if(isUserDoesNotRequireMfa(userLogin)) {
+    //VTR Cm
+    if (userLogin.sessionState === USER_STATE.AUTHENTICATED) {
       return res.redirect(PATH_NAMES.AUTH_CODE);
     }
 
-    if (fromAccountExists) {
-      renderValidationError(
-        req,
-        res,
-        ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE,
-        ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY
-      );
-    } else {
-      renderValidationError(
-        req,
-        res,
-        ENTER_PASSWORD_TEMPLATE,
-        ENTER_PASSWORD_VALIDATION_KEY
-      );
-    }
-  };
-}
+    const error = formatValidationError(
+      "password",
+      req.t(
+        fromAccountExists
+          ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY
+          : ENTER_PASSWORD_VALIDATION_KEY
+      )
+    );
 
-function renderValidationError(
-  req: Request,
-  res: Response,
-  fromTemplateName: string,
-  validationMessageKey: string
-) {
-  const error = formatValidationError("password", req.t(validationMessageKey));
-  renderBadRequest(res, req, fromTemplateName, error);
+    return renderBadRequest(
+      res,
+      req,
+      fromAccountExists
+        ? ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE
+        : ENTER_PASSWORD_TEMPLATE,
+      error
+    );
+  };
 }

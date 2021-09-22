@@ -619,9 +619,9 @@
       "summary": "Return to the service you were trying to access and sign in again."
     },
     "resetPasswordInvalidLink": {
-    "title": "That link has expired",
+      "title": "That link has expired",
       "header": "That link has expired",
-      "info":{
+      "info": {
         "paragraph1": "It’s been more than 15 minutes since it was sent.",
         "paragraph2Start": "You’ll need to ",
         "link": "go back to the GOV.UK homepage",
@@ -631,7 +631,7 @@
     "resetPasswordExpiredLink": {
       "title": "You can’t reset your password at the moment",
       "header": "You can’t reset your password at the moment",
-      "info":{
+      "info": {
         "paragraph1": "This is because it’s been more than 15 minutes since we sent you the link to reset it.",
         "paragraph2Start": "You’ll need to ",
         "link": "go back to the GOV.UK homepage",
@@ -639,17 +639,27 @@
       }
     },
     "resetPasswordCountExceeded": {
-    "title": "You requested too many password resets",
-    "header": "You requested too many password resets",
-    "paragraph1": "You need to wait 15 minutes.",
-    "paragraph2": "You can then request a new password reset."
-  },
-  "resetPasswordAttemptBlocked": {
-    "title": "You cannot request a password reset at the moment",
-    "header": "You cannot request a password reset at the moment",
-    "paragraph1": "This is because you have requested a password reset too many times",
-    "paragraph2": "You can try again after 15 minutes have passed."
+      "title": "You requested too many password resets",
+      "header": "You requested too many password resets",
+      "paragraph1": "You need to wait 15 minutes.",
+      "paragraph2": "You can then request a new password reset."
+    },
+    "resetPasswordAttemptBlocked": {
+      "title": "You cannot request a password reset at the moment",
+      "header": "You cannot request a password reset at the moment",
+      "paragraph1": "This is because you have requested a password reset too many times",
+      "paragraph2": "You can try again after 15 minutes have passed."
+    },
+    "accountLocked": {
+      "title": "You entered the wrong password too many times",
+      "header": "You entered the wrong password too many times",
+      "paragraph": "You've been locked out of your account because you entered the wrong password more than 5 times. This is to keep your account secure.",
+      "subHeader": "What next",
+      "bulletPointSection": {
+        "title": "You can:",
+        "first": "wait 15 minutes and try to sign in again",
+        "second": "reset your password"
+      }
+    }
   }
 }
-}
-

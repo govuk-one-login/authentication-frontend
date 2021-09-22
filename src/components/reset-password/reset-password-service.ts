@@ -11,7 +11,7 @@ export function resetPasswordService(
     code: string
   ): Promise<ApiResponseResult> {
     const config = getBaseRequestConfig("sessionId");
-    config.validateStatus = (status) => {
+    config.validateStatus = (status: number) => {
       return (
         status === HTTP_STATUS_CODES.OK ||
         status === HTTP_STATUS_CODES.BAD_REQUEST

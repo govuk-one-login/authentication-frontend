@@ -125,13 +125,10 @@ describe("Integration::enter password", () => {
       .expect(302, done);
   });
 
-  it("should redirect to auth-code page when password is correct", (done) => {
-    nock(baseApi)
-      .post("/login")
-      .once()
-      .reply(200, {
-        sessionState: USER_STATE.AUTHENTICATED,
-      })
+  it("should redirect to /auth-code when password is correct (VTR Cm)", (done) => {
+    nock(baseApi).post("/login").once().reply(200, {
+      sessionState: USER_STATE.AUTHENTICATED,
+    });
 
     request(app)
       .post(ENDPOINT)
@@ -142,6 +139,23 @@ describe("Integration::enter password", () => {
         password: "password",
       })
       .expect("Location", "/auth-code")
+      .expect(302, done);
+  });
+
+  it("should redirect to /account-locked when incorrect password entered 5 times", (done) => {
+    nock(baseApi).post("/login").times(6).reply(200, {
+      sessionState: USER_STATE.ACCOUNT_LOCKED,
+    });
+
+    request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        password: "password",
+      })
+      .expect("Location", "/account-locked")
       .expect(302, done);
   });
 });
