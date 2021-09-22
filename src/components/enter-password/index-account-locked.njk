@@ -1,0 +1,27 @@
+@@ -0,0 +1,26 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set pageTitleName = 'pages.accountLocked.title' | translate %}
+
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.accountLocked.header' | translate}}</h1>
+
+<p class="govuk-body">{{'pages.accountLocked.paragraph' | translate}}</p>
+
+<h2 class="govuk-heading-m">{{'pages.accountLocked.subHeader' | translate}}</h2>
+
+<p class="govuk-body">{{'pages.accountLocked.bulletPointSection.title' | translate}}</p>
+
+<ul class="govuk-list govuk-list--bullet">
+    <li>{{'pages.accountLocked.bulletPointSection.first' | translate}}</li>
+    <li><a href="/reset-password-check-email" class="govuk-link">{{'pages.accountLocked.bulletPointSection.second' | translate}}</a></li>
+</ul>
+
+{% endblock %}

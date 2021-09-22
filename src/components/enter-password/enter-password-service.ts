@@ -1,4 +1,8 @@
-import { getBaseRequestConfigWithClientSession, Http, http } from "../../utils/http";
+import {
+  getBaseRequestConfigWithClientSession,
+  Http,
+  http,
+} from "../../utils/http";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants";
 import { EnterPasswordServiceInterface, UserLogin } from "./types";
 
@@ -11,7 +15,10 @@ export function enterPasswordService(
     password: string,
     clientSessionId: string
   ): Promise<UserLogin> {
-    const config = getBaseRequestConfigWithClientSession(sessionId, clientSessionId);
+    const config = getBaseRequestConfigWithClientSession(
+      sessionId,
+      clientSessionId
+    );
     config.validateStatus = function (status: any) {
       return (
         status === HTTP_STATUS_CODES.OK ||

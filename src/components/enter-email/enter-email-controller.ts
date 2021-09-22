@@ -20,7 +20,7 @@ export function enterEmailPost(
     req.session.user.email = email;
 
     if (await service.userExists(sessionId, email)) {
-      res.redirect(PATH_NAMES.ENTER_PASSWORD);
+      return res.redirect(PATH_NAMES.ENTER_PASSWORD);
     }
 
     return res.redirect(PATH_NAMES.ACCOUNT_NOT_FOUND);
