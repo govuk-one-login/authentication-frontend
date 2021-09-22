@@ -5,7 +5,7 @@ import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
 
-describe("Integration:: verify email", () => {
+describe("Integration:: check your email email", () => {
   let sandbox: sinon.SinonSandbox;
   let token: string | string[];
   let cookies: string;
@@ -169,5 +169,22 @@ describe("Integration:: verify email", () => {
         );
       })
       .expect(400, done);
+  });
+
+  it("should return error page when when incorrect code entered more than 5 times", (done) => {
+    nock(baseApi).post("/verify-code").times(6).reply(200, {
+      sessionState: "EMAIL_CODE_MAX_RETRIES_REACHED",
+    });
+
+    request(app)
+      .post("/check-your-email")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123455",
+      })
+      .expect("Location", "/security-code-expired")
+      .expect(302, done);
   });
 });

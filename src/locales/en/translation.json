@@ -304,7 +304,7 @@
       "continueReport": "Continue your report",
       "progressSaved": "Your progress has been saved."
     },
-    "verifyEmail": {
+    "checkYourEmail": {
       "title": "Check your email",
       "header": "Check your email",
       "text": "We have sent an email to: ",
@@ -350,12 +350,11 @@
       }
     },
     "securityCodeExpired": {
-      "title": "Security code entered incorrectly",
-      "header": "Security code entered incorrectly",
+      "title": "You entered the wrong security code too many times",
+      "header": "You entered the wrong security code too many times",
       "info": {
-        "paragraph1": "You entered the wrong security code too many times.",
-        "paragraph2": "You need to wait 15 minutes.",
-        "paragraph3": "You can then enter your phone number again and get a new code."
+        "paragraph1": "You need to wait 15 minutes.",
+        "paragraph2": "You can then get a new code and try again. "
       }
     },
     "enterMfa": {

@@ -8,15 +8,15 @@ import {
 import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 
-const TEMPLATE_NAME = "verify-email/index.njk";
+const TEMPLATE_NAME = "check-your-email/index.njk";
 
-export function verifyEmailGet(req: Request, res: Response): void {
+export function checkYourEmailGet(req: Request, res: Response): void {
   res.render(TEMPLATE_NAME, {
     email: req.session.user.email,
   });
 }
 
-export function verifyEmailPost(
+export function checkYourEmailPost(
   service: VerifyCodeInterface = codeService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
@@ -31,13 +31,15 @@ export function verifyEmailPost(
 
     if (userState === USER_STATE.EMAIL_CODE_VERIFIED) {
       return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
+    } else if (userState === USER_STATE.EMAIL_CODE_MAX_RETRIES_REACHED) {
+      return res.redirect(PATH_NAMES.SECURITY_CODE_EXPIRED);
+    } else {
+      const error = formatValidationError(
+        "code",
+        req.t("pages.checkYourEmail.code.validationError.invalidCode")
+      );
+
+      return renderBadRequest(res, req, TEMPLATE_NAME, error);
     }
-
-    const error = formatValidationError(
-      "code",
-      req.t("pages.verifyEmail.code.validationError.invalidCode")
-    );
-
-    renderBadRequest(res, req, TEMPLATE_NAME, error);
   };
 }
