@@ -70,7 +70,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.21",
+    "@types/chai": "^4.2.22",
     "@types/chai-as-promised": "^7.1.4",
     "@types/cheerio": "^0.22.30",
     "@types/cookie-session": "^2.0.43",
