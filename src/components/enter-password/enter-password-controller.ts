@@ -10,6 +10,7 @@ import { EnterPasswordServiceInterface, UserLogin } from "./types";
 import { MfaServiceInterface } from "../common/mfa/types";
 import { mfaService } from "../common/mfa/mfa-service";
 
+const MULTIPLE_INCORRECT_PASSWORD_TEMPLATE = "enter-password/index-multiple-incorrect-passwords.njk";
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
   "pages.enterPassword.password.validationError.incorrectPassword";

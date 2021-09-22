@@ -216,6 +216,17 @@
         "text": "I've forgotten my password"
       }
     },
+    "multipleIncorrectPasswords": {
+      "title": "You entered the wrong password too many times",
+      "header": "You entered the wrong password too many times",
+      "paragraph": "You've been locked out of your account because you entered the wrong password more than 5 times. This is to keep your account secure.",
+      "subHeader": "What next",
+      "bulletPointSection": {
+        "title": "You can:",
+        "first": "wait 15 minutes and try to sign in again",
+        "second": "reset your password"
+      }
+    },
     "enterPasswordAccountExists": {
       "title": "You have a GOV.UK account",
       "header": "You have a GOV.UK account",
