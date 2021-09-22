@@ -33,13 +33,13 @@ export function checkYourPhonePost(
       return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL);
     } else if (userState == USER_STATE.PHONE_NUMBER_CODE_MAX_RETRIES_REACHED) {
       return res.redirect(PATH_NAMES.SECURITY_CODE_EXPIRED);
+    } else {
+      const error = formatValidationError(
+        "code",
+        req.t("pages.checkYourPhone.code.validationError.invalidCode")
+      );
+
+      return renderBadRequest(res, req, TEMPLATE_NAME, error);
     }
-
-    const error = formatValidationError(
-      "code",
-      req.t("pages.checkYourPhone.code.validationError.invalidCode")
-    );
-
-    renderBadRequest(res, req, TEMPLATE_NAME, error);
   };
 }

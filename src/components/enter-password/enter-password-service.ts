@@ -19,7 +19,7 @@ export function enterPasswordService(
       sessionId,
       clientSessionId
     );
-    config.validateStatus = function (status: any) {
+    config.validateStatus = function (status: number) {
       return (
         status === HTTP_STATUS_CODES.OK ||
         status === HTTP_STATUS_CODES.UNAUTHORIZED

@@ -26,7 +26,6 @@ import { registerAccountCreatedRouter } from "./components/account-created/accou
 import { createPasswordRouter } from "./components/create-password/create-password-routes";
 import { enterPhoneNumberRouter } from "./components/enter-phone-number/enter-phone-number-routes";
 
-import { verifyEmailRouter } from "./components/verify-email/verify-email-routes";
 import { pageNotFoundHandler } from "./handlers/page-not-found-handler";
 import { serverErrorHandler } from "./handlers/internal-server-error-handler";
 import { csrfMiddleware } from "./middleware/csrf-middleware";
@@ -49,6 +48,7 @@ import { resetPasswordCheckEmailRouter } from "./components/reset-password-check
 import { setLocalVarsMiddleware } from "./middleware/set-local-vars-middleware";
 import { resetPasswordRouter } from "./components/reset-password/reset-password-routes";
 import { noCacheMiddleware } from "./middleware/no-cache-middleware";
+import { checkYourEmailRouter } from "./components/check-your-email/check-your-email-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -62,7 +62,7 @@ function registerRoutes(app: express.Application) {
   app.use(accountNotFoundRouter);
   app.use(enterPasswordRouter);
   app.use(resetPasswordCheckEmailRouter);
-  app.use(verifyEmailRouter);
+  app.use(checkYourEmailRouter);
   app.use(createPasswordRouter);
   app.use(enterPhoneNumberRouter);
   app.use(registerAccountCreatedRouter);
