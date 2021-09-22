@@ -15,15 +15,6 @@
 
     <p class="govuk-body">{{'pages.securityCodeExpired.info.paragraph1' | translate}}</p>
     <p class="govuk-body">{{'pages.securityCodeExpired.info.paragraph2' | translate}}</p>
-    <p class="govuk-body">{{'pages.securityCodeExpired.info.paragraph3' | translate}}</p>
-
-    <br>
-
-    {{ govukButton({
-        "text": button_text|default('general.continue.label' | translate, true),
-        "type": "Submit",
-        "preventDoubleClick": true
-    }) }}
 
 </form>
 
