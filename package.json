@@ -64,7 +64,7 @@
     "jsdom": "^17.0.0",
     "nunjucks": "^3.2.3",
     "libphonenumber-js": "^1.9.34",
-    "prettier": "^2.3.2",
+    "prettier": "^2.4.1",
     "pino": "^6.13.2",
     "pino-http": "^5.7.0",
     "uuid": "^8.3.2"
