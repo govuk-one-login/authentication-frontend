@@ -304,7 +304,7 @@
       "continueReport": "Continue your report",
       "progressSaved": "Your progress has been saved."
     },
-    "verifyEmail": {
+    "checkYourEmail": {
       "title": "Check your email",
       "header": "Check your email",
       "text": "We have sent an email to: ",
@@ -350,12 +350,11 @@
       }
     },
     "securityCodeExpired": {
-      "title": "Security code entered incorrectly",
-      "header": "Security code entered incorrectly",
+      "title": "You entered the wrong security code too many times",
+      "header": "You entered the wrong security code too many times",
       "info": {
-        "paragraph1": "You entered the wrong security code too many times.",
-        "paragraph2": "You need to wait 15 minutes.",
-        "paragraph3": "You can then enter your phone number again and get a new code."
+        "paragraph1": "You need to wait 15 minutes.",
+        "paragraph2": "You can then get a new code and try again. "
       }
     },
     "enterMfa": {
@@ -619,9 +618,9 @@
       "summary": "Return to the service you were trying to access and sign in again."
     },
     "resetPasswordInvalidLink": {
-    "title": "That link has expired",
+      "title": "That link has expired",
       "header": "That link has expired",
-      "info":{
+      "info": {
         "paragraph1": "It’s been more than 15 minutes since it was sent.",
         "paragraph2Start": "You’ll need to ",
         "link": "go back to the GOV.UK homepage",
@@ -631,7 +630,7 @@
     "resetPasswordExpiredLink": {
       "title": "You can’t reset your password at the moment",
       "header": "You can’t reset your password at the moment",
-      "info":{
+      "info": {
         "paragraph1": "This is because it’s been more than 15 minutes since we sent you the link to reset it.",
         "paragraph2Start": "You’ll need to ",
         "link": "go back to the GOV.UK homepage",
@@ -639,17 +638,16 @@
       }
     },
     "resetPasswordCountExceeded": {
-    "title": "You requested too many password resets",
-    "header": "You requested too many password resets",
-    "paragraph1": "You need to wait 15 minutes.",
-    "paragraph2": "You can then request a new password reset."
-  },
-  "resetPasswordAttemptBlocked": {
-    "title": "You cannot request a password reset at the moment",
-    "header": "You cannot request a password reset at the moment",
-    "paragraph1": "This is because you have requested a password reset too many times",
-    "paragraph2": "You can try again after 15 minutes have passed."
+      "title": "You requested too many password resets",
+      "header": "You requested too many password resets",
+      "paragraph1": "You need to wait 15 minutes.",
+      "paragraph2": "You can then request a new password reset."
+    },
+    "resetPasswordAttemptBlocked": {
+      "title": "You cannot request a password reset at the moment",
+      "header": "You cannot request a password reset at the moment",
+      "paragraph1": "This is because you have requested a password reset too many times",
+      "paragraph2": "You can try again after 15 minutes have passed."
+    }
   }
 }
-}
-

@@ -41,7 +41,8 @@ function isUserLoggedIn(userLogin: UserLogin) {
 
 function isUserDoesNotRequireMfa(userLogin: UserLogin) {
   return (
-    userLogin.sessionState && userLogin.sessionState === USER_STATE.AUTHENTICATED
+    userLogin.sessionState &&
+    userLogin.sessionState === USER_STATE.AUTHENTICATED
   );
 }
 
@@ -54,7 +55,12 @@ export function enterPasswordPost(
     const { email } = req.session.user;
     const id = res.locals.sessionId;
     const clientSessionId = res.locals.clientSessionId;
-    const userLogin = await service.loginUser(id, email, req.body["password"], clientSessionId);
+    const userLogin = await service.loginUser(
+      id,
+      email,
+      req.body["password"],
+      clientSessionId
+    );
 
     if (isUserLoggedIn(userLogin)) {
       req.session.user.phoneNumber = userLogin.redactedPhoneNumber;
@@ -62,7 +68,7 @@ export function enterPasswordPost(
       return res.redirect(PATH_NAMES.ENTER_MFA);
     }
 
-    if(isUserDoesNotRequireMfa(userLogin)) {
+    if (isUserDoesNotRequireMfa(userLogin)) {
       return res.redirect(PATH_NAMES.AUTH_CODE);
     }
 

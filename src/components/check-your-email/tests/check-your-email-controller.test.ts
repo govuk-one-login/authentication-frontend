@@ -3,11 +3,14 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { verifyEmailGet, verifyEmailPost } from "../verify-email-controller";
 import { UserSession } from "../../../types";
 import { VerifyCodeInterface } from "../../common/verify-code/types";
+import {
+  checkYourEmailGet,
+  checkYourEmailPost,
+} from "../check-your-email-controller";
 
-describe("verify email controller", () => {
+describe("check your email controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -32,15 +35,15 @@ describe("verify email controller", () => {
     sandbox.restore();
   });
 
-  describe("verifyEmailGet", () => {
+  describe("checkYourEmailGet", () => {
     it("should render the check your email view", () => {
-      verifyEmailGet(req as Request, res as Response);
+      checkYourEmailGet(req as Request, res as Response);
 
-      expect(res.render).to.have.been.calledWith("verify-email/index.njk");
+      expect(res.render).to.have.been.calledWith("check-your-email/index.njk");
     });
   });
 
-  describe("verifyEmailPost", () => {
+  describe("checkYourEmailPost", () => {
     it("should redirect to /create-password when valid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
         verifyCode: sandbox.fake.returns("EMAIL_CODE_VERIFIED"),
@@ -49,7 +52,7 @@ describe("verify email controller", () => {
       req.body.code = "123456";
       req.session.user.id = "123456-djjad";
 
-      await verifyEmailPost(fakeService)(req as Request, res as Response);
+      await checkYourEmailPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith("/create-password");
@@ -63,10 +66,10 @@ describe("verify email controller", () => {
       req.body.code = "678988";
       req.session.user.id = "123456-djjad";
 
-      await verifyEmailPost(fakeService)(req as Request, res as Response);
+      await checkYourEmailPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
-      expect(res.render).to.have.been.calledWith("verify-email/index.njk");
+      expect(res.render).to.have.been.calledWith("check-your-email/index.njk");
     });
   });
 });

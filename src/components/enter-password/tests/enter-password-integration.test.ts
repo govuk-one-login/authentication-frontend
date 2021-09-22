@@ -126,12 +126,9 @@ describe("Integration::enter password", () => {
   });
 
   it("should redirect to auth-code page when password is correct", (done) => {
-    nock(baseApi)
-      .post("/login")
-      .once()
-      .reply(200, {
-        sessionState: USER_STATE.AUTHENTICATED,
-      })
+    nock(baseApi).post("/login").once().reply(200, {
+      sessionState: USER_STATE.AUTHENTICATED,
+    });
 
     request(app)
       .post(ENDPOINT)
