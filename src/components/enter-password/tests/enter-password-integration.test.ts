@@ -24,6 +24,7 @@ describe("Integration::enter password", () => {
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+        res.locals.clientSessionId = "gdsfsfdsgsdgsd-mjdzU854";
         req.session.user = {
           email: "joe.bloggs@digital.cabinet-office.gov.uk",
         };
@@ -121,6 +122,26 @@ describe("Integration::enter password", () => {
         password: "password",
       })
       .expect("Location", "/enter-code")
+      .expect(302, done);
+  });
+
+  it("should redirect to auth-code page when password is correct", (done) => {
+    nock(baseApi)
+      .post("/login")
+      .once()
+      .reply(200, {
+        sessionState: USER_STATE.AUTHENTICATED,
+      })
+
+    request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        password: "password",
+      })
+      .expect("Location", "/auth-code")
       .expect(302, done);
   });
 });

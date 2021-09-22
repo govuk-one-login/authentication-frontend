@@ -40,6 +40,12 @@ function isUserLoggedIn(userLogin: UserLogin) {
   );
 }
 
+function isUserDoesNotRequireMfa(userLogin: UserLogin) {
+  return (
+    userLogin.sessionState && userLogin.sessionState === USER_STATE.AUTHENTICATED
+  );
+}
+
 export function enterPasswordPost(
   fromAccountExists = false,
   service: EnterPasswordServiceInterface = enterPasswordService(),
@@ -48,12 +54,17 @@ export function enterPasswordPost(
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
     const id = res.locals.sessionId;
-    const userLogin = await service.loginUser(id, email, req.body["password"]);
+    const clientSessionId = res.locals.clientSessionId;
+    const userLogin = await service.loginUser(id, email, req.body["password"], clientSessionId);
 
     if (isUserLoggedIn(userLogin)) {
       req.session.user.phoneNumber = userLogin.redactedPhoneNumber;
       await mfaCodeService.sendMfaCode(id, email);
       return res.redirect(PATH_NAMES.ENTER_MFA);
+    }
+
+    if(isUserDoesNotRequireMfa(userLogin)) {
+      return res.redirect(PATH_NAMES.AUTH_CODE);
     }
 
     if (fromAccountExists) {
