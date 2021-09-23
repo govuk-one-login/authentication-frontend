@@ -1,3 +1,5 @@
+import { ApiResponseResult } from "../../types";
+
 export interface UserExists {
   email: string;
   doesUserExist: boolean;
@@ -8,6 +10,6 @@ export interface EnterEmailServiceInterface {
   sendEmailVerificationNotification: (
     sessionId: string,
     email: string
-  ) => Promise<void>;
+  ) => Promise<ApiResponseResult>;
   userExists: (sessionId: string, emailAddress: string) => Promise<boolean>;
 }

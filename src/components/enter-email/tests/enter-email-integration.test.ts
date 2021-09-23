@@ -161,4 +161,98 @@ describe("Integration::enter email", () => {
       })
       .expect(500, done);
   });
+
+  it("should redirect to /check-your-email when email address doesn't exist", (done) => {
+    nock(baseApi).post("/user-exists").once().reply(200, {
+      email: "test2@test2.com",
+      doesUserExist: true,
+      sessionState: "USER_FOUND",
+    });
+
+    request(app)
+      .post("/enter-email-create")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        email: "test2@test2.com",
+      })
+      .expect("Location", "/enter-password-account-exists")
+      .expect(302, done);
+  });
+
+  it("should redirect to /check-your-email when email address doesn't exist", (done) => {
+    nock(baseApi)
+      .post("/user-exists")
+      .once()
+      .reply(200, {
+        email: "test@test.com",
+        doesUserExist: false,
+        sessionState: "USER_NOT_FOUND",
+      })
+      .post("/send-notification")
+      .once()
+      .reply(200);
+
+    request(app)
+      .post("/enter-email-create")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        email: "test@test.com",
+      })
+      .expect("Location", "/check-your-email")
+      .expect(302, done);
+  });
+
+  it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", (done) => {
+    nock(baseApi)
+      .post("/user-exists")
+      .once()
+      .reply(200, {
+        email: "test@test.com",
+        doesUserExist: false,
+        sessionState: "USER_NOT_FOUND",
+      })
+      .post("/send-notification")
+      .once()
+      .reply(400, { code: "1024" });
+
+    request(app)
+      .post("/enter-email-create")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        email: "test@test.com",
+      })
+      .expect("Location", "/security-code-requested-too-many-times")
+      .expect(302, done);
+  });
+
+  it("should redirect to /security-code-invalid-request when exceeded OTP request limit", (done) => {
+    nock(baseApi)
+      .post("/user-exists")
+      .once()
+      .reply(200, {
+        email: "test@test.com",
+        doesUserExist: false,
+        sessionState: "USER_NOT_FOUND",
+      })
+      .post("/send-notification")
+      .once()
+      .reply(400, { code: "1025" });
+
+    request(app)
+      .post("/enter-email-create")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        email: "test@test.com",
+      })
+      .expect("Location", "/security-code-invalid-request")
+      .expect(302, done);
+  });
 });

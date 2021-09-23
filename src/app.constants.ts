@@ -28,6 +28,8 @@ export const PATH_NAMES = {
     "/updated-terms-and-conditions-optional",
   ENTER_MFA: "/enter-code",
   SECURITY_CODE_EXPIRED: "/security-code-expired",
+  SECURITY_CODE_REQUEST_EXCEEDED: "/security-code-requested-too-many-times",
+  SECURITY_CODE_WAIT: "/security-code-invalid-request",
   AUTH_CODE: "/auth-code",
   RESEND_MFA_CODE: "/resend-code",
   SIGNED_OUT: "/signed-out",
@@ -46,6 +48,7 @@ export const HTTP_STATUS_CODES = {
 
 export const ERROR_CODES = {
   REQUEST_MISSING_PARAMETERS: "1001",
+  REQUESTED_TOO_MANY_SECURITY_CODES: "1024",
 };
 
 export enum LOCALE {

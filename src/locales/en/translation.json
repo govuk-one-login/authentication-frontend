@@ -354,7 +354,23 @@
       "header": "You entered the wrong security code too many times",
       "info": {
         "paragraph1": "You need to wait 15 minutes.",
-        "paragraph2": "You can then get a new code and try again. "
+        "paragraph2": "You can then get a new code and try again."
+      }
+    },
+    "securityRequestsExceededExpired": {
+      "title": "You requested too many security codes",
+      "header": "You requested too many security codes",
+      "info": {
+        "paragraph1": "You need to wait 15 minutes.",
+        "paragraph2": "You can then get a new code and try again."
+      }
+    },
+    "securityCodeWaitToRequest": {
+      "title": "You cannot get a new security code at the moment ",
+      "header": "You cannot get a new security code at the moment ",
+      "info": {
+        "paragraph1": "This is because you requested too many security codes.",
+        "paragraph2": "You can try again after 15 minutes have passed."
       }
     },
     "enterMfa": {
