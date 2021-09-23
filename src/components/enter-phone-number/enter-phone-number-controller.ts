@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PATH_NAMES } from "../../app.constants";
+import { ERROR_CODES, PATH_NAMES } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { EnterPhoneNumberServiceInterface } from "./types";
 import { enterPhoneNumberService } from "./enter-phone-number-service";
@@ -19,11 +19,20 @@ export function enterPhoneNumberPost(
 
     req.session.user.phoneNumber = redactPhoneNumber(phoneNumber);
 
-    if (await service.updateProfile(id, email, phoneNumber)) {
-      await service.sendPhoneVerificationNotification(id, email, phoneNumber);
-      res.redirect(PATH_NAMES.CHECK_YOUR_PHONE);
-    } else {
-      throw new Error("Unable to update user profile");
+    await service.updateProfile(id, email, phoneNumber);
+    const result = await service.sendPhoneVerificationNotification(
+      id,
+      email,
+      phoneNumber
+    );
+
+    if (!result.success) {
+      if (result.code === ERROR_CODES.REQUESTED_TOO_MANY_SECURITY_CODES) {
+        return res.redirect(PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED);
+      }
+      return res.redirect(PATH_NAMES.SECURITY_CODE_WAIT);
     }
+
+    return res.redirect(PATH_NAMES.CHECK_YOUR_PHONE);
   };
 }

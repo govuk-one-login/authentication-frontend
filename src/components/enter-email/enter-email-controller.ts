@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PATH_NAMES } from "../../app.constants";
+import { ERROR_CODES, PATH_NAMES } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { enterEmailService } from "./enter-email-service";
 import { EnterEmailServiceInterface } from "./types";
@@ -38,10 +38,21 @@ export function enterEmailCreatePost(
     const hasAccount = await service.userExists(sessionId, email);
 
     if (hasAccount) {
-      res.redirect("/enter-password-account-exists");
-    } else {
-      await service.sendEmailVerificationNotification(sessionId, email);
-      res.redirect(PATH_NAMES.CHECK_YOUR_EMAIL);
+      return res.redirect(PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS);
     }
+
+    const result = await service.sendEmailVerificationNotification(
+      sessionId,
+      email
+    );
+
+    if (!result.success) {
+      if (result.code === ERROR_CODES.REQUESTED_TOO_MANY_SECURITY_CODES) {
+        return res.redirect(PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED);
+      }
+      return res.redirect(PATH_NAMES.SECURITY_CODE_WAIT);
+    }
+
+    return res.redirect(PATH_NAMES.CHECK_YOUR_EMAIL);
   };
 }

@@ -174,6 +174,52 @@ describe("Integration::enter phone number", () => {
       .expect(302, done);
   });
 
+  it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", (done) => {
+    nock(baseApi)
+      .post("/update-profile")
+      .times(6)
+      .reply(200, {
+        sessionState: "ADDED_UNVERIFIED_PHONE_NUMBER",
+      })
+      .post("/send-notification")
+      .times(6)
+      .reply(400, { code: "1024" });
+
+    request(app)
+      .post("/enter-phone-number")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        phoneNumber: "07738394991",
+      })
+      .expect("Location", "/security-code-requested-too-many-times")
+      .expect(302, done);
+  });
+
+  it("should redirect to /security-code-invalid-request when exceeded OTP request limit", (done) => {
+    nock(baseApi)
+      .post("/update-profile")
+      .once()
+      .reply(200, {
+        sessionState: "ADDED_UNVERIFIED_PHONE_NUMBER",
+      })
+      .post("/send-notification")
+      .once()
+      .reply(400, { code: "1025" });
+
+    request(app)
+      .post("/enter-phone-number")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        phoneNumber: "07738394991",
+      })
+      .expect("Location", "/security-code-invalid-request")
+      .expect(302, done);
+  });
+
   it("should return internal server error if /update-profile api call fails", (done) => {
     nock(baseApi)
       .post("/update-profile")

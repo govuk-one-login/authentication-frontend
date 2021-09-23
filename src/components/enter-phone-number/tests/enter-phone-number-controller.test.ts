@@ -35,9 +35,11 @@ describe("enter phone number controller", () => {
   });
 
   describe("enterPhoneNumberPost", () => {
-    it("should redirect to /check-your-phone when succesfully", async () => {
+    it("should redirect to /check-your-phone when success", async () => {
       const fakeService: EnterPhoneNumberServiceInterface = {
-        sendPhoneVerificationNotification: sandbox.fake(),
+        sendPhoneVerificationNotification: sandbox.fake.returns({
+          success: true,
+        }),
         updateProfile: sandbox.fake.returns(true),
       };
 
@@ -111,26 +113,6 @@ describe("enter phone number controller", () => {
       );
 
       expect(fakeService.updateProfile).to.have.not.been.called;
-      expect(fakeService.sendPhoneVerificationNotification).to.have.not.been
-        .called;
-    });
-
-    it("should throw error when update profile API response is false", async () => {
-      const fakeService: EnterPhoneNumberServiceInterface = {
-        sendPhoneVerificationNotification: sandbox.fake(),
-        updateProfile: sandbox.fake.returns(false),
-      };
-
-      req.body.phoneNumber = "07738393990";
-      req.session.user = {
-        email: "test@test.com",
-      };
-
-      await expect(
-        enterPhoneNumberPost(fakeService)(req as Request, res as Response)
-      ).to.be.rejectedWith(Error, "Unable to update user profile");
-
-      expect(fakeService.updateProfile).to.have.been.calledOnce;
       expect(fakeService.sendPhoneVerificationNotification).to.have.not.been
         .called;
     });

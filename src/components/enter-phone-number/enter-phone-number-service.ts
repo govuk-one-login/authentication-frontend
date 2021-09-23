@@ -1,10 +1,12 @@
 import { getBaseRequestConfig, Http, http } from "../../utils/http";
 import {
   API_ENDPOINTS,
+  HTTP_STATUS_CODES,
   NOTIFICATION_TYPE,
   USER_STATE,
 } from "../../app.constants";
 import { EnterPhoneNumberServiceInterface, UpdateUserProfile } from "./types";
+import { ApiResponse, ApiResponseResult } from "../../types";
 
 const UPDATE_TYPE_ADD_PHONE_NUMBER = "ADD_PHONE_NUMBER";
 
@@ -33,16 +35,30 @@ export function enterPhoneNumberService(
     sessionId: string,
     email: string,
     phoneNumber: string
-  ): Promise<void> {
-    await axios.client.post<void>(
+  ): Promise<ApiResponseResult> {
+    const config = getBaseRequestConfig(sessionId);
+    config.validateStatus = function (status: number) {
+      return (
+        status === HTTP_STATUS_CODES.OK ||
+        status === HTTP_STATUS_CODES.BAD_REQUEST
+      );
+    };
+
+    const { data, status } = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.SEND_NOTIFICATION,
       {
         email,
         phoneNumber,
         notificationType: NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER,
       },
-      getBaseRequestConfig(sessionId)
+      config
     );
+
+    return {
+      success: status === HTTP_STATUS_CODES.OK,
+      code: data.code,
+      message: data.message,
+    };
   };
 
   return {
