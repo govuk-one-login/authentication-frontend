@@ -438,12 +438,12 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
-"@types/i18next-fs-backend@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@types/i18next-fs-backend/-/i18next-fs-backend-1.1.1.tgz#9a63c4ad3d8405bf437e7cc7122da917a519423d"
-  integrity sha512-rj95Ng1UmDSHiFPXOGX95c760LUOYj5MyYuxeXleWNCkeOVZJVpVKTEL6bTPeBK8A+GSnFeOnoNNkdmM2wUjTg==
+"@types/i18next-fs-backend@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@types/i18next-fs-backend/-/i18next-fs-backend-1.1.2.tgz#4f3116769229371fcdf64bbdb6841ea745e392f9"
+  integrity sha512-ZzTRXA5B0x0oGhzKNp08IsYjZpli4LjRZpg3q4j0XFxN5lKG2MVLnR4yHX8PPExBk4sj9Yfk1z9O6CjPrAlmIQ==
   dependencies:
-    i18next "^20.6.1"
+    i18next "^21.0.1"
 
 "@types/json-schema@^7.0.7":
   version "7.0.9"
@@ -2322,10 +2322,17 @@ i18next-http-middleware@^3.1.4:
   resolved "https://registry.yarnpkg.com/i18next-http-middleware/-/i18next-http-middleware-3.1.4.tgz#edcb6caf1f6feb83cd8433bc4a3a9acb69180a4a"
   integrity sha512-OVjxnw1w9RqhrOBSsXBXbk/7kzpLu+YvaL0LZnLHTCzjs8dMG8/BuoaDxi1l30T1lUfmweb+er/xwRHV3lp0RQ==
 
-i18next@^20.3.5, i18next@^20.6.1:
+i18next@^20.3.5:
   version "20.6.1"
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-20.6.1.tgz#535e5f6e5baeb685c7d25df70db63bf3cc0aa345"
   integrity sha512-yCMYTMEJ9ihCwEQQ3phLo7I/Pwycf8uAx+sRHwwk5U9Aui/IZYgQRyMqXafQOw5QQ7DM1Z+WyEXWIqSuJHhG2A==
+  dependencies:
+    "@babel/runtime" "^7.12.0"
+
+i18next@^21.0.1:
+  version "21.0.1"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-21.0.1.tgz#6b20df6135579c54c2f401590be4ea444b37a40f"
+  integrity sha512-t2qKY5tO9FPCS9TBajVRQ/FSCf8AAolLP6O2YCUGyR3qLeznlpPnrmzLmQo+Aqe/W3cY/znaV1d6AEIEVxcCAg==
   dependencies:
     "@babel/runtime" "^7.12.0"
 
