@@ -13,7 +13,7 @@ services:
     environment:
       - ENVIRONMENT="development"
       - API_BASE_URL=
-      - SESSION_EXPIRY="1800000"
+      - SESSION_EXPIRY="3600000"
       - SESSION_SECRET="secret"
       - API_KEY=key
     restart: on-failure
