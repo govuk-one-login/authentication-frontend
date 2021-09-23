@@ -1,7 +1,8 @@
-export interface MfaServiceInterface {
-  sendMfaCode: (sessionId: string, emailAddress: string) => Promise<void>;
-}
+import { ApiResponseResult } from "../../../types";
 
-export interface UserSessionState {
-  sessionState: string;
+export interface MfaServiceInterface {
+  sendMfaCode: (
+    sessionId: string,
+    emailAddress: string
+  ) => Promise<ApiResponseResult>;
 }
