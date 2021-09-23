@@ -25,7 +25,7 @@ export function renderBadRequest(
 ): void {
   res.status(HTTP_STATUS_CODES.BAD_REQUEST);
 
-  res.render(template, {
+  return res.render(template, {
     errors,
     errorList: Object.values(errors),
     ...req.body,

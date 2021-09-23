@@ -150,7 +150,7 @@ describe("Integration:: check your email email", () => {
   });
 
   it("should return validation error when incorrect code entered", (done) => {
-    nock(baseApi).post("/verify-code").once().reply(200, {
+    nock(baseApi).post("/verify-code").once().reply(400, {
       sessionState: "EMAIL_CODE_NOT_VALID",
     });
 
@@ -172,8 +172,9 @@ describe("Integration:: check your email email", () => {
   });
 
   it("should return error page when when incorrect code entered more than 5 times", (done) => {
-    nock(baseApi).post("/verify-code").times(6).reply(200, {
+    nock(baseApi).post("/verify-code").times(6).reply(400, {
       sessionState: "EMAIL_CODE_MAX_RETRIES_REACHED",
+      success: false,
     });
 
     request(app)
@@ -184,7 +185,7 @@ describe("Integration:: check your email email", () => {
         _csrf: token,
         code: "123455",
       })
-      .expect("Location", "/security-code-expired")
+      .expect("Location", "/security-code-invalid")
       .expect(302, done);
   });
 });

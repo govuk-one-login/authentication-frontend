@@ -1,22 +1,35 @@
-import { API_ENDPOINTS } from "../../../app.constants";
-import { getBaseRequestConfig, http, Http } from "../../../utils/http";
-import { VerifyCode } from "./types";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import {
+  createApiResponse,
+  getRequestConfig,
+  http,
+  Http,
+} from "../../../utils/http";
+import { ApiResponse, ApiResponseResult } from "../../../types";
+import { VerifyCodeInterface } from "./types";
 
-export function codeService(axios: Http = http): any {
+export function codeService(axios: Http = http): VerifyCodeInterface {
   const verifyCode = async function (
     sessionId: string,
     code: string,
     notificationType: string
-  ): Promise<string> {
-    const { data } = await axios.client.post<VerifyCode>(
+  ): Promise<ApiResponseResult> {
+    const response = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.VERIFY_CODE,
       {
         code,
         notificationType,
       },
-      getBaseRequestConfig(sessionId)
+      getRequestConfig({
+        sessionId: sessionId,
+        validationStatues: [
+          HTTP_STATUS_CODES.OK,
+          HTTP_STATUS_CODES.BAD_REQUEST,
+        ],
+      })
     );
-    return data.sessionState;
+
+    return createApiResponse(response);
   };
 
   return {

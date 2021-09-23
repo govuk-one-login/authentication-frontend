@@ -87,8 +87,5 @@ export async function callClientInfo(
   res: Response,
   service: UpdateTermsAndCondsServiceInterface
 ): Promise<ClientInfoResponse> {
-  return await service.clientInfo(
-    res.locals.sessionId,
-    res.locals.clientSessionId
-  );
+  return service.clientInfo(res.locals.sessionId, res.locals.clientSessionId);
 }

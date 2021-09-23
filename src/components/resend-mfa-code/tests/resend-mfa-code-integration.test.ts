@@ -95,7 +95,10 @@ describe("Integration:: resend mfa code", () => {
   });
 
   it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", (done) => {
-    nock(baseApi).post("/mfa").once().reply(400, { code: "1024" });
+    nock(baseApi)
+      .post("/mfa")
+      .times(6)
+      .reply(400, { sessionState: "MFA_SMS_MAX_CODES_SENT" });
 
     request(app)
       .post("/resend-code")
@@ -109,7 +112,10 @@ describe("Integration:: resend mfa code", () => {
   });
 
   it("should redirect to /security-code-invalid-request when exceeded OTP request limit", (done) => {
-    nock(baseApi).post("/mfa").once().reply(400, { code: "1025" });
+    nock(baseApi)
+      .post("/mfa")
+      .once()
+      .reply(400, { sessionState: "MFA_CODE_REQUESTS_BLOCKED" });
 
     request(app)
       .post("/resend-code")

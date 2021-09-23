@@ -183,7 +183,7 @@ describe("Integration::enter phone number", () => {
       })
       .post("/send-notification")
       .times(6)
-      .reply(400, { code: "1024" });
+      .reply(400, { sessionState: "PHONE_NUMBER_MAX_CODES_SENT" });
 
     request(app)
       .post("/enter-phone-number")
@@ -206,7 +206,7 @@ describe("Integration::enter phone number", () => {
       })
       .post("/send-notification")
       .once()
-      .reply(400, { code: "1025" });
+      .reply(400, { sessionState: "PHONE_NUMBER_CODE_REQUESTS_BLOCKED" });
 
     request(app)
       .post("/enter-phone-number")

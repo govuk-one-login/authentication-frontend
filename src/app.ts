@@ -6,7 +6,6 @@ import { loggerMiddleware } from "./utils/logger";
 import { sanitizeRequestMiddleware } from "./middleware/sanitize-request-middleware";
 import i18nextMiddleware from "i18next-http-middleware";
 import * as path from "path";
-import bodyParser from "body-parser";
 import { configureNunjucks } from "./config/nunchucks";
 import { i18nextConfigurationOptions } from "./config/i18next";
 import { helmetConfiguration } from "./config/helmet";
@@ -85,11 +84,10 @@ function createApp(): express.Application {
 
   app.enable("trust proxy");
 
-  app.use(loggerMiddleware);
-
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
   app.use(noCacheMiddleware);
+  app.use(loggerMiddleware);
 
   app.use(
     "/assets",

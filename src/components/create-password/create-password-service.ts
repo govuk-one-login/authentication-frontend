@@ -1,4 +1,4 @@
-import { getBaseRequestConfig, Http, http } from "../../utils/http";
+import { getRequestConfig, Http, http } from "../../utils/http";
 import { API_ENDPOINTS } from "../../app.constants";
 import { CreatePasswordServiceInterface, UserSignup } from "./types";
 
@@ -16,7 +16,7 @@ export function createPasswordService(
         email: emailAddress,
         password: password,
       },
-      getBaseRequestConfig(sessionId)
+      getRequestConfig({ sessionId: sessionId })
     );
     return data.sessionState;
   };

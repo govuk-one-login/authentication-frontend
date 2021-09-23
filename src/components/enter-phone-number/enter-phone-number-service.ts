@@ -1,4 +1,4 @@
-import { getBaseRequestConfig, Http, http } from "../../utils/http";
+import { getRequestConfig, Http, http } from "../../utils/http";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
@@ -25,7 +25,7 @@ export function enterPhoneNumberService(
         profileInformation: phoneNumber,
         updateProfileType: UPDATE_TYPE_ADD_PHONE_NUMBER,
       },
-      getBaseRequestConfig(sessionId)
+      getRequestConfig({ sessionId: sessionId })
     );
 
     return data.sessionState === USER_STATE.ADDED_UNVERIFIED_PHONE_NUMBER;
@@ -36,14 +36,6 @@ export function enterPhoneNumberService(
     email: string,
     phoneNumber: string
   ): Promise<ApiResponseResult> {
-    const config = getBaseRequestConfig(sessionId);
-    config.validateStatus = function (status: number) {
-      return (
-        status === HTTP_STATUS_CODES.OK ||
-        status === HTTP_STATUS_CODES.BAD_REQUEST
-      );
-    };
-
     const { data, status } = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.SEND_NOTIFICATION,
       {
@@ -51,13 +43,18 @@ export function enterPhoneNumberService(
         phoneNumber,
         notificationType: NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER,
       },
-      config
+      getRequestConfig({
+        sessionId: sessionId,
+        validationStatues: [
+          HTTP_STATUS_CODES.OK,
+          HTTP_STATUS_CODES.BAD_REQUEST,
+        ],
+      })
     );
 
     return {
       success: status === HTTP_STATUS_CODES.OK,
-      code: data.code,
-      message: data.message,
+      sessionState: data.sessionState,
     };
   };
 

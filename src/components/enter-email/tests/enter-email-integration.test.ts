@@ -216,8 +216,8 @@ describe("Integration::enter email", () => {
         sessionState: "USER_NOT_FOUND",
       })
       .post("/send-notification")
-      .once()
-      .reply(400, { code: "1024" });
+      .times(6)
+      .reply(400, { sessionState: "EMAIL_MAX_CODES_SENT" });
 
     request(app)
       .post("/enter-email-create")
@@ -242,7 +242,7 @@ describe("Integration::enter email", () => {
       })
       .post("/send-notification")
       .once()
-      .reply(400, { code: "1025" });
+      .reply(400, { sessionState: "EMAIL_CODE_REQUESTS_BLOCKED" });
 
     request(app)
       .post("/enter-email-create")

@@ -349,7 +349,7 @@
         }
       }
     },
-    "securityCodeExpired": {
+    "securityCodeInvalid": {
       "title": "You entered the wrong security code too many times",
       "header": "You entered the wrong security code too many times",
       "info": {

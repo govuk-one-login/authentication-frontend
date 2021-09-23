@@ -3,17 +3,17 @@ import { PATH_NAMES } from "../../app.constants";
 import * as express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import {
-  securityCodeCannotRequestGet,
-  securityCodeExpiredGet,
+  securityCodeCannotRequestCodeGet,
+  securityCodeInvalidGet,
   securityCodeTriesExceededGet,
 } from "./security-code-error-controller";
 
 const router = express.Router();
 
 router.get(
-  PATH_NAMES.SECURITY_CODE_EXPIRED,
+  PATH_NAMES.SECURITY_CODE_INVALID,
   validateSessionMiddleware,
-  securityCodeExpiredGet
+  securityCodeInvalidGet
 );
 
 router.get(
@@ -25,7 +25,7 @@ router.get(
 router.get(
   PATH_NAMES.SECURITY_CODE_WAIT,
   validateSessionMiddleware,
-  securityCodeCannotRequestGet
+  securityCodeCannotRequestCodeGet
 );
 
 export { router as securityCodeErrorRouter };

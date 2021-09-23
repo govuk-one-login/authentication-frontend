@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
-import { ERROR_CODES, PATH_NAMES } from "../../app.constants";
+import { PATH_NAMES } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { EnterPhoneNumberServiceInterface } from "./types";
 import { enterPhoneNumberService } from "./enter-phone-number-service";
 import { redactPhoneNumber } from "../../utils/strings";
+import { getNextPathRateLimit } from "../common/constants";
+import { BadRequestError } from "../../utils/error";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
   res.render("enter-phone-number/index.njk");
@@ -27,10 +29,10 @@ export function enterPhoneNumberPost(
     );
 
     if (!result.success) {
-      if (result.code === ERROR_CODES.REQUESTED_TOO_MANY_SECURITY_CODES) {
-        return res.redirect(PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED);
+      if (result.sessionState) {
+        return res.redirect(getNextPathRateLimit(result.sessionState));
       }
-      return res.redirect(PATH_NAMES.SECURITY_CODE_WAIT);
+      throw new BadRequestError(result.message, result.code);
     }
 
     return res.redirect(PATH_NAMES.CHECK_YOUR_PHONE);
