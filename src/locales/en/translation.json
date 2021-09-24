@@ -89,7 +89,7 @@
       "title": "You've been signed out",
       "header": "You have been signed out",
       "content": {
-        "paragraph1": "You’ve been signed out because you did not use your account for 30 minutes or more.",
+        "paragraph1": "You’ve been signed out because you did not use your account for 60 minutes or more.",
         "paragraph2": "This is to keep your account and your information secure.",
         "signInButtonText": "Sign in",
         "signInButtonHRef": "#",
