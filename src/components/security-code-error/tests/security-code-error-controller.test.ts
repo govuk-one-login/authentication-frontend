@@ -5,8 +5,8 @@ import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 import { UserSession } from "../../../types";
 import {
-  securityCodeCannotRequestGet,
-  securityCodeExpiredGet,
+  securityCodeCannotRequestCodeGet,
+  securityCodeInvalidGet,
   securityCodeTriesExceededGet,
 } from "../security-code-error-controller";
 
@@ -28,7 +28,7 @@ describe("security code  controller", () => {
 
   describe("securityCodeExpiredGet", () => {
     it("should render security code expired view", () => {
-      securityCodeExpiredGet(req as Request, res as Response);
+      securityCodeInvalidGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("security-code-error/index.njk");
     });
@@ -46,7 +46,7 @@ describe("security code  controller", () => {
 
   describe("securityCodeCannotRequestGet", () => {
     it("should render security code invalid request view", () => {
-      securityCodeCannotRequestGet(req as Request, res as Response);
+      securityCodeCannotRequestCodeGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
         "security-code-error/index-wait.njk"

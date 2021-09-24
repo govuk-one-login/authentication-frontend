@@ -1,6 +1,6 @@
 import { MfaServiceInterface } from "./types";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
-import { getBaseRequestConfig, http, Http } from "../../../utils/http";
+import { getRequestConfig, http, Http } from "../../../utils/http";
 import { ApiResponse, ApiResponseResult } from "../../../types";
 
 export function mfaService(axios: Http = http): MfaServiceInterface {
@@ -8,26 +8,25 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
     sessionId: string,
     emailAddress: string
   ): Promise<ApiResponseResult> {
-    const config = getBaseRequestConfig(sessionId);
-    config.validateStatus = function (status: number) {
-      return (
-        status === HTTP_STATUS_CODES.OK ||
-        status === HTTP_STATUS_CODES.BAD_REQUEST
-      );
-    };
-
     const { data, status } = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.MFA,
       {
         email: emailAddress,
       },
-      config
+      getRequestConfig({
+        sessionId: sessionId,
+        validationStatues: [
+          HTTP_STATUS_CODES.OK,
+          HTTP_STATUS_CODES.BAD_REQUEST,
+        ],
+      })
     );
 
     return {
       success: status === HTTP_STATUS_CODES.OK,
       code: data.code,
       message: data.message,
+      sessionState: data.sessionState,
     };
   };
 

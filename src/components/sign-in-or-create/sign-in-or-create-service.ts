@@ -1,8 +1,4 @@
-import {
-  getBaseRequestConfigWithClientSession,
-  Http,
-  http,
-} from "../../utils/http";
+import { getRequestConfig, Http, http } from "../../utils/http";
 import { API_ENDPOINTS } from "../../app.constants";
 
 import { ClientInfoResponse, SignInOrCreateServiceInterface } from "./types";
@@ -16,7 +12,10 @@ export function signInOrCreateService(
   ): Promise<ClientInfoResponse> {
     const { data } = await axios.client.get<ClientInfoResponse>(
       API_ENDPOINTS.CLIENT_INFO,
-      getBaseRequestConfigWithClientSession(sessionId, clientSessionId)
+      getRequestConfig({
+        sessionId: sessionId,
+        clientSessionId: clientSessionId,
+      })
     );
     return data;
   };

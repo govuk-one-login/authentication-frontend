@@ -47,8 +47,7 @@ describe("Integration::reset password check email ", () => {
     request(app).get("/reset-password-check-email").expect(200, done);
   });
 
-  //todo check
-  it("should return error page when expired link", (done) => {
+  it("should return error page when 6 password reset codes requested", (done) => {
     nock(baseApi)
       .post("/reset-password-request")
       .times(6)
@@ -65,8 +64,7 @@ describe("Integration::reset password check email ", () => {
       .expect(200, done);
   });
 
-  //todo check
-  it("should return error page when expired code", (done) => {
+  it("should return error page when blocked from requesting codes", (done) => {
     nock(baseApi)
       .post("/reset-password-request")
       .once()

@@ -3,6 +3,7 @@ import { ExpressRouteFunc } from "../../types";
 import { ResetPasswordCheckEmailServiceInterface } from "./types";
 import { resetPasswordCheckEmailService } from "./reset-password-check-email-service";
 import { ERROR_CODES } from "../../app.constants";
+import { BadRequestError } from "../../utils/error";
 
 export function resetPasswordCheckEmailGet(
   service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailService()
@@ -18,15 +19,18 @@ export function resetPasswordCheckEmailGet(
       });
     }
 
-    if (result.code === ERROR_CODES.REQUEST_MISSING_PARAMETERS) {
-      throw new Error("Reset password request invalid: missing parameters");
+    if (
+      result.code === ERROR_CODES.RESET_PASSWORD_LINK_MAX_RETRIES_REACHED ||
+      result.code === ERROR_CODES.RESET_PASSWORD_LINK_BLOCKED
+    ) {
+      const errorTemplate =
+        result.code === ERROR_CODES.RESET_PASSWORD_LINK_MAX_RETRIES_REACHED
+          ? "reset-password-check-email/index-exceeded-request-count.njk"
+          : "reset-password-check-email/index-request-attempt-blocked.njk";
+
+      return res.render(errorTemplate);
+    } else {
+      throw new BadRequestError(result.message, result.code);
     }
-
-    const errorTemplate =
-      result.code === "1022"
-        ? "reset-password-check-email/index-exceeded-request-count.njk"
-        : "reset-password-check-email/index-request-attempt-blocked.njk";
-
-    return res.render(errorTemplate);
   };
 }

@@ -1,4 +1,4 @@
-import { getBaseRequestConfig, Http, http } from "../../utils/http";
+import { getRequestConfig, Http, http } from "../../utils/http";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants";
 
 import { ResetPasswordCheckEmailServiceInterface } from "./types";
@@ -11,19 +11,18 @@ export function resetPasswordCheckEmailService(
     email: string,
     sessionId: string
   ): Promise<ApiResponseResult> {
-    const config = getBaseRequestConfig(sessionId);
-    config.validateStatus = function (status: number) {
-      return (
-        status === HTTP_STATUS_CODES.OK ||
-        status === HTTP_STATUS_CODES.BAD_REQUEST
-      );
-    };
     const { data, status } = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.RESET_PASSWORD_REQUEST,
       {
         email: email,
       },
-      config
+      getRequestConfig({
+        sessionId: sessionId,
+        validationStatues: [
+          HTTP_STATUS_CODES.OK,
+          HTTP_STATUS_CODES.BAD_REQUEST,
+        ],
+      })
     );
     return {
       success: status === HTTP_STATUS_CODES.OK,

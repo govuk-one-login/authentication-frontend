@@ -1,4 +1,4 @@
-import { getBaseRequestConfig, Http, http } from "../../utils/http";
+import { getRequestConfig, Http, http } from "../../utils/http";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
@@ -19,7 +19,7 @@ export function enterEmailService(
       {
         email: emailAddress,
       },
-      getBaseRequestConfig(sessionId)
+      getRequestConfig({ sessionId: sessionId })
     );
 
     return data.doesUserExist;
@@ -29,27 +29,24 @@ export function enterEmailService(
     sessionId: string,
     email: string
   ): Promise<ApiResponseResult> {
-    const config = getBaseRequestConfig(sessionId);
-    config.validateStatus = function (status: number) {
-      return (
-        status === HTTP_STATUS_CODES.OK ||
-        status === HTTP_STATUS_CODES.BAD_REQUEST
-      );
-    };
-
     const { data, status } = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.SEND_NOTIFICATION,
       {
         email: email,
         notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
       },
-      config
+      getRequestConfig({
+        sessionId: sessionId,
+        validationStatues: [
+          HTTP_STATUS_CODES.OK,
+          HTTP_STATUS_CODES.BAD_REQUEST,
+        ],
+      })
     );
 
     return {
       success: status === HTTP_STATUS_CODES.OK,
-      code: data.code,
-      message: data.message,
+      sessionState: data.sessionState,
     };
   };
 

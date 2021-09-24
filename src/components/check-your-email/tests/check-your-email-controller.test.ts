@@ -46,7 +46,10 @@ describe("check your email controller", () => {
   describe("checkYourEmailPost", () => {
     it("should redirect to /create-password when valid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake.returns("EMAIL_CODE_VERIFIED"),
+        verifyCode: sandbox.fake.returns({
+          sessionState: "EMAIL_CODE_VERIFIED",
+          success: true,
+        }),
       };
 
       req.body.code = "123456";
@@ -60,7 +63,10 @@ describe("check your email controller", () => {
 
     it("should return error when invalid code", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake.returns(false),
+        verifyCode: sandbox.fake.returns({
+          success: false,
+          sessionState: "EMAIL_CODE_NOT_VALID",
+        }),
       };
       req.t = sandbox.fake.returns("translated string");
       req.body.code = "678988";

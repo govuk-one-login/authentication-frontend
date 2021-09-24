@@ -1,4 +1,4 @@
-import { getBaseRequestConfig, Http, http } from "../../utils/http";
+import { getRequestConfig, Http, http } from "../../utils/http";
 import { API_ENDPOINTS, NOTIFICATION_TYPE } from "../../app.constants";
 import { AccountNotFoundServiceInterface } from "./types";
 
@@ -15,7 +15,7 @@ export function accountNotFoundService(
         email: email,
         notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
       },
-      getBaseRequestConfig(sessionId)
+      getRequestConfig({ sessionId: sessionId })
     );
   };
 

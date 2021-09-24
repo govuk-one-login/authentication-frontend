@@ -52,14 +52,5 @@ describe("HTML Lang middleware", () => {
       );
       expect(next).to.have.been.called;
     });
-
-    it("should call next function", () => {
-      validateBodyMiddleware("test.html")(
-        req as Request,
-        res as Response,
-        next
-      );
-      expect(next).to.have.been.called;
-    });
   });
 });

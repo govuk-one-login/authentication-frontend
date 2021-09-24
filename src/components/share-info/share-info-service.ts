@@ -1,8 +1,4 @@
-import {
-  getBaseRequestConfigWithClientSession,
-  Http,
-  http,
-} from "../../utils/http";
+import { getRequestConfig, Http, http } from "../../utils/http";
 import { API_ENDPOINTS, USER_STATE } from "../../app.constants";
 
 import {
@@ -29,7 +25,10 @@ export function shareInfoService(
         profileInformation: consent,
         updateProfileType: UPDATE_TYPE_CAPTURE_CONSENT,
       },
-      getBaseRequestConfigWithClientSession(sessionId, clientSessionId)
+      getRequestConfig({
+        sessionId: sessionId,
+        clientSessionId: clientSessionId,
+      })
     );
 
     return data.sessionState === USER_STATE.ADDED_CONSENT;
@@ -41,7 +40,10 @@ export function shareInfoService(
   ): Promise<ClientInfoResponse> {
     const { data } = await axios.client.get<ClientInfoResponse>(
       API_ENDPOINTS.CLIENT_INFO,
-      getBaseRequestConfigWithClientSession(sessionId, clientSessionId)
+      getRequestConfig({
+        sessionId: sessionId,
+        clientSessionId: clientSessionId,
+      })
     );
     return data;
   };

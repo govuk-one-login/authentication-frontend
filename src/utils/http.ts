@@ -1,6 +1,13 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosError,
+  AxiosResponse,
+} from "axios";
 import { getApiBaseUrl, getApiKey } from "../config";
 import { logger } from "./logger";
+import { ApiResponseResult } from "../types";
+import { HTTP_STATUS_CODES } from "../app.constants";
 
 const headers: Readonly<Record<string, string | boolean>> = {
   Accept: "application/json",
@@ -9,22 +16,42 @@ const headers: Readonly<Record<string, string | boolean>> = {
   "X-Requested-With": "XMLHttpRequest",
 };
 
-export function getBaseRequestConfig(sessionId: string): AxiosRequestConfig {
+export interface ConfigOptions {
+  sessionId?: string;
+  clientSessionId?: string;
+  validationStatues?: number[];
+}
+export function createApiResponse(response: AxiosResponse): ApiResponseResult {
   return {
+    success: response.status === HTTP_STATUS_CODES.OK,
+    code: response.data.code,
+    message: response.data.message,
+    sessionState: response.data.sessionState,
+  };
+}
+
+export function getRequestConfig(options: ConfigOptions): AxiosRequestConfig {
+  const config: AxiosRequestConfig = {
     headers: {
-      "Session-Id": sessionId,
       "X-API-Key": getApiKey(),
     },
     proxy: false,
   };
-}
 
-export function getBaseRequestConfigWithClientSession(
-  sessionId: string,
-  clientSessionId: string
-): AxiosRequestConfig {
-  const config = getBaseRequestConfig(sessionId);
-  config.headers["Client-Session-Id"] = clientSessionId;
+  if (options.sessionId) {
+    config.headers["Session-Id"] = options.sessionId;
+  }
+
+  if (options.clientSessionId) {
+    config.headers["Client-Session-Id"] = options.clientSessionId;
+  }
+
+  if (options.validationStatues) {
+    config.validateStatus = function (status: number) {
+      return options.validationStatues.includes(status);
+    };
+  }
+
   return config;
 }
 

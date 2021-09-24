@@ -1,8 +1,4 @@
-import {
-  getBaseRequestConfigWithClientSession,
-  Http,
-  http,
-} from "../../utils/http";
+import { getRequestConfig, Http, http } from "../../utils/http";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants";
 import { EnterPasswordServiceInterface, UserLogin } from "./types";
 
@@ -15,24 +11,20 @@ export function enterPasswordService(
     password: string,
     clientSessionId: string
   ): Promise<UserLogin> {
-    const config = getBaseRequestConfigWithClientSession(
-      sessionId,
-      clientSessionId
-    );
-    config.validateStatus = function (status: number) {
-      return (
-        status === HTTP_STATUS_CODES.OK ||
-        status === HTTP_STATUS_CODES.UNAUTHORIZED
-      );
-    };
-
     const { data } = await axios.client.post<UserLogin>(
       API_ENDPOINTS.LOG_IN_USER,
       {
         email: emailAddress,
         password: password,
       },
-      config
+      getRequestConfig({
+        sessionId: sessionId,
+        clientSessionId: clientSessionId,
+        validationStatues: [
+          HTTP_STATUS_CODES.OK,
+          HTTP_STATUS_CODES.UNAUTHORIZED,
+        ],
+      })
     );
     return data;
   };

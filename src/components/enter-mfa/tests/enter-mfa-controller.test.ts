@@ -43,7 +43,10 @@ describe("enter mfa controller", () => {
   describe("enterMfaPost", () => {
     it("should redirect to /auth-code when valid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake.returns("MFA_CODE_VERIFIED"),
+        verifyCode: sandbox.fake.returns({
+          sessionState: "MFA_CODE_VERIFIED",
+          success: true,
+        }),
       };
 
       req.body.code = "123456";
@@ -57,7 +60,10 @@ describe("enter mfa controller", () => {
 
     it("should return error when invalid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake(),
+        verifyCode: sandbox.fake.returns({
+          success: false,
+          sessionState: "MFA_CODE_NOT_VALID",
+        }),
       };
 
       req.t = sandbox.fake.returns("translated string");
@@ -72,7 +78,10 @@ describe("enter mfa controller", () => {
 
     it("should redirect to security code expired when invalid code entered more than max retries", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake.returns("MFA_CODE_MAX_RETRIES_REACHED"),
+        verifyCode: sandbox.fake.returns({
+          sessionState: "MFA_CODE_MAX_RETRIES_REACHED",
+          success: false,
+        }),
       };
 
       req.t = sandbox.fake.returns("translated string");
@@ -82,7 +91,7 @@ describe("enter mfa controller", () => {
       await enterMfaPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
-      expect(res.redirect).to.have.been.calledWith("/security-code-expired");
+      expect(res.redirect).to.have.been.calledWith("/security-code-invalid");
     });
   });
 });

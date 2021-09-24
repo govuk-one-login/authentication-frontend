@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { ERROR_CODES, PATH_NAMES } from "../../app.constants";
+import { PATH_NAMES } from "../../app.constants";
 import { mfaService } from "../common/mfa/mfa-service";
 import { MfaServiceInterface } from "../common/mfa/types";
+import { getNextPathRateLimit } from "../common/constants";
+import { BadRequestError } from "../../utils/error";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
   res.render("resend-mfa-code/index.njk", {
@@ -19,10 +21,10 @@ export function resendMfaCodePost(
     const result = await service.sendMfaCode(id, email);
 
     if (!result.success) {
-      if (result.code === ERROR_CODES.REQUESTED_TOO_MANY_SECURITY_CODES) {
-        return res.redirect(PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED);
+      if (result.sessionState) {
+        return res.redirect(getNextPathRateLimit(result.sessionState));
       }
-      return res.redirect(PATH_NAMES.SECURITY_CODE_WAIT);
+      throw new BadRequestError(result.message, result.code);
     }
 
     return res.redirect(PATH_NAMES.ENTER_MFA);

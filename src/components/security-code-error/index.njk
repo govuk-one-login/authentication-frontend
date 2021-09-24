@@ -1,12 +1,12 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% set pageTitleName = 'pages.securityCodeExpired.title' | translate %}
+{% set pageTitleName = 'pages.securityCodeInvalid.title' | translate %}
 
 {% block content %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeExpired.header' | translate }}</h1>
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeInvalid.header' | translate }}</h1>
 
-<p class="govuk-body">{{'pages.securityCodeExpired.info.paragraph1' | translate}}</p>
-<p class="govuk-body">{{'pages.securityCodeExpired.info.paragraph2' | translate}}</p>
+<p class="govuk-body">{{'pages.securityCodeInvalid.info.paragraph1' | translate}}</p>
+<p class="govuk-body">{{'pages.securityCodeInvalid.info.paragraph2' | translate}}</p>
 
 {% endblock %}
