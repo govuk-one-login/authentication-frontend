@@ -53,7 +53,8 @@ export function enterPasswordPost(
       sessionId,
       email,
       req.body["password"],
-      clientSessionId
+      clientSessionId,
+      req.ip
     );
 
     if (userLogin.sessionState === USER_STATE.ACCOUNT_LOCKED) {
