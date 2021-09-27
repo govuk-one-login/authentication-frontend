@@ -1786,10 +1786,10 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
-express-validator@^6.12.1:
-  version "6.12.1"
-  resolved "https://registry.yarnpkg.com/express-validator/-/express-validator-6.12.1.tgz#2ff698ff6f9af436cb08913b5b26849e43f34031"
-  integrity sha512-olpTAv0ZB5IhNuDQ2rodKAuJsewgFgLIsczJMAWD6T0Yvxsa+j/Hk61jl8e26lAq+oJr6hUqPRjdlOBKhFlWeQ==
+express-validator@^6.12.2:
+  version "6.12.2"
+  resolved "https://registry.yarnpkg.com/express-validator/-/express-validator-6.12.2.tgz#0ee3e34338223ae6ed9a97532ff3687fd561db90"
+  integrity sha512-UMVck7ZWrKH7eX75CRYk/pAc9jxZk8Ddsdkukw1R7LTWuQNiDaooz6nVfIdg33qZUHCuv2m2o+RS4pTMaLjGmA==
   dependencies:
     lodash "^4.17.21"
     validator "^13.5.2"
