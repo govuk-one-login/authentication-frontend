@@ -158,4 +158,21 @@ describe("Integration::enter password", () => {
       .expect("Location", "/account-locked")
       .expect(302, done);
   });
+
+  it("should redirect to /enter-phone-number when user does not have a verified phone number", (done) => {
+    nock(baseApi).post("/login").once().reply(200, {
+      sessionState: USER_STATE.REQUIRES_TWO_FACTOR,
+    });
+
+    request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        password: "password",
+      })
+      .expect("Location", "/enter-phone-number")
+      .expect(302, done);
+  });
 });

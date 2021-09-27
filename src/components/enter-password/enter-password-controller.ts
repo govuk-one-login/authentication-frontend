@@ -60,6 +60,10 @@ export function enterPasswordPost(
       return res.redirect(PATH_NAMES.ACCOUNT_LOCKED);
     }
 
+    if (userLogin.sessionState === USER_STATE.REQUIRES_TWO_FACTOR) {
+      return res.redirect(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
+    }
+
     if (userLogin.sessionState === USER_STATE.LOGGED_IN) {
       req.session.user.phoneNumber = userLogin.redactedPhoneNumber;
       await mfaCodeService.sendMfaCode(sessionId, email);
