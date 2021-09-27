@@ -54,7 +54,7 @@
     "csurf": "^1.11.0",
     "dompurify": "^2.3.3",
     "express": "^4.17.1",
-    "express-validator": "^6.12.1",
+    "express-validator": "^6.12.2",
     "govuk-frontend": "^3.13.1",
     "helmet": "4.6.0",
     "i18next": "^20.3.5",
