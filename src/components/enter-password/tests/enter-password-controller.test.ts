@@ -88,6 +88,29 @@ describe("enter password controller", () => {
       expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
     });
 
+
+    it("should redirect to enter phone number when phone number is not verified", async () => {
+      const fakeService: EnterPasswordServiceInterface = {
+        loginUser: sandbox.fake.returns({
+          sessionState: USER_STATE.REQUIRES_TWO_FACTOR,
+        }),
+      };
+
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      req.body["password"] = "password";
+
+      await enterPasswordPost(false, fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);
+    });
+
     it("should throw error when API call throws error", async () => {
       const error = new Error("Internal server error");
       const fakeService: EnterPasswordServiceInterface = {

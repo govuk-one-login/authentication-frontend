@@ -1,5 +1,5 @@
 export interface UserLogin {
-  redactedPhoneNumber: string;
+  redactedPhoneNumber?: string;
   sessionState: string;
 }
 
