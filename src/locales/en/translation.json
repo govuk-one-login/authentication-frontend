@@ -309,11 +309,15 @@
       "header": "Check your email",
       "text": "We have sent an email to: ",
       "info": {
-        "paragraph1": "Once you have opened the email and got the code, come back to this page and enter the security code below.",
-        "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
-        "paragraph3Start": "You can ",
-        "enterEmailLink": "enter your email address again",
-        "paragraph3End": " if you got it wrong."
+        "paragraph1": "The email contains a 6 digit security code.",
+        "paragraph2": "Open the email to get the security code, then enter it below.",
+        "paragraph3": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder."
+      },
+      "requestNewCode": {
+        "link": "Request a new code",
+        "paragraph1": "if you:",
+        "listItem1": "didn't receive a code",
+        "listItem2": "need a new code"
       },
       "code": {
         "label": "Enter the 6 digit security code",

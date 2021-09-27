@@ -21,6 +21,7 @@ export function accountNotFoundPost(
   return async function (req: Request, res: Response) {
     const email = req.session.user.email;
     const sessionId = res.locals.sessionId;
+    req.session.user.createAccount = true;
 
     await service.sendEmailVerificationNotification(sessionId, email);
     res.redirect(PATH_NAMES.CHECK_YOUR_EMAIL);
