@@ -19,10 +19,7 @@
 
 <p class="govuk-body">{{'pages.checkYourEmail.info.paragraph1' | translate}}</p>
 <p class="govuk-body">{{'pages.checkYourEmail.info.paragraph2' | translate}}</p>
-<p class="govuk-body">{{'pages.checkYourEmail.info.paragraph3Start' | translate }}
-    <a href="/enter-email" class="govuk-link" rel="noreferrer noopener" target="_blank">{{'pages.checkYourEmail.info.enterEmailLink' | translate }}</a>
-    {{'pages.checkYourEmail.info.paragraph3End' | translate }}
-</p>
+<p class="govuk-body">{{'pages.checkYourEmail.info.paragraph3' | translate}}</p>
 
 <form action="/check-your-email" method="post" novalidate>
 
@@ -40,6 +37,12 @@
         text: errors['code'].text
     } if (errors['code'])})
 }}
+
+<p class="govuk-body"> <a href="/enter-email" class="govuk-link" rel="noreferrer">{{'pages.enterMfa.resend.link' | translate }}</a> {{ 'pages.checkYourEmail.requestNewCode.paragraph1' | translate}}</p>
+<ul class="govuk-list govuk-list--bullet">
+ <li>{{ 'pages.checkYourEmail.requestNewCode.listItem1' | translate}}</li>
+ <li>{{ 'pages.checkYourEmail.requestNewCode.listItem2' | translate}}</li>
+</ul>
 
 {{ govukButton({
     "text": button_text|default("Continue", true),
