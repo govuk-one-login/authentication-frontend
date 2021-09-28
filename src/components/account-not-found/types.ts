@@ -1,6 +1,7 @@
 export interface AccountNotFoundServiceInterface {
   sendEmailVerificationNotification: (
     sessionId: string,
-    email: string
+    email: string,
+    sourceIp: string
   ) => Promise<void>;
 }

@@ -2,11 +2,13 @@ export interface UpdateTermsAndCondsServiceInterface {
   updateProfile: (
     sessionId: string,
     email: string,
-    updatedTermsAndCondsValue: boolean
+    updatedTermsAndCondsValue: boolean,
+    sourceIp: string
   ) => Promise<boolean>;
   clientInfo: (
     sessionId: string,
-    clientSessionId: string
+    clientSessionId: string,
+    sourceIp: string
   ) => Promise<ClientInfoResponse>;
 }
 

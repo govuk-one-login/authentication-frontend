@@ -21,11 +21,12 @@ export function enterPhoneNumberPost(
 
     req.session.user.phoneNumber = redactPhoneNumber(phoneNumber);
 
-    await service.updateProfile(id, email, phoneNumber);
+    await service.updateProfile(id, email, phoneNumber, req.ip);
     const result = await service.sendPhoneVerificationNotification(
       id,
       email,
-      phoneNumber
+      phoneNumber,
+      req.ip
     );
 
     if (!result.success) {

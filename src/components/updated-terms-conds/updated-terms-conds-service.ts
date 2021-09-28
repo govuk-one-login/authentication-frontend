@@ -15,7 +15,8 @@ export function updateTermsAndCondsService(
   const updateProfile = async function (
     sessionId: string,
     email: string,
-    updatedTermsAndCondsValue: boolean
+    updatedTermsAndCondsValue: boolean,
+    sourceIp: string
   ): Promise<boolean> {
     const { data } = await axios.client.post<UpdateUserProfile>(
       API_ENDPOINTS.UPDATE_PROFILE,
@@ -24,7 +25,7 @@ export function updateTermsAndCondsService(
         profileInformation: updatedTermsAndCondsValue,
         updateProfileType: UPDATE_TERMS_AND_CONDS,
       },
-      getRequestConfig({ sessionId: sessionId })
+      getRequestConfig({ sessionId: sessionId, sourceIp: sourceIp })
     );
 
     return data.sessionState === USER_STATE.UPDATED_TERMS_AND_CONDITIONS;
@@ -32,13 +33,15 @@ export function updateTermsAndCondsService(
 
   const clientInfo = async function (
     sessionId: string,
-    clientSessionId: string
+    clientSessionId: string,
+    sourceIp: string
   ): Promise<ClientInfoResponse> {
     const { data } = await axios.client.get<ClientInfoResponse>(
       API_ENDPOINTS.CLIENT_INFO,
       getRequestConfig({
         sessionId: sessionId,
         clientSessionId: clientSessionId,
+        sourceIp: sourceIp
       })
     );
 

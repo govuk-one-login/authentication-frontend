@@ -4,12 +4,14 @@ export interface EnterPhoneNumberServiceInterface {
   sendPhoneVerificationNotification: (
     sessionId: string,
     email: string,
-    phoneNumber: string
+    phoneNumber: string,
+    sourceIp: string
   ) => Promise<ApiResponseResult>;
   updateProfile: (
     sessionId: string,
     email: string,
-    phoneNumber: string
+    phoneNumber: string,
+    sourceIp: string
   ) => Promise<boolean>;
 }
 

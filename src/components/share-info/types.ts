@@ -3,11 +3,13 @@ export interface ShareInfoServiceInterface {
     sessionId: string,
     clientSessionId: string,
     email: string,
-    consentValue: boolean
+    consentValue: boolean,
+    sourceIp: string
   ) => Promise<boolean>;
   clientInfo: (
     sessionId: string,
-    clientSessionId: string
+    clientSessionId: string,
+    sourceIp: string
   ) => Promise<ClientInfoResponse>;
 }
 
