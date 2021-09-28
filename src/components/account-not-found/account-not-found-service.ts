@@ -7,7 +7,8 @@ export function accountNotFoundService(
 ): AccountNotFoundServiceInterface {
   const sendEmailVerificationNotification = async function (
     sessionId: string,
-    email: string
+    email: string,
+    sourceIp: string
   ): Promise<void> {
     await axios.client.post<void>(
       API_ENDPOINTS.SEND_NOTIFICATION,
@@ -15,7 +16,7 @@ export function accountNotFoundService(
         email: email,
         notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
       },
-      getRequestConfig({ sessionId: sessionId })
+      getRequestConfig({ sessionId: sessionId, sourceIp: sourceIp })
     );
   };
 
