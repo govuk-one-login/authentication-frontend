@@ -18,7 +18,7 @@ export function resendMfaCodePost(
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
     const id = res.locals.sessionId;
-    const result = await service.sendMfaCode(id, email);
+    const result = await service.sendMfaCode(id, email, req.ip);
 
     if (!result.success) {
       if (result.sessionState) {

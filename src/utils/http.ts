@@ -20,6 +20,7 @@ export interface ConfigOptions {
   sessionId?: string;
   clientSessionId?: string;
   validationStatues?: number[];
+  sourceIp?: string
 }
 export function createApiResponse(response: AxiosResponse): ApiResponseResult {
   return {
@@ -44,6 +45,10 @@ export function getRequestConfig(options: ConfigOptions): AxiosRequestConfig {
 
   if (options.clientSessionId) {
     config.headers["Client-Session-Id"] = options.clientSessionId;
+  }
+
+  if (options.sourceIp) {
+    config.headers["X-Forwarded-For"] = options.sourceIp;
   }
 
   if (options.validationStatues) {

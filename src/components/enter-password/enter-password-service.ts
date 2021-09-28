@@ -9,7 +9,8 @@ export function enterPasswordService(
     sessionId: string,
     emailAddress: string,
     password: string,
-    clientSessionId: string
+    clientSessionId: string,
+    sourceIp: string
   ): Promise<UserLogin> {
     const { data } = await axios.client.post<UserLogin>(
       API_ENDPOINTS.LOG_IN_USER,
@@ -24,6 +25,7 @@ export function enterPasswordService(
           HTTP_STATUS_CODES.OK,
           HTTP_STATUS_CODES.UNAUTHORIZED,
         ],
+        sourceIp: sourceIp
       })
     );
     return data;

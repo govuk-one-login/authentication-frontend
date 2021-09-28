@@ -8,7 +8,8 @@ export function createPasswordService(
   const signUpUser = async function (
     sessionId: string,
     emailAddress: string,
-    password: string
+    password: string,
+    sourceIp: string
   ): Promise<string> {
     const { data } = await axios.client.post<UserSignup>(
       API_ENDPOINTS.SIGNUP_USER,
@@ -16,7 +17,7 @@ export function createPasswordService(
         email: emailAddress,
         password: password,
       },
-      getRequestConfig({ sessionId: sessionId })
+      getRequestConfig({ sessionId: sessionId, sourceIp: sourceIp })
     );
     return data.sessionState;
   };

@@ -10,7 +10,7 @@ export function shareInfoGet(
   return async function (req: Request, res: Response) {
     const sessionId = res.locals.sessionId;
     const clientSessionId = res.locals.clientSessionId;
-    const clientInfo = await service.clientInfo(sessionId, clientSessionId);
+    const clientInfo = await service.clientInfo(sessionId, clientSessionId, req.ip);
     const prettyScopes = mapScopes(clientInfo.scopes);
 
     res.render("share-info/index.njk", { clientInfo, prettyScopes });
@@ -31,7 +31,8 @@ export function shareInfoPost(
         sessionId,
         clientSessionId,
         email,
-        consentValue
+        consentValue,
+        req.ip
       )
     ) {
       res.redirect(PATH_NAMES.AUTH_CODE);

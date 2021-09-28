@@ -16,7 +16,8 @@ export function enterPhoneNumberService(
   const updateProfile = async function (
     sessionId: string,
     email: string,
-    phoneNumber: string
+    phoneNumber: string,
+    sourceIp: string
   ): Promise<boolean> {
     const { data } = await axios.client.post<UpdateUserProfile>(
       API_ENDPOINTS.UPDATE_PROFILE,
@@ -25,7 +26,7 @@ export function enterPhoneNumberService(
         profileInformation: phoneNumber,
         updateProfileType: UPDATE_TYPE_ADD_PHONE_NUMBER,
       },
-      getRequestConfig({ sessionId: sessionId })
+      getRequestConfig({ sessionId: sessionId, sourceIp: sourceIp })
     );
 
     return data.sessionState === USER_STATE.ADDED_UNVERIFIED_PHONE_NUMBER;
@@ -34,7 +35,8 @@ export function enterPhoneNumberService(
   const sendPhoneNumberVerificationNotification = async function (
     sessionId: string,
     email: string,
-    phoneNumber: string
+    phoneNumber: string,
+    sourceIp: string
   ): Promise<ApiResponseResult> {
     const { data, status } = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.SEND_NOTIFICATION,
@@ -49,6 +51,7 @@ export function enterPhoneNumberService(
           HTTP_STATUS_CODES.OK,
           HTTP_STATUS_CODES.BAD_REQUEST,
         ],
+        sourceIp: sourceIp
       })
     );
 

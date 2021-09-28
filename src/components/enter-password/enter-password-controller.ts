@@ -53,7 +53,8 @@ export function enterPasswordPost(
       sessionId,
       email,
       req.body["password"],
-      clientSessionId
+      clientSessionId,
+      req.ip
     );
 
     if (userLogin.sessionState === USER_STATE.ACCOUNT_LOCKED) {
@@ -66,7 +67,7 @@ export function enterPasswordPost(
 
     if (userLogin.sessionState === USER_STATE.LOGGED_IN) {
       req.session.user.phoneNumber = userLogin.redactedPhoneNumber;
-      await mfaCodeService.sendMfaCode(sessionId, email);
+      await mfaCodeService.sendMfaCode(sessionId, email, req.ip);
       return res.redirect(PATH_NAMES.ENTER_MFA);
     }
 

@@ -1,7 +1,8 @@
 export interface SignInOrCreateServiceInterface {
   clientInfo: (
     sessionId: string,
-    clientSessionId: string
+    clientSessionId: string,
+    sourceIp: string
   ) => Promise<ClientInfoResponse>;
 }
 
