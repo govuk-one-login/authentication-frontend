@@ -67,7 +67,7 @@ export function enterPasswordPost(
 
     if (userLogin.sessionState === USER_STATE.LOGGED_IN) {
       req.session.user.phoneNumber = userLogin.redactedPhoneNumber;
-      await mfaCodeService.sendMfaCode(sessionId, email);
+      await mfaCodeService.sendMfaCode(sessionId, email, req.ip);
       return res.redirect(PATH_NAMES.ENTER_MFA);
     }
 
