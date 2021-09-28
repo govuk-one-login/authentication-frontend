@@ -34,7 +34,7 @@ export function resetPasswordPost(
       return res.redirect(PATH_NAMES.RESET_PASSWORD_EXPIRED_LINK);
     }
 
-    const response = await service.updatePassword(newPassword, getCode(code));
+    const response = await service.updatePassword(newPassword, getCode(code), req.ip);
 
     if (response.success) {
       return res.redirect(PATH_NAMES.RESET_PASSWORD_CONFIRMATION);
