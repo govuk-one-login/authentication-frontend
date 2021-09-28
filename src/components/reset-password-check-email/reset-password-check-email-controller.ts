@@ -11,7 +11,7 @@ export function resetPasswordCheckEmailGet(
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
     const sessionId = res.locals.sessionId;
-    const result = await service.resetPasswordRequest(email, sessionId);
+    const result = await service.resetPasswordRequest(email, sessionId, req.ip);
 
     if (result.success) {
       return res.render("reset-password-check-email/index.njk", {
