@@ -12,7 +12,8 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
   const verifyCode = async function (
     sessionId: string,
     code: string,
-    notificationType: string
+    notificationType: string,
+    sourceIp: string
   ): Promise<ApiResponseResult> {
     const response = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.VERIFY_CODE,
@@ -26,6 +27,7 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
           HTTP_STATUS_CODES.OK,
           HTTP_STATUS_CODES.BAD_REQUEST,
         ],
+        sourceIp: sourceIp
       })
     );
 
