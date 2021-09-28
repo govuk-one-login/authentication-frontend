@@ -16,7 +16,8 @@ export function shareInfoService(
     sessionId: string,
     clientSessionId: string,
     email: string,
-    consent: boolean
+    consent: boolean,
+    sourceIp: string
   ): Promise<boolean> {
     const { data } = await axios.client.post<UpdateUserProfile>(
       API_ENDPOINTS.UPDATE_PROFILE,
@@ -28,6 +29,7 @@ export function shareInfoService(
       getRequestConfig({
         sessionId: sessionId,
         clientSessionId: clientSessionId,
+        sourceIp: sourceIp
       })
     );
 
@@ -36,13 +38,15 @@ export function shareInfoService(
 
   const clientInfo = async function (
     sessionId: string,
-    clientSessionId: string
+    clientSessionId: string,
+    sourceIp: string
   ): Promise<ClientInfoResponse> {
     const { data } = await axios.client.get<ClientInfoResponse>(
       API_ENDPOINTS.CLIENT_INFO,
       getRequestConfig({
         sessionId: sessionId,
         clientSessionId: clientSessionId,
+        sourceIp: sourceIp
       })
     );
     return data;
