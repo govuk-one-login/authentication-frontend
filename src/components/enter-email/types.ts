@@ -9,7 +9,8 @@ export interface UserExists {
 export interface EnterEmailServiceInterface {
   sendEmailVerificationNotification: (
     sessionId: string,
-    email: string
+    email: string,
+    sourceIp: string
   ) => Promise<ApiResponseResult>;
-  userExists: (sessionId: string, emailAddress: string) => Promise<boolean>;
+  userExists: (sessionId: string, emailAddress: string, sourceIp: string) => Promise<boolean>;
 }
