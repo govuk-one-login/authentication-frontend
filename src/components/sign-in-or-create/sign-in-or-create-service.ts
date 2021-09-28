@@ -8,13 +8,15 @@ export function signInOrCreateService(
 ): SignInOrCreateServiceInterface {
   const clientInfo = async function (
     sessionId: string,
-    clientSessionId: string
+    clientSessionId: string,
+    sourceIp: string
   ): Promise<ClientInfoResponse> {
     const { data } = await axios.client.get<ClientInfoResponse>(
       API_ENDPOINTS.CLIENT_INFO,
       getRequestConfig({
         sessionId: sessionId,
         clientSessionId: clientSessionId,
+        sourceIp: sourceIp
       })
     );
     return data;

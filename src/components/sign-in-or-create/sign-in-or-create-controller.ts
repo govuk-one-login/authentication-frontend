@@ -10,7 +10,7 @@ export function signInOrCreateGet(
   return async function (req: Request, res: Response) {
     const sessionId = res.locals.sessionId;
     const clientSessionId = res.locals.clientSessionId;
-    const clientInfo = await service.clientInfo(sessionId, clientSessionId);
+    const clientInfo = await service.clientInfo(sessionId, clientSessionId, req.ip);
     if (clientInfo.service_type && clientInfo.clientName) {
       req.session.serviceType = clientInfo.service_type;
       req.session.clientName = clientInfo.clientName;
