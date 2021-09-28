@@ -1,6 +1,8 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% set pageTitleName = 'pages.resendMfaCode.title' | translate %}
+{% set showBack = true %}
+{% set hrefBack = 'enter-code' %}
 {% block content %}
 
 <form action="/resend-code" method="post" novalidate>

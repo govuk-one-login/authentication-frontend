@@ -1,7 +1,8 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
-
+{% set showBack = true %}
+{% set hrefBack = 'enter-email' %}
 {% set pageTitleName = 'pages.accountNotFoundMandatory.title' | translate %}
 
 {% block content %}
