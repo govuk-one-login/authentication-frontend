@@ -1,7 +1,7 @@
 {% extends "govuk/template.njk" %}
 {% from "govuk/components/cookie-banner/macro.njk" import govukCookieBanner %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
-	      {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
 {% block head %}
   <!--[if !IE 8]><!-->
@@ -54,10 +54,10 @@
         }) }}
 	      {% block beforeContent %}{% endblock %}
 	      {% if showBack %}
-	            {{ govukBackLink({
-                      text: "Back",
-                      href: hrefBack
-                 }) }}
+	        {{ govukBackLink({
+                text: "Back",
+                href: hrefBack
+            }) }}
           {% endif %}
 	      <main class="govuk-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %} lang="{{ mainLang }}"{% endif %}>
           <div class="govuk-grid-row">
