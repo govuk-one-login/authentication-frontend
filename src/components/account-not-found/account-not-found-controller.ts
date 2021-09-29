@@ -23,7 +23,7 @@ export function accountNotFoundPost(
     const sessionId = res.locals.sessionId;
     req.session.user.createAccount = true;
 
-    await service.sendEmailVerificationNotification(sessionId, email);
+    await service.sendEmailVerificationNotification(sessionId, email, req.ip);
     res.redirect(PATH_NAMES.CHECK_YOUR_EMAIL);
   };
 }

@@ -15,7 +15,8 @@ export function createPasswordPost(
     await service.signUpUser(
       res.locals.sessionId,
       req.session.user.email,
-      req.body.password
+      req.body.password,
+      req.ip
     );
 
     res.redirect(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);

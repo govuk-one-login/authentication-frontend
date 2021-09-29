@@ -72,7 +72,7 @@ export function updatedTermsCondsPost(
 
     if (acceptOrReject === "accept") {
       if (
-        await service.updateProfile(sessionId, email, updatedTermsAndCondsValue)
+        await service.updateProfile(sessionId, email, updatedTermsAndCondsValue, req.ip)
       ) {
         res.redirect(PATH_NAMES.AUTH_CODE);
       } else {
@@ -87,5 +87,5 @@ export async function callClientInfo(
   res: Response,
   service: UpdateTermsAndCondsServiceInterface
 ): Promise<ClientInfoResponse> {
-  return service.clientInfo(res.locals.sessionId, res.locals.clientSessionId);
+  return service.clientInfo(res.locals.sessionId, res.locals.clientSessionId, req.ip);
 }

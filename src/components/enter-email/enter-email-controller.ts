@@ -21,7 +21,7 @@ export function enterEmailPost(
     const sessionId = res.locals.sessionId;
     req.session.user.email = email;
 
-    if (await service.userExists(sessionId, email)) {
+    if (await service.userExists(sessionId, email, req.ip)) {
       return res.redirect(PATH_NAMES.ENTER_PASSWORD);
     }
 
@@ -37,7 +37,7 @@ export function enterEmailCreatePost(
     const sessionId = res.locals.sessionId;
 
     req.session.user.email = email;
-    const hasAccount = await service.userExists(sessionId, email);
+    const hasAccount = await service.userExists(sessionId, email, req.ip);
 
     if (hasAccount) {
       return res.redirect(PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS);
@@ -45,7 +45,8 @@ export function enterEmailCreatePost(
 
     const result = await service.sendEmailVerificationNotification(
       sessionId,
-      email
+      email,
+      req.ip
     );
 
     if (!result.success) {

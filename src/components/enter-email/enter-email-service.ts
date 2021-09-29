@@ -12,14 +12,15 @@ export function enterEmailService(
 ): EnterEmailServiceInterface {
   const userExists = async function (
     sessionId: string,
-    emailAddress: string
+    emailAddress: string,
+    sourceIp: string
   ): Promise<boolean> {
     const { data } = await axios.client.post<UserExists>(
       API_ENDPOINTS.USER_EXISTS,
       {
         email: emailAddress,
       },
-      getRequestConfig({ sessionId: sessionId })
+      getRequestConfig({ sessionId: sessionId, sourceIp: sourceIp })
     );
 
     return data.doesUserExist;
@@ -27,7 +28,8 @@ export function enterEmailService(
 
   const sendEmailVerificationNotification = async function (
     sessionId: string,
-    email: string
+    email: string,
+    sourceIp: string
   ): Promise<ApiResponseResult> {
     const { data, status } = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.SEND_NOTIFICATION,
@@ -41,6 +43,7 @@ export function enterEmailService(
           HTTP_STATUS_CODES.OK,
           HTTP_STATUS_CODES.BAD_REQUEST,
         ],
+        sourceIp: sourceIp
       })
     );
 

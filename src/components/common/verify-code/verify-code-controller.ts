@@ -27,7 +27,8 @@ export function verifyCodePost(
     const result = await service.verifyCode(
       sessionId,
       code,
-      options.notificationType
+      options.notificationType,
+      req.ip
     );
 
     if (result.success) {

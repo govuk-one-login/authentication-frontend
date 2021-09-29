@@ -6,7 +6,8 @@ import { ApiResponse, ApiResponseResult } from "../../../types";
 export function mfaService(axios: Http = http): MfaServiceInterface {
   const sendMfaCode = async function (
     sessionId: string,
-    emailAddress: string
+    emailAddress: string,
+    sourceIp: string
   ): Promise<ApiResponseResult> {
     const { data, status } = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.MFA,
@@ -19,6 +20,7 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
           HTTP_STATUS_CODES.OK,
           HTTP_STATUS_CODES.BAD_REQUEST,
         ],
+        sourceIp: sourceIp
       })
     );
 

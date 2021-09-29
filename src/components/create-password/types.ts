@@ -6,6 +6,7 @@ export interface CreatePasswordServiceInterface {
   signUpUser: (
     sessionId: string,
     emailAddress: string,
-    password: string
+    password: string,
+    sourceIp: string
   ) => Promise<string>;
 }
