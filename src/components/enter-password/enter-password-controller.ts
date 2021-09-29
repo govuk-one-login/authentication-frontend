@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PATH_NAMES, USER_STATE } from "../../app.constants";
+import { USER_STATE } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import {
   formatValidationError,
@@ -9,6 +9,7 @@ import { enterPasswordService } from "./enter-password-service";
 import { EnterPasswordServiceInterface } from "./types";
 import { MfaServiceInterface } from "../common/mfa/types";
 import { mfaService } from "../common/mfa/mfa-service";
+import { getNextPathByState } from "../common/constants";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -57,23 +58,20 @@ export function enterPasswordPost(
       req.ip
     );
 
-    if (userLogin.sessionState === USER_STATE.ACCOUNT_LOCKED) {
-      return res.redirect(PATH_NAMES.ACCOUNT_LOCKED);
-    }
+    if (userLogin.sessionState) {
+      let redirectTo = getNextPathByState(userLogin.sessionState);
 
-    if (userLogin.sessionState === USER_STATE.REQUIRES_TWO_FACTOR) {
-      return res.redirect(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
-    }
+      if (userLogin.sessionState === USER_STATE.LOGGED_IN) {
+        req.session.user.phoneNumber = userLogin.redactedPhoneNumber;
+        const result = await mfaCodeService.sendMfaCode(
+          sessionId,
+          email,
+          req.ip
+        );
+        redirectTo = getNextPathByState(result.sessionState);
+      }
 
-    if (userLogin.sessionState === USER_STATE.LOGGED_IN) {
-      req.session.user.phoneNumber = userLogin.redactedPhoneNumber;
-      await mfaCodeService.sendMfaCode(sessionId, email, req.ip);
-      return res.redirect(PATH_NAMES.ENTER_MFA);
-    }
-
-    //VTR Cm
-    if (userLogin.sessionState === USER_STATE.AUTHENTICATED) {
-      return res.redirect(PATH_NAMES.AUTH_CODE);
+      return res.redirect(redirectTo);
     }
 
     const error = formatValidationError(

@@ -5,6 +5,10 @@ import { ResetPasswordServiceInterface } from "./types";
 import { resetPasswordService } from "./reset-password-service";
 
 function isCodeExpired(code: string): boolean {
+  if (!code) {
+    return true;
+  }
+
   const codeExpiry = code.split(".")[1];
   return Date.now() > Number(codeExpiry);
 }
@@ -34,7 +38,11 @@ export function resetPasswordPost(
       return res.redirect(PATH_NAMES.RESET_PASSWORD_EXPIRED_LINK);
     }
 
-    const response = await service.updatePassword(newPassword, getCode(code), req.ip);
+    const response = await service.updatePassword(
+      newPassword,
+      getCode(code),
+      req.ip
+    );
 
     if (response.success) {
       return res.redirect(PATH_NAMES.RESET_PASSWORD_CONFIRMATION);

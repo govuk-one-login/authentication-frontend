@@ -38,7 +38,10 @@ describe("create-password controller", () => {
   describe("createPasswordPost", () => {
     it("should redirect to enter-phone-number when 2 factor is required", async () => {
       const fakeService: CreatePasswordServiceInterface = {
-        signUpUser: sandbox.fake.returns(USER_STATE.REQUIRES_TWO_FACTOR),
+        signUpUser: sandbox.fake.returns({
+          success: true,
+          sessionState: USER_STATE.REQUIRES_TWO_FACTOR,
+        }),
       };
 
       req.body.password = "password1";

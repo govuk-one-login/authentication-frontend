@@ -1,11 +1,14 @@
 import { expect } from "chai";
 import { describe } from "mocha";
+
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { shareInfoGet, shareInfoPost } from "../share-info-controller";
+import {
+  updatedTermsConditionsGet,
+  updatedTermsConditionsPost,
+} from "../updated-terms-conditions-controller";
 import { UserSession } from "../../../types";
 import { ClientInfoServiceInterface } from "../../common/client-info/types";
-import { BadRequestError } from "../../../utils/error";
 import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
 
 describe("share-info controller", () => {
@@ -33,73 +36,81 @@ describe("share-info controller", () => {
     sandbox.restore();
   });
 
-  describe("shareInfoGet", () => {
-    it("should render share-info page", async () => {
-      const fakeClientInfoService: ClientInfoServiceInterface = {
+  describe("updatedTermsCondsGet", () => {
+    it("should render updated-terms-conditions page", async () => {
+      const fakeService: ClientInfoServiceInterface = {
         clientInfo: sandbox.fake.returns({
-          data: { scopes: ["openid", "profile"] },
           success: true,
+          data: {
+            scopes: ["openid", "profile"],
+            redirectUi: "http://local",
+          },
         }),
       };
 
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
 
-      await shareInfoGet(fakeClientInfoService)(
+      await updatedTermsConditionsGet(fakeService)(
         req as Request,
         res as Response
       );
 
-      expect(fakeClientInfoService.clientInfo).to.be.calledOnce;
-      expect(res.render).to.have.calledWith("share-info/index.njk");
+      expect(fakeService.clientInfo).to.be.calledOnce;
+      expect(res.render).to.have.calledWith(
+        "updated-terms-conditions/index.njk"
+      );
     });
   });
 
-  describe("shareInfoPost", () => {
-    it("should redirect to /auth-code when accepted sharing info", async () => {
+  describe("updatedTermsCondsPost", () => {
+    it("should redirect to /auth-code when acceptOrReject has value accept", async () => {
       const fakeService: UpdateProfileServiceInterface = {
         updateProfile: sandbox.fake.returns({
           success: true,
-          sessionState: "CONSENT_ADDED",
+          sessionState: "UPDATED_TERMS_AND_CONDITIONS_ACCEPTED",
         }),
       };
 
-      req.body.consentValue = true;
+      req.body.acceptOrReject = "accept";
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
       req.session.user = {
         email: "test@test.com",
       };
 
-      await shareInfoPost(fakeService)(req as Request, res as Response);
+      await updatedTermsConditionsPost(fakeService)(
+        req as Request,
+        res as Response
+      );
 
       expect(fakeService.updateProfile).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith("/auth-code");
     });
-  });
 
-  describe("shareInfoPostError", () => {
-    it("should throw error when update profile returns false", async () => {
+    it("should redirect to redirectUri with error code param when acceptOrReject has value reject", async () => {
       const fakeService: UpdateProfileServiceInterface = {
-        updateProfile: sandbox.fake.returns({
-          success: false,
-          code: "1000",
-          message: "error",
-        }),
+        updateProfile: sandbox.fake(),
       };
 
-      req.body.consentValue = true;
+      req.session.redirectUri = "http://test.test";
+      req.body.acceptOrReject = "reject";
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
       req.session.user = {
         email: "test@test.com",
       };
+      req.session.state = "test";
 
-      await expect(
-        shareInfoPost(fakeService)(req as Request, res as Response)
-      ).to.be.rejectedWith(BadRequestError, "Bad Request:1000:error");
+      await updatedTermsConditionsPost(fakeService)(
+        req as Request,
+        res as Response
+      );
 
-      expect(fakeService.updateProfile).to.have.been.calledOnce;
+      expect(fakeService.updateProfile).not.to.been.called;
+      expect(res.redirect).to.have.calledWith(
+        "http://test.test?error_code=rejectedTermsAndConditions&state=test"
+      );
     });
   });
 });

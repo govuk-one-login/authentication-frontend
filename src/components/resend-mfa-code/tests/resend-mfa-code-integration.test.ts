@@ -49,7 +49,7 @@ describe("Integration:: resend mfa code", () => {
     app = undefined;
   });
 
-  it("should return resend mfda code page", (done) => {
+  it("should return resend mfa code page", (done) => {
     request(app).get("/resend-code").expect(200, done);
   });
 
@@ -65,7 +65,7 @@ describe("Integration:: resend mfa code", () => {
 
   it("should redirect to /enter-code when new code requested", (done) => {
     nock(baseApi).post("/mfa").once().reply(200, {
-      sessionState: "MFA_CODE_SENT",
+      sessionState: "MFA_SMS_CODE_SENT",
     });
 
     request(app)

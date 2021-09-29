@@ -1,24 +1,37 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { shareInfoService } from "./share-info-service";
-import { PATH_NAMES } from "../../app.constants";
-import { ShareInfoServiceInterface } from "./types";
+
+import { BadRequestError } from "../../utils/error";
+import { getNextPathByState } from "../common/constants";
+import { ClientInfoServiceInterface } from "../common/client-info/types";
+import { UpdateProfileServiceInterface } from "../common/update-profile/types";
+import { updateProfileService } from "../common/update-profile/update-profile-service";
+import { clientInfoService } from "../common/client-info/client-info-service";
 
 export function shareInfoGet(
-  service: ShareInfoServiceInterface = shareInfoService()
+  service: ClientInfoServiceInterface = clientInfoService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const sessionId = res.locals.sessionId;
     const clientSessionId = res.locals.clientSessionId;
-    const clientInfo = await service.clientInfo(sessionId, clientSessionId, req.ip);
-    const prettyScopes = mapScopes(clientInfo.scopes);
 
-    res.render("share-info/index.njk", { clientInfo, prettyScopes });
+    const clientInfoResponse = await service.clientInfo(
+      sessionId,
+      clientSessionId,
+      req.ip
+    );
+
+    const prettyScopes = mapScopes(clientInfoResponse.data.scopes);
+
+    res.render("share-info/index.njk", {
+      clientName: clientInfoResponse.data.clientName,
+      prettyScopes,
+    });
   };
 }
 
 export function shareInfoPost(
-  service: ShareInfoServiceInterface = shareInfoService()
+  service: UpdateProfileServiceInterface = updateProfileService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const consentValue = req.body.consentValue;
@@ -26,19 +39,22 @@ export function shareInfoPost(
     const sessionId = res.locals.sessionId;
     const clientSessionId = res.locals.clientSessionId;
 
-    if (
-      await service.updateProfile(
-        sessionId,
-        clientSessionId,
-        email,
-        consentValue,
-        req.ip
-      )
-    ) {
-      res.redirect(PATH_NAMES.AUTH_CODE);
-    } else {
-      throw new Error("Unable to update user profile");
+    const result = await service.updateProfile(
+      sessionId,
+      clientSessionId,
+      email,
+      {
+        profileInformation: consentValue,
+        updateProfileType: "CAPTURE_CONSENT",
+      },
+      req.ip
+    );
+
+    if (!result.success) {
+      throw new BadRequestError(result.message, result.code);
     }
+
+    res.redirect(getNextPathByState(result.sessionState));
   };
 }
 

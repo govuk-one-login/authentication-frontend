@@ -3,7 +3,7 @@ import { validateBodyMiddleware } from "../../middleware/form-validation-middlew
 import { ValidationChainFunc } from "../../types";
 
 export function validateEnterEmailRequest(
-  template = "enter-email/enter-email-existing-account.njk"
+  template = "enter-email/index-existing-account.njk"
 ): ValidationChainFunc {
   return [
     body("email")

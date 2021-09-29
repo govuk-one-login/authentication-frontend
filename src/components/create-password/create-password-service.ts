@@ -1,6 +1,12 @@
-import { getRequestConfig, Http, http } from "../../utils/http";
+import {
+  createApiResponse,
+  getRequestConfig,
+  Http,
+  http,
+} from "../../utils/http";
 import { API_ENDPOINTS } from "../../app.constants";
-import { CreatePasswordServiceInterface, UserSignup } from "./types";
+import { CreatePasswordServiceInterface } from "./types";
+import { ApiResponse, ApiResponseResult } from "../../types";
 
 export function createPasswordService(
   axios: Http = http
@@ -10,8 +16,8 @@ export function createPasswordService(
     emailAddress: string,
     password: string,
     sourceIp: string
-  ): Promise<string> {
-    const { data } = await axios.client.post<UserSignup>(
+  ): Promise<ApiResponseResult> {
+    const response = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.SIGNUP_USER,
       {
         email: emailAddress,
@@ -19,7 +25,8 @@ export function createPasswordService(
       },
       getRequestConfig({ sessionId: sessionId, sourceIp: sourceIp })
     );
-    return data.sessionState;
+
+    return createApiResponse(response);
   };
 
   return {

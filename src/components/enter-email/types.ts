@@ -1,16 +1,13 @@
 import { ApiResponseResult } from "../../types";
 
-export interface UserExists {
+export interface UserExists extends ApiResponseResult {
   email: string;
-  doesUserExist: boolean;
-  state: string;
 }
 
 export interface EnterEmailServiceInterface {
-  sendEmailVerificationNotification: (
+  userExists: (
     sessionId: string,
-    email: string,
+    emailAddress: string,
     sourceIp: string
   ) => Promise<ApiResponseResult>;
-  userExists: (sessionId: string, emailAddress: string, sourceIp: string) => Promise<boolean>;
 }

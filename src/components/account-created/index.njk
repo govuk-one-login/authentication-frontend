@@ -30,12 +30,12 @@
 
     {{ govukButton({
         "text": button_text|default('pages.accountCreated.signOut' | translate, true),
-        "href": linkUrl
+        "href": logoutUrl
     }) }}
 
     <br>
 
-    <a href="/auth-code" class="govuk-link">
+    <a href="{{ linkUrl }}" class="govuk-link govuk-body">
         {{'pages.accountCreated.continueReport' | translate}}
     </a>
 {% endif %}
@@ -50,7 +50,7 @@
 
     <br>
 
-    <a href="/auth-code" class="govuk-link">
+    <a href="{{ logoutUrl }}" class="govuk-link govuk-body">
         {{'pages.accountCreated.signOut' | translate}}
     </a>
 {% endif %}

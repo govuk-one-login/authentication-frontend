@@ -19,11 +19,7 @@ export function resetPasswordCheckEmailService(
       },
       getRequestConfig({
         sessionId: sessionId,
-        validationStatues: [
-          HTTP_STATUS_CODES.OK,
-          HTTP_STATUS_CODES.BAD_REQUEST,
-        ],
-        sourceIp: sourceIp
+        sourceIp: sourceIp,
       })
     );
     return {

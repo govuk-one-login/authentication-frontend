@@ -46,7 +46,10 @@ describe("resend mfa controller", () => {
   describe("resendMfaCodePost", () => {
     it("should send mfa code and redirect to /enter-code view", async () => {
       const fakeService: MfaServiceInterface = {
-        sendMfaCode: sandbox.fake.returns({ success: true }),
+        sendMfaCode: sandbox.fake.returns({
+          success: true,
+          sessionState: "MFA_SMS_CODE_SENT",
+        }),
       };
 
       res.locals.sessionId = "123456-djjad";

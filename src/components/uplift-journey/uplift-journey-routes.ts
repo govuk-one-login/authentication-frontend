@@ -1,15 +1,17 @@
 import { PATH_NAMES } from "../../app.constants";
 
 import * as express from "express";
-import { accountCreatedGet } from "./account-created-controller";
+
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
+import { asyncHandler } from "../../utils/async";
+import { upliftJourneyGet } from "./uplift-journey-controller";
 
 const router = express.Router();
 
 router.get(
-  PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL,
+  PATH_NAMES.UPLIFT_JOURNEY,
   validateSessionMiddleware,
-  accountCreatedGet
+  asyncHandler(upliftJourneyGet())
 );
 
-export { router as registerAccountCreatedRouter };
+export { router as upliftJourneyRouter };

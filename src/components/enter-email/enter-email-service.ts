@@ -1,11 +1,12 @@
-import { getRequestConfig, Http, http } from "../../utils/http";
 import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  NOTIFICATION_TYPE,
-} from "../../app.constants";
+  createApiResponse,
+  getRequestConfig,
+  Http,
+  http,
+} from "../../utils/http";
+import { API_ENDPOINTS } from "../../app.constants";
 import { EnterEmailServiceInterface, UserExists } from "./types";
-import { ApiResponse, ApiResponseResult } from "../../types";
+import { ApiResponse } from "../../types";
 
 export function enterEmailService(
   axios: Http = http
@@ -14,8 +15,8 @@ export function enterEmailService(
     sessionId: string,
     emailAddress: string,
     sourceIp: string
-  ): Promise<boolean> {
-    const { data } = await axios.client.post<UserExists>(
+  ): Promise<UserExists> {
+    const response = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.USER_EXISTS,
       {
         email: emailAddress,
@@ -23,38 +24,13 @@ export function enterEmailService(
       getRequestConfig({ sessionId: sessionId, sourceIp: sourceIp })
     );
 
-    return data.doesUserExist;
-  };
+    const apiResponse = createApiResponse(response) as UserExists;
+    apiResponse.email = response.data.email;
 
-  const sendEmailVerificationNotification = async function (
-    sessionId: string,
-    email: string,
-    sourceIp: string
-  ): Promise<ApiResponseResult> {
-    const { data, status } = await axios.client.post<ApiResponse>(
-      API_ENDPOINTS.SEND_NOTIFICATION,
-      {
-        email: email,
-        notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
-      },
-      getRequestConfig({
-        sessionId: sessionId,
-        validationStatues: [
-          HTTP_STATUS_CODES.OK,
-          HTTP_STATUS_CODES.BAD_REQUEST,
-        ],
-        sourceIp: sourceIp
-      })
-    );
-
-    return {
-      success: status === HTTP_STATUS_CODES.OK,
-      sessionState: data.sessionState,
-    };
+    return apiResponse;
   };
 
   return {
     userExists,
-    sendEmailVerificationNotification,
   };
 }

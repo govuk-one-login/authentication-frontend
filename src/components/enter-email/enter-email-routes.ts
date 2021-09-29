@@ -25,7 +25,7 @@ router.post(
 router.post(
   PATH_NAMES.ENTER_EMAIL_POST_CREATE,
   validateSessionMiddleware,
-  validateEnterEmailRequest("enter-email/enter-email-create-account.njk"),
+  validateEnterEmailRequest("enter-email/index-create-account.njk"),
   asyncHandler(enterEmailCreatePost())
 );
 

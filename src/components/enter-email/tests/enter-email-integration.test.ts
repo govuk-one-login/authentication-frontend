@@ -99,8 +99,7 @@ describe("Integration::enter email", () => {
   it("should redirect to /enter-password page when email address exists", (done) => {
     nock(baseApi).post("/user-exists").once().reply(200, {
       email: "test@test.com",
-      doesUserExist: true,
-      sessionState: "USER_FOUND",
+      sessionState: "AUTHENTICATION_REQUIRED",
     });
 
     request(app)
@@ -121,12 +120,11 @@ describe("Integration::enter email", () => {
       .once()
       .reply(200, {
         email: "test@test.com",
-        doesUserExist: false,
         sessionState: "USER_NOT_FOUND",
       })
       .post("/send-notification")
       .once()
-      .reply(200, {});
+      .reply(200, { sessionState: "VERIFY_EMAIL_CODE_SENT" });
 
     request(app)
       .post("/enter-email")
@@ -162,11 +160,11 @@ describe("Integration::enter email", () => {
       .expect(500, done);
   });
 
-  it("should redirect to /check-your-email when email address doesn't exist", (done) => {
+  it("should redirect to /enter-password-account-exists when email address exists", (done) => {
     nock(baseApi).post("/user-exists").once().reply(200, {
       email: "test2@test2.com",
       doesUserExist: true,
-      sessionState: "USER_FOUND",
+      sessionState: "AUTHENTICATION_REQUIRED",
     });
 
     request(app)
@@ -187,12 +185,11 @@ describe("Integration::enter email", () => {
       .once()
       .reply(200, {
         email: "test@test.com",
-        doesUserExist: false,
         sessionState: "USER_NOT_FOUND",
       })
       .post("/send-notification")
       .once()
-      .reply(200);
+      .reply(200, { sessionState: "VERIFY_EMAIL_CODE_SENT" });
 
     request(app)
       .post("/enter-email-create")
@@ -212,7 +209,6 @@ describe("Integration::enter email", () => {
       .once()
       .reply(200, {
         email: "test@test.com",
-        doesUserExist: false,
         sessionState: "USER_NOT_FOUND",
       })
       .post("/send-notification")
@@ -237,7 +233,6 @@ describe("Integration::enter email", () => {
       .once()
       .reply(200, {
         email: "test@test.com",
-        doesUserExist: false,
         sessionState: "USER_NOT_FOUND",
       })
       .post("/send-notification")

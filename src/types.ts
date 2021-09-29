@@ -26,6 +26,8 @@ export interface ApiResponse {
   code?: string;
   message?: string;
   sessionState: string;
+  email?: string;
+  data: any;
 }
 
 export interface ApiResponseResult {

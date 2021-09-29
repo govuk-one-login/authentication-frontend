@@ -1,6 +1,4 @@
-export interface UserSignup {
-  sessionState: string;
-}
+import { ApiResponseResult } from "../../types";
 
 export interface CreatePasswordServiceInterface {
   signUpUser: (
@@ -8,5 +6,5 @@ export interface CreatePasswordServiceInterface {
     emailAddress: string,
     password: string,
     sourceIp: string
-  ) => Promise<string>;
+  ) => Promise<ApiResponseResult>;
 }

@@ -16,11 +16,7 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
       },
       getRequestConfig({
         sessionId: sessionId,
-        validationStatues: [
-          HTTP_STATUS_CODES.OK,
-          HTTP_STATUS_CODES.BAD_REQUEST,
-        ],
-        sourceIp: sourceIp
+        sourceIp: sourceIp,
       })
     );
 
