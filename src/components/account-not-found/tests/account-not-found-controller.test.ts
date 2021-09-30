@@ -9,9 +9,9 @@ import {
   accountNotFoundPost,
 } from "../account-not-found-controller";
 import { SERVICE_TYPE } from "../../../app.constants";
-import { AccountNotFoundServiceInterface } from "../types";
+import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 
-describe("sign in or create controller", () => {
+describe("account not found controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -32,7 +32,7 @@ describe("sign in or create controller", () => {
       accountNotFoundGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
-        "account-not-found/account-not-found-mandatory.njk"
+        "account-not-found/index-mandatory.njk"
       );
     });
 
@@ -41,13 +41,16 @@ describe("sign in or create controller", () => {
       accountNotFoundGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
-        "account-not-found/account-not-found-optional.njk"
+        "account-not-found/index-optional.njk"
       );
     });
 
     it("should redirect to /check-your-email when no account exists", async () => {
-      const fakeService: AccountNotFoundServiceInterface = {
-        sendEmailVerificationNotification: sandbox.fake(),
+      const fakeService: SendNotificationServiceInterface = {
+        sendNotification: sandbox.fake.returns({
+          success: true,
+          sessionState: "VERIFY_EMAIL_CODE_SENT",
+        }),
       };
 
       req.body.email = "test.test.com";
@@ -56,8 +59,7 @@ describe("sign in or create controller", () => {
       await accountNotFoundPost(fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith("/check-your-email");
-      expect(fakeService.sendEmailVerificationNotification).to.have.been
-        .calledOnce;
+      expect(fakeService.sendNotification).to.have.been.calledOnce;
     });
   });
 });

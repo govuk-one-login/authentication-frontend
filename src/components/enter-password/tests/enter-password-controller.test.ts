@@ -42,11 +42,15 @@ describe("enter password controller", () => {
         loginUser: sandbox.fake.returns({
           sessionState: USER_STATE.LOGGED_IN,
           redactedPhoneNumber: "******3456",
+          success: true,
         }),
       };
 
       const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sandbox.fake(),
+        sendMfaCode: sandbox.fake.returns({
+          sessionState: "MFA_SMS_CODE_SENT",
+          success: true,
+        }),
       };
 
       res.locals.sessionId = "123456-djjad";
@@ -88,7 +92,6 @@ describe("enter password controller", () => {
       expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
     });
 
-
     it("should redirect to enter phone number when phone number is not verified", async () => {
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sandbox.fake.returns({
@@ -108,7 +111,34 @@ describe("enter password controller", () => {
         res as Response
       );
 
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
+      );
+    });
+
+    it("should redirect to updated terms when terms and conditions not accepted", async () => {
+      const fakeService: EnterPasswordServiceInterface = {
+        loginUser: sandbox.fake.returns({
+          sessionState: USER_STATE.UPDATED_TERMS_AND_CONDITIONS,
+          success: true,
+        }),
+      };
+
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      req.body["password"] = "password";
+
+      await enterPasswordPost(false, fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS
+      );
     });
 
     it("should throw error when API call throws error", async () => {

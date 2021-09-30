@@ -111,7 +111,9 @@ describe("Integration::enter password", () => {
       })
       .post("/mfa")
       .once()
-      .reply(200);
+      .reply(200, {
+        sessionState: USER_STATE.LOGGED_IN,
+      });
 
     request(app)
       .post(ENDPOINT)
@@ -173,6 +175,23 @@ describe("Integration::enter password", () => {
         password: "password",
       })
       .expect("Location", "/enter-phone-number")
+      .expect(302, done);
+  });
+
+  it("should redirect to /updated-terms-conditions when user hasn't agreed terms and conditions", (done) => {
+    nock(baseApi).post("/login").once().reply(200, {
+      sessionState: USER_STATE.UPDATED_TERMS_AND_CONDITIONS,
+    });
+
+    request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        password: "password",
+      })
+      .expect("Location", "/updated-terms-and-conditions")
       .expect(302, done);
   });
 });

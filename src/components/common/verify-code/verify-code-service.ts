@@ -1,4 +1,4 @@
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import { API_ENDPOINTS } from "../../../app.constants";
 import {
   createApiResponse,
   getRequestConfig,
@@ -13,6 +13,7 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
     sessionId: string,
     code: string,
     notificationType: string,
+    clientSessionId: string,
     sourceIp: string
   ): Promise<ApiResponseResult> {
     const response = await axios.client.post<ApiResponse>(
@@ -22,12 +23,9 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
         notificationType,
       },
       getRequestConfig({
-        sessionId: sessionId,
-        validationStatues: [
-          HTTP_STATUS_CODES.OK,
-          HTTP_STATUS_CODES.BAD_REQUEST,
-        ],
-        sourceIp: sourceIp
+        sessionId,
+        clientSessionId,
+        sourceIp: sourceIp,
       })
     );
 

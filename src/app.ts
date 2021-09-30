@@ -39,7 +39,7 @@ import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-cod
 import { signedOutRouter } from "./components/signed-out/signed-out-routes";
 import { getSessionIdMiddleware } from "./middleware/session-middleware";
 import { shareInfoRouter } from "./components/share-info/share-info-routes";
-import { updatedTermsCondsRouter } from "./components/updated-terms-conds/updated-terms-conds-routes";
+import { updatedTermsConditionsRouter } from "./components/updated-terms-conditions/updated-terms-conditions-routes";
 import { signInOrCreateRouter } from "./components/sign-in-or-create/sign-in-or-create-routes";
 import { accountNotFoundRouter } from "./components/account-not-found/account-not-found-routes";
 import { resetPasswordCheckEmailRouter } from "./components/reset-password-check-email/reset-password-check-email-routes";
@@ -48,6 +48,7 @@ import { resetPasswordRouter } from "./components/reset-password/reset-password-
 import { noCacheMiddleware } from "./middleware/no-cache-middleware";
 import { checkYourEmailRouter } from "./components/check-your-email/check-your-email-routes";
 import { securityCodeErrorRouter } from "./components/security-code-error/security-code-error-routes";
+import { upliftJourneyRouter } from "./components/uplift-journey/uplift-journey-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -74,8 +75,9 @@ function registerRoutes(app: express.Application) {
   app.use(resendMfaCodeRouter);
   app.use(signedOutRouter);
   app.use(shareInfoRouter);
-  app.use(updatedTermsCondsRouter);
+  app.use(updatedTermsConditionsRouter);
   app.use(resetPasswordRouter);
+  app.use(upliftJourneyRouter);
 }
 
 function createApp(): express.Application {

@@ -30,7 +30,7 @@ describe("enter email controller", () => {
       enterEmailGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
-        "enter-email/enter-email-create-account.njk"
+        "enter-email/index-create-account.njk"
       );
     });
   });
@@ -40,16 +40,18 @@ describe("enter email controller", () => {
       enterEmailGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
-        "enter-email/enter-email-existing-account.njk"
+        "enter-email/index-existing-account.njk"
       );
     });
   });
 
   describe("enterEmailPost", () => {
-    it("should redirect to enter-password when account exists", async () => {
+    it("should redirect to /enter-password when account exists", async () => {
       const fakeService: EnterEmailServiceInterface = {
-        userExists: sandbox.fake.returns(true),
-        sendEmailVerificationNotification: sandbox.fake(),
+        userExists: sandbox.fake.returns({
+          success: true,
+          sessionState: "AUTHENTICATION_REQUIRED",
+        }),
       };
 
       req.body.email = "test.test.com";
@@ -63,8 +65,10 @@ describe("enter email controller", () => {
 
     it("should redirect to /account-not-found when no account exists", async () => {
       const fakeService: EnterEmailServiceInterface = {
-        userExists: sandbox.fake.returns(false),
-        sendEmailVerificationNotification: sandbox.fake(),
+        userExists: sandbox.fake.returns({
+          success: true,
+          sessionState: "USER_NOT_FOUND",
+        }),
       };
 
       req.body.email = "test.test.com";
@@ -80,7 +84,6 @@ describe("enter email controller", () => {
       const error = new Error("Internal server error");
       const fakeService: EnterEmailServiceInterface = {
         userExists: sandbox.fake.throws(error),
-        sendEmailVerificationNotification: sandbox.fake(),
       };
 
       req.body.email = "test.test.com";
@@ -90,13 +93,11 @@ describe("enter email controller", () => {
         enterEmailPost(fakeService)(req as Request, res as Response)
       ).to.be.rejectedWith(Error, "Internal server error");
       expect(fakeService.userExists).to.have.been.calledOnce;
-      expect(fakeService.sendEmailVerificationNotification).not.to.been.called;
     });
 
     it("should throw error when session is not populated", async () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sandbox.fake(),
-        sendEmailVerificationNotification: sandbox.fake(),
       };
 
       req.body.email = "test.test.com";
@@ -110,7 +111,6 @@ describe("enter email controller", () => {
       );
 
       expect(fakeService.userExists).not.to.been.called;
-      expect(fakeService.sendEmailVerificationNotification).not.to.been.called;
     });
   });
 });

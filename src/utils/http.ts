@@ -20,8 +20,9 @@ export interface ConfigOptions {
   sessionId?: string;
   clientSessionId?: string;
   validationStatues?: number[];
-  sourceIp?: string
+  sourceIp?: string;
 }
+
 export function createApiResponse(response: AxiosResponse): ApiResponseResult {
   return {
     success: response.status === HTTP_STATUS_CODES.OK,
@@ -84,6 +85,12 @@ export class Http {
     const http = axios.create({
       baseURL: getApiBaseUrl(),
       headers: headers,
+      validateStatus: (status) => {
+        return (
+          status >= HTTP_STATUS_CODES.OK &&
+          status <= HTTP_STATUS_CODES.BAD_REQUEST
+        );
+      },
     });
 
     http.interceptors.response.use(

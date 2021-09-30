@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getNextPathRateLimit } from "../constants";
+import { getNextPathByState } from "../constants";
 import {
   formatValidationError,
   renderBadRequest,
@@ -10,10 +10,10 @@ import { ExpressRouteFunc } from "../../../types";
 
 interface Config {
   notificationType: string;
-  successPath: string;
   template: string;
   validationKey: string;
   validationState: string;
+  callback?: (req: Request, res: Response, state: string) => void;
 }
 
 export function verifyCodePost(
@@ -23,29 +23,29 @@ export function verifyCodePost(
   return async function (req: Request, res: Response) {
     const code = req.body["code"];
     const sessionId = res.locals.sessionId;
+    const clientSessionId = res.locals.clientSessionId;
 
     const result = await service.verifyCode(
       sessionId,
       code,
       options.notificationType,
+      clientSessionId,
       req.ip
     );
 
-    if (result.success) {
-      return res.redirect(options.successPath);
+    if (!result.success && !result.sessionState) {
+      throw new BadRequestError(result.code, result.message);
     }
 
-    if (result.sessionState) {
-      if (result.sessionState === options.validationState) {
-        const error = formatValidationError(
-          "code",
-          req.t(options.validationKey)
-        );
-        return renderBadRequest(res, req, options.template, error);
-      }
-      return res.redirect(getNextPathRateLimit(result.sessionState));
-    } else {
-      throw new BadRequestError(result.message, result.code);
+    if (result.sessionState === options.validationState) {
+      const error = formatValidationError("code", req.t(options.validationKey));
+      return renderBadRequest(res, req, options.template, error);
     }
+
+    if (options.callback) {
+      return options.callback(req, res, result.sessionState);
+    }
+
+    res.redirect(getNextPathByState(result.sessionState));
   };
 }

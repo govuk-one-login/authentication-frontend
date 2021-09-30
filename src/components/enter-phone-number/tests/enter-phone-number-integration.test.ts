@@ -160,7 +160,7 @@ describe("Integration::enter phone number", () => {
       })
       .post("/send-notification")
       .once()
-      .reply(200, {});
+      .reply(200, { sessionState: "VERIFY_PHONE_NUMBER_CODE_SENT" });
 
     request(app)
       .post("/enter-phone-number")

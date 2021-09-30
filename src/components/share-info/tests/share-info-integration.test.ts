@@ -5,6 +5,17 @@ import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
 
+function createClientInfoNock(baseApi: string) {
+  nock(baseApi)
+    .get("/client-info")
+    .once()
+    .reply(200, {
+      client_id: "client_test",
+      client_name: "client_test_name",
+      scopes: ["email", "phone"],
+    });
+}
+
 describe("Integration::share info", () => {
   let sandbox: sinon.SinonSandbox;
   let token: string | string[];
@@ -31,14 +42,7 @@ describe("Integration::share info", () => {
     app = require("../../../app").createApp();
     baseApi = process.env.API_BASE_URL;
 
-    nock(baseApi)
-      .get("/client-info")
-      .once()
-      .reply(200, {
-        clientId: "client_test",
-        clientName: "client_test_name",
-        scopes: ["email", "phone"],
-      });
+    createClientInfoNock(baseApi);
 
     request(app)
       .get("/share-info")
@@ -59,14 +63,7 @@ describe("Integration::share info", () => {
   });
 
   it("should return share info page", (done) => {
-    nock(baseApi)
-      .get("/client-info")
-      .once()
-      .reply(200, {
-        clientId: "client_test",
-        clientName: "client_test_name",
-        scopes: ["email", "phone"],
-      });
+    createClientInfoNock(baseApi);
     request(app).get("/share-info").expect(200, done);
   });
 
@@ -100,7 +97,7 @@ describe("Integration::share info", () => {
 
   it("should redirect to /auth-code page when consentValue valid", (done) => {
     nock(baseApi).post("/update-profile").once().reply(200, {
-      sessionState: "ADDED_CONSENT",
+      sessionState: "CONSENT_ADDED",
     });
 
     request(app)

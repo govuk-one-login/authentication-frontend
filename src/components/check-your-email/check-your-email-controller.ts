@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { NOTIFICATION_TYPE, PATH_NAMES, USER_STATE } from "../../app.constants";
+import { NOTIFICATION_TYPE, USER_STATE } from "../../app.constants";
 import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
@@ -19,7 +19,6 @@ export const checkYourEmailPost = (
   return verifyCodePost(service, {
     notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
     template: TEMPLATE_NAME,
-    successPath: PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
     validationKey: "pages.checkYourEmail.code.validationError.invalidCode",
     validationState: USER_STATE.EMAIL_CODE_NOT_VALID,
   });

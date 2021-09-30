@@ -1,6 +1,7 @@
-export interface UserLogin {
+import { ApiResponseResult } from "../../types";
+
+export interface UserLoginResponse extends ApiResponseResult {
   redactedPhoneNumber?: string;
-  sessionState: string;
 }
 
 export interface EnterPasswordServiceInterface {
@@ -10,5 +11,5 @@ export interface EnterPasswordServiceInterface {
     password: string,
     clientSessionId: string,
     sourceIp: string
-  ) => Promise<UserLogin>;
+  ) => Promise<UserLoginResponse>;
 }

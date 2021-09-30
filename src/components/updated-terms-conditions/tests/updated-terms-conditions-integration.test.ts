@@ -9,8 +9,8 @@ function nockClientInfo(baseApi: string) {
   nock(baseApi)
     .get("/client-info")
     .reply(200, {
-      clientId: "0wmWMtSCIRmNtbi_UaenAkt9D7o",
-      clientName: "testclient",
+      client_id: "0wmWMtSCIRmNtbi_UaenAkt9D7o",
+      client_name: "testclient",
       scopes: ["openid", "email", "phone"],
       redirectUri: "http://localhost:5000/callback",
       state: "test",
@@ -70,20 +70,6 @@ describe("Integration:: updated-terms-code", () => {
     request(app).get("/updated-terms-and-conditions").expect(200, done);
   });
 
-  it("should return update terms and conditions optional page", (done) => {
-    nockClientInfo(baseApi);
-    request(app)
-      .get("/updated-terms-and-conditions-optional")
-      .expect(200, done);
-  });
-
-  it("should return update terms and conditions mandatory page", (done) => {
-    nockClientInfo(baseApi);
-    request(app)
-      .get("/updated-terms-and-conditions-mandatory")
-      .expect(200, done);
-  });
-
   it("should return error when csrf not present", (done) => {
     request(app)
       .post("/updated-terms-and-conditions")
@@ -96,7 +82,7 @@ describe("Integration:: updated-terms-code", () => {
 
   it("should redirect to /auth_code when terms accepted", (done) => {
     nock(baseApi).post("/update-profile").once().reply(200, {
-      sessionState: "UPDATED_TERMS_AND_CONDITIONS",
+      sessionState: "UPDATED_TERMS_AND_CONDITIONS_ACCEPTED",
     });
 
     request(app)
@@ -111,9 +97,9 @@ describe("Integration:: updated-terms-code", () => {
       .expect(302, done);
   });
 
-  it("should redirect to service url when terms rejected", (done) => {
+  it("should redirect to /share-info consent required", (done) => {
     nock(baseApi).post("/update-profile").once().reply(200, {
-      sessionState: "UPDATED_TERMS_AND_CONDITIONS",
+      sessionState: "CONSENT_REQUIRED",
     });
 
     request(app)
@@ -122,12 +108,20 @@ describe("Integration:: updated-terms-code", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
-        acceptOrReject: "reject",
+        acceptOrReject: "accept",
       })
-      .expect(
-        "Location",
-        "http://localhost:5000/callback?error_code=rejectedTermsAndConditions&state=test"
-      )
+      .expect("Location", "/share-info")
       .expect(302, done);
+  });
+
+  it("should redirect to conditional page when terms rejected", (done) => {
+    request(app)
+      .get("/updated-terms-and-conditions-disagree")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+      })
+      .expect(200, done);
   });
 });

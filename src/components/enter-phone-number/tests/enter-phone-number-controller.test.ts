@@ -8,7 +8,8 @@ import {
   enterPhoneNumberGet,
   enterPhoneNumberPost,
 } from "../enter-phone-number-controller";
-import { EnterPhoneNumberServiceInterface } from "../types";
+import { SendNotificationServiceInterface } from "../../common/send-notification/types";
+import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
 
 describe("enter phone number controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -36,11 +37,18 @@ describe("enter phone number controller", () => {
 
   describe("enterPhoneNumberPost", () => {
     it("should redirect to /check-your-phone when success", async () => {
-      const fakeService: EnterPhoneNumberServiceInterface = {
-        sendPhoneVerificationNotification: sandbox.fake.returns({
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sandbox.fake.returns({
           success: true,
+          sessionState: "VERIFY_PHONE_NUMBER_CODE_SENT",
         }),
-        updateProfile: sandbox.fake.returns(true),
+      };
+
+      const fakeProfileService: UpdateProfileServiceInterface = {
+        updateProfile: sandbox.fake.returns({
+          success: true,
+          sessionState: "ADDED_UNVERIFIED_PHONE_NUMBER",
+        }),
       };
 
       res.locals.sessionId = "123456-djjad";
@@ -49,19 +57,26 @@ describe("enter phone number controller", () => {
         email: "test@test.com",
       };
 
-      await enterPhoneNumberPost(fakeService)(req as Request, res as Response);
+      await enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
+        req as Request,
+        res as Response
+      );
 
-      expect(fakeService.updateProfile).to.have.been.calledOnce;
-      expect(fakeService.sendPhoneVerificationNotification).to.have.been
-        .calledOnce;
+      expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith("/check-your-phone");
       expect(req.session.user.phoneNumber).to.be.eq("*******3990");
     });
 
     it("should throw error when API call to /update-profile throws error", async () => {
       const error = new Error("Internal server error");
-      const fakeService: EnterPhoneNumberServiceInterface = {
-        sendPhoneVerificationNotification: sandbox.fake(),
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sandbox.fake.returns({
+          success: true,
+        }),
+      };
+
+      const fakeProfileService: UpdateProfileServiceInterface = {
         updateProfile: sandbox.fake.throws(error),
       };
 
@@ -69,36 +84,46 @@ describe("enter phone number controller", () => {
       res.locals.sessionId = "123456-djjad";
 
       await expect(
-        enterPhoneNumberPost(fakeService)(req as Request, res as Response)
+        enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
+          req as Request,
+          res as Response
+        )
       ).to.be.rejectedWith(Error, "Internal server error");
 
-      expect(fakeService.updateProfile).to.have.been.calledOnce;
-      expect(fakeService.sendPhoneVerificationNotification).to.have.not.been
-        .called;
+      expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.not.been.called;
     });
 
     it("should throw error when API call to /send-notification throws error", async () => {
       const error = new Error("Internal server error");
-      const fakeService: EnterPhoneNumberServiceInterface = {
-        sendPhoneVerificationNotification: sandbox.fake.throws(error),
-        updateProfile: sandbox.fake.returns(true),
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sandbox.fake.throws(error),
+      };
+
+      const fakeProfileService: UpdateProfileServiceInterface = {
+        updateProfile: sandbox.fake.returns({ success: true }),
       };
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "123456-djjad";
 
       await expect(
-        enterPhoneNumberPost(fakeService)(req as Request, res as Response)
+        enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
+          req as Request,
+          res as Response
+        )
       ).to.be.rejectedWith(Error, "Internal server error");
 
-      expect(fakeService.updateProfile).to.have.been.calledOnce;
-      expect(fakeService.sendPhoneVerificationNotification).to.have.been
-        .calledOnce;
+      expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
     });
 
     it("should throw error when session is not populated", async () => {
-      const fakeService: EnterPhoneNumberServiceInterface = {
-        sendPhoneVerificationNotification: sandbox.fake(),
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sandbox.fake(),
+      };
+
+      const fakeProfileService: UpdateProfileServiceInterface = {
         updateProfile: sandbox.fake(),
       };
 
@@ -106,15 +131,17 @@ describe("enter phone number controller", () => {
       req.session = undefined;
 
       await expect(
-        enterPhoneNumberPost(fakeService)(req as Request, res as Response)
+        enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
+          req as Request,
+          res as Response
+        )
       ).to.be.rejectedWith(
         TypeError,
         "Cannot read property 'user' of undefined"
       );
 
-      expect(fakeService.updateProfile).to.have.not.been.called;
-      expect(fakeService.sendPhoneVerificationNotification).to.have.not.been
-        .called;
+      expect(fakeProfileService.updateProfile).to.have.not.been.called;
+      expect(fakeNotificationService.sendNotification).to.have.not.been.called;
     });
   });
 });

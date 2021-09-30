@@ -1,11 +1,11 @@
 import { ApiResponseResult } from "../../../types";
 
-export interface VerifyCodeInterface {
-  verifyCode: (
+export interface SendNotificationServiceInterface {
+  sendNotification: (
     sessionId: string,
-    code: string,
+    email: string,
     notificationType: string,
-    clientSessionId: string,
-    sourceIp: string
+    sourceIp: string,
+    phoneNumber?: string
   ) => Promise<ApiResponseResult>;
 }

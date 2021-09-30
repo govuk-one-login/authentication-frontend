@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { PATH_NAMES } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { createPasswordService } from "./create-password-service";
 import { CreatePasswordServiceInterface } from "./types";
+import { BadRequestError } from "../../utils/error";
+import { getNextPathByState } from "../common/constants";
 
 export function createPasswordGet(req: Request, res: Response): void {
   res.render("create-password/index.njk");
@@ -12,13 +13,17 @@ export function createPasswordPost(
   service: CreatePasswordServiceInterface = createPasswordService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    await service.signUpUser(
+    const result = await service.signUpUser(
       res.locals.sessionId,
       req.session.user.email,
       req.body.password,
       req.ip
     );
 
-    res.redirect(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);
+    if (!result.success) {
+      throw new BadRequestError(result.message, result.code);
+    }
+
+    return res.redirect(getNextPathByState(result.sessionState));
   };
 }

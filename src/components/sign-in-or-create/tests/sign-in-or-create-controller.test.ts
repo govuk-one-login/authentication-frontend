@@ -5,7 +5,7 @@ import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 import { UserSession } from "../../../types";
 import { signInOrCreateGet } from "../sign-in-or-create-controller";
-import { SignInOrCreateServiceInterface } from "../types";
+import { ClientInfoServiceInterface } from "../../common/client-info/types";
 
 describe("sign in or create controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -25,8 +25,11 @@ describe("sign in or create controller", () => {
 
   describe("signInOrCreateGet", () => {
     it("should render the sign in or create view", async () => {
-      const fakeService: SignInOrCreateServiceInterface = {
-        clientInfo: sandbox.fake.returns({ scopes: ["openid", "profile"] }),
+      const fakeService: ClientInfoServiceInterface = {
+        clientInfo: sandbox.fake.returns({
+          success: true,
+          data: { scopes: ["openid", "profile"] },
+        }),
       };
 
       res.locals.sessionId = "s-123456-djjad";

@@ -1,16 +1,18 @@
 import { Request, Response } from "express";
-import { PATH_NAMES } from "../../app.constants";
+import { NOTIFICATION_TYPE, USER_STATE } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { enterEmailService } from "./enter-email-service";
 import { EnterEmailServiceInterface } from "./types";
-import { getNextPathRateLimit } from "../common/constants";
+import { getNextPathByState } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
+import { SendNotificationServiceInterface } from "../common/send-notification/types";
+import { sendNotificationService } from "../common/send-notification/send-notification-service";
 
 export function enterEmailGet(req: Request, res: Response): void {
   if (req.session.user.createAccount) {
-    return res.render("enter-email/enter-email-create-account.njk");
+    return res.render("enter-email/index-create-account.njk");
   }
-  return res.render("enter-email/enter-email-existing-account.njk");
+  return res.render("enter-email/index-existing-account.njk");
 }
 
 export function enterEmailPost(
@@ -21,41 +23,56 @@ export function enterEmailPost(
     const sessionId = res.locals.sessionId;
     req.session.user.email = email;
 
-    if (await service.userExists(sessionId, email, req.ip)) {
-      return res.redirect(PATH_NAMES.ENTER_PASSWORD);
+    const result = await service.userExists(sessionId, email, req.ip);
+
+    if (!result.success) {
+      throw new BadRequestError(result.message, result.code);
     }
 
-    return res.redirect(PATH_NAMES.ACCOUNT_NOT_FOUND);
+    return res.redirect(getNextPathByState(result.sessionState));
   };
 }
 
 export function enterEmailCreatePost(
-  service: EnterEmailServiceInterface = enterEmailService()
+  service: EnterEmailServiceInterface = enterEmailService(),
+  notificationService: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const email = req.body.email;
     const sessionId = res.locals.sessionId;
 
     req.session.user.email = email;
-    const hasAccount = await service.userExists(sessionId, email, req.ip);
-
-    if (hasAccount) {
-      return res.redirect(PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS);
-    }
-
-    const result = await service.sendEmailVerificationNotification(
+    const userExistsResponse = await service.userExists(
       sessionId,
       email,
       req.ip
     );
 
-    if (!result.success) {
-      if (result.sessionState) {
-        return res.redirect(getNextPathRateLimit(result.sessionState));
-      }
-      throw new BadRequestError(result.message, result.code);
+    if (
+      userExistsResponse.success &&
+      userExistsResponse.sessionState === USER_STATE.AUTHENTICATION_REQUIRED
+    ) {
+      return res.redirect(
+        getNextPathByState(USER_STATE.AUTHENTICATION_REQUIRED_ACCOUNT_EXISTS)
+      );
     }
 
-    return res.redirect(PATH_NAMES.CHECK_YOUR_EMAIL);
+    const sendNotificationResponse = await notificationService.sendNotification(
+      sessionId,
+      email,
+      NOTIFICATION_TYPE.VERIFY_EMAIL,
+      req.ip
+    );
+
+    if (!sendNotificationResponse.success && sendNotificationResponse.code) {
+      throw new BadRequestError(
+        sendNotificationResponse.message,
+        sendNotificationResponse.code
+      );
+    }
+
+    return res.redirect(
+      getNextPathByState(sendNotificationResponse.sessionState)
+    );
   };
 }

@@ -32,15 +32,11 @@
         "value": "accept"
     }) }}
 
-    <br />
-    {{ govukButton({
-        "text": 'pages.updatedTermsAndConds.doNotAgree' | translate,
-        "type": "Submit",
-        "preventDoubleClick": true,
-        classes: 'govuk-btn-link inverted-button-link',
-        "name": "acceptOrReject",
-        "value": "reject"
-    }) }}
+    <br >
+
+    <a href="/updated-terms-and-conditions-disagree" class="govuk-btn-link inverted-button-link govuk-body">
+        {{'pages.updatedTermsAndConds.doNotAgree' | translate}}
+    </a>
 
 </form>
 {% endblock %}
