@@ -24,6 +24,7 @@ export function updatedTermsConditionsGet(
     req.session.redirectUri = clientInfoResponse.data.redirectUri;
     req.session.state = clientInfoResponse.data.state;
     req.session.serviceType = clientInfoResponse.data.serviceType;
+    req.session.clientName = clientInfoResponse.data.clientName;
 
     res.render("updated-terms-conditions/index.njk");
   };
@@ -36,7 +37,9 @@ export function updatedTermsRejectedGet(): ExpressRouteFunc {
         ? "index-optional.njk"
         : "index-mandatory.njk";
 
-    return res.render("updated-terms-conditions/" + view);
+    return res.render("updated-terms-conditions/" + view, {
+      clientName: req.session.clientName,
+    });
   };
 }
 
