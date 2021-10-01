@@ -9,6 +9,7 @@ applications:
     env:
       NODE_ENV: "production"
       API_BASE_URL: ((api_base_url))
+      FRONTEND_API_BASE_URL: ((frontend_api_base_url))
       SESSION_EXPIRY: ((session_expiry))
       SESSION_SECRET: ((session_secret))
       API_KEY: ((api_key))

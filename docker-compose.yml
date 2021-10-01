@@ -31,6 +31,7 @@ services:
     environment:
       - ENVIRONMENT="development"
       - API_BASE_URL=
+      - FRONTEND_API_BASE_URL=
       - TEST_CLIENT_ID=
     restart: on-failure
     networks:

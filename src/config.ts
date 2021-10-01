@@ -6,6 +6,10 @@ export function getApiBaseUrl(): string {
   return process.env.API_BASE_URL;
 }
 
+export function getFrontendApiBaseUrl(): string {
+  return process.env.FRONTEND_API_BASE_URL;
+}
+
 export function getNodeEnv(): string {
   return process.env.NODE_ENV || "development";
 }

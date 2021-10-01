@@ -29,7 +29,7 @@ describe("Integration:: resend mfa code", () => {
       });
 
     app = require("../../../app").createApp();
-    baseApi = process.env.API_BASE_URL;
+    baseApi = process.env.FRONTEND_API_BASE_URL;
 
     request(app)
       .get("/resend-code")
