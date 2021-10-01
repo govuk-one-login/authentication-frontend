@@ -6,7 +6,10 @@ export function initialiseSessionMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  req.session.user = {};
+  if (!req.cookies || !req.cookies["aps"]) {
+    req.session.user = {};
+  }
+
   next();
 }
 
