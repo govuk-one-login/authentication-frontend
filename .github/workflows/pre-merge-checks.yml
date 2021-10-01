@@ -29,5 +29,6 @@ jobs:
     env:
       ENVIRONMENT: development
       API_BASE_URL: http://localhost:6000/api
+      FRONTEND_API_BASE_URL: http://localhost:6060/api
       SESSION_SECRET: secret
       API_KEY: test-key

@@ -4,7 +4,7 @@ import axios, {
   AxiosError,
   AxiosResponse,
 } from "axios";
-import { getApiBaseUrl, getApiKey } from "../config";
+import { getApiKey, getFrontendApiBaseUrl } from "../config";
 import { logger } from "./logger";
 import { ApiResponseResult } from "../types";
 import { HTTP_STATUS_CODES } from "../app.constants";
@@ -83,7 +83,7 @@ export class Http {
 
   private initHttp() {
     const http = axios.create({
-      baseURL: getApiBaseUrl(),
+      baseURL: getFrontendApiBaseUrl(),
       headers: headers,
       validateStatus: (status) => {
         return (
