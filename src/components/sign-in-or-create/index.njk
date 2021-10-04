@@ -18,21 +18,9 @@
 {% include "common/errors/errorSummary.njk" %}
 
 {% if serviceType === 'OPTIONAL' %}
-
   <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.signInOrCreate.optional.header' | translate}}</h1>
-  <p class="govuk-body">{{'pages.signInOrCreate.optional.paragraph1' | translate}}</p>
-  {{ govukInsetText({
-    text: 'pages.signInOrCreate.optional.paragraph2' | translate
-  }) }}
-
 {% else %}
-
   <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.signInOrCreate.mandatory.header' | translate}}</h1>
-  <p class="govuk-body">{{'pages.signInOrCreate.mandatory.paragraph1' | translate}}</p>
-  {{ govukInsetText({
-    text: 'pages.signInOrCreate.mandatory.paragraph2' | translate
-  }) }}
-
 {% endif %}
 
 {% set moreAboutTextHtml %}
@@ -41,10 +29,6 @@
 <p class="govuk-body">{{'pages.signInOrCreate.moreAbout.paragraph3' | translate}}</p>
 {% endset %}
 
-{{ govukDetails({
-  summaryText: 'pages.signInOrCreate.moreAbout.header' | translate,
-  html: moreAboutTextHtml
-}) }}
 
 <form action="/sign-in-or-create" method="post" novalidate>
 
@@ -76,6 +60,10 @@
   } if (errors['createAccount'])
 }) }}
 
+  {{ govukInsetText({
+    text: 'pages.signInOrCreate.mandatory.paragraph' | translate
+  }) }}
+
 {{ govukButton({
   "text": 'pages.signInOrCreate.continueButtonText' | translate,
   "type": "Submit",
@@ -83,6 +71,12 @@
 }) }}
 
 </form>
+
+{{ govukDetails({
+  summaryText: 'pages.signInOrCreate.moreAbout.header' | translate,
+  html: moreAboutTextHtml
+}) }}
+
 
 {% endblock %}
 

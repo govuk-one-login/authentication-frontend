@@ -11,7 +11,8 @@
 
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterMfa.header' | translate }}</h1>
 
-<p class="govuk-body">{{'pages.enterMfa.info.paragraph' | translate | replace("[mobile]", phoneNumber )}}</p>
+<p class="govuk-body">{{'pages.enterMfa.info.paragraph1' | translate | replace("[mobile]", phoneNumber )}}</p>
+<p class="govuk-body">{{'pages.enterMfa.info.paragraph2' | translate | replace("[mobile]", phoneNumber )}}</p>
 
 <form action="/enter-code" method="post" novalidate>
 
@@ -30,11 +31,7 @@
   } if (errors['code'])})
   }}
 
-    <p class="govuk-body"> <a href="/resend-code" class="govuk-link" rel="noreferrer">{{'pages.enterMfa.resend.link' | translate }}</a> {{ 'pages.enterMfa.resend.paragraph1' | translate}}</p>
-    <ul class="govuk-list govuk-list--bullet">
-     <li>{{ 'pages.enterMfa.resend.listItem1' | translate}}</li>
-     <li>{{ 'pages.enterMfa.resend.listItem2' | translate}}</li>
-    </ul>
+  <p class="govuk-body"> <a href="/resend-code" class="govuk-link" rel="noreferrer">{{'pages.enterMfa.resend.link' | translate }}</a> {{ 'pages.enterMfa.resend.paragraph1' | translate}}</p>
 
   {{ govukButton({
   "text": button_text|default('general.continue.label' | translate, true),

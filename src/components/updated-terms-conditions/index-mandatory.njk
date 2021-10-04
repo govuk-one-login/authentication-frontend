@@ -8,7 +8,15 @@
 <h1 class="govuk-white-text govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.updatedTermsAndCondsMandatory.header' | translate}}</h1>
 
 <p class="govuk-body govuk-white-text">
-    {{ 'pages.updatedTermsAndCondsMandatory.paragraph' | translate }}
+     {{ 'pages.updatedTermsAndCondsMandatory.info.text' | translate }}
+        <a class="govuk-white-text"
+           href="/terms-and-conditons">{{ 'pages.updatedTermsAndCondsMandatory.info.termsAndConditionsText' | translate }}</a>,
+        <a class="govuk-white-text"
+           href="/privacy-statement">{{ 'pages.updatedTermsAndCondsMandatory.info.privacyNoticeText' | translate }}</a>
+        {{ 'pages.updatedTermsAndCondsMandatory.info.and' | translate }}
+        <a class="govuk-white-text"
+           href="/cookies">{{ 'pages.updatedTermsAndCondsMandatory.info.cookiesPolicyText' | translate }}</a>
+           {{ 'pages.updatedTermsAndCondsMandatory.info.end' | translate }}
 </p>
 
 <form action="/updated-terms-and-conditions" method="post" novalidate>

@@ -2,8 +2,8 @@
   "general": {
     "provider": "GOV.UK",
     "pageTitle": "GOV.UK Sign in",
-    "serviceName": "Sign in to or create your GOV.UK Account",
-    "serviceNameTitle": "GOV.UK Account",
+    "serviceName": "Sign in to or create your GOV.UK account",
+    "serviceNameTitle": "GOV.UK account",
     "errorTitlePrefix": "Error",
     "back": "Back",
     "warning": "Warning",
@@ -17,8 +17,8 @@
     "footer": {},
     "cookie": {
       "cookieBanner": {
-        "title": "Cookies on GOV.UK Account",
-        "heading": "Cookies on GOV.UK Account",
+        "title": "Cookies on GOV.UK account",
+        "heading": "Cookies on GOV.UK account",
         "paragraph1": "We use some essential cookies to make this service work.",
         "paragraph2": "We’d also like to use analytics cookies so we can understand how you use the service and make improvements.",
         "buttonAcceptText": "Accept analytics cookies",
@@ -101,10 +101,9 @@
   "pages": {
     "signInOrCreate": {
       "mandatory": {
-        "title": "Sign in or create a GOV.UK account",
-        "header": "Sign in or create a GOV.UK account",
-        "paragraph1": "You need a GOV.UK account to do this.  If you don't have a GOV.UK account, you can create one.",
-        "paragraph2": "The GOV.UK account is new.  It's separate from other government accounts, such as your personal tax account, or Government Gateway."
+        "title": "Create a GOV.UK account or sign in",
+        "header": "Create a GOV.UK account or sign in",
+        "paragraph": "The GOV.UK account is different to any government accounts you already have, for example your personal tax account or Government Gateway. "
       },
       "optional": {
         "title": "Create a GOV.UK account or sign in",
@@ -114,13 +113,13 @@
       },
       "moreAbout": {
         "header": "More about GOV.UK accounts",
-        "paragraph1": "GOV.UK account is a new account that we're starting to use for some government services.",
-        "paragraph2": "Other services use different accounts, such as Government Gateway or your Universal Credit account.",
-        "paragraph3": "In the future, you'll be able to use your GOV.UK account for all government services.  For now, you need different accounts for different services."
+        "paragraph1": "The GOV.UK account is new. It will one day allow you to access all online government services.",
+        "paragraph2": "We’re still building the GOV.UK account and will be adding more features and services to it.",
+        "paragraph3": " For now, you need to use different accounts to access different government services."
       },
       "existingAccountRadios": {
         "createAccountText": "Create an account",
-        "createAccountHintText": "You'll need an email address and a UK mobile phone number.  It will take no more than 5 minutes.",
+        "createAccountHintText": "You’ll need an email address and a UK mobile phone number. It will take about 2 minutes.",
         "signInText": "Sign in",
         "errorMessage": "Select an option"
       },
@@ -140,8 +139,8 @@
       }
     },
     "enterEmailExistingAccount": {
-      "title": "Sign in",
-      "header": "Enter your email address",
+      "title": "Sign in to your GOV.UK account",
+      "header": "Sign in to your GOV.UK account",
       "text": "Enter your email address to sign in.",
       "email": {
         "label": "Email address",
@@ -153,9 +152,9 @@
       }
     },
     "enterEmail": {
-      "title": "Sign in to or create your GOV.UK Account",
-      "header": "Sign in to or create your GOV.UK Account",
-      "text": "A GOV.UK Account is separate from other government accounts (for example a personal tax account or Government Gateway).",
+      "title": "Sign in to or create your GOV.UK account",
+      "header": "Sign in to or create your GOV.UK account",
+      "text": "A GOV.UK account is separate from other government accounts (for example a personal tax account or Government Gateway).",
       "email": {
         "label": "Email address",
         "text": "To sign in or create an account, enter your email address",
@@ -166,24 +165,24 @@
         }
       },
       "details": {
-        "summary": "A GOV.UK Account will:",
+        "summary": "A GOV.UK account will:",
         "bulletPoint1": "let you reuse and share your data to ensure that government services are quicker to interact with",
         "bulletPoint2": "suggest GOV.UK guidance and information that is relevant to you",
         "bulletPoint3": "tell you when content you're interested in has been updated",
         "bulletPoint4": "help you set up reminders for tasks you may need to complete later"
       },
       "whatYouNeed": {
-        "summary": "What you need to create a GOV.UK Account",
+        "summary": "What you need to create a GOV.UK account",
         "bulletPoint1": "an email address",
         "bulletPoint2": "a working UK phone number with signal, so we can send you a security code"
       }
     },
     "accountNotFoundMandatory": {
-      "title": "You do not have a GOV.UK account",
-      "header": "You do not have a GOV.UK account",
+      "title": "No GOV.UK account found",
+      "header": "No GOV.UK account found",
       "paragraph1": "There is no GOV.UK account for ",
-      "insetText1": "The GOV.UK account is new.  It's separate from other government accounts you may already have.",
-      "paragraph2": "You need to create a GOV.UK account, even if you have another government account.",
+      "insetText1": "The GOV.UK account is new. It’s separate from other government accounts, such as Government Gateway or your personal tax account.",
+      "paragraph2": "You need to create a GOV.UK account even if you already have another type of government account.",
       "createAccountButtonText": "Create a GOV.UK account",
       "createAccountButtonHref": "/enter-email",
       "tryAnotherLinkText": "Try another email address",
@@ -236,8 +235,8 @@
       "title": "Check your email",
       "header": "Check your email",
       "paragraph1": "We sent an email to ",
-      "paragraph2": "Use the link in the email to reset your password.",
-      "paragraph3": "The link will expire after 15 minutes.",
+      "paragraph2": " You can use the link in the email to reset your password.",
+      "paragraph3": "The link will be active for 15 minutes.",
       "sendAnotherEmailLinkText": "Send another email"
     },
     "createPassword": {
@@ -245,7 +244,7 @@
       "header": "Create your password",
       "password": {
         "label": "Enter a password",
-        "hint": "It needs to be at least 8 characters long and must include at least one number",
+        "hint": "It must be at least 8 characters long and must include at least one number",
         "validationError": {
           "required": "Enter your password",
           "minLength": "Your password must be at least 8 characters long and must include a number",
@@ -267,11 +266,11 @@
       "termsOfUse": {
         "heading": "Agree to our terms of use",
         "paragraph1": "We will collect and save your information securely. We will not share your personal information without your consent.",
-        "paragraph2": "By continuing, you confirm that you agree to our <a href=\"/privacy-statement\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\"> privacy notice</a> and our <a href=\"/terms-and-conditions\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">terms and conditions</a>."
+        "paragraph2": "By continuing, you confirm that you agree to our <a href=\"/privacy-statement\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">privacy notice</a> and our <a href=\"/terms-and-conditions\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">terms and conditions</a>."
       }
     },
     "enterPhoneNumber": {
-      "title": "Enter your phone number",
+      "title": "Enter your mobile phone number",
       "header": "Enter your mobile phone number",
       "info": {
         "paragraph1": "We will send a 6 digit security code to the number you give us.",
@@ -288,18 +287,21 @@
       }
     },
     "accountCreated": {
-      "title": "Account created",
-      "header": "You have successfully created your GOV.UK Account",
-      "subHeader": "What happens next",
+      "title": "You have  created your GOV.UK account",
+      "header": "You have  created your GOV.UK account",
+      "subHeader": "What you can do with your GOV.UK account",
+      "text": "You need to return to GOV.UK to continue.",
       "info": {
-        "paragraph1": "At the moment you can only use this account to save your progress on applications or services and finish them later.",
-        "paragraph2": "In the future, you will be able to use your GOV.UK account to sign in to other government services. It will take a few years for this to happen.",
-        "paragraph3": "For now, you'll need to use different accounts for different government services.",
-        "paragraph4": "We've sent you an email so you can complete it later."
+        "paragraph1": "At the moment, you can only use your GOV.UK account to:",
+        "paragraph2": "In the future, you’ll be able to use your GOV.UK account to sign in to all government services. It will take a few years for this to happen.",
+        "paragraph3": "For now, you need to use different accounts for different government services.",
+        "listItem1": "manage your GOV.UK emails",
+        "listItem2": "save your answers in the",
+        "brexitCheckerLink": "Brexit checker"
       },
       "inset": "Your progress on ",
       "insetContinued": " has been saved.",
-      "continue": "Continue",
+      "continue": "Go back to GOV.UK to continue",
       "signOut": "Sign out",
       "continueReport": "Continue your report",
       "progressSaved": "Your progress has been saved."
@@ -310,14 +312,14 @@
       "text": "We have sent an email to: ",
       "info": {
         "paragraph1": "The email contains a 6 digit security code.",
-        "paragraph2": "Open the email to get the security code, then enter it below.",
-        "paragraph3": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder."
+        "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
+        "paragraph3": "The code will expire after 15 minutes."
       },
       "requestNewCode": {
         "link": "Request a new code",
-        "paragraph1": "if you:",
-        "listItem1": "didn't receive a code",
-        "listItem2": "need a new code"
+        "paragraph1": "if:",
+        "listItem1": "the code isn’t working or has expired, or you didn’t receive one",
+        "listItem2": "you want to use a different email address "
       },
       "code": {
         "label": "Enter the 6 digit security code",
@@ -334,13 +336,14 @@
       "title": "Check your phone",
       "header": "Check your phone",
       "info": {
-        "paragraph": "We sent a code to the [mobile] number you registered."
+        "paragraph1": "We sent a code to [mobile].",
+        "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes."
       },
       "resend": {
         "link": "Request a new code",
-        "paragraph1": "if you:",
-        "listItem1": "didn't receive a code",
-        "listItem2": "need a new code"
+        "paragraph1": "if:",
+        "listItem1": "the code isn’t working or has expired, or you didn’t receive one",
+        "listItem2": "you want to use a different phone number"
       },
       "code": {
         "label": "Enter the 6 digit security code",
@@ -381,13 +384,12 @@
       "title": "Check your phone",
       "header": "Check your phone",
       "info": {
-        "paragraph": "We sent a code to the [mobile] number you registered."
+        "paragraph1": "We sent a code to [mobile].",
+        "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes."
       },
       "resend": {
         "link": "Request a new code",
-        "paragraph1": "if you:",
-        "listItem1": "didn't receive a code",
-        "listItem2": "need a new code"
+        "paragraph1": "if the code doesn’t work or has expired, or you didn’t receive one."
       },
       "code": {
         "label": "Enter the 6 digit security code",
@@ -404,8 +406,8 @@
       "title": "Request a new security code",
       "header": "Request a new security code",
       "continue": "Send a new  code",
-      "message": "Text messages can sometimes take a few minutes to arrive",
-      "phoneNumber": "We'll send a new code to [mobile]"
+      "message": "Text messages can sometimes take a few minutes to arrive.",
+      "phoneNumber": "We'll send a new code to [mobile]."
     },
     "signedOut": {
       "title": "Signed out",
@@ -418,10 +420,10 @@
       "header": "Share information from your GOV.UK account",
       "continue": "Continue",
       "bulletPointSectionHeader": "This service needs to use your:",
-      "paragraph1": "You added this information to your GOV.UK account when you created the account. You can choose to share it with the service instead of entering it when you use the service.",
-      "paragraph2": "The service will only use this information to contact you about the service. It won't share your information with anyone else. It will keep your information for as long as it needs to or the law requires it to.",
+      "paragraph1": "You added this information to your GOV.UK account when you created the account. You can choose to share it with the service instead of entering it again when you use the service.",
+      "paragraph2": "The service will only use this information to contact you about the service. It won’t share your information with anyone else. It will keep your information for as long as it needs to or the law requires it to.",
       "paragraph3": "If you choose not to share information from your GOV.UK account, you may still be asked for that information as you use the service. For example if you choose not to share your email address and phone number and the service needs a way to contact you.",
-      "essentialHeader": "Do you want to share information from your GOV.UK account?",
+      "essentialHeader": "Do you want to share information from your GOV.UK account? ",
       "radios": {
         "shareMy": "Do you want to share information from your GOV.UK account?",
         "radioText": {
@@ -451,14 +453,21 @@
     "updatedTermsAndCondsMandatory": {
       "title": "Agree to the updated terms of use to continue",
       "header": "Agree to the updated terms of use to continue",
-      "paragraph": "You need to agree to our updated terms of use to use this service.",
+      "info": {
+        "text": "You need to agree to our updated",
+        "and": "and",
+        "termsAndConditionsText": "terms and conditions",
+        "privacyNoticeText": "privacy notice",
+        "cookiesPolicyText": "cookies policy",
+        "end": "to use this service."
+      },
       "agreeAndContinue": "Agree and continue",
       "goBackToService": "Go back to "
     },
     "updatedTermsAndCondsOptional": {
-      "title": "Agree to the updated terms of use to save your progress",
-      "header": "Agree to the updated terms of use to save your progress",
-      "paragraph1": "You need to agree to our updated terms of use to save your progress.",
+      "title": "Agree to the updated terms of use to continue",
+      "header": "Agree to the updated terms of use to continue",
+      "paragraph1": "You need to agree to our updated",
       "paragraph2": "You can still complete your ",
       "paragraph2Continued": " without saving it.",
       "agreeAndContinue": "Agree and continue",
@@ -529,11 +538,11 @@
           },
           "rows": {
             "row1": {
-              "col2": "Helps us count how many people visit GOV.UK Account by checking if you’ve visited before",
+              "col2": "Helps us count how many people visit GOV.UK account by checking if you’ve visited before",
               "col3": "2 years"
             },
             "row2": {
-              "col2": "Helps us count how many people visit GOV.UK Account by checking if you’ve visited before",
+              "col2": "Helps us count how many people visit GOV.UK account by checking if you’ve visited before",
               "col3": "24 hours"
             }
           }
@@ -635,7 +644,11 @@
     "resetPasswordConfirmation": {
       "title": "You’ve reset your password",
       "header": "You’ve reset your password",
-      "summary": "Return to the service you were trying to access and sign in again."
+      "summary": {
+        "text": "You can now  ",
+        "link": "go back to the GOV.UK homepage",
+        "end": "and start what you were doing again."
+      }
     },
     "resetPasswordInvalidLink": {
       "title": "That link has expired",
