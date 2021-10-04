@@ -16,7 +16,7 @@
   {{ 'pages.shareInfo.header' | translate }}
 </h1>
 
-<h2 class="govuk-body-l">{{ clientInfo.client_name }}</h2>
+<h2 class="govuk-body-l">{{ clientName }}</h2>
 <p class="govuk-body">{{'pages.shareInfo.bulletPointSectionHeader' | translate}}</p>
 
 <ul class="govuk-list govuk-list--bullet">
@@ -45,9 +45,8 @@
   },
   fieldset: {
     legend: {
-      text: 'pages.shareInfo.radios.shareMy' | translate,
       isPageHeading: false,
-      classes: "govuk-body"
+      classes: "govuk-heading-s"
     }
   },
   items: [
@@ -76,3 +75,4 @@
 </form>
 
 {% endblock %}
+

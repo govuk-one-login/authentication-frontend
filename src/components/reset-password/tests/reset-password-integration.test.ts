@@ -158,7 +158,7 @@ describe("Integration::reset password", () => {
   });
 
   it("should redirect to /reset-password-confirmation when valid password entered", (done) => {
-    nock(baseApi).post("/reset-password").once().reply(200, { success: true });
+    nock(baseApi).post("/reset-password").once().reply(204);
 
     request(app)
       .post(ENDPOINT)

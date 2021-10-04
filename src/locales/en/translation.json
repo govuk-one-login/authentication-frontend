@@ -253,7 +253,7 @@
         }
       },
       "confirmPassword": {
-        "label": "Retype password",
+        "label": "Re-type password",
         "validationError": {
           "required": "Re-type your password",
           "matches": "Enter the same password in both fields"
@@ -411,7 +411,7 @@
     },
     "signedOut": {
       "title": "Signed out",
-      "header": "You have signed out",
+      "header": "You have been signed out",
       "buttonHref": "https://www.gov.uk/",
       "buttonText": "Return to the GOV.UK homepage"
     },
@@ -632,7 +632,7 @@
       "confirmPassword": {
         "label": "Re-type new password",
         "validationError": {
-          "required": "Re-type your password",
+          "required": "Re-type your new password",
           "matches": "Enter the same password in both fields"
         }
       },

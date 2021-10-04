@@ -23,9 +23,12 @@ export interface ConfigOptions {
   sourceIp?: string;
 }
 
-export function createApiResponse(response: AxiosResponse): ApiResponseResult {
+export function createApiResponse(
+  response: AxiosResponse,
+  status: number = HTTP_STATUS_CODES.OK
+): ApiResponseResult {
   return {
-    success: response.status === HTTP_STATUS_CODES.OK,
+    success: response.status === status,
     code: response.data.code,
     message: response.data.message,
     sessionState: response.data.sessionState,
