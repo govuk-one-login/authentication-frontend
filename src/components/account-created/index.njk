@@ -12,32 +12,30 @@
     titleText: 'pages.accountCreated.header' | translate
 }) }}
 
-<br>
+<p class="govuk-body">{{'pages.accountCreated.text' | translate}}</p>
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.accountCreated.subHeader' | translate}}</h1>
+ {{ govukButton({
+  "text": button_text|default('pages.accountCreated.continue' | translate, true),
+  "href":"https://www.gov.uk/",
+  "preventDoubleClick": true
+  }) }}
 
-<p class="govuk-body">{{'pages.accountCreated.info.paragraph1' | translate}}</p>
-<p class="govuk-body">{{'pages.accountCreated.info.paragraph2' | translate}}</p>
-<p class="govuk-body">{{'pages.accountCreated.info.paragraph3' | translate}}</p>
+
+<h2 class="govuk-heading-m govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.accountCreated.subHeader' | translate}}</h2>
 
 {% if serviceType === 'MANDATORY' %}
-    {{ govukInsetText({
-      text: 'pages.accountCreated.inset' | translate + clientName + 'pages.accountCreated.insetContinued' | translate,
-      classes: "govuk-bold"
-    }) }}
 
-    <p class="govuk-body">{{'pages.accountCreated.info.paragraph4' | translate}}</p>
 
-    {{ govukButton({
-        "text": button_text|default('pages.accountCreated.signOut' | translate, true),
-        "href": logoutUrl
-    }) }}
+    <p class="govuk-body">{{'pages.accountCreated.info.paragraph1' | translate}}</p>
 
-    <br>
+    <ul class="govuk-list govuk-list--bullet">
+         <li>{{'pages.accountCreated.info.listItem1' | translate}}</li>
+         <li>{{'pages.accountCreated.info.listItem2' | translate}} <a class="govuk-link" rel="noreferrer noopener" href="https://www.gov.uk/brexit" target="_blank" >{{ 'pages.accountCreated.info.brexitCheckerLink' | translate }}</a></li>
+    </ul>
 
-    <a href="{{ linkUrl }}" class="govuk-link govuk-body">
-        {{'pages.accountCreated.continueReport' | translate}}
-    </a>
+    <p class="govuk-body">{{'pages.accountCreated.info.paragraph2' | translate}}</p>
+    <p class="govuk-body">{{'pages.accountCreated.info.paragraph3' | translate}}</p>
+
 {% endif %}
 
 {% if serviceType === 'OPTIONAL' %}
