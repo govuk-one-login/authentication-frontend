@@ -4,7 +4,7 @@ import {
   Http,
   http,
 } from "../../utils/http";
-import { API_ENDPOINTS } from "../../app.constants";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants";
 import { ResetPasswordServiceInterface } from "./types";
 import { ApiResponse, ApiResponseResult } from "../../types";
 
@@ -27,7 +27,7 @@ export function resetPasswordService(
       })
     );
 
-    return createApiResponse(response);
+    return createApiResponse(response, HTTP_STATUS_CODES.NO_CONTENT);
   };
 
   return {
