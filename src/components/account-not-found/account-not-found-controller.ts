@@ -31,7 +31,7 @@ export function accountNotFoundPost(
     );
 
     if (!result.success && !result.sessionState) {
-      throw new BadRequestError(result.code, result.message);
+      throw new BadRequestError(result.message, result.code);
     }
 
     res.redirect(getNextPathByState(result.sessionState));

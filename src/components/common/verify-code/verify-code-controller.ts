@@ -34,7 +34,7 @@ export function verifyCodePost(
     );
 
     if (!result.success && !result.sessionState) {
-      throw new BadRequestError(result.code, result.message);
+      throw new BadRequestError(result.message, result.code);
     }
 
     if (result.sessionState === options.validationState) {

@@ -279,10 +279,10 @@
       "phoneNumber": {
         "label": "UK phone number",
         "validationError": {
-          "required": "Enter a UK phone number",
-          "international": "Enter a UK phone number",
-          "length": "Enter a UK phone number, like 07700 900000",
-          "numeric": "Enter a UK Phone number using numbers only"
+          "required": "Enter a phone number",
+          "international": "Enter a UK mobile phone number",
+          "length": "Enter a UK mobile phone number, like 07700 900000",
+          "numeric": "Enter a UK mobile phone number using numbers only"
         }
       }
     },
@@ -328,7 +328,7 @@
           "maxLength": "Enter the security code using only 6 digits",
           "minLength": "Enter the security code using only 6 digits",
           "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new security code."
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
       }
     },
@@ -352,7 +352,7 @@
           "maxLength": "Enter the security code using only 6 digits",
           "minLength": "Enter the security code using only 6 digits",
           "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new security code."
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
       }
     },
@@ -398,7 +398,7 @@
           "maxLength": "Enter the security code using only 6 digits",
           "minLength": "Enter the security code using only 6 digits",
           "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new security code."
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
       }
     },

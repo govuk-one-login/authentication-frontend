@@ -51,7 +51,7 @@ describe("Integration::reset password check email ", () => {
     nock(baseApi)
       .post("/reset-password-request")
       .times(6)
-      .reply(400, { code: "1022" });
+      .reply(400, { code: 1022 });
 
     request(app)
       .get("/reset-password-check-email")
@@ -68,7 +68,7 @@ describe("Integration::reset password check email ", () => {
     nock(baseApi)
       .post("/reset-password-request")
       .once()
-      .reply(400, { code: "1023" });
+      .reply(400, { code: 1023 });
 
     request(app)
       .get("/reset-password-check-email")
