@@ -16,7 +16,7 @@
 
  {{ govukButton({
   "text": button_text|default('pages.accountCreated.continue' | translate, true),
-  "href":"https://www.gov.uk/",
+  "href": linkUrl,
   "preventDoubleClick": true
   }) }}
 
@@ -24,7 +24,6 @@
 <h2 class="govuk-heading-m govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.accountCreated.subHeader' | translate}}</h2>
 
 {% if serviceType === 'MANDATORY' %}
-
 
     <p class="govuk-body">{{'pages.accountCreated.info.paragraph1' | translate}}</p>
 
