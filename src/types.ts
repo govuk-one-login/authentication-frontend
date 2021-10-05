@@ -23,7 +23,7 @@ export type ValidationChainFunc = (
 )[];
 
 export interface ApiResponse {
-  code?: string;
+  code?: number;
   message?: string;
   sessionState: string;
   email?: string;
@@ -32,7 +32,7 @@ export interface ApiResponse {
 
 export interface ApiResponseResult {
   success: boolean;
-  code?: string;
+  code?: number;
   message?: string;
   sessionState?: string;
 }

@@ -73,7 +73,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#phoneNumber-error").text()).to.contains(
-          "Enter a UK phone number"
+          "Enter a phone number"
         );
       })
       .expect(400, done);
@@ -91,7 +91,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#phoneNumber-error").text()).to.contains(
-          "Enter a UK phone number"
+          "Enter a UK mobile phone number"
         );
       })
       .expect(400, done);
@@ -109,7 +109,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#phoneNumber-error").text()).to.contains(
-          "Enter a UK Phone number using numbers only"
+          "Enter a UK mobile phone number using numbers only"
         );
       })
       .expect(400, done);
@@ -127,7 +127,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#phoneNumber-error").text()).to.contains(
-          "Enter a UK phone number, like 07700 900000"
+          "Enter a UK mobile phone number, like 07700 900000"
         );
       })
       .expect(400, done);
@@ -145,7 +145,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#phoneNumber-error").text()).to.contains(
-          "Enter a UK phone number, like 07700 900000"
+          "Enter a UK mobile phone number, like 07700 900000"
         );
       })
       .expect(400, done);
