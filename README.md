@@ -21,8 +21,10 @@ Create a copy of the .env.sample file and rename it .env and fill in below value
 ```
 ENVIRONMENT=development
 API_BASE_URL=
-SESSION_EXPIRY=300000
+FRONTEND_API_BASE_URL=
+SESSION_EXPIRY=30000
 SESSION_SECRET=123456
+API_KEY=
 ```
 
 You can find the `API_BASE_URL` in [Concourse](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-api) under the outputs within the deloy-lambda job.
