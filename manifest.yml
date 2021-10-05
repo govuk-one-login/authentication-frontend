@@ -4,6 +4,7 @@ applications:
     path: di-authentication-frontend.zip
     command: yarn run start
     memory: 2G
+    instances: ((app_instances))
     buildpacks:
       - nodejs_buildpack
     env:
