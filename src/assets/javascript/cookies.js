@@ -54,14 +54,19 @@ var cookies = function (trackingId, analyticsCookieDomain) {
   function processCookieConsentFlag() {
     var cookieConsent = getQueryParameterByName("cookie_consent");
 
-    if (
-      (cookieConsent && cookieConsent === "accept") ||
-      cookieConsent === "reject"
-    ) {
+    if (!cookieConsent) {
+      return;
+    }
+
+    cookieConsent = cookieConsent.trim();
+
+    if (cookieConsent === "accept" || cookieConsent === "reject") {
       setCookie(COOKIES_PREFERENCES_SET, {
         analytics: cookieConsent === "accept",
       });
-    } else {
+    }
+
+    if (cookieConsent === "not-engaged") {
       setCookie(COOKIES_PREFERENCES_SET, "", { days: -1 });
     }
   }
