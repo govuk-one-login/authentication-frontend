@@ -630,7 +630,7 @@
         }
       },
       "confirmPassword": {
-        "label": "Re-type new password",
+        "label": "Re-type your new password",
         "validationError": {
           "required": "Re-type your new password",
           "matches": "Enter the same password in both fields"
