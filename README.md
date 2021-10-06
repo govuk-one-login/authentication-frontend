@@ -25,6 +25,7 @@ FRONTEND_API_BASE_URL=
 SESSION_EXPIRY=30000
 SESSION_SECRET=123456
 API_KEY=
+ANALYTICS_COOKIE_DOMAIN=localhost
 ```
 
 You can find the `API_BASE_URL` in [Concourse](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-api) under the outputs within the deloy-lambda job.

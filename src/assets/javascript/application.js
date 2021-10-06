@@ -1,7 +1,9 @@
 (function (w) {
   "use strict";
-  function appInit(trackingId) {
-    var cookies = window.GOVSignIn.Cookies(trackingId);
+  function appInit(trackingId, cookieDomain) {
+    var cookies = window.GOVSignIn.Cookies(trackingId, cookieDomain);
+
+    cookies.processCookieConsentFlag();
 
     if (cookies.hasConsentForAnalytics()) {
       cookies.initAnalytics();
