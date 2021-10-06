@@ -29,6 +29,9 @@ export function enterEmailPost(
       throw new BadRequestError(result.message, result.code);
     }
 
+    req.session.user.createAccount =
+      result.sessionState === USER_STATE.USER_NOT_FOUND;
+
     return res.redirect(getNextPathByState(result.sessionState));
   };
 }
