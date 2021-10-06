@@ -29,3 +29,7 @@ export function getApiKey(): string {
 export function getGtmId(): string {
   return process.env.GTM_ID;
 }
+
+export function getAnalyticsCookieDomain(): string {
+  return process.env.ANALYTICS_COOKIE_DOMAIN;
+}

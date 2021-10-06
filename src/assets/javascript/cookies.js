@@ -1,6 +1,6 @@
 "use strict";
 
-var cookies = function (trackingId) {
+var cookies = function (trackingId, analyticsCookieDomain) {
   var COOKIES_PREFERENCES_SET = "cookies_preferences_set";
 
   var cookiesAccepted = document.querySelector("#cookies-accepted");
@@ -43,6 +43,26 @@ var cookies = function (trackingId) {
 
     if (!hasCookiesPolicy) {
       showElement(cookieBannerContainer);
+    }
+  }
+
+  function getQueryParameterByName(name) {
+    var match = RegExp("[?&]" + name + "=([^&]*)").exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, " "));
+  }
+
+  function processCookieConsentFlag() {
+    var cookieConsent = getQueryParameterByName("cookie_consent");
+
+    if (
+      (cookieConsent && cookieConsent === "accept") ||
+      cookieConsent === "reject"
+    ) {
+      setCookie(COOKIES_PREFERENCES_SET, {
+        analytics: cookieConsent === "accept",
+      });
+    } else {
+      setCookie(COOKIES_PREFERENCES_SET, "", { days: -1 });
     }
   }
 
@@ -179,7 +199,12 @@ var cookies = function (trackingId) {
       var date = new Date();
       date.setTime(date.getTime() + options.days * 24 * 60 * 60 * 1000);
       cookieString =
-        cookieString + "; expires=" + date.toGMTString() + "; path=/";
+        cookieString +
+        "; expires=" +
+        date.toGMTString() +
+        "; path=/; domain=" +
+        analyticsCookieDomain +
+        ";";
     }
 
     if (document.location.protocol === "https:") {
@@ -207,6 +232,7 @@ var cookies = function (trackingId) {
     cookiesPageInit,
     hasConsentForAnalytics,
     initAnalytics,
+    processCookieConsentFlag,
   };
 };
 

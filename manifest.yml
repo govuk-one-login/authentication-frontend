@@ -15,5 +15,6 @@ applications:
       SESSION_SECRET: ((session_secret))
       API_KEY: ((api_key))
       GTM_ID: ((gtm_id))
+      ANALYTICS_COOKIE_DOMAIN: ((analytics_cookie_domain))
     routes:
       - route: ((route_name))

@@ -15,7 +15,8 @@ const AUTHORIZE_REQUEST =
   "state=sEazICy8jKFFlt-NLSw5yqYRA2r4q5BZGcAf9sYeWRg&" +
   "nonce=gyRdMfQGsQS9BvhU-lBwENOZ0UU&" +
   "client_id=" +
-  process.env.TEST_CLIENT_ID;
+  process.env.TEST_CLIENT_ID +
+  "&cookie_consent=accept";
 
 app.get("/", (req, res) => {
   axios
