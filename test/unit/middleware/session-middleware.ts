@@ -74,7 +74,7 @@ describe("session-middleware", () => {
 
   describe("handleBackButtonMiddleware", () => {
     it("should call next when session state is missing", () => {
-      req.session.user = {
+      req.session = {
         nextState: null
       };
       handleBackButtonMiddleware(req as Request, res as Response, next);
@@ -83,7 +83,7 @@ describe("session-middleware", () => {
     });
 
     it("should call next when the next path matches the current request path", () => {
-      req.session.user = {
+      req.session = {
         nextState: USER_STATE.LOGGED_IN
       };
       req.route = {
@@ -96,7 +96,7 @@ describe("session-middleware", () => {
     });
 
     it("should redirect to invalid session error page if next path does not match current request path", () => {
-      req.session.user = {
+      req.session = {
         nextState: USER_STATE.LOGGED_IN
       };
       req.route = {
@@ -104,7 +104,7 @@ describe("session-middleware", () => {
       };
 
       handleBackButtonMiddleware(req as Request, res as Response, next);
-      expect(req.session.user.nextState).to.be.null;
+      expect(req.session.nextState).to.be.null;
       expect(res.redirect).to.be.calledWith("/invalid-session");
     });
   });
