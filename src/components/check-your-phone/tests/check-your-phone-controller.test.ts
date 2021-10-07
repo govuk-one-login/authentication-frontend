@@ -95,5 +95,20 @@ describe("check your phone controller", () => {
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.been.calledWith("/security-code-invalid");
     });
+
+    it("should update the user session state value in the req", async () => {
+      const fakeService: VerifyCodeInterface = {
+        verifyCode: sandbox.fake.returns({
+          success: true,
+          sessionState: "CONSENT_REQUIRED",
+        }),
+      };
+
+      expect(req.session.nextState).to.be.undefined;
+
+      await checkYourPhonePost(fakeService)(req as Request, res as Response);
+
+      expect(req.session.nextState).to.equal("CONSENT_REQUIRED");
+    });
   });
 });

@@ -1,6 +1,9 @@
 import { PATH_NAMES } from "../../app.constants";
 import * as express from "express";
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
+import {
+  handleBackButtonMiddleware,
+  validateSessionMiddleware,
+} from "../../middleware/session-middleware";
 import {
   createPasswordGet,
   createPasswordPost,
@@ -13,6 +16,7 @@ const router = express.Router();
 router.get(
   PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
   validateSessionMiddleware,
+  handleBackButtonMiddleware,
   createPasswordGet
 );
 router.post(

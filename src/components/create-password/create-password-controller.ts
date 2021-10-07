@@ -24,6 +24,8 @@ export function createPasswordPost(
       throw new BadRequestError(result.message, result.code);
     }
 
+    req.session.nextState = result.sessionState;
+
     return res.redirect(getNextPathByState(result.sessionState));
   };
 }

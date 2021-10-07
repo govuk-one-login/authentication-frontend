@@ -692,6 +692,13 @@
         "first": "wait 15 minutes and try to sign in again",
         "second": "reset your password"
       }
+    },
+    "browserBackButtonError": {
+      "title": "Sorry, you cannot go back from that page",
+      "header": "Sorry, you cannot go back from that page",
+      "paragraph1": "You'll need to start again to create your account or sign in.",
+      "returnToAccountCreationButtonText": "Back to create your account or sign in",
+      "returnToAccountCreationButtonLink": "/sign-in-or-create"
     }
   }
 }

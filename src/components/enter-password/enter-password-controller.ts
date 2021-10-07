@@ -71,6 +71,8 @@ export function enterPasswordPost(
         redirectTo = getNextPathByState(result.sessionState);
       }
 
+      req.session.nextState = userLogin.sessionState;
+
       return res.redirect(redirectTo);
     }
 
