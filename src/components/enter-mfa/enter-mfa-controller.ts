@@ -9,7 +9,7 @@ const TEMPLATE_NAME = "enter-mfa/index.njk";
 
 export function enterMfaGet(req: Request, res: Response): void {
   res.render(TEMPLATE_NAME, {
-    phoneNumber: req.session.user.phoneNumber,
+    phoneNumber: req.session.phoneNumber,
   });
 }
 

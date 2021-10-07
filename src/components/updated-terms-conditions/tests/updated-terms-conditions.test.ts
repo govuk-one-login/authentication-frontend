@@ -7,11 +7,11 @@ import {
   updatedTermsConditionsGet,
   updatedTermsConditionsPost,
 } from "../updated-terms-conditions-controller";
-import { UserSession } from "../../../types";
+
 import { ClientInfoServiceInterface } from "../../common/client-info/types";
 import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
 
-describe("share-info controller", () => {
+describe("updated terms conditions controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -21,7 +21,7 @@ describe("share-info controller", () => {
 
     req = {
       body: {},
-      session: { user: {} as UserSession },
+      session: {},
       i18n: { language: "en" },
     };
     res = {
@@ -75,9 +75,7 @@ describe("share-info controller", () => {
       req.body.acceptOrReject = "accept";
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
-      req.session.user = {
-        email: "test@test.com",
-      };
+      req.session.email = "test@test.com";
 
       await updatedTermsConditionsPost(fakeService)(
         req as Request,
@@ -97,9 +95,7 @@ describe("share-info controller", () => {
       req.body.acceptOrReject = "reject";
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
-      req.session.user = {
-        email: "test@test.com",
-      };
+      req.session.email = "test@test.com";
       req.session.state = "test";
 
       await updatedTermsConditionsPost(fakeService)(

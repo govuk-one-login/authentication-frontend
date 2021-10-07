@@ -9,7 +9,7 @@ const TEMPLATE_NAME = "check-your-email/index.njk";
 
 export function checkYourEmailGet(req: Request, res: Response): void {
   res.render(TEMPLATE_NAME, {
-    email: req.session.user.email,
+    email: req.session.email,
   });
 }
 

@@ -3,7 +3,7 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { UserSession } from "../../../types";
+
 import {
   resendMfaCodeGet,
   resendMfaCodePost,
@@ -20,7 +20,7 @@ describe("resend mfa controller", () => {
 
     req = {
       body: {},
-      session: { user: {} as UserSession },
+      session: {},
       i18n: { language: "en" },
     };
     res = {
@@ -53,7 +53,7 @@ describe("resend mfa controller", () => {
       };
 
       res.locals.sessionId = "123456-djjad";
-      req.session.user = {
+      req.session = {
         email: "test@test.com",
       };
 

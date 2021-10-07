@@ -7,7 +7,7 @@ import { BadRequestError } from "../../utils/error";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
   res.render("resend-mfa-code/index.njk", {
-    phoneNumber: req.session.user.phoneNumber,
+    phoneNumber: req.session.phoneNumber,
   });
 }
 
@@ -15,7 +15,7 @@ export function resendMfaCodePost(
   service: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session.user;
+    const { email } = req.session;
     const id = res.locals.sessionId;
 
     const result = await service.sendMfaCode(id, email, req.ip);

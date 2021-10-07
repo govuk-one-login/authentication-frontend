@@ -7,8 +7,8 @@ export function accountCreatedGet(req: Request, res: Response): void {
   const clientName = req.session.clientName;
 
   res.render("account-created/index.njk", {
-    linkUrl: req.session.user.nextState
-      ? getNextPathByState(req.session.user.nextState)
+    linkUrl: req.session.nextState
+      ? getNextPathByState(req.session.nextState)
       : PATH_NAMES.AUTH_CODE,
     serviceType,
     clientName,

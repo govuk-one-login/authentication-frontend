@@ -3,7 +3,7 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 import { shareInfoGet, shareInfoPost } from "../share-info-controller";
-import { UserSession } from "../../../types";
+
 import { ClientInfoServiceInterface } from "../../common/client-info/types";
 import { BadRequestError } from "../../../utils/error";
 import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
@@ -18,7 +18,7 @@ describe("share-info controller", () => {
 
     req = {
       body: {},
-      session: { user: {} as UserSession },
+      session: {},
       i18n: { language: "en" },
     };
     res = {
@@ -67,9 +67,7 @@ describe("share-info controller", () => {
       req.body.consentValue = true;
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
-      req.session.user = {
-        email: "test@test.com",
-      };
+      req.session.email = "test@test.com";
 
       await shareInfoPost(fakeService)(req as Request, res as Response);
 
@@ -91,9 +89,7 @@ describe("share-info controller", () => {
       req.body.consentValue = true;
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
-      req.session.user = {
-        email: "test@test.com",
-      };
+      req.session.email = "test@test.com";
 
       await expect(
         shareInfoPost(fakeService)(req as Request, res as Response)

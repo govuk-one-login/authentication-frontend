@@ -6,17 +6,26 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-    - 3000:3000
-    - 9229:9229
+      - 3000:3000
+      - 9230:9230
     volumes:
       - ./:/app
     environment:
       - ENVIRONMENT="development"
       - API_BASE_URL=
-      - SESSION_EXPIRY="3600000"
+      - SESSION_EXPIRY=3600000
       - SESSION_SECRET="secret"
-      - API_KEY=key
+      - API_KEY=
+      - FRONTEND_API_BASE_URL=
+      - ANALYTICS_COOKIE_DOMAIN=localhost
     restart: on-failure
+    networks:
+      - di-net
+
+  redis:
+    image: redis:6.0.5-alpine
+    ports:
+      - 6379:6379
     networks:
       - di-net
 

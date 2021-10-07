@@ -35,7 +35,7 @@ export function enterPasswordAccountExistsGet(
   req: Request,
   res: Response
 ): void {
-  const { email } = req.session.user;
+  const { email } = req.session;
   res.render(ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE, {
     email: email,
   });
@@ -47,7 +47,7 @@ export function enterPasswordPost(
   mfaCodeService: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session.user;
+    const { email } = req.session;
     const { sessionId, clientSessionId } = res.locals;
 
     const userLogin = await service.loginUser(
@@ -62,7 +62,7 @@ export function enterPasswordPost(
       let redirectTo = getNextPathByState(userLogin.sessionState);
 
       if (userLogin.sessionState === USER_STATE.LOGGED_IN) {
-        req.session.user.phoneNumber = userLogin.redactedPhoneNumber;
+        req.session.phoneNumber = userLogin.redactedPhoneNumber;
         const result = await mfaCodeService.sendMfaCode(
           sessionId,
           email,

@@ -6,10 +6,15 @@ export function initialiseSessionMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  if (!req.cookies || !req.cookies["aps"]) {
-    req.session.user = {};
+  if (req.query.interrupt) {
+    req.session.resetMaxAge();
+  } else {
+    req.session.regenerate((err: any) => {
+      if (err) {
+        throw new Error(err);
+      }
+    });
   }
-
   next();
 }
 
@@ -18,7 +23,7 @@ export function getSessionIdMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  if (req.cookies && req.cookies["gs"]) {
+  if (req.cookies && req.cookies.gs) {
     const ids = req.cookies["gs"].split(".");
 
     res.locals.sessionId = ids[0];
@@ -32,13 +37,11 @@ export function validateSessionMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  if (
-    req.cookies["gs"] !== undefined &&
-    req.cookies["aps"] !== undefined &&
-    res.locals.sessionId
-  ) {
+  if (req.cookies.gs && req.cookies.aps && req.session.id) {
     return next();
   }
+
+  req.session.destroy();
 
   res.status(401);
   next(new Error(ERROR_MESSAGES.INVALID_SESSION));

@@ -3,7 +3,7 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { UserSession } from "../../../types";
+
 import { landingGet } from "../landing-controller";
 
 describe("landing controller", () => {
@@ -14,7 +14,7 @@ describe("landing controller", () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
-    req = { body: {}, session: { user: {} as UserSession }, query: {} };
+    req = { body: {}, session: {}, query: {} };
     res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
   });
 

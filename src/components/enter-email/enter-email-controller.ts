@@ -9,7 +9,7 @@ import { SendNotificationServiceInterface } from "../common/send-notification/ty
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 
 export function enterEmailGet(req: Request, res: Response): void {
-  if (req.session.user.createAccount) {
+  if (req.session.createAccount) {
     return res.render("enter-email/index-create-account.njk");
   }
   return res.render("enter-email/index-existing-account.njk");
@@ -21,7 +21,7 @@ export function enterEmailPost(
   return async function (req: Request, res: Response) {
     const email = req.body.email;
     const sessionId = res.locals.sessionId;
-    req.session.user.email = email;
+    req.session.email = email;
 
     const result = await service.userExists(sessionId, email, req.ip);
 
@@ -29,7 +29,7 @@ export function enterEmailPost(
       throw new BadRequestError(result.message, result.code);
     }
 
-    req.session.user.createAccount =
+    req.session.createAccount =
       result.sessionState === USER_STATE.USER_NOT_FOUND;
 
     return res.redirect(getNextPathByState(result.sessionState));
@@ -44,7 +44,7 @@ export function enterEmailCreatePost(
     const email = req.body.email;
     const sessionId = res.locals.sessionId;
 
-    req.session.user.email = email;
+    req.session.email = email;
     const userExistsResponse = await service.userExists(
       sessionId,
       email,

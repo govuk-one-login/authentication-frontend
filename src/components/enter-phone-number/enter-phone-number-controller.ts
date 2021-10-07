@@ -19,11 +19,11 @@ export function enterPhoneNumberPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const phoneNumber = req.body.phoneNumber;
-    const { email } = req.session.user;
+    const { email } = req.session;
     const id = res.locals.sessionId;
     const clientSessionId = res.locals.clientSessionId;
 
-    req.session.user.phoneNumber = redactPhoneNumber(phoneNumber);
+    req.session.phoneNumber = redactPhoneNumber(phoneNumber);
 
     const updateProfileResponse = await profileService.updateProfile(
       id,

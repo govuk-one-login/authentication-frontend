@@ -4,7 +4,7 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 import { enterMfaGet, enterMfaPost } from "../enter-mfa-controller";
-import { UserSession } from "../../../types";
+
 import { VerifyCodeInterface } from "../../common/verify-code/types";
 
 describe("enter mfa controller", () => {
@@ -17,7 +17,7 @@ describe("enter mfa controller", () => {
 
     req = {
       body: {},
-      session: { user: {} as UserSession },
+      session: {},
       i18n: { language: "en" },
     };
     res = {

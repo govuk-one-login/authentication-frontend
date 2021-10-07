@@ -10,6 +10,18 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 15.x
@@ -32,3 +44,5 @@ jobs:
       FRONTEND_API_BASE_URL: http://localhost:6060/api
       SESSION_SECRET: secret
       API_KEY: test-key
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379

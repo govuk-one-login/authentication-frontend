@@ -35,7 +35,9 @@ app.get("/", (req, res) => {
           cookeValue = item.split("=")[1];
         }
       });
-      res.cookie("gs", cookeValue);
+      res.cookie("gs", cookeValue, {
+        maxAge: new Date(new Date().getTime() + 60 * 60000),
+      });
       console.log("Session is:" + cookeValue);
       res.redirect("http://localhost:3000/");
     })
