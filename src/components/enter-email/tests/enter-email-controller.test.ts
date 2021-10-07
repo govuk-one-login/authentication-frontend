@@ -4,7 +4,6 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 import { enterEmailGet, enterEmailPost } from "../enter-email-controller";
-import { UserSession } from "../../../types";
 import { EnterEmailServiceInterface } from "../types";
 
 describe("enter email controller", () => {
@@ -15,7 +14,7 @@ describe("enter email controller", () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
-    req = { body: {}, session: { user: {} as UserSession } };
+    req = { body: {}, session: {} };
     res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
   });
 
@@ -25,7 +24,7 @@ describe("enter email controller", () => {
 
   describe("enterEmailGet", () => {
     it("should render enter email create account view when user selected create account", () => {
-      req.session.user.createAccount = true;
+      req.session.createAccount = true;
 
       enterEmailGet(req as Request, res as Response);
 
@@ -107,7 +106,7 @@ describe("enter email controller", () => {
         enterEmailPost(fakeService)(req as Request, res as Response)
       ).to.be.rejectedWith(
         TypeError,
-        "Cannot read property 'user' of undefined"
+        "Cannot set property 'email' of undefined"
       );
 
       expect(fakeService.userExists).not.to.been.called;

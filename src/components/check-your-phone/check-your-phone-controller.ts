@@ -10,7 +10,7 @@ const TEMPLATE_NAME = "check-your-phone/index.njk";
 
 export function checkYourPhoneGet(req: Request, res: Response): void {
   res.render(TEMPLATE_NAME, {
-    phoneNumber: req.session.user.phoneNumber,
+    phoneNumber: req.session.phoneNumber,
   });
 }
 
@@ -24,7 +24,7 @@ export const checkYourPhonePost = (
     validationState: USER_STATE.PHONE_NUMBER_CODE_NOT_VALID,
     callback: (req, res, state) => {
       if (state === USER_STATE.CONSENT_REQUIRED) {
-        req.session.user.nextState = state;
+        req.session.nextState = state;
         return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL);
       }
       res.redirect(getNextPathByState(state));

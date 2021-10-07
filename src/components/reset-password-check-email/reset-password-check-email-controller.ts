@@ -9,7 +9,7 @@ export function resetPasswordCheckEmailGet(
   service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session.user;
+    const { email } = req.session;
     const sessionId = res.locals.sessionId;
     const result = await service.resetPasswordRequest(email, sessionId, req.ip);
 

@@ -3,7 +3,7 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { UserSession } from "../../../types";
+
 import { signedOutGet } from "../signed-out-controller";
 
 describe("signed out controller", () => {
@@ -16,7 +16,7 @@ describe("signed out controller", () => {
 
     req = {
       body: {},
-      session: { user: {} as UserSession },
+      session: {},
       cookies: {
         aps: "123",
         cookies_preferences_set: "abc",

@@ -3,7 +3,7 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { UserSession } from "../../../types";
+
 import { authCodeGet } from "../auth-code-controller";
 
 describe("auth code controller", () => {
@@ -16,7 +16,7 @@ describe("auth code controller", () => {
 
     req = {
       body: {},
-      session: { user: {} as UserSession },
+      session: {},
       i18n: { language: "en" },
     };
     res = {

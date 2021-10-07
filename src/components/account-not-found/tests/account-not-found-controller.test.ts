@@ -3,7 +3,7 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { UserSession } from "../../../types";
+
 import {
   accountNotFoundGet,
   accountNotFoundPost,
@@ -19,7 +19,7 @@ describe("account not found controller", () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
-    req = { body: {}, session: { user: {} as UserSession } };
+    req = { body: {}, session: {} };
     res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
   });
 

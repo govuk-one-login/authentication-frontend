@@ -42,6 +42,6 @@ export function signInOrCreateGet(
 }
 
 export function signInOrCreatePost(req: Request, res: Response): void {
-  req.session.user.createAccount = req.body.createAccount === "true";
+  req.session.createAccount = req.body.createAccount === "true";
   res.redirect(PATH_NAMES.ENTER_EMAIL);
 }

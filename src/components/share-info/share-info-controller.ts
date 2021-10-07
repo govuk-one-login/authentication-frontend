@@ -35,7 +35,7 @@ export function shareInfoPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const consentValue = req.body.consentValue;
-    const { email } = req.session.user;
+    const { email } = req.session;
     const sessionId = res.locals.sessionId;
     const clientSessionId = res.locals.clientSessionId;
 

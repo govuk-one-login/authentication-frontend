@@ -7,7 +7,7 @@ import {
   checkYourPhoneGet,
   checkYourPhonePost,
 } from "../check-your-phone-controller";
-import { UserSession } from "../../../types";
+
 import { VerifyCodeInterface } from "../../common/verify-code/types";
 
 describe("check your phone controller", () => {
@@ -20,7 +20,7 @@ describe("check your phone controller", () => {
 
     req = {
       body: {},
-      session: { user: {} as UserSession },
+      session: {},
       i18n: { language: "en" },
     };
     res = {

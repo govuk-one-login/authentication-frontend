@@ -20,9 +20,7 @@ describe("Integration::reset password check email ", () => {
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        req.session.user = {
-          email: "test@test.com",
-        };
+        req.session.email = "test@test.com";
         next();
       });
 

@@ -11,7 +11,7 @@ export function accountNotFoundGet(req: Request, res: Response): void {
     res.render("account-not-found/index-optional.njk");
   } else {
     res.render("account-not-found/index-mandatory.njk", {
-      email: req.session.user.email,
+      email: req.session.email,
     });
   }
 }
@@ -20,7 +20,7 @@ export function accountNotFoundPost(
   service: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const email = req.session.user.email;
+    const email = req.session.email;
     const sessionId = res.locals.sessionId;
 
     const result = await service.sendNotification(

@@ -9,7 +9,7 @@ export function upliftJourneyGet(
   mfaCodeService: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session.user;
+    const { email } = req.session;
     const { sessionId } = res.locals;
 
     const result = await mfaCodeService.sendMfaCode(sessionId, email, req.ip);

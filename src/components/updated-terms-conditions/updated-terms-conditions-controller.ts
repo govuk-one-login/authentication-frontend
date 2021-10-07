@@ -47,7 +47,7 @@ export function updatedTermsConditionsPost(
   service: UpdateProfileServiceInterface = updateProfileService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session.user;
+    const { email } = req.session;
     const { sessionId, clientSessionId } = res.locals;
     const { redirectUri, state } = req.session;
     const acceptOrReject = req.body.acceptOrReject;

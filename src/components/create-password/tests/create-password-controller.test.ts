@@ -7,7 +7,6 @@ import {
   createPasswordPost,
   createPasswordGet,
 } from "../create-password-controller";
-import { UserSession } from "../../../types";
 import { USER_STATE } from "../../../app.constants";
 import { CreatePasswordServiceInterface } from "../types";
 
@@ -19,7 +18,10 @@ describe("create-password controller", () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
-    req = { body: {}, session: { user: {} as UserSession } };
+    req = {
+      body: {},
+      session: {},
+    };
     res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
   });
 
@@ -45,10 +47,7 @@ describe("create-password controller", () => {
       };
 
       req.body.password = "password1";
-      req.session.user = {
-        id: "12-d0dasdk4d",
-        email: "joe.bloggs@test.com",
-      };
+      req.session.email = "joe.bloggs@test.com";
 
       await createPasswordPost(fakeService)(req as Request, res as Response);
 
@@ -68,7 +67,7 @@ describe("create-password controller", () => {
         createPasswordPost(fakeService)(req as Request, res as Response)
       ).to.be.rejectedWith(
         TypeError,
-        "Cannot read property 'user' of undefined"
+        "Cannot read property 'email' of undefined"
       );
       expect(fakeService.signUpUser).to.have.not.been.called;
     });
@@ -79,10 +78,7 @@ describe("create-password controller", () => {
       };
 
       req.body = undefined;
-      req.session.user = {
-        id: "12-d0dasdk",
-        email: "joe.bloggs@test.com",
-      };
+      req.session.email = "joe.bloggs@test.com";
 
       await expect(
         createPasswordPost(fakeService)(req as Request, res as Response)
@@ -100,10 +96,7 @@ describe("create-password controller", () => {
       };
 
       req.body.password = "password1";
-      req.session.user = {
-        id: "12-d0dasdk3d",
-        email: "joe.bloggs@test.com",
-      };
+      req.session.email = "joe.bloggs@test.com";
 
       await expect(
         createPasswordPost(fakeService)(req as Request, res as Response)

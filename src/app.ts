@@ -15,7 +15,6 @@ import { setHtmlLangMiddleware } from "./middleware/html-lang-middleware";
 import i18next from "i18next";
 import Backend from "i18next-fs-backend";
 
-import cookieSession from "cookie-session";
 import { getNodeEnv, getSessionExpiry, getSessionSecret } from "./config";
 import { logErrorMiddleware } from "./middleware/log-error-middleware";
 import { enterEmailRouter } from "./components/enter-email/enter-email-routes";
@@ -30,7 +29,7 @@ import { serverErrorHandler } from "./handlers/internal-server-error-handler";
 import { csrfMiddleware } from "./middleware/csrf-middleware";
 import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-routes";
 import { landingRouter } from "./components/landing/landing-route";
-import { getCSRFCookieOptions, getSessionCookieOptions } from "./config/cookie";
+import { getCSRFCookieOptions } from "./config/cookie";
 import { ENVIRONMENT_NAME } from "./app.constants";
 import { cookiesRouter } from "./components/common/cookies/cookies-routes";
 import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes";
@@ -49,6 +48,8 @@ import { noCacheMiddleware } from "./middleware/no-cache-middleware";
 import { checkYourEmailRouter } from "./components/check-your-email/check-your-email-routes";
 import { securityCodeErrorRouter } from "./components/security-code-error/security-code-error-routes";
 import { upliftJourneyRouter } from "./components/uplift-journey/uplift-journey-routes";
+import { getSessionCookieOptions, getSessionStore } from "./config/session";
+import session from "express-session";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -113,14 +114,21 @@ function createApp(): express.Application {
   app.use(helmet(helmetConfiguration));
 
   app.use(
-    cookieSession(
-      getSessionCookieOptions(
+    session({
+      name: "aps",
+      store: getSessionStore(),
+      saveUninitialized: true,
+      secret: getSessionSecret(),
+      unset: "destroy",
+      resave: false,
+      cookie: getSessionCookieOptions(
         isProduction,
         getSessionExpiry(),
         getSessionSecret()
-      )
-    )
+      ),
+    })
   );
+
   app.use(cookieParser());
   app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
 

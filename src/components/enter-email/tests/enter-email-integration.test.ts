@@ -21,7 +21,7 @@ describe("Integration::enter email", () => {
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        req.session.user = {};
+
         next();
       });
 

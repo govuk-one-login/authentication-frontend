@@ -3,7 +3,7 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { UserSession } from "../../../types";
+
 import {
   enterPhoneNumberGet,
   enterPhoneNumberPost,
@@ -19,7 +19,7 @@ describe("enter phone number controller", () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
-    req = { body: {}, session: { user: {} as UserSession } };
+    req = { body: {}, session: {} };
     res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
   });
 
@@ -53,9 +53,7 @@ describe("enter phone number controller", () => {
 
       res.locals.sessionId = "123456-djjad";
       req.body.phoneNumber = "07738393990";
-      req.session.user = {
-        email: "test@test.com",
-      };
+      req.session.email = "test@test.com";
 
       await enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
         req as Request,
@@ -65,7 +63,7 @@ describe("enter phone number controller", () => {
       expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith("/check-your-phone");
-      expect(req.session.user.phoneNumber).to.be.eq("*******3990");
+      expect(req.session.phoneNumber).to.be.eq("*******3990");
     });
 
     it("should throw error when API call to /update-profile throws error", async () => {
@@ -118,30 +116,30 @@ describe("enter phone number controller", () => {
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
     });
 
-    it("should throw error when session is not populated", async () => {
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sandbox.fake(),
-      };
-
-      const fakeProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sandbox.fake(),
-      };
-
-      req.body.phoneNumber = "07738393990";
-      req.session = undefined;
-
-      await expect(
-        enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
-          req as Request,
-          res as Response
-        )
-      ).to.be.rejectedWith(
-        TypeError,
-        "Cannot read property 'user' of undefined"
-      );
-
-      expect(fakeProfileService.updateProfile).to.have.not.been.called;
-      expect(fakeNotificationService.sendNotification).to.have.not.been.called;
-    });
+    // it("should throw error when session is not populated", async () => {
+    //   const fakeNotificationService: SendNotificationServiceInterface = {
+    //     sendNotification: sandbox.fake(),
+    //   };
+    //
+    //   const fakeProfileService: UpdateProfileServiceInterface = {
+    //     updateProfile: sandbox.fake(),
+    //   };
+    //
+    //   req.body.phoneNumber = "07738393990";
+    //   req.session = null;
+    //
+    //   await expect(
+    //     enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
+    //       req as Request,
+    //       res as Response
+    //     )
+    //   ).to.be.rejectedWith(
+    //     TypeError,
+    //     "Cannot destructure property 'email' of 'req.session' as it is null"
+    //   );
+    //
+    //   expect(fakeProfileService.updateProfile).to.have.not.been.called;
+    //   expect(fakeNotificationService.sendNotification).to.have.not.been.called;
+    // });
   });
 });

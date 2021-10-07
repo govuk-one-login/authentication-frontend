@@ -3,7 +3,7 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { UserSession } from "../../../types";
+
 import { VerifyCodeInterface } from "../../common/verify-code/types";
 import {
   checkYourEmailGet,
@@ -20,7 +20,7 @@ describe("check your email controller", () => {
 
     req = {
       body: {},
-      session: { user: {} as UserSession },
+      session: {},
       i18n: { language: "" },
     };
     res = {
@@ -53,7 +53,7 @@ describe("check your email controller", () => {
       };
 
       req.body.code = "123456";
-      req.session.user.id = "123456-djjad";
+      req.session.id = "123456-djjad";
 
       await checkYourEmailPost(fakeService)(req as Request, res as Response);
 
@@ -70,7 +70,7 @@ describe("check your email controller", () => {
       };
       req.t = sandbox.fake.returns("translated string");
       req.body.code = "678988";
-      req.session.user.id = "123456-djjad";
+      req.session.id = "123456-djjad";
 
       await checkYourEmailPost(fakeService)(req as Request, res as Response);
 

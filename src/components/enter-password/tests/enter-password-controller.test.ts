@@ -7,7 +7,7 @@ import {
   enterPasswordGet,
   enterPasswordPost,
 } from "../enter-password-controller";
-import { UserSession } from "../../../types";
+
 import { PATH_NAMES, USER_STATE } from "../../../app.constants";
 import { EnterPasswordServiceInterface } from "../types";
 import { MfaServiceInterface } from "../../common/mfa/types";
@@ -20,7 +20,7 @@ describe("enter password controller", () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
-    req = { body: {}, session: { user: {} as UserSession } };
+    req = { body: {}, session: {} };
     res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
   });
 
@@ -55,7 +55,7 @@ describe("enter password controller", () => {
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
-      req.session.user = {
+      req.session = {
         email: "joe.bloggs@test.com",
       };
       req.body["password"] = "password";
@@ -79,7 +79,7 @@ describe("enter password controller", () => {
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
-      req.session.user = {
+      req.session = {
         email: "joe.bloggs@test.com",
       };
       req.body["password"] = "password";
@@ -101,7 +101,7 @@ describe("enter password controller", () => {
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
-      req.session.user = {
+      req.session = {
         email: "joe.bloggs@test.com",
       };
       req.body["password"] = "password";
@@ -126,7 +126,7 @@ describe("enter password controller", () => {
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
-      req.session.user = {
+      req.session = {
         email: "joe.bloggs@test.com",
       };
       req.body["password"] = "password";
@@ -153,7 +153,7 @@ describe("enter password controller", () => {
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
-      req.session.user = {
+      req.session = {
         email: "joe.bloggs@test.com",
       };
       req.body["password"] = "password";

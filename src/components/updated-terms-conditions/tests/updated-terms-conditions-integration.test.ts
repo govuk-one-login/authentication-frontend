@@ -34,11 +34,10 @@ describe("Integration:: updated-terms-code", () => {
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         res.locals.clientSessionId = "tDy103saszhcxbQq0-mjdzU33d";
-        req.session.user = {
-          email: "test@test.com",
-          phoneNumber: "******7867",
-        };
+        req.session.email = "test@test.com";
+        req.session.phoneNumber = "******7867";
         req.session.redirectUri = "http://localhost:5000/callback";
+
         next();
       });
 
