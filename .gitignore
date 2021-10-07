@@ -118,6 +118,7 @@ logs.json
 logs*.json
 *.csv
 *.xlsx
+*.iml
 
 keys/
 .vscode/

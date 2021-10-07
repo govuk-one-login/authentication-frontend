@@ -1,6 +1,9 @@
 import * as express from "express";
 import { PATH_NAMES } from "../../app.constants";
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
+import {
+  handleBackButtonMiddleware,
+  validateSessionMiddleware,
+} from "../../middleware/session-middleware";
 import { asyncHandler } from "../../utils/async";
 import {
   checkYourEmailGet,
@@ -13,6 +16,7 @@ const router = express.Router();
 router.get(
   PATH_NAMES.CHECK_YOUR_EMAIL,
   validateSessionMiddleware,
+  handleBackButtonMiddleware,
   checkYourEmailGet
 );
 

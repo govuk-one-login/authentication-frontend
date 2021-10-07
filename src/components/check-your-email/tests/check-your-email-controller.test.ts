@@ -77,5 +77,20 @@ describe("check your email controller", () => {
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.render).to.have.been.calledWith("check-your-email/index.njk");
     });
+
+    it("should update the user session state value in the req", async () => {
+      const fakeService: VerifyCodeInterface = {
+        verifyCode: sandbox.fake.returns({
+          success: true,
+          sessionState: "EMAIL_CODE_VERIFIED",
+        }),
+      };
+
+      expect(req.session.nextState).to.be.undefined;
+
+      await checkYourEmailPost(fakeService)(req as Request, res as Response);
+
+      expect(req.session.nextState).to.equal("EMAIL_CODE_VERIFIED");
+    });
   });
 });

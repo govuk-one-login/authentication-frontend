@@ -48,6 +48,7 @@ import { noCacheMiddleware } from "./middleware/no-cache-middleware";
 import { checkYourEmailRouter } from "./components/check-your-email/check-your-email-routes";
 import { securityCodeErrorRouter } from "./components/security-code-error/security-code-error-routes";
 import { upliftJourneyRouter } from "./components/uplift-journey/uplift-journey-routes";
+import { browserBackButtonErrorRouter } from "./components/browser-back-button-error/browser-back-button-error-routes";
 import { getSessionCookieOptions, getSessionStore } from "./config/session";
 import session from "express-session";
 
@@ -79,6 +80,7 @@ function registerRoutes(app: express.Application) {
   app.use(updatedTermsConditionsRouter);
   app.use(resetPasswordRouter);
   app.use(upliftJourneyRouter);
+  app.use(browserBackButtonErrorRouter);
 }
 
 function createApp(): express.Application {

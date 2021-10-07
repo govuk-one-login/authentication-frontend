@@ -58,6 +58,8 @@ export function enterPhoneNumberPost(
       );
     }
 
+    req.session.nextState = sendNotificationResponse.sessionState;
+
     return res.redirect(
       getNextPathByState(sendNotificationResponse.sessionState)
     );

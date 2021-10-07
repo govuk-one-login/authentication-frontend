@@ -1,0 +1,31 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% set pageTitleName = 'pages.browserBackButtonError.title' | translate %}
+
+{% block content %}
+
+{% set html %}
+<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
+<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
+{% endset %}
+
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+  {{ 'pages.browserBackButtonError.header' | translate }}
+</h1>
+
+{# might not need this? #}
+<h2 class="govuk-body-l">{{ clientName }}</h2> 
+
+<p class="govuk-body">{{'pages.browserBackButtonError.paragraph1' | translate}}</p>
+
+{{ govukButton({
+    "text": button_text|default('pages.browserBackButtonError.returnToAccountCreationButtonText' | translate, true),
+    "type": "Submit",
+    "href": 'pages.browserBackButtonError.returnToAccountCreationButtonLink' | translate
+    }) }}
+
+{% endblock %}
+

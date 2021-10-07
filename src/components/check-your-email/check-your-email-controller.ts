@@ -4,6 +4,7 @@ import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
 import { ExpressRouteFunc } from "../../types";
+import { getNextPathByState } from "../common/constants";
 
 const TEMPLATE_NAME = "check-your-email/index.njk";
 
@@ -21,5 +22,9 @@ export const checkYourEmailPost = (
     template: TEMPLATE_NAME,
     validationKey: "pages.checkYourEmail.code.validationError.invalidCode",
     validationState: USER_STATE.EMAIL_CODE_NOT_VALID,
+    callback: (req, res, state) => {
+      req.session.nextState = state;
+      return res.redirect(getNextPathByState(state));
+    },
   });
 };

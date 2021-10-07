@@ -141,5 +141,36 @@ describe("enter phone number controller", () => {
     //   expect(fakeProfileService.updateProfile).to.have.not.been.called;
     //   expect(fakeNotificationService.sendNotification).to.have.not.been.called;
     // });
+
+    it("should update the user session state value in the req", async () => {
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sandbox.fake.returns({
+          success: true,
+          sessionState: "VERIFY_PHONE_NUMBER_CODE_SENT",
+        }),
+      };
+
+      const fakeProfileService: UpdateProfileServiceInterface = {
+        updateProfile: sandbox.fake.returns({
+          success: true,
+          sessionState: "ADDED_UNVERIFIED_PHONE_NUMBER",
+        }),
+      };
+
+      res.locals.sessionId = "123456-djjad";
+      req.body.phoneNumber = "07738393990";
+      req.session = {
+        email: "test@test.com",
+      };
+
+      expect(req.session.nextState).to.be.undefined;
+
+      await enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(req.session.nextState).to.equal("VERIFY_PHONE_NUMBER_CODE_SENT");
+    });
   });
 });

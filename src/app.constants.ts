@@ -33,6 +33,7 @@ export const PATH_NAMES = {
   SIGNED_OUT: "/signed-out",
   ACCOUNT_LOCKED: "/account-locked",
   UPLIFT_JOURNEY: "/uplift",
+  INVALID_SESSION: "/invalid-session",
 };
 
 export const HTTP_STATUS_CODES = {

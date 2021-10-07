@@ -11,7 +11,10 @@ import {
   validateEnterPasswordAccountExistsRequest,
   validateEnterPasswordRequest,
 } from "./enter-password-validation";
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
+import {
+  validateSessionMiddleware,
+  handleBackButtonMiddleware,
+} from "../../middleware/session-middleware";
 import { asyncHandler } from "../../utils/async";
 
 const router = express.Router();
@@ -19,12 +22,14 @@ const router = express.Router();
 router.get(
   PATH_NAMES.ENTER_PASSWORD,
   validateSessionMiddleware,
+  handleBackButtonMiddleware,
   enterPasswordGet
 );
 
 router.get(
   PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS,
   validateSessionMiddleware,
+  handleBackButtonMiddleware,
   enterPasswordAccountExistsGet
 );
 

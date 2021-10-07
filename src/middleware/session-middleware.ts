@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { ERROR_MESSAGES } from "../app.constants";
+import { ERROR_MESSAGES, PATH_NAMES } from "../app.constants";
+import { getNextPathByState } from "../components/common/constants";
 
 export function initialiseSessionMiddleware(
   req: Request,
@@ -45,4 +46,23 @@ export function validateSessionMiddleware(
 
   res.status(401);
   next(new Error(ERROR_MESSAGES.INVALID_SESSION));
+}
+
+export function handleBackButtonMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
+  const { nextState } = req.session;
+
+  if (nextState) {
+    const nextPath = getNextPathByState(nextState);
+
+    if (req.route.path !== nextPath) {
+      req.session.nextState = null;
+      return res.redirect(PATH_NAMES.INVALID_SESSION);
+    }
+  }
+
+  return next();
 }

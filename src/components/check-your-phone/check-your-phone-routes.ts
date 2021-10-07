@@ -1,4 +1,7 @@
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
+import {
+  handleBackButtonMiddleware,
+  validateSessionMiddleware,
+} from "../../middleware/session-middleware";
 import { PATH_NAMES } from "../../app.constants";
 import express from "express";
 import {
@@ -13,6 +16,7 @@ const router = express.Router();
 router.get(
   PATH_NAMES.CHECK_YOUR_PHONE,
   validateSessionMiddleware,
+  handleBackButtonMiddleware,
   checkYourPhoneGet
 );
 
