@@ -18,3 +18,5 @@ applications:
       ANALYTICS_COOKIE_DOMAIN: ((analytics_cookie_domain))
     routes:
       - route: ((route_name))
+    services:
+      - ((environment_name))-frontend-redis
