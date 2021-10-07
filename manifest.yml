@@ -17,3 +17,5 @@ applications:
       GTM_ID: ((gtm_id))
     routes:
       - route: ((route_name))
+    services:
+      - ((environment_name))-frontend-redis

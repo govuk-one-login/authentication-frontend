@@ -1,0 +1,40 @@
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: hashicorp/terraform
+    tag: 1.0.4
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+params:
+  DEPLOYER_ROLE_ARN: ((deployer-role-arn-non-prod))
+  STATE_BUCKET: digital-identity-dev-tfstate
+  DEPLOY_ENVIRONMENT: build
+  CF_USERNAME: ((cf-username))
+  CF_PASSWORD: ((cf-password))
+  CF_ORG_NAME: ((cf-org-name))
+inputs:
+  - name: frontend-src
+outputs:
+  - name: terraform-outputs
+run:
+  path: /bin/sh
+  args:
+    - -euc
+    - |
+      cd "frontend-src/ci/terraform/"
+      terraform init -input=false \
+        -backend-config "role_arn=${DEPLOYER_ROLE_ARN}" \
+        -backend-config "bucket=${STATE_BUCKET}" \
+        -backend-config "key=frontend-${DEPLOY_ENVIRONMENT}-terraform.tfstate" \
+        -backend-config "encrypt=true" \
+        -backend-config "region=eu-west-2"
+
+      terraform apply -auto-approve \
+        -var "deployer_role_arn=${DEPLOYER_ROLE_ARN}" \
+        -var "cf_username=${CF_USERNAME}" \
+        -var "cf_password=${CF_PASSWORD}" \
+        -var "cf_org_name=${CF_ORG_NAME}" \
+        -var-file ${DEPLOY_ENVIRONMENT}.tfvars
+
+      terraform output --json > ../../../terraform-outputs/${DEPLOY_ENVIRONMENT}-terraform-outputs.json
