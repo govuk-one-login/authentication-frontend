@@ -104,11 +104,11 @@ describe("check your phone controller", () => {
         }),
       };
 
-      expect(req.session.nextState).to.be.undefined;
+      expect(req.session.backState).to.be.undefined;
 
       await checkYourPhonePost(fakeService)(req as Request, res as Response);
 
-      expect(req.session.nextState).to.equal("CONSENT_REQUIRED");
+      expect(req.session.backState).to.equal("CONSENT_REQUIRED");
     });
   });
 });

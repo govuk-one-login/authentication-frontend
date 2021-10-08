@@ -53,13 +53,13 @@ export function handleBackButtonMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  const { nextState } = req.session;
+  const { backState } = req.session;
 
-  if (nextState) {
-    const nextPath = getNextPathByState(nextState);
+  if (backState) {
+    const nextPath = getNextPathByState(backState);
 
     if (req.route.path !== nextPath) {
-      req.session.nextState = null;
+      req.session.backState = null;
       return res.redirect(PATH_NAMES.INVALID_SESSION);
     }
   }

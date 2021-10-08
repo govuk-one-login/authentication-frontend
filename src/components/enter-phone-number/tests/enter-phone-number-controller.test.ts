@@ -163,14 +163,14 @@ describe("enter phone number controller", () => {
         email: "test@test.com",
       };
 
-      expect(req.session.nextState).to.be.undefined;
+      expect(req.session.backState).to.be.undefined;
 
       await enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
         req as Request,
         res as Response
       );
 
-      expect(req.session.nextState).to.equal("VERIFY_PHONE_NUMBER_CODE_SENT");
+      expect(req.session.backState).to.equal("VERIFY_PHONE_NUMBER_CODE_SENT");
     });
   });
 });
