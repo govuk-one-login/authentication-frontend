@@ -45,6 +45,7 @@ export function enterPhoneNumberPost(
 
     const sendNotificationResponse = await service.sendNotification(
       id,
+      clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER,
       req.ip,
