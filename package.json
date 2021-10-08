@@ -2,11 +2,11 @@
   "name": "di-auth",
   "version": "1.0.0",
   "description": "",
-  "engines": {
-    "node": "15.14.0"
-  },
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "16.2.0"
+  },
   "scripts": {
     "build-ts": "tsc",
     "build": "yarn build-sass && yarn build-ts && yarn minfiy-build-js && yarn copy-assets",
@@ -82,7 +82,7 @@
     "@types/express": "^4.17.13",
     "@types/express-session": "^1.17.4",
     "@types/i18next-fs-backend": "^1.1.1",
-    "@types/node": "^15.14.9",
+    "@types/node": "^16.3.0",
     "@types/nunjucks": "^3.1.5",
     "@types/mocha": "^9.0.0",
     "@types/pino": "^6.3.11",
