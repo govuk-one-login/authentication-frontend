@@ -86,11 +86,11 @@ describe("check your email controller", () => {
         }),
       };
 
-      expect(req.session.nextState).to.be.undefined;
+      expect(req.session.backState).to.be.undefined;
 
       await checkYourEmailPost(fakeService)(req as Request, res as Response);
 
-      expect(req.session.nextState).to.equal("EMAIL_CODE_VERIFIED");
+      expect(req.session.backState).to.equal("EMAIL_CODE_VERIFIED");
     });
   });
 });

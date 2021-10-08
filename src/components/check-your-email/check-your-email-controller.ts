@@ -23,7 +23,7 @@ export const checkYourEmailPost = (
     validationKey: "pages.checkYourEmail.code.validationError.invalidCode",
     validationState: USER_STATE.EMAIL_CODE_NOT_VALID,
     callback: (req, res, state) => {
-      req.session.nextState = state;
+      req.session.backState = state;
       return res.redirect(getNextPathByState(state));
     },
   });

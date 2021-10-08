@@ -58,7 +58,7 @@ export function enterPhoneNumberPost(
       );
     }
 
-    req.session.nextState = sendNotificationResponse.sessionState;
+    req.session.backState = sendNotificationResponse.sessionState;
 
     return res.redirect(
       getNextPathByState(sendNotificationResponse.sessionState)

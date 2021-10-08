@@ -167,39 +167,5 @@ describe("enter password controller", () => {
       ).to.be.rejectedWith(Error, "Internal server error");
       expect(fakeService.loginUser).to.have.been.calledOnce;
     });
-
-    it("should update the user session state value in the req", async () => {
-      const fakeService: EnterPasswordServiceInterface = {
-        loginUser: sandbox.fake.returns({
-          sessionState: USER_STATE.LOGGED_IN,
-          redactedPhoneNumber: "******3456",
-          success: true,
-        }),
-      };
-
-      const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sandbox.fake.returns({
-          sessionState: "MFA_SMS_CODE_SENT",
-          success: true,
-        }),
-      };
-
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      req.session = {
-        email: "joe.bloggs@test.com",
-      };
-      req.body["password"] = "password";
-
-      expect(req.session.nextState).to.be.undefined;
-
-      await enterPasswordPost(
-        false,
-        fakeService,
-        fakeMfaService
-      )(req as Request, res as Response);
-
-      expect(req.session.nextState).to.equal(USER_STATE.LOGGED_IN);
-    });
   });
 });

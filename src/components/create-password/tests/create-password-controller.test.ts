@@ -103,5 +103,20 @@ describe("create-password controller", () => {
       ).to.be.rejectedWith(Error, "Internal server error");
       expect(fakeService.signUpUser).to.have.been.called;
     });
+
+    it("should update the user session state value in the req", async () => {
+      const fakeService: CreatePasswordServiceInterface = {
+        signUpUser: sandbox.fake.returns({
+          success: true,
+          sessionState: USER_STATE.REQUIRES_TWO_FACTOR,
+        }),
+      };
+
+      expect(req.session.backState).to.be.undefined;
+
+      await createPasswordPost(fakeService)(req as Request, res as Response);
+
+      expect(req.session.backState).to.equal(USER_STATE.REQUIRES_TWO_FACTOR);
+    });
   });
 });

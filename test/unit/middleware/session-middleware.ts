@@ -75,7 +75,7 @@ describe("session-middleware", () => {
   describe("handleBackButtonMiddleware", () => {
     it("should call next when session state is missing", () => {
       req.session = {
-        nextState: null
+        backState: null
       };
       handleBackButtonMiddleware(req as Request, res as Response, next);
 
@@ -84,7 +84,7 @@ describe("session-middleware", () => {
 
     it("should call next when the next path matches the current request path", () => {
       req.session = {
-        nextState: USER_STATE.LOGGED_IN
+        backState: USER_STATE.LOGGED_IN
       };
       req.route = {
         path: PATH_NAMES.ENTER_MFA
@@ -97,14 +97,14 @@ describe("session-middleware", () => {
 
     it("should redirect to invalid session error page if next path does not match current request path", () => {
       req.session = {
-        nextState: USER_STATE.LOGGED_IN
+        backState: USER_STATE.LOGGED_IN
       };
       req.route = {
         path: "/incorrect-path"
       };
 
       handleBackButtonMiddleware(req as Request, res as Response, next);
-      expect(req.session.nextState).to.be.null;
+      expect(req.session.backState).to.be.null;
       expect(res.redirect).to.be.calledWith("/invalid-session");
     });
   });

@@ -23,6 +23,7 @@ export const checkYourPhonePost = (
     validationKey: "pages.checkYourPhone.code.validationError.invalidCode",
     validationState: USER_STATE.PHONE_NUMBER_CODE_NOT_VALID,
     callback: (req, res, state) => {
+      req.session.backState = state;
       if (state === USER_STATE.CONSENT_REQUIRED) {
         req.session.nextState = state;
         return res.redirect(PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL);
