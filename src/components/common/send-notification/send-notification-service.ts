@@ -1,5 +1,5 @@
 import { ApiResponse, ApiResponseResult } from "../../../types";
-import { API_ENDPOINTS } from "../../../app.constants";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
 import {
   createApiResponse,
   getRequestConfig,
@@ -36,7 +36,10 @@ export function sendNotificationService(
       })
     );
 
-    return createApiResponse(response);
+    return createApiResponse(response, [
+      HTTP_STATUS_CODES.OK,
+      HTTP_STATUS_CODES.NO_CONTENT,
+    ]);
   };
 
   return {

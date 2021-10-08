@@ -27,7 +27,7 @@ export function resetPasswordService(
       })
     );
 
-    return createApiResponse(response, HTTP_STATUS_CODES.NO_CONTENT);
+    return createApiResponse(response, [HTTP_STATUS_CODES.NO_CONTENT]);
   };
 
   return {

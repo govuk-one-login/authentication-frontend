@@ -131,9 +131,15 @@ describe("Integration:: check your phone", () => {
   });
 
   it("should redirect to /create-password when valid code entered", (done) => {
-    nock(baseApi).post("/verify-code").once().reply(200, {
-      sessionState: "PHONE_NUMBER_CODE_VERIFIED",
-    });
+    nock(baseApi)
+      .post("/verify-code")
+      .once()
+      .reply(200, {
+        sessionState: "PHONE_NUMBER_CODE_VERIFIED",
+      })
+      .post("/send-notification")
+      .once()
+      .reply(204);
 
     request(app)
       .post("/check-your-phone")
