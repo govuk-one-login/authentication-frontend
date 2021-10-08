@@ -9,6 +9,7 @@ import {
 } from "../check-your-phone-controller";
 
 import { VerifyCodeInterface } from "../../common/verify-code/types";
+import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 
 describe("check your phone controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -52,10 +53,17 @@ describe("check your phone controller", () => {
         }),
       };
 
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sandbox.fake(),
+      };
+
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
 
-      await checkYourPhonePost(fakeService)(req as Request, res as Response);
+      await checkYourPhonePost(fakeService, fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith("/account-created");
@@ -68,11 +76,18 @@ describe("check your phone controller", () => {
           sessionState: "PHONE_NUMBER_CODE_NOT_VALID",
         }),
       };
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sandbox.fake(),
+      };
+
       req.t = sandbox.fake.returns("translated string");
       req.body.code = "678988";
       res.locals.sessionId = "123456-djjad";
 
-      await checkYourPhonePost(fakeService)(req as Request, res as Response);
+      await checkYourPhonePost(fakeService, fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.render).to.have.been.calledWith("check-your-phone/index.njk");
@@ -86,11 +101,18 @@ describe("check your phone controller", () => {
         }),
       };
 
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sandbox.fake(),
+      };
+
       req.t = sandbox.fake.returns("translated string");
       req.body.code = "678988";
       res.locals.sessionId = "123456-djjad";
 
-      await checkYourPhonePost(fakeService)(req as Request, res as Response);
+      await checkYourPhonePost(fakeService, fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.been.calledWith("/security-code-invalid");
@@ -104,9 +126,16 @@ describe("check your phone controller", () => {
         }),
       };
 
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sandbox.fake(),
+      };
+
       expect(req.session.backState).to.be.undefined;
 
-      await checkYourPhonePost(fakeService)(req as Request, res as Response);
+      await checkYourPhonePost(fakeService, fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
 
       expect(req.session.backState).to.equal("CONSENT_REQUIRED");
     });

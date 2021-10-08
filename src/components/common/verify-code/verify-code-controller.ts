@@ -43,7 +43,7 @@ export function verifyCodePost(
     }
 
     if (options.callback) {
-      return options.callback(req, res, result.sessionState);
+      return await options.callback(req, res, result.sessionState);
     }
 
     res.redirect(getNextPathByState(result.sessionState));

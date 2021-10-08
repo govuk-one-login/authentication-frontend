@@ -25,10 +25,10 @@ export interface ConfigOptions {
 
 export function createApiResponse(
   response: AxiosResponse,
-  status: number = HTTP_STATUS_CODES.OK
+  status: number[] = [HTTP_STATUS_CODES.OK]
 ): ApiResponseResult {
   return {
-    success: response.status === status,
+    success: status.includes(response.status),
     code: response.data.code,
     message: response.data.message,
     sessionState: response.data.sessionState,
