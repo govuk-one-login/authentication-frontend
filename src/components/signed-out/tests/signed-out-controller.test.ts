@@ -16,6 +16,7 @@ describe("signed out controller", () => {
 
     req = {
       body: {},
+      query: {},
       session: {},
       cookies: {
         aps: "123",
@@ -44,6 +45,15 @@ describe("signed out controller", () => {
       expect(res.clearCookie).not.to.have.calledWith("cookies_preferences_set");
       expect(res.clearCookie).not.to.have.calledWith("lng");
       expect(res.clearCookie).to.have.calledWith("gs");
+    });
+
+    it("should throw error when invalid sign out request", () => {
+      req.query.error_code = "invalid_request";
+      req.query.error_description = "something bad happened";
+
+      expect(() => signedOutGet(req as Request, res as Response)).to.throw(
+        "Bad Request:invalid_request:something bad happened"
+      );
     });
   });
 });
