@@ -16,6 +16,9 @@ applications:
       API_KEY: ((api_key))
       GTM_ID: ((gtm_id))
       ANALYTICS_COOKIE_DOMAIN: ((analytics_cookie_domain))
+      ZENDESK_USERNAME: ((zendesk_username))
+      ZENDESK_API_TOKEN: ((zendesk_api_token))
+      ZENDESK_GROUP_ID_PUBLIC: ((zendesk_group_id_public))
     routes:
       - route: ((route_name))
     services:

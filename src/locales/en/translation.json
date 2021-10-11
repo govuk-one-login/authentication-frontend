@@ -62,6 +62,10 @@
       "privacy": {
         "pageTitle": "Privacy notice",
         "linkText": "Privacy notice"
+      },
+      "support": {
+        "pageTitle": "Support",
+        "linkText": "Support"
       }
     }
   },
@@ -699,6 +703,97 @@
       "paragraph1": "You'll need to start again to create your account or sign in.",
       "returnToAccountCreationButtonText": "Back to create your account or sign in",
       "returnToAccountCreationButtonLink": "/sign-in-or-create"
+    },
+    "support": {
+      "title": "Support",
+      "header": "Support",
+      "section1": {
+        "header": "What do you need help with?",
+        "supportTypeRadios": {
+          "govServiceRadioText": "I work in a government service team and we want to start using GOV.UK Sign In",
+          "publicRadioText": "I’m a member of the public",
+          "continueButtonText": "Continue",
+          "errorMessage": "You must select an option to tell us what you need help with"
+        }
+      },
+      "section2": {
+        "header": "Office Hours",
+        "paragraph1": "We can only respond to your support queries during office hours. Our office hours are 9:30am to 5:30pm, Monday to Friday.",
+        "paragraph2": "When you get in touch during office hours, we’ll try to reply within 2 working days."
+      }
+    },
+    "contactUsGov": {
+      "title": "Contact Us",
+      "header": "Contact Us",
+      "paragraph1": "You can find out how to:",
+      "bulletPoint1": {
+        "linkHref": "https://www.sign-in.service.gov.uk/getting-started/",
+        "linkText": "get started",
+        "text": " with GOV.UK Sign"
+      },
+      "bulletPoint2": {
+        "linkHref": "https://www.sign-in.service.gov.uk/register",
+        "linkText": "register your interest",
+        "text": " in using GOV.UK Sign"
+      },
+      "paragraph2": {
+        "linkHref": "mailto: govuk-sign-in@digital.cabinet-office.gov.uk",
+        "linkText": "govuk-sign-in@digital.cabinet-office.gov.uk",
+        "text": "Or if you still have questions, you can contact us at "
+      }
+    },
+    "contactUsPublic": {
+      "title": "Contact Us",
+      "header": "Contact Us",
+      "section1": {
+        "paragraph1": "This form is to:",
+        "bulletPoint1": "report any problems signing in to government services",
+        "bulletPoint2": "ask questions ",
+        "bulletPoint3": "suggest improvements",
+        "paragraph2": "We only manage some government sign-ins, so we may need to send your email to another government department.",
+        "questionsText": "If your question or feedback is not about signing in, for example you want to ask about a tax or visa application, you need to <a  href=\"https://www.gov.uk/contact\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">different contact details</a>"
+      },
+      "section2": {
+        "header": "Get in touch",
+        "paragraph1": "Don’t include personal or financial information, for example your National Insurance number or credit card details.",
+        "question1": {
+          "label": "What service were you using?",
+          "hint": "For example, GOV.UK Account",
+          "validationError": {
+            "required": "Enter the name of the service you were using"
+          }
+        },
+        "question2": {
+          "label": "What would you like to tell us?",
+          "hint": "For example, if you had problem signing in describe what error message you saw",
+          "validationError": {
+            "required": "Tell us what you need help with"
+          }
+        }
+      },
+      "section3": {
+        "header": "If you'd like a reply, please provide your contact details",
+        "paragraph1": "We'll only use this to reply to your message.",
+        "replyEmail": {
+          "label": "<label class=\"govuk-label \" for=\"email\"><strong>Contact Email</strong><span> (Optional)</span></label>",
+          "hint": "Enter an email address in the correct format, like name@gmail.com",
+          "validationError": {
+            "required": "Enter an email address in the correct format, like name@example.com"
+          }
+        }
+      },
+      "submitButtonText": "Submit",
+      "submitButtonLink": "/contact-us-submit"
+    },
+    "contactUsSubmitSuccess": {
+      "title": "Your message has been submitted",
+      "header": "Your message has been submitted",
+      "paragraph1": "Thank you for your message.",
+      "paragraph2": "We’ll try to get back to you in 2 working days.",
+      "paragraph3": {
+        "linkHref": "https://www.gov.uk",
+        "linkText": "Return to the GOV.UK homepage"
+      }
     }
   }
 }
