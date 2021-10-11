@@ -43,6 +43,7 @@ export function enterEmailCreatePost(
   return async function (req: Request, res: Response) {
     const email = req.body.email;
     const sessionId = res.locals.sessionId;
+    const clientSessionId = res.locals.clientSessionId;
 
     req.session.email = email;
     const userExistsResponse = await service.userExists(
@@ -62,6 +63,7 @@ export function enterEmailCreatePost(
 
     const sendNotificationResponse = await notificationService.sendNotification(
       sessionId,
+      clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_EMAIL,
       req.ip

@@ -34,6 +34,7 @@ export const checkYourPhonePost = (
       ) {
         await notificationService.sendNotification(
           res.locals.sessionId,
+          res.locals.clientSessionId,
           req.session.email,
           NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
           req.ip

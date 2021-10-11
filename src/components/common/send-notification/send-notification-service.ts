@@ -13,6 +13,7 @@ export function sendNotificationService(
 ): SendNotificationServiceInterface {
   const sendNotification = async function (
     sessionId: string,
+    clientSessionId: string,
     email: string,
     notificationType: string,
     sourceIp: string,
@@ -32,6 +33,7 @@ export function sendNotificationService(
       payload,
       getRequestConfig({
         sessionId: sessionId,
+        clientSessionId: clientSessionId,
         sourceIp: sourceIp,
       })
     );

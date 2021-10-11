@@ -22,9 +22,11 @@ export function accountNotFoundPost(
   return async function (req: Request, res: Response) {
     const email = req.session.email;
     const sessionId = res.locals.sessionId;
+    const clientSessionId = res.locals.clientSessionId;
 
     const result = await service.sendNotification(
       sessionId,
+      clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_EMAIL,
       req.ip
