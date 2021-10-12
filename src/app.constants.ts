@@ -3,6 +3,7 @@ export const PATH_NAMES = {
   TERMS_AND_CONDITIONS: "/terms-and-conditions",
   PRIVACY_POLICY: "/privacy-statement",
   COOKIES_POLICY: "/cookies",
+  SUPPORT: "/support",
   SIGN_IN_OR_CREATE: "/sign-in-or-create",
   ENTER_EMAIL: "/enter-email",
   ENTER_EMAIL_POST_CREATE: "/enter-email-create",
@@ -34,6 +35,9 @@ export const PATH_NAMES = {
   ACCOUNT_LOCKED: "/account-locked",
   UPLIFT_JOURNEY: "/uplift",
   INVALID_SESSION: "/invalid-session",
+  CONTACT_US: "/contact-us",
+  CONTACT_US_SUBMIT_SUCCESS: "/contact-us-submit-success",
+  CONTACT_US_POST_SUBMIT: "/contact-us-submit",
 };
 
 export const HTTP_STATUS_CODES = {
@@ -132,6 +136,11 @@ export enum NOTIFICATION_TYPE {
   VERIFY_PHONE_NUMBER = "VERIFY_PHONE_NUMBER",
   ACCOUNT_CREATED_CONFIRMATION = "ACCOUNT_CREATED_CONFIRMATION",
   MFA_SMS = "MFA_SMS",
+}
+
+export enum SUPPORT_TYPE {
+  GOV_SERVICE = "GOV_SERVICE",
+  PUBLIC = "PUBLIC",
 }
 
 export const ENVIRONMENT_NAME = {

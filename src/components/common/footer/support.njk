@@ -1,0 +1,60 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% set pageTitleName = 'pages.support.title' | translate %}
+
+{% block content %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+  {{'pages.support.header' | translate}}
+</h1>
+
+<h3 class="govuk-heading-m">
+  {{'pages.support.section1.header' | translate}}
+</h3>
+
+<form action="/support" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+{{ govukRadios({
+  idPrefix: "support",
+  name: "supportType",
+  attributes: {
+    "id": "radio-support"
+  },
+  items: [
+    {
+      text: 'pages.support.section1.supportTypeRadios.govServiceRadioText' | translate,
+      id: "support-gov-service",
+      value: "GOV_SERVICE"
+    },
+    {
+      text: 'pages.support.section1.supportTypeRadios.publicRadioText' | translate,
+      id: "support-public",
+      value: "PUBLIC"
+    }
+  ],
+  errorMessage: {
+  text: errors['supportType'].text
+  } if (errors['supportType'])
+}) }}
+
+{{ govukButton({
+  "text": 'pages.support.section1.supportTypeRadios.continueButtonText' | translate,
+  "type": "Submit",
+  "preventDoubleClick": true
+}) }}
+
+</form>
+
+<h2 class="govuk-heading-m">
+  {{'pages.support.section2.header' | translate}}
+</h2>
+
+<p class="govuk-body">{{'pages.support.section2.paragraph1' | translate}}</p>
+<p class="govuk-body">{{'pages.support.section2.paragraph2' | translate}}</p>
+
+{% endblock %}
+

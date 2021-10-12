@@ -37,3 +37,19 @@ export function getAnalyticsCookieDomain(): string {
 export function getRedisHost(): string {
   return process.env.REDIS_HOST ?? "redis";
 }
+
+export function getZendeskUser(): string {
+  return process.env.ZENDESK_USERNAME;
+}
+
+export function getZendeskToken(): string {
+  return process.env.ZENDESK_API_TOKEN;
+}
+
+export function getZendeskAPIUrl(): string {
+  return process.env.ZENDESK_API_URL ?? "https://govuk.zendesk.com/api/v2/";
+}
+
+export function getZendeskGroupIdPublic(): number {
+  return Number(process.env.ZENDESK_GROUP_ID_PUBLIC);
+}

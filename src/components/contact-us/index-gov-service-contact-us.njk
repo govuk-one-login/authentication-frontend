@@ -1,0 +1,40 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% set showBack = true %}
+{% set hrefBack = 'support' %}
+{% set pageTitleName = 'pages.contactUsGov.title' | translate %}
+
+{% block content %}
+
+ {% include "common/errors/errorSummary.njk" %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+  {{ 'pages.contactUsGov.header' | translate }}
+</h1>
+
+<p class="govuk-body">{{'pages.contactUsGov.paragraph1' | translate }}</p>
+<ul class="govuk-list govuk-list--bullet">
+ <li>
+    <a href="{{'pages.contactUsGov.bulletPoint1.linkHref' | translate}}" class="govuk-link" rel="noreferrer noopener" target="_blank">
+        {{'pages.contactUsGov.bulletPoint1.linkText' | translate}}
+    </a>
+    {{ 'pages.contactUsGov.bulletPoint1.text' | translate}}</li>
+ <li>
+    <a href="{{'pages.contactUsGov.bulletPoint2.linkHref' | translate}}" class="govuk-link" rel="noreferrer noopener" target="_blank">
+        {{'pages.contactUsGov.bulletPoint2.linkText' | translate}}
+    </a>
+    {{ 'pages.contactUsGov.bulletPoint2.text' | translate}}</li>
+ </li>
+</ul>
+
+<p class="govuk-body">
+    {{'pages.contactUsGov.paragraph2.text' | translate }}
+    <a href="{{'pages.contactUsGov.paragraph2.linkHref' | translate}}" class="govuk-link" rel="noreferrer noopener" target="_blank">
+        {{'pages.contactUsGov.paragraph2.linkText' | translate}}
+    </a>
+</p>
+
+{% endblock %}
+

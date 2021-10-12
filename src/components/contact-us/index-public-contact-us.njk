@@ -1,0 +1,108 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+
+{% set showBack = true %}
+{% set hrefBack = 'support' %}
+{% set pageTitleName = 'pages.contactUsPublic.title' | translate %}
+
+{% block content %}
+
+    {% include "common/errors/errorSummary.njk" %}
+
+{% set html %}
+<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
+<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
+{% endset %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+  {{ 'pages.contactUsPublic.header' | translate }}
+</h1>
+
+<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph1' | translate }}</p>
+<ul class="govuk-list govuk-list--bullet">
+ <li>{{ 'pages.contactUsPublic.section1.bulletPoint1' | translate}}</li>
+ <li>{{ 'pages.contactUsPublic.section1.bulletPoint2' | translate}}</li>
+ <li>{{ 'pages.contactUsPublic.section1.bulletPoint3' | translate}}</li>
+</ul>
+
+{{ govukInsetText({
+    html: 'pages.contactUsPublic.section1.questionsText' | translate
+  }) }}
+
+<form action="/contact-us-submit" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+<h2 class="govuk-heading-m">
+  {{ 'pages.contactUsPublic.section2.header' | translate }}
+</h2>
+
+<p class="govuk-body">{{'pages.contactUsPublic.section2.paragraph1' | translate }}</p>
+
+{{ govukInput({
+    label: {
+        text: 'pages.contactUsPublic.section2.question1.label' | translate,
+        classes: "govuk-label--s"
+    },
+    hint: {
+        text: 'pages.contactUsPublic.section2.question1.hint' | translate
+    },
+    id: "serviceType",
+    name: "serviceType",
+    value: serviceType,
+    errorMessage: {
+        text: errors['serviceType'].text
+    } if (errors['serviceType'])
+}) }}
+
+{{ govukTextarea({
+    label: {
+      text: 'pages.contactUsPublic.section2.question2.label' | translate,
+      classes: "govuk-label--s"
+    },
+    hint: {
+      text: 'pages.contactUsPublic.section2.question2.hint' | translate
+    },
+    id: "issueDescription",
+    name: "issueDescription",
+    value: issueDescription,
+    errorMessage: {
+        text: errors['issueDescription'].text
+    } if (errors['issueDescription'])
+}) }}
+
+<h3 class="govuk-heading-s">
+  {{ 'pages.contactUsPublic.section3.header' | translate }}
+</h3>
+
+<p class="govuk-body">{{'pages.contactUsPublic.section3.paragraph1' | translate }}</p>
+
+{{ govukInput({
+    label: {
+        html: 'pages.contactUsPublic.section3.replyEmail.label' | translate
+    },
+    hint: {
+        text: 'pages.contactUsPublic.section3.replyEmail.hint' | translate
+    },
+    id: "replyEmail",
+    name: "replyEmail",
+    value: replyEmail,
+    errorMessage: {
+        text: errors['replyEmail'].text
+    } if (errors['replyEmail'])
+}) }}
+
+{{ govukButton({
+    "text": button_text|default("Submit form", true),
+    "type": "Submit",
+    "preventDoubleClick": true
+}) }}
+
+</form>
+
+{% endblock %}
+
