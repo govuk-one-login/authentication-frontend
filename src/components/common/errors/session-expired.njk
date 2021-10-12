@@ -4,18 +4,15 @@
 {% set pageTitleName = 'error.timeoutError.title' | translate %}
 
 {% block content %}
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">{{ 'error.timeoutError.header' | translate }}</h1>
-        <p class="govuk-body">{{ 'error.timeoutError.content.paragraph1' | translate }}</p>
-        <p class="govuk-body">{{ 'error.timeoutError.content.paragraph2' | translate }}</p>
-    </div>
-</div>
+
+<h1 class="govuk-heading-l">{{ 'error.timeoutError.header' | translate }}</h1>
+<p class="govuk-body">{{ 'error.timeoutError.content.paragraph1' | translate }}</p>
+<p class="govuk-body">{{ 'error.timeoutError.content.paragraph2' | translate }}</p>
 
 {{ govukButton({
 "text": button_text|default('error.timeoutError.content.signInButtonText' | translate, true),
 "type": "Submit",
-"href": 'error.timeoutError.content.signInButtonHRef' | translate
+"href": accountManagementUrl
 }) }}
 
 <p class="govuk-body">

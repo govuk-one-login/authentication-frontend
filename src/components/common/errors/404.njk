@@ -10,14 +10,10 @@
     <p class="govuk-body">{{'error.error404.content.paragraph2' | translate }}</p>
 
     {{ govukButton({
-    "text": button_text|default('error.error404.content.backToYourAccountButtonText' | translate, true),
+    "text": button_text|default('error.error404.content.govUKHomepageButtonText' | translate, true),
     "type": "Submit",
-    "href": 'error.error404.content.backToYourAccountButtonLink' | translate
+    "href": 'error.error404.content.govUKHomepageButtonHref' | translate
     }) }}
-
-    <p class="govuk-body">
-      <a href="{{'error.error404.content.govUKHomepageLink' | translate }}" class="govuk-link">{{'error.error404.content.govUKHomepageLinkText' | translate }}</a>
-    </p>
   </div>
 </div>
 {% endblock %}
