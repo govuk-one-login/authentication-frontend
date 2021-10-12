@@ -76,10 +76,8 @@
       "content": {
         "paragraph1": "If you typed the web address, check it is correct.",
         "paragraph2": "If you pasted the web address, check you copied the entire address.",
-        "backToYourAccountButtonLink": "#",
-        "backToYourAccountButtonText": "Go back to your account",
-        "govUKHomepageLink": "https://www.gov.uk/",
-        "govUKHomepageLinkText": "Go to the GOV.UK homepage"
+        "govUKHomepageButtonHref": "https://www.gov.uk/",
+        "govUKHomepageButtonText": "Go to the GOV.UK homepage"
       }
     },
     "error500": {
@@ -95,7 +93,7 @@
       "content": {
         "paragraph1": "You’ve been signed out because you did not use your account for 60 minutes or more.",
         "paragraph2": "This is to keep your account and your information secure.",
-        "signInButtonText": "Sign in",
+        "signInButtonText": "Sign in to your account",
         "signInButtonHRef": "#",
         "govUKHomepageLink": "https://www.gov.uk/",
         "govUKHomepageLinkText": "Go to the GOV.UK homepage"
@@ -117,7 +115,7 @@
       },
       "moreAbout": {
         "header": "More about GOV.UK accounts",
-        "paragraph1": "The GOV.UK account is new. It will one day allow you to access all online government services.",
+        "paragraph1": "The GOV.UK account is new. In the future, you’ll be able to use it to sign in to all government services. It will take a few years for this to happen.",
         "paragraph2": "We’re still building the GOV.UK account and will be adding more features and services to it.",
         "paragraph3": " For now, you need to use different accounts to access different government services."
       },
@@ -299,9 +297,8 @@
         "paragraph1": "At the moment, you can only use your GOV.UK account to:",
         "paragraph2": "In the future, you’ll be able to use your GOV.UK account to sign in to all government services. It will take a few years for this to happen.",
         "paragraph3": "For now, you need to use different accounts for different government services.",
-        "listItem1": "manage your GOV.UK emails",
-        "listItem2": "save your answers in the",
-        "brexitCheckerLink": "Brexit checker"
+        "listItem1": "manage your GOV.UK email subscriptions",
+        "listItem2": "save your answers in the Brexit checker"
       },
       "inset": "Your progress on ",
       "insetContinued": " has been saved.",
@@ -322,7 +319,7 @@
       "requestNewCode": {
         "link": "Request a new code",
         "paragraph1": "if:",
-        "listItem1": "the code isn’t working or has expired, or you didn’t receive one",
+        "listItem1": "the code is not working or has expired, or you did not receive one",
         "listItem2": "you want to use a different email address "
       },
       "code": {
@@ -346,7 +343,7 @@
       "resend": {
         "link": "Request a new code",
         "paragraph1": "if:",
-        "listItem1": "the code isn’t working or has expired, or you didn’t receive one",
+        "listItem1": "the code is not working or has expired, or you did not receive one",
         "listItem2": "you want to use a different phone number"
       },
       "code": {
@@ -393,7 +390,7 @@
       },
       "resend": {
         "link": "Request a new code",
-        "paragraph1": "if the code doesn’t work or has expired, or you didn’t receive one."
+        "paragraph1": "if the code does not work or has expired, or you did not receive one."
       },
       "code": {
         "label": "Enter the 6 digit security code",

@@ -38,6 +38,10 @@ export function getRedisHost(): string {
   return process.env.REDIS_HOST ?? "redis";
 }
 
+export function getAccountManagementUrl(): string {
+  return process.env.ACCOUNT_MANAGEMENT_URL;
+}
+
 export function getZendeskUser(): string {
   return process.env.ZENDESK_USERNAME;
 }
