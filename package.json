@@ -5,7 +5,7 @@
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": "16.2.0"
+    "node": "16.8.0"
   },
   "scripts": {
     "build-ts": "tsc",
@@ -22,7 +22,7 @@
     "start": "node dist/server.js",
     "test:audit": "yarn audit",
     "test:integration": "rm -rf test/coverage && NODE_ENV=development nyc mocha -r dotenv/config  \"src/**/*-integration.test.ts\"",
-    "test:unit": "rm -rf test/coverage && NODE_ENV=development nyc mocha -r dotenv/config --exclude \"src/**/*-integration.test.ts\"  \"test/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
+    "test:unit": "rm -rf test/coverage && NODE_ENV=development nyc mocha --exclude \"src/**/*-integration.test.ts\"  \"test/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
     "test": "rm -rf test/coverage && NODE_ENV=development nyc mocha -r dotenv/config  \"test/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
     "test:coverage": "nyc report",
     "watch-node": "nodemon -r dotenv/config --inspect=0.0.0.0:9230 dist/server.js | pino-pretty",
@@ -83,6 +83,7 @@
     "@types/express": "^4.17.13",
     "@types/express-session": "^1.17.4",
     "@types/i18next-fs-backend": "^1.1.1",
+    "@types/node": "^16.7.13",
     "@types/node-zendesk": "^2.0.3",
     "@types/nunjucks": "^3.1.5",
     "@types/mocha": "^9.0.0",
