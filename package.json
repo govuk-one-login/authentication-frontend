@@ -62,7 +62,7 @@
     "i18next": "^21.2.4",
     "i18next-fs-backend": "^1.1.1",
     "i18next-http-middleware": "^3.1.4",
-    "jsdom": "^17.0.0",
+    "jsdom": "^18.0.0",
     "node-zendesk": "^2.1.0",
     "nunjucks": "^3.2.3",
     "libphonenumber-js": "^1.9.34",
