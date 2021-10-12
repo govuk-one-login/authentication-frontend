@@ -48,7 +48,7 @@
     "semi": true
   },
   "dependencies": {
-    "axios": "^0.21.2",
+    "axios": "^0.22.0",
     "cfenv": "^1.2.4",
     "csurf": "^1.11.0",
     "connect-redis": "^6.0.0",
