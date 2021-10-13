@@ -10,9 +10,11 @@ describe("auth code controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
+  const config = require("../../../config.ts");
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
+    sandbox.stub(config, "getApiBaseUrl").returns("http://test-url");
 
     req = {
       body: {},
@@ -31,10 +33,34 @@ describe("auth code controller", () => {
   });
 
   describe("authCodeGet", () => {
-    it("should redirect to auth code API endpoint", () => {
+    it("should redirect to auth code API endpoint with cookie consent param set as not-engaged", () => {
+      req.cookies = {};
+
       authCodeGet(req as Request, res as Response);
 
-      expect(res.redirect).to.have.been.calledOnce;
+      expect(res.redirect).to.have.been.calledWith(
+        "http://test-url/auth-code?cookie_consent=not-engaged"
+      );
+    });
+
+    it("should redirect to auth code API endpoint with cookie consent param set as accept", () => {
+      req.cookies = { cookies_preferences_set: '{"analytics":true}' };
+
+      authCodeGet(req as Request, res as Response);
+
+      expect(res.redirect).to.have.been.calledWith(
+        "http://test-url/auth-code?cookie_consent=accept"
+      );
+    });
+
+    it("should redirect to auth code API endpoint with cookie consent param set as reject", () => {
+      req.cookies = { cookies_preferences_set: '{"analytics":false}' };
+
+      authCodeGet(req as Request, res as Response);
+
+      expect(res.redirect).to.have.been.calledWith(
+        "http://test-url/auth-code?cookie_consent=reject"
+      );
     });
   });
 });

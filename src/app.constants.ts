@@ -138,6 +138,12 @@ export enum NOTIFICATION_TYPE {
   MFA_SMS = "MFA_SMS",
 }
 
+export const COOKIE_CONSENT = {
+  ACCEPT: "accept",
+  REJECT: "reject",
+  NOT_ENGAGED: "not-engaged",
+};
+
 export enum SUPPORT_TYPE {
   GOV_SERVICE = "GOV_SERVICE",
   PUBLIC = "PUBLIC",
