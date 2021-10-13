@@ -108,7 +108,7 @@
         "paragraph": "The GOV.UK account is different to any government accounts you already have, for example your personal tax account or Government Gateway. "
       },
       "optional": {
-        "title": "Create a GOV.UK account or sign in",
+        "title": "Sign in or create a GOV.UK account to save your progress",
         "header": "Sign in or create a GOV.UK account to save your progress",
         "paragraph1": "You need a GOV.UK account to save your progress.  If you don't have a GOV.UK account, you can create one.",
         "paragraph2": "The GOV.UK account is different to other government accounts you already have (for example your personal tax account, or Government Gateway)."
@@ -128,7 +128,7 @@
       "continueButtonText": "Continue"
     },
     "enterEmailCreateAccount": {
-      "title": "Enter your email",
+      "title": "Enter your email address",
       "header": "Enter your email address",
       "text": "Enter your email address to create an account.",
       "email": {
@@ -191,7 +191,7 @@
       "tryAnotherLinkHref": "/enter-email-existing-account"
     },
     "accountNotFoundOptional": {
-      "title": "Account not found",
+      "title": "No GOV.UK account found",
       "header": "No GOV.UK account found",
       "paragraph1": "We could not find a GOV.UK account using this email address.",
       "insetText1": "You may have other government accounts such as Government Gateway or your personal tax account.",
@@ -411,7 +411,7 @@
       "phoneNumber": "We'll send a new code to [mobile]."
     },
     "signedOut": {
-      "title": "Signed out",
+      "title": "You have been signed out",
       "header": "You have been signed out",
       "buttonHref": "https://www.gov.uk/",
       "buttonText": "Return to the GOV.UK homepage"
@@ -562,7 +562,7 @@
       }
     },
     "accessibilityStatement": {
-      "title": "Accessibility statement",
+      "title": "Accessibility statement for GOV.UK Sign in",
       "header": "Accessibility statement for GOV.UK Sign in",
       "content": {
         "paragraph1": "This accessibility statement applies to xxxx.",
