@@ -15,7 +15,12 @@ describe("landing controller", () => {
     sandbox = sinon.createSandbox();
 
     req = { body: {}, session: {}, query: {} };
-    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
+    res = {
+      render: sandbox.fake(),
+      redirect: sandbox.fake(),
+      locals: {},
+      cookie: sandbox.fake(),
+    };
   });
 
   afterEach(() => {
@@ -32,14 +37,13 @@ describe("landing controller", () => {
       expect(res.redirect).to.have.calledWith("/sign-in-or-create");
     });
 
-    it("should redirect to /sign-in-or-create page with cookie consent query param", () => {
+    it("should redirect to /sign-in-or-create page with cookie preferences set", () => {
       req.query.cookie_consent = "accept";
 
       landingGet(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        "/sign-in-or-create?cookie_consent=accept"
-      );
+      expect(res.cookie).to.have.been.called;
+      expect(res.redirect).to.have.calledWith("/sign-in-or-create");
     });
 
     it("should redirect to /uplift page when interrupt query param set", () => {

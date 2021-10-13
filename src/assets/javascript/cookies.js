@@ -46,31 +46,6 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     }
   }
 
-  function getQueryParameterByName(name) {
-    var match = RegExp("[?&]" + name + "=([^&]*)").exec(window.location.search);
-    return match && decodeURIComponent(match[1].replace(/\+/g, " "));
-  }
-
-  function processCookieConsentFlag() {
-    var cookieConsent = getQueryParameterByName("cookie_consent");
-
-    if (!cookieConsent) {
-      return;
-    }
-
-    cookieConsent = cookieConsent.trim();
-
-    if (cookieConsent === "accept" || cookieConsent === "reject") {
-      setCookie(COOKIES_PREFERENCES_SET, {
-        analytics: cookieConsent === "accept",
-      });
-    }
-
-    if (cookieConsent === "not-engaged") {
-      setCookie(COOKIES_PREFERENCES_SET, "", { days: -1 });
-    }
-  }
-
   function setBannerCookieConsent(analyticsConsent) {
     setCookie(
       COOKIES_PREFERENCES_SET,
@@ -237,7 +212,6 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     cookiesPageInit,
     hasConsentForAnalytics,
     initAnalytics,
-    processCookieConsentFlag,
   };
 };
 
