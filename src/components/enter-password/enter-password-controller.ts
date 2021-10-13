@@ -58,11 +58,11 @@ export function enterPasswordPost(
       req.ip
     );
 
-    if (userLogin.sessionState) {
+    if (userLogin.success && userLogin.sessionState) {
       let redirectTo = getNextPathByState(userLogin.sessionState);
+      req.session.phoneNumber = userLogin.redactedPhoneNumber;
 
       if (userLogin.sessionState === USER_STATE.LOGGED_IN) {
-        req.session.phoneNumber = userLogin.redactedPhoneNumber;
         const result = await mfaCodeService.sendMfaCode(
           sessionId,
           email,
