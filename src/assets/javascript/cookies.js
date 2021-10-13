@@ -179,12 +179,7 @@ var cookies = function (trackingId, analyticsCookieDomain) {
       var date = new Date();
       date.setTime(date.getTime() + options.days * 24 * 60 * 60 * 1000);
       cookieString =
-        cookieString +
-        "; expires=" +
-        date.toGMTString() +
-        "; path=/; domain=" +
-        analyticsCookieDomain +
-        ";";
+        cookieString + "; expires=" + date.toGMTString() + "; path=/;";
     }
 
     if (document.location.protocol === "https:") {
