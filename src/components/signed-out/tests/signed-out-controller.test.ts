@@ -52,7 +52,7 @@ describe("signed out controller", () => {
       req.query.error_description = "something bad happened";
 
       expect(() => signedOutGet(req as Request, res as Response)).to.throw(
-        "Bad Request:invalid_request:something bad happened"
+        "invalid_request:something bad happened"
       );
     });
   });
