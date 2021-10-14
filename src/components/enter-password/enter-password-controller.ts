@@ -65,6 +65,7 @@ export function enterPasswordPost(
       if (userLogin.sessionState === USER_STATE.LOGGED_IN) {
         const result = await mfaCodeService.sendMfaCode(
           sessionId,
+          clientSessionId,
           email,
           req.ip
         );

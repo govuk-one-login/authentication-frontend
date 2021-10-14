@@ -6,6 +6,7 @@ import { ApiResponse, ApiResponseResult } from "../../../types";
 export function mfaService(axios: Http = http): MfaServiceInterface {
   const sendMfaCode = async function (
     sessionId: string,
+    clientSessionId: string,
     emailAddress: string,
     sourceIp: string
   ): Promise<ApiResponseResult> {
@@ -16,6 +17,7 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
       },
       getRequestConfig({
         sessionId: sessionId,
+        clientSessionId: clientSessionId,
         sourceIp: sourceIp,
       })
     );
