@@ -6,9 +6,9 @@ export function logErrorMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  const sessionId = req.session || undefined;
-  const stack = error.stack ? `\n${error.stack}` : "";
-
-  req.log.error(`[${req.method}] ${req.originalUrl}. ${stack}`, { sessionId });
+  req.log.error({
+    err: { data: error.data, status: error.status, stack: error.stack },
+    msg: `Error:${error.message}`,
+  });
   next(error);
 }

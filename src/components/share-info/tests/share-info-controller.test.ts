@@ -93,7 +93,7 @@ describe("share-info controller", () => {
 
       await expect(
         shareInfoPost(fakeService)(req as Request, res as Response)
-      ).to.be.rejectedWith(BadRequestError, "Bad Request:1000:error");
+      ).to.be.rejectedWith(BadRequestError, "1000:error");
 
       expect(fakeService.updateProfile).to.have.been.calledOnce;
     });

@@ -5,9 +5,9 @@ import axios, {
   AxiosResponse,
 } from "axios";
 import { getApiKey, getFrontendApiBaseUrl } from "../config";
-import { logger } from "./logger";
 import { ApiResponseResult } from "../types";
 import { HTTP_STATUS_CODES } from "../app.constants";
+import { ApiError } from "./error";
 
 const headers: Readonly<Record<string, string | boolean>> = {
   Accept: "application/json",
@@ -72,16 +72,19 @@ export class Http {
   }
 
   private static handleError(error: AxiosError) {
-    const { response } = error;
-    const { data } = response || {};
+    let apiError;
 
-    if (data) {
-      logger.error(error.message, { error: JSON.stringify(data) });
+    if (error.response && error.response.data) {
+      apiError = new ApiError(
+        error.message,
+        error.response.status,
+        error.response.data
+      );
     } else {
-      logger.error(error.message);
+      apiError = new ApiError(error.message);
     }
 
-    return Promise.reject(error);
+    return Promise.reject(apiError);
   }
 
   private initHttp() {
