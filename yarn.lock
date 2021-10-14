@@ -481,10 +481,10 @@
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-9.0.0.tgz#3205bcd15ada9bc681ac20bef64e9e6df88fd297"
   integrity sha512-scN0hAWyLVAvLR9AyW7HoFF5sJZglyBsbPuHO4fv7JRvfmPBMfp1ozWqOf/e4wwPNxezBZXRfWzMb6iFLgEVRA==
 
-"@types/node-zendesk@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@types/node-zendesk/-/node-zendesk-2.0.3.tgz#69baabd87aafadefa59c907d0079a3f72414944a"
-  integrity sha512-WdBZbTwh9eJa8iGC3HbJhhMN6J3wOe1417WzqJAjl3RnNfvgS8RZ0A6Xu3lSuVr2gmCfiZjtaHzJd/5rEZHxdQ==
+"@types/node-zendesk@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@types/node-zendesk/-/node-zendesk-2.0.4.tgz#ca690e4e2074720670f03ed49627144d8c940e84"
+  integrity sha512-xiWHNTdoUqsZ44Wk310jlCmWeDbO38hNdELBoVg+UhVyoxpGTQXiEI8yvLS98eRBi4Px7sDKYGKakY90JFghpQ==
   dependencies:
     "@types/node" "*"
 
