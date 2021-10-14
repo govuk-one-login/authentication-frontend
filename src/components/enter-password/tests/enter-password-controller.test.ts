@@ -72,6 +72,7 @@ describe("enter password controller", () => {
     it("should redirect to auth code when mfa is not required", async () => {
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sandbox.fake.returns({
+          success: true,
           sessionState: USER_STATE.AUTHENTICATED,
           redactedPhoneNumber: "******3456",
         }),
@@ -95,6 +96,7 @@ describe("enter password controller", () => {
     it("should redirect to enter phone number when phone number is not verified", async () => {
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sandbox.fake.returns({
+          success: true,
           sessionState: USER_STATE.REQUIRES_TWO_FACTOR,
         }),
       };
