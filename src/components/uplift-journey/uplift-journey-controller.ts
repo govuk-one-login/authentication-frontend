@@ -11,8 +11,9 @@ export function upliftJourneyGet(
   return async function (req: Request, res: Response) {
     const { email } = req.session;
     const { sessionId } = res.locals;
+    const { clientSessionId } = res.locals;
 
-    const result = await mfaCodeService.sendMfaCode(sessionId, email, req.ip);
+    const result = await mfaCodeService.sendMfaCode(sessionId, clientSessionId, email, req.ip);
     res.redirect(getNextPathByState(result.sessionState));
   };
 }
