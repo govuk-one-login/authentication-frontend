@@ -34,6 +34,10 @@ export function getRedisHost(): string {
   return process.env.REDIS_HOST ?? "redis";
 }
 
+export function getRedisPort(): number {
+  return Number(process.env.REDIS_PORT) ?? 6379;
+}
+
 export function getAccountManagementUrl(): string {
   return process.env.ACCOUNT_MANAGEMENT_URL;
 }
