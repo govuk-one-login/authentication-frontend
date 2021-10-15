@@ -19,7 +19,12 @@ export function resendMfaCodePost(
     const id = res.locals.sessionId;
     const clientSessionId = res.locals.clientSessionId;
 
-    const result = await service.sendMfaCode(id, clientSessionId, email, req.ip);
+    const result = await service.sendMfaCode(
+      id,
+      clientSessionId,
+      email,
+      req.ip
+    );
 
     if (!result.success && !result.sessionState) {
       throw new BadRequestError(result.message, result.code);
