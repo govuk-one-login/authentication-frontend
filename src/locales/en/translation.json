@@ -88,15 +88,13 @@
       }
     },
     "timeoutError": {
-      "title": "You've been signed out",
-      "header": "You have been signed out",
+      "title": "Sorry, the page has expired",
+      "header": "Sorry, the page has expired",
       "content": {
-        "paragraph1": "You’ve been signed out because you did not use your account for 60 minutes or more.",
-        "paragraph2": "This is to keep your account and your information secure.",
-        "signInButtonText": "Sign in to your account",
-        "signInButtonHRef": "#",
-        "govUKHomepageLink": "https://www.gov.uk/",
-        "govUKHomepageLinkText": "Go to the GOV.UK homepage"
+        "paragraph1": "This is because you did not do anything for 60 minutes or more. ",
+        "paragraph2": "You’ll need to start what you were doing again.",
+        "govUKHomepageButtonHref": "https://www.gov.uk/",
+        "govUKHomepageButtonText": "Go to the GOV.UK homepage"
       }
     }
   },
