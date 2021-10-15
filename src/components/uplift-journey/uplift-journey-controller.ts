@@ -13,7 +13,12 @@ export function upliftJourneyGet(
     const { sessionId } = res.locals;
     const { clientSessionId } = res.locals;
 
-    const result = await mfaCodeService.sendMfaCode(sessionId, clientSessionId, email, req.ip);
+    const result = await mfaCodeService.sendMfaCode(
+      sessionId,
+      clientSessionId,
+      email,
+      req.ip
+    );
     res.redirect(getNextPathByState(result.sessionState));
   };
 }

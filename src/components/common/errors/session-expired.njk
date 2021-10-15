@@ -10,13 +10,9 @@
 <p class="govuk-body">{{ 'error.timeoutError.content.paragraph2' | translate }}</p>
 
 {{ govukButton({
-"text": button_text|default('error.timeoutError.content.signInButtonText' | translate, true),
+"text": button_text|default('error.timeoutError.content.govUKHomepageButtonText' | translate, true),
 "type": "Submit",
-"href": accountManagementUrl
+"href": 'error.timeoutError.content.govUKHomepageButtonHref' | translate
 }) }}
-
-<p class="govuk-body">
-    <a href="{{'error.timeoutError.content.govUKHomepageLink' | translate }}" class="govuk-link">{{'error.timeoutError.content.govUKHomepageLinkText' | translate }}</a>
-</p>
 
 {% endblock %}
