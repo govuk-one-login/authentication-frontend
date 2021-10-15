@@ -31,8 +31,6 @@
 <p class="govuk-body">{{'pages.shareInfo.paragraph2' | translate}}</p>
 <p class="govuk-body">{{'pages.shareInfo.paragraph3' | translate}}</p>
 
-<h2 class="govuk-heading-s">{{'pages.shareInfo.essentialHeader' | translate}}</h2>
-
 <form action="/share-info" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
@@ -45,8 +43,9 @@
   },
   fieldset: {
     legend: {
+      text: 'pages.shareInfo.essentialHeader' | translate,
       isPageHeading: false,
-      classes: "govuk-heading-s"
+      classes: "govuk-fieldset__legend--s"
     }
   },
   items: [

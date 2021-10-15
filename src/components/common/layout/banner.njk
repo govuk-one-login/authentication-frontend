@@ -48,14 +48,17 @@
     {
       html: acceptHtml,
       attributes: {
-            "id": "cookies-accepted"
-          },
+        "id": "cookies-accepted"
+      },
       actions: [
         {
           text: 'general.cookie.cookieBanner.cookieBannerHideLink' | translate,
           href: "#",
           type: "button",
-          classes:"cookie-hide-button"
+          classes:"cookie-hide-button",
+          attributes: {
+            "aria-label": "Hide cookie banner button"
+          }
         }
       ],
       hidden: true
@@ -63,14 +66,17 @@
     {
       html: rejectedHtml,
       attributes: {
-                  "id": "cookies-rejected"
-                },
+        "id": "cookies-rejected"
+      },
       actions: [
         {
           text: 'general.cookie.cookieBanner.cookieBannerHideLink' | translate,
           href: "#",
           type: "button",
-          classes:"cookie-hide-button"
+          classes:"cookie-hide-button",
+          attributes: {
+            "aria-label": "Hide cookie banner button"
+          }
         }
       ],
       hidden: true
