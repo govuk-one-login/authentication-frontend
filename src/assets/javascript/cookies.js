@@ -1,8 +1,8 @@
 "use strict";
 
 var cookies = function (trackingId, analyticsCookieDomain) {
-  var COOKIES_PREFERENCES_SET = "cookies_preferences_set";
 
+  var COOKIES_PREFERENCES_SET = "cookies_preferences_set";
   var cookiesAccepted = document.querySelector("#cookies-accepted");
   var cookiesRejected = document.querySelector("#cookies-rejected");
   var hideCookieBanner = document.querySelectorAll(".cookie-hide-button");
@@ -145,6 +145,12 @@ var cookies = function (trackingId, analyticsCookieDomain) {
           "customPixels",
         ],
       },
+      {
+        'department': {
+          'programmeteam': 'di',
+          'productteam': 'sso'
+        }
+      }
     ];
 
     function gtag(obj) {
@@ -152,6 +158,52 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     }
 
     gtag({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+
+    function addSessionJourneyToDataLayer(url) {
+      const sessionJourney = getJourneyMapping(url);
+
+      if (sessionJourney) {
+        window.dataLayer.push(sessionJourney)
+      }
+    }
+
+    const url = window.location.search.includes("type")
+        ? window.location.pathname + window.location.search
+        : window.location.pathname
+
+    addSessionJourneyToDataLayer(url);
+  }
+
+  function generateSessionJourney(journey, status) {
+    return {
+      sessionjourney: {
+        journey: journey,
+        status: status
+      }
+    }
+  }
+
+  function getJourneyMapping(url) {
+    const JOURNEY_DATA_LAYER_PATHS = {
+      "/enter-email?type=create-account": generateSessionJourney('sign up', 'start'),
+      "/check-your-email": generateSessionJourney('sign up', 'middle'),
+      "/create-password": generateSessionJourney('sign up', 'middle'),
+      "/enter-phone-number": generateSessionJourney('sign up', 'middle'),
+      "/check-your-phone": generateSessionJourney('sign up', 'middle'),
+      "/account-created": generateSessionJourney('sign up', 'end'),
+      "/enter-email?type=sign-in": generateSessionJourney('sign in', 'start'),
+      "/enter-password-account-exists": generateSessionJourney('sign in', 'start'),
+      "/enter-password": generateSessionJourney('sign in', 'middle'),
+      "/enter-code": generateSessionJourney('sign in', 'middle'),
+      "/resend-code": generateSessionJourney('sign in', 'middle'),
+      "/updated-terms-and-conditions": generateSessionJourney('sign in', 'middle'),
+      "/share-info": generateSessionJourney('sign in', 'middle'),
+      "/reset-password-check-email": generateSessionJourney('password reset', 'start'),
+      "/reset-password": generateSessionJourney('password reset', 'middle'),
+      "/reset-password-confirmed": generateSessionJourney('password reset', 'end')
+    };
+
+    return JOURNEY_DATA_LAYER_PATHS[url];
   }
 
   function getCookie(name) {
