@@ -20,7 +20,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - 6379:6379
+          - 6389:6379
 
     steps:
       - uses: actions/checkout@v2
@@ -45,4 +45,4 @@ jobs:
       SESSION_SECRET: secret
       API_KEY: test-key
       REDIS_HOST: localhost
-      REDIS_PORT: 6379
+      REDIS_PORT: 6389
