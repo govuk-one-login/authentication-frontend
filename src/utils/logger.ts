@@ -47,7 +47,7 @@ const loggerMiddleware = PinoHttp({
     if (res.statusCode === 404) {
       return "resource not found";
     }
-    return "request completed";
+    return `request completed with status code of:${res.statusCode}`;
   },
   customAttributeKeys: {
     responseTime: "timeTaken",
