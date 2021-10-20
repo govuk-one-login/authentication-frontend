@@ -105,7 +105,7 @@ describe("updated terms conditions controller", () => {
 
       expect(fakeService.updateProfile).not.to.been.called;
       expect(res.redirect).to.have.calledWith(
-        "http://test.test?error_code=rejectedTermsAndConditions&state=test"
+        "/terms-and-conditions-not-accepted"
       );
     });
   });

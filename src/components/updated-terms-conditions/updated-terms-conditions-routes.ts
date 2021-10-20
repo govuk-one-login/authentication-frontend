@@ -2,6 +2,7 @@ import { PATH_NAMES } from "../../app.constants";
 
 import * as express from "express";
 import {
+  termsConditionsNotAccepted,
   updatedTermsConditionsGet,
   updatedTermsConditionsPost,
   updatedTermsRejectedGet,
@@ -21,6 +22,11 @@ router.get(
   PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS_DISAGREE,
   validateSessionMiddleware,
   asyncHandler(updatedTermsRejectedGet())
+);
+
+router.get(
+  PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS_NOT_ACCEPTED,
+  termsConditionsNotAccepted
 );
 
 router.post(

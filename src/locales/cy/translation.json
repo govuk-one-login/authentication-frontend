@@ -789,6 +789,10 @@
         "linkHref": "https://www.gov.uk",
         "linkText": "Return to the GOV.UK homepage"
       }
+    },
+    "termsConditionsNotAccepted": {
+      "title": "placeholder",
+      "header": "placeholder"
     }
   }
 }
