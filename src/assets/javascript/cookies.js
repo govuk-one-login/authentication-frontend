@@ -153,12 +153,6 @@ var cookies = function (trackingId, analyticsCookieDomain) {
       }
     ];
 
-    function gtag(obj) {
-      dataLayer.push(obj);
-    }
-
-    gtag({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-
     function addSessionJourneyToDataLayer(url) {
       const sessionJourney = getJourneyMapping(url);
 
@@ -172,6 +166,12 @@ var cookies = function (trackingId, analyticsCookieDomain) {
         : window.location.pathname
 
     addSessionJourneyToDataLayer(url);
+
+    function gtag(obj) {
+      dataLayer.push(obj);
+    }
+
+    gtag({ "gtm.start": new Date().getTime(), event: "gtm.js" });
   }
 
   function generateSessionJourney(journey, status) {
