@@ -13,7 +13,7 @@
   {{ 'pages.cookiePolicy.successBanner.header' | translate }}
 </h3>
 <p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
-<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
+<a class="govuk-notification-banner__link" id="go-back-link" href={{ backUrl }}>{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
 {% endset %}
 
 {{ govukNotificationBanner({
