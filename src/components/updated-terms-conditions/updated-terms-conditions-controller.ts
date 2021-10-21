@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
 import { getNextPathByState } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
-import { SERVICE_TYPE } from "../../app.constants";
+import { PATH_NAMES, SERVICE_TYPE } from "../../app.constants";
 import { ClientInfoServiceInterface } from "../common/client-info/types";
 import { UpdateProfileServiceInterface } from "../common/update-profile/types";
 import { updateProfileService } from "../common/update-profile/update-profile-service";
@@ -21,8 +21,6 @@ export function updatedTermsConditionsGet(
       req.ip
     );
 
-    req.session.redirectUri = clientInfoResponse.data.redirectUri;
-    req.session.state = clientInfoResponse.data.state;
     req.session.serviceType = clientInfoResponse.data.serviceType;
     req.session.clientName = clientInfoResponse.data.clientName;
 
@@ -49,13 +47,10 @@ export function updatedTermsConditionsPost(
   return async function (req: Request, res: Response) {
     const { email } = req.session;
     const { sessionId, clientSessionId } = res.locals;
-    const { redirectUri, state } = req.session;
     const acceptOrReject = req.body.acceptOrReject;
 
     if (acceptOrReject === "reject") {
-      return res.redirect(
-        redirectUri + `?error_code=rejectedTermsAndConditions&state=${state}`
-      );
+      return res.redirect(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS_NOT_ACCEPTED);
     }
 
     if (acceptOrReject === "accept") {
@@ -74,4 +69,8 @@ export function updatedTermsConditionsPost(
       res.redirect(getNextPathByState(result.sessionState));
     }
   };
+}
+
+export function termsConditionsNotAccepted(req: Request, res: Response): void {
+  res.render("updated-terms-conditions/index-rejected.njk");
 }

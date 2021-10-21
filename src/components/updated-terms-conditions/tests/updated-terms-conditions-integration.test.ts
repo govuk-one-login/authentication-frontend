@@ -113,14 +113,16 @@ describe("Integration:: updated-terms-code", () => {
       .expect(302, done);
   });
 
-  it("should redirect to conditional page when terms rejected", (done) => {
+  it("should redirect to terms not accepted when terms and conditions are rejected", (done) => {
     request(app)
-      .get("/updated-terms-and-conditions-disagree")
+      .post("/updated-terms-and-conditions")
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
+        acceptOrReject: "reject",
       })
-      .expect(200, done);
+      .expect("Location", "/terms-and-conditions-not-accepted")
+      .expect(302, done);
   });
 });

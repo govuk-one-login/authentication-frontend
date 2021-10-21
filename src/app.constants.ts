@@ -25,6 +25,8 @@ export const PATH_NAMES = {
   UPDATED_TERMS_AND_CONDITIONS: "/updated-terms-and-conditions",
   UPDATED_TERMS_AND_CONDITIONS_DISAGREE:
     "/updated-terms-and-conditions-disagree",
+  UPDATED_TERMS_AND_CONDITIONS_NOT_ACCEPTED:
+    "/terms-and-conditions-not-accepted",
   ENTER_MFA: "/enter-code",
   SECURITY_CODE_INVALID: "/security-code-invalid",
   SECURITY_CODE_REQUEST_EXCEEDED: "/security-code-requested-too-many-times",
