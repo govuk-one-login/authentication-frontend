@@ -37,6 +37,16 @@ export function validateCreatePasswordRequest(): ValidationChainFunc {
           );
         }
         return true;
+      })
+      .custom((value, { req }) => {
+        if (value !== req.body["confirm-password"]) {
+          throw new Error(
+            req.t(
+              "pages.createPassword.confirmPassword.validationError.matches"
+            )
+          );
+        }
+        return true;
       }),
     body("confirm-password")
       .notEmpty()
