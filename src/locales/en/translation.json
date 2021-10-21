@@ -10,7 +10,7 @@
     "errorSummaryTitle": "There is a problem",
     "phaseBanner": {
       "tag": "beta",
-      "content": "This is a new service – your <a  href=\"https://www.account.publishing.service.gov.uk/feedback\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">feedback</a> will help us to improve it."
+      "content": "This is a new service – your <a  href=\"/contact-us?supportType=PUBLIC\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">feedback</a> will help us to improve it."
     },
     "yes": "Yes",
     "no": "No",
