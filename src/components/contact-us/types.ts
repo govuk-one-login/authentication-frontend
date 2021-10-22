@@ -2,6 +2,7 @@ export interface ContactForm {
   subject: string;
   comment: string;
   email?: string;
+  name?: string;
 }
 
 export interface ContactUsServiceInterface {

@@ -96,6 +96,21 @@
     } if (errors['replyEmail'])
 }) }}
 
+{{ govukInput({
+    label: {
+        html: 'pages.contactUsPublic.section3.name.label' | translate
+    },
+    hint: {
+        text: 'pages.contactUsPublic.section3.name.hint' | translate
+    },
+    id: "name",
+    name: "name",
+    value: name,
+    errorMessage: {
+        text: errors['name'].text
+    } if (errors['name'])
+}) }}
+
 {{ govukButton({
     "text": button_text|default("Submit form", true),
     "type": "Submit",

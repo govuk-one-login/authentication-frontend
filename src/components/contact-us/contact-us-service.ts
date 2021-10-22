@@ -12,7 +12,10 @@ export function contactUsService(
     const payload = {
       ticket: {
         subject: contactForm.subject,
-        requester: contactForm.email ?? "Not specified",
+        requester: {
+          email: contactForm.email ?? "",
+          name: contactForm.name ?? "",
+        },
         comment: { body: contactForm.comment },
         group_id: getZendeskGroupIdPublic(),
         tags: ["govuk_sign_in"],

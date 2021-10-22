@@ -24,6 +24,7 @@ export function contactUsFormPost(
       comment: req.body.issueDescription,
       subject: req.body.serviceType,
       email: req.body.replyEmail,
+      name: req.body.name,
     });
 
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
