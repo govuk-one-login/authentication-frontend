@@ -3,6 +3,7 @@ import { ExpressRouteFunc } from "../../types";
 import { PATH_NAMES } from "../../app.constants";
 import { ResetPasswordServiceInterface } from "./types";
 import { resetPasswordService } from "./reset-password-service";
+import xss from "xss";
 
 function isCodeExpired(code: string): boolean {
   if (!code) {
@@ -18,9 +19,9 @@ function getCode(code: string): string {
 }
 
 export function resetPasswordGet(req: Request, res: Response): void {
-  const code = req.query.code as string;
+  const code = xss(req.query.code as string);
 
-  if (!req.query.code || isCodeExpired(code)) {
+  if (!code || isCodeExpired(code)) {
     return res.render("reset-password/index-invalid.njk");
   }
 
