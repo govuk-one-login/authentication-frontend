@@ -31,3 +31,8 @@ export interface ApiResponseResult {
   message?: string;
   sessionState?: string;
 }
+
+export interface Error {
+  text: string;
+  href: string;
+}
