@@ -5,26 +5,23 @@ import { getNextPathByState } from "../common/constants";
 const COOKIES_PREFERENCES_SET = "cookies_preferences_set";
 
 function setPreferencesCookie(cookieConsent: string, res: Response) {
-  if ([COOKIE_CONSENT.ACCEPT, COOKIE_CONSENT.REJECT].includes(cookieConsent)) {
-    const yearFromNow = new Date();
-    yearFromNow.setFullYear(yearFromNow.getFullYear() + 1);
+  let cookieValue = "";
+  const cookieExpires = new Date();
 
-    res.cookie(
-      COOKIES_PREFERENCES_SET,
-      JSON.stringify({ analytics: cookieConsent === COOKIE_CONSENT.ACCEPT }),
-      {
-        expires: yearFromNow,
-        secure: true,
-      }
-    );
-  } else {
-    const expiredDate = new Date();
-    expiredDate.setFullYear(expiredDate.getFullYear() - 1);
-    res.cookie(COOKIES_PREFERENCES_SET, "", {
-      expires: expiredDate,
-      secure: true,
+  if ([COOKIE_CONSENT.ACCEPT, COOKIE_CONSENT.REJECT].includes(cookieConsent)) {
+    cookieExpires.setFullYear(cookieExpires.getFullYear() + 1);
+    cookieValue = JSON.stringify({
+      analytics: cookieConsent === COOKIE_CONSENT.ACCEPT,
     });
+  } else {
+    cookieExpires.setFullYear(cookieExpires.getFullYear() - 1);
   }
+
+  res.cookie(COOKIES_PREFERENCES_SET, cookieValue, {
+    expires: cookieExpires,
+    secure: true,
+    domain: res.locals.analyticsCookieDomain,
+  });
 }
 
 export function landingGet(req: Request, res: Response): void {

@@ -57,3 +57,7 @@ export function getZendeskAPIUrl(): string {
 export function getZendeskGroupIdPublic(): number {
   return Number(process.env.ZENDESK_GROUP_ID_PUBLIC);
 }
+
+export function getAnalyticsCookieDomain(): string {
+  return process.env.ANALYTICS_COOKIE_DOMAIN;
+}

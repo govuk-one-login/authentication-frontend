@@ -120,5 +120,5 @@
 {% block bodyEnd %}
   <script type="text/javascript" src="/public/scripts/cookies.js"></script>
   <script type="text/javascript"  src="/public/scripts/application.js"></script>
-  <script type="text/javascript" nonce='{{scriptNonce}}'>window.GOVSignIn.appInit("{{gtmId}}")</script>
+  <script type="text/javascript" nonce='{{scriptNonce}}'>window.GOVSignIn.appInit("{{gtmId}}", "{{ analyticsCookieDomain }}")</script>
 {% endblock %}

@@ -1,7 +1,6 @@
 "use strict";
 
 var cookies = function (trackingId, analyticsCookieDomain) {
-
   var COOKIES_PREFERENCES_SET = "cookies_preferences_set";
   var cookiesAccepted = document.querySelector("#cookies-accepted");
   var cookiesRejected = document.querySelector("#cookies-rejected");
@@ -63,55 +62,6 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     }
   }
 
-  function saveCookieSettings(event) {
-    event.preventDefault();
-
-    var hasConsented =
-      document.querySelector(
-        '#radio-cookie-preferences input[type="radio"]:checked'
-      ).value === "true";
-
-    setCookie(COOKIES_PREFERENCES_SET, {
-      analytics: hasConsented,
-    });
-    showElement(document.querySelector("#save-success-banner"));
-
-    if (hasConsented) {
-      initAnalytics();
-    }
-
-    var isGaCookie = !!(getCookie("_ga") && getCookie("_gid"));
-
-    if (isGaCookie && !hasConsented) {
-      var gtagCookie = "_gat_gtag_" + trackingId.replace(/-/g, "_");
-
-      setCookie("_ga", "", { days: -1 });
-      setCookie("_gid", "", { days: -1 });
-      setCookie(gtagCookie, "", { days: -1 });
-    }
-
-    window.scrollTo(0, 0);
-  }
-
-  function cookiesPageInit() {
-    var analyticsConsent = hasConsentForAnalytics();
-
-    if (analyticsConsent) {
-      setCookie(COOKIES_PREFERENCES_SET, { analytics: analyticsConsent });
-      document.querySelector("#policy-cookies-accepted").checked =
-        analyticsConsent;
-    } else {
-      document.querySelector("#policy-cookies-rejected").checked = true;
-    }
-
-    document.querySelector("#save-cookie-settings").addEventListener(
-      "click",
-      function (event) {
-        saveCookieSettings(event);
-      }.bind(this)
-    );
-  }
-
   function hasConsentForAnalytics() {
     var cookieConsent = JSON.parse(getCookie(COOKIES_PREFERENCES_SET));
     return cookieConsent ? cookieConsent.analytics : false;
@@ -146,24 +96,24 @@ var cookies = function (trackingId, analyticsCookieDomain) {
         ],
       },
       {
-        'department': {
-          'programmeteam': 'di',
-          'productteam': 'sso'
-        }
-      }
+        department: {
+          programmeteam: "di",
+          productteam: "sso",
+        },
+      },
     ];
 
     function addSessionJourneyToDataLayer(url) {
       const sessionJourney = getJourneyMapping(url);
 
       if (sessionJourney) {
-        window.dataLayer.push(sessionJourney)
+        window.dataLayer.push(sessionJourney);
       }
     }
 
     const url = window.location.search.includes("type")
-        ? window.location.pathname + window.location.search
-        : window.location.pathname
+      ? window.location.pathname + window.location.search
+      : window.location.pathname;
 
     addSessionJourneyToDataLayer(url);
 
@@ -178,30 +128,45 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     return {
       sessionjourney: {
         journey: journey,
-        status: status
-      }
-    }
+        status: status,
+      },
+    };
   }
 
   function getJourneyMapping(url) {
     const JOURNEY_DATA_LAYER_PATHS = {
-      "/enter-email?type=create-account": generateSessionJourney('sign up', 'start'),
-      "/account-not-found": generateSessionJourney('sign up', 'start'),
-      "/check-your-email": generateSessionJourney('sign up', 'middle'),
-      "/create-password": generateSessionJourney('sign up', 'middle'),
-      "/enter-phone-number": generateSessionJourney('sign up', 'middle'),
-      "/check-your-phone": generateSessionJourney('sign up', 'middle'),
-      "/account-created": generateSessionJourney('sign up', 'end'),
-      "/enter-email?type=sign-in": generateSessionJourney('sign in', 'start'),
-      "/enter-password-account-exists": generateSessionJourney('sign in', 'start'),
-      "/enter-password": generateSessionJourney('sign in', 'middle'),
-      "/enter-code": generateSessionJourney('sign in', 'middle'),
-      "/resend-code": generateSessionJourney('sign in', 'middle'),
-      "/updated-terms-and-conditions": generateSessionJourney('sign in', 'middle'),
-      "/share-info": generateSessionJourney('sign in', 'middle'),
-      "/reset-password-check-email": generateSessionJourney('password reset', 'start'),
-      "/reset-password": generateSessionJourney('password reset', 'middle'),
-      "/reset-password-confirmed": generateSessionJourney('password reset', 'end')
+      "/enter-email?type=create-account": generateSessionJourney(
+        "sign up",
+        "start"
+      ),
+      "/account-not-found": generateSessionJourney("sign up", "start"),
+      "/check-your-email": generateSessionJourney("sign up", "middle"),
+      "/create-password": generateSessionJourney("sign up", "middle"),
+      "/enter-phone-number": generateSessionJourney("sign up", "middle"),
+      "/check-your-phone": generateSessionJourney("sign up", "middle"),
+      "/account-created": generateSessionJourney("sign up", "end"),
+      "/enter-email?type=sign-in": generateSessionJourney("sign in", "start"),
+      "/enter-password-account-exists": generateSessionJourney(
+        "sign in",
+        "start"
+      ),
+      "/enter-password": generateSessionJourney("sign in", "middle"),
+      "/enter-code": generateSessionJourney("sign in", "middle"),
+      "/resend-code": generateSessionJourney("sign in", "middle"),
+      "/updated-terms-and-conditions": generateSessionJourney(
+        "sign in",
+        "middle"
+      ),
+      "/share-info": generateSessionJourney("sign in", "middle"),
+      "/reset-password-check-email": generateSessionJourney(
+        "password reset",
+        "start"
+      ),
+      "/reset-password": generateSessionJourney("password reset", "middle"),
+      "/reset-password-confirmed": generateSessionJourney(
+        "password reset",
+        "end"
+      ),
     };
 
     return JOURNEY_DATA_LAYER_PATHS[url];
@@ -232,7 +197,13 @@ var cookies = function (trackingId, analyticsCookieDomain) {
       var date = new Date();
       date.setTime(date.getTime() + options.days * 24 * 60 * 60 * 1000);
       cookieString =
-        cookieString + "; expires=" + date.toGMTString() + "; path=/;";
+        cookieString +
+        "; expires=" +
+        date.toGMTString() +
+        "; path=/;" +
+        " domain=" +
+        analyticsCookieDomain +
+        ";";
     }
 
     if (document.location.protocol === "https:") {
@@ -257,7 +228,6 @@ var cookies = function (trackingId, analyticsCookieDomain) {
   return {
     cookieBannerInit,
     isOnCookiesPage,
-    cookiesPageInit,
     hasConsentForAnalytics,
     initAnalytics,
   };

@@ -70,7 +70,6 @@ function registerRoutes(app: express.Application) {
   app.use(enterPhoneNumberRouter);
   app.use(registerAccountCreatedRouter);
   app.use(footerRouter);
-  app.use(cookiesRouter);
   app.use(checkYourPhoneRouter);
   app.use(securityCodeErrorRouter);
   app.use(enterMfaRouter);
