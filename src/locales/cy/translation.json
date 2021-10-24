@@ -563,59 +563,84 @@
       }
     },
     "accessibilityStatement": {
-      "title": "Accessibility statement for GOV.UK Sign in",
-      "header": "Accessibility statement for GOV.UK Sign in",
+      "title": "Accessibility statement for GOV.UK accounts",
+      "header": "Accessibility statement for GOV.UK accounts",
       "content": {
-        "paragraph1": "This accessibility statement applies to xxxx.",
-        "paragraph2": "This service is part of the wider GOV.UK website. There’s a separate ",
+        "paragraph1": "GOV.UK accounts are part of the wider GOV.UK website. There’s a separate ",
         "linkText": "accessibility statement for the main GOV.UK website.",
-        "linkHref": "https://www.gov.uk/help/accessibility-statement",
-        "paragraph3": "This service is run by the Government Digital Service (GDS)."
+        "linkHref": "https://www.gov.uk/help/accessibility",
+        "paragraph2": "This page only contains information about GOV.UK accounts, available at www.signin.account.gov.uk."
       },
       "section1": {
-        "header": "Using this service",
-        "paragraph1": "We want as many people as possible to be able to use this website. This means you should be able to:",
+        "header": "Using GOV.UK accounts",
+        "paragraph1": {
+          "text1": "GOV.UK accounts are run by the ",
+          "linkText": "Government Digital Service (GDS)",
+          "linkHref": "https://www.gov.uk/government/organisations/government-digital-service",
+          "text2": ", part of the Cabinet Office. We want as many people as possible to be able to use GOV.UK accounts. This means you should be able to:"
+        },
         "bulletPoint1": "change colours, contrast levels and fonts",
         "bulletPoint2": "zoom in up to 300% without the text spilling off the screen",
-        "bulletPoint3": "get from the start of the service to the end using just a keyboard",
-        "bulletPoint4": "get from the start of the service to the end using speech recognition software",
-        "bulletPoint5": "listen to most of the service using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)",
-        "paragraph2": "We’ve also made the website text as simple as possible to understand.",
+        "bulletPoint3": "navigate most of the account using just a keyboard",
+        "bulletPoint4": "navigate most of the account using speech recognition software",
+        "bulletPoint5": "listen to most of the account content using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)",
+        "paragraph2": "We’ve also made the text in the account as simple as possible to understand.",
         "linkText": "AbilityNet",
         "linkHref": "https://mcmw.abilitynet.org.uk/",
         "paragraph3": "has advice on making your device easier to use if you have a disability."
       },
       "section2": {
-        "header": "What to do if you have difficulty using this service",
-        "paragraph1": "If you have difficulty using this service, contact xxxx.",
-        "paragraph2": "If you need any part of this service in a different format like large print, audio recording or braille, contact xxxxx."
+        "header": "How accessible GOV.UK accounts are",
+        "paragraph1": "The following parts of GOV.UK accounts are not fully accessible:",
+        "bulletPoint1": "it’s not possible to stop or change the length of the time-out when you use, sign in to or create an account",
+        "bulletPoint2": "one link has poor colour contrast",
+        "bulletPoint3": "one page has heading elements that are not consistent",
+        "paragraph2": "We’ll update this page when issues are fixed or with information about when we plan to fix them."
       },
       "section3": {
-        "header": "Report accessibility problems with this service",
-        "paragraph1": "We’re always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we’re not meeting accessibility requirements, contact xxxx.",
-        "subHeader": "Enforcement procedure",
-        "paragraph2": "The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’).",
-        "paragraph3": "If you’re not happy with how we respond to your complaint, ",
+        "header": "What to do if you have difficulty using GOV.UK accounts",
+        "paragraph1": "If you have difficulty using GOV.UK accounts, ",
+        "linkText": "contact us.",
+        "linkHref": "/support"
+      },
+      "section4": {
+        "header": "Report accessibility problems with GOV.UK accounts",
+        "paragraph1": "We’re always looking to improve the accessibility of GOV.UK accounts. If you find any problems not listed on this page or think we’re not meeting accessibility requirements, ",
+        "linkText": "contact us.",
+        "linkHref": "/support"
+      },
+      "section5": {
+        "header": "Enforcement procedure",
+        "paragraph1": "The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’).",
+        "paragraph2": "If you’re not happy with how we respond to your complaint, ",
         "linkText": "contact the Equality Advisory and Support Service (EASS).",
         "linkHref": "https://www.equalityadvisoryservice.com/"
       },
-      "section4": {
-        "header": "Technical information about this service’s accessibility",
-        "paragraph1": "GDS is committed to making its website accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.",
+      "section6": {
+        "header": "Technical information about GOV.UK accounts’ accessibility",
+        "paragraph1": "The Government Digital Service is committed to making GOV.UK accounts accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.",
         "subHeader": "Compliance status",
-        "paragraph2": "This service is compliant with the ",
-        "linkText": "Web Content Accessibility Guidelines version 2.1",
-        "linkHref": "https://www.w3.org/TR/WCAG21/",
-        "paragraph3": " AA standard."
+        "paragraph2": {
+          "text1": "GOV.UK accounts are partially compliant with the",
+          "linkText": "Web Content Accessibility Guidelines version 2.1",
+          "linkHref": "https://www.w3.org/TR/WCAG21/",
+          "text2": " AA standard, due to the non-compliances listed below."
+        }
       },
-      "section5": {
-        "header": "How we tested this service",
-        "paragraph1": "This statement was prepared on [date when it was first published]. It was last reviewed on [date when it was last reviewed].",
-        "paragraph2": "This service was last tested on [date] and was checked for compliance with WCAG 2.1 AA. The test was carried out by xxxxxx.",
-        "paragraph3": "We tested it by xxxxx.",
-        "paragraph4": "You can ",
-        "linkText": "read the full accessibility test report [add link to report].",
-        "linkHref": ""
+      "section7": {
+        "header": "Non-accessible content",
+        "paragraph1": "The content listed below is non-accessible for the following reasons.",
+        "subHeader": "Non compliance with the accessibility regulations",
+        "paragraph2": "When you create an account or sign in, if you do not do anything for 60 minutes, the process will stop (time out) or you’ll be signed out. It’s not possible to adjust, extend or turn off the time out. This fails WCAG 2.1 success criterion 2.2.1 (Timing Adjustable)."
+      },
+      "section8": {
+        "header": "What we’re doing to improve accessibility",
+        "paragraph1": "We’ll update this page when issues are fixed, when we expect them to be fixed or when new problems are identified."
+      },
+      "section9": {
+        "header": "Preparation of this accessibility statement",
+        "paragraph1": "This statement was prepared on 4 November 2020. It was last reviewed on 21 October 2021.",
+        "paragraph2": "GOV.UK accounts were last tested on 4 October 2021. The test was carried out by the Digital Accessibility Centre (DAC), who produced an accessibility audit report on 13 October 2021. DAC assessed GOV.UK accounts against the Web Content Accessibility Guidelines WCAG 2.1."
       }
     },
     "resetPassword": {
