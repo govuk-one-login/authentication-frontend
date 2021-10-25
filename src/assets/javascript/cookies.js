@@ -87,13 +87,7 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     window.dataLayer = [
       {
         "gtm.allowlist": ["google"],
-        "gtm.blocklist": [
-          "nonGoogleScripts",
-          "nonGoogleIframes",
-          "nonGooglePixels",
-          "customScripts",
-          "customPixels",
-        ],
+        "gtm.blocklist": ["adm", "awct", "sp", "gclidw", "gcs", "opt"],
       },
       {
         department: {
