@@ -19,7 +19,7 @@ export function enterEmailService(
     const response = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.USER_EXISTS,
       {
-        email: emailAddress,
+        email: emailAddress.toLowerCase(),
       },
       getRequestConfig({ sessionId: sessionId, sourceIp: sourceIp })
     );
