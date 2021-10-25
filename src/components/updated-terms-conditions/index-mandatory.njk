@@ -28,19 +28,37 @@
         "type": "Submit",
         "preventDoubleClick": true,
         classes: 'govuk-blue-text govuk-white-button inverted-button',
-        "name": "acceptOrReject",
+        "name": "termsAndConditionsResult",
         "value": "accept"
     }) }}
 
     <br />
-    {{ govukButton({
-        "text": 'pages.updatedTermsAndCondsMandatory.goBackToService' | translate + clientName,
-        "type": "Submit",
-        "preventDoubleClick": true,
-        classes: 'govuk-btn-link inverted-button-link',
-        "name": "acceptOrReject",
-        "value": "reject"
-    }) }}
+
+    <p class="govuk-body govuk-white-text">
+        {{ 'pages.updatedTermsAndCondsMandatory.section2.paragraph1' | translate }}
+        {{ govukButton({
+            "text": 'pages.updatedTermsAndCondsMandatory.section2.govUkHomePageText' | translate,
+            "type": "Submit",
+            "preventDoubleClick": true,
+            classes: 'govuk-btn-link',
+            "name": "termsAndConditionsResult",
+            "value": "govUk"
+        }) }}
+    </p>
+
+    <p class="govuk-body govuk-white-text">
+        {{ 'pages.updatedTermsAndCondsMandatory.section2.paragraph2' | translate }}
+        {{ govukButton({
+            "text": 'pages.updatedTermsAndCondsMandatory.section2.contactUsText' | translate,
+            "type": "Submit",
+            "preventDoubleClick": true,
+            classes: 'govuk-btn-link',
+            "name": "termsAndConditionsResult",
+            "value": "contactUs"
+        }) }}
+    </p>
+
+
 
 </form>
 {% endblock %}

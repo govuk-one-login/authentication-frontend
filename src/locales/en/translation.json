@@ -295,11 +295,9 @@
       "subHeader": "What you can do with your GOV.UK account",
       "text": "You need to return to GOV.UK to continue.",
       "info": {
-        "paragraph1": "At the moment, you can only use your GOV.UK account to:",
+        "paragraph1": "At the moment, you can only use your GOV.UK account to save your answers when you use the Brexit checker.",
         "paragraph2": "In the future, you’ll be able to use your GOV.UK account to sign in to all government services. It will take a few years for this to happen.",
-        "paragraph3": "For now, you need to use different accounts for different government services.",
-        "listItem1": "manage your GOV.UK email subscriptions",
-        "listItem2": "save your answers in the Brexit checker"
+        "paragraph3": "For now, you need to use different accounts for different government services."
       },
       "inset": "Your progress on ",
       "insetContinued": " has been saved.",
@@ -461,7 +459,13 @@
         "termsAndConditionsText": "terms and conditions",
         "privacyNoticeText": "privacy notice",
         "cookiesPolicyText": "cookies policy",
-        "end": "to use this service."
+        "end": "to keep using your account."
+      },
+      "section2": {
+        "paragraph1": "If you do not agree to the new terms, you cannot use your GOV.UK account.",
+        "govUkHomePageText": "Go to the GOV.UK homepage.",
+        "paragraph2": "If you no longer need your account, or want to delete information saved in your account, you can ",
+        "contactUsText": "contact us."
       },
       "agreeAndContinue": "Agree and continue",
       "goBackToService": "Go back to "

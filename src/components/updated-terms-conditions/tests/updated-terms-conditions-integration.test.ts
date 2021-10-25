@@ -74,7 +74,7 @@ describe("Integration:: updated-terms-code", () => {
       .post("/updated-terms-and-conditions")
       .type("form")
       .send({
-        acceptOrReject: "reject",
+        termsAndConditionsResult: "reject",
       })
       .expect(500, done);
   });
@@ -90,7 +90,7 @@ describe("Integration:: updated-terms-code", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
-        acceptOrReject: "accept",
+        termsAndConditionsResult: "accept",
       })
       .expect("Location", "/auth-code")
       .expect(302, done);
@@ -107,22 +107,9 @@ describe("Integration:: updated-terms-code", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
-        acceptOrReject: "accept",
+        termsAndConditionsResult: "accept",
       })
       .expect("Location", "/share-info")
-      .expect(302, done);
-  });
-
-  it("should redirect to terms not accepted when terms and conditions are rejected", (done) => {
-    request(app)
-      .post("/updated-terms-and-conditions")
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        acceptOrReject: "reject",
-      })
-      .expect("Location", "/terms-and-conditions-not-accepted")
       .expect(302, done);
   });
 });

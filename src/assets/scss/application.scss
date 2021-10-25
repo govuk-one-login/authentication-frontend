@@ -31,14 +31,18 @@
 }
 
 .govuk-btn-link {
+  vertical-align: inherit;
   border: none;
-  font-weight: bold;
   outline: none;
   background: none;
   cursor: pointer;
   color: #ffffff;
   box-shadow: 0px 1px #ffffff;
   padding: 0;
+}
+
+.govuk-btn-link:hover {
+  background: none;
 }
 
 .inverted-button {
