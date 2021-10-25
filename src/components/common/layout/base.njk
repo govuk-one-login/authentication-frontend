@@ -74,42 +74,27 @@
         items: [
           {
             href: "/accessibility-statement",
-            attributes: {
-                      target: "_blank"
-
-                    },
+            attributes: {target: "_blank"},
             text: 'general.footer.accessibilityStatement.linkText' | translate
           },
           {
-            href: "/cookies",
-            attributes: {
-                                  target: "_blank"
-
-                                },
+            href: "https://www.gov.uk/help/cookies",
+              attributes: {target: "_blank"},
             text: 'general.footer.cookies.linkText' | translate
           },
           {
             href: "/terms-and-conditions",
-            attributes: {
-                                  target: "_blank"
-
-                                },
+              attributes: {target: "_blank"},
             text: 'general.footer.terms.linkText' | translate
           },
           {
               href: "/privacy-statement",
-              attributes: {
-                                    target: "_blank"
-
-                                  },
+              attributes: {target: "_blank"},
               text: 'general.footer.privacy.linkText' | translate
           },
           {
                 href: "/support",
-              attributes: {
-                                    target: "_blank"
-
-                                  },
+              attributes: {target: "_blank"},
               text: 'general.footer.support.linkText' | translate
           }
         ]
@@ -120,5 +105,6 @@
 {% block bodyEnd %}
   <script type="text/javascript" src="/public/scripts/cookies.js"></script>
   <script type="text/javascript"  src="/public/scripts/application.js"></script>
-  <script type="text/javascript" nonce='{{scriptNonce}}'>window.GOVSignIn.appInit("{{gtmId}}")</script>
+  <script type="text/javascript" nonce='{{scriptNonce}}'>window.GOVSignIn.appInit("{{gtmId}}", "{{ analyticsCookieDomain }}")</script>
 {% endblock %}
+

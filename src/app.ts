@@ -31,7 +31,6 @@ import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-p
 import { landingRouter } from "./components/landing/landing-route";
 import { getCSRFCookieOptions } from "./config/cookie";
 import { ENVIRONMENT_NAME } from "./app.constants";
-import { cookiesRouter } from "./components/common/cookies/cookies-routes";
 import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes";
 import { authCodeRouter } from "./components/auth-code/auth-code-routes";
 import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-code-routes";
@@ -70,7 +69,6 @@ function registerRoutes(app: express.Application) {
   app.use(enterPhoneNumberRouter);
   app.use(registerAccountCreatedRouter);
   app.use(footerRouter);
-  app.use(cookiesRouter);
   app.use(checkYourPhoneRouter);
   app.use(securityCodeErrorRouter);
   app.use(enterMfaRouter);

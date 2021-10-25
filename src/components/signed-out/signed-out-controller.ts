@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { BadRequestError } from "../../utils/error";
+import xss from "xss";
 
 export function signedOutGet(req: Request, res: Response): void {
-  if (req.query && req.query.error_code) {
-    throw new BadRequestError(
-      req.query.error_description as string,
-      req.query.error_code as string
-    );
+  const errorCode = xss(req.query.error_code as string);
+  const errorDescription = xss(req.query.error_description as string);
+  if (errorCode || errorDescription) {
+    throw new BadRequestError(errorDescription, errorCode);
   }
 
   if (req.cookies) {

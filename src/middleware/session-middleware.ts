@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ERROR_MESSAGES, PATH_NAMES } from "../app.constants";
 import { getNextPathByState } from "../components/common/constants";
+import xss from "xss";
 
 export function initialiseSessionMiddleware(
   req: Request,
@@ -25,7 +26,7 @@ export function getSessionIdMiddleware(
   next: NextFunction
 ): void {
   if (req.cookies && req.cookies.gs) {
-    const ids = req.cookies["gs"].split(".");
+    const ids = xss(req.cookies["gs"]).split(".");
 
     res.locals.sessionId = ids[0];
     res.locals.clientSessionId = ids[1];
