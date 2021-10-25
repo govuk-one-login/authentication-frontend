@@ -643,6 +643,145 @@
         "paragraph2": "GOV.UK accounts were last tested on 4 October 2021. The test was carried out by the Digital Accessibility Centre (DAC), who produced an accessibility audit report on 13 October 2021. DAC assessed GOV.UK accounts against the Web Content Accessibility Guidelines WCAG 2.1."
       }
     },
+    "termsAndConditions": {
+      "title": "GOV.UK account terms and conditions",
+      "header": "GOV.UK account terms and conditions",
+      "section1": {
+        "paragraph1": {
+          "text1": "These terms and conditions specifically cover GOV.UK accounts. You can use a GOV.UK account to access and use some government services and features. Pages that are part of the GOV.UK account have urls containing account.gov.uk. If you are using other parts of GOV.UK you should also read the ",
+          "linkText": "terms and conditions for GOV.UK."
+        },
+        "paragraph2": {
+          "text1": "The GOV.UK account is managed by ",
+          "linkText": "Government Digital Service",
+          "text2": " (GDS) on behalf of the Crown. GDS is part of the Cabinet Office and will be referred to as ‘we’ from now on."
+        },
+        "paragraph3": {
+          "text1": "Please read these terms and conditions, the ",
+          "linkText1": "GOV.UK accounts privacy notice",
+          "text2": " and the ",
+          "linkText2": "GOV.UK cookies policy",
+          "text3": "before using the GOV.UK account. The privacy notice explains the terms on which we process any personal data we collect from you or that you provide to us. The cookie policy gives information about the cookies we use and how we use them when you use GOV.UK or your GOV.UK account."
+        },
+        "paragraph4": "By registering for and continuing to use a GOV.UK account, you agree to these terms and conditions, the privacy notice and cookies policy.",
+        "subHeader": "Changes to these terms and conditions",
+        "paragraph5": "We can update these terms, as well as the cookies policy and privacy notice, at any time without notice.",
+        "paragraph6": "If we change the terms and conditions, we’ll ask you to accept them the next time you sign in to your account."
+      },
+      "section2": {
+        "header": "Accessing your GOV.UK account",
+        "paragraph1": "You are responsible for making all arrangements for you to access your GOV.UK account. This includes providing your own device, operating system, browser and internet connection. \nYou should use a device that uses a Windows, OS, iOS or Android operating system. We recommend you use one of the following browsers:",
+        "bulletPoint1": "The latest version of Google Chrome, Microsoft Edge, Mozilla Firefox, Samsung Internet or Internet Explorer",
+        "bulletPoint2": "Safari 12 or later",
+        "bulletPoint3": "Safari for iOS 12.1 or later",
+        "paragraph2": "We do not guarantee that your GOV.UK account will always be available, or that access to it will be error free. We will provide a way for you to report problems with your account.",
+        "paragraph3": "We may suspend, stop, remove, update or change the GOV.UK account without notice at any time."
+      },
+      "section3": {
+        "header": "Keeping your account secure",
+        "paragraph1": {
+          "text1": "We have many measures in place to keep your information safe, but as the owner of your GOV.UK account, you also have some responsibility for the security of your account. For example you should choose a strong password for your account and ensure you keep it secure. The UK’s National Cyber Security Centre (NCSC) provides ",
+          "linkText": "advice on keeping your online accounts secure."
+        },
+        "paragraph2": "If you think that someone knows the username and password to your GOV.UK account, you must reset your password as soon as possible."
+      },
+      "section4": {
+        "header": "Using your GOV.UK account",
+        "paragraph1": "You will use your account to access government services and for no other purpose.",
+        "paragraph2": "Unless permitted by law or under these terms and conditions, you must:",
+        "bulletPoint1": "not copy the GOV.UK account except where copying is incidental to normal use",
+        "bulletPoint2": "not rent, lease, sub-license, loan, translate, merge, adapt, vary or modify the GOV.UK account",
+        "bulletPoint3": "not combine or incorporate the GOV.UK account with any other programs or services",
+        "bulletPoint4": "not disassemble, decompile, reverse-engineer or create derivative works based on any part of the GOV.UK account",
+        "bulletPoint5": "comply with all technology control or export laws that apply to the technology used by the GOV.UK account",
+        "paragraph3": "You must not use your GOV.UK account:",
+        "bulletPoint6": "to transmit any material that is insulting or offensive",
+        "bulletPoint7": "to collect any data or attempt to decipher any transmissions to or from the servers running GOV.UK account",
+        "bulletPoint8": "in a way that could damage, disable, overburden, impair or compromise our systems or security",
+        "bulletPoint9": "in a way that interferes with other users",
+        "bulletPoint10": "in any unlawful or fraudulent manner or for any unlawful or fraudulent purpose",
+        "bulletPoint11": "in a manner that is improper use or inconsistent with these terms and conditions",
+        "bulletPoint12": "to gain or attempt to gain unauthorised access to the GOV.UK platform, the server on which the GOV.UK platform is stored or any server, computer or database connected to GOV.UK platform, by hacking or other means",
+        "bulletPoint13": "to transmit, send or upload any data that contains viruses, Trojan horses, worms, spyware or any other harmful programs designed to adversely affect the operation of computer software or hardware",
+        "bulletPoint14": "in connection with any kind of denial of service attack or for any malicious purpose",
+        "bulletPoint15": "with someone else’s registered details , unless you have the authority to do so from them",
+        "paragraph4": "If you breach any of these terms and conditions, we may stop you from accessing your GOV.UK account and may take action to enforce these terms and conditions and take other action as appropriate where we have suffered loss. If, by doing any of the above acts, you are also committing a criminal offence, we may report it to the relevant law enforcement authorities. We may cooperate with those authorities by disclosing your identity to them."
+      },
+      "section5": {
+        "header": "Deleting your account",
+        "paragraph1": {
+          "text1": "You can permanently delete your account and the information in it at any time by signing in to your account or ",
+          "linkText1": "contacting us.",
+          "text2": "We'll keep a record of certain information, in line with our ",
+          "linkText2": "privacy notice",
+          "text3": ", for audit purposes and to help prevent crime."
+        }
+      },
+      "section6": {
+        "header": "Changes",
+        "paragraph1": "We can make changes and improvements to the GOV.UK account at any time and without notice to:",
+        "bulletPoint1": "make technical improvements or corrections",
+        "bulletPoint2": "improve the performance of the service",
+        "bulletPoint3": "enhance functionality",
+        "bulletPoint4": "reflect changes to the operating system",
+        "bulletPoint5": "address security issues",
+        "bulletPoint6": "prevent crime"
+      },
+      "section7": {
+        "header": "Services and transactions",
+        "paragraph1": "You can use your GOV.UK account to access online government services. These services can be managed by GDS, the Cabinet Office or another government department or agency.",
+        "paragraph2": "Each service will have their own, separate terms and conditions, privacy notices and cookies policies, which apply to the use of that service. You should read these before you use the service.",
+        "paragraph3": "If a service run by another government department or agency stops being accessible with GOV.UK accounts the service will contact you to tell you what you should do."
+      },
+      "section8": {
+        "header": "Our legal responsibility to you",
+        "paragraph1": "The GOV.UK account is a tool and we have no liability to you for the online government services that you access using the GOV.UK account. Liability to you rests with the government service provider.",
+        "paragraph2": "Although we make reasonable efforts to provide, maintain and update a robust GOV.UK account service, it is provided 'as is'. We make no express or implied representations, warranties or guarantees that your access to, or use of, GOV.UK account will be unbroken or completely secure.",
+        "paragraph3": "We will not be liable or responsible for any loss or damage caused by a virus, denial of service attack or any other harmful material that may infect your device, equipment, programs, data or other proprietary material due to your use of a GOV.UK account.",
+        "subHeader1": "Loss and damages",
+        "paragraph4": "Nothing in these terms and conditions excludes or limits our liability for:",
+        "bulletPoint1": "death or personal injury as a result of our negligence",
+        "bulletPoint2": "fraud or fraudulent misrepresentation",
+        "bulletPoint3": "any other liability which cannot be excluded or limited under English law",
+        "paragraph5": "We’re not liable for any:",
+        "bulletPoint4": "loss or damage that may come from using the GOV.UK account that is not caused by our breach of these terms and conditions",
+        "bulletPoint5": "loss or damage to a device or digital content belonging to you",
+        "bulletPoint6": "loss or damage arising from an inability to access or use your GOV.UK account",
+        "bulletPoint7": "indirect or subsequent losses that were not foreseeable to both you and us when you started using your GOV.UK account (loss or damages are ‘foreseeable’ when they are an obvious result of our breach of these terms and conditions or if they were considered by you and us when you began using the GOV.UK account)",
+        "bulletPoint8": "loss of profits, revenue, contracts, savings, goodwill and wasted expenditure",
+        "paragraph6": "GDS is not liable for its failure to comply with the terms and conditions due to circumstances which are beyond GDS’ control.",
+        "paragraph7": "This does not affect any legal rights you may have as a consumer in relation to faulty services or software. Advice about your legal rights is available from your local Citizen’s Advice or Trading Standards Office.",
+        "subHeader2": "Links from the GOV.UK account",
+        "paragraph8": "We are not responsible for any links from your GOV.UK account links to websites that are managed by other government departments and agencies, service providers or other organisations. We do not have any control over the content on these websites.",
+        "paragraph9": "We’re not responsible for:",
+        "bulletPoint9": "the protection of any information you give to these websites",
+        "bulletPoint10": "any loss or damage that may come from your use of these websites, or any other websites they link to",
+        "paragraph10": "You agree to release us from any claims or disputes that may come from using these websites.",
+        "paragraph11": "You should read all terms and conditions, privacy policies and end user licences that relate to these websites before you use them."
+      },
+      "section9": {
+        "header": "Making sure these terms and conditions are followed",
+        "paragraph1": "Each section within these terms and conditions operates separately. If any provision in these terms and conditions is invalid or unenforceable according to applicable law, we will replace it with a valid and enforceable provision that most closely matches the intent of the original. This includes warranty disclaimers and exclusions, and limits of liability. The rest of these terms and conditions will remain in effect.",
+        "paragraph2": "If we delay in enforcing these terms and conditions, we can still enforce them later. If we do not insist right away that you follow the requirements within these terms and conditions, or we delay in taking steps against you if you break them, this will not prevent us from taking steps against you or prevent your need to follow the requirements at a later date."
+      },
+      "section10": {
+        "header": "Governing law",
+        "paragraph1": "The laws of England apply exclusively to these terms and conditions and to all matters relating to use of GOV.UK accounts. Any cause of action arising under or in connection with these terms and conditions or your use of GOV.UK accounts will be subject to the exclusive jurisdiction of the courts of England."
+      },
+      "section11": {
+        "header": "Contacting us",
+        "paragraph1": {
+          "linkText": "Contact us",
+          "text1": " if you have:"
+        },
+        "bulletPoint1": "questions about these terms and conditions",
+        "bulletPoint2": "questions or a complaint about the GOV.UK account",
+        "paragraph2": {
+          "text1": "Find out more ",
+          "linkText": "about GDS and our role."
+        }
+      }
+    },
     "resetPassword": {
       "title": "Reset your password",
       "header": "Reset your password",
