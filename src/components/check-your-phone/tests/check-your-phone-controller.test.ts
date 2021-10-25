@@ -115,7 +115,9 @@ describe("check your phone controller", () => {
       );
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
-      expect(res.redirect).to.have.been.calledWith("/security-code-invalid");
+      expect(res.redirect).to.have.been.calledWith(
+        "/security-code-invalid?actionType=otpMaxRetries"
+      );
     });
 
     it("should update the user session state value in the req", async () => {

@@ -106,7 +106,10 @@ describe("Integration:: resend mfa code", () => {
       .send({
         _csrf: token,
       })
-      .expect("Location", "/security-code-requested-too-many-times")
+      .expect(
+        "Location",
+        "/security-code-requested-too-many-times?actionType=mfaMaxCodesSent"
+      )
       .expect(302, done);
   });
 
@@ -123,7 +126,10 @@ describe("Integration:: resend mfa code", () => {
       .send({
         _csrf: token,
       })
-      .expect("Location", "/security-code-invalid-request")
+      .expect(
+        "Location",
+        "/security-code-invalid-request?actionType=mfaBlocked"
+      )
       .expect(302, done);
   });
 });

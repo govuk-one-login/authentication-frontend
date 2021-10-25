@@ -184,7 +184,49 @@ describe("Integration:: enter mfa", () => {
         _csrf: token,
         code: "123455",
       })
-      .expect("Location", "/security-code-invalid")
+      .expect("Location", "/security-code-invalid?actionType=mfaMaxRetries")
+      .expect(302, done);
+  });
+
+  it("should redirect to security code requests blocked when exceeded request limit", (done) => {
+    nock(baseApi).post("/verify-code").times(1).reply(400, {
+      sessionState: "MFA_CODE_REQUESTS_BLOCKED",
+      success: false,
+    });
+
+    request(app)
+      .post("/enter-code")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123455",
+      })
+      .expect(
+        "Location",
+        "/security-code-invalid-request?actionType=mfaBlocked"
+      )
+      .expect(302, done);
+  });
+
+  it("should redirect to security code requested too many times when exceed request limit", (done) => {
+    nock(baseApi).post("/verify-code").times(6).reply(400, {
+      sessionState: "MFA_SMS_MAX_CODES_SENT",
+      success: false,
+    });
+
+    request(app)
+      .post("/enter-code")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123455",
+      })
+      .expect(
+        "Location",
+        "/security-code-requested-too-many-times?actionType=mfaMaxCodesSent"
+      )
       .expect(302, done);
   });
 });

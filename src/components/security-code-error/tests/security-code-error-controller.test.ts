@@ -9,6 +9,7 @@ import {
   securityCodeInvalidGet,
   securityCodeTriesExceededGet,
 } from "../security-code-error-controller";
+import { SecurityCodeErrorType } from "../../common/constants";
 
 describe("security code  controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -18,7 +19,7 @@ describe("security code  controller", () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
-    req = { body: {}, session: {} };
+    req = { body: {}, session: {}, query: {} };
     res = { render: sandbox.fake(), redirect: sandbox.fake() };
   });
 
@@ -28,6 +29,8 @@ describe("security code  controller", () => {
 
   describe("securityCodeExpiredGet", () => {
     it("should render security code expired view", () => {
+      req.query.actionType = SecurityCodeErrorType.EmailMaxCodesSent;
+
       securityCodeInvalidGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("security-code-error/index.njk");
@@ -36,6 +39,8 @@ describe("security code  controller", () => {
 
   describe("securityCodeTriesExceededGet", () => {
     it("should render security code requested too many times view", () => {
+      req.query.actionType = SecurityCodeErrorType.EmailMaxCodesSent;
+
       securityCodeTriesExceededGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
@@ -46,6 +51,8 @@ describe("security code  controller", () => {
 
   describe("securityCodeCannotRequestGet", () => {
     it("should render security code invalid request view", () => {
+      req.query.actionType = SecurityCodeErrorType.EmailMaxCodesSent;
+
       securityCodeCannotRequestCodeGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
