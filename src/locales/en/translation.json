@@ -361,7 +361,9 @@
       "header": "You entered the wrong security code too many times",
       "info": {
         "paragraph1": "You need to wait 15 minutes.",
-        "paragraph2": "You can then get a new code and try again."
+        "paragraph2Start": "You can then ",
+        "link": "get a new code ",
+        "paragraph2End": "and try again."
       }
     },
     "securityRequestsExceededExpired": {
@@ -369,7 +371,9 @@
       "header": "You requested too many security codes",
       "info": {
         "paragraph1": "You need to wait 15 minutes.",
-        "paragraph2": "You can then get a new code and try again."
+        "paragraph2Start": "You can then ",
+        "link": "get a new code ",
+        "paragraph2End": "and try again."
       }
     },
     "securityCodeWaitToRequest": {
@@ -377,7 +381,9 @@
       "header": "You cannot get a new security code at the moment ",
       "info": {
         "paragraph1": "This is because you requested too many security codes.",
-        "paragraph2": "You can try again after 15 minutes have passed."
+        "paragraph2Start": "You can ",
+        "link": "get a new code ",
+        "paragraph2End": "after 15 minutes have passed."
       }
     },
     "enterMfa": {
@@ -859,7 +865,8 @@
       "subHeader": "What next",
       "bulletPointSection": {
         "title": "You can:",
-        "first": "wait 15 minutes and try to sign in again",
+        "first": "wait 15 minutes and ",
+        "firstLink": "try to sign in again",
         "second": "reset your password"
       }
     },

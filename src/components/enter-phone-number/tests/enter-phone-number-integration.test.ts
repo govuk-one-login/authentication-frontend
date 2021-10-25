@@ -191,7 +191,10 @@ describe("Integration::enter phone number", () => {
         _csrf: token,
         phoneNumber: "07738394991",
       })
-      .expect("Location", "/security-code-requested-too-many-times")
+      .expect(
+        "Location",
+        "/security-code-requested-too-many-times?actionType=otpMaxCodesSent"
+      )
       .expect(302, done);
   });
 
@@ -214,7 +217,10 @@ describe("Integration::enter phone number", () => {
         _csrf: token,
         phoneNumber: "07738394991",
       })
-      .expect("Location", "/security-code-invalid-request")
+      .expect(
+        "Location",
+        "/security-code-invalid-request?actionType=otpBlocked"
+      )
       .expect(302, done);
   });
 

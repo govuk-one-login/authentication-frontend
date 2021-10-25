@@ -6,6 +6,11 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityRequestsExceededExpired.header' | translate }}</h1>
 
 <p class="govuk-body">{{'pages.securityRequestsExceededExpired.info.paragraph1' | translate}}</p>
-<p class="govuk-body">{{'pages.securityRequestsExceededExpired.info.paragraph2' | translate}}</p>
+    <p class="govuk-body">
+        {{'pages.securityCodeInvalid.info.paragraph2Start' | translate}}
+        <a class="govuk-link" rel="noreferrer" href="{{ newCodeLink }}">{{'pages.securityCodeInvalid.info.link' | translate}}</a>
+        {{'pages.securityCodeInvalid.info.paragraph2End' | translate}}
+    </p>
+
 
 {% endblock %}

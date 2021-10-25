@@ -91,7 +91,9 @@ describe("enter mfa controller", () => {
       await enterMfaPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
-      expect(res.redirect).to.have.been.calledWith("/security-code-invalid");
+      expect(res.redirect).to.have.been.calledWith(
+        "/security-code-invalid?actionType=mfaMaxRetries"
+      );
     });
   });
 });

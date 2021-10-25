@@ -189,7 +189,7 @@ describe("Integration:: check your phone", () => {
         _csrf: token,
         code: "123455",
       })
-      .expect("Location", "/security-code-invalid")
+      .expect("Location", "/security-code-invalid?actionType=otpMaxRetries")
       .expect(302, done);
   });
 });

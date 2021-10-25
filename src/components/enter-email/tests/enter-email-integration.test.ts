@@ -223,7 +223,10 @@ describe("Integration::enter email", () => {
         _csrf: token,
         email: "test@test.com",
       })
-      .expect("Location", "/security-code-requested-too-many-times")
+      .expect(
+        "Location",
+        "/security-code-requested-too-many-times?actionType=emailMaxCodesSent"
+      )
       .expect(302, done);
   });
 
@@ -247,7 +250,10 @@ describe("Integration::enter email", () => {
         _csrf: token,
         email: "test@test.com",
       })
-      .expect("Location", "/security-code-invalid-request")
+      .expect(
+        "Location",
+        "/security-code-invalid-request?actionType=emailBlocked"
+      )
       .expect(302, done);
   });
 });

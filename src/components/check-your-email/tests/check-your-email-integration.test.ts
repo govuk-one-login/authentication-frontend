@@ -183,7 +183,7 @@ describe("Integration:: check your email", () => {
         _csrf: token,
         code: "123455",
       })
-      .expect("Location", "/security-code-invalid")
+      .expect("Location", "/security-code-invalid?actionType=emailMaxRetries")
       .expect(302, done);
   });
 });
