@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
 import { getNextPathByState } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
-import { SERVICE_TYPE } from "../../app.constants";
+import { PATH_NAMES, SERVICE_TYPE } from "../../app.constants";
 import { ClientInfoServiceInterface } from "../common/client-info/types";
 import { UpdateProfileServiceInterface } from "../common/update-profile/types";
 import { updateProfileService } from "../common/update-profile/update-profile-service";
@@ -56,7 +56,7 @@ export function updatedTermsConditionsPost(
 
     if (termsAndConditionsResult === "contactUs") {
       req.session.destroy();
-      return res.redirect("/contact-us?supportType=PUBLIC");
+      return res.redirect(PATH_NAMES.CONTACT_US + "?supportType=PUBLIC");
     }
 
     if (termsAndConditionsResult === "accept") {
