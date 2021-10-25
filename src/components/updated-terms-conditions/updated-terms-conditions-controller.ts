@@ -47,13 +47,19 @@ export function updatedTermsConditionsPost(
   return async function (req: Request, res: Response) {
     const { email } = req.session;
     const { sessionId, clientSessionId } = res.locals;
-    const acceptOrReject = req.body.acceptOrReject;
+    const termsAndConditionsResult = req.body.termsAndConditionsResult;
 
-    if (acceptOrReject === "reject") {
-      return res.redirect(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS_NOT_ACCEPTED);
+    if (termsAndConditionsResult === "govUk") {
+      req.session.destroy();
+      return res.redirect("https://www.gov.uk/");
     }
 
-    if (acceptOrReject === "accept") {
+    if (termsAndConditionsResult === "contactUs") {
+      req.session.destroy();
+      return res.redirect(PATH_NAMES.CONTACT_US + "?supportType=PUBLIC");
+    }
+
+    if (termsAndConditionsResult === "accept") {
       const result = await service.updateProfile(
         sessionId,
         clientSessionId,
@@ -69,8 +75,4 @@ export function updatedTermsConditionsPost(
       res.redirect(getNextPathByState(result.sessionState));
     }
   };
-}
-
-export function termsConditionsNotAccepted(req: Request, res: Response): void {
-  res.render("updated-terms-conditions/index-rejected.njk");
 }

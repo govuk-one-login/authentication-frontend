@@ -21,7 +21,9 @@ describe("updated terms conditions controller", () => {
 
     req = {
       body: {},
-      session: {},
+      session: {
+        destroy: sandbox.fake(),
+      },
       i18n: { language: "en" },
     };
     res = {
@@ -64,7 +66,7 @@ describe("updated terms conditions controller", () => {
   });
 
   describe("updatedTermsCondsPost", () => {
-    it("should redirect to /auth-code when acceptOrReject has value accept", async () => {
+    it("should redirect to /auth-code when termsAndConditionsResult has value accept", async () => {
       const fakeService: UpdateProfileServiceInterface = {
         updateProfile: sandbox.fake.returns({
           success: true,
@@ -72,7 +74,7 @@ describe("updated terms conditions controller", () => {
         }),
       };
 
-      req.body.acceptOrReject = "accept";
+      req.body.termsAndConditionsResult = "accept";
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
       req.session.email = "test@test.com";
@@ -86,13 +88,13 @@ describe("updated terms conditions controller", () => {
       expect(res.redirect).to.have.calledWith("/auth-code");
     });
 
-    it("should redirect to redirectUri with error code param when acceptOrReject has value reject", async () => {
+    it("should redirect to govUK website when termsAndConditionsResult has value govUk", async () => {
       const fakeService: UpdateProfileServiceInterface = {
         updateProfile: sandbox.fake(),
       };
 
       req.session.redirectUri = "http://test.test";
-      req.body.acceptOrReject = "reject";
+      req.body.termsAndConditionsResult = "govUk";
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
       req.session.email = "test@test.com";
@@ -104,9 +106,28 @@ describe("updated terms conditions controller", () => {
       );
 
       expect(fakeService.updateProfile).not.to.been.called;
-      expect(res.redirect).to.have.calledWith(
-        "/terms-and-conditions-not-accepted"
+      expect(res.redirect).to.have.calledWith("https://www.gov.uk/");
+    });
+
+    it("should redirect to support page when termsAndConditionsResult has value contactUs", async () => {
+      const fakeService: UpdateProfileServiceInterface = {
+        updateProfile: sandbox.fake(),
+      };
+
+      req.session.redirectUri = "http://test.test";
+      req.body.termsAndConditionsResult = "contactUs";
+      res.locals.sessionId = "s-123456-djjad";
+      res.locals.clientSessionId = "c-123456-djjad";
+      req.session.email = "test@test.com";
+      req.session.state = "test";
+
+      await updatedTermsConditionsPost(fakeService)(
+        req as Request,
+        res as Response
       );
+
+      expect(fakeService.updateProfile).not.to.been.called;
+      expect(res.redirect).to.have.calledWith("/contact-us?supportType=PUBLIC");
     });
   });
 });
