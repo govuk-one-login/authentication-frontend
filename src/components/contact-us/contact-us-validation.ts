@@ -1,7 +1,6 @@
 import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
-import { containsNumbersOrSpacesOnly } from "../../utils/phone-number";
 
 export function validateContactUsRequest(): ValidationChainFunc {
   return [
