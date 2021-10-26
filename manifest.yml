@@ -24,3 +24,4 @@ applications:
       - route: ((route_name))
     services:
       - ((environment_name))-frontend-redis
+      - ((environment_name))-splunk
