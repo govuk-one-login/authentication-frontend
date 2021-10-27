@@ -58,4 +58,22 @@ describe("reset password controller", () => {
       );
     });
   });
+
+  describe("resetPasswordPost", () => {
+    it("should redirect to /reset-password-expired-link when timestamp has been tampered with", async () => {
+      const fakeService: ResetPasswordServiceInterface = {
+        updatePassword: sandbox.fake.returns({ success: true }),
+      };
+
+      req.body.password = "Password1";
+      req.body.code = "asdkki8ddas.234";
+
+      await resetPasswordPost(fakeService)(req as Request, res as Response);
+
+      expect(fakeService.updatePassword).to.have.been.not.calledOnce;
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.RESET_PASSWORD_EXPIRED_LINK
+      );
+    });
+  });
 });

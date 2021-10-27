@@ -11,7 +11,13 @@ function isCodeExpired(code: string): boolean {
   }
 
   const codeExpiry = code.split(".")[1];
-  return Date.now() > Number(codeExpiry);
+  const codeAsNumber = Number(codeExpiry);
+
+  if (isNaN(codeAsNumber)) {
+    return true;
+  }
+
+  return Date.now() > codeAsNumber;
 }
 
 function getCode(code: string): string {
