@@ -9,7 +9,7 @@ import { SendNotificationServiceInterface } from "../common/send-notification/ty
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 
 export function enterEmailGet(req: Request, res: Response): void {
-  if (req.session.createAccount) {
+  if (req.query.type === "create-account") {
     return res.render("enter-email/index-create-account.njk");
   }
   return res.render("enter-email/index-existing-account.njk");
@@ -28,9 +28,6 @@ export function enterEmailPost(
     if (!result.success) {
       throw new BadRequestError(result.message, result.code);
     }
-
-    req.session.createAccount =
-      result.sessionState === USER_STATE.USER_NOT_FOUND;
 
     return res.redirect(getNextPathByState(result.sessionState));
   };
