@@ -5,6 +5,7 @@ import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 import { enterEmailGet, enterEmailPost } from "../enter-email-controller";
 import { EnterEmailServiceInterface } from "../types";
+import { JOURNEY_TYPE } from "../../common/constants";
 
 describe("enter email controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -14,7 +15,7 @@ describe("enter email controller", () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
-    req = { body: {}, session: {} };
+    req = { body: {}, session: {}, query: {} };
     res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
   });
 
@@ -24,7 +25,7 @@ describe("enter email controller", () => {
 
   describe("enterEmailGet", () => {
     it("should render enter email create account view when user selected create account", () => {
-      req.session.createAccount = true;
+      req.query.type = JOURNEY_TYPE.CREATE_ACCOUNT;
 
       enterEmailGet(req as Request, res as Response);
 

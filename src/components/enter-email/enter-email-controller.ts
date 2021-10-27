@@ -3,13 +3,13 @@ import { NOTIFICATION_TYPE, USER_STATE } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { enterEmailService } from "./enter-email-service";
 import { EnterEmailServiceInterface } from "./types";
-import { getNextPathByState } from "../common/constants";
+import { getNextPathByState, JOURNEY_TYPE } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 
 export function enterEmailGet(req: Request, res: Response): void {
-  if (req.query.type === "create-account") {
+  if (req.query.type === JOURNEY_TYPE.CREATE_ACCOUNT) {
     return res.render("enter-email/index-create-account.njk");
   }
   return res.render("enter-email/index-existing-account.njk");

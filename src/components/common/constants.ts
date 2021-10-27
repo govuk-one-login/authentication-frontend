@@ -101,11 +101,16 @@ function pathWithQueryParam(
 }
 
 export function getNextPathByState(sessionState: string): string {
-  let nextPath = STATE_TO_PATH_MAPPING[sessionState];
+  const nextPath = STATE_TO_PATH_MAPPING[sessionState];
 
   if (!nextPath) {
-    nextPath = PATH_NAMES.SIGN_IN_OR_CREATE;
+    throw Error(`Invalid state:${sessionState}`);
   }
 
   return nextPath;
 }
+
+export const JOURNEY_TYPE = {
+  SIGN_IN: "sign-in",
+  CREATE_ACCOUNT: "create-account",
+};

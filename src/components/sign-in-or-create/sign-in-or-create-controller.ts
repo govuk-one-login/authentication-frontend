@@ -4,6 +4,7 @@ import { PATH_NAMES, SERVICE_TYPE } from "../../app.constants";
 import { clientInfoService } from "../common/client-info/client-info-service";
 import { ClientInfoServiceInterface } from "../common/client-info/types";
 import { BadRequestError } from "../../utils/error";
+import { JOURNEY_TYPE } from "../common/constants";
 
 export function signInOrCreateGet(
   service: ClientInfoServiceInterface = clientInfoService()
@@ -42,6 +43,9 @@ export function signInOrCreateGet(
 }
 
 export function signInOrCreatePost(req: Request, res: Response): void {
-  const type = req.body.createAccount === "true" ? "create-account" : "sign-in";
+  const type =
+    req.body.createAccount === "true"
+      ? JOURNEY_TYPE.CREATE_ACCOUNT
+      : JOURNEY_TYPE.SIGN_IN;
   res.redirect(PATH_NAMES.ENTER_EMAIL + "?type=" + type);
 }
