@@ -827,6 +827,7 @@
           "text2": " provide more information about this"
         },
         "bulletPoint4": "online identifiers, such as your Internet Protocol (IP) address, and technical information about the device you use including the model, web browser and operating system, which is automatically collected in system logs when you use GOV.UK",
+        "bulletPoint5": "questions, queries or feedback you leave, including your name and email address, if you provide them on the GOV.UK accounts contact form",
         "paragraph3": "When you create an account, it will automatically generate a unique account identifier."
       },
       "section3": {
@@ -847,6 +848,7 @@
         "bulletPoint8": "contact you about any planned interruptions, problems or changes that may affect your account (using your email address)",
         "bulletPoint9": "contact you to ask for feedback on your account, if you have given us permission to (using your email address)",
         "bulletPoint10": "improve the GOV.UK account (using Google Analytics data)",
+        "bulletPoint11": "respond to any feedback you send us, if you’ve asked us to",
         "paragraph3": "We may also use your information to produce anonymised reports about GOV.UK accounts. This helps us understand where we can make improvements to GOV.UK accounts."
       },
       "section4": {
@@ -954,7 +956,7 @@
         "header": "Changes to this policy",
         "paragraph1": "We may change this privacy policy. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy policy will apply to you and your information immediately.",
         "paragraph2": "If these changes affect how your personal information is processed, GDS will let you know.",
-        "paragraph3": "Last updated 25 October 2021"
+        "paragraph3": "Last updated 27 October 2021"
       }
     },
     "resetPassword": {
