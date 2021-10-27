@@ -10,6 +10,7 @@ import { EnterPasswordServiceInterface } from "./types";
 import { MfaServiceInterface } from "../common/mfa/types";
 import { mfaService } from "../common/mfa/mfa-service";
 import { getNextPathByState } from "../common/constants";
+import { BadRequestError } from "../../utils/error";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -69,6 +70,11 @@ export function enterPasswordPost(
           email,
           req.ip
         );
+
+        if (!result.success) {
+          throw new BadRequestError(result.message, result.code);
+        }
+
         redirectTo = getNextPathByState(result.sessionState);
       }
 
