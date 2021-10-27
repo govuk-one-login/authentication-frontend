@@ -21,7 +21,7 @@ export function enterEmailPost(
   return async function (req: Request, res: Response) {
     const email = req.body.email;
     const sessionId = res.locals.sessionId;
-    req.session.email = email;
+    req.session.email = email.toLowerCase();
 
     const result = await service.userExists(sessionId, email, req.ip);
 
@@ -42,7 +42,7 @@ export function enterEmailCreatePost(
     const sessionId = res.locals.sessionId;
     const clientSessionId = res.locals.clientSessionId;
 
-    req.session.email = email;
+    req.session.email = email.toLowerCase();
     const userExistsResponse = await service.userExists(
       sessionId,
       email,
