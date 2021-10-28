@@ -23,8 +23,8 @@ describe("phone-number", () => {
       expect(containsUKMobileNumber("07911 123456")).to.equal(true);
     });
 
-    it("should return true when UK landline number entered", () => {
-      expect(containsUKMobileNumber("020 3451 9000")).to.equal(true);
+    it("should return false when UK landline number entered", () => {
+      expect(containsUKMobileNumber("020 3451 9000")).to.equal(false);
     });
   });
 

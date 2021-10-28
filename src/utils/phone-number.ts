@@ -1,4 +1,4 @@
-import { isValidPhoneNumber } from "libphonenumber-js";
+import { isValidPhoneNumber } from "libphonenumber-js/mobile";
 
 export function containsUKMobileNumber(value: string): boolean {
   return isValidPhoneNumber(value, "GB");
