@@ -15,7 +15,7 @@
 <p class="govuk-body">{{'pages.enterMfa.info.paragraph2' | translate | replace("[mobile]", phoneNumber )}}</p>
 
 <form action="/enter-code" method="post" novalidate>
-
+  <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
   <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
   {{ govukInput({
