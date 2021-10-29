@@ -23,8 +23,32 @@ describe("phone-number", () => {
       expect(containsUKMobileNumber("07911 123456")).to.equal(true);
     });
 
-    it("should return false when UK landline number entered", () => {
-      expect(containsUKMobileNumber("020 3451 9000")).to.equal(false);
+    it("should return false when invalid UK mobile phone number entered", () => {
+      expect(containsUKMobileNumber("06911123456")).to.equal(false);
+    });
+
+    it("should return false when London UK landline number entered", () => {
+      expect(containsUKMobileNumber("020 7946 0000")).to.equal(false);
+    });
+
+    it("should return false when Edinburgh UK landline number entered", () => {
+      expect(containsUKMobileNumber("01314960001")).to.equal(false);
+    });
+
+    it("should return false when no area UK landline number entered", () => {
+      expect(containsUKMobileNumber("01632 960999")).to.equal(false);
+    });
+
+    it("should return false when UK wide landline number entered", () => {
+      expect(containsUKMobileNumber("03069 990000 ")).to.equal(false);
+    });
+
+    it("should return false when freephone number entered", () => {
+      expect(containsUKMobileNumber("08081 570000")).to.equal(false);
+    });
+
+    it("should return false when premium rate number entered", () => {
+      expect(containsUKMobileNumber("0909 8790000")).to.equal(false);
     });
   });
 
