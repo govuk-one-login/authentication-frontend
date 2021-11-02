@@ -3,16 +3,17 @@ import axios, {
   AxiosRequestConfig,
   AxiosError,
   AxiosResponse,
+  AxiosRequestHeaders,
 } from "axios";
 import { getApiKey, getFrontendApiBaseUrl } from "../config";
 import { ApiResponseResult } from "../types";
 import { HTTP_STATUS_CODES } from "../app.constants";
 import { ApiError } from "./error";
 
-const headers: Readonly<Record<string, string | boolean>> = {
+const headers: AxiosRequestHeaders = {
   Accept: "application/json",
   "Content-Type": "application/json; charset=utf-8",
-  "Access-Control-Allow-Credentials": true,
+  "Access-Control-Allow-Credentials": "true",
   "X-Requested-With": "XMLHttpRequest",
 };
 

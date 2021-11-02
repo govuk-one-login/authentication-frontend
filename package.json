@@ -12,7 +12,7 @@
     "build": "yarn build-sass && yarn build-ts && yarn minfiy-build-js && yarn copy-assets",
     "build-sass": "rm -rf dist/public/style.css && sass --no-source-map src/assets/scss/application.scss dist/public/style.css --style compressed",
     "clean": "rm -rf dist node_modules logs.json",
-    "copy-assets": "mkdir -p dist && copyfiles -u 1 src/**/*.njk dist/ src/locales/**/** dist/ && copyfiles -a static/* && copyfiles -u 3 src/assets/javascript/*.js dist/public/scripts",
+    "copy-assets": "mkdir -p dist && copyfiles -u 1 src/**/*.njk dist/ src/locales/**/** dist/ && copyfiles -u 3 src/assets/javascript/*.js dist/public/scripts",
     "dev": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\"",
     "dummy-server": "node dev-app.js",
     "depcheck": "depcheck",
@@ -48,7 +48,7 @@
     "semi": true
   },
   "dependencies": {
-    "axios": "^0.21.2",
+    "axios": "^0.24.0",
     "cfenv": "^1.2.4",
     "csurf": "^1.11.0",
     "connect-redis": "^6.0.0",
@@ -62,12 +62,12 @@
     "i18next": "^21.2.4",
     "i18next-fs-backend": "^1.1.1",
     "i18next-http-middleware": "^3.1.4",
-    "jsdom": "^18.0.0",
+    "jsdom": "^18.0.1",
     "node-zendesk": "^2.1.0",
     "nunjucks": "^3.2.3",
     "libphonenumber-js": "^1.9.39",
     "prettier": "^2.4.1",
-    "pino": "^6.13.2",
+    "pino": "^7.0.5",
     "pino-http": "^5.7.0",
     "redis": "^3.1.2",
     "uuid": "^8.3.2",
@@ -118,7 +118,7 @@
     "sinon-chai": "^3.7.0",
     "supertest": "^6.1.5",
     "ts-node": "^10.2.1",
-    "typescript": "^4.4.3",
-    "uglify-js": "^3.14.1"
+    "typescript": "^4.4.4",
+    "uglify-js": "^3.14.3"
   }
 }
