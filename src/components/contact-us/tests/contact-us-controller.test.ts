@@ -19,8 +19,8 @@ describe("contact us controller", () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
-    req = { body: {}, query: {} };
-    res = { render: sandbox.fake(), redirect: sandbox.fake() };
+    req = { body: {}, query: {}, get: sandbox.fake() };
+    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
   });
 
   afterEach(() => {

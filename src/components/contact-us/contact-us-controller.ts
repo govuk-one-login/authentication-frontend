@@ -25,6 +25,10 @@ export function contactUsFormPost(
       subject: req.body.serviceType,
       email: req.body.replyEmail,
       name: req.body.name,
+      optionalData: {
+        sessionId: res.locals.sessionId,
+        userAgent: req.get("User-Agent"),
+      },
     });
 
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);

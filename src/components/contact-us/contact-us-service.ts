@@ -1,4 +1,4 @@
-import { ContactForm, ContactUsServiceInterface } from "./types";
+import { ContactForm, ContactUsServiceInterface, OptionalData } from "./types";
 import { Client } from "node-zendesk";
 import { zendeskAPIClient } from "../../utils/zendesk";
 import { getZendeskGroupIdPublic } from "../../config";
@@ -12,7 +12,12 @@ export function contactUsService(
     const payload: any = {
       ticket: {
         subject: contactForm.subject,
-        comment: { body: contactForm.comment },
+        comment: {
+          body: formatCommentBody(
+            contactForm.comment,
+            contactForm.optionalData
+          ),
+        },
         group_id: getZendeskGroupIdPublic(),
         tags: ["govuk_sign_in"],
       },
@@ -27,6 +32,14 @@ export function contactUsService(
 
     await zendeskClient.tickets.create(payload);
   };
+
+  function formatCommentBody(comment: string, optionalData: OptionalData) {
+    return `
+    ${comment}
+    --------------------------------------------------
+    Session id:${optionalData.sessionId}
+    User agent:${optionalData.userAgent}`;
+  }
 
   return {
     contactUsSubmitForm,
