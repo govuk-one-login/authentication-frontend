@@ -65,7 +65,7 @@
     "jsdom": "^18.0.1",
     "node-zendesk": "^2.1.0",
     "nunjucks": "^3.2.3",
-    "libphonenumber-js": "^1.9.39",
+    "libphonenumber-js": "^1.9.42",
     "prettier": "^2.4.1",
     "pino": "^7.0.5",
     "pino-http": "^5.7.0",
