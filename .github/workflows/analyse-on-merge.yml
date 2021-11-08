@@ -1,0 +1,52 @@
+name: Pre-merge checks
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6389:6379
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.8.0
+      - name: Install dependencies
+        run: yarn install
+      - name: Build app
+        run: yarn build
+      - name: Run unit tests
+        run: yarn test:unit
+      - name: Run integration tests
+        run: yarn test:integration
+      - name: Run lint
+        run: yarn lint
+      - name: Run test coverage
+        run: yarn test:coverage
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    env:
+      ENVIRONMENT: development
+      API_BASE_URL: http://localhost:6000/api
+      FRONTEND_API_BASE_URL: http://localhost:6060/api
+      SESSION_SECRET: secret
+      API_KEY: test-key
+      REDIS_HOST: localhost
+      REDIS_PORT: 6389
