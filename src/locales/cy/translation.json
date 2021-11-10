@@ -362,8 +362,8 @@
       "info": {
         "paragraph1": "You need to wait 15 minutes.",
         "paragraph2Start": "You can then ",
-        "link": "get a new code ",
-        "paragraph2End": "and try again."
+        "link": "get a new code",
+        "paragraph2End": " and try again."
       }
     },
     "securityRequestsExceededExpired": {
@@ -372,8 +372,8 @@
       "info": {
         "paragraph1": "You need to wait 15 minutes.",
         "paragraph2Start": "You can then ",
-        "link": "get a new code ",
-        "paragraph2End": "and try again."
+        "link": "get a new code",
+        "paragraph2End": " and try again."
       }
     },
     "securityCodeWaitToRequest": {
@@ -382,8 +382,8 @@
       "info": {
         "paragraph1": "This is because you requested too many security codes.",
         "paragraph2Start": "You can ",
-        "link": "get a new code ",
-        "paragraph2End": "after 15 minutes have passed."
+        "link": "get a new code",
+        "paragraph2End": " after 15 minutes have passed."
       }
     },
     "enterMfa": {
