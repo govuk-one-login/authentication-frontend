@@ -3,6 +3,8 @@
 const express = require("express");
 const axios = require("axios").default;
 const dotenv = require("dotenv").config();
+const url = require("url");
+const querystring = require("querystring");
 const app = express();
 const port = 2000;
 
@@ -14,9 +16,9 @@ const AUTHORIZE_REQUEST =
   "redirect_uri=https%3A%2F%2Fdi-auth-stub-relying-party-build.london.cloudapps.digital%2Foidc%2Fauthorization-code%2Fcallback&" +
   "state=sEazICy8jKFFlt-NLSw5yqYRA2r4q5BZGcAf9sYeWRg&" +
   "nonce=gyRdMfQGsQS9BvhU-lBwENOZ0UU&" +
-  "client_id=" +
   process.env.TEST_CLIENT_ID +
-  "&cookie_consent=accept";
+  "&cookie_consent=accept" +
+  "&_ga=test";
 
 app.get("/", (req, res) => {
   axios
@@ -39,7 +41,11 @@ app.get("/", (req, res) => {
         maxAge: new Date(new Date().getTime() + 60 * 60000),
       });
       console.log("Session is:" + cookeValue);
-      res.redirect("http://localhost:3000/");
+      const location = url.parse(response.headers.location, true);
+
+      res.redirect(
+        "http://localhost:3000/?" + querystring.stringify(location.query)
+      );
     })
     .catch(function (error) {
       console.error(error);

@@ -8,6 +8,7 @@ export function authCodeGet(req: Request, res: Response): void {
   const authCodeRedirect = `${getApiBaseUrl()}${API_ENDPOINTS.AUTH_CODE}`;
   const cookieConsent = xss(req.cookies.cookies_preferences_set);
   let consentValue = COOKIE_CONSENT.NOT_ENGAGED;
+  let gaId;
 
   if (cookieConsent) {
     const parsedCookie = JSON.parse(cookieConsent);
@@ -15,11 +16,18 @@ export function authCodeGet(req: Request, res: Response): void {
       parsedCookie.analytics === true
         ? COOKIE_CONSENT.ACCEPT
         : COOKIE_CONSENT.REJECT;
+    gaId = parsedCookie.gaId;
   }
 
-  const queryParamCookieConsent = querystring.stringify({
+  const cookieValue: any = {
     cookie_consent: consentValue,
-  });
+  };
 
-  res.redirect(authCodeRedirect + "?" + queryParamCookieConsent);
+  if (gaId && consentValue === COOKIE_CONSENT.ACCEPT) {
+    cookieValue._ga = gaId;
+  }
+
+  const additionalQueryParams = querystring.stringify(cookieValue);
+
+  res.redirect(authCodeRedirect + "?" + additionalQueryParams);
 }
