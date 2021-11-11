@@ -29,9 +29,6 @@ describe("landing controller", () => {
 
   describe("landingGet", () => {
     it("should redirect to /sign-in-or-create page", () => {
-      req.session.serviceType = "MANDATORY";
-      req.session.clientName = "test client name";
-
       landingGet(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith("/sign-in-or-create");
@@ -68,6 +65,18 @@ describe("landing controller", () => {
       landingGet(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith("/share-info");
+    });
+
+    it("should redirect to /sign-in-or-create page _ga query param when present", () => {
+      req.query.cookie_consent = "accept";
+      req.query._ga = "2.172053219.3232.1636392870-444224.1635165988";
+
+      landingGet(req as Request, res as Response);
+
+      expect(res.cookie).to.have.been.called;
+      expect(res.redirect).to.have.calledWith(
+        "/sign-in-or-create?_ga=2.172053219.3232.1636392870-444224.1635165988"
+      );
     });
   });
 });
