@@ -53,7 +53,7 @@
 <h3 class="govuk-heading-s">{{'pages.createPassword.termsOfUse.heading' | translate}}</h3>
 
 <p class="govuk-body">{{'pages.createPassword.termsOfUse.paragraph1' | translate}}</p>
-<p class="govuk-body">{{'pages.createPassword.termsOfUse.paragraph2' | translate | replace("#PRIVACY_NOTICE_LINK", '<a class="govuk-link" href="privacy-statement" rel="noreferrer noopener" target="_blank">privacy notice</a>') | safe }}</p>
+<p class="govuk-body">{{'pages.createPassword.termsOfUse.paragraph2' | translate | replace("#PRIVACY_NOTICE_LINK", '<a class="govuk-link" href="/privacy-notice" rel="noreferrer noopener" target="_blank">privacy notice</a>') | safe }}</p>
 
 {{ govukButton({
     "text": button_text|default("Continue", true),

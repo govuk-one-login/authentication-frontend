@@ -269,7 +269,7 @@
       "termsOfUse": {
         "heading": "Agree to our terms of use",
         "paragraph1": "We will collect and save your information securely. We will not share your personal information without your consent.",
-        "paragraph2": "By continuing, you confirm that you agree to our <a href=\"/privacy-statement\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">privacy notice</a> and our <a href=\"/terms-and-conditions\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">terms and conditions</a>."
+        "paragraph2": "By continuing, you confirm that you agree to our <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">privacy notice</a> and our <a href=\"/terms-and-conditions\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">terms and conditions</a>."
       }
     },
     "enterPhoneNumber": {
@@ -447,7 +447,7 @@
         "and": "and",
         "termsAndConditionsHref": "terms-and-conditions",
         "termsAndConditionsText": "terms and conditions",
-        "privacyNoticeHref": "privacy-statement",
+        "privacyNoticeHref": "/privacy-notice",
         "privacyNoticeText": "privacy notice",
         "cookiesPolicyText": "cookies policy"
       },
