@@ -85,7 +85,39 @@ describe("Integration::enter email", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
-        email: "INVALID",
+        email: "test.tµrn@example.com",
+      })
+      .expect(function (res) {
+        const page = cheerio.load(res.text);
+        expect(page("#email-error").text()).to.contains(
+          "Enter an email address in the correct format, like name@example.com\n"
+        );
+      })
+      .expect(400);
+
+      request(app)
+      .post("/enter-email")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        email: "test.trnexample.com",
+      })
+      .expect(function (res) {
+        const page = cheerio.load(res.text);
+        expect(page("#email-error").text()).to.contains(
+          "Enter an email address in the correct format, like name@example.com\n"
+        );
+      })
+      .expect(400);
+
+      request(app)
+      .post("/enter-email")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        email: "test.trn@examplecom",
       })
       .expect(function (res) {
         const page = cheerio.load(res.text);
