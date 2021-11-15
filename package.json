@@ -88,7 +88,7 @@
     "@types/node-zendesk": "^2.0.3",
     "@types/nunjucks": "^3.1.5",
     "@types/mocha": "^9.0.0",
-    "@types/pino": "^6.3.11",
+    "@types/pino": "^7.0.5",
     "@types/pino-http": "^5.7.0",
     "@types/pino-pretty": "^4.7.1",
     "@types/redis": "^2.8.31",
