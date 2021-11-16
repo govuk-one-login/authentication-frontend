@@ -137,6 +137,26 @@ describe("Integration::reset password", () => {
       .expect(400, done);
   });
 
+  it("should return validation error when password is amongst most common passwords", (done) => {
+    request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "WBTxBpSQdd3cSxT-!X5s.1758350212000",
+        password: "password123",
+        "confirm-password": "password123",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#password-error").text()).to.contains(
+          "Enter a stronger password. Do not use very common passwords, such as ‘password’ or a sequence of numbers."
+        );
+      })
+      .expect(400, done);
+  });
+
   it("should return validation error when password not valid", (done) => {
     request(app)
       .post(ENDPOINT)

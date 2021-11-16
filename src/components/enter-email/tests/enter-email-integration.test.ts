@@ -95,7 +95,7 @@ describe("Integration::enter email", () => {
       })
       .expect(400);
 
-      request(app)
+    request(app)
       .post("/enter-email")
       .type("form")
       .set("Cookie", cookies)
@@ -111,7 +111,7 @@ describe("Integration::enter email", () => {
       })
       .expect(400);
 
-      request(app)
+    request(app)
       .post("/enter-email")
       .type("form")
       .set("Cookie", cookies)
