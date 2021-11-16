@@ -2,9 +2,7 @@ import { body } from "express-validator";
 import { containsNumber } from "../../utils/strings";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
-import {
-  isCommonPassword,
-} from "../../utils/password-validation";
+import { isCommonPassword } from "../../utils/password-validation";
 
 export function validateResetPasswordRequest(): ValidationChainFunc {
   return [
@@ -30,7 +28,9 @@ export function validateResetPasswordRequest(): ValidationChainFunc {
       .custom((value, { req }) => {
         if (isCommonPassword(value)) {
           throw new Error(
-            req.t("pages.createPassword.password.validationError.commonPassword")
+            req.t(
+              "pages.createPassword.password.validationError.commonPassword"
+            )
           );
         }
         return true;

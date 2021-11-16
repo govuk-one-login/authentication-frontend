@@ -18,7 +18,7 @@
     "depcheck": "depcheck",
     "lint": "eslint . --ext .ts,.js",
     "minfiy-build-js": "uglifyjs src/assets/javascript/application.js -o src/assets/javascript/application.js -c -m && uglifyjs src/assets/javascript/cookies.js -o src/assets/javascript/cookies.js -c -m",
-    "pretty": "prettier --write \"src/**/*.{ts,json}\"",
+    "pretty": "prettier --write \"*/**/*.{ts,json}\"",
     "start": "node dist/server.js",
     "test:audit": "yarn audit",
     "test:integration": "rm -rf test/coverage && NODE_ENV=development nyc mocha -r dotenv/config  \"src/**/*-integration.test.ts\"",

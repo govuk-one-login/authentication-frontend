@@ -2,11 +2,12 @@ import { NextFunction, Request, Response } from "express";
 import { expect, sinon } from "../../utils/test-utils";
 import { describe } from "mocha";
 import {
-  getSessionIdMiddleware, handleBackButtonMiddleware,
+  getSessionIdMiddleware,
+  handleBackButtonMiddleware,
   initialiseSessionMiddleware,
   validateSessionMiddleware,
 } from "../../../src/middleware/session-middleware";
-import {PATH_NAMES, USER_STATE} from "../../../src/app.constants";
+import { PATH_NAMES, USER_STATE } from "../../../src/app.constants";
 
 describe("session-middleware", () => {
   let sandbox: sinon.SinonSandbox;
@@ -20,7 +21,7 @@ describe("session-middleware", () => {
       session: {} as any,
       cookies: {} as any,
     };
-    res = { status: sandbox.stub(), locals: {}, redirect: sandbox.fake()};
+    res = { status: sandbox.stub(), locals: {}, redirect: sandbox.fake() };
     next = sandbox.fake();
   });
 
@@ -75,7 +76,7 @@ describe("session-middleware", () => {
   describe("handleBackButtonMiddleware", () => {
     it("should call next when session state is missing", () => {
       req.session = {
-        backState: null
+        backState: null,
       };
       handleBackButtonMiddleware(req as Request, res as Response, next);
 
@@ -84,10 +85,10 @@ describe("session-middleware", () => {
 
     it("should call next when the next path matches the current request path", () => {
       req.session = {
-        backState: USER_STATE.LOGGED_IN
+        backState: USER_STATE.LOGGED_IN,
       };
       req.route = {
-        path: PATH_NAMES.ENTER_MFA
+        path: PATH_NAMES.ENTER_MFA,
       };
 
       handleBackButtonMiddleware(req as Request, res as Response, next);
@@ -97,10 +98,10 @@ describe("session-middleware", () => {
 
     it("should redirect to invalid session error page if next path does not match current request path", () => {
       req.session = {
-        backState: USER_STATE.LOGGED_IN
+        backState: USER_STATE.LOGGED_IN,
       };
       req.route = {
-        path: "/incorrect-path"
+        path: "/incorrect-path",
       };
 
       handleBackButtonMiddleware(req as Request, res as Response, next);
