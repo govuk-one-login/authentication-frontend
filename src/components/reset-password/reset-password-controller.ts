@@ -3,7 +3,15 @@ import { ExpressRouteFunc } from "../../types";
 import { PATH_NAMES } from "../../app.constants";
 import { ResetPasswordServiceInterface } from "./types";
 import { resetPasswordService } from "./reset-password-service";
+import {
+  formatValidationError,
+  renderBadRequest,
+} from "../../utils/validation";
+import { ERROR_CODES } from "../../app.constants";
 import xss from "xss";
+
+const resetPasswordTemplate = "reset-password/index.njk";
+
 
 function isCodeExpired(code: string): boolean {
   if (!code) {
@@ -31,7 +39,7 @@ export function resetPasswordGet(req: Request, res: Response): void {
     return res.render("reset-password/index-invalid.njk");
   }
 
-  res.render("reset-password/index.njk", { code: code });
+  res.render(resetPasswordTemplate, { code: code });
 }
 
 export function resetPasswordPost(
@@ -53,6 +61,14 @@ export function resetPasswordPost(
 
     if (response.success) {
       return res.redirect(PATH_NAMES.RESET_PASSWORD_CONFIRMATION);
+    }
+
+    if (response.code === ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING) {
+      const error = formatValidationError(
+        "password",
+        req.t("pages.resetPassword.password.validationError.samePassword")
+      );
+      return renderBadRequest(res, req, resetPasswordTemplate, error);
     }
 
     return res.redirect(PATH_NAMES.RESET_PASSWORD_EXPIRED_LINK);

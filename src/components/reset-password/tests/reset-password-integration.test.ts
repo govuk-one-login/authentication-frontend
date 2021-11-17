@@ -157,6 +157,28 @@ describe("Integration::reset password", () => {
       .expect(400, done);
   });
 
+  it("should return error when new password is the same as existing password", (done) => {
+    nock(baseApi).post("/reset-password").once().reply(400, { code: 1024 });
+
+    request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "WBTxBpSQdd3cSxT-!X5s.1758350212000",
+        password: "p@ssw0rd-123",
+        "confirm-password": "p@ssw0rd-123",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#password-error").text()).to.contains(
+          "Your account is already using that password. Enter a different password"
+        );
+      })
+      .expect(400, done);
+  });
+
   it("should return validation error when password not valid", (done) => {
     request(app)
       .post(ENDPOINT)
