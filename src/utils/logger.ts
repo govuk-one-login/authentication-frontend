@@ -11,6 +11,7 @@ const logger = pino({
         id: req.id,
         method: req.method,
         url: req.url,
+        from: getRefererFrom(req.headers.referer),
       };
     },
     res: (res) => {
@@ -24,6 +25,19 @@ const logger = pino({
     },
   },
 });
+
+export function getRefererFrom(referer: string): string {
+  if (referer) {
+    try {
+      const refererUrl = new URL(referer);
+      return refererUrl.pathname + refererUrl.search;
+    } catch (error) {
+      return undefined;
+    }
+  } else {
+    return undefined;
+  }
+}
 
 const loggerMiddleware = PinoHttp({
   logger,
