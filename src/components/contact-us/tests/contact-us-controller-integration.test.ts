@@ -4,12 +4,14 @@ import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
+import { PATH_NAMES } from "../../../app.constants";
 
-describe("Integration:: contact us - end user", () => {
+describe("Integration:: contact us - public user", () => {
   let sandbox: sinon.SinonSandbox;
   let token: string | string[];
   let cookies: string;
   let app: any;
+  let zendeskApiUrl: string;
 
   before(() => {
     decache("../../../app");
@@ -27,6 +29,7 @@ describe("Integration:: contact us - end user", () => {
       });
 
     app = require("../../../app").createApp();
+    zendeskApiUrl = process.env.ZENDESK_API_URL;
 
     request(app)
       .get("/contact-us")
@@ -47,7 +50,7 @@ describe("Integration:: contact us - end user", () => {
     app = undefined;
   });
 
-  it("should return contact us end user mfa code page", (done) => {
+  it("should return contact us page", (done) => {
     request(app)
       .get("/contact-us")
       .query("supportType=PUBLIC")
@@ -59,31 +62,64 @@ describe("Integration:: contact us - end user", () => {
       .post("/contact-us")
       .query("supportType=PUBLIC")
       .type("form")
-      .send({
-        serviceType: "",
-      })
+      .send({})
       .expect(500, done);
   });
 
-  it("should return validation error when service name and description are not entered", (done) => {
+  it("should return validation error when description are not entered", (done) => {
     request(app)
-      .post("/contact-us-submit")
+      .post("/contact-us")
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
-        serviceType: "",
         issueDescription: "",
+        feedbackContact: "",
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
-        expect($("#serviceType-error").text()).to.contains(
-          "Enter the name of the service you were using"
-        );
         expect($("#issueDescription-error").text()).to.contains(
-          "Tell us what you need help with"
+          "Tell us what you need help with or give us feedback"
         );
       })
       .expect(400, done);
+  });
+
+  it("should return validation error when user selected yes to contact for feedback and left fields empty", (done) => {
+    request(app)
+      .post("/contact-us")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        issueDescription: "issue",
+        feedbackContact: "true",
+        name: "",
+        replyEmail: "",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#name-error").text()).to.contains("Enter your name");
+        expect($("#replyEmail-error").text()).to.contains("Enter your email");
+      })
+      .expect(400, done);
+  });
+
+  it("should redirect to success page when form submitted", (done) => {
+    nock(zendeskApiUrl).post("/tickets.json").once().reply(200);
+
+    request(app)
+      .post("/contact-us")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        issueDescription: "issue",
+        feedbackContact: "true",
+        name: "test",
+        replyEmail: "test@test.com",
+      })
+      .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
+      .expect(302, done);
   });
 });

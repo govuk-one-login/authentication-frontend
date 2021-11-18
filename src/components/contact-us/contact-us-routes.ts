@@ -15,7 +15,7 @@ router.get(PATH_NAMES.CONTACT_US, contactUsGet);
 router.get(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS, contactUsSubmitSuccessGet);
 
 router.post(
-  PATH_NAMES.CONTACT_US_POST_SUBMIT,
+  PATH_NAMES.CONTACT_US,
   validateContactUsRequest(),
   asyncHandler(contactUsFormPost())
 );
