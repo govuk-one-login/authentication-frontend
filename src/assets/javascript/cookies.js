@@ -215,13 +215,8 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     el.style.display = "block";
   }
 
-  function isOnCookiesPage() {
-    return window.location.pathname.indexOf("cookies") !== -1;
-  }
-
   return {
     cookieBannerInit,
-    isOnCookiesPage,
     hasConsentForAnalytics,
     initAnalytics,
   };

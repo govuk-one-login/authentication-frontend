@@ -22,7 +22,7 @@ export function contactUsFormPost(
   return async function (req: Request, res: Response) {
     await service.contactUsSubmitForm({
       comment: req.body.issueDescription,
-      subject: req.body.serviceType,
+      subject: "GOV.UK Accounts Feedback",
       email: req.body.replyEmail,
       name: req.body.name,
       optionalData: {

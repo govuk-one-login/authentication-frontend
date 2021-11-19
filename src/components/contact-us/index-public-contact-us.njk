@@ -4,6 +4,7 @@
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% set showBack = true %}
 {% set hrefBack = 'support' %}
@@ -29,11 +30,15 @@
  <li>{{ 'pages.contactUsPublic.section1.bulletPoint3' | translate}}</li>
 </ul>
 
-{{ govukInsetText({
-    html: 'pages.contactUsPublic.section1.questionsText' | translate
-  }) }}
+<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph2' | translate }}</p>
+<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph3' | translate }}</p>
 
-<form action="/contact-us-submit" method="post" novalidate>
+{{ govukWarningText({
+    text:'pages.contactUsPublic.section2.paragraph1' | translate,
+    iconFallbackText: "Warning"
+}) }}
+
+<form action="/contact-us" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
@@ -41,28 +46,10 @@
   {{ 'pages.contactUsPublic.section2.header' | translate }}
 </h2>
 
-<p class="govuk-body">{{'pages.contactUsPublic.section2.paragraph1' | translate }}</p>
-
-{{ govukInput({
-    label: {
-        text: 'pages.contactUsPublic.section2.question1.label' | translate,
-        classes: "govuk-label--s"
-    },
-    id: "serviceType",
-    name: "serviceType",
-    value: serviceType,
-    errorMessage: {
-        text: errors['serviceType'].text
-    } if (errors['serviceType'])
-}) }}
-
 {{ govukTextarea({
     label: {
-      text: 'pages.contactUsPublic.section2.question2.label' | translate,
+      text: 'pages.contactUsPublic.section2.question1.label' | translate,
       classes: "govuk-label--s"
-    },
-    hint: {
-      text: 'pages.contactUsPublic.section2.question2.hint' | translate
     },
     id: "issueDescription",
     name: "issueDescription",
@@ -72,41 +59,64 @@
     } if (errors['issueDescription'])
 }) }}
 
-<h3 class="govuk-heading-s">
-  {{ 'pages.contactUsPublic.section3.header' | translate }}
-</h3>
 
-<p class="govuk-body">{{'pages.contactUsPublic.section3.paragraph1' | translate }}</p>
+    {{ govukRadios({
+        idPrefix: "feedback-contact",
+        name: "feedbackContact",
+        fieldset: {
+            legend: {
+                text: 'pages.contactUsPublic.section3.header' | translate,
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
+            }
+        },
+        items: [
+            {
+                value: "true",
+                text: 'general.yes' | translate,
+                checked: feedbackContact === 'true'
+            },
+            {
+                value: "false",
+                text: 'general.no' | translate,
+                checked: feedbackContact === 'false'
+            }
+        ]
+    }) }}
 
-{{ govukInput({
-    label: {
-        html: 'pages.contactUsPublic.section3.replyEmail.label' | translate
-    },
-    hint: {
-        text: 'pages.contactUsPublic.section3.replyEmail.hint' | translate
-    },
-    id: "replyEmail",
-    name: "replyEmail",
-    value: replyEmail,
-    errorMessage: {
-        text: errors['replyEmail'].text
-    } if (errors['replyEmail'])
-}) }}
+<div id="contact-details-container" class="{{ "" if feedbackContact === "true" else "govuk-!-display-none" }}">
+    {{ govukInput({
+        label: {
+            html: 'pages.contactUsPublic.section3.replyEmail.label' | translate
+        },
+        hint: {
+            text: 'pages.contactUsPublic.section3.replyEmail.hint' | translate
+        },
+        id: "replyEmail",
+        name: "replyEmail",
+        value: replyEmail,
 
-{{ govukInput({
-    label: {
-        html: 'pages.contactUsPublic.section3.name.label' | translate
-    },
-    hint: {
-        text: 'pages.contactUsPublic.section3.name.hint' | translate
-    },
-    id: "name",
-    name: "name",
-    value: name,
-    errorMessage: {
-        text: errors['name'].text
-    } if (errors['name'])
-}) }}
+        errorMessage: {
+            text: errors['replyEmail'].text
+        } if (errors['replyEmail'])
+    }) }}
+
+    {{ govukInput({
+        label: {
+            html: 'pages.contactUsPublic.section3.name.label' | translate
+        },
+        hint: {
+            text: 'pages.contactUsPublic.section3.name.hint' | translate
+        },
+        id: "name",
+        name: "name",
+        value: name,
+        errorMessage: {
+            text: errors['name'].text
+        } if (errors['name'])
+    }) }}
+</div>
+
 
 {{ govukButton({
     "text": button_text|default("Submit form", true),
@@ -117,4 +127,6 @@
 </form>
 
 {% endblock %}
+
+
 

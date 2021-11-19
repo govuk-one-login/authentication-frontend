@@ -1084,41 +1084,34 @@
       }
     },
     "contactUsPublic": {
-      "title": "Feedback about your GOV.UK account",
-      "header": "Feedback about your GOV.UK account",
+      "title": "Contact us",
+      "header": "Contact us",
       "section1": {
-        "paragraph1": "This form is to:",
-        "bulletPoint1": "report any problems signing in to your GOV.UK account",
+        "paragraph1": "Use this form to:",
+        "bulletPoint1": "report any problems signing in to goverment services",
         "bulletPoint2": "ask questions ",
         "bulletPoint3": "suggest improvements",
-        "paragraph2": "We only manage some government sign-ins, so we may need to send your email to another government department.",
-        "questionsText": "If your question or feedback is not about your account, for example you want to ask about a tax or visa application, you need to use <a  href=\"https://www.gov.uk/contact\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">different contact details</a>"
+        "paragraph2": "Our office hours are 9:30am to 5:30pm, Monday to Friday.",
+        "paragraph3": " When you get in touch during office hours, we’ll try to reply within 2 working days."
       },
       "section2": {
         "header": "Get in touch",
         "paragraph1": "Do not include personal or financial information, for example your National Insurance number or credit card details.",
         "question1": {
-          "label": "What service were you using?",
+          "label": "Please tell us what happened or give us feedback",
           "validationError": {
-            "required": "Enter the name of the service you were using"
-          }
-        },
-        "question2": {
-          "label": "What would you like to tell us?",
-          "hint": "For example, if you had problem signing in describe what error message you saw",
-          "validationError": {
-            "required": "Tell us what you need help with"
+            "required": "Tell us what you need help with or give us feedback"
           }
         }
       },
       "section3": {
-        "header": "If you'd like a reply, please provide your contact details",
-        "paragraph1": "We'll only use this to reply to your message.",
+        "header": "Can we contact you about your feedback?",
         "replyEmail": {
           "label": "<label class=\"govuk-label \" for=\"email\"><strong>Email address</strong><span> (Optional)</span></label>",
           "hint": "Enter an email address in the correct format, like name@gmail.com",
           "validationError": {
-            "required": "Enter an email address in the correct format, like name@example.com"
+            "invalidFormat": "Enter an email address in the correct format, like name@example.com",
+            "required": "Enter your email"
           }
         },
         "name": {

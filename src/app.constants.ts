@@ -39,7 +39,6 @@ export const PATH_NAMES = {
   INVALID_SESSION: "/invalid-session",
   CONTACT_US: "/contact-us",
   CONTACT_US_SUBMIT_SUCCESS: "/contact-us-submit-success",
-  CONTACT_US_POST_SUBMIT: "/contact-us-submit",
 };
 
 export const HTTP_STATUS_CODES = {
