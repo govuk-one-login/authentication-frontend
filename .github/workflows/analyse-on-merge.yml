@@ -50,3 +50,4 @@ jobs:
       API_KEY: test-key
       REDIS_HOST: localhost
       REDIS_PORT: 6389
+      ZENDESK_API_URL: https://zendesk.com
