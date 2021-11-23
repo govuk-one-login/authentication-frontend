@@ -21,15 +21,15 @@ export function accountNotFoundPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const email = req.session.email;
-    const sessionId = res.locals.sessionId;
-    const clientSessionId = res.locals.clientSessionId;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const result = await service.sendNotification(
       sessionId,
       clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_EMAIL,
-      req.ip
+      req.ip,
+      persistentSessionId
     );
 
     if (!result.success && !result.sessionState) {

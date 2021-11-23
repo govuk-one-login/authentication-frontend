@@ -22,15 +22,15 @@ export function verifyCodePost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const code = req.body["code"];
-    const sessionId = res.locals.sessionId;
-    const clientSessionId = res.locals.clientSessionId;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const result = await service.verifyCode(
       sessionId,
       code,
       options.notificationType,
       clientSessionId,
-      req.ip
+      req.ip,
+      persistentSessionId
     );
 
     if (!result.success && !result.sessionState) {

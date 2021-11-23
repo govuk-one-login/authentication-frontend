@@ -37,7 +37,8 @@ export const checkYourPhonePost = (
           res.locals.clientSessionId,
           req.session.email,
           NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
-          req.ip
+          req.ip,
+          res.locals.persistentSessionId
         );
       }
 

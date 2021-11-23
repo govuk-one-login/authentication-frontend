@@ -17,6 +17,7 @@ export interface ClientInfoServiceInterface {
   clientInfo: (
     sessionId: string,
     clientSessionId: string,
-    sourceIp: string
+    sourceIp: string,
+    persistentSessionId: string
   ) => Promise<ClientInfoResponse>;
 }

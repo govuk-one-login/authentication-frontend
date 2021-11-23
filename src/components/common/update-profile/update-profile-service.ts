@@ -17,7 +17,8 @@ export function updateProfileService(
     clientSessionId: string,
     email: string,
     requestType: RequestType,
-    sourceIp: string
+    sourceIp: string,
+    persistentSessionId: string
   ): Promise<ApiResponseResult> {
     const response = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.UPDATE_PROFILE,
@@ -26,7 +27,12 @@ export function updateProfileService(
         profileInformation: requestType.profileInformation,
         updateProfileType: requestType.updateProfileType,
       },
-      getRequestConfig({ sessionId, clientSessionId, sourceIp })
+      getRequestConfig({
+        sessionId,
+        clientSessionId,
+        sourceIp,
+        persistentSessionId,
+      })
     );
 
     return createApiResponse(response);

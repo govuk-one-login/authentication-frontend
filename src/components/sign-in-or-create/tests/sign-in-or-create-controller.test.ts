@@ -34,6 +34,7 @@ describe("sign in or create controller", () => {
 
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
 
       await signInOrCreateGet(fakeService)(req as Request, res as Response);
 

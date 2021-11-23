@@ -55,6 +55,7 @@ describe("enter password controller", () => {
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
       req.session = {
         email: "joe.bloggs@test.com",
       };
@@ -80,6 +81,7 @@ describe("enter password controller", () => {
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
       req.session = {
         email: "joe.bloggs@test.com",
       };
@@ -103,6 +105,7 @@ describe("enter password controller", () => {
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
       req.session = {
         email: "joe.bloggs@test.com",
       };
@@ -128,6 +131,7 @@ describe("enter password controller", () => {
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
       req.session = {
         email: "joe.bloggs@test.com",
       };

@@ -31,6 +31,11 @@ export function getSessionIdMiddleware(
     res.locals.sessionId = ids[0];
     res.locals.clientSessionId = ids[1];
   }
+  if (req.cookies && req.cookies["di-persistent-session-id"]) {
+    res.locals.persistentSessionId = xss(
+      req.cookies["di-persistent-session-id"]
+    );
+  }
   next();
 }
 

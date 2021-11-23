@@ -52,6 +52,7 @@ describe("updated terms conditions controller", () => {
 
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
 
       await updatedTermsConditionsGet(fakeService)(
         req as Request,
@@ -77,6 +78,7 @@ describe("updated terms conditions controller", () => {
       req.body.termsAndConditionsResult = "accept";
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
       req.session.email = "test@test.com";
 
       await updatedTermsConditionsPost(fakeService)(
@@ -97,6 +99,7 @@ describe("updated terms conditions controller", () => {
       req.body.termsAndConditionsResult = "govUk";
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
       req.session.email = "test@test.com";
       req.session.state = "test";
 

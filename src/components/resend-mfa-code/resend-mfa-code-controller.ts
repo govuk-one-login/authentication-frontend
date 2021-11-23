@@ -16,14 +16,14 @@ export function resendMfaCodePost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email } = req.session;
-    const id = res.locals.sessionId;
-    const clientSessionId = res.locals.clientSessionId;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const result = await service.sendMfaCode(
-      id,
+      sessionId,
       clientSessionId,
       email,
-      req.ip
+      req.ip,
+      persistentSessionId
     );
 
     if (!result.success && !result.sessionState) {

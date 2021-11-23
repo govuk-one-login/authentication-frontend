@@ -10,14 +10,14 @@ export function upliftJourneyGet(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email } = req.session;
-    const { sessionId } = res.locals;
-    const { clientSessionId } = res.locals;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const result = await mfaCodeService.sendMfaCode(
       sessionId,
       clientSessionId,
       email,
-      req.ip
+      req.ip,
+      persistentSessionId
     );
     res.redirect(getNextPathByState(result.sessionState));
   };

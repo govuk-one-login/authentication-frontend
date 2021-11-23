@@ -12,13 +12,13 @@ export function updatedTermsConditionsGet(
   service: ClientInfoServiceInterface = clientInfoService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const sessionId = res.locals.sessionId;
-    const clientSessionId = res.locals.clientSessionId;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const clientInfoResponse = await service.clientInfo(
       sessionId,
       clientSessionId,
-      req.ip
+      req.ip,
+      persistentSessionId
     );
 
     req.session.serviceType = clientInfoResponse.data.serviceType;
@@ -46,7 +46,7 @@ export function updatedTermsConditionsPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email } = req.session;
-    const { sessionId, clientSessionId } = res.locals;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const termsAndConditionsResult = req.body.termsAndConditionsResult;
 
     if (termsAndConditionsResult === "govUk") {
@@ -65,7 +65,8 @@ export function updatedTermsConditionsPost(
         clientSessionId,
         email,
         { updateProfileType: "UPDATE_TERMS_CONDS", profileInformation: true },
-        req.ip
+        req.ip,
+        persistentSessionId
       );
 
       if (!result.success) {

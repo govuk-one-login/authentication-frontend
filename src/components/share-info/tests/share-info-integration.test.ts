@@ -33,6 +33,7 @@ describe("Integration::share info", () => {
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         res.locals.clientSessionId = "csy103saszhcxbQq0-mjdzU854";
+        res.locals.persistentSessionId = "dips-123456-abc";
         req.session.email = "test@test.com";
         next();
       });

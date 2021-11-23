@@ -44,6 +44,7 @@ describe("share-info controller", () => {
 
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
 
       await shareInfoGet(fakeClientInfoService)(
         req as Request,
@@ -67,6 +68,7 @@ describe("share-info controller", () => {
       req.body.consentValue = true;
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
       req.session.email = "test@test.com";
 
       await shareInfoPost(fakeService)(req as Request, res as Response);
