@@ -296,7 +296,9 @@
       "subHeader": "What you can do with your GOV.UK account",
       "text": "You need to return to GOV.UK to continue.",
       "info": {
-        "paragraph1": "At the moment, you can only use your GOV.UK account to save your answers when you use the Brexit checker.",
+        "paragraph1": "At the moment, you can only use your GOV.UK account to:",
+        "listItem1": "manage your GOV.UK email subscriptions",
+        "listItem2": "save your answers when you use the Brexit checker",
         "paragraph2": "In the future, you’ll be able to use your GOV.UK account to sign in to all government services. It will take a few years for this to happen.",
         "paragraph3": "For now, you need to use different accounts for different government services."
       },
