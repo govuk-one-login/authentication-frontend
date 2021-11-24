@@ -17,7 +17,8 @@ export function createPasswordPost(
       res.locals.sessionId,
       req.session.email,
       req.body.password,
-      req.ip
+      req.ip,
+      res.locals.persistentSessionId
     );
 
     if (!result.success) {

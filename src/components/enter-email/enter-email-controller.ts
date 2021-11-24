@@ -23,7 +23,12 @@ export function enterEmailPost(
     const sessionId = res.locals.sessionId;
     req.session.email = email.toLowerCase();
 
-    const result = await service.userExists(sessionId, email, req.ip);
+    const result = await service.userExists(
+      sessionId,
+      email,
+      req.ip,
+      res.locals.persistentSessionId
+    );
 
     if (!result.success) {
       throw new BadRequestError(result.message, result.code);
@@ -39,14 +44,14 @@ export function enterEmailCreatePost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const email = req.body.email;
-    const sessionId = res.locals.sessionId;
-    const clientSessionId = res.locals.clientSessionId;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     req.session.email = email.toLowerCase();
     const userExistsResponse = await service.userExists(
       sessionId,
       email,
-      req.ip
+      req.ip,
+      persistentSessionId
     );
 
     if (
@@ -63,7 +68,8 @@ export function enterEmailCreatePost(
       clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_EMAIL,
-      req.ip
+      req.ip,
+      persistentSessionId
     );
 
     if (!sendNotificationResponse.success && sendNotificationResponse.code) {

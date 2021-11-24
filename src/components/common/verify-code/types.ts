@@ -6,6 +6,7 @@ export interface VerifyCodeInterface {
     code: string,
     notificationType: string,
     clientSessionId: string,
-    sourceIp: string
+    sourceIp: string,
+    persistentSessionId: string
   ) => Promise<ApiResponseResult>;
 }

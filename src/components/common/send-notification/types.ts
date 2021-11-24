@@ -7,6 +7,7 @@ export interface SendNotificationServiceInterface {
     email: string,
     notificationType: string,
     sourceIp: string,
+    persistentSessionId: string,
     phoneNumber?: string
   ) => Promise<ApiResponseResult>;
 }

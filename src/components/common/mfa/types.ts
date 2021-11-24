@@ -5,6 +5,7 @@ export interface MfaServiceInterface {
     sessionId: string,
     clientSessionId: string,
     emailAddress: string,
-    sourceIp: string
+    sourceIp: string,
+    persistentSessionId: string
   ) => Promise<ApiResponseResult>;
 }

@@ -12,7 +12,6 @@ import xss from "xss";
 
 const resetPasswordTemplate = "reset-password/index.njk";
 
-
 function isCodeExpired(code: string): boolean {
   if (!code) {
     return true;
@@ -56,7 +55,8 @@ export function resetPasswordPost(
     const response = await service.updatePassword(
       newPassword,
       getCode(code),
-      req.ip
+      req.ip,
+      res.locals.persistentSessionId
     );
 
     if (response.success) {

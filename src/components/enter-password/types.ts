@@ -10,6 +10,7 @@ export interface EnterPasswordServiceInterface {
     email: string,
     password: string,
     clientSessionId: string,
-    sourceIp: string
+    sourceIp: string,
+    persistentSessionId: string
   ) => Promise<UserLoginResponse>;
 }

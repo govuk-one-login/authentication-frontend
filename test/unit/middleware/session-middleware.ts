@@ -44,6 +44,15 @@ describe("session-middleware", () => {
       getSessionIdMiddleware(req as Request, res as Response, next);
 
       expect(res.locals).to.have.property("sessionId");
+      expect(res.locals).to.not.have.property("persistentSessionId");
+      expect(next).to.be.calledOnce;
+    });
+    it("should add persistent session id to locals when cookie present", () => {
+      req.cookies = { "di-persistent-session-id": "psid123456xyz" };
+      getSessionIdMiddleware(req as Request, res as Response, next);
+
+      expect(res.locals).to.have.property("persistentSessionId");
+      expect(res.locals.persistentSessionId).to.equal("psid123456xyz");
       expect(next).to.be.calledOnce;
     });
     it("should not have session id on response when no session cookie present", () => {

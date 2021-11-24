@@ -14,14 +14,19 @@ export function enterEmailService(
   const userExists = async function (
     sessionId: string,
     emailAddress: string,
-    sourceIp: string
+    sourceIp: string,
+    persistentSessionId: string
   ): Promise<UserExists> {
     const response = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.USER_EXISTS,
       {
         email: emailAddress.toLowerCase(),
       },
-      getRequestConfig({ sessionId: sessionId, sourceIp: sourceIp })
+      getRequestConfig({
+        sessionId: sessionId,
+        sourceIp: sourceIp,
+        persistentSessionId: persistentSessionId,
+      })
     );
 
     const apiResponse = createApiResponse(response) as UserExists;

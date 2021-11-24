@@ -20,20 +20,20 @@ export function enterPhoneNumberPost(
   return async function (req: Request, res: Response) {
     const phoneNumber = req.body.phoneNumber;
     const { email } = req.session;
-    const id = res.locals.sessionId;
-    const clientSessionId = res.locals.clientSessionId;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     req.session.phoneNumber = redactPhoneNumber(phoneNumber);
 
     const updateProfileResponse = await profileService.updateProfile(
-      id,
+      sessionId,
       clientSessionId,
       email,
       {
         profileInformation: phoneNumber,
         updateProfileType: "ADD_PHONE_NUMBER",
       },
-      req.ip
+      req.ip,
+      persistentSessionId
     );
 
     if (!updateProfileResponse.success) {
@@ -44,11 +44,12 @@ export function enterPhoneNumberPost(
     }
 
     const sendNotificationResponse = await service.sendNotification(
-      id,
+      sessionId,
       clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER,
       req.ip,
+      persistentSessionId,
       phoneNumber
     );
 

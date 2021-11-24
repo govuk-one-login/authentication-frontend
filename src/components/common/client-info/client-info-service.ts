@@ -13,7 +13,8 @@ export function clientInfoService(
   const clientInfo = async function (
     sessionId: string,
     clientSessionId: string,
-    sourceIp: string
+    sourceIp: string,
+    persistentSessionId: string
   ): Promise<ClientInfoResponse> {
     const response = await axios.client.get(
       API_ENDPOINTS.CLIENT_INFO,
@@ -21,6 +22,7 @@ export function clientInfoService(
         sessionId: sessionId,
         clientSessionId: clientSessionId,
         sourceIp: sourceIp,
+        persistentSessionId: persistentSessionId,
       })
     );
 

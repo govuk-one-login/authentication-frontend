@@ -22,6 +22,7 @@ export interface ConfigOptions {
   clientSessionId?: string;
   validationStatues?: number[];
   sourceIp?: string;
+  persistentSessionId?: string;
 }
 
 export function createApiResponse(
@@ -60,6 +61,10 @@ export function getRequestConfig(options: ConfigOptions): AxiosRequestConfig {
     config.validateStatus = function (status: number) {
       return options.validationStatues.includes(status);
     };
+  }
+
+  if (options.persistentSessionId) {
+    config.headers["di-persistent-session-id"] = options.persistentSessionId;
   }
 
   return config;

@@ -6,7 +6,8 @@ export interface UpdateProfileServiceInterface {
     clientSessionId: string,
     email: string,
     requestType: RequestType,
-    sourceIp: string
+    sourceIp: string,
+    persistentSessionId: string
   ) => Promise<ApiResponseResult>;
 }
 

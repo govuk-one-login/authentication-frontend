@@ -10,7 +10,8 @@ export function resetPasswordCheckEmailService(
   const resetPasswordRequest = async function (
     email: string,
     sessionId: string,
-    sourceIp: string
+    sourceIp: string,
+    persistentSessionId: string
   ): Promise<ApiResponseResult> {
     const { data, status } = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.RESET_PASSWORD_REQUEST,
@@ -20,6 +21,7 @@ export function resetPasswordCheckEmailService(
       getRequestConfig({
         sessionId: sessionId,
         sourceIp: sourceIp,
+        persistentSessionId: persistentSessionId,
       })
     );
     return {

@@ -12,13 +12,13 @@ export function shareInfoGet(
   service: ClientInfoServiceInterface = clientInfoService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const sessionId = res.locals.sessionId;
-    const clientSessionId = res.locals.clientSessionId;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const clientInfoResponse = await service.clientInfo(
       sessionId,
       clientSessionId,
-      req.ip
+      req.ip,
+      persistentSessionId
     );
 
     const prettyScopes = mapScopes(clientInfoResponse.data.scopes);
@@ -36,8 +36,7 @@ export function shareInfoPost(
   return async function (req: Request, res: Response) {
     const consentValue = req.body.consentValue;
     const { email } = req.session;
-    const sessionId = res.locals.sessionId;
-    const clientSessionId = res.locals.clientSessionId;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const result = await service.updateProfile(
       sessionId,
@@ -47,7 +46,8 @@ export function shareInfoPost(
         profileInformation: consentValue,
         updateProfileType: "CAPTURE_CONSENT",
       },
-      req.ip
+      req.ip,
+      persistentSessionId
     );
 
     if (!result.success) {

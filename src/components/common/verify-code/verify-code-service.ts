@@ -14,7 +14,8 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
     code: string,
     notificationType: string,
     clientSessionId: string,
-    sourceIp: string
+    sourceIp: string,
+    persistentSessionId: string
   ): Promise<ApiResponseResult> {
     const response = await axios.client.post<ApiResponse>(
       API_ENDPOINTS.VERIFY_CODE,
@@ -26,6 +27,7 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
         sessionId,
         clientSessionId,
         sourceIp: sourceIp,
+        persistentSessionId: persistentSessionId,
       })
     );
 

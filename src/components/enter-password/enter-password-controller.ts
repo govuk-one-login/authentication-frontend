@@ -49,14 +49,15 @@ export function enterPasswordPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email } = req.session;
-    const { sessionId, clientSessionId } = res.locals;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const userLogin = await service.loginUser(
       sessionId,
       email,
       req.body["password"],
       clientSessionId,
-      req.ip
+      req.ip,
+      persistentSessionId
     );
 
     if (userLogin.success && userLogin.sessionState) {
@@ -68,7 +69,8 @@ export function enterPasswordPost(
           sessionId,
           clientSessionId,
           email,
-          req.ip
+          req.ip,
+          persistentSessionId
         );
 
         if (!result.success) {

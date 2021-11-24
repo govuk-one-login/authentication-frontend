@@ -15,7 +15,8 @@ export function enterPasswordService(
     emailAddress: string,
     password: string,
     clientSessionId: string,
-    sourceIp: string
+    sourceIp: string,
+    persistentSessionId: string
   ): Promise<UserLoginResponse> {
     const response = await axios.client.post<UserLoginResponse>(
       API_ENDPOINTS.LOG_IN_USER,
@@ -31,6 +32,7 @@ export function enterPasswordService(
           HTTP_STATUS_CODES.UNAUTHORIZED,
         ],
         sourceIp: sourceIp,
+        persistentSessionId: persistentSessionId,
       })
     );
 

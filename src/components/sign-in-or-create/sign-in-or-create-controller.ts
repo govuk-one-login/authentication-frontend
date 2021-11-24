@@ -10,13 +10,13 @@ export function signInOrCreateGet(
   service: ClientInfoServiceInterface = clientInfoService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const sessionId = res.locals.sessionId;
-    const clientSessionId = res.locals.clientSessionId;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const clientInfoResponse = await service.clientInfo(
       sessionId,
       clientSessionId,
-      req.ip
+      req.ip,
+      persistentSessionId
     );
 
     if (!clientInfoResponse.success) {

@@ -8,6 +8,7 @@ export interface EnterEmailServiceInterface {
   userExists: (
     sessionId: string,
     emailAddress: string,
-    sourceIp: string
+    sourceIp: string,
+    persistentSessionId: string
   ) => Promise<ApiResponseResult>;
 }

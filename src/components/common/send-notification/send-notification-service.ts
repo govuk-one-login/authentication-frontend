@@ -17,6 +17,7 @@ export function sendNotificationService(
     email: string,
     notificationType: string,
     sourceIp: string,
+    persistentSessionId: string,
     phoneNumber?: string
   ): Promise<ApiResponseResult> {
     const payload: any = {
@@ -35,6 +36,7 @@ export function sendNotificationService(
         sessionId: sessionId,
         clientSessionId: clientSessionId,
         sourceIp: sourceIp,
+        persistentSessionId: persistentSessionId,
       })
     );
 

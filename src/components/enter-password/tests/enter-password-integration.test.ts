@@ -25,6 +25,7 @@ describe("Integration::enter password", () => {
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         res.locals.clientSessionId = "gdsfsfdsgsdgsd-mjdzU854";
+        res.locals.persistentSessionId = "dips-123456-abc";
         req.session.email = "joe.bloggs@digital.cabinet-office.gov.uk";
         next();
       });
