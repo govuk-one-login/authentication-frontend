@@ -2,6 +2,7 @@ export const PATH_NAMES = {
   ACCESSIBILITY_STATEMENT: "/accessibility-statement",
   TERMS_AND_CONDITIONS: "/terms-and-conditions",
   PRIVACY_POLICY: "/privacy-notice",
+  PRIVACY_STATEMENT: "/privacy-statement",
   COOKIES_POLICY: "/cookies",
   SUPPORT: "/support",
   SIGN_IN_OR_CREATE: "/sign-in-or-create",
