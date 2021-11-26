@@ -16,7 +16,7 @@ const AUTHORIZE_REQUEST =
   "redirect_uri=https%3A%2F%2Fdi-auth-stub-relying-party-build.london.cloudapps.digital%2Foidc%2Fauthorization-code%2Fcallback&" +
   "state=sEazICy8jKFFlt-NLSw5yqYRA2r4q5BZGcAf9sYeWRg&" +
   "nonce=gyRdMfQGsQS9BvhU-lBwENOZ0UU&" +
-  process.env.TEST_CLIENT_ID +
+  "client_id=" + process.env.TEST_CLIENT_ID +
   "&cookie_consent=accept" +
   "&_ga=test";
 
