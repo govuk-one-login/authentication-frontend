@@ -31,6 +31,14 @@ function getCode(code: string): string {
   return code.split(".")[0];
 }
 
+function getSessionId(code: string): string {
+  return code.split(".")[2];
+}
+
+function getPersistentSessionId(code: string): string {
+  return code.split(".")[3];
+}
+
 export function resetPasswordGet(req: Request, res: Response): void {
   const code = xss(req.query.code as string);
 
@@ -48,7 +56,11 @@ export function resetPasswordPost(
     const code = req.body.code;
     const newPassword = req.body.password;
 
-    if (isCodeExpired(code)) {
+    if (
+      isCodeExpired(code) ||
+      !getSessionId(code) ||
+      !getPersistentSessionId(code)
+    ) {
       return res.redirect(PATH_NAMES.RESET_PASSWORD_EXPIRED_LINK);
     }
 
@@ -56,7 +68,8 @@ export function resetPasswordPost(
       newPassword,
       getCode(code),
       req.ip,
-      res.locals.persistentSessionId
+      getSessionId(code),
+      getPersistentSessionId(code)
     );
 
     if (response.success) {

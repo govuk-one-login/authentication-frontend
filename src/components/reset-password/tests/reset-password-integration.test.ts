@@ -12,7 +12,8 @@ describe("Integration::reset password", () => {
   let app: any;
   let baseApi: string;
 
-  const ENDPOINT = "/reset-password?code=WBTxBpSQdd3cSxT-!X5s.1758350212000";
+  const ENDPOINT =
+    "/reset-password?code=WBTxBpSQdd3cSxT-!X5s.1758350212000.a-session-id.a-persistent-id";
 
   before(() => {
     sandbox = sinon.createSandbox();
@@ -166,7 +167,7 @@ describe("Integration::reset password", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
-        code: "WBTxBpSQdd3cSxT-!X5s.1758350212000",
+        code: "WBTxBpSQdd3cSxT-!X5s.1758350212000.a-session-id.a-persistent-id",
         password: "p@ssw0rd-123",
         "confirm-password": "p@ssw0rd-123",
       })
@@ -208,7 +209,7 @@ describe("Integration::reset password", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
-        code: "WBTxBpSQdd3cSxT-!X5s.1758350212000",
+        code: "WBTxBpSQdd3cSxT-!X5s.1758350212000.a-session-id.a-persistent-id",
         password: "Testpassword1",
         "confirm-password": "Testpassword1",
       })
