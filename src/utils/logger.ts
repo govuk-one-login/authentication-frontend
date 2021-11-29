@@ -16,11 +16,10 @@ const logger = pino({
     },
     res: (res) => {
       return {
-        id: res.id,
-        method: res.method,
-        url: res.url,
+        status: res.statusCode,
         sessionId: res.locals.sessionId,
         clientSessionId: res.locals.clientSessionId,
+        persistentSessionId: res.locals.persistentSessionId,
       };
     },
   },
