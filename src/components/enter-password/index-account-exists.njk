@@ -24,19 +24,8 @@
 
 <p class="govuk-body">{{'pages.enterPasswordAccountExists.info' | translate}}</p>
 
-{{ govukInput({
-    label: {
-        text: 'pages.enterPasswordAccountExists.password.label' | translate
-    },
-    classes: "govuk-!-width-two-thirds",
-    id: "password",
-    name: "password",
-    type: "password",
-    spellcheck: false,
-    errorMessage: {
-        text: errors['password'].text
-    } if (errors['password'])})
-}}
+    {% set passwordLabel = 'pages.enterPasswordAccountExists.password.label' | translate %}
+    {% include "enter-password/_show-password.njk" %}
 
 <p class="govuk-body">
     <a href="/reset-password-check-email" class="govuk-link" rel="noreferrer noopener">{{'pages.enterPassword.forgottenPassword.text' | translate }}</a>

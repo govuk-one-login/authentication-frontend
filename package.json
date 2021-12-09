@@ -17,7 +17,7 @@
     "dummy-server": "node dev-app.js",
     "depcheck": "depcheck",
     "lint": "eslint . --ext .ts,.js",
-    "minfiy-build-js": "uglifyjs src/assets/javascript/application.js -o src/assets/javascript/application.js -c -m && uglifyjs src/assets/javascript/cookies.js -o src/assets/javascript/cookies.js -c -m",
+    "minfiy-build-js": "uglifyjs src/assets/javascript/application.js -o src/assets/javascript/application.js -c -m && uglifyjs src/assets/javascript/cookies.js -o src/assets/javascript/cookies.js -c -m && uglifyjs src/assets/javascript/showPassword.js -o src/assets/javascript/showPassword.js -c -m",
     "pretty": "prettier --write \"*/**/*.{ts,json}\"",
     "start": "node dist/server.js",
     "test:audit": "yarn audit",

@@ -31,5 +31,11 @@ function initFeedbackRadioButtons() {
 
   initFeedbackRadioButtons();
 
+  if (GOVUK.Modules && GOVUK.Modules.ShowPassword) {
+    new GOVUK.Modules.ShowPassword(
+      document.getElementsByClassName("govuk-show-password")[0]
+    ).init();
+  }
+
   w.GOVSignIn.appInit = appInit;
 })(window);
