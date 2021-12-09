@@ -51,13 +51,14 @@ import { browserBackButtonErrorRouter } from "./components/browser-back-button-e
 import { contactUsRouter } from "./components/contact-us/contact-us-routes";
 import { getSessionCookieOptions, getSessionStore } from "./config/session";
 import session from "express-session";
+import { proveIdentityRouter } from "./components/prove-identity/prove-identity-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
   path.resolve("node_modules/govuk-frontend/"),
 ];
 
-function registerRoutes(app: express.Application) {
+function registerRoutes(app: express.Application, isProduction: boolean) {
   app.use(landingRouter);
   app.use(signInOrCreateRouter);
   app.use(enterEmailRouter);
@@ -81,6 +82,7 @@ function registerRoutes(app: express.Application) {
   app.use(upliftJourneyRouter);
   app.use(browserBackButtonErrorRouter);
   app.use(contactUsRouter);
+  if (! isProduction) { app.use(proveIdentityRouter); }
 }
 
 function createApp(): express.Application {
@@ -139,7 +141,7 @@ function createApp(): express.Application {
   app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
 
-  registerRoutes(app);
+  registerRoutes(app, isProduction);
 
   app.use(logErrorMiddleware);
   app.use(serverErrorHandler);

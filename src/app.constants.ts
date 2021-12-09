@@ -40,6 +40,7 @@ export const PATH_NAMES = {
   INVALID_SESSION: "/invalid-session",
   CONTACT_US: "/contact-us",
   CONTACT_US_SUBMIT_SUCCESS: "/contact-us-submit-success",
+  PROVE_IDENTITY: "/prove-identity",
 };
 
 export const HTTP_STATUS_CODES = {
@@ -77,6 +78,7 @@ export const API_ENDPOINTS = {
   CLIENT_INFO: "/client-info",
   RESET_PASSWORD_REQUEST: "/reset-password-request",
   RESET_PASSWORD: "/reset-password",
+  IPV_AUTHORIZE: "/ipv-authorize"
 };
 
 export const ERROR_MESSAGES = {
