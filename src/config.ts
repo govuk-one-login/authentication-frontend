@@ -14,6 +14,10 @@ export function getNodeEnv(): string {
   return process.env.NODE_ENV || "development";
 }
 
+export function getAppEnv(): string {
+  return process.env.APP_ENV || "local";
+}
+
 export function getSessionExpiry(): number {
   return Number(process.env.SESSION_EXPIRY);
 }
