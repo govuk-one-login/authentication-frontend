@@ -78,7 +78,7 @@ export const API_ENDPOINTS = {
   CLIENT_INFO: "/client-info",
   RESET_PASSWORD_REQUEST: "/reset-password-request",
   RESET_PASSWORD: "/reset-password",
-  IPV_AUTHORIZE: "/ipv-authorize"
+  IPV_AUTHORIZE: "/ipv-authorize",
 };
 
 export const ERROR_MESSAGES = {
@@ -157,4 +157,11 @@ export enum SUPPORT_TYPE {
 export const ENVIRONMENT_NAME = {
   PROD: "production",
   DEV: "development",
+};
+
+export const APP_ENV_NAME = {
+  PROD: "production",
+  INT: "integration",
+  BUILD: "build",
+  LOCAL: "local",
 };

@@ -7,6 +7,10 @@ import { proveIdentityGet } from "./prove-identity-controller";
 
 const router = express.Router();
 
-router.get(PATH_NAMES.PROVE_IDENTITY, validateSessionMiddleware, asyncHandler(proveIdentityGet()));
+router.get(
+  PATH_NAMES.PROVE_IDENTITY,
+  validateSessionMiddleware,
+  asyncHandler(proveIdentityGet())
+);
 
 export { router as proveIdentityRouter };

@@ -15,7 +15,12 @@ import { setHtmlLangMiddleware } from "./middleware/html-lang-middleware";
 import i18next from "i18next";
 import Backend from "i18next-fs-backend";
 
-import { getNodeEnv, getSessionExpiry, getSessionSecret } from "./config";
+import {
+  getAppEnv,
+  getNodeEnv,
+  getSessionExpiry,
+  getSessionSecret,
+} from "./config";
 import { logErrorMiddleware } from "./middleware/log-error-middleware";
 import { enterEmailRouter } from "./components/enter-email/enter-email-routes";
 import { enterPasswordRouter } from "./components/enter-password/enter-password-routes";
@@ -30,7 +35,7 @@ import { csrfMiddleware } from "./middleware/csrf-middleware";
 import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-routes";
 import { landingRouter } from "./components/landing/landing-route";
 import { getCSRFCookieOptions } from "./config/cookie";
-import { ENVIRONMENT_NAME } from "./app.constants";
+import { APP_ENV_NAME, ENVIRONMENT_NAME } from "./app.constants";
 import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes";
 import { authCodeRouter } from "./components/auth-code/auth-code-routes";
 import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-code-routes";
@@ -58,7 +63,7 @@ const APP_VIEWS = [
   path.resolve("node_modules/govuk-frontend/"),
 ];
 
-function registerRoutes(app: express.Application, isProduction: boolean) {
+function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
   app.use(landingRouter);
   app.use(signInOrCreateRouter);
   app.use(enterEmailRouter);
@@ -82,12 +87,15 @@ function registerRoutes(app: express.Application, isProduction: boolean) {
   app.use(upliftJourneyRouter);
   app.use(browserBackButtonErrorRouter);
   app.use(contactUsRouter);
-  if (! isProduction) { app.use(proveIdentityRouter); }
+  if (!appEnvIsProduction) {
+    app.use(proveIdentityRouter);
+  }
 }
 
 function createApp(): express.Application {
   const app: express.Application = express();
   const isProduction = getNodeEnv() === ENVIRONMENT_NAME.PROD;
+  const appEnvIsProduction = getAppEnv() === APP_ENV_NAME.PROD;
 
   app.enable("trust proxy");
 
@@ -141,7 +149,7 @@ function createApp(): express.Application {
   app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
 
-  registerRoutes(app, isProduction);
+  registerRoutes(app, appEnvIsProduction);
 
   app.use(logErrorMiddleware);
   app.use(serverErrorHandler);

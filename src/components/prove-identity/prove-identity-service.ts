@@ -5,7 +5,10 @@ import {
   http,
 } from "../../utils/http";
 import { API_ENDPOINTS } from "../../app.constants";
-import { IPVAuthorisationResponse, ProveIdentityServiceInterface } from "./types";
+import {
+  IPVAuthorisationResponse,
+  ProveIdentityServiceInterface,
+} from "./types";
 
 export function proveIdentityService(
   axios: Http = http
@@ -20,7 +23,7 @@ export function proveIdentityService(
     const response = await axios.client.post<IPVAuthorisationResponse>(
       API_ENDPOINTS.IPV_AUTHORIZE,
       {
-        email: emailAddress,   
+        email: emailAddress,
       },
       getRequestConfig({
         sessionId: sessionId,
