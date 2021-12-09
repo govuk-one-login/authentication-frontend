@@ -4,8 +4,8 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
-import { ProveIdentityServiceInterface } from "../types"
-import { proveIdentityGet } from "../prove-identity-controller"
+import { ProveIdentityServiceInterface } from "../types";
+import { proveIdentityGet } from "../prove-identity-controller";
 
 describe("prove identity controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -39,7 +39,9 @@ describe("prove identity controller", () => {
 
       await proveIdentityGet(fakeService)(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith("https://test-ipv-authorisation-uri");
+      expect(res.redirect).to.have.calledWith(
+        "https://test-ipv-authorisation-uri"
+      );
     });
   });
 });
