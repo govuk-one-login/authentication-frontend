@@ -16,21 +16,9 @@
 <form action="/enter-password" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    {% set passwordLabel = 'pages.enterPassword.password.label' | translate %}
 
-{{ govukInput({
-    label: {
-        text: 'pages.enterPassword.password.label' | translate
-    },
-    classes: "govuk-!-width-two-thirds",
-    id: "password",
-    name: "password",
-    type: "password",
-    spellcheck: false,
-    errorMessage: {
-        text: errors['password'].text
-    } if (errors['password'])})
-}}
-
+    {% include "enter-password/_show-password.njk" %}
 <p class="govuk-body">
     <a href="/reset-password-check-email" class="govuk-link" rel="noreferrer noopener">{{'pages.enterPassword.forgottenPassword.text' | translate }}</a>
 </p>
@@ -43,4 +31,8 @@
 
 </form>
 
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="/public/scripts/showPassword.js"></script>
 {% endblock %}
