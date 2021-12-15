@@ -1,8 +1,8 @@
 {% extends "common/layout/base.njk" %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "common/show-password/macro.njk" import govukInputWithShowPassword %}
 
 {% set pageTitleName = 'pages.createPassword.title' | translate %}
 
@@ -16,34 +16,8 @@
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
-{{ govukInput({
-    label: {
-        text: 'pages.createPassword.password.label' | translate
-    },
-    hint: {
-      text: 'pages.createPassword.password.hint' | translate
-    },
-    id: "password",
-    name: "password",
-    type: "password",
-    spellcheck: false,
-    errorMessage: {
-        text: errors['password'].text
-    } if (errors['password'])})
-}}
-
-{{ govukInput({
-    label: {
-        text: 'pages.createPassword.confirmPassword.label' | translate
-    },
-    id: "confirm-password",
-    name: "confirm-password",
-    type: "password",
-    spellcheck: false,
-    errorMessage: {
-        text: errors['confirm-password'].text
-    } if (errors['confirm-password'])})
-}}
+    {{ govukInputWithShowPassword('pages.createPassword.password.label'  | translate, "password", errors, 'pages.createPassword.password.hint' | translate) }}
+    {{ govukInputWithShowPassword('pages.createPassword.confirmPassword.label' | translate, "confirm-password", errors) }}
 
 {{ govukDetails({
   summaryText: 'pages.createPassword.securePasswordDetails.summary' | translate,
@@ -63,5 +37,9 @@
 
 </form>
 
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="/public/scripts/showPassword.js"></script>
 {% endblock %}
 

@@ -1,0 +1,22 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
+{% macro govukInputWithShowPassword(label, id, errors, hint) %}
+    <div class="govuk-show-password" data-module="show-password" data-disable-form-submit-check="false" data-show-text="Show" data-hide-text="Hide" data-show-full-text="Show password" data-hide-full-text="Hide password" data-announce-show="Your password is shown" data-announce-hide="Your password is hidden">
+        {{ govukInput({
+            label: {
+                text: label
+            },
+            hint: {
+                text: hint
+            },
+            classes: "govuk-!-width-two-thirds govuk-password-input",
+            id: id,
+            name: id,
+            type: "password",
+            spellcheck: false,
+            errorMessage: {
+                text: errors[id].text
+            } if (errors[id])})
+        }}
+    </div>
+{% endmacro %}

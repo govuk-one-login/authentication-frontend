@@ -3,6 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "common/show-password/macro.njk" import govukInputWithShowPassword %}
 {% set showBack = true %}
 {% set hrefBack = 'enter-email?type=create-account' %}
 {% set pageTitleName = 'pages.enterPasswordAccountExists.title' | translate %}
@@ -23,10 +24,7 @@
 </p>
 
 <p class="govuk-body">{{'pages.enterPasswordAccountExists.info' | translate}}</p>
-
-    {% set passwordLabel = 'pages.enterPasswordAccountExists.password.label' | translate %}
-    {% include "enter-password/_show-password.njk" %}
-
+    {{ govukInputWithShowPassword('pages.enterPasswordAccountExists.password.label' | translate, "password", errors) }}
 <p class="govuk-body">
     <a href="/reset-password-check-email" class="govuk-link" rel="noreferrer noopener">{{'pages.enterPassword.forgottenPassword.text' | translate }}</a>
 </p>
@@ -39,5 +37,9 @@
 
 </form>
 
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="/public/scripts/showPassword.js"></script>
 {% endblock %}
 
