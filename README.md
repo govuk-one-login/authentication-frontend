@@ -30,13 +30,17 @@ ANALYTICS_COOKIE_DOMAIN=localhost
 
 You can find the `API_BASE_URL` in [Concourse](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-api) under the outputs within the deloy-lambda job.
 
-Run the `startup.sh` script.
+Run `docker-compose up` or the `startup.sh` script.
 
-To find out if the application has started, open a console window on the docker container and view the logs. If the server has started successfully you will see this message `Server listening on port 3000`.
+In `docker-compose.yaml` you will see three services which need to be started to run the frontend locally, the frontend itself, a lightweight stub client, and a redis instance. 
 
-Run the `session-start-local.sh` to start a session so that you can successfully call the backend.
+When starting for the first time, or after a clean, the frontend will take a few minutes to start as node needs to install all the dependencies.
 
-Changes made locally will automatically be deployed after a few seconds. You should check the docker console to check that your changes have been picked up.
+To find out if the application has started, open a console window on the frontend docker container and view the logs. If the server has started successfully you will see this message `Server listening on port 3000`.  If this does not appear try forcing node to restart by updating one of the `.njk` files.
+
+Navigate to the stub app [http://localhost:2000](http://localhost:2000).  This acts like a local client to create a backend session and redirect to the start page.
+
+Changes made locally will automatically be deployed after a few seconds. You should check the docker console to check that your changes have been picked up by the restart.
 
 ### Running the tests
 
@@ -52,10 +56,13 @@ docker exec -it di-auth-frontend-dev /bin/sh
 
 ### Restarting the app
 
-You can restart the app by re-running the `startup.sh` script.
+You can restart the app by re-running the `startup.sh` script, or restarting docker-compose.
+
+For a clean start run `./startup.sh -c`
 
 ## Other useful yarn commands
 
+Remember to run these commands in the docker container itself.
 
 ### Development
 
