@@ -23,55 +23,14 @@
   <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.signInOrCreate.mandatory.header' | translate}}</h1>
 {% endif %}
 
-{% set moreAboutTextHtml %}
-<p class="govuk-body">{{'pages.signInOrCreate.moreAbout.paragraph1' | translate}}</p>
-<p class="govuk-body">{{'pages.signInOrCreate.moreAbout.paragraph2' | translate}}</p>
-<p class="govuk-body">{{'pages.signInOrCreate.moreAbout.paragraph3' | translate}}</p>
-{% endset %}
+  <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph' | translate }}</p>
 
-
-<form action="/sign-in-or-create" method="post" novalidate>
-
-<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-
-{{ govukRadios({
-  idPrefix: "sign-in-or-create",
-  name: "createAccount",
-  attributes: {
-    "id": "radio-sign-in-or-create-existing-account"
-  },
-  items: [
-    {
-      text: 'pages.signInOrCreate.existingAccountRadios.createAccountText' | translate,
-      hint: {
-        text: 'pages.signInOrCreate.existingAccountRadios.createAccountHintText' | translate
-      },
-      id: "create-account-true",
-      value: "true"
-    },
-    {
-      text: 'pages.signInOrCreate.existingAccountRadios.signInText' | translate,
-      id: "create-account-false",
-      value: "false"
-    }
-  ],
-  errorMessage: {
-  text: errors['createAccount'].text
-  } if (errors['createAccount'])
-}) }}
-
-  {{ govukInsetText({
-    text: 'pages.signInOrCreate.mandatory.paragraph' | translate
+  {{ govukButton({
+    "text": 'pages.signInOrCreate.createButtonText' | translate,
+    "href": "/enter-email?type=create-account"
   }) }}
 
-{{ govukButton({
-  "text": 'pages.signInOrCreate.continueButtonText' | translate,
-  "type": "Submit",
-  "preventDoubleClick": true
-}) }}
-
-</form>
-
+  <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph2' | translate }} <a href="/enter-email?type=sign-in">{{ 'pages.signInOrCreate.signInText' | translate }}.</a> </p>
 {{ govukDetails({
   summaryText: 'pages.signInOrCreate.moreAbout.header' | translate,
   html: moreAboutTextHtml

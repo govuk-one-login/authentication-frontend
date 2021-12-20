@@ -105,28 +105,22 @@
     "signInOrCreate": {
       "mandatory": {
         "title": "Create a GOV.UK account or sign in",
-        "header": "Create a GOV.UK account or sign in",
-        "paragraph": "The GOV.UK account is different to any government accounts you already have, for example your personal tax account or Government Gateway. "
+        "header": "Create a GOV.UK account or sign in"
       },
       "optional": {
-        "title": "Sign in or create a GOV.UK account to save your progress",
-        "header": "Sign in or create a GOV.UK account to save your progress",
-        "paragraph1": "You need a GOV.UK account to save your progress.  If you don't have a GOV.UK account, you can create one.",
-        "paragraph2": "The GOV.UK account is different to other government accounts you already have (for example your personal tax account, or Government Gateway)."
+        "title": "Create an account to save your progress",
+        "header": "Create an account to save your progress"
       },
+      "paragraph": "You’ll need an email address and a UK mobile phone number. It will take about 2 minutes.",
+      "paragraph2": "If you already have a GOV.UK account you can",
+      "signInText": "sign in",
       "moreAbout": {
-        "header": "More about GOV.UK accounts",
-        "paragraph1": "The GOV.UK account is new. In the future, you’ll be able to use it to sign in to all government services. It will take a few years for this to happen.",
-        "paragraph2": "We’re still building the GOV.UK account and will be adding more features and services to it.",
-        "paragraph3": " For now, you need to use different accounts to access different government services."
+        "header": "About GOV.UK accounts",
+        "paragraph1": "The GOV.UK account is a new account, which will one day allow you to access all online government services.",
+        "paragraph2": "We’re still building the GOV.UK account and will be adding more services to it.",
+        "paragraph3": "For now, you need to use different accounts to access different government services."
       },
-      "existingAccountRadios": {
-        "createAccountText": "Create an account",
-        "createAccountHintText": "You’ll need an email address and a UK mobile phone number. It will take about 2 minutes.",
-        "signInText": "Sign in",
-        "errorMessage": "Select an option"
-      },
-      "continueButtonText": "Continue"
+      "createButtonText": "Create a GOV.UK account"
     },
     "enterEmailCreateAccount": {
       "title": "Enter your email address",
