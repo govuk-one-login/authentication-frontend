@@ -1,0 +1,26 @@
+interface Comment {
+  body?: string;
+  html_body?: string;
+  public?: boolean;
+}
+
+export interface CreateTicketPayload {
+  ticket: CreateTicket;
+}
+
+export interface CreateTicket {
+  comment: Comment;
+  subject?: string;
+  group_id?: number;
+  tags?: ReadonlyArray<string> | null;
+  requester?: RequesterAnonymous;
+}
+
+interface RequesterAnonymous {
+  name: string;
+  email?: string;
+}
+
+export interface ZendeskInterface {
+  createTicket(form: CreateTicketPayload): Promise<void>;
+}

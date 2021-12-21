@@ -1,15 +1,15 @@
 import { ContactForm, ContactUsServiceInterface, OptionalData } from "./types";
-import { Client } from "node-zendesk";
-import { zendeskAPIClient } from "../../utils/zendesk";
+import { defaultZendeskClient } from "../../utils/zendesk";
 import { getZendeskGroupIdPublic } from "../../config";
+import { CreateTicketPayload, ZendeskInterface } from "../../utils/types";
 
 export function contactUsService(
-  zendeskClient: Client = zendeskAPIClient
+  zendeskClient: ZendeskInterface = defaultZendeskClient
 ): ContactUsServiceInterface {
   const contactUsSubmitForm = async function (
     contactForm: ContactForm
   ): Promise<void> {
-    const payload: any = {
+    const payload: CreateTicketPayload = {
       ticket: {
         subject: contactForm.subject,
         comment: {
@@ -23,14 +23,14 @@ export function contactUsService(
       },
     };
 
-    if (contactForm.email && contactForm.name) {
+    if (contactForm.feedbackContact && contactForm.email && contactForm.name) {
       payload.ticket.requester = {
         email: contactForm.email,
         name: contactForm.name,
       };
     }
 
-    await zendeskClient.tickets.create(payload);
+    await zendeskClient.createTicket(payload);
   };
 
   function formatCommentBody(comment: string, optionalData: OptionalData) {

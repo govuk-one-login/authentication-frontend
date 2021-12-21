@@ -11,6 +11,12 @@ function initFeedbackRadioButtons() {
           container.classList.remove("govuk-!-display-none");
         } else {
           container.classList.add("govuk-!-display-none");
+          var elements = container.getElementsByTagName("input");
+          for (var i = 0; i < elements.length; i++) {
+            if (elements[i].type == "text") {
+              elements[i].value = "";
+            }
+          }
         }
       }.bind(this)
     );

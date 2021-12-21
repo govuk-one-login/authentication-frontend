@@ -29,6 +29,7 @@ export function contactUsFormPost(
         sessionId: res.locals.sessionId,
         userAgent: req.get("User-Agent"),
       },
+      feedbackContact: req.body.feedbackContact === "true",
     });
 
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
