@@ -4,6 +4,7 @@ export interface ContactForm {
   email?: string;
   name?: string;
   optionalData: OptionalData;
+  feedbackContact: boolean;
 }
 
 export interface OptionalData {

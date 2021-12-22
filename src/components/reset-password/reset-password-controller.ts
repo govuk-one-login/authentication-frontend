@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { PATH_NAMES } from "../../app.constants";
+import { PATH_NAMES, ERROR_CODES } from "../../app.constants";
 import { ResetPasswordServiceInterface } from "./types";
 import { resetPasswordService } from "./reset-password-service";
 import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation";
-import { ERROR_CODES } from "../../app.constants";
 import xss from "xss";
 
 const resetPasswordTemplate = "reset-password/index.njk";
