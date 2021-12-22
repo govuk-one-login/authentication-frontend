@@ -101,7 +101,7 @@
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "cheerio": "^1.0.0-rc.10",
-    "concurrently": "^6.4.0",
+    "concurrently": "^6.5.1",
     "copyfiles": "^2.4.1",
     "decache": "^4.6.1",
     "dotenv": "^10.0.0",
