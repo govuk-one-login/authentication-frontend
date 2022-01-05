@@ -2599,10 +2599,10 @@ istanbul-reports@^3.0.2:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
-joycon@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/joycon/-/joycon-3.1.0.tgz#33bb2b6b5a6849a1e251bed623bdf610f477d49f"
-  integrity sha512-5Y/YJghKF/IzaUXTut0JtbQyHfBShTaIsH7hHhGXEzYO07zWdWZm5hr3Q6miqhrwsRqqm3mgOnUEZdn+1aRxKQ==
+joycon@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/joycon/-/joycon-3.1.1.tgz#bce8596d6ae808f8b68168f5fc69280996894f03"
+  integrity sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==
 
 js-tokens@^4.0.0:
   version "4.0.0"
@@ -3299,16 +3299,16 @@ pino-http@^6.5.0:
     pino "^7.5.0"
     pino-std-serializers "^5.0.0"
 
-pino-pretty@^7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/pino-pretty/-/pino-pretty-7.2.0.tgz#6cd1500fa47a6e9011e87bb65e129cd4555265f1"
-  integrity sha512-pkZhaF1JiyQt4BRqkLANYWuZTxavmuXh3OHsb8goeQasTFgNdzOECXkZWyPYrA0YMRa8zKoVsCzeYz9lI2NYwA==
+pino-pretty@^7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/pino-pretty/-/pino-pretty-7.3.0.tgz#277fdc2306a2f6d727a1127e7747d1c078efdd4b"
+  integrity sha512-HAhShJ2z2QzxXhYAn6XfwYpF13o1PQbjzSNA9q+30FAvhjOmeACit9lprhV/mCOw/8YFWSyyNk0YCq2EDYGYpw==
   dependencies:
     args "^5.0.1"
     colorette "^2.0.7"
     dateformat "^4.6.3"
     fast-safe-stringify "^2.0.7"
-    joycon "^3.0.0"
+    joycon "^3.1.1"
     pino-abstract-transport "^0.5.0"
     pump "^3.0.0"
     readable-stream "^3.6.0"
