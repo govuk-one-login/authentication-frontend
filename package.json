@@ -58,7 +58,7 @@
     "connect-redis": "^6.0.0",
     "cookie-parser": "^1.4.5",
     "csurf": "^1.11.0",
-    "dompurify": "^2.3.3",
+    "dompurify": "^2.3.4",
     "express": "^4.17.2",
     "express-session": "^1.17.2",
     "express-validator": "^6.13.0",
