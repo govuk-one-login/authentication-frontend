@@ -373,10 +373,10 @@
     "@types/connect" "*"
     "@types/node" "*"
 
-"@types/cfenv@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@types/cfenv/-/cfenv-1.2.1.tgz#31b337b1c061763654338ab723a05a9a729982ef"
-  integrity sha512-1oFMIffnJAHZOxOsVIiBZysnfIKxoDbPdWbglbM8/t3lY2Gw7kzjd9j+hHMSRMKXSU6bslYFofsh7G7NnxPXBQ==
+"@types/cfenv@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@types/cfenv/-/cfenv-1.2.2.tgz#83832746d91983acfb489156c398216a7eaa4f1c"
+  integrity sha512-CMuv9YGppbOWL+TrAutVk48oxwuDGpGSZQ453dOTzMvF0U0E5VhrljlKVH8r9/VOfVPRp3GyKKrNEU8/SsyikQ==
 
 "@types/chai-as-promised@^7.1.4":
   version "7.1.4"
