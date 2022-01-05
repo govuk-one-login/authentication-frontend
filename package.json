@@ -78,7 +78,7 @@
     "xss": "^1.0.10"
   },
   "devDependencies": {
-    "@types/cfenv": "^1.2.1",
+    "@types/cfenv": "^1.2.2",
     "@types/chai": "^4.2.21",
     "@types/chai-as-promised": "^7.1.4",
     "@types/cheerio": "^0.22.30",
