@@ -107,7 +107,7 @@ describe("enter email controller", () => {
         enterEmailPost(fakeService)(req as Request, res as Response)
       ).to.be.rejectedWith(
         TypeError,
-        "Cannot set property 'email' of undefined"
+        "Cannot set properties of undefined (setting 'email')"
       );
 
       expect(fakeService.userExists).not.to.been.called;
