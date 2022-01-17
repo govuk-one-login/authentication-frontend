@@ -67,7 +67,7 @@ describe("create-password controller", () => {
         createPasswordPost(fakeService)(req as Request, res as Response)
       ).to.be.rejectedWith(
         TypeError,
-        "Cannot read property 'email' of undefined"
+        "Cannot read properties of undefined (reading 'email')"
       );
       expect(fakeService.signUpUser).to.have.not.been.called;
     });
@@ -84,7 +84,7 @@ describe("create-password controller", () => {
         createPasswordPost(fakeService)(req as Request, res as Response)
       ).to.be.rejectedWith(
         TypeError,
-        "Cannot read property 'password' of undefined"
+        "Cannot read properties of undefined (reading 'password')"
       );
       expect(fakeService.signUpUser).to.have.not.been.called;
     });
