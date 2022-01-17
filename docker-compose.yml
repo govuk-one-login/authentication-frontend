@@ -5,7 +5,7 @@ services:
   di-auth-frontend:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: local.Dockerfile
     ports:
       - 3000:3000
       - 9230:9230
