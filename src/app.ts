@@ -57,6 +57,7 @@ import { contactUsRouter } from "./components/contact-us/contact-us-routes";
 import { getSessionCookieOptions, getSessionStore } from "./config/session";
 import session from "express-session";
 import { proveIdentityRouter } from "./components/prove-identity/prove-identity-routes";
+import { healthcheckRouter } from "./components/healthcheck/healthcheck-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -87,6 +88,7 @@ function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
   app.use(upliftJourneyRouter);
   app.use(browserBackButtonErrorRouter);
   app.use(contactUsRouter);
+  app.use(healthcheckRouter);
   if (!appEnvIsProduction) {
     app.use(proveIdentityRouter);
   }

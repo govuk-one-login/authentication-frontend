@@ -41,6 +41,7 @@ export const PATH_NAMES = {
   CONTACT_US: "/contact-us",
   CONTACT_US_SUBMIT_SUCCESS: "/contact-us-submit-success",
   PROVE_IDENTITY: "/prove-identity",
+  HEALTHCHECK: "/healthcheck",
 };
 
 export const HTTP_STATUS_CODES = {
