@@ -27,3 +27,10 @@ variable "redis_service_plan" {
   default     = "tiny-5_x"
   description = "The PaaS service plan (instance size) to use for Redis. For a full list of options, run 'cf marketplace -e redis'"
 }
+
+variable "common_state_bucket" {
+}
+
+variable "redis_node_size" {
+  default = "cache.t2.small"
+}

@@ -1,0 +1,5 @@
+redis_service_plan  = "tiny-5.x"
+environment         = "sandpit"
+common_state_bucket = "digital-identity-dev-tfstate"
+cf_org_name         = "gds-digital-identity-authentication"
+aws_region          = "eu-west-2"
