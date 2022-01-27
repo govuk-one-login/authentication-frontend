@@ -28,7 +28,7 @@ API_KEY=
 ANALYTICS_COOKIE_DOMAIN=localhost
 ```
 
-You can find the `API_BASE_URL` in [Concourse](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-api) under the outputs within the deloy-lambda job.
+You can find the `API_BASE_URL` in [Concourse](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-deployment) under the outputs within the deploy-oidc-api-{environment} job, where {environment} is the name of the environment you want to connect to.
 
 Run `docker-compose up` or the `startup.sh` script.
 
