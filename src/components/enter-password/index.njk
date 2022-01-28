@@ -14,7 +14,7 @@
 
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPassword.header' | translate}}</h1>
 
-<form action="/enter-password" method="post" novalidate>
+<form id="form-tracking" action="/enter-password" method="post" novalidate>
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
 {{ govukInputWithShowPassword('pages.enterPassword.password.label' | translate, "password", errors) }}

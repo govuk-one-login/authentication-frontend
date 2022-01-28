@@ -116,6 +116,18 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     }
 
     gtag({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+
+    var submitButton = document.querySelector('button[type="submit"]');
+    var pageForm = document.getElementById("form-tracking");
+
+    if (submitButton && pageForm) {
+      submitButton.addEventListener("click", function () {
+        var tracker = ga.getAll()[0];
+        var linker = new window.gaplugins.Linker(tracker);
+        var destinationLink = linker.decorate(pageForm.action);
+        pageForm.action = destinationLink;
+      });
+    }
   }
 
   function generateSessionJourney(journey, status) {
