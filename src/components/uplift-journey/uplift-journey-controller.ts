@@ -19,6 +19,17 @@ export function upliftJourneyGet(
       req.ip,
       persistentSessionId
     );
-    res.redirect(getNextPathByState(result.sessionState));
+
+    let redirectPath = getNextPathByState(result.sessionState);
+
+    if (req.query._ga) {
+      const queryParams = new URLSearchParams({
+        _ga: req.query._ga as string,
+      }).toString();
+
+      redirectPath = redirectPath + "?" + queryParams;
+    }
+
+    res.redirect(redirectPath);
   };
 }

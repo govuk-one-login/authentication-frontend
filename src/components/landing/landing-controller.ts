@@ -6,11 +6,7 @@ import * as querystring from "querystring";
 
 const COOKIES_PREFERENCES_SET = "cookies_preferences_set";
 
-function setPreferencesCookie(
-  cookieConsent: string,
-  res: Response,
-  gaId: string
-) {
+function setPreferencesCookie(cookieConsent: string, res: Response) {
   let cookieValue: any = {};
   const cookieExpires = new Date();
 
@@ -20,10 +16,6 @@ function setPreferencesCookie(
     cookieValue = {
       analytics: cookieConsent === COOKIE_CONSENT.ACCEPT,
     };
-
-    if (cookieConsent === COOKIE_CONSENT.ACCEPT && gaId) {
-      cookieValue.gaId = gaId;
-    }
   } else {
     cookieExpires.setFullYear(cookieExpires.getFullYear() - 1);
   }
@@ -49,7 +41,7 @@ export function landingGet(req: Request, res: Response): void {
   const cookieConsent = xss(req.query.cookie_consent as string);
 
   if (cookieConsent) {
-    setPreferencesCookie(cookieConsent, res, ga);
+    setPreferencesCookie(cookieConsent, res);
     if (ga && cookieConsent === COOKIE_CONSENT.ACCEPT) {
       redirectPath = redirectPath + "?" + querystring.stringify({ _ga: ga });
     }

@@ -65,9 +65,11 @@ describe("auth code controller", () => {
 
     it("should redirect to auth code API endpoint with cookie consent param set as reject and no _ga param", () => {
       req.cookies = {
-        cookies_preferences_set:
-          '{"analytics":false, "gaId":"2.172053219.3232.1636392870-444224.1635165988"}',
+        cookies_preferences_set: '{"analytics":false}',
       };
+
+      req.session.crossDomainGaTrackingId =
+        "2.172053219.3232.1636392870-444224.1635165988";
 
       authCodeGet(req as Request, res as Response);
 
@@ -78,9 +80,11 @@ describe("auth code controller", () => {
 
     it("should redirect to auth code API endpoint with cookie consent param set as accept and with the _ga param set", () => {
       req.cookies = {
-        cookies_preferences_set:
-          '{"analytics":true, "gaId":"2.172053219.3232.1636392870-444224.1635165988"}',
+        cookies_preferences_set: '{"analytics":true}',
       };
+
+      req.session.crossDomainGaTrackingId =
+        "2.172053219.3232.1636392870-444224.1635165988";
 
       authCodeGet(req as Request, res as Response);
 

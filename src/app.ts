@@ -58,6 +58,7 @@ import { getSessionCookieOptions, getSessionStore } from "./config/session";
 import session from "express-session";
 import { proveIdentityRouter } from "./components/prove-identity/prove-identity-routes";
 import { healthcheckRouter } from "./components/healthcheck/healthcheck-routes";
+import { crossDomainTrackingMiddleware } from "./middleware/cross-domain-tracking-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -150,6 +151,7 @@ function createApp(): express.Application {
   app.post("*", sanitizeRequestMiddleware);
   app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
+  app.use(crossDomainTrackingMiddleware);
 
   registerRoutes(app, appEnvIsProduction);
 
