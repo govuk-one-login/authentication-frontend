@@ -13,7 +13,7 @@ describe("Integration:: contact us - public user", () => {
   let app: any;
   let zendeskApiUrl: string;
 
-  before(() => {
+  before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
@@ -28,7 +28,7 @@ describe("Integration:: contact us - public user", () => {
         next();
       });
 
-    app = require("../../../app").createApp();
+    app = await require("../../../app").createApp();
     zendeskApiUrl = process.env.ZENDESK_API_URL;
 
     request(app)

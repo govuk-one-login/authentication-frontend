@@ -8,11 +8,11 @@ describe("Integration::healthcheck", () => {
   let sandbox: sinon.SinonSandbox;
   let app: any;
 
-  before(() => {
+  before(async () => {
     decache("../../../app");
     decache("../../../middleware/requires-auth-middleware");
     sandbox = sinon.createSandbox();
-    app = require("../../../app").createApp();
+    app = await require("../../../app").createApp();
   });
 
   after(() => {

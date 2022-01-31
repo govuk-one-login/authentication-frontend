@@ -18,8 +18,10 @@ import Backend from "i18next-fs-backend";
 import {
   getAppEnv,
   getNodeEnv,
+  getRedisConfig,
   getSessionExpiry,
   getSessionSecret,
+  isFargate,
 } from "./config";
 import { logErrorMiddleware } from "./middleware/log-error-middleware";
 import { enterEmailRouter } from "./components/enter-email/enter-email-routes";
@@ -95,7 +97,7 @@ function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
   }
 }
 
-function createApp(): express.Application {
+async function createApp(): Promise<express.Application> {
   const app: express.Application = express();
   const isProduction = getNodeEnv() === ENVIRONMENT_NAME.PROD;
   const appEnvIsProduction = getAppEnv() === APP_ENV_NAME.PROD;
@@ -128,10 +130,13 @@ function createApp(): express.Application {
   app.use(i18nextMiddleware.handle(i18next));
   app.use(helmet(helmetConfiguration));
 
+  const redisConfig =
+    isProduction && isFargate() ? await getRedisConfig(getAppEnv()) : undefined;
+
   app.use(
     session({
       name: "aps",
-      store: getSessionStore(),
+      store: getSessionStore(redisConfig),
       saveUninitialized: true,
       secret: getSessionSecret(),
       unset: "destroy",
