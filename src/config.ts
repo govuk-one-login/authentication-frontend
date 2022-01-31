@@ -1,3 +1,7 @@
+import { RedisConfig } from "./utils/types";
+import ssm from "./utils/ssm";
+import { Parameter } from "aws-sdk/clients/ssm";
+
 export function getLogLevel(): string {
   return process.env.LOGS_LEVEL || "debug";
 }
@@ -42,6 +46,30 @@ export function getRedisPort(): number {
   return Number(process.env.REDIS_PORT) ?? 6379;
 }
 
+export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
+  const hostKey = `${appEnv}-${process.env.REDIS_KEY}-redis-master-host`;
+  const portKey = `${appEnv}-${process.env.REDIS_KEY}-redis-port`;
+  const passwordKey = `${appEnv}-${process.env.REDIS_KEY}-redis-password`;
+
+  const params = {
+    Names: [hostKey, portKey, passwordKey],
+    WithDecryption: true,
+  };
+
+  const result = await ssm.getParameters(params).promise();
+
+  if (result.InvalidParameters && result.InvalidParameters.length > 0) {
+    throw Error("Invalid SSM config values for redis");
+  }
+
+  return {
+    password: result.Parameters.find((p: Parameter) => p.Name === passwordKey)
+      .Value,
+    host: result.Parameters.find((p: Parameter) => p.Name === hostKey).Value,
+    port: result.Parameters.find((p: Parameter) => p.Name === portKey).Value,
+  };
+}
+
 export function getAccountManagementUrl(): string {
   return process.env.ACCOUNT_MANAGEMENT_URL;
 }
@@ -64,4 +92,8 @@ export function getZendeskGroupIdPublic(): number {
 
 export function getAnalyticsCookieDomain(): string {
   return process.env.ANALYTICS_COOKIE_DOMAIN;
+}
+
+export function isFargate(): boolean {
+  return process.env.FARGATE === "1";
 }

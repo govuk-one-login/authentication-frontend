@@ -24,3 +24,12 @@ interface RequesterAnonymous {
 export interface ZendeskInterface {
   createTicket(form: CreateTicketPayload): Promise<void>;
 }
+
+export interface RedisConfig {
+  host: string;
+  port: string;
+  password: string;
+  name?: string;
+  uri?: string;
+  tls?: boolean;
+}

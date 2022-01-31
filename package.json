@@ -53,6 +53,7 @@
     "semi": true
   },
   "dependencies": {
+    "aws-sdk": "^2.1066.0",
     "axios": "^0.24.0",
     "cfenv": "^1.2.4",
     "connect-redis": "^6.0.0",
@@ -75,9 +76,9 @@
     "pino-http": "^6.5.0",
     "prettier": "^2.5.1",
     "redis": "^3.1.2",
+    "uglify-js": "^3.14.5",
     "uuid": "^8.3.2",
-    "xss": "^1.0.10",
-    "uglify-js": "^3.14.5"
+    "xss": "^1.0.10"
   },
   "devDependencies": {
     "@types/cfenv": "^1.2.2",
