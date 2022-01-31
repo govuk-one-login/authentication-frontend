@@ -15,10 +15,10 @@ describe("Integration::reset password", () => {
   const ENDPOINT =
     "/reset-password?code=WBTxBpSQdd3cSxT-!X5s.1758350212000.a-session-id.a-persistent-id";
 
-  before(() => {
+  before(async () => {
     sandbox = sinon.createSandbox();
 
-    app = require("../../../app").createApp();
+    app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     request(app)

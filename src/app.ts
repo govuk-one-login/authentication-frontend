@@ -95,7 +95,7 @@ function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
   }
 }
 
-function createApp(): express.Application {
+async function createApp(): Promise<express.Application> {
   const app: express.Application = express();
   const isProduction = getNodeEnv() === ENVIRONMENT_NAME.PROD;
   const appEnvIsProduction = getAppEnv() === APP_ENV_NAME.PROD;

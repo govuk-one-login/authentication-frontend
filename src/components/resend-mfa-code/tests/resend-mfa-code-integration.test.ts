@@ -12,7 +12,7 @@ describe("Integration:: resend mfa code", () => {
   let app: any;
   let baseApi: string;
 
-  before(() => {
+  before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
@@ -27,7 +27,7 @@ describe("Integration:: resend mfa code", () => {
         next();
       });
 
-    app = require("../../../app").createApp();
+    app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     request(app)
