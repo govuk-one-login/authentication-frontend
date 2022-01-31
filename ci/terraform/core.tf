@@ -17,4 +17,5 @@ locals {
   private_subnet_cidr_blocks                 = data.terraform_remote_state.core.outputs.private_subnet_cidr_blocks
   public_subnet_ids                          = data.terraform_remote_state.core.outputs.public_subnet_ids
   public_subnet_cidr_blocks                  = data.terraform_remote_state.core.outputs.private_subnet_cidr_blocks
+  cluster_id                                 = data.terraform_remote_state.core.outputs.cluster_id
 }
