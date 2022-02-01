@@ -1079,42 +1079,23 @@
     },
     "contactUsPublic": {
       "title": "Contact us",
-      "header": "Contact us",
+      "header": "GOV.UK account: report a problem or give feedback",
       "section1": {
         "paragraph1": "Use this form to:",
-        "bulletPoint1": "report any problems signing in to government services",
-        "bulletPoint2": "ask questions ",
-        "bulletPoint3": "suggest improvements",
-        "paragraph2": "Our office hours are 9:30am to 5:30pm, Monday to Friday.",
-        "paragraph3": " When you get in touch during office hours, we’ll try to reply within 2 working days."
+        "bulletPoint1": "tell us about a problem you’re having with your GOV.UK account",
+        "bulletPoint2": "suggest improvements or give feedback about your experience using your GOV.UK account",
+        "paragraph2": "Our office hours are 9:30am to 5:30pm, Monday to Friday."
       },
       "section2": {
-        "header": "Get in touch",
-        "paragraph1": "Do not include personal or financial information, for example your National Insurance number or credit card details.",
-        "question1": {
-          "label": "Please tell us what happened or give us feedback",
-          "validationError": {
-            "required": "Tell us what you need help with or give us feedback"
-          }
-        }
+        "paragraph1": "Do not include personal or financial information, for example your National Insurance number or credit card details."
       },
       "section3": {
-        "header": "Can we contact you about your feedback?",
-        "replyEmail": {
-          "label": "<label class=\"govuk-label \" for=\"email\"><strong>Email address</strong><span> (Optional)</span></label>",
-          "hint": "Enter an email address in the correct format, like name@gmail.com",
-          "validationError": {
-            "invalidFormat": "Enter an email address in the correct format, like name@example.com",
-            "required": "Enter your email"
-          }
-        },
-        "name": {
-          "label": "<label class=\"govuk-label \" for=\"name\"><strong>Name</strong><span> (Optional)</span></label>",
-          "hint": "We'll only use this to reply to your message",
-          "validationError": {
-            "required": "Enter your name"
-          }
-        }
+        "header": "What are you contacting us about?",
+        "radio1": "A problem creating an account",
+        "radio2": "A problem signing in to your account",
+        "radio3": "Another problem using your GOV.UK account",
+        "radio4": "GOV.UK email subscriptions",
+        "radio5": "A suggestion or feedback about using your GOV.UK account"
       },
       "submitButtonText": "Submit",
       "submitButtonLink": "/contact-us-submit"

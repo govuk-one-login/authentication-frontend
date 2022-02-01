@@ -27,11 +27,9 @@
 <ul class="govuk-list govuk-list--bullet">
  <li>{{ 'pages.contactUsPublic.section1.bulletPoint1' | translate}}</li>
  <li>{{ 'pages.contactUsPublic.section1.bulletPoint2' | translate}}</li>
- <li>{{ 'pages.contactUsPublic.section1.bulletPoint3' | translate}}</li>
 </ul>
 
 <p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph2' | translate }}</p>
-<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph3' | translate }}</p>
 
 {{ govukWarningText({
     text:'pages.contactUsPublic.section2.paragraph1' | translate,
@@ -41,24 +39,6 @@
 <form action="/contact-us" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-
-<h2 class="govuk-heading-m">
-  {{ 'pages.contactUsPublic.section2.header' | translate }}
-</h2>
-
-{{ govukTextarea({
-    label: {
-      text: 'pages.contactUsPublic.section2.question1.label' | translate,
-      classes: "govuk-label--s"
-    },
-    id: "issueDescription",
-    name: "issueDescription",
-    value: issueDescription,
-    errorMessage: {
-        text: errors['issueDescription'].text
-    } if (errors['issueDescription'])
-}) }}
-
 
     {{ govukRadios({
         idPrefix: "feedback-contact",
@@ -72,54 +52,31 @@
         },
         items: [
             {
-                value: "true",
-                text: 'general.yes' | translate,
-                checked: feedbackContact === 'true'
+                value: "Creating an account",
+                text: 'pages.contactUsPublic.section3.radio1' | translate
             },
             {
-                value: "false",
-                text: 'general.no' | translate,
-                checked: feedbackContact === 'false'
+                value: "Signing in",
+                text: 'pages.contactUsPublic.section3.radio2' | translate
+            },
+            {
+                value: "Something else",
+                text: 'pages.contactUsPublic.section3.radio3' | translate
+            },
+            {
+                value: "GOV.UK email subscriptions",
+                text: 'pages.contactUsPublic.section3.radio4' | translate
+            },
+            {
+                value: "Suggestions or feedback",
+                text: 'pages.contactUsPublic.section3.radio5' | translate
             }
         ]
     }) }}
 
-<div id="contact-details-container" class="{{ "" if feedbackContact === "true" else "govuk-!-display-none" }}">
-    {{ govukInput({
-        label: {
-            html: 'pages.contactUsPublic.section3.replyEmail.label' | translate
-        },
-        hint: {
-            text: 'pages.contactUsPublic.section3.replyEmail.hint' | translate
-        },
-        id: "replyEmail",
-        name: "replyEmail",
-        value: replyEmail,
-
-        errorMessage: {
-            text: errors['replyEmail'].text
-        } if (errors['replyEmail'])
-    }) }}
-
-    {{ govukInput({
-        label: {
-            html: 'pages.contactUsPublic.section3.name.label' | translate
-        },
-        hint: {
-            text: 'pages.contactUsPublic.section3.name.hint' | translate
-        },
-        id: "name",
-        name: "name",
-        value: name,
-        errorMessage: {
-            text: errors['name'].text
-        } if (errors['name'])
-    }) }}
-</div>
-
 
 {{ govukButton({
-    "text": button_text|default("Submit form", true),
+    "text": button_text|default('general.continue.label' | translate, true),
     "type": "Submit",
     "preventDoubleClick": true
 }) }}
