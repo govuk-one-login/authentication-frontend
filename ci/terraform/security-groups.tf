@@ -41,3 +41,73 @@ resource "aws_security_group_rule" "allow_connection_to_frontend_redis" {
   to_port                  = local.redis_port_number
   type                     = "egress"
 }
+
+resource "aws_security_group" "frontend_alb_sg" {
+  name_prefix = "${var.environment}-frontend-alb-"
+  vpc_id      = local.vpc_id
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = local.default_tags
+}
+
+resource "aws_security_group_rule" "allow_alb_http_ingress_from_anywhere" {
+  count = var.public_access ? 1 : 0
+
+  security_group_id = aws_security_group.frontend_alb_sg.id
+  type              = "ingress"
+
+  description = "http"
+  protocol    = "tcp"
+  from_port   = 80
+  to_port     = 80
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "allow_alb_https_ingress_from_anywhere" {
+  count = var.public_access ? 1 : 0
+
+  security_group_id = aws_security_group.frontend_alb_sg.id
+  type              = "ingress"
+
+  description = "https"
+  protocol    = "tcp"
+  from_port   = 443
+  to_port     = 443
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "allow_alb_application_egress_to_task_group" {
+  security_group_id = aws_security_group.frontend_alb_sg.id
+  type              = "egress"
+
+  description              = "http"
+  protocol                 = "tcp"
+  from_port                = var.app_port
+  to_port                  = var.app_port
+  source_security_group_id = aws_security_group.frontend_ecs_tasks_sg.id
+}
+
+resource "aws_security_group" "frontend_ecs_tasks_sg" {
+  name_prefix = "${var.environment}-frontend-ecs-task-"
+  vpc_id      = local.vpc_id
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = local.default_tags
+}
+
+resource "aws_security_group_rule" "allow_ecs_task_ingress_from_alb" {
+  security_group_id = aws_security_group.frontend_ecs_tasks_sg.id
+  type              = "ingress"
+
+  description              = "http"
+  protocol                 = "tcp"
+  from_port                = var.app_port
+  to_port                  = var.app_port
+  source_security_group_id = aws_security_group.frontend_alb_sg.id
+}
