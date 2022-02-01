@@ -134,5 +134,5 @@ variable "zendesk_api_token" {
 }
 
 variable "frontend_api_fqdn" {
-  default = ""
+  default = null
 }
