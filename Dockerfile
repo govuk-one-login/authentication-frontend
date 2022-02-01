@@ -4,7 +4,6 @@ COPY package.json ./
 COPY yarn.lock ./
 COPY tsconfig.json ./
 COPY ./src ./src
-COPY ./static ./static
 COPY ./@types ./@types
 RUN yarn install && yarn build
 

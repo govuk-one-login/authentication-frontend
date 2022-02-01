@@ -49,3 +49,23 @@ resource "aws_alb_listener" "frontend_alb_listener_https" {
 
   tags = local.default_tags
 }
+
+resource "aws_alb_listener_rule" "frontend_alb_listener_https_robots" {
+  listener_arn = aws_alb_listener.frontend_alb_listener_https.arn
+  priority     = 10
+
+  action {
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/plain"
+      message_body = file("static/robots.txt")
+      status_code  = 200
+    }
+  }
+
+  condition {
+    path_pattern {
+      values = ["/robots.txt"]
+    }
+  }
+}
