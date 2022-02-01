@@ -10,11 +10,23 @@ params:
   DEPLOYER_ROLE_ARN: ((deployer-role-arn-non-prod))
   STATE_BUCKET: digital-identity-dev-tfstate
   DEPLOY_ENVIRONMENT: build
+  DNS_DEPLOYER_ROLE_ARN: ((deployer-role-arn-production))
+  DNS_STATE_BUCKET: ((dns-state-bucket))
+  DNS_STATE_KEY: ((dns-state-key))
   CF_USERNAME: ((cf-username))
   CF_PASSWORD: ((cf-password))
   CF_ORG_NAME: ((cf-org-name))
+  APP_INSTANCES: 3
+  GTM_ID: ((build-gtm-id))
+  SESSION_EXPIRY: ((build-session-expiry))
+  LOGGING_ENDPOINT_ARN: "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prod"
+  LOGGING_ENDPOINT_ENABLED: "true"
+  ZENDESK_USERNAME: ""
+  ZENDESK_GROUP_ID_PUBLIC: ""
+  ZENDESK_API_TOKEN: ""
 inputs:
   - name: frontend-src
+  - name: frontend-image
 outputs:
   - name: terraform-outputs
 run:
@@ -22,6 +34,10 @@ run:
   args:
     - -euc
     - |
+      export IMAGE_URI=$(cat frontend-image/repository)
+      export IMAGE_TAG=$(cat frontend-image/tag)
+      export IMAGE_DIGEST=$(cat frontend-image/digest)
+      
       cd "frontend-src/ci/terraform/"
       terraform init -input=false \
         -backend-config "role_arn=${DEPLOYER_ROLE_ARN}" \
@@ -35,6 +51,22 @@ run:
         -var "cf_username=${CF_USERNAME}" \
         -var "cf_password=${CF_PASSWORD}" \
         -var "cf_org_name=${CF_ORG_NAME}" \
-        -var-file ${DEPLOY_ENVIRONMENT}.tfvars
+        -var "common_state_bucket=${STATE_BUCKET}" \
+        -var "dns_state_bucket=${DNS_STATE_BUCKET}" \
+        -var "dns_state_key=${DNS_STATE_KEY}" \
+        -var "dns_state_role=${DNS_DEPLOYER_ROLE_ARN}" \
+        -var "ecs_desired_count=${APP_INSTANCES}" \
+        -var "session_expiry=${SESSION_EXPIRY}" \
+        -var "logging_endpoint_arn=${LOGGING_ENDPOINT_ARN}" \
+        -var "logging_endpoint_enabled=${LOGGING_ENDPOINT_ENABLED}" \
+        -var "zendesk_username=${ZENDESK_USERNAME}" \
+        -var "zendesk_group_id_public=${ZENDESK_GROUP_ID_PUBLIC}" \
+        -var "zendesk_api_token=${ZENDESK_API_TOKEN}" \
+        -var "gtm_id=${GTM_ID}" \
+        -var "session_expiry=${SESSION_EXPIRY}" \
+        -var "image_uri=${IMAGE_URI}" \
+        -var "image_tag=${IMAGE_TAG}" \
+        -var "image_digest=${IMAGE_DIGEST}" \
+        -var-file ${DEPLOY_ENVIRONMENT}.tfvars \
 
       terraform output --json > ../../../terraform-outputs/${DEPLOY_ENVIRONMENT}-terraform-outputs.json
