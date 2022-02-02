@@ -15,7 +15,7 @@
     {{ 'pages.updatedTermsAndCondsOptional.paragraph2' | translate + clientInfo.client_name + 'pages.updatedTermsAndCondsOptional.paragraph2Continued' | translate }}
 </p>
 
-<form action="/updated-terms-and-conditions" method="post" novalidate>
+<form id="form-tracking" action="/updated-terms-and-conditions" method="post" novalidate>
 
     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
