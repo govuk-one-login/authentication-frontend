@@ -17,6 +17,9 @@
  {{ govukButton({
   "text": button_text|default('pages.accountCreated.continue' | translate, true),
   "href": linkUrl,
+     "attributes": {
+         "id": "track-link"
+     },
   "preventDoubleClick": true
   }) }}
 

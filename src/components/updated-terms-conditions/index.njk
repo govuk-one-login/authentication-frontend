@@ -19,7 +19,7 @@
 </p>
 <p class="govuk-body govuk-white-text">{{ 'pages.updatedTermsAndConds.paragraph2' | translate }}</p>
 
-<form action="/updated-terms-and-conditions" method="post" novalidate>
+<form id="form-tracking"  action="/updated-terms-and-conditions" method="post" novalidate>
 
     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 

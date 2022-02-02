@@ -128,6 +128,19 @@ var cookies = function (trackingId, analyticsCookieDomain) {
         pageForm.action = destinationLink;
       });
     }
+
+    var trackLink = document.getElementById("track-link");
+
+    if (trackLink) {
+      trackLink.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        var tracker = ga.getAll()[0];
+        var linker = new window.gaplugins.Linker(tracker);
+        var destinationLink = linker.decorate(trackLink.href);
+        window.location.href = destinationLink;
+      });
+    }
   }
 
   function generateSessionJourney(journey, status) {
