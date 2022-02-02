@@ -1,6 +1,19 @@
 import { Request, Response } from "express";
 import { PATH_NAMES, SUPPORT_TYPE, ZENDESK_THEMES } from "../../app.constants";
 
+const themes = {
+  [ZENDESK_THEMES.SOMETHING_ELSE]:
+    "contact-us/index-another-problem-questions.njk",
+  [ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS]:
+    "contact-us/index-email-subscriptions-questions.njk",
+  [ZENDESK_THEMES.SUGGESTIONS_FEEDBACK]:
+    "contact-us/index-suggestion-feedback-questions.njk",
+  [ZENDESK_THEMES.SIGNING_IN]:
+    "contact-us/index-signing-in-further-information.njk",
+  [ZENDESK_THEMES.ACCOUNT_CREATION]:
+    "contact-us/index-account-creation-further-information.njk",
+};
+
 export function contactUsGet(req: Request, res: Response): void {
   if (req.query.supportType === SUPPORT_TYPE.GOV_SERVICE) {
     return res.render("contact-us/index-gov-service-contact-us.njk");
@@ -14,23 +27,11 @@ export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
 }
 
 export function contactUsQuestionsGet(req: Request, res: Response): void {
-  if (req.query.theme === ZENDESK_THEMES.SOMETHING_ELSE) {
-    return res.render("contact-us/index-another-problem-questions.njk");
-  } else if (req.query.theme === ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS) {
-    return res.render("contact-us/index-email-subscriptions-questions.njk");
-  } else if (req.query.theme === ZENDESK_THEMES.SUGGESTIONS_FEEDBACK) {
-    return res.render("contact-us/index-suggestion-feedback-questions.njk");
-  }
+  return res.render(themes[req.query.theme as string]);
 }
 
 export function furtherInformationGet(req: Request, res: Response): void {
-  if (req.query.theme === ZENDESK_THEMES.SIGNING_IN) {
-    return res.render("contact-us/index-signing-in-further-information.njk");
-  } else if (req.query.theme === ZENDESK_THEMES.ACCOUNT_CREATION) {
-    return res.render(
-      "contact-us/index-account-creation-further-information.njk"
-    );
-  }
+  return res.render(themes[req.query.theme as string]);
 }
 
 export function contactUsFormPost(req: Request, res: Response): void {
