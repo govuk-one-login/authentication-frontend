@@ -3,15 +3,15 @@ import { PATH_NAMES, SUPPORT_TYPE, ZENDESK_THEMES } from "../../app.constants";
 
 const themes = {
   [ZENDESK_THEMES.SOMETHING_ELSE]:
-    "contact-us/index-another-problem-questions.njk",
+    "contact-us/questions/index-another-problem-questions.njk",
   [ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS]:
-    "contact-us/index-email-subscriptions-questions.njk",
+    "contact-us/questions/index-email-subscriptions-questions.njk",
   [ZENDESK_THEMES.SUGGESTIONS_FEEDBACK]:
-    "contact-us/index-suggestion-feedback-questions.njk",
+    "contact-us/questions/index-suggestion-feedback-questions.njk",
   [ZENDESK_THEMES.SIGNING_IN]:
-    "contact-us/index-signing-in-further-information.njk",
+    "contact-us/further-information/index-signing-in-further-information.njk",
   [ZENDESK_THEMES.ACCOUNT_CREATION]:
-    "contact-us/index-account-creation-further-information.njk",
+    "contact-us/further-information/index-account-creation-further-information.njk",
 };
 
 export function contactUsGet(req: Request, res: Response): void {
