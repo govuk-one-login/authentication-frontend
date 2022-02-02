@@ -1095,7 +1095,8 @@
         "radio2": "A problem signing in to your account",
         "radio3": "Another problem using your GOV.UK account",
         "radio4": "GOV.UK email subscriptions",
-        "radio5": "A suggestion or feedback about using your GOV.UK account"
+        "radio5": "A suggestion or feedback about using your GOV.UK account",
+        "errorMessage": "You must select an option to tell us what you need help with"
       },
       "submitButtonText": "Submit",
       "submitButtonLink": "/contact-us-submit"

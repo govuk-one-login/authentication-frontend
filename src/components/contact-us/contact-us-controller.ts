@@ -1,8 +1,5 @@
 import { Request, Response } from "express";
-import { ContactUsServiceInterface } from "./types";
-import { contactUsService } from "./contact-us-service";
-import { ExpressRouteFunc } from "../../types";
-import { PATH_NAMES, SUPPORT_TYPE } from "../../app.constants";
+import { PATH_NAMES, SUPPORT_TYPE, ZENDESK_THEMES } from "../../app.constants";
 
 export function contactUsGet(req: Request, res: Response): void {
   if (req.query.supportType === SUPPORT_TYPE.GOV_SERVICE) {
@@ -16,26 +13,30 @@ export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
   res.render("contact-us/index-submit-success.njk");
 }
 
-export function furtherInformation(req: Request, res: Response): void {
-  res.render("contact-us/index-signing-in-further-information.njk");
+export function furtherInformationGet(req: Request, res: Response): void {
+  if (req.query.theme === ZENDESK_THEMES.SIGNING_IN) {
+    return res.render("contact-us/index-signing-in-further-information.njk");
+  } else if (req.query.theme === ZENDESK_THEMES.ACCOUNT_CREATION) {
+    return res.render(
+      "contact-us/index-account-creation-further-information.njk"
+    );
+  }
 }
 
-export function contactUsFormPost(
-  service: ContactUsServiceInterface = contactUsService()
-): ExpressRouteFunc {
-  return async function (req: Request, res: Response) {
-    await service.contactUsSubmitForm({
-      comment: req.body.issueDescription,
-      subject: "GOV.UK Accounts Feedback",
-      email: req.body.replyEmail,
-      name: req.body.name,
-      optionalData: {
-        sessionId: res.locals.sessionId,
-        userAgent: req.get("User-Agent"),
-      },
-      feedbackContact: req.body.feedbackContact === "true",
-    });
+export function contactUsFormPost(req: Request, res: Response): void {
+  res.redirect(
+    appendQueryParam(
+      "theme",
+      req.body.theme,
+      PATH_NAMES.CONTACT_US_FURTHER_INFORMATION
+    )
+  );
+}
 
-    return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
-  };
+function appendQueryParam(param: string, value: string, url: string) {
+  if (!param || !value) {
+    return url;
+  }
+
+  return `${url}?${param}=${value.trim()}`;
 }
