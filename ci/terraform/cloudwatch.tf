@@ -63,3 +63,20 @@ resource "aws_cloudwatch_log_subscription_filter" "ecs_frontend_task_log_subscri
   filter_pattern  = ""
   destination_arn = var.logging_endpoint_arn
 }
+
+resource "aws_cloudwatch_log_group" "alb_waf_log" {
+  // Frustratingly, the log group name has to begin with "aws-waf-logs-" so we can't follow our normal convention here
+  name              = "aws-waf-logs-frontend-alb-${var.environment}"
+  kms_key_id        = aws_kms_key.cloudwatch_log_encryption.arn
+  retention_in_days = var.cloudwatch_log_retention
+
+  tags = local.default_tags
+}
+
+resource "aws_cloudwatch_log_subscription_filter" "alb_waf_log_subscription" {
+  count           = var.logging_endpoint_enabled ? 1 : 0
+  name            = "${aws_cloudwatch_log_group.alb_waf_log.name}-splunk-subscription"
+  log_group_name  = aws_cloudwatch_log_group.alb_waf_log.name
+  filter_pattern  = ""
+  destination_arn = var.logging_endpoint_arn
+}
