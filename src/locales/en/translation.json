@@ -1129,6 +1129,40 @@
         }
       }
     },
+    "contactUsQuestions": {
+      "emailReply": {
+        "header": "Can we reply to you by email?"
+      },
+      "anotherProblem": {
+        "title": "Another problem using your GOV.UK account",
+        "header": "Another problem using your GOV.UK account",
+        "section1": {
+          "header": "What were you trying to do?"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "For example, was there a technical problem?"
+        }
+      },
+      "emailSubscriptions": {
+        "title": "Your GOV.UK email subscriptions",
+        "header": "Your GOV.UK email subscriptions",
+        "section1": {
+          "header": "What were you trying to do and what happened?"
+        },
+        "section2": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give feedback"
+        }
+      },
+      "suggestionOrFeedback": {
+        "title": "A suggestion or feedback about using your GOV.UK account",
+        "header": "A suggestion or feedback about using your GOV.UK account",
+        "section1": {
+          "header": "Your suggestion or feedback"
+        }
+      }
+    },
     "contactUsSubmitSuccess": {
       "title": "Your message has been submitted",
       "header": "Your message has been submitted",

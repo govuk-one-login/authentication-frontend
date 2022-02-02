@@ -3,10 +3,7 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import {
-  contactUsFormPost,
-  contactUsGet,
-} from "../contact-us-controller";
+import { contactUsFormPost, contactUsGet } from "../contact-us-controller";
 import { SUPPORT_TYPE, ZENDESK_THEMES } from "../../../app.constants";
 
 describe("contact us controller", () => {
@@ -62,6 +59,33 @@ describe("contact us controller", () => {
 
       expect(res.redirect).to.have.calledWith(
         "/contact-us-further-information?theme=ACCOUNT_CREATION"
+      );
+    });
+    it("should redirect /contact-us-questions page when 'Another problem using your GOV.UK account' radio option is chosen", async () => {
+      req.body.theme = ZENDESK_THEMES.SOMETHING_ELSE;
+
+      contactUsFormPost(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(
+        "/contact-us-questions?theme=SOMETHING_ELSE"
+      );
+    });
+    it("should redirect /contact-us-questions page when 'GOV.UK email subscriptions' radio option is chosen", async () => {
+      req.body.theme = ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS;
+
+      contactUsFormPost(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(
+        "/contact-us-questions?theme=EMAIL_SUBSCRIPTIONS"
+      );
+    });
+    it("should redirect /contact-us-questions page when 'A suggestion or feedback about using your GOV.UK account' radio option is chosen", async () => {
+      req.body.theme = ZENDESK_THEMES.SUGGESTIONS_FEEDBACK;
+
+      contactUsFormPost(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(
+        "/contact-us-questions?theme=SUGGESTIONS_FEEDBACK"
       );
     });
   });

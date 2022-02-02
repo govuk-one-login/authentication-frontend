@@ -13,6 +13,16 @@ export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
   res.render("contact-us/index-submit-success.njk");
 }
 
+export function contactUsQuestionsGet(req: Request, res: Response): void {
+  if (req.query.theme === ZENDESK_THEMES.SOMETHING_ELSE) {
+    return res.render("contact-us/index-another-problem-questions.njk");
+  } else if (req.query.theme === ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS) {
+    return res.render("contact-us/index-email-subscriptions-questions.njk");
+  } else if (req.query.theme === ZENDESK_THEMES.SUGGESTIONS_FEEDBACK) {
+    return res.render("contact-us/index-suggestion-feedback-questions.njk");
+  }
+}
+
 export function furtherInformationGet(req: Request, res: Response): void {
   if (req.query.theme === ZENDESK_THEMES.SIGNING_IN) {
     return res.render("contact-us/index-signing-in-further-information.njk");
@@ -24,9 +34,15 @@ export function furtherInformationGet(req: Request, res: Response): void {
 }
 
 export function contactUsFormPost(req: Request, res: Response): void {
+  let url = PATH_NAMES.CONTACT_US_QUESTIONS;
+  if (
+    req.body.theme === ZENDESK_THEMES.ACCOUNT_CREATION ||
+    req.body.theme === ZENDESK_THEMES.SIGNING_IN
+  ) {
+    url = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
+  }
   const queryParams = new URLSearchParams({
     theme: req.body.theme,
   }).toString();
-
-  res.redirect(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION + "?" + queryParams);
+  res.redirect(url + "?" + queryParams);
 }

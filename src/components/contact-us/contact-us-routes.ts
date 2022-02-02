@@ -6,6 +6,7 @@ import {
   contactUsSubmitSuccessGet,
   contactUsFormPost,
   furtherInformationGet,
+  contactUsQuestionsGet,
 } from "./contact-us-controller";
 import { validateContactUsRequest } from "./contact-us-validation";
 
@@ -19,5 +20,6 @@ router.post(
 );
 router.get(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS, contactUsSubmitSuccessGet);
 router.get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION, furtherInformationGet);
+router.get(PATH_NAMES.CONTACT_US_QUESTIONS, contactUsQuestionsGet);
 
 export { router as contactUsRouter };
