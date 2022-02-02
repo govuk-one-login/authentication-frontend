@@ -1,0 +1,84 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% set showBack = true %}
+{% set hrefBack = 'support' %}
+{% set pageTitleName = 'pages.contactUsFurtherInformation.signingIn.title' | translate %}
+
+{% block content %}
+
+    {% include "common/errors/errorSummary.njk" %}
+
+{% set html %}
+<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
+<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
+{% endset %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+  {{ 'pages.contactUsFurtherInformation.signingIn.header' | translate }}
+</h1>
+
+<form action="/contact-us" method="get" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+    {{ govukRadios({
+        idPrefix: "feedback-contact",
+        name: "feedbackContact",
+        fieldset: {
+            legend: {
+                text: 'pages.contactUsFurtherInformation.signingIn.section1.header' | translate,
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
+            }
+        },
+        items: [
+            {
+                value: "Code not received",
+                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio1' | translate
+            },
+            {
+                value: "Code incorrect",
+                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio2' | translate
+            },
+            {
+                value: "account recovery - phone number",
+                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio3' | translate
+            },
+            {
+                value: "account recovery - password",
+                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio4' | translate
+            },
+            {
+                value: "Account cant be found",
+                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio5' | translate
+            },
+            {
+                value: "System error",
+                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio6' | translate
+            },
+            {
+                value: "Something else",
+                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio7' | translate
+            }
+        ]
+    }) }}
+
+
+{{ govukButton({
+    "text": button_text|default('general.continue.label' | translate, true),
+    "type": "Submit",
+    "preventDoubleClick": true
+}) }}
+
+</form>
+
+{% endblock %}
+
+
+

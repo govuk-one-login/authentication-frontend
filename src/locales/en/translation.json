@@ -1100,6 +1100,22 @@
       "submitButtonText": "Submit",
       "submitButtonLink": "/contact-us-submit"
     },
+    "contactUsFurtherInformation": {
+      "signingIn": {
+        "title": "Contact us. Further information",
+        "header": "A problem signing in to your account",
+        "section1": {
+          "header": "Tell us what happened",
+          "radio1": "You did not receive a security code",
+          "radio2": "The security code did not work",
+          "radio3": "You do not have access to the phone number you used when you created your account, so you could not receive a security code",
+          "radio4": "You’ve forgotten your password",
+          "radio5": "You’ve been told your account ‘cannot be found’",
+          "radio6": "There was a technical problem (for example, the service was unavailable)",
+          "radio7": "Something else"
+        }
+      }
+    },
     "contactUsSubmitSuccess": {
       "title": "Your message has been submitted",
       "header": "Your message has been submitted",

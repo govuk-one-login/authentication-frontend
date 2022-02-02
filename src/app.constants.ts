@@ -40,6 +40,7 @@ export const PATH_NAMES = {
   INVALID_SESSION: "/invalid-session",
   CONTACT_US: "/contact-us",
   CONTACT_US_SUBMIT_SUCCESS: "/contact-us-submit-success",
+  CONTACT_US_FURTHER_INFORMATION: "/contact-us-further-information",
   PROVE_IDENTITY: "/prove-identity",
   HEALTHCHECK: "/healthcheck",
 };

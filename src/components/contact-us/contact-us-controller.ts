@@ -16,6 +16,10 @@ export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
   res.render("contact-us/index-submit-success.njk");
 }
 
+export function furtherInformation(req: Request, res: Response): void {
+  res.render("contact-us/index-signing-in-further-information.njk");
+}
+
 export function contactUsFormPost(
   service: ContactUsServiceInterface = contactUsService()
 ): ExpressRouteFunc {
