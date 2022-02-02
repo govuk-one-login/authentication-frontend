@@ -10,6 +10,9 @@ resource "aws_ecs_service" "frontend_ecs_service" {
   desired_count   = var.ecs_desired_count
   launch_type     = "FARGATE"
 
+  deployment_minimum_healthy_percent = var.deployment_min_healthy_percent
+  deployment_maximum_percent         = var.deployment_max_percent
+
   network_configuration {
     security_groups = [
       local.allow_egress_security_group_id,

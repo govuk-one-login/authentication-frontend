@@ -82,7 +82,7 @@ variable "image_digest" {
 
 variable "ecs_desired_count" {
   type    = number
-  default = 3
+  default = 2
 }
 
 variable "app_port" {
@@ -135,4 +135,12 @@ variable "zendesk_api_token" {
 
 variable "frontend_api_fqdn" {
   default = null
+}
+
+variable "deployment_min_healthy_percent" {
+  default = 50
+}
+
+variable "deployment_max_percent" {
+  default = 100
 }
