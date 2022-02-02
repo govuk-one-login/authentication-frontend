@@ -20,7 +20,7 @@
 {% endset %}
 
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsFurtherInformation.signingIn.header' | translate }}
+  {{ 'pages.contactUsFurtherInformation.accountCreation.header' | translate }}
 </h1>
 
 <form action="/contact-us" method="get" novalidate>
@@ -32,7 +32,7 @@
         name: "feedbackContact",
         fieldset: {
             legend: {
-                text: 'pages.contactUsFurtherInformation.signingIn.section1.header' | translate,
+                text: 'pages.contactUsFurtherInformation.accountCreation.section1.header' | translate,
                 isPageHeading: false,
                 classes: "govuk-fieldset__legend--m"
             }
@@ -40,31 +40,23 @@
         items: [
             {
                 value: "Code not received",
-                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio1' | translate
+                text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio1' | translate
             },
             {
                 value: "Code incorrect",
-                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio2' | translate
+                text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio2' | translate
             },
             {
                 value: "account recovery - phone number",
-                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio3' | translate
+                text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio3' | translate
             },
             {
                 value: "account recovery - password",
-                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio4' | translate
+                text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio4' | translate
             },
             {
                 value: "Account cant be found",
-                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio5' | translate
-            },
-            {
-                value: "System error",
-                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio6' | translate
-            },
-            {
-                value: "Something else",
-                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio7' | translate
+                text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio5' | translate
             }
         ]
     }) }}

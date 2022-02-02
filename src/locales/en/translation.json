@@ -1101,8 +1101,8 @@
       "submitButtonLink": "/contact-us-submit"
     },
     "contactUsFurtherInformation": {
+      "title": "Contact us. Further information",
       "signingIn": {
-        "title": "Contact us. Further information",
         "header": "A problem signing in to your account",
         "section1": {
           "header": "Tell us what happened",
@@ -1113,6 +1113,17 @@
           "radio5": "You’ve been told your account ‘cannot be found’",
           "radio6": "There was a technical problem (for example, the service was unavailable)",
           "radio7": "Something else"
+        }
+      },
+      "accountCreation": {
+        "header": "A problem creating an account",
+        "section1": {
+          "header": "Tell us what happened",
+          "radio1": "You did not receive a security code",
+          "radio2": "The security code did not work",
+          "radio3": "You do not have a UK mobile phone number",
+          "radio4": "There was a technical problem (for example, the service was unavailable)",
+          "radio5": "Something else"
         }
       }
     },
