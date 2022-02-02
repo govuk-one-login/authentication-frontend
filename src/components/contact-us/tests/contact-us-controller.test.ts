@@ -6,10 +6,8 @@ import { Request, Response } from "express";
 import {
   contactUsFormPost,
   contactUsGet,
-  contactUsSubmitSuccessGet,
 } from "../contact-us-controller";
-import { SUPPORT_TYPE } from "../../../app.constants";
-import { ContactUsServiceInterface } from "../types";
+import { SUPPORT_TYPE, ZENDESK_THEMES } from "../../../app.constants";
 
 describe("contact us controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -47,25 +45,24 @@ describe("contact us controller", () => {
     });
   });
 
-  describe("contactUsSubmitSuccessGet", () => {
-    it("should render contact us success page", () => {
-      contactUsSubmitSuccessGet(req as Request, res as Response);
+  describe("contactUsFormPost", () => {
+    it("should redirect /contact-us-further-information page when 'A problem signing in to your account' radio option is chosen", async () => {
+      req.body.theme = ZENDESK_THEMES.SIGNING_IN;
 
-      expect(res.render).to.have.calledWith(
-        "contact-us/index-submit-success.njk"
+      contactUsFormPost(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(
+        "/contact-us-further-information?theme=SIGNING_IN"
       );
     });
-  });
+    it("should redirect /contact-us-further-information page when 'A problem creating an account' radio option is chosen", async () => {
+      req.body.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
 
-  describe("contactUsFormPost", () => {
-    it("should redirect /contact-us-submit-success page when ticket posted", async () => {
-      const fakeService: ContactUsServiceInterface = {
-        contactUsSubmitForm: sandbox.fake(),
-      };
+      contactUsFormPost(req as Request, res as Response);
 
-      await contactUsFormPost(fakeService)(req as Request, res as Response);
-
-      expect(res.redirect).to.have.calledWith("/contact-us-submit-success");
+      expect(res.redirect).to.have.calledWith(
+        "/contact-us-further-information?theme=ACCOUNT_CREATION"
+      );
     });
   });
 });
