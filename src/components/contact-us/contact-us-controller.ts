@@ -24,19 +24,9 @@ export function furtherInformationGet(req: Request, res: Response): void {
 }
 
 export function contactUsFormPost(req: Request, res: Response): void {
-  res.redirect(
-    appendQueryParam(
-      "theme",
-      req.body.theme,
-      PATH_NAMES.CONTACT_US_FURTHER_INFORMATION
-    )
-  );
-}
+  const queryParams = new URLSearchParams({
+    theme: req.body.theme,
+  }).toString();
 
-function appendQueryParam(param: string, value: string, url: string) {
-  if (!param || !value) {
-    return url;
-  }
-
-  return `${url}?${param}=${value.trim()}`;
+  res.redirect(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION + "?" + queryParams);
 }

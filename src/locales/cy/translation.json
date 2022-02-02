@@ -1117,6 +1117,7 @@
         }
       },
       "accountCreation": {
+        "title": "A problem creating an account",
         "header": "A problem creating an account",
         "section1": {
           "header": "Tell us what happened",

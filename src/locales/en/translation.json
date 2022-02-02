@@ -1102,8 +1102,8 @@
       "submitButtonLink": "/contact-us-submit"
     },
     "contactUsFurtherInformation": {
-      "title": "Contact us. Further information",
       "signingIn": {
+        "title": "A problem signing in to your account",
         "header": "A problem signing in to your account",
         "section1": {
           "header": "Tell us what happened",
@@ -1117,6 +1117,7 @@
         }
       },
       "accountCreation": {
+        "title": "A problem creating an account",
         "header": "A problem creating an account",
         "section1": {
           "header": "Tell us what happened",
