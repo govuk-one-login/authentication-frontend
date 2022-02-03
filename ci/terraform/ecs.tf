@@ -1,10 +1,15 @@
+locals {
+  service_name   = "${var.environment}-frontend-ecs-service"
+  container_name = "frontend-application"
+}
+
 resource "random_string" "session_secret" {
   length  = 32
   special = false
 }
 
 resource "aws_ecs_service" "frontend_ecs_service" {
-  name            = "${var.environment}-frontend-ecs-service"
+  name            = local.service_name
   cluster         = local.cluster_id
   task_definition = aws_ecs_task_definition.frontend_task_definition.arn
   desired_count   = var.ecs_desired_count
@@ -26,7 +31,7 @@ resource "aws_ecs_service" "frontend_ecs_service" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.frontend_alb_target_group.arn
-    container_name   = "frontend-application"
+    container_name   = local.container_name
     container_port   = var.app_port
   }
 
@@ -43,7 +48,7 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
   memory                   = 2048
   container_definitions = jsonencode([
     {
-      name      = "frontend-application"
+      name      = local.container_name
       image     = "${var.image_uri}:${var.image_tag}@${var.image_digest}"
       essential = true
       logConfiguration = {
@@ -51,7 +56,7 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
         options = {
           awslogs-group         = aws_cloudwatch_log_group.ecs_frontend_task_log.name
           awslogs-region        = var.aws_region
-          awslogs-stream-prefix = var.environment
+          awslogs-stream-prefix = local.service_name
         }
       }
       portMappings = [
