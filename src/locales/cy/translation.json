@@ -178,7 +178,7 @@
       "title": "No GOV.UK account found",
       "header": "No GOV.UK account found",
       "paragraph1": "There is no GOV.UK account for ",
-      "insetText1": "The GOV.UK account is new. It’s separate from other government accounts, such as Government Gateway or your personal tax account.",
+      "insetText1": "GOV.UK accounts are new. At the moment, they are separate from other government accounts, such as Government Gateway or Universal Credit.",
       "paragraph2": "You need to create a GOV.UK account even if you already have another type of government account.",
       "createAccountButtonText": "Create a GOV.UK account",
       "createAccountButtonHref": "/enter-email",
