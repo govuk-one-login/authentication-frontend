@@ -116,8 +116,8 @@
       "signInText": "sign in",
       "moreAbout": {
         "header": "About GOV.UK accounts",
-        "paragraph1": "The GOV.UK account is a new account, which will one day allow you to access all online government services.",
-        "paragraph2": "We’re still building the GOV.UK account and will be adding more services to it.",
+        "paragraph1": "GOV.UK accounts are new. They are a first step towards creating a single account that you can use to sign in to all government services.",
+        "paragraph2": "GOV.UK accounts will eventually replace all other government accounts. We're working on adding more features and services.",
         "paragraph3": "For now, you need to use different accounts to access different government services."
       },
       "createButtonText": "Create a GOV.UK account"
