@@ -140,11 +140,18 @@ export const SERVICE_TYPE = {
 };
 
 export const ZENDESK_THEMES = {
-  ACCOUNT_CREATION: "ACCOUNT_CREATION",
-  SIGNING_IN: "SIGNING_IN",
-  SOMETHING_ELSE: "SOMETHING_ELSE",
-  EMAIL_SUBSCRIPTIONS: "EMAIL_SUBSCRIPTIONS",
-  SUGGESTIONS_FEEDBACK: "SUGGESTIONS_FEEDBACK",
+  ACCOUNT_CREATION: "account_creation",
+  SIGNING_IN: "signing_in",
+  SOMETHING_ELSE: "something_else",
+  EMAIL_SUBSCRIPTIONS: "email_subscriptions",
+  SUGGESTIONS_FEEDBACK: "suggestions_feedback",
+  ACCOUNT_NOT_FOUND: "account_not_found",
+  TECHNICAL_ERROR: "technical_error",
+  NO_SECURITY_CODE: "no_security_code",
+  INVALID_SECURITY_CODE: "invalid_security_code",
+  NO_UK_MOBILE_NUMBER: "no_uk_mobile_number",
+  FORGOTTEN_PASSWORD: "forgotten_password",
+  NO_PHONE_NUMBER_ACCESS: "no_phone_number_access",
 };
 
 export enum NOTIFICATION_TYPE {

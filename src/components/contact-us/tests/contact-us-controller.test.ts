@@ -49,7 +49,7 @@ describe("contact us controller", () => {
       contactUsFormPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-further-information?theme=SIGNING_IN"
+        "/contact-us-further-information?theme=signing_in"
       );
     });
     it("should redirect /contact-us-further-information page when 'A problem creating an account' radio option is chosen", async () => {
@@ -58,7 +58,7 @@ describe("contact us controller", () => {
       contactUsFormPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-further-information?theme=ACCOUNT_CREATION"
+        "/contact-us-further-information?theme=account_creation"
       );
     });
     it("should redirect /contact-us-questions page when 'Another problem using your GOV.UK account' radio option is chosen", async () => {
@@ -67,7 +67,7 @@ describe("contact us controller", () => {
       contactUsFormPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=SOMETHING_ELSE"
+        "/contact-us-questions?theme=something_else"
       );
     });
     it("should redirect /contact-us-questions page when 'GOV.UK email subscriptions' radio option is chosen", async () => {
@@ -76,7 +76,7 @@ describe("contact us controller", () => {
       contactUsFormPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=EMAIL_SUBSCRIPTIONS"
+        "/contact-us-questions?theme=email_subscriptions"
       );
     });
     it("should redirect /contact-us-questions page when 'A suggestion or feedback about using your GOV.UK account' radio option is chosen", async () => {
@@ -85,7 +85,7 @@ describe("contact us controller", () => {
       contactUsFormPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=SUGGESTIONS_FEEDBACK"
+        "/contact-us-questions?theme=suggestions_feedback"
       );
     });
   });

@@ -41,7 +41,7 @@
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
     {{ govukRadios({
-        idPrefix: "contact-us-theme",
+        idPrefix: "contact-us",
         name: "theme",
         fieldset: {
             legend: {
@@ -52,23 +52,23 @@
         },
         items: [
             {
-                value: "ACCOUNT_CREATION",
+                value: "account_creation",
                 text: 'pages.contactUsPublic.section3.radio1' | translate
             },
             {
-                value: "SIGNING_IN",
+                value: "signing_in",
                 text: 'pages.contactUsPublic.section3.radio2' | translate
             },
             {
-                value: "SOMETHING_ELSE",
+                value: "something_else",
                 text: 'pages.contactUsPublic.section3.radio3' | translate
             },
             {
-                value: "EMAIL_SUBSCRIPTIONS",
+                value: "email_subscriptions",
                 text: 'pages.contactUsPublic.section3.radio4' | translate
             },
             {
-                value: "SUGGESTIONS_FEEDBACK",
+                value: "suggestions_feedback",
                 text: 'pages.contactUsPublic.section3.radio5' | translate
             }
         ],

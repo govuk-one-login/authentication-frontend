@@ -1,35 +1,15 @@
-{% extends "common/layout/base.njk" %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
-
-{% set showBack = true %}
-{% set hrefBack = 'support' %}
-{% set pageTitleName = 'pages.contactUsFurtherInformation.signingIn.title' | translate %}
-
-{% block content %}
-
-    {% include "common/errors/errorSummary.njk" %}
-
-{% set html %}
-<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
-<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
-{% endset %}
-
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
   {{ 'pages.contactUsFurtherInformation.signingIn.header' | translate }}
 </h1>
 
-<form action="/contact-us" method="get" novalidate>
+<form action="/contact-us-further-information" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="theme" value="{{theme}}"/>
 
     {{ govukRadios({
-        idPrefix: "feedback-contact",
-        name: "feedbackContact",
+        idPrefix: "signing-in",
+        name: "subtheme",
         fieldset: {
             legend: {
                 text: 'pages.contactUsFurtherInformation.signingIn.section1.header' | translate,
@@ -39,34 +19,37 @@
         },
         items: [
             {
-                value: "Code not received",
+                value: "no_security_code",
                 text: 'pages.contactUsFurtherInformation.signingIn.section1.radio1' | translate
             },
             {
-                value: "Code incorrect",
+                value: "invalid_security_code",
                 text: 'pages.contactUsFurtherInformation.signingIn.section1.radio2' | translate
             },
             {
-                value: "account recovery - phone number",
+                value: "no_phone_number_access",
                 text: 'pages.contactUsFurtherInformation.signingIn.section1.radio3' | translate
             },
             {
-                value: "account recovery - password",
+                value: "forgotten_password",
                 text: 'pages.contactUsFurtherInformation.signingIn.section1.radio4' | translate
             },
             {
-                value: "Account cant be found",
+                value: "account_not_found",
                 text: 'pages.contactUsFurtherInformation.signingIn.section1.radio5' | translate
             },
             {
-                value: "System error",
+                value: "technical_error",
                 text: 'pages.contactUsFurtherInformation.signingIn.section1.radio6' | translate
             },
             {
-                value: "Something else",
+                value: "something_else",
                 text: 'pages.contactUsFurtherInformation.signingIn.section1.radio7' | translate
             }
-        ]
+        ],
+          errorMessage: {
+          text: errors['subtheme'].text
+          } if (errors['subtheme'])
     }) }}
 
 
@@ -77,8 +60,5 @@
 }) }}
 
 </form>
-
-{% endblock %}
-
 
 

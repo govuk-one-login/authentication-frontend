@@ -1096,7 +1096,7 @@
         "radio3": "Another problem using your GOV.UK account",
         "radio4": "GOV.UK email subscriptions",
         "radio5": "A suggestion or feedback about using your GOV.UK account",
-        "errorMessage": "You must select an option to tell us what you need help with"
+        "errorMessage": "Select a reason for contacting us"
       },
       "submitButtonText": "Submit",
       "submitButtonLink": "/contact-us-submit"
@@ -1113,7 +1113,8 @@
           "radio4": "You’ve forgotten your password",
           "radio5": "You’ve been told your account ‘cannot be found’",
           "radio6": "There was a technical problem (for example, the service was unavailable)",
-          "radio7": "Something else"
+          "radio7": "Something else",
+          "errorMessage": "Select the problem you had when signing in to your account"
         }
       },
       "accountCreation": {
@@ -1125,7 +1126,8 @@
           "radio2": "The security code did not work",
           "radio3": "You do not have a UK mobile phone number",
           "radio4": "There was a technical problem (for example, the service was unavailable)",
-          "radio5": "Something else"
+          "radio5": "Something else",
+          "errorMessage": "Select the problem you had when creating an account"
         }
       }
     },
@@ -1160,6 +1162,88 @@
         "header": "A suggestion or feedback about using your GOV.UK account",
         "section1": {
           "header": "Your suggestion or feedback"
+        }
+      },
+      "technicalError": {
+        "title": "There was a technical error",
+        "header": "There was a technical error",
+        "section1": {
+          "header": "What were you trying to do?"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "Included details of the error"
+        },
+        "section3": {
+          "header": "If possible, tell us the URL of the page the error happened on?"
+        }
+      },
+      "noSecurityCode": {
+        "title": "You did not receive a security code",
+        "header": "You did not receive a security code",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "invalidSecurityCode": {
+        "title": "The security code does not work",
+        "header": "The security code does not work",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "noUKMobile": {
+        "title": "You do not have a UK mobile phone number",
+        "header": "You do not have a UK mobile phone number",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "forgottenPassword": {
+        "title": "You’ve forgotten your password",
+        "header": "You’ve forgotten your password",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "noPhoneNumberAccess": {
+        "title": "You do not have access to the phone number you used when you created your account",
+        "header": "You do not have access to the phone number you used when you created your account",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "accountCreationProblem": {
+        "title": "Another problem creating an account",
+        "header": "Another problem creating an account",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "signignInProblem": {
+        "title": "Another problem signing in to your account",
+        "header": "Another problem signing in to your account",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "accountNotFound": {
+        "title": "Your account cannot be found",
+        "header": "Your account cannot be found",
+        "section1": {
+          "header": "What service were you trying to use?",
+          "paragraph1": "For example, your GOV.UK email subscriptions, your personal tax account or Universal Credit"
+        },
+        "section2": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
         }
       }
     },
