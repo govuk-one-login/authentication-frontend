@@ -49,7 +49,7 @@ resource "aws_kms_key" "cloudwatch_log_encryption" {
 }
 
 resource "aws_cloudwatch_log_group" "ecs_frontend_task_log" {
-  name              = "${var.environment}-frontend-ecs-task"
+  name              = "/ecs/${var.environment}-frontend"
   kms_key_id        = aws_kms_key.cloudwatch_log_encryption.arn
   retention_in_days = var.cloudwatch_log_retention
 
