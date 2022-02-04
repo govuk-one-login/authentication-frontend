@@ -10,7 +10,16 @@ export function validateContactUsRequest(
     body(bodyType)
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t("pages.contactUsPublic.section3.errorMessage", {
+        let errorMessage = "pages.contactUsPublic.section3.errorMessage";
+        if (req.body.theme === "signing_in") {
+          errorMessage =
+            "pages.contactUsFurtherInformation.signingIn.section1.errorMessage";
+        } else if (req.body.theme === "account_creation") {
+          errorMessage =
+            "pages.contactUsFurtherInformation.accountCreation.section1.errorMessage";
+        }
+
+        return req.t(errorMessage, {
           value,
         });
       }),
