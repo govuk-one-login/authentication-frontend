@@ -7,56 +7,9 @@
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% set showBack = true %}
-{% set hrefBack = 'support' %}
+{% set hrefBack = backurl %}
 
-    {% if subtheme == 'account_not_found' %}
-        {% set pageTitleName = 'pages.contactUsQuestions.accountNotFound.title' | translate %}
-    {% endif %}
-
-    {% if subtheme == 'technical_error' %}
-        {% set pageTitleName = 'pages.contactUsQuestions.technicalError.title' | translate %}
-    {% endif %}
-
-    {% if subtheme == 'no_security_code' %}
-        {% set pageTitleName = 'pages.contactUsQuestions.noSecurityCode.title' | translate %}
-    {% endif %}
-
-    {% if subtheme == 'invalid_security_code' %}
-        {% set pageTitleName = 'pages.contactUsQuestions.invalidSecurityCode.title' | translate %}
-    {% endif %}
-
-    {% if subtheme == 'no_uk_mobile_number' %}
-        {% set pageTitleName = 'pages.contactUsQuestions.noUKMobile.title' | translate %}
-    {% endif %}
-
-    {% if subtheme == 'forgotten_password' %}
-        {% set pageTitleName = 'pages.contactUsQuestions.forgottenPassword.title' | translate %}
-    {% endif %}
-
-    {% if subtheme == 'no_phone_number_access' %}
-        {% set pageTitleName = 'pages.contactUsQuestions.noPhoneNumberAccess.title' | translate %}
-    {% endif %}
-
-    {% if (theme == 'account_creation') and (subtheme == 'something_else') %}
-        {% set pageTitleName = 'pages.contactUsQuestions.signingIn.title' | translate %}
-    {% endif %}
-
-    {% if (theme == 'signing_in') and (subtheme == 'something_else') %}
-        {% set pageTitleName = 'pages.contactUsQuestions.signignInProblem.title' | translate %}
-    {% endif %}
-
-    {% if theme == 'email_subscriptions' %}
-       {% set pageTitleName = 'pages.contactUsQuestions.emailSubscriptions.title' | translate %}
-    {% endif %}
-
-    {% if theme == 'something_else' %}
-        {% set pageTitleName = 'pages.contactUsQuestions.anotherProblem.title' | translate %}
-    {% endif %}
-
-    {% if theme == 'suggestions_feedback' %}
-        {% set pageTitleName = 'pages.contactUsQuestions.suggestionOrFeedback.title' | translate %}
-    {% endif %}
-
+{% set pageTitleName = pageTitleHeading | translate %}
 
 {% block content %}
 {% include "common/errors/errorSummary.njk" %}

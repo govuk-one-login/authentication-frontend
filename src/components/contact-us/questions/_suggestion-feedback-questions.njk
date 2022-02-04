@@ -7,11 +7,11 @@
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="theme" value="{{theme}}"/>
 
-<h2 class="govuk-heading-m">
-  {{ 'pages.contactUsQuestions.suggestionOrFeedback.section1.header' | translate }}
-</h2>
-
 {{ govukTextarea({
+    label: {
+      text: 'pages.contactUsQuestions.suggestionOrFeedback.section1.header' | translate,
+      classes: "govuk-label--s"
+    },
     id: "suggestionOrFeedback-whatWereYouTrying",
     name: "suggestionOrFeedback-whatWereYouTrying",
     errorMessage: {

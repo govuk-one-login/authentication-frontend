@@ -8,11 +8,11 @@
 <input type="hidden" name="theme" value="{{theme}}"/>
 <input type="hidden" name="theme" value="{{subtheme}}"/>
 
-<h2 class="govuk-heading-m">
-  {{ 'pages.contactUsQuestions.technicalError.section1.header' | translate }}
-</h2>
-
 {{ govukTextarea({
+    label: {
+      text: 'pages.contactUsQuestions.technicalError.section1.header' | translate,
+      classes: "govuk-label--s"
+    },
     id: "technicalError-whatWereYouTrying",
     name: "technicalError-whatWereYouTrying",
     errorMessage: {
@@ -20,15 +20,14 @@
     } if (errors['technicalError-whatWereYouTrying'])
 }) }}
 
-<h2 class="govuk-heading-m">
-  {{ 'pages.contactUsQuestions.technicalError.section2.header' | translate }}
-</h2>
-
 {{ govukTextarea({
     label: {
-      text: 'pages.contactUsQuestions.technicalError.section2.paragraph1' | translate,
+      text: 'pages.contactUsQuestions.technicalError.section2.header' | translate,
       classes: "govuk-label--s"
     },
+    hint: {
+        text: 'pages.contactUsQuestions.technicalError.section2.paragraph1' | translate
+      },
     id: "technicalError-whatHappened",
     name: "technicalError-whatHappened",
     errorMessage: {
@@ -36,11 +35,11 @@
     } if (errors['technicalError-whatHappened'])
 }) }}
 
-<h2 class="govuk-heading-m">
-  {{ 'pages.contactUsQuestions.technicalError.section3.header' | translate }}
-</h2>
-
 {{ govukTextarea({
+    label: {
+      text: 'pages.contactUsQuestions.technicalError.section3.header' | translate,
+      classes: "govuk-label--s"
+    },
     id: "technicalError-whatWereYouTrying",
     name: "technicalError-whatWereYouTrying",
     errorMessage: {

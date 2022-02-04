@@ -8,15 +8,14 @@
 <input type="hidden" name="theme" value="{{theme}}"/>
 <input type="hidden" name="theme" value="{{subtheme}}"/>
 
-<h2 class="govuk-heading-m">
-  {{ 'pages.contactUsQuestions.accountNotFound.section1.header' | translate }}
-</h2>
-
 {{ govukTextarea({
     label: {
-      text: 'pages.contactUsQuestions.accountNotFound.section1.paragraph1' | translate,
+      text: 'pages.contactUsQuestions.accountNotFound.section1.header' | translate,
       classes: "govuk-label--s"
     },
+    hint: {
+        text: 'pages.contactUsQuestions.accountNotFound.section1.paragraph1' | translate
+      },
     id: "accountNotFound-whatWereYouTrying",
     name: "accountNotFound-whatWereYouTrying",
     errorMessage: {
@@ -24,15 +23,14 @@
     } if (errors['accountNotFound-whatWereYouTrying'])
 }) }}
 
-<h2 class="govuk-heading-m">
-  {{ 'pages.contactUsQuestions.accountNotFound.section2.header' | translate }}
-</h2>
-
 {{ govukTextarea({
     label: {
-      text: 'pages.contactUsQuestions.accountNotFound.section2.paragraph1' | translate,
+      text: 'pages.contactUsQuestions.accountNotFound.section2.header' | translate,
       classes: "govuk-label--s"
     },
+    hint: {
+        text: 'pages.contactUsQuestions.accountNotFound.section2.paragraph1' | translate
+      },
     id: "accountNotFound-anythingElse",
     name: "accountNotFound-anythingElse",
     errorMessage: {

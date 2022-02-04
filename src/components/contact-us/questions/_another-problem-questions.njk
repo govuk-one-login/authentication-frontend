@@ -8,11 +8,11 @@
 <input type="hidden" name="theme" value="{{theme}}"/>
 <input type="hidden" name="theme" value="{{subtheme}}"/>
 
-<h2 class="govuk-heading-m">
-  {{ 'pages.contactUsQuestions.anotherProblem.section1.header' | translate }}
-</h2>
-
 {{ govukTextarea({
+    label: {
+      text: 'pages.contactUsQuestions.anotherProblem.section1.header' | translate,
+      classes: "govuk-label--s"
+    },
     id: "anotherProblem-whatWereYouTrying",
     name: "anotherProblem-whatWereYouTrying",
     errorMessage: {

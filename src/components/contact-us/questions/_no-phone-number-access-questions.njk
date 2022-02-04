@@ -8,15 +8,14 @@
 <input type="hidden" name="theme" value="{{theme}}"/>
 <input type="hidden" name="theme" value="{{subtheme}}"/>
 
-<h2 class="govuk-heading-m">
-  {{ 'pages.contactUsQuestions.noPhoneNumberAccess.section1.header' | translate }}
-</h2>
-
 {{ govukTextarea({
     label: {
-      text: 'pages.contactUsQuestions.noPhoneNumberAccess.section1.paragraph1' | translate,
+      text: 'pages.contactUsQuestions.noPhoneNumberAccess.section1.header' | translate,
       classes: "govuk-label--s"
     },
+    hint: {
+        text: 'pages.contactUsQuestions.noPhoneNumberAccess.section1.paragraph1' | translate
+      },
     id: "noPhoneNumberAccess-anythingElse",
     name: "noPhoneNumberAccess-anythingElse",
     errorMessage: {

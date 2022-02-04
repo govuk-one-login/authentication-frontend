@@ -9,7 +9,7 @@ import {
 } from "../contact-us-controller";
 import { ZENDESK_THEMES } from "../../../app.constants";
 
-describe("signing in further information controller", () => {
+describe("contact us further information controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
