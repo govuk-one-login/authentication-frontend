@@ -6,18 +6,19 @@
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="theme" value="{{theme}}"/>
-<input type="hidden" name="theme" value="{{subtheme}}"/>
+<input type="hidden" name="subtheme" value="{{subtheme}}"/>
+<input type="hidden" name="backurl" value="{{backurl}}"/>
 
 {{ govukTextarea({
     label: {
       text: 'pages.contactUsQuestions.technicalError.section1.header' | translate,
       classes: "govuk-label--s"
     },
-    id: "technicalError-whatWereYouTrying",
-    name: "technicalError-whatWereYouTrying",
+    id: "issueDescription",
+    name: "issueDescription",
     errorMessage: {
-        text: errors['technicalError-whatWereYouTrying'].text
-    } if (errors['technicalError-whatWereYouTrying'])
+        text: errors['issueDescription'].text
+    } if (errors['issueDescription'])
 }) }}
 
 {{ govukTextarea({
@@ -28,11 +29,11 @@
     hint: {
         text: 'pages.contactUsQuestions.technicalError.section2.paragraph1' | translate
       },
-    id: "technicalError-whatHappened",
-    name: "technicalError-whatHappened",
+    id: "additionalDescription",
+    name: "additionalDescription",
     errorMessage: {
-        text: errors['technicalError-whatHappened'].text
-    } if (errors['technicalError-whatHappened'])
+        text: errors['additionalDescription'].text
+    } if (errors['additionalDescription'])
 }) }}
 
 {{ govukTextarea({
@@ -40,11 +41,11 @@
       text: 'pages.contactUsQuestions.technicalError.section3.header' | translate,
       classes: "govuk-label--s"
     },
-    id: "technicalError-whatWereYouTrying",
-    name: "technicalError-whatWereYouTrying",
+    id: "optionalDescription",
+    name: "optionalDescription",
     errorMessage: {
-        text: errors['technicalError-whatWereYouTrying'].text
-    } if (errors['technicalError-whatWereYouTrying'])
+        text: errors['optionalDescription'].text
+    } if (errors['optionalDescription'])
 }) }}
 
     {{ govukRadios({

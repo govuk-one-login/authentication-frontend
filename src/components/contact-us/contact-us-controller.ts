@@ -74,7 +74,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
   ) {
     pageTitle = somethingELseSubThemeToPageTitle[req.query.theme as string];
   } else {
-    if (req.body.subtheme) {
+    if (req.query.subtheme) {
       pageTitle = themeToPageTitle[req.query.subtheme as string];
     }
   }

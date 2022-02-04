@@ -6,18 +6,19 @@
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="theme" value="{{theme}}"/>
-<input type="hidden" name="theme" value="{{subtheme}}"/>
+<input type="hidden" name="subtheme" value="{{subtheme}}"/>
+<input type="hidden" name="backurl" value="{{backurl}}"/>
 
 {{ govukTextarea({
     label: {
       text: 'pages.contactUsQuestions.anotherProblem.section1.header' | translate,
       classes: "govuk-label--s"
     },
-    id: "anotherProblem-whatWereYouTrying",
-    name: "anotherProblem-whatWereYouTrying",
+    id: "issueDescription",
+    name: "issueDescription",
     errorMessage: {
-        text: errors['issueDescription-whatWereYouTrying'].text
-    } if (errors['issueDescription-whatWereYouTrying'])
+        text: errors['issueDescription'].text
+    } if (errors['issueDescription'])
 }) }}
 
 <h2 class="govuk-heading-m">
@@ -29,11 +30,11 @@
       text: 'pages.contactUsQuestions.anotherProblem.section2.paragraph1' | translate,
       classes: "govuk-label--s"
     },
-    id: "anotherProblem-whatHappened",
-    name: "anotherProblem-whatHappened",
+    id: "additionalDescription",
+    name: "additionalDescription",
     errorMessage: {
-        text: errors['anotherProblem-whatHappened'].text
-    } if (errors['anotherProblem-whatHappened'])
+        text: errors['additionalDescription'].text
+    } if (errors['additionalDescription'])
 }) }}
 
     {{ govukRadios({

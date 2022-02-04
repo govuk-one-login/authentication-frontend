@@ -6,17 +6,18 @@
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="theme" value="{{theme}}"/>
+<input type="hidden" name="backurl" value="{{backurl}}"/>
 
 {{ govukTextarea({
     label: {
       text: 'pages.contactUsQuestions.emailSubscriptions.section1.header' | translate,
       classes: "govuk-label--s"
     },
-    id: "emailSubscription-whatWereYouTrying",
-    name: "emailSubscription-whatWereYouTrying",
+    id: "issueDescription",
+    name: "issueDescription",
     errorMessage: {
-        text: errors['emailSubscription-whatWereYouTrying'].text
-    } if (errors['emailSubscription-whatWereYouTrying'])
+        text: errors['issueDescription'].text
+    } if (errors['issueDescription'])
 }) }}
 
 {{ govukTextarea({
@@ -27,11 +28,11 @@
     hint: {
         text: 'pages.contactUsQuestions.emailSubscriptions.section2.paragraph1' | translate
       },
-    id: "emailSubscription-whatHappened",
-    name: "emailSubscription-whatHappened",
+    id: "optionalDescription",
+    name: "optionalDescription",
     errorMessage: {
-        text: errors['emailSubscription-whatHappened'].text
-    } if (errors['emailSubscription-whatHappened'])
+        text: errors['optionalDescription'].text
+    } if (errors['optionalDescription'])
 }) }}
 
     {{ govukRadios({

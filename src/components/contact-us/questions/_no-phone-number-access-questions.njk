@@ -6,7 +6,8 @@
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="theme" value="{{theme}}"/>
-<input type="hidden" name="theme" value="{{subtheme}}"/>
+<input type="hidden" name="subtheme" value="{{subtheme}}"/>
+<input type="hidden" name="backurl" value="{{backurl}}"/>
 
 {{ govukTextarea({
     label: {
@@ -16,11 +17,11 @@
     hint: {
         text: 'pages.contactUsQuestions.noPhoneNumberAccess.section1.paragraph1' | translate
       },
-    id: "noPhoneNumberAccess-anythingElse",
-    name: "noPhoneNumberAccess-anythingElse",
+    id: "optionalDescription",
+    name: "optionalDescription",
     errorMessage: {
-        text: errors['noPhoneNumberAccess-anythingElse'].text
-    } if (errors['noPhoneNumberAccess-anythingElse'])
+        text: errors['optionalDescription'].text
+    } if (errors['optionalDescription'])
 }) }}
 
     {{ govukRadios({

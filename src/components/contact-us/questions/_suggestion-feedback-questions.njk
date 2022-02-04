@@ -6,17 +6,18 @@
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="theme" value="{{theme}}"/>
+<input type="hidden" name="backurl" value="{{backurl}}"/>
 
 {{ govukTextarea({
     label: {
       text: 'pages.contactUsQuestions.suggestionOrFeedback.section1.header' | translate,
       classes: "govuk-label--s"
     },
-    id: "suggestionOrFeedback-whatWereYouTrying",
-    name: "suggestionOrFeedback-whatWereYouTrying",
+    id: "issueDescription",
+    name: "issueDescription",
     errorMessage: {
-        text: errors['suggestionOrFeedback-whatWereYouTrying'].text
-    } if (errors['suggestionOrFeedback-whatWereYouTrying'])
+        text: errors['issueDescription'].text
+    } if (errors['issueDescription'])
 }) }}
 
     {{ govukRadios({
