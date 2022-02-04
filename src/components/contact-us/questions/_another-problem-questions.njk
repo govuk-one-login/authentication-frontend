@@ -37,62 +37,44 @@
     } if (errors['additionalDescription'])
 }) }}
 
-    {{ govukRadios({
-        idPrefix: "feedback-contact",
-        name: "feedbackContact",
-        fieldset: {
-            legend: {
-                text: 'pages.contactUsQuestions.emailReply.header' | translate,
-                isPageHeading: false,
-                classes: "govuk-fieldset__legend--m"
-            }
-        },
-        items: [
-            {
-                value: "true",
-                text: 'general.yes' | translate,
-                checked: feedbackContact === 'true'
-            },
-            {
-                value: "false",
-                text: 'general.no' | translate,
-                checked: feedbackContact === 'false'
-            }
-        ]
-    }) }}
+{% set emailHtml %}
+{{ govukInput({
+  id: "contact-by-email",
+  name: "contact-by-email",
+  type: "email",
+  autocomplete: "email",
+  spellcheck: false,
+  classes: "govuk-!-width-one-third",
+  label: {
+    text: 'pages.contactUsQuestions.emailReply.label' | translate
+  }
+}) }}
+{% endset -%}
 
-<div id="contact-details-container" class="{{ "" if feedbackContact === "true" else "govuk-!-display-none" }}">
-    {{ govukInput({
-        label: {
-            html: 'pages.contactUsPublic.section3.replyEmail.label' | translate
-        },
-        hint: {
-            text: 'pages.contactUsPublic.section3.replyEmail.hint' | translate
-        },
-        id: "replyEmail",
-        name: "replyEmail",
-        value: replyEmail,
-
-        errorMessage: {
-            text: errors['replyEmail'].text
-        } if (errors['replyEmail'])
-    }) }}
-
-    {{ govukInput({
-        label: {
-            html: 'pages.contactUsPublic.section3.name.label' | translate
-        },
-        hint: {
-            text: 'pages.contactUsPublic.section3.name.hint' | translate
-        },
-        id: "name",
-        name: "name",
-        value: name,
-        errorMessage: {
-            text: errors['name'].text
-        } if (errors['name'])
-    }) }}
-</div>
+{{ govukRadios({
+  idPrefix: "contact",
+  name: "contact",
+  fieldset: {
+    legend: {
+      text: 'pages.contactUsQuestions.emailReply.header' | translate,
+      isPageHeading: true,
+      classes: "govuk-fieldset__legend--l"
+    }
+  },
+  items: [
+    {
+      value: "true",
+      text: 'general.yes' | translate,
+      conditional: {
+        html: emailHtml
+      }
+    },
+    {
+      value: "false",
+      text: 'general.no' | translate
+    }
+  ]
+}) }}
 
 
 {{ govukButton({

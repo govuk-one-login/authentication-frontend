@@ -1131,7 +1131,8 @@
     },
     "contactUsQuestions": {
       "emailReply": {
-        "header": "Can we reply to you by email?"
+        "header": "Can we reply to you by email?",
+        "label": "Email address"
       },
       "anotherProblem": {
         "title": "Another problem using your GOV.UK account",
