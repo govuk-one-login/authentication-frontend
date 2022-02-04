@@ -1139,18 +1139,21 @@
         "title": "Another problem using your GOV.UK account",
         "header": "Another problem using your GOV.UK account",
         "section1": {
-          "header": "What were you trying to do?"
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
         },
         "section2": {
           "header": "What happened?",
-          "paragraph1": "For example, was there a technical problem?"
+          "paragraph1": "For example, was there a technical problem?",
+          "errorMessage": "Enter what happened"
         }
       },
       "emailSubscriptions": {
         "title": "Your GOV.UK email subscriptions",
         "header": "Your GOV.UK email subscriptions",
         "section1": {
-          "header": "What were you trying to do and what happened?"
+          "header": "What were you trying to do and what happened?",
+          "errorMessage": "Enter what you were trying to do and what happened"
         },
         "section2": {
           "header": "Anything else you want to tell us",
@@ -1161,18 +1164,21 @@
         "title": "A suggestion or feedback about using your GOV.UK account",
         "header": "A suggestion or feedback about using your GOV.UK account",
         "section1": {
-          "header": "Your suggestion or feedback"
+          "header": "Your suggestion or feedback",
+          "errorMessage": "Enter your suggestion or feedback"
         }
       },
       "technicalError": {
         "title": "There was a technical error",
         "header": "There was a technical error",
         "section1": {
-          "header": "What were you trying to do?"
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
         },
         "section2": {
           "header": "What happened?",
-          "paragraph1": "Included details of the error"
+          "paragraph1": "Included details of the error",
+          "errorMessage": "Enter what happened"
         },
         "section3": {
           "header": "If possible, tell us the URL of the page the error happened on?"
@@ -1223,7 +1229,8 @@
         "header": "Another problem creating an account",
         "section1": {
           "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give us feedback"
+          "paragraph1": "For example, if you want to add more detail or give us feedback",
+          "errorMessage": "Enter what happened"
         }
       },
       "signignInProblem": {
@@ -1231,7 +1238,8 @@
         "header": "Another problem signing in to your account",
         "section1": {
           "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give us feedback"
+          "paragraph1": "For example, if you want to add more detail or give us feedback",
+          "errorMessage": "Enter what happened"
         }
       },
       "accountNotFound": {
@@ -1239,7 +1247,8 @@
         "header": "Your account cannot be found",
         "section1": {
           "header": "What service were you trying to use?",
-          "paragraph1": "For example, your GOV.UK email subscriptions, your personal tax account or Universal Credit"
+          "paragraph1": "For example, your GOV.UK email subscriptions, your personal tax account or Universal Credit",
+          "errorMessage": "Enter what service you were trying to use"
         },
         "section2": {
           "header": "Anything else you want to tell us",
