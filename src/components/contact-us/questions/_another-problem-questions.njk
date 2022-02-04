@@ -1,42 +1,39 @@
-{% extends "common/layout/base.njk" %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
-
-{% set showBack = true %}
-{% set hrefBack = 'support' %}
-{% set pageTitleName = 'pages.contactUsQuestions.suggestionOrFeedback.title' | translate %}
-
-{% block content %}
-
-    {% include "common/errors/errorSummary.njk" %}
-
-{% set html %}
-<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
-<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
-{% endset %}
-
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsQuestions.suggestionOrFeedback.header' | translate }}
+  {{ 'pages.contactUsQuestions.anotherProblem.header' | translate }}
 </h1>
 
 <form action="/contact-us-questions" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="theme" value="{{theme}}"/>
+<input type="hidden" name="theme" value="{{subtheme}}"/>
 
 <h2 class="govuk-heading-m">
-  {{ 'pages.contactUsQuestions.suggestionOrFeedback.section1.header' | translate }}
+  {{ 'pages.contactUsQuestions.anotherProblem.section1.header' | translate }}
 </h2>
 
 {{ govukTextarea({
-    id: "suggestionOrFeedback-whatWereYouTrying",
-    name: "suggestionOrFeedback-whatWereYouTrying",
+    id: "anotherProblem-whatWereYouTrying",
+    name: "anotherProblem-whatWereYouTrying",
     errorMessage: {
-        text: errors['suggestionOrFeedback-whatWereYouTrying'].text
-    } if (errors['suggestionOrFeedback-whatWereYouTrying'])
+        text: errors['issueDescription-whatWereYouTrying'].text
+    } if (errors['issueDescription-whatWereYouTrying'])
+}) }}
+
+<h2 class="govuk-heading-m">
+  {{ 'pages.contactUsQuestions.anotherProblem.section2.header' | translate }}
+</h2>
+
+{{ govukTextarea({
+    label: {
+      text: 'pages.contactUsQuestions.anotherProblem.section2.paragraph1' | translate,
+      classes: "govuk-label--s"
+    },
+    id: "anotherProblem-whatHappened",
+    name: "anotherProblem-whatHappened",
+    errorMessage: {
+        text: errors['anotherProblem-whatHappened'].text
+    } if (errors['anotherProblem-whatHappened'])
 }) }}
 
     {{ govukRadios({
@@ -104,5 +101,3 @@
 }) }}
 
 </form>
-
-{% endblock %}

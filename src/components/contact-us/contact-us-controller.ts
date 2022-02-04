@@ -1,29 +1,6 @@
 import { Request, Response } from "express";
 import { PATH_NAMES, SUPPORT_TYPE, ZENDESK_THEMES } from "../../app.constants";
 
-const themes = {
-  [ZENDESK_THEMES.SOMETHING_ELSE]:
-    "contact-us/questions/index-another-problem-questions.njk",
-  [ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS]:
-    "contact-us/questions/index-email-subscriptions-questions.njk",
-  [ZENDESK_THEMES.SUGGESTIONS_FEEDBACK]:
-    "contact-us/questions/index-suggestion-feedback-questions.njk",
-  [ZENDESK_THEMES.ACCOUNT_NOT_FOUND]:
-    "contact-us/questions/index-account-not-found-questions.njk",
-  [ZENDESK_THEMES.TECHNICAL_ERROR]:
-    "contact-us/questions/index-technical-error-questions.njk",
-  [ZENDESK_THEMES.NO_SECURITY_CODE]:
-    "contact-us/questions/index-no-security-code-questions.njk",
-  [ZENDESK_THEMES.INVALID_SECURITY_CODE]:
-    "contact-us/questions/index-invalid-security-code-questions.njk",
-  [ZENDESK_THEMES.NO_UK_MOBILE_NUMBER]:
-    "contact-us/questions/index-no-uk-mobile-questions.njk",
-  [ZENDESK_THEMES.FORGOTTEN_PASSWORD]:
-    "contact-us/questions/index-forgotten-password-questions.njk",
-  [ZENDESK_THEMES.NO_PHONE_NUMBER_ACCESS]:
-    "contact-us/questions/index-no-phone-number-access-questions.njk",
-};
-
 export function contactUsGet(req: Request, res: Response): void {
   if (req.query.supportType === SUPPORT_TYPE.GOV_SERVICE) {
     return res.render("contact-us/index-gov-service-contact-us.njk");
@@ -61,11 +38,10 @@ export function furtherInformationPost(req: Request, res: Response): void {
 }
 
 export function contactUsQuestionsGet(req: Request, res: Response): void {
-  if (req.query.subtheme) {
-    return res.render(themes[req.query.subtheme as string]);
-  } else {
-    return res.render(themes[req.query.theme as string]);
-  }
+  return res.render("contact-us/questions/index.njk", {
+    theme: req.query.theme,
+    subtheme: req.query.subtheme,
+  });
 }
 
 export function contactUsSubmitSuccessGet(req: Request, res: Response): void {

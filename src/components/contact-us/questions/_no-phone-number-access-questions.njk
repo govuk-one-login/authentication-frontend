@@ -1,58 +1,27 @@
-{% extends "common/layout/base.njk" %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
-
-{% set showBack = true %}
-{% set hrefBack = 'support' %}
-{% set pageTitleName = 'pages.contactUsQuestions.emailSubscriptions.title' | translate %}
-
-{% block content %}
-
-    {% include "common/errors/errorSummary.njk" %}
-
-{% set html %}
-<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
-<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
-{% endset %}
-
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsQuestions.emailSubscriptions.header' | translate }}
+  {{ 'pages.contactUsQuestions.noPhoneNumberAccess.header' | translate }}
 </h1>
 
 <form action="/contact-us-questions" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="theme" value="{{theme}}"/>
+<input type="hidden" name="theme" value="{{subtheme}}"/>
 
 <h2 class="govuk-heading-m">
-  {{ 'pages.contactUsQuestions.emailSubscriptions.section1.header' | translate }}
-</h2>
-
-{{ govukTextarea({
-    id: "emailSubscription-whatWereYouTrying",
-    name: "emailSubscription-whatWereYouTrying",
-    errorMessage: {
-        text: errors['emailSubscription-whatWereYouTrying'].text
-    } if (errors['emailSubscription-whatWereYouTrying'])
-}) }}
-
-<h2 class="govuk-heading-m">
-  {{ 'pages.contactUsQuestions.emailSubscriptions.section2.header' | translate }}
+  {{ 'pages.contactUsQuestions.noPhoneNumberAccess.section1.header' | translate }}
 </h2>
 
 {{ govukTextarea({
     label: {
-      text: 'pages.contactUsQuestions.emailSubscriptions.section2.paragraph1' | translate,
+      text: 'pages.contactUsQuestions.noPhoneNumberAccess.section1.paragraph1' | translate,
       classes: "govuk-label--s"
     },
-    id: "emailSubscription-whatHappened",
-    name: "emailSubscription-whatHappened",
+    id: "noPhoneNumberAccess-anythingElse",
+    name: "noPhoneNumberAccess-anythingElse",
     errorMessage: {
-        text: errors['emailSubscription-whatHappened'].text
-    } if (errors['emailSubscription-whatHappened'])
+        text: errors['noPhoneNumberAccess-anythingElse'].text
+    } if (errors['noPhoneNumberAccess-anythingElse'])
 }) }}
 
     {{ govukRadios({
@@ -120,5 +89,3 @@
 }) }}
 
 </form>
-
-{% endblock %}

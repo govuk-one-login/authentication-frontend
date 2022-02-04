@@ -1,46 +1,43 @@
-{% extends "common/layout/base.njk" %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
-
-{% set showBack = true %}
-{% set hrefBack = 'support' %}
-{% set pageTitleName = 'pages.contactUsQuestions.signignInProblem.title' | translate %}
-
-{% block content %}
-
-    {% include "common/errors/errorSummary.njk" %}
-
-{% set html %}
-<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
-<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
-{% endset %}
-
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsQuestions.signignInProblem.header' | translate }}
+  {{ 'pages.contactUsQuestions.accountNotFound.header' | translate }}
 </h1>
 
 <form action="/contact-us-questions" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="theme" value="{{theme}}"/>
+<input type="hidden" name="theme" value="{{subtheme}}"/>
 
 <h2 class="govuk-heading-m">
-  {{ 'pages.contactUsQuestions.signignInProblem.section1.header' | translate }}
+  {{ 'pages.contactUsQuestions.accountNotFound.section1.header' | translate }}
 </h2>
 
 {{ govukTextarea({
     label: {
-      text: 'pages.contactUsQuestions.signignInProblem.section1.paragraph1' | translate,
+      text: 'pages.contactUsQuestions.accountNotFound.section1.paragraph1' | translate,
       classes: "govuk-label--s"
     },
-    id: "signignInProblem-anythingElse",
-    name: "signignInProblem-anythingElse",
+    id: "accountNotFound-whatWereYouTrying",
+    name: "accountNotFound-whatWereYouTrying",
     errorMessage: {
-        text: errors['signignInProblem-anythingElse'].text
-    } if (errors['signignInProblem-anythingElse'])
+        text: errors['accountNotFound-whatWereYouTrying'].text
+    } if (errors['accountNotFound-whatWereYouTrying'])
+}) }}
+
+<h2 class="govuk-heading-m">
+  {{ 'pages.contactUsQuestions.accountNotFound.section2.header' | translate }}
+</h2>
+
+{{ govukTextarea({
+    label: {
+      text: 'pages.contactUsQuestions.accountNotFound.section2.paragraph1' | translate,
+      classes: "govuk-label--s"
+    },
+    id: "accountNotFound-anythingElse",
+    name: "accountNotFound-anythingElse",
+    errorMessage: {
+        text: errors['accountNotFound-anythingElse'].text
+    } if (errors['accountNotFound-anythingElse'])
 }) }}
 
     {{ govukRadios({
@@ -108,5 +105,3 @@
 }) }}
 
 </form>
-
-{% endblock %}

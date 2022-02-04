@@ -1,24 +1,3 @@
-{% extends "common/layout/base.njk" %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
-
-{% set showBack = true %}
-{% set hrefBack = 'support' %}
-{% set pageTitleName = 'pages.contactUsQuestions.accountCreationProblem.title' | translate %}
-
-{% block content %}
-
-    {% include "common/errors/errorSummary.njk" %}
-
-{% set html %}
-<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
-<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
-{% endset %}
-
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
   {{ 'pages.contactUsQuestions.accountCreationProblem.header' | translate }}
 </h1>
@@ -26,6 +5,8 @@
 <form action="/contact-us-questions" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="theme" value="{{theme}}"/>
+<input type="hidden" name="theme" value="{{subtheme}}"/>
 
 <h2 class="govuk-heading-m">
   {{ 'pages.contactUsQuestions.accountCreationProblem.section1.header' | translate }}
@@ -108,5 +89,3 @@
 }) }}
 
 </form>
-
-{% endblock %}
