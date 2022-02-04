@@ -1132,6 +1132,11 @@
       }
     },
     "contactUsQuestions": {
+      "replyByEmail": {
+        "validationError": {
+          "noBoxSelected": "Select yes if we can reply to you by email"
+        }
+      },
       "emailReply": {
         "header": "Can we reply to you by email?",
         "label": "Email address"

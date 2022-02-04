@@ -26,6 +26,14 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value }
         );
       }),
+    body("contact")
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.replyByEmail.validationError.noBoxSelected",
+          { value }
+        );
+      }),
     body("replyEmail")
       .if(body("feedbackContact").equals("true"))
       .notEmpty()
