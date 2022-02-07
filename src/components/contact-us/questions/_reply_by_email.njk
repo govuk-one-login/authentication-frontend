@@ -1,8 +1,8 @@
 {% set emailHtml %}
 {{ govukInput({
-  id: "replyEmail",
-  name: "replyEmail",
-  value: replyEmail,
+  id: "email",
+  name: "email",
+  value: email,
   type: "email",
   autocomplete: "email",
   spellcheck: false,
@@ -14,13 +14,13 @@
       text: 'pages.contactUsQuestions.emailReply.emailHint' | translate
   },
   errorMessage: {
-      text: errors['replyEmail'].text
-  } if (errors['replyEmail'])
+      text: errors['email'].text
+  } if (errors['email'])
 }) }}
 {{ govukInput({
-  id: "replyName",
-  name: "replyName",
-  value: replyName,
+  id: "name",
+  name: "name",
+  value: name,
   spellcheck: false,
   classes: "govuk-!-width-one-third",
   label: {

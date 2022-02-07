@@ -34,7 +34,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value }
         );
       }),
-    body("replyEmail")
+    body("email")
       .if(body("contact").equals("true"))
       .notEmpty()
       .withMessage((value, { req }) => {
