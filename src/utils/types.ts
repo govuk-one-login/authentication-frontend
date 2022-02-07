@@ -17,7 +17,7 @@ export interface CreateTicket {
 }
 
 interface RequesterAnonymous {
-  name: string;
+  name?: string;
   email?: string;
 }
 

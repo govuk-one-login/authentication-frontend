@@ -13,17 +13,17 @@ export function contactUsService(
       ticket: {
         subject: contactForm.subject,
         comment: {
-          body: formatCommentBody(
-            contactForm.comment,
+          html_body: formatCommentBody(
+            contactForm.contents,
             contactForm.optionalData
           ),
         },
         group_id: getZendeskGroupIdPublic(),
-        tags: ["govuk_sign_in"],
+        tags: ["govuk_sign_in", ...contactForm.tags],
       },
     };
 
-    if (contactForm.feedbackContact && contactForm.email && contactForm.name) {
+    if (contactForm.feedbackContact && contactForm.email) {
       payload.ticket.requester = {
         email: contactForm.email,
         name: contactForm.name,
@@ -33,14 +33,19 @@ export function contactUsService(
     await zendeskClient.createTicket(payload);
   };
 
-  function formatCommentBody(comment: string, optionalData: OptionalData) {
-    return `
-    ${comment}
-    --------------------------------------------------
-    Session id:${optionalData.sessionId}
-    User agent:${optionalData.userAgent}`;
-  }
+  function formatCommentBody(contents: string[], optionalData: OptionalData) {
+    const htmlBody = [];
 
+    for (const item of contents) {
+      if (item) {
+        htmlBody.push(`<p>${item}</p>`);
+      }
+    }
+    htmlBody.push(`<p>User agent:${optionalData.userAgent}</p>`);
+    htmlBody.push(`<p>Session id:${optionalData.sessionId}</p>`);
+
+    return htmlBody.join("");
+  }
   return {
     contactUsSubmitForm,
   };

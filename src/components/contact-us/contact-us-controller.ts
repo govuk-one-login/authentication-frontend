@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import { PATH_NAMES, SUPPORT_TYPE, ZENDESK_THEMES } from "../../app.constants";
+import { contactUsService } from "./contact-us-service";
+import { ContactUsServiceInterface } from "./types";
+import { ExpressRouteFunc } from "../../types";
 
 const themeToPageTitle = {
   [ZENDESK_THEMES.ACCOUNT_NOT_FOUND]:
@@ -84,6 +87,31 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     backurl: req.headers.referer,
     pageTitleHeading: pageTitle,
   });
+}
+
+export function contactUsQuestionsFormPost(
+  service: ContactUsServiceInterface = contactUsService()
+): ExpressRouteFunc {
+  return async function (req: Request, res: Response) {
+    await service.contactUsSubmitForm({
+      contents: [
+        req.body.issueDescription,
+        req.body.additionalDescription,
+        req.body.optionalDescription,
+      ],
+      tags: [req.body.theme, req.body.subtheme],
+      subject: "GOV.UK Accounts Feedback",
+      email: req.body.email,
+      name: req.body.name,
+      optionalData: {
+        sessionId: res.locals.sessionId,
+        userAgent: req.get("User-Agent"),
+      },
+      feedbackContact: req.body.contact === "true",
+    });
+
+    return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
+  };
 }
 
 export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
