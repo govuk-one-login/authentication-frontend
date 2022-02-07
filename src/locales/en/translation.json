@@ -1134,12 +1134,14 @@
     "contactUsQuestions": {
       "replyByEmail": {
         "validationError": {
-          "noBoxSelected": "Select yes if we can reply to you by email"
+          "noBoxSelected": "Select yes if we can reply to you by email",
+          "noEmailAddress": "Enter your email address"
         }
       },
       "emailReply": {
         "header": "Can we reply to you by email?",
-        "label": "Email address"
+        "label": "Email address",
+        "hint": "Enter an email address in the correct format, like name@example.com"
       },
       "anotherProblem": {
         "title": "Another problem using your GOV.UK account",

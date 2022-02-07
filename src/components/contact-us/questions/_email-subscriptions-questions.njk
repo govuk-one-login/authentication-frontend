@@ -34,47 +34,8 @@
         text: errors['optionalDescription'].text
     } if (errors['optionalDescription'])
 }) }}
-{% set emailHtml %}
-{{ govukInput({
-  id: "contact-by-email",
-  name: "contact-by-email",
-  type: "email",
-  autocomplete: "email",
-  spellcheck: false,
-  classes: "govuk-!-width-one-third",
-  label: {
-    text: 'pages.contactUsQuestions.emailReply.label' | translate
-  }
-}) }}
-{% endset -%}
 
-{{ govukRadios({
-  idPrefix: "contact",
-  name: "contact",
-  fieldset: {
-    legend: {
-      text: 'pages.contactUsQuestions.emailReply.header' | translate,
-      isPageHeading: true,
-      classes: "govuk-fieldset__legend--l"
-    }
-  },
-  items: [
-    {
-      value: "true",
-      text: 'general.yes' | translate,
-      conditional: {
-        html: emailHtml
-      }
-    },
-    {
-      value: "false",
-      text: 'general.no' | translate
-    }
-    ],
-      errorMessage: {
-          text: errors['contact'].text
-      } if (errors['contact'])
-}) }}
+{% include 'contact-us/questions/_reply_by_email.njk' %}
 
 
 {{ govukButton({

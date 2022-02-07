@@ -35,11 +35,11 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
         );
       }),
     body("replyEmail")
-      .if(body("feedbackContact").equals("true"))
+      .if(body("contact").equals("true"))
       .notEmpty()
       .withMessage((value, { req }) => {
         return req.t(
-          "pages.contactUsPublic.section3.replyEmail.validationError.required",
+          "pages.contactUsQuestions.replyByEmail.validationError.noEmailAddress",
           { value }
         );
       })
@@ -47,15 +47,6 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsPublic.section3.replyEmail.validationError.invalidFormat",
-          { value }
-        );
-      }),
-    body("name")
-      .if(body("feedbackContact").equals("true"))
-      .notEmpty()
-      .withMessage((value, { req }) => {
-        return req.t(
-          "pages.contactUsPublic.section3.name.validationError.required",
           { value }
         );
       }),
