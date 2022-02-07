@@ -1140,8 +1140,10 @@
       },
       "emailReply": {
         "header": "Can we reply to you by email?",
-        "label": "Email address",
-        "hint": "Enter an email address in the correct format, like name@example.com"
+        "emailLabel": "Email address",
+        "emailHint": "Enter an email address in the correct format, like name@example.com",
+        "nameLabel": "Name (Optional)",
+        "nameHint": "We will only use this to reply to your message"
       },
       "anotherProblem": {
         "title": "Another problem using your GOV.UK account",

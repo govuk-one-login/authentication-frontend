@@ -8,14 +8,27 @@
   spellcheck: false,
   classes: "govuk-!-width-one-third",
   label: {
-    text: 'pages.contactUsQuestions.emailReply.label' | translate
+    text: 'pages.contactUsQuestions.emailReply.emailLabel' | translate
   },
   hint: {
-      text: 'pages.contactUsQuestions.emailReply.hint' | translate
+      text: 'pages.contactUsQuestions.emailReply.emailHint' | translate
   },
   errorMessage: {
       text: errors['replyEmail'].text
   } if (errors['replyEmail'])
+}) }}
+{{ govukInput({
+  id: "replyName",
+  name: "replyName",
+  value: replyName,
+  spellcheck: false,
+  classes: "govuk-!-width-one-third",
+  label: {
+    text: 'pages.contactUsQuestions.emailReply.nameLabel' | translate
+  },
+  hint: {
+      text: 'pages.contactUsQuestions.emailReply.nameHint' | translate
+  }
 }) }}
 {% endset -%}
 
