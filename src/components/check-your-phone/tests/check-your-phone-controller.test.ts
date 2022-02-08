@@ -10,30 +10,32 @@ import {
 
 import { VerifyCodeInterface } from "../../common/verify-code/types";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
+import { PATH_NAMES } from "../../../app.constants";
+import { ERROR_CODES } from "../../common/constants";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("check your phone controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = {
-      body: {},
-      session: {},
+    req = mockRequest({
+      path: PATH_NAMES.CHECK_YOUR_PHONE,
+      session: { client: {}, user: {} },
+      log: { info: sinon.fake() },
+      t: sinon.fake(),
       i18n: { language: "en" },
-    };
-    res = {
-      render: sandbox.fake(),
-      redirect: sandbox.fake(),
-      status: sandbox.fake(),
-      locals: {},
-    };
+    });
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("checkYourPhoneGet", () => {
@@ -47,14 +49,14 @@ describe("check your phone controller", () => {
   describe("checkYourPhonePost", () => {
     it("should redirect to /create-password when valid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake.returns({
+        verifyCode: sinon.fake.returns({
           sessionState: "PHONE_NUMBER_CODE_VERIFIED",
           success: true,
         }),
       };
 
       const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sandbox.fake(),
+        sendNotification: sinon.fake(),
       };
 
       req.body.code = "123456";
@@ -66,21 +68,26 @@ describe("check your phone controller", () => {
       );
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
-      expect(res.redirect).to.have.calledWith("/account-created");
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL
+      );
     });
 
     it("should return error when invalid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake.returns({
+        verifyCode: sinon.fake.returns({
           success: false,
-          sessionState: "PHONE_NUMBER_CODE_NOT_VALID",
+          data: {
+            code: ERROR_CODES.INVALID_VERIFY_PHONE_NUMBER_CODE,
+            message: "",
+          },
         }),
       };
       const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sandbox.fake(),
+        sendNotification: sinon.fake(),
       };
 
-      req.t = sandbox.fake.returns("translated string");
+      req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
       res.locals.sessionId = "123456-djjad";
 
@@ -95,17 +102,20 @@ describe("check your phone controller", () => {
 
     it("should redirect to security code expired when invalid code entered more than max retries", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake.returns({
-          sessionState: "PHONE_NUMBER_CODE_MAX_RETRIES_REACHED",
+        verifyCode: sinon.fake.returns({
           success: false,
+          data: {
+            code: ERROR_CODES.ENTERED_INVALID_VERIFY_PHONE_NUMBER_CODE_MAX_TIMES,
+            message: "",
+          },
         }),
       };
 
       const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sandbox.fake(),
+        sendNotification: sinon.fake(),
       };
 
-      req.t = sandbox.fake.returns("translated string");
+      req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
       res.locals.sessionId = "123456-djjad";
 
@@ -116,30 +126,8 @@ describe("check your phone controller", () => {
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.been.calledWith(
-        "/security-code-invalid?actionType=otpMaxRetries"
+        `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=otpMaxRetries`
       );
-    });
-
-    it("should update the user session state value in the req", async () => {
-      const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake.returns({
-          success: true,
-          sessionState: "CONSENT_REQUIRED",
-        }),
-      };
-
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sandbox.fake(),
-      };
-
-      expect(req.session.backState).to.be.undefined;
-
-      await checkYourPhonePost(fakeService, fakeNotificationService)(
-        req as Request,
-        res as Response
-      );
-
-      expect(req.session.backState).to.equal("CONSENT_REQUIRED");
     });
   });
 });

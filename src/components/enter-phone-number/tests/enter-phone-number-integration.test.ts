@@ -4,9 +4,10 @@ import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
+import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
 
 describe("Integration::enter phone number", () => {
-  let sandbox: sinon.SinonSandbox;
   let token: string | string[];
   let cookies: string;
   let app: any;
@@ -16,12 +17,19 @@ describe("Integration::enter phone number", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-    sandbox = sinon.createSandbox();
-    sandbox
+
+    sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        req.session.email = "test@test.com";
+        req.session.user = {
+          email: "test@test.com",
+          phoneNumber: "******7867",
+          journey: {
+            nextPath: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
+          },
+        };
+
         next();
       });
 
@@ -29,7 +37,7 @@ describe("Integration::enter phone number", () => {
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     request(app)
-      .get("/enter-phone-number")
+      .get(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .end((err, res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
@@ -42,16 +50,18 @@ describe("Integration::enter phone number", () => {
   });
 
   after(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   it("should return enter phone number page", (done) => {
-    request(app).get("/enter-phone-number").expect(200, done);
+    request(app)
+      .get(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
+      .expect(200, done);
   });
 
   it("should return error when csrf not present", (done) => {
     request(app)
-      .post("/enter-phone-number")
+      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
       .send({
         phoneNumber: "123456789",
@@ -61,7 +71,7 @@ describe("Integration::enter phone number", () => {
 
   it("should return validation error when phone number not entered", (done) => {
     request(app)
-      .post("/enter-phone-number")
+      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -79,7 +89,7 @@ describe("Integration::enter phone number", () => {
 
   it("should return validation error when phone number entered is not valid", (done) => {
     request(app)
-      .post("/enter-phone-number")
+      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -97,7 +107,7 @@ describe("Integration::enter phone number", () => {
 
   it("should return validation error when phone number entered contains text", (done) => {
     request(app)
-      .post("/enter-phone-number")
+      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -115,7 +125,7 @@ describe("Integration::enter phone number", () => {
 
   it("should return validation error when phone number entered less than 12 characters", (done) => {
     request(app)
-      .post("/enter-phone-number")
+      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -133,7 +143,7 @@ describe("Integration::enter phone number", () => {
 
   it("should return validation error when phone number entered greater than 12 characters", (done) => {
     request(app)
-      .post("/enter-phone-number")
+      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -151,40 +161,39 @@ describe("Integration::enter phone number", () => {
 
   it("should redirect to /check-your-phone page when valid UK phone number entered", (done) => {
     nock(baseApi)
-      .post("/update-profile")
+      .post(API_ENDPOINTS.UPDATE_PROFILE)
       .once()
-      .reply(200, {
-        sessionState: "ADDED_UNVERIFIED_PHONE_NUMBER",
-      })
+      .reply(200)
       .post("/send-notification")
       .once()
-      .reply(200, { sessionState: "VERIFY_PHONE_NUMBER_CODE_SENT" });
+      .reply(200);
 
     request(app)
-      .post("/enter-phone-number")
+      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
         phoneNumber: "07738394991",
       })
-      .expect("Location", "/check-your-phone")
+      .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
       .expect(302, done);
   });
 
   it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", (done) => {
     nock(baseApi)
-      .post("/update-profile")
+      .post(API_ENDPOINTS.UPDATE_PROFILE)
       .times(6)
-      .reply(200, {
-        sessionState: "ADDED_UNVERIFIED_PHONE_NUMBER",
-      })
+      .reply(200, {})
       .post("/send-notification")
       .times(6)
-      .reply(400, { sessionState: "PHONE_NUMBER_MAX_CODES_SENT" });
+      .reply(400, {
+        code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT,
+        success: false,
+      });
 
     request(app)
-      .post("/enter-phone-number")
+      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -193,24 +202,25 @@ describe("Integration::enter phone number", () => {
       })
       .expect(
         "Location",
-        "/security-code-requested-too-many-times?actionType=otpMaxCodesSent"
+        `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.OtpMaxCodesSent}`
       )
       .expect(302, done);
   });
 
   it("should redirect to /security-code-invalid-request when exceeded OTP request limit", (done) => {
     nock(baseApi)
-      .post("/update-profile")
+      .post(API_ENDPOINTS.UPDATE_PROFILE)
       .once()
-      .reply(200, {
-        sessionState: "ADDED_UNVERIFIED_PHONE_NUMBER",
-      })
+      .reply(200)
       .post("/send-notification")
       .once()
-      .reply(400, { sessionState: "PHONE_NUMBER_CODE_REQUESTS_BLOCKED" });
+      .reply(400, {
+        code: ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED,
+        success: false,
+      });
 
     request(app)
-      .post("/enter-phone-number")
+      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -219,14 +229,14 @@ describe("Integration::enter phone number", () => {
       })
       .expect(
         "Location",
-        "/security-code-invalid-request?actionType=otpBlocked"
+        `${PATH_NAMES.SECURITY_CODE_WAIT}?actionType=${SecurityCodeErrorType.OtpBlocked}`
       )
       .expect(302, done);
   });
 
   it("should return internal server error if /update-profile api call fails", (done) => {
     nock(baseApi)
-      .post("/update-profile")
+      .post(API_ENDPOINTS.UPDATE_PROFILE)
       .once()
       .reply(500, {
         sessionState: "done",
@@ -236,7 +246,7 @@ describe("Integration::enter phone number", () => {
       .reply(200, {});
 
     request(app)
-      .post("/enter-phone-number")
+      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
       .set("Cookie", cookies)
       .send({

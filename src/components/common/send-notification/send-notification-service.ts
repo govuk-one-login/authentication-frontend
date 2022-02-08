@@ -1,4 +1,4 @@
-import { ApiResponse, ApiResponseResult } from "../../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
 import {
   createApiResponse,
@@ -19,7 +19,7 @@ export function sendNotificationService(
     sourceIp: string,
     persistentSessionId: string,
     phoneNumber?: string
-  ): Promise<ApiResponseResult> {
+  ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const payload: any = {
       email,
       notificationType,
@@ -29,7 +29,7 @@ export function sendNotificationService(
       payload.phoneNumber = phoneNumber;
     }
 
-    const response = await axios.client.post<ApiResponse>(
+    const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.SEND_NOTIFICATION,
       payload,
       getRequestConfig({
@@ -37,10 +37,15 @@ export function sendNotificationService(
         clientSessionId: clientSessionId,
         sourceIp: sourceIp,
         persistentSessionId: persistentSessionId,
+        validationStatues: [
+          HTTP_STATUS_CODES.OK,
+          HTTP_STATUS_CODES.NO_CONTENT,
+          HTTP_STATUS_CODES.BAD_REQUEST,
+        ],
       })
     );
 
-    return createApiResponse(response, [
+    return createApiResponse<DefaultApiResponse>(response, [
       HTTP_STATUS_CODES.OK,
       HTTP_STATUS_CODES.NO_CONTENT,
     ]);

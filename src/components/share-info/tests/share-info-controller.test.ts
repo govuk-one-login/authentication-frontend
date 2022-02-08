@@ -7,36 +7,37 @@ import { shareInfoGet, shareInfoPost } from "../share-info-controller";
 import { ClientInfoServiceInterface } from "../../common/client-info/types";
 import { BadRequestError } from "../../../utils/error";
 import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
+import { PATH_NAMES } from "../../../app.constants";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("share-info controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = {
-      body: {},
-      session: {},
+    req = mockRequest({
+      path: PATH_NAMES.SHARE_INFO,
+      session: { client: {}, user: {} },
+      log: { info: sinon.fake() },
+      t: sinon.fake(),
       i18n: { language: "en" },
-    };
-    res = {
-      render: sandbox.fake(),
-      redirect: sandbox.fake(),
-      status: sandbox.fake(),
-      locals: {},
-    };
+    });
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("shareInfoGet", () => {
     it("should render share-info page", async () => {
       const fakeClientInfoService: ClientInfoServiceInterface = {
-        clientInfo: sandbox.fake.returns({
+        clientInfo: sinon.fake.returns({
           data: { scopes: ["openid", "profile"] },
           success: true,
         }),
@@ -59,9 +60,8 @@ describe("share-info controller", () => {
   describe("shareInfoPost", () => {
     it("should redirect to /auth-code when accepted sharing info", async () => {
       const fakeService: UpdateProfileServiceInterface = {
-        updateProfile: sandbox.fake.returns({
+        updateProfile: sinon.fake.returns({
           success: true,
-          sessionState: "CONSENT_ADDED",
         }),
       };
 
@@ -69,29 +69,28 @@ describe("share-info controller", () => {
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.email = "test@test.com";
+      req.session.user.email = "test@test.com";
 
       await shareInfoPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.updateProfile).to.have.been.calledOnce;
-      expect(res.redirect).to.have.calledWith("/auth-code");
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
     });
   });
 
   describe("shareInfoPostError", () => {
     it("should throw error when update profile returns false", async () => {
       const fakeService: UpdateProfileServiceInterface = {
-        updateProfile: sandbox.fake.returns({
+        updateProfile: sinon.fake.returns({
           success: false,
-          code: "1000",
-          message: "error",
+          data: { code: "1000", message: "error" },
         }),
       };
 
       req.body.consentValue = true;
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
-      req.session.email = "test@test.com";
+      req.session.user.email = "test@test.com";
 
       await expect(
         shareInfoPost(fakeService)(req as Request, res as Response)

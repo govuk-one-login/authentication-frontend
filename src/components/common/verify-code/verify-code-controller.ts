@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getNextPathByState } from "../constants";
+import { getErrorPathByCode, getNextPathAndUpdateJourney } from "../constants";
 import {
   formatValidationError,
   renderBadRequest,
@@ -7,13 +7,15 @@ import {
 import { BadRequestError } from "../../../utils/error";
 import { VerifyCodeInterface } from "./types";
 import { ExpressRouteFunc } from "../../../types";
+import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine";
+import { NOTIFICATION_TYPE } from "../../../app.constants";
 
 interface Config {
-  notificationType: string;
+  notificationType: NOTIFICATION_TYPE;
   template: string;
   validationKey: string;
-  validationState: string;
-  callback?: (req: Request, res: Response, state: string) => void;
+  validationErrorCode: number;
+  callback?: (req: Request, res: Response) => void;
 }
 
 export function verifyCodePost(
@@ -33,19 +35,54 @@ export function verifyCodePost(
       persistentSessionId
     );
 
-    if (!result.success && !result.sessionState) {
-      throw new BadRequestError(result.message, result.code);
-    }
+    if (!result.success) {
+      if (result.data.code === options.validationErrorCode) {
+        const error = formatValidationError(
+          "code",
+          req.t(options.validationKey)
+        );
+        return renderBadRequest(res, req, options.template, error);
+      }
 
-    if (result.sessionState === options.validationState) {
-      const error = formatValidationError("code", req.t(options.validationKey));
-      return renderBadRequest(res, req, options.template, error);
+      const path = getErrorPathByCode(result.data.code);
+
+      if (path) {
+        return res.redirect(path);
+      }
+
+      throw new BadRequestError(result.data.message, result.data.code);
     }
 
     if (options.callback) {
-      return options.callback(req, res, result.sessionState);
+      return options.callback(req, res);
     }
 
-    res.redirect(getNextPathByState(result.sessionState));
+    let nextEvent;
+
+    switch (options.notificationType) {
+      case NOTIFICATION_TYPE.VERIFY_EMAIL:
+        nextEvent = USER_JOURNEY_EVENTS.EMAIL_CODE_VERIFIED;
+        break;
+      case NOTIFICATION_TYPE.MFA_SMS:
+        nextEvent = USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED;
+        break;
+      default:
+        throw new Error("Unknown notification type");
+    }
+
+    res.redirect(
+      getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        nextEvent,
+        {
+          isIdentityRequired: req.session.user.isIdentityRequired,
+          isConsentRequired: req.session.user.isConsentRequired,
+          isLatestTermsAndConditionsAccepted:
+            req.session.user.isLatestTermsAndConditionsAccepted,
+        },
+        res.locals.sessionId
+      )
+    );
   };
 }

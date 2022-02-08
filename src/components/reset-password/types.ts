@@ -1,4 +1,4 @@
-import { ApiResponseResult } from "../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../types";
 
 export interface ResetPasswordServiceInterface {
   updatePassword: (
@@ -7,5 +7,5 @@ export interface ResetPasswordServiceInterface {
     sourceIp: string,
     sessionId: string,
     persistentSessionId: string
-  ) => Promise<ApiResponseResult>;
+  ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

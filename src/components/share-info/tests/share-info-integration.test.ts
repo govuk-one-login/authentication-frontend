@@ -4,20 +4,25 @@ import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 
-function createClientInfoNock(baseApi: string) {
+function nockClientInfo(baseApi: string) {
   nock(baseApi)
-    .get("/client-info")
+    .get(API_ENDPOINTS.CLIENT_INFO)
     .once()
     .reply(200, {
-      client_id: "client_test",
-      client_name: "client_test_name",
-      scopes: ["email", "phone"],
+      client_id: "0wmWMtSCIRmNtbi_UaenAkt9D7o",
+      client_name: "testclient",
+      scopes: ["openid", "email", "phone"],
+      redirectUri: "http://localhost:5000/callback",
+      state: "test",
+      serviceType: "test",
+      cookieConsentShared: false,
+      consentEnabled: false,
     });
 }
 
 describe("Integration::share info", () => {
-  let sandbox: sinon.SinonSandbox;
   let token: string | string[];
   let cookies: string;
   let app: any;
@@ -27,24 +32,31 @@ describe("Integration::share info", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-    sandbox = sinon.createSandbox();
-    sandbox
+
+    sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         res.locals.clientSessionId = "csy103saszhcxbQq0-mjdzU854";
         res.locals.persistentSessionId = "dips-123456-abc";
-        req.session.email = "test@test.com";
+
+        req.session.user = {
+          email: "test@test.com",
+          journey: {
+            nextPath: PATH_NAMES.SHARE_INFO,
+          },
+        };
+
         next();
       });
 
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    createClientInfoNock(baseApi);
+    nockClientInfo(baseApi);
 
     request(app)
-      .get("/share-info")
+      .get(PATH_NAMES.SHARE_INFO)
       .end((err, res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
@@ -57,18 +69,18 @@ describe("Integration::share info", () => {
   });
 
   after(() => {
-    sandbox.restore();
+    sinon.restore();
     app = undefined;
   });
 
   it("should return share info page", (done) => {
-    createClientInfoNock(baseApi);
-    request(app).get("/share-info").expect(200, done);
+    nockClientInfo(baseApi);
+    request(app).get(PATH_NAMES.SHARE_INFO).expect(200, done);
   });
 
   it("should return error when csrf not present", (done) => {
     request(app)
-      .post("/share-info")
+      .post(PATH_NAMES.SHARE_INFO)
       .type("form")
       .send({
         consentValue: "true",
@@ -78,7 +90,7 @@ describe("Integration::share info", () => {
 
   it("should return validation error when consentValue not selected", (done) => {
     request(app)
-      .post("/share-info")
+      .post(PATH_NAMES.SHARE_INFO)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -95,27 +107,25 @@ describe("Integration::share info", () => {
   });
 
   it("should redirect to /auth-code page when consentValue valid", (done) => {
-    nock(baseApi).post("/update-profile").once().reply(200, {
-      sessionState: "CONSENT_ADDED",
-    });
+    nock(baseApi).post(API_ENDPOINTS.UPDATE_PROFILE).once().reply(200);
 
     request(app)
-      .post("/share-info")
+      .post(PATH_NAMES.SHARE_INFO)
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
         consentValue: "true",
       })
-      .expect("Location", "/auth-code")
+      .expect("Location", PATH_NAMES.AUTH_CODE)
       .expect(302, done);
   });
 
   it("should return internal server error when /update-profile API call response is 500", (done) => {
-    nock(baseApi).post("/update-profile").once().reply(500, {});
+    nock(baseApi).post(API_ENDPOINTS.UPDATE_PROFILE).once().reply(500, {});
 
     request(app)
-      .post("/share-info")
+      .post(PATH_NAMES.SHARE_INFO)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -126,7 +136,7 @@ describe("Integration::share info", () => {
   });
 
   it("should return internal server error when /client-info API call response is 500", (done) => {
-    nock(baseApi).get("/client-info").once().reply(500, {});
-    request(app).get("/share-info").expect(500, done);
+    nock(baseApi).get(API_ENDPOINTS.CLIENT_INFO).once().reply(500, {});
+    request(app).get(PATH_NAMES.SHARE_INFO).expect(500, done);
   });
 });

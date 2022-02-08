@@ -8,7 +8,7 @@ export function proveIdentityGet(
   service: ProveIdentityServiceInterface = proveIdentityService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session;
+    const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const result = await service.ipvAuthorize(
       sessionId,
@@ -18,8 +18,9 @@ export function proveIdentityGet(
       persistentSessionId
     );
     if (!result.success) {
-      throw new BadRequestError(result.message, result.code);
+      throw new BadRequestError(result.data.message, result.data.code);
     }
-    return res.redirect(result.redirectUri);
+
+    return res.redirect(result.data.redirectUri);
   };
 }

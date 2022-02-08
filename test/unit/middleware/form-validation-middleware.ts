@@ -6,24 +6,22 @@ import {
   validateBodyMiddleware,
   validationErrorFormatter,
 } from "../../../src/middleware/form-validation-middleware";
+import { mockRequest, mockResponse } from "mock-req-res";
 
 describe("HTML Lang middleware", () => {
-  let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: NextFunction;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-    req = {
-      i18n: { language: "en" } as any,
-    };
-    res = { locals: {} };
-    next = sandbox.fake();
+    req = mockRequest({ i18n: { language: "en" } });
+
+    res = mockResponse();
+    next = sinon.fake();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("validationErrorFormatter", () => {

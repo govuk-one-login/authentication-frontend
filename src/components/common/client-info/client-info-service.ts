@@ -5,7 +5,8 @@ import {
   http,
   Http,
 } from "../../../utils/http";
-import { API_ENDPOINTS } from "../../../app.constants";
+import { API_ENDPOINTS, SERVICE_TYPE } from "../../../app.constants";
+import { ApiResponseResult } from "../../../types";
 
 export function clientInfoService(
   axios: Http = http
@@ -15,8 +16,8 @@ export function clientInfoService(
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string
-  ): Promise<ClientInfoResponse> {
-    const response = await axios.client.get(
+  ): Promise<ApiResponseResult<ClientInfoResponse>> {
+    const response = await axios.client.get<ClientInfoResponse>(
       API_ENDPOINTS.CLIENT_INFO,
       getRequestConfig({
         sessionId: sessionId,
@@ -26,18 +27,14 @@ export function clientInfoService(
       })
     );
 
-    const res = createApiResponse(response) as ClientInfoResponse;
+    const result = createApiResponse<ClientInfoResponse>(response);
 
-    res.data = {
-      clientId: response.data.client_id,
-      clientName: response.data.client_name,
-      scopes: response.data.scopes,
-      redirectUri: response.data.redirectUri,
-      serviceType: response.data.service_type,
-      state: response.data.state,
-    };
+    if (result.success) {
+      result.data.serviceType =
+        result.data.serviceType ?? SERVICE_TYPE.MANDATORY;
+    }
 
-    return res;
+    return result;
   };
 
   return {

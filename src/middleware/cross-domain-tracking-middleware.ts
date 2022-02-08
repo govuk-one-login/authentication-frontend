@@ -7,7 +7,7 @@ export function crossDomainTrackingMiddleware(
   next: NextFunction
 ): void {
   if (req.query._ga) {
-    req.session.crossDomainGaTrackingId = xss(req.query._ga as string);
+    req.session.client.crossDomainGaTrackingId = xss(req.query._ga as string);
   }
 
   next();

@@ -1,7 +1,4 @@
-import {
-  handleBackButtonMiddleware,
-  validateSessionMiddleware,
-} from "../../middleware/session-middleware";
+import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { PATH_NAMES } from "../../app.constants";
 import express from "express";
 import {
@@ -10,19 +7,21 @@ import {
 } from "./check-your-phone-controller";
 import { asyncHandler } from "../../utils/async";
 import { validateSmsCodeRequest } from "./check-your-phone-validation";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 
 const router = express.Router();
 
 router.get(
   PATH_NAMES.CHECK_YOUR_PHONE,
   validateSessionMiddleware,
-  handleBackButtonMiddleware,
+  allowUserJourneyMiddleware,
   checkYourPhoneGet
 );
 
 router.post(
   PATH_NAMES.CHECK_YOUR_PHONE,
   validateSessionMiddleware,
+  allowUserJourneyMiddleware,
   validateSmsCodeRequest(),
   asyncHandler(checkYourPhonePost())
 );

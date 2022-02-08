@@ -6,35 +6,40 @@ import { Request, Response } from "express";
 
 import { resetPasswordCheckEmailGet } from "../reset-password-check-email-controller";
 import { ResetPasswordCheckEmailServiceInterface } from "../types";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("reset password check email controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = { body: {}, session: {} };
-    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
+    req = mockRequest({
+      session: { client: {}, user: {} },
+      log: { info: sinon.fake() },
+    });
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("resetPasswordCheckEmailGet", () => {
     it("should render reset password check email view", async () => {
       const fakeService: ResetPasswordCheckEmailServiceInterface = {
-        resetPasswordRequest: sandbox.fake.returns({
+        resetPasswordRequest: sinon.fake.returns({
           success: true,
           sessionState: "RESET_PASSWORD_LINK_SENT",
         }),
       };
 
       res.locals.sessionId = "s-123456-djjad";
-      req.session = {
-        id: "12-d0dasdk",
+      req.session.user = {
         email: "joe.bloggs@test.com",
       };
 

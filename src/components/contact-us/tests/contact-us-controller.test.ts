@@ -8,23 +8,26 @@ import {
   contactUsGet,
   contactUsSubmitSuccessGet,
 } from "../contact-us-controller";
-import { SUPPORT_TYPE } from "../../../app.constants";
+import { PATH_NAMES, SUPPORT_TYPE } from "../../../app.constants";
 import { ContactUsServiceInterface } from "../types";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("contact us controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = { body: {}, query: {}, get: sandbox.fake() };
-    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
+    req = mockRequest();
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("contactUsGet", () => {
@@ -60,12 +63,14 @@ describe("contact us controller", () => {
   describe("contactUsFormPost", () => {
     it("should redirect /contact-us-submit-success page when ticket posted", async () => {
       const fakeService: ContactUsServiceInterface = {
-        contactUsSubmitForm: sandbox.fake(),
+        contactUsSubmitForm: sinon.fake(),
       };
 
       await contactUsFormPost(fakeService)(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith("/contact-us-submit-success");
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS
+      );
     });
   });
 });

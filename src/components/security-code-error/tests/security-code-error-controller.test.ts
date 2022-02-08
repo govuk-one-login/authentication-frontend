@@ -10,21 +10,24 @@ import {
   securityCodeTriesExceededGet,
 } from "../security-code-error-controller";
 import { SecurityCodeErrorType } from "../../common/constants";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("security code  controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = { body: {}, session: {}, query: {} };
-    res = { render: sandbox.fake(), redirect: sandbox.fake() };
+    req = mockRequest();
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("securityCodeExpiredGet", () => {

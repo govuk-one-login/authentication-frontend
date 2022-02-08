@@ -6,7 +6,7 @@ import {
 } from "../../utils/http";
 import { API_ENDPOINTS } from "../../app.constants";
 import { CreatePasswordServiceInterface } from "./types";
-import { ApiResponse, ApiResponseResult } from "../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../types";
 
 export function createPasswordService(
   axios: Http = http
@@ -17,8 +17,8 @@ export function createPasswordService(
     password: string,
     sourceIp: string,
     persistentSessionId: string
-  ): Promise<ApiResponseResult> {
-    const response = await axios.client.post<ApiResponse>(
+  ): Promise<ApiResponseResult<DefaultApiResponse>> {
+    const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.SIGNUP_USER,
       {
         email: emailAddress,
@@ -31,7 +31,7 @@ export function createPasswordService(
       })
     );
 
-    return createApiResponse(response);
+    return createApiResponse<DefaultApiResponse>(response);
   };
 
   return {

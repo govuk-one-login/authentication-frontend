@@ -8,58 +8,41 @@ import {
   updatedTermsConditionsPost,
 } from "../updated-terms-conditions-controller";
 
-import { ClientInfoServiceInterface } from "../../common/client-info/types";
 import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
+import { EXTERNAL_LINKS, PATH_NAMES } from "../../../app.constants";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("updated terms conditions controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = {
-      body: {},
-      session: {
-        destroy: sandbox.fake(),
-      },
+    req = mockRequest({
+      session: { client: {}, user: {}, destroy: sinon.fake() },
+      log: { info: sinon.fake() },
+      t: sinon.fake(),
       i18n: { language: "en" },
-    };
-    res = {
-      render: sandbox.fake(),
-      redirect: sandbox.fake(),
-      status: sandbox.fake(),
-      locals: {},
-    };
+    });
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("updatedTermsCondsGet", () => {
     it("should render updated-terms-conditions page", async () => {
-      const fakeService: ClientInfoServiceInterface = {
-        clientInfo: sandbox.fake.returns({
-          success: true,
-          data: {
-            scopes: ["openid", "profile"],
-            redirectUi: "http://local",
-          },
-        }),
-      };
-
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
 
-      await updatedTermsConditionsGet(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await updatedTermsConditionsGet(req as Request, res as Response);
 
-      expect(fakeService.clientInfo).to.be.calledOnce;
       expect(res.render).to.have.calledWith(
         "updated-terms-conditions/index.njk"
       );
@@ -67,19 +50,20 @@ describe("updated terms conditions controller", () => {
   });
 
   describe("updatedTermsCondsPost", () => {
-    it("should redirect to /auth-code when termsAndConditionsResult has value accept", async () => {
+    it("should redirect to /auth-code when terms accepted", async () => {
       const fakeService: UpdateProfileServiceInterface = {
-        updateProfile: sandbox.fake.returns({
+        updateProfile: sinon.fake.returns({
           success: true,
           sessionState: "UPDATED_TERMS_AND_CONDITIONS_ACCEPTED",
         }),
       };
 
+      req.path = PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS;
       req.body.termsAndConditionsResult = "accept";
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.email = "test@test.com";
+      req.session.user.email = "test@test.com";
 
       await updatedTermsConditionsPost(fakeService)(
         req as Request,
@@ -87,21 +71,44 @@ describe("updated terms conditions controller", () => {
       );
 
       expect(fakeService.updateProfile).to.have.been.calledOnce;
-      expect(res.redirect).to.have.calledWith("/auth-code");
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
+    });
+
+    it("should redirect to /share-info when consent required", async () => {
+      const fakeService: UpdateProfileServiceInterface = {
+        updateProfile: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      req.path = PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS;
+      req.session.client.consentEnabled = true;
+      req.session.user.isConsentRequired = true;
+      req.body.termsAndConditionsResult = "accept";
+      res.locals.sessionId = "s-123456-djjad";
+      res.locals.clientSessionId = "c-123456-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
+      req.session.user.email = "test@test.com";
+
+      await updatedTermsConditionsPost(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeService.updateProfile).to.have.been.calledOnce;
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.SHARE_INFO);
     });
 
     it("should redirect to govUK website when termsAndConditionsResult has value govUk", async () => {
       const fakeService: UpdateProfileServiceInterface = {
-        updateProfile: sandbox.fake(),
+        updateProfile: sinon.fake(),
       };
 
-      req.session.redirectUri = "http://test.test";
       req.body.termsAndConditionsResult = "govUk";
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.email = "test@test.com";
-      req.session.state = "test";
+      req.session.user.email = "test@test.com";
 
       await updatedTermsConditionsPost(fakeService)(
         req as Request,
@@ -109,20 +116,18 @@ describe("updated terms conditions controller", () => {
       );
 
       expect(fakeService.updateProfile).not.to.been.called;
-      expect(res.redirect).to.have.calledWith("https://www.gov.uk/");
+      expect(res.redirect).to.have.been.calledWith(EXTERNAL_LINKS.GOV_UK);
     });
 
     it("should redirect to support page when termsAndConditionsResult has value contactUs", async () => {
       const fakeService: UpdateProfileServiceInterface = {
-        updateProfile: sandbox.fake(),
+        updateProfile: sinon.fake(),
       };
 
-      req.session.redirectUri = "http://test.test";
       req.body.termsAndConditionsResult = "contactUs";
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
-      req.session.email = "test@test.com";
-      req.session.state = "test";
+      req.session.user.email = "test@test.com";
 
       await updatedTermsConditionsPost(fakeService)(
         req as Request,
@@ -130,7 +135,9 @@ describe("updated terms conditions controller", () => {
       );
 
       expect(fakeService.updateProfile).not.to.been.called;
-      expect(res.redirect).to.have.calledWith("/contact-us?supportType=PUBLIC");
+      expect(res.redirect).to.have.calledWith(
+        `${PATH_NAMES.CONTACT_US}?supportType=PUBLIC`
+      );
     });
   });
 });

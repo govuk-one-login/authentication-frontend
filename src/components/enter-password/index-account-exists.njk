@@ -5,7 +5,7 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "common/show-password/macro.njk" import govukInputWithShowPassword %}
 {% set showBack = true %}
-{% set hrefBack = 'enter-email?type=create-account' %}
+{% set hrefBack = 'enter-email-create' %}
 {% set pageTitleName = 'pages.enterPasswordAccountExists.title' | translate %}
 
 {% block content %}
@@ -14,7 +14,7 @@
 
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPasswordAccountExists.header' | translate}}</h1>
 
-<form id="form-tracking" action="/enter-password" method="post" novalidate>
+<form id="form-tracking" action="/enter-password-account-exists" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 

@@ -7,26 +7,30 @@ import {
   createPasswordPost,
   createPasswordGet,
 } from "../create-password-controller";
-import { USER_STATE } from "../../../app.constants";
 import { CreatePasswordServiceInterface } from "../types";
+import { PATH_NAMES } from "../../../app.constants";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("create-password controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = {
-      body: {},
-      session: {},
-    };
-    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
+    req = mockRequest({
+      path: PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
+      session: { client: {}, user: {} },
+      log: { info: sinon.fake() },
+    });
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("createPasswordGet", () => {
@@ -40,28 +44,30 @@ describe("create-password controller", () => {
   describe("createPasswordPost", () => {
     it("should redirect to enter-phone-number when 2 factor is required", async () => {
       const fakeService: CreatePasswordServiceInterface = {
-        signUpUser: sandbox.fake.returns({
+        signUpUser: sinon.fake.returns({
           success: true,
-          sessionState: USER_STATE.REQUIRES_TWO_FACTOR,
         }),
       };
 
       req.body.password = "password1";
-      req.session.email = "joe.bloggs@test.com";
+      req.session.user.email = "joe.bloggs@test.com";
+      res.locals.sessionId = "34234dsf";
 
       await createPasswordPost(fakeService)(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith("/enter-phone-number");
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
+      );
       expect(fakeService.signUpUser).to.have.been.calledOnce;
     });
 
     it("should throw error when session is not populated", async () => {
       const fakeService: CreatePasswordServiceInterface = {
-        signUpUser: sandbox.fake(),
+        signUpUser: sinon.fake(),
       };
 
       req.body.password = "password1";
-      req.session = undefined;
+      req.session.user = undefined;
 
       await expect(
         createPasswordPost(fakeService)(req as Request, res as Response)
@@ -74,11 +80,11 @@ describe("create-password controller", () => {
 
     it("should throw error when password field is not in body", async () => {
       const fakeService: CreatePasswordServiceInterface = {
-        signUpUser: sandbox.fake(),
+        signUpUser: sinon.fake(),
       };
 
       req.body = undefined;
-      req.session.email = "joe.bloggs@test.com";
+      req.session.user.email = "joe.bloggs@test.com";
 
       await expect(
         createPasswordPost(fakeService)(req as Request, res as Response)
@@ -92,31 +98,16 @@ describe("create-password controller", () => {
     it("should throw error when API call returns error", async () => {
       const error = new Error("Internal server error");
       const fakeService: CreatePasswordServiceInterface = {
-        signUpUser: sandbox.fake.throws(error),
+        signUpUser: sinon.fake.throws(error),
       };
 
       req.body.password = "password1";
-      req.session.email = "joe.bloggs@test.com";
+      req.session.user.email = "joe.bloggs@test.com";
 
       await expect(
         createPasswordPost(fakeService)(req as Request, res as Response)
       ).to.be.rejectedWith(Error, "Internal server error");
       expect(fakeService.signUpUser).to.have.been.called;
-    });
-
-    it("should update the user session state value in the req", async () => {
-      const fakeService: CreatePasswordServiceInterface = {
-        signUpUser: sandbox.fake.returns({
-          success: true,
-          sessionState: USER_STATE.REQUIRES_TWO_FACTOR,
-        }),
-      };
-
-      expect(req.session.backState).to.be.undefined;
-
-      await createPasswordPost(fakeService)(req as Request, res as Response);
-
-      expect(req.session.backState).to.equal(USER_STATE.REQUIRES_TWO_FACTOR);
     });
   });
 });

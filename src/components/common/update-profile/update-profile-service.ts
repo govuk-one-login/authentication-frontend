@@ -1,13 +1,13 @@
 import { RequestType, UpdateProfileServiceInterface } from "./types";
 
-import { API_ENDPOINTS } from "../../../app.constants";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
 import {
   createApiResponse,
   getRequestConfig,
   http,
   Http,
 } from "../../../utils/http";
-import { ApiResponse, ApiResponseResult } from "../../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types";
 
 export function updateProfileService(
   axios: Http = http
@@ -19,8 +19,8 @@ export function updateProfileService(
     requestType: RequestType,
     sourceIp: string,
     persistentSessionId: string
-  ): Promise<ApiResponseResult> {
-    const response = await axios.client.post<ApiResponse>(
+  ): Promise<ApiResponseResult<DefaultApiResponse>> {
+    const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.UPDATE_PROFILE,
       {
         email,
@@ -35,7 +35,9 @@ export function updateProfileService(
       })
     );
 
-    return createApiResponse(response);
+    return createApiResponse<DefaultApiResponse>(response, [
+      HTTP_STATUS_CODES.NO_CONTENT,
+    ]);
   };
 
   return {

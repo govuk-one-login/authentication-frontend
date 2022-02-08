@@ -1,62 +1,44 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { getNextPathByState } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
-import { PATH_NAMES, SERVICE_TYPE } from "../../app.constants";
-import { ClientInfoServiceInterface } from "../common/client-info/types";
+import { EXTERNAL_LINKS, PATH_NAMES, SERVICE_TYPE } from "../../app.constants";
 import { UpdateProfileServiceInterface } from "../common/update-profile/types";
 import { updateProfileService } from "../common/update-profile/update-profile-service";
-import { clientInfoService } from "../common/client-info/client-info-service";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { getNextPathAndUpdateJourney } from "../common/constants";
 
-export function updatedTermsConditionsGet(
-  service: ClientInfoServiceInterface = clientInfoService()
-): ExpressRouteFunc {
-  return async function (req: Request, res: Response) {
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
-    const clientInfoResponse = await service.clientInfo(
-      sessionId,
-      clientSessionId,
-      req.ip,
-      persistentSessionId
-    );
-
-    req.session.serviceType = clientInfoResponse.data.serviceType;
-    req.session.clientName = clientInfoResponse.data.clientName;
-
-    res.render("updated-terms-conditions/index.njk");
-  };
+export function updatedTermsConditionsGet(req: Request, res: Response): void {
+  res.render("updated-terms-conditions/index.njk");
 }
 
-export function updatedTermsRejectedGet(): ExpressRouteFunc {
-  return async function (req: Request, res: Response) {
-    const view =
-      req.session.serviceType === SERVICE_TYPE.OPTIONAL
-        ? "index-optional.njk"
-        : "index-mandatory.njk";
+export function updatedTermsRejectedGet(req: Request, res: Response): void {
+  const view =
+    req.session.client.serviceType === SERVICE_TYPE.OPTIONAL
+      ? "index-optional.njk"
+      : "index-mandatory.njk";
 
-    return res.render("updated-terms-conditions/" + view, {
-      clientName: req.session.clientName,
-    });
-  };
+  return res.render("updated-terms-conditions/" + view, {
+    clientName: req.session.client.name,
+  });
 }
 
 export function updatedTermsConditionsPost(
   service: UpdateProfileServiceInterface = updateProfileService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session;
+    const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const termsAndConditionsResult = req.body.termsAndConditionsResult;
+    const resultMap: any = {
+      govUk: EXTERNAL_LINKS.GOV_UK,
+      contactUs: PATH_NAMES.CONTACT_US + "?supportType=PUBLIC",
+    };
 
-    if (termsAndConditionsResult === "govUk") {
-      req.session.destroy();
-      return res.redirect("https://www.gov.uk/");
-    }
-
-    if (termsAndConditionsResult === "contactUs") {
-      req.session.destroy();
-      return res.redirect(PATH_NAMES.CONTACT_US + "?supportType=PUBLIC");
+    if (["govUk", "contactUs"].includes(termsAndConditionsResult)) {
+      req.session.destroy((error) => {
+        throw Error(`Unable to destroy session ${error}`);
+      });
+      return res.redirect(resultMap[termsAndConditionsResult]);
     }
 
     if (termsAndConditionsResult === "accept") {
@@ -70,10 +52,21 @@ export function updatedTermsConditionsPost(
       );
 
       if (!result.success) {
-        throw new BadRequestError(result.message, result.code);
+        throw new BadRequestError(result.data.message, result.data.code);
       }
 
-      res.redirect(getNextPathByState(result.sessionState));
+      res.redirect(
+        getNextPathAndUpdateJourney(
+          req,
+          req.path,
+          USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED,
+          {
+            isConsentRequired: req.session.user.isConsentRequired,
+            isIdentityRequired: req.session.user.isIdentityRequired,
+          },
+          sessionId
+        )
+      );
     }
   };
 }

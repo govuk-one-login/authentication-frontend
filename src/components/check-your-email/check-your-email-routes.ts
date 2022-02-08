@@ -1,28 +1,27 @@
 import * as express from "express";
 import { PATH_NAMES } from "../../app.constants";
-import {
-  handleBackButtonMiddleware,
-  validateSessionMiddleware,
-} from "../../middleware/session-middleware";
+import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { asyncHandler } from "../../utils/async";
 import {
   checkYourEmailGet,
   checkYourEmailPost,
 } from "./check-your-email-controller";
 import { validateCheckYourEmailRequest } from "./check-your-email-validation";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 
 const router = express.Router();
 
 router.get(
   PATH_NAMES.CHECK_YOUR_EMAIL,
   validateSessionMiddleware,
-  handleBackButtonMiddleware,
+  allowUserJourneyMiddleware,
   checkYourEmailGet
 );
 
 router.post(
   PATH_NAMES.CHECK_YOUR_EMAIL,
   validateSessionMiddleware,
+  allowUserJourneyMiddleware,
   validateCheckYourEmailRequest(),
   asyncHandler(checkYourEmailPost())
 );

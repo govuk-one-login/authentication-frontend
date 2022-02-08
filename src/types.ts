@@ -17,22 +17,35 @@ export type ValidationChainFunc = (
     ) => any)
 )[];
 
-export interface ApiResponse {
-  code?: number;
-  message?: string;
-  sessionState: string;
-  email?: string;
-  data: any;
+export interface ApiResponseResult<T> {
+  success: boolean;
+  data: T;
 }
 
-export interface ApiResponseResult {
-  success: boolean;
-  code?: number;
-  message?: string;
-  sessionState?: string;
+export interface DefaultApiResponse {
+  message: string;
+  code: number;
 }
 
 export interface Error {
   text: string;
   href: string;
+}
+
+export interface UserSession {
+  isAuthenticated?: boolean;
+  email?: string;
+  phoneNumber?: string;
+  journey?: { nextPath: string; optionalPaths: string[] };
+  isConsentRequired?: boolean;
+  isLatestTermsAndConditionsAccepted?: boolean;
+  isIdentityRequired?: boolean;
+}
+
+export interface UserSessionClient {
+  name?: string;
+  serviceType?: string;
+  cookieConsentEnabled?: boolean;
+  consentEnabled?: boolean;
+  crossDomainGaTrackingId?: string;
 }
