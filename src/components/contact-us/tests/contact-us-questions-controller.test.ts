@@ -3,8 +3,12 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { contactUsQuestionsGet } from "../contact-us-controller";
+import {
+  contactUsQuestionsFormPost,
+  contactUsQuestionsGet,
+} from "../contact-us-controller";
 import { ZENDESK_THEMES } from "../../../app.constants";
+import { ContactUsServiceInterface } from "../types";
 
 describe("contact us questions controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -219,6 +223,20 @@ describe("contact us questions controller", () => {
         subtheme: "something_else",
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.accountCreation.title",
+      });
+    });
+    describe("contactUsFormPost", () => {
+      it("should redirect /contact-us-submit-success page when ticket posted", async () => {
+        const fakeService: ContactUsServiceInterface = {
+          contactUsSubmitForm: sandbox.fake(),
+        };
+
+        await contactUsQuestionsFormPost(fakeService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(res.redirect).to.have.calledWith("/contact-us-submit-success");
       });
     });
   });
