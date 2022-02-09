@@ -48,8 +48,8 @@ export function contactUsService(
   }
 
   function prefixThemeTags(tags: string[]) {
-    const tagPrefix = 'auth_';
-    return tags.map(i => tagPrefix + i)
+    const tagPrefix = "auth_";
+    return tags.map((i) => tagPrefix + i);
   }
 
   return {
