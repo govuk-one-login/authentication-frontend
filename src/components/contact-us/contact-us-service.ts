@@ -19,7 +19,7 @@ export function contactUsService(
           ),
         },
         group_id: getZendeskGroupIdPublic(),
-        tags: ["govuk_sign_in", ...contactForm.tags],
+        tags: ["govuk_sign_in", ...prefixThemeTags(contactForm.tags)],
       },
     };
 
@@ -46,6 +46,12 @@ export function contactUsService(
 
     return htmlBody.join("");
   }
+
+  function prefixThemeTags(tags: string[]) {
+    const tagPrefix = 'auth_';
+    return tags.map(i => tagPrefix + i)
+  }
+
   return {
     contactUsSubmitForm,
   };
