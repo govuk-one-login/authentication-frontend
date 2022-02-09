@@ -2,6 +2,11 @@
   {{ 'pages.contactUsQuestions.anotherProblem.header' | translate }}
 </h1>
 
+{{ govukWarningText({
+    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
+    iconFallbackText: "Warning"
+}) }}
+
 <form action="/contact-us-questions" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>

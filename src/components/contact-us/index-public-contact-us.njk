@@ -31,11 +31,6 @@
 
 <p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph2' | translate }}</p>
 
-{{ govukWarningText({
-    text:'pages.contactUsPublic.section2.paragraph1' | translate,
-    iconFallbackText: "Warning"
-}) }}
-
 <form action="/contact-us" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>

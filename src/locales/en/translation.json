@@ -1086,9 +1086,6 @@
         "bulletPoint2": "suggest improvements or give feedback about your experience using your GOV.UK account",
         "paragraph2": "Our office hours are 9:30am to 5:30pm, Monday to Friday."
       },
-      "section2": {
-        "paragraph1": "Do not include personal or financial information, for example your National Insurance number or credit card details."
-      },
       "section3": {
         "header": "What are you contacting us about?",
         "radio1": "A problem creating an account",
@@ -1132,6 +1129,9 @@
       }
     },
     "contactUsQuestions": {
+      "personalInformation": {
+        "paragraph1": "Do not include personal or financial information, for example your National Insurance number or credit card details."
+      },
       "replyByEmail": {
         "validationError": {
           "noBoxSelected": "Select yes if we can reply to you by email",
