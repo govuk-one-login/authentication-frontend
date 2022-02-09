@@ -142,5 +142,5 @@ variable "deployment_min_healthy_percent" {
 }
 
 variable "deployment_max_percent" {
-  default = 100
+  default = 150
 }
