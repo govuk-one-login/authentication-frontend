@@ -54,8 +54,6 @@ resource "aws_security_group" "frontend_alb_sg" {
 }
 
 resource "aws_security_group_rule" "allow_alb_http_ingress_from_anywhere" {
-  count = var.public_access ? 1 : 0
-
   security_group_id = aws_security_group.frontend_alb_sg.id
   type              = "ingress"
 
@@ -67,8 +65,6 @@ resource "aws_security_group_rule" "allow_alb_http_ingress_from_anywhere" {
 }
 
 resource "aws_security_group_rule" "allow_alb_https_ingress_from_anywhere" {
-  count = var.public_access ? 1 : 0
-
   security_group_id = aws_security_group.frontend_alb_sg.id
   type              = "ingress"
 
