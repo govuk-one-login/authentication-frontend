@@ -27,7 +27,7 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.suggestionOrFeedback.title",
 };
 
-const somethingELseSubThemeToPageTitle = {
+const somethingElseSubThemeToPageTitle = {
   [ZENDESK_THEMES.ACCOUNT_CREATION]:
     "pages.contactUsQuestions.accountCreation.title",
   [ZENDESK_THEMES.SIGNING_IN]: "pages.contactUsQuestions.signingIn.title",
@@ -45,8 +45,9 @@ export function contactUsFormPost(req: Request, res: Response): void {
   let url = PATH_NAMES.CONTACT_US_QUESTIONS;
   const queryParams = new URLSearchParams({ theme: req.body.theme }).toString();
   if (
-    req.body.theme === ZENDESK_THEMES.ACCOUNT_CREATION ||
-    req.body.theme === ZENDESK_THEMES.SIGNING_IN
+    [ZENDESK_THEMES.ACCOUNT_CREATION, ZENDESK_THEMES.SIGNING_IN].includes(
+      req.body.theme
+    )
   ) {
     url = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
   }
@@ -75,11 +76,9 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     req.query.subtheme === ZENDESK_THEMES.SOMETHING_ELSE &&
     req.query.theme === ZENDESK_THEMES.ACCOUNT_CREATION
   ) {
-    pageTitle = somethingELseSubThemeToPageTitle[req.query.theme as string];
-  } else {
-    if (req.query.subtheme) {
-      pageTitle = themeToPageTitle[req.query.subtheme as string];
-    }
+    pageTitle = somethingElseSubThemeToPageTitle[req.query.theme as string];
+  } else if (req.query.subtheme) {
+    pageTitle = themeToPageTitle[req.query.subtheme as string];
   }
   return res.render("contact-us/questions/index.njk", {
     theme: req.query.theme,
