@@ -1,9 +1,13 @@
 resource "aws_route53_record" "frontend" {
   name    = local.frontend_fqdn
-  type    = "CNAME"
+  type    = "A"
   zone_id = local.zone_id
-  records = [var.paas_frontend_cdn_route_destination]
-  ttl     = 300
+
+  alias {
+    evaluate_target_health = false
+    name                   = aws_lb.frontend_alb.dns_name
+    zone_id                = aws_lb.frontend_alb.zone_id
+  }
 }
 
 resource "aws_route53_record" "frontend_fg" {

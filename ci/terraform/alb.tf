@@ -36,7 +36,7 @@ resource "aws_alb_listener" "frontend_alb_listener_https" {
   protocol          = "HTTPS"
 
   ssl_policy      = "ELBSecurityPolicy-2016-08"
-  certificate_arn = aws_acm_certificate.frontend_certificate.arn
+  certificate_arn = aws_acm_certificate.frontend_alb_certificate.arn
 
   default_action {
     target_group_arn = aws_alb_target_group.frontend_alb_target_group.id
