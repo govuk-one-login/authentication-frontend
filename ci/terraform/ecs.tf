@@ -96,7 +96,7 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
         },
         {
           name  = "BASE_URL"
-          value = aws_route53_record.frontend_fg.name
+          value = aws_route53_record.frontend.name
         },
         {
           name  = "SESSION_EXPIRY"
