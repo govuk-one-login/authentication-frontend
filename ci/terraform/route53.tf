@@ -19,7 +19,7 @@ resource "aws_route53_record" "frontend_fg" {
 }
 
 resource "aws_acm_certificate" "frontend_certificate" {
-  domain_name       = aws_route53_record.frontend_fg.name
+  domain_name       = aws_route53_record.frontend.name
   validation_method = "DNS"
 
   tags = local.default_tags
