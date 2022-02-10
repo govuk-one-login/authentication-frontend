@@ -144,3 +144,8 @@ variable "deployment_min_healthy_percent" {
 variable "deployment_max_percent" {
   default = 150
 }
+
+variable "paas_frontend_cdn_route_destination" {
+  type        = string
+  description = "The Cloudfront instance to forward all PaaS requests to"
+}

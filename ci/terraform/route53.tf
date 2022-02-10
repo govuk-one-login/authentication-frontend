@@ -1,3 +1,11 @@
+resource "aws_route53_record" "frontend" {
+  name    = local.frontend_fqdn
+  type    = "CNAME"
+  zone_id = local.zone_id
+  records = [var.paas_frontend_cdn_route_destination]
+  ttl     = 300
+}
+
 resource "aws_route53_record" "frontend_fg" {
   name    = "signin-fg.${local.service_domain}"
   type    = "A"
