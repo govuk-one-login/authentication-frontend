@@ -1022,7 +1022,7 @@
       "paragraph1": "This is because you tried to reset your password too many times the last time you tried to sign in.",
       "paragraph2": "You can ",
       "resetPasswordLinkText": "reset your password",
-      "paragraph3": " after 15 mins have passed."
+      "paragraph3": " after 15 minutes have passed."
     },
     "accountLocked": {
       "title": "You entered the wrong password too many times",
