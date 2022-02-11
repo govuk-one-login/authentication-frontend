@@ -84,7 +84,7 @@ run:
         -var "sidecar_image_tag=${SIDECAR_IMAGE_TAG}" \
         -var "sidecar_image_digest=${SIDECAR_IMAGE_DIGEST}" \
         -var "basic_auth_username=${NORMALISED_BASIC_AUTH_USERNAME}" \
-        -var "basic_auth_password=${NORMALISED_BASIC_AUTH_PASSWORD}" \      
+        -var "basic_auth_password=${NORMALISED_BASIC_AUTH_PASSWORD}" \
         -var-file ${DEPLOY_ENVIRONMENT}.tfvars \
 
       terraform output --json > ../../../terraform-outputs/${DEPLOY_ENVIRONMENT}-terraform-outputs.json
