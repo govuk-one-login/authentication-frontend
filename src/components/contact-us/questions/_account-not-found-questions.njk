@@ -41,6 +41,11 @@
     } if (errors['optionalDescription'])
 }) }}
 
+{{ govukWarningText({
+    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
+    iconFallbackText: "Warning"
+}) }}
+
 {% include 'contact-us/questions/_reply_by_email.njk' %}
 
 {{ govukButton({
