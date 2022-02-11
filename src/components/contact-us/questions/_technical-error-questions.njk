@@ -38,7 +38,12 @@
     } if (errors['additionalDescription'])
 }) }}
 
-{{ govukTextarea({
+{{ govukWarningText({
+    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
+    iconFallbackText: "Warning"
+}) }}
+
+{{ govukInput({
     label: {
       text: 'pages.contactUsQuestions.technicalError.section3.header' | translate,
       classes: "govuk-label--s"
