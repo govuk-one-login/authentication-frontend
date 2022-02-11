@@ -23,7 +23,7 @@ resource "aws_alb_target_group" "frontend_alb_target_group" {
     protocol            = "HTTP"
     matcher             = "200"
     timeout             = "3"
-    path                = "/healthcheck"
+    path                = "/healthcheck/"
     unhealthy_threshold = "2"
   }
 
@@ -39,7 +39,7 @@ resource "aws_alb_listener" "frontend_alb_listener_https" {
   certificate_arn = aws_acm_certificate.frontend_alb_certificate.arn
 
   default_action {
-    target_group_arn = aws_alb_target_group.frontend_alb_target_group.id
+    target_group_arn = aws_alb_target_group.frontend_alb_target_group.arn
     type             = "forward"
   }
 
