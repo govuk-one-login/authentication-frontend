@@ -22,7 +22,7 @@ locals {
         protocol      = "tcp"
         containerPort = var.app_port
         hostPort      = var.app_port
-      }]
+    }]
     environment = [
       {
         name  = "NODE_ENV"
@@ -108,7 +108,7 @@ locals {
         protocol      = "tcp"
         containerPort = local.nginx_port
         hostPort      = local.nginx_port
-      }]
+    }]
     environment = [
       {
         name  = "BASIC_AUTH_USERNAME"
