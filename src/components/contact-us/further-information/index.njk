@@ -1,0 +1,34 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% set showBack = true %}
+{% set hrefBack = 'contact-us' %}
+
+{% if theme == 'signing_in' %}
+    {% set pageTitleName = 'pages.contactUsFurtherInformation.signingIn.title' | translate %}
+{% endif %}
+
+{% if theme == 'account_creation' %}
+    {% set pageTitleName = 'pages.contactUsFurtherInformation.accountCreation.title' | translate %}
+{% endif %}
+
+{% block content %}
+{% include "common/errors/errorSummary.njk" %}
+
+    {% if theme == 'signing_in' %}
+        {% include 'contact-us/further-information/_signing-in-further-information.njk' %}
+    {% endif %}
+
+    {% if theme == 'account_creation' %}
+        {% include 'contact-us/further-information/_account-creation-further-information.njk' %}
+    {% endif %}
+
+{% endblock %}
+
+
+

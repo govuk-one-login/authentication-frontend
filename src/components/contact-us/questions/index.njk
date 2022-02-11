@@ -1,0 +1,65 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% set showBack = true %}
+{% set hrefBack = backurl %}
+
+{% set pageTitleName = pageTitleHeading | translate %}
+
+{% block content %}
+{% include "common/errors/errorSummary.njk" %}
+
+    {% if subtheme == 'account_not_found' %}
+        {% include 'contact-us/questions/_account-not-found-questions.njk' %}
+    {% endif %}
+
+    {% if subtheme == 'technical_error' %}
+        {% include 'contact-us/questions/_technical-error-questions.njk' %}
+    {% endif %}
+
+    {% if subtheme == 'no_security_code' %}
+        {% include 'contact-us/questions/_no-security-code-questions.njk' %}
+    {% endif %}
+
+    {% if subtheme == 'invalid_security_code' %}
+        {% include 'contact-us/questions/_invalid-security-code-questions.njk' %}
+    {% endif %}
+
+    {% if subtheme == 'no_uk_mobile_number' %}
+        {% include 'contact-us/questions/_no-uk-mobile-questions.njk' %}
+    {% endif %}
+
+    {% if subtheme == 'forgotten_password' %}
+        {% include 'contact-us/questions/_forgotten-password-questions.njk' %}
+    {% endif %}
+
+    {% if subtheme == 'no_phone_number_access' %}
+        {% include 'contact-us/questions/_no-phone-number-access-questions.njk' %}
+    {% endif %}
+
+    {% if (theme == 'account_creation') and (subtheme == 'something_else') %}
+        {% include 'contact-us/questions/_account-creation-problem-questions.njk' %}
+    {% endif %}
+
+    {% if (theme == 'signing_in') and (subtheme == 'something_else') %}
+        {% include 'contact-us/questions/_signing-in-problem-questions.njk' %}
+    {% endif %}
+
+    {% if theme == 'email_subscriptions' %}
+       {% include 'contact-us/questions/_email-subscriptions-questions.njk' %}
+    {% endif %}
+
+    {% if theme == 'something_else' %}
+        {% include 'contact-us/questions/_another-problem-questions.njk' %}
+    {% endif %}
+
+    {% if theme == 'suggestions_feedback' %}
+        {% include 'contact-us/questions/_suggestion-feedback-questions.njk' %}
+    {% endif %}
+
+{% endblock %}

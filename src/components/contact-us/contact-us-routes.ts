@@ -5,19 +5,42 @@ import {
   contactUsGet,
   contactUsSubmitSuccessGet,
   contactUsFormPost,
+  furtherInformationGet,
+  contactUsQuestionsGet,
+  furtherInformationPost,
+  contactUsQuestionsFormPost,
 } from "./contact-us-controller";
-import { asyncHandler } from "../../utils/async";
 import { validateContactUsRequest } from "./contact-us-validation";
+import { validateContactUsQuestionsRequest } from "./contact-us-questions-validation";
+import { asyncHandler } from "../../utils/async";
 
 const router = express.Router();
 
 router.get(PATH_NAMES.CONTACT_US, contactUsGet);
-router.get(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS, contactUsSubmitSuccessGet);
-
 router.post(
   PATH_NAMES.CONTACT_US,
-  validateContactUsRequest(),
-  asyncHandler(contactUsFormPost())
+  validateContactUsRequest("contact-us/index-public-contact-us.njk", "theme"),
+  contactUsFormPost
 );
+
+router.get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION, furtherInformationGet);
+router.post(
+  PATH_NAMES.CONTACT_US_FURTHER_INFORMATION,
+  validateContactUsRequest(
+    "contact-us/further-information/index.njk",
+    "subtheme"
+  ),
+  furtherInformationPost
+);
+
+router.get(PATH_NAMES.CONTACT_US_QUESTIONS, contactUsQuestionsGet);
+
+router.post(
+  PATH_NAMES.CONTACT_US_QUESTIONS,
+  validateContactUsQuestionsRequest(),
+  asyncHandler(contactUsQuestionsFormPost())
+);
+
+router.get(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS, contactUsSubmitSuccessGet);
 
 export { router as contactUsRouter };

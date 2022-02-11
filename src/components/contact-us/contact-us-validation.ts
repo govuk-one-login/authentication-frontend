@@ -2,41 +2,27 @@ import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 
-export function validateContactUsRequest(): ValidationChainFunc {
+export function validateContactUsRequest(
+  template: string,
+  bodyType: string
+): ValidationChainFunc {
   return [
-    body("issueDescription")
+    body(bodyType)
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t(
-          "pages.contactUsPublic.section2.question1.validationError.required",
-          { value }
-        );
+        let errorMessage = "pages.contactUsPublic.section3.errorMessage";
+        if (req.body.theme === "signing_in") {
+          errorMessage =
+            "pages.contactUsFurtherInformation.signingIn.section1.errorMessage";
+        } else if (req.body.theme === "account_creation") {
+          errorMessage =
+            "pages.contactUsFurtherInformation.accountCreation.section1.errorMessage";
+        }
+
+        return req.t(errorMessage, {
+          value,
+        });
       }),
-    body("replyEmail")
-      .if(body("feedbackContact").equals("true"))
-      .notEmpty()
-      .withMessage((value, { req }) => {
-        return req.t(
-          "pages.contactUsPublic.section3.replyEmail.validationError.required",
-          { value }
-        );
-      })
-      .isEmail()
-      .withMessage((value, { req }) => {
-        return req.t(
-          "pages.contactUsPublic.section3.replyEmail.validationError.invalidFormat",
-          { value }
-        );
-      }),
-    body("name")
-      .if(body("feedbackContact").equals("true"))
-      .notEmpty()
-      .withMessage((value, { req }) => {
-        return req.t(
-          "pages.contactUsPublic.section3.name.validationError.required",
-          { value }
-        );
-      }),
-    validateBodyMiddleware("contact-us/index-public-contact-us.njk"),
+    validateBodyMiddleware(template),
   ];
 }
