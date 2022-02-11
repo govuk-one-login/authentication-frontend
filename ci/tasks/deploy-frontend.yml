@@ -23,9 +23,12 @@ params:
   ZENDESK_USERNAME: ((build-zendesk-username))
   ZENDESK_API_TOKEN: ((build-zendesk-api-token))
   ZENDESK_GROUP_ID_PUBLIC: ((build-zendesk-group-id-public))
+  BASIC_AUTH_USERNAME: ((no-basic-auth-username))
+  BASIC_AUTH_PASSWORD: ((no-basic-auth-password))
 inputs:
   - name: frontend-src
   - name: frontend-image
+  - name: basic-auth-sidecar-image
 outputs:
   - name: terraform-outputs
 run:
@@ -36,6 +39,18 @@ run:
       export IMAGE_URI=$(cat frontend-image/repository)
       export IMAGE_TAG=$(cat frontend-image/tag)
       export IMAGE_DIGEST=$(cat frontend-image/digest)
+      
+      export SIDECAR_IMAGE_URI=$(cat basic-auth-sidecar-image/repository)
+      export SIDECAR_IMAGE_TAG=$(cat basic-auth-sidecar-image/tag)
+      export SIDECAR_IMAGE_DIGEST=$(cat basic-auth-sidecar-image/digest)
+      
+      NORMALISED_BASIC_AUTH_USERNAME="${BASIC_AUTH_USERNAME}"
+      NORMALISED_BASIC_AUTH_PASSWORD="${BASIC_AUTH_PASSWORD}"
+      
+      if [ ${NORMALISED_BASIC_AUTH_PASSWORD} == "none" ]; then
+        NORMALISED_BASIC_AUTH_USERNAME=""
+        NORMALISED_BASIC_AUTH_PASSWORD=""
+      fi
       
       cd "frontend-src/ci/terraform/"
       terraform init -input=false \
@@ -65,6 +80,11 @@ run:
         -var "image_uri=${IMAGE_URI}" \
         -var "image_tag=${IMAGE_TAG}" \
         -var "image_digest=${IMAGE_DIGEST}" \
+        -var "sidecar_image_uri=${SIDECAR_IMAGE_URI}" \
+        -var "sidecar_image_tag=${SIDECAR_IMAGE_TAG}" \
+        -var "sidecar_image_digest=${SIDECAR_IMAGE_DIGEST}" \
+        -var "basic_auth_username=${NORMALISED_BASIC_AUTH_USERNAME}" \
+        -var "basic_auth_password=${NORMALISED_BASIC_AUTH_PASSWORD}" \      
         -var-file ${DEPLOY_ENVIRONMENT}.tfvars \
 
       terraform output --json > ../../../terraform-outputs/${DEPLOY_ENVIRONMENT}-terraform-outputs.json

@@ -81,8 +81,8 @@ resource "aws_security_group_rule" "allow_alb_application_egress_to_task_group" 
 
   description              = "http"
   protocol                 = "tcp"
-  from_port                = var.app_port
-  to_port                  = var.app_port
+  from_port                = local.application_port
+  to_port                  = local.application_port
   source_security_group_id = aws_security_group.frontend_ecs_tasks_sg.id
 }
 
@@ -103,7 +103,7 @@ resource "aws_security_group_rule" "allow_ecs_task_ingress_from_alb" {
 
   description              = "http"
   protocol                 = "tcp"
-  from_port                = var.app_port
-  to_port                  = var.app_port
+  from_port                = local.application_port
+  to_port                  = local.application_port
   source_security_group_id = aws_security_group.frontend_alb_sg.id
 }

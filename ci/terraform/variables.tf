@@ -144,3 +144,19 @@ variable "paas_frontend_cdn_route_destination" {
   type        = string
   description = "The Cloudfront instance to forward all PaaS requests to"
 }
+
+variable "sidecar_image_uri" {
+  default = ""
+}
+variable "sidecar_image_tag" {
+  default = "latest"
+}
+variable "sidecar_image_digest" {
+  default = ""
+}
+variable "basic_auth_username" {
+  default = ""
+}
+variable "basic_auth_password" {
+  default = ""
+}
