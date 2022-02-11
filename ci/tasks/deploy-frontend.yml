@@ -16,7 +16,6 @@ params:
   CF_USERNAME: ((cf-username))
   CF_PASSWORD: ((cf-password))
   CF_ORG_NAME: ((cf-org-name))
-  APP_INSTANCES: 3
   GTM_ID: ((build-gtm-id))
   SESSION_EXPIRY: ((build-session-expiry))
   LOGGING_ENDPOINT_ARN: "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prod"
@@ -55,7 +54,6 @@ run:
         -var "dns_state_bucket=${DNS_STATE_BUCKET}" \
         -var "dns_state_key=${DNS_STATE_KEY}" \
         -var "dns_state_role=${DNS_DEPLOYER_ROLE_ARN}" \
-        -var "ecs_desired_count=${APP_INSTANCES}" \
         -var "session_expiry=${SESSION_EXPIRY}" \
         -var "logging_endpoint_arn=${LOGGING_ENDPOINT_ARN}" \
         -var "logging_endpoint_enabled=${LOGGING_ENDPOINT_ENABLED}" \
