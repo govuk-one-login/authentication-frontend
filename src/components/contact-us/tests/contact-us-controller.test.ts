@@ -3,31 +3,23 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import {
-  contactUsFormPost,
-  contactUsGet,
-  contactUsSubmitSuccessGet,
-} from "../contact-us-controller";
-import { PATH_NAMES, SUPPORT_TYPE } from "../../../app.constants";
-import { ContactUsServiceInterface } from "../types";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { contactUsFormPost, contactUsGet } from "../contact-us-controller";
+import { SUPPORT_TYPE, ZENDESK_THEMES } from "../../../app.constants";
 
 describe("contact us controller", () => {
-  let req: RequestOutput;
-  let res: ResponseOutput;
+  let sandbox: sinon.SinonSandbox;
+  let req: Partial<Request>;
+  let res: Partial<Response>;
 
   beforeEach(() => {
-    req = mockRequest();
-    res = mockResponse();
+    sandbox = sinon.createSandbox();
+
+    req = { body: {}, query: {}, get: sandbox.fake() };
+    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
   });
 
   afterEach(() => {
-    sinon.restore();
+    sandbox.restore();
   });
 
   describe("contactUsGet", () => {
@@ -50,26 +42,50 @@ describe("contact us controller", () => {
     });
   });
 
-  describe("contactUsSubmitSuccessGet", () => {
-    it("should render contact us success page", () => {
-      contactUsSubmitSuccessGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "contact-us/index-submit-success.njk"
-      );
-    });
-  });
-
   describe("contactUsFormPost", () => {
-    it("should redirect /contact-us-submit-success page when ticket posted", async () => {
-      const fakeService: ContactUsServiceInterface = {
-        contactUsSubmitForm: sinon.fake(),
-      };
+    it("should redirect /contact-us-further-information page when 'A problem signing in to your account' radio option is chosen", async () => {
+      req.body.theme = ZENDESK_THEMES.SIGNING_IN;
 
-      await contactUsFormPost(fakeService)(req as Request, res as Response);
+      contactUsFormPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS
+        "/contact-us-further-information?theme=signing_in"
+      );
+    });
+    it("should redirect /contact-us-further-information page when 'A problem creating an account' radio option is chosen", async () => {
+      req.body.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
+
+      contactUsFormPost(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(
+        "/contact-us-further-information?theme=account_creation"
+      );
+    });
+    it("should redirect /contact-us-questions page when 'Another problem using your GOV.UK account' radio option is chosen", async () => {
+      req.body.theme = ZENDESK_THEMES.SOMETHING_ELSE;
+
+      contactUsFormPost(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(
+        "/contact-us-questions?theme=something_else"
+      );
+    });
+    it("should redirect /contact-us-questions page when 'GOV.UK email subscriptions' radio option is chosen", async () => {
+      req.body.theme = ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS;
+
+      contactUsFormPost(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(
+        "/contact-us-questions?theme=email_subscriptions"
+      );
+    });
+    it("should redirect /contact-us-questions page when 'A suggestion or feedback about using your GOV.UK account' radio option is chosen", async () => {
+      req.body.theme = ZENDESK_THEMES.SUGGESTIONS_FEEDBACK;
+
+      contactUsFormPost(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(
+        "/contact-us-questions?theme=suggestions_feedback"
       );
     });
   });

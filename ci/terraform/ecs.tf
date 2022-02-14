@@ -1,6 +1,133 @@
 locals {
   service_name   = "${var.environment}-frontend-ecs-service"
   container_name = "frontend-application"
+
+  nginx_port       = 8080
+  application_port = var.basic_auth_password == "" ? var.app_port : local.nginx_port
+
+  frontend_container_definition = {
+    name      = local.container_name
+    image     = "${var.image_uri}:${var.image_tag}@${var.image_digest}"
+    essential = true
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        awslogs-group         = aws_cloudwatch_log_group.ecs_frontend_task_log.name
+        awslogs-region        = var.aws_region
+        awslogs-stream-prefix = local.service_name
+      }
+    }
+    portMappings = [
+      {
+        protocol      = "tcp"
+        containerPort = var.app_port
+        hostPort      = var.app_port
+    }]
+    environment = [
+      {
+        name  = "NODE_ENV"
+        value = "production"
+      },
+      {
+        name  = "APP_ENV"
+        value = var.environment
+      },
+      {
+        name  = "FARGATE"
+        value = "1"
+      },
+      {
+        name  = "API_BASE_URL"
+        value = "https://${local.oidc_api_fqdn}"
+      },
+      {
+        name  = "FRONTEND_API_BASE_URL"
+        value = "https://${local.frontend_api_fqdn}/"
+      },
+      {
+        name  = "API_KEY"
+        value = local.api_key
+      },
+      {
+        name  = "ACCOUNT_MANAGEMENT_URL"
+        value = "https://${local.account_management_fqdn}"
+      },
+      {
+        name  = "BASE_URL"
+        value = aws_route53_record.frontend.name
+      },
+      {
+        name  = "SESSION_EXPIRY"
+        value = var.session_expiry
+      },
+      {
+        name  = "SESSION_SECRET"
+        value = random_string.session_secret.result
+      },
+      {
+        name  = "GTM_ID"
+        value = var.gtm_id
+      },
+      {
+        name  = "ANALYTICS_COOKIE_DOMAIN"
+        value = local.service_domain
+      },
+      {
+        name  = "REDIS_KEY"
+        value = local.redis_key
+      },
+      {
+        name  = "ZENDESK_API_TOKEN"
+        value = var.zendesk_api_token
+      },
+      {
+        name  = "ZENDESK_GROUP_ID_PUBLIC"
+        value = var.zendesk_group_id_public
+      },
+      {
+        name  = "ZENDESK_USERNAME"
+        value = var.zendesk_username
+      },
+    ]
+  }
+
+  sidecar_container_definition = {
+    name      = "nginx-sidecar"
+    image     = "${var.sidecar_image_uri}:${var.sidecar_image_tag}@${var.sidecar_image_digest}"
+    essential = true
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        awslogs-group         = aws_cloudwatch_log_group.ecs_frontend_task_log.name
+        awslogs-region        = var.aws_region
+        awslogs-stream-prefix = local.service_name
+      }
+    }
+    portMappings = [
+      {
+        protocol      = "tcp"
+        containerPort = local.nginx_port
+        hostPort      = local.nginx_port
+    }]
+    environment = [
+      {
+        name  = "BASIC_AUTH_USERNAME"
+        value = var.basic_auth_username
+      },
+      {
+        name  = "BASIC_AUTH_PASSWORD"
+        value = var.basic_auth_password
+      },
+      {
+        name  = "PROXY_PASS"
+        value = "http://localhost:${var.app_port}"
+      },
+      {
+        name  = "NGINX_PORT"
+        value = "8080"
+      },
+    ]
+  }
 }
 
 resource "random_string" "session_secret" {
@@ -31,8 +158,8 @@ resource "aws_ecs_service" "frontend_ecs_service" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.frontend_alb_target_group.arn
-    container_name   = local.container_name
-    container_port   = var.app_port
+    container_name   = var.basic_auth_password == "" ? local.frontend_container_definition.name : local.sidecar_container_definition.name
+    container_port   = local.application_port
   }
 
   tags = local.default_tags
@@ -46,92 +173,10 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
   network_mode             = "awsvpc"
   cpu                      = 1024
   memory                   = 2048
-  container_definitions = jsonencode([
-    {
-      name      = local.container_name
-      image     = "${var.image_uri}:${var.image_tag}@${var.image_digest}"
-      essential = true
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          awslogs-group         = aws_cloudwatch_log_group.ecs_frontend_task_log.name
-          awslogs-region        = var.aws_region
-          awslogs-stream-prefix = local.service_name
-        }
-      }
-      portMappings = [
-        {
-          protocol      = "tcp"
-          containerPort = var.app_port
-          hostPort      = var.app_port
-      }]
-      environment = [
-        {
-          name  = "NODE_ENV"
-          value = "production"
-        },
-        {
-          name  = "APP_ENV"
-          value = var.environment
-        },
-        {
-          name  = "FARGATE"
-          value = "1"
-        },
-        {
-          name  = "API_BASE_URL"
-          value = "https://${local.oidc_api_fqdn}"
-        },
-        {
-          name  = "FRONTEND_API_BASE_URL"
-          value = "https://${local.frontend_api_fqdn}/"
-        },
-        {
-          name  = "API_KEY"
-          value = local.api_key
-        },
-        {
-          name  = "ACCOUNT_MANAGEMENT_URL"
-          value = "https://${local.account_management_fqdn}"
-        },
-        {
-          name  = "BASE_URL"
-          value = aws_route53_record.frontend_fg.name
-        },
-        {
-          name  = "SESSION_EXPIRY"
-          value = var.session_expiry
-        },
-        {
-          name  = "SESSION_SECRET"
-          value = random_string.session_secret.result
-        },
-        {
-          name  = "GTM_ID"
-          value = var.gtm_id
-        },
-        {
-          name  = "ANALYTICS_COOKIE_DOMAIN"
-          value = local.service_domain
-        },
-        {
-          name  = "REDIS_KEY"
-          value = local.redis_key
-        },
-        {
-          name  = "ZENDESK_API_TOKEN"
-          value = var.zendesk_api_token
-        },
-        {
-          name  = "ZENDESK_GROUP_ID_PUBLIC"
-          value = var.zendesk_group_id_public
-        },
-        {
-          name  = "ZENDESK_USERNAME"
-          value = var.zendesk_username
-        },
-      ]
-  }])
+  container_definitions = var.basic_auth_password == "" ? jsonencode([local.frontend_container_definition]) : jsonencode([
+    local.frontend_container_definition,
+    local.sidecar_container_definition,
+  ])
 
   tags = local.default_tags
 }

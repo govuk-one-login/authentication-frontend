@@ -1,8 +1,9 @@
 export interface ContactForm {
   subject: string;
-  comment: string;
+  contents: string[];
   email?: string;
   name?: string;
+  tags: string[];
   optionalData: OptionalData;
   feedbackContact: boolean;
 }

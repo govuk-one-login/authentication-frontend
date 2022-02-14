@@ -1009,16 +1009,20 @@
       }
     },
     "resetPasswordCountExceeded": {
-      "title": "You requested too many password resets",
-      "header": "You requested too many password resets",
+      "title": "You tried to reset your password too many times",
+      "header": "You tried to reset your password too many times",
       "paragraph1": "You need to wait 15 minutes.",
-      "paragraph2": "You can then request a new password reset."
+      "paragraph2": "You can then ",
+      "resetPasswordLinkText": "reset your password",
+      "paragraph3": " and try to sign in again."
     },
     "resetPasswordAttemptBlocked": {
-      "title": "You cannot request a password reset at the moment",
-      "header": "You cannot request a password reset at the moment",
-      "paragraph1": "This is because you have requested a password reset too many times",
-      "paragraph2": "You can try again after 15 minutes have passed."
+      "title": "You cannot reset your password at the moment",
+      "header": "You cannot reset your password at the moment",
+      "paragraph1": "This is because you tried to reset your password too many times the last time you tried to sign in.",
+      "paragraph2": "You can ",
+      "resetPasswordLinkText": "reset your password",
+      "paragraph3": " after 15 minutes have passed."
     },
     "accountLocked": {
       "title": "You entered the wrong password too many times",
@@ -1079,45 +1083,192 @@
     },
     "contactUsPublic": {
       "title": "Contact us",
-      "header": "Contact us",
+      "header": "GOV.UK account: report a problem or give feedback",
       "section1": {
         "paragraph1": "Use this form to:",
-        "bulletPoint1": "report any problems signing in to government services",
-        "bulletPoint2": "ask questions ",
-        "bulletPoint3": "suggest improvements",
-        "paragraph2": "Our office hours are 9:30am to 5:30pm, Monday to Friday.",
-        "paragraph3": " When you get in touch during office hours, we’ll try to reply within 2 working days."
-      },
-      "section2": {
-        "header": "Get in touch",
-        "paragraph1": "Do not include personal or financial information, for example your National Insurance number or credit card details.",
-        "question1": {
-          "label": "Please tell us what happened or give us feedback",
-          "validationError": {
-            "required": "Tell us what you need help with or give us feedback"
-          }
-        }
+        "bulletPoint1": "tell us about a problem you’re having with your GOV.UK account",
+        "bulletPoint2": "suggest improvements or give feedback about your experience using your GOV.UK account",
+        "paragraph2": "Our office hours are 9:30am to 5:30pm, Monday to Friday."
       },
       "section3": {
-        "header": "Can we contact you about your feedback?",
-        "replyEmail": {
-          "label": "<label class=\"govuk-label \" for=\"email\"><strong>Email address</strong><span> (Optional)</span></label>",
-          "hint": "Enter an email address in the correct format, like name@gmail.com",
-          "validationError": {
-            "invalidFormat": "Enter an email address in the correct format, like name@example.com",
-            "required": "Enter your email"
-          }
-        },
-        "name": {
-          "label": "<label class=\"govuk-label \" for=\"name\"><strong>Name</strong><span> (Optional)</span></label>",
-          "hint": "We'll only use this to reply to your message",
-          "validationError": {
-            "required": "Enter your name"
-          }
-        }
+        "header": "What are you contacting us about?",
+        "radio1": "A problem creating an account",
+        "radio2": "A problem signing in to your account",
+        "radio3": "Another problem using your GOV.UK account",
+        "radio4": "GOV.UK email subscriptions",
+        "radio5": "A suggestion or feedback about using your GOV.UK account",
+        "errorMessage": "Select a reason for contacting us"
       },
       "submitButtonText": "Submit",
       "submitButtonLink": "/contact-us-submit"
+    },
+    "contactUsFurtherInformation": {
+      "signingIn": {
+        "title": "A problem signing in to your account",
+        "header": "A problem signing in to your account",
+        "section1": {
+          "header": "Tell us what happened",
+          "radio1": "You did not receive a security code",
+          "radio2": "The security code did not work",
+          "radio3": "You do not have access to the phone number you used when you created your account, so you could not receive a security code",
+          "radio4": "You’ve forgotten your password",
+          "radio5": "You’ve been told your account ‘cannot be found’",
+          "radio6": "There was a technical problem (for example, the service was unavailable)",
+          "radio7": "Something else",
+          "errorMessage": "Select the problem you had when signing in to your account"
+        }
+      },
+      "accountCreation": {
+        "title": "A problem creating an account",
+        "header": "A problem creating an account",
+        "section1": {
+          "header": "Tell us what happened",
+          "radio1": "You did not receive a security code",
+          "radio2": "The security code did not work",
+          "radio3": "You do not have a UK mobile phone number",
+          "radio4": "There was a technical problem (for example, the service was unavailable)",
+          "radio5": "Something else",
+          "errorMessage": "Select the problem you had when creating an account"
+        }
+      }
+    },
+    "contactUsQuestions": {
+      "personalInformation": {
+        "paragraph1": "Do not include personal or financial information, for example your National Insurance number or credit card details."
+      },
+      "replyByEmail": {
+        "validationError": {
+          "noBoxSelected": "Select yes if we can reply to you by email",
+          "noEmailAddress": "Enter your email address"
+        }
+      },
+      "emailReply": {
+        "header": "Can we reply to you by email?",
+        "emailLabel": "Email address",
+        "emailHint": "Enter an email address in the correct format, like name@example.com",
+        "nameLabel": "Name (Optional)",
+        "nameHint": "We will only use this to reply to your message"
+      },
+      "anotherProblem": {
+        "title": "Another problem using your GOV.UK account",
+        "header": "Another problem using your GOV.UK account",
+        "section1": {
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "For example, was there a technical problem?",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "emailSubscriptions": {
+        "title": "Your GOV.UK email subscriptions",
+        "header": "Your GOV.UK email subscriptions",
+        "section1": {
+          "header": "What were you trying to do and what happened?",
+          "errorMessage": "Enter what you were trying to do and what happened"
+        },
+        "section2": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give feedback"
+        }
+      },
+      "suggestionOrFeedback": {
+        "title": "A suggestion or feedback about using your GOV.UK account",
+        "header": "A suggestion or feedback about using your GOV.UK account",
+        "section1": {
+          "header": "Your suggestion or feedback",
+          "errorMessage": "Enter your suggestion or feedback"
+        }
+      },
+      "technicalError": {
+        "title": "There was a technical error",
+        "header": "There was a technical error",
+        "section1": {
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "Included details of the error",
+          "errorMessage": "Enter what happened"
+        },
+        "section3": {
+          "header": "If possible, tell us the URL of the page the error happened on?"
+        }
+      },
+      "noSecurityCode": {
+        "title": "You did not receive a security code",
+        "header": "You did not receive a security code",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "invalidSecurityCode": {
+        "title": "The security code does not work",
+        "header": "The security code does not work",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "noUKMobile": {
+        "title": "You do not have a UK mobile phone number",
+        "header": "You do not have a UK mobile phone number",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "forgottenPassword": {
+        "title": "You’ve forgotten your password",
+        "header": "You’ve forgotten your password",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "noPhoneNumberAccess": {
+        "title": "You do not have access to the phone number you used when you created your account",
+        "header": "You do not have access to the phone number you used when you created your account",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "accountCreationProblem": {
+        "title": "Another problem creating an account",
+        "header": "Another problem creating an account",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "signignInProblem": {
+        "title": "Another problem signing in to your account",
+        "header": "Another problem signing in to your account",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "accountNotFound": {
+        "title": "Your account cannot be found",
+        "header": "Your account cannot be found",
+        "section1": {
+          "header": "What service were you trying to use?",
+          "paragraph1": "For example, your GOV.UK email subscriptions, your personal tax account or Universal Credit",
+          "errorMessage": "Enter what service you were trying to use"
+        },
+        "section2": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      }
     },
     "contactUsSubmitSuccess": {
       "title": "Your message has been submitted",

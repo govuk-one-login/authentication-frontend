@@ -1,5 +1,6 @@
 redis_service_plan  = "large-ha-5_x"
 environment         = "production"
 common_state_bucket = "digital-identity-prod-tfstate"
-public_access       = false
 ecs_desired_count   = 4
+
+paas_frontend_cdn_route_destination = "d2fete2ah9wab4.cloudfront.net"

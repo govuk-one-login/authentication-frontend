@@ -23,7 +23,7 @@ resource "aws_alb_target_group" "frontend_alb_target_group" {
     protocol            = "HTTP"
     matcher             = "200"
     timeout             = "3"
-    path                = "/healthcheck"
+    path                = "/healthcheck/"
     unhealthy_threshold = "2"
   }
 
@@ -36,10 +36,10 @@ resource "aws_alb_listener" "frontend_alb_listener_https" {
   protocol          = "HTTPS"
 
   ssl_policy      = "ELBSecurityPolicy-2016-08"
-  certificate_arn = aws_acm_certificate.frontend_certificate.arn
+  certificate_arn = aws_acm_certificate.frontend_alb_certificate.arn
 
   default_action {
-    target_group_arn = aws_alb_target_group.frontend_alb_target_group.id
+    target_group_arn = aws_alb_target_group.frontend_alb_target_group.arn
     type             = "forward"
   }
 
@@ -68,4 +68,22 @@ resource "aws_alb_listener_rule" "frontend_alb_listener_https_robots" {
       values = ["/robots.txt"]
     }
   }
+}
+
+resource "aws_alb_listener" "frontend_alb_listener_http" {
+  load_balancer_arn = aws_lb.frontend_alb.id
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+
+  tags = local.default_tags
 }

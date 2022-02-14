@@ -113,11 +113,6 @@ variable "logging_endpoint_enabled" {
   description = "Whether the service should ship its Lambda logs to the `logging_endpoint_arn`"
 }
 
-variable "public_access" {
-  type    = bool
-  default = false
-}
-
 variable "zendesk_username" {
   type    = string
   default = ""
@@ -142,5 +137,26 @@ variable "deployment_min_healthy_percent" {
 }
 
 variable "deployment_max_percent" {
-  default = 100
+  default = 150
+}
+
+variable "paas_frontend_cdn_route_destination" {
+  type        = string
+  description = "The Cloudfront instance to forward all PaaS requests to"
+}
+
+variable "sidecar_image_uri" {
+  default = ""
+}
+variable "sidecar_image_tag" {
+  default = "latest"
+}
+variable "sidecar_image_digest" {
+  default = ""
+}
+variable "basic_auth_username" {
+  default = ""
+}
+variable "basic_auth_password" {
+  default = ""
 }
