@@ -498,10 +498,10 @@
   resolved "https://registry.yarnpkg.com/@types/nunjucks/-/nunjucks-3.2.1.tgz#02a3ade3dc4d3950029c6466a4034565dba7cf8c"
   integrity sha512-hUh5HIC7peH+0MvlYU5KM2RydWxG1mBceivHsQGwlelU9zlczLICyJmjMwgjkI3m0+N50n46GVHkw35lIim6LQ==
 
-"@types/pino-pretty@*", "@types/pino-pretty@^4.7.1":
-  version "4.7.3"
-  resolved "https://registry.yarnpkg.com/@types/pino-pretty/-/pino-pretty-4.7.3.tgz#4e59ceb28c08634d962ea2f46af0c083fbc20a64"
-  integrity sha512-Up2guG601DADD1xr4o3WSibPLpVgNVXGrdFg3Kl+RaS8Ym3XvlT8UV9/IH+8Mk4ykNAAOemQ4QkfDZKCjgYszA==
+"@types/pino-pretty@*", "@types/pino-pretty@^4.7.5":
+  version "4.7.5"
+  resolved "https://registry.yarnpkg.com/@types/pino-pretty/-/pino-pretty-4.7.5.tgz#e4ade1e42b78b8b0c1c28010ff7eb6c439278b19"
+  integrity sha512-rfHe6VIknk14DymxGqc9maGsRe8/HQSvM2u46EAz2XrS92qsAJnW16dpdFejBuZKD8cRJX6Aw6uVZqIQctMpAg==
   dependencies:
     "@types/node" "*"
     "@types/pino" "6.3"
