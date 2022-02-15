@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { PATH_NAMES, SUPPORT_TYPE, ZENDESK_THEMES } from "../../app.constants";
 import { contactUsService } from "./contact-us-service";
-import { ContactUsServiceInterface } from "./types";
+import { ContactUsServiceInterface, Questions } from "./types";
 import { ExpressRouteFunc } from "../../types";
 
 const themeToPageTitle = {
@@ -92,13 +92,15 @@ export function contactUsQuestionsFormPost(
   service: ContactUsServiceInterface = contactUsService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
+    const listofquestions = getQuestionsFromFormType(req, req.body.formType);
+
     await service.contactUsSubmitForm({
-      contents: [
-        req.body.issueDescription,
-        req.body.additionalDescription,
-        req.body.optionalDescription,
-      ],
-      tags: [req.body.theme, req.body.subtheme],
+      descriptions: {
+        issueDescription: req.body.issueDescription,
+        additionalDescription: req.body.additionalDescription,
+        optionalDescription: req.body.optionalDescription,
+      },
+      themes: { theme: req.body.theme, subtheme: req.body.subtheme },
       subject: "GOV.UK Accounts Feedback",
       email: req.body.email,
       name: req.body.name,
@@ -107,6 +109,7 @@ export function contactUsQuestionsFormPost(
         userAgent: req.get("User-Agent"),
       },
       feedbackContact: req.body.contact === "true",
+      questions: listofquestions,
     });
 
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
@@ -115,4 +118,122 @@ export function contactUsQuestionsFormPost(
 
 export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
   res.render("contact-us/index-submit-success.njk");
+}
+
+export function getQuestionsFromFormType(
+  req: Request,
+  formType: string
+): Questions {
+  const formTypeToQuestions: { [key: string]: any } = {
+    accountCreationProblem: {
+      issueDescription: {
+        text: req.t(
+          "pages.contactUsQuestions.accountCreationProblem.section1.paragraph1"
+        ),
+        order: 1,
+      },
+    },
+    accountNotFound: {
+      issueDescription: {
+        text: req.t("pages.contactUsQuestions.accountNotFound.section1.header"),
+        order: 1,
+      },
+      optionalDescription: {
+        text: req.t("pages.contactUsQuestions.accountNotFound.section2.header"),
+        order: 2,
+      },
+    },
+    anotherProblem: {
+      issueDescription: {
+        text: req.t("pages.contactUsQuestions.anotherProblem.section1.header"),
+        order: 1,
+      },
+      additionalDescription: {
+        text: req.t("pages.contactUsQuestions.anotherProblem.section2.header"),
+        order: 2,
+      },
+    },
+    emailSubscription: {
+      issueDescription: {
+        text: req.t(
+          "pages.contactUsQuestions.emailSubscriptions.section1.header"
+        ),
+        order: 1,
+      },
+      optionalDescription: {
+        text: req.t(
+          "pages.contactUsQuestions.emailSubscriptions.section2.header"
+        ),
+        order: 2,
+      },
+    },
+    forgottenPassword: {
+      optionalDescription: {
+        text: req.t(
+          "pages.contactUsQuestions.forgottenPassword.section1.header"
+        ),
+        order: 1,
+      },
+    },
+    invalidSecurityCode: {
+      optionalDescription: {
+        text: req.t(
+          "pages.contactUsQuestions.invalidSecurityCode.section1.header"
+        ),
+        order: 1,
+      },
+    },
+    noPhoneNumberAccess: {
+      optionalDescription: {
+        text: req.t(
+          "pages.contactUsQuestions.noPhoneNumberAccess.section1.header"
+        ),
+        order: 1,
+      },
+    },
+    noSecurityCode: {
+      optionalDescription: {
+        text: req.t("pages.contactUsQuestions.noSecurityCode.section1.header"),
+        order: 1,
+      },
+    },
+    noUKMobile: {
+      optionalDescription: {
+        text: req.t("pages.contactUsQuestions.noUKMobile.section1.header"),
+        order: 1,
+      },
+    },
+    signingInProblem: {
+      issueDescription: {
+        text: req.t(
+          "pages.contactUsQuestions.signignInProblem.section1.header"
+        ),
+        order: 1,
+      },
+    },
+    suggestionFeedback: {
+      issueDescription: {
+        text: req.t(
+          "pages.contactUsQuestions.suggestionOrFeedback.section1.header"
+        ),
+        order: 1,
+      },
+    },
+    technicalError: {
+      issueDescription: {
+        text: req.t("pages.contactUsQuestions.technicalError.section1.header"),
+        order: 1,
+      },
+      additionalDescription: {
+        text: req.t("pages.contactUsQuestions.technicalError.section2.header"),
+        order: 2,
+      },
+      optionalDescription: {
+        text: req.t("pages.contactUsQuestions.technicalError.section3.header"),
+        order: 3,
+      },
+    },
+  };
+
+  return formTypeToQuestions[formType];
 }

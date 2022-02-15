@@ -1,4 +1,11 @@
-import { ContactForm, ContactUsServiceInterface, OptionalData } from "./types";
+import {
+  ContactForm,
+  ContactUsServiceInterface,
+  Descriptions,
+  OptionalData,
+  Questions,
+  Themes,
+} from "./types";
 import { defaultZendeskClient } from "../../utils/zendesk";
 import { getZendeskGroupIdPublic } from "../../config";
 import { CreateTicketPayload, ZendeskInterface } from "../../utils/types";
@@ -14,12 +21,14 @@ export function contactUsService(
         subject: contactForm.subject,
         comment: {
           html_body: formatCommentBody(
-            contactForm.contents,
-            contactForm.optionalData
+            contactForm.descriptions,
+            contactForm.optionalData,
+            contactForm.questions,
+            contactForm.themes
           ),
         },
         group_id: getZendeskGroupIdPublic(),
-        tags: ["govuk_sign_in", ...prefixThemeTags(contactForm.tags)],
+        tags: ["govuk_sign_in", ...prefixThemeTags(contactForm.themes)],
       },
     };
 
@@ -33,23 +42,54 @@ export function contactUsService(
     await zendeskClient.createTicket(payload);
   };
 
-  function formatCommentBody(contents: string[], optionalData: OptionalData) {
+  function formatCommentBody(
+    descriptions: Descriptions,
+    optionalData: OptionalData,
+    questions: Questions,
+    themes: Themes
+  ) {
     const htmlBody = [];
 
-    for (const item of contents) {
-      if (item) {
-        htmlBody.push(`<p>${item}</p>`);
-      }
+    htmlBody.push(`<span>[What are you contacting us about?]</span>`);
+    htmlBody.push(`<p>${themes.theme}</p>`);
+
+    if (themes.subtheme) {
+      htmlBody.push(`<span>[Tell us what happened?]</span>`);
+      htmlBody.push(`<p>${themes.subtheme}</p>`);
     }
-    htmlBody.push(`<p>User agent:${optionalData.userAgent}</p>`);
+
+    if (descriptions.issueDescription) {
+      htmlBody.push(`<span>[${questions.issueDescription.text}]</span>`);
+      htmlBody.push(`<p>${descriptions.issueDescription}</p>`);
+    }
+
+    if (descriptions.additionalDescription) {
+      htmlBody.push(`<span>[${questions.additionalDescription.text}]</span>`);
+      htmlBody.push(`<p>${descriptions.additionalDescription}</p>`);
+    }
+
+    if (descriptions.optionalDescription) {
+      htmlBody.push(`<span>[${questions.optionalDescription.text}]</span>`);
+      htmlBody.push(`<p>${descriptions.optionalDescription}</p>`);
+    }
+
+    htmlBody.push(`<span>[Session ID]</span>`);
     htmlBody.push(`<p>Session id:${optionalData.sessionId}</p>`);
+
+    htmlBody.push(`<span>[User Agent]</span>`);
+    htmlBody.push(`<p>User agent:${optionalData.userAgent}</p>`);
 
     return htmlBody.join("");
   }
 
-  function prefixThemeTags(tags: string[]) {
+  function prefixThemeTags(themes: Themes) {
     const tagPrefix = "auth_";
-    return tags.map((i) => tagPrefix + i);
+    const tagArray = [];
+    tagArray.push(tagPrefix + themes.theme);
+    if (themes.subtheme) {
+      tagArray.push(tagPrefix + themes.subtheme);
+    }
+    return tagArray;
   }
 
   return {
