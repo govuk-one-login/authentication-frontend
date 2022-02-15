@@ -7,6 +7,7 @@ export interface ContactForm {
   optionalData: OptionalData;
   feedbackContact: boolean;
   questions: Questions;
+  themeQuestions: ThemeQuestions;
 }
 
 export interface OptionalData {
@@ -18,6 +19,11 @@ export interface Questions {
   issueDescription?: string;
   additionalDescription?: string;
   optionalDescription?: string;
+}
+
+export interface ThemeQuestions {
+  themeQuestion: string;
+  subthemeQuestion?: string;
 }
 
 export interface Descriptions {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { PATH_NAMES, SUPPORT_TYPE, ZENDESK_THEMES } from "../../app.constants";
 import { contactUsService } from "./contact-us-service";
-import { ContactUsServiceInterface, Questions } from "./types";
+import { ContactUsServiceInterface, Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
 
 const themeToPageTitle = {
@@ -92,7 +92,12 @@ export function contactUsQuestionsFormPost(
   service: ContactUsServiceInterface = contactUsService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const listofquestions = getQuestionsFromFormType(req, req.body.formType);
+    const questions = getQuestionsFromFormType(req, req.body.formType);
+    const themeQuestions = getQuestionFromThemes(
+      req,
+      req.body.theme,
+      req.body.subtheme
+    );
 
     await service.contactUsSubmitForm({
       descriptions: {
@@ -109,7 +114,8 @@ export function contactUsQuestionsFormPost(
         userAgent: req.get("User-Agent"),
       },
       feedbackContact: req.body.contact === "true",
-      questions: listofquestions,
+      questions: questions,
+      themeQuestions: themeQuestions,
     });
 
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
@@ -203,4 +209,72 @@ export function getQuestionsFromFormType(
   };
 
   return formTypeToQuestions[formType];
+}
+
+export function getQuestionFromThemes(
+  req: Request,
+  theme: string,
+  subtheme?: string
+): ThemeQuestions {
+  const themesToQuestions: { [key: string]: any } = {
+    account_creation: req.t("pages.contactUsPublic.section3.radio1"),
+    signing_in: req.t("pages.contactUsPublic.section3.radio1"),
+    something_else: req.t("pages.contactUsPublic.section3.radio1"),
+    email_subscriptions: req.t("pages.contactUsPublic.section3.radio1"),
+    suggestions_feedback: req.t("pages.contactUsPublic.section3.radio1"),
+  };
+  const signinSubthemeToQuestions: { [key: string]: any } = {
+    no_security_code: req.t(
+      "pages.contactUsFurtherInformation.signingIn.section1.radio1"
+    ),
+    invalid_security_code: req.t(
+      "pages.contactUsFurtherInformation.signingIn.section1.radio2"
+    ),
+    no_phone_number_access: req.t(
+      "pages.contactUsFurtherInformation.signingIn.section1.radio3"
+    ),
+    forgotten_password: req.t(
+      "pages.contactUsFurtherInformation.signingIn.section1.radio4"
+    ),
+    account_not_found: req.t(
+      "pages.contactUsFurtherInformation.signingIn.section1.radio5"
+    ),
+    technical_error: req.t(
+      "pages.contactUsFurtherInformation.signingIn.section1.radio6"
+    ),
+    something_else: req.t(
+      "pages.contactUsFurtherInformation.signingIn.section1.radio7"
+    ),
+  };
+  const accountCreationSubthemeToQuestions: { [key: string]: any } = {
+    no_security_code: req.t(
+      "pages.contactUsFurtherInformation.accountCreation.section1.radio1"
+    ),
+    invalid_security_code: req.t(
+      "pages.contactUsFurtherInformation.accountCreation.section1.radio2"
+    ),
+    no_uk_mobile_number: req.t(
+      "pages.contactUsFurtherInformation.accountCreation.section1.radio3"
+    ),
+    technical_error: req.t(
+      "pages.contactUsFurtherInformation.accountCreation.section1.radio4"
+    ),
+    something_else: req.t(
+      "pages.contactUsFurtherInformation.accountCreation.section1.radio5"
+    ),
+  };
+  const themeQuestion = themesToQuestions[theme];
+  let subthemeQuestion;
+  if (subtheme) {
+    if (theme == ZENDESK_THEMES.ACCOUNT_CREATION) {
+      subthemeQuestion = accountCreationSubthemeToQuestions[subtheme];
+    }
+    if (theme == ZENDESK_THEMES.SIGNING_IN) {
+      subthemeQuestion = signinSubthemeToQuestions[subtheme];
+    }
+  }
+  return {
+    themeQuestion,
+    subthemeQuestion,
+  };
 }

@@ -4,6 +4,7 @@ import {
   Descriptions,
   OptionalData,
   Questions,
+  ThemeQuestions,
   Themes,
 } from "./types";
 import { defaultZendeskClient } from "../../utils/zendesk";
@@ -24,7 +25,7 @@ export function contactUsService(
             contactForm.descriptions,
             contactForm.optionalData,
             contactForm.questions,
-            contactForm.themes
+            contactForm.themeQuestions
           ),
         },
         group_id: getZendeskGroupIdPublic(),
@@ -46,16 +47,16 @@ export function contactUsService(
     descriptions: Descriptions,
     optionalData: OptionalData,
     questions: Questions,
-    themes: Themes
+    themeQuestions: ThemeQuestions
   ) {
     const htmlBody = [];
 
     htmlBody.push(`<span>[What are you contacting us about?]</span>`);
-    htmlBody.push(`<p>${themes.theme}</p>`);
+    htmlBody.push(`<p>${themeQuestions.themeQuestion}</p>`);
 
-    if (themes.subtheme) {
+    if (themeQuestions.subthemeQuestion) {
       htmlBody.push(`<span>[Tell us what happened?]</span>`);
-      htmlBody.push(`<p>${themes.subtheme}</p>`);
+      htmlBody.push(`<p>${themeQuestions.subthemeQuestion}</p>`);
     }
 
     if (descriptions.issueDescription) {
