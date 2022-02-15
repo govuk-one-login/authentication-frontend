@@ -1,0 +1,142 @@
+import { expect } from "chai";
+import { describe } from "mocha";
+import { getNextState, USER_JOURNEY_EVENTS } from "../state-machine";
+import { PATH_NAMES } from "../../../../app.constants";
+
+describe("state-machine", () => {
+  describe("getNextState - login journey (2fa)", () => {
+    it("should move from initial state to sign or create when user event is landing", () => {
+      const nextState = getNextState(
+        PATH_NAMES.START,
+        USER_JOURNEY_EVENTS.LANDING
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
+    });
+
+    it("should move from sign or create to enter email when user event is sign in", () => {
+      const nextState = getNextState(
+        PATH_NAMES.SIGN_IN_OR_CREATE,
+        USER_JOURNEY_EVENTS.SIGN_IN
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
+    });
+
+    it("should move from enter email to enter password when user event is validate credentials", () => {
+      const nextState = getNextState(
+        PATH_NAMES.ENTER_EMAIL_SIGN_IN,
+        USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.ENTER_PASSWORD);
+    });
+
+    it("should move from enter password to enter mfa code when user event is credentials validated", () => {
+      const nextState = getNextState(
+        PATH_NAMES.ENTER_PASSWORD,
+        USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
+        { requiresTwoFactorAuth: true }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.ENTER_MFA);
+    });
+
+    it("should move from mfa code verified state to auth code when user event is mfa code verified", () => {
+      const nextState = getNextState(
+        PATH_NAMES.ENTER_MFA,
+        USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
+    });
+  });
+  describe("getNextState - login journey (non 2fa)", () => {
+    it("should move from initial state to sign or create when user event is landing", () => {
+      const nextState = getNextState(
+        PATH_NAMES.START,
+        USER_JOURNEY_EVENTS.LANDING
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
+    });
+
+    it("should move from sign or create to enter email when user event is sign in", () => {
+      const nextState = getNextState(
+        PATH_NAMES.SIGN_IN_OR_CREATE,
+        USER_JOURNEY_EVENTS.SIGN_IN
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
+    });
+
+    it("should move from enter email to enter password when user event is validate credentials", () => {
+      const nextState = getNextState(
+        PATH_NAMES.ENTER_EMAIL_SIGN_IN,
+        USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.ENTER_PASSWORD);
+    });
+
+    it("should move from enter password to auth code when user doesn't require 2fa", () => {
+      const nextState = getNextState(
+        PATH_NAMES.ENTER_PASSWORD,
+        USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
+        { requiresTwoFactorAuth: false }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
+    });
+  });
+  describe("getNextState - register", () => {
+    it("should move from initial state to sign or create when user event is landing", () => {
+      const nextState = getNextState(
+        PATH_NAMES.START,
+        USER_JOURNEY_EVENTS.LANDING
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
+    });
+
+    it("should move from sign or create to enter email when user event is create account", () => {
+      const nextState = getNextState(
+        PATH_NAMES.SIGN_IN_OR_CREATE,
+        USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT);
+    });
+
+    it("should move from enter email to check your email when email verification code sent event", () => {
+      const nextState = getNextState(
+        PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
+        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.CHECK_YOUR_EMAIL);
+    });
+
+    it("should move from check your email to create password when email verified code event", () => {
+      const nextState = getNextState(
+        PATH_NAMES.CHECK_YOUR_EMAIL,
+        USER_JOURNEY_EVENTS.EMAIL_CODE_VERIFIED
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
+    });
+
+    it("should move from create password to enter phone number when password created event", () => {
+      const nextState = getNextState(
+        PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
+        USER_JOURNEY_EVENTS.PASSWORD_CREATED
+      );
+      expect(nextState.value).to.equal(
+        PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
+      );
+    });
+
+    it("should move from check your phone to account confirmation when phone number verified event", () => {
+      const nextState = getNextState(
+        PATH_NAMES.CHECK_YOUR_PHONE,
+        USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL);
+    });
+
+    it("should move from account created to auth code when user successfully has created an account", () => {
+      const nextState = getNextState(
+        PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL,
+        USER_JOURNEY_EVENTS.ACCOUNT_CREATED
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
+    });
+  });
+});

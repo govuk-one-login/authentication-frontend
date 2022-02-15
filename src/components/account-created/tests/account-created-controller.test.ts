@@ -5,27 +5,35 @@ import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
 import { accountCreatedGet } from "../account-created-controller";
+import { PATH_NAMES } from "../../../app.constants";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("account created controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = { body: {}, session: {} };
-    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
+    req = mockRequest({
+      path: PATH_NAMES.ACCOUNT_NOT_FOUND,
+      session: { client: {}, user: {} },
+      log: { info: sinon.fake() },
+    });
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("registerAccountCreatedGet", () => {
     it("should render account created page", () => {
-      req.session.serviceType = "MANDATORY";
-      req.session.clientName = "test client name";
+      req.session.client.serviceType = "MANDATORY";
+      req.session.client.name = "test client name";
 
       accountCreatedGet(req as Request, res as Response);
 

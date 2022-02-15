@@ -31,15 +31,29 @@
 
   <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph' | translate }}</p>
 
+<form action="/sign-in-or-create" method="post" novalidate>
+
+  <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
   {{ govukButton({
     text: 'pages.signInOrCreate.createButtonText' | translate,
-    href: "/enter-email?type=create-account",
+    value: "create",
+    name: "optionSelected",
     attributes: {
       "id": "create-account-link"
     }
   }) }}
 
-  <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph2' | translate }} <a id="sign-in-link" class="govuk-link" href="/enter-email?type=sign-in">{{ 'pages.signInOrCreate.signInText' | translate }}</a>.</p>
+  <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph2' | translate }}
+    {{ govukButton({
+      "text": 'pages.signInOrCreate.signInText' | translate,
+      "type": "Submit",
+      "preventDoubleClick": true,
+      classes: 'govuk-link govuk-btn-as-link',
+      "name": "optionSelected",
+      "value": "signin"
+    }) }}.</p>
+</form>
 {{ govukDetails({
   summaryText: 'pages.signInOrCreate.moreAbout.header' | translate,
   html: moreAboutTextHtml
@@ -47,5 +61,6 @@
 
 
 {% endblock %}
+
 
 

@@ -1,7 +1,8 @@
-import { ApiResponseResult } from "../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../types";
 
-export interface UserExists extends ApiResponseResult {
+export interface UserExists extends DefaultApiResponse {
   email: string;
+  doesUserExist: boolean;
 }
 
 export interface EnterEmailServiceInterface {
@@ -10,5 +11,5 @@ export interface EnterEmailServiceInterface {
     emailAddress: string,
     sourceIp: string,
     persistentSessionId: string
-  ) => Promise<ApiResponseResult>;
+  ) => Promise<ApiResponseResult<UserExists>>;
 }

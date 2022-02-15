@@ -7,21 +7,21 @@ import {
   resendMfaCodePost,
 } from "./resend-mfa-code-controller";
 import { asyncHandler } from "../../utils/async";
-import { csrfMiddleware } from "../../middleware/csrf-middleware";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 
 const router = express.Router();
 
 router.get(
   PATH_NAMES.RESEND_MFA_CODE,
   validateSessionMiddleware,
-  csrfMiddleware,
+  allowUserJourneyMiddleware,
   resendMfaCodeGet
 );
 
 router.post(
   PATH_NAMES.RESEND_MFA_CODE,
   validateSessionMiddleware,
-  csrfMiddleware,
+  allowUserJourneyMiddleware,
   asyncHandler(resendMfaCodePost())
 );
 

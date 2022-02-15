@@ -5,35 +5,35 @@ import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
 import { signedOutGet } from "../signed-out-controller";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("signed out controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = {
-      body: {},
-      query: {},
-      session: {},
+    req = mockRequest({
+      session: { client: {}, user: {}, destroy: sinon.fake() },
+      log: { info: sinon.fake() },
+      t: sinon.fake(),
+      i18n: { language: "en" },
       cookies: {
         aps: "123",
         cookies_preferences_set: "abc",
         lng: "en",
         gs: "xyz",
       },
-    };
-    res = {
-      render: sandbox.fake(),
-      redirect: sandbox.fake(),
-      clearCookie: sandbox.fake(),
-    };
+    });
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("signedOutGet", () => {
@@ -45,6 +45,7 @@ describe("signed out controller", () => {
       expect(res.clearCookie).not.to.have.calledWith("cookies_preferences_set");
       expect(res.clearCookie).not.to.have.calledWith("lng");
       expect(res.clearCookie).to.have.calledWith("gs");
+      expect(req.session.destroy).to.have.been.calledOnce;
     });
 
     it("should throw error when invalid sign out request", () => {

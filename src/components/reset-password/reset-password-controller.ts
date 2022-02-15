@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { PATH_NAMES, ERROR_CODES } from "../../app.constants";
+import { PATH_NAMES } from "../../app.constants";
 import { ResetPasswordServiceInterface } from "./types";
 import { resetPasswordService } from "./reset-password-service";
 import {
@@ -8,6 +8,7 @@ import {
   renderBadRequest,
 } from "../../utils/validation";
 import xss from "xss";
+import { ERROR_CODES } from "../common/constants";
 
 const resetPasswordTemplate = "reset-password/index.njk";
 
@@ -75,7 +76,7 @@ export function resetPasswordPost(
       return res.redirect(PATH_NAMES.RESET_PASSWORD_CONFIRMATION);
     }
 
-    if (response.code === ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING) {
+    if (response.data.code === ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING) {
       const error = formatValidationError(
         "password",
         req.t("pages.resetPassword.password.validationError.samePassword")

@@ -4,9 +4,14 @@ import { sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../../app.constants";
+import { ERROR_CODES } from "../../common/constants";
 
 describe("Integration:: resend mfa code", () => {
-  let sandbox: sinon.SinonSandbox;
   let token: string | string[];
   let cookies: string;
   let app: any;
@@ -16,13 +21,19 @@ describe("Integration:: resend mfa code", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-    sandbox = sinon.createSandbox();
-    sandbox
+    sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        req.session.email = "test@test.com";
-        req.session.phoneNumber = "******7867";
+
+        req.session.user = {
+          email: "test@test.com",
+          phoneNumber: "******7867",
+          journey: {
+            nextPath: PATH_NAMES.ENTER_MFA,
+            optionalPaths: [PATH_NAMES.RESEND_MFA_CODE],
+          },
+        };
 
         next();
       });
@@ -31,7 +42,7 @@ describe("Integration:: resend mfa code", () => {
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     request(app)
-      .get("/resend-code")
+      .get(PATH_NAMES.RESEND_MFA_CODE)
       .end((err, res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
@@ -44,17 +55,17 @@ describe("Integration:: resend mfa code", () => {
   });
 
   after(() => {
-    sandbox.restore();
+    sinon.restore();
     app = undefined;
   });
 
   it("should return resend mfa code page", (done) => {
-    request(app).get("/resend-code").expect(200, done);
+    request(app).get(PATH_NAMES.RESEND_MFA_CODE).expect(200, done);
   });
 
   it("should return error when csrf not present", (done) => {
     request(app)
-      .post("/resend-code")
+      .post(PATH_NAMES.RESEND_MFA_CODE)
       .type("form")
       .send({
         code: "123456",
@@ -63,28 +74,29 @@ describe("Integration:: resend mfa code", () => {
   });
 
   it("should redirect to /enter-code when new code requested", (done) => {
-    nock(baseApi).post("/mfa").once().reply(200, {
-      sessionState: "MFA_SMS_CODE_SENT",
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.MFA)
+      .once()
+      .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
     request(app)
-      .post("/resend-code")
+      .post(PATH_NAMES.RESEND_MFA_CODE)
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
       })
-      .expect("Location", "/enter-code")
+      .expect("Location", PATH_NAMES.ENTER_MFA)
       .expect(302, done);
   });
 
   it("should return 500 error screen when API call fails", (done) => {
-    nock(baseApi).post("/mfa").once().reply(500, {
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(500, {
       errorCode: "1234",
     });
 
     request(app)
-      .post("/resend-code")
+      .post(PATH_NAMES.RESEND_MFA_CODE)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -95,12 +107,12 @@ describe("Integration:: resend mfa code", () => {
 
   it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", (done) => {
     nock(baseApi)
-      .post("/mfa")
+      .post(API_ENDPOINTS.MFA)
       .times(6)
-      .reply(400, { sessionState: "MFA_SMS_MAX_CODES_SENT" });
+      .reply(400, { code: ERROR_CODES.MFA_SMS_MAX_CODES_SENT });
 
     request(app)
-      .post("/resend-code")
+      .post(PATH_NAMES.RESEND_MFA_CODE)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -115,12 +127,12 @@ describe("Integration:: resend mfa code", () => {
 
   it("should redirect to /security-code-invalid-request when exceeded OTP request limit", (done) => {
     nock(baseApi)
-      .post("/mfa")
+      .post(API_ENDPOINTS.MFA)
       .once()
-      .reply(400, { sessionState: "MFA_CODE_REQUESTS_BLOCKED" });
+      .reply(400, { code: ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED });
 
     request(app)
-      .post("/resend-code")
+      .post(PATH_NAMES.RESEND_MFA_CODE)
       .type("form")
       .set("Cookie", cookies)
       .send({

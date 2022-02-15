@@ -4,25 +4,21 @@ import { sinon } from "../utils/test-utils";
 import { NextFunction, Request, Response } from "express";
 import { pageNotFoundHandler } from "../../src/handlers/page-not-found-handler";
 import { serverErrorHandler } from "../../src/handlers/internal-server-error-handler";
+import { mockRequest, mockResponse } from "mock-req-res";
 
 describe("Error handlers", () => {
-  let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: NextFunction;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-    req = { app: { locals: {} } } as Partial<Request>;
-    res = {
-      render: sandbox.spy(),
-      status: sandbox.spy(),
-    } as Partial<Response>;
-    next = sandbox.fake();
+    req = mockRequest();
+    res = mockResponse();
+    next = sinon.fake();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("pageNotFoundHandler", () => {

@@ -1,4 +1,4 @@
-import { ApiResponseResult } from "../../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types";
 
 export interface MfaServiceInterface {
   sendMfaCode: (
@@ -7,5 +7,5 @@ export interface MfaServiceInterface {
     emailAddress: string,
     sourceIp: string,
     persistentSessionId: string
-  ) => Promise<ApiResponseResult>;
+  ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

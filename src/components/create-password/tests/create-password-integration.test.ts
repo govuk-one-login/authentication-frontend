@@ -4,9 +4,9 @@ import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 
 describe("Integration::register create password", () => {
-  let sandbox: sinon.SinonSandbox;
   let token: string | string[];
   let cookies: string;
   let app: any;
@@ -16,12 +16,19 @@ describe("Integration::register create password", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-    sandbox = sinon.createSandbox();
-    sandbox
+
+    sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        req.session.email = "test@test.com";
+
+        req.session.user = {
+          email: "test@test.com",
+          journey: {
+            nextPath: PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
+          },
+        };
+
         next();
       });
 
@@ -29,7 +36,7 @@ describe("Integration::register create password", () => {
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     request(app)
-      .get("/create-password")
+      .get(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .end((err, res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
@@ -42,17 +49,17 @@ describe("Integration::register create password", () => {
   });
 
   after(() => {
-    sandbox.restore();
+    sinon.restore();
     app = undefined;
   });
 
   it("should return create password page", (done) => {
-    request(app).get("/create-password").expect(200, done);
+    request(app).get(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD).expect(200, done);
   });
 
   it("should return error when csrf not present", (done) => {
     request(app)
-      .post("/create-password")
+      .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .send({
         email: "test@test.com",
@@ -63,7 +70,7 @@ describe("Integration::register create password", () => {
 
   it("should return validation error when password not entered", (done) => {
     request(app)
-      .post("/create-password")
+      .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -83,7 +90,7 @@ describe("Integration::register create password", () => {
 
   it("should return validation error when passwords don't match", (done) => {
     request(app)
-      .post("/create-password")
+      .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -102,7 +109,7 @@ describe("Integration::register create password", () => {
 
   it("should return validation error when password less than 8 characters", (done) => {
     request(app)
-      .post("/create-password")
+      .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -121,7 +128,7 @@ describe("Integration::register create password", () => {
 
   it("should return validation error when password not valid", (done) => {
     request(app)
-      .post("/create-password")
+      .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -140,7 +147,7 @@ describe("Integration::register create password", () => {
 
   it("should return validation error when password is amongst most common passwords", (done) => {
     request(app)
-      .post("/create-password")
+      .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -158,12 +165,10 @@ describe("Integration::register create password", () => {
   });
 
   it("should redirect to enter phone number when valid password entered", (done) => {
-    nock(baseApi).post("/signup").once().reply(200, {
-      sessionState: "TWO_FACTOR_REQUIRED",
-    });
+    nock(baseApi).post(API_ENDPOINTS.SIGNUP_USER).once().reply(204, {});
 
     request(app)
-      .post("/create-password")
+      .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -171,7 +176,7 @@ describe("Integration::register create password", () => {
         password: "testpassword1",
         "confirm-password": "testpassword1",
       })
-      .expect("Location", "/enter-phone-number")
+      .expect("Location", PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .expect(302, done);
   });
 });

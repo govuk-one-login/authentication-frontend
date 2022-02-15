@@ -8,24 +8,31 @@ import {
   enterPasswordPost,
 } from "../enter-password-controller";
 
-import { PATH_NAMES, USER_STATE } from "../../../app.constants";
+import { PATH_NAMES } from "../../../app.constants";
 import { EnterPasswordServiceInterface } from "../types";
 import { MfaServiceInterface } from "../../common/mfa/types";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("enter password controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = { body: {}, session: {} };
-    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
+    req = mockRequest({
+      path: PATH_NAMES.ENTER_PASSWORD,
+      session: { client: {}, user: {} },
+      log: { info: sinon.fake() },
+    });
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("enterEmailGet", () => {
@@ -39,16 +46,19 @@ describe("enter password controller", () => {
   describe("enterPasswordPost", () => {
     it("should redirect to enter-code when the password is correct", async () => {
       const fakeService: EnterPasswordServiceInterface = {
-        loginUser: sandbox.fake.returns({
-          sessionState: USER_STATE.LOGGED_IN,
-          redactedPhoneNumber: "******3456",
+        loginUser: sinon.fake.returns({
+          data: {
+            redactedPhoneNumber: "******3456",
+            mfaRequired: true,
+            consentRequired: false,
+            latestTermsAndConditionsAccepted: true,
+          },
           success: true,
         }),
       };
 
       const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sandbox.fake.returns({
-          sessionState: "MFA_SMS_CODE_SENT",
+        sendMfaCode: sinon.fake.returns({
           success: true,
         }),
       };
@@ -56,7 +66,7 @@ describe("enter password controller", () => {
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
-      req.session = {
+      req.session.user = {
         email: "joe.bloggs@test.com",
       };
       req.body["password"] = "password";
@@ -72,17 +82,16 @@ describe("enter password controller", () => {
 
     it("should redirect to auth code when mfa is not required", async () => {
       const fakeService: EnterPasswordServiceInterface = {
-        loginUser: sandbox.fake.returns({
+        loginUser: sinon.fake.returns({
           success: true,
-          sessionState: USER_STATE.AUTHENTICATED,
-          redactedPhoneNumber: "******3456",
+          data: { redactedPhoneNumber: "******3456", mfaRequired: false },
         }),
       };
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
-      req.session = {
+      req.session.user = {
         email: "joe.bloggs@test.com",
       };
       req.body["password"] = "password";
@@ -97,16 +106,19 @@ describe("enter password controller", () => {
 
     it("should redirect to enter phone number when phone number is not verified", async () => {
       const fakeService: EnterPasswordServiceInterface = {
-        loginUser: sandbox.fake.returns({
+        loginUser: sinon.fake.returns({
           success: true,
-          sessionState: USER_STATE.REQUIRES_TWO_FACTOR,
+          data: {
+            redactedPhoneNumber: "******3456",
+            phoneNumberVerified: false,
+          },
         }),
       };
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
-      req.session = {
+      req.session.user = {
         email: "joe.bloggs@test.com",
       };
       req.body["password"] = "password";
@@ -123,8 +135,11 @@ describe("enter password controller", () => {
 
     it("should redirect to updated terms when terms and conditions not accepted", async () => {
       const fakeService: EnterPasswordServiceInterface = {
-        loginUser: sandbox.fake.returns({
-          sessionState: USER_STATE.UPDATED_TERMS_AND_CONDITIONS,
+        loginUser: sinon.fake.returns({
+          data: {
+            redactedPhoneNumber: "******3456",
+            latestTermsAndConditionsAccepted: false,
+          },
           success: true,
         }),
       };
@@ -132,7 +147,7 @@ describe("enter password controller", () => {
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
-      req.session = {
+      req.session.user = {
         email: "joe.bloggs@test.com",
       };
       req.body["password"] = "password";
@@ -150,16 +165,16 @@ describe("enter password controller", () => {
     it("should throw error when API call throws error", async () => {
       const error = new Error("Internal server error");
       const fakeService: EnterPasswordServiceInterface = {
-        loginUser: sandbox.fake.throws(error),
+        loginUser: sinon.fake.throws(error),
       };
 
       const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sandbox.fake(),
+        sendMfaCode: sinon.fake(),
       };
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
-      req.session = {
+      req.session.user = {
         email: "joe.bloggs@test.com",
       };
       req.body["password"] = "password";

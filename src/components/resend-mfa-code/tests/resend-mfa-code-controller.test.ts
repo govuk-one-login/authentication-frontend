@@ -9,30 +9,31 @@ import {
   resendMfaCodePost,
 } from "../resend-mfa-code-controller";
 import { MfaServiceInterface } from "../../common/mfa/types";
+import { PATH_NAMES } from "../../../app.constants";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("resend mfa controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = {
-      body: {},
-      session: {},
+    req = mockRequest({
+      path: PATH_NAMES.CHECK_YOUR_PHONE,
+      session: { client: {}, user: {} },
+      log: { info: sinon.fake() },
+      t: sinon.fake(),
       i18n: { language: "en" },
-    };
-    res = {
-      render: sandbox.fake(),
-      redirect: sandbox.fake(),
-      status: sandbox.fake(),
-      locals: {},
-    };
+    });
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("resendMfaCodeGet", () => {
@@ -46,20 +47,20 @@ describe("resend mfa controller", () => {
   describe("resendMfaCodePost", () => {
     it("should send mfa code and redirect to /enter-code view", async () => {
       const fakeService: MfaServiceInterface = {
-        sendMfaCode: sandbox.fake.returns({
+        sendMfaCode: sinon.fake.returns({
           success: true,
-          sessionState: "MFA_SMS_CODE_SENT",
         }),
       };
 
       res.locals.sessionId = "123456-djjad";
-      req.session = {
+      req.session.user = {
         email: "test@test.com",
       };
+      req.path = PATH_NAMES.RESEND_MFA_CODE;
 
       await resendMfaCodePost(fakeService)(req as Request, res as Response);
 
-      expect(res.redirect).to.have.been.calledWith("/enter-code");
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ENTER_MFA);
       expect(fakeService.sendMfaCode).to.have.been.calledOnce;
     });
   });

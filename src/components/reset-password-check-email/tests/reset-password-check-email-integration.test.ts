@@ -3,11 +3,11 @@ import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import decache from "decache";
-import { USER_STATE } from "../../../app.constants";
+
 import cheerio from "cheerio";
+import { PATH_NAMES } from "../../../app.constants";
 
 describe("Integration::reset password check email ", () => {
-  let sandbox: sinon.SinonSandbox;
   let app: any;
   let baseApi: string;
 
@@ -15,12 +15,20 @@ describe("Integration::reset password check email ", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-    sandbox = sinon.createSandbox();
-    sandbox
+
+    sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        req.session.email = "test@test.com";
+
+        req.session.user = {
+          email: "test@test.com",
+          journey: {
+            nextPath: PATH_NAMES.ENTER_PASSWORD,
+            optionalPaths: [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL],
+          },
+        };
+
         next();
       });
 
@@ -33,15 +41,12 @@ describe("Integration::reset password check email ", () => {
   });
 
   after(() => {
-    sandbox.restore();
+    sinon.restore();
     app = undefined;
   });
 
   it("should return reset password check email page", (done) => {
-    nock(baseApi)
-      .post("/reset-password-request")
-      .once()
-      .reply(200, { sessionState: USER_STATE.RESET_PASSWORD_LINK_SENT });
+    nock(baseApi).post("/reset-password-request").once().reply(204);
     request(app).get("/reset-password-check-email").expect(200, done);
   });
 

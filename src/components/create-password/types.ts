@@ -1,4 +1,4 @@
-import { ApiResponseResult } from "../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../types";
 
 export interface CreatePasswordServiceInterface {
   signUpUser: (
@@ -7,5 +7,5 @@ export interface CreatePasswordServiceInterface {
     password: string,
     sourceIp: string,
     persistentSessionId: string
-  ) => Promise<ApiResponseResult>;
+  ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

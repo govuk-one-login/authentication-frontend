@@ -17,5 +17,15 @@ export function signedOutGet(req: Request, res: Response): void {
     }
   }
 
+  if (req.session) {
+    req.session.destroy((error) => {
+      if (error) {
+        req.log.error(`Failed to delete session: ${error}`);
+      } else {
+        req.log.info("Session destroyed");
+      }
+    });
+  }
+
   res.render("signed-out/index.njk");
 }

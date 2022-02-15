@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
-import { NOTIFICATION_TYPE, USER_STATE } from "../../app.constants";
+import { NOTIFICATION_TYPE } from "../../app.constants";
 import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
 import { ExpressRouteFunc } from "../../types";
+import { ERROR_CODES } from "../common/constants";
 
 const TEMPLATE_NAME = "enter-mfa/index.njk";
 
 export function enterMfaGet(req: Request, res: Response): void {
   res.render(TEMPLATE_NAME, {
-    phoneNumber: req.session.phoneNumber,
+    phoneNumber: req.session.user.phoneNumber,
   });
 }
 
@@ -20,6 +21,6 @@ export const enterMfaPost = (
     notificationType: NOTIFICATION_TYPE.MFA_SMS,
     template: TEMPLATE_NAME,
     validationKey: "pages.enterMfa.code.validationError.invalidCode",
-    validationState: USER_STATE.MFA_CODE_NOT_VALID,
+    validationErrorCode: ERROR_CODES.INVALID_MFA_CODE,
   });
 };

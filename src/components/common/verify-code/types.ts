@@ -1,4 +1,4 @@
-import { ApiResponseResult } from "../../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types";
 
 export interface VerifyCodeInterface {
   verifyCode: (
@@ -8,5 +8,5 @@ export interface VerifyCodeInterface {
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string
-  ) => Promise<ApiResponseResult>;
+  ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

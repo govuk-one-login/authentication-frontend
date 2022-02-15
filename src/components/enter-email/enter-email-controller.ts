@@ -1,18 +1,23 @@
 import { Request, Response } from "express";
-import { NOTIFICATION_TYPE, USER_STATE } from "../../app.constants";
+import { NOTIFICATION_TYPE } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { enterEmailService } from "./enter-email-service";
 import { EnterEmailServiceInterface } from "./types";
-import { getNextPathByState, JOURNEY_TYPE } from "../common/constants";
+import {
+  getErrorPathByCode,
+  getNextPathAndUpdateJourney,
+} from "../common/constants";
 import { BadRequestError } from "../../utils/error";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 
 export function enterEmailGet(req: Request, res: Response): void {
-  if (req.query.type === JOURNEY_TYPE.CREATE_ACCOUNT) {
-    return res.render("enter-email/index-create-account.njk");
-  }
   return res.render("enter-email/index-existing-account.njk");
+}
+
+export function enterEmailCreateGet(req: Request, res: Response): void {
+  return res.render("enter-email/index-create-account.njk");
 }
 
 export function enterEmailPost(
@@ -21,7 +26,7 @@ export function enterEmailPost(
   return async function (req: Request, res: Response) {
     const email = req.body.email;
     const sessionId = res.locals.sessionId;
-    req.session.email = email.toLowerCase();
+    req.session.user.email = email.toLowerCase();
 
     const result = await service.userExists(
       sessionId,
@@ -31,10 +36,16 @@ export function enterEmailPost(
     );
 
     if (!result.success) {
-      throw new BadRequestError(result.message, result.code);
+      throw new BadRequestError(result.data.message, result.data.code);
     }
 
-    return res.redirect(getNextPathByState(result.sessionState));
+    const nextState = result.data.doesUserExist
+      ? USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS
+      : USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND;
+
+    return res.redirect(
+      getNextPathAndUpdateJourney(req, req.path, nextState, null, sessionId)
+    );
   };
 }
 
@@ -43,10 +54,11 @@ export function enterEmailCreatePost(
   notificationService: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const email = req.body.email;
+    const email = req.body.email.toLowerCase();
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
-    req.session.email = email.toLowerCase();
+    req.session.user.email = email;
+
     const userExistsResponse = await service.userExists(
       sessionId,
       email,
@@ -54,12 +66,22 @@ export function enterEmailCreatePost(
       persistentSessionId
     );
 
-    if (
-      userExistsResponse.success &&
-      userExistsResponse.sessionState === USER_STATE.AUTHENTICATION_REQUIRED
-    ) {
+    if (!userExistsResponse.success) {
+      throw new BadRequestError(
+        userExistsResponse.data.message,
+        userExistsResponse.data.code
+      );
+    }
+
+    if (userExistsResponse.data.doesUserExist) {
       return res.redirect(
-        getNextPathByState(USER_STATE.AUTHENTICATION_REQUIRED_ACCOUNT_EXISTS)
+        getNextPathAndUpdateJourney(
+          req,
+          req.path,
+          USER_JOURNEY_EVENTS.ACCOUNT_FOUND_CREATE,
+          null,
+          sessionId
+        )
       );
     }
 
@@ -72,15 +94,27 @@ export function enterEmailCreatePost(
       persistentSessionId
     );
 
-    if (!sendNotificationResponse.success && sendNotificationResponse.code) {
+    if (!sendNotificationResponse.success) {
+      const path = getErrorPathByCode(sendNotificationResponse.data.code);
+
+      if (path) {
+        return res.redirect(path);
+      }
+
       throw new BadRequestError(
-        sendNotificationResponse.message,
-        sendNotificationResponse.code
+        sendNotificationResponse.data.message,
+        sendNotificationResponse.data.code
       );
     }
 
     return res.redirect(
-      getNextPathByState(sendNotificationResponse.sessionState)
+      getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
+        null,
+        sessionId
+      )
     );
   };
 }

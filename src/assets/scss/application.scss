@@ -41,6 +41,22 @@
   padding: 0;
 }
 
+.govuk-btn-as-link {
+  vertical-align: inherit;
+  border: none;
+  outline: none;
+  background: none;
+  padding: 0;
+  color: $govuk-link-colour;
+  box-shadow: 0px 1px #ffffff;
+}
+
+.govuk-btn-as-link:hover{
+  background: none;
+  color: $govuk-link-visited-colour;
+  text-decoration: underline;
+}
+
 .govuk-btn-link:hover {
   background: none;
 }

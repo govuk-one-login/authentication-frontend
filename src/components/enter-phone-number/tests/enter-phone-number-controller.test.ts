@@ -10,21 +10,29 @@ import {
 } from "../enter-phone-number-controller";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
+import { PATH_NAMES } from "../../../app.constants";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("enter phone number controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = { body: {}, session: {} };
-    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
+    req = mockRequest({
+      path: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
+      session: { client: {}, user: {} },
+      log: { info: sinon.fake() },
+    });
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("enterPhoneNumberGet", () => {
@@ -38,22 +46,20 @@ describe("enter phone number controller", () => {
   describe("enterPhoneNumberPost", () => {
     it("should redirect to /check-your-phone when success", async () => {
       const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sandbox.fake.returns({
+        sendNotification: sinon.fake.returns({
           success: true,
-          sessionState: "VERIFY_PHONE_NUMBER_CODE_SENT",
         }),
       };
 
       const fakeProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sandbox.fake.returns({
+        updateProfile: sinon.fake.returns({
           success: true,
-          sessionState: "ADDED_UNVERIFIED_PHONE_NUMBER",
         }),
       };
 
       res.locals.sessionId = "123456-djjad";
       req.body.phoneNumber = "07738393990";
-      req.session.email = "test@test.com";
+      req.session.user.email = "test@test.com";
 
       await enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
         req as Request,
@@ -62,20 +68,20 @@ describe("enter phone number controller", () => {
 
       expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
-      expect(res.redirect).to.have.calledWith("/check-your-phone");
-      expect(req.session.phoneNumber).to.be.eq("*******3990");
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
+      expect(req.session.user.phoneNumber).to.be.eq("*******3990");
     });
 
     it("should throw error when API call to /update-profile throws error", async () => {
       const error = new Error("Internal server error");
       const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sandbox.fake.returns({
+        sendNotification: sinon.fake.returns({
           success: true,
         }),
       };
 
       const fakeProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sandbox.fake.throws(error),
+        updateProfile: sinon.fake.throws(error),
       };
 
       req.body.email = "test.test.com";
@@ -95,11 +101,11 @@ describe("enter phone number controller", () => {
     it("should throw error when API call to /send-notification throws error", async () => {
       const error = new Error("Internal server error");
       const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sandbox.fake.throws(error),
+        sendNotification: sinon.fake.throws(error),
       };
 
       const fakeProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sandbox.fake.returns({ success: true }),
+        updateProfile: sinon.fake.returns({ success: true }),
       };
 
       req.body.email = "test.test.com";
@@ -114,37 +120,6 @@ describe("enter phone number controller", () => {
 
       expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
-    });
-
-    it("should update the user session state value in the req", async () => {
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sandbox.fake.returns({
-          success: true,
-          sessionState: "VERIFY_PHONE_NUMBER_CODE_SENT",
-        }),
-      };
-
-      const fakeProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sandbox.fake.returns({
-          success: true,
-          sessionState: "ADDED_UNVERIFIED_PHONE_NUMBER",
-        }),
-      };
-
-      res.locals.sessionId = "123456-djjad";
-      req.body.phoneNumber = "07738393990";
-      req.session = {
-        email: "test@test.com",
-      };
-
-      expect(req.session.backState).to.be.undefined;
-
-      await enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
-        req as Request,
-        res as Response
-      );
-
-      expect(req.session.backState).to.equal("VERIFY_PHONE_NUMBER_CODE_SENT");
     });
   });
 });

@@ -6,7 +6,6 @@ import * as cheerio from "cheerio";
 import { PATH_NAMES } from "../../../app.constants";
 
 describe("Integration::reset password", () => {
-  let sandbox: sinon.SinonSandbox;
   let token: string | string[];
   let cookies: string;
   let app: any;
@@ -16,8 +15,6 @@ describe("Integration::reset password", () => {
     "/reset-password?code=WBTxBpSQdd3cSxT-!X5s.1758350212000.a-session-id.a-persistent-id";
 
   before(async () => {
-    sandbox = sinon.createSandbox();
-
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
@@ -35,7 +32,7 @@ describe("Integration::reset password", () => {
   });
 
   after(() => {
-    sandbox.restore();
+    sinon.restore();
     app = undefined;
   });
 

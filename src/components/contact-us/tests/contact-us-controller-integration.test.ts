@@ -7,7 +7,6 @@ import decache from "decache";
 import { PATH_NAMES } from "../../../app.constants";
 
 describe("Integration:: contact us - public user", () => {
-  let sandbox: sinon.SinonSandbox;
   let token: string | string[];
   let cookies: string;
   let app: any;
@@ -17,13 +16,13 @@ describe("Integration:: contact us - public user", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-    sandbox = sinon.createSandbox();
-    sandbox
+
+    sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        req.session.email = "test@test.com";
-        req.session.phoneNumber = "******7867";
+        req.session.user.email = "test@test.com";
+        req.session.user.phoneNumber = "******7867";
 
         next();
       });
@@ -32,7 +31,7 @@ describe("Integration:: contact us - public user", () => {
     zendeskApiUrl = process.env.ZENDESK_API_URL;
 
     request(app)
-      .get("/contact-us")
+      .get(PATH_NAMES.CONTACT_US)
       .query("supportType=PUBLIC")
       .end((err, res) => {
         const $ = cheerio.load(res.text);
@@ -46,13 +45,13 @@ describe("Integration:: contact us - public user", () => {
   });
 
   after(() => {
-    sandbox.restore();
+    sinon.restore();
     app = undefined;
   });
 
   it("should return contact us page", (done) => {
     request(app)
-      .get("/contact-us")
+      .get(PATH_NAMES.CONTACT_US)
       .query("supportType=PUBLIC")
       .expect(200, done);
   });
@@ -88,7 +87,7 @@ describe("Integration:: contact us - public user", () => {
 
   it("should return error when csrf not present", (done) => {
     request(app)
-      .post("/contact-us")
+      .post(PATH_NAMES.CONTACT_US)
       .query("supportType=PUBLIC")
       .type("form")
       .send({})

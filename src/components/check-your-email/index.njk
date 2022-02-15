@@ -5,7 +5,7 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% set showBack = true %}
-{% set hrefBack = 'enter-email?type=create-account' %}
+{% set hrefBack = 'enter-email-create' %}
 {% set pageTitleName = 'pages.checkYourEmail.title' | translate %}
 
 {% block content %}
@@ -37,7 +37,7 @@
     } if (errors['code'])})
 }}
 
-<p class="govuk-body"> <a href="/enter-email?type=create-account" class="govuk-link" rel="noreferrer">{{'pages.enterMfa.resend.link' | translate }}</a> {{ 'pages.checkYourEmail.requestNewCode.paragraph1' | translate}}</p>
+<p class="govuk-body"> <a href="/enter-email-create" class="govuk-link" rel="noreferrer">{{'pages.enterMfa.resend.link' | translate }}</a> {{ 'pages.checkYourEmail.requestNewCode.paragraph1' | translate}}</p>
 <ul class="govuk-list govuk-list--bullet">
  <li>{{ 'pages.checkYourEmail.requestNewCode.listItem1' | translate}}</li>
  <li>{{ 'pages.checkYourEmail.requestNewCode.listItem2' | translate}}</li>
@@ -52,3 +52,4 @@
 </form>
 
 {% endblock %}
+

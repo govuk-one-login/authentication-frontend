@@ -1,5 +1,5 @@
-import { PATH_NAMES, USER_STATE } from "../../app.constants";
-import * as querystring from "querystring";
+import { PATH_NAMES } from "../../app.constants";
+import { getNextState } from "./state-machine/state-machine";
 
 const SECURITY_CODE_ERROR = "actionType";
 
@@ -15,99 +15,136 @@ export enum SecurityCodeErrorType {
   EmailMaxRetries = "emailMaxRetries",
 }
 
-const SECURITY_CODE_ERROR_STATES: { [p: string]: string } = {
-  [USER_STATE.MFA_SMS_MAX_CODES_SENT]: pathWithQueryParam(
+export const ERROR_CODES = {
+  RESET_PASSWORD_LINK_MAX_RETRIES_REACHED: 1022,
+  RESET_PASSWORD_LINK_BLOCKED: 1023,
+  NEW_PASSWORD_SAME_AS_EXISTING: 1024,
+  ENTERED_INVALID_MFA_MAX_TIMES: 1027,
+  VERIFY_EMAIL_CODE_REQUEST_BLOCKED: 1029,
+  VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED: 1030,
+  VERIFY_PHONE_NUMBER_MAX_CODES_SENT: 1032,
+  VERIFY_EMAIL_MAX_CODES_SENT: 1031,
+  ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES: 1033,
+  ENTERED_INVALID_VERIFY_PHONE_NUMBER_CODE_MAX_TIMES: 1034,
+  MFA_SMS_MAX_CODES_SENT: 1025,
+  MFA_CODE_REQUESTS_BLOCKED: 1026,
+  INVALID_MFA_CODE: 1035,
+  INVALID_VERIFY_EMAIL_CODE: 1036,
+  INVALID_VERIFY_PHONE_NUMBER_CODE: 1037,
+  INVALID_PASSWORD_MAX_ATTEMPTS_REACHED: 1028,
+};
+
+export const ERROR_CODE_MAPPING: { [p: string]: string } = {
+  [ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED]: pathWithQueryParam(
+    PATH_NAMES["ACCOUNT_LOCKED"]
+  ),
+  [ERROR_CODES.MFA_SMS_MAX_CODES_SENT]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_REQUEST_EXCEEDED"],
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.MfaMaxCodesSent
   ),
-  [USER_STATE.MFA_CODE_REQUESTS_BLOCKED]: pathWithQueryParam(
+  [ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_WAIT"],
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.MfaBlocked
   ),
-  [USER_STATE.MFA_CODE_MAX_RETRIES_REACHED]: pathWithQueryParam(
+  [ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_INVALID"],
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.MfaMaxRetries
   ),
-  [USER_STATE.PHONE_NUMBER_MAX_CODES_SENT]: pathWithQueryParam(
+  [ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_REQUEST_EXCEEDED"],
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.OtpMaxCodesSent
   ),
-  [USER_STATE.PHONE_NUMBER_CODE_REQUESTS_BLOCKED]: pathWithQueryParam(
+  [ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_WAIT"],
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.OtpBlocked
   ),
-  [USER_STATE.PHONE_NUMBER_CODE_MAX_RETRIES_REACHED]: pathWithQueryParam(
-    PATH_NAMES["SECURITY_CODE_INVALID"],
-    SECURITY_CODE_ERROR,
-    SecurityCodeErrorType.OtpMaxRetries
-  ),
-  [USER_STATE.EMAIL_MAX_CODES_SENT]: pathWithQueryParam(
+  [ERROR_CODES.ENTERED_INVALID_VERIFY_PHONE_NUMBER_CODE_MAX_TIMES]:
+    pathWithQueryParam(
+      PATH_NAMES["SECURITY_CODE_INVALID"],
+      SECURITY_CODE_ERROR,
+      SecurityCodeErrorType.OtpMaxRetries
+    ),
+  [ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_REQUEST_EXCEEDED"],
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.EmailMaxCodesSent
   ),
-  [USER_STATE.EMAIL_CODE_REQUESTS_BLOCKED]: pathWithQueryParam(
+  [ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_WAIT"],
     SECURITY_CODE_ERROR,
-    SecurityCodeErrorType.EmailBlocked
+    SecurityCodeErrorType.OtpBlocked
   ),
-  [USER_STATE.EMAIL_CODE_MAX_RETRIES_REACHED]: pathWithQueryParam(
+  [ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_INVALID"],
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.EmailMaxRetries
   ),
+  [ERROR_CODES.VERIFY_EMAIL_CODE_REQUEST_BLOCKED]: pathWithQueryParam(
+    PATH_NAMES["SECURITY_CODE_WAIT"],
+    SECURITY_CODE_ERROR,
+    SecurityCodeErrorType.EmailBlocked
+  ),
 };
 
-const STATE_TO_PATH_MAPPING: { [p: string]: string } = {
-  ...SECURITY_CODE_ERROR_STATES,
-  [USER_STATE.AUTHENTICATED]: PATH_NAMES["AUTH_CODE"],
-  [USER_STATE.LOGGED_IN]: PATH_NAMES["ENTER_MFA"],
-  [USER_STATE.REQUIRES_TWO_FACTOR]:
-    PATH_NAMES["CREATE_ACCOUNT_ENTER_PHONE_NUMBER"],
-  [USER_STATE.ACCOUNT_LOCKED]: PATH_NAMES["ACCOUNT_LOCKED"],
-  [USER_STATE.UPDATED_TERMS_AND_CONDITIONS]:
-    PATH_NAMES["UPDATED_TERMS_AND_CONDITIONS"],
-  [USER_STATE.UPDATED_TERMS_AND_CONDITIONS_ACCEPTED]: PATH_NAMES["AUTH_CODE"],
-  [USER_STATE.UPLIFT_REQUIRED_CM]: PATH_NAMES["UPLIFT_JOURNEY"],
-  [USER_STATE.CONSENT_ADDED]: PATH_NAMES["AUTH_CODE"],
-  [USER_STATE.USER_NOT_FOUND]: PATH_NAMES["ACCOUNT_NOT_FOUND"],
-  [USER_STATE.VERIFY_EMAIL_CODE_SENT]: PATH_NAMES["CHECK_YOUR_EMAIL"],
-  [USER_STATE.EMAIL_CODE_VERIFIED]: PATH_NAMES["CREATE_ACCOUNT_SET_PASSWORD"],
-  [USER_STATE.CONSENT_REQUIRED]: PATH_NAMES["SHARE_INFO"],
-  [USER_STATE.MFA_CODE_VERIFIED]: PATH_NAMES["AUTH_CODE"],
-  [USER_STATE.VERIFY_PHONE_NUMBER_CODE_SENT]: PATH_NAMES["CHECK_YOUR_PHONE"],
-  [USER_STATE.LOGGED_IN]: PATH_NAMES["ENTER_MFA"],
-  [USER_STATE.MFA_SMS_CODE_SENT]: PATH_NAMES["ENTER_MFA"],
-  [USER_STATE.AUTHENTICATION_REQUIRED]: PATH_NAMES["ENTER_PASSWORD"],
-  [USER_STATE.AUTHENTICATION_REQUIRED_ACCOUNT_EXISTS]:
-    PATH_NAMES["ENTER_PASSWORD_ACCOUNT_EXISTS"],
-  [USER_STATE.TWO_FACTOR_REQUIRED]:
-    PATH_NAMES["CREATE_ACCOUNT_ENTER_PHONE_NUMBER"],
-  [USER_STATE.PHONE_NUMBER_CODE_VERIFIED]:
-    PATH_NAMES["CREATE_ACCOUNT_SUCCESSFUL"],
-};
-
-function pathWithQueryParam(
-  path: string,
-  queryParam: string,
-  value: string | SecurityCodeErrorType
-) {
-  return path + "?" + querystring.stringify({ [queryParam]: value });
-}
-
-export function getNextPathByState(sessionState: string): string {
-  const nextPath = STATE_TO_PATH_MAPPING[sessionState];
+export function getErrorPathByCode(errorCode: number): string | undefined {
+  const nextPath = ERROR_CODE_MAPPING[errorCode.toString()];
 
   if (!nextPath) {
-    throw Error(`Invalid state:${sessionState}`);
+    return undefined;
   }
 
   return nextPath;
+}
+
+function pathWithQueryParam(
+  path: string,
+  queryParam?: string,
+  value?: string | SecurityCodeErrorType
+) {
+  if (queryParam && value) {
+    const queryParams = new URLSearchParams({
+      [queryParam]: value,
+    }).toString();
+
+    return path + "?" + queryParams;
+  }
+
+  return path;
+}
+
+export function getNextPathAndUpdateJourney(
+  req: any,
+  path: string,
+  event: string,
+  ctx?: any,
+  sessionId?: string
+): string {
+  const nextState = getNextState(path, event, ctx);
+
+  req.session.user.journey = {
+    nextPath: nextState.value,
+    optionalPaths:
+      Object.keys(nextState.meta).length > 0
+        ? nextState.meta["AUTH." + nextState.value].optionalPaths
+        : [],
+  };
+
+  req.log.info(
+    `User journey transitioned from ${req.path} to ${nextState.value} with session id ${sessionId}`
+  );
+
+  if (!nextState) {
+    throw Error(
+      `Invalid user journey. No transition found from ${path} with event ${event}`
+    );
+  }
+
+  return nextState.value;
 }
 
 export const JOURNEY_TYPE = {
