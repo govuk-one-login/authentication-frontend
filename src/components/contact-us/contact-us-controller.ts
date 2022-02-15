@@ -126,112 +126,79 @@ export function getQuestionsFromFormType(
 ): Questions {
   const formTypeToQuestions: { [key: string]: any } = {
     accountCreationProblem: {
-      issueDescription: {
-        text: req.t(
-          "pages.contactUsQuestions.accountCreationProblem.section1.paragraph1"
-        ),
-        order: 1,
-      },
+      issueDescription: req.t(
+        "pages.contactUsQuestions.accountCreationProblem.section1.paragraph1"
+      ),
     },
     accountNotFound: {
-      issueDescription: {
-        text: req.t("pages.contactUsQuestions.accountNotFound.section1.header"),
-        order: 1,
-      },
-      optionalDescription: {
-        text: req.t("pages.contactUsQuestions.accountNotFound.section2.header"),
-        order: 2,
-      },
+      issueDescription: req.t(
+        "pages.contactUsQuestions.accountNotFound.section1.header"
+      ),
+      optionalDescription: req.t(
+        "pages.contactUsQuestions.accountNotFound.section2.header"
+      ),
     },
     anotherProblem: {
-      issueDescription: {
-        text: req.t("pages.contactUsQuestions.anotherProblem.section1.header"),
-        order: 1,
-      },
-      additionalDescription: {
-        text: req.t("pages.contactUsQuestions.anotherProblem.section2.header"),
-        order: 2,
-      },
+      issueDescription: req.t(
+        "pages.contactUsQuestions.anotherProblem.section1.header"
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.anotherProblem.section2.header"
+      ),
     },
     emailSubscription: {
-      issueDescription: {
-        text: req.t(
-          "pages.contactUsQuestions.emailSubscriptions.section1.header"
-        ),
-        order: 1,
-      },
-      optionalDescription: {
-        text: req.t(
-          "pages.contactUsQuestions.emailSubscriptions.section2.header"
-        ),
-        order: 2,
-      },
+      issueDescription: req.t(
+        "pages.contactUsQuestions.emailSubscriptions.section1.header"
+      ),
+      optionalDescription: req.t(
+        "pages.contactUsQuestions.emailSubscriptions.section2.header"
+      ),
     },
     forgottenPassword: {
-      optionalDescription: {
-        text: req.t(
-          "pages.contactUsQuestions.forgottenPassword.section1.header"
-        ),
-        order: 1,
-      },
+      optionalDescription: req.t(
+        "pages.contactUsQuestions.forgottenPassword.section1.header"
+      ),
     },
     invalidSecurityCode: {
-      optionalDescription: {
-        text: req.t(
-          "pages.contactUsQuestions.invalidSecurityCode.section1.header"
-        ),
-        order: 1,
-      },
+      optionalDescription: req.t(
+        "pages.contactUsQuestions.invalidSecurityCode.section1.header"
+      ),
     },
     noPhoneNumberAccess: {
-      optionalDescription: {
-        text: req.t(
-          "pages.contactUsQuestions.noPhoneNumberAccess.section1.header"
-        ),
-        order: 1,
-      },
+      optionalDescription: req.t(
+        "pages.contactUsQuestions.noPhoneNumberAccess.section1.header"
+      ),
     },
     noSecurityCode: {
-      optionalDescription: {
-        text: req.t("pages.contactUsQuestions.noSecurityCode.section1.header"),
-        order: 1,
-      },
+      optionalDescription: req.t(
+        "pages.contactUsQuestions.noSecurityCode.section1.header"
+      ),
     },
     noUKMobile: {
-      optionalDescription: {
-        text: req.t("pages.contactUsQuestions.noUKMobile.section1.header"),
-        order: 1,
-      },
+      optionalDescription: req.t(
+        "pages.contactUsQuestions.noUKMobile.section1.header"
+      ),
     },
     signingInProblem: {
-      issueDescription: {
-        text: req.t(
-          "pages.contactUsQuestions.signignInProblem.section1.header"
-        ),
-        order: 1,
-      },
+      issueDescription: req.t(
+        "pages.contactUsQuestions.signignInProblem.section1.header"
+      ),
     },
     suggestionFeedback: {
-      issueDescription: {
-        text: req.t(
-          "pages.contactUsQuestions.suggestionOrFeedback.section1.header"
-        ),
-        order: 1,
-      },
+      issueDescription: req.t(
+        "pages.contactUsQuestions.suggestionOrFeedback.section1.header"
+      ),
     },
     technicalError: {
-      issueDescription: {
-        text: req.t("pages.contactUsQuestions.technicalError.section1.header"),
-        order: 1,
-      },
-      additionalDescription: {
-        text: req.t("pages.contactUsQuestions.technicalError.section2.header"),
-        order: 2,
-      },
-      optionalDescription: {
-        text: req.t("pages.contactUsQuestions.technicalError.section3.header"),
-        order: 3,
-      },
+      issueDescription: req.t(
+        "pages.contactUsQuestions.technicalError.section1.header"
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.technicalError.section2.header"
+      ),
+      optionalDescription: req.t(
+        "pages.contactUsQuestions.technicalError.section3.header"
+      ),
     },
   };
 

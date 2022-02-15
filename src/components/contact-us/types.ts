@@ -15,14 +15,9 @@ export interface OptionalData {
 }
 
 export interface Questions {
-  issueDescription?: QuestionDetail;
-  additionalDescription?: QuestionDetail;
-  optionalDescription?: QuestionDetail;
-}
-
-export interface QuestionDetail {
-  text: string;
-  order: number;
+  issueDescription?: string;
+  additionalDescription?: string;
+  optionalDescription?: string;
 }
 
 export interface Descriptions {

@@ -59,25 +59,25 @@ export function contactUsService(
     }
 
     if (descriptions.issueDescription) {
-      htmlBody.push(`<span>[${questions.issueDescription.text}]</span>`);
+      htmlBody.push(`<span>[${questions.issueDescription}]</span>`);
       htmlBody.push(`<p>${descriptions.issueDescription}</p>`);
     }
 
     if (descriptions.additionalDescription) {
-      htmlBody.push(`<span>[${questions.additionalDescription.text}]</span>`);
+      htmlBody.push(`<span>[${questions.additionalDescription}]</span>`);
       htmlBody.push(`<p>${descriptions.additionalDescription}</p>`);
     }
 
     if (descriptions.optionalDescription) {
-      htmlBody.push(`<span>[${questions.optionalDescription.text}]</span>`);
+      htmlBody.push(`<span>[${questions.optionalDescription}]</span>`);
       htmlBody.push(`<p>${descriptions.optionalDescription}</p>`);
     }
 
     htmlBody.push(`<span>[Session ID]</span>`);
-    htmlBody.push(`<p>Session id:${optionalData.sessionId}</p>`);
+    htmlBody.push(`<p>${optionalData.sessionId}</p>`);
 
     htmlBody.push(`<span>[User Agent]</span>`);
-    htmlBody.push(`<p>User agent:${optionalData.userAgent}</p>`);
+    htmlBody.push(`<p>${optionalData.userAgent}</p>`);
 
     return htmlBody.join("");
   }
