@@ -1145,8 +1145,7 @@
         "emailLabel": "Email address",
         "emailHint": "Enter an email address in the correct format, like name@example.com",
         "nameLabel": "Name (Optional)",
-        "nameHint": "We will only use this to reply to your message"
-      },
+        "privacyNote": "Read our <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">privacy notice</a> for more information on how we use your personal information.",
       "anotherProblem": {
         "title": "Another problem using your GOV.UK account",
         "header": "Another problem using your GOV.UK account",
