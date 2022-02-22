@@ -385,10 +385,10 @@
   dependencies:
     "@types/chai" "*"
 
-"@types/chai@*", "@types/chai@^4.2.21":
-  version "4.2.22"
-  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.22.tgz#47020d7e4cf19194d43b5202f35f75bd2ad35ce7"
-  integrity sha512-tFfcE+DSTzWAgifkjik9AySNqIyNoYwmR+uecPwwD/XRNfvOjmC/FjCxpiUGDkDVDphPfCUecSQVFw+lN3M3kQ==
+"@types/chai@*", "@types/chai@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.3.0.tgz#23509ebc1fa32f1b4d50d6a66c4032d5b8eaabdc"
+  integrity sha512-/ceqdqeRraGolFTcfoXNiqjyQhZzbINDngeoAq9GoHa8PPK1yNzTaxWjA6BFWp5Ua9JpXEMSS4s5i9tS0hOJtw==
 
 "@types/cheerio@^0.22.30":
   version "0.22.30"
@@ -498,10 +498,10 @@
   resolved "https://registry.yarnpkg.com/@types/nunjucks/-/nunjucks-3.2.1.tgz#02a3ade3dc4d3950029c6466a4034565dba7cf8c"
   integrity sha512-hUh5HIC7peH+0MvlYU5KM2RydWxG1mBceivHsQGwlelU9zlczLICyJmjMwgjkI3m0+N50n46GVHkw35lIim6LQ==
 
-"@types/pino-pretty@*", "@types/pino-pretty@^4.7.1":
-  version "4.7.3"
-  resolved "https://registry.yarnpkg.com/@types/pino-pretty/-/pino-pretty-4.7.3.tgz#4e59ceb28c08634d962ea2f46af0c083fbc20a64"
-  integrity sha512-Up2guG601DADD1xr4o3WSibPLpVgNVXGrdFg3Kl+RaS8Ym3XvlT8UV9/IH+8Mk4ykNAAOemQ4QkfDZKCjgYszA==
+"@types/pino-pretty@*", "@types/pino-pretty@^4.7.5":
+  version "4.7.5"
+  resolved "https://registry.yarnpkg.com/@types/pino-pretty/-/pino-pretty-4.7.5.tgz#e4ade1e42b78b8b0c1c28010ff7eb6c439278b19"
+  integrity sha512-rfHe6VIknk14DymxGqc9maGsRe8/HQSvM2u46EAz2XrS92qsAJnW16dpdFejBuZKD8cRJX6Aw6uVZqIQctMpAg==
   dependencies:
     "@types/node" "*"
     "@types/pino" "6.3"
@@ -2362,10 +2362,10 @@ i18next-fs-backend@^1.1.1:
   resolved "https://registry.yarnpkg.com/i18next-fs-backend/-/i18next-fs-backend-1.1.4.tgz#d0e9b9ed2fa7a0f11002d82b9fa69c3c3d6482da"
   integrity sha512-/MfAGMP0jHonV966uFf9PkWWuDjPYLIcsipnSO3NxpNtAgRUKLTwvm85fEmsF6hGeu0zbZiCQ3W74jwO6K9uXA==
 
-i18next-http-middleware@^3.1.5:
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/i18next-http-middleware/-/i18next-http-middleware-3.1.5.tgz#47e5fbfa6f1b666b5ed7cb3fcadc4dd18b8e1945"
-  integrity sha512-kk67719/uiURzRI9fhdfWjrM05ycXyPHHxGmqnFIsw55yHqEbfPgTl2JEA32lxYJclrr4qY2ifd/VVer4l+WMw==
+i18next-http-middleware@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/i18next-http-middleware/-/i18next-http-middleware-3.2.0.tgz#baabe77c70964229d022e47ab2faa7fbab27498c"
+  integrity sha512-xsQls5hMeHTuDYt0SSS2rgJP7EtNQ1YuYzSQUSloUH3bhz/vahXQuJYm9n+ajdG1fpTEjo7yDpLwDWzRu+o1HQ==
 
 i18next@^21.0.1, i18next@^21.6.5:
   version "21.6.5"
