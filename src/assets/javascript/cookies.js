@@ -154,17 +154,14 @@ var cookies = function (trackingId, analyticsCookieDomain) {
 
   function getJourneyMapping(url) {
     const JOURNEY_DATA_LAYER_PATHS = {
-      "/enter-email?type=create-account": generateSessionJourney(
-        "sign up",
-        "start"
-      ),
+      "/enter-email-create": generateSessionJourney("sign up", "start"),
       "/account-not-found": generateSessionJourney("sign up", "start"),
       "/check-your-email": generateSessionJourney("sign up", "middle"),
       "/create-password": generateSessionJourney("sign up", "middle"),
       "/enter-phone-number": generateSessionJourney("sign up", "middle"),
       "/check-your-phone": generateSessionJourney("sign up", "middle"),
       "/account-created": generateSessionJourney("sign up", "end"),
-      "/enter-email?type=sign-in": generateSessionJourney("sign in", "start"),
+      "/enter-email": generateSessionJourney("sign in", "start"),
       "/enter-password-account-exists": generateSessionJourney(
         "sign in",
         "start"
