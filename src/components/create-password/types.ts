@@ -3,6 +3,7 @@ import { ApiResponseResult, DefaultApiResponse } from "../../types";
 export interface CreatePasswordServiceInterface {
   signUpUser: (
     sessionId: string,
+    clientSessionId: string,
     emailAddress: string,
     password: string,
     sourceIp: string,
