@@ -1,8 +1,13 @@
-import { getRequestConfig, Http, http } from "../../utils/http";
+import {
+  createApiResponse,
+  getRequestConfig,
+  Http,
+  http,
+} from "../../utils/http";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants";
 
 import { ResetPasswordCheckEmailServiceInterface } from "./types";
-import { ApiResponse, ApiResponseResult } from "../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../types";
 
 export function resetPasswordCheckEmailService(
   axios: Http = http
@@ -12,8 +17,8 @@ export function resetPasswordCheckEmailService(
     sessionId: string,
     sourceIp: string,
     persistentSessionId: string
-  ): Promise<ApiResponseResult> {
-    const { data, status } = await axios.client.post<ApiResponse>(
+  ): Promise<ApiResponseResult<DefaultApiResponse>> {
+    const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.RESET_PASSWORD_REQUEST,
       {
         email: email,
@@ -24,12 +29,9 @@ export function resetPasswordCheckEmailService(
         persistentSessionId: persistentSessionId,
       })
     );
-    return {
-      success: status === HTTP_STATUS_CODES.OK,
-      sessionState: data.sessionState,
-      code: data.code,
-      message: data.message,
-    };
+    return createApiResponse<DefaultApiResponse>(response, [
+      HTTP_STATUS_CODES.NO_CONTENT,
+    ]);
   };
   return {
     resetPasswordRequest,

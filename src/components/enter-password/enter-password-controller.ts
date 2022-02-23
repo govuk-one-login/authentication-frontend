@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { USER_STATE } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import {
   formatValidationError,
@@ -9,8 +8,13 @@ import { enterPasswordService } from "./enter-password-service";
 import { EnterPasswordServiceInterface } from "./types";
 import { MfaServiceInterface } from "../common/mfa/types";
 import { mfaService } from "../common/mfa/mfa-service";
-import { getNextPathByState } from "../common/constants";
+import {
+  ERROR_CODES,
+  getErrorPathByCode,
+  getNextPathAndUpdateJourney,
+} from "../common/constants";
 import { BadRequestError } from "../../utils/error";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -36,7 +40,7 @@ export function enterPasswordAccountExistsGet(
   req: Request,
   res: Response
 ): void {
-  const { email } = req.session;
+  const { email } = req.session.user;
   res.render(ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE, {
     email: email,
   });
@@ -48,7 +52,7 @@ export function enterPasswordPost(
   mfaCodeService: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session;
+    const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const userLogin = await service.loginUser(
@@ -60,45 +64,72 @@ export function enterPasswordPost(
       persistentSessionId
     );
 
-    if (userLogin.success && userLogin.sessionState) {
-      let redirectTo = getNextPathByState(userLogin.sessionState);
-      req.session.phoneNumber = userLogin.redactedPhoneNumber;
-
-      if (userLogin.sessionState === USER_STATE.LOGGED_IN) {
-        const result = await mfaCodeService.sendMfaCode(
-          sessionId,
-          clientSessionId,
-          email,
-          req.ip,
-          persistentSessionId
-        );
-
-        if (!result.success) {
-          throw new BadRequestError(result.message, result.code);
-        }
-
-        redirectTo = getNextPathByState(result.sessionState);
+    if (!userLogin.success) {
+      if (
+        userLogin.data.code ===
+        ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED
+      ) {
+        return res.redirect(getErrorPathByCode(userLogin.data.code));
       }
 
-      return res.redirect(redirectTo);
+      const error = formatValidationError(
+        "password",
+        req.t(
+          fromAccountExists
+            ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY
+            : ENTER_PASSWORD_VALIDATION_KEY
+        )
+      );
+
+      return renderBadRequest(
+        res,
+        req,
+        fromAccountExists
+          ? ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE
+          : ENTER_PASSWORD_TEMPLATE,
+        error
+      );
     }
 
-    const error = formatValidationError(
-      "password",
-      req.t(
-        fromAccountExists
-          ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY
-          : ENTER_PASSWORD_VALIDATION_KEY
-      )
-    );
+    req.session.user.phoneNumber = userLogin.data.redactedPhoneNumber;
+    req.session.user.isConsentRequired = userLogin.data.consentRequired;
+    req.session.user.isLatestTermsAndConditionsAccepted =
+      userLogin.data.latestTermsAndConditionsAccepted;
 
-    return renderBadRequest(
-      res,
-      req,
-      fromAccountExists
-        ? ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE
-        : ENTER_PASSWORD_TEMPLATE,
-      error
+    if (userLogin.data.mfaRequired && userLogin.data.phoneNumberVerified) {
+      const result = await mfaCodeService.sendMfaCode(
+        sessionId,
+        clientSessionId,
+        email,
+        req.ip,
+        persistentSessionId
+      );
+
+      if (!result.success) {
+        const path = getErrorPathByCode(result.data.code);
+
+        if (path) {
+          return res.redirect(path);
+        }
+
+        throw new BadRequestError(result.data.message, result.data.code);
+      }
+    }
+
+    return res.redirect(
+      getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
+        {
+          isLatestTermsAndConditionsAccepted:
+            req.session.user.isLatestTermsAndConditionsAccepted,
+          isPhoneNumberVerified: userLogin.data.phoneNumberVerified,
+          requiresTwoFactorAuth: userLogin.data.mfaRequired,
+          isConsentRequired: req.session.user.isConsentRequired,
+        },
+        sessionId
+      )
     );
   };
 }

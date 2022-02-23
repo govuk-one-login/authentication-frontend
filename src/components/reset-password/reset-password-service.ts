@@ -6,7 +6,7 @@ import {
 } from "../../utils/http";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants";
 import { ResetPasswordServiceInterface } from "./types";
-import { ApiResponse, ApiResponseResult } from "../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../types";
 
 export function resetPasswordService(
   axios: Http = http
@@ -17,8 +17,8 @@ export function resetPasswordService(
     sourceIp: string,
     sessionId: string,
     persistentSessionId: string
-  ): Promise<ApiResponseResult> {
-    const response = await axios.client.post<ApiResponse>(
+  ): Promise<ApiResponseResult<DefaultApiResponse>> {
+    const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.RESET_PASSWORD,
       {
         password: newPassword,
@@ -31,7 +31,9 @@ export function resetPasswordService(
       })
     );
 
-    return createApiResponse(response, [HTTP_STATUS_CODES.NO_CONTENT]);
+    return createApiResponse<DefaultApiResponse>(response, [
+      HTTP_STATUS_CODES.NO_CONTENT,
+    ]);
   };
 
   return {

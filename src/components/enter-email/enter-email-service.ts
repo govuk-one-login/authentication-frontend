@@ -6,7 +6,7 @@ import {
 } from "../../utils/http";
 import { API_ENDPOINTS } from "../../app.constants";
 import { EnterEmailServiceInterface, UserExists } from "./types";
-import { ApiResponse } from "../../types";
+import { ApiResponseResult } from "../../types";
 
 export function enterEmailService(
   axios: Http = http
@@ -16,8 +16,8 @@ export function enterEmailService(
     emailAddress: string,
     sourceIp: string,
     persistentSessionId: string
-  ): Promise<UserExists> {
-    const response = await axios.client.post<ApiResponse>(
+  ): Promise<ApiResponseResult<UserExists>> {
+    const response = await axios.client.post<UserExists>(
       API_ENDPOINTS.USER_EXISTS,
       {
         email: emailAddress.toLowerCase(),
@@ -29,10 +29,7 @@ export function enterEmailService(
       })
     );
 
-    const apiResponse = createApiResponse(response) as UserExists;
-    apiResponse.email = response.data.email;
-
-    return apiResponse;
+    return createApiResponse<UserExists>(response);
   };
 
   return {

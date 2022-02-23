@@ -1,7 +1,12 @@
 import { MfaServiceInterface } from "./types";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
-import { getRequestConfig, http, Http } from "../../../utils/http";
-import { ApiResponse, ApiResponseResult } from "../../../types";
+import {
+  createApiResponse,
+  getRequestConfig,
+  http,
+  Http,
+} from "../../../utils/http";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types";
 
 export function mfaService(axios: Http = http): MfaServiceInterface {
   const sendMfaCode = async function (
@@ -10,8 +15,8 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
     emailAddress: string,
     sourceIp: string,
     persistentSessionId: string
-  ): Promise<ApiResponseResult> {
-    const { data, status } = await axios.client.post<ApiResponse>(
+  ): Promise<ApiResponseResult<DefaultApiResponse>> {
+    const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.MFA,
       {
         email: emailAddress,
@@ -24,12 +29,9 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
       })
     );
 
-    return {
-      success: status === HTTP_STATUS_CODES.OK,
-      code: data.code,
-      message: data.message,
-      sessionState: data.sessionState,
-    };
+    return createApiResponse<DefaultApiResponse>(response, [
+      HTTP_STATUS_CODES.NO_CONTENT,
+    ]);
   };
 
   return {

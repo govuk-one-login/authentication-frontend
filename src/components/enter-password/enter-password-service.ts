@@ -6,6 +6,7 @@ import {
 } from "../../utils/http";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants";
 import { EnterPasswordServiceInterface, UserLoginResponse } from "./types";
+import { ApiResponseResult } from "../../types";
 
 export function enterPasswordService(
   axios: Http = http
@@ -17,7 +18,7 @@ export function enterPasswordService(
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string
-  ): Promise<UserLoginResponse> {
+  ): Promise<ApiResponseResult<UserLoginResponse>> {
     const response = await axios.client.post<UserLoginResponse>(
       API_ENDPOINTS.LOG_IN_USER,
       {
@@ -30,16 +31,14 @@ export function enterPasswordService(
         validationStatues: [
           HTTP_STATUS_CODES.OK,
           HTTP_STATUS_CODES.UNAUTHORIZED,
+          HTTP_STATUS_CODES.BAD_REQUEST,
         ],
         sourceIp: sourceIp,
         persistentSessionId: persistentSessionId,
       })
     );
 
-    const apiResponse = createApiResponse(response) as UserLoginResponse;
-    apiResponse.redactedPhoneNumber = response.data.redactedPhoneNumber;
-
-    return apiResponse;
+    return createApiResponse<UserLoginResponse>(response);
   };
 
   return {

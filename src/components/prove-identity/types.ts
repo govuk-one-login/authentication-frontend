@@ -1,6 +1,6 @@
-import { ApiResponseResult } from "../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../types";
 
-export interface IPVAuthorisationResponse extends ApiResponseResult {
+export interface IPVAuthorisationResponse extends DefaultApiResponse {
   redirectUri?: string;
 }
 
@@ -11,5 +11,5 @@ export interface ProveIdentityServiceInterface {
     emailAddress: string,
     sourceIp: string,
     persistentSessionId: string
-  ) => Promise<IPVAuthorisationResponse>;
+  ) => Promise<ApiResponseResult<IPVAuthorisationResponse>>;
 }

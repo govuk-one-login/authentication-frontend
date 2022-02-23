@@ -4,9 +4,13 @@ import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../../app.constants";
 
 describe("Integration::enter email", () => {
-  let sandbox: sinon.SinonSandbox;
   let token: string | string[];
   let cookies: string;
   let app: any;
@@ -16,11 +20,18 @@ describe("Integration::enter email", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-    sandbox = sinon.createSandbox();
-    sandbox
+
+    sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+
+        req.session.user = {
+          journey: {
+            nextPath: PATH_NAMES.ENTER_EMAIL_SIGN_IN,
+            optionalPaths: [PATH_NAMES.SIGN_IN_OR_CREATE],
+          },
+        };
 
         next();
       });
@@ -29,7 +40,7 @@ describe("Integration::enter email", () => {
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     request(app)
-      .get("/enter-email")
+      .get(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .end((err, res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
@@ -42,17 +53,17 @@ describe("Integration::enter email", () => {
   });
 
   after(() => {
-    sandbox.restore();
+    sinon.restore();
     app = undefined;
   });
 
   it("should return enter email page", (done) => {
-    request(app).get("/enter-email").expect(200, done);
+    request(app).get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200, done);
   });
 
   it("should return error when csrf not present", (done) => {
     request(app)
-      .post("/enter-email")
+      .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .send({
         email: "test@test.com",
@@ -62,7 +73,7 @@ describe("Integration::enter email", () => {
 
   it("should return validation error when email not entered", (done) => {
     request(app)
-      .post("/enter-email")
+      .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -80,7 +91,7 @@ describe("Integration::enter email", () => {
 
   it("should return validation error when invalid email entered", (done) => {
     request(app)
-      .post("/enter-email")
+      .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -96,7 +107,7 @@ describe("Integration::enter email", () => {
       .expect(400);
 
     request(app)
-      .post("/enter-email")
+      .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -112,7 +123,7 @@ describe("Integration::enter email", () => {
       .expect(400);
 
     request(app)
-      .post("/enter-email")
+      .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -129,50 +140,47 @@ describe("Integration::enter email", () => {
   });
 
   it("should redirect to /enter-password page when email address exists", (done) => {
-    nock(baseApi).post("/user-exists").once().reply(200, {
-      email: "test@test.com",
-      sessionState: "AUTHENTICATION_REQUIRED",
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.USER_EXISTS)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email: "test@test.com",
+        doesUserExist: true,
+      });
 
     request(app)
-      .post("/enter-email")
+      .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
         email: "test@test.com",
       })
-      .expect("Location", "/enter-password")
+      .expect("Location", PATH_NAMES.ENTER_PASSWORD)
       .expect(302, done);
   });
 
   it("should redirect to /account-not-found when email address not found", (done) => {
-    nock(baseApi)
-      .post("/user-exists")
-      .once()
-      .reply(200, {
-        email: "test@test.com",
-        sessionState: "USER_NOT_FOUND",
-      })
-      .post("/send-notification")
-      .once()
-      .reply(200, { sessionState: "VERIFY_EMAIL_CODE_SENT" });
+    nock(baseApi).post(API_ENDPOINTS.USER_EXISTS).once().reply(200, {
+      email: "test@test.com",
+      doesUserExist: false,
+    });
 
     request(app)
-      .post("/enter-email")
+      .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
         email: "test@test.com",
       })
-      .expect("Location", "/account-not-found")
+      .expect("Location", PATH_NAMES.ACCOUNT_NOT_FOUND)
       .expect(302, done);
   });
 
   it("should return internal server error when /user-exists API call response is 500", (done) => {
     nock(baseApi)
-      .post("/user-exists")
+      .post(API_ENDPOINTS.USER_EXISTS)
       .once()
       .reply(500, {
         message: "Internal Server error",
@@ -182,7 +190,7 @@ describe("Integration::enter email", () => {
       .reply(200, {});
 
     request(app)
-      .post("/enter-email")
+      .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
       .send({
@@ -190,102 +198,5 @@ describe("Integration::enter email", () => {
         email: "test@test.com",
       })
       .expect(500, done);
-  });
-
-  it("should redirect to /enter-password-account-exists when email address exists", (done) => {
-    nock(baseApi).post("/user-exists").once().reply(200, {
-      email: "test2@test2.com",
-      doesUserExist: true,
-      sessionState: "AUTHENTICATION_REQUIRED",
-    });
-
-    request(app)
-      .post("/enter-email-create")
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        email: "test2@test2.com",
-      })
-      .expect("Location", "/enter-password-account-exists")
-      .expect(302, done);
-  });
-
-  it("should redirect to /check-your-email when email address doesn't exist", (done) => {
-    nock(baseApi)
-      .post("/user-exists")
-      .once()
-      .reply(200, {
-        email: "test@test.com",
-        sessionState: "USER_NOT_FOUND",
-      })
-      .post("/send-notification")
-      .once()
-      .reply(200, { sessionState: "VERIFY_EMAIL_CODE_SENT" });
-
-    request(app)
-      .post("/enter-email-create")
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        email: "test@test.com",
-      })
-      .expect("Location", "/check-your-email")
-      .expect(302, done);
-  });
-
-  it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", (done) => {
-    nock(baseApi)
-      .post("/user-exists")
-      .once()
-      .reply(200, {
-        email: "test@test.com",
-        sessionState: "USER_NOT_FOUND",
-      })
-      .post("/send-notification")
-      .times(6)
-      .reply(400, { sessionState: "EMAIL_MAX_CODES_SENT" });
-
-    request(app)
-      .post("/enter-email-create")
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        email: "test@test.com",
-      })
-      .expect(
-        "Location",
-        "/security-code-requested-too-many-times?actionType=emailMaxCodesSent"
-      )
-      .expect(302, done);
-  });
-
-  it("should redirect to /security-code-invalid-request when exceeded OTP request limit", (done) => {
-    nock(baseApi)
-      .post("/user-exists")
-      .once()
-      .reply(200, {
-        email: "test@test.com",
-        sessionState: "USER_NOT_FOUND",
-      })
-      .post("/send-notification")
-      .once()
-      .reply(400, { sessionState: "EMAIL_CODE_REQUESTS_BLOCKED" });
-
-    request(app)
-      .post("/enter-email-create")
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        email: "test@test.com",
-      })
-      .expect(
-        "Location",
-        "/security-code-invalid-request?actionType=emailBlocked"
-      )
-      .expect(302, done);
   });
 });

@@ -42,7 +42,10 @@ import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes";
 import { authCodeRouter } from "./components/auth-code/auth-code-routes";
 import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-code-routes";
 import { signedOutRouter } from "./components/signed-out/signed-out-routes";
-import { getSessionIdMiddleware } from "./middleware/session-middleware";
+import {
+  getSessionIdMiddleware,
+  initialiseSessionMiddleware,
+} from "./middleware/session-middleware";
 import { shareInfoRouter } from "./components/share-info/share-info-routes";
 import { updatedTermsConditionsRouter } from "./components/updated-terms-conditions/updated-terms-conditions-routes";
 import { signInOrCreateRouter } from "./components/sign-in-or-create/sign-in-or-create-routes";
@@ -54,7 +57,6 @@ import { noCacheMiddleware } from "./middleware/no-cache-middleware";
 import { checkYourEmailRouter } from "./components/check-your-email/check-your-email-routes";
 import { securityCodeErrorRouter } from "./components/security-code-error/security-code-error-routes";
 import { upliftJourneyRouter } from "./components/uplift-journey/uplift-journey-routes";
-import { browserBackButtonErrorRouter } from "./components/browser-back-button-error/browser-back-button-error-routes";
 import { contactUsRouter } from "./components/contact-us/contact-us-routes";
 import { getSessionCookieOptions, getSessionStore } from "./config/session";
 import session from "express-session";
@@ -89,7 +91,6 @@ function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
   app.use(updatedTermsConditionsRouter);
   app.use(resetPasswordRouter);
   app.use(upliftJourneyRouter);
-  app.use(browserBackButtonErrorRouter);
   app.use(contactUsRouter);
   app.use(healthcheckRouter);
   if (!appEnvIsProduction) {
@@ -137,7 +138,7 @@ async function createApp(): Promise<express.Application> {
     session({
       name: "aps",
       store: getSessionStore(redisConfig),
-      saveUninitialized: true,
+      saveUninitialized: false,
       secret: getSessionSecret(),
       unset: "destroy",
       resave: false,
@@ -156,6 +157,7 @@ async function createApp(): Promise<express.Application> {
   app.post("*", sanitizeRequestMiddleware);
   app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
+  app.use(initialiseSessionMiddleware);
   app.use(crossDomainTrackingMiddleware);
 
   registerRoutes(app, appEnvIsProduction);

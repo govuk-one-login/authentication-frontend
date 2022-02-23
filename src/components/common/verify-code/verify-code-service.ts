@@ -1,11 +1,11 @@
-import { API_ENDPOINTS } from "../../../app.constants";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
 import {
   createApiResponse,
   getRequestConfig,
   http,
   Http,
 } from "../../../utils/http";
-import { ApiResponse, ApiResponseResult } from "../../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types";
 import { VerifyCodeInterface } from "./types";
 
 export function codeService(axios: Http = http): VerifyCodeInterface {
@@ -16,8 +16,8 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string
-  ): Promise<ApiResponseResult> {
-    const response = await axios.client.post<ApiResponse>(
+  ): Promise<ApiResponseResult<DefaultApiResponse>> {
+    const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.VERIFY_CODE,
       {
         code,
@@ -31,7 +31,7 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
       })
     );
 
-    return createApiResponse(response);
+    return createApiResponse(response, [HTTP_STATUS_CODES.NO_CONTENT]);
   };
 
   return {

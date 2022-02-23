@@ -1,42 +1,23 @@
 import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types";
-import { SERVICE_TYPE } from "../../app.constants";
-import { clientInfoService } from "../common/client-info/client-info-service";
-import { ClientInfoServiceInterface } from "../common/client-info/types";
-import { BadRequestError } from "../../utils/error";
+import { getNextPathAndUpdateJourney } from "../common/constants";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 
-export function signInOrCreateGet(
-  service: ClientInfoServiceInterface = clientInfoService()
-): ExpressRouteFunc {
-  return async function (req: Request, res: Response) {
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+export function signInOrCreateGet(req: Request, res: Response): void {
+  res.render("sign-in-or-create/index.njk", {
+    serviceType: req.session.client.serviceType,
+  });
+}
 
-    const clientInfoResponse = await service.clientInfo(
-      sessionId,
-      clientSessionId,
-      req.ip,
-      persistentSessionId
-    );
-
-    if (!clientInfoResponse.success) {
-      throw new BadRequestError(
-        clientInfoResponse.message,
-        clientInfoResponse.code
-      );
-    }
-
-    if (
-      clientInfoResponse.data.serviceType &&
-      clientInfoResponse.data.clientName
-    ) {
-      req.session.serviceType = clientInfoResponse.data.serviceType;
-      req.session.clientName = clientInfoResponse.data.clientName;
-    } else {
-      req.session.serviceType = SERVICE_TYPE.MANDATORY;
-    }
-
-    res.render("sign-in-or-create/index.njk", {
-      serviceType: req.session.serviceType,
-    });
-  };
+export function signInOrCreatePost(req: Request, res: Response): void {
+  res.redirect(
+    getNextPathAndUpdateJourney(
+      req,
+      req.path,
+      req.body.optionSelected === "create"
+        ? USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT
+        : USER_JOURNEY_EVENTS.SIGN_IN,
+      null,
+      res.locals.sessionId
+    )
+  );
 }

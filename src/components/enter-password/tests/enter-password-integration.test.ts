@@ -3,11 +3,11 @@ import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
-import { USER_STATE } from "../../../app.constants";
 import decache from "decache";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
+import { ERROR_CODES } from "../../common/constants";
 
 describe("Integration::enter password", () => {
-  let sandbox: sinon.SinonSandbox;
   let token: string | string[];
   let cookies: string;
   let app: any;
@@ -19,14 +19,21 @@ describe("Integration::enter password", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-    sandbox = sinon.createSandbox();
-    sandbox
+
+    sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         res.locals.clientSessionId = "gdsfsfdsgsdgsd-mjdzU854";
         res.locals.persistentSessionId = "dips-123456-abc";
-        req.session.email = "joe.bloggs@digital.cabinet-office.gov.uk";
+
+        req.session.user = {
+          email: "test@test.com",
+          journey: {
+            nextPath: PATH_NAMES.ENTER_PASSWORD,
+          },
+        };
+
         next();
       });
 
@@ -47,7 +54,7 @@ describe("Integration::enter password", () => {
   });
 
   after(() => {
-    sandbox.restore();
+    sinon.restore();
     app = undefined;
   });
 
@@ -82,7 +89,7 @@ describe("Integration::enter password", () => {
   });
 
   it("should return validation error when password is incorrect", (done) => {
-    nock(baseApi).post("/login").once().reply(401);
+    nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(401);
 
     request(app)
       .post(ENDPOINT)
@@ -101,35 +108,8 @@ describe("Integration::enter password", () => {
       .expect(400, done);
   });
 
-  it("should redirect to /enter-code page when password is correct", (done) => {
-    nock(baseApi)
-      .post("/login")
-      .once()
-      .reply(200, {
-        sessionState: USER_STATE.LOGGED_IN,
-      })
-      .post("/mfa")
-      .once()
-      .reply(200, {
-        sessionState: USER_STATE.LOGGED_IN,
-      });
-
-    request(app)
-      .post(ENDPOINT)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        password: "password",
-      })
-      .expect("Location", "/enter-code")
-      .expect(302, done);
-  });
-
   it("should redirect to /auth-code when password is correct (VTR Cm)", (done) => {
-    nock(baseApi).post("/login").once().reply(200, {
-      sessionState: USER_STATE.AUTHENTICATED,
-    });
+    nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(200);
 
     request(app)
       .post(ENDPOINT)
@@ -139,13 +119,13 @@ describe("Integration::enter password", () => {
         _csrf: token,
         password: "password",
       })
-      .expect("Location", "/auth-code")
+      .expect("Location", PATH_NAMES.AUTH_CODE)
       .expect(302, done);
   });
 
   it("should redirect to /account-locked when incorrect password entered 5 times", (done) => {
-    nock(baseApi).post("/login").times(6).reply(200, {
-      sessionState: USER_STATE.ACCOUNT_LOCKED,
+    nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).times(6).reply(400, {
+      code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED,
     });
 
     request(app)
@@ -156,41 +136,7 @@ describe("Integration::enter password", () => {
         _csrf: token,
         password: "password",
       })
-      .expect("Location", "/account-locked")
-      .expect(302, done);
-  });
-
-  it("should redirect to /enter-phone-number when user does not have a verified phone number", (done) => {
-    nock(baseApi).post("/login").once().reply(200, {
-      sessionState: USER_STATE.REQUIRES_TWO_FACTOR,
-    });
-
-    request(app)
-      .post(ENDPOINT)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        password: "password",
-      })
-      .expect("Location", "/enter-phone-number")
-      .expect(302, done);
-  });
-
-  it("should redirect to /updated-terms-conditions when user hasn't agreed terms and conditions", (done) => {
-    nock(baseApi).post("/login").once().reply(200, {
-      sessionState: USER_STATE.UPDATED_TERMS_AND_CONDITIONS,
-    });
-
-    request(app)
-      .post(ENDPOINT)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        password: "password",
-      })
-      .expect("Location", "/updated-terms-and-conditions")
+      .expect("Location", PATH_NAMES.ACCOUNT_LOCKED)
       .expect(302, done);
   });
 });

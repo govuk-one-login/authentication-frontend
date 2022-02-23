@@ -2,22 +2,21 @@ import { NextFunction, Request, Response } from "express";
 import { describe } from "mocha";
 import { sanitizeRequestMiddleware } from "../../../src/middleware/sanitize-request-middleware";
 import { expect, sinon } from "../../utils/test-utils";
+import { mockRequest, mockResponse } from "mock-req-res";
 
 describe("sanitize-request-middleware", () => {
-  let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: NextFunction;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-    req = { body: {} };
-    res = {};
-    next = sandbox.fake();
+    req = mockRequest();
+    res = mockResponse();
+    next = sinon.fake();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("sanitizeRequestMiddleware", () => {

@@ -10,25 +10,24 @@ import {
 } from "../reset-password-controller";
 import { ResetPasswordServiceInterface } from "../types";
 import { PATH_NAMES } from "../../../app.constants";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("reset password controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = {
-      body: {},
-      query: {},
-      session: { user: { state: { resetPassword: {} } } },
-    };
-    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
+    req = mockRequest();
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("resetPasswordGet", () => {
@@ -45,7 +44,7 @@ describe("reset password controller", () => {
   describe("resetPasswordPost", () => {
     it("should redirect to /reset-password-confirmation page", async () => {
       const fakeService: ResetPasswordServiceInterface = {
-        updatePassword: sandbox.fake.returns({ success: true }),
+        updatePassword: sinon.fake.returns({ success: true }),
       };
 
       req.body.password = "Password1";
@@ -64,7 +63,7 @@ describe("reset password controller", () => {
   describe("resetPasswordPost", () => {
     it("should redirect to /reset-password-expired-link when timestamp has been tampered with", async () => {
       const fakeService: ResetPasswordServiceInterface = {
-        updatePassword: sandbox.fake.returns({ success: true }),
+        updatePassword: sinon.fake.returns({ success: true }),
       };
 
       req.body.password = "Password1";
@@ -82,7 +81,7 @@ describe("reset password controller", () => {
   describe("resetPasswordPost", () => {
     it("should redirect to /reset-password-expired-link when code is missing", async () => {
       const fakeService: ResetPasswordServiceInterface = {
-        updatePassword: sandbox.fake.returns({ success: true }),
+        updatePassword: sinon.fake.returns({ success: true }),
       };
 
       req.body.password = "Password1";
@@ -100,7 +99,7 @@ describe("reset password controller", () => {
   describe("resetPasswordPost", () => {
     it("should redirect to /reset-password-expired-link when session-id is missing", async () => {
       const fakeService: ResetPasswordServiceInterface = {
-        updatePassword: sandbox.fake.returns({ success: true }),
+        updatePassword: sinon.fake.returns({ success: true }),
       };
 
       req.body.password = "Password1";

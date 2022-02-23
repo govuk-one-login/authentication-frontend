@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { JOURNEY_TYPE, SecurityCodeErrorType } from "../common/constants";
+import { SecurityCodeErrorType } from "../common/constants";
 import { PATH_NAMES } from "../../app.constants";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
@@ -39,6 +39,6 @@ function getNewCodePath(actionType: SecurityCodeErrorType) {
     case SecurityCodeErrorType.EmailMaxCodesSent:
     case SecurityCodeErrorType.EmailBlocked:
     case SecurityCodeErrorType.EmailMaxRetries:
-      return PATH_NAMES.ENTER_EMAIL + `?type=${JOURNEY_TYPE.CREATE_ACCOUNT}`;
+      return PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT;
   }
 }

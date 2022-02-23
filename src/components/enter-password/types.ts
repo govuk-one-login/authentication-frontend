@@ -1,7 +1,11 @@
-import { ApiResponseResult } from "../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../types";
 
-export interface UserLoginResponse extends ApiResponseResult {
+export interface UserLoginResponse extends DefaultApiResponse {
   redactedPhoneNumber?: string;
+  mfaRequired?: boolean;
+  phoneNumberVerified?: boolean;
+  latestTermsAndConditionsAccepted?: boolean;
+  consentRequired?: boolean;
 }
 
 export interface EnterPasswordServiceInterface {
@@ -12,5 +16,5 @@ export interface EnterPasswordServiceInterface {
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string
-  ) => Promise<UserLoginResponse>;
+  ) => Promise<ApiResponseResult<UserLoginResponse>>;
 }

@@ -6,30 +6,31 @@ import { Request, Response } from "express";
 import { enterMfaGet, enterMfaPost } from "../enter-mfa-controller";
 
 import { VerifyCodeInterface } from "../../common/verify-code/types";
+import { PATH_NAMES } from "../../../app.constants";
+import { ERROR_CODES } from "../../common/constants";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 
 describe("enter mfa controller", () => {
-  let sandbox: sinon.SinonSandbox;
-  let req: Partial<Request>;
-  let res: Partial<Response>;
+  let req: RequestOutput;
+  let res: ResponseOutput;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-
-    req = {
-      body: {},
-      session: {},
+    req = mockRequest({
+      path: PATH_NAMES.ENTER_MFA,
+      session: { client: {}, user: {} },
+      log: { info: sinon.fake() },
       i18n: { language: "en" },
-    };
-    res = {
-      render: sandbox.fake(),
-      redirect: sandbox.fake(),
-      status: sandbox.fake(),
-      locals: {},
-    };
+    });
+    res = mockResponse();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   describe("enterMfaGet", () => {
@@ -43,8 +44,7 @@ describe("enter mfa controller", () => {
   describe("enterMfaPost", () => {
     it("should redirect to /auth-code when valid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake.returns({
-          sessionState: "MFA_CODE_VERIFIED",
+        verifyCode: sinon.fake.returns({
           success: true,
         }),
       };
@@ -55,18 +55,18 @@ describe("enter mfa controller", () => {
       await enterMfaPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
-      expect(res.redirect).to.have.calledWith("/auth-code");
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
     });
 
     it("should return error when invalid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake.returns({
+        verifyCode: sinon.fake.returns({
           success: false,
-          sessionState: "MFA_CODE_NOT_VALID",
+          data: { code: ERROR_CODES.INVALID_MFA_CODE, message: "" },
         }),
       };
 
-      req.t = sandbox.fake.returns("translated string");
+      req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
       res.locals.sessionId = "123456-djjad";
 
@@ -78,13 +78,16 @@ describe("enter mfa controller", () => {
 
     it("should redirect to security code expired when invalid code entered more than max retries", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sandbox.fake.returns({
-          sessionState: "MFA_CODE_MAX_RETRIES_REACHED",
+        verifyCode: sinon.fake.returns({
+          data: {
+            code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
+            message: "",
+          },
           success: false,
         }),
       };
 
-      req.t = sandbox.fake.returns("translated string");
+      req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
       res.locals.sessionId = "123456-djjad";
 
@@ -92,7 +95,7 @@ describe("enter mfa controller", () => {
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.been.calledWith(
-        "/security-code-invalid?actionType=mfaMaxRetries"
+        `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=mfaMaxRetries`
       );
     });
   });

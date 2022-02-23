@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { ERROR_MESSAGES, PATH_NAMES } from "../app.constants";
-import { getNextPathByState } from "../components/common/constants";
 import xss from "xss";
 
 export function initialiseSessionMiddleware(
@@ -8,15 +7,22 @@ export function initialiseSessionMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  if (req.query.interrupt) {
-    req.session.resetMaxAge();
-  } else {
-    req.session.regenerate((err: any) => {
-      if (err) {
-        throw new Error(err);
-      }
-    });
+  if (req.path === PATH_NAMES.START) {
+    req.session.client = {};
+
+    const email =
+      req.session && req.session.user ? req.session.user.email : undefined;
+    const phoneNumber =
+      req.session && req.session.user
+        ? req.session.user.phoneNumber
+        : undefined;
+
+    req.session.user = {
+      email: email,
+      phoneNumber: phoneNumber,
+    };
   }
+
   next();
 }
 
@@ -48,27 +54,14 @@ export function validateSessionMiddleware(
     return next();
   }
 
-  req.session.destroy();
+  req.session.destroy((error) => {
+    if (error) {
+      req.log.error(`Failed to delete session: ${error}`);
+    } else {
+      req.log.info("Session destroyed");
+    }
+  });
 
   res.status(401);
   next(new Error(ERROR_MESSAGES.INVALID_SESSION));
-}
-
-export function handleBackButtonMiddleware(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void {
-  const { backState } = req.session;
-
-  if (backState) {
-    const nextPath = getNextPathByState(backState);
-
-    if (req.route.path !== nextPath) {
-      req.session.backState = null;
-      return res.redirect(PATH_NAMES.INVALID_SESSION);
-    }
-  }
-
-  return next();
 }

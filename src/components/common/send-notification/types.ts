@@ -1,4 +1,4 @@
-import { ApiResponseResult } from "../../../types";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types";
 
 export interface SendNotificationServiceInterface {
   sendNotification: (
@@ -9,5 +9,5 @@ export interface SendNotificationServiceInterface {
     sourceIp: string,
     persistentSessionId: string,
     phoneNumber?: string
-  ) => Promise<ApiResponseResult>;
+  ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

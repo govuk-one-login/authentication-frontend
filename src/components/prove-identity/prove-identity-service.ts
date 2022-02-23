@@ -9,6 +9,7 @@ import {
   IPVAuthorisationResponse,
   ProveIdentityServiceInterface,
 } from "./types";
+import { ApiResponseResult } from "../../types";
 
 export function proveIdentityService(
   axios: Http = http
@@ -19,7 +20,7 @@ export function proveIdentityService(
     emailAddress: string,
     sourceIp: string,
     persistentSessionId: string
-  ): Promise<IPVAuthorisationResponse> {
+  ): Promise<ApiResponseResult<IPVAuthorisationResponse>> {
     const response = await axios.client.post<IPVAuthorisationResponse>(
       API_ENDPOINTS.IPV_AUTHORIZE,
       {
@@ -32,10 +33,7 @@ export function proveIdentityService(
         persistentSessionId: persistentSessionId,
       })
     );
-    const apiResponse = createApiResponse(response) as IPVAuthorisationResponse;
-    apiResponse.redirectUri = response.data.redirectUri;
-
-    return apiResponse;
+    return createApiResponse<IPVAuthorisationResponse>(response);
   };
 
   return {
