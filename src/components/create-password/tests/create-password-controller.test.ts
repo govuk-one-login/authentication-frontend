@@ -45,6 +45,9 @@ describe("create-password controller", () => {
     it("should redirect to enter-phone-number when 2 factor is required", async () => {
       const fakeService: CreatePasswordServiceInterface = {
         signUpUser: sinon.fake.returns({
+          data: {
+            consentRequired: false,
+          },
           success: true,
         }),
       };

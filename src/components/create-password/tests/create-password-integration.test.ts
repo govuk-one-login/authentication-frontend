@@ -4,7 +4,11 @@ import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../../app.constants";
 
 describe("Integration::register create password", () => {
   let token: string | string[];
@@ -165,7 +169,10 @@ describe("Integration::register create password", () => {
   });
 
   it("should redirect to enter phone number when valid password entered", (done) => {
-    nock(baseApi).post(API_ENDPOINTS.SIGNUP_USER).once().reply(204, {});
+    nock(baseApi)
+      .post(API_ENDPOINTS.SIGNUP_USER)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {});
 
     request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
