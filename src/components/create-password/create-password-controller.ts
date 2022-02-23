@@ -16,6 +16,7 @@ export function createPasswordPost(
   return async function (req: Request, res: Response) {
     const result = await service.signUpUser(
       res.locals.sessionId,
+      res.locals.clientSessionId,
       req.session.user.email,
       req.body.password,
       req.ip,

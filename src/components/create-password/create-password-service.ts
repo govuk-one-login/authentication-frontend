@@ -13,6 +13,7 @@ export function createPasswordService(
 ): CreatePasswordServiceInterface {
   const signUpUser = async function (
     sessionId: string,
+    clientSessionId: string,
     emailAddress: string,
     password: string,
     sourceIp: string,
@@ -26,6 +27,7 @@ export function createPasswordService(
       },
       getRequestConfig({
         sessionId: sessionId,
+        clientSessionId: clientSessionId,
         sourceIp: sourceIp,
         persistentSessionId: persistentSessionId,
       })
