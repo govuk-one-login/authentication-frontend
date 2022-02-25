@@ -53,6 +53,12 @@ describe("contact us further information controller", () => {
         }
       );
     });
+
+    it("should redirect to contact-us when no theme is present in request", () => {
+      furtherInformationGet(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith("/contact-us");
+    });
   });
 
   describe("signingInFurtherInformationPost", () => {

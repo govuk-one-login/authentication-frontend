@@ -75,6 +75,11 @@ describe("contact us questions controller", () => {
         fromPage: "https://gov.uk/sign-in",
       });
     });
+    it("should redirect to contact-us when no theme is present in request", () => {
+      contactUsQuestionsGet(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith("/contact-us");
+    });
   });
 
   describe("contactUsQuestionsGetFromFurtherInformationSigningInPage", () => {

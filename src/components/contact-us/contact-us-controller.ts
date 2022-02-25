@@ -66,6 +66,9 @@ export function contactUsFormPost(req: Request, res: Response): void {
 }
 
 export function furtherInformationGet(req: Request, res: Response): void {
+  if (!req.query.theme) {
+    return res.redirect(PATH_NAMES.CONTACT_US);
+  }
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
     fromPage: req.query.fromPage,
@@ -84,6 +87,9 @@ export function furtherInformationPost(req: Request, res: Response): void {
 }
 
 export function contactUsQuestionsGet(req: Request, res: Response): void {
+  if (!req.query.theme) {
+    return res.redirect(PATH_NAMES.CONTACT_US);
+  }
   let pageTitle = themeToPageTitle[req.query.theme as string];
   if (
     req.query.subtheme === ZENDESK_THEMES.SOMETHING_ELSE &&
