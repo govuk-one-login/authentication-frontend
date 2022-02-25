@@ -25,7 +25,8 @@ export function contactUsService(
             contactForm.descriptions,
             contactForm.optionalData,
             contactForm.questions,
-            contactForm.themeQuestions
+            contactForm.themeQuestions,
+            contactForm.referer
           ),
         },
         group_id: getZendeskGroupIdPublic(),
@@ -47,7 +48,8 @@ export function contactUsService(
     descriptions: Descriptions,
     optionalData: OptionalData,
     questions: Questions,
-    themeQuestions: ThemeQuestions
+    themeQuestions: ThemeQuestions,
+    referer: string
   ) {
     const htmlBody = [];
 
@@ -76,6 +78,13 @@ export function contactUsService(
 
     htmlBody.push(`<span>[Session ID]</span>`);
     htmlBody.push(`<p>${optionalData.sessionId}</p>`);
+
+    htmlBody.push(`<span>[From page]</span>`);
+    if (!referer) {
+      htmlBody.push(`<p>undefined</p>`);
+    } else {
+      htmlBody.push(`<p>${referer}</p>`);
+    }
 
     htmlBody.push(`<span>[User Agent]</span>`);
     htmlBody.push(`<p>${optionalData.userAgent}</p>`);

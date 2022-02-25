@@ -8,6 +8,7 @@ export interface ContactForm {
   feedbackContact: boolean;
   questions: Questions;
   themeQuestions: ThemeQuestions;
+  referer: string;
 }
 
 export interface OptionalData {
