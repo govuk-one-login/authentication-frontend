@@ -66,7 +66,10 @@ export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
     password: result.Parameters.find((p: Parameter) => p.Name === passwordKey)
       .Value,
     host: result.Parameters.find((p: Parameter) => p.Name === hostKey).Value,
-    port: result.Parameters.find((p: Parameter) => p.Name === portKey).Value,
+    port: Number(
+      result.Parameters.find((p: Parameter) => p.Name === portKey).Value
+    ),
+    isLocal: false,
   };
 }
 
@@ -92,8 +95,4 @@ export function getZendeskGroupIdPublic(): number {
 
 export function getAnalyticsCookieDomain(): string {
   return process.env.ANALYTICS_COOKIE_DOMAIN;
-}
-
-export function isFargate(): boolean {
-  return process.env.FARGATE === "1";
 }
