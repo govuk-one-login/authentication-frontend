@@ -13,6 +13,7 @@ describe("contact us further information controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
+  const FROM_PAGE = "https://gov.uk/sign-in";
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -28,28 +29,28 @@ describe("contact us further information controller", () => {
   describe("furtherInformationGet", () => {
     it("should render signing in further information if a problem signing in to your account radio option was chosen", () => {
       req.query.theme = ZENDESK_THEMES.SIGNING_IN;
-      req.query.fromPage = "https://gov.uk/sign-in";
+      req.query.fromPage = FROM_PAGE;
       furtherInformationGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
         "contact-us/further-information/index.njk",
         {
           theme: "signing_in",
-          fromPage: "https://gov.uk/sign-in",
+          fromPage: FROM_PAGE,
         }
       );
     });
 
     it("should render account creation further information if a creating an account radio option was chosen", () => {
       req.query.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
-      req.query.fromPage = "https://gov.uk/sign-in";
+      req.query.fromPage = FROM_PAGE;
       furtherInformationGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
         "contact-us/further-information/index.njk",
         {
           theme: "account_creation",
-          fromPage: "https://gov.uk/sign-in",
+          fromPage: FROM_PAGE,
         }
       );
     });
@@ -65,7 +66,7 @@ describe("contact us further information controller", () => {
     it("should redirect /contact-us-questions page when 'You did not receive a security code' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.SIGNING_IN;
       req.body.subtheme = ZENDESK_THEMES.NO_SECURITY_CODE;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
@@ -75,7 +76,7 @@ describe("contact us further information controller", () => {
     it("should redirect /contact-us-questions page when 'The security code did not work' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.SIGNING_IN;
       req.body.subtheme = ZENDESK_THEMES.INVALID_SECURITY_CODE;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
@@ -85,7 +86,7 @@ describe("contact us further information controller", () => {
     it("should redirect /contact-us-questions page when 'You do not have access to the phone number' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.SIGNING_IN;
       req.body.subtheme = ZENDESK_THEMES.NO_PHONE_NUMBER_ACCESS;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
@@ -95,7 +96,7 @@ describe("contact us further information controller", () => {
     it("should redirect /contact-us-questions page when 'You’ve forgotten your password' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.SIGNING_IN;
       req.body.subtheme = ZENDESK_THEMES.FORGOTTEN_PASSWORD;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
@@ -105,7 +106,7 @@ describe("contact us further information controller", () => {
     it("should redirect /contact-us-questions page when 'Your account cannot be found' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.SIGNING_IN;
       req.body.subtheme = ZENDESK_THEMES.ACCOUNT_NOT_FOUND;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
@@ -115,7 +116,7 @@ describe("contact us further information controller", () => {
     it("should redirect /contact-us-questions page when 'There was a technical problem' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.SIGNING_IN;
       req.body.subtheme = ZENDESK_THEMES.TECHNICAL_ERROR;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
@@ -125,7 +126,7 @@ describe("contact us further information controller", () => {
     it("should redirect /contact-us-questions page when 'Something else' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.SIGNING_IN;
       req.body.subtheme = ZENDESK_THEMES.SOMETHING_ELSE;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
@@ -138,7 +139,7 @@ describe("contact us further information controller", () => {
     it("should redirect /contact-us-questions page when 'You did not receive a security code' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
       req.body.subtheme = ZENDESK_THEMES.NO_SECURITY_CODE;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
@@ -148,7 +149,7 @@ describe("contact us further information controller", () => {
     it("should redirect /contact-us-questions page when 'The security code did not work' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
       req.body.subtheme = ZENDESK_THEMES.INVALID_SECURITY_CODE;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
@@ -158,7 +159,7 @@ describe("contact us further information controller", () => {
     it("should redirect /contact-us-questions page when 'You do not have a UK mobile phone number' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
       req.body.subtheme = ZENDESK_THEMES.NO_UK_MOBILE_NUMBER;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
@@ -168,7 +169,7 @@ describe("contact us further information controller", () => {
     it("should redirect /contact-us-questions page when 'There was a technical problem' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
       req.body.subtheme = ZENDESK_THEMES.TECHNICAL_ERROR;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
@@ -178,7 +179,7 @@ describe("contact us further information controller", () => {
     it("should redirect /contact-us-questions page when 'Something else' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
       req.body.subtheme = ZENDESK_THEMES.SOMETHING_ELSE;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(

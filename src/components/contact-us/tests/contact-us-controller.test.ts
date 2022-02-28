@@ -10,6 +10,7 @@ describe("contact us controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
+  const FROM_PAGE = "https://gov.uk/sign-in";
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -45,7 +46,7 @@ describe("contact us controller", () => {
   describe("contactUsFormPost", () => {
     it("should redirect /contact-us-further-information page when 'A problem signing in to your account' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.SIGNING_IN;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
 
       contactUsFormPost(req as Request, res as Response);
 
@@ -55,7 +56,7 @@ describe("contact us controller", () => {
     });
     it("should redirect /contact-us-further-information page when 'A problem creating an account' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
 
       contactUsFormPost(req as Request, res as Response);
 
@@ -65,7 +66,7 @@ describe("contact us controller", () => {
     });
     it("should redirect /contact-us-questions page when 'Another problem using your GOV.UK account' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.SOMETHING_ELSE;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
 
       contactUsFormPost(req as Request, res as Response);
 
@@ -75,7 +76,7 @@ describe("contact us controller", () => {
     });
     it("should redirect /contact-us-questions page when 'GOV.UK email subscriptions' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
 
       contactUsFormPost(req as Request, res as Response);
 
@@ -85,7 +86,7 @@ describe("contact us controller", () => {
     });
     it("should redirect /contact-us-questions page when 'A suggestion or feedback about using your GOV.UK account' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.SUGGESTIONS_FEEDBACK;
-      req.body.fromPage = "https://gov.uk/sign-in";
+      req.body.fromPage = FROM_PAGE;
 
       contactUsFormPost(req as Request, res as Response);
 

@@ -80,10 +80,10 @@ export function contactUsService(
     htmlBody.push(`<p>${optionalData.sessionId}</p>`);
 
     htmlBody.push(`<span>[From page]</span>`);
-    if (!referer) {
-      htmlBody.push(`<p>undefined</p>`);
-    } else {
+    if (referer) {
       htmlBody.push(`<p>${referer}</p>`);
+    } else {
+      htmlBody.push(`<p>Unable to capture referer</p>`);
     }
 
     htmlBody.push(`<span>[User Agent]</span>`);
