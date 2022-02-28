@@ -27,9 +27,10 @@ export interface ZendeskInterface {
 
 export interface RedisConfig {
   host: string;
-  port: string;
-  password: string;
+  port: number;
+  password?: string;
   name?: string;
   uri?: string;
   tls?: boolean;
+  isLocal: boolean;
 }
