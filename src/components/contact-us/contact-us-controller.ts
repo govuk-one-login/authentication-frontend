@@ -218,10 +218,10 @@ export function getQuestionFromThemes(
 ): ThemeQuestions {
   const themesToQuestions: { [key: string]: any } = {
     account_creation: req.t("pages.contactUsPublic.section3.radio1"),
-    signing_in: req.t("pages.contactUsPublic.section3.radio1"),
-    something_else: req.t("pages.contactUsPublic.section3.radio1"),
-    email_subscriptions: req.t("pages.contactUsPublic.section3.radio1"),
-    suggestions_feedback: req.t("pages.contactUsPublic.section3.radio1"),
+    signing_in: req.t("pages.contactUsPublic.section3.radio2"),
+    something_else: req.t("pages.contactUsPublic.section3.radio3"),
+    email_subscriptions: req.t("pages.contactUsPublic.section3.radio4"),
+    suggestions_feedback: req.t("pages.contactUsPublic.section3.radio5"),
   };
   const signinSubthemeToQuestions: { [key: string]: any } = {
     no_security_code: req.t(
