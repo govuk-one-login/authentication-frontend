@@ -2,16 +2,6 @@ locals {
   redis_port_number = 6379
 }
 
-data "cloudfoundry_service" "redis" {
-  name = "redis"
-}
-
-resource "cloudfoundry_service_instance" "redis" {
-  name         = "${var.environment}-frontend-redis"
-  space        = data.cloudfoundry_space.space.id
-  service_plan = data.cloudfoundry_service.redis.service_plans[var.redis_service_plan]
-}
-
 resource "aws_elasticache_subnet_group" "frontend_redis_session_store" {
   name       = "${var.environment}-frontend-redis-subnet"
   subnet_ids = local.private_subnet_ids
