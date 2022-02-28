@@ -37,13 +37,24 @@ export function contactUsGet(req: Request, res: Response): void {
   if (req.query.supportType === SUPPORT_TYPE.GOV_SERVICE) {
     return res.render("contact-us/index-gov-service-contact-us.njk");
   }
+  let fromPage = req.headers.referer;
 
-  return res.render("contact-us/index-public-contact-us.njk");
+  if (req.headers.referer && req.headers.referer.includes("fromPage")) {
+    const urlObj = new URL(req.headers.referer);
+    fromPage = urlObj.searchParams.get("fromPage");
+  }
+
+  return res.render("contact-us/index-public-contact-us.njk", {
+    fromPage: fromPage,
+  });
 }
 
 export function contactUsFormPost(req: Request, res: Response): void {
   let url = PATH_NAMES.CONTACT_US_QUESTIONS;
-  const queryParams = new URLSearchParams({ theme: req.body.theme }).toString();
+  const queryParams = new URLSearchParams({
+    theme: req.body.theme,
+    fromPage: req.body.fromPage,
+  }).toString();
   if (
     [ZENDESK_THEMES.ACCOUNT_CREATION, ZENDESK_THEMES.SIGNING_IN].includes(
       req.body.theme
@@ -55,8 +66,12 @@ export function contactUsFormPost(req: Request, res: Response): void {
 }
 
 export function furtherInformationGet(req: Request, res: Response): void {
+  if (!req.query.theme) {
+    return res.redirect(PATH_NAMES.CONTACT_US);
+  }
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
+    fromPage: req.query.fromPage,
   });
 }
 
@@ -65,12 +80,16 @@ export function furtherInformationPost(req: Request, res: Response): void {
   const queryParams = new URLSearchParams({
     theme: req.body.theme,
     subtheme: req.body.subtheme,
+    fromPage: req.body.fromPage,
   }).toString();
 
   res.redirect(url + "?" + queryParams);
 }
 
 export function contactUsQuestionsGet(req: Request, res: Response): void {
+  if (!req.query.theme) {
+    return res.redirect(PATH_NAMES.CONTACT_US);
+  }
   let pageTitle = themeToPageTitle[req.query.theme as string];
   if (
     req.query.subtheme === ZENDESK_THEMES.SOMETHING_ELSE &&
@@ -84,6 +103,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     theme: req.query.theme,
     subtheme: req.query.subtheme,
     backurl: req.headers.referer,
+    fromPage: req.query.fromPage,
     pageTitleHeading: pageTitle,
   });
 }
@@ -116,6 +136,7 @@ export function contactUsQuestionsFormPost(
       feedbackContact: req.body.contact === "true",
       questions: questions,
       themeQuestions: themeQuestions,
+      referer: req.body.fromPage,
     });
 
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);

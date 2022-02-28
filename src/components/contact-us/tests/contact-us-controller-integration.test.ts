@@ -169,6 +169,7 @@ describe("Integration:: contact us - public user", () => {
         contact: "true",
         email: "test@test.com",
         formType: "noSecurityCode",
+        fromPage: "https://gov.uk/sign-in",
       })
       .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
       .expect(302, done);
