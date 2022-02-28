@@ -13,9 +13,6 @@ params:
   DNS_DEPLOYER_ROLE_ARN: ((deployer-role-arn-production))
   DNS_STATE_BUCKET: ((dns-state-bucket))
   DNS_STATE_KEY: ((dns-state-key))
-  CF_USERNAME: ((cf-username))
-  CF_PASSWORD: ((cf-password))
-  CF_ORG_NAME: ((cf-org-name))
   GTM_ID: ((build-gtm-id))
   SESSION_EXPIRY: ((build-session-expiry))
   LOGGING_ENDPOINT_ARN: "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prod"
@@ -62,9 +59,6 @@ run:
 
       terraform apply -auto-approve \
         -var "deployer_role_arn=${DEPLOYER_ROLE_ARN}" \
-        -var "cf_username=${CF_USERNAME}" \
-        -var "cf_password=${CF_PASSWORD}" \
-        -var "cf_org_name=${CF_ORG_NAME}" \
         -var "common_state_bucket=${STATE_BUCKET}" \
         -var "dns_state_bucket=${DNS_STATE_BUCKET}" \
         -var "dns_state_key=${DNS_STATE_KEY}" \
