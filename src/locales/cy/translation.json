@@ -271,16 +271,25 @@
       "title": "Enter your mobile phone number",
       "header": "Enter your mobile phone number",
       "info": {
-        "paragraph1": "We will send a 6 digit security code to the number you give us.",
-        "paragraph2": "You must use a UK mobile phone number."
+        "paragraph1": "We will send a 6 digit security code to the number you give us."
       },
-      "phoneNumber": {
-        "label": "UK phone number",
+      "ukPhoneNumber": {
+        "label": "UK mobile phone number",
         "validationError": {
           "required": "Enter a phone number",
           "international": "Enter a UK mobile phone number",
           "length": "Enter a UK mobile phone number, like 07700 900000",
           "numeric": "Enter a UK mobile phone number using numbers only"
+        }
+      },
+      "internationalPhoneNumber": {
+        "checkBoxLabel": "I have an international mobile number",
+        "label": "International mobile number",
+        "hint": "Include the country code, for example +3537777666555",
+        "validationError": {
+          "required": "Enter a phone number",
+          "plusNumericOnly": "Enter a phone number using only numbers or the + symbol",
+          "international": "Enter a phone number in the correct format"
         }
       }
     },
@@ -1150,133 +1159,128 @@
           "header": "What were you trying to do?",
           "errorMessage": "Enter what you were trying to do"
         },
-        "section2": {
-          "header": "What happened?",
-          "paragraph1": "For example, was there a technical problem?",
-          "errorMessage": "Enter what happened"
-        }
-      },
-      "emailSubscriptions": {
-        "title": "Your GOV.UK email subscriptions",
-        "header": "Your GOV.UK email subscriptions",
-        "section1": {
-          "header": "What were you trying to do and what happened?",
-          "errorMessage": "Enter what you were trying to do and what happened"
+        "emailSubscriptions": {
+          "title": "Your GOV.UK email subscriptions",
+          "header": "Your GOV.UK email subscriptions",
+          "section1": {
+            "header": "What were you trying to do and what happened?",
+            "errorMessage": "Enter what you were trying to do and what happened"
+          },
+          "section2": {
+            "header": "Anything else you want to tell us",
+            "paragraph1": "For example, if you want to add more detail or give feedback"
+          }
         },
-        "section2": {
-          "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give feedback"
-        }
-      },
-      "suggestionOrFeedback": {
-        "title": "A suggestion or feedback about using your GOV.UK account",
-        "header": "A suggestion or feedback about using your GOV.UK account",
-        "section1": {
-          "header": "Your suggestion or feedback",
-          "errorMessage": "Enter your suggestion or feedback"
-        }
-      },
-      "technicalError": {
-        "title": "There was a technical error",
-        "header": "There was a technical error",
-        "section1": {
-          "header": "What were you trying to do?",
-          "errorMessage": "Enter what you were trying to do"
+        "suggestionOrFeedback": {
+          "title": "A suggestion or feedback about using your GOV.UK account",
+          "header": "A suggestion or feedback about using your GOV.UK account",
+          "section1": {
+            "header": "Your suggestion or feedback",
+            "errorMessage": "Enter your suggestion or feedback"
+          }
         },
-        "section2": {
-          "header": "What happened?",
-          "paragraph1": "Included details of the error",
-          "errorMessage": "Enter what happened"
+        "technicalError": {
+          "title": "There was a technical error",
+          "header": "There was a technical error",
+          "section1": {
+            "header": "What were you trying to do?",
+            "errorMessage": "Enter what you were trying to do"
+          },
+          "section2": {
+            "header": "What happened?",
+            "paragraph1": "Included details of the error",
+            "errorMessage": "Enter what happened"
+          },
+          "section3": {
+            "header": "If possible, tell us the URL of the page the error happened on?"
+          }
         },
-        "section3": {
-          "header": "If possible, tell us the URL of the page the error happened on?"
-        }
-      },
-      "noSecurityCode": {
-        "title": "You did not receive a security code",
-        "header": "You did not receive a security code",
-        "section1": {
-          "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give us feedback"
-        }
-      },
-      "invalidSecurityCode": {
-        "title": "The security code does not work",
-        "header": "The security code does not work",
-        "section1": {
-          "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give us feedback"
-        }
-      },
-      "noUKMobile": {
-        "title": "You do not have a UK mobile phone number",
-        "header": "You do not have a UK mobile phone number",
-        "section1": {
-          "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give us feedback"
-        }
-      },
-      "forgottenPassword": {
-        "title": "You’ve forgotten your password",
-        "header": "You’ve forgotten your password",
-        "section1": {
-          "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give us feedback"
-        }
-      },
-      "noPhoneNumberAccess": {
-        "title": "You do not have access to the phone number you used when you created your account",
-        "header": "You do not have access to the phone number you used when you created your account",
-        "section1": {
-          "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give us feedback"
-        }
-      },
-      "accountCreationProblem": {
-        "title": "Another problem creating an account",
-        "header": "Another problem creating an account",
-        "section1": {
-          "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give us feedback",
-          "errorMessage": "Enter what happened"
-        }
-      },
-      "signignInProblem": {
-        "title": "Another problem signing in to your account",
-        "header": "Another problem signing in to your account",
-        "section1": {
-          "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give us feedback",
-          "errorMessage": "Enter what happened"
-        }
-      },
-      "accountNotFound": {
-        "title": "Your account cannot be found",
-        "header": "Your account cannot be found",
-        "section1": {
-          "header": "What service were you trying to use?",
-          "paragraph1": "For example, your GOV.UK email subscriptions, your personal tax account or Universal Credit",
-          "errorMessage": "Enter what service you were trying to use"
+        "noSecurityCode": {
+          "title": "You did not receive a security code",
+          "header": "You did not receive a security code",
+          "section1": {
+            "header": "Anything else you want to tell us",
+            "paragraph1": "For example, if you want to add more detail or give us feedback"
+          }
         },
-        "section2": {
-          "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        "invalidSecurityCode": {
+          "title": "The security code does not work",
+          "header": "The security code does not work",
+          "section1": {
+            "header": "Anything else you want to tell us",
+            "paragraph1": "For example, if you want to add more detail or give us feedback"
+          }
+        },
+        "noUKMobile": {
+          "title": "You do not have a UK mobile phone number",
+          "header": "You do not have a UK mobile phone number",
+          "section1": {
+            "header": "Anything else you want to tell us",
+            "paragraph1": "For example, if you want to add more detail or give us feedback"
+          }
+        },
+        "forgottenPassword": {
+          "title": "You’ve forgotten your password",
+          "header": "You’ve forgotten your password",
+          "section1": {
+            "header": "Anything else you want to tell us",
+            "paragraph1": "For example, if you want to add more detail or give us feedback"
+          }
+        },
+        "noPhoneNumberAccess": {
+          "title": "You do not have access to the phone number you used when you created your account",
+          "header": "You do not have access to the phone number you used when you created your account",
+          "section1": {
+            "header": "Anything else you want to tell us",
+            "paragraph1": "For example, if you want to add more detail or give us feedback"
+          }
+        },
+        "accountCreationProblem": {
+          "title": "Another problem creating an account",
+          "header": "Another problem creating an account",
+          "section1": {
+            "header": "Anything else you want to tell us",
+            "paragraph1": "For example, if you want to add more detail or give us feedback",
+            "errorMessage": "Enter what happened"
+          }
+        },
+        "signignInProblem": {
+          "title": "Another problem signing in to your account",
+          "header": "Another problem signing in to your account",
+          "section1": {
+            "header": "Anything else you want to tell us",
+            "paragraph1": "For example, if you want to add more detail or give us feedback",
+            "errorMessage": "Enter what happened"
+          }
+        },
+        "accountNotFound": {
+          "title": "Your account cannot be found",
+          "header": "Your account cannot be found",
+          "section1": {
+            "header": "What service were you trying to use?",
+            "paragraph1": "For example, your GOV.UK email subscriptions, your personal tax account or Universal Credit",
+            "errorMessage": "Enter what service you were trying to use"
+          },
+          "section2": {
+            "header": "Anything else you want to tell us",
+            "paragraph1": "For example, if you want to add more detail or give us feedback"
+          }
         }
+      },
+      "contactUsSubmitSuccess": {
+        "title": "Your message has been submitted",
+        "header": "Your message has been submitted",
+        "paragraph1": "Thank you for your message.",
+        "paragraph2": "We’ll try to get back to you in 2 working days.",
+        "paragraph3": {
+          "linkHref": "https://www.gov.uk",
+          "linkText": "Return to the GOV.UK homepage"
+        }
+      },
+      "termsConditionsNotAccepted": {
+        "title": "placeholder",
+        "header": "placeholder"
       }
-    },
-    "contactUsSubmitSuccess": {
-      "title": "Your message has been submitted",
-      "header": "Your message has been submitted",
-      "paragraph1": "Thank you for your message.",
-      "paragraph2": "We’ll try to get back to you in 2 working days.",
-      "paragraph3": {
-        "linkHref": "https://www.gov.uk",
-        "linkText": "Return to the GOV.UK homepage"
-      }
-    },
-    "termsConditionsNotAccepted": {
-      "title": "placeholder",
-      "header": "placeholder"
     }
   }
 }
