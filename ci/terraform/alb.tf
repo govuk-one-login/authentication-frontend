@@ -44,7 +44,7 @@ resource "aws_alb_listener" "frontend_alb_listener_https" {
   }
 
   depends_on = [
-    aws_acm_certificate_validation.frontend_acm_certificate_validation
+    aws_acm_certificate_validation.frontend_acm_alb_certificate_validation
   ]
 
   tags = local.default_tags
