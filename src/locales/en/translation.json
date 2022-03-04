@@ -285,18 +285,12 @@
       }
     },
     "accountCreated": {
-      "title": "You have  created your GOV.UK account",
-      "header": "You have  created your GOV.UK account",
-      "subHeader": "What you can do with your GOV.UK account",
-      "text": "You need to return to GOV.UK to continue.",
-      "info": {
-        "paragraph1": "At the moment, you can only use your GOV.UK account to manage your GOV.UK email subscriptions.",
-        "paragraph2": "In the future, you’ll be able to use your GOV.UK account to sign in to all government services. It will take a few years for this to happen.",
-        "paragraph3": "For now, you need to use different accounts for different government services."
-      },
+      "title": "You've created your GOV.UK account",
+      "header": "You've created your GOV.UK account",
+      "text": "Now continue to use the service.",
       "inset": "Your progress on ",
       "insetContinued": " has been saved.",
-      "continue": "Go back to GOV.UK to continue",
+      "continue": "Continue",
       "signOut": "Sign out",
       "continueReport": "Continue your report",
       "progressSaved": "Your progress has been saved."
