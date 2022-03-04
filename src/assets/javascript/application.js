@@ -23,22 +23,6 @@ function initFeedbackRadioButtons() {
   });
 }
 
-function initEnterPhoneNumber() {
-  var phoneNumberInput = document.querySelector('#phoneNumber');
-  if (phoneNumberInput) {
-    var intPhoneNumberCheckbox = document.querySelector('#hasInternationalPhoneNumber');
-    intPhoneNumberCheckbox.addEventListener("click", function(event) {  
-      if (event.currentTarget.checked) {
-        phoneNumberInput.disabled = true;
-        phoneNumberInput.classList.add("govuk-input--disabled");
-      } else {
-        phoneNumberInput.disabled = false;
-        phoneNumberInput.classList.remove("govuk-input--disabled");
-      }
-    });
-  }
-}
-
 (function (w) {
   "use strict";
   function appInit(trackingId, analyticsCookieDomain) {
@@ -53,7 +37,6 @@ function initEnterPhoneNumber() {
   }
 
   initFeedbackRadioButtons();
-  initEnterPhoneNumber();
 
   if (w.GOVUK && w.GOVUK.Modules && w.GOVUK.Modules.ShowPassword) {
     var modules = document.querySelectorAll('[data-module="show-password"]');

@@ -2,7 +2,6 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
-{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% set pageTitleName = 'pages.enterPhoneNumber.title' | translate %}
 {% block content %}
@@ -17,10 +16,11 @@
   <input type="hidden" name="_csrf" value="{{csrfToken}}" />
 
   <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph1' | translate}}</p>
+  <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph2' | translate}}</p>
 
   {{ govukInput({
   label: {
-  text: 'pages.enterPhoneNumber.ukPhoneNumber.label' | translate
+  text: 'pages.enterPhoneNumber.phoneNumber.label' | translate
   },
   classes: "govuk-!-width-two-thirds",
   id: "phoneNumber",
@@ -32,39 +32,6 @@
   } if (errors['phoneNumber'])})
   }}
 
-  {% set internationalNumberHtml %}
-  {{ govukInput({
-    id: "internationalPhoneNumber",
-    name: "internationalPhoneNumber",
-    type: "tel",
-    autocomplete: "tel",
-    classes: "govuk-!-width-two-thirds",
-    label: {
-      text: 'pages.enterPhoneNumber.internationalPhoneNumber.label' | translate
-    },
-    hint: {
-      text: 'pages.enterPhoneNumber.internationalPhoneNumber.hint' | translate
-    },
-    errorMessage: {
-    text: errors['internationalPhoneNumber'].text
-    } if (errors['internationalPhoneNumber'])
-  }) }}
-  {% endset -%}
-
-  {{ govukCheckboxes({
-    items: [
-      {
-        value: "true",
-        id: "hasInternationalPhoneNumber",
-        name: "hasInternationalPhoneNumber",
-        text: 'pages.enterPhoneNumber.internationalPhoneNumber.checkBoxLabel' | translate,
-        conditional: {
-          html: internationalNumberHtml
-        },
-        checked: hasInternationalPhoneNumber === 'true'
-      }
-    ]
-  }) }}
 
   {{ govukButton({
   "text": button_text|default('general.continue.label' | translate, true),
@@ -75,3 +42,4 @@
 </form>
 
 {% endblock %}
+

@@ -12,7 +12,6 @@ import { UpdateProfileServiceInterface } from "../common/update-profile/types";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { prependInternationalPrefix } from "../../utils/phone-number";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
   res.render("enter-phone-number/index.njk");
@@ -23,18 +22,9 @@ export function enterPhoneNumberPost(
   profileService: UpdateProfileServiceInterface = updateProfileService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const hasInternationalPhoneNumber = req.body.hasInternationalPhoneNumber;
+    const phoneNumber = req.body.phoneNumber;
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    let phoneNumber;
-
-    if (hasInternationalPhoneNumber && hasInternationalPhoneNumber === "true") {
-      phoneNumber = prependInternationalPrefix(
-        req.body.internationalPhoneNumber
-      );
-    } else {
-      phoneNumber = req.body.phoneNumber;
-    }
 
     req.session.user.phoneNumber = redactPhoneNumber(phoneNumber);
 
