@@ -5,12 +5,8 @@
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% set pageTitleName = 'pages.accountCreated.title' | translate %}
 {% block content %}
-
-{% include "common/errors/errorSummary.njk" %}
-
-{{ govukPanel({
-    titleText: 'pages.accountCreated.header' | translate
-}) }}
+    
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.accountCreated.header' | translate}}</h1>
 
 <p class="govuk-body">{{'pages.accountCreated.text' | translate}}</p>
 
@@ -22,16 +18,6 @@
      },
   "preventDoubleClick": true
   }) }}
-
-{% if serviceType === 'MANDATORY' %}
-
-    <h2 class="govuk-heading-m govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.accountCreated.subHeader' | translate}}</h2>
-
-    <p class="govuk-body">{{'pages.accountCreated.info.paragraph1' | translate}}</p>
-    <p class="govuk-body">{{'pages.accountCreated.info.paragraph2' | translate}}</p>
-    <p class="govuk-body">{{'pages.accountCreated.info.paragraph3' | translate}}</p>
-
-{% endif %}
 
 {% if serviceType === 'OPTIONAL' %}
     <h1 class="govuk-body govuk-bold">{{'pages.accountCreated.progressSaved' | translate}}</h1>
