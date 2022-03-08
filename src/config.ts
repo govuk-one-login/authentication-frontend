@@ -74,7 +74,7 @@ export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
 }
 
 export function getAccountManagementUrl(): string {
-  return process.env.ACCOUNT_MANAGEMENT_URL;
+  return process.env.ACCOUNT_MANAGEMENT_URL || "http://localhost:6001";
 }
 
 export function getZendeskUser(): string {
