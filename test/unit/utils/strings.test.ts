@@ -42,12 +42,8 @@ describe("string-helpers", () => {
   });
 
   describe("obfuscatePhoneNumber", () => {
-    it("should return obfuscated phone number when valid uk phone number", () => {
+    it("should return obfuscated phone number when valid phone number", () => {
       expect(redactPhoneNumber("07700900796")).to.equal("*******0796");
-    });
-
-    it("should return obfuscated phone number when valid international phone number", () => {
-      expect(redactPhoneNumber("+330645453322")).to.equal("*********3322");
     });
 
     it("should return undefined when phone number is is empty", () => {

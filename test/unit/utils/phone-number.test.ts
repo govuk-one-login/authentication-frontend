@@ -1,11 +1,9 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import {
-  containsInternationalMobileNumber,
   containsNumbersOrSpacesOnly,
   containsUKMobileNumber,
   lengthInRangeWithoutSpaces,
-  prependInternationalPrefix,
 } from "../../../src/utils/phone-number";
 
 describe("phone-number", () => {
@@ -133,94 +131,6 @@ describe("phone-number", () => {
     it("should return true with numbers and spaces in range", () => {
       expect(lengthInRangeWithoutSpaces(" 123 45 678 901 ", 11, 11)).to.equal(
         true
-      );
-    });
-  });
-
-  describe("test international uk mobile numbers", () => {
-    it("should return true with valid uk mobile domestic", () => {
-      expect(containsUKMobileNumber("07911123456")).to.equal(true);
-    });
-
-    it("should return true with valid uk mobile", () => {
-      expect(containsUKMobileNumber("00447911123456")).to.equal(true);
-    });
-
-    it("should return true with valid uk mobile in E164", () => {
-      expect(containsUKMobileNumber("+447911123456")).to.equal(true);
-    });
-
-    it("should return true with valid uk mobile in E164 with zero", () => {
-      expect(containsUKMobileNumber("+4407911123456")).to.equal(true);
-    });
-
-    it("should return false with valid uk mobile without lib country code", () => {
-      expect(containsInternationalMobileNumber("07911123456")).to.equal(false);
-    });
-
-    it("should return false with valid uk mobile without lib country code", () => {
-      expect(containsInternationalMobileNumber("00447911123456")).to.equal(
-        false
-      );
-    });
-
-    it("should return true with valid uk mobile in E164 without lib country code", () => {
-      expect(containsInternationalMobileNumber("+447911123456")).to.equal(true);
-    });
-
-    it("should return true with valid uk mobile in E164 without lib country code with zero", () => {
-      expect(containsInternationalMobileNumber("+4407911123456")).to.equal(
-        true
-      );
-    });
-  });
-
-  describe("test international French mobile numbers", () => {
-    it("should return false with valid French mobile without lib country code", () => {
-      expect(containsInternationalMobileNumber("0645453322")).to.equal(false);
-    });
-
-    it("should return false with valid French mobile without lib country code", () => {
-      expect(containsInternationalMobileNumber("0033645453322")).to.equal(
-        false
-      );
-    });
-
-    it("should return true with valid French mobile in E164 without lib country code", () => {
-      expect(containsInternationalMobileNumber("+33645453322")).to.equal(true);
-    });
-
-    it("should return true with valid French mobile in E164 without lib country code with zero", () => {
-      expect(containsInternationalMobileNumber("+330645453322")).to.equal(true);
-    });
-  });
-
-  describe("test international Spanish mobile numbers", () => {
-    it("should return false with valid Spanish mobile without lib country code", () => {
-      expect(containsInternationalMobileNumber("608453322")).to.equal(false);
-    });
-
-    it("should return false with valid Spanish mobile without lib country code", () => {
-      expect(containsInternationalMobileNumber("0034608453322")).to.equal(
-        false
-      );
-    });
-
-    it("should return true with valid Spanish mobile in E164 without lib country code", () => {
-      expect(containsInternationalMobileNumber("+34608453322")).to.equal(true);
-    });
-  });
-
-  describe("prependInternationalPrefix", () => {
-    it("should prepend + to an international number without the prefix", () => {
-      expect(prependInternationalPrefix("34608453322")).to.equal(
-        "+34608453322"
-      );
-    });
-
-    it("should not prepend + to an international number with the prefix", () => {
-      expect(prependInternationalPrefix("+34608453322")).to.equal(
-        "+34608453322"
       );
     });
   });
