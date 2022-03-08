@@ -126,6 +126,10 @@ locals {
         name  = "NGINX_PORT"
         value = "8080"
       },
+      {
+        name  = "NGINX_HOST"
+        value = local.frontend_fqdn
+      },
     ]
   }
 }
