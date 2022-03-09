@@ -37,15 +37,15 @@ export function contactUsGet(req: Request, res: Response): void {
   if (req.query.supportType === SUPPORT_TYPE.GOV_SERVICE) {
     return res.render("contact-us/index-gov-service-contact-us.njk");
   }
-  let fromPage = req.headers.referer;
+  let referer = req.headers.referer;
 
-  if (req.headers.referer && req.headers.referer.includes("fromPage")) {
+  if (req.headers.referer && req.headers.referer.includes("referer")) {
     const urlObj = new URL(req.headers.referer);
-    fromPage = urlObj.searchParams.get("fromPage");
+    referer = urlObj.searchParams.get("referer");
   }
 
   return res.render("contact-us/index-public-contact-us.njk", {
-    fromPage: fromPage,
+    referer: referer,
   });
 }
 
@@ -53,7 +53,7 @@ export function contactUsFormPost(req: Request, res: Response): void {
   let url = PATH_NAMES.CONTACT_US_QUESTIONS;
   const queryParams = new URLSearchParams({
     theme: req.body.theme,
-    fromPage: req.body.fromPage,
+    referer: req.body.referer,
   }).toString();
   if (
     [ZENDESK_THEMES.ACCOUNT_CREATION, ZENDESK_THEMES.SIGNING_IN].includes(
@@ -71,7 +71,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
   }
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
-    fromPage: req.query.fromPage,
+    referer: req.query.referer,
   });
 }
 
@@ -80,7 +80,7 @@ export function furtherInformationPost(req: Request, res: Response): void {
   const queryParams = new URLSearchParams({
     theme: req.body.theme,
     subtheme: req.body.subtheme,
-    fromPage: req.body.fromPage,
+    referer: req.body.referer,
   }).toString();
 
   res.redirect(url + "?" + queryParams);
@@ -103,7 +103,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     theme: req.query.theme,
     subtheme: req.query.subtheme,
     backurl: req.headers.referer,
-    fromPage: req.query.fromPage,
+    referer: req.query.referer,
     pageTitleHeading: pageTitle,
   });
 }
@@ -136,7 +136,7 @@ export function contactUsQuestionsFormPost(
       feedbackContact: req.body.contact === "true",
       questions: questions,
       themeQuestions: themeQuestions,
-      referer: req.body.fromPage,
+      referer: req.body.referer,
     });
 
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
