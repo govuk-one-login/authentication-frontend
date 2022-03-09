@@ -27,5 +27,7 @@ export function signedOutGet(req: Request, res: Response): void {
     });
   }
 
-  res.render("signed-out/index.njk");
+  res.render("signed-out/index.njk", {
+    signinLink: res.locals.accountManagementUrl,
+  });
 }

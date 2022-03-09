@@ -405,10 +405,13 @@
       "phoneNumber": "We'll send a new code to [mobile]."
     },
     "signedOut": {
-      "title": "You have been signed out",
-      "header": "You have been signed out",
-      "buttonHref": "https://www.gov.uk/",
-      "buttonText": "Return to the GOV.UK homepage"
+      "title": "You have signed out",
+      "header": "You have signed out",
+      "govukLinkHref": "https://www.gov.uk/",
+      "govukLinkText": "Go to the GOV.UK homepage",
+      "paragraph1": "or",
+      "signInLinkText": "sign in",
+      "paragraph2": "to your GOV.UK account."
     },
     "shareInfo": {
       "title": "Share information from your GOV.UK account",
