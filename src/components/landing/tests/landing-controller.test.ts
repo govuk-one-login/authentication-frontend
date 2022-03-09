@@ -65,8 +65,6 @@ describe("landing controller", () => {
     });
 
     it("should redirect to /sign-in-or-create page with cookie preferences set", async () => {
-      req.query.cookie_consent = "accept";
-
       const fakeLandingService: LandingServiceInterface = {
         start: sinon.fake.returns({
           data: {
@@ -76,7 +74,7 @@ describe("landing controller", () => {
               clientName: "Test client",
               cookieConsentShared: true,
             },
-            user: {},
+            user: { cookieConsent: COOKIE_CONSENT.ACCEPT },
           },
           success: true,
         }),
@@ -269,10 +267,7 @@ describe("landing controller", () => {
     });
 
     it("should redirect to /sign-in-or-create page with _ga query param when present", async () => {
-      req.query.cookie_consent = COOKIE_CONSENT.ACCEPT;
-      req.session.client.consentEnabled = true;
-      req.query._ga = "2.172053219.3232.1636392870-444224.1635165988";
-
+      const gaTrackingId = "2.172053219.3232.1636392870-444224.1635165988";
       const fakeLandingService: LandingServiceInterface = {
         start: sinon.fake.returns({
           data: {
@@ -281,11 +276,14 @@ describe("landing controller", () => {
               serviceType: "MANDATORY",
               clientName: "Test client",
               cookieConsentShared: true,
+              consentEnabled: true,
             },
             user: {
               consentRequired: false,
               identityRequired: false,
               upliftRequired: false,
+              cookieConsent: COOKIE_CONSENT.ACCEPT,
+              gaCrossDomainTrackingId: gaTrackingId,
             },
           },
           success: true,
@@ -307,7 +305,7 @@ describe("landing controller", () => {
 
       expect(res.cookie).to.have.been.called;
       expect(res.redirect).to.have.calledWith(
-        `${PATH_NAMES.SIGN_IN_OR_CREATE}?_ga=2.172053219.3232.1636392870-444224.1635165988`
+        `${PATH_NAMES.SIGN_IN_OR_CREATE}?_ga=${gaTrackingId}`
       );
     });
   });

@@ -34,8 +34,7 @@ export function landingGet(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const { _ga, cookie_consent, prompt } = req.query;
-    const ga = sanitize(_ga as string);
+    const { prompt } = req.query;
 
     const startAuthResponse = await service.start(
       sessionId,
@@ -82,7 +81,7 @@ export function landingGet(
       sessionId
     );
 
-    const cookieConsent = sanitize(cookie_consent as string);
+    const cookieConsent = sanitize(startAuthResponse.data.user.cookieConsent);
 
     if (req.session.client.cookieConsentEnabled && cookieConsent) {
       const consentCookieValue =
@@ -90,9 +89,12 @@ export function landingGet(
 
       createConsentCookie(res, consentCookieValue);
 
-      if (ga && cookieConsent === COOKIE_CONSENT.ACCEPT) {
+      if (
+        startAuthResponse.data.user.gaCrossDomainTrackingId &&
+        cookieConsent === COOKIE_CONSENT.ACCEPT
+      ) {
         const queryParams = new URLSearchParams({
-          _ga: ga,
+          _ga: startAuthResponse.data.user.gaCrossDomainTrackingId,
         }).toString();
 
         redirectPath = redirectPath + "?" + queryParams;
