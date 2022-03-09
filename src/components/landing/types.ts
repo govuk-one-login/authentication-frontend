@@ -17,6 +17,8 @@ export interface UserSessionInfo {
   identityRequired: boolean;
   consentRequired: boolean;
   authenticated: boolean;
+  cookieConsent?: string;
+  gaCrossDomainTrackingId?: string;
 }
 
 export interface LandingServiceInterface {
