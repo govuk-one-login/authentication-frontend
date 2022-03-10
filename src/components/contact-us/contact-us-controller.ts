@@ -39,6 +39,10 @@ export function contactUsGet(req: Request, res: Response): void {
   }
   let referer = req.headers.referer;
 
+  if (req.query.referer) {
+    referer = req.query.referer as string;
+  }
+
   if (req.headers.referer && req.headers.referer.includes("referer")) {
     const urlObj = new URL(req.headers.referer);
     referer = urlObj.searchParams.get("referer");
