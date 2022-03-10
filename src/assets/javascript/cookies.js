@@ -70,6 +70,7 @@ var cookies = function (trackingId, analyticsCookieDomain) {
   function initAnalytics() {
     loadGtmScript();
     initGtm();
+    initLinkerHandlers();
   }
 
   function loadGtmScript() {
@@ -97,35 +98,31 @@ var cookies = function (trackingId, analyticsCookieDomain) {
       },
     ];
 
-    function addSessionJourneyToDataLayer(url) {
-      const sessionJourney = getJourneyMapping(url);
-
-      if (sessionJourney) {
-        window.dataLayer.push(sessionJourney);
-      }
-    }
-
-    const url = window.location.search.includes("type")
-      ? window.location.pathname + window.location.search
-      : window.location.pathname;
-
-    addSessionJourneyToDataLayer(url);
+    var sessionJourney = getJourneyMapping(window.location.pathname);
 
     function gtag(obj) {
       dataLayer.push(obj);
     }
 
-    gtag({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+    if (sessionJourney) {
+      gtag(sessionJourney);
+    }
 
+    gtag({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+  }
+
+  function initLinkerHandlers() {
     var submitButton = document.querySelector('button[type="submit"]');
     var pageForm = document.getElementById("form-tracking");
 
     if (submitButton && pageForm) {
       submitButton.addEventListener("click", function () {
-        var tracker = ga.getAll()[0];
-        var linker = new window.gaplugins.Linker(tracker);
-        var destinationLink = linker.decorate(pageForm.action);
-        pageForm.action = destinationLink;
+        if (window.ga && window.gaplugins) {
+          var tracker = ga.getAll()[0];
+          var linker = new window.gaplugins.Linker(tracker);
+          var destinationLink = linker.decorate(pageForm.action);
+          pageForm.action = destinationLink;
+        }
       });
     }
 
@@ -135,10 +132,14 @@ var cookies = function (trackingId, analyticsCookieDomain) {
       trackLink.addEventListener("click", function (e) {
         e.preventDefault();
 
-        var tracker = ga.getAll()[0];
-        var linker = new window.gaplugins.Linker(tracker);
-        var destinationLink = linker.decorate(trackLink.href);
-        window.location.href = destinationLink;
+        if (window.ga && window.gaplugins) {
+          var tracker = ga.getAll()[0];
+          var linker = new window.gaplugins.Linker(tracker);
+          var destinationLink = linker.decorate(trackLink.href);
+          window.location.href = destinationLink;
+        } else {
+          window.location.href = trackLink.href;
+        }
       });
     }
   }
