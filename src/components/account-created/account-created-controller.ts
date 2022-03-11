@@ -5,6 +5,13 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 export function accountCreatedGet(req: Request, res: Response): void {
   const { serviceType, name } = req.session.client;
 
+  res.render("account-created/index.njk", {
+    serviceType,
+    name,
+  });
+}
+
+export function accountCreatedPost(req: Request, res: Response): void {
   const nextPath = getNextPathAndUpdateJourney(
     req,
     req.path,
@@ -15,9 +22,5 @@ export function accountCreatedGet(req: Request, res: Response): void {
     res.locals.sessionId
   );
 
-  res.render("account-created/index.njk", {
-    linkUrl: nextPath,
-    serviceType,
-    name,
-  });
+  res.redirect(nextPath);
 }
