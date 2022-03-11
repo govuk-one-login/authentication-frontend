@@ -10,21 +10,22 @@
 
 <p class="govuk-body">{{'pages.accountCreated.text' | translate}}</p>
 
- {{ govukButton({
-  "text": button_text|default('pages.accountCreated.continue' | translate, true),
-  "href": linkUrl,
-     "attributes": {
-         "id": "track-link"
-     },
-  "preventDoubleClick": true
-  }) }}
+<form id="form-tracking" action="/account-created" method="post" novalidate>
+<input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+    {{ govukButton({
+        "text": button_text|default('pages.accountCreated.continue' | translate, true),
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
 
 {% if serviceType === 'OPTIONAL' %}
     <h1 class="govuk-body govuk-bold">{{'pages.accountCreated.progressSaved' | translate}}</h1>
 
     {{ govukButton({
         "text": button_text|default('pages.accountCreated.continue' | translate, true),
-        "href": linkUrl
+        "preventDoubleClick": true
     }) }}
 
     <br>
@@ -33,5 +34,5 @@
         {{'pages.accountCreated.signOut' | translate}}
     </a>
 {% endif %}
-
+</form>
 {% endblock %}
