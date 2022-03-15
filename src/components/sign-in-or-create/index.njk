@@ -20,7 +20,6 @@
 {% endset %}
 
 {% block content %}
-
 {% include "common/errors/errorSummary.njk" %}
 
 {% if serviceType === 'OPTIONAL' %}
@@ -30,6 +29,10 @@
 {% endif %}
 
   <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph' | translate }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ 'pages.signInOrCreate.bullet1' | translate }}</li>
+    <li>{{ 'pages.signInOrCreate.bullet2' | translate }}</li>
+  </ul>
 
 <form action="/sign-in-or-create" method="post" novalidate>
 
@@ -63,6 +66,3 @@
 
 
 {% endblock %}
-
-
-
