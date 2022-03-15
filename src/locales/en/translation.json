@@ -111,7 +111,9 @@
         "title": "Create an account to save your progress",
         "header": "Create an account to save your progress"
       },
-      "paragraph": "You’ll need an email address and a UK mobile phone number. It will take about 2 minutes.",
+      "paragraph": "You’ll need:",
+      "bullet1": "an email address",
+      "bullet2": "a UK mobile phone number",
       "paragraph2": "If you already have a GOV.UK account you can",
       "signInText": "sign in",
       "moreAbout": {
