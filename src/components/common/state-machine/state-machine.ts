@@ -97,6 +97,9 @@ const authStateMachine = createMachine(
           optionalPaths: [
             PATH_NAMES.ENTER_EMAIL_SIGN_IN,
             PATH_NAMES.SIGN_IN_OR_CREATE,
+            PATH_NAMES.SECURITY_CODE_WAIT,
+            PATH_NAMES.SECURITY_CODE_INVALID,
+            PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
           ],
         },
       },

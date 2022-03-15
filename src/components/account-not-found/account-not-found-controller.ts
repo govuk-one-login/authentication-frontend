@@ -4,7 +4,10 @@ import { ExpressRouteFunc } from "../../types";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { BadRequestError } from "../../utils/error";
-import { getNextPathAndUpdateJourney } from "../common/constants";
+import {
+  getErrorPathByCode,
+  getNextPathAndUpdateJourney,
+} from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 
 export function accountNotFoundGet(req: Request, res: Response): void {
@@ -33,6 +36,12 @@ export function accountNotFoundPost(
     );
 
     if (!result.success) {
+      const path = getErrorPathByCode(result.data.code);
+
+      if (path) {
+        return res.redirect(path);
+      }
+
       throw new BadRequestError(result.data.message, result.data.code);
     }
 
