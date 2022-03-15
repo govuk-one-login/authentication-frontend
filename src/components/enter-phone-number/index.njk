@@ -15,6 +15,7 @@
 <form action="/enter-phone-number" method="post" novalidate>
 
   <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+   <input type="hidden" name="supportInternationalNumbers" value="{{supportInternationalNumbers}}" />
 
   <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph1' | translate}}</p>
 
@@ -32,39 +33,43 @@
   } if (errors['phoneNumber'])})
   }}
 
-  {% set internationalNumberHtml %}
-  {{ govukInput({
-    id: "internationalPhoneNumber",
-    name: "internationalPhoneNumber",
-    type: "tel",
-    autocomplete: "tel",
-    classes: "govuk-!-width-two-thirds",
-    label: {
-      text: 'pages.enterPhoneNumber.internationalPhoneNumber.label' | translate
-    },
-    hint: {
-      text: 'pages.enterPhoneNumber.internationalPhoneNumber.hint' | translate
-    },
-    errorMessage: {
-    text: errors['internationalPhoneNumber'].text
-    } if (errors['internationalPhoneNumber'])
-  }) }}
-  {% endset -%}
+  {% if supportInternationalNumbers %}
 
-  {{ govukCheckboxes({
-    items: [
-      {
-        value: "true",
-        id: "hasInternationalPhoneNumber",
-        name: "hasInternationalPhoneNumber",
-        text: 'pages.enterPhoneNumber.internationalPhoneNumber.checkBoxLabel' | translate,
-        conditional: {
-          html: internationalNumberHtml
+      {% set internationalNumberHtml %}
+      {{ govukInput({
+        id: "internationalPhoneNumber",
+        name: "internationalPhoneNumber",
+        type: "tel",
+        autocomplete: "tel",
+        classes: "govuk-!-width-two-thirds",
+        label: {
+          text: 'pages.enterPhoneNumber.internationalPhoneNumber.label' | translate
         },
-        checked: hasInternationalPhoneNumber === 'true'
-      }
-    ]
-  }) }}
+        hint: {
+          text: 'pages.enterPhoneNumber.internationalPhoneNumber.hint' | translate
+        },
+        errorMessage: {
+        text: errors['internationalPhoneNumber'].text
+        } if (errors['internationalPhoneNumber'])
+      }) }}
+      {% endset -%}
+
+      {{ govukCheckboxes({
+        items: [
+          {
+            value: "true",
+            id: "hasInternationalPhoneNumber",
+            name: "hasInternationalPhoneNumber",
+            text: 'pages.enterPhoneNumber.internationalPhoneNumber.checkBoxLabel' | translate,
+            conditional: {
+              html: internationalNumberHtml
+            },
+            checked: hasInternationalPhoneNumber === 'true'
+          }
+        ]
+      }) }}
+
+  {% endif %}
 
   {{ govukButton({
   "text": button_text|default('general.continue.label' | translate, true),

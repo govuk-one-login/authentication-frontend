@@ -193,6 +193,7 @@ describe("Integration::enter phone number", () => {
         _csrf: token,
         hasInternationalPhoneNumber: true,
         internationalPhoneNumber: "",
+        supportInternationalNumbers: true,
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
@@ -213,6 +214,7 @@ describe("Integration::enter phone number", () => {
         _csrf: token,
         hasInternationalPhoneNumber: true,
         internationalPhoneNumber: "123456789",
+        supportInternationalNumbers: true,
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
@@ -233,6 +235,7 @@ describe("Integration::enter phone number", () => {
         _csrf: token,
         hasInternationalPhoneNumber: true,
         internationalPhoneNumber: "123456789dd",
+        supportInternationalNumbers: true,
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
@@ -253,6 +256,7 @@ describe("Integration::enter phone number", () => {
         _csrf: token,
         hasInternationalPhoneNumber: true,
         internationalPhoneNumber: "1234567",
+        supportInternationalNumbers: true,
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
@@ -273,6 +277,7 @@ describe("Integration::enter phone number", () => {
         _csrf: token,
         hasInternationalPhoneNumber: true,
         internationalPhoneNumber: "12345678901234567",
+        supportInternationalNumbers: true,
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
@@ -301,6 +306,7 @@ describe("Integration::enter phone number", () => {
         _csrf: token,
         hasInternationalPhoneNumber: true,
         internationalPhoneNumber: "+33645453322",
+        supportInternationalNumbers: true,
       })
       .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
       .expect(302, done);

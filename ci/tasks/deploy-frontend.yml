@@ -22,6 +22,7 @@ params:
   ZENDESK_GROUP_ID_PUBLIC: ((build-zendesk-group-id-public))
   BASIC_AUTH_USERNAME: ((no-basic-auth-username))
   BASIC_AUTH_PASSWORD: ((no-basic-auth-password))
+  SUPPORT_INTERNATIONAL_NUMBERS: "0"
 inputs:
   - name: frontend-src
   - name: frontend-image
@@ -77,6 +78,8 @@ run:
         -var "sidecar_image_uri=${SIDECAR_IMAGE_URI}" \
         -var "sidecar_image_tag=${SIDECAR_IMAGE_TAG}" \
         -var "sidecar_image_digest=${SIDECAR_IMAGE_DIGEST}" \
+        -var "account_management_image_tag=${ACCOUNT_MANAGEMENT_IMAGE_TAG}" \
+        -var "support_international_numbers=${SUPPORT_INTERNATIONAL_NUMBERS}" \
         -var "basic_auth_username=${NORMALISED_BASIC_AUTH_USERNAME}" \
         -var "basic_auth_password=${NORMALISED_BASIC_AUTH_PASSWORD}" \
         -var-file ${DEPLOY_ENVIRONMENT}.tfvars \

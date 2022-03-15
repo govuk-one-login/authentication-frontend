@@ -45,6 +45,10 @@ variable "service_domain" {
   default = null
 }
 
+variable "support_international_numbers" {
+  type = string
+}
+
 variable "zone_id" {
   default = null
 }
