@@ -77,6 +77,10 @@ locals {
         value = local.redis_key
       },
       {
+        name  = "SUPPORT_INTERNATIONAL_NUMBERS"
+        value = var.support_international_numbers
+      },
+      {
         name  = "ZENDESK_API_TOKEN"
         value = var.zendesk_api_token
       },

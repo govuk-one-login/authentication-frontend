@@ -10,7 +10,9 @@ export function containsNumbersOnly(value: string): boolean {
 }
 
 export function redactPhoneNumber(value: string): string | undefined {
-  return value ? "*******" + value.trim().slice(7) : undefined;
+  return value
+    ? "*".repeat(value.length - 4) + value.trim().slice(value.length - 4)
+    : undefined;
 }
 
 export function generateNonce(): string {
