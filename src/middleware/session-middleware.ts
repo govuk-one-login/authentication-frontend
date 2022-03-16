@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { ERROR_MESSAGES, PATH_NAMES } from "../app.constants";
+import { ERROR_LOG_LEVEL, ERROR_MESSAGES, PATH_NAMES } from "../app.constants";
 import xss from "xss";
+import { ErrorWithLevel } from "../utils/error";
 
 export function initialiseSessionMiddleware(
   req: Request,
@@ -63,5 +64,7 @@ export function validateSessionMiddleware(
   });
 
   res.status(401);
-  next(new Error(ERROR_MESSAGES.INVALID_SESSION));
+  next(
+    new ErrorWithLevel(ERROR_MESSAGES.INVALID_SESSION, ERROR_LOG_LEVEL.INFO)
+  );
 }

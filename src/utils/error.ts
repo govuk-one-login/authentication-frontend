@@ -15,3 +15,11 @@ export class ApiError extends Error {
     this.status = status;
   }
 }
+
+export class ErrorWithLevel extends Error {
+  level: string;
+  constructor(message: string, level: string) {
+    super(message);
+    this.level = level;
+  }
+}

@@ -83,6 +83,11 @@ export const ERROR_MESSAGES = {
   PAGE_NOT_FOUND: "Request page not found",
 };
 
+export const ERROR_LOG_LEVEL = {
+  ERROR: "Error",
+  INFO: "Info",
+};
+
 export const SERVICE_TYPE = {
   MANDATORY: "MANDATORY",
   OPTIONAL: "OPTIONAL",
