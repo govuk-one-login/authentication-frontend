@@ -1,19 +1,60 @@
 {% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% set pageTitleName = 'pages.resetPasswordCheckEmail.title' | translate %}
 {% block content %}
 
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resetPasswordCheckEmail.header' | translate}}</h1>
 
 <p class="govuk-body">
-    {{'pages.resetPasswordCheckEmail.paragraph1' | translate}}
-    {{email}}.
-    {{'pages.resetPasswordCheckEmail.paragraph2' | translate}}
+    {{ govukInsetText({
+        html: 'pages.resetPasswordCheckEmail.paragraph1' | translate + '<span class="govuk-body govuk-!-font-weight-bold">' + email + '</span>'
+    }) }}
 </p>
+
+<p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph2' | translate}}</p>
+
 <p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph3' | translate}}</p>
 
-<p class="govuk-body">
-    <a href="/reset-password-check-email" class="govuk-link" rel="noreferrer noopener">{{'pages.resetPasswordCheckEmail.sendAnotherEmailLinkText' | translate }}</a>
-</p>
+<p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph4' | translate}}</p>
+
+<form action="/reset-password-check-email" method="post" novalidate>
+
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <input type="hidden" name="email" value="{{email}}"/>
+    {{ govukInput({
+        label: {
+            text: 'pages.resetPasswordCheckEmail.code.label' | translate
+        },
+        id: "code",
+        name: "code",
+        type: "number",
+        classes: "govuk-!-width-two-thirds govuk-!-font-weight-bold",
+        value: code,
+        errorMessage: {
+            text: errors['code'].text
+        } if (errors['code'])})
+    }}
+
+    {% set resendLinkParagraph %}
+        <a href="/reset-password-check-email" class="govuk-link" rel="noreferrer">{{ 'pages.resetPasswordCheckEmail.requestNewCode.link' | translate }}</a>{{ 'pages.resetPasswordCheckEmail.requestNewCode.paragraph1' | translate }}
+    {%  endset %}
+    {{ govukDetails({
+        summaryText: 'pages.resetPasswordCheckEmail.requestNewCode.header' | translate,
+        text: resendLinkParagraph | safe
+    }) }}
+
+
+    {{ govukButton({
+        "text": 'pages.resetPasswordCheckEmail.buttonText' | translate | default("Continue", true),
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+
+</form>
 
 {% endblock %}
 

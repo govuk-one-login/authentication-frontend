@@ -4,6 +4,12 @@ import { ResetPasswordCheckEmailServiceInterface } from "./types";
 import { resetPasswordCheckEmailService } from "./reset-password-check-email-service";
 import { BadRequestError } from "../../utils/error";
 import { ERROR_CODES } from "../common/constants";
+import { VerifyCodeInterface } from "../common/verify-code/types";
+import { codeService } from "../common/verify-code/verify-code-service";
+import { verifyCodePost } from "../common/verify-code/verify-code-controller";
+import { NOTIFICATION_TYPE } from "../../app.constants";
+
+const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
 export function resetPasswordCheckEmailGet(
   service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailService()
@@ -19,7 +25,7 @@ export function resetPasswordCheckEmailGet(
     );
 
     if (result.success) {
-      return res.render("reset-password-check-email/index.njk", {
+      return res.render(TEMPLATE_NAME, {
         email,
       });
     }
@@ -41,3 +47,14 @@ export function resetPasswordCheckEmailGet(
     }
   };
 }
+
+export function resetPasswordCheckEmailPost (
+  service: VerifyCodeInterface = codeService()
+): ExpressRouteFunc {
+  return verifyCodePost(service, {
+    notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
+    template: TEMPLATE_NAME,
+    validationKey: "pages.checkYourEmail.code.validationError.invalidCode",
+    validationErrorCode: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE,
+  });
+};
