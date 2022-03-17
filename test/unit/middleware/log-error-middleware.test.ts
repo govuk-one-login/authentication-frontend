@@ -34,8 +34,9 @@ describe("logErrorMiddleware", () => {
       );
 
       expect(req.log.error).to.be.called.calledOnce;
-      expect(req.log.error).to.be.called.calledWith({ 
-        err: { data: undefined, status: undefined, stack: sinon.match.any }, msg: 'Error:An Error' 
+      expect(req.log.error).to.be.called.calledWith({
+        err: { data: undefined, status: undefined, stack: sinon.match.any },
+        msg: "Error:An Error",
       });
       expect(next).to.be.calledOnce;
     });
@@ -49,8 +50,9 @@ describe("logErrorMiddleware", () => {
       );
 
       expect(req.log.info).to.be.called.calledOnce;
-      expect(req.log.info).to.be.called.calledWith({ 
-        err: { data: undefined, status: undefined }, msg: 'Actually Info' 
+      expect(req.log.info).to.be.called.calledWith({
+        err: { data: undefined, status: undefined },
+        msg: "Actually Info",
       });
       expect(next).to.be.calledOnce;
     });
