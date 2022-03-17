@@ -233,10 +233,27 @@
     "resetPasswordCheckEmail": {
       "title": "Check your email",
       "header": "Check your email",
-      "paragraph1": "We sent an email to ",
-      "paragraph2": " You can use the link in the email to reset your password.",
-      "paragraph3": "The link will be active for 15 minutes.",
-      "sendAnotherEmailLinkText": "Send another email"
+      "paragraph1": "We have sent an email to: ",
+      "paragraph2": "The email contains a 6 digit security code.",
+      "paragraph3": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
+      "paragraph4": "The code will expire after 15 minutes.",
+      "code": {
+        "label": "Enter the 6 digit security code",
+        "validationError": {
+          "required": "Enter the security code",
+          "maxLength": "Enter the security code using only 6 digits",
+          "minLength": "Enter the security code using only 6 digits",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+        }
+      },
+      "sendAnotherEmailLinkText": "Send another email",
+      "requestNewCode": {
+        "header": "Problems receiving the code?",
+        "link": "Request a new code",
+        "paragraph1": " if the code does not work or you did not receive one. "
+      },
+      "buttonText": "Continue"
     },
     "createPassword": {
       "title": "Create your password",
