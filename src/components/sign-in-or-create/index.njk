@@ -47,22 +47,14 @@
     }
   }) }}
 
-  <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph2' | translate }}{{ govukButton({
-      "text": 'pages.signInOrCreate.signInText' | translate,
-      "type": "Submit",
-      "preventDoubleClick": true,
-      classes: 'govuk-link govuk-btn-as-link',
-      "name": "optionSelected",
-      "value": "signin",
-      attributes:{
-        "id": "sign-in-link"
-      }
-    })}}.</p>
+  <p class="govuk-body">
+    {{ 'pages.signInOrCreate.paragraph2' | translate }} <button value="signin" type="Submit" name="optionSelected" data-prevent-double-click="true" class="govuk-button govuk-link govuk-btn-as-link" data-module="govuk-button" id="sign-in-link">{{ 'pages.signInOrCreate.signInText' | translate }}</button>.
+  </p>
+
 </form>
 {{ govukDetails({
   summaryText: 'pages.signInOrCreate.moreAbout.header' | translate,
   html: moreAboutTextHtml
 }) }}
-
 
 {% endblock %}
