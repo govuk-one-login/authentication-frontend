@@ -240,10 +240,6 @@
       "code": {
         "label": "Enter the 6 digit security code",
         "validationError": {
-          "required": "Enter the security code",
-          "maxLength": "Enter the security code using only 6 digits",
-          "minLength": "Enter the security code using only 6 digits",
-          "invalidFormat": "Enter the security code using only 6 digits",
           "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
       },

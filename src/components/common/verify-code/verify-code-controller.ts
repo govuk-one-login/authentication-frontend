@@ -66,6 +66,9 @@ export function verifyCodePost(
       case NOTIFICATION_TYPE.MFA_SMS:
         nextEvent = USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED;
         break;
+      case NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE:
+        nextEvent = USER_JOURNEY_EVENTS.RESET_PASSWORD_CODE_VERIFIED;
+        break;
       default:
         throw new Error("Unknown notification type");
     }
