@@ -17,7 +17,7 @@ import {
   ResponseOutput,
 } from "mock-req-res";
 
-describe("reset password controller", () => {
+describe("reset password controller (with a reset code in link)", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
@@ -110,6 +110,47 @@ describe("reset password controller", () => {
       expect(fakeService.updatePassword).to.have.been.not.calledOnce;
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.RESET_PASSWORD_EXPIRED_LINK
+      );
+    });
+  });
+});
+
+describe("reset password controller (in 6 digit code flow)", () => {
+  let req: RequestOutput;
+  let res: ResponseOutput;
+
+  beforeEach(() => {
+    req = mockRequest();
+    res = mockResponse();
+  });
+
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  describe("resetPasswordGet", () => {
+    it("should render change password page", () => {
+      resetPasswordGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith("reset-password/index.njk");
+    });
+  });
+
+  describe("resetPasswordPost", () => {
+    it("should redirect to /reset-password-confirmation page", async () => {
+      const fakeService: ResetPasswordServiceInterface = {
+        updatePassword: sinon.fake.returns({ success: true }),
+      };
+
+      req.body.password = "Password1";
+      req.body.code =
+        "asdkki8ddas.1758350212000.some-session-id.some-persistent-session-id";
+
+      await resetPasswordPost(fakeService)(req as Request, res as Response);
+
+      expect(fakeService.updatePassword).to.have.been.calledOnce;
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.RESET_PASSWORD_CONFIRMATION
       );
     });
   });

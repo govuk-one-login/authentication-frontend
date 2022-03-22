@@ -5,7 +5,7 @@ import nock = require("nock");
 import * as cheerio from "cheerio";
 import { PATH_NAMES } from "../../../app.constants";
 
-describe("Integration::reset password", () => {
+describe("Integration::reset password (with a reset code in link)", () => {
   let token: string | string[];
   let cookies: string;
   let app: any;
@@ -48,19 +48,6 @@ describe("Integration::reset password", () => {
         password: "password",
       })
       .expect(500, done);
-  });
-
-  it("should return to invalid link error when code missing from query param", (done) => {
-    const invalidEndpoint = "/reset-password";
-    request(app)
-      .get(invalidEndpoint)
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($(".govuk-heading-l").text()).to.contains(
-          "That link has expired"
-        );
-      })
-      .expect(200, done);
   });
 
   it("should return to invalid link error when code expired", (done) => {
