@@ -42,7 +42,7 @@ function getPersistentSessionId(code: string): string {
 export function resetPasswordGet(req: Request, res: Response): void {
   const code = xss(req.query.code as string);
 
-  if (!code || isCodeExpired(code)) {
+  if (code && isCodeExpired(code)) {
     return res.render("reset-password/index-invalid.njk");
   }
 
@@ -56,20 +56,32 @@ export function resetPasswordPost(
     const code = req.body.code;
     const newPassword = req.body.password;
 
-    if (
-      isCodeExpired(code) ||
-      !getSessionId(code) ||
-      !getPersistentSessionId(code)
-    ) {
-      return res.redirect(PATH_NAMES.RESET_PASSWORD_EXPIRED_LINK);
+    let resetCode = null;
+    let sessionId =  null;
+    let persistentSessionId = null;
+
+    if (code) {
+      if (
+        isCodeExpired(code) ||
+        !getSessionId(code) ||
+        !getPersistentSessionId(code)
+      ) {
+        return res.redirect(PATH_NAMES.RESET_PASSWORD_EXPIRED_LINK);
+      }
+      resetCode = getCode(code);
+      sessionId = getSessionId(code);
+      persistentSessionId = getPersistentSessionId(code);
+    } else {
+      sessionId =  res.locals.sessionId;
+      persistentSessionId = res.locals.persistentSessionId;
     }
 
     const response = await service.updatePassword(
       newPassword,
-      getCode(code),
+      resetCode,
       req.ip,
-      getSessionId(code),
-      getPersistentSessionId(code)
+      sessionId,
+      persistentSessionId
     );
 
     if (response.success) {
