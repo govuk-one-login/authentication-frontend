@@ -33,6 +33,7 @@ const USER_JOURNEY_EVENTS = {
   REQUEST_PASSWORD_RESET: "REQUEST_PASSWORD_RESET",
   PASSWORD_RESET_REQUESTED: "PASSWORD_RESET_REQUESTED",
   RESEND_MFA: "RESEND_MFA",
+  RESET_PASSWORD_CODE_VERIFIED: "RESET_PASSWORD_CODE_VERIFIED",
 };
 
 const authStateMachine = createMachine(
@@ -295,6 +296,14 @@ const authStateMachine = createMachine(
         on: {
           [USER_JOURNEY_EVENTS.CONSENT_ACCEPTED]: [PATH_NAMES.AUTH_CODE],
         },
+      },
+      [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL]: {
+        on: {
+          [USER_JOURNEY_EVENTS.RESET_PASSWORD_CODE_VERIFIED]: [PATH_NAMES.RESET_PASSWORD]
+        }
+      },
+      [PATH_NAMES.RESET_PASSWORD]: {
+        type: "final",
       },
       [PATH_NAMES.PROVE_IDENTITY]: {
         type: "final",

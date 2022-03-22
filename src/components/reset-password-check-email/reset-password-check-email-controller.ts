@@ -52,9 +52,9 @@ export function resetPasswordCheckEmailPost (
   service: VerifyCodeInterface = codeService()
 ): ExpressRouteFunc {
   return verifyCodePost(service, {
-    notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
+    notificationType: NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE,
     template: TEMPLATE_NAME,
-    validationKey: "pages.checkYourEmail.code.validationError.invalidCode",
-    validationErrorCode: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE,
+    validationKey: "pages.resetPasswordCheckEmail.code.validationError.invalidCode",
+    validationErrorCode: ERROR_CODES.RESET_PASSWORD_INVALID_CODE,
   });
 };
