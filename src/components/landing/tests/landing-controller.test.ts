@@ -14,6 +14,7 @@ import {
   ResponseOutput,
 } from "mock-req-res";
 import { LandingServiceInterface } from "../types";
+import { BadRequestError } from "../../../utils/error";
 
 describe("landing controller", () => {
   let req: RequestOutput;
@@ -308,5 +309,59 @@ describe("landing controller", () => {
         `${PATH_NAMES.SIGN_IN_OR_CREATE}?_ga=${gaTrackingId}`
       );
     });
+  });
+
+  it("should throw an error with level Info if the landing service returns a code 1000 Session-Id is missing or invalid", async () => {
+    const fakeLandingService: LandingServiceInterface = {
+      start: sinon.fake.returns({
+        data: {
+          code: 1000,
+          message: "Session-Id is missing or invalid",
+        },
+        success: false,
+      }),
+    };
+
+    const fakeCookieConsentService: CookieConsentServiceInterface = {
+      getCookieConsent: sinon.fake(),
+      createConsentCookieValue: sinon.fake(),
+    };
+
+    await expect(
+      landingGet(fakeLandingService, fakeCookieConsentService)(
+        req as Request,
+        res as Response
+      )
+    )
+      .to.eventually.be.rejectedWith("1000:Session-Id is missing or invalid")
+      .and.be.an.instanceOf(BadRequestError)
+      .and.have.property("level", "Info");
+  });
+
+  it("should throw an error without level property if the landing service returns a code 1001 Request is missing parameters", async () => {
+    const fakeLandingService: LandingServiceInterface = {
+      start: sinon.fake.returns({
+        data: {
+          code: 1001,
+          message: "Request is missing parameters",
+        },
+        success: false,
+      }),
+    };
+
+    const fakeCookieConsentService: CookieConsentServiceInterface = {
+      getCookieConsent: sinon.fake(),
+      createConsentCookieValue: sinon.fake(),
+    };
+
+    await expect(
+      landingGet(fakeLandingService, fakeCookieConsentService)(
+        req as Request,
+        res as Response
+      )
+    )
+      .to.eventually.be.rejectedWith("1001:Request is missing parameters")
+      .and.be.an.instanceOf(BadRequestError)
+      .and.not.to.have.property("level");
   });
 });

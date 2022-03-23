@@ -3,6 +3,8 @@ import {
   COOKIE_CONSENT,
   COOKIES_PREFERENCES_SET,
   PATH_NAMES,
+  ERROR_LOG_LEVEL,
+  API_ERROR_CODES,
 } from "../../app.constants";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
@@ -44,10 +46,18 @@ export function landingGet(
     );
 
     if (!startAuthResponse.success) {
-      throw new BadRequestError(
+      const startError = new BadRequestError(
         startAuthResponse.data.message,
         startAuthResponse.data.code
       );
+      if (
+        startAuthResponse.data.code &&
+        startAuthResponse.data.code ===
+          API_ERROR_CODES.SESSION_ID_MISSING_OR_INVALID
+      ) {
+        startError.level = ERROR_LOG_LEVEL.INFO;
+      }
+      throw startError;
     }
 
     req.session.client.serviceType = startAuthResponse.data.client.serviceType;
