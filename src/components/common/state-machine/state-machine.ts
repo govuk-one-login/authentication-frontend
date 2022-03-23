@@ -303,7 +303,32 @@ const authStateMachine = createMachine(
         }
       },
       [PATH_NAMES.RESET_PASSWORD]: {
-        type: "final",
+        on: {
+          [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
+            {
+              target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
+              cond: "isPhoneNumberVerified",
+            },
+            { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
+            {
+              target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
+              cond: "isLatestTermsAndConditionsAccepted",
+            },
+            {
+              target: [PATH_NAMES.SHARE_INFO],
+              cond: "isConsentRequired",
+            },
+            { target: [PATH_NAMES.AUTH_CODE] },
+          ],
+        },
+        meta: {
+          optionalPaths: [
+            PATH_NAMES.ENTER_EMAIL_SIGN_IN,
+            PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
+            PATH_NAMES.ACCOUNT_LOCKED,
+            PATH_NAMES.SIGN_IN_OR_CREATE,
+          ],
+        },
       },
       [PATH_NAMES.PROVE_IDENTITY]: {
         type: "final",

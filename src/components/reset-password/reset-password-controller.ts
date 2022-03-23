@@ -8,7 +8,8 @@ import {
   renderBadRequest,
 } from "../../utils/validation";
 import xss from "xss";
-import { ERROR_CODES } from "../common/constants";
+import { ERROR_CODES, getNextPathAndUpdateJourney } from "../common/constants";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 
 const resetPasswordTemplate = "reset-password/index.njk";
 
@@ -85,7 +86,23 @@ export function resetPasswordPost(
     );
 
     if (response.success) {
-      return res.redirect(PATH_NAMES.RESET_PASSWORD_CONFIRMATION);
+      if (code) {
+        return res.redirect(PATH_NAMES.RESET_PASSWORD_CONFIRMATION);
+      }
+      return res.redirect(
+        getNextPathAndUpdateJourney(
+          req,
+          req.path,
+          USER_JOURNEY_EVENTS.PASSWORD_CREATED,
+          {
+            isIdentityRequired: req.session.user.isIdentityRequired,
+            isConsentRequired: req.session.user.isConsentRequired,
+            isLatestTermsAndConditionsAccepted:
+            req.session.user.isLatestTermsAndConditionsAccepted,
+          },
+          res.locals.sessionId
+        )
+      );
     }
 
     if (response.data.code === ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING) {
