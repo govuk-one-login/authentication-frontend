@@ -12,8 +12,6 @@ image_digest            = "sha256:dfbe4c6ccbbaf4c8ae7589a31d0bf73940cef19b8cfcb3
 session_expiry          = 300000
 gtm_id                  = ""
 
-paas_frontend_cdn_route_destination = "d2eyuvxr6b3efm.cloudfront.net"
-
 basic_auth_username  = ""
 basic_auth_password  = ""
 sidecar_image_uri    = "706615647326.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository"
