@@ -96,7 +96,7 @@
     "@types/nunjucks": "^3.2.1",
     "@types/pino-pretty": "^4.7.5",
     "@types/redis": "^2.8.31",
-    "@types/sinon": "^10.0.6",
+    "@types/sinon": "^10.0.11",
     "@types/sinon-chai": "^3.2.8",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^4.28.3",
