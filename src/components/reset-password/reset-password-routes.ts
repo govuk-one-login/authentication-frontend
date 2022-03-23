@@ -9,10 +9,17 @@ import {
   resetPasswordGet,
   resetPasswordPost,
 } from "./reset-password-controller";
+import { validateSessionMiddleware } from "../../middleware/session-middleware";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 
 const router = express.Router();
 
-router.get(PATH_NAMES.RESET_PASSWORD, resetPasswordGet);
+router.get(
+  PATH_NAMES.RESET_PASSWORD,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
+  resetPasswordGet
+);
 
 router.get(
   PATH_NAMES.RESET_PASSWORD_CONFIRMATION,
@@ -23,6 +30,8 @@ router.get(PATH_NAMES.RESET_PASSWORD_EXPIRED_LINK, resetPasswordExpiredLinkGet);
 
 router.post(
   PATH_NAMES.RESET_PASSWORD,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
   validateResetPasswordRequest(),
   asyncHandler(resetPasswordPost())
 );
