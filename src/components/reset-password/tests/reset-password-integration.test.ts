@@ -12,8 +12,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
   let app: any;
   let baseApi: string;
 
-  const ENDPOINT =
-    "/reset-password";
+  const ENDPOINT = "/reset-password";
 
   before(async () => {
     decache("../../../app");

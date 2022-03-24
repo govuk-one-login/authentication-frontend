@@ -58,7 +58,7 @@ export function resetPasswordPost(
     const newPassword = req.body.password;
 
     let resetCode = null;
-    let sessionId =  null;
+    let sessionId = null;
     let persistentSessionId = null;
 
     if (code) {
@@ -73,7 +73,7 @@ export function resetPasswordPost(
       sessionId = getSessionId(code);
       persistentSessionId = getPersistentSessionId(code);
     } else {
-      sessionId =  res.locals.sessionId;
+      sessionId = res.locals.sessionId;
       persistentSessionId = res.locals.persistentSessionId;
     }
 
@@ -86,9 +86,6 @@ export function resetPasswordPost(
     );
 
     if (response.success) {
-      if (code) {
-        return res.redirect(PATH_NAMES.RESET_PASSWORD_CONFIRMATION);
-      }
       return res.redirect(
         getNextPathAndUpdateJourney(
           req,
@@ -98,7 +95,7 @@ export function resetPasswordPost(
             isIdentityRequired: req.session.user.isIdentityRequired,
             isConsentRequired: req.session.user.isConsentRequired,
             isLatestTermsAndConditionsAccepted:
-            req.session.user.isLatestTermsAndConditionsAccepted,
+              req.session.user.isLatestTermsAndConditionsAccepted,
           },
           res.locals.sessionId
         )
@@ -115,13 +112,6 @@ export function resetPasswordPost(
 
     return res.redirect(PATH_NAMES.RESET_PASSWORD_EXPIRED_LINK);
   };
-}
-
-export function resetPasswordConfirmationGet(
-  req: Request,
-  res: Response
-): void {
-  res.render("reset-password/index-confirmation.njk");
 }
 
 export function resetPasswordExpiredLinkGet(req: Request, res: Response): void {
