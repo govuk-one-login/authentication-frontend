@@ -61,7 +61,7 @@ resource "aws_security_group_rule" "allow_alb_http_ingress_from_anywhere" {
   protocol    = "tcp"
   from_port   = 80
   to_port     = 80
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_blocks = var.incoming_traffic_cidr_blocks
 }
 
 resource "aws_security_group_rule" "allow_alb_https_ingress_from_anywhere" {
@@ -72,7 +72,7 @@ resource "aws_security_group_rule" "allow_alb_https_ingress_from_anywhere" {
   protocol    = "tcp"
   from_port   = 443
   to_port     = 443
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_blocks = var.incoming_traffic_cidr_blocks
 }
 
 resource "aws_security_group_rule" "allow_alb_application_egress_to_task_group" {

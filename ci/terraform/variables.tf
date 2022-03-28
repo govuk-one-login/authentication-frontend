@@ -141,3 +141,9 @@ variable "basic_auth_username" {
 variable "basic_auth_password" {
   default = ""
 }
+
+variable "incoming_traffic_cidr_blocks" {
+  default     = ["0.0.0.0/0"]
+  type        = list(string)
+  description = "The list of CIDR blocks allowed to send requests to the ALB"
+}
