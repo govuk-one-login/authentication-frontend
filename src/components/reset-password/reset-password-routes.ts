@@ -7,11 +7,14 @@ import {
   resetPasswordExpiredLinkGet,
   resetPasswordGet,
   resetPasswordPost,
+  resetPasswordRequestGet,
 } from "./reset-password-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 
 const router = express.Router();
+
+router.get(PATH_NAMES.RESET_PASSWORD_REQUEST, resetPasswordRequestGet);
 
 router.get(
   PATH_NAMES.RESET_PASSWORD,

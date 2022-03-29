@@ -114,6 +114,18 @@ export function resetPasswordPost(
   };
 }
 
+export function resetPasswordRequestGet(req: Request, res: Response): void {
+  return res.redirect(
+    getNextPathAndUpdateJourney(
+      req,
+      req.path,
+      USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED,
+      null,
+      res.locals.sessionId
+    )
+  );
+}
+
 export function resetPasswordExpiredLinkGet(req: Request, res: Response): void {
   res.render("reset-password/index-expired.njk");
 }

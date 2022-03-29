@@ -251,6 +251,12 @@
       },
       "buttonText": "Continue"
     },
+    "resetPasswordResendCode": {
+      "title": "Request a new security code",
+      "header": "Request a new security code",
+      "email": "We'll send a new code to ",
+      "send": "Send a new code"
+    },
     "createPassword": {
       "title": "Create your password",
       "header": "Create your password",
