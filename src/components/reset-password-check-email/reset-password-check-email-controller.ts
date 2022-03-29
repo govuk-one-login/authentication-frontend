@@ -17,14 +17,19 @@ export function resetPasswordCheckEmailGet(
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
     const sessionId = res.locals.sessionId;
-    const result = await service.resetPasswordRequest(
-      email,
-      sessionId,
-      req.ip,
-      res.locals.persistentSessionId
-    );
+    const requestCode = ! (req.query.requestCode && req.query.requestCode === 'false') ;
+    let result;
 
-    if (result.success) {
+    if (requestCode) {
+      result = await service.resetPasswordRequest(
+        email,
+        sessionId,
+        req.ip,
+        res.locals.persistentSessionId
+      );
+    }
+
+    if (! requestCode || result.success) {
       return res.render(TEMPLATE_NAME, {
         email,
       });
@@ -57,4 +62,10 @@ export function resetPasswordCheckEmailPost (
     validationKey: "pages.resetPasswordCheckEmail.code.validationError.invalidCode",
     validationErrorCode: ERROR_CODES.RESET_PASSWORD_INVALID_CODE,
   });
-};
+}
+
+export function resetPasswordResendCodeGet(req: Request, res: Response): void {
+  res.render("reset-password-check-email/index-reset-password-resend-code.njk", {
+    email: req.session.user.email,
+  });
+}
