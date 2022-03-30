@@ -4,7 +4,6 @@ import { PATH_NAMES } from "../../app.constants";
 import { asyncHandler } from "../../utils/async";
 import { validateResetPasswordRequest } from "./reset-password-validation";
 import {
-  resetPasswordExpiredLinkGet,
   resetPasswordGet,
   resetPasswordPost,
   resetPasswordRequestGet,
@@ -22,8 +21,6 @@ router.get(
   allowUserJourneyMiddleware,
   resetPasswordGet
 );
-
-router.get(PATH_NAMES.RESET_PASSWORD_EXPIRED_LINK, resetPasswordExpiredLinkGet);
 
 router.post(
   PATH_NAMES.RESET_PASSWORD,
