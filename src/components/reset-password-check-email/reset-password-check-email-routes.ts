@@ -4,6 +4,7 @@ import { resetPasswordCheckEmailGet, resetPasswordCheckEmailPost, resetPasswordR
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { asyncHandler } from "../../utils/async";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
+import { validateResetPasswordCheckEmailRequest } from "./reset-password-check-email-validation";
 
 const router = express.Router();
 
@@ -18,6 +19,7 @@ router.post(
   PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  validateResetPasswordCheckEmailRequest(),
   asyncHandler(resetPasswordCheckEmailPost())
 );
 
