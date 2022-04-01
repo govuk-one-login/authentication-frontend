@@ -40,6 +40,8 @@ export const PATH_NAMES = {
   CONTACT_US_QUESTIONS: "/contact-us-questions",
   PROVE_IDENTITY: "/prove-identity",
   HEALTHCHECK: "/healthcheck",
+  PROVE_IDENTITY_WELCOME_SESSION_EXISTS: "/prove-identity-welcome-session",
+  PROVE_IDENTITY_WELCOME: "/prove-identity-welcome",
 };
 
 export const HTTP_STATUS_CODES = {
@@ -146,4 +148,12 @@ export const EXTERNAL_LINKS = {
   GOV_UK: "https://www.gov.uk/",
 };
 
+export const OIDC_PROMPT = {
+  LOGIN: "LOGIN",
+  NONE: "NONE",
+};
+
+export const IPV_ERROR_CODES = {
+  AccountNotCreated_IPV: "AccountNotCreated_IPV",
+};
 export const COOKIES_PREFERENCES_SET = "cookies_preferences_set";

@@ -36,7 +36,7 @@ export function landingGet(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const { prompt } = req.query;
+    const loginPrompt = sanitize(req.query.prompt as string);
 
     const startAuthResponse = await service.start(
       sessionId,
@@ -67,11 +67,15 @@ export function landingGet(
       startAuthResponse.data.client.cookieConsentShared;
     req.session.client.consentEnabled =
       startAuthResponse.data.user.consentRequired;
+    req.session.client.prompt = loginPrompt;
+    req.session.client.redirectUri = startAuthResponse.data.client.redirectUri;
 
     req.session.user.isIdentityRequired =
       startAuthResponse.data.user.identityRequired;
     req.session.user.isAuthenticated =
       startAuthResponse.data.user.authenticated;
+    req.session.user.isUpliftRequired =
+      startAuthResponse.data.user.upliftRequired;
 
     const nextState = req.session.user.isAuthenticated
       ? USER_JOURNEY_EVENTS.EXISTING_SESSION
@@ -83,10 +87,10 @@ export function landingGet(
       nextState,
       {
         isConsentRequired: req.session.client.consentEnabled,
-        requiresUplift: startAuthResponse.data.user.upliftRequired,
+        requiresUplift: req.session.user.isUpliftRequired,
         isIdentityRequired: req.session.user.isIdentityRequired,
         isAuthenticated: req.session.user.isAuthenticated,
-        prompt: sanitize(prompt as string),
+        prompt: req.session.client.prompt,
       },
       sessionId
     );

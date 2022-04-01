@@ -64,6 +64,7 @@ import session from "express-session";
 import { proveIdentityRouter } from "./components/prove-identity/prove-identity-routes";
 import { healthcheckRouter } from "./components/healthcheck/healthcheck-routes";
 import { crossDomainTrackingMiddleware } from "./middleware/cross-domain-tracking-middleware";
+import { proveIdentityWelcomeRouter } from "./components/prove-identity-welcome/prove-identity-welcome-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -96,6 +97,7 @@ function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
   app.use(healthcheckRouter);
   if (!appEnvIsProduction) {
     app.use(proveIdentityRouter);
+    app.use(proveIdentityWelcomeRouter);
   }
 }
 

@@ -1,5 +1,5 @@
 import { createMachine, EventType, StateValue } from "xstate";
-import { PATH_NAMES } from "../../../app.constants";
+import { OIDC_PROMPT, PATH_NAMES } from "../../../app.constants";
 
 const USER_JOURNEY_EVENTS = {
   AUTHENTICATED: "AUTHENTICATED",
@@ -47,25 +47,31 @@ const authStateMachine = createMachine(
       isPhoneNumberVerified: true,
       isAuthenticated: false,
       isIdentityRequired: false,
-      prompt: "NONE",
+      prompt: OIDC_PROMPT.NONE,
     },
     states: {
       [PATH_NAMES.START]: {
         on: {
           [USER_JOURNEY_EVENTS.EXISTING_SESSION]: [
-            { target: [PATH_NAMES.ENTER_PASSWORD], cond: "requiresLogin" },
-            { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
             {
-              target: [PATH_NAMES.PROVE_IDENTITY],
+              target: [PATH_NAMES.PROVE_IDENTITY_WELCOME],
               cond: "isIdentityRequired",
             },
+            { target: [PATH_NAMES.ENTER_PASSWORD], cond: "requiresLogin" },
+            { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
             {
               target: [PATH_NAMES.SHARE_INFO],
               cond: "isConsentRequired",
             },
             { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
           ],
-          [USER_JOURNEY_EVENTS.LANDING]: [PATH_NAMES.SIGN_IN_OR_CREATE],
+          [USER_JOURNEY_EVENTS.LANDING]: [
+            {
+              target: [PATH_NAMES.PROVE_IDENTITY_WELCOME],
+              cond: "isIdentityRequired",
+            },
+            { target: [PATH_NAMES.SIGN_IN_OR_CREATE] },
+          ],
         },
       },
       [PATH_NAMES.SIGN_IN_OR_CREATE]: {
@@ -73,6 +79,21 @@ const authStateMachine = createMachine(
           [USER_JOURNEY_EVENTS.SIGN_IN]: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
           [USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT]: [
             PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
+          ],
+        },
+      },
+      [PATH_NAMES.PROVE_IDENTITY_WELCOME]: {
+        on: {
+          [USER_JOURNEY_EVENTS.EXISTING_SESSION]: [
+            {
+              target: [PATH_NAMES.ENTER_PASSWORD],
+              cond: "requiresLogin",
+            },
+            { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
+            { target: [PATH_NAMES.PROVE_IDENTITY] },
+          ],
+          [USER_JOURNEY_EVENTS.CREATE_OR_SIGN_IN]: [
+            PATH_NAMES.SIGN_IN_OR_CREATE,
           ],
         },
       },
@@ -318,7 +339,8 @@ const authStateMachine = createMachine(
       isIdentityRequired: (context) => context.isIdentityRequired === true,
       isAuthenticated: (context) => context.isAuthenticated === true,
       requiresLogin: (context) =>
-        context.isAuthenticated === true && context.prompt === "LOGIN",
+        context.isAuthenticated === true &&
+        context.prompt === OIDC_PROMPT.LOGIN,
     },
   }
 );

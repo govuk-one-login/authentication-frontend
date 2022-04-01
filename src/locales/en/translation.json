@@ -1291,6 +1291,38 @@
     "termsConditionsNotAccepted": {
       "title": "placeholder",
       "header": "placeholder"
+    },
+    "proveIdentityWelcome": {
+      "title": "Prove your identity with a GOV.UK account",
+      "header": "Prove your identity with a GOV.UK account",
+      "section1": {
+        "paragraph1": "You can currently only prove your identity with your GOV.UK account if you have a UK passport.",
+        "insetTextPassport": "If your passport has expired, you can still use it to prove your identity up until 18 months after the expiry date.",
+        "paragraph2": "You do not need to have your passport with you if you can remember the details on it."
+      },
+      "section2": {
+        "subHeading": "What you need to do",
+        "paragraph1": "It will take you about 10 minutes to prove your identity this way.",
+        "insetTextEnglishOnly": "This service is currently only available in English.",
+        "paragraph2": "You'll need to create or sign in to your GOV.UK account first. We'll then ask you for your current address and passport details.",
+        "paragraph3": "We'll also ask you some security questions that only you should know the answers to. You might find it easier to answer these questions if you have information about:",
+        "listItem1": "your mobile phone contract",
+        "listItem2": "your bank account",
+        "listItem3": "any credit cards, loans or mortgages you have",
+        "paragraph4": "We'll only use the information you give us to make sure that you are who you say you are."
+      },
+      "section3": {
+        "subHeading": "Choose a way to prove your identity",
+        "radioOption1": "Continue to sign in or create a GOV.UK account",
+        "radioOption2": "Prove your identity another way",
+        "radioOption2HintText": "You can prove your identity online with GOV.UK Verify or take your identity documents to be checked in person.",
+        "errorMessage": "Select an option"
+      },
+      "existingSession": {
+        "continueButton": "Continue with GOV.UK account",
+        "paragraph1":"If you don't have a passport, ",
+        "linkText": "you can prove your identity another way"
+      }
     }
   }
 }
