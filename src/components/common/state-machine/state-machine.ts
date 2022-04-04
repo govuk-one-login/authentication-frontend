@@ -32,9 +32,7 @@ const USER_JOURNEY_EVENTS = {
   PASSWORD_CREATED: "PASSWORD_CREATED",
   REQUEST_PASSWORD_RESET: "REQUEST_PASSWORD_RESET",
   PASSWORD_RESET_REQUESTED: "PASSWORD_RESET_REQUESTED",
-  PASSWORD_RESET_RESEND_CODE: "PASSWORD_RESET_RESEND_CODE",
   RESEND_MFA: "RESEND_MFA",
-  RESET_PASSWORD_CODE_VERIFIED: "RESET_PASSWORD_CODE_VERIFIED",
 };
 
 const authStateMachine = createMachine(
@@ -138,9 +136,9 @@ const authStateMachine = createMachine(
         meta: {
           optionalPaths: [
             PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
+            PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
             PATH_NAMES.ACCOUNT_LOCKED,
             PATH_NAMES.SIGN_IN_OR_CREATE,
-            PATH_NAMES.RESET_PASSWORD_REQUEST,
           ],
         },
       },
@@ -237,9 +235,9 @@ const authStateMachine = createMachine(
         meta: {
           optionalPaths: [
             PATH_NAMES.ENTER_EMAIL_SIGN_IN,
+            PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
             PATH_NAMES.ACCOUNT_LOCKED,
             PATH_NAMES.SIGN_IN_OR_CREATE,
-            PATH_NAMES.RESET_PASSWORD_REQUEST,
           ],
         },
       },
@@ -296,54 +294,6 @@ const authStateMachine = createMachine(
       [PATH_NAMES.SHARE_INFO]: {
         on: {
           [USER_JOURNEY_EVENTS.CONSENT_ACCEPTED]: [PATH_NAMES.AUTH_CODE],
-        },
-      },
-      [PATH_NAMES.RESET_PASSWORD_REQUEST]: {
-        on: {
-          [USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED]: [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL],
-        },
-      },
-      [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL]: {
-        on: {
-          [USER_JOURNEY_EVENTS.RESET_PASSWORD_CODE_VERIFIED]: [PATH_NAMES.RESET_PASSWORD]
-        },
-        meta: {
-          optionalPaths: [
-            PATH_NAMES.RESET_PASSWORD_RESEND_CODE,
-          ],
-        },
-      },
-      [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]: {
-        on: {
-          [USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED]: [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL],
-        },
-      },
-      [PATH_NAMES.RESET_PASSWORD]: {
-        on: {
-          [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
-            {
-              target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
-              cond: "isPhoneNumberVerified",
-            },
-            { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
-            {
-              target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
-              cond: "isLatestTermsAndConditionsAccepted",
-            },
-            {
-              target: [PATH_NAMES.SHARE_INFO],
-              cond: "isConsentRequired",
-            },
-            { target: [PATH_NAMES.AUTH_CODE] },
-          ],
-        },
-        meta: {
-          optionalPaths: [
-            PATH_NAMES.ENTER_EMAIL_SIGN_IN,
-            PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
-            PATH_NAMES.ACCOUNT_LOCKED,
-            PATH_NAMES.SIGN_IN_OR_CREATE,
-          ],
         },
       },
       [PATH_NAMES.PROVE_IDENTITY]: {
