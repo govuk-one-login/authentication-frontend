@@ -10,6 +10,8 @@ import { PATH_NAMES } from "../../../app.constants";
 describe("Integration::reset password check email ", () => {
   let app: any;
   let baseApi: string;
+  let token: string | string[];
+  let cookies: string;
 
   before(async () => {
     decache("../../../app");
@@ -34,6 +36,16 @@ describe("Integration::reset password check email ", () => {
 
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
+
+    nock(baseApi).post("/reset-password-request").once().reply(204);
+
+    request(app)
+      .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+      .end((err, res) => {
+        const $ = cheerio.load(res.text);
+        token = $("[name=_csrf]").val();
+        cookies = res.headers["set-cookie"];
+      });
   });
 
   beforeEach(() => {
@@ -82,6 +94,28 @@ describe("Integration::reset password check email ", () => {
         );
       })
       .expect(200, done);
+  });
+
+  it("should redisplay page with error", (done) => {
+    nock(baseApi)
+      .post("/verify-code")
+      .reply(400, { code: 1021 });
+
+    request(app)
+      .post("/reset-password-check-email")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123456",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#code-error").text()).to.contains(
+          "The security code you entered is not correct"
+        );
+      })
+      .expect(400, done);
   });
 
   it("should return internal server error when /reset-password-request API call response is 500", (done) => {
