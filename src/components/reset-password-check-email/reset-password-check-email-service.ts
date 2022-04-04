@@ -22,7 +22,6 @@ export function resetPasswordCheckEmailService(
       API_ENDPOINTS.RESET_PASSWORD_REQUEST,
       {
         email: email,
-        useCodeFlow: true
       },
       getRequestConfig({
         sessionId: sessionId,

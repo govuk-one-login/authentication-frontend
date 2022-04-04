@@ -1,0 +1,20 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% set pageTitleName = 'pages.resetPasswordExpiredLink.title' | translate %}
+
+{% block content %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resetPasswordExpiredLink.header' | translate}}</h1>
+
+<p class="govuk-body">
+    {{'pages.resetPasswordExpiredLink.info.paragraph1' | translate}}
+</p>
+
+<p class="govuk-body">
+    {{'pages.resetPasswordExpiredLink.info.paragraph2Start' | translate}}
+    <a href="https://www.gov.uk" class="govuk-link" rel="noreferrer noopener">{{'pages.resetPasswordExpiredLink.info.link' | translate }}</a>
+    {{'pages.resetPasswordExpiredLink.info.paragraph2End' | translate}}
+</p>
+
+{% endblock %}

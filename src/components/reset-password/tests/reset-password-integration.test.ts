@@ -4,35 +4,17 @@ import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import { PATH_NAMES } from "../../../app.constants";
-import decache from "decache";
 
-describe("Integration::reset password (in 6 digit code flow)", () => {
+describe("Integration::reset password", () => {
   let token: string | string[];
   let cookies: string;
   let app: any;
   let baseApi: string;
 
-  const ENDPOINT = "/reset-password";
+  const ENDPOINT =
+    "/reset-password?code=WBTxBpSQdd3cSxT-!X5s.1758350212000.a-session-id.a-persistent-id";
 
   before(async () => {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
-
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        req.session.user = {
-          email: "test@test.com",
-          phoneNumber: "******7867",
-          journey: {
-            nextPath: PATH_NAMES.RESET_PASSWORD,
-          },
-        };
-
-        next();
-      });
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
@@ -68,6 +50,33 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .expect(500, done);
   });
 
+  it("should return to invalid link error when code missing from query param", (done) => {
+    const invalidEndpoint = "/reset-password";
+    request(app)
+      .get(invalidEndpoint)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($(".govuk-heading-l").text()).to.contains(
+          "That link has expired"
+        );
+      })
+      .expect(200, done);
+  });
+
+  it("should return to invalid link error when code expired", (done) => {
+    const invalidEndpoint =
+      "/reset-password?code=WBTxBpSQdd3cSxT-!X5s.1631729877";
+    request(app)
+      .get(invalidEndpoint)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($(".govuk-heading-l").text()).to.contains(
+          "That link has expired"
+        );
+      })
+      .expect(200, done);
+  });
+
   it("should return validation error when password not entered", (done) => {
     request(app)
       .post(ENDPOINT)
@@ -75,6 +84,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
+        code: "WBTxBpSQdd3cSxT-!X5s.1758350212000",
         password: "",
         "confirm-password": "",
       })
@@ -92,6 +102,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
+        code: "WBTxBpSQdd3cSxT-!X5s.1758350212000",
         password: "sadsadasd33da",
         "confirm-password": "sdnnsad99d",
       })
@@ -111,6 +122,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
+        code: "WBTxBpSQdd3cSxT-!X5s.1758350212000",
         password: "dad",
         "confirm-password": "",
       })
@@ -130,6 +142,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
+        code: "WBTxBpSQdd3cSxT-!X5s.1758350212000",
         password: "password123",
         "confirm-password": "password123",
       })
@@ -151,6 +164,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
+        code: "WBTxBpSQdd3cSxT-!X5s.1758350212000.a-session-id.a-persistent-id",
         password: "p@ssw0rd-123",
         "confirm-password": "p@ssw0rd-123",
       })
@@ -170,6 +184,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
+        code: "WBTxBpSQdd3cSxT-!X5s.1758350212000",
         password: "testpassword",
         "confirm-password": "testpassword",
       })
@@ -182,7 +197,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .expect(400, done);
   });
 
-  it("should redirect to MFA step when valid password entered", (done) => {
+  it("should redirect to /reset-password-confirmation when valid password entered", (done) => {
     nock(baseApi).post("/reset-password").once().reply(204);
 
     request(app)
@@ -191,10 +206,11 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
+        code: "WBTxBpSQdd3cSxT-!X5s.1758350212000.a-session-id.a-persistent-id",
         password: "Testpassword1",
         "confirm-password": "Testpassword1",
       })
-      .expect("Location", PATH_NAMES.AUTH_CODE)
+      .expect("Location", PATH_NAMES.RESET_PASSWORD_CONFIRMATION)
       .expect(302, done);
   });
 });

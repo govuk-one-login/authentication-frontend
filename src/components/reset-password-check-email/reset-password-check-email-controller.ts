@@ -4,12 +4,6 @@ import { ResetPasswordCheckEmailServiceInterface } from "./types";
 import { resetPasswordCheckEmailService } from "./reset-password-check-email-service";
 import { BadRequestError } from "../../utils/error";
 import { ERROR_CODES } from "../common/constants";
-import { VerifyCodeInterface } from "../common/verify-code/types";
-import { codeService } from "../common/verify-code/verify-code-service";
-import { verifyCodePost } from "../common/verify-code/verify-code-controller";
-import { NOTIFICATION_TYPE } from "../../app.constants";
-
-const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
 export function resetPasswordCheckEmailGet(
   service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailService()
@@ -17,20 +11,15 @@ export function resetPasswordCheckEmailGet(
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
     const sessionId = res.locals.sessionId;
-    const requestCode = ! (req.query.requestCode && req.query.requestCode === 'false') ;
-    let result;
+    const result = await service.resetPasswordRequest(
+      email,
+      sessionId,
+      req.ip,
+      res.locals.persistentSessionId
+    );
 
-    if (requestCode) {
-      result = await service.resetPasswordRequest(
-        email,
-        sessionId,
-        req.ip,
-        res.locals.persistentSessionId
-      );
-    }
-
-    if (! requestCode || result.success) {
-      return res.render(TEMPLATE_NAME, {
+    if (result.success) {
+      return res.render("reset-password-check-email/index.njk", {
         email,
       });
     }
@@ -51,21 +40,4 @@ export function resetPasswordCheckEmailGet(
       throw new BadRequestError(result.data.message, result.data.code);
     }
   };
-}
-
-export function resetPasswordCheckEmailPost (
-  service: VerifyCodeInterface = codeService()
-): ExpressRouteFunc {
-  return verifyCodePost(service, {
-    notificationType: NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE,
-    template: TEMPLATE_NAME,
-    validationKey: "pages.resetPasswordCheckEmail.code.validationError.invalidCode",
-    validationErrorCode: ERROR_CODES.RESET_PASSWORD_INVALID_CODE,
-  });
-}
-
-export function resetPasswordResendCodeGet(req: Request, res: Response): void {
-  res.render("reset-password-check-email/index-reset-password-resend-code.njk", {
-    email: req.session.user.email,
-  });
 }
