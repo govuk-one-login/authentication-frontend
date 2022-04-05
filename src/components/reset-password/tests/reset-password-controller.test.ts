@@ -17,6 +17,8 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
+import { EnterPasswordServiceInterface } from "../../enter-password/types";
+import { MfaServiceInterface } from "../../common/mfa/types";
 
 describe("reset password controller (in 6 digit code flow)", () => {
   let req: RequestOutput;
@@ -59,23 +61,113 @@ describe("reset password controller (in 6 digit code flow)", () => {
   });
 
   describe("resetPasswordPost", () => {
-    it("should redirect to /auth-code when password updated", async () => {
-      const fakeService: ResetPasswordServiceInterface = {
+    it("should redirect to /enter-code when password updated and phone number verified", async () => {
+      const fakeResetService: ResetPasswordServiceInterface = {
         updatePassword: sinon.fake.returns({ success: true }),
       };
-
+      const fakeLoginService: EnterPasswordServiceInterface = {
+        loginUser: sinon.fake.returns(
+          { success: true,
+            data: {
+              redactedPhoneNumber: "******1234",
+              consentRequired: false,
+              latestTermsAndConditionsAccepted: true,
+              phoneNumberVerified: true,
+              mfaRequired: true
+            }
+          }
+        ),
+      };
+      fakeLoginService.loginUser
+      const fakeMfAService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({ success: true }),
+      };
+      
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
       req.body.password = "Password1";
 
-      await resetPasswordPost(fakeService)(req as Request, res as Response);
+      await resetPasswordPost(fakeResetService, fakeLoginService, fakeMfAService)(req as Request, res as Response);
 
-      expect(fakeService.updatePassword).to.have.been.calledOnce;
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.AUTH_CODE
-      );
+      expect(fakeResetService.updatePassword).to.have.been.calledOnce;
+      expect(fakeLoginService.loginUser).to.have.been.calledOnce;
+      expect(fakeMfAService.sendMfaCode).to.have.been.calledOnce;
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
     });
+
+    it("should redirect to /enter-phone-number when password updated and phone number not verified", async () => {
+      const fakeResetService: ResetPasswordServiceInterface = {
+        updatePassword: sinon.fake.returns({ success: true }),
+      };
+      const fakeLoginService: EnterPasswordServiceInterface = {
+        loginUser: sinon.fake.returns(
+          { success: true,
+            data: {
+              redactedPhoneNumber: "******1234",
+              consentRequired: false,
+              latestTermsAndConditionsAccepted: true,
+              phoneNumberVerified: false,
+              mfaRequired: true
+            }
+          }
+        ),
+      };
+      fakeLoginService.loginUser
+      const fakeMfAService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({ success: true }),
+      };
+      
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      req.body.password = "Password1";
+
+      await resetPasswordPost(fakeResetService, fakeLoginService, fakeMfAService)(req as Request, res as Response);
+
+      expect(fakeResetService.updatePassword).to.have.been.calledOnce;
+      expect(fakeLoginService.loginUser).to.have.been.calledOnce;
+      expect(fakeMfAService.sendMfaCode).to.not.have.been.called;
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);
+    });
+  });
+
+  it("should request 2fa when password updated even for non 2fa service", async () => {
+    const fakeResetService: ResetPasswordServiceInterface = {
+      updatePassword: sinon.fake.returns({ success: true }),
+    };
+    const fakeLoginService: EnterPasswordServiceInterface = {
+      loginUser: sinon.fake.returns(
+        { success: true,
+          data: {
+            redactedPhoneNumber: "******1234",
+            consentRequired: false,
+            latestTermsAndConditionsAccepted: true,
+            phoneNumberVerified: true,
+            mfaRequired: false
+          }
+        }
+      ),
+    };
+    fakeLoginService.loginUser
+    const fakeMfAService: MfaServiceInterface = {
+      sendMfaCode: sinon.fake.returns({ success: true }),
+    };
+    
+    req.session.user = {
+      email: "joe.bloggs@test.com",
+    };
+    req.body.password = "Password1";
+
+    await resetPasswordPost(fakeResetService, fakeLoginService, fakeMfAService)(req as Request, res as Response);
+
+    expect(fakeResetService.updatePassword).to.have.been.calledOnce;
+    expect(fakeLoginService.loginUser).to.have.been.calledOnce;
+    expect(fakeMfAService.sendMfaCode).to.have.been.calledOnce;
+
+    expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
   });
 });
 

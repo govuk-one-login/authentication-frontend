@@ -184,6 +184,8 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
 
   it("should redirect to MFA step when valid password entered", (done) => {
     nock(baseApi).post("/reset-password").once().reply(204);
+    nock(baseApi).post("/login").once().reply(200);
+    nock(baseApi).post("/mfa").once().reply(204);
 
     request(app)
       .post(ENDPOINT)
@@ -194,7 +196,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
         password: "Testpassword1",
         "confirm-password": "Testpassword1",
       })
-      .expect("Location", PATH_NAMES.AUTH_CODE)
+      .expect("Location", PATH_NAMES.ENTER_MFA)
       .expect(302, done);
   });
 });

@@ -6,9 +6,13 @@ import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation";
-import { ERROR_CODES, getNextPathAndUpdateJourney } from "../common/constants";
+import { ERROR_CODES, getErrorPathByCode, getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { BadRequestError } from "../../utils/error";
+import { EnterPasswordServiceInterface } from "../enter-password/types";
+import { enterPasswordService } from "../enter-password/enter-password-service";
+import { MfaServiceInterface } from "../common/mfa/types";
+import { mfaService } from "../common/mfa/mfa-service";
 
 const resetPasswordTemplate = "reset-password/index.njk";
 
@@ -17,48 +21,86 @@ export function resetPasswordGet(req: Request, res: Response): void {
 }
 
 export function resetPasswordPost(
-  service: ResetPasswordServiceInterface = resetPasswordService()
+  resetService: ResetPasswordServiceInterface = resetPasswordService(),
+  loginService: EnterPasswordServiceInterface = enterPasswordService(),
+  mfaCodeService: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-
+    const { email } = req.session.user;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const newPassword = req.body.password;
-    const sessionId = res.locals.sessionId;
-    const persistentSessionId = res.locals.persistentSessionId;
 
-    const response = await service.updatePassword(
+    const updatePasswordResponse = await resetService.updatePassword(
       newPassword,
       req.ip,
       sessionId,
       persistentSessionId
     );
 
-    if (response.success) {
-      return res.redirect(
-        getNextPathAndUpdateJourney(
-          req,
-          req.path,
-          USER_JOURNEY_EVENTS.PASSWORD_CREATED,
-          {
-            isIdentityRequired: req.session.user.isIdentityRequired,
-            isConsentRequired: req.session.user.isConsentRequired,
-            isLatestTermsAndConditionsAccepted:
-              req.session.user.isLatestTermsAndConditionsAccepted,
-          },
-          res.locals.sessionId
-        )
-      );
+    if (! updatePasswordResponse.success) {
+      if (updatePasswordResponse.data.code === ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING) {
+        const error = formatValidationError(
+          "password",
+          req.t("pages.resetPassword.password.validationError.samePassword")
+        );
+        return renderBadRequest(res, req, resetPasswordTemplate, error);
+      } else {
+        throw new BadRequestError(updatePasswordResponse.data.message, updatePasswordResponse.data.code);
+      }
     }
 
-    if (response.data.code === ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING) {
-      const error = formatValidationError(
-        "password",
-        req.t("pages.resetPassword.password.validationError.samePassword")
-      );
-      return renderBadRequest(res, req, resetPasswordTemplate, error);
+    const loginResponse = await loginService.loginUser(
+      sessionId,
+      email,
+      newPassword,
+      clientSessionId,
+      req.ip,
+      persistentSessionId
+    );
+
+    if (! loginResponse.success) {
+      throw new BadRequestError(loginResponse.data.message, loginResponse.data.code);
     }
 
-    throw new BadRequestError(response.data.message, response.data.code);
-  };
+    req.session.user.phoneNumber = loginResponse.data.redactedPhoneNumber;
+    req.session.user.isConsentRequired = loginResponse.data.consentRequired;
+    req.session.user.isLatestTermsAndConditionsAccepted =
+    loginResponse.data.latestTermsAndConditionsAccepted;
+
+    if (loginResponse.data.phoneNumberVerified) {
+      const mfaResponse = await mfaCodeService.sendMfaCode(
+        sessionId,
+        clientSessionId,
+        email,
+        req.ip,
+        persistentSessionId
+      );
+
+      if (!mfaResponse.success) {
+        const path = getErrorPathByCode(mfaResponse.data.code);
+        if (path) {
+          return res.redirect(path);
+        }
+        throw new BadRequestError(mfaResponse.data.message, mfaResponse.data.code);
+      }
+    }
+
+    return res.redirect(
+      getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.PASSWORD_CREATED,
+        {
+          isConsentRequired: req.session.user.isConsentRequired,
+          requiresTwoFactorAuth: true,
+          isLatestTermsAndConditionsAccepted:
+            req.session.user.isLatestTermsAndConditionsAccepted,
+          isPhoneNumberVerified: loginResponse.data.phoneNumberVerified,
+        },
+        res.locals.sessionId
+      )
+    );
+  }
 }
 
 export function resetPasswordRequestGet(req: Request, res: Response): void {
