@@ -14,24 +14,21 @@
 
 <form action="/reset-password" method="post" novalidate>
 
-<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-<input type="hidden" name="code" value="{{code}}"/>
-
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
     {{ govukInputWithShowPassword('pages.resetPassword.password.label'  | translate, "password", errors , 'pages.resetPassword.password.hint' | translate) }}
     {{ govukInputWithShowPassword('pages.resetPassword.confirmPassword.label' | translate, "confirm-password", errors)  }}
 
+    {{ govukDetails({
+    summaryText: 'pages.resetPassword.securePasswordDetails.summary' | translate,
+    text: 'pages.resetPassword.securePasswordDetails.text' | translate
+    }) }}
 
-{{ govukDetails({
-  summaryText: 'pages.resetPassword.securePasswordDetails.summary' | translate,
-  text: 'pages.resetPassword.securePasswordDetails.text' | translate
-}) }}
-
-{{ govukButton({
-    "text": button_text|default("Continue", true),
-    "type": "Submit",
-    "preventDoubleClick": true
-}) }}
+    {{ govukButton({
+        "text": button_text|default("Continue", true),
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
 
 </form>
 
