@@ -1,100 +1,116 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { PATH_NAMES } from "../../app.constants";
 import { ResetPasswordServiceInterface } from "./types";
 import { resetPasswordService } from "./reset-password-service";
 import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation";
-import xss from "xss";
-import { ERROR_CODES } from "../common/constants";
+import { ERROR_CODES, getErrorPathByCode, getNextPathAndUpdateJourney } from "../common/constants";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { BadRequestError } from "../../utils/error";
+import { EnterPasswordServiceInterface } from "../enter-password/types";
+import { enterPasswordService } from "../enter-password/enter-password-service";
+import { MfaServiceInterface } from "../common/mfa/types";
+import { mfaService } from "../common/mfa/mfa-service";
 
 const resetPasswordTemplate = "reset-password/index.njk";
 
-function isCodeExpired(code: string): boolean {
-  if (!code) {
-    return true;
-  }
-
-  const codeExpiry = code.split(".")[1];
-  const codeAsNumber = Number(codeExpiry);
-
-  if (isNaN(codeAsNumber)) {
-    return true;
-  }
-
-  return Date.now() > codeAsNumber;
-}
-
-function getCode(code: string): string {
-  return code.split(".")[0];
-}
-
-function getSessionId(code: string): string {
-  return code.split(".")[2];
-}
-
-function getPersistentSessionId(code: string): string {
-  return code.split(".")[3];
-}
-
 export function resetPasswordGet(req: Request, res: Response): void {
-  const code = xss(req.query.code as string);
-
-  if (!code || isCodeExpired(code)) {
-    return res.render("reset-password/index-invalid.njk");
-  }
-
-  res.render(resetPasswordTemplate, { code: code });
+  res.render(resetPasswordTemplate);
 }
 
 export function resetPasswordPost(
-  service: ResetPasswordServiceInterface = resetPasswordService()
+  resetService: ResetPasswordServiceInterface = resetPasswordService(),
+  loginService: EnterPasswordServiceInterface = enterPasswordService(),
+  mfaCodeService: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const code = req.body.code;
+    const { email } = req.session.user;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const newPassword = req.body.password;
 
-    if (
-      isCodeExpired(code) ||
-      !getSessionId(code) ||
-      !getPersistentSessionId(code)
-    ) {
-      return res.redirect(PATH_NAMES.RESET_PASSWORD_EXPIRED_LINK);
-    }
-
-    const response = await service.updatePassword(
+    const updatePasswordResponse = await resetService.updatePassword(
       newPassword,
-      getCode(code),
       req.ip,
-      getSessionId(code),
-      getPersistentSessionId(code)
+      sessionId,
+      persistentSessionId
     );
 
-    if (response.success) {
-      return res.redirect(PATH_NAMES.RESET_PASSWORD_CONFIRMATION);
+    if (! updatePasswordResponse.success) {
+      if (updatePasswordResponse.data.code === ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING) {
+        const error = formatValidationError(
+          "password",
+          req.t("pages.resetPassword.password.validationError.samePassword")
+        );
+        return renderBadRequest(res, req, resetPasswordTemplate, error);
+      } else {
+        throw new BadRequestError(updatePasswordResponse.data.message, updatePasswordResponse.data.code);
+      }
     }
 
-    if (response.data.code === ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING) {
-      const error = formatValidationError(
-        "password",
-        req.t("pages.resetPassword.password.validationError.samePassword")
+    const loginResponse = await loginService.loginUser(
+      sessionId,
+      email,
+      newPassword,
+      clientSessionId,
+      req.ip,
+      persistentSessionId
+    );
+
+    if (! loginResponse.success) {
+      throw new BadRequestError(loginResponse.data.message, loginResponse.data.code);
+    }
+
+    req.session.user.phoneNumber = loginResponse.data.redactedPhoneNumber;
+    req.session.user.isConsentRequired = loginResponse.data.consentRequired;
+    req.session.user.isLatestTermsAndConditionsAccepted =
+    loginResponse.data.latestTermsAndConditionsAccepted;
+
+    if (loginResponse.data.phoneNumberVerified) {
+      const mfaResponse = await mfaCodeService.sendMfaCode(
+        sessionId,
+        clientSessionId,
+        email,
+        req.ip,
+        persistentSessionId
       );
-      return renderBadRequest(res, req, resetPasswordTemplate, error);
+
+      if (!mfaResponse.success) {
+        const path = getErrorPathByCode(mfaResponse.data.code);
+        if (path) {
+          return res.redirect(path);
+        }
+        throw new BadRequestError(mfaResponse.data.message, mfaResponse.data.code);
+      }
     }
 
-    return res.redirect(PATH_NAMES.RESET_PASSWORD_EXPIRED_LINK);
-  };
+    return res.redirect(
+      getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.PASSWORD_CREATED,
+        {
+          isConsentRequired: req.session.user.isConsentRequired,
+          requiresTwoFactorAuth: true,
+          isLatestTermsAndConditionsAccepted:
+            req.session.user.isLatestTermsAndConditionsAccepted,
+          isPhoneNumberVerified: loginResponse.data.phoneNumberVerified,
+        },
+        res.locals.sessionId
+      )
+    );
+  }
 }
 
-export function resetPasswordConfirmationGet(
-  req: Request,
-  res: Response
-): void {
-  res.render("reset-password/index-confirmation.njk");
-}
-
-export function resetPasswordExpiredLinkGet(req: Request, res: Response): void {
-  res.render("reset-password/index-expired.njk");
+export function resetPasswordRequestGet(req: Request, res: Response): void {
+  return res.redirect(
+    getNextPathAndUpdateJourney(
+      req,
+      req.path,
+      USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED,
+      null,
+      res.locals.sessionId
+    )
+  );
 }
