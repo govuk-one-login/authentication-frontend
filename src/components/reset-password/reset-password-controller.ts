@@ -6,7 +6,11 @@ import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation";
-import { ERROR_CODES, getErrorPathByCode, getNextPathAndUpdateJourney } from "../common/constants";
+import {
+  ERROR_CODES,
+  getErrorPathByCode,
+  getNextPathAndUpdateJourney,
+} from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { BadRequestError } from "../../utils/error";
 import { EnterPasswordServiceInterface } from "../enter-password/types";
@@ -37,15 +41,21 @@ export function resetPasswordPost(
       persistentSessionId
     );
 
-    if (! updatePasswordResponse.success) {
-      if (updatePasswordResponse.data.code === ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING) {
+    if (!updatePasswordResponse.success) {
+      if (
+        updatePasswordResponse.data.code ===
+        ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING
+      ) {
         const error = formatValidationError(
           "password",
           req.t("pages.resetPassword.password.validationError.samePassword")
         );
         return renderBadRequest(res, req, resetPasswordTemplate, error);
       } else {
-        throw new BadRequestError(updatePasswordResponse.data.message, updatePasswordResponse.data.code);
+        throw new BadRequestError(
+          updatePasswordResponse.data.message,
+          updatePasswordResponse.data.code
+        );
       }
     }
 
@@ -58,14 +68,17 @@ export function resetPasswordPost(
       persistentSessionId
     );
 
-    if (! loginResponse.success) {
-      throw new BadRequestError(loginResponse.data.message, loginResponse.data.code);
+    if (!loginResponse.success) {
+      throw new BadRequestError(
+        loginResponse.data.message,
+        loginResponse.data.code
+      );
     }
 
     req.session.user.phoneNumber = loginResponse.data.redactedPhoneNumber;
     req.session.user.isConsentRequired = loginResponse.data.consentRequired;
     req.session.user.isLatestTermsAndConditionsAccepted =
-    loginResponse.data.latestTermsAndConditionsAccepted;
+      loginResponse.data.latestTermsAndConditionsAccepted;
 
     if (loginResponse.data.phoneNumberVerified) {
       const mfaResponse = await mfaCodeService.sendMfaCode(
@@ -81,7 +94,10 @@ export function resetPasswordPost(
         if (path) {
           return res.redirect(path);
         }
-        throw new BadRequestError(mfaResponse.data.message, mfaResponse.data.code);
+        throw new BadRequestError(
+          mfaResponse.data.message,
+          mfaResponse.data.code
+        );
       }
     }
 
@@ -100,7 +116,7 @@ export function resetPasswordPost(
         res.locals.sessionId
       )
     );
-  }
+  };
 }
 
 export function resetPasswordRequestGet(req: Request, res: Response): void {

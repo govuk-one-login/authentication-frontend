@@ -17,7 +17,9 @@ export function resetPasswordCheckEmailGet(
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
     const sessionId = res.locals.sessionId;
-    const requestCode = ! (req.query.requestCode && req.query.requestCode === 'false') ;
+    const requestCode = !(
+      req.query.requestCode && req.query.requestCode === "false"
+    );
     let result;
 
     if (requestCode) {
@@ -29,7 +31,7 @@ export function resetPasswordCheckEmailGet(
       );
     }
 
-    if (! requestCode || result.success) {
+    if (!requestCode || result.success) {
       return res.render(TEMPLATE_NAME, {
         email,
       });
@@ -53,19 +55,23 @@ export function resetPasswordCheckEmailGet(
   };
 }
 
-export function resetPasswordCheckEmailPost (
+export function resetPasswordCheckEmailPost(
   service: VerifyCodeInterface = codeService()
 ): ExpressRouteFunc {
   return verifyCodePost(service, {
     notificationType: NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE,
     template: TEMPLATE_NAME,
-    validationKey: "pages.resetPasswordCheckEmail.code.validationError.invalidCode",
+    validationKey:
+      "pages.resetPasswordCheckEmail.code.validationError.invalidCode",
     validationErrorCode: ERROR_CODES.RESET_PASSWORD_INVALID_CODE,
   });
 }
 
 export function resetPasswordResendCodeGet(req: Request, res: Response): void {
-  res.render("reset-password-check-email/index-reset-password-resend-code.njk", {
-    email: req.session.user.email,
-  });
+  res.render(
+    "reset-password-check-email/index-reset-password-resend-code.njk",
+    {
+      email: req.session.user.email,
+    }
+  );
 }

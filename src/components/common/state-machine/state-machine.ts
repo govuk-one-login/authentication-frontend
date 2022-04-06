@@ -300,22 +300,26 @@ const authStateMachine = createMachine(
       },
       [PATH_NAMES.RESET_PASSWORD_REQUEST]: {
         on: {
-          [USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED]: [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL],
+          [USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED]: [
+            PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
+          ],
         },
       },
       [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL]: {
         on: {
-          [USER_JOURNEY_EVENTS.RESET_PASSWORD_CODE_VERIFIED]: [PATH_NAMES.RESET_PASSWORD]
+          [USER_JOURNEY_EVENTS.RESET_PASSWORD_CODE_VERIFIED]: [
+            PATH_NAMES.RESET_PASSWORD,
+          ],
         },
         meta: {
-          optionalPaths: [
-            PATH_NAMES.RESET_PASSWORD_RESEND_CODE,
-          ],
+          optionalPaths: [PATH_NAMES.RESET_PASSWORD_RESEND_CODE],
         },
       },
       [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]: {
         on: {
-          [USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED]: [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL],
+          [USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED]: [
+            PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
+          ],
         },
       },
       [PATH_NAMES.RESET_PASSWORD]: {
