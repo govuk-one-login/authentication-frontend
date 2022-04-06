@@ -12,6 +12,7 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
+import { PATH_NAMES } from "../../../app.constants";
 
 describe("prove identity controller", () => {
   let req: RequestOutput;
@@ -19,6 +20,7 @@ describe("prove identity controller", () => {
 
   beforeEach(() => {
     req = mockRequest({
+      path: PATH_NAMES.PROVE_IDENTITY,
       session: { client: {}, user: {} },
       log: { info: sinon.fake() },
     });
@@ -44,6 +46,9 @@ describe("prove identity controller", () => {
 
       await proveIdentityGet(fakeService)(req as Request, res as Response);
 
+      expect(req.session.user.journey.nextPath).to.equal(
+        PATH_NAMES.PROVE_IDENTITY_CALLBACK
+      );
       expect(res.redirect).to.have.calledWith(
         "https://test-ipv-authorisation-uri"
       );

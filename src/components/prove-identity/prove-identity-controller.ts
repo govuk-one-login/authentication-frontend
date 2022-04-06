@@ -3,6 +3,8 @@ import { ExpressRouteFunc } from "../../types";
 import { BadRequestError } from "../../utils/error";
 import { proveIdentityService } from "./prove-identity-service";
 import { ProveIdentityServiceInterface } from "./types";
+import { getNextPathAndUpdateJourney } from "../common/constants";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 
 export function proveIdentityGet(
   service: ProveIdentityServiceInterface = proveIdentityService()
@@ -20,6 +22,14 @@ export function proveIdentityGet(
     if (!result.success) {
       throw new BadRequestError(result.data.message, result.data.code);
     }
+
+    getNextPathAndUpdateJourney(
+      req,
+      req.path,
+      USER_JOURNEY_EVENTS.PROVE_IDENTITY_INIT,
+      {},
+      clientSessionId
+    );
 
     return res.redirect(result.data.redirectUri);
   };

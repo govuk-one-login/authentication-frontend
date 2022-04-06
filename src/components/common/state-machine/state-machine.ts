@@ -16,6 +16,8 @@ const USER_JOURNEY_EVENTS = {
   EXISTING_SESSION: "EXISTING_SESSION",
   VERIFY_MFA: "VERIFY_MFA",
   PROVE_IDENTITY: "PROVE_IDENTITY",
+  PROVE_IDENTITY_CALLBACK: "PROVE_IDENTITY_CALLBACK",
+  PROVE_IDENTITY_INIT: "PROVE_IDENTITY_INIT",
   IDENTITY_CHECKED: "IDENTITY_CHECKED",
   CREATE_ACCOUNT: "CREATE_ACCOUNT",
   ENTER_EMAIL: "ENTER_EMAIL",
@@ -372,7 +374,19 @@ const authStateMachine = createMachine(
         },
       },
       [PATH_NAMES.PROVE_IDENTITY]: {
-        type: "final",
+        on: {
+          [USER_JOURNEY_EVENTS.PROVE_IDENTITY_INIT]: [
+            PATH_NAMES.PROVE_IDENTITY_CALLBACK,
+          ],
+        },
+      },
+      [PATH_NAMES.PROVE_IDENTITY_CALLBACK]: {
+        on: {
+          [USER_JOURNEY_EVENTS.PROVE_IDENTITY_CALLBACK]: [PATH_NAMES.AUTH_CODE],
+        },
+        meta: {
+          optionalPaths: [PATH_NAMES.PROVE_IDENTITY],
+        },
       },
       [PATH_NAMES.AUTH_CODE]: {
         type: "final",

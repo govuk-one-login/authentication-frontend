@@ -39,6 +39,7 @@ export const PATH_NAMES = {
   CONTACT_US_FURTHER_INFORMATION: "/contact-us-further-information",
   CONTACT_US_QUESTIONS: "/contact-us-questions",
   PROVE_IDENTITY: "/prove-identity",
+  PROVE_IDENTITY_CALLBACK: "/ipv-callback",
   HEALTHCHECK: "/healthcheck",
   PROVE_IDENTITY_WELCOME_SESSION_EXISTS: "/prove-identity-welcome-session",
   PROVE_IDENTITY_WELCOME: "/prove-identity-welcome",
