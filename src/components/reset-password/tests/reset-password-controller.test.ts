@@ -42,15 +42,15 @@ describe("reset password controller (in 6 digit code flow)", () => {
 
   describe("resetPasswordRequestGet", () => {
     it("should redirect to /reset-password-check-mail when reset password requested", () => {
-
       req.path = PATH_NAMES.RESET_PASSWORD_REQUEST;
 
       resetPasswordRequestGet(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
+      );
     });
   });
-
 
   describe("resetPasswordGet", () => {
     it("should render change password page", () => {
@@ -66,29 +66,32 @@ describe("reset password controller (in 6 digit code flow)", () => {
         updatePassword: sinon.fake.returns({ success: true }),
       };
       const fakeLoginService: EnterPasswordServiceInterface = {
-        loginUser: sinon.fake.returns(
-          { success: true,
-            data: {
-              redactedPhoneNumber: "******1234",
-              consentRequired: false,
-              latestTermsAndConditionsAccepted: true,
-              phoneNumberVerified: true,
-              mfaRequired: true
-            }
-          }
-        ),
+        loginUser: sinon.fake.returns({
+          success: true,
+          data: {
+            redactedPhoneNumber: "******1234",
+            consentRequired: false,
+            latestTermsAndConditionsAccepted: true,
+            phoneNumberVerified: true,
+            mfaRequired: true,
+          },
+        }),
       };
-      fakeLoginService.loginUser
+      fakeLoginService.loginUser;
       const fakeMfAService: MfaServiceInterface = {
         sendMfaCode: sinon.fake.returns({ success: true }),
       };
-      
+
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
       req.body.password = "Password1";
 
-      await resetPasswordPost(fakeResetService, fakeLoginService, fakeMfAService)(req as Request, res as Response);
+      await resetPasswordPost(
+        fakeResetService,
+        fakeLoginService,
+        fakeMfAService
+      )(req as Request, res as Response);
 
       expect(fakeResetService.updatePassword).to.have.been.calledOnce;
       expect(fakeLoginService.loginUser).to.have.been.calledOnce;
@@ -102,35 +105,40 @@ describe("reset password controller (in 6 digit code flow)", () => {
         updatePassword: sinon.fake.returns({ success: true }),
       };
       const fakeLoginService: EnterPasswordServiceInterface = {
-        loginUser: sinon.fake.returns(
-          { success: true,
-            data: {
-              redactedPhoneNumber: "******1234",
-              consentRequired: false,
-              latestTermsAndConditionsAccepted: true,
-              phoneNumberVerified: false,
-              mfaRequired: true
-            }
-          }
-        ),
+        loginUser: sinon.fake.returns({
+          success: true,
+          data: {
+            redactedPhoneNumber: "******1234",
+            consentRequired: false,
+            latestTermsAndConditionsAccepted: true,
+            phoneNumberVerified: false,
+            mfaRequired: true,
+          },
+        }),
       };
-      fakeLoginService.loginUser
+      fakeLoginService.loginUser;
       const fakeMfAService: MfaServiceInterface = {
         sendMfaCode: sinon.fake.returns({ success: true }),
       };
-      
+
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
       req.body.password = "Password1";
 
-      await resetPasswordPost(fakeResetService, fakeLoginService, fakeMfAService)(req as Request, res as Response);
+      await resetPasswordPost(
+        fakeResetService,
+        fakeLoginService,
+        fakeMfAService
+      )(req as Request, res as Response);
 
       expect(fakeResetService.updatePassword).to.have.been.calledOnce;
       expect(fakeLoginService.loginUser).to.have.been.calledOnce;
       expect(fakeMfAService.sendMfaCode).to.not.have.been.called;
 
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
+      );
     });
   });
 
@@ -139,29 +147,32 @@ describe("reset password controller (in 6 digit code flow)", () => {
       updatePassword: sinon.fake.returns({ success: true }),
     };
     const fakeLoginService: EnterPasswordServiceInterface = {
-      loginUser: sinon.fake.returns(
-        { success: true,
-          data: {
-            redactedPhoneNumber: "******1234",
-            consentRequired: false,
-            latestTermsAndConditionsAccepted: true,
-            phoneNumberVerified: true,
-            mfaRequired: false
-          }
-        }
-      ),
+      loginUser: sinon.fake.returns({
+        success: true,
+        data: {
+          redactedPhoneNumber: "******1234",
+          consentRequired: false,
+          latestTermsAndConditionsAccepted: true,
+          phoneNumberVerified: true,
+          mfaRequired: false,
+        },
+      }),
     };
-    fakeLoginService.loginUser
+    fakeLoginService.loginUser;
     const fakeMfAService: MfaServiceInterface = {
       sendMfaCode: sinon.fake.returns({ success: true }),
     };
-    
+
     req.session.user = {
       email: "joe.bloggs@test.com",
     };
     req.body.password = "Password1";
 
-    await resetPasswordPost(fakeResetService, fakeLoginService, fakeMfAService)(req as Request, res as Response);
+    await resetPasswordPost(
+      fakeResetService,
+      fakeLoginService,
+      fakeMfAService
+    )(req as Request, res as Response);
 
     expect(fakeResetService.updatePassword).to.have.been.calledOnce;
     expect(fakeLoginService.loginUser).to.have.been.calledOnce;
@@ -170,4 +181,3 @@ describe("reset password controller (in 6 digit code flow)", () => {
     expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
   });
 });
-

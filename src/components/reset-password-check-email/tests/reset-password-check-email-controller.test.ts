@@ -4,9 +4,17 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
-import { resetPasswordCheckEmailGet, resetPasswordCheckEmailPost } from "../reset-password-check-email-controller";
+import {
+  resetPasswordCheckEmailGet,
+  resetPasswordCheckEmailPost,
+} from "../reset-password-check-email-controller";
 import { ResetPasswordCheckEmailServiceInterface } from "../types";
-import { mockRequest, mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import {
+  mockRequest,
+  mockResponse,
+  RequestOutput,
+  ResponseOutput,
+} from "mock-req-res";
 import { VerifyCodeInterface } from "../../common/verify-code/types";
 import { PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
@@ -71,9 +79,7 @@ describe("reset password check email controller", () => {
         res as Response
       );
 
-      expect(res.redirect).to.have.calledWith(
-        "/reset-password"
-      );
+      expect(res.redirect).to.have.calledWith("/reset-password");
     });
 
     it("should render check email page with errors if incorrect code entered", async () => {
@@ -82,7 +88,7 @@ describe("reset password check email controller", () => {
           success: false,
           data: {
             code: ERROR_CODES.RESET_PASSWORD_INVALID_CODE,
-          }
+          },
         }),
       };
       req.session.user = {

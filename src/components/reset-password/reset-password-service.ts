@@ -20,7 +20,7 @@ export function resetPasswordService(
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.RESET_PASSWORD,
       {
-        password: newPassword
+        password: newPassword,
       },
       getRequestConfig({
         sourceIp: sourceIp,

@@ -97,9 +97,7 @@ describe("Integration::reset password check email ", () => {
   });
 
   it("should redisplay page with error", (done) => {
-    nock(baseApi)
-      .post("/verify-code")
-      .reply(400, { code: 1021 });
+    nock(baseApi).post("/verify-code").reply(400, { code: 1021 });
 
     request(app)
       .post("/reset-password-check-email")
