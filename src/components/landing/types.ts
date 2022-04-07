@@ -10,6 +10,7 @@ export interface ClientInfo {
   scopes: string[];
   serviceType: string;
   cookieConsentShared: boolean;
+  redirectUri: string;
 }
 
 export interface UserSessionInfo {

@@ -6,7 +6,11 @@ import { Request, Response } from "express";
 
 import { landingGet } from "../landing-controller";
 import { CookieConsentServiceInterface } from "../../common/cookie-consent/types";
-import { COOKIE_CONSENT, PATH_NAMES } from "../../../app.constants";
+import {
+  COOKIE_CONSENT,
+  OIDC_PROMPT,
+  PATH_NAMES,
+} from "../../../app.constants";
 import {
   mockRequest,
   mockResponse,
@@ -228,11 +232,13 @@ describe("landing controller", () => {
         res as Response
       );
 
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.PROVE_IDENTITY);
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.PROVE_IDENTITY_WELCOME
+      );
     });
 
     it("should redirect to /enter-password page when prompt is login", async () => {
-      req.query.prompt = "LOGIN";
+      req.query.prompt = OIDC_PROMPT.LOGIN;
 
       const fakeLandingService: LandingServiceInterface = {
         start: sinon.fake.returns({

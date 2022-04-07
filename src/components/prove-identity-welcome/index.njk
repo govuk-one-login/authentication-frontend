@@ -1,0 +1,81 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% set pageTitleName = 'pages.proveIdentityWelcome.title' | translate %}
+
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.proveIdentityWelcome.header' | translate}}</h1>
+
+<p class="govuk-body">{{'pages.proveIdentityWelcome.section1.paragraph1' | translate}}</p>
+
+{{ govukInsetText({
+    html: 'pages.proveIdentityWelcome.section1.insetTextPassport' | translate
+}) }}
+
+<p class="govuk-body">{{'pages.proveIdentityWelcome.section1.paragraph2' | translate}}</p>
+
+<h2 class="govuk-heading-m">{{'pages.proveIdentityWelcome.section2.subHeading' | translate}}</h2>
+
+<p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph1' | translate}}</p>
+
+{{ govukInsetText({
+    html: 'pages.proveIdentityWelcome.section2.insetTextEnglishOnly' | translate
+}) }}
+
+<p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph2' | translate}}</p>
+<p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph3' | translate}}</p>
+
+<ul class="govuk-list govuk-list--bullet">
+    <li>{{'pages.proveIdentityWelcome.section2.listItem1' | translate}}</li>
+    <li>{{'pages.proveIdentityWelcome.section2.listItem2' | translate}}</li>
+    <li>{{'pages.proveIdentityWelcome.section2.listItem3' | translate}}</li>
+</ul>
+
+<p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph4' | translate}}</p>
+
+<form id="form-tracking" action="/prove-identity-welcome" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+        {{ govukRadios({
+            idPrefix: "chooseWayPyi",
+            name:"chooseWayPyi",
+            fieldset: {
+                legend: {
+                    text: 'pages.proveIdentityWelcome.section3.subHeading' | translate,
+                    isPageHeading: false,
+                    classes: "govuk-fieldset__legend--m"
+                }
+            },
+            items: [
+                {
+                    value: "sign-in",
+                    text: 'pages.proveIdentityWelcome.section3.radioOption1' | translate
+                },
+                {
+                    value: "redirect",
+                    text: 'pages.proveIdentityWelcome.section3.radioOption2' | translate,
+                    hint: {
+                    text: 'pages.proveIdentityWelcome.section3.radioOption2HintText' | translate
+                }
+                }
+            ],
+            errorMessage: {
+                text: errors['chooseWayPyi'].text
+            } if (errors['chooseWayPyi'])
+        }) }}
+
+    {{ govukButton({
+        "text": button_text|default('general.continue.label' | translate, true),
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+
+</form>
+{% endblock %}

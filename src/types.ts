@@ -40,6 +40,7 @@ export interface UserSession {
   isConsentRequired?: boolean;
   isLatestTermsAndConditionsAccepted?: boolean;
   isIdentityRequired?: boolean;
+  isUpliftRequired?: boolean;
 }
 
 export interface UserSessionClient {
@@ -49,4 +50,6 @@ export interface UserSessionClient {
   consentEnabled?: boolean;
   crossDomainGaTrackingId?: string;
   scopes?: string[];
+  prompt?: string;
+  redirectUri?: string;
 }
