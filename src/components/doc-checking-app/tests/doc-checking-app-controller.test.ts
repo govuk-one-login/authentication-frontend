@@ -49,7 +49,7 @@ describe("doc checking app controller", () => {
       await docCheckingAppGet(fakeService)(req as Request, res as Response);
 
       expect(req.session.user.journey.nextPath).to.equal(
-        PATH_NAMES.PROVE_IDENTITY_CALLBACK
+        PATH_NAMES.DOC_CHECKING_APP_CALLBACK
       );
       expect(res.redirect).to.have.calledWith(
         "https://test-doc-checking-authorisation-uri.com"
