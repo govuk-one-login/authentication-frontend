@@ -39,6 +39,8 @@ export const PATH_NAMES = {
   CONTACT_US_FURTHER_INFORMATION: "/contact-us-further-information",
   CONTACT_US_QUESTIONS: "/contact-us-questions",
   PROVE_IDENTITY: "/prove-identity",
+  DOC_CHECKING_APP: "/doc-checking-app",
+  DOC_CHECKING_APP_CALLBACK: "/doc-checking-app-callback",
   PROVE_IDENTITY_CALLBACK: "/ipv-callback",
   HEALTHCHECK: "/healthcheck",
   PROVE_IDENTITY_WELCOME_SESSION_EXISTS: "/prove-identity-welcome-session",
@@ -78,6 +80,7 @@ export const API_ENDPOINTS = {
   RESET_PASSWORD_REQUEST: "/reset-password-request",
   RESET_PASSWORD: "/reset-password",
   IPV_AUTHORIZE: "/ipv-authorize",
+  DOC_CHECKING_APP_AUTHORIZE: "/doc-checking-app-authorize",
 };
 
 export const ERROR_MESSAGES = {
