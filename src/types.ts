@@ -41,6 +41,7 @@ export interface UserSession {
   isLatestTermsAndConditionsAccepted?: boolean;
   isIdentityRequired?: boolean;
   isUpliftRequired?: boolean;
+  docCheckingAppUser?: boolean;
 }
 
 export interface UserSessionClient {

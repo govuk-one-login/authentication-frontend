@@ -315,59 +315,96 @@ describe("landing controller", () => {
         `${PATH_NAMES.SIGN_IN_OR_CREATE}?_ga=${gaTrackingId}`
       );
     });
-  });
 
-  it("should throw an error with level Info if the landing service returns a code 1000 Session-Id is missing or invalid", async () => {
-    const fakeLandingService: LandingServiceInterface = {
-      start: sinon.fake.returns({
-        data: {
-          code: 1000,
-          message: "Session-Id is missing or invalid",
-        },
-        success: false,
-      }),
-    };
+    it("should redirect to /doc-checking-app when doc check app user", async () => {
+      const fakeLandingService: LandingServiceInterface = {
+        start: sinon.fake.returns({
+          data: {
+            client: {
+              scopes: ["openid", "profile"],
+              serviceType: "MANDATORY",
+              clientName: "Test client",
+              cookieConsentShared: false,
+              consentEnabled: false,
+            },
+            user: {
+              authenticated: false,
+              consentRequired: false,
+              docCheckingAppUser: true,
+            },
+          },
+          success: true,
+        }),
+      };
 
-    const fakeCookieConsentService: CookieConsentServiceInterface = {
-      getCookieConsent: sinon.fake(),
-      createConsentCookieValue: sinon.fake(),
-    };
+      const fakeCookieConsentService: CookieConsentServiceInterface = {
+        getCookieConsent: sinon.fake(),
+        createConsentCookieValue: sinon.fake.returns({
+          value: JSON.stringify("cookieValue"),
+          expiry: "cookieExpires",
+        }),
+      };
 
-    await expect(
-      landingGet(fakeLandingService, fakeCookieConsentService)(
+      await landingGet(fakeLandingService, fakeCookieConsentService)(
         req as Request,
         res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.DOC_CHECKING_APP);
+    });
+
+    it("should throw an error with level Info if the landing service returns a code 1000 Session-Id is missing or invalid", async () => {
+      const fakeLandingService: LandingServiceInterface = {
+        start: sinon.fake.returns({
+          data: {
+            code: 1000,
+            message: "Session-Id is missing or invalid",
+          },
+          success: false,
+        }),
+      };
+
+      const fakeCookieConsentService: CookieConsentServiceInterface = {
+        getCookieConsent: sinon.fake(),
+        createConsentCookieValue: sinon.fake(),
+      };
+
+      await expect(
+        landingGet(fakeLandingService, fakeCookieConsentService)(
+          req as Request,
+          res as Response
+        )
       )
-    )
-      .to.eventually.be.rejectedWith("1000:Session-Id is missing or invalid")
-      .and.be.an.instanceOf(BadRequestError)
-      .and.have.property("level", "Info");
-  });
+        .to.eventually.be.rejectedWith("1000:Session-Id is missing or invalid")
+        .and.be.an.instanceOf(BadRequestError)
+        .and.have.property("level", "Info");
+    });
 
-  it("should throw an error without level property if the landing service returns a code 1001 Request is missing parameters", async () => {
-    const fakeLandingService: LandingServiceInterface = {
-      start: sinon.fake.returns({
-        data: {
-          code: 1001,
-          message: "Request is missing parameters",
-        },
-        success: false,
-      }),
-    };
+    it("should throw an error without level property if the landing service returns a code 1001 Request is missing parameters", async () => {
+      const fakeLandingService: LandingServiceInterface = {
+        start: sinon.fake.returns({
+          data: {
+            code: 1001,
+            message: "Request is missing parameters",
+          },
+          success: false,
+        }),
+      };
 
-    const fakeCookieConsentService: CookieConsentServiceInterface = {
-      getCookieConsent: sinon.fake(),
-      createConsentCookieValue: sinon.fake(),
-    };
+      const fakeCookieConsentService: CookieConsentServiceInterface = {
+        getCookieConsent: sinon.fake(),
+        createConsentCookieValue: sinon.fake(),
+      };
 
-    await expect(
-      landingGet(fakeLandingService, fakeCookieConsentService)(
-        req as Request,
-        res as Response
+      await expect(
+        landingGet(fakeLandingService, fakeCookieConsentService)(
+          req as Request,
+          res as Response
+        )
       )
-    )
-      .to.eventually.be.rejectedWith("1001:Request is missing parameters")
-      .and.be.an.instanceOf(BadRequestError)
-      .and.not.to.have.property("level");
+        .to.eventually.be.rejectedWith("1001:Request is missing parameters")
+        .and.be.an.instanceOf(BadRequestError)
+        .and.not.to.have.property("level");
+    });
   });
 });

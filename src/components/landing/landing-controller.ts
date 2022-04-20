@@ -76,6 +76,8 @@ export function landingGet(
       startAuthResponse.data.user.authenticated;
     req.session.user.isUpliftRequired =
       startAuthResponse.data.user.upliftRequired;
+    req.session.user.docCheckingAppUser =
+      startAuthResponse.data.user.docCheckingAppUser;
 
     const nextState = req.session.user.isAuthenticated
       ? USER_JOURNEY_EVENTS.EXISTING_SESSION
@@ -91,6 +93,7 @@ export function landingGet(
         isIdentityRequired: req.session.user.isIdentityRequired,
         isAuthenticated: req.session.user.isAuthenticated,
         prompt: req.session.client.prompt,
+        skipAuthentication: req.session.user.docCheckingAppUser,
       },
       sessionId
     );
