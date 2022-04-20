@@ -18,6 +18,8 @@ const USER_JOURNEY_EVENTS = {
   PROVE_IDENTITY: "PROVE_IDENTITY",
   PROVE_IDENTITY_CALLBACK: "PROVE_IDENTITY_CALLBACK",
   PROVE_IDENTITY_INIT: "PROVE_IDENTITY_INIT",
+  DOC_CHECKING_AUTH_REDIRECT: "DOC_CHECKING_AUTH_REDIRECT",
+  DOC_CHECKING_AUTH_CALLBACK: "DOC_CHECKING_AUTH_CALLBACK",
   IDENTITY_CHECKED: "IDENTITY_CHECKED",
   CREATE_ACCOUNT: "CREATE_ACCOUNT",
   ENTER_EMAIL: "ENTER_EMAIL",
@@ -386,6 +388,23 @@ const authStateMachine = createMachine(
         },
         meta: {
           optionalPaths: [PATH_NAMES.PROVE_IDENTITY],
+        },
+      },
+      [PATH_NAMES.DOC_CHECKING_APP]: {
+        on: {
+          [USER_JOURNEY_EVENTS.DOC_CHECKING_AUTH_REDIRECT]: [
+            PATH_NAMES.DOC_CHECKING_APP_CALLBACK,
+          ],
+        },
+      },
+      [PATH_NAMES.DOC_CHECKING_APP_CALLBACK]: {
+        on: {
+          [USER_JOURNEY_EVENTS.DOC_CHECKING_AUTH_CALLBACK]: [
+            PATH_NAMES.AUTH_CODE,
+          ],
+        },
+        meta: {
+          optionalPaths: [PATH_NAMES.DOC_CHECKING_APP],
         },
       },
       [PATH_NAMES.AUTH_CODE]: {

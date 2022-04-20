@@ -66,6 +66,8 @@ import { healthcheckRouter } from "./components/healthcheck/healthcheck-routes";
 import { crossDomainTrackingMiddleware } from "./middleware/cross-domain-tracking-middleware";
 import { proveIdentityWelcomeRouter } from "./components/prove-identity-welcome/prove-identity-welcome-routes";
 import { proveIdentityCallbackRouter } from "./components/prove-identity-callback/prove-identity-callback-routes";
+import { docCheckingAppRouter } from "./components/doc-checking-app/doc-checking-app-routes";
+import { docCheckingAppCallbackRouter } from "./components/doc-checking-app-callback/doc-checking-app-callback-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -100,6 +102,8 @@ function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
     app.use(proveIdentityRouter);
     app.use(proveIdentityWelcomeRouter);
     app.use(proveIdentityCallbackRouter);
+    app.use(docCheckingAppRouter);
+    app.use(docCheckingAppCallbackRouter);
   }
 }
 
