@@ -27,6 +27,6 @@ export function validateEnterPasswordAccountExistsRequest(): ValidationChainFunc
           }
         );
       }),
-    validateBodyMiddleware("enter-password/enter-password-account-exists.njk"),
+    validateBodyMiddleware("enter-password/index-account-exists.njk"),
   ];
 }
