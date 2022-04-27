@@ -54,6 +54,7 @@ const authStateMachine = createMachine(
       isAuthenticated: false,
       isIdentityRequired: false,
       prompt: OIDC_PROMPT.NONE,
+      skipAuthentication: false,
     },
     states: {
       [PATH_NAMES.START]: {
@@ -72,6 +73,10 @@ const authStateMachine = createMachine(
             { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
           ],
           [USER_JOURNEY_EVENTS.LANDING]: [
+            {
+              target: [PATH_NAMES.DOC_CHECKING_APP],
+              cond: "skipAuthentication",
+            },
             {
               target: [PATH_NAMES.PROVE_IDENTITY_WELCOME],
               cond: "isIdentityRequired",
@@ -428,6 +433,9 @@ const authStateMachine = createMachine(
       requiresLogin: (context) =>
         context.isAuthenticated === true &&
         context.prompt === OIDC_PROMPT.LOGIN,
+      skipAuthentication: (context) =>
+        context.skipAuthentication === true &&
+        context.isAuthenticated === false,
     },
   }
 );
