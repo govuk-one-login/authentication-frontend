@@ -22,6 +22,7 @@ export function docCheckingAppService(
   ): Promise<ApiResponseResult<DocCheckingAuthorisationResponse>> {
     const response = await axios.client.post<DocCheckingAuthorisationResponse>(
       API_ENDPOINTS.DOC_CHECKING_APP_AUTHORIZE,
+      {},
       getRequestConfig({
         sessionId: sessionId,
         clientSessionId: clientSessionId,
