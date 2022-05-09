@@ -233,10 +233,27 @@
     "resetPasswordCheckEmail": {
       "title": "Check your email",
       "header": "Check your email",
-      "paragraph1": "We sent an email to ",
-      "paragraph2": " You can use the link in the email to reset your password.",
-      "paragraph3": "The link will be active for 15 minutes.",
-      "sendAnotherEmailLinkText": "Send another email"
+      "paragraph1": "We have sent an email to: ",
+      "paragraph2": "The email contains a 6 digit security code.",
+      "paragraph3": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
+      "paragraph4": "The code will expire after 15 minutes.",
+      "code": {
+        "label": "Enter the 6 digit security code",
+        "validationError": {
+          "required": "Enter the security code",
+          "maxLength": "Enter the security code using only 6 digits",
+          "minLength": "Enter the security code using only 6 digits",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+        }
+      },
+      "sendAnotherEmailLinkText": "Send another email",
+      "requestNewCode": {
+        "header": "Problems receiving the code?",
+        "link": "Request a new code",
+        "paragraph1": " if the code does not work or you did not receive one. "
+      },
+      "buttonText": "Continue"
     },
     "resetPasswordResendCode": {
       "title": "Request a new security code",
@@ -585,8 +602,7 @@
       "header": "Accessibility statement for GOV.UK accounts",
       "content": {
         "paragraph1": "GOV.UK accounts are part of the wider GOV.UK website. There’s a separate ",
-        "linkText": "accessibility statement for the main GOV.UK website.",
-        "linkHref": "https://www.gov.uk/help/accessibility",
+        "linkText": "accessibility statement for the main GOV.UK website",
         "paragraph2": "This page only contains information about GOV.UK accounts, available at www.signin.account.gov.uk."
       },
       "section1": {
@@ -594,7 +610,6 @@
         "paragraph1": {
           "text1": "GOV.UK accounts are run by the ",
           "linkText": "Government Digital Service (GDS)",
-          "linkHref": "https://www.gov.uk/government/organisations/government-digital-service",
           "text2": ", part of the Cabinet Office. We want as many people as possible to be able to use GOV.UK accounts. This means you should be able to:"
         },
         "bulletPoint1": "change colours, contrast levels and fonts",
@@ -618,21 +633,18 @@
       "section3": {
         "header": "What to do if you have difficulty using GOV.UK accounts",
         "paragraph1": "If you have difficulty using GOV.UK accounts, ",
-        "linkText": "contact us.",
-        "linkHref": "/support"
+        "linkText": "contact us"
       },
       "section4": {
         "header": "Report accessibility problems with GOV.UK accounts",
         "paragraph1": "We’re always looking to improve the accessibility of GOV.UK accounts. If you find any problems not listed on this page or think we’re not meeting accessibility requirements, ",
-        "linkText": "contact us.",
-        "linkHref": "/support"
+        "linkText": "contact us"
       },
       "section5": {
         "header": "Enforcement procedure",
         "paragraph1": "The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’).",
         "paragraph2": "If you’re not happy with how we respond to your complaint, ",
-        "linkText": "contact the Equality Advisory and Support Service (EASS).",
-        "linkHref": "https://www.equalityadvisoryservice.com/"
+        "linkText": "contact the Equality Advisory and Support Service (EASS)"
       },
       "section6": {
         "header": "Technical information about GOV.UK accounts’ accessibility",
@@ -641,7 +653,6 @@
         "paragraph2": {
           "text1": "GOV.UK accounts are partially compliant with the",
           "linkText": "Web Content Accessibility Guidelines version 2.1",
-          "linkHref": "https://www.w3.org/TR/WCAG21/",
           "text2": " AA standard, due to the non-compliances listed below."
         }
       },
@@ -667,7 +678,7 @@
       "section1": {
         "paragraph1": {
           "text1": "These terms and conditions specifically cover GOV.UK accounts. You can use a GOV.UK account to access and use some government services and features. Pages that are part of the GOV.UK account have urls containing account.gov.uk. If you are using other parts of GOV.UK you should also read the ",
-          "linkText": "terms and conditions for GOV.UK."
+          "linkText": "terms and conditions for GOV.UK"
         },
         "paragraph2": {
           "text1": "The GOV.UK account is managed by ",
@@ -699,7 +710,7 @@
         "header": "Keeping your account secure",
         "paragraph1": {
           "text1": "We have many measures in place to keep your information safe, but as the owner of your GOV.UK account, you also have some responsibility for the security of your account. For example you should choose a strong password for your account and ensure you keep it secure. The UK’s National Cyber Security Centre (NCSC) provides ",
-          "linkText": "advice on keeping your online accounts secure."
+          "linkText": "advice on keeping your online accounts secure"
         },
         "paragraph2": "If you think that someone knows the username and password to your GOV.UK account, you must reset your password as soon as possible."
       },
@@ -729,7 +740,7 @@
         "header": "Deleting your account",
         "paragraph1": {
           "text1": "You can permanently delete your account and the information in it at any time by signing in to your account or ",
-          "linkText1": "contacting us.",
+          "linkText1": "contacting us",
           "text2": "We'll keep a record of certain information, in line with our ",
           "linkText2": "privacy notice",
           "text3": ", for audit purposes and to help prevent crime."
@@ -796,7 +807,7 @@
         "bulletPoint2": "questions or a complaint about the GOV.UK account",
         "paragraph2": {
           "text1": "Find out more ",
-          "linkText": "about GDS and our role."
+          "linkText": "about GDS and our role"
         }
       }
     },
@@ -929,7 +940,7 @@
         "bulletPoint7": "ask that the processing of your personal information is restricted in certain circumstances",
         "paragraph3": {
           "text1": "If you have any of these requests, contact the ",
-          "linkText": "GDS Privacy Team."
+          "linkText": "GDS Privacy Team"
         }
       },
       "section11": {
