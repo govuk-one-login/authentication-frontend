@@ -127,11 +127,11 @@ variable "deployment_max_percent" {
 }
 
 variable "health_check_grace_period_seconds" {
-  default = 0
+  default = 15
 }
 
 variable "deregistration_delay" {
-  default = 300
+  default = 30
 }
 
 variable "sidecar_image_uri" {
