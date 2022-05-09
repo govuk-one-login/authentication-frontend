@@ -126,6 +126,14 @@ variable "deployment_max_percent" {
   default = 150
 }
 
+variable "health_check_grace_period_seconds" {
+  default = 0
+}
+
+variable "deregistration_delay" {
+  default = 300
+}
+
 variable "sidecar_image_uri" {
   default = ""
 }
