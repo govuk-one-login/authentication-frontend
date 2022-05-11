@@ -1,4 +1,4 @@
-FROM node:16.13.0-alpine as builder
+FROM node:16.15.0-alpine as builder
 WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./
@@ -7,7 +7,7 @@ COPY ./src ./src
 COPY ./@types ./@types
 RUN yarn install && yarn build
 
-FROM node:16.13.0-alpine as final
+FROM node:16.15.0-alpine as final
 WORKDIR /app
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules/ node_modules
