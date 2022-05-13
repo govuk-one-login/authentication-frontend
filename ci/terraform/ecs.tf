@@ -180,8 +180,8 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
   task_role_arn            = aws_iam_role.ecs_task_role.arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = 1024
-  memory                   = 2048
+  cpu                      = var.frontend_task_definition_cpu
+  memory                   = var.frontend_task_definition_memory
   container_definitions = var.basic_auth_password == "" ? jsonencode([local.frontend_container_definition]) : jsonencode([
     local.frontend_container_definition,
     local.sidecar_container_definition,
