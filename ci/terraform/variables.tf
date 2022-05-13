@@ -71,6 +71,50 @@ variable "ecs_desired_count" {
   default = 2
 }
 
+variable "frontend_task_definition_cpu" {
+  type    = number
+  default = 1024
+}
+
+variable "frontend_task_definition_memory" {
+  type    = number
+  default = 2048
+}
+
+variable "frontend_auto_scaling_enabled" {
+  default = false
+}
+
+variable "frontend_auto_scaling_min_count" {
+  type    = number
+  default = 2
+}
+
+variable "frontend_auto_scaling_max_count" {
+  type    = number
+  default = 4
+}
+
+variable "frontend_auto_scaling_policy_memory_target" {
+  type    = number
+  default = 75
+}
+
+variable "frontend_auto_scaling_policy_cpu_target" {
+  type    = number
+  default = 65
+}
+
+variable "frontend_auto_scaling_policy_scale_out_cooldown" {
+  type    = number
+  default = 120
+}
+
+variable "frontend_auto_scaling_policy_scale_in_cooldown" {
+  type    = number
+  default = 300
+}
+
 variable "app_port" {
   type    = number
   default = 3000
