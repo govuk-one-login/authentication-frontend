@@ -53,6 +53,10 @@ describe("phone-number", () => {
     it("should return false when premium rate number entered", () => {
       expect(containsUKMobileNumber("0909 8790000")).to.equal(false);
     });
+
+    it("should return true with a notify test number", () => {
+      expect(containsUKMobileNumber("07700900222")).to.equal(true);
+    });
   });
 
   describe("containsNumbersOrSpacesOnly", () => {

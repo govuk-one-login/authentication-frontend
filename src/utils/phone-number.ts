@@ -1,7 +1,11 @@
 import { isValidPhoneNumber } from "libphonenumber-js/mobile";
 
+const ALLOWED_TEST_NUMBERS = ["07700900222"];
+
 export function containsUKMobileNumber(value: string): boolean {
-  return isValidPhoneNumber(value, "GB");
+  return (
+    ALLOWED_TEST_NUMBERS.includes(value) || isValidPhoneNumber(value, "GB")
+  );
 }
 
 export function containsInternationalMobileNumber(value: string): boolean {
