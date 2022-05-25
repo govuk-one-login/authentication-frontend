@@ -94,7 +94,7 @@
       "title": "Sorry, the page has expired",
       "header": "Sorry, the page has expired",
       "content": {
-        "paragraph1": "This is because you did not do anything for 60 minutes or more. ",
+        "paragraph1": "This is because you did not do anything for more than 2 hours. ",
         "paragraph2": "You’ll need to start what you were doing again.",
         "govUKHomepageButtonHref": "https://www.gov.uk/",
         "govUKHomepageButtonText": "Go to the GOV.UK homepage"
@@ -660,7 +660,7 @@
         "header": "Non-accessible content",
         "paragraph1": "The content listed below is non-accessible for the following reasons.",
         "subHeader": "Non compliance with the accessibility regulations",
-        "paragraph2": "When you create an account or sign in, if you do not do anything for 60 minutes, the process will stop (time out) or you’ll be signed out. It’s not possible to adjust, extend or turn off the time out. This fails WCAG 2.1 success criterion 2.2.1 (Timing Adjustable)."
+        "paragraph2": "When you create an account or sign in, if you do not do anything for 2 hours, the process will stop (time out) or you’ll be signed out. It’s not possible to adjust, extend or turn off the time out. This fails WCAG 2.1 success criterion 2.2.1 (Timing Adjustable)."
       },
       "section8": {
         "header": "What we’re doing to improve accessibility",
