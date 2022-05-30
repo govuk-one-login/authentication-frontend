@@ -6,6 +6,7 @@ import { Request, Response } from "express";
 
 import {
   IPV_ERROR_CODES,
+  OIDC_ERRORS,
   OIDC_PROMPT,
   PATH_NAMES,
 } from "../../../app.constants";
@@ -75,7 +76,7 @@ describe("prove your identity welcome controller", () => {
       proveIdentityWelcomePost(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(
-        `http://someservice.com/auth?error=${IPV_ERROR_CODES.AccountNotCreated_IPV}`
+        `http://someservice.com/auth?error=${OIDC_ERRORS.ACCESS_DENIED}&error_description=${IPV_ERROR_CODES.AccountNotCreated_IPV}`
       );
     });
 

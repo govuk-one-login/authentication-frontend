@@ -158,6 +158,10 @@ export const OIDC_PROMPT = {
   NONE: "NONE",
 };
 
+export const OIDC_ERRORS = {
+  ACCESS_DENIED: "access_denied",
+};
+
 export const IPV_ERROR_CODES = {
   AccountNotCreated_IPV: "AccountNotCreated_IPV",
 };
