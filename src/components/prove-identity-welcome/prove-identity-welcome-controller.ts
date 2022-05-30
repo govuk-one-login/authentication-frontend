@@ -1,11 +1,15 @@
 import { Request, Response } from "express";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { IPV_ERROR_CODES, PATH_NAMES } from "../../app.constants";
+import { IPV_ERROR_CODES, OIDC_ERRORS, PATH_NAMES } from "../../app.constants";
 
 function getUseAlternativePYIMethodError(redirectUri: string) {
   const redirect = new URL(redirectUri);
-  redirect.searchParams.append("error", IPV_ERROR_CODES.AccountNotCreated_IPV);
+  redirect.searchParams.append("error", OIDC_ERRORS.ACCESS_DENIED);
+  redirect.searchParams.append(
+    "error_description",
+    IPV_ERROR_CODES.AccountNotCreated_IPV
+  );
   return redirect.href;
 }
 export function proveIdentityWelcomeGet(req: Request, res: Response): void {
