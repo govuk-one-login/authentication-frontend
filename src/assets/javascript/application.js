@@ -23,7 +23,7 @@ function initFeedbackRadioButtons() {
   });
 }
 
-var onIntNumberSelected = function(intPhoneNumberCheckbox, phoneNumberInput) {
+var onIntNumberSelected = function (intPhoneNumberCheckbox, phoneNumberInput) {
   if (intPhoneNumberCheckbox.checked) {
     phoneNumberInput.value = "";
     phoneNumberInput.disabled = true;
@@ -35,13 +35,18 @@ var onIntNumberSelected = function(intPhoneNumberCheckbox, phoneNumberInput) {
 };
 
 function initEnterPhoneNumber() {
-  var phoneNumberInput = document.querySelector('#phoneNumber');
-  if (phoneNumberInput) {
-    var intPhoneNumberCheckbox = document.querySelector('#hasInternationalPhoneNumber');
-    intPhoneNumberCheckbox.addEventListener("click", function(event) {
+  var phoneNumberInput = document.querySelector("#phoneNumber");
+  var intPhoneNumberCheckbox = document.querySelector(
+    "#hasInternationalPhoneNumber"
+  );
+  if (phoneNumberInput && intPhoneNumberCheckbox) {
+    intPhoneNumberCheckbox.addEventListener("click", function (event) {
       onIntNumberSelected(event.currentTarget, phoneNumberInput);
     });
-    window.addEventListener("load", onIntNumberSelected(intPhoneNumberCheckbox, phoneNumberInput));
+    window.addEventListener(
+      "load",
+      onIntNumberSelected(intPhoneNumberCheckbox, phoneNumberInput)
+    );
   }
 }
 
