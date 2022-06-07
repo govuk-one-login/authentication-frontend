@@ -76,7 +76,11 @@ describe("prove your identity welcome controller", () => {
       proveIdentityWelcomePost(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(
-        `http://someservice.com/auth?error=${OIDC_ERRORS.ACCESS_DENIED}&error_description=${IPV_ERROR_CODES.AccountNotCreated_IPV}`
+        `http://someservice.com/auth?error=${
+          OIDC_ERRORS.ACCESS_DENIED
+        }&error_description=${encodeURIComponent(
+          IPV_ERROR_CODES.ACCOUNT_NOT_CREATED
+        )}`
       );
     });
 

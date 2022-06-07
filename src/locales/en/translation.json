@@ -1340,6 +1340,12 @@
         "paragraph1":"If you don't have a passport, ",
         "linkText": "you can prove your identity another way"
       }
+    },
+    "proveIdentityCheck": {
+      "title": "Return you to the [serviceName] service",
+      "header": "Return you to the [serviceName] service",
+      "paragraph1": "loading",
+      "paragraph2": "We're still trying"
     }
   }
 }

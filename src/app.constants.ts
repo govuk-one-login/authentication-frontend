@@ -81,6 +81,7 @@ export const API_ENDPOINTS = {
   RESET_PASSWORD: "/reset-password",
   IPV_AUTHORIZE: "/ipv-authorize",
   DOC_CHECKING_APP_AUTHORIZE: "/doc-checking-app-authorize",
+  IPV_PROCESSING_IDENTITY: "/processing-identity",
 };
 
 export const ERROR_MESSAGES = {
@@ -163,6 +164,8 @@ export const OIDC_ERRORS = {
 };
 
 export const IPV_ERROR_CODES = {
-  AccountNotCreated_IPV: "AccountNotCreated_IPV",
+  ACCOUNT_NOT_CREATED: "Account not created",
+  IDENTITY_PROCESSING_TIMEOUT: "Identity check timeout",
 };
+
 export const COOKIES_PREFERENCES_SET = "cookies_preferences_set";
