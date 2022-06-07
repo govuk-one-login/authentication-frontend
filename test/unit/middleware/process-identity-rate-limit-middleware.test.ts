@@ -27,7 +27,7 @@ describe("process identity rate limit middleware", () => {
       path: PATH_NAMES.PROVE_IDENTITY_CALLBACK,
       session: {
         user: {
-          identityProcessStart: addSecondsToDate(60),
+          identityProcessCheckStart: addSecondsToDate(60),
         },
       },
     });
@@ -45,7 +45,7 @@ describe("process identity rate limit middleware", () => {
       path: PATH_NAMES.PROVE_IDENTITY_CALLBACK,
       session: {
         user: {
-          identityProcessStart: addSecondsToDate(-60),
+          identityProcessCheckStart: addSecondsToDate(-60),
         },
         client: { redirectUri: "https://some-service.com/auth" },
       },

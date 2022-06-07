@@ -8,10 +8,10 @@ export function processIdentityRateLimitMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  const requestStart = req.session.user.identityProcessStart;
+  const initialRequestStart = req.session.user.identityProcessCheckStart;
   const now = new Date();
-  if (requestStart) {
-    if (now.getTime() > requestStart.getTime()) {
+  if (initialRequestStart) {
+    if (now.getTime() > initialRequestStart) {
       return res.redirect(
         createServiceRedirectErrorUrl(
           req.session.client.redirectUri,
@@ -21,7 +21,7 @@ export function processIdentityRateLimitMiddleware(
       );
     }
   } else {
-    req.session.user.identityProcessStart = addSecondsToDate(60);
+    req.session.user.identityProcessCheckStart = addSecondsToDate(60);
   }
 
   next();
