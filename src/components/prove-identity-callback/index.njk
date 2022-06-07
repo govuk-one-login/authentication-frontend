@@ -1,0 +1,12 @@
+{% extends "common/layout/base.njk" %}
+{% set pageTitleName = 'pages.proveIdentityCheck.title' | translate | replace("[serviceName]", serviceName) %}
+
+{% block headMetaData %}
+    <meta http-equiv="refresh" content="5">
+{% endblock %}
+
+{% block content %}
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.proveIdentityCheck.header' | translate | replace("[serviceName]", serviceName) }}</h1>
+    <div class="ccms-loader centre"></div>
+    <p class="govuk-body text-centre">loading</p>
+{% endblock %}

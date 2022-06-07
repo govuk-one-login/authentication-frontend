@@ -42,6 +42,7 @@ export interface UserSession {
   isIdentityRequired?: boolean;
   isUpliftRequired?: boolean;
   docCheckingAppUser?: boolean;
+  identityProcessStart?: Date;
 }
 
 export interface UserSessionClient {

@@ -24,3 +24,23 @@ export class ErrorWithLevel extends Error {
     this.level = level;
   }
 }
+
+export function createServiceRedirectErrorUrl(
+  redirectUri: string,
+  error: string,
+  errorDescription: string
+): string {
+  const redirect = new URL(redirectUri);
+  const params = {
+    error: error,
+    error_description: errorDescription,
+  };
+
+  return (
+    redirect +
+    "?" +
+    Object.entries(params)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join("&")
+  );
+}
