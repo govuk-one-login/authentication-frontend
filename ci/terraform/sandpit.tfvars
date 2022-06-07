@@ -7,15 +7,9 @@ frontend_fqdn           = "signin.sandpit.auth.ida.digital.cabinet-office.gov.uk
 frontend_api_fqdn       = "auth.sandpit.auth.ida.digital.cabinet-office.gov.uk"
 service_domain          = "sandpit.auth.ida.digital.cabinet-office.gov.uk"
 zone_id                 = "Z050645231Q0HZAX6FT5W"
-image_uri               = "706615647326.dkr.ecr.eu-west-2.amazonaws.com/frontend-image-repository"
-image_digest            = "sha256:dfbe4c6ccbbaf4c8ae7589a31d0bf73940cef19b8cfcb3eaf20c35cfed6a693d"
 session_expiry          = 300000
 gtm_id                  = ""
 
-basic_auth_username             = ""
-basic_auth_password             = ""
-sidecar_image_uri               = "706615647326.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository"
-sidecar_image_digest            = "sha256:b676bdc0aa24f1bf02364a1afeaa0649f585ce572849746769b3104f63b71976"
 support_international_numbers   = 0
 frontend_task_definition_cpu    = 256
 frontend_task_definition_memory = 512
