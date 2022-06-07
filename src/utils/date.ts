@@ -1,3 +1,3 @@
-export function addSecondsToDate(seconds: number): Date {
-  return new Date(new Date().getTime() + 1000 * seconds);
+export function addSecondsToDate(seconds: number): number {
+  return new Date(new Date().getTime() + 1000 * seconds).getTime();
 }
