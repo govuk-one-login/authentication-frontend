@@ -128,6 +128,7 @@ export function contactUsQuestionsFormPost(
         issueDescription: req.body.issueDescription,
         additionalDescription: req.body.additionalDescription,
         optionalDescription: req.body.optionalDescription,
+        moreDetailDescription: req.body.moreDetailDescription,
       },
       themes: { theme: req.body.theme, subtheme: req.body.subtheme },
       subject: "GOV.UK Accounts Feedback",
@@ -192,7 +193,7 @@ export function getQuestionsFromFormType(
       ),
     },
     invalidSecurityCode: {
-      optionalDescription: req.t(
+      moreDetailDescription: req.t(
         "pages.contactUsQuestions.invalidSecurityCode.section2.header"
       ),
     },
@@ -202,12 +203,12 @@ export function getQuestionsFromFormType(
       ),
     },
     noSecurityCode: {
-      optionalDescription: req.t(
+      moreDetailDescription: req.t(
         "pages.contactUsQuestions.noSecurityCode.section2.header"
       ),
     },
     noUKMobile: {
-      optionalDescription: req.t(
+      moreDetailDescription: req.t(
         "pages.contactUsQuestions.noUKMobile.section1.header"
       ),
     },

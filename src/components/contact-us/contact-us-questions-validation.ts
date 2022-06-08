@@ -36,6 +36,15 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value }
         );
       }),
+    body("moreDetailDescription")
+      .optional()
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.optionalDescriptionErrorMessage.message",
+          { value }
+        );
+      }),
     body("contact")
       .notEmpty()
       .withMessage((value, { req }) => {

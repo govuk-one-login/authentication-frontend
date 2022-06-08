@@ -1262,8 +1262,11 @@
         "header": "You do not have a UK mobile phone number",
         "section1": {
           "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give us feedback"
+          "paragraph1": "You can add more detail, such as what you were trying to do, or give us feedback"
         }
+      },
+      "optionalDescriptionErrorMessage": {
+        "message": "Enter more detail"
       },
       "forgottenPassword": {
         "title": "You’ve forgotten your password",

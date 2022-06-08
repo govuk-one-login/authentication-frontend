@@ -87,6 +87,11 @@ export function contactUsService(
       htmlBody.push(`<p>${descriptions.optionalDescription}</p>`);
     }
 
+    if (descriptions.moreDetailDescription) {
+      htmlBody.push(`<span>[${questions.moreDetailDescription}]</span>`);
+      htmlBody.push(`<p>${descriptions.moreDetailDescription}</p>`);
+    }
+
     htmlBody.push(`<span>[Session ID]</span>`);
     htmlBody.push(`<p>${optionalData.sessionId}</p>`);
 
