@@ -1223,20 +1223,38 @@
           "header": "If possible, tell us the URL of the page the error happened on?"
         }
       },
+      "securityCodeSentMethod": {
+        "header": "How was the security code sent?",
+        "radio1": "Email",
+        "radio2": "Text message",
+        "errorMessage": "Select whether the code was sent by email or text message"
+      },
       "noSecurityCode": {
         "title": "You did not receive a security code",
         "header": "You did not receive a security code",
         "section1": {
+          "header": "How was the security code sent?",
+          "radio1": "Email",
+          "radio2": "Text message",
+          "errorMessage": "Select whether the code was sent by email or text message"
+        },
+        "section2": {
           "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give us feedback"
+          "hintText": "You can add more detail, such as what happened when you entered the security code or what you were trying to do, or give us feedback"
         }
       },
       "invalidSecurityCode": {
         "title": "The security code does not work",
         "header": "The security code does not work",
         "section1": {
+          "header": "How was the security code sent?",
+          "radio1": "Email",
+          "radio2": "Text message",
+          "errorMessage": "Select whether the code was sent by email or text message"
+        },
+        "section2": {
           "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give us feedback"
+          "hintText": "You can add more detail, such as what happened when you entered the security code or what you were trying to do, or give us feedback"
         }
       },
       "noUKMobile": {
@@ -1340,6 +1358,12 @@
         "paragraph1":"If you don't have a passport, ",
         "linkText": "you can prove your identity another way"
       }
+    },
+    "proveIdentityCheck": {
+      "title": "Return you to the [serviceName] service",
+      "header": "Return you to the [serviceName] service",
+      "paragraph1": "loading",
+      "paragraph2": "We're still trying"
     }
   }
 }
