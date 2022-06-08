@@ -28,12 +28,14 @@ export class ErrorWithLevel extends Error {
 export function createServiceRedirectErrorUrl(
   redirectUri: string,
   error: string,
-  errorDescription: string
+  errorDescription: string,
+  state: string
 ): string {
   const redirect = new URL(redirectUri);
   const params = {
     error: error,
     error_description: errorDescription,
+    state: state,
   };
 
   return (

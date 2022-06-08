@@ -13,7 +13,8 @@ export function proveIdentityWelcomeGet(req: Request, res: Response): void {
       redirectUri: createServiceRedirectErrorUrl(
         req.session.client.redirectUri,
         OIDC_ERRORS.ACCESS_DENIED,
-        IPV_ERROR_CODES.ACCOUNT_NOT_CREATED
+        IPV_ERROR_CODES.ACCOUNT_NOT_CREATED,
+        req.session.client.state
       ),
     }
   );
@@ -27,7 +28,8 @@ export function proveIdentityWelcomePost(req: Request, res: Response): void {
       createServiceRedirectErrorUrl(
         req.session.client.redirectUri,
         OIDC_ERRORS.ACCESS_DENIED,
-        IPV_ERROR_CODES.ACCOUNT_NOT_CREATED
+        IPV_ERROR_CODES.ACCOUNT_NOT_CREATED,
+        req.session.client.state
       )
     );
   }

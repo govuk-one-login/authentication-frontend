@@ -25,6 +25,8 @@ describe("prove identity callback controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
+  const STATE = "ndhd7d7d";
+
   beforeEach(() => {
     req = mockRequest({
       path: PATH_NAMES.PROVE_IDENTITY_CALLBACK,
@@ -32,6 +34,7 @@ describe("prove identity callback controller", () => {
         client: {
           redirectUri: "http://someservice.com/auth",
           clientName: "test service",
+          state: STATE,
         },
         user: { email: "test@test.com" },
       },
@@ -102,7 +105,7 @@ describe("prove identity callback controller", () => {
           OIDC_ERRORS.ACCESS_DENIED
         }&error_description=${encodeURIComponent(
           IPV_ERROR_CODES.IDENTITY_PROCESSING_TIMEOUT
-        )}`
+        )}&state=${encodeURIComponent(STATE)}`
       );
     });
   });
