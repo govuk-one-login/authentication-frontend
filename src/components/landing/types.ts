@@ -11,6 +11,7 @@ export interface ClientInfo {
   serviceType: string;
   cookieConsentShared: boolean;
   redirectUri: string;
+  state: string;
 }
 
 export interface UserSessionInfo {

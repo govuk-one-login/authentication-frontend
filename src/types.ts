@@ -54,4 +54,5 @@ export interface UserSessionClient {
   scopes?: string[];
   prompt?: string;
   redirectUri?: string;
+  state?: string;
 }

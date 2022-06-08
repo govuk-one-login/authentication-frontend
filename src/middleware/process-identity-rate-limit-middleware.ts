@@ -16,7 +16,8 @@ export function processIdentityRateLimitMiddleware(
         createServiceRedirectErrorUrl(
           req.session.client.redirectUri,
           OIDC_ERRORS.ACCESS_DENIED,
-          IPV_ERROR_CODES.IDENTITY_PROCESSING_TIMEOUT
+          IPV_ERROR_CODES.IDENTITY_PROCESSING_TIMEOUT,
+          req.session.client.state
         )
       );
     }
