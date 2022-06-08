@@ -26,7 +26,8 @@ export function contactUsService(
             contactForm.optionalData,
             contactForm.questions,
             contactForm.themeQuestions,
-            contactForm.referer
+            contactForm.referer,
+            contactForm.securityCodeSentMethod
           ),
         },
         group_id: getZendeskGroupIdPublic(),
@@ -49,7 +50,8 @@ export function contactUsService(
     optionalData: OptionalData,
     questions: Questions,
     themeQuestions: ThemeQuestions,
-    referer: string
+    referer: string,
+    securityCodeSentMethod: string
   ) {
     const htmlBody = [];
 
@@ -59,6 +61,15 @@ export function contactUsService(
     if (themeQuestions.subthemeQuestion) {
       htmlBody.push(`<span>[Tell us what happened?]</span>`);
       htmlBody.push(`<p>${themeQuestions.subthemeQuestion}</p>`);
+    }
+
+    if (securityCodeSentMethod) {
+      let securityCodeMethod = "Email";
+      if (securityCodeSentMethod == "text_message") {
+        securityCodeMethod = "Text message";
+      }
+      htmlBody.push(`<span>[How was the security code sent?]</span>`);
+      htmlBody.push(`<p>${securityCodeMethod}</p>`);
     }
 
     if (descriptions.issueDescription) {

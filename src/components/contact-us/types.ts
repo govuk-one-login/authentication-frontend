@@ -9,6 +9,7 @@ export interface ContactForm {
   questions: Questions;
   themeQuestions: ThemeQuestions;
   referer: string;
+  securityCodeSentMethod?: string;
 }
 
 export interface OptionalData {

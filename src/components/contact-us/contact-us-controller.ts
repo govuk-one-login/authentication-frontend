@@ -141,6 +141,7 @@ export function contactUsQuestionsFormPost(
       questions: questions,
       themeQuestions: themeQuestions,
       referer: req.body.referer,
+      securityCodeSentMethod: req.body.securityCodeSentMethod,
     });
 
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
@@ -192,7 +193,7 @@ export function getQuestionsFromFormType(
     },
     invalidSecurityCode: {
       optionalDescription: req.t(
-        "pages.contactUsQuestions.invalidSecurityCode.section1.header"
+        "pages.contactUsQuestions.invalidSecurityCode.section2.header"
       ),
     },
     noPhoneNumberAccess: {
@@ -202,7 +203,7 @@ export function getQuestionsFromFormType(
     },
     noSecurityCode: {
       optionalDescription: req.t(
-        "pages.contactUsQuestions.noSecurityCode.section1.header"
+        "pages.contactUsQuestions.noSecurityCode.section2.header"
       ),
     },
     noUKMobile: {

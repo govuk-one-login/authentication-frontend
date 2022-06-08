@@ -1,10 +1,20 @@
-import { body } from "express-validator";
+import { body, check } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 import { ZENDESK_THEMES } from "../../app.constants";
 
 export function validateContactUsQuestionsRequest(): ValidationChainFunc {
   return [
+    body("securityCodeSentMethod")
+      .if(body("theme").equals("account_creation"))
+      .if(check("radio_buttons").notEmpty())
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.securityCodeSentMethod.errorMessage",
+          { value }
+        );
+      }),
     body("issueDescription")
       .optional()
       .notEmpty()
