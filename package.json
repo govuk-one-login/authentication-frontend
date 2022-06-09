@@ -12,6 +12,7 @@
     "build": "yarn build-sass && yarn build-ts && yarn minfiy-build-js && yarn copy-assets",
     "build-sass": "rm -rf dist/public/style.css && sass --no-source-map src/assets/scss/application.scss dist/public/style.css --style compressed",
     "clean": "rm -rf dist node_modules logs.json",
+    "clean-modules": "rm -rf node_modules",
     "copy-assets": "mkdir -p dist && copyfiles -u 1 src/**/*.njk dist/ src/locales/**/** dist/ src/config/*.txt dist/ && copyfiles -u 3 src/assets/javascript/*.js dist/public/scripts -e **/all.js && cp node_modules/govuk-frontend/govuk/all.js dist/public/scripts",
     "dev": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\"",
     "dummy-server": "node dev-app.js",
