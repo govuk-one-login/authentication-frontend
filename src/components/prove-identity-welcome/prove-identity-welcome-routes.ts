@@ -27,11 +27,4 @@ router.post(
   proveIdentityWelcomePost
 );
 
-router.post(
-  PATH_NAMES.PROVE_IDENTITY_WELCOME_SESSION_EXISTS,
-  validateSessionMiddleware,
-  allowUserJourneyMiddleware,
-  proveIdentityWelcomePost
-);
-
 export { router as proveIdentityWelcomeRouter };

@@ -37,7 +37,7 @@
 
     <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph4' | translate}}</p>
 
-    <form id="form-tracking" action="/prove-identity-welcome-session" method="post" novalidate>
+    <form id="form-tracking" action="/prove-identity-welcome?auth=true" method="post" novalidate>
 
         <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
@@ -46,7 +46,7 @@
             "type": "Submit",
             "preventDoubleClick": true
         }) }}
-    <p class="govuk-body"> {{'pages.proveIdentityWelcome.existingSession.paragraph1' | translate}}<a href="{{ redirectUri }}">{{'pages.proveIdentityWelcome.existingSession.linkText' | translate}}</a>.</p>
+    <p class="govuk-body"> {{'pages.proveIdentityWelcome.existingSession.paragraph1' | translate}}<a class="govuk-link" href="{{ redirectUri }}">{{'pages.proveIdentityWelcome.existingSession.linkText' | translate}}</a>.</p>
     </form>
 {% endblock %}
 
