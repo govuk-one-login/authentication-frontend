@@ -9,6 +9,7 @@ export interface ContactForm {
   questions: Questions;
   themeQuestions: ThemeQuestions;
   referer: string;
+  securityCodeSentMethod?: string;
 }
 
 export interface OptionalData {
@@ -20,6 +21,7 @@ export interface Questions {
   issueDescription?: string;
   additionalDescription?: string;
   optionalDescription?: string;
+  moreDetailDescription?: string;
 }
 
 export interface ThemeQuestions {
@@ -31,6 +33,7 @@ export interface Descriptions {
   issueDescription?: string;
   additionalDescription?: string;
   optionalDescription?: string;
+  moreDetailDescription?: string;
 }
 
 export interface Themes {

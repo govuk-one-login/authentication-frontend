@@ -128,6 +128,7 @@ export function contactUsQuestionsFormPost(
         issueDescription: req.body.issueDescription,
         additionalDescription: req.body.additionalDescription,
         optionalDescription: req.body.optionalDescription,
+        moreDetailDescription: req.body.moreDetailDescription,
       },
       themes: { theme: req.body.theme, subtheme: req.body.subtheme },
       subject: "GOV.UK Accounts Feedback",
@@ -141,6 +142,7 @@ export function contactUsQuestionsFormPost(
       questions: questions,
       themeQuestions: themeQuestions,
       referer: req.body.referer,
+      securityCodeSentMethod: req.body.securityCodeSentMethod,
     });
 
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
@@ -191,8 +193,8 @@ export function getQuestionsFromFormType(
       ),
     },
     invalidSecurityCode: {
-      optionalDescription: req.t(
-        "pages.contactUsQuestions.invalidSecurityCode.section1.header"
+      moreDetailDescription: req.t(
+        "pages.contactUsQuestions.invalidSecurityCode.section2.header"
       ),
     },
     noPhoneNumberAccess: {
@@ -201,12 +203,12 @@ export function getQuestionsFromFormType(
       ),
     },
     noSecurityCode: {
-      optionalDescription: req.t(
-        "pages.contactUsQuestions.noSecurityCode.section1.header"
+      moreDetailDescription: req.t(
+        "pages.contactUsQuestions.noSecurityCode.section2.header"
       ),
     },
     noUKMobile: {
-      optionalDescription: req.t(
+      moreDetailDescription: req.t(
         "pages.contactUsQuestions.noUKMobile.section1.header"
       ),
     },

@@ -2,7 +2,7 @@
   {{ 'pages.contactUsQuestions.noSecurityCode.header' | translate }}
 </h1>
 
-<form action="/contact-us-questions" method="post" novalidate>
+<form action="/contact-us-questions?radio_buttons=true" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="theme" value="{{theme}}"/>
@@ -11,20 +11,50 @@
 <input type="hidden" name="formType" value="noSecurityCode"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
 
+{% if theme == 'account_creation' %}
+    {{ govukRadios({
+        idPrefix: "securityCodeSentMethod",
+        name: "securityCodeSentMethod",
+        fieldset: {
+            legend: {
+                text: 'pages.contactUsQuestions.securityCodeSentMethod.header' | translate,
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
+            }
+        },
+        items: [
+            {
+                value: "email",
+                checked: securityCodeSentMethod === 'email',
+                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio1' | translate
+            },
+            {
+                value: "text_message",
+                checked: securityCodeSentMethod === 'text_message',
+                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio2' | translate
+            }
+        ],
+          errorMessage: {
+          text: errors['securityCodeSentMethod'].text
+          } if (errors['securityCodeSentMethod'])
+    }) }}
+{% endif %}
+
+
 {{ govukTextarea({
     label: {
-      text: 'pages.contactUsQuestions.noSecurityCode.section1.header' | translate,
+      text: 'pages.contactUsQuestions.noSecurityCode.section2.header' | translate,
       classes: "govuk-label--s"
     },
     hint: {
-        text: 'pages.contactUsQuestions.noSecurityCode.section1.paragraph1' | translate
+        text: 'pages.contactUsQuestions.noSecurityCode.section2.hintText' | translate
       },
-    id: "optionalDescription",
-    name: "optionalDescription",
-    value: optionalDescription,
+    id: "moreDetailDescription",
+    name: "moreDetailDescription",
+    value: moreDetailDescription,
     errorMessage: {
-        text: errors['optionalDescription'].text
-    } if (errors['optionalDescription'])
+        text: errors['moreDetailDescription'].text
+    } if (errors['moreDetailDescription'])
 }) }}
 
 {{ govukWarningText({

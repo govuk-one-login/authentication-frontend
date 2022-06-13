@@ -154,6 +154,27 @@ describe("Integration:: contact us - public user", () => {
       .expect(400, done);
   });
 
+  it("should return validation error when user has not selected how the security code was sent whilst creating an account", (done) => {
+    request(app)
+      .post("/contact-us-questions?radio_buttons=true")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        theme: "account_creation",
+        subtheme: "no_security_code",
+        moreDetailDescription: "issue",
+        contact: "false",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#securityCodeSentMethod-error").text()).to.contains(
+          "Select whether the code was sent by email or text message"
+        );
+      })
+      .expect(400, done);
+  });
+
   it("should redirect to success page when form submitted", (done) => {
     nock(zendeskApiUrl).post("/tickets.json").once().reply(200);
 
