@@ -5,6 +5,7 @@ import { CreatePasswordServiceInterface } from "./types";
 import { BadRequestError } from "../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { getNextPathAndUpdateJourney } from "../common/constants";
+import { supportMFAOptions } from "../../config";
 
 export function createPasswordGet(req: Request, res: Response): void {
   res.render("create-password/index.njk");
@@ -36,6 +37,7 @@ export function createPasswordPost(
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
         {
           requiresTwoFactorAuth: true,
+          supportMFAOptions: supportMFAOptions(),
         },
         res.locals.sessionId
       )

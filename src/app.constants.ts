@@ -44,6 +44,7 @@ export const PATH_NAMES = {
   PROVE_IDENTITY_CALLBACK: "/ipv-callback",
   HEALTHCHECK: "/healthcheck",
   PROVE_IDENTITY_WELCOME: "/prove-identity-welcome",
+  GET_SECURITY_CODES: "/get-security-codes",
 };
 
 export const HTTP_STATUS_CODES = {

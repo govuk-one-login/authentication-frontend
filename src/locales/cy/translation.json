@@ -1367,6 +1367,22 @@
       "header": "Return you to the [serviceName] service",
       "paragraph1": "loading",
       "paragraph2": "We're still trying"
+    },
+    "getSecurityCodes": {
+      "title": "Choose how to get security codes",
+      "header": "Choose how to get security codes",
+      "summary": "To finish creating your account, you need to choose a way to prove it's you when you sign in.",
+      "secondFactorRadios": {
+        "textMessageText": "Text message",
+        "authAppText": "Authenticator app for smartphone, tablet or computer",
+        "errorMessage": "Select how you want to get security codes"
+      },
+      "authAppDetails": {
+        "summaryText": "What is an authenticator app?",
+        "paragraph1": "An authenticator app creates a security code that helps confirm it's you when you sign in.",
+        "paragraph2": "You can use an authenticator app on your smartphone, tablet or desktop computer.  Download an authenticator app for your smartphone or tablet from your app store or search online for an authenticator app for your computer."
+      },
+      "continueButtonText": "Continue"
     }
   }
 }

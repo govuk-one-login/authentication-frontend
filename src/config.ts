@@ -50,6 +50,10 @@ export function supportInternationalNumbers(): boolean {
   return process.env.SUPPORT_INTERNATIONAL_NUMBERS === "1";
 }
 
+export function supportMFAOptions(): boolean {
+  return process.env.SUPPORT_MFA_OPTIONS === "1";
+}
+
 export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
   const hostKey = `${appEnv}-${process.env.REDIS_KEY}-redis-master-host`;
   const portKey = `${appEnv}-${process.env.REDIS_KEY}-redis-port`;

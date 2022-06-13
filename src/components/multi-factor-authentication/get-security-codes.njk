@@ -1,0 +1,62 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% set pageTitleName = 'pages.getSecurityCodes.title' | translate %}
+
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+{% set authAppDetailsTextHtml %}
+  <p class="govuk-body">{{'pages.getSecurityCodes.authAppDetails.paragraph1' | translate}}</p>
+  <p class="govuk-body">{{'pages.getSecurityCodes.authAppDetails.paragraph2' | translate}}</p>
+{% endset %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.getSecurityCodes.header' | translate}}</h1>
+
+<p class="govuk-body">{{'pages.getSecurityCodes.summary' | translate}}</p>
+
+<form action="/get-security-codes" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+{{ govukRadios({
+  idPrefix: "mfa-options",
+  name: "mfaOptions",
+  attributes: {
+    "id": "radio-mfa-options"
+  },
+  items: [
+    {
+      text: 'pages.getSecurityCodes.secondFactorRadios.textMessageText' | translate,
+      id: "mfa-options-text-message",
+      value: "SMS"
+    },
+    {
+      text: 'pages.getSecurityCodes.secondFactorRadios.authAppText' | translate,
+      id: "mfa-options-auth-app",
+      value: "AUTH_APP"
+    }
+  ],
+  errorMessage: {
+  text: errors['mfaOptions'].text
+  } if (errors['mfaOptions'])
+}) }}
+
+{{ govukDetails({
+  summaryText: 'pages.getSecurityCodes.authAppDetails.summaryText' | translate,
+  html: authAppDetailsTextHtml
+}) }}
+
+{{ govukButton({
+  "text": 'pages.getSecurityCodes.continueButtonText' | translate,
+  "type": "Submit",
+  "preventDoubleClick": true
+}) }}
+
+</form>
+
+{% endblock %}

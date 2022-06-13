@@ -39,6 +39,8 @@ const USER_JOURNEY_EVENTS = {
   PASSWORD_RESET_RESEND_CODE: "PASSWORD_RESET_RESEND_CODE",
   RESEND_MFA: "RESEND_MFA",
   RESET_PASSWORD_CODE_VERIFIED: "RESET_PASSWORD_CODE_VERIFIED",
+  MFA_OPTION_AUTH_APP_SELECTED: "MFA_OPTION_AUTH_APP_SELECTED",
+  MFA_OPTION_SMS_SELECTED: "MFA_OPTION_SMS_SELECTED",
 };
 
 const authStateMachine = createMachine(
@@ -55,6 +57,7 @@ const authStateMachine = createMachine(
       isIdentityRequired: false,
       prompt: OIDC_PROMPT.NONE,
       skipAuthentication: false,
+      supportMFAOptions: false,
     },
     states: {
       [PATH_NAMES.START]: {
@@ -193,6 +196,22 @@ const authStateMachine = createMachine(
       [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]: {
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
+            {
+              target: [PATH_NAMES.GET_SECURITY_CODES],
+              cond: "supportMFAOptions",
+            },
+            {
+              target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
+            },
+          ],
+        },
+      },
+      [PATH_NAMES.GET_SECURITY_CODES]: {
+        on: {
+          [USER_JOURNEY_EVENTS.MFA_OPTION_SMS_SELECTED]: [
+            PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
+          ],
+          [USER_JOURNEY_EVENTS.MFA_OPTION_AUTH_APP_SELECTED]: [
             PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
           ],
         },
@@ -436,6 +455,7 @@ const authStateMachine = createMachine(
       skipAuthentication: (context) =>
         context.skipAuthentication === true &&
         context.isAuthenticated === false,
+      supportMFAOptions: (context) => context.supportMFAOptions === true,
     },
   }
 );
