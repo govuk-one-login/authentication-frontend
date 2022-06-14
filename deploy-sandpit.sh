@@ -60,7 +60,7 @@ if [[ $BUILD == "1" ]]; then
   echo "Building image..."
   docker buildx build --platform=linux/amd64 -t "${REPO_NAME}" .
   echo "Tagging image..."
-  docker tag frontend-image-repository:latest "${REPO_URL}:${IMAGE_TAG}"
+  docker tag "${REPO_NAME}:latest" "${REPO_URL}:${IMAGE_TAG}"
 
   echo "Pushing image..."
   docker push "${REPO_URL}:${IMAGE_TAG}"
@@ -83,9 +83,11 @@ if [[ $TERRAFORM == "1" ]]; then
   terraform init -backend-config=sandpit.hcl
   terraform apply ${TERRAFORM_OPTS} -var-file sandpit.tfvars -var "image_uri=${REPO_URL}" -var "image_digest=${IMAGE_DIGEST}"
 
-  echo -n "Waiting for ECS deployment to complete ... "
-  aws ecs wait services-stable --services "sandpit-frontend-ecs-service" --cluster "sandpit-app-cluster"
-  echo "done!"
+  if [[ $TERRAFORM_OPTS != "-destroy" ]]; then
+    echo -n "Waiting for ECS deployment to complete ... "
+    aws ecs wait services-stable --services "sandpit-frontend-ecs-service" --cluster "sandpit-app-cluster"
+    echo "done!"
+  fi
 
 fi
 
