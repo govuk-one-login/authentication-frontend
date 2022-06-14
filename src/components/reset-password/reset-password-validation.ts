@@ -2,7 +2,6 @@ import { body } from "express-validator";
 import { containsNumber, containsNumbersOnly } from "../../utils/strings";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
-import { isCommonPassword } from "../../utils/password-validation";
 
 export function validateResetPasswordRequest(): ValidationChainFunc {
   return [
@@ -27,16 +26,6 @@ export function validateResetPasswordRequest(): ValidationChainFunc {
         ) {
           throw new Error(
             req.t("pages.resetPassword.password.validationError.alphaNumeric")
-          );
-        }
-        return true;
-      })
-      .custom((value, { req }) => {
-        if (isCommonPassword(value)) {
-          throw new Error(
-            req.t(
-              "pages.createPassword.password.validationError.commonPassword"
-            )
           );
         }
         return true;
