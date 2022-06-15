@@ -6,7 +6,7 @@ import { PATH_NAMES } from "../../../app.constants";
 import {
   getSecurityCodesGet,
   getSecurityCodesPost,
-} from "../multi-factor-authentication-controller";
+} from "../select-mfa-options-controller";
 import {
   mockRequest,
   mockResponse,
@@ -14,7 +14,7 @@ import {
   ResponseOutput,
 } from "mock-req-res";
 
-describe("mutil-factor-authentication controller", () => {
+describe("select-mfa-options controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
@@ -37,9 +37,7 @@ describe("mutil-factor-authentication controller", () => {
     it("should render get-security-codes page", () => {
       getSecurityCodesGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "multi-factor-authentication/get-security-codes.njk"
-      );
+      expect(res.render).to.have.calledWith("select-mfa-options/index.njk");
     });
   });
 

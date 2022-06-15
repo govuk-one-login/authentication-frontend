@@ -3,10 +3,10 @@ import * as express from "express";
 import {
   getSecurityCodesGet,
   getSecurityCodesPost,
-} from "./multi-factor-authentication-controller";
+} from "./select-mfa-options-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
-import { validateMultiFactorAuthenticationRequest } from "./multi-factor-authentication-validation";
+import { validateMultiFactorAuthenticationRequest } from "./select-mfa-options-validation";
 
 const router = express.Router();
 
@@ -25,4 +25,4 @@ router.post(
   getSecurityCodesPost
 );
 
-export { router as multiFactorAuthenticationRouter };
+export { router as selectMFAOptionsRouter };

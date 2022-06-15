@@ -69,7 +69,7 @@ import { proveIdentityWelcomeRouter } from "./components/prove-identity-welcome/
 import { proveIdentityCallbackRouter } from "./components/prove-identity-callback/prove-identity-callback-routes";
 import { docCheckingAppRouter } from "./components/doc-checking-app/doc-checking-app-routes";
 import { docCheckingAppCallbackRouter } from "./components/doc-checking-app-callback/doc-checking-app-callback-routes";
-import { multiFactorAuthenticationRouter } from "./components/multi-factor-authentication/multi-factor-authentication-routes";
+import { selectMFAOptionsRouter } from "./components/select-mfa-options/select-mfa-options-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -86,7 +86,7 @@ function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
   app.use(checkYourEmailRouter);
   app.use(createPasswordRouter);
   if (supportMFAOptions()) {
-    app.use(multiFactorAuthenticationRouter);
+    app.use(selectMFAOptionsRouter);
   }
   app.use(enterPhoneNumberRouter);
   app.use(registerAccountCreatedRouter);

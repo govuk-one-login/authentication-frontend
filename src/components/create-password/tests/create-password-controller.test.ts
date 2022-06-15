@@ -42,7 +42,7 @@ describe("create-password controller", () => {
   });
 
   describe("createPasswordPost", () => {
-    it("should redirect to enter-phone-number when 2 factor is required", async () => {
+    it("should redirect to get security codes when 2 factor is required", async () => {
       const fakeService: CreatePasswordServiceInterface = {
         signUpUser: sinon.fake.returns({
           data: {
@@ -58,9 +58,7 @@ describe("create-password controller", () => {
 
       await createPasswordPost(fakeService)(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
-      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
       expect(fakeService.signUpUser).to.have.been.calledOnce;
     });
 

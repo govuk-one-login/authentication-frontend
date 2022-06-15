@@ -11,8 +11,6 @@ export function validateMultiFactorAuthenticationRequest(): ValidationChainFunc 
           value,
         });
       }),
-    validateBodyMiddleware(
-      "multi-factor-authentication/get-security-codes.njk"
-    ),
+    validateBodyMiddleware("select-mfa-options/index.njk"),
   ];
 }

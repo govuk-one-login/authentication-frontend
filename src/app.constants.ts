@@ -45,6 +45,7 @@ export const PATH_NAMES = {
   HEALTHCHECK: "/healthcheck",
   PROVE_IDENTITY_WELCOME: "/prove-identity-welcome",
   GET_SECURITY_CODES: "/get-security-codes",
+  SETUP_AUTHENTICATOR_APP: "/setup-authenticator-app",
 };
 
 export const HTTP_STATUS_CODES = {
