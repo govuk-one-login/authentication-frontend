@@ -1,5 +1,9 @@
 import { body } from "express-validator";
-import { containsNumber } from "../../utils/strings";
+import {
+  containsLettersOnly,
+  containsNumber,
+  containsNumbersOnly,
+} from "../../utils/strings";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 import { isCommonPassword } from "../../utils/password-validation";
@@ -13,12 +17,6 @@ export function validateResetPasswordRequest(): ValidationChainFunc {
           value,
         });
       })
-      .isLength({ min: 8 })
-      .withMessage((value, { req }) => {
-        return req.t("pages.resetPassword.password.validationError.minLength", {
-          value,
-        });
-      })
       .isLength({ max: 256 })
       .withMessage((value, { req }) => {
         return req.t("pages.resetPassword.password.validationError.maxLength", {
@@ -26,19 +24,24 @@ export function validateResetPasswordRequest(): ValidationChainFunc {
         });
       })
       .custom((value, { req }) => {
-        if (isCommonPassword(value)) {
+        if (
+          !containsNumber(value) ||
+          containsNumbersOnly(value) ||
+          value.length < 8 ||
+          containsLettersOnly(value)
+        ) {
           throw new Error(
-            req.t(
-              "pages.createPassword.password.validationError.commonPassword"
-            )
+            req.t("pages.resetPassword.password.validationError.alphaNumeric")
           );
         }
         return true;
       })
       .custom((value, { req }) => {
-        if (!containsNumber(value)) {
+        if (isCommonPassword(value)) {
           throw new Error(
-            req.t("pages.resetPassword.password.validationError.alphaNumeric")
+            req.t(
+              "pages.createPassword.password.validationError.commonPassword"
+            )
           );
         }
         return true;

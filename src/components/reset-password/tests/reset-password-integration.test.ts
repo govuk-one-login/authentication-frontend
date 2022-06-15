@@ -117,7 +117,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#password-error").text()).to.contains(
-          "Your password must be at least 8 characters long and must include a number"
+          "Your password must be at least 8 characters long and must include letters and numbers"
         );
       })
       .expect(400, done);
@@ -163,7 +163,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .expect(400, done);
   });
 
-  it("should return validation error when password not valid", (done) => {
+  it("should return validation error when no numbers present in password", (done) => {
     request(app)
       .post(ENDPOINT)
       .type("form")
@@ -176,7 +176,26 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#password-error").text()).to.contains(
-          "Your password must be at least 8 characters long and must include a number"
+          "Your password must be at least 8 characters long and must include letters and numbers"
+        );
+      })
+      .expect(400, done);
+  });
+
+  it("should return validation error when password all numeric", (done) => {
+    request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        password: "222222222222222",
+        "confirm-password": "222222222222222",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#password-error").text()).to.contains(
+          "Your password must be at least 8 characters long and must include letters and numbers"
         );
       })
       .expect(400, done);
