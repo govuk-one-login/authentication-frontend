@@ -168,7 +168,7 @@ describe("Integration::register create password", () => {
       .expect(400, done);
   });
 
-  it("should redirect to enter phone number when valid password entered", (done) => {
+  it("should redirect to get security codes when valid password entered", (done) => {
     nock(baseApi)
       .post(API_ENDPOINTS.SIGNUP_USER)
       .once()
@@ -183,7 +183,7 @@ describe("Integration::register create password", () => {
         password: "testpassword1",
         "confirm-password": "testpassword1",
       })
-      .expect("Location", PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
+      .expect("Location", PATH_NAMES.GET_SECURITY_CODES)
       .expect(302, done);
   });
 });
