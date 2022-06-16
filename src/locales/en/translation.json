@@ -1117,8 +1117,8 @@
       },
       "section3": {
         "header": "What are you contacting us about?",
-        "radio1": "A problem creating an account",
-        "radio2": "A problem signing in to your account",
+        "radio1": "A problem creating a GOV.UK account",
+        "radio2": "A problem signing in to your GOV.UK account",
         "radio3": "A problem proving your identity",
         "radio4": "Another problem using your GOV.UK account",
         "radio5": "GOV.UK email subscriptions",
@@ -1130,8 +1130,8 @@
     },
     "contactUsFurtherInformation": {
       "signingIn": {
-        "title": "A problem signing in to your account",
-        "header": "A problem signing in to your account",
+        "title": "A problem signing in to your GOV.UK account",
+        "header": "A problem signing in to your GOV.UK account",
         "section1": {
           "header": "Tell us what happened",
           "radio1": "You did not receive a security code",
@@ -1145,8 +1145,8 @@
         }
       },
       "accountCreation": {
-        "title": "A problem creating an account",
-        "header": "A problem creating an account",
+        "title": "A problem creating a GOV.UK account",
+        "header": "A problem creating a GOV.UK account",
         "section1": {
           "header": "Tell us what happened",
           "radio1": "You did not receive a security code",

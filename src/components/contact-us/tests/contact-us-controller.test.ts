@@ -44,7 +44,7 @@ describe("contact us controller", () => {
   });
 
   describe("contactUsFormPost", () => {
-    it("should redirect /contact-us-further-information page when 'A problem signing in to your account' radio option is chosen", async () => {
+    it("should redirect /contact-us-further-information page when 'A problem signing in to your GOV.UK account' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.SIGNING_IN;
       req.body.referer = REFERER;
 
@@ -54,7 +54,7 @@ describe("contact us controller", () => {
         "/contact-us-further-information?theme=signing_in&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
       );
     });
-    it("should redirect /contact-us-further-information page when 'A problem creating an account' radio option is chosen", async () => {
+    it("should redirect /contact-us-further-information page when 'A problem creating a GOV.UK account' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
       req.body.referer = REFERER;
 
