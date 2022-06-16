@@ -45,7 +45,7 @@ export const PATH_NAMES = {
   HEALTHCHECK: "/healthcheck",
   PROVE_IDENTITY_WELCOME: "/prove-identity-welcome",
   GET_SECURITY_CODES: "/get-security-codes",
-  SETUP_AUTHENTICATOR_APP: "/setup-authenticator-app",
+  CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP: "/setup-authenticator-app",
 };
 
 export const HTTP_STATUS_CODES = {
@@ -83,6 +83,7 @@ export const API_ENDPOINTS = {
   IPV_AUTHORIZE: "/ipv-authorize",
   DOC_CHECKING_APP_AUTHORIZE: "/doc-checking-app-authorize",
   IPV_PROCESSING_IDENTITY: "/processing-identity",
+  VERIFY_MFA_CODE: "/verify-mfa-code",
 };
 
 export const ERROR_MESSAGES = {

@@ -42,7 +42,7 @@ export function sendMfaGeneric(
         isConsentRequired: req.session.user.isConsentRequired,
         isIdentityRequired: req.session.user.isIdentityRequired,
       },
-      clientSessionId
+      sessionId
     );
 
     if (req.query._ga) {

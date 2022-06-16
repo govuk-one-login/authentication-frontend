@@ -52,13 +52,13 @@ describe("select-mfa-options controller", () => {
       );
     });
 
-    it("should redirect to /enter-phone-number even when auth app selected until add code screen implemented", async () => {
+    it("should redirect to /setup-authenticator-app even when auth app selected", async () => {
       req.body.mfaOptions = "AUTH_APP";
 
       getSecurityCodesPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
+        PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP
       );
     });
   });
