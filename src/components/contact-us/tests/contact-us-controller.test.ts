@@ -94,5 +94,15 @@ describe("contact us controller", () => {
         "/contact-us-questions?theme=suggestions_feedback&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
       );
     });
+    it("should redirect /contact-us-questions page when 'A problem proving your identity' radio option is chosen", async () => {
+      req.body.theme = ZENDESK_THEMES.PROVING_IDENTITY;
+      req.body.referer = REFERER;
+
+      contactUsFormPost(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(
+        "/contact-us-questions?theme=proving_identity&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+      );
+    });
   });
 });

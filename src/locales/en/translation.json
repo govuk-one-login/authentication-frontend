@@ -1119,9 +1119,10 @@
         "header": "What are you contacting us about?",
         "radio1": "A problem creating an account",
         "radio2": "A problem signing in to your account",
-        "radio3": "Another problem using your GOV.UK account",
-        "radio4": "GOV.UK email subscriptions",
-        "radio5": "A suggestion or feedback about using your GOV.UK account",
+        "radio3": "A problem proving your identity",
+        "radio4": "Another problem using your GOV.UK account",
+        "radio5": "GOV.UK email subscriptions",
+        "radio6": "A suggestion or feedback about using your GOV.UK account",
         "errorMessage": "Select a reason for contacting us"
       },
       "submitButtonText": "Submit",
@@ -1221,6 +1222,19 @@
         },
         "section3": {
           "header": "If possible, tell us the URL of the page the error happened on?"
+        }
+      },
+      "provingIdentity": {
+        "title": "A problem proving your identity",
+        "header": "A problem proving your identity",
+        "section1": {
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "For example, did you see any warning or error messages?",
+          "errorMessage": "Enter what happened"
         }
       },
       "securityCodeSentMethod": {
