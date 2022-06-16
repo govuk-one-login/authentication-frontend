@@ -9,10 +9,6 @@ export function containsNumbersOnly(value: string): boolean {
   return value ? /^\d+$/.test(value) : false;
 }
 
-export function containsLettersOnly(value: string): boolean {
-  return value ? /^[a-zA-Z]+$/.test(value) : false;
-}
-
 export function redactPhoneNumber(value: string): string | undefined {
   return value
     ? "*".repeat(value.length - 4) + value.trim().slice(value.length - 4)

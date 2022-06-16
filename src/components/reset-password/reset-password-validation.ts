@@ -1,9 +1,5 @@
 import { body } from "express-validator";
-import {
-  containsLettersOnly,
-  containsNumber,
-  containsNumbersOnly,
-} from "../../utils/strings";
+import { containsNumber, containsNumbersOnly } from "../../utils/strings";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 import { isCommonPassword } from "../../utils/password-validation";
@@ -27,8 +23,7 @@ export function validateResetPasswordRequest(): ValidationChainFunc {
         if (
           !containsNumber(value) ||
           containsNumbersOnly(value) ||
-          value.length < 8 ||
-          containsLettersOnly(value)
+          value.length < 8
         ) {
           throw new Error(
             req.t("pages.resetPassword.password.validationError.alphaNumeric")
