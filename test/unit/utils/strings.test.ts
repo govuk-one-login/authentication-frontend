@@ -1,6 +1,11 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { containsNumber, redactPhoneNumber } from "../../../src/utils/strings";
+import {
+  containsLettersOnly,
+  containsNumber,
+  containsNumbersOnly,
+  redactPhoneNumber,
+} from "../../../src/utils/strings";
 
 describe("string-helpers", () => {
   describe("containsNumber", () => {
@@ -23,21 +28,41 @@ describe("string-helpers", () => {
 
   describe("hasNumbersOnly", () => {
     it("should return false when string contains text characters", () => {
-      expect(containsNumber("test")).to.equal(false);
+      expect(containsNumbersOnly("test")).to.equal(false);
     });
 
     it("should return false when string is empty", () => {
-      expect(containsNumber("")).to.equal(false);
+      expect(containsNumbersOnly("")).to.equal(false);
     });
 
     it("should return false when string is null", () => {
-      expect(containsNumber(null)).to.equal(false);
+      expect(containsNumbersOnly(null)).to.equal(false);
     });
     it("should return false when string contains alphanumeric characters", () => {
-      expect(containsNumber("test123456")).to.equal(true);
+      expect(containsNumbersOnly("test123456")).to.equal(false);
     });
     it("should return true when string contains numeric characters only", () => {
-      expect(containsNumber("123456")).to.equal(true);
+      expect(containsNumbersOnly("123456")).to.equal(true);
+    });
+  });
+
+  describe("hasLettersOnly", () => {
+    it("should return false when string contains only numbers", () => {
+      expect(containsLettersOnly("1234")).to.equal(false);
+    });
+
+    it("should return false when string is empty", () => {
+      expect(containsLettersOnly("")).to.equal(false);
+    });
+
+    it("should return false when string is null", () => {
+      expect(containsLettersOnly(null)).to.equal(false);
+    });
+    it("should return false when string contains alphanumeric characters", () => {
+      expect(containsLettersOnly("test123456")).to.equal(false);
+    });
+    it("should return true when string contains letters characters only", () => {
+      expect(containsLettersOnly("abcdefg")).to.equal(true);
     });
   });
 
