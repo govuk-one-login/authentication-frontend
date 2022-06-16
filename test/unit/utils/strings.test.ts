@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import {
-  containsLettersOnly,
   containsNumber,
   containsNumbersOnly,
   redactPhoneNumber,
@@ -43,26 +42,6 @@ describe("string-helpers", () => {
     });
     it("should return true when string contains numeric characters only", () => {
       expect(containsNumbersOnly("123456")).to.equal(true);
-    });
-  });
-
-  describe("hasLettersOnly", () => {
-    it("should return false when string contains only numbers", () => {
-      expect(containsLettersOnly("1234")).to.equal(false);
-    });
-
-    it("should return false when string is empty", () => {
-      expect(containsLettersOnly("")).to.equal(false);
-    });
-
-    it("should return false when string is null", () => {
-      expect(containsLettersOnly(null)).to.equal(false);
-    });
-    it("should return false when string contains alphanumeric characters", () => {
-      expect(containsLettersOnly("test123456")).to.equal(false);
-    });
-    it("should return true when string contains letters characters only", () => {
-      expect(containsLettersOnly("abcdefg")).to.equal(true);
     });
   });
 
