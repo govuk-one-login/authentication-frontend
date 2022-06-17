@@ -13,6 +13,8 @@ export enum SecurityCodeErrorType {
   EmailMaxCodesSent = "emailMaxCodesSent",
   EmailBlocked = "emailBlocked",
   EmailMaxRetries = "emailMaxRetries",
+  AuthAppMfaNoCodeValidator = "authAppMfaNoCodeValidator",
+  AuthAppMfaMaxRetries = "authAppMfaMaxRetries",
 }
 
 export const ERROR_CODES = {
@@ -33,6 +35,7 @@ export const ERROR_CODES = {
   INVALID_VERIFY_PHONE_NUMBER_CODE: 1037,
   INVALID_PASSWORD_MAX_ATTEMPTS_REACHED: 1028,
   RESET_PASSWORD_INVALID_CODE: 1021,
+  AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED: 1042,
   AUTH_APP_INVALID_CODE: 1043,
 };
 
@@ -90,6 +93,11 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
     PATH_NAMES["SECURITY_CODE_WAIT"],
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.EmailBlocked
+  ),
+  [ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED]: pathWithQueryParam(
+    PATH_NAMES["SECURITY_CODE_INVALID"],
+    SECURITY_CODE_ERROR,
+    SecurityCodeErrorType.AuthAppMfaMaxRetries
   ),
 };
 
