@@ -118,6 +118,7 @@ export const ZENDESK_THEMES = {
   NO_UK_MOBILE_NUMBER: "no_uk_mobile_number",
   FORGOTTEN_PASSWORD: "forgotten_password",
   NO_PHONE_NUMBER_ACCESS: "no_phone_number_access",
+  PROVING_IDENTITY: "proving_identity",
 };
 
 export enum NOTIFICATION_TYPE {
