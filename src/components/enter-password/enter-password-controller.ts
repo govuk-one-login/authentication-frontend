@@ -93,6 +93,7 @@ export function enterPasswordPost(
 
     req.session.user.phoneNumber = userLogin.data.redactedPhoneNumber;
     req.session.user.isConsentRequired = userLogin.data.consentRequired;
+    req.session.user.isAccountPartCreated = !userLogin.data.phoneNumberVerified;
     req.session.user.isLatestTermsAndConditionsAccepted =
       userLogin.data.latestTermsAndConditionsAccepted;
 

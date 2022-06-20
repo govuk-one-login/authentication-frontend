@@ -41,6 +41,17 @@ describe("enter phone number controller", () => {
 
       expect(res.render).to.have.calledWith("enter-phone-number/index.njk");
     });
+
+    it("should render enter phone number returning user view when user has a partly created account", () => {
+      req.session.user = {
+        isAccountPartCreated: true,
+      };
+      enterPhoneNumberGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "enter-phone-number/returning-user-index.njk"
+      );
+    });
   });
 
   describe("enterPhoneNumberPost", () => {

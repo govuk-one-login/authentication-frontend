@@ -52,6 +52,7 @@ describe("enter password controller", () => {
             mfaRequired: true,
             consentRequired: false,
             latestTermsAndConditionsAccepted: true,
+            phoneNumberVerified: true,
           },
           success: true,
         }),
@@ -78,13 +79,18 @@ describe("enter password controller", () => {
       )(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
+      expect(req.session.user.isAccountPartCreated).to.be.eq(false);
     });
 
     it("should redirect to auth code when mfa is not required", async () => {
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sinon.fake.returns({
           success: true,
-          data: { redactedPhoneNumber: "******3456", mfaRequired: false },
+          data: {
+            redactedPhoneNumber: "******3456",
+            mfaRequired: false,
+            phoneNumberVerified: true,
+          },
         }),
       };
 
@@ -102,6 +108,7 @@ describe("enter password controller", () => {
       );
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
+      expect(req.session.user.isAccountPartCreated).to.be.eq(false);
     });
 
     it("should redirect to enter phone number when phone number is not verified", async () => {
@@ -131,6 +138,7 @@ describe("enter password controller", () => {
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
       );
+      expect(req.session.user.isAccountPartCreated).to.be.eq(true);
     });
 
     it("should redirect to updated terms when terms and conditions not accepted", async () => {
@@ -139,6 +147,7 @@ describe("enter password controller", () => {
           data: {
             redactedPhoneNumber: "******3456",
             latestTermsAndConditionsAccepted: false,
+            phoneNumberVerified: true,
           },
           success: true,
         }),
@@ -160,6 +169,7 @@ describe("enter password controller", () => {
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS
       );
+      expect(req.session.user.isAccountPartCreated).to.be.eq(false);
     });
 
     it("should throw error when API call throws error", async () => {

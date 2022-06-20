@@ -297,6 +297,14 @@
       "info": {
         "paragraph1": "We will send a 6 digit security code to the number you give us."
       },
+      "returningUser": {
+        "title": "Finish creating your account",
+        "header": "Finish creating your account",
+        "info": {
+          "paragraph1": "You need to add a UK mobile phone number to your GOV.UK account.",
+          "paragraph2": "We will send a 6 digit security code to the number you give us."
+        }
+      },
       "ukPhoneNumber": {
         "label": "UK mobile phone number",
         "validationError": {
