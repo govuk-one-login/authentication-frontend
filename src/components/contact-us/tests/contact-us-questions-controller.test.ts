@@ -76,22 +76,6 @@ describe("contact us questions controller", () => {
         referer: REFERER,
       });
     });
-
-    it("should render contact-us-questions if a 'A problem proving your identity' radio option was chosen", () => {
-      req.query.theme = ZENDESK_THEMES.PROVING_IDENTITY;
-      req.headers.referer = "/contact-us";
-      req.query.referer = REFERER;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        theme: "proving_identity",
-        subtheme: undefined,
-        backurl: "/contact-us",
-        pageTitleHeading: "pages.contactUsQuestions.provingIdentity.title",
-        referer: REFERER,
-      });
-    });
-
     it("should redirect to contact-us when no theme is present in request", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
