@@ -56,6 +56,8 @@ describe("enter mfa controller", () => {
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
+      expect(req.session.user.isAccountPartCreated).to.be.eq(false);
     });
 
     it("should return error when invalid code entered", async () => {

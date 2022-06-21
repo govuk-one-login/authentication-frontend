@@ -79,6 +79,8 @@ export function resetPasswordPost(
     req.session.user.isConsentRequired = loginResponse.data.consentRequired;
     req.session.user.isLatestTermsAndConditionsAccepted =
       loginResponse.data.latestTermsAndConditionsAccepted;
+    req.session.user.isAccountPartCreated =
+      !loginResponse.data.phoneNumberVerified;
 
     if (loginResponse.data.phoneNumberVerified) {
       const mfaResponse = await mfaCodeService.sendMfaCode(
