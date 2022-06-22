@@ -40,7 +40,7 @@ export const PATH_NAMES = {
   CONTACT_US_QUESTIONS: "/contact-us-questions",
   PROVE_IDENTITY: "/prove-identity",
   DOC_CHECKING_APP: "/doc-checking-app",
-  DOC_CHECKING_APP_CALLBACK: "/doc-checking-app-callback",
+  DOC_CHECKING_APP_CALLBACK: "/doc-app-callback",
   PROVE_IDENTITY_CALLBACK: "/ipv-callback",
   HEALTHCHECK: "/healthcheck",
   PROVE_IDENTITY_WELCOME: "/prove-identity-welcome",
