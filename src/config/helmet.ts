@@ -34,7 +34,7 @@ export const helmetConfiguration: Parameters<typeof helmet>[0] = {
   },
   hsts: {
     maxAge: 31536000, // 1 Year
-    preload: false,
+    preload: true,
     includeSubDomains: true,
   },
   referrerPolicy: false,
