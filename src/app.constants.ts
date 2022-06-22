@@ -81,7 +81,7 @@ export const API_ENDPOINTS = {
   RESET_PASSWORD_REQUEST: "/reset-password-request",
   RESET_PASSWORD: "/reset-password",
   IPV_AUTHORIZE: "/ipv-authorize",
-  DOC_CHECKING_APP_AUTHORIZE: "/doc-checking-app-authorize",
+  DOC_CHECKING_APP_AUTHORIZE: "/doc-app-authorize",
   IPV_PROCESSING_IDENTITY: "/processing-identity",
 };
 
