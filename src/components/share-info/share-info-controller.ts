@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
 
 import { BadRequestError } from "../../utils/error";
-import { UpdateProfileServiceInterface } from "../common/update-profile/types";
+import {
+  UpdateProfileServiceInterface,
+  UpdateType,
+} from "../common/update-profile/types";
 import { updateProfileService } from "../common/update-profile/update-profile-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { getNextPathAndUpdateJourney } from "../common/constants";
@@ -30,7 +33,7 @@ export function shareInfoPost(
       email,
       {
         profileInformation: consentValue,
-        updateProfileType: "CAPTURE_CONSENT",
+        updateProfileType: UpdateType.CAPTURE_CONSENT,
       },
       req.ip,
       persistentSessionId

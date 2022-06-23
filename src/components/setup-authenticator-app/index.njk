@@ -1,0 +1,71 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set pageTitleName = 'pages.setupAuthenticatorApp.title' | translate %}
+
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+{% set insetTextHtml %}
+    <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph1' | translate}}</p>
+    <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph2' | translate}}</p>
+    <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph3' | translate}}</p>
+{% endset %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.setupAuthenticatorApp.header' | translate }}</h1>
+
+<p class="govuk-body">{{'pages.setupAuthenticatorApp.step1' | translate }}</p>
+    {{ govukDetails({
+        summaryText: 'pages.setupAuthenticatorApp.noAuthAppDetails.summaryText' | translate,
+        html: insetTextHtml
+    }) }}
+<p class="govuk-body">{{'pages.setupAuthenticatorApp.step2' | translate }}</p>
+
+<p class="govuk-body">
+  <img src="{{qrCode}}" alt="QR Code Image">
+</p>
+
+<p class="govuk-body">
+    {{ 'pages.setupAuthenticatorApp.secretKeyLabelText' | translate }}
+    <span class="govuk-body govuk-!-font-weight-bold">{{secretKey}}</span>
+</p>
+<p class="govuk-body">{{'pages.setupAuthenticatorApp.step3' | translate }}</p>
+<p class="govuk-body">{{'pages.setupAuthenticatorApp.step4' | translate }}</p>
+
+<form id="form-tracking" method="post" novalidate>
+  
+  <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+  {{ govukInput({
+  label: {
+  text: 'pages.setupAuthenticatorApp.code.label' | translate
+  },
+  hint: {
+      text: 'pages.setupAuthenticatorApp.code.hintText' | translate
+  },
+  classes: "govuk-!-width-two-thirds govuk-!-font-weight-bold",
+  id: "code",
+  name: "code",
+  type: "number",
+  autocomplete:"off",
+  errorMessage: {
+  text: errors['code'].text
+  } if (errors['code'])})
+  }}
+
+{{ govukButton({
+  "text": button_text|default('general.continue.label' | translate, true),
+  "type": "Submit",
+  "preventDoubleClick": true
+  }) }}
+
+  <p class="govuk-body"> <a href="/enter-phone-number" class="govuk-link" rel="noreferrer">{{'pages.setupAuthenticatorApp.textMessageInsteadLinkText' | translate }}</a></p>
+
+</form>
+
+{% endblock %}
+

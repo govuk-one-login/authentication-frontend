@@ -1389,6 +1389,31 @@
         "paragraph2": "You can use an authenticator app on your smartphone, tablet or desktop computer.  Download an authenticator app for your smartphone or tablet from your app store or search online for an authenticator app for your computer."
       },
       "continueButtonText": "Continue"
+    },
+    "setupAuthenticatorApp": {
+      "title": "Set up an authenticator app",
+      "header": "Set up an authenticator app",
+      "step1": "1. Open your authenticator app on your smartphone, tablet or computer.",
+      "noAuthAppDetails": {
+        "summaryText": "I don't have an authenticator app",
+        "paragraph1": "You can download an authenticator app for your smartphone or tablet from your app store.",
+        "paragraph2": "If you don't have a smartphone or tablet, search online for an authenticator app for your computer.",
+        "paragraph3": "You can use any authenticator app."
+      },
+      "step2": "2. Use your authenticator app to scan the QR code or type the secret key into your authenticator app.  Some authenticator apps call the secret key a 'code'.",
+      "secretKeyLabelText": "Secret key: ",
+      "step3": "3. The authenticator app will show an access code.",
+      "step4": "4. Enter the access code.",
+      "code": {
+        "label": "Access code",
+        "hintText": "This is the number show in your authenticator app",
+        "validationError":{
+         "required": "Enter the security code shown in your authenticator app",
+          "invalidCode": "The security code you entered is not correct, try entering it again or wait for for your authenticator app to give you a new code"
+        }
+      },
+      "continueButtonText": "Continue",
+      "textMessageInsteadLinkText": "Get a security code by text message instead"
     }
   }
 }
