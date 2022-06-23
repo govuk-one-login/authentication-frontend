@@ -27,8 +27,8 @@ export function proveIdentityGet(
       req,
       req.path,
       USER_JOURNEY_EVENTS.PROVE_IDENTITY_INIT,
-      null,
-      sessionId
+      {},
+      clientSessionId
     );
 
     return res.redirect(result.data.redirectUri);
