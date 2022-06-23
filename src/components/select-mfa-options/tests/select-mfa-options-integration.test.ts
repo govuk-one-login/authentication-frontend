@@ -85,7 +85,7 @@ describe("Integration::select-mfa-options", () => {
       .expect(400, done);
   });
 
-  it("should redirect to /setup-authenticator-app page when mfaOptions is AUTH_APP", (done) => {
+  it("should redirect to /enter-phone-numbe page when mfaOptions is AUTH_APP (awaiting setup-authenticator-app)", (done) => {
     request(app)
       .post(PATH_NAMES.GET_SECURITY_CODES)
       .type("form")
@@ -94,7 +94,7 @@ describe("Integration::select-mfa-options", () => {
         _csrf: token,
         mfaOptions: "AUTH_APP",
       })
-      .expect("Location", PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
+      .expect("Location", PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .expect(302, done);
   });
 

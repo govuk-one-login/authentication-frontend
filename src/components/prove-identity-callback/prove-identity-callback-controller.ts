@@ -39,8 +39,8 @@ export function proveIdentityCallbackGet(
         req,
         req.path,
         USER_JOURNEY_EVENTS.PROVE_IDENTITY_CALLBACK,
-        null,
-        sessionId
+        {},
+        clientSessionId
       );
     } else {
       redirectPath = createServiceRedirectErrorUrl(

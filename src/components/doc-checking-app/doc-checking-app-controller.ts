@@ -25,8 +25,8 @@ export function docCheckingAppGet(
       req,
       req.path,
       USER_JOURNEY_EVENTS.DOC_CHECKING_AUTH_REDIRECT,
-      null,
-      sessionId
+      {},
+      clientSessionId
     );
 
     return res.redirect(result.data.redirectUri);
