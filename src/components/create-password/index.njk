@@ -16,7 +16,15 @@
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
-    {{ govukInputWithShowPassword('pages.createPassword.password.label'  | translate, "password", errors, 'pages.createPassword.password.hint' | translate) }}
+    <p class="govuk-body">{{'pages.createPassword.password.paragraph1' | translate}}</p>
+    <ul class="govuk-list govuk-list--bullet">
+     <li>{{ 'pages.createPassword.password.bulletPoint1' | translate}}</li>
+     <li>{{ 'pages.createPassword.password.bulletPoint2' | translate}}</li>
+    </ul>
+
+     <p class="govuk-body">{{'pages.createPassword.password.paragraph2' | translate}}</p>
+
+    {{ govukInputWithShowPassword('pages.createPassword.password.label'  | translate, "password", errors ) }}
     {{ govukInputWithShowPassword('pages.createPassword.confirmPassword.label' | translate, "confirm-password", errors) }}
 
 {{ govukDetails({

@@ -266,7 +266,10 @@
       "header": "Create your password",
       "password": {
         "label": "Enter a password",
-        "hint": "Your password must be at least 8 characters long and must include letters and numbers",
+        "paragraph1": "Your password must:",
+        "bulletPoint1": "be at least 8 characters long",
+        "bulletPoint2": "include letters and numbers",
+        "paragraph2": "Do not use a very common password, such as ‘password’ or a sequence of numbers.",
         "validationError": {
           "required": "Enter your password",
           "maxLength": "Your password must be less than 256 characters",
@@ -990,7 +993,10 @@
       "header": "Reset your password",
       "password": {
         "label": "Enter a new password",
-        "hint": "Your password must be at least 8 characters long and must include letters and numbers",
+        "paragraph1": "Your password must:",
+        "bulletPoint1": "be at least 8 characters long",
+        "bulletPoint2": "include letters and numbers",
+        "paragraph2": "Do not use a very common password, such as ‘password’ or a sequence of numbers.",
         "validationError": {
           "required": "Enter your password",
           "maxLength": "Your password must be less than 256 characters",
