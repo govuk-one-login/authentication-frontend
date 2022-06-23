@@ -104,10 +104,10 @@ function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
   app.use(upliftJourneyRouter);
   app.use(contactUsRouter);
   app.use(healthcheckRouter);
+  app.use(proveIdentityRouter);
+  app.use(proveIdentityWelcomeRouter);
+  app.use(proveIdentityCallbackRouter);
   if (!appEnvIsProduction) {
-    app.use(proveIdentityRouter);
-    app.use(proveIdentityWelcomeRouter);
-    app.use(proveIdentityCallbackRouter);
     app.use(docCheckingAppRouter);
     app.use(docCheckingAppCallbackRouter);
   }
