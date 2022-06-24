@@ -8,7 +8,10 @@ import {
 } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
 import { updateProfileService } from "../common/update-profile/update-profile-service";
-import { UpdateProfileServiceInterface } from "../common/update-profile/types";
+import {
+  UpdateProfileServiceInterface,
+  UpdateType,
+} from "../common/update-profile/types";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
@@ -57,7 +60,7 @@ export function enterPhoneNumberPost(
       email,
       {
         profileInformation: phoneNumber,
-        updateProfileType: "ADD_PHONE_NUMBER",
+        updateProfileType: UpdateType.ADD_PHONE_NUMBER,
       },
       req.ip,
       persistentSessionId
@@ -98,6 +101,7 @@ export function enterPhoneNumberPost(
         req,
         req.path,
         USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER,
+        null,
         sessionId
       )
     );
