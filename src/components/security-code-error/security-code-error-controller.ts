@@ -5,6 +5,7 @@ import { PATH_NAMES } from "../../app.constants";
 export function securityCodeInvalidGet(req: Request, res: Response): void {
   res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
+    isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
   });
 }
 
@@ -40,5 +41,16 @@ function getNewCodePath(actionType: SecurityCodeErrorType) {
     case SecurityCodeErrorType.EmailBlocked:
     case SecurityCodeErrorType.EmailMaxRetries:
       return PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT;
+    case SecurityCodeErrorType.AuthAppMfaMaxRetries:
+      return PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE;
+  }
+}
+
+function isAuthApp(actionType: SecurityCodeErrorType) {
+  switch (actionType) {
+    case SecurityCodeErrorType.AuthAppMfaMaxRetries:
+      return true;
+    default:
+      return false;
   }
 }

@@ -15,6 +15,7 @@ import {
 } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { supportMFAOptions } from "../../config";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -116,7 +117,6 @@ export function enterPasswordPost(
         throw new BadRequestError(result.data.message, result.data.code);
       }
     }
-
     return res.redirect(
       getNextPathAndUpdateJourney(
         req,
@@ -128,6 +128,9 @@ export function enterPasswordPost(
           isPhoneNumberVerified: userLogin.data.phoneNumberVerified,
           requiresTwoFactorAuth: userLogin.data.mfaRequired,
           isConsentRequired: req.session.user.isConsentRequired,
+          supportMFAOptions: supportMFAOptions(),
+          mfaMethodType: userLogin.data.mfaMethodType,
+          isMfaMethodVerified: userLogin.data.mfaMethodVerified,
         },
         sessionId
       )

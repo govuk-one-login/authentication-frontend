@@ -6,6 +6,8 @@ export interface UserLoginResponse extends DefaultApiResponse {
   phoneNumberVerified?: boolean;
   latestTermsAndConditionsAccepted?: boolean;
   consentRequired?: boolean;
+  mfaMethodType?: string;
+  mfaMethodVerified?: boolean;
 }
 
 export interface EnterPasswordServiceInterface {

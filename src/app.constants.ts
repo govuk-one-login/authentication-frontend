@@ -45,6 +45,7 @@ export const PATH_NAMES = {
   HEALTHCHECK: "/healthcheck",
   PROVE_IDENTITY_WELCOME: "/prove-identity-welcome",
   GET_SECURITY_CODES: "/get-security-codes",
+  ENTER_AUTHENTICATOR_APP_CODE: "/enter-authenticator-app-code",
   CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP: "/setup-authenticator-app",
 };
 
@@ -138,6 +139,11 @@ export const COOKIE_CONSENT = {
 export enum SUPPORT_TYPE {
   GOV_SERVICE = "GOV_SERVICE",
   PUBLIC = "PUBLIC",
+}
+
+export enum MFA_METHOD_TYPE {
+  SMS = "SMS",
+  AUTH_APP = "AUTH_APP",
 }
 
 export const ENVIRONMENT_NAME = {

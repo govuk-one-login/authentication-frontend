@@ -71,6 +71,7 @@ import { docCheckingAppRouter } from "./components/doc-checking-app/doc-checking
 import { docCheckingAppCallbackRouter } from "./components/doc-checking-app-callback/doc-checking-app-callback-routes";
 import { selectMFAOptionsRouter } from "./components/select-mfa-options/select-mfa-options-routes";
 import { setupAuthenticatorAppRouter } from "./components/setup-authenticator-app/setup-authenticator-app-routes";
+import { enterAuthenticatorAppCodeRouter } from "./components/enter-authenticator-app-code/enter-authenticator-app-code-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -88,6 +89,8 @@ function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
   app.use(createPasswordRouter);
   if (supportMFAOptions()) {
     app.use(selectMFAOptionsRouter);
+    app.use(enterAuthenticatorAppCodeRouter);
+    app.use(setupAuthenticatorAppRouter);
   }
   app.use(enterPhoneNumberRouter);
   app.use(registerAccountCreatedRouter);
@@ -111,7 +114,6 @@ function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
     app.use(docCheckingAppRouter);
     app.use(docCheckingAppCallbackRouter);
   }
-  app.use(setupAuthenticatorAppRouter);
 }
 
 async function createApp(): Promise<express.Application> {

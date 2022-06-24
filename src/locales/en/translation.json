@@ -397,6 +397,11 @@
         "paragraph2Start": "You can then ",
         "link": "get a new code",
         "paragraph2End": " and try again."
+      },
+      "authAppInfo": {
+        "paragraph2Start": "You can then ",
+        "link": "try again",
+        "paragraph2End": " with a new code."
       }
     },
     "securityRequestsExceededExpired": {
@@ -1420,6 +1425,18 @@
       },
       "continueButtonText": "Continue",
       "textMessageInsteadLinkText": "Get a security code by text message instead"
+    },
+    "enterAuthenticatorAppCode": {
+      "title": "Enter the security code shown in your authenticator app",
+      "header": "Enter the security code shown in your authenticator app",
+      "code": {
+        "label": "Security code",
+        "validationError": {
+          "required": "Enter the security code",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "The security code you entered is not correct, try entering it again or wait for your authenticator app to give you a new code"
+        }
+      }
     }
   }
 }

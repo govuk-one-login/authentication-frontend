@@ -1,5 +1,9 @@
 import { createMachine, EventType, StateValue } from "xstate";
-import { OIDC_PROMPT, PATH_NAMES } from "../../../app.constants";
+import {
+  MFA_METHOD_TYPE,
+  OIDC_PROMPT,
+  PATH_NAMES,
+} from "../../../app.constants";
 
 const USER_JOURNEY_EVENTS = {
   AUTHENTICATED: "AUTHENTICATED",
@@ -41,6 +45,8 @@ const USER_JOURNEY_EVENTS = {
   RESET_PASSWORD_CODE_VERIFIED: "RESET_PASSWORD_CODE_VERIFIED",
   MFA_OPTION_AUTH_APP_SELECTED: "MFA_OPTION_AUTH_APP_SELECTED",
   MFA_OPTION_SMS_SELECTED: "MFA_OPTION_SMS_SELECTED",
+  VERIFY_AUTH_APP_CODE: "VERIFY_AUTH_APP_CODE",
+  AUTH_APP_CODE_VERIFIED: "AUTH_APP_CODE_VERIFIED",
 };
 
 const authStateMachine = createMachine(
@@ -58,6 +64,8 @@ const authStateMachine = createMachine(
       prompt: OIDC_PROMPT.NONE,
       skipAuthentication: false,
       supportMFAOptions: false,
+      mfaMethodType: MFA_METHOD_TYPE.SMS,
+      isMfaMethodVerified: true,
     },
     states: {
       [PATH_NAMES.START]: {
@@ -152,6 +160,10 @@ const authStateMachine = createMachine(
       [PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS]: {
         on: {
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
+            {
+              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
+              cond: "requiresMFAAuthAppCode",
+            },
             {
               target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
               cond: "isPhoneNumberVerified",
@@ -279,6 +291,10 @@ const authStateMachine = createMachine(
         on: {
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
             {
+              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
+              cond: "requiresMFAAuthAppCode",
+            },
+            {
               target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
               cond: "isPhoneNumberVerified",
             },
@@ -328,6 +344,28 @@ const authStateMachine = createMachine(
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
           ],
+        },
+      },
+      [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE]: {
+        on: {
+          [USER_JOURNEY_EVENTS.AUTH_APP_CODE_VERIFIED]: [
+            {
+              target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
+              cond: "isLatestTermsAndConditionsAccepted",
+            },
+            {
+              target: [PATH_NAMES.PROVE_IDENTITY],
+              cond: "isIdentityRequired",
+            },
+            {
+              target: [PATH_NAMES.SHARE_INFO],
+              cond: "isConsentRequired",
+            },
+            { target: [PATH_NAMES.AUTH_CODE] },
+          ],
+        },
+        meta: {
+          optionalPaths: [PATH_NAMES.SECURITY_CODE_INVALID],
         },
       },
       [PATH_NAMES.UPLIFT_JOURNEY]: {
@@ -481,6 +519,10 @@ const authStateMachine = createMachine(
         context.skipAuthentication === true &&
         context.isAuthenticated === false,
       supportMFAOptions: (context) => context.supportMFAOptions === true,
+      requiresMFAAuthAppCode: (context) =>
+        context.supportMFAOptions === true &&
+        context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
+        context.isMfaMethodVerified === true,
     },
   }
 );
