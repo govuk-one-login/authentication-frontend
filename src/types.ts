@@ -44,6 +44,7 @@ export interface UserSession {
   isAccountPartCreated?: boolean;
   docCheckingAppUser?: boolean;
   identityProcessCheckStart?: number;
+  authAppSecret?: string;
 }
 
 export interface UserSessionClient {

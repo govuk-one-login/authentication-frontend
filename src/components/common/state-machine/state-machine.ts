@@ -212,7 +212,18 @@ const authStateMachine = createMachine(
             PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
           ],
           [USER_JOURNEY_EVENTS.MFA_OPTION_AUTH_APP_SELECTED]: [
-            PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
+            PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP,
+          ],
+        },
+      },
+      [PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP]: {
+        on: {
+          [USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED]: [
+            {
+              target: [PATH_NAMES.PROVE_IDENTITY],
+              cond: "isIdentityRequired",
+            },
+            { target: [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL] },
           ],
         },
       },
@@ -389,6 +400,20 @@ const authStateMachine = createMachine(
             },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
+        },
+        [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
+          on: {
+            [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [
+              PATH_NAMES.CHECK_YOUR_PHONE,
+            ],
+          },
+          meta: {
+            optionalPaths: [
+              PATH_NAMES.SECURITY_CODE_WAIT,
+              PATH_NAMES.SECURITY_CODE_INVALID,
+              PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+            ],
+          },
         },
         meta: {
           optionalPaths: [
