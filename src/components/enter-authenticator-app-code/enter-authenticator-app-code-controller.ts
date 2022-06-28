@@ -18,7 +18,7 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 const TEMPLATE_NAME = "enter-authenticator-app-code/index.njk";
 
 export function enterAuthenticatorAppCodeGet(
-  _req: Request,
+  req: Request,
   res: Response
 ): void {
   res.render(TEMPLATE_NAME);
@@ -69,10 +69,6 @@ export function verifyAuthenticatorAppCodePost(
       }
 
       throw new BadRequestError(result.data.message, result.data.code);
-    }
-
-    if (options.callback) {
-      return options.callback(req, res);
     }
 
     res.redirect(
