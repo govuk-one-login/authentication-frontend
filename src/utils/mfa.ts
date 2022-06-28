@@ -1,4 +1,10 @@
-import { authenticatorGenerateSecret, KeyEncodings } from "@otplib/core";
+import {
+  authenticatorGenerateSecret,
+  HashAlgorithms,
+  KeyEncodings,
+  keyuri,
+  Strategy,
+} from "@otplib/core";
 import * as base32EncDec from "@otplib/plugin-base32-enc-dec";
 import crypto from "crypto";
 
@@ -17,5 +23,13 @@ export function generateMfaSecret(): string {
 }
 
 export function generateQRCodeValue(secret: string, email: string): string {
-  return `otpauth://totp/${email}?secret=${secret}&issuer=GOV.UK%20SignIn&algorithm=SHA1&digits=6&period=30`;
+  return keyuri({
+    accountName: email,
+    secret: secret,
+    algorithm: HashAlgorithms.SHA1,
+    digits: 6,
+    step: 30,
+    issuer: "GOV.UK SignIn",
+    type: Strategy.TOTP,
+  });
 }
