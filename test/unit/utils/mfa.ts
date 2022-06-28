@@ -13,7 +13,7 @@ describe("mfa", () => {
   describe("generateQRCodeValue", () => {
     it("should generate QR code value with correct inputs", () => {
       const expected =
-        "otpauth://totp/test@test.com?secret=testsecret&issuer=GOV.UK%20SignIn&algorithm=SHA1&digits=6&period=30";
+        "otpauth://totp/GOV.UK%20SignIn:test%40test.com?secret=testsecret&period=30&digits=6&algorithm=SHA1&issuer=GOV.UK%20SignIn";
       expect(generateQRCodeValue("testsecret", "test@test.com")).to.equal(
         expected
       );
