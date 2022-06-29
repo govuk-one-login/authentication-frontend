@@ -24,6 +24,7 @@ params:
   BASIC_AUTH_PASSWORD: ((no-basic-auth-password))
   SUPPORT_INTERNATIONAL_NUMBERS: "0"
   INCOMING_TRAFFIC_CIDR_BLOCKS: '["0.0.0.0/0"]'
+  BASIC_AUTH_BYPASS_CIDR_BLOCKS: '[]'
 inputs:
   - name: frontend-src
   - name: frontend-image
@@ -83,6 +84,7 @@ run:
         -var "basic_auth_username=${NORMALISED_BASIC_AUTH_USERNAME}" \
         -var "basic_auth_password=${NORMALISED_BASIC_AUTH_PASSWORD}" \
         -var "incoming_traffic_cidr_blocks=${INCOMING_TRAFFIC_CIDR_BLOCKS}" \
+        -var "basic_auth_bypass_cidr_blocks=${BASIC_AUTH_BYPASS_CIDR_BLOCKS}" \
         -var-file ${DEPLOY_ENVIRONMENT}.tfvars \
 
       terraform output --json > ../../../terraform-outputs/${DEPLOY_ENVIRONMENT}-terraform-outputs.json

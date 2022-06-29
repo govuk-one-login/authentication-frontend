@@ -199,3 +199,9 @@ variable "incoming_traffic_cidr_blocks" {
   type        = list(string)
   description = "The list of CIDR blocks allowed to send requests to the ALB"
 }
+
+variable "basic_auth_bypass_cidr_blocks" {
+  default     = []
+  type        = list(string)
+  description = "The list of CIDR blocks allowed to bypass basic auth (if enabled)"
+}

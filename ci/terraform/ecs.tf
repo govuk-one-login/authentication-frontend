@@ -134,6 +134,10 @@ locals {
         name  = "NGINX_HOST"
         value = local.frontend_fqdn
       },
+      {
+        name  = "IP_ALLOW_LIST"
+        value = length(var.basic_auth_bypass_cidr_blocks) == 0 ? "" : json_encode(var.basic_auth_bypass_cidr_blocks)
+      },
     ]
   }
 }
