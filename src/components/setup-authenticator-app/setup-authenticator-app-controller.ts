@@ -25,7 +25,8 @@ export async function setupAuthenticatorAppGet(
 ): Promise<void> {
   const qrCodeText = generateQRCodeValue(
     req.session.user.authAppSecret,
-    req.session.user.email
+    req.session.user.email,
+    req.t("general.authenticatorAppIssuer")
   );
 
   const qrCodeUrl = await QRCode.toDataURL(qrCodeText);

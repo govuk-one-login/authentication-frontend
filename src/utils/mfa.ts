@@ -7,6 +7,8 @@ import {
 } from "@otplib/core";
 import * as base32EncDec from "@otplib/plugin-base32-enc-dec";
 import crypto from "crypto";
+import { APP_ENV_NAME } from "../app.constants";
+import { getAppEnv } from "../config";
 
 function createRandomBytes(size: number, encoding: KeyEncodings): string {
   return crypto.randomBytes(size).toString(encoding);
@@ -22,14 +24,22 @@ export function generateMfaSecret(): string {
   return authenticatorGenerateSecret(32, options);
 }
 
-export function generateQRCodeValue(secret: string, email: string): string {
+export function generateQRCodeValue(
+  secret: string,
+  email: string,
+  issuerName: string
+): string {
+  const issuer =
+    getAppEnv() === APP_ENV_NAME.PROD
+      ? issuerName
+      : `${issuerName} - ${getAppEnv()}`;
   return keyuri({
     accountName: email,
     secret: secret,
     algorithm: HashAlgorithms.SHA1,
     digits: 6,
     step: 30,
-    issuer: "GOV.UK SignIn",
+    issuer: issuer,
     type: Strategy.TOTP,
   });
 }
