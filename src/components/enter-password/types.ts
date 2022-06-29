@@ -3,7 +3,6 @@ import { ApiResponseResult, DefaultApiResponse } from "../../types";
 export interface UserLoginResponse extends DefaultApiResponse {
   redactedPhoneNumber?: string;
   mfaRequired?: boolean;
-  phoneNumberVerified?: boolean;
   latestTermsAndConditionsAccepted?: boolean;
   consentRequired?: boolean;
   mfaMethodType?: string;

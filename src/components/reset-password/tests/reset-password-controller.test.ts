@@ -10,7 +10,7 @@ import {
   resetPasswordRequestGet,
 } from "../reset-password-controller";
 import { ResetPasswordServiceInterface } from "../types";
-import { PATH_NAMES } from "../../../app.constants";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants";
 import {
   mockRequest,
   mockResponse,
@@ -72,7 +72,8 @@ describe("reset password controller (in 6 digit code flow)", () => {
             redactedPhoneNumber: "******1234",
             consentRequired: false,
             latestTermsAndConditionsAccepted: true,
-            phoneNumberVerified: true,
+            mfaMethodVerified: true,
+            mfaMethodType: MFA_METHOD_TYPE.SMS,
             mfaRequired: true,
           },
         }),
@@ -111,7 +112,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
             redactedPhoneNumber: "******1234",
             consentRequired: false,
             latestTermsAndConditionsAccepted: true,
-            phoneNumberVerified: false,
+            mfaMethodVerified: false,
             mfaRequired: true,
           },
         }),
@@ -153,8 +154,9 @@ describe("reset password controller (in 6 digit code flow)", () => {
           redactedPhoneNumber: "******1234",
           consentRequired: false,
           latestTermsAndConditionsAccepted: true,
-          phoneNumberVerified: true,
+          mfaMethodVerified: true,
           mfaRequired: false,
+          mfaMethodType: MFA_METHOD_TYPE.SMS,
         },
       }),
     };

@@ -52,7 +52,7 @@ describe("enter password controller", () => {
             mfaRequired: true,
             consentRequired: false,
             latestTermsAndConditionsAccepted: true,
-            phoneNumberVerified: true,
+            mfaMethodVerified: true,
           },
           success: true,
         }),
@@ -89,7 +89,7 @@ describe("enter password controller", () => {
           data: {
             redactedPhoneNumber: "******3456",
             mfaRequired: false,
-            phoneNumberVerified: true,
+            mfaMethodVerified: true,
           },
         }),
       };
@@ -117,7 +117,7 @@ describe("enter password controller", () => {
           success: true,
           data: {
             redactedPhoneNumber: "******3456",
-            phoneNumberVerified: false,
+            mfaMethodVerified: false,
           },
         }),
       };
@@ -147,7 +147,7 @@ describe("enter password controller", () => {
           data: {
             redactedPhoneNumber: "******3456",
             latestTermsAndConditionsAccepted: false,
-            phoneNumberVerified: true,
+            mfaMethodVerified: true,
           },
           success: true,
         }),
