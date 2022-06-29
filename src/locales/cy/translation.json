@@ -684,8 +684,8 @@
       },
       "section9": {
         "header": "Preparation of this accessibility statement",
-        "paragraph1": "This statement was prepared on 4 November 2020. It was last reviewed on 21 October 2021.",
-        "paragraph2": "GOV.UK accounts were last tested on 4 October 2021. The test was carried out by the Digital Accessibility Centre (DAC), who produced an accessibility audit report on 13 October 2021. DAC assessed GOV.UK accounts against the Web Content Accessibility Guidelines WCAG 2.1."
+        "paragraph1": "This statement was prepared on 4 November 2020. It was last reviewed on 29 June 2022.",
+        "paragraph2": "GOV.UK accounts were last tested on 13 June 2022. The test was carried out by the Digital Accessibility Centre (DAC), who produced an accessibility audit report on 17 June 2022. DAC assessed GOV.UK accounts against the Web Content Accessibility Guidelines WCAG 2.1."
       }
     },
     "termsAndConditions": {
@@ -837,53 +837,74 @@
           "linkText": "Government Digital Service (GDS)",
           "text2": ", part of the Cabinet Office. Mentions of ‘us’ and ‘we’ in this privacy notice refer to GDS."
         },
-        "paragraph2": "The Cabinet Office is the data controller of the personal information you provide to us when you:",
-        "bulletPoint1": "create a GOV.UK account",
-        "bulletPoint2": "use your GOV.UK account to access an online government service",
-        "bulletPoint3": "contact us",
-        "paragraph3": "When you provide information to another government service while signed into your account, the government department that runs the service is the data controller. They will have their own privacy notice to explain how they process your information. We do not have access to the information you provide to services run by other government departments.",
-        "paragraph4": {
+        "paragraph2": {
           "text1": "This privacy notice only covers GOV.UK accounts. Read the main ",
           "linkText": "GOV.UK privacy notice",
           "text2": " to find out how your personal information is collected and processed when you use the GOV.UK website."
-        }
+        },
+        "paragraph3": "The Cabinet Office is the data controller of the personal information you provide to us when you:",
+        "bulletPoint1": "create a GOV.UK account",
+        "bulletPoint2": "use your GOV.UK account to access an online government service",
+        "bulletPoint3": "contact us",
+        "paragraph4": "When you provide information to another government service while signed into your account, the government department that runs the service is the data controller. They will have their own privacy notice to explain how they process your information. We do not have access to the information you provide to services run by other government departments.",
+        "paragraph5": "When you prove your identity with a GOV.UK account, we will:",
+        "bulletPoint4": "ask you for your passport details - we'll check these with HM Passport Office (HMPO)",
+        "bulletPoint5": {
+          "text3": "check your information with",
+          "linkText": "Experian",
+          "linkHref": "https://www.experian.co.uk/privacy/privacy-and-your-data?utm_medium=internalRef&utm_source=Consumer%20Services",
+          "text4": "to make sure you've not been a victim of identity theft"
+        },
+        "bulletPoint6": "use Experian's data to ask you security questions that only you should know the answers to - Experian will also check that your answers match the information they already have about you",
+        "paragraph6": "HMPO and Experian will also become data controllers during this process. We do not keep any information you give us when proving your identity, including your answers to the security questions."
       },
       "section2": {
         "header": "What information we collect",
-        "paragraph1": "When you use a service that requires a GOV.UK account, we’ll receive information about the service when it directs you to create or sign in to an account.",
+        "paragraph1": "When you use a service that requires a GOV.UK account, we’ll receive information about the service when it directs you to:",
+        "bulletPoint1": "create or sign in to an account",
+        "bulletPoint2": "prove your identity",
         "paragraph2": "The information we collect when you create and use a GOV.UK account includes:",
-        "bulletPoint1": "basic personal information needed to set up and authenticate your account, including your email address and mobile phone number",
-        "bulletPoint2": "any information that you choose to save to your account, for example your GOV.UK email subscription preferences",
-        "bulletPoint3": {
+        "bulletPoint3": "basic personal information needed to set up and authenticate your account, including your email address and mobile phone number",
+        "bulletPoint4": "other information needed to prove your identity, such as your name, date of birth, passport details and address history",
+        "bulletPoint5": "any information that you choose to save to your account, for example your GOV.UK email subscription preferences",
+        "bulletPoint6": {
           "text1": "information on how you use your account and the GOV.UK website, which is collected in the system logs, and by Google Analytics cookies if you give consent - the ",
           "linkText1": "GOV.UK privacy notice",
           "and": " and ",
           "linkText2": "GOV.UK cookies policy",
           "text2": " provide more information about this"
         },
-        "bulletPoint4": "online identifiers, such as your Internet Protocol (IP) address, and technical information about the device you use including the model, web browser and operating system, which is automatically collected in system logs when you use GOV.UK",
-        "bulletPoint5": "questions, queries or feedback you leave, including your name and email address, if you provide them on the GOV.UK accounts contact form",
+        "bulletPoint7": "online identifiers, such as your Internet Protocol (IP) address, and technical information about the device you use including the model, web browser and operating system, which is automatically collected in system logs when you use GOV.UK",
+        "bulletPoint8": "questions, queries or feedback you leave, including your name and email address, if you provide them on the GOV.UK accounts contact form",
+        "bulletPoint9": "if you were able to prove your identity with your GOV.UK account",
+        "bulletPoint10": "what organisations, services or information we used to prove your identity",
         "paragraph3": "When you create an account, it will automatically generate a unique account identifier."
       },
       "section3": {
         "header": "Why we need your information",
         "paragraph1": "We collect your personal information to:",
         "bulletPoint1": "provide you with a GOV.UK account so that you can use it to access online government services",
-        "bulletPoint2": {
+        "bulletPoint2": "prove your identity",
+        "bulletPoint3": {
           "text1": "store your preferences, for example your ",
           "linkText": "GOV.UK",
           "text2": "email subscription update preferences"
         },
         "paragraph2": "We also use your information to:",
-        "bulletPoint3": "keep your account secure (using your email address, phone number, password and system logs)",
-        "bulletPoint4": "monitor, detect and investigate fraud (using system logs)",
-        "bulletPoint5": "tell the services you access through your GOV.UK account that you have successfully signed in",
-        "bulletPoint6": "provide government services that you access through your account and the departments that run them with information you explicitly agree to us sharing, for example your email and telephone number",
-        "bulletPoint7": "provide you with a record of how your account has been used, for example, when it was last signed in to and what services it has been used with (using your IP address and system logs)",
-        "bulletPoint8": "contact you about any planned interruptions, problems or changes that may affect your account (using your email address)",
-        "bulletPoint9": "contact you to ask for feedback on your account, if you have given us permission to (using your email address)",
-        "bulletPoint10": "improve the GOV.UK account (using Google Analytics data)",
-        "bulletPoint11": "respond to any feedback you send us, if you’ve asked us to",
+        "bulletPoint4": "keep your account secure (using your email address, phone number, password and system logs)",
+        "bulletPoint5": "monitor, detect and investigate fraud",
+        "bulletPoint6": "tell the services you access through your GOV.UK account that you have successfully signed in",
+        "bulletPoint7": "provide government services that you access through your account and the departments that run them with information you explicitly agree to us sharing, for example your email and telephone number",
+        "bulletPoint8": "provide you with a record of how your account has been used, for example, when it was last signed in to and what services it has been used with (using your IP address and system logs)",
+        "bulletPoint9": "contact you about any planned interruptions, problems or changes that may affect your account (using your email address)",
+        "bulletPoint10": "contact you to ask for feedback on your account, if you have given us permission to (using your email address)",
+        "bulletPoint11": {
+          "text3": "improve and understand how you use your GOV.UK account",
+          "linkText": "using Google Analytics cookies",
+          "linkHref": "https://www.gov.uk/help/cookies",
+          "text4": "(you can choose not to accept these cookies)"
+        },
+        "bulletPoint12": "respond to any feedback you send us, if you’ve asked us to",
         "paragraph3": "We may also use your information to produce anonymised reports about GOV.UK accounts. This helps us understand where we can make improvements to GOV.UK accounts."
       },
       "section4": {
@@ -901,21 +922,28 @@
         "bulletPoint2": "share your information with third parties for marketing purposes",
         "subHeader1": "Sharing your information with online government services and the departments that run them",
         "paragraph2": "We'll tell the services that you access through your account when you successfully create your account or sign in so that they can allow you to use the service.",
-        "paragraph3": "Services you access through your account may ask you to share information you have saved in your GOV.UK account. When they do this, we'll tell you which information they have asked for, and will only share the information if you agree. You do not have to share the information from your account to use the service, but the service may still ask you for the information.",
-        "paragraph4": "Each service you access through your GOV.UK account will have its own terms and conditions and privacy notice. You should read these as well as the GOV.UK accounts terms and conditions and this privacy notice, so that you understand how your personal information is managed.",
-        "subHeader2": "Sharing your information to protect against fraud",
-        "paragraph5": "To protect against crime and fraud, we might sometimes share information with:",
+        "paragraph3": "Services you access through your account may ask you to share information you have saved in your GOV.UK account. When they do this, we'll tell you which information they have asked for, and will only share the information if you agree.",
+        "paragraph4": "If you do not choose to share this information from your GOV.UK account, you might be asked to provide the same information directly to the service later on.",
+        "paragraph5": "Each service you access through your GOV.UK account will have its own terms and conditions and privacy notice. You should read these as well as the GOV.UK accounts terms and conditions and this privacy notice, so that you understand how your personal information is managed.",
+        "subHeader2": "Sharing your information to prove your identity",
+        "paragraph6": "We'll share your information with HMPO and Experian when we prove your identity. We'll only give them the information they need to do this check. They will keep your details for as long as they need to or the law requires them to do so.",
+        "subHeader3": "Sharing your information to protect against fraud",
+        "paragraph7": "To protect against crime and fraud, we might sometimes share information with:",
         "bulletPoint3": "government departments that run the services you access though your account",
         "bulletPoint4": "other public sector organisations, such as the Home Office",
         "bulletPoint5": "law enforcement agencies",
-        "paragraph6": "This information we might share includes:",
-        "bulletPoint6": "phone numbers",
-        "bulletPoint7": "email addresses",
-        "bulletPoint8": "IP addresses and geolocations",
-        "bulletPoint9": "unique account identifiers",
-        "bulletPoint10": "information about the devices being used",
-        "subHeader3": "Sharing your information with our suppliers",
-        "paragraph7": "We work with technology suppliers, for example we use an external hosting provider. These suppliers may have access to your information as part of providing their services to us."
+        "bulletPoint6": "credit reference agencies",
+        "bulletPoint7": "data processors who provide relevant monitoring services",
+        "paragraph8": "The information we might share includes:",
+        "bulletPoint8": "phone numbers",
+        "bulletPoint9": "email addresses",
+        "bulletPoint10": "IP addresses and geolocations",
+        "bulletPoint11": "unique account identifiers",
+        "bulletPoint12": "information about the devices being used",
+        "bulletPoint13": "passport details, including name and date of birth",
+        "bulletPoint14": "address history",
+        "subHeader4": "Sharing your information with our suppliers",
+        "paragraph9": "We work with technology suppliers, for example we use an external hosting provider. These suppliers may have access to your information as part of providing their services to us."
       },
       "section6": {
         "header": "How long we keep your information",
@@ -931,7 +959,8 @@
       },
       "section8": {
         "header": "Where your information is processed and stored",
-        "paragraph1": "All information associated with your GOV.UK account is stored in the European Economic Area (EEA). Where our suppliers require access to your data, they may do so from outside of the EEA. Data collected by Google Analytics may be transferred outside the European Economic Area (EEA) for processing. When either of these things happen, we will make sure your information is just as well protected, for example by including extra clauses in our contracts with suppliers."
+        "paragraph1": "All personal data and information associated with your GOV.UK account is stored in the UK or in the European Economic Area (EEA). The EEA has been assessed by the Information Commissioner’s Office as having adequate legal protections for data privacy in line with those in the UK.",
+        "paragraph2": "Where our suppliers require access to your data, they may do so from outside of the EEA. Data collected by Google Analytics may be transferred outside the European Economic Area (EEA) for processing. When either of these things happen, we will make sure your information is just as well protected, for example by including extra clauses in our contracts with suppliers."
       },
       "section9": {
         "header": "How we protect your personal information and keep it secure",
@@ -944,6 +973,13 @@
         "bulletPoint2": "contact us immediately if you suspect that your account has been compromised"
       },
       "section10": {
+        "header": "Automated processing",
+        "paragraph1": "Your personal information will be subject to automated decision making when:",
+        "bulletPoint1": "your passport details are checked against data held by HMPO",
+        "bulletPoint2": "Experian runs an identity fraud check to make sure you've not had your identity stolen",
+        "bulletPoint3": "your answers to security questions are matched against data held by Experian"
+      },
+      "section11": {
         "header": "Your rights",
         "paragraph1": "When you are signed in to your account you can:",
         "bulletPoint1": "access all personal information associated with your GOV.UK account",
@@ -952,18 +988,21 @@
         "bulletPoint4": "delete information from your account (apart from your email address, mobile phone number and password because you can’t access your account without them)",
         "bulletPoint5": "delete your GOV.UK account entirely",
         "paragraph2": "You can also:",
-        "bulletPoint6": "object to how your personal information is processed",
-        "bulletPoint7": "ask that the processing of your personal information is restricted in certain circumstances",
+        "bulletPoint6": "withdraw your consent for your personal information to be processed using web analytics data or feedback",
+        "bulletPoint7": "object to how your personal information is processed",
+        "bulletPoint8": "ask that the processing of your personal information is restricted in certain circumstances",
+        "bulletPoint9": "contact us to get help if you're not able to prove your identity online",
         "paragraph3": {
           "text1": "If you have any of these requests, contact the ",
           "linkText": "GDS Privacy Team"
         }
       },
-      "section11": {
+      "section12": {
         "header": "Contact us or make a complaint",
         "paragraph1": "Contact the GDS Privacy Team if you:",
         "bulletPoint1": "have a question about anything in this privacy notice",
         "bulletPoint2": "think that your personal information has been misused or mishandled",
+        "bulletPoint3": "want to make a 'subject access request' to find out more about how your personal information is collected and used",
         "paragraph2": "You can also contact our Data Protection Officer (DPO) who provides independent advice and monitoring of our use of personal information:",
         "address1": {
           "line1": "Data Protection Officer",
@@ -985,13 +1024,14 @@
           "text": "Textphone: 01625 545860",
           "line6": "Monday to Friday, 9am to 4:30pm",
           "line7": "Find out about call charges"
-        }
+        },
+        "paragraph4": "Making a complaint to the Information Commissioner will not affect your rights."
       },
-      "section12": {
+      "section13": {
         "header": "Changes to this policy",
         "paragraph1": "We may change this privacy policy. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy policy will apply to you and your information immediately.",
         "paragraph2": "If these changes affect how your personal information is processed, GDS will let you know.",
-        "paragraph3": "Last updated 27 October 2021"
+        "paragraph3": "Last updated 29 June 2022"
       }
     },
     "resetPassword": {
@@ -1434,7 +1474,7 @@
         "label": "Access code",
         "hintText": "This is the number show in your authenticator app",
         "validationError":{
-          "required": "Enter the security code shown in your authenticator app",
+         "required": "Enter the security code shown in your authenticator app",
           "invalidCode": "The security code you entered is not correct, try entering it again or wait for for your authenticator app to give you a new code"
         }
       },
