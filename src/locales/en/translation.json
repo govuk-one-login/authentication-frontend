@@ -826,30 +826,29 @@
         }
       }
     },
-    {"privacy":
-    {
-        "title": "GOV.UK accounts privacy notice",
-        "header": "GOV.UK accounts privacy notice",
-        "section1": {
-          "header": "Who we are",
-          "paragraph1": {
-            "text1": "GOV.UK accounts are provided by the ",
-            "linkText": "Government Digital Service (GDS)",
-            "text2": ", part of the Cabinet Office. Mentions of ‘us’ and ‘we’ in this privacy notice refer to GDS."
-          },
-          "paragraph2": {
-            "text1": "This privacy notice only covers GOV.UK accounts. Read the main ",
-            "linkText": "GOV.UK privacy notice",
-            "text2": " to find out how your personal information is collected and processed when you use the GOV.UK website."
-          },
-          "paragraph3": "The Cabinet Office is the data controller of the personal information you provide to us when you:",
-          "bulletPoint1": "create a GOV.UK account",
-          "bulletPoint2": "use your GOV.UK account to access an online government service",
-          "bulletPoint3": "contact us",
-          "paragraph4": "When you provide information to another government service while signed into your account, the government department that runs the service is the data controller. They will have their own privacy notice to explain how they process your information. We do not have access to the information you provide to services run by other government departments.",
-          "paragraph5": "When you prove your identity with a GOV.UK account, we will:",
-          "bulletPoint4": "ask you for your passport details - we'll check these with HM Passport Office (HMPO)",
-          "bulletPoint5": {
+    "privacy": {
+      "title": "GOV.UK accounts privacy notice",
+      "header": "GOV.UK accounts privacy notice",
+      "section1": {
+        "header": "Who we are",
+        "paragraph1": {
+          "text1": "GOV.UK accounts are provided by the ",
+          "linkText": "Government Digital Service (GDS)",
+          "text2": ", part of the Cabinet Office. Mentions of ‘us’ and ‘we’ in this privacy notice refer to GDS."
+        },
+        "paragraph2": {
+          "text1": "This privacy notice only covers GOV.UK accounts. Read the main ",
+          "linkText": "GOV.UK privacy notice",
+          "text2": " to find out how your personal information is collected and processed when you use the GOV.UK website."
+        },
+        "paragraph3": "The Cabinet Office is the data controller of the personal information you provide to us when you:",
+        "bulletPoint1": "create a GOV.UK account",
+        "bulletPoint2": "use your GOV.UK account to access an online government service",
+        "bulletPoint3": "contact us",
+        "paragraph4": "When you provide information to another government service while signed into your account, the government department that runs the service is the data controller. They will have their own privacy notice to explain how they process your information. We do not have access to the information you provide to services run by other government departments.",
+        "paragraph5": "When you prove your identity with a GOV.UK account, we will:",
+        "bulletPoint4": "ask you for your passport details - we'll check these with HM Passport Office (HMPO)",
+        "bulletPoint5": {
           "text3": "check your information with",
           "linkText": "Experian",
           "linkHref": "https://www.experian.co.uk/privacy/privacy-and-your-data?utm_medium=internalRef&utm_source=Consumer%20Services",
@@ -1033,8 +1032,7 @@
         "paragraph2": "If these changes affect how your personal information is processed, GDS will let you know.",
         "paragraph3": "Last updated 30 June 2022"
       }
-    }
-}
+    },
     "resetPassword": {
       "title": "Reset your password",
       "header": "Reset your password",
