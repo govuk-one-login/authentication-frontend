@@ -895,7 +895,7 @@
         "bulletPoint5": "monitor, detect and investigate fraud",
         "bulletPoint6": "tell the services you access through your GOV.UK account that you have successfully signed in",
         "bulletPoint7": "provide government services that you access through your account and the departments that run them with information you explicitly agree to us sharing, for example your email and telephone number",
-        "bulletPoint8": "provide you with a record of how your account has been used, for example, when it was last signed in to and what services it has been used with (using your IP address and system logs)",
+        "bulletPoint8": "provide you with a record of how your account has been used, for example, when it was last signed in to and what services it has been used with",
         "bulletPoint9": "contact you about any planned interruptions, problems or changes that may affect your account (using your email address)",
         "bulletPoint10": "contact you to ask for feedback on your account, if you have given us permission to (using your email address)",
         "bulletPoint11": {
@@ -1031,7 +1031,7 @@
         "header": "Changes to this policy",
         "paragraph1": "We may change this privacy policy. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy policy will apply to you and your information immediately.",
         "paragraph2": "If these changes affect how your personal information is processed, GDS will let you know.",
-        "paragraph3": "Last updated 29 June 2022"
+        "paragraph3": "Last updated: 29 June 2022"
       }
     },
     "resetPassword": {
