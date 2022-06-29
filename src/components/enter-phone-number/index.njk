@@ -4,20 +4,33 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% set pageTitleName = 'pages.enterPhoneNumber.title' | translate %}
-{% block content %}
 
+    {% if isAccountPartCreated %}
+        {% set pageTitleName = 'pages.enterPhoneNumber.returningUser.title' | translate %}
+    {% else %}
+        {% set pageTitleName = 'pages.enterPhoneNumber.title' | translate %}
+    {% endif %}
+
+{% block content %}
 {% include "common/errors/errorSummary.njk" %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.header' |
-  translate}}</h1>
+
+   {% if isAccountPartCreated %}
+      <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.returningUser.header' |
+        translate}}</h1>
+       <p class="govuk-body">{{'pages.enterPhoneNumber.returningUser.info.paragraph1' | translate}}</p>
+       <p class="govuk-body">{{'pages.enterPhoneNumber.returningUser.info.paragraph2' | translate}}</p>
+   {% else %}
+       <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.header' |
+         translate}}</h1>
+        <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph1' | translate}}</p>
+   {% endif %}
 
 <form action="/enter-phone-number" method="post" novalidate>
 
   <input type="hidden" name="_csrf" value="{{csrfToken}}" />
-   <input type="hidden" name="supportInternationalNumbers" value="{{supportInternationalNumbers}}" />
-
-  <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph1' | translate}}</p>
+  <input type="hidden" name="supportInternationalNumbers" value="{{supportInternationalNumbers}}" />
+  <input type="hidden" name="isAccountPartCreated" value="{{isAccountPartCreated}}" />
 
   {{ govukInput({
   label: {
@@ -78,5 +91,6 @@
   }) }}
 
 </form>
+
 
 {% endblock %}

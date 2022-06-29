@@ -19,15 +19,10 @@ import { prependInternationalPrefix } from "../../utils/phone-number";
 import { supportInternationalNumbers } from "../../config";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
-  if (req.session.user.isAccountPartCreated) {
-    res.render("enter-phone-number/returning-user-index.njk", {
-      supportInternationalNumbers: supportInternationalNumbers() ? true : null,
-    });
-  } else {
-    res.render("enter-phone-number/index.njk", {
-      supportInternationalNumbers: supportInternationalNumbers() ? true : null,
-    });
-  }
+  res.render("enter-phone-number/index.njk", {
+    supportInternationalNumbers: supportInternationalNumbers() ? true : null,
+    isAccountPartCreated: req.session.user.isAccountPartCreated,
+  });
 }
 
 export function enterPhoneNumberPost(

@@ -39,7 +39,10 @@ describe("enter phone number controller", () => {
     it("should render enter phone number view", () => {
       enterPhoneNumberGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("enter-phone-number/index.njk");
+      expect(res.render).to.have.calledWith("enter-phone-number/index.njk", {
+        supportInternationalNumbers: true,
+        isAccountPartCreated: undefined,
+      });
     });
 
     it("should render enter phone number returning user view when user has a partly created account", () => {
@@ -48,9 +51,10 @@ describe("enter phone number controller", () => {
       };
       enterPhoneNumberGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "enter-phone-number/returning-user-index.njk"
-      );
+      expect(res.render).to.have.calledWith("enter-phone-number/index.njk", {
+        supportInternationalNumbers: true,
+        isAccountPartCreated: true,
+      });
     });
   });
 
