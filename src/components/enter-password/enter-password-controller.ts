@@ -16,6 +16,7 @@ import {
 import { BadRequestError } from "../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { supportMFAOptions } from "../../config";
+import { MFA_METHOD_TYPE } from "../../app.constants";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -94,11 +95,15 @@ export function enterPasswordPost(
 
     req.session.user.phoneNumber = userLogin.data.redactedPhoneNumber;
     req.session.user.isConsentRequired = userLogin.data.consentRequired;
-    req.session.user.isAccountPartCreated = !userLogin.data.phoneNumberVerified;
+    req.session.user.isAccountPartCreated = !userLogin.data.mfaMethodVerified;
     req.session.user.isLatestTermsAndConditionsAccepted =
       userLogin.data.latestTermsAndConditionsAccepted;
 
-    if (userLogin.data.mfaRequired && userLogin.data.phoneNumberVerified) {
+    if (
+      userLogin.data.mfaRequired &&
+      userLogin.data.mfaMethodVerified &&
+      userLogin.data.mfaMethodType === MFA_METHOD_TYPE.SMS
+    ) {
       const result = await mfaCodeService.sendMfaCode(
         sessionId,
         clientSessionId,
@@ -125,7 +130,6 @@ export function enterPasswordPost(
         {
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
-          isPhoneNumberVerified: userLogin.data.phoneNumberVerified,
           requiresTwoFactorAuth: userLogin.data.mfaRequired,
           isConsentRequired: req.session.user.isConsentRequired,
           supportMFAOptions: supportMFAOptions(),

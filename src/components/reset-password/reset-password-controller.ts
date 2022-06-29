@@ -17,6 +17,7 @@ import { EnterPasswordServiceInterface } from "../enter-password/types";
 import { enterPasswordService } from "../enter-password/enter-password-service";
 import { MfaServiceInterface } from "../common/mfa/types";
 import { mfaService } from "../common/mfa/mfa-service";
+import { MFA_METHOD_TYPE } from "../../app.constants";
 
 const resetPasswordTemplate = "reset-password/index.njk";
 
@@ -80,9 +81,12 @@ export function resetPasswordPost(
     req.session.user.isLatestTermsAndConditionsAccepted =
       loginResponse.data.latestTermsAndConditionsAccepted;
     req.session.user.isAccountPartCreated =
-      !loginResponse.data.phoneNumberVerified;
+      !loginResponse.data.mfaMethodVerified;
 
-    if (loginResponse.data.phoneNumberVerified) {
+    if (
+      loginResponse.data.mfaMethodVerified &&
+      loginResponse.data.mfaMethodType === MFA_METHOD_TYPE.SMS
+    ) {
       const mfaResponse = await mfaCodeService.sendMfaCode(
         sessionId,
         clientSessionId,
@@ -113,7 +117,7 @@ export function resetPasswordPost(
           requiresTwoFactorAuth: true,
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
-          isPhoneNumberVerified: loginResponse.data.phoneNumberVerified,
+          isMfaMethodVerified: loginResponse.data.mfaMethodVerified,
         },
         res.locals.sessionId
       )

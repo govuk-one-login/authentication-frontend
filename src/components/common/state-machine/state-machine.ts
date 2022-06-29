@@ -58,7 +58,6 @@ const authStateMachine = createMachine(
       isConsentRequired: false,
       requiresUplift: false,
       requiresTwoFactorAuth: false,
-      isPhoneNumberVerified: true,
       isAuthenticated: false,
       isIdentityRequired: false,
       prompt: OIDC_PROMPT.NONE,
@@ -166,7 +165,7 @@ const authStateMachine = createMachine(
             },
             {
               target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
-              cond: "isPhoneNumberVerified",
+              cond: "isAccountPartCreated",
             },
             { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
             {
@@ -296,7 +295,7 @@ const authStateMachine = createMachine(
             },
             {
               target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
-              cond: "isPhoneNumberVerified",
+              cond: "isAccountPartCreated",
             },
             { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
             {
@@ -425,7 +424,7 @@ const authStateMachine = createMachine(
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
             {
               target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
-              cond: "isPhoneNumberVerified",
+              cond: "isAccountPartCreated",
             },
             { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
             {
@@ -508,8 +507,7 @@ const authStateMachine = createMachine(
         context.requiresUplift === true && context.isAuthenticated === true,
       requiresTwoFactorAuth: (context) =>
         context.requiresTwoFactorAuth === true,
-      isPhoneNumberVerified: (context) =>
-        context.isPhoneNumberVerified === false,
+      isAccountPartCreated: (context) => context.isMfaMethodVerified === false,
       isIdentityRequired: (context) => context.isIdentityRequired === true,
       isAuthenticated: (context) => context.isAuthenticated === true,
       requiresLogin: (context) =>
@@ -520,7 +518,6 @@ const authStateMachine = createMachine(
         context.isAuthenticated === false,
       supportMFAOptions: (context) => context.supportMFAOptions === true,
       requiresMFAAuthAppCode: (context) =>
-        context.supportMFAOptions === true &&
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.isMfaMethodVerified === true,
     },
