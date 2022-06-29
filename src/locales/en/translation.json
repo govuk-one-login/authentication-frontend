@@ -683,7 +683,7 @@
       },
       "section9": {
         "header": "Preparation of this accessibility statement",
-        "paragraph1": "This statement was prepared on 4 November 2020. It was last reviewed on 30 June 2022.",
+        "paragraph1": "This statement was prepared on 4 November 2020. It was last reviewed on 29 June 2022.",
         "paragraph2": "GOV.UK accounts were last tested on 13 June 2022. The test was carried out by the Digital Accessibility Centre (DAC), who produced an accessibility audit report on 17 June 2022. DAC assessed GOV.UK accounts against the Web Content Accessibility Guidelines WCAG 2.1."
       }
     },
@@ -891,7 +891,7 @@
         },
         "paragraph2": "We also use your information to:",
         "bulletPoint4": "keep your account secure (using your email address, phone number, password and system logs)",
-        "bulletPoint5": "monitor, detect and investigate fraud (using system logs)",
+        "bulletPoint5": "monitor, detect and investigate fraud",
         "bulletPoint6": "tell the services you access through your GOV.UK account that you have successfully signed in",
         "bulletPoint7": "provide government services that you access through your account and the departments that run them with information you explicitly agree to us sharing, for example your email and telephone number",
         "bulletPoint8": "provide you with a record of how your account has been used, for example, when it was last signed in to and what services it has been used with (using your IP address and system logs)",
@@ -921,7 +921,7 @@
         "bulletPoint2": "share your information with third parties for marketing purposes",
         "subHeader1": "Sharing your information with online government services and the departments that run them",
         "paragraph2": "We'll tell the services that you access through your account when you successfully create your account or sign in so that they can allow you to use the service.",
-        "paragraph3": "Services you access through your account may ask you to share information you have saved in your GOV.UK account. When they do this, we'll tell you which information they have asked for, and will only share the information if you agree. You do not have to share the information from your account to use the service, but the service may still ask you for the information.",
+        "paragraph3": "Services you access through your account may ask you to share information you have saved in your GOV.UK account. When they do this, we'll tell you which information they have asked for, and will only share the information if you agree.",
         "paragraph4": "If you do not choose to share this information from your GOV.UK account, you might be asked to provide the same information directly to the service later on.",
         "paragraph5": "Each service you access through your GOV.UK account will have its own terms and conditions and privacy notice. You should read these as well as the GOV.UK accounts terms and conditions and this privacy notice, so that you understand how your personal information is managed.",
         "subHeader2": "Sharing your information to prove your identity",
@@ -1030,7 +1030,7 @@
         "header": "Changes to this policy",
         "paragraph1": "We may change this privacy policy. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy policy will apply to you and your information immediately.",
         "paragraph2": "If these changes affect how your personal information is processed, GDS will let you know.",
-        "paragraph3": "Last updated 30 June 2022"
+        "paragraph3": "Last updated 29 June 2022"
       }
     },
     "resetPassword": {
