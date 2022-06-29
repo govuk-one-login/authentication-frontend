@@ -3,8 +3,10 @@ import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { generateMfaSecret } from "../../utils/mfa";
 
-export function getSecurityCodesGet(_req: Request, res: Response): void {
-  res.render("select-mfa-options/index.njk");
+export function getSecurityCodesGet(req: Request, res: Response): void {
+  res.render("select-mfa-options/index.njk", {
+    isAccountPartCreated: req.session.user.isAccountPartCreated,
+  });
 }
 
 export function getSecurityCodesPost(req: Request, res: Response): void {

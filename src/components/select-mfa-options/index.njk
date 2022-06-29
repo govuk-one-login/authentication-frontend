@@ -4,7 +4,11 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
-{% set pageTitleName = 'pages.getSecurityCodes.title' | translate %}
+{% if isAccountPartCreated %}
+  {% set pageTitleName = 'pages.getSecurityCodes.titleAccountPartCreated' | translate %}
+{% else %}
+  {% set pageTitleName = 'pages.getSecurityCodes.title' | translate %}
+{% endif %}
 
 {% block content %}
 
@@ -15,13 +19,18 @@
   <p class="govuk-body">{{'pages.getSecurityCodes.authAppDetails.paragraph2' | translate}}</p>
 {% endset %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.getSecurityCodes.header' | translate}}</h1>
-
-<p class="govuk-body">{{'pages.getSecurityCodes.summary' | translate}}</p>
+  {% if isAccountPartCreated %}
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.getSecurityCodes.headerAccountPartCreated' | translate}}</h1>
+    <p class="govuk-body">{{'pages.getSecurityCodes.summaryAccountPartCreated' | translate}}</p>
+  {% else %}
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.getSecurityCodes.header' | translate}}</h1>
+    <p class="govuk-body">{{'pages.getSecurityCodes.summary' | translate}}</p>
+  {% endif %}
 
 <form action="/get-security-codes" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="isAccountPartCreated" value="{{isAccountPartCreated}}"/>
 
 {{ govukRadios({
   idPrefix: "mfa-options",

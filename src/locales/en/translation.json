@@ -1443,6 +1443,9 @@
       "title": "Choose how to get security codes",
       "header": "Choose how to get security codes",
       "summary": "To finish creating your account, you need to choose a way to prove it's you when you sign in.",
+      "titleAccountPartCreated": "Finish creating your account",
+      "headerAccountPartCreated": "Finish creating your account",
+      "summaryAccountPartCreated": "Choose a way to get security codes when you sign in. This helps keep your account secure.",
       "secondFactorRadios": {
         "textMessageText": "Text message",
         "authAppText": "Authenticator app for smartphone, tablet or computer",

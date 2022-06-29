@@ -33,6 +33,7 @@ describe("enter password controller", () => {
 
   afterEach(() => {
     sinon.restore();
+    delete process.env.SUPPORT_MFA_OPTIONS;
   });
 
   describe("enterEmailGet", () => {
@@ -138,6 +139,35 @@ describe("enter password controller", () => {
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
       );
+      expect(req.session.user.isAccountPartCreated).to.be.eq(true);
+    });
+
+    it("should redirect to get security codes page when 2fa method is not verified", async () => {
+      process.env.SUPPORT_MFA_OPTIONS = "1";
+      const fakeService: EnterPasswordServiceInterface = {
+        loginUser: sinon.fake.returns({
+          success: true,
+          data: {
+            redactedPhoneNumber: "******3456",
+            mfaMethodVerified: false,
+          },
+        }),
+      };
+
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      req.body["password"] = "password";
+
+      await enterPasswordPost(false, fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
       expect(req.session.user.isAccountPartCreated).to.be.eq(true);
     });
 

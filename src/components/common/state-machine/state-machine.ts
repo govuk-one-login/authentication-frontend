@@ -164,6 +164,10 @@ const authStateMachine = createMachine(
               cond: "requiresMFAAuthAppCode",
             },
             {
+              target: [PATH_NAMES.GET_SECURITY_CODES],
+              cond: "supportMFAOptionsAndIsAccountPartCreated", //TODO this is just to test drop offs
+            },
+            {
               target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
               cond: "isAccountPartCreated",
             },
@@ -289,6 +293,10 @@ const authStateMachine = createMachine(
       [PATH_NAMES.ENTER_PASSWORD]: {
         on: {
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
+            {
+              target: [PATH_NAMES.GET_SECURITY_CODES],
+              cond: "supportMFAOptionsAndIsAccountPartCreated", //TODO this is just to test drop offs
+            },
             {
               target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
               cond: "requiresMFAAuthAppCode",
@@ -423,6 +431,10 @@ const authStateMachine = createMachine(
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
             {
+              target: [PATH_NAMES.GET_SECURITY_CODES],
+              cond: "supportMFAOptionsAndIsAccountPartCreated", //TODO this is just to test drop offs
+            },
+            {
               target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
               cond: "isAccountPartCreated",
             },
@@ -520,6 +532,11 @@ const authStateMachine = createMachine(
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.isMfaMethodVerified === true,
+      supportMFAOptionsAndIsAccountPartCreated: (
+        context //TODO this should be removed before go live
+      ) =>
+        context.supportMFAOptions === true &&
+        context.isMfaMethodVerified === false,
     },
   }
 );
