@@ -25,6 +25,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.anotherProblem.title",
   [ZENDESK_THEMES.SUGGESTIONS_FEEDBACK]:
     "pages.contactUsQuestions.suggestionOrFeedback.title",
+  [ZENDESK_THEMES.PROVING_IDENTITY]:
+    "pages.contactUsQuestions.provingIdentity.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
@@ -233,6 +235,14 @@ export function getQuestionsFromFormType(
         "pages.contactUsQuestions.technicalError.section3.header"
       ),
     },
+    provingIdentity: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.provingIdentity.section1.header"
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.provingIdentity.section2.header"
+      ),
+    },
   };
 
   return formTypeToQuestions[formType];
@@ -246,9 +256,10 @@ export function getQuestionFromThemes(
   const themesToQuestions: { [key: string]: any } = {
     account_creation: req.t("pages.contactUsPublic.section3.radio1"),
     signing_in: req.t("pages.contactUsPublic.section3.radio2"),
-    something_else: req.t("pages.contactUsPublic.section3.radio3"),
-    email_subscriptions: req.t("pages.contactUsPublic.section3.radio4"),
-    suggestions_feedback: req.t("pages.contactUsPublic.section3.radio5"),
+    proving_identity: req.t("pages.contactUsPublic.section3.radio3"),
+    something_else: req.t("pages.contactUsPublic.section3.radio4"),
+    email_subscriptions: req.t("pages.contactUsPublic.section3.radio5"),
+    suggestions_feedback: req.t("pages.contactUsPublic.section3.radio6"),
   };
   const signinSubthemeToQuestions: { [key: string]: any } = {
     no_security_code: req.t(

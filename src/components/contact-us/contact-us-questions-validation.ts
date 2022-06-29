@@ -86,6 +86,9 @@ export function getErrorMessageForIssueDescription(
   if (theme === ZENDESK_THEMES.SUGGESTIONS_FEEDBACK) {
     return "pages.contactUsQuestions.suggestionOrFeedback.section1.errorMessage";
   }
+  if (theme === ZENDESK_THEMES.PROVING_IDENTITY) {
+    return "pages.contactUsQuestions.provingIdentity.section1.errorMessage";
+  }
   if (subtheme === ZENDESK_THEMES.ACCOUNT_NOT_FOUND) {
     return "pages.contactUsQuestions.accountNotFound.section1.errorMessage";
   }
@@ -115,6 +118,9 @@ export function getErrorMessageForAdditionalDescription(
   }
   if (theme === ZENDESK_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.anotherProblem.section2.errorMessage";
+  }
+  if (theme === ZENDESK_THEMES.PROVING_IDENTITY) {
+    return "pages.contactUsQuestions.provingIdentity.section2.errorMessage";
   }
   if (subtheme === ZENDESK_THEMES.TECHNICAL_ERROR) {
     return "pages.contactUsQuestions.technicalError.section2.errorMessage";
