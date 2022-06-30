@@ -28,6 +28,7 @@
   name: "phoneNumber",
   type: "tel",
   autocomplete: "tel",
+  value: phoneNumber,
   errorMessage: {
   text: errors['phoneNumber'].text
   } if (errors['phoneNumber'])})
@@ -41,6 +42,7 @@
         name: "internationalPhoneNumber",
         type: "tel",
         autocomplete: "tel",
+        value: internationalPhoneNumber,
         classes: "govuk-!-width-two-thirds",
         label: {
           text: 'pages.enterPhoneNumber.internationalPhoneNumber.label' | translate
