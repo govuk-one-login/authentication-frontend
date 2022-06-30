@@ -138,6 +138,10 @@ locals {
         name  = "IP_ALLOW_LIST"
         value = length(var.basic_auth_bypass_cidr_blocks) == 0 ? "" : jsonencode(var.basic_auth_bypass_cidr_blocks)
       },
+      {
+        name  = "TRUSTED_PROXIES"
+        value = jsonencode(local.public_subnet_cidr_blocks)
+      },
     ]
   }
 }
