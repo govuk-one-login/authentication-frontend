@@ -2,7 +2,6 @@
 
 const express = require("express");
 const axios = require("axios").default;
-const dotenv = require("dotenv").config();
 const url = require("url");
 const querystring = require("querystring");
 const app = express();
@@ -13,7 +12,7 @@ const AUTHORIZE_REQUEST =
   "/authorize?" +
   "scope=openid+phone+email&" +
   "response_type=code&" +
-  "redirect_uri=https%3A%2F%2Fdi-auth-stub-relying-party-build.london.cloudapps.digital%2Foidc%2Fauthorization-code%2Fcallback&" +
+  "redirect_uri=https%3A%2F%2F" + process.env.STUB_HOSTNAME + "%2Foidc%2Fauthorization-code%2Fcallback&" +
   "state=sEazICy8jKFFlt-NLSw5yqYRA2r4q5BZGcAf9sYeWRg&" +
   "nonce=gyRdMfQGsQS9BvhU-lBwENOZ0UU&" +
   "client_id=" + process.env.TEST_CLIENT_ID +
