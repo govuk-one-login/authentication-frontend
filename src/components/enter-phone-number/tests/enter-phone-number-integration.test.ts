@@ -121,7 +121,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#phoneNumber-error").text()).to.contains(
-          "Enter a phone number using only numbers or the + symbol"
+          "Enter a UK mobile phone number using only numbers or the + symbol"
         );
       })
       .expect(400, done);

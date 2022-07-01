@@ -18,7 +18,7 @@ describe("phone-number", () => {
       expect(containsUKMobileNumber("1234")).to.equal(false);
     });
 
-    it("should return truwvdfs when non UK phone number entered", () => {
+    it("should return false when non UK phone number entered", () => {
       expect(containsUKMobileNumber("541 754-3010")).to.equal(false);
     });
 
@@ -72,6 +72,10 @@ describe("phone-number", () => {
 
     it("should return false when starting with +33 without 0", () => {
       expect(containsUKMobileNumber("+33645453322")).to.equal(false);
+    });
+
+    it("should return false when only a single 4 is present", () => {
+      expect(containsUKMobileNumber("+47911123456")).to.equal(false);
     });
 
     it("should return false when missing 7", () => {
