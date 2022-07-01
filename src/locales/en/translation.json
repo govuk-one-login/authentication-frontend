@@ -314,7 +314,7 @@
           "required": "Enter a phone number",
           "international": "Enter a UK mobile phone number",
           "length": "Enter a UK mobile phone number, like 07700 900000",
-          "numeric": "Enter a UK mobile phone number using numbers only"
+          "plusNumericOnly": "Enter a phone number using only numbers or the + symbol"
         }
       },
       "internationalPhoneNumber": {

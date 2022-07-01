@@ -4,7 +4,9 @@ const ALLOWED_TEST_NUMBERS = ["07700900222"];
 
 export function containsUKMobileNumber(value: string): boolean {
   return (
-    ALLOWED_TEST_NUMBERS.includes(value) || isValidPhoneNumber(value, "GB")
+    ALLOWED_TEST_NUMBERS.includes(value) ||
+    (isValidPhoneNumber(value, "GB") &&
+      /^([44]{2}|[+44]{3}|[07]{2}).*$/.test(value))
   );
 }
 

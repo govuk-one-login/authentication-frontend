@@ -87,6 +87,118 @@ describe("enter phone number controller", () => {
       expect(req.session.user.phoneNumber).to.be.eq("*******3990");
     });
 
+    it("should redirect to /check-your-phone when success with valid UK number prefixed with +447", async () => {
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      const fakeProfileService: UpdateProfileServiceInterface = {
+        updateProfile: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      res.locals.sessionId = "123456-djjad";
+      req.body.phoneNumber = "+447738393990";
+      req.session.user.email = "test@test.com";
+
+      await enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
+      expect(req.session.user.phoneNumber).to.be.eq("*********3990");
+    });
+
+    it("should redirect to /check-your-phone when success with valid UK number prefixed with 447", async () => {
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      const fakeProfileService: UpdateProfileServiceInterface = {
+        updateProfile: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      res.locals.sessionId = "123456-djjad";
+      req.body.phoneNumber = "447738393990";
+      req.session.user.email = "test@test.com";
+
+      await enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
+      expect(req.session.user.phoneNumber).to.be.eq("********3990");
+    });
+
+    it("should redirect to /check-your-phone when success with valid UK number prefixed with 440", async () => {
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      const fakeProfileService: UpdateProfileServiceInterface = {
+        updateProfile: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      res.locals.sessionId = "123456-djjad";
+      req.body.phoneNumber = "4407738393990";
+      req.session.user.email = "test@test.com";
+
+      await enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
+      expect(req.session.user.phoneNumber).to.be.eq("*********3990");
+    });
+
+    it("should redirect to /check-your-phone when success with valid UK number prefixed with +440", async () => {
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      const fakeProfileService: UpdateProfileServiceInterface = {
+        updateProfile: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      res.locals.sessionId = "123456-djjad";
+      req.body.phoneNumber = "+4407738393990";
+      req.session.user.email = "test@test.com";
+
+      await enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
+      expect(req.session.user.phoneNumber).to.be.eq("**********3990");
+    });
+
     it("should redirect to /check-your-phone when success with valid international number", async () => {
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake.returns({

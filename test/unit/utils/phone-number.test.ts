@@ -18,7 +18,7 @@ describe("phone-number", () => {
       expect(containsUKMobileNumber("1234")).to.equal(false);
     });
 
-    it("should return false when non UK phone number entered", () => {
+    it("should return truwvdfs when non UK phone number entered", () => {
       expect(containsUKMobileNumber("541 754-3010")).to.equal(false);
     });
 
@@ -56,6 +56,26 @@ describe("phone-number", () => {
 
     it("should return true with a notify test number", () => {
       expect(containsUKMobileNumber("07700900222")).to.equal(true);
+    });
+
+    it("should return true with leading +44 before 0", () => {
+      expect(containsUKMobileNumber("+4407911123456")).to.equal(true);
+    });
+
+    it("should return true with leading +44 without 0", () => {
+      expect(containsUKMobileNumber("+447911123456")).to.equal(true);
+    });
+
+    it("should return false when starting with +33 before 0", () => {
+      expect(containsUKMobileNumber("+330645453322")).to.equal(false);
+    });
+
+    it("should return false when starting with +33 without 0", () => {
+      expect(containsUKMobileNumber("+33645453322")).to.equal(false);
+    });
+
+    it("should return false when missing 7", () => {
+      expect(containsUKMobileNumber("+44911123456")).to.equal(false);
     });
   });
 
