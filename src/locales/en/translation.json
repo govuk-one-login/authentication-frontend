@@ -15,7 +15,6 @@
     "authenticatorAppIssuer": "GOV.UK SignIn",
     "yes": "Yes",
     "no": "No",
-    "footer": {},
     "cookie": {
       "cookieBanner": {
         "title": "Cookies on GOV.UK account",
