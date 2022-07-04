@@ -4,7 +4,6 @@ import { ValidationChainFunc } from "../../types";
 import {
   containsLeadingPlusNumbersOrSpacesOnly,
   containsInternationalMobileNumber,
-  containsNumbersOrSpacesOnly,
   containsUKMobileNumber,
   lengthInRangeWithoutSpaces,
 } from "../../utils/phone-number";
@@ -21,17 +20,17 @@ export function validateEnterPhoneNumberRequest(): ValidationChainFunc {
         );
       })
       .custom((value, { req }) => {
-        if (!containsNumbersOrSpacesOnly(value)) {
+        if (!containsLeadingPlusNumbersOrSpacesOnly(value)) {
           throw new Error(
             req.t(
-              "pages.enterPhoneNumber.ukPhoneNumber.validationError.numeric"
+              "pages.enterPhoneNumber.ukPhoneNumber.validationError.plusNumericOnly"
             )
           );
         }
         return true;
       })
       .custom((value, { req }) => {
-        if (!lengthInRangeWithoutSpaces(value, 10, 11)) {
+        if (!lengthInRangeWithoutSpaces(value, 10, 14)) {
           throw new Error(
             req.t("pages.enterPhoneNumber.ukPhoneNumber.validationError.length")
           );

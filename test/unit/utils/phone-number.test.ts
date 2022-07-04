@@ -2,7 +2,6 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import {
   containsInternationalMobileNumber,
-  containsNumbersOrSpacesOnly,
   containsUKMobileNumber,
   lengthInRangeWithoutSpaces,
   prependInternationalPrefix,
@@ -57,27 +56,29 @@ describe("phone-number", () => {
     it("should return true with a notify test number", () => {
       expect(containsUKMobileNumber("07700900222")).to.equal(true);
     });
-  });
 
-  describe("containsNumbersOrSpacesOnly", () => {
-    it("should return false when non numeric character is in string", () => {
-      expect(containsNumbersOrSpacesOnly("test")).to.equal(false);
+    it("should return true with leading +44 before 0", () => {
+      expect(containsUKMobileNumber("+4407911123456")).to.equal(true);
     });
 
-    it("should return false when symbol is in string", () => {
-      expect(containsNumbersOrSpacesOnly("!!")).to.equal(false);
+    it("should return true with leading +44 without 0", () => {
+      expect(containsUKMobileNumber("+447911123456")).to.equal(true);
     });
 
-    it("should return true when spaces only in string", () => {
-      expect(containsNumbersOrSpacesOnly("   ")).to.equal(true);
+    it("should return false when starting with +33 before 0", () => {
+      expect(containsUKMobileNumber("+330645453322")).to.equal(false);
     });
 
-    it("should return true when numbers only in string", () => {
-      expect(containsNumbersOrSpacesOnly("1234567")).to.equal(true);
+    it("should return false when starting with +33 without 0", () => {
+      expect(containsUKMobileNumber("+33645453322")).to.equal(false);
     });
 
-    it("should return true when spaces and numbers in string", () => {
-      expect(containsNumbersOrSpacesOnly("123 4567 33")).to.equal(true);
+    it("should return false when only a single 4 is present", () => {
+      expect(containsUKMobileNumber("+47911123456")).to.equal(false);
+    });
+
+    it("should return false when missing 7", () => {
+      expect(containsUKMobileNumber("+44911123456")).to.equal(false);
     });
   });
 

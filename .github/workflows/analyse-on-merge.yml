@@ -52,3 +52,4 @@ jobs:
       REDIS_PORT: 6389
       SUPPORT_MFA_OPTIONS: 1
       ZENDESK_API_URL: https://zendesk.com
+      SUPPORT_INTERNATIONAL_NUMBERS: 1
