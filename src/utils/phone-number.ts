@@ -13,10 +13,6 @@ export function containsInternationalMobileNumber(value: string): boolean {
   return isValidPhoneNumber(prependInternationalPrefix(value));
 }
 
-export function containsNumbersOrSpacesOnly(value: string): boolean {
-  return value ? /^[\d\s]+$/.test(value) : false;
-}
-
 export function containsLeadingPlusNumbersOrSpacesOnly(value: string): boolean {
   return value ? /^\+?[\d\s]+$/.test(value) : false;
 }
