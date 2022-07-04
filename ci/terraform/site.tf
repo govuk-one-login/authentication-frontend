@@ -33,6 +33,6 @@ data "aws_partition" "current" {}
 locals {
   default_tags = {
     environment = var.environment
-    application = "account-management"
+    application = "auth-frontend"
   }
 }
