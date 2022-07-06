@@ -25,6 +25,7 @@ params:
   SUPPORT_INTERNATIONAL_NUMBERS: "0"
   INCOMING_TRAFFIC_CIDR_BLOCKS: '["0.0.0.0/0"]'
   BASIC_AUTH_BYPASS_CIDR_BLOCKS: '[]'
+  SUPPORT_MFA_OPTIONS: "0"
 inputs:
   - name: frontend-src
   - name: frontend-image
