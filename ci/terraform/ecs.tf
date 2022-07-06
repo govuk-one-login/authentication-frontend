@@ -81,6 +81,10 @@ locals {
         value = var.support_international_numbers
       },
       {
+        name  = "SUPPORT_MFA_OPTIONS"
+        value = var.support_mfa_options
+      },
+      {
         name  = "ZENDESK_API_TOKEN"
         value = var.zendesk_api_token
       },

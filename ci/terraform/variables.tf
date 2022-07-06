@@ -49,6 +49,10 @@ variable "support_international_numbers" {
   type = string
 }
 
+variable "support_mfa_options" {
+  type = string
+}
+
 variable "zone_id" {
   default = null
 }
