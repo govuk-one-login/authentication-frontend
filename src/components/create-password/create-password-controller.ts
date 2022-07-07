@@ -4,7 +4,11 @@ import { createPasswordService } from "./create-password-service";
 import { CreatePasswordServiceInterface } from "./types";
 import { BadRequestError } from "../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { getNextPathAndUpdateJourney } from "../common/constants";
+import { ERROR_CODES, getNextPathAndUpdateJourney } from "../common/constants";
+import {
+  formatValidationError,
+  renderBadRequest,
+} from "../../utils/validation";
 import { supportMFAOptions } from "../../config";
 
 export function createPasswordGet(req: Request, res: Response): void {
@@ -25,6 +29,13 @@ export function createPasswordPost(
     );
 
     if (!result.success) {
+      if (result.data.code === ERROR_CODES.PASSWORD_IS_COMMON) {
+        const error = formatValidationError(
+          "password",
+          req.t("pages.createPassword.password.validationError.commonPassword")
+        );
+        return renderBadRequest(res, req, "create-password/index.njk", error);
+      }
       throw new BadRequestError(result.data.message, result.data.code);
     }
 

@@ -124,6 +124,8 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
   });
 
   it("should return validation error when password is amongst most common passwords", (done) => {
+    nock(baseApi).post("/reset-password").once().reply(400, { code: 1040 });
+
     request(app)
       .post(ENDPOINT)
       .type("form")

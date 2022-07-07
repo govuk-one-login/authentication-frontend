@@ -53,6 +53,13 @@ export function resetPasswordPost(
           req.t("pages.resetPassword.password.validationError.samePassword")
         );
         return renderBadRequest(res, req, resetPasswordTemplate, error);
+      }
+      if (updatePasswordResponse.data.code === ERROR_CODES.PASSWORD_IS_COMMON) {
+        const error = formatValidationError(
+          "password",
+          req.t("pages.createPassword.password.validationError.commonPassword")
+        );
+        return renderBadRequest(res, req, resetPasswordTemplate, error);
       } else {
         throw new BadRequestError(
           updatePasswordResponse.data.message,

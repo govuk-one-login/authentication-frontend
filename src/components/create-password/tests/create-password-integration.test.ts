@@ -169,6 +169,11 @@ describe("Integration::register create password", () => {
   });
 
   it("should return validation error when password is amongst most common passwords", (done) => {
+    nock(baseApi)
+      .post(API_ENDPOINTS.SIGNUP_USER)
+      .once()
+      .reply(400, { code: 1040 });
+
     request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
