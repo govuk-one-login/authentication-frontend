@@ -72,6 +72,7 @@ import { docCheckingAppCallbackRouter } from "./components/doc-checking-app-call
 import { selectMFAOptionsRouter } from "./components/select-mfa-options/select-mfa-options-routes";
 import { setupAuthenticatorAppRouter } from "./components/setup-authenticator-app/setup-authenticator-app-routes";
 import { enterAuthenticatorAppCodeRouter } from "./components/enter-authenticator-app-code/enter-authenticator-app-code-routes";
+import { cookiesRouter } from "./components/common/cookies/cookies-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -110,6 +111,7 @@ function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
   app.use(proveIdentityRouter);
   app.use(proveIdentityWelcomeRouter);
   app.use(proveIdentityCallbackRouter);
+  app.use(cookiesRouter);
   if (!appEnvIsProduction) {
     app.use(docCheckingAppRouter);
     app.use(docCheckingAppCallbackRouter);
