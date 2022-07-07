@@ -60,7 +60,11 @@ function initEnterPhoneNumber() {
       cookies.initAnalytics();
     }
 
-    cookies.cookieBannerInit();
+    if (cookies.isOnCookiesPage()) {
+      cookies.cookiesPageInit();
+    } else {
+      cookies.cookieBannerInit();
+    }
   }
 
   initFeedbackRadioButtons();
