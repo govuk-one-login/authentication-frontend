@@ -45,6 +45,7 @@ export interface UserSession {
   docCheckingAppUser?: boolean;
   identityProcessCheckStart?: number;
   authAppSecret?: string;
+  cookies_referer?: string;
 }
 
 export interface UserSessionClient {

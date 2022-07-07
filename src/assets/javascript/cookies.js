@@ -2,7 +2,6 @@
 
 var cookies = function (trackingId, analyticsCookieDomain) {
   var COOKIES_PREFERENCES_SET = "cookies_preferences_set";
-
   var cookiesAccepted = document.querySelector("#cookies-accepted");
   var cookiesRejected = document.querySelector("#cookies-rejected");
   var hideCookieBanner = document.querySelectorAll(".cookie-hide-button");
@@ -94,22 +93,7 @@ var cookies = function (trackingId, analyticsCookieDomain) {
   }
 
   function cookiesPageInit() {
-    var analyticsConsent = hasConsentForAnalytics();
-
-    if (analyticsConsent) {
-      setCookie(COOKIES_PREFERENCES_SET, { analytics: analyticsConsent });
-      document.querySelector("#policy-cookies-accepted").checked =
-        analyticsConsent;
-    } else {
-      document.querySelector("#policy-cookies-rejected").checked = true;
-    }
-
-    document.querySelector("#save-cookie-settings").addEventListener(
-      "click",
-      function (event) {
-        saveCookieSettings(event);
-      }.bind(this)
-    );
+    document.querySelector("#cookie-preferences-form").hidden = false;
   }
 
   function hasConsentForAnalytics() {
@@ -120,6 +104,7 @@ var cookies = function (trackingId, analyticsCookieDomain) {
   function initAnalytics() {
     loadGtmScript();
     initGtm();
+    initLinkerHandlers();
   }
 
   function loadGtmScript() {
@@ -137,21 +122,105 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     window.dataLayer = [
       {
         "gtm.allowlist": ["google"],
-        "gtm.blocklist": [
-          "nonGoogleScripts",
-          "nonGoogleIframes",
-          "nonGooglePixels",
-          "customScripts",
-          "customPixels",
-        ],
+        "gtm.blocklist": ["adm", "awct", "sp", "gclidw", "gcs", "opt"],
+      },
+      {
+        department: {
+          programmeteam: "di",
+          productteam: "sso",
+        },
       },
     ];
+
+    var sessionJourney = getJourneyMapping(window.location.pathname);
 
     function gtag(obj) {
       dataLayer.push(obj);
     }
 
+    if (sessionJourney) {
+      gtag(sessionJourney);
+    }
+
     gtag({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+  }
+
+  function initLinkerHandlers() {
+    var submitButton = document.querySelector('button[type="submit"]');
+    var pageForm = document.getElementById("form-tracking");
+
+    if (submitButton && pageForm) {
+      submitButton.addEventListener("click", function () {
+        if (window.ga && window.gaplugins) {
+          var tracker = ga.getAll()[0];
+          var linker = new window.gaplugins.Linker(tracker);
+          var destinationLink = linker.decorate(pageForm.action);
+          pageForm.action = destinationLink;
+        }
+      });
+    }
+
+    var trackLink = document.getElementById("track-link");
+
+    if (trackLink) {
+      trackLink.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        if (window.ga && window.gaplugins) {
+          var tracker = ga.getAll()[0];
+          var linker = new window.gaplugins.Linker(tracker);
+          var destinationLink = linker.decorate(trackLink.href);
+          window.location.href = destinationLink;
+        } else {
+          window.location.href = trackLink.href;
+        }
+      });
+    }
+  }
+
+  function generateSessionJourney(journey, status) {
+    return {
+      sessionjourney: {
+        journey: journey,
+        status: status,
+      },
+    };
+  }
+
+  function getJourneyMapping(url) {
+    const JOURNEY_DATA_LAYER_PATHS = {
+      "/enter-email-create": generateSessionJourney("sign up", "start"),
+      "/account-not-found": generateSessionJourney("sign up", "start"),
+      "/check-your-email": generateSessionJourney("sign up", "middle"),
+      "/create-password": generateSessionJourney("sign up", "middle"),
+      "/enter-phone-number": generateSessionJourney("sign up", "middle"),
+      "/check-your-phone": generateSessionJourney("sign up", "middle"),
+      "/account-created": generateSessionJourney("sign up", "end"),
+      "/enter-email": generateSessionJourney("sign in", "start"),
+      "/enter-password-account-exists": generateSessionJourney(
+        "sign in",
+        "start"
+      ),
+      "/enter-password": generateSessionJourney("sign in", "middle"),
+      "/enter-code": generateSessionJourney("sign in", "middle"),
+      "/resend-code": generateSessionJourney("sign in", "middle"),
+      "/updated-terms-and-conditions": generateSessionJourney(
+        "sign in",
+        "middle"
+      ),
+      "/share-info": generateSessionJourney("sign in", "middle"),
+      "/reset-password-check-email": generateSessionJourney(
+        "password reset",
+        "start"
+      ),
+      "/reset-password": generateSessionJourney("password reset", "middle"),
+      "/reset-password-confirmed": generateSessionJourney(
+        "password reset",
+        "end"
+      ),
+    };
+
+    return JOURNEY_DATA_LAYER_PATHS[url];
   }
 
   function getCookie(name) {
@@ -179,7 +248,13 @@ var cookies = function (trackingId, analyticsCookieDomain) {
       var date = new Date();
       date.setTime(date.getTime() + options.days * 24 * 60 * 60 * 1000);
       cookieString =
-        cookieString + "; expires=" + date.toGMTString() + "; path=/;";
+        cookieString +
+        "; expires=" +
+        date.toGMTString() +
+        "; path=/;" +
+        " domain=" +
+        analyticsCookieDomain +
+        ";";
     }
 
     if (document.location.protocol === "https:") {

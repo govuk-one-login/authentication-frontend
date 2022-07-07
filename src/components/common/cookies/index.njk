@@ -16,6 +16,16 @@
 <a class="govuk-notification-banner__link" id="go-back-link" href={{ backUrl }}>{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
 {% endset %}
 
+{% if updated %}
+{{ 
+  govukNotificationBanner({
+  html: html,
+  type: 'success',
+  attributes: {
+    "id": "save-success-banner"
+  }
+}) }}
+{% else %}
 {{ govukNotificationBanner({
   html: html,
   type: 'success',
@@ -24,6 +34,7 @@
     "hidden": true
   }
 }) }}
+{% endif %}
 
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
   {{ 'pages.cookiePolicy.header' | translate }}
@@ -191,9 +202,11 @@
   ]
 }) }}
 
+<form method="post" id="cookie-preferences-form" novalidate hidden="true">
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 {{ govukRadios({
   idPrefix: "cookie-preferences",
-  name: "cookie-preferences",
+  name: "cookie_preferences",
   attributes: {
     "id": "radio-cookie-preferences"
   },
@@ -208,23 +221,27 @@
     {
       value: "true",
       text: 'pages.cookiePolicy.settings.yesRadioButton' | translate,
-      id: "policy-cookies-accepted"
+      id: "policy-cookies-accepted",
+      checked: analyticsConsent === true
     },
     {
       value: "false",
       text: 'pages.cookiePolicy.settings.noRadioButton' | translate,
-      id: "policy-cookies-rejected"
+      id: "policy-cookies-rejected",
+      checked: analyticsConsent === false
     }
   ]
 }) }}
 
 {{ govukButton({
   "text": 'pages.cookiePolicy.settings.saveButton' | translate,
-  "type": "Button",
+  "type": "submit",
   "preventDoubleClick": true,
   attributes: {
     "id": "save-cookie-settings"
   }
 }) }}
+
+</form>
 
 {% endblock %}
