@@ -93,6 +93,24 @@ describe("Integration::setup-authenticator-app", () => {
       .expect(400, done);
   });
 
+  it("should return validation error when access code is too long (more than 6 digits)", (done) => {
+    request(app)
+      .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "12345678910",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#code-error").text()).to.contains(
+          "The security code must not be longer than 6 digits"
+        );
+      })
+      .expect(400, done);
+  });
+
   it("should redirect to /account-created page when successful validation of code", (done) => {
     nock(baseApi)
       .post(API_ENDPOINTS.UPDATE_PROFILE)
