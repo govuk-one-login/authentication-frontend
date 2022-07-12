@@ -40,20 +40,24 @@
   {{ 'pages.cookiePolicy.header' | translate }}
 </h1>
 
-<p class="govuk-body">{{'pages.cookiePolicy.info.paragraph1' | translate}}</p>
-<p class="govuk-body">{{'pages.cookiePolicy.info.paragraph2' | translate}}</p>
+<p class="govuk-body">{{'pages.cookiePolicy.info.paragraph1' | translate}}
+  <a href="{{'pages.cookiePolicy.info.govUkCookiesLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener" target="_blank">{{'pages.cookiePolicy.info.govUkCookiesLinkText' | translate}}</a>{{'pages.cookiePolicy.info.paragraph2' | translate}}
+</p>
 <p class="govuk-body">{{'pages.cookiePolicy.info.paragraph3' | translate}}</p>
 <p class="govuk-body">{{'pages.cookiePolicy.info.paragraph4' | translate}}</p>
-<p class="govuk-body">{{'pages.cookiePolicy.info.paragraph5' | translate}}
-  <a href="{{'pages.cookiePolicy.info.linkHref' | translate}}" class="govuk-link" rel="noreferrer noopener" target="_blank">
-    {{'pages.cookiePolicy.info.linkText' | translate}}
-  </a>
-  {{'pages.cookiePolicy.info.paragraph6' | translate}}
+<p class="govuk-body">{{'pages.cookiePolicy.info.paragraph5' | translate}}</p>
+<p class="govuk-body">{{'pages.cookiePolicy.info.paragraph6' | translate}}
+  <a href="{{'pages.cookiePolicy.info.linkHref' | translate}}" class="govuk-link" rel="noreferrer noopener" target="_blank">{{'pages.cookiePolicy.info.linkText' | translate}}</a>{{'pages.cookiePolicy.info.paragraph7' | translate}}
 </p>
 
 <h2 class="govuk-heading-s">{{'pages.cookiePolicy.essential.header' | translate}}</h2>
 
 <p class="govuk-body">{{'pages.cookiePolicy.essential.info.paragraph1' | translate}}</p>
+<ul class="govuk-list govuk-list--bullet">
+  <li>{{'pages.cookiePolicy.essential.info.bulletPoint1' | translate}}</li>
+  <li>{{'pages.cookiePolicy.essential.info.bulletPoint2' | translate}}</li>
+  <li>{{'pages.cookiePolicy.essential.info.bulletPoint3' | translate}}</li>
+</ul>
 
 {{ govukTable({
   firstCellIsHeader: false,
@@ -65,52 +69,16 @@
     {
     text: 'pages.cookiePolicy.essential.info.table.headers.col2' | translate,
     classes: 'govuk-body-s'
-    },
-    {
-    text: 'pages.cookiePolicy.essential.info.table.headers.col3' | translate,
-    classes: 'govuk-body-s'
     }
   ],
   rows: [
-    [
-      {
-      text: "lang",
-      classes: 'govuk-body-s'
-      },
-      {
-      text: 'pages.cookiePolicy.essential.info.table.rows.row1.col2' | translate,
-      classes: 'govuk-body-s'
-      },
-      {
-      text: 'pages.cookiePolicy.essential.info.table.rows.row1.col3' | translate,
-      classes: 'govuk-body-s'
-      }
-    ],
     [
       {
       text: "aps",
       classes: 'govuk-body-s'
       },
       {
-      text: 'pages.cookiePolicy.essential.info.table.rows.row2.col2' | translate,
-      classes: 'govuk-body-s'
-      },
-      {
-      text: 'pages.cookiePolicy.essential.info.table.rows.row2.col3' | translate,
-      classes: 'govuk-body-s'
-      }
-    ],
-    [
-      {
-      text: "aps.sig",
-      classes: 'govuk-body-s'
-      },
-      {
-      text: 'pages.cookiePolicy.essential.info.table.rows.row3.col2' | translate,
-      classes: 'govuk-body-s'
-      },
-      {
-      text: 'pages.cookiePolicy.essential.info.table.rows.row3.col3' | translate,
+      text: 'pages.cookiePolicy.essential.info.table.rows.row1.col2' | translate,
       classes: 'govuk-body-s'
       }
     ],
@@ -120,27 +88,118 @@
       classes: 'govuk-body-s'
       },
       {
-      text: 'pages.cookiePolicy.essential.info.table.rows.row4.col2' | translate,
-      classes: 'govuk-body-s'
-      },
-      {
-      text: 'pages.cookiePolicy.essential.info.table.rows.row4.col3' | translate,
+      text: 'pages.cookiePolicy.essential.info.table.rows.row2.col2' | translate,
       classes: 'govuk-body-s'
       }
     ],
     [
       {
-      text: "cookies_preferences_set",
+      text: "gs",
+      classes: 'govuk-body-s'
+      },
+      {
+      text: 'pages.cookiePolicy.essential.info.table.rows.row4.col2' | translate,
+      classes: 'govuk-body-s'
+      }
+    ],
+    [
+      {
+      text: "di-persistent-session-id",
+      classes: 'govuk-body-s'
+      },
+      {
+      text: 'pages.cookiePolicy.essential.info.table.rows.row3.col2' | translate,
+      classes: 'govuk-body-s'
+      }
+    ],
+    [
+      {
+      text: "am",
       classes: 'govuk-body-s'
       },
       {
       text: 'pages.cookiePolicy.essential.info.table.rows.row5.col2' | translate,
       classes: 'govuk-body-s'
-      },
-      {
-      text: 'pages.cookiePolicy.essential.info.table.rows.row5.col3' | translate,
-      classes: 'govuk-body-s'
       }
+    ]
+  ]
+}) }}
+
+<h2 class="govuk-heading-s">{{'pages.cookiePolicy.cookiesMessage.header' | translate}}</h2>
+<p class="govuk-body">{{'pages.cookiePolicy.cookiesMessage.paragraph1' | translate}}</p>
+<ul class="govuk-list govuk-list--bullet">
+  <li>{{'pages.cookiePolicy.cookiesMessage.bulletPoint1' | translate}}</li>
+  <li>{{'pages.cookiePolicy.cookiesMessage.bulletPoint2' | translate}}</li>
+</ul>
+
+{{ govukTable({
+  firstCellIsHeader: false,
+  head: [
+    {
+      text: 'pages.cookiePolicy.cookiesMessage.table.headers.col1' | translate,
+      classes: 'govuk-body-s'
+    },
+    {
+      text: 'pages.cookiePolicy.cookiesMessage.table.headers.col2' | translate,
+      classes: 'govuk-body-s'
+    },
+    {
+      text: 'pages.cookiePolicy.cookiesMessage.table.headers.col3' | translate,
+      classes: 'govuk-body-s'
+    }
+  ],
+  rows: [
+    [
+    {
+      text: "cookies_preferences_set",
+      classes: 'govuk-body-s'
+    },
+    {
+      text: 'pages.cookiePolicy.cookiesMessage.table.rows.row1.col2' | translate,
+      classes: 'govuk-body-s'
+    },
+    {
+      text: 'pages.cookiePolicy.cookiesMessage.table.rows.row1.col3' | translate,
+      classes: 'govuk-body-s'
+    }
+    ]
+  ]
+}) }}
+
+<h2 class="govuk-heading-s">{{'pages.cookiePolicy.settingsCookies.header' | translate}}</h2>
+<p class="govuk-body">{{'pages.cookiePolicy.settingsCookies.paragraph1' | translate}}</p>
+<p class="govuk-body">{{'pages.cookiePolicy.settingsCookies.paragraph2' | translate}}</p>
+
+{{ govukTable({
+  firstCellIsHeader: false,
+  head: [
+    {
+      text: 'pages.cookiePolicy.settingsCookies.table.headers.col1' | translate,
+      classes: 'govuk-body-s'
+    },
+    {
+      text: 'pages.cookiePolicy.settingsCookies.table.headers.col2' | translate,
+      classes: 'govuk-body-s'
+    },
+    {
+      text: 'pages.cookiePolicy.settingsCookies.table.headers.col3' | translate,
+      classes: 'govuk-body-s'
+    }
+  ],
+  rows: [
+    [
+    {
+      text: "lng",
+      classes: 'govuk-body-s'
+    },
+    {
+      text: 'pages.cookiePolicy.settingsCookies.table.rows.row1.col2' | translate,
+      classes: 'govuk-body-s'
+    },
+    {
+      text: 'pages.cookiePolicy.settingsCookies.table.rows.row1.col3' | translate,
+      classes: 'govuk-body-s'
+    }
     ]
   ]
 }) }}
@@ -148,11 +207,6 @@
 <h2 class="govuk-heading-s">{{'pages.cookiePolicy.analytics.header' | translate}}</h2>
 <p class="govuk-body">{{'pages.cookiePolicy.analytics.info.paragraph1' | translate}}</p>
 <p class="govuk-body">{{'pages.cookiePolicy.analytics.info.paragraph2' | translate}}</p>
-<ul class="govuk-list govuk-list--bullet">
-  <li>{{'pages.cookiePolicy.analytics.info.bulletPoint1' | translate}}</li>
-  <li>{{'pages.cookiePolicy.analytics.info.bulletPoint2' | translate}}</li>
-  <li>{{'pages.cookiePolicy.analytics.info.bulletPoint3' | translate}}</li>
-</ul>
 
 {{ govukTable({
   firstCellIsHeader: false,
@@ -198,6 +252,20 @@
       text: 'pages.cookiePolicy.analytics.table.rows.row2.col3' | translate,
       classes: 'govuk-body-s'
     }
+    ],
+    [
+    {
+      text: "_gat_UA-[number]",
+      classes: 'govuk-body-s'
+    },
+    {
+      text: 'pages.cookiePolicy.analytics.table.rows.row3.col2' | translate,
+      classes: 'govuk-body-s'
+    },
+    {
+      text: 'pages.cookiePolicy.analytics.table.rows.row3.col3' | translate,
+      classes: 'govuk-body-s'
+    }
     ]
   ]
 }) }}
@@ -209,13 +277,6 @@
   name: "cookie_preferences",
   attributes: {
     "id": "radio-cookie-preferences"
-  },
-  fieldset: {
-    legend: {
-      text: 'pages.cookiePolicy.settings.header' | translate,
-      isPageHeading: false,
-      classes: "govuk-fieldset__legend--m"
-    }
   },
   items: [
     {
