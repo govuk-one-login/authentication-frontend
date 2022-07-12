@@ -122,6 +122,7 @@ logs*.json
 
 keys/
 .vscode/
+.env*
 
 ci/terraform/.terraform
 src/assets/javascript/all.js
