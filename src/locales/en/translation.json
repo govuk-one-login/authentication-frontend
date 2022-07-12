@@ -1409,7 +1409,8 @@
         "hintText": "This is the number show in your authenticator app",
         "validationError":{
          "required": "Enter the security code shown in your authenticator app",
-          "invalidCode": "The security code you entered is not correct, try entering it again or wait for for your authenticator app to give you a new code"
+          "invalidCode": "The security code you entered is not correct, try entering it again or wait for for your authenticator app to give you a new code",
+          "length": "The security code you entered must not be longer than 6 digits"
         }
       },
       "continueButtonText": "Continue",
