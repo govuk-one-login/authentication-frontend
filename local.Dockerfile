@@ -8,4 +8,4 @@ WORKDIR /app
 
 EXPOSE $PORT
 
-CMD yarn install && yarn build-dev && yarn dev
+CMD yarn install && yarn copy-assets && yarn dev
