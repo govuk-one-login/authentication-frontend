@@ -62,6 +62,10 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     }
   }
 
+  function cookiesPageInit() {
+    document.querySelector("#cookie-preferences-form").hidden = false;
+  }
+
   function hasConsentForAnalytics() {
     var cookieConsent = JSON.parse(getCookie(COOKIES_PREFERENCES_SET));
     return cookieConsent ? cookieConsent.analytics : false;
@@ -238,8 +242,14 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     el.style.display = "block";
   }
 
+  function isOnCookiesPage() {
+    return window.location.pathname.indexOf("cookies") !== -1;
+  }
+
   return {
     cookieBannerInit,
+    isOnCookiesPage,
+    cookiesPageInit,
     hasConsentForAnalytics,
     initAnalytics,
   };

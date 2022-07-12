@@ -14,7 +14,6 @@ export function cookieConsentService(): CookieConsentServiceInterface {
           ? COOKIE_CONSENT.ACCEPT
           : COOKIE_CONSENT.REJECT;
     }
-
     const cookieValue: any = {
       cookie_consent: consentValue,
     };
