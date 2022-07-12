@@ -62,36 +62,6 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     }
   }
 
-  function saveCookieSettings(event) {
-    event.preventDefault();
-
-    var hasConsented =
-      document.querySelector(
-        '#radio-cookie-preferences input[type="radio"]:checked'
-      ).value === "true";
-
-    setCookie(COOKIES_PREFERENCES_SET, {
-      analytics: hasConsented,
-    });
-    showElement(document.querySelector("#save-success-banner"));
-
-    if (hasConsented) {
-      initAnalytics();
-    }
-
-    var isGaCookie = !!(getCookie("_ga") && getCookie("_gid"));
-
-    if (isGaCookie && !hasConsented) {
-      var gtagCookie = "_gat_gtag_" + trackingId.replace(/-/g, "_");
-
-      setCookie("_ga", "", { days: -1 });
-      setCookie("_gid", "", { days: -1 });
-      setCookie(gtagCookie, "", { days: -1 });
-    }
-
-    window.scrollTo(0, 0);
-  }
-
   function cookiesPageInit() {
     document.querySelector("#cookie-preferences-form").hidden = false;
   }
