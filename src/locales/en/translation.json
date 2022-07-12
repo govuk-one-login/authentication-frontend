@@ -1406,8 +1406,7 @@
       "header": "Prove your identity with a GOV.UK account",
       "section1": {
         "paragraph1": "You can currently only prove your identity with your GOV.UK account if you have a UK passport.",
-        "insetTextPassport": "If your passport has expired, you can still use it to prove your identity up until 18 months after the expiry date.",
-        "paragraph2": "You do not need to have your passport with you if you can remember the details on it."
+        "insetTextPassport": "If your passport has expired, you can still use it to prove your identity up until 18 months after the expiry date."
       },
       "section2": {
         "subHeading": "What you need to do",
@@ -1423,6 +1422,7 @@
       "section3": {
         "subHeading": "Choose a way to prove your identity",
         "radioOption1": "Continue to sign in or create a GOV.UK account",
+        "radioOption1HintText": "Make sure you have your UK passport with you before you continue. You might still be able to prove your identity if you do not have your passport but know the details on it.",
         "radioOption2": "Prove your identity another way",
         "radioOption2HintText": "You can prove your identity online with GOV.UK Verify or take your identity documents to be checked in person.",
         "errorMessage": "Select an option"
