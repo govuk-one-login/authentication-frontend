@@ -568,6 +568,21 @@
               },
               "row5": {
                 "col2": "2 hours"
+              },
+              "row6": {
+                "col2": "When you close your web browser"
+              },
+              "row7": {
+                "col2": "When you close your web browser"
+              },
+              "row8": {
+                "col2": "When you close your web browser"
+              },
+              "row9": {
+                "col2": "When you close your web browser"
+              },
+              "row10": {
+                "col2": "When you close your web browser"
               }
             }
           }
@@ -606,6 +621,10 @@
             "row1": {
               "col2": "Remembers the language you use the account in",
               "col3": "1 year"
+            },
+            "row2": {
+              "col2": "Remembers the language you use the account in",
+              "col3": "When you close your web browser"
             }
           }
         }
