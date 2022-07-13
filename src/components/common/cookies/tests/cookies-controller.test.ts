@@ -44,7 +44,7 @@ describe("cookies controller", () => {
   describe("cookiesPost", () => {
     it("should save analytics preferences as yes and render cookies page", () => {
       req.body.cookie_preferences = "true";
-      req.session.user.cookies_referer = "/page-before-1";
+      req.body.originalReferer = "/page-before-1";
 
       cookiesPost(req as Request, res as Response);
 
@@ -56,7 +56,7 @@ describe("cookies controller", () => {
     });
     it("should save analytics preferences as no and render cookies page", () => {
       req.body.cookie_preferences = "false";
-      req.session.user.cookies_referer = "/page-before-2";
+      req.body.originalReferer = "/page-before-2";
 
       cookiesPost(req as Request, res as Response);
 

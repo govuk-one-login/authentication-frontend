@@ -14,8 +14,7 @@ export function cookiesGet(req: Request, res: Response): void {
     sanitize(req.cookies.cookies_preferences_set)
   );
 
-  req.session.user.cookies_referer = req.headers.referer;
-  res.locals.backUrl = req.session.user.cookies_referer;
+  res.locals.backUrl = req.headers.referer;
   res.locals.analyticsConsent =
     consentValue.cookie_consent === COOKIE_CONSENT.ACCEPT;
   res.locals.updated = false;
@@ -30,7 +29,7 @@ export function cookiesPost(req: Request, res: Response): void {
 
   createConsentCookie(res, consentCookieValue);
 
-  res.locals.backUrl = req.session.user.cookies_referer;
+  res.locals.backUrl = req.body.originalReferer;
   res.locals.analyticsConsent = consentValue === "true";
   res.locals.updated = true;
   res.render("common/cookies/index.njk");
