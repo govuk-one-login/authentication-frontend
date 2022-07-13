@@ -26,12 +26,12 @@
 <p class="govuk-body">{{'pages.setupAuthenticatorApp.step2' | translate }}</p>
 
 <p class="govuk-body">
-  <img src="{{qrCode}}" alt="QR Code Image">
+  <img id="qr-code" src="{{qrCode}}" alt="QR Code Image">
 </p>
 
 <p class="govuk-body">
     {{ 'pages.setupAuthenticatorApp.secretKeyLabelText' | translate }}
-    <span class="govuk-body govuk-!-font-weight-bold">{{secretKey}}</span>
+    <span id="secret-key" class="govuk-body govuk-!-font-weight-bold">{{secretKey}}</span>
 </p>
 <p class="govuk-body">{{'pages.setupAuthenticatorApp.step3' | translate }}</p>
 <p class="govuk-body">{{'pages.setupAuthenticatorApp.step4' | translate }}</p>
@@ -39,6 +39,7 @@
 <form id="form-tracking" method="post" novalidate>
   
   <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+  <input type="hidden" name="_secretKey" value="{{secretKey}}"/>
 
   {{ govukInput({
   label: {
@@ -47,7 +48,7 @@
   hint: {
       text: 'pages.setupAuthenticatorApp.code.hintText' | translate
   },
-  classes: "govuk-!-width-two-thirds govuk-!-font-weight-bold",
+  classes: "govuk-input--width-10 govuk-!-font-weight-bold",
   id: "code",
   name: "code",
   type: "number",

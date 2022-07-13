@@ -29,10 +29,10 @@ export async function setupAuthenticatorAppGet(
     req.t("general.authenticatorAppIssuer")
   );
 
-  const qrCodeUrl = await QRCode.toDataURL(qrCodeText);
+  req.session.user.authAppQrCodeUrl = await QRCode.toDataURL(qrCodeText);
 
   res.render(TEMPLATE, {
-    qrCode: qrCodeUrl,
+    qrCode: req.session.user.authAppQrCodeUrl,
     secretKey: req.session.user.authAppSecret,
   });
 }
@@ -78,7 +78,10 @@ export function setupAuthenticatorAppPost(
           "code",
           req.t("pages.setupAuthenticatorApp.code.validationError.invalidCode")
         );
-        return renderBadRequest(res, req, TEMPLATE, error);
+        return renderBadRequest(res, req, TEMPLATE, error, {
+          qrCode: req.session.user.authAppQrCodeUrl,
+          secretKey: req.session.user.authAppSecret,
+        });
       }
 
       throw new BadRequestError(

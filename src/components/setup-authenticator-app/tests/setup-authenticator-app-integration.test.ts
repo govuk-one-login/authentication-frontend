@@ -89,6 +89,7 @@ describe("Integration::setup-authenticator-app", () => {
         expect($("#code-error").text()).to.contains(
           "Enter the security code shown in your authenticator app"
         );
+        expect($("#secret-key").text()).to.not.be.empty;
       })
       .expect(400, done);
   });
@@ -107,6 +108,7 @@ describe("Integration::setup-authenticator-app", () => {
         expect($("#code-error").text()).to.contains(
           "Enter the security code using only 6 digits"
         );
+        expect($("#secret-key").text()).to.not.be.empty;
       })
       .expect(400, done);
   });
