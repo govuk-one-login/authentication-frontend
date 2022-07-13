@@ -19,6 +19,8 @@ services:
       - API_KEY=${API_KEY}
       - FRONTEND_API_BASE_URL=${FRONTEND_API_BASE_URL}
       - ANALYTICS_COOKIE_DOMAIN=localhost
+      - SUPPORT_INTERNATIONAL_NUMBERS=${SUPPORT_INTERNATIONAL_NUMBERS}
+      - SUPPORT_MFA_OPTIONS=${SUPPORT_MFA_OPTIONS}
     restart: on-failure
     networks:
       - di-net
