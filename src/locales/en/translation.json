@@ -1490,9 +1490,9 @@
       }
     },
     "proveIdentityCheck": {
-      "title": "Return you to the [serviceName] service",
-      "header": "Return you to the [serviceName] service",
-      "paragraph1": "loading",
+      "title": "Returning you to the ‘[serviceName]’ service",
+      "header": "Returning you to the ‘[serviceName]’ service",
+      "paragraph1": "Please wait",
       "paragraph2": "We're still trying"
     },
     "getSecurityCodes": {
