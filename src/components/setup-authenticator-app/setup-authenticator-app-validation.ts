@@ -13,7 +13,17 @@ export function validateSetupAuthAppRequest(): ValidationChainFunc {
             value,
           }
         );
+      })
+      .isLength({ max: 6 })
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.setupAuthenticatorApp.code.validationError.length",
+          {
+            value,
+          }
+        );
       }),
+
     validateBodyMiddleware("setup-authenticator-app/index.njk"),
   ];
 }
