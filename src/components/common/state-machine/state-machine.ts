@@ -241,6 +241,9 @@ const authStateMachine = createMachine(
             { target: [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL] },
           ],
         },
+        meta: {
+          optionalPaths: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
+        },
       },
       [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
         on: {

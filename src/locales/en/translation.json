@@ -12,7 +12,7 @@
       "tag": "beta",
       "content": "This is a new service – your <a  href=\"/contact-us?supportType=PUBLIC\" class=\"govuk-link\" rel=\"noopener\" target=\"_blank\">feedback (opens in new tab)</a> will help us to improve it."
     },
-    "authenticatorAppIssuer": "GOV.UK SignIn",
+    "authenticatorAppIssuer": "GOV.UK account",
     "yes": "Yes",
     "no": "No",
     "cookie": {
