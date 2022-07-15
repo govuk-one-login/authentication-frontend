@@ -1,6 +1,7 @@
 import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
+import { Request } from "express";
 
 export function validateSetupAuthAppRequest(): ValidationChainFunc {
   return [
@@ -14,7 +15,7 @@ export function validateSetupAuthAppRequest(): ValidationChainFunc {
           }
         );
       })
-      .isLength({ max: 6 })
+      .isLength({ min: 6, max: 6 })
       .withMessage((value, { req }) => {
         return req.t(
           "pages.setupAuthenticatorApp.code.validationError.length",
@@ -23,7 +24,18 @@ export function validateSetupAuthAppRequest(): ValidationChainFunc {
           }
         );
       }),
-
-    validateBodyMiddleware("setup-authenticator-app/index.njk"),
+    validateBodyMiddleware(
+      "setup-authenticator-app/index.njk",
+      postValidationLocals
+    ),
   ];
 }
+
+const postValidationLocals = function locals(
+  req: Request
+): Record<string, unknown> {
+  return {
+    qrCode: req.session.user.authAppQrCodeUrl,
+    secretKey: req.session.user.authAppSecret,
+  };
+};

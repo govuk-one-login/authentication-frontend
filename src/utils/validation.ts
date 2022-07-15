@@ -22,7 +22,8 @@ export function renderBadRequest(
   res: Response,
   req: Request,
   template: string,
-  errors: { [k: string]: Error }
+  errors: { [k: string]: Error },
+  postValidationLocals?: Record<string, unknown>
 ): void {
   res.status(HTTP_STATUS_CODES.BAD_REQUEST);
 
@@ -30,10 +31,14 @@ export function renderBadRequest(
   const uniqueErrorList = [
     ...new Map(errorValues.map((error) => [error.text, error])).values(),
   ];
-  return res.render(template, {
+  const errorParams = {
     errors,
     errorList: uniqueErrorList,
     ...req.body,
     language: req.i18n.language,
-  });
+  };
+  const params = postValidationLocals
+    ? { ...errorParams, ...postValidationLocals }
+    : errorParams;
+  return res.render(template, params);
 }
