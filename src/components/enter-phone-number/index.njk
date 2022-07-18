@@ -5,34 +5,26 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
-    {% if isAccountPartCreated %}
-        {% set pageTitleName = 'pages.enterPhoneNumber.returningUser.title' | translate %}
-    {% else %}
-        {% set pageTitleName = 'pages.enterPhoneNumber.title' | translate %}
-    {% endif %}
+{% set pageTitleName = 'pages.enterPhoneNumber.title' | translate %}
 
 {% block content %}
-{% include "common/errors/errorSummary.njk" %}
+  {% include "common/errors/errorSummary.njk" %}
 
-
-   {% if isAccountPartCreated %}
-      <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.returningUser.header' |
-        translate}}</h1>
-       <p class="govuk-body">{{'pages.enterPhoneNumber.returningUser.info.paragraph1' | translate}}</p>
-       <p class="govuk-body">{{'pages.enterPhoneNumber.returningUser.info.paragraph2' | translate}}</p>
-   {% else %}
-       <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.header' |
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.header' |
          translate}}</h1>
-        <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph1' | translate}}</p>
-   {% endif %}
 
-<form action="/enter-phone-number" method="post" novalidate>
+  {% if supportInternationalNumbers | length %}
+    <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph1' | translate}}</p>
+  {% endif %}
+  <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph2' | translate}}</p>
 
-  <input type="hidden" name="_csrf" value="{{csrfToken}}" />
-  <input type="hidden" name="supportInternationalNumbers" value="{{supportInternationalNumbers}}" />
-  <input type="hidden" name="isAccountPartCreated" value="{{isAccountPartCreated}}" />
+  <form action="/enter-phone-number" method="post" novalidate="novalidate">
 
-  {{ govukInput({
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <input type="hidden" name="supportInternationalNumbers" value="{{supportInternationalNumbers}}"/>
+    <input type="hidden" name="isAccountPartCreated" value="{{isAccountPartCreated}}"/>
+
+    {{ govukInput({
   label: {
   text: 'pages.enterPhoneNumber.ukPhoneNumber.label' | translate
   },
@@ -47,7 +39,7 @@
   } if (errors['phoneNumber'])})
   }}
 
-  {% if supportInternationalNumbers %}
+    {% if supportInternationalNumbers %}
 
       {% set internationalNumberHtml %}
       {{ govukInput({
@@ -84,15 +76,14 @@
         ]
       }) }}
 
-  {% endif %}
+    {% endif %}
 
-  {{ govukButton({
+    {{ govukButton({
   "text": button_text|default('general.continue.label' | translate, true),
   "type": "Submit",
   "preventDoubleClick": true
   }) }}
 
-</form>
-
+  </form>
 
 {% endblock %}

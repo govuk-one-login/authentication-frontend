@@ -279,6 +279,7 @@ const authStateMachine = createMachine(
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
             PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
+            PATH_NAMES.GET_SECURITY_CODES,
           ],
         },
       },

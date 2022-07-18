@@ -298,15 +298,8 @@
       "title": "Enter your mobile phone number",
       "header": "Enter your mobile phone number",
       "info": {
-        "paragraph1": "We will send a 6 digit security code to the number you give us."
-      },
-      "returningUser": {
-        "title": "Finish creating your account",
-        "header": "Finish creating your account",
-        "info": {
-          "paragraph1": "You need to add a UK mobile phone number to your GOV.UK account.",
-          "paragraph2": "We will send a 6 digit security code to the number you give us."
-        }
+        "paragraph1": "You need to add a UK mobile phone number to your GOV.UK account.",
+        "paragraph2": "We will send a 6 digit security code to the number you give us."
       },
       "ukPhoneNumber": {
         "label": "UK mobile phone number",
@@ -369,14 +362,8 @@
       "title": "Check your phone",
       "header": "Check your phone",
       "info": {
-        "paragraph1": "We sent a code to [mobile].",
+        "paragraph1": "We have sent a code to [mobile].",
         "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes."
-      },
-      "resend": {
-        "link": "Request a new code",
-        "paragraph1": "if:",
-        "listItem1": "the code is not working or has expired, or you did not receive one",
-        "listItem2": "you want to use a different phone number"
       },
       "code": {
         "label": "Enter the 6 digit security code",
@@ -387,6 +374,17 @@
           "invalidFormat": "Enter the security code using only 6 digits",
           "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
+      },
+      "details": {
+        "summaryText": "Problems with the code?",
+        "text1": "We can ",
+        "sendCodeLinkText": "send the code again",
+        "sendCodeLinkHref": "/enter-phone-number",
+        "text 2": " or you can ",
+        "changePhoneNumberLinkText": "use a different phone number",
+        "changePhoneNumberLinkHref": "/enter-phone-number",
+        "changeMfaChoiceLinkText": "Get a code another way",
+        "changeMfaChoiceLinkHref": "/get-security-codes"
       }
     },
     "securityCodeInvalid": {
@@ -1526,11 +1524,11 @@
       },
       "step2": "2. Use your authenticator app to scan the QR code or type the secret key into your authenticator app.  Some authenticator apps call the secret key a 'code'.",
       "secretKeyLabelText": "Secret key: ",
-      "step3": "3. The authenticator app will show an access code.",
-      "step4": "4. Enter the access code.",
+      "step3": "3. The authenticator app will show a security code.",
+      "step4": "4. Enter the security code.",
       "code": {
-        "label": "Access code",
-        "hintText": "This is the number show in your authenticator app",
+        "label": "Security code",
+        "hintText": "This is the number shown in your authenticator app",
         "validationError":{
          "required": "Enter the security code shown in your authenticator app",
           "invalidCode": "The security code you entered is not correct, try entering it again or wait for for your authenticator app to give you a new code",
@@ -1538,7 +1536,7 @@
         }
       },
       "continueButtonText": "Continue",
-      "textMessageInsteadLinkText": "Get a security code by text message instead"
+      "textMessageInsteadLinkText": "Get a code another way"
     },
     "enterAuthenticatorAppCode": {
       "title": "Enter the security code shown in your authenticator app",
