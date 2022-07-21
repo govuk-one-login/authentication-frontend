@@ -2,6 +2,7 @@
 
 var cookies = function (trackingId, analyticsCookieDomain) {
   var COOKIES_PREFERENCES_SET = "cookies_preferences_set";
+  var COOKIES_HISTORY_LENGTH = "chl";
   var cookiesAccepted = document.querySelector("#cookies-accepted");
   var cookiesRejected = document.querySelector("#cookies-rejected");
   var hideCookieBanner = document.querySelectorAll(".cookie-hide-button");
@@ -64,6 +65,21 @@ var cookies = function (trackingId, analyticsCookieDomain) {
 
   function cookiesPageInit() {
     document.querySelector("#cookie-preferences-form").hidden = false;
+    var chl = getCookie(COOKIES_HISTORY_LENGTH);
+    if (! chl || chl === "0" ) {
+      setCookie(
+        COOKIES_HISTORY_LENGTH,
+        window.history.length
+        );
+    }
+    document.querySelector("#go-back-link").onclick = function() {
+      var chl = getCookie(COOKIES_HISTORY_LENGTH);
+      if (chl && !isNaN(chl)) {
+        var backCount = (window.history.length - chl) + 1;
+        window.history.go(-(Math.abs(backCount)));
+        setCookie(COOKIES_HISTORY_LENGTH, 0);
+      }
+    };
   }
 
   function hasConsentForAnalytics() {
