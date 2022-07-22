@@ -39,7 +39,7 @@ import { csrfMiddleware } from "./middleware/csrf-middleware";
 import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-routes";
 import { landingRouter } from "./components/landing/landing-route";
 import { getCSRFCookieOptions } from "./config/cookie";
-import { APP_ENV_NAME, ENVIRONMENT_NAME } from "./app.constants";
+import { ENVIRONMENT_NAME } from "./app.constants";
 import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes";
 import { authCodeRouter } from "./components/auth-code/auth-code-routes";
 import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-code-routes";
@@ -79,7 +79,7 @@ const APP_VIEWS = [
   path.resolve("node_modules/govuk-frontend/"),
 ];
 
-function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
+function registerRoutes(app: express.Application) {
   app.use(landingRouter);
   app.use(signInOrCreateRouter);
   app.use(enterEmailRouter);
@@ -112,16 +112,13 @@ function registerRoutes(app: express.Application, appEnvIsProduction: boolean) {
   app.use(proveIdentityWelcomeRouter);
   app.use(proveIdentityCallbackRouter);
   app.use(cookiesRouter);
-  if (!appEnvIsProduction) {
-    app.use(docCheckingAppRouter);
-    app.use(docCheckingAppCallbackRouter);
-  }
+  app.use(docCheckingAppRouter);
+  app.use(docCheckingAppCallbackRouter);
 }
 
 async function createApp(): Promise<express.Application> {
   const app: express.Application = express();
   const isProduction = getNodeEnv() === ENVIRONMENT_NAME.PROD;
-  const appEnvIsProduction = getAppEnv() === APP_ENV_NAME.PROD;
 
   app.enable("trust proxy");
 
@@ -181,7 +178,7 @@ async function createApp(): Promise<express.Application> {
   app.use(initialiseSessionMiddleware);
   app.use(crossDomainTrackingMiddleware);
 
-  registerRoutes(app, appEnvIsProduction);
+  registerRoutes(app);
 
   app.use(logErrorMiddleware);
   app.use(serverErrorHandler);
