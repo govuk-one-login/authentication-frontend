@@ -369,14 +369,8 @@
       "title": "Check your phone",
       "header": "Check your phone",
       "info": {
-        "paragraph1": "We sent a code to [mobile].",
+        "paragraph1": "We have sent a code to [mobile].",
         "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes."
-      },
-      "resend": {
-        "link": "Request a new code",
-        "paragraph1": "if:",
-        "listItem1": "the code is not working or has expired, or you did not receive one",
-        "listItem2": "you want to use a different phone number"
       },
       "code": {
         "label": "Enter the 6 digit security code",
@@ -387,6 +381,17 @@
           "invalidFormat": "Enter the security code using only 6 digits",
           "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
+      },
+      "details": {
+        "summaryText": "Problems with the code?",
+        "text1": "We can ",
+        "sendCodeLinkText": "send the code again",
+        "sendCodeLinkHref": "/resend-code?isResendCodeRequest=true",
+        "text 2": " or you can ",
+        "changePhoneNumberLinkText": "use a different phone number",
+        "changePhoneNumberLinkHref": "/enter-phone-number",
+        "changeMfaChoiceLinkText": "Get a code another way",
+        "changeMfaChoiceLinkHref": "/get-security-codes"
       }
     },
     "securityCodeInvalid": {
@@ -405,8 +410,8 @@
       }
     },
     "securityRequestsExceededExpired": {
-      "title": "You requested too many security codes",
-      "header": "You requested too many security codes",
+      "title": "You asked to resend the security code too many times",
+      "header": "You asked to resend the security code too many times",
       "info": {
         "paragraph1": "You need to wait 15 minutes.",
         "paragraph2Start": "You can then ",
@@ -428,7 +433,7 @@
       "title": "Check your phone",
       "header": "Check your phone",
       "info": {
-        "paragraph1": "We sent a code to [mobile].",
+        "paragraph1": "We sent a code to the phone number linked to your account.",
         "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes."
       },
       "resend": {
@@ -444,14 +449,24 @@
           "invalidFormat": "Enter the security code using only 6 digits",
           "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
+      },
+      "details": {
+        "summaryText": "Problems with the code?",
+        "text1": "We can ",
+        "sendCodeLinkText": "send the code again",
+        "sendCodeLinkHref": "/resend-code",
+        "text 2": " if the code is not working or you did not receive it."
       }
     },
     "resendMfaCode": {
-      "title": "Request a new security code",
-      "header": "Request a new security code",
-      "continue": "Send a new  code",
+      "title": "Resend the security code",
+      "header": "Resend the security code",
+      "continue": "Resend the code",
       "message": "Text messages can sometimes take a few minutes to arrive.",
-      "phoneNumber": "We'll send a new code to [mobile]."
+      "phoneNumber": {
+        "default": "We will send a code to the phone number linked to your account",
+        "isResendCodeRequest": "We will send a new code to [mobile]."
+      }
     },
     "signedOut": {
       "title": "You have signed out",

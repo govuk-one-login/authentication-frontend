@@ -7,22 +7,22 @@
 
 {% block content %}
 
-{% include "common/errors/errorSummary.njk" %}
+  {% include "common/errors/errorSummary.njk" %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterMfa.header' | translate }}</h1>
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterMfa.header' | translate }}</h1>
 
-<p class="govuk-body">{{'pages.enterMfa.info.paragraph1' | translate | replace("[mobile]", phoneNumber )}}</p>
-<p class="govuk-body">{{'pages.enterMfa.info.paragraph2' | translate | replace("[mobile]", phoneNumber )}}</p>
+  <p class="govuk-body">{{'pages.enterMfa.info.paragraph1' | translate }}</p>
+  <p class="govuk-body">{{'pages.enterMfa.info.paragraph2' | translate }}</p>
 
-<form id="form-tracking" action="/enter-code" method="post" novalidate>
-  <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
-  <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+  <form id="form-tracking" action="/enter-code" method="post" novalidate="novalidate">
+    <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
-  {{ govukInput({
+    {{ govukInput({
   label: {
   text: 'pages.enterMfa.code.label' | translate
   },
-  classes: "govuk-!-width-two-thirds govuk-!-font-weight-bold",
+  classes: "govuk-input--width-10 govuk-!-font-weight-bold",
   id: "code",
   name: "code",
   type: "number",
@@ -32,14 +32,25 @@
   } if (errors['code'])})
   }}
 
-  <p class="govuk-body"> <a href="/resend-code" class="govuk-link" rel="noreferrer">{{'pages.enterMfa.resend.link' | translate }}</a> {{ 'pages.enterMfa.resend.paragraph1' | translate}}</p>
+    {% set detailsHTML %}
+    <p class="govuk-body">
+      {{'pages.enterMfa.details.text1' | translate}}
+      <a href="{{'pages.enterMfa.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterMfa.details.sendCodeLinkText'| translate}}</a>
+      {{'pages.enterMfa.details.text 2' | translate}}
+    </p>
+    {% endset %}
 
-  {{ govukButton({
+    {{ govukDetails({
+      summaryText: 'pages.enterMfa.details.summaryText' | translate,
+      html: detailsHTML
+    }) }}
+
+    {{ govukButton({
   "text": button_text|default('general.continue.label' | translate, true),
   "type": "Submit",
   "preventDoubleClick": true
   }) }}
 
-</form>
+  </form>
 
 {% endblock %}

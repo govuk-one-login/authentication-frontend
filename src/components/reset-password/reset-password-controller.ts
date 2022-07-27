@@ -100,7 +100,8 @@ export function resetPasswordPost(
         clientSessionId,
         email,
         req.ip,
-        persistentSessionId
+        persistentSessionId,
+        false
       );
 
       if (!mfaResponse.success) {

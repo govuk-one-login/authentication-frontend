@@ -7,6 +7,7 @@ import { sendMfaGeneric } from "../common/mfa/send-mfa-controller";
 export function resendMfaCodeGet(req: Request, res: Response): void {
   res.render("resend-mfa-code/index.njk", {
     phoneNumber: req.session.user.phoneNumber,
+    isResendCodeRequest: req.query?.isResendCodeRequest,
   });
 }
 
