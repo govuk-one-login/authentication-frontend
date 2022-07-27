@@ -48,6 +48,7 @@ export const PATH_NAMES = {
   ENTER_AUTHENTICATOR_APP_CODE: "/enter-authenticator-app-code",
   CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP: "/setup-authenticator-app",
   COOKIES_POLICY: "/cookies",
+  ERROR_PAGE: "/error",
 };
 
 export const HTTP_STATUS_CODES = {

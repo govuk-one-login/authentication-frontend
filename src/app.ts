@@ -73,6 +73,7 @@ import { selectMFAOptionsRouter } from "./components/select-mfa-options/select-m
 import { setupAuthenticatorAppRouter } from "./components/setup-authenticator-app/setup-authenticator-app-routes";
 import { enterAuthenticatorAppCodeRouter } from "./components/enter-authenticator-app-code/enter-authenticator-app-code-routes";
 import { cookiesRouter } from "./components/common/cookies/cookies-routes";
+import { errorPageRouter } from "./components/common/errors/error-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -114,6 +115,7 @@ function registerRoutes(app: express.Application) {
   app.use(cookiesRouter);
   app.use(docCheckingAppRouter);
   app.use(docCheckingAppCallbackRouter);
+  app.use(errorPageRouter);
 }
 
 async function createApp(): Promise<express.Application> {
