@@ -423,10 +423,10 @@
       "title": "You cannot get a new security code at the moment ",
       "header": "You cannot get a new security code at the moment ",
       "info": {
-        "paragraph1": "This is because you requested too many security codes.",
+        "paragraph1": "This is because you asked to resend the security code too many times.",
         "paragraph2Start": "You can ",
         "link": "get a new code",
-        "paragraph2End": " after 15 minutes have passed."
+        "paragraph2End": " after 15 minutes."
       }
     },
     "enterMfa": {
@@ -459,13 +459,13 @@
       }
     },
     "resendMfaCode": {
-      "title": "Resend the security code",
-      "header": "Resend the security code",
-      "continue": "Resend the code",
+      "title": "Get security code",
+      "header": "Get security code",
+      "continue": "Get security code",
       "message": "Text messages can sometimes take a few minutes to arrive.",
       "phoneNumber": {
         "default": "We will send a code to the phone number linked to your account",
-        "isResendCodeRequest": "We will send a new code to [mobile]."
+        "isResendCodeRequest": "We will send a code to: [mobile]."
       }
     },
     "signedOut": {

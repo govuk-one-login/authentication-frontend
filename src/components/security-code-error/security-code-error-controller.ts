@@ -13,7 +13,9 @@ export function securityCodeTriesExceededGet(
   req: Request,
   res: Response
 ): void {
-  res.render("security-code-error/index-too-many-requests.njk", {
+  res.cookie("re", "true", { maxAge: 15 * 60 * 1000, httpOnly: true });
+
+  return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isResendCodeRequest: req.query.isResendCodeRequest,
   });

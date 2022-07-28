@@ -5,10 +5,22 @@ import { MfaServiceInterface } from "../common/mfa/types";
 import { sendMfaGeneric } from "../common/mfa/send-mfa-controller";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
-  res.render("resend-mfa-code/index.njk", {
-    phoneNumber: req.session.user.phoneNumber,
-    isResendCodeRequest: req.query?.isResendCodeRequest,
-  });
+  const isStillLockedOutBy15MinOtpCodeBlockWindow = req.cookies?.re;
+
+  if (isStillLockedOutBy15MinOtpCodeBlockWindow) {
+    const newCodeLink = req.query?.isResendCodeRequest
+      ? "/resend-code?isResendCodeRequest=true"
+      : "/resend-code";
+
+    res.render("security-code-error/index-wait.njk", {
+      newCodeLink,
+    });
+  } else {
+    res.render("resend-mfa-code/index.njk", {
+      phoneNumber: req.session.user.phoneNumber,
+      isResendCodeRequest: req.query?.isResendCodeRequest,
+    });
+  }
 }
 
 export function resendMfaCodePost(
