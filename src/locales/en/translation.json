@@ -318,8 +318,8 @@
         }
       },
       "internationalPhoneNumber": {
-        "checkBoxLabel": "I have an international mobile number",
-        "label": "International mobile number",
+        "checkBoxLabel": "I do not have a UK mobile number",
+        "label": "Mobile phone number",
         "hint": "Include the country code, for example +3537777666555",
         "validationError": {
           "required": "Enter a phone number",
