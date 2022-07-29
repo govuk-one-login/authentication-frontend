@@ -13,37 +13,53 @@ export function sendMfaGeneric(
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const isResendCodeRequest: boolean = req.body.isResendCodeRequest;
 
     const result = await mfaCodeService.sendMfaCode(
       sessionId,
       clientSessionId,
       email,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      isResendCodeRequest
     );
 
     if (!result.success) {
       const path = getErrorPathByCode(result.data.code);
 
-      if (path) {
-        return res.redirect(path);
+      if (path && isResendCodeRequest) {
+        return path.includes("?")
+          ? res.redirect(path + "&isResendCodeRequest=true")
+          : res.redirect(path + "?isResendCodeRequest=true");
+      }
+
+      if (path && !isResendCodeRequest) {
+        res.redirect(path);
       }
 
       throw new BadRequestError(result.data.message, result.data.code);
     }
 
-    let redirectPath = getNextPathAndUpdateJourney(
-      req,
-      PATH_NAMES.ENTER_MFA,
-      USER_JOURNEY_EVENTS.VERIFY_MFA,
-      {
-        isLatestTermsAndConditionsAccepted:
-          req.session.user.isLatestTermsAndConditionsAccepted,
-        isConsentRequired: req.session.user.isConsentRequired,
-        isIdentityRequired: req.session.user.isIdentityRequired,
-      },
-      sessionId
-    );
+    let redirectPath;
+
+    if (!isResendCodeRequest) {
+      redirectPath = getNextPathAndUpdateJourney(
+        req,
+        PATH_NAMES.ENTER_MFA,
+        USER_JOURNEY_EVENTS.VERIFY_MFA,
+        {
+          isLatestTermsAndConditionsAccepted:
+            req.session.user.isLatestTermsAndConditionsAccepted,
+          isConsentRequired: req.session.user.isConsentRequired,
+          isIdentityRequired: req.session.user.isIdentityRequired,
+        },
+        sessionId
+      );
+    }
+
+    if (isResendCodeRequest) {
+      redirectPath = PATH_NAMES.CHECK_YOUR_PHONE;
+    }
 
     if (req.query._ga) {
       const queryParams = new URLSearchParams({

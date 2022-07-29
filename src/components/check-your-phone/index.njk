@@ -3,27 +3,33 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% set pageTitleName = 'pages.checkYourPhone.title' | translate %}
+{% set showBack = true %}
+{% set hrefBack = 'pages.checkYourPhone.details.changePhoneNumberLinkHref' | translate %}
 
 {% block content %}
 
-{% include "common/errors/errorSummary.njk" %}
+  {% include "common/errors/errorSummary.njk" %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.checkYourPhone.header' | translate }}</h1>
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.checkYourPhone.header' | translate }}</h1>
 
-<p class="govuk-body">{{'pages.checkYourPhone.info.paragraph1' | translate | replace("[mobile]", phoneNumber )}}</p>
-<p class="govuk-body">{{'pages.checkYourPhone.info.paragraph2' | translate }}</p>
+  {{ govukInsetText({
+    text: 'pages.checkYourPhone.info.paragraph1' | translate | replace("[mobile]", phoneNumber )
+  }) }}
 
-<form action="/check-your-phone" method="post" novalidate>
+  <p class="govuk-body">{{'pages.checkYourPhone.info.paragraph2' | translate }}</p>
 
-  <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-  <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
+  <form action="/check-your-phone" method="post" novalidate="novalidate">
 
-  {{ govukInput({
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
+
+    {{ govukInput({
   label: {
   text: 'pages.checkYourPhone.code.label' | translate
   },
-  classes: "govuk-!-width-two-thirds govuk-!-font-weight-bold",
+  classes: "govuk-input--width-10 govuk-!-font-weight-bold",
   id: "code",
   name: "code",
   type: "number",
@@ -35,18 +41,26 @@
   } if (errors['code'])})
   }}
 
-    <p class="govuk-body"> <a href="/enter-phone-number" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.resend.link' | translate }}</a> {{ 'pages.checkYourPhone.resend.paragraph1' | translate}}</p>
-    <ul class="govuk-list govuk-list--bullet">
-     <li>{{ 'pages.checkYourPhone.resend.listItem1' | translate}}</li>
-     <li>{{ 'pages.checkYourPhone.resend.listItem2' | translate}}</li>
-    </ul>
+    {% set detailsHTML %}
+    <p class="govuk-body">
+      {{'pages.checkYourPhone.details.text1' | translate}}
+      <a href="{{'pages.checkYourPhone.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.sendCodeLinkText'| translate}}</a>
+      {{'pages.checkYourPhone.details.text 2' | translate}}
+      <a href="{{'pages.checkYourPhone.details.changePhoneNumberLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.changePhoneNumberLinkText'| translate}}</a>.
+    </p>
+    {% endset %}
 
-  {{ govukButton({
+    {{ govukDetails({
+      summaryText: 'pages.checkYourPhone.details.summaryText' | translate,
+      html: detailsHTML
+    }) }}
+
+    {{ govukButton({
   "text": button_text|default('general.continue.label' | translate, true),
   "type": "Submit",
   "preventDoubleClick": true
   }) }}
 
-</form>
+  </form>
 
 {% endblock %}

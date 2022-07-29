@@ -41,9 +41,9 @@ describe("Integration:: resend mfa code", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.RESEND_MFA_CODE)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
@@ -73,7 +73,7 @@ describe("Integration:: resend mfa code", () => {
       .expect(500, done);
   });
 
-  it("should redirect to /enter-code when new code requested", (done) => {
+  it("should redirect to /enter-code when new code requested as part of sign in journey", (done) => {
     nock(baseApi)
       .post(API_ENDPOINTS.MFA)
       .once()
@@ -88,6 +88,34 @@ describe("Integration:: resend mfa code", () => {
       })
       .expect("Location", PATH_NAMES.ENTER_MFA)
       .expect(302, done);
+  });
+
+  it("should redirect to /check-your-phone when new code requested as part of account creation journey", (done) => {
+    nock(baseApi)
+      .post(API_ENDPOINTS.MFA)
+      .once()
+      .reply(HTTP_STATUS_CODES.NO_CONTENT);
+
+    request(app)
+      .post(PATH_NAMES.RESEND_MFA_CODE)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        isResendCodeRequest: true,
+      })
+      .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
+      .expect(302, done);
+  });
+
+  it.only("should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active", () => {
+    const testSpecificCookies = cookies + "; re=true";
+    request(app)
+      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .set("Cookie", testSpecificCookies)
+      .expect((res) => {
+        res.text.includes("You cannot get a new security code at the moment");
+      });
   });
 
   it("should return 500 error screen when API call fails", (done) => {

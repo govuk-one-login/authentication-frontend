@@ -109,7 +109,8 @@ export function enterPasswordPost(
         clientSessionId,
         email,
         req.ip,
-        persistentSessionId
+        persistentSessionId,
+        false
       );
 
       if (!result.success) {
