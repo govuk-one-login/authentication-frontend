@@ -256,6 +256,7 @@ const authStateMachine = createMachine(
             PATH_NAMES.SECURITY_CODE_WAIT,
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+            PATH_NAMES.GET_SECURITY_CODES,
           ],
         },
       },
