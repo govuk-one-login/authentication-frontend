@@ -108,7 +108,7 @@ describe("Integration:: resend mfa code", () => {
       .expect(302, done);
   });
 
-  it.only("should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active", () => {
+  it("should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active", () => {
     const testSpecificCookies = cookies + "; re=true";
     request(app)
       .get(PATH_NAMES.RESEND_MFA_CODE)
