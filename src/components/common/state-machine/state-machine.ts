@@ -242,7 +242,7 @@ const authStateMachine = createMachine(
           ],
         },
         meta: {
-          optionalPaths: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
+          optionalPaths: [PATH_NAMES.GET_SECURITY_CODES],
         },
       },
       [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
@@ -280,6 +280,7 @@ const authStateMachine = createMachine(
             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
             PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
             PATH_NAMES.RESEND_MFA_CODE,
+            PATH_NAMES.GET_SECURITY_CODES,
           ],
         },
       },

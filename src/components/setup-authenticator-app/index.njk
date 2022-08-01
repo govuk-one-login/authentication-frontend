@@ -8,40 +8,40 @@
 
 {% block content %}
 
-{% include "common/errors/errorSummary.njk" %}
+  {% include "common/errors/errorSummary.njk" %}
 
-{% set insetTextHtml %}
-    <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph1' | translate}}</p>
-    <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph2' | translate}}</p>
-    <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph3' | translate}}</p>
-{% endset %}
+  {% set insetTextHtml %}
+  <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph1' | translate}}</p>
+  <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph2' | translate}}</p>
+  <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph3' | translate}}</p>
+  {% endset %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.setupAuthenticatorApp.header' | translate }}</h1>
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.setupAuthenticatorApp.header' | translate }}</h1>
 
-<p class="govuk-body">{{'pages.setupAuthenticatorApp.step1' | translate }}</p>
-    {{ govukDetails({
+  <p class="govuk-body">{{'pages.setupAuthenticatorApp.step1' | translate }}</p>
+  {{ govukDetails({
         summaryText: 'pages.setupAuthenticatorApp.noAuthAppDetails.summaryText' | translate,
         html: insetTextHtml
     }) }}
-<p class="govuk-body">{{'pages.setupAuthenticatorApp.step2' | translate }}</p>
+  <p class="govuk-body">{{'pages.setupAuthenticatorApp.step2' | translate }}</p>
 
-<p class="govuk-body">
-  <img id="qr-code" src="{{qrCode}}" alt="QR Code Image">
-</p>
+  <p class="govuk-body">
+    <img id="qr-code" src="{{qrCode}}" alt="QR Code Image">
+  </p>
 
-<p class="govuk-body">
+  <p class="govuk-body">
     {{ 'pages.setupAuthenticatorApp.secretKeyLabelText' | translate }}
     <span id="secret-key" class="govuk-body govuk-!-font-weight-bold">{{secretKey}}</span>
-</p>
-<p class="govuk-body">{{'pages.setupAuthenticatorApp.step3' | translate }}</p>
-<p class="govuk-body">{{'pages.setupAuthenticatorApp.step4' | translate }}</p>
+  </p>
+  <p class="govuk-body">{{'pages.setupAuthenticatorApp.step3' | translate }}</p>
+  <p class="govuk-body">{{'pages.setupAuthenticatorApp.step4' | translate }}</p>
 
-<form id="form-tracking" method="post" novalidate>
-  
-  <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-  <input type="hidden" name="_secretKey" value="{{secretKey}}"/>
+  <form id="form-tracking" method="post" novalidate="novalidate">
 
-  {{ govukInput({
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <input type="hidden" name="_secretKey" value="{{secretKey}}"/>
+
+    {{ govukInput({
   label: {
   text: 'pages.setupAuthenticatorApp.code.label' | translate
   },
@@ -58,15 +58,16 @@
   } if (errors['code'])})
   }}
 
-{{ govukButton({
+    {{ govukButton({
   "text": button_text|default('general.continue.label' | translate, true),
   "type": "Submit",
   "preventDoubleClick": true
   }) }}
 
-  <p class="govuk-body"> <a href="/enter-phone-number" class="govuk-link" rel="noreferrer">{{'pages.setupAuthenticatorApp.textMessageInsteadLinkText' | translate }}</a></p>
+    <p class="govuk-body">
+      <a href="/get-security-codes" class="govuk-link" rel="noreferrer">{{'pages.setupAuthenticatorApp.changeMfaChoiceLinkText' | translate }}</a>
+    </p>
 
-</form>
+  </form>
 
 {% endblock %}
-

@@ -50,6 +50,18 @@
     </p>
     {% endset %}
 
+    {% if supportMfaOptions %}
+      {% set detailsHTML %}
+
+      {{detailsHTML | safe}}
+
+      <p class="govuk-body">
+        <a href="{{'pages.checkYourPhone.details.changeMfaChoiceLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.changeMfaChoiceLinkText'| translate}}</a>.
+      </p>
+
+      {% endset %}
+    {% endif %}
+
     {{ govukDetails({
       summaryText: 'pages.checkYourPhone.details.summaryText' | translate,
       html: detailsHTML

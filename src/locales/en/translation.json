@@ -1547,11 +1547,11 @@
       },
       "step2": "2. Use your authenticator app to scan the QR code or type the secret key into your authenticator app.  Some authenticator apps call the secret key a 'code'.",
       "secretKeyLabelText": "Secret key: ",
-      "step3": "3. The authenticator app will show an access code.",
-      "step4": "4. Enter the access code.",
+      "step3": "3. The authenticator app will show an security code.",
+      "step4": "4. Enter the security code.",
       "code": {
-        "label": "Access code",
-        "hintText": "This is the number show in your authenticator app",
+        "label": "Security code",
+        "hintText": "This is the 6-digit number shown in your authenticator app",
         "validationError":{
          "required": "Enter the security code shown in your authenticator app",
           "invalidCode": "The security code you entered is not correct, try entering it again or wait for for your authenticator app to give you a new code",
@@ -1559,7 +1559,7 @@
         }
       },
       "continueButtonText": "Continue",
-      "textMessageInsteadLinkText": "Get a security code by text message instead"
+      "changeMfaChoiceLinkText": "Get a code another way"
     },
     "enterAuthenticatorAppCode": {
       "title": "Enter the security code shown in your authenticator app",
