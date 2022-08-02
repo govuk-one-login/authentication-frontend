@@ -290,8 +290,12 @@
       },
       "termsOfUse": {
         "heading": "Agree to our terms of use",
-        "paragraph1": "We will collect and save your information securely. We will not share your personal information without your consent.",
-        "paragraph2": "By continuing, you confirm that you agree to our <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">privacy notice</a> and our <a href=\"/terms-and-conditions\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">terms and conditions</a>."
+        "paragraph1": "By continuing, you confirm that you agree to our:",
+        "bullet1LinkText": "privacy notice (opens in a new tab)",
+        "bullet1Text": ", which explains how we use your personal information",
+        "bullet1LinkHref": "/privacy-notice",
+        "bullet2LinkText": "terms and conditions (opens in a new tab)",
+        "bullet2LinkHref": "/terms-and-conditions"
       }
     },
     "enterPhoneNumber": {
