@@ -283,6 +283,22 @@ describe("contact us questions controller", () => {
         referer: REFERER,
       });
     });
+    it("should render contact-us-questions if a 'problem with authenticator app' radio option was chosen", () => {
+      req.query.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
+      req.query.subtheme = ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM;
+      req.headers.referer = "/contact-us-further-information";
+      req.query.referer = REFERER;
+      contactUsQuestionsGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        theme: "account_creation",
+        subtheme: "authenticator_app_problem",
+        backurl: "/contact-us-further-information",
+        pageTitleHeading: "pages.contactUsQuestions.authenticatorApp.title",
+        referer: REFERER,
+      });
+    });
+
     describe("contactUsFormPost", () => {
       it("should redirect /contact-us-submit-success page when ticket posted", async () => {
         const fakeService: ContactUsServiceInterface = {

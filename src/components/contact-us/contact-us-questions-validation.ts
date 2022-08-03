@@ -107,6 +107,9 @@ export function getErrorMessageForIssueDescription(
   ) {
     return "pages.contactUsQuestions.accountCreationProblem.section1.errorMessage";
   }
+  if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
+    return "pages.contactUsQuestions.authenticatorApp.section1.errorMessage";
+  }
 }
 
 export function getErrorMessageForAdditionalDescription(
@@ -124,5 +127,8 @@ export function getErrorMessageForAdditionalDescription(
   }
   if (subtheme === ZENDESK_THEMES.TECHNICAL_ERROR) {
     return "pages.contactUsQuestions.technicalError.section2.errorMessage";
+  }
+  if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
+    return "pages.contactUsQuestions.authenticatorApp.section2.errorMessage";
   }
 }

@@ -1293,6 +1293,7 @@
           "radio3": "You do not have a UK mobile phone number",
           "radio4": "There was a technical problem (for example, the service was unavailable)",
           "radio5": "Something else",
+          "radio6": "You had a problem with an authenticator app",
           "errorMessage": "Select the problem you had when creating an account"
         }
       }
@@ -1325,6 +1326,19 @@
         "section2": {
           "header": "What happened?",
           "paragraph1": "For example, was there a technical problem?",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "authenticatorApp": {
+        "title": "You had a problem with an authenticator app",
+        "header": "You had a problem with an authenticator app",
+        "section1": {
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "For example, you had a problem with the QR code or finding an authenticator app",
           "errorMessage": "Enter what happened"
         }
       },

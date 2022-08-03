@@ -218,4 +218,26 @@ describe("Integration:: contact us - public user", () => {
       .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
       .expect(302, done);
   });
+
+  it("should redirect to success page when authenticator app problem form submitted", (done) => {
+    nock(zendeskApiUrl).post("/tickets.json").once().reply(200);
+
+    request(app)
+      .post("/contact-us-questions")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        theme: "account_creation",
+        subtheme: "authenticator_app_problem",
+        issueDescription: "issue",
+        additionalDescription: "additional information",
+        contact: "true",
+        email: "test@test.com",
+        formType: "authenticatorApp",
+        referer: "https://gov.uk/sign-in",
+      })
+      .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
+      .expect(302, done);
+  });
 });

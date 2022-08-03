@@ -27,6 +27,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.suggestionOrFeedback.title",
   [ZENDESK_THEMES.PROVING_IDENTITY]:
     "pages.contactUsQuestions.provingIdentity.title",
+  [ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM]:
+    "pages.contactUsQuestions.authenticatorApp.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
@@ -181,6 +183,14 @@ export function getQuestionsFromFormType(
         "pages.contactUsQuestions.anotherProblem.section2.header"
       ),
     },
+    authenticatorApp: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.authenticatorApp.section1.header"
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.authenticatorApp.section2.header"
+      ),
+    },
     emailSubscription: {
       issueDescription: req.t(
         "pages.contactUsQuestions.emailSubscriptions.section1.header"
@@ -299,6 +309,9 @@ export function getQuestionFromThemes(
     ),
     something_else: req.t(
       "pages.contactUsFurtherInformation.accountCreation.section1.radio5"
+    ),
+    authenticator_app_problem: req.t(
+      "pages.contactUsFurtherInformation.accountCreation.section1.radio6"
     ),
   };
   const themeQuestion = themesToQuestions[theme];

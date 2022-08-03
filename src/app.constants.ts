@@ -123,6 +123,7 @@ export const ZENDESK_THEMES = {
   FORGOTTEN_PASSWORD: "forgotten_password",
   NO_PHONE_NUMBER_ACCESS: "no_phone_number_access",
   PROVING_IDENTITY: "proving_identity",
+  AUTHENTICATOR_APP_PROBLEM: "authenticator_app_problem",
 };
 
 export enum NOTIFICATION_TYPE {
