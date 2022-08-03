@@ -1395,12 +1395,6 @@
       "invalidSecurityCode": {
         "title": "The security code does not work",
         "header": "The security code does not work",
-        "section1": {
-          "header": "How was the security code sent?",
-          "radio1": "Email",
-          "radio2": "Text message",
-          "errorMessage": "Select whether the code was sent by email or text message"
-        },
         "section2": {
           "header": "Anything else you want to tell us",
           "hintText": "You can add more detail, such as what happened when you entered the security code or what you were trying to do, or give us feedback"
