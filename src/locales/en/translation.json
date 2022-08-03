@@ -1288,7 +1288,7 @@
         "header": "A problem creating a GOV.UK account",
         "section1": {
           "header": "Tell us what happened",
-          "radio1": "You did not receive a security code",
+          "radio1": "You did not get a security code",
           "radio2": "The security code did not work",
           "radio3": "You do not have a UK mobile phone number",
           "radio4": "There was a technical problem (for example, the service was unavailable)",
