@@ -154,6 +154,29 @@ describe("Integration:: contact us - public user", () => {
       .expect(400, done);
   });
 
+  it("should return validation error when user selected yes to contact for feedback but email is in an invalid format", (done) => {
+    request(app)
+      .post("/contact-us-questions")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        theme: "signing_in",
+        subtheme: "something_else",
+        issueDescription: "issue",
+        additionalDescription: "additional",
+        contact: "true",
+        email: "test",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#email-error").text()).to.contains(
+          "Enter an email address in the correct format, like name@example.com"
+        );
+      })
+      .expect(400, done);
+  });
+
   it("should return validation error when user has not selected how the security code was sent whilst creating an account", (done) => {
     request(app)
       .post("/contact-us-questions?radio_buttons=true")
