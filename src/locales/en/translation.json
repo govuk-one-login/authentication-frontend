@@ -1304,7 +1304,8 @@
       "replyByEmail": {
         "validationError": {
           "noBoxSelected": "Select yes if we can reply to you by email",
-          "noEmailAddress": "Enter your email address"
+          "noEmailAddress": "Enter your email address",
+          "invalidFormat": "Enter an email address in the correct format, like name@example.com"
         }
       },
       "emailReply": {

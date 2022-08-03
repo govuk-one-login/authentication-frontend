@@ -65,7 +65,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .isEmail()
       .withMessage((value, { req }) => {
         return req.t(
-          "pages.contactUsPublic.section3.replyEmail.validationError.invalidFormat",
+          "pages.contactUsQuestions.replyByEmail.validationError.invalidFormat",
           { value }
         );
       }),
