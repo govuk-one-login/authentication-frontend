@@ -1378,20 +1378,15 @@
         }
       },
       "securityCodeSentMethod": {
-        "header": "How was the security code sent?",
+        "header": "How did you expect to get the security code?",
         "radio1": "Email",
         "radio2": "Text message",
+        "radio3": "Authenticator App",
         "errorMessage": "Select whether the code was sent by email or text message"
       },
       "noSecurityCode": {
-        "title": "You did not receive a security code",
-        "header": "You did not receive a security code",
-        "section1": {
-          "header": "How was the security code sent?",
-          "radio1": "Email",
-          "radio2": "Text message",
-          "errorMessage": "Select whether the code was sent by email or text message"
-        },
+        "title": "You did not get a security code",
+        "header": "You did not get a security code",
         "section2": {
           "header": "Anything else you want to tell us",
           "hintText": "You can add more detail, such as what you were trying to do, or give us feedback"
