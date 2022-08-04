@@ -11,7 +11,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .notEmpty()
       .withMessage((value, { req }) => {
         return req.t(
-          "pages.contactUsQuestions.securityCodeSentMethod.errorMessage",
+          "pages.contactUsQuestions." + req.body.formType + ".section1.errorMessage",
           { value }
         );
       }),

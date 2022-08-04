@@ -1392,15 +1392,17 @@
         }
       },
       "securityCodeSentMethod": {
-        "header": "How did you expect to get the security code?",
         "radio1": "Email",
         "radio2": "Text message",
-        "radio3": "Authenticator App",
-        "errorMessage": "Select whether the code was sent by email or text message"
+        "radio3": "Authenticator app"
       },
       "noSecurityCode": {
         "title": "You did not get a security code",
         "header": "You did not get a security code",
+        "section1": {
+          "header": "How did you expect to get the security code?",
+          "errorMessage": "Select whether you expected to get the code by email, text message or authenticator app"
+        },
         "section2": {
           "header": "Anything else you want to tell us",
           "hintText": "You can add more detail, such as what you were trying to do, or give us feedback"
@@ -1409,6 +1411,10 @@
       "invalidSecurityCode": {
         "title": "The security code does not work",
         "header": "The security code does not work",
+        "section1": {
+          "header": "How did you get the security code?",
+          "errorMessage": "Select whether you got the code by email, text message or authenticator app"
+        },
         "section2": {
           "header": "Anything else you want to tell us",
           "hintText": "You can add more detail, such as what happened when you entered the security code or what you were trying to do, or give us feedback"
