@@ -12,17 +12,9 @@
 <input type="hidden" name="referer" value="{{referer}}"/>
 
 {% if theme == 'account_creation' %}
-    {{ govukRadios({
-        idPrefix: "securityCodeSentMethod",
-        name: "securityCodeSentMethod",
-        fieldset: {
-            legend: {
-                text: 'pages.contactUsQuestions.invalidSecurityCode.section1.header' | translate,
-                isPageHeading: false,
-                classes: "govuk-fieldset__legend--m"
-            }
-        },
-        items: [
+
+    {% if supportMFAOptions %}
+        {% set items = [
             {
                 value: "email",
                 checked: securityCodeSentMethod === 'email',
@@ -38,10 +30,38 @@
                 checked: securityCodeSentMethod === 'authenticator_app',
                 text: 'pages.contactUsQuestions.securityCodeSentMethod.radio3' | translate
             }
-        ],
-          errorMessage: {
+        ]
+        %}
+    {% else %}
+        {% set items = [
+            {
+                value: "email",
+                checked: securityCodeSentMethod === 'email',
+                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio1' | translate
+            },
+            {
+                value: "text_message",
+                checked: securityCodeSentMethod === 'text_message',
+                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio2' | translate
+            }
+        ]
+        %}
+    {% endif %}
+
+    {{ govukRadios({
+        idPrefix: "securityCodeSentMethod",
+        name: "securityCodeSentMethod",
+        fieldset: {
+            legend: {
+                text: 'pages.contactUsQuestions.invalidSecurityCode.section1.header' | translate,
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
+            }
+        },
+        items: items,
+        errorMessage: {
           text: errors['securityCodeSentMethod'].text
-          } if (errors['securityCodeSentMethod'])
+        } if (errors['securityCodeSentMethod'])
     }) }}
 {% endif %}
 

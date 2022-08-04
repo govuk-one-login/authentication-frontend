@@ -2,6 +2,7 @@ import { body, check } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 import { ZENDESK_THEMES } from "../../app.constants";
+import { supportMFAOptions } from "../../config";
 
 export function validateContactUsQuestionsRequest(): ValidationChainFunc {
   return [
@@ -10,10 +11,12 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .if(check("radio_buttons").notEmpty())
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t(
-          "pages.contactUsQuestions." + req.body.formType + ".section1.errorMessage",
-          { value }
-        );
+        const section = supportMFAOptions()
+          ? req.body.formType + ".section1"
+          : "securityCodeSentMethod";
+        return req.t("pages.contactUsQuestions." + section + ".errorMessage", {
+          value,
+        });
       }),
     body("issueDescription")
       .optional()

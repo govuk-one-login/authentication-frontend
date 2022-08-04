@@ -187,12 +187,13 @@ describe("Integration:: contact us - public user", () => {
         theme: "account_creation",
         subtheme: "no_security_code",
         moreDetailDescription: "issue",
+        formType: "noSecurityCode",
         contact: "false",
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#securityCodeSentMethod-error").text()).to.contains(
-          "Select whether the code was sent by email or text message"
+          "Select whether you expected to get the code by email, text message or authenticator app"
         );
       })
       .expect(400, done);

@@ -3,6 +3,7 @@ import { PATH_NAMES, SUPPORT_TYPE, ZENDESK_THEMES } from "../../app.constants";
 import { contactUsService } from "./contact-us-service";
 import { ContactUsServiceInterface, Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
+import { supportMFAOptions } from "../../config";
 
 const themeToPageTitle = {
   [ZENDESK_THEMES.ACCOUNT_NOT_FOUND]:
@@ -80,6 +81,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
     referer: req.query.referer,
+    supportMFAOptions: supportMFAOptions(),
   });
 }
 
@@ -113,6 +115,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     backurl: req.headers.referer,
     referer: req.query.referer,
     pageTitleHeading: pageTitle,
+    supportMFAOptions: supportMFAOptions(),
   });
 }
 

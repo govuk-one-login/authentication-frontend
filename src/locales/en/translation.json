@@ -1394,7 +1394,8 @@
       "securityCodeSentMethod": {
         "radio1": "Email",
         "radio2": "Text message",
-        "radio3": "Authenticator app"
+        "radio3": "Authenticator app",
+        "errorMessage": "Select whether the code was sent by email or text message"
       },
       "noSecurityCode": {
         "title": "You did not get a security code",
