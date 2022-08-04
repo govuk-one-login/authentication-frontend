@@ -5,7 +5,7 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
-{% if isAccountPartCreated %}
+{% if isAccountPartCreated and not supportMFAOptions %}
   {% set pageTitleName = 'pages.enterPhoneNumber.returningUser.title' | translate %}
 {% else %}
   {% set pageTitleName = 'pages.enterPhoneNumber.title' | translate %}
@@ -19,7 +19,7 @@
 {% block content %}
   {% include "common/errors/errorSummary.njk" %}
 
-  {% if isAccountPartCreated %}
+  {% if isAccountPartCreated and not supportMFAOptions %}
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.returningUser.header' |
         translate}}</h1>
     <p class="govuk-body">{{'pages.enterPhoneNumber.returningUser.info.paragraph1' | translate}}</p>
@@ -28,6 +28,9 @@
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.header' |
          translate}}</h1>
     <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph1' | translate}}</p>
+    {% if not supportInternationalNumbers %}
+        <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph2' | translate}}</p>
+    {% endif %}
   {% endif %}
 
   <form action="/enter-phone-number" method="post" novalidate="novalidate">
