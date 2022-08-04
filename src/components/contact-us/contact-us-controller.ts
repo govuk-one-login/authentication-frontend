@@ -137,7 +137,7 @@ export function contactUsQuestionsFormPost(
       email: req.body.email,
       name: req.body.name,
       optionalData: {
-        sessionId: res.locals.sessionId,
+        sessionId: "",
         userAgent: req.get("User-Agent"),
       },
       feedbackContact: req.body.contact === "true",
