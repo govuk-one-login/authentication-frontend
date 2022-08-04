@@ -1289,11 +1289,12 @@
         "header": "A problem creating a GOV.UK account",
         "section1": {
           "header": "Tell us what happened",
-          "radio1": "You did not receive a security code",
+          "radio1": "You did not get a security code",
           "radio2": "The security code did not work",
           "radio3": "You do not have a UK mobile phone number",
           "radio4": "There was a technical problem (for example, the service was unavailable)",
           "radio5": "Something else",
+          "radio6": "You had a problem with an authenticator app",
           "errorMessage": "Select the problem you had when creating an account"
         }
       }
@@ -1326,6 +1327,19 @@
         "section2": {
           "header": "What happened?",
           "paragraph1": "For example, was there a technical problem?",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "authenticatorApp": {
+        "title": "You had a problem with an authenticator app",
+        "header": "You had a problem with an authenticator app",
+        "section1": {
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "For example, you had a problem with the QR code or finding an authenticator app",
           "errorMessage": "Enter what happened"
         }
       },
@@ -1379,19 +1393,17 @@
         }
       },
       "securityCodeSentMethod": {
-        "header": "How was the security code sent?",
         "radio1": "Email",
         "radio2": "Text message",
+        "radio3": "Authenticator app",
         "errorMessage": "Select whether the code was sent by email or text message"
       },
       "noSecurityCode": {
-        "title": "You did not receive a security code",
-        "header": "You did not receive a security code",
+        "title": "You did not get a security code",
+        "header": "You did not get a security code",
         "section1": {
-          "header": "How was the security code sent?",
-          "radio1": "Email",
-          "radio2": "Text message",
-          "errorMessage": "Select whether the code was sent by email or text message"
+          "header": "How did you expect to get the security code?",
+          "errorMessage": "Select whether you expected to get the code by email, text message or authenticator app"
         },
         "section2": {
           "header": "Anything else you want to tell us",
@@ -1402,10 +1414,8 @@
         "title": "The security code does not work",
         "header": "The security code does not work",
         "section1": {
-          "header": "How was the security code sent?",
-          "radio1": "Email",
-          "radio2": "Text message",
-          "errorMessage": "Select whether the code was sent by email or text message"
+          "header": "How did you get the security code?",
+          "errorMessage": "Select whether you got the code by email, text message or authenticator app"
         },
         "section2": {
           "header": "Anything else you want to tell us",

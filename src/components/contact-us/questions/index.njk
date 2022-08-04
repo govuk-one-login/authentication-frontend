@@ -42,6 +42,10 @@
         {% include 'contact-us/questions/_no-phone-number-access-questions.njk' %}
     {% endif %}
 
+    {% if subtheme == 'authenticator_app_problem' %}
+        {% include 'contact-us/questions/_authenticator-app-problem.njk' %}
+    {% endif %}
+
     {% if (theme == 'account_creation') and (subtheme == 'something_else') %}
         {% include 'contact-us/questions/_account-creation-problem-questions.njk' %}
     {% endif %}

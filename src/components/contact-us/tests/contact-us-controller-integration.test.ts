@@ -187,12 +187,13 @@ describe("Integration:: contact us - public user", () => {
         theme: "account_creation",
         subtheme: "no_security_code",
         moreDetailDescription: "issue",
+        formType: "noSecurityCode",
         contact: "false",
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#securityCodeSentMethod-error").text()).to.contains(
-          "Select whether the code was sent by email or text message"
+          "Select whether you expected to get the code by email, text message or authenticator app"
         );
       })
       .expect(400, done);
@@ -213,6 +214,28 @@ describe("Integration:: contact us - public user", () => {
         contact: "true",
         email: "test@test.com",
         formType: "noSecurityCode",
+        referer: "https://gov.uk/sign-in",
+      })
+      .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
+      .expect(302, done);
+  });
+
+  it("should redirect to success page when authenticator app problem form submitted", (done) => {
+    nock(zendeskApiUrl).post("/tickets.json").once().reply(200);
+
+    request(app)
+      .post("/contact-us-questions")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        theme: "account_creation",
+        subtheme: "authenticator_app_problem",
+        issueDescription: "issue",
+        additionalDescription: "additional information",
+        contact: "true",
+        email: "test@test.com",
+        formType: "authenticatorApp",
         referer: "https://gov.uk/sign-in",
       })
       .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)

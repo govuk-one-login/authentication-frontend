@@ -7,18 +7,38 @@
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="theme" value="{{theme}}"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
+<input type="hidden" name="supportMFAOptions" value="{{supportMFAOptions}}"/>
 
-    {{ govukRadios({
-        idPrefix: "account-creation",
-        name: "subtheme",
-        fieldset: {
-            legend: {
-                text: 'pages.contactUsFurtherInformation.accountCreation.section1.header' | translate,
-                isPageHeading: false,
-                classes: "govuk-fieldset__legend--m"
-            }
-        },
-        items: [
+    {% if supportMFAOptions %}
+        {% set items = [
+                {
+                    value: "no_uk_mobile_number",
+                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio3' | translate
+                },
+                {
+                    value: "no_security_code",
+                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio1' | translate
+                },
+                {
+                    value: "invalid_security_code",
+                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio2' | translate
+                },
+                {
+                    value: "authenticator_app_problem",
+                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio6' | translate
+                },
+                {
+                    value: "technical_error",
+                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio4' | translate
+                },
+                {
+                    value: "something_else",
+                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio5' | translate
+                }
+            ]
+        %}
+    {% else %}
+        {% set items = [
             {
                 value: "no_uk_mobile_number",
                 text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio3' | translate
@@ -39,7 +59,21 @@
                 value: "something_else",
                 text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio5' | translate
             }
-        ],
+        ]
+        %}
+    {% endif %}
+
+    {{ govukRadios({
+        idPrefix: "account-creation",
+        name: "subtheme",
+        fieldset: {
+            legend: {
+                text: 'pages.contactUsFurtherInformation.accountCreation.section1.header' | translate,
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
+            }
+        },
+        items: items,
       errorMessage: {
       text: errors['subtheme'].text
       } if (errors['subtheme'])

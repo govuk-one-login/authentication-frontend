@@ -3,6 +3,7 @@ import { PATH_NAMES, SUPPORT_TYPE, ZENDESK_THEMES } from "../../app.constants";
 import { contactUsService } from "./contact-us-service";
 import { ContactUsServiceInterface, Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
+import { supportMFAOptions } from "../../config";
 
 const themeToPageTitle = {
   [ZENDESK_THEMES.ACCOUNT_NOT_FOUND]:
@@ -27,6 +28,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.suggestionOrFeedback.title",
   [ZENDESK_THEMES.PROVING_IDENTITY]:
     "pages.contactUsQuestions.provingIdentity.title",
+  [ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM]:
+    "pages.contactUsQuestions.authenticatorApp.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
@@ -78,6 +81,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
     referer: req.query.referer,
+    supportMFAOptions: supportMFAOptions() ? true : null,
   });
 }
 
@@ -111,6 +115,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     backurl: req.headers.referer,
     referer: req.query.referer,
     pageTitleHeading: pageTitle,
+    supportMFAOptions: supportMFAOptions() ? true : null,
   });
 }
 
@@ -179,6 +184,14 @@ export function getQuestionsFromFormType(
       ),
       additionalDescription: req.t(
         "pages.contactUsQuestions.anotherProblem.section2.header"
+      ),
+    },
+    authenticatorApp: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.authenticatorApp.section1.header"
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.authenticatorApp.section2.header"
       ),
     },
     emailSubscription: {
@@ -299,6 +312,9 @@ export function getQuestionFromThemes(
     ),
     something_else: req.t(
       "pages.contactUsFurtherInformation.accountCreation.section1.radio5"
+    ),
+    authenticator_app_problem: req.t(
+      "pages.contactUsFurtherInformation.accountCreation.section1.radio6"
     ),
   };
   const themeQuestion = themesToQuestions[theme];

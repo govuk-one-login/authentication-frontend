@@ -2,6 +2,7 @@ import { body, check } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 import { ZENDESK_THEMES } from "../../app.constants";
+import { supportMFAOptions } from "../../config";
 
 export function validateContactUsQuestionsRequest(): ValidationChainFunc {
   return [
@@ -10,10 +11,12 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .if(check("radio_buttons").notEmpty())
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t(
-          "pages.contactUsQuestions.securityCodeSentMethod.errorMessage",
-          { value }
-        );
+        const section = supportMFAOptions()
+          ? req.body.formType + ".section1"
+          : "securityCodeSentMethod";
+        return req.t("pages.contactUsQuestions." + section + ".errorMessage", {
+          value,
+        });
       }),
     body("issueDescription")
       .optional()
@@ -107,6 +110,9 @@ export function getErrorMessageForIssueDescription(
   ) {
     return "pages.contactUsQuestions.accountCreationProblem.section1.errorMessage";
   }
+  if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
+    return "pages.contactUsQuestions.authenticatorApp.section1.errorMessage";
+  }
 }
 
 export function getErrorMessageForAdditionalDescription(
@@ -124,5 +130,8 @@ export function getErrorMessageForAdditionalDescription(
   }
   if (subtheme === ZENDESK_THEMES.TECHNICAL_ERROR) {
     return "pages.contactUsQuestions.technicalError.section2.errorMessage";
+  }
+  if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
+    return "pages.contactUsQuestions.authenticatorApp.section2.errorMessage";
   }
 }

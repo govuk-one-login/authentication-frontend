@@ -64,9 +64,17 @@ export function contactUsService(
     }
 
     if (securityCodeSentMethod) {
-      let securityCodeMethod = "Email";
-      if (securityCodeSentMethod == "text_message") {
-        securityCodeMethod = "Text message";
+      let securityCodeMethod = "";
+      switch (securityCodeSentMethod) {
+        case "email":
+          securityCodeMethod = "Email";
+          break;
+        case "text_message":
+          securityCodeMethod = "Text message";
+          break;
+        case "authenticator_app":
+          securityCodeMethod = "Authenticator app";
+          break;
       }
       htmlBody.push(`<span>[How was the security code sent?]</span>`);
       htmlBody.push(`<p>${securityCodeMethod}</p>`);

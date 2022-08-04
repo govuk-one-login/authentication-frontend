@@ -46,6 +46,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us",
         pageTitleHeading: "pages.contactUsQuestions.anotherProblem.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
     it("should render contact-us-questions if a 'GOV.UK email subscriptions' radio option was chosen", () => {
@@ -60,6 +61,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us",
         pageTitleHeading: "pages.contactUsQuestions.emailSubscriptions.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
     it("should render contact-us-questions if a 'A suggestion or feedback' radio option was chosen", () => {
@@ -74,6 +76,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us",
         pageTitleHeading: "pages.contactUsQuestions.suggestionOrFeedback.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
 
@@ -89,6 +92,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us",
         pageTitleHeading: "pages.contactUsQuestions.provingIdentity.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
 
@@ -113,6 +117,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
     it("should render contact-us-questions if a 'the security code did not work' radio option was chosen", () => {
@@ -128,6 +133,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
     it("should render contact-us-questions if a 'You do not have access to the phone number' radio option was chosen", () => {
@@ -143,6 +149,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.noPhoneNumberAccess.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
     it("should render contact-us-questions if a 'You've forgotten your password' radio option was chosen", () => {
@@ -158,6 +165,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.forgottenPassword.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
     it("should render contact-us-questions if a 'Your account cannot be found' radio option was chosen", () => {
@@ -173,6 +181,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.accountNotFound.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
     it("should render contact-us-questions if a 'technical problem' radio option was chosen", () => {
@@ -188,6 +197,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
     it("should render contact-us-questions if a 'something else' radio option was chosen", () => {
@@ -203,6 +213,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.anotherProblem.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
   });
@@ -221,6 +232,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
     it("should render contact-us-questions if a 'the security code did not work' radio option was chosen", () => {
@@ -236,6 +248,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
     it("should render contact-us-questions if a 'You do not have a UK number' radio option was chosen", () => {
@@ -251,6 +264,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.noUKMobile.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
     it("should render contact-us-questions if a 'technical problem' radio option was chosen", () => {
@@ -266,6 +280,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
     it("should render contact-us-questions if a 'something else' radio option was chosen", () => {
@@ -281,8 +296,26 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.accountCreation.title",
         referer: REFERER,
+        supportMFAOptions: true,
       });
     });
+    it("should render contact-us-questions if a 'problem with authenticator app' radio option was chosen", () => {
+      req.query.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
+      req.query.subtheme = ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM;
+      req.headers.referer = "/contact-us-further-information";
+      req.query.referer = REFERER;
+      contactUsQuestionsGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        theme: "account_creation",
+        subtheme: "authenticator_app_problem",
+        backurl: "/contact-us-further-information",
+        pageTitleHeading: "pages.contactUsQuestions.authenticatorApp.title",
+        referer: REFERER,
+        supportMFAOptions: true,
+      });
+    });
+
     describe("contactUsFormPost", () => {
       it("should redirect /contact-us-submit-success page when ticket posted", async () => {
         const fakeService: ContactUsServiceInterface = {
