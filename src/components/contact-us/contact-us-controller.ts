@@ -81,7 +81,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
     referer: req.query.referer,
-    supportMFAOptions: supportMFAOptions(),
+    supportMFAOptions: supportMFAOptions() ? true : null,
   });
 }
 
@@ -115,7 +115,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     backurl: req.headers.referer,
     referer: req.query.referer,
     pageTitleHeading: pageTitle,
-    supportMFAOptions: supportMFAOptions(),
+    supportMFAOptions: supportMFAOptions() ? true : null,
   });
 }
 
