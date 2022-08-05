@@ -3,7 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "common/show-password/macro.njk" import govukInputWithShowPassword %}
+{% from "common/show-password/macro.njk" import govukInputWithShowPasswordWithLabelAsPageHeading %}
 {% set showBack = true %}
 {% set hrefBack = 'enter-email' %}
 {% set pageTitleName = 'pages.enterPassword.title' | translate %}
@@ -12,12 +12,10 @@
 
 {% include "common/errors/errorSummary.njk" %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPassword.header' | translate}}</h1>
-
 <form id="form-tracking" action="/enter-password" method="post" novalidate>
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
-{{ govukInputWithShowPassword('pages.enterPassword.password.label' | translate, "password", errors) }}
+{{ govukInputWithShowPasswordWithLabelAsPageHeading('pages.enterPassword.header' | translate, "password", errors) }}
 
 <p class="govuk-body">
     <a href="/reset-password-request" class="govuk-link" rel="noreferrer noopener">{{'pages.enterPassword.forgottenPassword.text' | translate }}</a>
