@@ -70,6 +70,7 @@ run:
         -var "dns_state_role=${DNS_DEPLOYER_ROLE_ARN}" \
         -var "session_expiry=${SESSION_EXPIRY}" \
         -var "logging_endpoint_arn=${LOGGING_ENDPOINT_ARN}" \
+        -var 'logging_endpoint_arns=["arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prod"]' \
         -var "logging_endpoint_enabled=${LOGGING_ENDPOINT_ENABLED}" \
         -var "zendesk_username=${ZENDESK_USERNAME}" \
         -var "zendesk_group_id_public=${ZENDESK_GROUP_ID_PUBLIC}" \
