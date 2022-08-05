@@ -181,6 +181,8 @@ var cookies = function (trackingId, analyticsCookieDomain) {
       "/create-password": generateSessionJourney("sign up", "middle"),
       "/enter-phone-number": generateSessionJourney("sign up", "middle"),
       "/check-your-phone": generateSessionJourney("sign up", "middle"),
+      "/setup-authenticator-app": generateSessionJourney('sign up', 'middle'),
+      "/get-security-codes": generateSessionJourney('sign up', 'middle'),
       "/account-created": generateSessionJourney("sign up", "end"),
       "/enter-email": generateSessionJourney("sign in", "start"),
       "/enter-password-account-exists": generateSessionJourney(
@@ -188,6 +190,7 @@ var cookies = function (trackingId, analyticsCookieDomain) {
         "start"
       ),
       "/enter-password": generateSessionJourney("sign in", "middle"),
+      "/enter-authenticator-app-code": generateSessionJourney('sign in', 'middle'),
       "/enter-code": generateSessionJourney("sign in", "middle"),
       "/resend-code": generateSessionJourney("sign in", "middle"),
       "/updated-terms-and-conditions": generateSessionJourney(
