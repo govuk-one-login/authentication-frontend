@@ -128,9 +128,7 @@
     "enterEmailCreateAccount": {
       "title": "Enter your email address",
       "header": "Enter your email address",
-      "text": "Enter your email address to create an account.",
       "email": {
-        "label": "Email address",
         "validationError": {
           "required": "Enter your email address",
           "length": "Email address must be 256 characters or fewer",
