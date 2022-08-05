@@ -8,16 +8,16 @@
 
 {% include "common/errors/errorSummary.njk" %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterAuthenticatorAppCode.header' | translate }}</h1>
-
 <form id="form-tracking" action="/enter-authenticator-app-code" method="post" novalidate>
 
   <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
   {{ govukInput({
-    label: {
-      text: 'pages.enterAuthenticatorAppCode.code.label' | translate
-    },
+      label: {
+        text: 'pages.enterAuthenticatorAppCode.header' | translate,
+        classes: "govuk-label--l",
+        isPageHeading: true
+      },
     classes: "govuk-input--width-10",
     id: "code",
     name: "code",

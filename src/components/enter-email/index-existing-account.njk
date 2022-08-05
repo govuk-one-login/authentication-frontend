@@ -11,18 +11,16 @@
 
 {% include "common/errors/errorSummary.njk" %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterEmailExistingAccount.header' | translate}}</h1>
-
-<p class="govuk-body">{{'pages.enterEmailExistingAccount.text' | translate}}</p>
-
 <form action="/enter-email" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
 {{ govukInput({
-    label: {
-        text: 'pages.enterEmailExistingAccount.email.label' | translate
-    },
+     label: {
+            text: 'pages.enterEmailExistingAccount.header' | translate,
+            classes: "govuk-label--l",
+            isPageHeading: true
+        },
     id: "email",
     name: "email",
     value: email,

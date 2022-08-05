@@ -139,9 +139,8 @@
       }
     },
     "enterEmailExistingAccount": {
-      "title": "Sign in to your GOV.UK account",
-      "header": "Sign in to your GOV.UK account",
-      "text": "Enter your email address to sign in.",
+      "title": "Enter your email address to sign in to your GOV.UK account",
+      "header": "Enter your email address to sign in to your GOV.UK account",
       "email": {
         "label": "Email address",
         "validationError": {
@@ -1579,10 +1578,9 @@
       "changeMfaChoiceLinkText": "Get a code another way"
     },
     "enterAuthenticatorAppCode": {
-      "title": "Enter the security code shown in your authenticator app",
-      "header": "Enter the security code shown in your authenticator app",
+      "title": "Enter the 6 digit security code shown in your authenticator app",
+      "header": "Enter the 6 digit security code shown in your authenticator app",
       "code": {
-        "label": "Security code",
         "validationError": {
           "required": "Enter the security code",
           "invalidFormat": "Enter the security code using only 6 digits",
