@@ -12,59 +12,8 @@
 <input type="hidden" name="referer" value="{{referer}}"/>
 <input type="hidden" name="supportMFAOptions" value="{{supportMFAOptions}}"/>
 
-{% if theme == 'account_creation' %}
-
-    {% if supportMFAOptions %}
-        {% set items = [
-            {
-                value: "email",
-                checked: securityCodeSentMethod === 'email',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio1' | translate
-            },
-            {
-                value: "text_message",
-                checked: securityCodeSentMethod === 'text_message',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio2' | translate
-            },
-            {
-                value: "authenticator_app",
-                checked: securityCodeSentMethod === 'authenticator_app',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio3' | translate
-            }
-        ]
-        %}
-    {% else %}
-        {% set items = [
-            {
-                value: "email",
-                checked: securityCodeSentMethod === 'email',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio1' | translate
-            },
-            {
-                value: "text_message",
-                checked: securityCodeSentMethod === 'text_message',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio2' | translate
-            }
-        ]
-        %}
-    {% endif %}
-
-    {{ govukRadios({
-        idPrefix: "securityCodeSentMethod",
-        name: "securityCodeSentMethod",
-        fieldset: {
-            legend: {
-                text: 'pages.contactUsQuestions.invalidSecurityCode.section1.header' | translate,
-                isPageHeading: false,
-                classes: "govuk-fieldset__legend--m"
-            }
-        },
-        items: items,
-        errorMessage: {
-          text: errors['securityCodeSentMethod'].text
-        } if (errors['securityCodeSentMethod'])
-    }) }}
-{% endif %}
+{% set radioHeader = 'pages.contactUsQuestions.invalidSecurityCode.section1.header' | translate %}
+{% include "contact-us/questions/_security_send_method.njk" %}
 
 {{ govukTextarea({
     label: {
