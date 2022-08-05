@@ -1405,6 +1405,7 @@
           "header": "How did you expect to get the security code?",
           "errorMessage": "Select whether you expected to get the code by email, text message or authenticator app",
           "errorMessageSignIn": "Select whether you expected to get the code by text message or authenticator app"
+
         },
         "section2": {
           "header": "Anything else you want to tell us",
@@ -1416,7 +1417,8 @@
         "header": "The security code does not work",
         "section1": {
           "header": "How did you get the security code?",
-          "errorMessage": "Select whether you got the code by email, text message or authenticator app"
+          "errorMessage": "Select whether you got the code by email, text message or authenticator app",
+          "errorMessageSignIn": "Select whether you got the code by text message or authenticator app"
         },
         "section2": {
           "header": "Anything else you want to tell us",
