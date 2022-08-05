@@ -1274,9 +1274,9 @@
         "header": "A problem signing in to your GOV.UK account",
         "section1": {
           "header": "Tell us what happened",
-          "radio1": "You did not receive a security code",
+          "radio1": "You did not get a security code",
           "radio2": "The security code did not work",
-          "radio3": "You do not have access to the phone number you used when you created your account, so you could not receive a security code",
+          "radio3": "You've changed your phone number or lost your phone",
           "radio4": "You’ve forgotten your password",
           "radio5": "You’ve been told your account ‘cannot be found’",
           "radio6": "There was a technical problem (for example, the service was unavailable)",
