@@ -2,7 +2,7 @@
   {{ 'pages.contactUsQuestions.noPhoneNumberAccess.header' | translate }}
 </h1>
 
-<form action="/contact-us-questions" method="post" novalidate>
+<form action="/contact-us-questions?radio_buttons=true" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="theme" value="{{theme}}"/>
@@ -10,14 +10,18 @@
 <input type="hidden" name="backurl" value="{{backurl}}"/>
 <input type="hidden" name="formType" value="noPhoneNumberAccess"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
+<input type="hidden" name="supportMFAOptions" value="{{supportMFAOptions}}"/>
+
+{% set radioHeader = 'pages.contactUsQuestions.noPhoneNumberAccess.section1.header' | translate %}
+{% include "contact-us/questions/_security_send_method.njk" %}
 
 {{ govukTextarea({
     label: {
-      text: 'pages.contactUsQuestions.noPhoneNumberAccess.section1.header' | translate,
+      text: 'pages.contactUsQuestions.noPhoneNumberAccess.section2.header' | translate,
       classes: "govuk-label--s"
     },
     hint: {
-        text: 'pages.contactUsQuestions.noPhoneNumberAccess.section1.paragraph1' | translate
+        text: 'pages.contactUsQuestions.noPhoneNumberAccess.section2.paragraph1' | translate
       },
     id: "optionalDescription",
     name: "optionalDescription",

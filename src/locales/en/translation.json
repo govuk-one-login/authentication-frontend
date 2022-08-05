@@ -1441,9 +1441,13 @@
         }
       },
       "noPhoneNumberAccess": {
-        "title": "You do not have access to the phone number you used when you created your account",
-        "header": "You do not have access to the phone number you used when you created your account",
+        "title": "You've changed your phone number or lost your phone",
+        "header": "You've changed your phone number or lost your phone",
         "section1": {
+          "header": "How do you get security codes to sign in?",
+          "errorMessageSignIn": "Select whether you get security codes by text message or authenticator app"
+        },
+        "section2": {
           "header": "Anything else you want to tell us",
           "paragraph1": "For example, if you want to add more detail or give us feedback"
         }
