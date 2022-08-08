@@ -1422,7 +1422,7 @@
         },
         "section2": {
           "header": "Anything else you want to tell us",
-          "hintText": "You can add more detail, such as what happened when you entered the security code or what you were trying to do, or give us feedback"
+          "hintText": "You can add more detail, such as what you were trying to do, or give us feedback"
         }
       },
       "noUKMobile": {
