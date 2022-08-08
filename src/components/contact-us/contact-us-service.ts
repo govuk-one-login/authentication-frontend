@@ -76,7 +76,7 @@ export function contactUsService(
           securityCodeMethod = "Authenticator app";
           break;
       }
-      htmlBody.push(`<span>[How was the security code sent?]</span>`);
+      htmlBody.push(`<span>[${questions.radioButtons}]</span>`);
       htmlBody.push(`<p>${securityCodeMethod}</p>`);
     }
 
