@@ -1271,9 +1271,9 @@
         "header": "A problem signing in to your GOV.UK account",
         "section1": {
           "header": "Tell us what happened",
-          "radio1": "You did not receive a security code",
+          "radio1": "You did not get a security code",
           "radio2": "The security code did not work",
-          "radio3": "You do not have access to the phone number you used when you created your account, so you could not receive a security code",
+          "radio3": "You've changed your phone number or lost your phone",
           "radio4": "You’ve forgotten your password",
           "radio5": "You’ve been told your account ‘cannot be found’",
           "radio6": "There was a technical problem (for example, the service was unavailable)",
@@ -1400,7 +1400,9 @@
         "header": "You did not get a security code",
         "section1": {
           "header": "How did you expect to get the security code?",
-          "errorMessage": "Select whether you expected to get the code by email, text message or authenticator app"
+          "errorMessage": "Select whether you expected to get the code by email, text message or authenticator app",
+          "errorMessageSignIn": "Select whether you expected to get the code by text message or authenticator app"
+
         },
         "section2": {
           "header": "Anything else you want to tell us",
@@ -1412,11 +1414,12 @@
         "header": "The security code does not work",
         "section1": {
           "header": "How did you get the security code?",
-          "errorMessage": "Select whether you got the code by email, text message or authenticator app"
+          "errorMessage": "Select whether you got the code by email, text message or authenticator app",
+          "errorMessageSignIn": "Select whether you got the code by text message or authenticator app"
         },
         "section2": {
           "header": "Anything else you want to tell us",
-          "hintText": "You can add more detail, such as what happened when you entered the security code or what you were trying to do, or give us feedback"
+          "hintText": "You can add more detail, such as what you were trying to do, or give us feedback"
         }
       },
       "noUKMobile": {
@@ -1439,9 +1442,13 @@
         }
       },
       "noPhoneNumberAccess": {
-        "title": "You do not have access to the phone number you used when you created your account",
-        "header": "You do not have access to the phone number you used when you created your account",
+        "title": "You've changed your phone number or lost your phone",
+        "header": "You've changed your phone number or lost your phone",
         "section1": {
+          "header": "How do you get security codes to sign in?",
+          "errorMessageSignIn": "Select whether you get security codes by text message or authenticator app"
+        },
+        "section2": {
           "header": "Anything else you want to tell us",
           "paragraph1": "For example, if you want to add more detail or give us feedback"
         }

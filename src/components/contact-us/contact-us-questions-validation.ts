@@ -7,16 +7,22 @@ import { supportMFAOptions } from "../../config";
 export function validateContactUsQuestionsRequest(): ValidationChainFunc {
   return [
     body("securityCodeSentMethod")
-      .if(body("theme").equals("account_creation"))
+      .if((value: string, { req }: any) => {
+        return req.body.theme == "account_creation" || supportMFAOptions();
+      })
       .if(check("radio_buttons").notEmpty())
       .notEmpty()
       .withMessage((value, { req }) => {
         const section = supportMFAOptions()
           ? req.body.formType + ".section1"
           : "securityCodeSentMethod";
-        return req.t("pages.contactUsQuestions." + section + ".errorMessage", {
-          value,
-        });
+        const suffix = req.body.theme == "signing_in" ? "SignIn" : "";
+        return req.t(
+          "pages.contactUsQuestions." + section + ".errorMessage" + suffix,
+          {
+            value,
+          }
+        );
       }),
     body("issueDescription")
       .optional()
