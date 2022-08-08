@@ -211,15 +211,24 @@ export function getQuestionsFromFormType(
       moreDetailDescription: req.t(
         "pages.contactUsQuestions.invalidSecurityCode.section2.header"
       ),
+      radioButtons: req.t(
+        "pages.contactUsQuestions.invalidSecurityCode.section1.header"
+      ),
     },
     noPhoneNumberAccess: {
       optionalDescription: req.t(
+        "pages.contactUsQuestions.noPhoneNumberAccess.section1.header"
+      ),
+      radioButtons: req.t(
         "pages.contactUsQuestions.noPhoneNumberAccess.section1.header"
       ),
     },
     noSecurityCode: {
       moreDetailDescription: req.t(
         "pages.contactUsQuestions.noSecurityCode.section2.header"
+      ),
+      radioButtons: req.t(
+        "pages.contactUsQuestions.noSecurityCode.section1.header"
       ),
     },
     noUKMobile: {

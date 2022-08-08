@@ -22,6 +22,7 @@ export interface Questions {
   additionalDescription?: string;
   optionalDescription?: string;
   moreDetailDescription?: string;
+  radioButtons?: string;
 }
 
 export interface ThemeQuestions {
