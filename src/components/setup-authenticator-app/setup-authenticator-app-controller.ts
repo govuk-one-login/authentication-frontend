@@ -69,7 +69,8 @@ export function setupAuthenticatorAppPost(
       code,
       req.ip,
       sessionId,
-      persistentSessionId
+      persistentSessionId,
+      clientSessionId
     );
 
     if (!verifyAccessCodeRes.success) {
