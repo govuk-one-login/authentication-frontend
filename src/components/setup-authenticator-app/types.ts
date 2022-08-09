@@ -5,6 +5,7 @@ export interface AuthAppServiceInterface {
     code: string,
     sourceIp: string,
     sessionId: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    clientSessionId: string
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

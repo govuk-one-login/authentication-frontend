@@ -16,7 +16,8 @@ export function setupAuthAppService(axios: Http = http): any {
     code: string,
     sourceIp: string,
     sessionId: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    clientSessionId: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.VERIFY_MFA_CODE,
@@ -33,6 +34,7 @@ export function setupAuthAppService(axios: Http = http): any {
         sourceIp: sourceIp,
         sessionId: sessionId,
         persistentSessionId: persistentSessionId,
+        clientSessionId: clientSessionId,
       })
     );
 
