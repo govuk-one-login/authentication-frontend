@@ -217,7 +217,7 @@ export function getQuestionsFromFormType(
     },
     noPhoneNumberAccess: {
       optionalDescription: req.t(
-        "pages.contactUsQuestions.noPhoneNumberAccess.section1.header"
+        "pages.contactUsQuestions.noPhoneNumberAccess.section2.header"
       ),
       radioButtons: req.t(
         "pages.contactUsQuestions.noPhoneNumberAccess.section1.header"
