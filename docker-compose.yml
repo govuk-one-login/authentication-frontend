@@ -3,6 +3,7 @@ version: '3.8'
 
 services:
   di-auth-frontend:
+    container_name: di-authentication-frontend_di-auth-frontend
     build:
       context: .
       dockerfile: local.Dockerfile
