@@ -49,7 +49,7 @@ The unit tests have been written with Mocha and Supertest.
 If the app is run in a container then the tests are run there too:
 
 ```shell script
-docker exec -it di-auth-frontend-dev /bin/sh
+docker exec -it di-authentication-frontend_di-auth-frontend /bin/sh
 
 # yarn run test:unit
 ```
