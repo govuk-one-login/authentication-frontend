@@ -37,11 +37,19 @@
     } if (errors['code'])})
 }}
 
-<p class="govuk-body"> <a href="/enter-email-create" class="govuk-link" rel="noreferrer">{{'pages.enterMfa.resend.link' | translate }}</a> {{ 'pages.checkYourEmail.requestNewCode.paragraph1' | translate}}</p>
-<ul class="govuk-list govuk-list--bullet">
- <li>{{ 'pages.checkYourEmail.requestNewCode.listItem1' | translate}}</li>
- <li>{{ 'pages.checkYourEmail.requestNewCode.listItem2' | translate}}</li>
-</ul>
+{% set detailsHTML %}
+<p class="govuk-body">
+  {{'pages.checkYourEmail.details.text1' | translate}}
+  <a href="{{'pages.checkYourEmail.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourEmail.details.sendCodeLinkText'| translate}}</a>
+  {{'pages.checkYourEmail.details.text2' | translate}}
+  <a href="{{'pages.checkYourEmail.details.changeEmailLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourEmail.details.changeEmailLinkText'| translate}}</a>.
+</p>
+{% endset %}
+
+{{ govukDetails({
+  summaryText: 'pages.checkYourEmail.details.summaryText' | translate,
+  html: detailsHTML
+}) }}
 
 {{ govukButton({
     "text": button_text|default("Continue", true),
