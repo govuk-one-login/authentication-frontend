@@ -31,10 +31,12 @@
   <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph' | translate }}</p>
   <ul class="govuk-list govuk-list--bullet">
     <li>{{ 'pages.signInOrCreate.bullet1' | translate }}</li>
-    {% if supportMFAOptions %}
-    <li>{{ 'pages.signInOrCreate.bullet2AuthApps' | translate }}</li>
+    {% if supportMFAOptions and supportInternationalNumbers %}
+        <li>{{ 'pages.signInOrCreate.bullet2IntNumbers' | translate }}</li>
+    {% elif supportMFAOptions %}
+        <li>{{ 'pages.signInOrCreate.bullet2AuthApps' | translate }}</li>
     {% else %}
-    <li>{{ 'pages.signInOrCreate.bullet2' | translate }}</li>
+        <li>{{ 'pages.signInOrCreate.bullet2' | translate }}</li>
     {% endif %}
   </ul>
 
@@ -42,6 +44,7 @@
 
   <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
   <input type="hidden" name="supportMFAOptions" value="{{supportMFAOptions}}"/>
+  <input type="hidden" name="supportInternationalNumbers" value="{{supportInternationalNumbers}}"/>
 
   {{ govukButton({
     text: 'pages.signInOrCreate.createButtonText' | translate,
