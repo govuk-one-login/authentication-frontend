@@ -7,7 +7,6 @@
 {% set pageTitleName = 'pages.proveIdentityWelcome.title' | translate %}
 
 {% block content %}
-
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.proveIdentityWelcome.header' | translate}}</h1>
 
     <p class="govuk-body">{{'pages.proveIdentityWelcome.section1.paragraph1' | translate}}</p>
@@ -24,7 +23,7 @@
         html: 'pages.proveIdentityWelcome.section2.insetTextEnglishOnly' | translate
     }) }}
 
-    <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph2' | translate}}</p>
+    <p class="govuk-body">{{'pages.proveIdentityWelcome.existingSession.section2.paragraph2' | translate}}</p>
     <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph3' | translate}}</p>
 
     <ul class="govuk-list govuk-list--bullet">
@@ -35,16 +34,43 @@
 
     <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph4' | translate}}</p>
 
-    <form id="form-tracking" action="/prove-identity-welcome?auth=true" method="post" novalidate>
+    <form id="form-tracking" action="/prove-identity-welcome" method="post" novalidate="novalidate">
 
         <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
-        {{ govukButton({
-            "text": button_text|default('pages.proveIdentityWelcome.existingSession.continueButton' | translate, true),
-            "type": "Submit",
-            "preventDoubleClick": true
+        {{ govukRadios({
+            idPrefix: "chooseWayPyi",
+            name:"chooseWayPyi",
+            fieldset: {
+                legend: {
+                    text: 'pages.proveIdentityWelcome.section3.subHeading' | translate,
+                    isPageHeading: false,
+                    classes: "govuk-fieldset__legend--m"
+                }
+            },
+            items: [
+                {
+                    value: "continue",
+                    text: 'pages.proveIdentityWelcome.existingSession.section3.radioOption1' | translate
+                },
+                {
+                    value: "redirect",
+                    text: 'pages.proveIdentityWelcome.section3.radioOption2' | translate,
+                    hint: {
+                    text: 'pages.proveIdentityWelcome.section3.radioOption2HintText' | translate
+                }
+                }
+            ],
+            errorMessage: {
+                text: errors['chooseWayPyi'].text
+            } if (errors['chooseWayPyi'])
         }) }}
-    <p class="govuk-body"> {{'pages.proveIdentityWelcome.existingSession.paragraph1' | translate}}<a class="govuk-link" href="{{ redirectUri }}">{{'pages.proveIdentityWelcome.existingSession.linkText' | translate}}</a>.</p>
+
+        {{ govukButton({
+        "text": button_text|default('general.continue.label' | translate, true),
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+
     </form>
 {% endblock %}
-

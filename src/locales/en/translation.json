@@ -1531,9 +1531,12 @@
         "errorMessage": "Select an option"
       },
       "existingSession": {
-        "continueButton": "Continue with GOV.UK account",
-        "paragraph1":"If you don't have a passport, ",
-        "linkText": "you can prove your identity another way"
+        "section2": {
+          "paragraph2": "We'll ask you for your current address and passport details."
+        },
+        "section3": {
+          "radioOption1": "Continue with your GOV.UK account"
+        }
       }
     },
     "proveIdentityCheck": {
