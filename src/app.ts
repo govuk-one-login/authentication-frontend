@@ -23,7 +23,6 @@ import {
   getRedisPort,
   getSessionExpiry,
   getSessionSecret,
-  supportMFAOptions,
 } from "./config";
 import { logErrorMiddleware } from "./middleware/log-error-middleware";
 import { enterEmailRouter } from "./components/enter-email/enter-email-routes";
@@ -89,11 +88,9 @@ function registerRoutes(app: express.Application) {
   app.use(resetPasswordCheckEmailRouter);
   app.use(checkYourEmailRouter);
   app.use(createPasswordRouter);
-  if (supportMFAOptions()) {
-    app.use(selectMFAOptionsRouter);
-    app.use(enterAuthenticatorAppCodeRouter);
-    app.use(setupAuthenticatorAppRouter);
-  }
+  app.use(selectMFAOptionsRouter);
+  app.use(enterAuthenticatorAppCodeRouter);
+  app.use(setupAuthenticatorAppRouter);
   app.use(enterPhoneNumberRouter);
   app.use(registerAccountCreatedRouter);
   app.use(footerRouter);

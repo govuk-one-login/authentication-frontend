@@ -7,9 +7,7 @@
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="theme" value="{{theme}}"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
-<input type="hidden" name="supportMFAOptions" value="{{supportMFAOptions}}"/>
 
-    {% if supportMFAOptions %}
         {% set items = [
                 {
                     value: "no_uk_mobile_number",
@@ -37,31 +35,6 @@
                 }
             ]
         %}
-    {% else %}
-        {% set items = [
-            {
-                value: "no_uk_mobile_number",
-                text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio3' | translate
-            },
-            {
-                value: "no_security_code",
-                text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio1' | translate
-            },
-            {
-                value: "invalid_security_code",
-                text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio2' | translate
-            },
-            {
-                value: "technical_error",
-                text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio4' | translate
-            },
-            {
-                value: "something_else",
-                text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio5' | translate
-            }
-        ]
-        %}
-    {% endif %}
 
     {{ govukRadios({
         idPrefix: "account-creation",

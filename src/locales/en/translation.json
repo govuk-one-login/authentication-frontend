@@ -113,8 +113,7 @@
       },
       "paragraph": "You’ll need:",
       "bullet1": "an email address",
-      "bullet2": "a UK mobile phone number",
-      "bullet2AuthApps": "a way to get security codes - this can be a UK mobile phone number or an authenticator app",
+      "bullet2": "a way to get security codes - this can be a UK mobile phone number or an authenticator app",
       "bullet2IntNumbers": "a way to get security codes - this can be a mobile phone number or an authenticator app",
       "insetAlternativeLanguage": {
         "paragraph1": "The GOV.UK account is also available ",
@@ -315,14 +314,6 @@
       "info": {
         "paragraph1": "We will send a 6 digit security code to the number you give us.",
         "paragraph2": "You must use a UK mobile phone number."
-      },
-      "returningUser": {
-        "title": "Finish creating your account",
-        "header": "Finish creating your account",
-        "info": {
-          "paragraph1": "You need to add a UK mobile phone number to your GOV.UK account.",
-          "paragraph2": "We will send a 6 digit security code to the number you give us."
-        }
       },
       "ukPhoneNumber": {
         "label": "UK mobile phone number",

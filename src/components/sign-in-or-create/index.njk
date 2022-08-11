@@ -31,10 +31,8 @@
   <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph' | translate }}</p>
   <ul class="govuk-list govuk-list--bullet">
     <li>{{ 'pages.signInOrCreate.bullet1' | translate }}</li>
-    {% if supportMFAOptions and supportInternationalNumbers %}
+    {% if supportInternationalNumbers %}
         <li>{{ 'pages.signInOrCreate.bullet2IntNumbers' | translate }}</li>
-    {% elif supportMFAOptions %}
-        <li>{{ 'pages.signInOrCreate.bullet2AuthApps' | translate }}</li>
     {% else %}
         <li>{{ 'pages.signInOrCreate.bullet2' | translate }}</li>
     {% endif %}
@@ -43,7 +41,6 @@
 <form action="/sign-in-or-create" method="post" novalidate>
 
   <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-  <input type="hidden" name="supportMFAOptions" value="{{supportMFAOptions}}"/>
   <input type="hidden" name="supportInternationalNumbers" value="{{supportInternationalNumbers}}"/>
 
   {{ govukButton({

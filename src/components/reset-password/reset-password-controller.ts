@@ -18,7 +18,6 @@ import { enterPasswordService } from "../enter-password/enter-password-service";
 import { MfaServiceInterface } from "../common/mfa/types";
 import { mfaService } from "../common/mfa/mfa-service";
 import { MFA_METHOD_TYPE } from "../../app.constants";
-import { supportMFAOptions } from "../../config";
 
 const resetPasswordTemplate = "reset-password/index.njk";
 
@@ -126,7 +125,6 @@ export function resetPasswordPost(
           requiresTwoFactorAuth: true,
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
-          supportMFAOptions: supportMFAOptions(),
           mfaMethodType: loginResponse.data.mfaMethodType,
           isMfaMethodVerified: loginResponse.data.mfaMethodVerified,
         },

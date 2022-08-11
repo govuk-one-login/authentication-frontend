@@ -1,43 +1,38 @@
-{% if theme == 'account_creation' or supportMFAOptions %}
+{% set items = [] %}
 
-    {% set items = [] %}
+{% if theme == 'account_creation' %}
+    {% set items = (items.push({
+        value: "email",
+        checked: securityCodeSentMethod === 'email',
+        text: 'pages.contactUsQuestions.securityCodeSentMethod.radio1' | translate
+    }), items) %}
+{% endif %}
 
-    {% if theme == 'account_creation' %}
-        {% set items = (items.push({
-            value: "email",
-            checked: securityCodeSentMethod === 'email',
-            text: 'pages.contactUsQuestions.securityCodeSentMethod.radio1' | translate
-        }), items) %}
-    {% endif %}
+{% set items = (items.push({
+    value: "text_message",
+    checked: securityCodeSentMethod === 'text_message',
+    text: 'pages.contactUsQuestions.securityCodeSentMethod.radio2' | translate
+}), items) %}
 
     {% set items = (items.push({
-        value: "text_message",
-        checked: securityCodeSentMethod === 'text_message',
-        text: 'pages.contactUsQuestions.securityCodeSentMethod.radio2' | translate
-    }), items) %}
+        value: "authenticator_app",
+        checked: securityCodeSentMethod === 'authenticator_app',
+        text: 'pages.contactUsQuestions.securityCodeSentMethod.radio3' | translate
+    }), items)
+    %}
 
-    {% if supportMFAOptions %}
-        {% set items = (items.push({
-            value: "authenticator_app",
-            checked: securityCodeSentMethod === 'authenticator_app',
-            text: 'pages.contactUsQuestions.securityCodeSentMethod.radio3' | translate
-        }), items)
-        %}
-    {% endif %}
-
-    {{ govukRadios({
-        idPrefix: "securityCodeSentMethod",
-        name: "securityCodeSentMethod",
-        fieldset: {
-            legend: {
-                text: radioHeader,
-                isPageHeading: false,
-                classes: "govuk-fieldset__legend--m"
-            }
-        },
-        items: items,
-        errorMessage: {
-            text: errors['securityCodeSentMethod'].text
-        } if (errors['securityCodeSentMethod'])
-    }) }}
-{% endif %}
+{{ govukRadios({
+    idPrefix: "securityCodeSentMethod",
+    name: "securityCodeSentMethod",
+    fieldset: {
+        legend: {
+            text: radioHeader,
+            isPageHeading: false,
+            classes: "govuk-fieldset__legend--m"
+        }
+    },
+    items: items,
+    errorMessage: {
+        text: errors['securityCodeSentMethod'].text
+    } if (errors['securityCodeSentMethod'])
+}) }}
