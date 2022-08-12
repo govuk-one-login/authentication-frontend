@@ -251,6 +251,15 @@
           "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
       },
+      "details": {
+        "summaryText": "Problems with the code?",
+        "text1": "We can ",
+        "sendCodeLinkText": "send the code again",
+        "sendCodeLinkHref": "/resend-code?isResendCodeRequest=true",
+        "text2": " or you can ",
+        "changeEmailLinkText": "use a different email address",
+        "changeEmailLinkHref": "/enter-email"
+      },
       "sendAnotherEmailLinkText": "Send another email",
       "requestNewCode": {
         "header": "Problems receiving the code?",
@@ -357,12 +366,6 @@
         "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
         "paragraph3": "The code will expire after 15 minutes."
       },
-      "requestNewCode": {
-        "link": "Request a new code",
-        "paragraph1": "if:",
-        "listItem1": "the code is not working or has expired, or you did not receive one",
-        "listItem2": "you want to use a different email address "
-      },
       "code": {
         "label": "Enter the 6 digit security code",
         "validationError": {
@@ -372,6 +375,15 @@
           "invalidFormat": "Enter the security code using only 6 digits",
           "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
+      },
+      "details": {
+        "summaryText": "Problems with the code?",
+        "text1": "We can ",
+        "sendCodeLinkText": "send the code again",
+        "sendCodeLinkHref": "/resend-code?isResendCodeRequest=true",
+        "text2": " or you can ",
+        "changeEmailLinkText": "use a different email address",
+        "changeEmailLinkHref": "/enter-email-create"
       }
     },
     "checkYourPhone": {
