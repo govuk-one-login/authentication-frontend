@@ -256,9 +256,7 @@
         "text1": "We can ",
         "sendCodeLinkText": "send the code again",
         "sendCodeLinkHref": "/resend-code?isResendCodeRequest=true",
-        "text2": " or you can ",
-        "changeEmailLinkText": "use a different email address",
-        "changeEmailLinkHref": "/enter-email"
+        "text2": " if the code is not working or you did not receive it"
       },
       "sendAnotherEmailLinkText": "Send another email",
       "requestNewCode": {
