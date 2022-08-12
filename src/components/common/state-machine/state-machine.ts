@@ -423,10 +423,7 @@ const authStateMachine = createMachine(
           ],
         },
         meta: {
-          optionalPaths: [
-            PATH_NAMES.RESET_PASSWORD_RESEND_CODE,
-            PATH_NAMES.ENTER_EMAIL_SIGN_IN,
-          ],
+          optionalPaths: [PATH_NAMES.RESET_PASSWORD_RESEND_CODE],
         },
       },
       [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]: {
