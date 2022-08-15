@@ -54,6 +54,10 @@ export function supportMFAOptions(): boolean {
   return process.env.SUPPORT_MFA_OPTIONS === "1";
 }
 
+export function supportLanguageCY(): boolean {
+  return process.env.SUPPORT_LANGUAGE_CY === "1";
+}
+
 export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
   const hostKey = `${appEnv}-${process.env.REDIS_KEY}-redis-master-host`;
   const portKey = `${appEnv}-${process.env.REDIS_KEY}-redis-port`;
