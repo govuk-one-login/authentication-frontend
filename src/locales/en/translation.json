@@ -378,7 +378,7 @@
         "summaryText": "Problems with the code?",
         "text1": "We can ",
         "sendCodeLinkText": "send the code again",
-        "sendCodeLinkHref": "/resend-code?isResendCodeRequest=true",
+        "sendCodeLinkHref": "/resend-email-code",
         "text2": " or you can ",
         "changeEmailLinkText": "use a different email address",
         "changeEmailLinkHref": "/enter-email-create"
@@ -485,6 +485,15 @@
       "phoneNumber": {
         "default": "We will send a code to the phone number linked to your account",
         "isResendCodeRequest": "We will send a code to: [mobile]."
+      }
+    },
+    "resendEmailCode": {
+      "title": "Get security code",
+      "header": "Get security code",
+      "continue": "Get security code",
+      "message": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
+      "email": {
+        "default": "We will send a code to: "
       }
     },
     "signedOut": {

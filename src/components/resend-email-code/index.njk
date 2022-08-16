@@ -1,0 +1,30 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% set pageTitleName = 'pages.resendEmailCode.title' | translate %}
+{% set showBack = true %}
+{% set hrefBack = 'enter-code' %}
+
+
+{% set phoneNumberMessage = 'pages.resendEmailCode.email.default' | translate + '<span class="govuk-body govuk-!-font-weight-bold">' + emailAddress + '</span>' %}
+
+{% block content %}
+    <form action="/resend-email-code" method="post" novalidate="novalidate">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+        <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resendEmailCode.header' | translate}}</h1>
+
+        {{ govukInsetText({
+            html: 'pages.resendEmailCode.email.default' | translate + '<span class="govuk-body govuk-!-font-weight-bold">' + emailAddress + '</span>'
+        }) }}
+
+        <p class="govuk-body">{{'pages.resendEmailCode.message' | translate}}</p>
+        {{ govukButton({
+        "text": button_text|default('pages.resendEmailCode.continue' | translate, true),
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+
+    </form>
+{% endblock %}
