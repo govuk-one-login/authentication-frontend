@@ -378,7 +378,7 @@
         "summaryText": "Problems with the code?",
         "text1": "We can ",
         "sendCodeLinkText": "send the code again",
-        "sendCodeLinkHref": "/resend-code?isResendCodeRequest=true",
+        "sendCodeLinkHref": "/resend-email-code",
         "text2": " or you can ",
         "changeEmailLinkText": "use a different email address",
         "changeEmailLinkHref": "/enter-email-create"

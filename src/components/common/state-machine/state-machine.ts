@@ -156,6 +156,11 @@ const authStateMachine = createMachine(
           optionalPaths: [PATH_NAMES.SIGN_IN_OR_CREATE],
         },
       },
+      [PATH_NAMES.RESEND_EMAIL_CODE]: {
+        on: {
+          [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.CHECK_YOUR_EMAIL],
+        },
+      },
       [PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS]: {
         on: {
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
@@ -201,6 +206,7 @@ const authStateMachine = createMachine(
         meta: {
           optionalPaths: [
             PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
+            PATH_NAMES.RESEND_EMAIL_CODE,
             PATH_NAMES.SECURITY_CODE_WAIT,
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
