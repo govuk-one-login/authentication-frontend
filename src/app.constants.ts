@@ -31,6 +31,7 @@ export const PATH_NAMES = {
   SECURITY_CODE_WAIT: "/security-code-invalid-request",
   AUTH_CODE: "/auth-code",
   RESEND_MFA_CODE: "/resend-code",
+  RESEND_EMAIL_CODE: "/resend-email-code",
   SIGNED_OUT: "/signed-out",
   ACCOUNT_LOCKED: "/account-locked",
   UPLIFT_JOURNEY: "/uplift",

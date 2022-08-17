@@ -1,0 +1,30 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% set pageTitleName = 'pages.resendMfaCode.title' | translate %}
+{% set showBack = true %}
+{% set hrefBack = 'enter-code' %}
+
+
+{% set emailMessage = 'pages.resendMfaCode.phoneNumber.isResendCodeRequest' | translate | replace("[mobile].", "") %}
+
+{% block content %}
+    <form action="/resend-email-code" method="post" novalidate="novalidate">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+        <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resendMfaCode.header' | translate}}</h1>
+
+        {{ govukInsetText({
+            html: emailMessage + '<span class="govuk-body govuk-!-font-weight-bold">' + emailAddress + '</span>'
+        }) }}
+
+        <p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph3' | translate}}</p>
+        {{ govukButton({
+        "text": button_text|default('pages.resendMfaCode.continue' | translate, true),
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+
+    </form>
+{% endblock %}
