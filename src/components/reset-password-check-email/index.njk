@@ -7,25 +7,25 @@
 {% set pageTitleName = 'pages.resetPasswordCheckEmail.title' | translate %}
 {% block content %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resetPasswordCheckEmail.header' | translate}}</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resetPasswordCheckEmail.header' | translate}}</h1>
 
-<p class="govuk-body">
-    {{ govukInsetText({
+    <p class="govuk-body">
+        {{ govukInsetText({
         html: 'pages.resetPasswordCheckEmail.paragraph1' | translate + '<span class="govuk-body govuk-!-font-weight-bold">' + email + '</span>'
     }) }}
-</p>
+    </p>
 
-<p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph2' | translate}}</p>
+    <p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph2' | translate}}</p>
 
-<p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph3' | translate}}</p>
+    <p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph3' | translate}}</p>
 
-<p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph4' | translate}}</p>
+    <p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph4' | translate}}</p>
 
-<form action="/reset-password-check-email" method="post" novalidate>
+    <form action="/reset-password-check-email" method="post" novalidate="novalidate">
 
-    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-    <input type="hidden" name="email" value="{{email}}"/>
-    {{ govukInput({
+        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+        <input type="hidden" name="email" value="{{email}}"/>
+        {{ govukInput({
         label: {
             text: 'pages.resetPasswordCheckEmail.code.label' | translate
         },
@@ -33,39 +33,32 @@
         name: "code",
         type: "number",
         autocomplete:"off",
-        classes: "govuk-!-width-two-thirds govuk-!-font-weight-bold",
+        classes: "govuk-input--width-10 govuk-!-font-weight-bold",
         value: code,
         errorMessage: {
             text: errors['code'].text
         } if (errors['code'])})
     }}
 
-    {% set resendLinkParagraph %}
-        <a href="/reset-password-resend-code" class="govuk-link" rel="noreferrer">{{ 'pages.resetPasswordCheckEmail.requestNewCode.link' | translate }}</a>{{ 'pages.resetPasswordCheckEmail.requestNewCode.paragraph1' | translate }}
-    {%  endset %}
+        {% set detailsHTML %}
+        <p class="govuk-body">
+            {{'pages.resetPasswordCheckEmail.details.text1' | translate}}
+            <a href="{{'pages.resetPasswordCheckEmail.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.resetPasswordCheckEmail.details.sendCodeLinkText'| translate}}</a>
+            {{'pages.resetPasswordCheckEmail.details.text2' | translate}}.
+        </p>
+        {% endset %}
 
-    {% set detailsHTML %}
-    <p class="govuk-body">
-      {{'pages.resetPasswordCheckEmail.details.text1' | translate}}
-      <a href="{{'pages.resetPasswordCheckEmail.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.resetPasswordCheckEmail.details.sendCodeLinkText'| translate}}</a>
-      {{'pages.resetPasswordCheckEmail.details.text2' | translate}}.
-    </p>
-    {% endset %}
-
-    {{ govukDetails({
+        {{ govukDetails({
       summaryText: 'pages.resetPasswordCheckEmail.details.summaryText' | translate,
       html: detailsHTML
     }) }}
 
-
-    {{ govukButton({
+        {{ govukButton({
         "text": 'pages.resetPasswordCheckEmail.buttonText' | translate | default("Continue", true),
         "type": "Submit",
         "preventDoubleClick": true
     }) }}
 
-</form>
+    </form>
 
 {% endblock %}
-
-

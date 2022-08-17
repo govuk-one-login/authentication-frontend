@@ -255,7 +255,7 @@
         "summaryText": "Problems with the code?",
         "text1": "We can ",
         "sendCodeLinkText": "send the code again",
-        "sendCodeLinkHref": "/resend-code?isResendCodeRequest=true",
+        "sendCodeLinkHref": "/reset-password-resend-code",
         "text2": " if the code is not working or you did not receive it"
       },
       "sendAnotherEmailLinkText": "Send another email",
