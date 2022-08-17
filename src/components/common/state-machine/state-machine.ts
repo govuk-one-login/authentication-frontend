@@ -479,7 +479,6 @@ const authStateMachine = createMachine(
         meta: {
           optionalPaths: [
             PATH_NAMES.ENTER_EMAIL_SIGN_IN,
-            PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
             PATH_NAMES.ACCOUNT_LOCKED,
             PATH_NAMES.SIGN_IN_OR_CREATE,
           ],
