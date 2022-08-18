@@ -9,55 +9,57 @@
 {% set pageTitleName = 'pages.checkYourEmail.title' | translate %}
 
 {% block content %}
-{% include "common/errors/errorSummary.njk" %}
+  {% include "common/errors/errorSummary.njk" %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.checkYourEmail.header' | translate}}</h1>
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.checkYourEmail.header' | translate}}</h1>
 
-{{ govukInsetText({
+  {{ govukInsetText({
     html: 'pages.checkYourEmail.text' | translate + '<span class="govuk-body govuk-!-font-weight-bold">' + email + '</span>'
   }) }}
 
-<p class="govuk-body">{{'pages.checkYourEmail.info.paragraph1' | translate}}</p>
-<p class="govuk-body">{{'pages.checkYourEmail.info.paragraph2' | translate}}</p>
-<p class="govuk-body">{{'pages.checkYourEmail.info.paragraph3' | translate}}</p>
+  <p class="govuk-body">{{'pages.checkYourEmail.info.paragraph1' | translate}}</p>
+  <p class="govuk-body">{{'pages.checkYourEmail.info.paragraph2' | translate}}</p>
+  <p class="govuk-body">{{'pages.checkYourEmail.info.paragraph3' | translate}}</p>
 
-<form action="/check-your-email" method="post" novalidate>
+  <form action="/check-your-email" method="post" novalidate="novalidate">
 
-<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-<input type="hidden" name="email" value="{{email}}"/>
-{{ govukInput({
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <input type="hidden" name="email" value="{{email}}"/>
+    {{ govukInput({
     label: {
         text: 'pages.checkYourEmail.code.label' | translate
     },
     id: "code",
     name: "code",
+    inputmode: "numeric",
+    pattern: "[0-9]*",
+    spellcheck: false,
     value: code,
     errorMessage: {
         text: errors['code'].text
     } if (errors['code'])})
 }}
 
-{% set detailsHTML %}
-<p class="govuk-body">
-  {{'pages.checkYourEmail.details.text1' | translate}}
-  <a href="{{'pages.checkYourEmail.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourEmail.details.sendCodeLinkText'| translate}}</a>
-  {{'pages.checkYourEmail.details.text2' | translate}}
-  <a href="{{'pages.checkYourEmail.details.changeEmailLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourEmail.details.changeEmailLinkText'| translate}}</a>.
-</p>
-{% endset %}
+    {% set detailsHTML %}
+    <p class="govuk-body">
+      {{'pages.checkYourEmail.details.text1' | translate}}
+      <a href="{{'pages.checkYourEmail.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourEmail.details.sendCodeLinkText'| translate}}</a>
+      {{'pages.checkYourEmail.details.text2' | translate}}
+      <a href="{{'pages.checkYourEmail.details.changeEmailLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourEmail.details.changeEmailLinkText'| translate}}</a>.
+    </p>
+    {% endset %}
 
-{{ govukDetails({
+    {{ govukDetails({
   summaryText: 'pages.checkYourEmail.details.summaryText' | translate,
   html: detailsHTML
 }) }}
 
-{{ govukButton({
+    {{ govukButton({
     "text": button_text|default("Continue", true),
     "type": "Submit",
     "preventDoubleClick": true
 }) }}
 
-</form>
+  </form>
 
 {% endblock %}
-
