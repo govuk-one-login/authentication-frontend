@@ -118,8 +118,8 @@
       "bullet2IntNumbers": "a way to get security codes - this can be a mobile phone number or an authenticator app",
       "insetAlternativeLanguage": {
         "paragraph1": "The GOV.UK account is also available ",
-        "linkText": "in Welsh (Cymraeg)",
-        "linkHref": ""
+        "linkText": "in English",
+        "linkHref": "?lng=en"
       },
       "paragraph2": "If you already have a GOV.UK account you can",
       "signInText": "sign in",
