@@ -1,1 +1,1620 @@
-../en/translation.json
+{
+  "general": {
+    "provider": "GOV.UK",
+    "pageTitle": "GOV.UK Sign in",
+    "serviceName": "Sign in to or create your GOV.UK account",
+    "serviceNameTitle": "GOV.UK account",
+    "errorTitlePrefix": "Error",
+    "back": "Back",
+    "warning": "Warning",
+    "errorSummaryTitle": "There is a problem",
+    "phaseBanner": {
+      "tag": "beta",
+      "content": "This is a new service – your <a  href=\"/contact-us?supportType=PUBLIC\" class=\"govuk-link\" rel=\"noopener\" target=\"_blank\">feedback (opens in new tab)</a> will help us to improve it."
+    },
+    "authenticatorAppIssuer": "GOV.UK account",
+    "yes": "Yes",
+    "no": "No",
+    "cookie": {
+      "cookieBanner": {
+        "title": "Cookies on GOV.UK account",
+        "heading": "Cookies on GOV.UK account",
+        "paragraph1": "We use some essential cookies to make this service work.",
+        "paragraph2": "We’d also like to use analytics cookies so we can understand how you use the service and make improvements.",
+        "buttonAcceptText": "Accept analytics cookies",
+        "buttonRejectText": "Reject analytics cookies",
+        "linkViewCookiesText": "View cookies",
+        "cookieBannerHideLink": "Hide this message",
+        "cookeBannerAccept": {
+          "paragraph1": "You’ve accepted additional cookies. You can ",
+          "paragraph2": " at any time."
+        },
+        "cookeBannerReject": {
+          "paragraph1": "You’ve rejected additional cookies. You can ",
+          "paragraph2": " at any time."
+        },
+        "changeCookiePreferencesLink": "change your cookie settings"
+      },
+      "cookieText": "GOV.UK uses cookies to make the site simpler.",
+      "cookieLink": "#",
+      "cookieLinkText": "Find out more about cookies"
+    },
+    "language": {
+      "english": "English",
+      "welsh": "Cymraeg (Welsh)"
+    },
+    "continue": {
+      "label": "Continue"
+    },
+    "header": {
+      "homepageHref": "https://www.gov.uk/"
+    },
+    "footer": {
+      "accessibilityStatement": {
+        "pageTitle": "Accessibility statement",
+        "linkText": "Accessibility statement"
+      },
+      "cookies": {
+        "pageTitle": "Cookie Policy",
+        "linkText": "Cookies"
+      },
+      "terms": {
+        "pageTitle": "Terms and conditions",
+        "linkText": "Terms and conditions"
+      },
+      "privacy": {
+        "pageTitle": "Privacy notice",
+        "linkText": "Privacy notice"
+      },
+      "support": {
+        "pageTitle": "Support",
+        "linkText": "Support (opens in new tab)"
+      }
+    }
+  },
+  "error": {
+    "error404": {
+      "title": "Page not found",
+      "header": "Page not found",
+      "content": {
+        "paragraph1": "If you typed the web address, check it is correct.",
+        "paragraph2": "If you pasted the web address, check you copied the entire address.",
+        "govUKHomepageButtonHref": "https://www.gov.uk/",
+        "govUKHomepageButtonText": "Go to the GOV.UK homepage"
+      }
+    },
+    "error500": {
+      "title": "There's a problem with this service",
+      "header": "Sorry, there's a problem with this service",
+      "content": {
+        "paragraph1": "Try again later."
+      }
+    },
+    "timeoutError": {
+      "title": "Sorry, the page has expired",
+      "header": "Sorry, the page has expired",
+      "content": {
+        "paragraph1": "This is because you did not do anything for more than 2 hours. ",
+        "paragraph2": "You’ll need to start what you were doing again.",
+        "govUKHomepageButtonHref": "https://www.gov.uk/",
+        "govUKHomepageButtonText": "Go to the GOV.UK homepage"
+      }
+    }
+  },
+  "pages": {
+    "signInOrCreate": {
+      "mandatory": {
+        "title": "Create a GOV.UK account or sign in",
+        "header": "Create a GOV.UK account or sign in"
+      },
+      "optional": {
+        "title": "Create an account to save your progress",
+        "header": "Create an account to save your progress"
+      },
+      "paragraph": "You’ll need:",
+      "bullet1": "an email address",
+      "bullet2": "a UK mobile phone number",
+      "bullet2AuthApps": "a way to get security codes - this can be a UK mobile phone number or an authenticator app",
+      "bullet2IntNumbers": "a way to get security codes - this can be a mobile phone number or an authenticator app",
+      "insetAlternativeLanguage": {
+        "paragraph1": "The GOV.UK account is also available ",
+        "linkText": "in Welsh (Cymraeg)",
+        "linkHref": ""
+      },
+      "paragraph2": "If you already have a GOV.UK account you can",
+      "signInText": "sign in",
+      "moreAbout": {
+        "header": "About GOV.UK accounts",
+        "paragraph1": "GOV.UK accounts are new. At the moment you can only use your GOV.UK account with a few services.",
+        "paragraph2": "GOV.UK accounts are currently separate from other government accounts (for example Government Gateway or Universal Credit).",
+        "paragraph3": "In the future, you’ll be able to use your GOV.UK account to sign in to most services on GOV.UK."
+      },
+      "createButtonText": "Create a GOV.UK account"
+    },
+    "enterEmailCreateAccount": {
+      "title": "Enter your email address",
+      "header": "Enter your email address",
+      "email": {
+        "validationError": {
+          "required": "Enter your email address",
+          "length": "Email address must be 256 characters or fewer",
+          "email": "Enter an email address in the correct format, like name@example.com"
+        }
+      }
+    },
+    "enterEmailExistingAccount": {
+      "title": "Enter your email address to sign in to your GOV.UK account",
+      "header": "Enter your email address to sign in to your GOV.UK account",
+      "email": {
+        "label": "Email address",
+        "validationError": {
+          "required": "Enter your email address",
+          "length": "Email address must be 256 characters or fewer",
+          "email": "Enter an email address in the correct format, like name@example.com"
+        }
+      }
+    },
+    "enterEmail": {
+      "title": "Sign in to or create your GOV.UK account",
+      "header": "Sign in to or create your GOV.UK account",
+      "text": "A GOV.UK account is separate from other government accounts (for example a personal tax account or Government Gateway).",
+      "email": {
+        "label": "Email address",
+        "text": "To sign in or create an account, enter your email address",
+        "validationError": {
+          "required": "Enter your email address",
+          "length": "Email address must be 256 characters or fewer",
+          "email": "Enter an email address in the correct format, like name@example.com"
+        }
+      },
+      "details": {
+        "summary": "A GOV.UK account will:",
+        "bulletPoint1": "let you reuse and share your data to ensure that government services are quicker to interact with",
+        "bulletPoint2": "suggest GOV.UK guidance and information that is relevant to you",
+        "bulletPoint3": "tell you when content you're interested in has been updated",
+        "bulletPoint4": "help you set up reminders for tasks you may need to complete later"
+      },
+      "whatYouNeed": {
+        "summary": "What you need to create a GOV.UK account",
+        "bulletPoint1": "an email address",
+        "bulletPoint2": "a working UK phone number with signal, so we can send you a security code"
+      }
+    },
+    "accountNotFoundMandatory": {
+      "title": "No GOV.UK account found",
+      "header": "No GOV.UK account found",
+      "paragraph1": "There is no GOV.UK account for ",
+      "insetText1": "GOV.UK accounts are new. At the moment, they are separate from other government accounts, such as Government Gateway or Universal Credit.",
+      "paragraph2": "You need to create a GOV.UK account even if you already have another type of government account.",
+      "createAccountButtonText": "Create a GOV.UK account",
+      "createAccountButtonHref": "/enter-email",
+      "tryAnotherLinkText": "Try another email address",
+      "tryAnotherLinkHref": "/enter-email-existing-account"
+    },
+    "accountNotFoundOptional": {
+      "title": "No GOV.UK account found",
+      "header": "No GOV.UK account found",
+      "paragraph1": "We could not find a GOV.UK account using this email address.",
+      "insetText1": "You may have other government accounts such as Government Gateway or your personal tax account.",
+      "insetText2": "The GOV.UK account is separate from these other government accounts.",
+      "insetText3": "You need to create a GOV.UK account, even if you have another government account.",
+      "createAccountButtonText": "Create a GOV.UK account",
+      "createAccountButtonHref": "/enter-email",
+      "tryAnotherLinkText": "Try another email address",
+      "tryAnotherLinkHref": "/enter-email-existing-account"
+    },
+    "enterPassword": {
+      "title": "Enter your password",
+      "header": "Enter your password",
+      "info": "Enter your password to sign in",
+      "password": {
+        "label": "Password",
+        "validationError": {
+          "required": "Enter your password",
+          "incorrectPassword": "Enter the correct password"
+        }
+      },
+      "forgottenPassword": {
+        "text": "I've forgotten my password"
+      }
+    },
+    "enterPasswordAccountExists": {
+      "title": "You have a GOV.UK account",
+      "header": "You have a GOV.UK account",
+      "paragraph1": "There's already a GOV.UK account using ",
+      "info": "Enter your password to sign in.",
+      "password": {
+        "label": "Password",
+        "validationError": {
+          "required": "Enter your password",
+          "incorrectPassword": "Enter the correct password"
+        }
+      },
+      "forgottenPassword": {
+        "text": "I've forgotten my password"
+      }
+    },
+    "resetPasswordCheckEmail": {
+      "title": "Check your email",
+      "header": "Check your email",
+      "paragraph1": "We have sent an email to: ",
+      "paragraph2": "The email contains a 6 digit security code.",
+      "paragraph3": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
+      "paragraph4": "The code will expire after 15 minutes.",
+      "code": {
+        "label": "Enter the 6 digit security code",
+        "validationError": {
+          "required": "Enter the security code",
+          "maxLength": "Enter the security code using only 6 digits",
+          "minLength": "Enter the security code using only 6 digits",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+        }
+      },
+      "details": {
+        "summaryText": "Problems with the code?",
+        "text1": "We can ",
+        "sendCodeLinkText": "send the code again",
+        "sendCodeLinkHref": "/reset-password-resend-code",
+        "text2": " if the code is not working or you did not receive it"
+      },
+      "sendAnotherEmailLinkText": "Send another email",
+      "requestNewCode": {
+        "header": "Problems receiving the code?",
+        "link": "Request a new code",
+        "paragraph1": " if the code does not work or you did not receive one. "
+      },
+      "buttonText": "Continue"
+    },
+    "resetPasswordResendCode": {
+      "title": "Request a new security code",
+      "header": "Request a new security code",
+      "email": "We'll send a new code to ",
+      "send": "Send a new code"
+    },
+    "createPassword": {
+      "title": "Create your password",
+      "header": "Create your password",
+      "password": {
+        "label": "Enter a password",
+        "paragraph1": "Your password must:",
+        "bulletPoint1": "be at least 8 characters long",
+        "bulletPoint2": "include letters and numbers",
+        "paragraph2": "Do not use a very common password, such as ‘password’ or a sequence of numbers.",
+        "validationError": {
+          "required": "Enter your password",
+          "maxLength": "Your password must be less than 256 characters",
+          "commonPassword": "Enter a stronger password. Do not use very common passwords, such as ‘password’ or a sequence of numbers.",
+          "alphaNumeric": "Your password must be at least 8 characters long and must include letters and numbers"
+        }
+      },
+      "confirmPassword": {
+        "label": "Re-type password",
+        "validationError": {
+          "required": "Re-type your password",
+          "matches": "Enter the same password in both fields"
+        }
+      },
+      "securePasswordDetails": {
+        "summary": "How to create a secure password",
+        "text": "A good way to create a secure and memorable password is to use 3 random words. You can use numbers, symbols and spaces."
+      },
+      "termsOfUse": {
+        "heading": "Agree to our terms of use",
+        "paragraph1": "By continuing, you confirm that you agree to our:",
+        "bullet1LinkText": "privacy notice (opens in a new tab)",
+        "bullet1Text": ", which explains how we use your personal information",
+        "bullet1LinkHref": "/privacy-notice",
+        "bullet2LinkText": "terms and conditions (opens in a new tab)",
+        "bullet2LinkHref": "/terms-and-conditions"
+      }
+    },
+    "enterPhoneNumber": {
+      "title": "Enter your mobile phone number",
+      "header": "Enter your mobile phone number",
+      "info": {
+        "paragraph1": "We will send a 6 digit security code to the number you give us.",
+        "paragraph2": "You must use a UK mobile phone number."
+      },
+      "returningUser": {
+        "title": "Finish creating your account",
+        "header": "Finish creating your account",
+        "info": {
+          "paragraph1": "You need to add a UK mobile phone number to your GOV.UK account.",
+          "paragraph2": "We will send a 6 digit security code to the number you give us."
+        }
+      },
+      "ukPhoneNumber": {
+        "label": "UK mobile phone number",
+        "validationError": {
+          "required": "Enter a phone number",
+          "international": "Enter a UK mobile phone number",
+          "length": "Enter a UK mobile phone number, like 07700 900000",
+          "plusNumericOnly": "Enter a UK mobile phone number using only numbers or the + symbol"
+        }
+      },
+      "internationalPhoneNumber": {
+        "checkBoxLabel": "I do not have a UK mobile number",
+        "label": "Mobile phone number",
+        "hint": "Include the country code, for example +3537777666555",
+        "validationError": {
+          "required": "Enter a phone number",
+          "plusNumericOnly": "Enter a phone number using only numbers or the + symbol",
+          "internationalFormat": "Enter a phone number in the correct format"
+        }
+      }
+    },
+    "accountCreated": {
+      "title": "You've created your GOV.UK account",
+      "header": "You've created your GOV.UK account",
+      "text": "Now continue to use the service.",
+      "inset": "Your progress on ",
+      "insetContinued": " has been saved.",
+      "continue": "Continue",
+      "signOut": "Sign out",
+      "continueReport": "Continue your report",
+      "progressSaved": "Your progress has been saved."
+    },
+    "checkYourEmail": {
+      "title": "Check your email",
+      "header": "Check your email",
+      "text": "We have sent an email to: ",
+      "info": {
+        "paragraph1": "The email contains a 6 digit security code.",
+        "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
+        "paragraph3": "The code will expire after 15 minutes."
+      },
+      "code": {
+        "label": "Enter the 6 digit security code",
+        "validationError": {
+          "required": "Enter the security code",
+          "maxLength": "Enter the security code using only 6 digits",
+          "minLength": "Enter the security code using only 6 digits",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+        }
+      },
+      "details": {
+        "summaryText": "Problems with the code?",
+        "text1": "We can ",
+        "sendCodeLinkText": "send the code again",
+        "sendCodeLinkHref": "/resend-email-code",
+        "text2": " or you can ",
+        "changeEmailLinkText": "use a different email address",
+        "changeEmailLinkHref": "/enter-email-create"
+      }
+    },
+    "checkYourPhone": {
+      "title": "Check your phone",
+      "header": "Check your phone",
+      "info": {
+        "paragraph1": "We have sent a code to [mobile].",
+        "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes."
+      },
+      "code": {
+        "label": "Enter the 6 digit security code",
+        "validationError": {
+          "required": "Enter the security code",
+          "maxLength": "Enter the security code using only 6 digits",
+          "minLength": "Enter the security code using only 6 digits",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+        }
+      },
+      "details": {
+        "summaryText": "Problems with the code?",
+        "text1": "We can ",
+        "sendCodeLinkText": "send the code again",
+        "sendCodeLinkHref": "/resend-code?isResendCodeRequest=true",
+        "text 2": " or you can ",
+        "changePhoneNumberLinkText": "use a different phone number",
+        "changePhoneNumberLinkHref": "/enter-phone-number",
+        "changeMfaChoiceLinkText": "Get a code another way",
+        "changeMfaChoiceLinkHref": "/get-security-codes"
+      }
+    },
+    "securityCodeInvalid": {
+      "title": "You entered the wrong security code too many times",
+      "header": "You entered the wrong security code too many times",
+      "info": {
+        "paragraph1": "You need to wait 15 minutes.",
+        "paragraph2Start": "You can then ",
+        "link": "get a new code",
+        "paragraph2End": " and try again."
+      },
+      "authAppInfo": {
+        "paragraph2Start": "You can then ",
+        "link": "try again",
+        "paragraph2End": " with a new code."
+      }
+    },
+    "securityRequestsExceededExpired": {
+      "title": "You asked to resend the security code too many times",
+      "header": "You asked to resend the security code too many times",
+      "info": {
+        "paragraph1": "You need to wait 15 minutes.",
+        "paragraph2Start": "You can then ",
+        "link": "get a new code",
+        "paragraph2End": " and try again."
+      }
+    },
+    "securityCodeWaitToRequest": {
+      "title": "You cannot get a new security code at the moment ",
+      "header": "You cannot get a new security code at the moment ",
+      "info": {
+        "paragraph1": "This is because you asked to resend the security code too many times.",
+        "paragraph2Start": "You can ",
+        "link": "get a new code",
+        "paragraph2End": " after 15 minutes."
+      }
+    },
+    "enterMfa": {
+      "title": "Check your phone",
+      "header": "Check your phone",
+      "info": {
+        "paragraph1": "We sent a code to the phone number linked to your account.",
+        "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes."
+      },
+      "resend": {
+        "link": "Request a new code",
+        "paragraph1": "if the code does not work or has expired, or you did not receive one."
+      },
+      "code": {
+        "label": "Enter the 6 digit security code",
+        "validationError": {
+          "required": "Enter the security code",
+          "maxLength": "Enter the security code using only 6 digits",
+          "minLength": "Enter the security code using only 6 digits",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+        }
+      },
+      "details": {
+        "summaryText": "Problems with the code?",
+        "text1": "We can ",
+        "sendCodeLinkText": "send the code again",
+        "sendCodeLinkHref": "/resend-code",
+        "text 2": " if the code is not working or you did not receive it."
+      }
+    },
+    "resendMfaCode": {
+      "title": "Get security code",
+      "header": "Get security code",
+      "continue": "Get security code",
+      "message": "Text messages can sometimes take a few minutes to arrive.",
+      "phoneNumber": {
+        "default": "We will send a code to the phone number linked to your account",
+        "isResendCodeRequest": "We will send a code to: [mobile]."
+      }
+    },
+    "signedOut": {
+      "title": "You have signed out",
+      "header": "You have signed out",
+      "govukLinkHref": "https://www.gov.uk/",
+      "govukLinkText": "Go to the GOV.UK homepage",
+      "paragraph1": "or",
+      "signInLinkText": "sign in",
+      "paragraph2": "to your GOV.UK account."
+    },
+    "shareInfo": {
+      "title": "Share information from your GOV.UK account",
+      "header": "Share information from your GOV.UK account",
+      "continue": "Continue",
+      "bulletPointSectionHeader": "This service needs to use your:",
+      "paragraph1": "You added this information to your GOV.UK account when you created the account. You can choose to share it with the service instead of entering it again when you use the service.",
+      "paragraph2": "The service will only use this information to contact you about the service. It won’t share your information with anyone else. It will keep your information for as long as it needs to or the law requires it to.",
+      "paragraph3": "If you choose not to share information from your GOV.UK account, you may still be asked for that information as you use the service. For example if you choose not to share your email address and phone number and the service needs a way to contact you.",
+      "essentialHeader": "Do you want to share information from your GOV.UK account? ",
+      "radios": {
+        "shareMy": "Do you want to share information from your GOV.UK account?",
+        "radioText": {
+          "agree": "Share my email address and phone number",
+          "doNotAgree": "Do not share my email address and phone number",
+          "errorMessage": "Select if you want to share your email address and phone number or not"
+        }
+      }
+    },
+    "updatedTermsAndConds": {
+      "title": "GOV.UK account terms of use update",
+      "header": "GOV.UK account terms of use update",
+      "paragraph1": {
+        "text": "We've updated our ",
+        "and": "and",
+        "termsAndConditionsHref": "terms-and-conditions",
+        "termsAndConditionsText": "terms and conditions",
+        "privacyNoticeHref": "/privacy-notice",
+        "privacyNoticeText": "privacy notice",
+        "cookiesPolicyText": "cookies policy"
+      },
+      "paragraph2": "By continuing you agree to our updated terms of use.",
+      "agreeAndContinue": "Agree and continue",
+      "doNotAgree": "I do not agree"
+    },
+    "updatedTermsAndCondsMandatory": {
+      "title": "Agree to the updated terms of use to continue",
+      "header": "Agree to the updated terms of use to continue",
+      "info": {
+        "text": "You need to agree to our updated",
+        "and": "and",
+        "termsAndConditionsText": "terms and conditions",
+        "privacyNoticeText": "privacy notice",
+        "cookiesPolicyText": "cookies policy",
+        "end": "to keep using your account."
+      },
+      "section2": {
+        "paragraph1": "If you do not agree to the new terms, you cannot use your GOV.UK account.",
+        "govUkHomePageText": "Go to the GOV.UK homepage.",
+        "paragraph2": "If you no longer need your account, or want to delete information saved in your account, you can ",
+        "contactUsText": "contact us."
+      },
+      "agreeAndContinue": "Agree and continue",
+      "goBackToService": "Go back to "
+    },
+    "updatedTermsAndCondsOptional": {
+      "title": "Agree to the updated terms of use to continue",
+      "header": "Agree to the updated terms of use to continue",
+      "paragraph1": "You need to agree to our updated",
+      "paragraph2": "You can still complete your ",
+      "paragraph2Continued": " without saving it.",
+      "agreeAndContinue": "Agree and continue",
+      "goBackToService": "Complete your "
+    },
+    "cookiePolicy": {
+      "title": "GOV.UK accounts cookies policy",
+      "header": "GOV.UK accounts cookies policy",
+      "info": {
+        "paragraph1": "This cookies policy only covers GOV.UK accounts. Read the main ",
+        "govUkCookiesLinkHref": "https://www.gov.uk/help/cookies",
+        "govUkCookiesLinkText": "GOV.UK cookies policy",
+        "paragraph2": " to find out about cookies that are used on GOV.UK.",
+        "paragraph3": "Cookies are files saved on to your phone, tablet or computer when you visit a website. We use cookies to make the GOV.UK account work.",
+        "paragraph4": "We may also use analytics cookies to learn about how you use the account and help us improve it. We'll ask for your permission before we do this.",
+        "paragraph5": "Cookies are not used to identify you personally.",
+        "paragraph6": "Find out more about",
+        "linkHref": "https://ico.org.uk/your-data-matters/online/cookies/",
+        "linkText": "how to manage cookies",
+        "paragraph7": " on the Information Commissioner’s Office (ICO) website."
+      },
+      "essential": {
+        "header": "Strictly necessary cookies",
+        "info": {
+          "paragraph1": "We use essential cookies to:",
+          "bulletPoint1": "make the account work",
+          "bulletPoint2": "keep your information secure",
+          "bulletPoint3": "detect fraudulent or malicious activity and breaches of our terms and conditions",
+          "table": {
+            "headers": {
+              "col1": "Name",
+              "col2": "Expires"
+            },
+            "rows": {
+              "row1": {
+                "col2": "2 hours"
+              },
+              "row2": {
+                "col2": "When you close your web browser"
+              },
+              "row3": {
+                "col2": "2 hours"
+              },
+              "row4": {
+                "col2": "13 months"
+              },
+              "row5": {
+                "col2": "2 hours"
+              },
+              "row6": {
+                "col2": "When you close your web browser"
+              },
+              "row7": {
+                "col2": "When you close your web browser"
+              },
+              "row8": {
+                "col2": "When you close your web browser"
+              },
+              "row9": {
+                "col2": "When you close your web browser"
+              },
+              "row10": {
+                "col2": "When you close your web browser"
+              },
+              "row11": {
+                "col2": "When you close your web browser"
+              },
+              "row12": {
+                "col2": "15 minutes"
+              }
+            }
+          }
+        }
+      },
+      "cookiesMessage": {
+        "header": "Cookies message",
+        "paragraph1": "You may see a banner when you use your GOV.UK account inviting you to accept cookies or review your settings. We’ll set cookies to: ",
+        "bulletPoint1": "let your computer know you’ve seen this message so you do not get shown it again",
+        "bulletPoint2": "store your settings",
+        "table": {
+          "headers": {
+            "col1": "Name",
+            "col2": "Purpose",
+            "col3": "Expires"
+          },
+          "rows": {
+            "row1": {
+              "col2": "Saves your cookie consent settings",
+              "col3": "1 year"
+            }
+          }
+        }
+      },
+      "settingsCookies": {
+        "header": "Cookies that remember your settings",
+        "paragraph1": "These cookies do things like remember your preferences and the choices you make, to personalise your experience of using your GOV.UK account.",
+        "paragraph2": "We set a cookie when you use your GOV.UK account to save your language preference. At the moment, this defaults to English.",
+        "table": {
+          "headers": {
+            "col1": "Name",
+            "col2": "Purpose",
+            "col3": "Expires"
+          },
+          "rows": {
+            "row1": {
+              "col2": "Remembers the language you use the account in",
+              "col3": "1 year"
+            },
+            "row2": {
+              "col2": "Remembers the language you use the account in",
+              "col3": "When you close your web browser"
+            }
+          }
+        }
+      },
+      "analytics": {
+        "header": "Cookies that measure how you use your GOV.UK account",
+        "info": {
+          "paragraph1": "We use Google Analytics cookies to collect anonymised information about how you use your GOV.UK account, for example what pages you visit and what you click on.",
+          "paragraph2": "This helps us understand how we can improve the account."
+        },
+        "table": {
+          "headers": {
+            "col1": "Name",
+            "col2": "Purpose",
+            "col3": "Expires"
+          },
+          "rows": {
+            "row1": {
+              "col2": "Helps us count how many people visit GOV.UK account by checking if you’ve visited before",
+              "col3": "2 years"
+            },
+            "row2": {
+              "col2": "Helps us count how many people visit GOV.UK account by checking if you’ve visited before",
+              "col3": "24 hours"
+            },
+            "row3": {
+              "col2": "Helps us count how many people visit GOV.UK accounts by checking if you’ve visited before",
+              "col3": "When you close your web browser"
+            }
+          }
+        }
+      },
+      "settings": {
+        "yesRadioButton": "Use cookies that measure how I use my GOV.UK account",
+        "noRadioButton": "Do not use cookies that measure how I use my GOV.UK account",
+        "saveButton": "Save cookie settings"
+      },
+      "successBanner": {
+        "header": "Your cookie settings were saved",
+        "paragraph1": "Other government services may set additional cookies and, if so, will have their own cookie policy and banner.",
+        "linkText": "Go back to the page you were looking at"
+      }
+    },
+    "accessibilityStatement": {
+      "title": "Accessibility statement for GOV.UK accounts",
+      "header": "Accessibility statement for GOV.UK accounts",
+      "content": {
+        "paragraph1": "GOV.UK accounts are part of the wider GOV.UK website. There’s a separate ",
+        "linkText": "accessibility statement for the main GOV.UK website",
+        "paragraph2": "This page only contains information about GOV.UK accounts, available at www.signin.account.gov.uk."
+      },
+      "section1": {
+        "header": "Using GOV.UK accounts",
+        "paragraph1": {
+          "text1": "GOV.UK accounts are run by the ",
+          "linkText": "Government Digital Service (GDS)",
+          "text2": ", part of the Cabinet Office. We want as many people as possible to be able to use GOV.UK accounts. This means you should be able to:"
+        },
+        "bulletPoint1": "change colours, contrast levels and fonts",
+        "bulletPoint2": "zoom in up to 300% without the text spilling off the screen",
+        "bulletPoint3": "navigate most of the account using just a keyboard",
+        "bulletPoint4": "navigate most of the account using speech recognition software",
+        "bulletPoint5": "listen to most of the account content using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)",
+        "paragraph2": "We’ve also made the text in the account as simple as possible to understand.",
+        "linkText": "AbilityNet",
+        "linkHref": "https://mcmw.abilitynet.org.uk/",
+        "paragraph3": "has advice on making your device easier to use if you have a disability."
+      },
+      "section2": {
+        "header": "How accessible GOV.UK accounts are",
+        "paragraph1": "The following parts of GOV.UK accounts are not fully accessible:",
+        "bulletPoint1": "it’s not possible to stop or change the length of the time-out when you use, sign in to or create an account",
+        "bulletPoint2": "one link has poor colour contrast",
+        "paragraph2": "We’ll update this page when issues are fixed or with information about when we plan to fix them."
+      },
+      "section3": {
+        "header": "What to do if you have difficulty using GOV.UK accounts",
+        "paragraph1": "If you have difficulty using GOV.UK accounts, ",
+        "linkText": "contact us"
+      },
+      "section4": {
+        "header": "Report accessibility problems with GOV.UK accounts",
+        "paragraph1": "We’re always looking to improve the accessibility of GOV.UK accounts. If you find any problems not listed on this page or think we’re not meeting accessibility requirements, ",
+        "linkText": "contact us"
+      },
+      "section5": {
+        "header": "Enforcement procedure",
+        "paragraph1": "The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’).",
+        "paragraph2": "If you’re not happy with how we respond to your complaint, ",
+        "linkText": "contact the Equality Advisory and Support Service (EASS)"
+      },
+      "section6": {
+        "header": "Technical information about GOV.UK accounts’ accessibility",
+        "paragraph1": "The Government Digital Service is committed to making GOV.UK accounts accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.",
+        "subHeader": "Compliance status",
+        "paragraph2": {
+          "text1": "GOV.UK accounts are partially compliant with the",
+          "linkText": "Web Content Accessibility Guidelines version 2.1",
+          "text2": " AA standard, due to the non-compliances listed below."
+        }
+      },
+      "section7": {
+        "header": "Non-accessible content",
+        "paragraph1": "The content listed below is non-accessible for the following reasons.",
+        "subHeader": "Non compliance with the accessibility regulations",
+        "paragraph2": "When you create an account or sign in, if you do not do anything for 2 hours, the process will stop (time out) or you’ll be signed out. It’s not possible to adjust, extend or turn off the time out. This fails WCAG 2.1 success criterion 2.2.1 (Timing Adjustable)."
+      },
+      "section8": {
+        "header": "What we’re doing to improve accessibility",
+        "paragraph1": "We’ll update this page when issues are fixed, when we expect them to be fixed or when new problems are identified."
+      },
+      "section9": {
+        "header": "Preparation of this accessibility statement",
+        "paragraph1": "This statement was prepared on 4 November 2020. It was last reviewed on 29 June 2022.",
+        "paragraph2": "GOV.UK accounts were last tested on 13 June 2022. The test was carried out by the Digital Accessibility Centre (DAC), who produced an accessibility audit report on 17 June 2022. DAC assessed GOV.UK accounts against the Web Content Accessibility Guidelines WCAG 2.1."
+      }
+    },
+    "termsAndConditions": {
+      "title": "GOV.UK account terms and conditions",
+      "header": "GOV.UK account terms and conditions",
+      "section1": {
+        "paragraph1": {
+          "text1": "These terms and conditions specifically cover GOV.UK accounts. You can use a GOV.UK account to access and use some government services and features. Pages that are part of the GOV.UK account have urls containing account.gov.uk. If you are using other parts of GOV.UK you should also read the ",
+          "linkText": "terms and conditions for GOV.UK"
+        },
+        "paragraph2": {
+          "text1": "The GOV.UK account is managed by ",
+          "linkText": "Government Digital Service",
+          "text2": " (GDS) on behalf of the Crown. GDS is part of the Cabinet Office and will be referred to as ‘we’ from now on."
+        },
+        "paragraph3": {
+          "text1": "Please read these terms and conditions, the ",
+          "linkText1": "GOV.UK accounts privacy notice",
+          "text2": " and the ",
+          "linkText2": "GOV.UK cookies policy",
+          "text3": "before using the GOV.UK account. The privacy notice explains the terms on which we process any personal data we collect from you or that you provide to us. The cookie policy gives information about the cookies we use and how we use them when you use GOV.UK or your GOV.UK account."
+        },
+        "paragraph4": "By registering for and continuing to use a GOV.UK account, you agree to these terms and conditions, the privacy notice and cookies policy.",
+        "subHeader": "Changes to these terms and conditions",
+        "paragraph5": "We can update these terms, as well as the cookies policy and privacy notice, at any time without notice.",
+        "paragraph6": "If we change the terms and conditions, we’ll ask you to accept them the next time you sign in to your account."
+      },
+      "section2": {
+        "header": "Accessing your GOV.UK account",
+        "paragraph1": "You are responsible for making all arrangements for you to access your GOV.UK account. This includes providing your own device, operating system, browser and internet connection. \nYou should use a device that uses a Windows, OS, iOS or Android operating system. We recommend you use one of the following browsers:",
+        "bulletPoint1": "The latest version of Google Chrome, Microsoft Edge, Mozilla Firefox, Samsung Internet or Internet Explorer",
+        "bulletPoint2": "Safari 12 or later",
+        "bulletPoint3": "Safari for iOS 12.1 or later",
+        "paragraph2": "We do not guarantee that your GOV.UK account will always be available, or that access to it will be error free. We will provide a way for you to report problems with your account.",
+        "paragraph3": "We may suspend, stop, remove, update or change the GOV.UK account without notice at any time."
+      },
+      "section3": {
+        "header": "Keeping your account secure",
+        "paragraph1": {
+          "text1": "We have many measures in place to keep your information safe, but as the owner of your GOV.UK account, you also have some responsibility for the security of your account. For example you should choose a strong password for your account and ensure you keep it secure. The UK’s National Cyber Security Centre (NCSC) provides ",
+          "linkText": "advice on keeping your online accounts secure"
+        },
+        "paragraph2": "If you think that someone knows the username and password to your GOV.UK account, you must reset your password as soon as possible."
+      },
+      "section4": {
+        "header": "Using your GOV.UK account",
+        "paragraph1": "You will use your account to access government services and for no other purpose.",
+        "paragraph2": "Unless permitted by law or under these terms and conditions, you must:",
+        "bulletPoint1": "not copy the GOV.UK account except where copying is incidental to normal use",
+        "bulletPoint2": "not rent, lease, sub-license, loan, translate, merge, adapt, vary or modify the GOV.UK account",
+        "bulletPoint3": "not combine or incorporate the GOV.UK account with any other programs or services",
+        "bulletPoint4": "not disassemble, decompile, reverse-engineer or create derivative works based on any part of the GOV.UK account",
+        "bulletPoint5": "comply with all technology control or export laws that apply to the technology used by the GOV.UK account",
+        "paragraph3": "You must not use your GOV.UK account:",
+        "bulletPoint6": "to transmit any material that is insulting or offensive",
+        "bulletPoint7": "to collect any data or attempt to decipher any transmissions to or from the servers running GOV.UK account",
+        "bulletPoint8": "in a way that could damage, disable, overburden, impair or compromise our systems or security",
+        "bulletPoint9": "in a way that interferes with other users",
+        "bulletPoint10": "in any unlawful or fraudulent manner or for any unlawful or fraudulent purpose",
+        "bulletPoint11": "in a manner that is improper use or inconsistent with these terms and conditions",
+        "bulletPoint12": "to gain or attempt to gain unauthorised access to the GOV.UK platform, the server on which the GOV.UK platform is stored or any server, computer or database connected to GOV.UK platform, by hacking or other means",
+        "bulletPoint13": "to transmit, send or upload any data that contains viruses, Trojan horses, worms, spyware or any other harmful programs designed to adversely affect the operation of computer software or hardware",
+        "bulletPoint14": "in connection with any kind of denial of service attack or for any malicious purpose",
+        "bulletPoint15": "with someone else’s registered details , unless you have the authority to do so from them",
+        "paragraph4": "If you breach any of these terms and conditions, we may stop you from accessing your GOV.UK account and may take action to enforce these terms and conditions and take other action as appropriate where we have suffered loss. If, by doing any of the above acts, you are also committing a criminal offence, we may report it to the relevant law enforcement authorities. We may cooperate with those authorities by disclosing your identity to them."
+      },
+      "section5": {
+        "header": "Deleting your account",
+        "paragraph1": {
+          "text1": "You can permanently delete your account and the information in it at any time by signing in to your account or ",
+          "linkText1": "contacting us",
+          "text2": "We'll keep a record of certain information, in line with our ",
+          "linkText2": "privacy notice",
+          "text3": ", for audit purposes and to help prevent crime."
+        }
+      },
+      "section6": {
+        "header": "Changes",
+        "paragraph1": "We can make changes and improvements to the GOV.UK account at any time and without notice to:",
+        "bulletPoint1": "make technical improvements or corrections",
+        "bulletPoint2": "improve the performance of the service",
+        "bulletPoint3": "enhance functionality",
+        "bulletPoint4": "reflect changes to the operating system",
+        "bulletPoint5": "address security issues",
+        "bulletPoint6": "prevent crime"
+      },
+      "section7": {
+        "header": "Services and transactions",
+        "paragraph1": "You can use your GOV.UK account to access online government services. These services can be managed by GDS, the Cabinet Office or another government department or agency.",
+        "paragraph2": "Each service will have their own, separate terms and conditions, privacy notices and cookies policies, which apply to the use of that service. You should read these before you use the service.",
+        "paragraph3": "If a service run by another government department or agency stops being accessible with GOV.UK accounts the service will contact you to tell you what you should do."
+      },
+      "section8": {
+        "header": "Our legal responsibility to you",
+        "paragraph1": "The GOV.UK account is a tool and we have no liability to you for the online government services that you access using the GOV.UK account. Liability to you rests with the government service provider.",
+        "paragraph2": "Although we make reasonable efforts to provide, maintain and update a robust GOV.UK account service, it is provided 'as is'. We make no express or implied representations, warranties or guarantees that your access to, or use of, GOV.UK account will be unbroken or completely secure.",
+        "paragraph3": "We will not be liable or responsible for any loss or damage caused by a virus, denial of service attack or any other harmful material that may infect your device, equipment, programs, data or other proprietary material due to your use of a GOV.UK account.",
+        "subHeader1": "Loss and damages",
+        "paragraph4": "Nothing in these terms and conditions excludes or limits our liability for:",
+        "bulletPoint1": "death or personal injury as a result of our negligence",
+        "bulletPoint2": "fraud or fraudulent misrepresentation",
+        "bulletPoint3": "any other liability which cannot be excluded or limited under English law",
+        "paragraph5": "We’re not liable for any:",
+        "bulletPoint4": "loss or damage that may come from using the GOV.UK account that is not caused by our breach of these terms and conditions",
+        "bulletPoint5": "loss or damage to a device or digital content belonging to you",
+        "bulletPoint6": "loss or damage arising from an inability to access or use your GOV.UK account",
+        "bulletPoint7": "indirect or subsequent losses that were not foreseeable to both you and us when you started using your GOV.UK account (loss or damages are ‘foreseeable’ when they are an obvious result of our breach of these terms and conditions or if they were considered by you and us when you began using the GOV.UK account)",
+        "bulletPoint8": "loss of profits, revenue, contracts, savings, goodwill and wasted expenditure",
+        "paragraph6": "GDS is not liable for its failure to comply with the terms and conditions due to circumstances which are beyond GDS’ control.",
+        "paragraph7": "This does not affect any legal rights you may have as a consumer in relation to faulty services or software. Advice about your legal rights is available from your local Citizen’s Advice or Trading Standards Office.",
+        "subHeader2": "Links from the GOV.UK account",
+        "paragraph8": "We are not responsible for any links from your GOV.UK account links to websites that are managed by other government departments and agencies, service providers or other organisations. We do not have any control over the content on these websites.",
+        "paragraph9": "We’re not responsible for:",
+        "bulletPoint9": "the protection of any information you give to these websites",
+        "bulletPoint10": "any loss or damage that may come from your use of these websites, or any other websites they link to",
+        "paragraph10": "You agree to release us from any claims or disputes that may come from using these websites.",
+        "paragraph11": "You should read all terms and conditions, privacy policies and end user licences that relate to these websites before you use them."
+      },
+      "section9": {
+        "header": "Making sure these terms and conditions are followed",
+        "paragraph1": "Each section within these terms and conditions operates separately. If any provision in these terms and conditions is invalid or unenforceable according to applicable law, we will replace it with a valid and enforceable provision that most closely matches the intent of the original. This includes warranty disclaimers and exclusions, and limits of liability. The rest of these terms and conditions will remain in effect.",
+        "paragraph2": "If we delay in enforcing these terms and conditions, we can still enforce them later. If we do not insist right away that you follow the requirements within these terms and conditions, or we delay in taking steps against you if you break them, this will not prevent us from taking steps against you or prevent your need to follow the requirements at a later date."
+      },
+      "section10": {
+        "header": "Governing law",
+        "paragraph1": "The laws of England apply exclusively to these terms and conditions and to all matters relating to use of GOV.UK accounts. Any cause of action arising under or in connection with these terms and conditions or your use of GOV.UK accounts will be subject to the exclusive jurisdiction of the courts of England."
+      },
+      "section11": {
+        "header": "Contacting us",
+        "paragraph1": {
+          "linkText": "Contact us",
+          "text1": " if you have:"
+        },
+        "bulletPoint1": "questions about these terms and conditions",
+        "bulletPoint2": "questions or a complaint about the GOV.UK account",
+        "paragraph2": {
+          "text1": "Find out more ",
+          "linkText": "about GDS and our role"
+        }
+      }
+    },
+    "privacy": {
+      "title": "GOV.UK accounts privacy notice",
+      "header": "GOV.UK accounts privacy notice",
+      "section1": {
+        "header": "Who we are",
+        "paragraph1": {
+          "text1": "GOV.UK accounts are provided by the ",
+          "linkText": "Government Digital Service (GDS)",
+          "text2": ", part of the Cabinet Office. Mentions of ‘us’ and ‘we’ in this privacy notice refer to GDS."
+        },
+        "paragraph2": {
+          "text1": "This privacy notice only covers GOV.UK accounts. Read the main ",
+          "linkText": "GOV.UK privacy notice",
+          "text2": " to find out how your personal information is collected and processed when you use the GOV.UK website."
+        },
+        "paragraph3": "The Cabinet Office is the data controller of the personal information you provide to us when you:",
+        "bulletPoint1": "create a GOV.UK account",
+        "bulletPoint2": "use your GOV.UK account to access an online government service",
+        "bulletPoint3": "contact us",
+        "paragraph4": "When you provide information to another government service while signed into your account, the government department that runs the service is the data controller. They will have their own privacy notice to explain how they process your information. We do not have access to the information you provide to services run by other government departments.",
+        "paragraph5": "When you prove your identity with a GOV.UK account, we will:",
+        "bulletPoint4": "ask you for your passport details - we'll check these with HM Passport Office (HMPO)",
+        "bulletPoint5": {
+          "text3": "check your information with",
+          "linkText": "Experian",
+          "linkHref": "https://www.experian.co.uk/privacy/privacy-and-your-data?utm_medium=internalRef&utm_source=Consumer%20Services",
+          "text4": "to make sure you've not been a victim of identity theft"
+        },
+        "bulletPoint6": "use Experian's data to ask you security questions that only you should know the answers to - Experian will also check that your answers match the information they already have about you",
+        "paragraph6": "HMPO and Experian will also become data controllers during this process. We do not keep any information you give us when proving your identity, including your answers to the security questions."
+      },
+      "section2": {
+        "header": "What information we collect",
+        "paragraph1": "When you use a service that requires a GOV.UK account, we’ll receive information about the service when it directs you to:",
+        "bulletPoint1": "create or sign in to an account",
+        "bulletPoint2": "prove your identity",
+        "paragraph2": "The information we collect when you create and use a GOV.UK account includes:",
+        "bulletPoint3": "basic personal information needed to set up and authenticate your account, including your email address and mobile phone number",
+        "bulletPoint4": "other information needed to prove your identity, such as your name, date of birth, passport details and address history",
+        "bulletPoint5": "any information that you choose to save to your account, for example your GOV.UK email subscription preferences",
+        "bulletPoint6": {
+          "text1": "information on how you use your account and the GOV.UK website, which is collected in the system logs, and by Google Analytics cookies if you give consent - the ",
+          "linkText1": "GOV.UK privacy notice",
+          "and": " and ",
+          "linkText2": "GOV.UK cookies policy",
+          "text2": " provide more information about this"
+        },
+        "bulletPoint7": "online identifiers, such as your Internet Protocol (IP) address, and technical information about the device you use including the model, web browser and operating system, which is automatically collected in system logs when you use GOV.UK",
+        "bulletPoint8": "questions, queries or feedback you leave, including your name and email address, if you provide them on the GOV.UK accounts contact form",
+        "bulletPoint9": "if you were able to prove your identity with your GOV.UK account",
+        "bulletPoint10": "what organisations, services or information we used to prove your identity",
+        "paragraph3": "When you create an account, it will automatically generate a unique account identifier."
+      },
+      "section3": {
+        "header": "Why we need your information",
+        "paragraph1": "We collect your personal information to:",
+        "bulletPoint1": "provide you with a GOV.UK account so that you can use it to access online government services",
+        "bulletPoint2": "prove your identity",
+        "bulletPoint3": {
+          "text1": "store your preferences, for example your ",
+          "linkText": "GOV.UK",
+          "text2": "email subscription update preferences"
+        },
+        "paragraph2": "We also use your information to:",
+        "bulletPoint4": "keep your account secure (using your email address, phone number, password and system logs)",
+        "bulletPoint5": "monitor, detect and investigate fraud",
+        "bulletPoint6": "tell the services you access through your GOV.UK account that you have successfully signed in",
+        "bulletPoint7": "provide government services that you access through your account and the departments that run them with information you explicitly agree to us sharing, for example your email and telephone number",
+        "bulletPoint8": "provide you with a record of how your account has been used, for example, when it was last signed in to and what services it has been used with",
+        "bulletPoint9": "contact you about any planned interruptions, problems or changes that may affect your account (using your email address)",
+        "bulletPoint10": "contact you to ask for feedback on your account, if you have given us permission to (using your email address)",
+        "bulletPoint11": {
+          "text3": "improve and understand how you use your GOV.UK account",
+          "linkText": "using Google Analytics cookies",
+          "linkHref": "https://www.gov.uk/help/cookies",
+          "text4": "(you can choose not to accept these cookies)"
+        },
+        "bulletPoint12": "respond to any feedback you send us, if you’ve asked us to",
+        "paragraph3": "We may also use your information to produce anonymised reports about GOV.UK accounts. This helps us understand where we can make improvements to GOV.UK accounts."
+      },
+      "section4": {
+        "header": "Our legal basis for processing your information",
+        "paragraph1": "When we process information for security and fraud monitoring, the legal basis is our legitimate interests.",
+        "paragraph2": "When we process information to make improvements to GOV.UK accounts, the legal basis is your explicit consent. This includes:",
+        "bulletPoint1": "collecting and analysing information about how you use your GOV.UK account using Google Analytics cookies",
+        "bulletPoint2": "emailing you to ask for feedback about your account",
+        "paragraph3": "The legal basis for processing all other personal data is that it’s necessary in the exercise of our functions as a government department."
+      },
+      "section5": {
+        "header": "Who we share your information with",
+        "paragraph1": "We will never:",
+        "bulletPoint1": "sell or rent your information to third parties",
+        "bulletPoint2": "share your information with third parties for marketing purposes",
+        "subHeader1": "Sharing your information with online government services and the departments that run them",
+        "paragraph2": "We'll tell the services that you access through your account when you successfully create your account or sign in so that they can allow you to use the service.",
+        "paragraph3": "Services you access through your account may ask you to share information you have saved in your GOV.UK account. When they do this, we'll tell you which information they have asked for, and will only share the information if you agree.",
+        "paragraph4": "If you do not choose to share this information from your GOV.UK account, you might be asked to provide the same information directly to the service later on.",
+        "paragraph5": "Each service you access through your GOV.UK account will have its own terms and conditions and privacy notice. You should read these as well as the GOV.UK accounts terms and conditions and this privacy notice, so that you understand how your personal information is managed.",
+        "subHeader2": "Sharing your information to prove your identity",
+        "paragraph6": "We'll share your information with HMPO and Experian when we prove your identity. We'll only give them the information they need to do this check. They will keep your details for as long as they need to or the law requires them to do so.",
+        "subHeader3": "Sharing your information to protect against fraud",
+        "paragraph7": "To protect against crime and fraud, we might sometimes share information with:",
+        "bulletPoint3": "government departments that run the services you access though your account",
+        "bulletPoint4": "other public sector organisations, such as the Home Office",
+        "bulletPoint5": "law enforcement agencies",
+        "bulletPoint6": "credit reference agencies",
+        "bulletPoint7": "data processors who provide relevant monitoring services",
+        "paragraph8": "The information we might share includes:",
+        "bulletPoint8": "phone numbers",
+        "bulletPoint9": "email addresses",
+        "bulletPoint10": "IP addresses and geolocations",
+        "bulletPoint11": "unique account identifiers",
+        "bulletPoint12": "information about the devices being used",
+        "bulletPoint13": "passport details, including name and date of birth",
+        "bulletPoint14": "address history",
+        "subHeader4": "Sharing your information with our suppliers",
+        "paragraph9": "We work with technology suppliers, for example we use an external hosting provider. These suppliers may have access to your information as part of providing their services to us."
+      },
+      "section6": {
+        "header": "How long we keep your information",
+        "paragraph1": "We store your personal information for as long as is reasonably necessary and legally justifiable.",
+        "paragraph2": "We will keep your account and any information saved in it for as long as you use it. If you delete your account or if you don’t sign in for 2 years, we’ll delete all the information associated with it. Any information you delete from your account will be permanently deleted.",
+        "paragraph3": "We will keep your feedback data for 2 years.",
+        "paragraph4": "We will delete access log data after 365 days.",
+        "paragraph5": "We will store information about the actions you take and how you use the account for 7 years, for fraud monitoring purposes."
+      },
+      "section7": {
+        "header": "Children’s privacy protection",
+        "paragraph1": "GOV.UK accounts are not designed for, or intentionally targeted at, children 13 years of age or younger. We do not intentionally collect or maintain information about anyone under the age of 13."
+      },
+      "section8": {
+        "header": "Where your information is processed and stored",
+        "paragraph1": "All personal data and information associated with your GOV.UK account is stored in the UK or in the European Economic Area (EEA). The EEA has been assessed by the Information Commissioner’s Office as having adequate legal protections for data privacy in line with those in the UK.",
+        "paragraph2": "Where our suppliers require access to your data, they may do so from outside of the EEA. Data collected by Google Analytics may be transferred outside the European Economic Area (EEA) for processing. When either of these things happen, we will make sure your information is just as well protected, for example by including extra clauses in our contracts with suppliers."
+      },
+      "section9": {
+        "header": "How we protect your personal information and keep it secure",
+        "paragraph1": "We are committed to doing all that we can to keep your information secure. We have set up systems and processes to prevent unauthorised access or disclosure of your information - for example, we use varying levels of encryption. We also make sure that any third parties that we deal with keep all personal information they process on our behalf secure.",
+        "paragraph2": "As the owner of your GOV.UK account, you also have some responsibility for the security of your account. For example, you should:",
+        "bulletPoint1": {
+          "text1": "choose a strong password for your account and ensure you keep it secure - the UK’s National Cyber Security Centre (NCSC) provides ",
+          "linkText": "advice on keeping your online accounts secure"
+        },
+        "bulletPoint2": "contact us immediately if you suspect that your account has been compromised"
+      },
+      "section10": {
+        "header": "Automated processing",
+        "paragraph1": "Your personal information will be subject to automated decision making when:",
+        "bulletPoint1": "your passport details are checked against data held by HMPO",
+        "bulletPoint2": "Experian runs an identity fraud check to make sure you've not had your identity stolen",
+        "bulletPoint3": "your answers to security questions are matched against data held by Experian"
+      },
+      "section11": {
+        "header": "Your rights",
+        "paragraph1": "When you are signed in to your account you can:",
+        "bulletPoint1": "access all personal information associated with your GOV.UK account",
+        "bulletPoint2": "change or update your information such as your email address, password and email subscription preferences",
+        "bulletPoint3": "change your consent to non-essential cookies or tell us how you want us to contact you",
+        "bulletPoint4": "delete information from your account (apart from your email address, mobile phone number and password because you can’t access your account without them)",
+        "bulletPoint5": "delete your GOV.UK account entirely",
+        "paragraph2": "You can also:",
+        "bulletPoint6": "withdraw your consent for your personal information to be processed using web analytics data or feedback",
+        "bulletPoint7": "object to how your personal information is processed",
+        "bulletPoint8": "ask that the processing of your personal information is restricted in certain circumstances",
+        "bulletPoint9": "contact us to get help if you're not able to prove your identity online",
+        "paragraph3": {
+          "text1": "If you have any of these requests, contact the ",
+          "linkText": "GDS Privacy Team"
+        }
+      },
+      "section12": {
+        "header": "Contact us or make a complaint",
+        "paragraph1": "Contact the GDS Privacy Team if you:",
+        "bulletPoint1": "have a question about anything in this privacy notice",
+        "bulletPoint2": "think that your personal information has been misused or mishandled",
+        "bulletPoint3": "want to make a 'subject access request' to find out more about how your personal information is collected and used",
+        "paragraph2": "You can also contact our Data Protection Officer (DPO) who provides independent advice and monitoring of our use of personal information:",
+        "address1": {
+          "line1": "Data Protection Officer",
+          "email": "DPO@cabinetoffice.gov.uk",
+          "line2": "Cabinet Office",
+          "line3": "70 Whitehall",
+          "line4": "London",
+          "line5": "SW1A 2AS"
+        },
+        "paragraph3": "You can also make a complaint to the Information Commissioner, who is an independent regulator.",
+        "address2": {
+          "line1": "Information Commissioner's Office",
+          "line2": "Wycliffe House",
+          "line3": "Water Lane",
+          "line4": "Wilmslow",
+          "line5": "Cheshire SK9 5AF",
+          "email": "icocasework@ico.org.uk",
+          "phone": "Telephone: 0303 123 1113",
+          "text": "Textphone: 01625 545860",
+          "line6": "Monday to Friday, 9am to 4:30pm",
+          "line7": "Find out about call charges"
+        },
+        "paragraph4": "Making a complaint to the Information Commissioner will not affect your rights."
+      },
+      "section13": {
+        "header": "Changes to this policy",
+        "paragraph1": "We may change this privacy policy. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy policy will apply to you and your information immediately.",
+        "paragraph2": "If these changes affect how your personal information is processed, GDS will let you know.",
+        "paragraph3": "Last updated: 29 June 2022"
+      }
+    },
+    "resetPassword": {
+      "title": "Reset your password",
+      "header": "Reset your password",
+      "password": {
+        "label": "Enter a new password",
+        "paragraph1": "Your password must:",
+        "bulletPoint1": "be at least 8 characters long",
+        "bulletPoint2": "include letters and numbers",
+        "paragraph2": "Do not use a very common password, such as ‘password’ or a sequence of numbers.",
+        "validationError": {
+          "required": "Enter your password",
+          "maxLength": "Your password must be less than 256 characters",
+          "samePassword": "Your account is already using that password. Enter a different password",
+          "alphaNumeric": "Your password must be at least 8 characters long and must include letters and numbers"
+        }
+      },
+      "confirmPassword": {
+        "label": "Re-type your new password",
+        "validationError": {
+          "required": "Re-type your new password",
+          "matches": "Enter the same password in both fields"
+        }
+      },
+      "securePasswordDetails": {
+        "summary": "How to create a secure password",
+        "text": "A good way to create a secure and memorable password is to use 3 random words. You can use numbers, symbols and spaces."
+      }
+    },
+    "resetPasswordConfirmation": {
+      "title": "You’ve reset your password",
+      "header": "You’ve reset your password",
+      "summary": {
+        "text": "You can now  ",
+        "link": "go back to the GOV.UK homepage",
+        "end": "and start what you were doing again."
+      }
+    },
+    "resetPasswordInvalidLink": {
+      "title": "That link has expired",
+      "header": "That link has expired",
+      "info": {
+        "paragraph1": "It’s been more than 15 minutes since it was sent.",
+        "paragraph2Start": "You’ll need to ",
+        "link": "go back to the GOV.UK homepage",
+        "paragraph2End": " and start what you were doing again."
+      }
+    },
+    "resetPasswordExpiredLink": {
+      "title": "You can’t reset your password at the moment",
+      "header": "You can’t reset your password at the moment",
+      "info": {
+        "paragraph1": "This is because it’s been more than 15 minutes since we sent you the link to reset it.",
+        "paragraph2Start": "You’ll need to ",
+        "link": "go back to the GOV.UK homepage",
+        "paragraph2End": " and start what you were doing again."
+      }
+    },
+    "resetPasswordCountExceeded": {
+      "title": "You tried to reset your password too many times",
+      "header": "You tried to reset your password too many times",
+      "paragraph1": "You need to wait 15 minutes.",
+      "paragraph2": "You can then ",
+      "resetPasswordLinkText": "reset your password",
+      "paragraph3": " and try to sign in again."
+    },
+    "resetPasswordAttemptBlocked": {
+      "title": "You cannot reset your password at the moment",
+      "header": "You cannot reset your password at the moment",
+      "paragraph1": "This is because you tried to reset your password too many times the last time you tried to sign in.",
+      "paragraph2": "You can ",
+      "resetPasswordLinkText": "reset your password",
+      "paragraph3": " after 15 minutes have passed."
+    },
+    "accountLocked": {
+      "title": "You entered the wrong password too many times",
+      "header": "You entered the wrong password too many times",
+      "paragraph": "You've been locked out of your account because you entered the wrong password more than 5 times. This is to keep your account secure.",
+      "subHeader": "What next",
+      "bulletPointSection": {
+        "title": "You can:",
+        "first": "wait 15 minutes and ",
+        "firstLink": "try to sign in again",
+        "second": "reset your password"
+      }
+    },
+    "browserBackButtonError": {
+      "title": "Sorry, you cannot go back from that page",
+      "header": "Sorry, you cannot go back from that page",
+      "paragraph1": "You'll need to start again to create your account or sign in.",
+      "returnToAccountCreationButtonText": "Back to create your account or sign in",
+      "returnToAccountCreationButtonLink": "/sign-in-or-create"
+    },
+    "support": {
+      "title": "Support",
+      "header": "Support",
+      "section1": {
+        "header": "What do you need help with?",
+        "supportTypeRadios": {
+          "govServiceRadioText": "I work in a government service team and we want to start using GOV.UK Sign In",
+          "publicRadioText": "I’m a member of the public",
+          "continueButtonText": "Continue",
+          "errorMessage": "You must select an option to tell us what you need help with"
+        }
+      },
+      "section2": {
+        "header": "Office Hours",
+        "paragraph1": "We can only respond to your support queries during office hours. Our office hours are 9:30am to 5:30pm, Monday to Friday.",
+        "paragraph2": "When you get in touch during office hours, we’ll try to reply within 2 working days."
+      }
+    },
+    "contactUsGov": {
+      "title": "Contact Us",
+      "header": "Contact Us",
+      "paragraph1": "You can find out how to:",
+      "bulletPoint1": {
+        "linkHref": "https://www.sign-in.service.gov.uk/getting-started/",
+        "linkText": "get started",
+        "text": " with GOV.UK Sign"
+      },
+      "bulletPoint2": {
+        "linkHref": "https://www.sign-in.service.gov.uk/register",
+        "linkText": "register your interest",
+        "text": " in using GOV.UK Sign"
+      },
+      "paragraph2": {
+        "linkHref": "mailto: govuk-sign-in@digital.cabinet-office.gov.uk",
+        "linkText": "govuk-sign-in@digital.cabinet-office.gov.uk",
+        "text": "Or if you still have questions, you can contact us at "
+      }
+    },
+    "contactUsPublic": {
+      "title": "Contact us",
+      "header": "GOV.UK account: report a problem or give feedback",
+      "section1": {
+        "paragraph1": "Use this form to:",
+        "bulletPoint1": "tell us about a problem you’re having with your GOV.UK account",
+        "bulletPoint2": "suggest improvements or give feedback about your experience using your GOV.UK account",
+        "paragraph2": "Our office hours are 9:30am to 5:30pm, Monday to Friday. We'll respond to you by email in 2 working days."
+      },
+      "section3": {
+        "header": "What are you contacting us about?",
+        "radio1": "A problem creating a GOV.UK account",
+        "radio2": "A problem signing in to your GOV.UK account",
+        "radio3": "A problem proving your identity",
+        "radio4": "Another problem using your GOV.UK account",
+        "radio5": "GOV.UK email subscriptions",
+        "radio6": "A suggestion or feedback about using your GOV.UK account",
+        "errorMessage": "Select a reason for contacting us"
+      },
+      "submitButtonText": "Submit",
+      "submitButtonLink": "/contact-us-submit"
+    },
+    "contactUsFurtherInformation": {
+      "signingIn": {
+        "title": "A problem signing in to your GOV.UK account",
+        "header": "A problem signing in to your GOV.UK account",
+        "section1": {
+          "header": "Tell us what happened",
+          "radio1": "You did not get a security code",
+          "radio2": "The security code did not work",
+          "radio3": "You've changed your phone number or lost your phone",
+          "radio4": "You’ve forgotten your password",
+          "radio5": "You’ve been told your account ‘cannot be found’",
+          "radio6": "There was a technical problem (for example, the service was unavailable)",
+          "radio7": "Something else",
+          "errorMessage": "Select the problem you had when signing in to your account"
+        }
+      },
+      "accountCreation": {
+        "title": "A problem creating a GOV.UK account",
+        "header": "A problem creating a GOV.UK account",
+        "section1": {
+          "header": "Tell us what happened",
+          "radio1": "You did not get a security code",
+          "radio2": "The security code did not work",
+          "radio3": "You do not have a UK mobile phone number",
+          "radio4": "There was a technical problem (for example, the service was unavailable)",
+          "radio5": "Something else",
+          "radio6": "You had a problem with an authenticator app",
+          "errorMessage": "Select the problem you had when creating an account"
+        }
+      }
+    },
+    "contactUsQuestions": {
+      "personalInformation": {
+        "paragraph1": "Do not include personal or financial information, for example your National Insurance number or credit card details."
+      },
+      "replyByEmail": {
+        "validationError": {
+          "noBoxSelected": "Select yes if we can reply to you by email",
+          "noEmailAddress": "Enter your email address",
+          "invalidFormat": "Enter an email address in the correct format, like name@example.com"
+        }
+      },
+      "emailReply": {
+        "header": "Can we reply to you by email?",
+        "emailLabel": "Email address",
+        "emailHint": "We will only use this to reply to your message",
+        "nameLabel": "Name (Optional)",
+        "privacyNote": "Read our <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">privacy notice</a> for more information on how we use your personal information."
+      },
+      "anotherProblem": {
+        "title": "Another problem using your GOV.UK account",
+        "header": "Another problem using your GOV.UK account",
+        "section1": {
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "For example, was there a technical problem?",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "authenticatorApp": {
+        "title": "You had a problem with an authenticator app",
+        "header": "You had a problem with an authenticator app",
+        "section1": {
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "For example, you had a problem with the QR code or finding an authenticator app",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "emailSubscriptions": {
+        "title": "Your GOV.UK email subscriptions",
+        "header": "Your GOV.UK email subscriptions",
+        "section1": {
+          "header": "What were you trying to do and what happened?",
+          "errorMessage": "Enter what you were trying to do and what happened"
+        },
+        "section2": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give feedback"
+        }
+      },
+      "suggestionOrFeedback": {
+        "title": "A suggestion or feedback about using your GOV.UK account",
+        "header": "A suggestion or feedback about using your GOV.UK account",
+        "section1": {
+          "header": "Your suggestion or feedback",
+          "errorMessage": "Enter your suggestion or feedback"
+        }
+      },
+      "technicalError": {
+        "title": "There was a technical error",
+        "header": "There was a technical error",
+        "section1": {
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "Included details of the error",
+          "errorMessage": "Enter what happened"
+        },
+        "section3": {
+          "header": "If possible, tell us the URL of the page the error happened on?"
+        }
+      },
+      "provingIdentity": {
+        "title": "A problem proving your identity",
+        "header": "A problem proving your identity",
+        "section1": {
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "For example, did you see any warning or error messages?",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "securityCodeSentMethod": {
+        "radio1": "Email",
+        "radio2": "Text message",
+        "radio3": "Authenticator app",
+        "errorMessage": "Select whether the code was sent by email or text message"
+      },
+      "noSecurityCode": {
+        "title": "You did not get a security code",
+        "header": "You did not get a security code",
+        "section1": {
+          "header": "How did you expect to get the security code?",
+          "errorMessage": "Select whether you expected to get the code by email, text message or authenticator app",
+          "errorMessageSignIn": "Select whether you expected to get the code by text message or authenticator app"
+
+        },
+        "section2": {
+          "header": "Anything else you want to tell us",
+          "hintText": "You can add more detail, such as what you were trying to do, or give us feedback"
+        }
+      },
+      "invalidSecurityCode": {
+        "title": "The security code does not work",
+        "header": "The security code does not work",
+        "section1": {
+          "header": "How did you get the security code?",
+          "errorMessage": "Select whether you got the code by email, text message or authenticator app",
+          "errorMessageSignIn": "Select whether you got the code by text message or authenticator app"
+        },
+        "section2": {
+          "header": "Anything else you want to tell us",
+          "hintText": "You can add more detail, such as what you were trying to do, or give us feedback"
+        }
+      },
+      "noUKMobile": {
+        "title": "You do not have a UK mobile phone number",
+        "header": "You do not have a UK mobile phone number",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "You can add more detail, such as what you were trying to do, or give us feedback"
+        }
+      },
+      "optionalDescriptionErrorMessage": {
+        "message": "Enter more detail"
+      },
+      "forgottenPassword": {
+        "title": "You’ve forgotten your password",
+        "header": "You’ve forgotten your password",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "noPhoneNumberAccess": {
+        "title": "You've changed your phone number or lost your phone",
+        "header": "You've changed your phone number or lost your phone",
+        "section1": {
+          "header": "How do you get security codes to sign in?",
+          "errorMessageSignIn": "Select whether you get security codes by text message or authenticator app"
+        },
+        "section2": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "accountCreationProblem": {
+        "title": "Another problem creating an account",
+        "header": "Another problem creating an account",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "signignInProblem": {
+        "title": "Another problem signing in to your account",
+        "header": "Another problem signing in to your account",
+        "section1": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "accountNotFound": {
+        "title": "Your account cannot be found",
+        "header": "Your account cannot be found",
+        "section1": {
+          "header": "What service were you trying to use?",
+          "paragraph1": "For example, your GOV.UK email subscriptions, your personal tax account or Universal Credit",
+          "errorMessage": "Enter what service you were trying to use"
+        },
+        "section2": {
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      }
+    },
+    "contactUsSubmitSuccess": {
+      "title": "Your message has been submitted",
+      "header": "Your message has been submitted",
+      "paragraph1": "Thank you for your message.",
+      "paragraph2": "We'll respond to you in 2 working days.",
+      "paragraph3": {
+        "linkHref": "https://www.gov.uk",
+        "linkText": "Return to the GOV.UK homepage"
+      }
+    },
+    "termsConditionsNotAccepted": {
+      "title": "placeholder",
+      "header": "placeholder"
+    },
+    "proveIdentityWelcome": {
+      "title": "Prove your identity with a GOV.UK account",
+      "header": "Prove your identity with a GOV.UK account",
+      "section1": {
+        "paragraph1": "You can currently only prove your identity with your GOV.UK account if you have a UK passport.",
+        "insetTextPassport": "If your passport has expired, you can still use it to prove your identity up until 18 months after the expiry date."
+      },
+      "section2": {
+        "subHeading": "What you need to do",
+        "paragraph1": "It will take you about 10 minutes to prove your identity this way.",
+        "insetTextEnglishOnly": "This service is currently only available in English.",
+        "insetAlternativeLanguage": {
+          "paragraph1": "This service is also available in ",
+          "linkText": "Welsh (Cymraeg)",
+          "linkHref": ""
+        },
+        "paragraph2": "You'll need to create or sign in to your GOV.UK account first. We'll then ask you for your current address and passport details.",
+        "paragraph3": "We'll also ask you some security questions that only you should know the answers to. You might find it easier to answer these questions if you have information about:",
+        "listItem1": "your mobile phone contract",
+        "listItem2": "your bank account",
+        "listItem3": "any credit cards, loans or mortgages you have",
+        "paragraph4": "We'll only use the information you give us to make sure that you are who you say you are."
+      },
+      "section3": {
+        "subHeading": "Choose a way to prove your identity",
+        "radioOption1": "Continue to sign in or create a GOV.UK account",
+        "radioOption1HintText": "Make sure you have your UK passport with you before you continue. You might still be able to prove your identity if you do not have your passport but know the details on it.",
+        "radioOption2": "Prove your identity another way",
+        "radioOption2HintText": "You can prove your identity online with GOV.UK Verify or take your identity documents to be checked in person.",
+        "errorMessage": "Select an option"
+      },
+      "existingSession": {
+        "section2": {
+          "paragraph2": "We'll ask you for your current address and passport details."
+        },
+        "section3": {
+          "radioOption1": "Continue with your GOV.UK account"
+        }
+      }
+    },
+    "proveIdentityCheck": {
+      "title": "Returning you to the ‘[serviceName]’ service",
+      "header": "Returning you to the ‘[serviceName]’ service",
+      "paragraph1": "Please wait",
+      "paragraph2": "We're still trying"
+    },
+    "getSecurityCodes": {
+      "title": "Choose how to get security codes",
+      "header": "Choose how to get security codes",
+      "summary": "To finish creating your account, you need to choose a way to prove it's you when you sign in.",
+      "titleAccountPartCreated": "Finish creating your account",
+      "headerAccountPartCreated": "Finish creating your account",
+      "summaryAccountPartCreated": "Choose a way to get security codes when you sign in. This helps keep your account secure.",
+      "secondFactorRadios": {
+        "textMessageText": "Text message",
+        "authAppText": "Authenticator app for smartphone, tablet or computer",
+        "errorMessage": "Select how you want to get security codes"
+      },
+      "authAppDetails": {
+        "summaryText": "What is an authenticator app?",
+        "paragraph1": "An authenticator app creates a security code that helps confirm it's you when you sign in.",
+        "paragraph2": "You can use an authenticator app on your smartphone, tablet or desktop computer.  Download an authenticator app for your smartphone or tablet from your app store or search online for an authenticator app for your computer."
+      },
+      "continueButtonText": "Continue"
+    },
+    "setupAuthenticatorApp": {
+      "title": "Set up an authenticator app",
+      "header": "Set up an authenticator app",
+      "step1": "1. Open your authenticator app on your smartphone, tablet or computer.",
+      "noAuthAppDetails": {
+        "summaryText": "I don't have an authenticator app",
+        "paragraph1": "You can download an authenticator app for your smartphone or tablet from your app store.",
+        "paragraph2": "If you don't have a smartphone or tablet, search online for an authenticator app for your computer.",
+        "paragraph3": "You can use any authenticator app."
+      },
+      "step2": "2. Use your authenticator app to scan the QR code or type the secret key into your authenticator app.  Some authenticator apps call the secret key a 'code'.",
+      "secretKeyLabelText": "Secret key: ",
+      "step3": "3. The authenticator app will show an security code.",
+      "step4": "4. Enter the security code.",
+      "code": {
+        "label": "Security code",
+        "hintText": "This is the 6-digit number shown in your authenticator app",
+        "validationError":{
+         "required": "Enter the security code shown in your authenticator app",
+          "invalidCode": "The security code you entered is not correct, try entering it again or wait for for your authenticator app to give you a new code",
+          "length": "Enter the security code using only 6 digits"
+        }
+      },
+      "continueButtonText": "Continue",
+      "changeMfaChoiceLinkText": "Get a code another way"
+    },
+    "enterAuthenticatorAppCode": {
+      "title": "Enter the 6 digit security code shown in your authenticator app",
+      "header": "Enter the 6 digit security code shown in your authenticator app",
+      "code": {
+        "validationError": {
+          "required": "Enter the security code",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "The security code you entered is not correct, try entering it again or wait for your authenticator app to give you a new code"
+        }
+      }
+    }
+  }
+}
