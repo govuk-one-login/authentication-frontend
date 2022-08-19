@@ -119,7 +119,7 @@
       "insetAlternativeLanguage": {
         "paragraph1": "The GOV.UK account is also available ",
         "linkText": "in Welsh (Cymraeg)",
-        "linkHref": ""
+        "linkHref": "?lng=cy"
       },
       "paragraph2": "If you already have a GOV.UK account you can",
       "signInText": "sign in",
