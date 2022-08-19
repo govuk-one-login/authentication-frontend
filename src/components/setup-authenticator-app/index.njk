@@ -53,7 +53,9 @@
   classes: "govuk-input--width-10 govuk-!-font-weight-bold",
   id: "code",
   name: "code",
-  type: "number",
+  inputmode: "numeric",
+  pattern: "[0-9]*",
+  spellcheck: false,
   autocomplete:"off",
   errorMessage: {
   text: errors['code'].text

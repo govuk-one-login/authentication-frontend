@@ -6,13 +6,13 @@
 
 {% block content %}
 
-{% include "common/errors/errorSummary.njk" %}
+  {% include "common/errors/errorSummary.njk" %}
 
-<form id="form-tracking" action="/enter-authenticator-app-code" method="post" novalidate>
+  <form id="form-tracking" action="/enter-authenticator-app-code" method="post" novalidate="novalidate">
 
-  <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
-  {{ govukInput({
+    {{ govukInput({
       label: {
         text: 'pages.enterAuthenticatorAppCode.header' | translate,
         classes: "govuk-label--l",
@@ -21,19 +21,21 @@
     classes: "govuk-input--width-10",
     id: "code",
     name: "code",
-    type: "number",
+    inputmode: "numeric",
+    pattern: "[0-9]*",
+    spellcheck: false,
     autocomplete:"off",
     errorMessage: {
       text: errors['code'].text
     } if (errors['code'])})
   }}
 
-  {{ govukButton({
+    {{ govukButton({
     "text": button_text|default('general.continue.label' | translate, true),
     "type": "Submit",
     "preventDoubleClick": true
   }) }}
 
-</form>
+  </form>
 
 {% endblock %}
