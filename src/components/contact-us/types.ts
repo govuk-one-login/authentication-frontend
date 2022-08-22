@@ -14,7 +14,7 @@ export interface ContactForm {
 
 export interface OptionalData {
   userAgent: string;
-  sessionId?: string;
+  ticketIdentifier?: string;
 }
 
 export interface Questions {

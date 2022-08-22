@@ -4,6 +4,8 @@ import { contactUsService } from "./contact-us-service";
 import { ContactUsServiceInterface, Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
 import { supportMFAOptions } from "../../config";
+import crypto from "crypto";
+import { logger } from "../../utils/logger";
 
 const themeToPageTitle = {
   [ZENDESK_THEMES.ACCOUNT_NOT_FOUND]:
@@ -129,6 +131,7 @@ export function contactUsQuestionsFormPost(
       req.body.theme,
       req.body.subtheme
     );
+    const ticketIdentifier = crypto.randomBytes(20).toString("base64url");
 
     await service.contactUsSubmitForm({
       descriptions: {
@@ -142,7 +145,7 @@ export function contactUsQuestionsFormPost(
       email: req.body.email,
       name: req.body.name,
       optionalData: {
-        sessionId: "",
+        ticketIdentifier: ticketIdentifier,
         userAgent: req.get("User-Agent"),
       },
       feedbackContact: req.body.contact === "true",
@@ -152,6 +155,9 @@ export function contactUsQuestionsFormPost(
       securityCodeSentMethod: req.body.securityCodeSentMethod,
     });
 
+    logger.info(
+      `Support ticket submitted with id ${ticketIdentifier} for session ${res.locals.sessionId}`
+    );
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
   };
 }
