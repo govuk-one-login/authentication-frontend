@@ -100,8 +100,12 @@ export function contactUsService(
       htmlBody.push(`<p>${descriptions.moreDetailDescription}</p>`);
     }
 
-    htmlBody.push(`<span>[Session ID]</span>`);
-    htmlBody.push(`<p>${optionalData.sessionId}</p>`);
+    htmlBody.push(`<span>[Ticket Identifier]</span>`);
+    if (optionalData.ticketIdentifier) {
+      htmlBody.push(`<p>${optionalData.ticketIdentifier}</p>`);
+    } else {
+      htmlBody.push(`<p>Unable to capture ticket identifier</p>`);
+    }
 
     htmlBody.push(`<span>[From page]</span>`);
     if (referer) {
