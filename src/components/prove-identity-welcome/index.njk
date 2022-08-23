@@ -8,38 +8,49 @@
 
 {% block content %}
 
-{% include "common/errors/errorSummary.njk" %}
+    {% include "common/errors/errorSummary.njk" %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.proveIdentityWelcome.header' | translate}}</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.proveIdentityWelcome.header' | translate}}</h1>
 
-<p class="govuk-body">{{'pages.proveIdentityWelcome.section1.paragraph1' | translate}}</p>
+    <p class="govuk-body">{{'pages.proveIdentityWelcome.section1.paragraph1' | translate}}</p>
 
-{{ govukInsetText({
+    {{ govukInsetText({
     html: 'pages.proveIdentityWelcome.section1.insetTextPassport' | translate
 }) }}
 
-<h2 class="govuk-heading-m">{{'pages.proveIdentityWelcome.section2.subHeading' | translate}}</h2>
+    <h2 class="govuk-heading-m">{{'pages.proveIdentityWelcome.section2.subHeading' | translate}}</h2>
 
-<p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph1' | translate}}</p>
+    <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph1' | translate}}</p>
 
-{{ govukInsetText({
-    html: 'pages.proveIdentityWelcome.section2.insetTextEnglishOnly' | translate
-}) }}
+    {% if supportLanguageCY %}
+        {% set insetTextInnerHtml %}
+        {{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.paragraph1' | translate }}
+        <a href="{{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkHref' | translate }}" class="govuk-link" rel="noreferrer">{{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkText' | translate }}</a>.
+        {% endset %}
 
-<p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph2' | translate}}</p>
-<p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph3' | translate}}</p>
+        {{ govukInsetText({
+        html: insetTextInnerHtml
+        }) }}
+    {% else %}
+        {{ govukInsetText({
+            text: 'pages.proveIdentityWelcome.section2.insetTextEnglishOnly' | translate
+        }) }}
+    {% endif %}
 
-<ul class="govuk-list govuk-list--bullet">
-    <li>{{'pages.proveIdentityWelcome.section2.listItem1' | translate}}</li>
-    <li>{{'pages.proveIdentityWelcome.section2.listItem2' | translate}}</li>
-    <li>{{'pages.proveIdentityWelcome.section2.listItem3' | translate}}</li>
-</ul>
+    <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph2' | translate}}</p>
+    <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph3' | translate}}</p>
 
-<p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph4' | translate}}</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>{{'pages.proveIdentityWelcome.section2.listItem1' | translate}}</li>
+        <li>{{'pages.proveIdentityWelcome.section2.listItem2' | translate}}</li>
+        <li>{{'pages.proveIdentityWelcome.section2.listItem3' | translate}}</li>
+    </ul>
 
-<form id="form-tracking" action="/prove-identity-welcome" method="post" novalidate>
+    <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph4' | translate}}</p>
 
-<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <form id="form-tracking" action="/prove-identity-welcome" method="post" novalidate="novalidate">
+
+        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
         {{ govukRadios({
             idPrefix: "chooseWayPyi",
@@ -72,11 +83,11 @@
             } if (errors['chooseWayPyi'])
         }) }}
 
-    {{ govukButton({
+        {{ govukButton({
         "text": button_text|default('general.continue.label' | translate, true),
         "type": "Submit",
         "preventDoubleClick": true
     }) }}
 
-</form>
+    </form>
 {% endblock %}

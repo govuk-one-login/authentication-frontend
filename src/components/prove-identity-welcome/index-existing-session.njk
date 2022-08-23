@@ -19,9 +19,20 @@
 
     <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph1' | translate}}</p>
 
-    {{ govukInsetText({
-        html: 'pages.proveIdentityWelcome.section2.insetTextEnglishOnly' | translate
-    }) }}
+    {% if supportLanguageCY %}
+        {% set insetTextInnerHtml %}
+        {{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.paragraph1' | translate }}
+        <a href="{{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkHref' | translate }}" class="govuk-link" rel="noreferrer">{{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkText' | translate }}</a>.
+        {% endset %}
+
+        {{ govukInsetText({
+        html: insetTextInnerHtml
+        }) }}
+    {% else %}
+        {{ govukInsetText({
+            html: 'pages.proveIdentityWelcome.section2.insetTextEnglishOnly' | translate
+        }) }}
+    {% endif %}
 
     <p class="govuk-body">{{'pages.proveIdentityWelcome.existingSession.section2.paragraph2' | translate}}</p>
     <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph3' | translate}}</p>
