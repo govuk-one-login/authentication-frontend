@@ -42,6 +42,25 @@ Navigate to the stub app [http://localhost:2000](http://localhost:2000).  This a
 
 Changes made locally will automatically be deployed after a few seconds. You should check the docker console to check that your changes have been picked up by the restart.
 
+### Switching between different Scopes and Levels of Confidence
+
+In the deployed stubs, you are given the option in a UI to select things like scopes and desired level of confidence. When running locally, it does not work the same way as you never see a stub UI. These equivalent parameters are defined in `dev-app.js`. In order to change them, you need to tweak the `AUTHORIZE_REQUEST` constant. One easy way to see a valid 'shape' for your desired set of options is to use a deployed stub (e.g. the Build environment stub), inspect the network calls, and have a look at the request payload directed to the `/authorize` endpoint. You can copy any relevant parts across into `dev-app.js`. For example, to increase Levels of Confidence from P0 to P2, you would need to add this line. Note that this must be URL encoded so `[` becomes `%5B` for example:
+
+```
+const AUTHORIZE_REQUEST =
+  process.env.API_BASE_URL +
+  "/authorize?" +
+  "vtr=%5B%22P2.Cl.Cm%22%5D&" + <= THIS LINE
+  "scope=openid+phone+email&" +
+  "response_type=code&" +
+  "redirect_uri=https%3A%2F%2F" + process.env.STUB_HOSTNAME + "%2Foidc%2Fauthorization-code%2Fcallback&" +
+  "state=sEazICy8jKFFlt-NLSw5yqYRA2r4q5BZGcAf9sYeWRg&" +
+  "nonce=gyRdMfQGsQS9BvhU-lBwENOZ0UU&" +
+  "client_id=" + process.env.TEST_CLIENT_ID +
+  "&cookie_consent=accept" +
+  "&_ga=test";
+```
+
 ### Running the tests
 
 The unit tests have been written with Mocha and Supertest.
