@@ -1528,7 +1528,7 @@
         "insetAlternativeLanguage": {
           "paragraph1": "This service is also available in ",
           "linkText": "Welsh (Cymraeg)",
-          "linkHref": ""
+          "linkHref": "?lng=cy"
         },
         "paragraph2": "You'll need to create or sign in to your GOV.UK account first. We'll then ask you for your current address and passport details.",
         "paragraph3": "We'll also ask you some security questions that only you should know the answers to. You might find it easier to answer these questions if you have information about:",
