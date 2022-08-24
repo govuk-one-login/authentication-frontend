@@ -25,4 +25,4 @@ echo "Stopping frontend services..."
 docker-compose down
 
 echo "Starting frontend service..."
-docker-compose up
+docker-compose up --build
