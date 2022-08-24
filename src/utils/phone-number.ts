@@ -1,6 +1,13 @@
 import { isValidPhoneNumber } from "libphonenumber-js/mobile";
 
-const ALLOWED_TEST_NUMBERS = ["07700900222"];
+const ALLOWED_TEST_NUMBERS = [
+  "07700900000",
+  "07700900111",
+  "07700900222",
+  "+447700900000",
+  "+447700900111",
+  "+447700900222",
+];
 
 export function containsUKMobileNumber(value: string): boolean {
   return (
