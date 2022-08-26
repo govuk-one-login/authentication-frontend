@@ -253,7 +253,7 @@
       },
       "details": {
         "summaryText": "Problemau gyda'r cod?",
-        "text1": ""Gallwn ",
+        "text1": "Gallwn ",
         "sendCodeLinkText": "anfon y cod eto",
         "sendCodeLinkHref": "/resend-code?isResendCodeRequest=true",
         "text2": " os nad yw'r cod yn gweithio neu ni wnaethoch ei dderbyn"
@@ -376,7 +376,7 @@
       },
       "details": {
         "summaryText": "Problemau gyda'r cod?",
-        "text1": ""Gallwn ",
+        "text1": "Gallwn ",
         "sendCodeLinkText": "anfon y cod eto",
         "sendCodeLinkHref": "/resend-code?isResendCodeRequest=true",
         "text2": " neu gallwch ",
@@ -403,7 +403,7 @@
       },
       "details": {
         "summaryText": "Problemau gyda'r cod?",
-        "text1": ""Gallwn ",
+        "text1": "Gallwn ",
         "sendCodeLinkText": "anfon y cod eto",
         "sendCodeLinkHref": "/resend-code?isResendCodeRequest=true",
         "text 2": " neu gallwch ",
@@ -471,7 +471,7 @@
       },
       "details": {
         "summaryText": "Problemau gyda'r cod?",
-        "text1": ""Gallwn ",
+        "text1": "Gallwn ",
         "sendCodeLinkText": "anfon y cod eto",
         "sendCodeLinkHref": "/resend-code",
         "text 2": " os nad yw'r cod yn gweithio neu ni wnaethoch ei dderbyn."
@@ -573,7 +573,7 @@
         "paragraph6": "Darganfyddwch fwy am",
         "linkHref": "https://ico.org.uk/your-data-matters/online/cookies/",
         "linkText": "sut i reoli cwcis",
-        "paragraph7": " ar wefan Swyddfa'r Comisiynydd Gwybodaeth (ICO).
+        "paragraph7": " ar wefan Swyddfa'r Comisiynydd Gwybodaeth (ICO)."
       },
       "essential": {
         "header": "Cwcis hollol hanfodol",
@@ -809,7 +809,7 @@
       },
       "section2": {
         "header": "Cael mynydiad i'ch cyfrif GOV.UK",
-        "paragraph1": "Rydych yn gyfrifol am wneud yr holl drefniadau i chi gael mynediad i'ch cyfrif GOV.UK. Mae hyn yn cynnwys darparu eich dyfais eich hun, system weithredu, porwr a chysylltiad rhyngrwyd. \ nDylech ddefnyddio dyfais sy'n defnyddio system weithredu Windows, OS, iOS neu Android. Rydym yn argymell eich bod yn defnyddio un o'r porwyr canlynol:",
+        "paragraph1": "Rydych yn gyfrifol am wneud yr holl drefniadau i chi gael mynediad i'ch cyfrif GOV.UK. Mae hyn yn cynnwys darparu eich dyfais eich hun, system weithredu, porwr a chysylltiad rhyngrwyd. Dylech ddefnyddio dyfais sy'n defnyddio system weithredu Windows, OS, iOS neu Android. Rydym yn argymell eich bod yn defnyddio un o'r porwyr canlynol:",
         "BulletPoint1": "Y fersiwn diweddaraf o Google Chrome, Microsoft Edge, Mozilla Firefox, Samsung Internet neu Internet Explorer",
         "bulletPoint2": "Safari 12 neu ddiweddarach",
         "bulletPoint3": "Safari ar gyfer iOS 12.1 neu ddiweddarach",
@@ -1612,7 +1612,7 @@
         "validationError": {
           "required": "Rhowch y cod diogelwch",
           "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "InvalidCode": "Nid yw'r cod diogelwch rydych wedi'i roi yn gywir, ceisiwch ei roi i mewn eto neu aros i'ch ap dilysydd roi cod newydd i chi",
+          "InvalidCode": "Nid yw'r cod diogelwch rydych wedi'i roi yn gywir, ceisiwch ei roi i mewn eto neu aros i'ch ap dilysydd roi cod newydd i chi"
         }
       }
     }
