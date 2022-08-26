@@ -53,6 +53,10 @@ variable "support_mfa_options" {
   type = string
 }
 
+variable "support_language_cy" {
+  type = string
+}
+
 variable "zone_id" {
   default = null
 }
