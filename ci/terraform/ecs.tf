@@ -85,6 +85,10 @@ locals {
         value = var.support_mfa_options
       },
       {
+        name  = "SUPPORT_LANGUAGE_CY"
+        value = var.support_language_cy
+      },
+      {
         name  = "ZENDESK_API_TOKEN"
         value = var.zendesk_api_token
       },

@@ -22,6 +22,7 @@ services:
       - ANALYTICS_COOKIE_DOMAIN=localhost
       - SUPPORT_INTERNATIONAL_NUMBERS=${SUPPORT_INTERNATIONAL_NUMBERS}
       - SUPPORT_MFA_OPTIONS=${SUPPORT_MFA_OPTIONS}
+      - SUPPORT_LANGUAGE_CY=${SUPPORT_LANGUAGE_CY}
     restart: on-failure
     networks:
       - di-net
