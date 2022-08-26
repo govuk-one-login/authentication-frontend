@@ -1,4 +1,5 @@
 import { LOCALE } from "../app.constants";
+import { supportLanguageCY } from "../config";
 
 export function i18nextConfigurationOptions(
   path: string
@@ -8,7 +9,7 @@ export function i18nextConfigurationOptions(
     fallbackLng: LOCALE.EN,
     lng: LOCALE.EN,
     preload: [LOCALE.EN],
-    supportedLngs: [LOCALE.EN, LOCALE.CY],
+    supportedLngs: supportLanguageCY() ? [LOCALE.EN, LOCALE.CY] : [LOCALE.EN],
     backend: {
       loadPath: path,
       allowMultiLoading: true,
