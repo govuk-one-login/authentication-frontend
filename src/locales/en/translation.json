@@ -1591,7 +1591,7 @@
       },
       "step2": "2. Use your authenticator app to scan the QR code or type the secret key into your authenticator app.  Some authenticator apps call the secret key a 'code'.",
       "secretKeyLabelText": "Secret key: ",
-      "step3": "3. The authenticator app will show an security code.",
+      "step3": "3. The authenticator app will show a security code.",
       "step4": "4. Enter the security code.",
       "code": {
         "label": "Security code",
