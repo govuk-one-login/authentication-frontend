@@ -9,6 +9,7 @@ import { SendNotificationServiceInterface } from "../common/send-notification/ty
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { supportMFAOptions } from "../../config";
+import xss from "xss";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";
 
@@ -35,7 +36,8 @@ export const checkYourPhonePost = (
         req.session.user.email,
         NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
         req.ip,
-        res.locals.persistentSessionId
+        res.locals.persistentSessionId,
+        xss(req.cookies.lng as string)
       );
 
       return res.redirect(

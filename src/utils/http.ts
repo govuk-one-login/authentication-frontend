@@ -24,6 +24,7 @@ export interface ConfigOptions {
   sourceIp?: string;
   persistentSessionId?: string;
   baseURL?: string;
+  userLanguage?: string;
 }
 
 export function createApiResponse<T>(
@@ -68,6 +69,10 @@ export function getRequestConfig(options: ConfigOptions): AxiosRequestConfig {
 
   if (options.baseURL) {
     config.baseURL = options.baseURL;
+  }
+
+  if (options.userLanguage) {
+    config.headers["User-Language"] = options.userLanguage;
   }
 
   return config;

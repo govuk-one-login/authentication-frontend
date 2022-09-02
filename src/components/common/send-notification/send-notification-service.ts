@@ -18,6 +18,7 @@ export function sendNotificationService(
     notificationType: string,
     sourceIp: string,
     persistentSessionId: string,
+    userLanguage: string,
     phoneNumber?: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const payload: any = {
@@ -41,6 +42,7 @@ export function sendNotificationService(
           HTTP_STATUS_CODES.NO_CONTENT,
           HTTP_STATUS_CODES.BAD_REQUEST,
         ],
+        userLanguage: userLanguage,
       })
     );
 

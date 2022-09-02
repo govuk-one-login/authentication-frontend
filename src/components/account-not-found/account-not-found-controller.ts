@@ -9,6 +9,7 @@ import {
   getNextPathAndUpdateJourney,
 } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import xss from "xss";
 
 export function accountNotFoundGet(req: Request, res: Response): void {
   if (req.session.client.serviceType === SERVICE_TYPE.OPTIONAL) {
@@ -32,7 +33,8 @@ export function accountNotFoundPost(
       req.session.user.email,
       NOTIFICATION_TYPE.VERIFY_EMAIL,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      xss(req.cookies.lng as string)
     );
 
     if (!result.success) {
