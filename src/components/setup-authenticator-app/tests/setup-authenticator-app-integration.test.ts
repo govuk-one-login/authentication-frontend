@@ -122,6 +122,10 @@ describe("Integration::setup-authenticator-app", () => {
       .post(API_ENDPOINTS.VERIFY_MFA_CODE)
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT, { success: true });
+    nock(baseApi)
+      .post(API_ENDPOINTS.SEND_NOTIFICATION)
+      .once()
+      .reply(HTTP_STATUS_CODES.NO_CONTENT, { success: true });
 
     request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)

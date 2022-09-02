@@ -17,6 +17,7 @@ import { UpdateProfileServiceInterface } from "../../common/update-profile/types
 import { AuthAppServiceInterface } from "../types";
 import { ERROR_CODES } from "../../common/constants";
 import { BadRequestError } from "../../../utils/error";
+import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 
 describe("setup-authenticator-app controller", () => {
   let req: RequestOutput;
@@ -64,13 +65,19 @@ describe("setup-authenticator-app controller", () => {
         verifyAccessCode: sinon.fake.returns({ success: true }),
       };
 
-      await setupAuthenticatorAppPost(fakeMfAService, updateProfileService)(
-        req as Request,
-        res as Response
-      );
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake(),
+      };
+
+      await setupAuthenticatorAppPost(
+        fakeMfAService,
+        updateProfileService,
+        fakeNotificationService
+      )(req as Request, res as Response);
 
       expect(updateProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeMfAService.verifyAccessCode).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
 
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL
@@ -93,13 +100,19 @@ describe("setup-authenticator-app controller", () => {
         }),
       };
 
-      await setupAuthenticatorAppPost(fakeMfAService, updateProfileService)(
-        req as Request,
-        res as Response
-      );
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake(),
+      };
+
+      await setupAuthenticatorAppPost(
+        fakeMfAService,
+        updateProfileService,
+        fakeNotificationService
+      )(req as Request, res as Response);
 
       expect(updateProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeMfAService.verifyAccessCode).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.not.have.been.called;
 
       expect(res.render).to.have.been.calledWith(
         "setup-authenticator-app/index.njk"
@@ -120,13 +133,19 @@ describe("setup-authenticator-app controller", () => {
         verifyAccessCode: sinon.fake.returns({ success: true }),
       };
 
-      await setupAuthenticatorAppPost(fakeMfAService, updateProfileService)(
-        req as Request,
-        res as Response
-      );
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake(),
+      };
+
+      await setupAuthenticatorAppPost(
+        fakeMfAService,
+        updateProfileService,
+        fakeNotificationService
+      )(req as Request, res as Response);
 
       expect(updateProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeMfAService.verifyAccessCode).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.PROVE_IDENTITY);
     });
