@@ -9,6 +9,7 @@ import { BadRequestError } from "../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
+import xss from "xss";
 
 export function resendEmailCodeGet(req: Request, res: Response): void {
   res.render("resend-email-code/index.njk", {
@@ -29,7 +30,8 @@ export function resendEmailCodePost(
       email,
       NOTIFICATION_TYPE.VERIFY_EMAIL,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      xss(req.cookies.lng as string)
     );
 
     if (!sendNotificationResponse.success) {

@@ -19,6 +19,7 @@ import { AuthAppServiceInterface } from "./types";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { NOTIFICATION_TYPE } from "../../app.constants";
+import xss from "xss";
 
 const TEMPLATE = "setup-authenticator-app/index.njk";
 
@@ -103,7 +104,8 @@ export function setupAuthenticatorAppPost(
       req.session.user.email,
       NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
       req.ip,
-      res.locals.persistentSessionId
+      res.locals.persistentSessionId,
+      xss(req.cookies.lng as string)
     );
 
     return res.redirect(
