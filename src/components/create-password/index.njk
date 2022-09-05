@@ -41,7 +41,7 @@
   </ul>
 
 {{ govukButton({
-    "text": button_text|default("Continue", true),
+    "text": button_text|default("general.continue.label" | translate, true),
     "type": "Submit",
     "preventDoubleClick": true
 }) }}
