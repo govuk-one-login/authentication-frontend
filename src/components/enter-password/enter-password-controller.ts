@@ -17,6 +17,7 @@ import { BadRequestError } from "../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { supportMFAOptions } from "../../config";
 import { MFA_METHOD_TYPE } from "../../app.constants";
+import xss from "xss";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -110,7 +111,8 @@ export function enterPasswordPost(
         email,
         req.ip,
         persistentSessionId,
-        false
+        false,
+        xss(req.cookies.lng as string)
       );
 
       if (!result.success) {
