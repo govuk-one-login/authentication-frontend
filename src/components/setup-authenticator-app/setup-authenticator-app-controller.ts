@@ -16,6 +16,9 @@ import {
   renderBadRequest,
 } from "../../utils/validation";
 import { AuthAppServiceInterface } from "./types";
+import { SendNotificationServiceInterface } from "../common/send-notification/types";
+import { sendNotificationService } from "../common/send-notification/send-notification-service";
+import { NOTIFICATION_TYPE } from "../../app.constants";
 
 const TEMPLATE = "setup-authenticator-app/index.njk";
 
@@ -39,7 +42,8 @@ export async function setupAuthenticatorAppGet(
 
 export function setupAuthenticatorAppPost(
   service: AuthAppServiceInterface = setupAuthAppService(),
-  profileService: UpdateProfileServiceInterface = updateProfileService()
+  profileService: UpdateProfileServiceInterface = updateProfileService(),
+  notificationService: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email, authAppSecret } = req.session.user;
@@ -92,6 +96,15 @@ export function setupAuthenticatorAppPost(
     }
 
     req.session.user.authAppSecret = null;
+
+    await notificationService.sendNotification(
+      res.locals.sessionId,
+      res.locals.clientSessionId,
+      req.session.user.email,
+      NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
+      req.ip,
+      res.locals.persistentSessionId
+    );
 
     return res.redirect(
       getNextPathAndUpdateJourney(
