@@ -6,6 +6,7 @@ import { BadRequestError } from "../../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine";
 import { PATH_NAMES } from "../../../app.constants";
 import { sanitize } from "../../../utils/strings";
+import xss from "xss";
 
 export function sendMfaGeneric(
   mfaCodeService: MfaServiceInterface
@@ -21,7 +22,8 @@ export function sendMfaGeneric(
       email,
       req.ip,
       persistentSessionId,
-      isResendCodeRequest
+      isResendCodeRequest,
+      xss(req.cookies.lng as string)
     );
 
     if (!result.success) {

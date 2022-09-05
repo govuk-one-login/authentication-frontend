@@ -7,6 +7,7 @@ export interface MfaServiceInterface {
     emailAddress: string,
     sourceIp: string,
     persistentSessionId: string,
-    isResendCodeRequest: boolean
+    isResendCodeRequest: boolean,
+    userLanguage: string
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

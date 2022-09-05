@@ -15,7 +15,8 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
     emailAddress: string,
     sourceIp: string,
     persistentSessionId: string,
-    isResendCodeRequest: boolean
+    isResendCodeRequest: boolean,
+    userLanguage: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.MFA,
@@ -28,6 +29,7 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
         clientSessionId: clientSessionId,
         sourceIp: sourceIp,
         persistentSessionId: persistentSessionId,
+        userLanguage: userLanguage,
       })
     );
 
