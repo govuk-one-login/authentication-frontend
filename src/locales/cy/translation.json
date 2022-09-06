@@ -1568,7 +1568,7 @@
       "headerAccountPartCreated": "Gorffen creu eich cyfrif",
       "summaryAccountPartCreated": "Dewiswch ffordd o gael codau diogelwch pan fyddwch yn mewngofnodi. Mae hyn yn helpu i gadw eich cyfrif yn ddiogel.",
       "secondFactorRadios": {
-        "textMessageText": "Text message",
+        "textMessageText": "Neges destun",
         "authAppText": "Ap dilysydd ar gyfer ffôn clyfar, llechen neu gyfrifiadur",
         "errorMessage": "Dewiswch y ffordd rydych am gael codau diogelwch"
       },
