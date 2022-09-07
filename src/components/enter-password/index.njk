@@ -15,7 +15,19 @@
 <form id="form-tracking" action="/enter-password" method="post" novalidate>
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
-{{ govukInputWithShowPasswordWithLabelAsPageHeading('pages.enterPassword.header' | translate, "password", errors) }}
+{{ govukInputWithShowPasswordWithLabelAsPageHeading(
+    'pages.enterPassword.header' | translate,
+    "password",
+    errors,
+    {
+        show: 'general.showPassword.show' | translate,
+        hide: 'general.showPassword.hide' | translate,
+        showFullText: 'general.showPassword.showFullText' | translate,
+        hideFullText: 'general.showPassword.hideFullText' | translate,
+        announceShown: 'general.showPassword.announceShown' | translate,
+        announceHidden: 'general.showPassword.announceHidden' | translate
+    }
+) }}
 
 <p class="govuk-body">
     <a href="/reset-password-request" class="govuk-link" rel="noreferrer noopener">{{'pages.enterPassword.forgottenPassword.text' | translate }}</a>

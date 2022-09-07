@@ -1,13 +1,10 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
-{% macro govukInputWithShowPassword(label, id, errors, hint) %}
-    <div class="govuk-show-password" data-module="show-password" data-disable-form-submit-check="false" data-show-text="Show" data-hide-text="Hide" data-show-full-text="Show password" data-hide-full-text="Hide password" data-announce-show="Your password is shown" data-announce-hide="Your password is hidden">
+{% macro govukInputWithShowPassword(label, id, errors, showSettings) %}
+    <div class="govuk-show-password" data-module="show-password" data-disable-form-submit-check="false" data-show-text="{{ showSettings.show }}" data-hide-text="{{ showSettings.hide }}" data-show-full-text="{{ showSettings.showFullText }}" data-hide-full-text="{{ showSettings.hideFullText }}" data-announce-show="{{ showSettings.announceShown }}" data-announce-hide="{{ showSettings.announceHidden }}">
         {{ govukInput({
             label: {
                 text: label
-            },
-            hint: {
-                text: hint
             },
             classes: "govuk-!-width-two-thirds govuk-password-input",
             id: id,
@@ -21,16 +18,13 @@
     </div>
 {% endmacro %}
 
-{% macro govukInputWithShowPasswordWithLabelAsPageHeading(label, id, errors, hint) %}
-    <div class="govuk-show-password" data-module="show-password" data-disable-form-submit-check="false" data-show-text="Show" data-hide-text="Hide" data-show-full-text="Show password" data-hide-full-text="Hide password" data-announce-show="Your password is shown" data-announce-hide="Your password is hidden">
+{% macro govukInputWithShowPasswordWithLabelAsPageHeading(label, id, errors, showSettings) %}
+    <div class="govuk-show-password" data-module="show-password" data-disable-form-submit-check="false" data-show-text="{{ showSettings.show }}" data-hide-text="{{ showSettings.hide }}" data-show-full-text="{{ showSettings.showFullText }}" data-hide-full-text="{{ showSettings.hideFullText }}" data-announce-show="{{ showSettings.announceShown }}" data-announce-hide="{{ showSettings.announceHidden }}">
         {{ govukInput({
             label: {
                 text: label,
                 classes: "govuk-label--l",
                 isPageHeading: true
-            },
-            hint: {
-                text: hint
             },
             classes: "govuk-!-width-two-thirds govuk-password-input",
             id: id,
