@@ -14,30 +14,30 @@
 
     {% include "common/errors/errorSummary.njk" %}
 
-{% set html %}
-<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
-<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
-{% endset %}
+    {% set html %}
+    <p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
+    <a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
+    {% endset %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsPublic.header' | translate }}
-</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+        {{ 'pages.contactUsPublic.header' | translate }}
+    </h1>
 
-<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph1' | translate }}</p>
-<ul class="govuk-list govuk-list--bullet">
- <li>{{ 'pages.contactUsPublic.section1.bulletPoint1' | translate}}</li>
- <li>{{ 'pages.contactUsPublic.section1.bulletPoint2' | translate}}</li>
-</ul>
+    <p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph1' | translate }}</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>{{ 'pages.contactUsPublic.section1.bulletPoint1' | translate}}</li>
+        <li>{{ 'pages.contactUsPublic.section1.bulletPoint2' | translate}}</li>
+    </ul>
 
-<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph2' | translate }}</p>
+    <p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph2' | translate }}</p>
 
-<form action="/contact-us" method="post" novalidate>
+    <form action="/contact-us" method="post" novalidate="novalidate">
 
-<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-<input type="hidden" name="referer" value="{{referer}}"/>
+        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+        <input type="hidden" name="referer" value="{{referer}}"/>
 
-    {{ govukRadios({
-        idPrefix: "contact-us",
+        {{ govukRadios({
+        idPrefix: "theme",
         name: "theme",
         fieldset: {
             legend: {
@@ -77,16 +77,12 @@
           } if (errors['theme'])
     }) }}
 
-
-{{ govukButton({
+        {{ govukButton({
     "text": button_text|default('general.continue.label' | translate, true),
     "type": "Submit",
     "preventDoubleClick": true
 }) }}
 
-</form>
+    </form>
 
 {% endblock %}
-
-
-
