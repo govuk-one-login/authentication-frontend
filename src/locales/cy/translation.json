@@ -13,7 +13,7 @@
       "content": "Mae hwn yn wasanaeth newydd – bydd eich <a  href=\"/contact-us?supportType=PUBLIC\" class=\"govuk-link\" rel=\"noopener\" target=\"_blank\">adborth (agor mewn tab newydd)</a> yn ein helpu i'w wella."
     },
     "authenticatorAppIssuer": "Cyfrif GOV.UK",
-    "yes": "Yes",
+    "yes": "Gallwch",
     "no": "Na",
     "cookie": {
       "cookieBanner": {
@@ -114,8 +114,8 @@
       "paragraph": "Byddwch angen:",
       "bullet1": "cyfeiriad e-bost",
       "bullet2": "rhif ffôn symudol y DU",
-      "bullet2AuthApps": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol y DU neu'n app dilysydd",
-      "bullet2IntNumbers": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol neu'n app dilysydd",
+      "bullet2AuthApps": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol y DU neu'n ap dilysydd",
+      "bullet2IntNumbers": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol neu'n ap dilysydd",
       "insetAlternativeLanguage": {
         "paragraph1": "Mae'r cyfrif GOV.UK hefyd ar gael ",
         "linkText": "yn Saesneg (English)",
@@ -641,7 +641,7 @@
           },
           "rows": {
             "row1": {
-              "col2": "Cadwch eich gosodiadau caniatâd cwcis",
+              "col2": "Cadw eich gosodiadau caniatâd cwcis",
               "col3": "1 flwyddyn"
             }
           }
@@ -719,7 +719,7 @@
       "section1": {
         "header": "Defnyddio cyfrifon GOV.UK",
         "paragraph1": {
-          "text1": "Mae GOV.UK cyfrifon yn cael eu rhedeg gan y ",
+          "text1": "Mae cyfrifon GOV.UK yn cael eu rhedeg gan y ",
           "linkText": "Gwasanaeth Digidol y Llywodraeth (GDS)",
           "text2": ", rhan o Swyddfa'r Cabinet. Rydym am i gynifer o bobl â phosibl allu defnyddio'r wefan hon. Er enghraifft, mae hynny'n golygu y dylech allu:"
         },
@@ -753,7 +753,7 @@
       "section5": {
         "header": "Gweithdrefn orfodi",
         "paragraph1": "Mae’r Comisiwn Cydraddoldeb a Hawliau Dynol (EHRC) yn gyfrifol am orfodi Rheoliadau Hygyrchedd Cyrff Sector Cyhoeddus (Gwefannau a Chymwysiadau Symudol) (Rhif 2) 2018 (y ‘rheoliadau hygyrchedd’).",
-        "paragraph2": "Os nad ydych yn hapus â sut rydym yn ymateb i'ch cwynt, ",
+        "paragraph2": "Os nad ydych yn hapus â sut rydym yn ymateb i'ch cwyn, ",
         "linkText": "cysylltwch â'r Gwasanaeth Cynghori a Chymorth Cydraddoldeb (EASS)"
       },
       "section6": {
@@ -810,7 +810,7 @@
       "section2": {
         "header": "Cael mynydiad i'ch cyfrif GOV.UK",
         "paragraph1": "Rydych yn gyfrifol am wneud yr holl drefniadau i chi gael mynediad i'ch cyfrif GOV.UK. Mae hyn yn cynnwys darparu eich dyfais eich hun, system weithredu, porwr a chysylltiad rhyngrwyd. Dylech ddefnyddio dyfais sy'n defnyddio system weithredu Windows, OS, iOS neu Android. Rydym yn argymell eich bod yn defnyddio un o'r porwyr canlynol:",
-        "BulletPoint1": "Y fersiwn diweddaraf o Google Chrome, Microsoft Edge, Mozilla Firefox, Samsung Internet neu Internet Explorer",
+        "bulletPoint1": "Y fersiwn diweddaraf o Google Chrome, Microsoft Edge, Mozilla Firefox, Samsung Internet neu Internet Explorer",
         "bulletPoint2": "Safari 12 neu ddiweddarach",
         "bulletPoint3": "Safari ar gyfer iOS 12.1 neu ddiweddarach",
         "paragraph2": "Nid ydym yn gwarantu y bydd eich cyfrif GOV.UK bob amser ar gael, neu bydd y mynediad iddo yn ddi-wall. Byddwn yn darparu ffordd i chi roi gwybod am broblemau gyda'ch cyfrif.",
@@ -843,14 +843,14 @@
         "bulletPoint12": "i gael neu geisio cael mynediad heb awdurdod i'r llwyfan GOV.UK, y gweinydd y mae'r llwyfan GOV.UK yn cael ei storio neu unrhyw weinydd, cyfrifiadur neu gronfa ddata sy'n gysylltiedig â llwyfan GOV.UK, drwy hacio neu ddulliau eraill",
         "bulletPoint13": "i drosglwyddo, anfon neu uwchlwytho unrhyw ddata sy'n cynnwys firysau, ceffylau Trojan, mwydod, spyware neu unrhyw raglenni niweidiol eraill a gynlluniwyd i effeithio'n andwyol ar weithrediad meddalwedd neu galedwedd cyfrifiadurol",
         "bulletPoint14": "mewn cysylltiad ag unrhyw fath o ymosodiad gwadu gwasanaeth neu at unrhyw bwrpas maleisus",
-        "bulletPoint15": "gyda manylion cofrestredig rhywun arall , oni bai bod gennych yr awdurdod i wneud hynny ganddynt hwy",
+        "bulletPoint15": "gyda manylion cofrestredig rhywun arall, oni bai bod gennych yr awdurdod i wneud hynny ganddynt hwy",
         "paragraph4": "Os byddwch yn torri unrhyw un o'r telerau ac amodau hyn, gallwn eich atal rhag cael mynediad i'ch cyfrif GOV.UK a gallwn gymryd camau i orfodi'r telerau ac amodau hyn a chymryd camau eraill fel y bo'n briodol lle rydym wedi dioddef colled. Os, drwy wneud unrhyw un o'r gweithredoedd uchod, rydych hefyd yn cyflawni trosedd, gallwn roi gwybod i'r awdurdodau gorfodi'r gyfraith perthnasol. Efallai y byddwn yn cydweithredu â'r awdurdodau hynny drwy ddatgelu eich hunaniaeth iddynt hwy."
       },
       "section5": {
         "header": "Dileu eich cyfrif",
         "paragraph1": {
           "text1": "Gallwch ddileu eich cyfrif a'r wybodaeth ynddo yn barhaol ar unrhyw adeg trwy fewngofnodi i'ch cyfrif neu ",
-          "linkText1": "gysylltu â n",
+          "linkText1": "gysylltu â ni",
           "text2": "Byddwn yn cadw cofnod o wybodaeth benodol, yn unol â'n ",
           "linkText2": "hysbysiad preifatrwydd",
           "text3": ", at ddibenion archwilio ac i helpu atal troseddu."
@@ -883,7 +883,7 @@
         "bulletPoint2": "twyll neu gamliwio twyllodrus",
         "bulletPoint3": "unrhyw atebolrwydd arall na ellir ei eithrio neu ei gyfyngu o dan gyfraith Lloegr",
         "paragraph5": "Nid ydym yn atebol am unrhyw:",
-        "bulletPoint4": "colled neu ddifrod a allai ddod o ddefnyddio'r cyfrif GOV.UK nad yw'n cael ei achosi gan i ni dorri'r telerau ac amodau hyn",
+        "bulletPoint4": "colled neu ddifrod a allai ddod o ddefnyddio'r cyfrif GOV.UK nad yw'n cael ei achosi oherwydd i ni dorri'r telerau ac amodau hyn",
         "bulletPoint5": "colled neu ddifrod i ddyfais neu gynnwys digidol sy'n perthyn i chi",
         "bulletPoint6": "colled neu ddifrod sy'n deillio o anallu i gael mynediad neu ddefnyddio eich cyfrif GOV.UK",
         "bulletPoint7": "colledion anuniongyrchol neu ddilynol na ellid eu rhagweld i chi a ni pan ddechreuoch ddefnyddio eich cyfrif GOV.UK (mae colled neu iawndal yn 'rhagweladwy' pan fyddant yn ganlyniad amlwg o  ni'n torri'r telerau ac amodau hyn neu os oeddent yn cael eu hystyried gennych chi a ni pan ddechreuoch ddefnyddio'r cyfrif GOV.UK)",
@@ -964,7 +964,7 @@
         "bulletPoint6": {
           "text1": "gwybodaeth am sut rydych yn defnyddio eich cyfrif a gwefan GOV.UK, sy'n cael ei gasglu yng nghofnodion y system, a chan gwcis Google Analytics os ydych yn rhoi caniatâd - mae'r ",
           "linkText1": "hysbysiad preifatrwydd GOV.UK",
-          "ac": " a ",
+          "and": " a ",
           "linkText2": "pholisi cwcis GOV.UK",
           "text2": " yn darparu mwy o wybodaeth am hyn"
         },
@@ -977,7 +977,7 @@
       "section3": {
         "header": "Pam rydym angen eich gwybodaeth",
         "paragraph1": "Rydym yn casglu eich gwybodaeth bersonol i:",
-        "bulletPoint1": "ddarparu cyfrif GOV.UK i chi fel y gallwch ei ddefnyddio i gael mynediad at wasanaethauar-lein y llywodraeth",
+        "bulletPoint1": "ddarparu cyfrif GOV.UK i chi fel y gallwch ei ddefnyddio i gael mynediad at wasanaethau ar-lein y llywodraeth",
         "bulletPoint2": "profi eich hunaniaeth",
         "bulletPoint3": {
           "text1": "cadw eich dewisiadau, er enghraifft eich dewisiadau diweddaru tanysgrifiad e-bost ",
@@ -1563,7 +1563,7 @@
     "getSecurityCodes": {
       "title": "Dewis sut i gael codau diogelwch",
       "header": "Dewis sut i gael codau diogelwch",
-      "summary": "I orffen creu eich cyfrif, mae angen i chi ddewis ffordd o brofi mai chi yw chi pan fyddwch yn mewngofnod.",
+      "summary": "I orffen creu eich cyfrif, mae angen i chi ddewis ffordd o brofi mai chi yw chi pan fyddwch yn mewngofnodi.",
       "titleAccountPartCreated": "Gorffen creu eich cyfrif",
       "headerAccountPartCreated": "Gorffen creu eich cyfrif",
       "summaryAccountPartCreated": "Dewiswch ffordd o gael codau diogelwch pan fyddwch yn mewngofnodi. Mae hyn yn helpu i gadw eich cyfrif yn ddiogel.",
@@ -1582,9 +1582,9 @@
     "setupAuthenticatorApp": {
       "title": "Sefydlu ap dilysydd",
       "header": "Sefydlu ap dilysydd",
-      "step1": "1. Agorwch eich ap dilysu ar eich ffôn clyfar, llechen neu gyfrifiadur.",
+      "step1": "1. Agorwch eich ap dilysydd ar eich ffôn clyfar, llechen neu gyfrifiadur.",
       "noAuthAppDetails": {
-        "summaryText": "Nid oes gennych  ap dilysu",
+        "summaryText": "Nid oes gennyf ap dilysydd",
         "paragraph1": "Gallwch lawrlwytho ap dilysydd ar gyfer eich ffôn clyfar neu lechen o'ch siop apiau.",
         "paragraph2": "Os nad oes gennych ffôn clyfar neu lechen, chwiliwch ar-lein am ap dilysydd ar gyfer eich cyfrifiadur.",
         "paragraph3": "Gallwch ddefnyddio unrhyw ap dilysydd."
@@ -1598,7 +1598,7 @@
         "hintText": "Dyma'r rhif 6-digid a ddangosir yn eich ap dilysydd",
         "validationError":{
          "required": "Rhowch y cod diogelwch a ddangosir yn eich ap dilysydd",
-          "InvalidCode": "Nid yw'r cod diogelwch rydych wedi'i roi yn gywir, ceisiwch ei roi i mewn eto neu aros i'ch ap dilysydd roi cod newydd i chi",
+          "invalidCode": "Nid yw'r cod diogelwch rydych wedi'i roi yn gywir, ceisiwch ei roi i mewn eto neu aros i'ch ap dilysydd roi cod newydd i chi",
           "length": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig"
         }
       },

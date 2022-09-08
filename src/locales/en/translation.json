@@ -843,7 +843,7 @@
         "bulletPoint12": "to gain or attempt to gain unauthorised access to the GOV.UK platform, the server on which the GOV.UK platform is stored or any server, computer or database connected to GOV.UK platform, by hacking or other means",
         "bulletPoint13": "to transmit, send or upload any data that contains viruses, Trojan horses, worms, spyware or any other harmful programs designed to adversely affect the operation of computer software or hardware",
         "bulletPoint14": "in connection with any kind of denial of service attack or for any malicious purpose",
-        "bulletPoint15": "with someone else’s registered details , unless you have the authority to do so from them",
+        "bulletPoint15": "with someone else’s registered details, unless you have the authority to do so from them",
         "paragraph4": "If you breach any of these terms and conditions, we may stop you from accessing your GOV.UK account and may take action to enforce these terms and conditions and take other action as appropriate where we have suffered loss. If, by doing any of the above acts, you are also committing a criminal offence, we may report it to the relevant law enforcement authorities. We may cooperate with those authorities by disclosing your identity to them."
       },
       "section5": {
@@ -1591,7 +1591,7 @@
       },
       "step2": "2. Use your authenticator app to scan the QR code or type the secret key into your authenticator app.  Some authenticator apps call the secret key a 'code'.",
       "secretKeyLabelText": "Secret key: ",
-      "step3": "3. The authenticator app will show an security code.",
+      "step3": "3. The authenticator app will show a security code.",
       "step4": "4. Enter the security code.",
       "code": {
         "label": "Security code",
