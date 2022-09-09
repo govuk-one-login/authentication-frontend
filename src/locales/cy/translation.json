@@ -8,6 +8,7 @@
     "back": "Yn ôl",
     "warning": "Rhybudd",
     "errorSummaryTitle": "Mae problem",
+    "sendMessage": "TBC",
     "phaseBanner": {
       "tag": "beta",
       "content": "Mae hwn yn wasanaeth newydd – bydd eich <a  href=\"/contact-us?supportType=PUBLIC\" class=\"govuk-link\" rel=\"noopener\" target=\"_blank\">adborth (agor mewn tab newydd)</a> yn ein helpu i'w wella."
