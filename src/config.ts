@@ -108,3 +108,7 @@ export function getZendeskGroupIdPublic(): number {
 export function getAnalyticsCookieDomain(): string {
   return process.env.ANALYTICS_COOKIE_DOMAIN;
 }
+
+export function getServiceDomain(): string {
+  return process.env.SERVICE_DOMAIN;
+}

@@ -100,6 +100,10 @@ locals {
         name  = "ZENDESK_USERNAME"
         value = var.zendesk_username
       },
+      {
+        name  = "SERVICE_DOMAIN"
+        value = local.service_domain
+      },
     ]
   }
 
