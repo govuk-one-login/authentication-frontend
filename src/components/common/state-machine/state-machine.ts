@@ -450,6 +450,10 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
               cond: "isAccountPartCreated",
             },
+            {
+              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
+              cond: "requiresMFAAuthAppCode",
+            },
             { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
             {
               target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
