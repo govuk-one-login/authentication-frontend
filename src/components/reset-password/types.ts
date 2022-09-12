@@ -5,6 +5,7 @@ export interface ResetPasswordServiceInterface {
     newPassword: string,
     sourceIp: string,
     sessionId: string,
+    clientSessionId: string,
     persistentSessionId: string
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

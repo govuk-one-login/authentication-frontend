@@ -32,6 +32,7 @@ export function enterEmailPost(
       sessionId,
       email,
       req.ip,
+      res.locals.clientSessionId,
       res.locals.persistentSessionId
     );
 
@@ -63,6 +64,7 @@ export function enterEmailCreatePost(
       sessionId,
       email,
       req.ip,
+      clientSessionId,
       persistentSessionId
     );
 

@@ -40,6 +40,7 @@ export function resetPasswordPost(
       newPassword,
       req.ip,
       sessionId,
+      clientSessionId,
       persistentSessionId
     );
 

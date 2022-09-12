@@ -27,6 +27,7 @@ export function resetPasswordCheckEmailGet(
         email,
         sessionId,
         req.ip,
+        res.locals.clientSessionId,
         res.locals.persistentSessionId
       );
     }
