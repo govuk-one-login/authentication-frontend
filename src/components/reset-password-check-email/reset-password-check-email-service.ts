@@ -16,6 +16,7 @@ export function resetPasswordCheckEmailService(
     email: string,
     sessionId: string,
     sourceIp: string,
+    clientSessionId: string,
     persistentSessionId: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
@@ -27,6 +28,7 @@ export function resetPasswordCheckEmailService(
       getRequestConfig({
         sessionId: sessionId,
         sourceIp: sourceIp,
+        clientSessionId: clientSessionId,
         persistentSessionId: persistentSessionId,
       })
     );

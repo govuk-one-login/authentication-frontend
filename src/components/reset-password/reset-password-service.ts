@@ -15,6 +15,7 @@ export function resetPasswordService(
     newPassword: string,
     sourceIp: string,
     sessionId: string,
+    clientSessionId: string,
     persistentSessionId: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
@@ -25,6 +26,7 @@ export function resetPasswordService(
       getRequestConfig({
         sourceIp: sourceIp,
         sessionId: sessionId,
+        clientSessionId: clientSessionId,
         persistentSessionId: persistentSessionId,
       })
     );

@@ -15,6 +15,7 @@ export function enterEmailService(
     sessionId: string,
     emailAddress: string,
     sourceIp: string,
+    clientSessionId: string,
     persistentSessionId: string
   ): Promise<ApiResponseResult<UserExists>> {
     const response = await axios.client.post<UserExists>(
@@ -25,6 +26,7 @@ export function enterEmailService(
       getRequestConfig({
         sessionId: sessionId,
         sourceIp: sourceIp,
+        clientSessionId: clientSessionId,
         persistentSessionId: persistentSessionId,
       })
     );
