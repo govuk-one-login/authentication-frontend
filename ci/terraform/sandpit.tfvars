@@ -9,6 +9,8 @@ service_domain          = "sandpit.auth.ida.digital.cabinet-office.gov.uk"
 zone_id                 = "Z050645231Q0HZAX6FT5W"
 session_expiry          = 300000
 gtm_id                  = ""
+support_language_cy     = "1"
+support_mfa_options     = "1"
 
 support_international_numbers   = 0
 frontend_task_definition_cpu    = 256

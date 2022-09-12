@@ -1,5 +1,5 @@
 import { LOCALE } from "../app.constants";
-import { supportLanguageCY } from "../config";
+import { getServiceDomain, supportLanguageCY } from "../config";
 
 export function i18nextConfigurationOptions(
   path: string
@@ -21,6 +21,7 @@ export function i18nextConfigurationOptions(
       caches: ["cookie"],
       ignoreCase: true,
       cookieSecure: true,
+      cookieDomain: getServiceDomain(),
     },
   };
 }
