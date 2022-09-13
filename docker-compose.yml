@@ -48,6 +48,7 @@ services:
       - FRONTEND_API_BASE_URL=${FRONTEND_API_BASE_URL}
       - TEST_CLIENT_ID=${TEST_CLIENT_ID}
       - STUB_HOSTNAME=${STUB_HOSTNAME}
+      - UI_LOCALES=${UI_LOCALES}
     restart: on-failure
     networks:
       - di-net
