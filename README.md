@@ -26,9 +26,12 @@ SESSION_EXPIRY=30000
 SESSION_SECRET=123456
 API_KEY=
 ANALYTICS_COOKIE_DOMAIN=localhost
+SERVICE_DOMAIN=localhost
 ```
 
 You can find the `API_BASE_URL` in [Concourse](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-deployment) under the outputs within the deploy-oidc-api-{environment} job, where {environment} is the name of the environment you want to connect to.
+
+`UI_LOCALES` can be used be the stub to request specific locales when authorising.  Only 'en' and 'cy' are supported.
 
 Run `docker-compose up` or the `startup.sh` script.
 

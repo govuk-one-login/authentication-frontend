@@ -7,7 +7,6 @@ export function i18nextConfigurationOptions(
   return {
     debug: false,
     fallbackLng: LOCALE.EN,
-    lng: LOCALE.EN,
     preload: [LOCALE.EN],
     supportedLngs: supportLanguageCY() ? [LOCALE.EN, LOCALE.CY] : [LOCALE.EN],
     backend: {
@@ -22,6 +21,7 @@ export function i18nextConfigurationOptions(
       ignoreCase: true,
       cookieSecure: true,
       cookieDomain: getServiceDomain(),
+      cookieSameSite: "",
     },
   };
 }

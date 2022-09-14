@@ -17,7 +17,10 @@ const AUTHORIZE_REQUEST =
   "nonce=gyRdMfQGsQS9BvhU-lBwENOZ0UU&" +
   "client_id=" + process.env.TEST_CLIENT_ID +
   "&cookie_consent=accept" +
-  "&_ga=test";
+  "&_ga=test" +
+  getUILocales(); 
+
+console.log(AUTHORIZE_REQUEST);
 
 app.get("/", (req, res) => {
   axios
@@ -28,18 +31,27 @@ app.get("/", (req, res) => {
       maxRedirects: 0,
     })
     .then(function (response) {
-      const cookies = response.headers["set-cookie"][0].split(";");
-      let cookeValue;
-      cookies.forEach((item) => {
-        const name = item.split("=")[0].toLowerCase().trim();
-        if (name.indexOf("gs") !== -1) {
-          cookeValue = item.split("=")[1];
-        }
-      });
-      res.cookie("gs", cookeValue, {
-        maxAge: new Date(new Date().getTime() + 60 * 60000),
-      });
-      console.log("Session is:" + cookeValue);
+      let sessionCookieValue;
+      const sessionCookie = response.headers["set-cookie"][0];
+      if (sessionCookie) {
+        sessionCookieValue = getCookieValue(sessionCookie.split(";"), "gs");
+        res.cookie("gs", sessionCookieValue, {
+          maxAge: new Date(new Date().getTime() + 60 * 60000),
+        });
+      }
+
+      let lngCookieValue;
+      const lngCookie = response.headers["set-cookie"][2];
+      if (lngCookie) {
+        lngCookieValue = getCookieValue(lngCookie.split(";"), "lng");
+        res.cookie("lng", lngCookieValue, {
+          maxAge: new Date(new Date().getTime() + 60 * 60000),
+        });
+      }
+
+      console.log(`Session is: ${sessionCookieValue}`);
+      console.log(`lng is: ${lngCookieValue}`);
+      
       const location = url.parse(response.headers.location, true);
 
       res.redirect(
@@ -55,3 +67,23 @@ app.listen(port, () => {
   console.log("TEST APP TO REDIRECT FOR NEW SESSION : DEV ONLY");
   console.log(`RUNNING ON http://localhost:${port}`);
 });
+
+function getCookieValue(cookie, cookieName) {
+  var value;
+  cookie.forEach((item) => {
+    const name = item.split("=")[0].toLowerCase().trim();
+    if (name.indexOf(cookieName) !== -1) {
+      value = item.split("=")[1];
+    }
+  });
+  return value;
+}
+
+function getUILocales() {
+  const uiLocales = process.env.UI_LOCALES;
+  if (uiLocales && uiLocales.length > 0) {
+    return "&ui_locales=" + uiLocales; 
+  } else {
+    return "";
+  }
+}
