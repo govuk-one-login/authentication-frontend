@@ -47,7 +47,7 @@
 {% include 'contact-us/questions/_reply_by_email.njk' %}
 
 {{ govukButton({
-    "text": button_text|default("Send message", true),
+    "text": button_text|default("general.sendMessage" | translate, true),
     "type": "Submit",
     "preventDoubleClick": true
 }) }}

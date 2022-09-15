@@ -8,6 +8,7 @@
     "back": "Back",
     "warning": "Warning",
     "errorSummaryTitle": "There is a problem",
+    "sendMessage": "Send message",
     "phaseBanner": {
       "tag": "beta",
       "content": "This is a new service – your <a  href=\"/contact-us?supportType=PUBLIC\" class=\"govuk-link\" rel=\"noopener\" target=\"_blank\">feedback (opens in new tab)</a> will help us to improve it."
