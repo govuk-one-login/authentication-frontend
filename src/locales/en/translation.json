@@ -24,6 +24,7 @@
         "buttonAcceptText": "Accept analytics cookies",
         "buttonRejectText": "Reject analytics cookies",
         "linkViewCookiesText": "View cookies",
+        "cookieBannerTitleText": "Success",
         "cookieBannerHideLink": "Hide this message",
         "cookeBannerAccept": {
           "paragraph1": "You’ve accepted additional cookies. You can ",
