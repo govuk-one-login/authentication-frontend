@@ -30,11 +30,7 @@
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
 {{ govukRadios({
-  idPrefix: "share-info",
   name: "consentValue",
-  attributes: {
-    "id": "radio-share-info-preferences"
-  },
   fieldset: {
     legend: {
       text: 'pages.shareInfo.essentialHeader' | translate,
@@ -45,12 +41,10 @@
   items: [
     {
       text: 'pages.shareInfo.radios.radioText.agree' | translate,
-      id: "share-info-accepted",
       value: "true"
     },
     {
       text: 'pages.shareInfo.radios.radioText.doNotAgree' | translate,
-      id: "share-info-rejected",
       value: "false"
     }
   ],

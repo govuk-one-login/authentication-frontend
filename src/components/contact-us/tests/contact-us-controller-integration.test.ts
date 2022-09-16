@@ -105,7 +105,7 @@ describe("Integration:: contact us - public user", () => {
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
-        expect($("#signing-in-error").text()).to.contains(
+        expect($("#subtheme-error").text()).to.contains(
           "Select the problem you had when signing in to your account"
         );
       })
