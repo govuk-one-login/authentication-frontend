@@ -72,6 +72,14 @@
         "pageTitle": "Cefnogaeth",
         "linkText": "Cefnogaeth (agor mewn tab newydd)"
       }
+    },
+    "showPassword": {
+      "show": "Dangos",
+      "hide": "Cuddio",
+      "showFullText": "Dangos cyfrinair",
+      "hideFullText": "Cuddio cyfrinair",
+      "announceShown": "Mae eich cyfrinair wedi'i ddangos",
+      "announceHidden": "Mae eich cyfrinair wedi'i guddio"
     }
   },
   "error": {
