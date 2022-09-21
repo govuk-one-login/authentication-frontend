@@ -37,7 +37,6 @@ describe("contact us further information controller", () => {
         {
           theme: "signing_in",
           referer: REFERER,
-          supportMFAOptions: true,
         }
       );
     });
@@ -52,7 +51,6 @@ describe("contact us further information controller", () => {
         {
           theme: "account_creation",
           referer: REFERER,
-          supportMFAOptions: true,
         }
       );
     });

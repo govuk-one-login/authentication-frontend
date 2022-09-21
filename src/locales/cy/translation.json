@@ -123,8 +123,7 @@
       },
       "paragraph": "Byddwch angen:",
       "bullet1": "cyfeiriad e-bost",
-      "bullet2": "rhif ffôn symudol y DU",
-      "bullet2AuthApps": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol y DU neu'n ap dilysydd",
+      "bullet2": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol y DU neu'n ap dilysydd",
       "bullet2IntNumbers": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol neu'n ap dilysydd",
       "insetAlternativeLanguage": {
         "paragraph1": "Mae'r cyfrif GOV.UK hefyd ar gael ",
@@ -325,14 +324,6 @@
       "info": {
         "paragraph1": "Byddwn yn anfon cod diogelwch 6 digid i'r rhif rydych yn ei roi i ni.",
         "paragraph2": "Mae'n rhaid i chi ddefnyddio rhif ffôn symudol y DU."
-      },
-      "returningUser": {
-        "title": "Gorffen creu eich cyfrif",
-        "header": "Gorffen creu eich cyfrif",
-        "info": {
-          "paragraph1": "Mae angen i chi ychwanegu rhif ffôn symudol y DU at eich cyfrif GOV.UK.",
-          "paragraph2": "Byddwn yn anfon cod diogelwch 6 digid i'r rhif rydych yn ei roi i ni."
-        }
       },
       "ukPhoneNumber": {
         "label": "Rhif ffôn symudol y DU",

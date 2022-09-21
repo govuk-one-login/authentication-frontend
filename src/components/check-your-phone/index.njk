@@ -24,7 +24,6 @@
 
     <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
     <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
-    <input type="hidden" name="supportMFAOptions" value="{{supportMFAOptions}}"/>
 
     {{ govukInput({
   label: {
@@ -50,7 +49,6 @@
     </p>
     {% endset %}
 
-    {% if supportMFAOptions %}
       {% set detailsHTML %}
 
       {{detailsHTML | safe}}
@@ -60,7 +58,6 @@
       </p>
 
       {% endset %}
-    {% endif %}
 
     {{ govukDetails({
       summaryText: 'pages.checkYourPhone.details.summaryText' | translate,

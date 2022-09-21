@@ -38,7 +38,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
 
   afterEach(() => {
     sinon.restore();
-    delete process.env.SUPPORT_MFA_OPTIONS;
   });
 
   describe("resetPasswordRequestGet", () => {
@@ -102,49 +101,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
     });
 
-    it("should redirect to /enter-phone-number when password updated and phone number not verified", async () => {
-      const fakeResetService: ResetPasswordServiceInterface = {
-        updatePassword: sinon.fake.returns({ success: true }),
-      };
-      const fakeLoginService: EnterPasswordServiceInterface = {
-        loginUser: sinon.fake.returns({
-          success: true,
-          data: {
-            redactedPhoneNumber: "******1234",
-            consentRequired: false,
-            latestTermsAndConditionsAccepted: true,
-            mfaMethodVerified: false,
-            mfaRequired: true,
-          },
-        }),
-      };
-      fakeLoginService.loginUser;
-      const fakeMfAService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({ success: true }),
-      };
-
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
-      req.body.password = "Password1";
-
-      await resetPasswordPost(
-        fakeResetService,
-        fakeLoginService,
-        fakeMfAService
-      )(req as Request, res as Response);
-
-      expect(fakeResetService.updatePassword).to.have.been.calledOnce;
-      expect(fakeLoginService.loginUser).to.have.been.calledOnce;
-      expect(fakeMfAService.sendMfaCode).to.not.have.been.called;
-
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
-      );
-    });
-
     it("should redirect to /get-security-codes when password updated and mfa method not verified", async () => {
-      process.env.SUPPORT_MFA_OPTIONS = "1";
       const fakeResetService: ResetPasswordServiceInterface = {
         updatePassword: sinon.fake.returns({ success: true }),
       };

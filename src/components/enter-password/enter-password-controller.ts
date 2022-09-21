@@ -15,7 +15,6 @@ import {
 } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { supportMFAOptions } from "../../config";
 import { MFA_METHOD_TYPE } from "../../app.constants";
 import xss from "xss";
 
@@ -135,7 +134,6 @@ export function enterPasswordPost(
             req.session.user.isLatestTermsAndConditionsAccepted,
           requiresTwoFactorAuth: userLogin.data.mfaRequired,
           isConsentRequired: req.session.user.isConsentRequired,
-          supportMFAOptions: supportMFAOptions(),
           mfaMethodType: userLogin.data.mfaMethodType,
           isMfaMethodVerified: userLogin.data.mfaMethodVerified,
         },

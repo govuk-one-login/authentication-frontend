@@ -42,7 +42,6 @@ describe("enter phone number controller", () => {
       expect(res.render).to.have.calledWith("enter-phone-number/index.njk", {
         supportInternationalNumbers: true,
         isAccountPartCreated: undefined,
-        supportMFAOptions: null,
       });
     });
 
@@ -55,7 +54,6 @@ describe("enter phone number controller", () => {
       expect(res.render).to.have.calledWith("enter-phone-number/index.njk", {
         supportInternationalNumbers: true,
         isAccountPartCreated: true,
-        supportMFAOptions: null,
       });
     });
   });

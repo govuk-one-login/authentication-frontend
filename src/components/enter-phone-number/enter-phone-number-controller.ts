@@ -16,13 +16,12 @@ import { SendNotificationServiceInterface } from "../common/send-notification/ty
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { prependInternationalPrefix } from "../../utils/phone-number";
-import { supportInternationalNumbers, supportMFAOptions } from "../../config";
+import { supportInternationalNumbers } from "../../config";
 import xss from "xss";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
   res.render("enter-phone-number/index.njk", {
     supportInternationalNumbers: supportInternationalNumbers() ? true : null,
-    supportMFAOptions: supportMFAOptions() ? true : null,
     isAccountPartCreated: req.session.user.isAccountPartCreated,
   });
 }

@@ -9,7 +9,6 @@ import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation";
-import { supportMFAOptions } from "../../config";
 
 export function createPasswordGet(req: Request, res: Response): void {
   res.render("create-password/index.njk");
@@ -48,7 +47,6 @@ export function createPasswordPost(
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
         {
           requiresTwoFactorAuth: true,
-          supportMFAOptions: supportMFAOptions(),
         },
         res.locals.sessionId
       )

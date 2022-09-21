@@ -62,7 +62,6 @@ const authStateMachine = createMachine(
       isIdentityRequired: false,
       prompt: OIDC_PROMPT.NONE,
       skipAuthentication: false,
-      supportMFAOptions: false,
       mfaMethodType: MFA_METHOD_TYPE.SMS,
       isMfaMethodVerified: true,
     },
@@ -170,10 +169,6 @@ const authStateMachine = createMachine(
             },
             {
               target: [PATH_NAMES.GET_SECURITY_CODES],
-              cond: "supportMFAOptionsAndIsAccountPartCreated", //TODO this is just to test drop offs
-            },
-            {
-              target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
               cond: "isAccountPartCreated",
             },
             { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
@@ -219,10 +214,6 @@ const authStateMachine = createMachine(
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
             {
               target: [PATH_NAMES.GET_SECURITY_CODES],
-              cond: "supportMFAOptions",
-            },
-            {
-              target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
             },
           ],
         },
@@ -306,15 +297,11 @@ const authStateMachine = createMachine(
         on: {
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
             {
-              target: [PATH_NAMES.GET_SECURITY_CODES],
-              cond: "supportMFAOptionsAndIsAccountPartCreated", //TODO this is just to test drop offs
-            },
-            {
               target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
               cond: "requiresMFAAuthAppCode",
             },
             {
-              target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
+              target: [PATH_NAMES.GET_SECURITY_CODES],
               cond: "isAccountPartCreated",
             },
             { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
@@ -444,10 +431,6 @@ const authStateMachine = createMachine(
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
             {
               target: [PATH_NAMES.GET_SECURITY_CODES],
-              cond: "supportMFAOptionsAndIsAccountPartCreated", //TODO this is just to test drop offs
-            },
-            {
-              target: [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER],
               cond: "isAccountPartCreated",
             },
             {
@@ -543,15 +526,9 @@ const authStateMachine = createMachine(
       skipAuthentication: (context) =>
         context.skipAuthentication === true &&
         context.isAuthenticated === false,
-      supportMFAOptions: (context) => context.supportMFAOptions === true,
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.isMfaMethodVerified === true,
-      supportMFAOptionsAndIsAccountPartCreated: (
-        context //TODO this should be removed before go live
-      ) =>
-        context.supportMFAOptions === true &&
-        context.isMfaMethodVerified === false,
     },
   }
 );
