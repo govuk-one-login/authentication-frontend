@@ -33,20 +33,14 @@
 <input type="hidden" name="isAccountPartCreated" value="{{isAccountPartCreated}}"/>
 
 {{ govukRadios({
-  idPrefix: "mfa-options",
   name: "mfaOptions",
-  attributes: {
-    "id": "radio-mfa-options"
-  },
   items: [
     {
       text: 'pages.getSecurityCodes.secondFactorRadios.textMessageText' | translate,
-      id: "mfa-options-text-message",
       value: "SMS"
     },
     {
       text: 'pages.getSecurityCodes.secondFactorRadios.authAppText' | translate,
-      id: "mfa-options-auth-app",
       value: "AUTH_APP"
     }
   ],

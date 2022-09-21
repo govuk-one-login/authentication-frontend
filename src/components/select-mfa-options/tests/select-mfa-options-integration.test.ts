@@ -78,7 +78,7 @@ describe("Integration::select-mfa-options", () => {
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
-        expect($("#mfa-options-error").text()).to.contains(
+        expect($("#mfaOptions-error").text()).to.contains(
           "Select how you want to get security codes"
         );
       })

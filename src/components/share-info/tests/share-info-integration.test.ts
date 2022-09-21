@@ -89,7 +89,7 @@ describe("Integration::share info", () => {
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
-        expect($("#share-info-error").text()).to.contains(
+        expect($("#consentValue-error").text()).to.contains(
           "Select if you want to share your email address and phone number or not"
         );
       })
