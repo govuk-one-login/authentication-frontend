@@ -495,6 +495,10 @@
       "phoneNumber": {
         "default": "Byddwn yn anfon cod at y rhif ffôn sy'n gysylltiedig â'ch cyfrif",
         "isResendCodeRequest": "Byddwn yn anfon cod i: [mobile]."
+      },
+      "email": {
+        "recipientMessage": "Byddwn yn anfon cod i: ",
+        "paragraph": "Efallai y bydd eich e-bost yn cymryd ychydig funudau i gyrraedd. Os na chewch e-bost, edrychwch ar eich ffolder spam."
       }
     },
     "signedOut": {
