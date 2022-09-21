@@ -26,6 +26,7 @@ import {
   supportMFAOptions,
 } from "./config";
 import { logErrorMiddleware } from "./middleware/log-error-middleware";
+import { getCookieLanguageMiddleware } from "./middleware/cookie-lang-middleware";
 import { enterEmailRouter } from "./components/enter-email/enter-email-routes";
 import { enterPasswordRouter } from "./components/enter-password/enter-password-routes";
 import { footerRouter } from "./components/common/footer/footer-pages-routes";
@@ -183,6 +184,8 @@ async function createApp(): Promise<express.Application> {
   app.use(crossDomainTrackingMiddleware);
 
   registerRoutes(app);
+
+  app.use(getCookieLanguageMiddleware);
 
   app.use(logErrorMiddleware);
   app.use(serverErrorHandler);

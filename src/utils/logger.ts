@@ -20,6 +20,7 @@ const logger = pino({
         sessionId: res.locals.sessionId,
         clientSessionId: res.locals.clientSessionId,
         persistentSessionId: res.locals.persistentSessionId,
+        languageFromCookie: res.locals.language?.toUpperCase(),
       };
     },
   },
@@ -46,6 +47,7 @@ const loggerMiddleware = PinoHttp({
       "/public/scripts/cookies.js",
       "/public/scripts/all.js",
       "/public/style.css",
+      "/public/scripts",
       "/public/scripts/application.js",
       "/assets/images/govuk-crest-2x.png",
       "/assets/fonts/bold-b542beb274-v2.woff2",
