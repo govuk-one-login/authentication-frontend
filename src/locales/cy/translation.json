@@ -124,7 +124,11 @@
       "bullet2IntNumbers": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol neu'n ap dilysydd",
       "insetAlternativeLanguage": {
         "paragraph1": "Mae'r cyfrif GOV.UK hefyd ar gael ",
-        "linkText": "yn Saesneg (English)",
+        "linkText": {
+          "inPageLanguage": "yn Saesneg",
+          "inDestinationLanguage": "(English)",
+          "destinationLanguageCode": "en"
+        },
         "linkHref": "?lng=en"
       },
       "paragraph2": "Os oes gennych gyfrif GOV.UK yn barod gallwch",
