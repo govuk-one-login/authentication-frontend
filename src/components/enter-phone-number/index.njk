@@ -5,39 +5,26 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
-{% if isAccountPartCreated and not supportMFAOptions %}
-  {% set pageTitleName = 'pages.enterPhoneNumber.returningUser.title' | translate %}
-{% else %}
-  {% set pageTitleName = 'pages.enterPhoneNumber.title' | translate %}
-{% endif %}
+ {% set pageTitleName = 'pages.enterPhoneNumber.title' | translate %}
 
-{% if supportMFAOptions %}
-  {% set showBack = true %}
-  {% set hrefBack = 'get-security-codes' %}
-{% endif %}
+
+{% set showBack = true %}
+{% set hrefBack = 'get-security-codes' %}
 
 {% block content %}
   {% include "common/errors/errorSummary.njk" %}
 
-  {% if isAccountPartCreated and not supportMFAOptions %}
-    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.returningUser.header' |
-        translate}}</h1>
-    <p class="govuk-body">{{'pages.enterPhoneNumber.returningUser.info.paragraph1' | translate}}</p>
-    <p class="govuk-body">{{'pages.enterPhoneNumber.returningUser.info.paragraph2' | translate}}</p>
-  {% else %}
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.header' |
          translate}}</h1>
     <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph1' | translate}}</p>
     {% if not supportInternationalNumbers %}
         <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph2' | translate}}</p>
     {% endif %}
-  {% endif %}
 
   <form action="/enter-phone-number" method="post" novalidate="novalidate">
 
     <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
     <input type="hidden" name="supportInternationalNumbers" value="{{supportInternationalNumbers}}"/>
-    <input type="hidden" name="supportMFAOptions" value="{{supportMFAOptions}}"/>
     <input type="hidden" name="isAccountPartCreated" value="{{isAccountPartCreated}}"/>
 
     {{ govukInput({

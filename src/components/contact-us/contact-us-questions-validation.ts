@@ -2,23 +2,20 @@ import { body, check } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 import { ZENDESK_THEMES } from "../../app.constants";
-import { supportMFAOptions } from "../../config";
 
 export function validateContactUsQuestionsRequest(): ValidationChainFunc {
   return [
     body("securityCodeSentMethod")
-      .if((value: string, { req }: any) => {
-        return req.body.theme == "account_creation" || supportMFAOptions();
-      })
+      .if(body("theme").equals("account_creation"))
       .if(check("radio_buttons").notEmpty())
       .notEmpty()
       .withMessage((value, { req }) => {
-        const section = supportMFAOptions()
-          ? req.body.formType + ".section1"
-          : "securityCodeSentMethod";
         const suffix = req.body.theme == "signing_in" ? "SignIn" : "";
         return req.t(
-          "pages.contactUsQuestions." + section + ".errorMessage" + suffix,
+          "pages.contactUsQuestions." +
+            req.body.formType +
+            ".section1.errorMessage" +
+            suffix,
           {
             value,
           }

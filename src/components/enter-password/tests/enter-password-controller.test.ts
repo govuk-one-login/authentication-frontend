@@ -33,7 +33,6 @@ describe("enter password controller", () => {
 
   afterEach(() => {
     sinon.restore();
-    delete process.env.SUPPORT_MFA_OPTIONS;
   });
 
   describe("enterEmailGet", () => {
@@ -54,6 +53,7 @@ describe("enter password controller", () => {
             consentRequired: false,
             latestTermsAndConditionsAccepted: true,
             mfaMethodVerified: true,
+            mfaMethodType: "SMS",
           },
           success: true,
         }),
@@ -91,6 +91,7 @@ describe("enter password controller", () => {
             redactedPhoneNumber: "******3456",
             mfaRequired: false,
             mfaMethodVerified: true,
+            mfaMethodType: "SMS",
           },
         }),
       };
@@ -112,44 +113,14 @@ describe("enter password controller", () => {
       expect(req.session.user.isAccountPartCreated).to.be.eq(false);
     });
 
-    it("should redirect to enter phone number when phone number is not verified", async () => {
-      const fakeService: EnterPasswordServiceInterface = {
-        loginUser: sinon.fake.returns({
-          success: true,
-          data: {
-            redactedPhoneNumber: "******3456",
-            mfaMethodVerified: false,
-          },
-        }),
-      };
-
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
-      req.body["password"] = "password";
-
-      await enterPasswordPost(false, fakeService)(
-        req as Request,
-        res as Response
-      );
-
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
-      );
-      expect(req.session.user.isAccountPartCreated).to.be.eq(true);
-    });
-
     it("should redirect to get security codes page when 2fa method is not verified", async () => {
-      process.env.SUPPORT_MFA_OPTIONS = "1";
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sinon.fake.returns({
           success: true,
           data: {
             redactedPhoneNumber: "******3456",
             mfaMethodVerified: false,
+            mfaMethodType: "SMS",
           },
         }),
       };
@@ -178,6 +149,7 @@ describe("enter password controller", () => {
             redactedPhoneNumber: "******3456",
             latestTermsAndConditionsAccepted: false,
             mfaMethodVerified: true,
+            mfaMethodType: "SMS",
           },
           success: true,
         }),

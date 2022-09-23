@@ -113,14 +113,12 @@ describe("state-machine", () => {
       expect(nextState.value).to.equal(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
     });
 
-    it("should move from create password to enter phone number when password created event", () => {
+    it("should move from create password to get security codes when password created event", () => {
       const nextState = getNextState(
         PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
         USER_JOURNEY_EVENTS.PASSWORD_CREATED
       );
-      expect(nextState.value).to.equal(
-        PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
-      );
+      expect(nextState.value).to.equal(PATH_NAMES.GET_SECURITY_CODES);
     });
 
     it("should move from check your phone to account confirmation when phone number verified event", () => {

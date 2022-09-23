@@ -8,7 +8,6 @@ import { ERROR_CODES, getNextPathAndUpdateJourney } from "../common/constants";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { supportMFAOptions } from "../../config";
 import xss from "xss";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";
@@ -16,7 +15,6 @@ const TEMPLATE_NAME = "check-your-phone/index.njk";
 export function checkYourPhoneGet(req: Request, res: Response): void {
   res.render(TEMPLATE_NAME, {
     phoneNumber: req.session.user.phoneNumber,
-    supportMFAOptions: supportMFAOptions() ? true : null,
   });
 }
 
