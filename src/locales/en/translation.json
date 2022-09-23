@@ -1537,7 +1537,11 @@
         "insetTextEnglishOnly": "This service is currently only available in English.",
         "insetAlternativeLanguage": {
           "paragraph1": "This service is also available in ",
-          "linkText": "Welsh (Cymraeg)",
+          "linkText": {
+            "inPageLanguage": "Welsh",
+            "inDestinationLanguage": "(Cymraeg)",
+            "destinationLanguageCode": "cy"
+          },
           "linkHref": "?lng=cy"
         },
         "paragraph2": "You'll need to create or sign in to your GOV.UK account first. We'll then ask you for your current address and passport details.",
