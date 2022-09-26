@@ -41,10 +41,6 @@
       "cookieLink": "#",
       "cookieLinkText": "Darganfyddwch fwy am gwcis"
     },
-    "language": {
-      "english": "English",
-      "welsh": "Cymraeg (Welsh)"
-    },
     "continue": {
       "label": "Parhau"
     },
@@ -127,7 +123,11 @@
       "bullet2IntNumbers": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol neu'n ap dilysydd",
       "insetAlternativeLanguage": {
         "paragraph1": "Mae'r cyfrif GOV.UK hefyd ar gael ",
-        "linkText": "yn Saesneg (English)",
+        "linkText": {
+          "inPageLanguage": "yn Saesneg",
+          "inDestinationLanguage": "(English)",
+          "destinationLanguageCode": "en"
+        },
         "linkHref": "?lng=en"
       },
       "paragraph2": "Os oes gennych gyfrif GOV.UK yn barod gallwch",
@@ -1528,7 +1528,11 @@
         "insetTextEnglishOnly": "Ar hyn o bryd dim ond yn Saesneg mae'r gwasanaeth hwn ar gael.",
         "insetAlternativeLanguage": {
           "paragraph1": "Mae'r gwasanaeth hwn hefyd ar gael yn ",
-          "linkText": "Saesneg",
+          "linkText": {
+            "inPageLanguage": "Saesneg",
+            "inDestinationLanguage": "(English)",
+            "destinationLanguageCode": "en"
+          },
           "linkHref": "?lng=en"
         },
         "paragraph2": "Bydd angen i chi greu neu fewngofnodi i'ch cyfrif GOV.UK yn gyntaf. Yna byddwn yn gofyn i chi am eich cyfeiriad presennol a manylion pasbort.",

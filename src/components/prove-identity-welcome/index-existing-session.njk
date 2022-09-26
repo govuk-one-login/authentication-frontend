@@ -22,7 +22,10 @@
     {% if supportLanguageCY %}
         {% set insetTextInnerHtml %}
         {{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.paragraph1' | translate }}
-        <a href="{{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkHref' | translate }}" class="govuk-link" rel="noreferrer">{{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkText' | translate }}</a>.
+        <a href="{{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkHref' | translate }}" class="govuk-link" rel="noreferrer">
+            {{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkText.inPageLanguage' | translate }}
+            <span lang="{{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkText.destinationLanguageCode' | translate }}">{{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkText.inDestinationLanguage' | translate }}</span>
+        </a>.
         {% endset %}
 
         {{ govukInsetText({

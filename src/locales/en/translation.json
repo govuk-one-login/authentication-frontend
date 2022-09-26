@@ -41,10 +41,6 @@
       "cookieLink": "#",
       "cookieLinkText": "Find out more about cookies"
     },
-    "language": {
-      "english": "English",
-      "welsh": "Cymraeg (Welsh)"
-    },
     "continue": {
       "label": "Continue"
     },
@@ -127,7 +123,11 @@
       "bullet2IntNumbers": "a way to get security codes - this can be a mobile phone number or an authenticator app",
       "insetAlternativeLanguage": {
         "paragraph1": "The GOV.UK account is also available ",
-        "linkText": "in Welsh (Cymraeg)",
+        "linkText": {
+          "inPageLanguage": "in Welsh",
+          "inDestinationLanguage": "(Cymraeg)",
+          "destinationLanguageCode": "cy"
+        },
         "linkHref": "?lng=cy"
       },
       "paragraph2": "If you already have a GOV.UK account you can",
@@ -1528,7 +1528,11 @@
         "insetTextEnglishOnly": "This service is currently only available in English.",
         "insetAlternativeLanguage": {
           "paragraph1": "This service is also available in ",
-          "linkText": "Welsh (Cymraeg)",
+          "linkText": {
+            "inPageLanguage": "Welsh",
+            "inDestinationLanguage": "(Cymraeg)",
+            "destinationLanguageCode": "cy"
+          },
           "linkHref": "?lng=cy"
         },
         "paragraph2": "You'll need to create or sign in to your GOV.UK account first. We'll then ask you for your current address and passport details.",

@@ -40,7 +40,10 @@
   {% if supportLanguageCY %}
     {% set altLangInsetHtml %}
     {{ 'pages.signInOrCreate.insetAlternativeLanguage.paragraph1' | translate }}
-    <a href="{{ 'pages.signInOrCreate.insetAlternativeLanguage.linkHref' | translate }}" class="govuk-link" rel="noreferrer">{{ 'pages.signInOrCreate.insetAlternativeLanguage.linkText' | translate }}</a>.
+    <a href="{{ 'pages.signInOrCreate.insetAlternativeLanguage.linkHref' | translate }}" class="govuk-link" rel="noreferrer">
+      {{ 'pages.signInOrCreate.insetAlternativeLanguage.linkText.inPageLanguage' | translate }}
+      <span lang="{{ 'pages.signInOrCreate.insetAlternativeLanguage.linkText.destinationLanguageCode' | translate }}">{{ 'pages.signInOrCreate.insetAlternativeLanguage.linkText.inDestinationLanguage' | translate }}</span>
+    </a>.
     {% endset %}
     {{ govukInsetText({
       html: altLangInsetHtml
