@@ -7,7 +7,7 @@
 {% set hrefBack = 'enter-code' %}
 
 
-{% set emailMessage = 'pages.resendMfaCode.phoneNumber.isResendCodeRequest' | translate | replace("[mobile].", "") %}
+{% set emailMessage = 'pages.resendMfaCode.email.recipientMessage' | translate %}
 
 {% block content %}
     <form action="/resend-email-code" method="post" novalidate="novalidate">
@@ -19,9 +19,9 @@
             html: emailMessage + '<span class="govuk-body govuk-!-font-weight-bold">' + emailAddress + '</span>'
         }) }}
 
-        <p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph3' | translate}}</p>
+        <p class="govuk-body">{{'pages.resendMfaCode.email.paragraph' | translate}}</p>
         {{ govukButton({
-        "text": button_text|default('pages.resendMfaCode.continue' | translate, true),
+        "text": 'pages.resendMfaCode.continue' | translate,
         "type": "Submit",
         "preventDoubleClick": true
     }) }}
