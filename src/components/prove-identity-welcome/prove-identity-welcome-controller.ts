@@ -36,9 +36,7 @@ export function proveIdentityWelcomePost(req: Request, res: Response): void {
     );
   }
 
-  const event = req.session.user.isAuthenticated
-    ? USER_JOURNEY_EVENTS.EXISTING_SESSION
-    : USER_JOURNEY_EVENTS.CREATE_OR_SIGN_IN;
+  const event = USER_JOURNEY_EVENTS.PHOTO_ID;
 
   const nextPath = getNextPathAndUpdateJourney(
     req,
