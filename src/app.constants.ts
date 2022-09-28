@@ -50,6 +50,7 @@ export const PATH_NAMES = {
   CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP: "/setup-authenticator-app",
   COOKIES_POLICY: "/cookies",
   ERROR_PAGE: "/error",
+  SECURITY_CODE_ENTERED_EXCEEDED: "/security-code-entered-exceeded",
 };
 
 export const HTTP_STATUS_CODES = {

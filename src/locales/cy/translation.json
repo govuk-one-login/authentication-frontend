@@ -1630,6 +1630,16 @@
           "invalidCode": "Nid yw'r cod diogelwch rydych wedi'i roi yn gywir, ceisiwch ei roi i mewn eto neu aros i'ch ap dilysydd roi cod newydd i chi"
         }
       }
+    },
+    "securityCodeEnteredExceeded": {
+      "title": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
+      "header": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
+      "info": {
+        "paragraph1": "Mae hyn oherwydd eich bod wedi rhoi'r cod diogelwch ormod o weithiau.",
+        "paragraph2Start": "Gallwch ",
+        "link": "gael cod newydd",
+        "paragraph2End": " ar ôl 15 munud."
+      }
     }
   }
 }

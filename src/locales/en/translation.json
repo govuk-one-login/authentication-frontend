@@ -1630,6 +1630,16 @@
           "invalidCode": "The security code you entered is not correct, try entering it again or wait for your authenticator app to give you a new code"
         }
       }
+    },
+    "securityCodeEnteredExceeded": {
+      "title": "You cannot get a new security code at the moment ",
+      "header": "You cannot get a new security code at the moment ",
+      "info": {
+        "paragraph1": "This is because you entered the security code too many times.",
+        "paragraph2Start": "You can ",
+        "link": "get a new code",
+        "paragraph2End": " after 15 minutes."
+      }
     }
   }
 }

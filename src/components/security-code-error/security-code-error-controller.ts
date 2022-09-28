@@ -30,12 +30,22 @@ export function securityCodeCannotRequestCodeGet(
   });
 }
 
+export function securityCodeEnteredExceededGet(
+  req: Request,
+  res: Response
+): void {
+  res.render("security-code-error/index-security-code-entered-exceeded.njk", {
+    newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
+  });
+}
+
 function getNewCodePath(actionType: SecurityCodeErrorType) {
   switch (actionType) {
     case SecurityCodeErrorType.MfaMaxCodesSent:
     case SecurityCodeErrorType.MfaBlocked:
-    case SecurityCodeErrorType.MfaMaxRetries:
       return PATH_NAMES.RESEND_MFA_CODE;
+    case SecurityCodeErrorType.MfaMaxRetries:
+      return PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED;
     case SecurityCodeErrorType.OtpMaxCodesSent:
     case SecurityCodeErrorType.OtpBlocked:
     case SecurityCodeErrorType.OtpMaxRetries:
