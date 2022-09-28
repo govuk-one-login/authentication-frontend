@@ -8,15 +8,9 @@ export function photoIdGet(req: Request, res: Response) : void {
 }
 
 export function photoIdPost(req: Request, res: Response) : void {
- const hasPhotoId = req.body.havePhotoId?.toLowerCase() === 'true';
 
- let event = req.session.user.isAuthenticated
-   ? USER_JOURNEY_EVENTS.EXISTING_SESSION
-   : USER_JOURNEY_EVENTS.CREATE_OR_SIGN_IN;
-
- if (!hasPhotoId) {
-  event = USER_JOURNEY_EVENTS.NO_PHOTO_ID
- }
+ const event = req.body.havePhotoId?.toLowerCase() === 'true'
+   ? USER_JOURNEY_EVENTS.CREATE_OR_SIGN_IN : USER_JOURNEY_EVENTS.NO_PHOTO_ID;
 
  const nextPath = getNextPathAndUpdateJourney(
    req,
