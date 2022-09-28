@@ -1626,6 +1626,34 @@
           "invalidCode": "The security code you entered is not correct, try entering it again or wait for your authenticator app to give you a new code"
         }
       }
+    },
+    "photoId" : {
+      "title": "Confirm you have photo id",
+      "header": "You must have a photo ID to prove your identity this way",
+      "section1": {
+        "paragraph1" : "You can only prove your identity with your GOV.UK account if you have one of the following:",
+        "listItem1": "a UK driving licence",
+        "listItem2": "a UK passport",
+        "insetPassportExpiry" : "If your passport has expired, you can still use it to prove your identity up until 18 months after the expiry date."
+      },
+      "section2": {
+        "subHeading" : "Do you have a photo ID?",
+        "insetPassportExpiry" : "If your passport has expired, you can still use it to prove your identity up until 18 months after the expiry date.",
+        "radioOption1" : "Yes",
+        "radioOption2" : "No",
+        "errorMessage": "Select an option"
+      }
+    },
+    "noPhotoId" : {
+      "title": "No photo id",
+      "header": "Sorry, we cannot prove your identity",
+      "section1": {
+        "paragraph1" : "You can currently only prove your identity with your GOV.UK account if you have a photo ID."
+      },
+      "section2": {
+        "subHeading" : "What you can do",
+        "paragraph1" : "If your passport has expired, you can still use it to prove your identity up until 18 months after the expiry date."
+      }
     }
   }
 }
