@@ -114,9 +114,6 @@ const authStateMachine = createMachine(
             { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
             { target: [PATH_NAMES.PROVE_IDENTITY] },
           ],
-          [USER_JOURNEY_EVENTS.CREATE_OR_SIGN_IN]: [
-            PATH_NAMES.SIGN_IN_OR_CREATE,
-          ],
           [USER_JOURNEY_EVENTS.PHOTO_ID]: [
             PATH_NAMES.PHOTO_ID,
           ],

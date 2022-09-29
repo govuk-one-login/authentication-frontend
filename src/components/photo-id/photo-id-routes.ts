@@ -6,7 +6,7 @@ import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-
 import {
   photoIdGet,
   photoIdPost,
-  noPhotoIdGet
+  noPhotoIdGet, noPhotoIdPost,
 } from "./photo-id-controller";
 import { validatePhotoIdRequest } from "./photo-id-validation";
 
@@ -34,5 +34,13 @@ router.get(
   allowUserJourneyMiddleware,
   noPhotoIdGet
 );
+
+router.post(
+  PATH_NAMES.NO_PHOTO_ID,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
+  noPhotoIdPost
+);
+
 
 export { router as photoIdRouter };

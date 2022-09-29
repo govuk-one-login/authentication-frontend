@@ -11,9 +11,11 @@ import {
 } from "mock-req-res";
 
 import {
+  IPV_ERROR_CODES,
+  OIDC_ERRORS,
   PATH_NAMES,
 } from "../../../app.constants";
-import { noPhotoIdGet, photoIdGet, photoIdPost } from "../photo-id-controller";
+import { noPhotoIdGet, noPhotoIdPost, photoIdGet, photoIdPost } from "../photo-id-controller";
 
 describe("photo-id controller", () => {
   let req: RequestOutput;
@@ -67,6 +69,21 @@ describe("photo-id controller", () => {
     it("Should render no-photo-id page", async () => {
       noPhotoIdGet(req as Request, res as Response);
       expect(res.render).to.have.been.calledWith("photo-id/index-no-photo-id.njk")
+    })
+  })
+
+  describe("noPhotoIdPost", () => {
+    it("Should red", async () => {
+      noPhotoIdPost(req as Request, res as Response);
+
+      expect(res.redirect).to.have.been.calledWith(
+        `http://someservice.com/auth?error=${
+          OIDC_ERRORS.ACCESS_DENIED
+        }&error_description=${encodeURIComponent(
+          IPV_ERROR_CODES.ACCOUNT_NOT_CREATED
+        )}&state=${encodeURIComponent(STATE)}`
+      );
+
     })
   })
 
