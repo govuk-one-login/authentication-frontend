@@ -1530,12 +1530,6 @@
       "header": "Profi pwy ydych chi gyda chyfrif GOV.UK",
       "section1": {
         "paragraph1": "Ar hyn o bryd gallwch ond profi pwy ydych chi gyda'ch cyfrif GOV.UK os oes gennych basbort y DU.",
-        "insetTextPassport": "Os yw'ch pasbort wedi dod i ben, gallwch ddal ei ddefnyddio i brofi pwy ydych chi hyd at 18 mis ar ôl y dyddiad dod i ben."
-      },
-      "section2": {
-        "subHeading": "Beth sydd angen i chi ei wneud",
-        "paragraph1": "Bydd yn cymryd tua 10 munud i chi brofi pwy ydych chi yn y ffordd hyn.",
-        "insetTextEnglishOnly": "Ar hyn o bryd dim ond yn Saesneg mae'r gwasanaeth hwn ar gael.",
         "insetAlternativeLanguage": {
           "paragraph1": "Mae'r gwasanaeth hwn hefyd ar gael yn ",
           "linkText": {
@@ -1545,25 +1539,27 @@
           },
           "linkHref": "?lng=en"
         },
-        "paragraph2": "Bydd angen i chi greu neu fewngofnodi i'ch cyfrif GOV.UK yn gyntaf. Yna byddwn yn gofyn i chi am eich cyfeiriad presennol a manylion pasbort.",
-        "paragraph3": "Byddwn hefyd yn gofyn rhai cwestiynau diogelwch i chi mai dim ond chi ddylai wybod yr atebion iddynt. Efallai y byddwch yn ei chael hi'n haws ateb y cwestiynau hyn os oes gennych chi wybodaeth am:",
-        "listItem1": "eich contract ffôn symudol",
-        "listItem2": "eich cyfrif banc",
-        "listItem3": "unrhyw gardiau credyd, benthyciadau neu forgeisi sydd gennych",
-        "paragraph4": "Byddwn ond yn defnyddio'r wybodaeth rydych yn ei rhoi i ni i wneud yn siwr mai chi yw pwy rydych yn ei ddweud ydych chi."
+        "insetTextEnglishOnly": "Ar hyn o bryd dim ond yn Saesneg mae'r gwasanaeth hwn ar gael."
+      },
+      "section2": {
+        "paragraph1": "Byddwch angen:",
+        "listItem1_1": "cyfrif GOV.UK - byddwn yn gofyn i chi greu neu fewngofnodi i'ch cyfrif pan fyddwch yn parhau",
+        "listItem1_2": "eich cyfeiriad presennol (efallai y byddwch angen eich cyfeiriad blaenorol hefyd os ydych wedi symud yn ddiweddar)",
+        "listItem1_3": "eich ID gyda llun",
+        "paragraph2": "Fe allwch wedyn naill ai:",
+        "listItem2_1": "lwytho llun o'ch ID gyda llun gan ddefnyddio'r ap Gwirio ID GOV.UK",
+        "listItem2_2": "rhoi y manylion o'ch ID gyda llun ac ateb rai cwestiynau diogelwch mai dim ond chi ddylai wybod yr atebion iddynt",
+        "paragraph3": "We'll only use the information you give us to make sure that you are who you say you are."
       },
       "section3": {
         "subHeading": "Dewiswch ffordd i brofi pwy ydych chi",
         "radioOption1": "Parhau i fewngofnodi neu greu cyfrif GOV.UK",
-        "radioOption1HintText": "Gwnewch yn siwr bod gennych eich pasbort DU gyda chi cyn i chi barhau. Efallai y byddwch yn dal i allu profi pwy ydych chi os nad oes gennych eich pasbort ond yn gwybod y manylion sydd arno.",
+        "radioOption1HintText": "You'll need your photo ID to prove your identity this way.",
         "radioOption2": "Profi pwy ydych chi mewn ffordd arall",
         "radioOption2HintText": "Gallwch brofi pwy ydych chi ar-lein gyda GOV.UK Verify neu fynd â'ch dogfennau adnabod i gael eu gwirio yn bersonol.",
         "errorMessage": "Dewiswch opsiwn"
       },
       "existingSession": {
-        "section2": {
-          "paragraph2": "Byddwn yn gofyn i chi am eich cyfeiriad presennol a manylion pasbort."
-        },
         "section3": {
           "radioOption1": "Parhau gyda'ch cyfrif GOV.UK"
         }
@@ -1629,6 +1625,33 @@
           "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
           "invalidCode": "Nid yw'r cod diogelwch rydych wedi'i roi yn gywir, ceisiwch ei roi i mewn eto neu aros i'ch ap dilysydd roi cod newydd i chi"
         }
+      }
+    },
+    "photoId" : {
+      "title": "Mae'n rhaid i chi gael ID gyda llun i brofi pwy ydych chi yn y ffordd yma",
+      "header": "Mae'n rhaid i chi gael ID gyda llun i brofi pwy ydych chi yn y ffordd yma",
+      "section1": {
+        "paragraph1" : "Gallwch ond profi pwy ydych chi gyda'ch cyfrif GOV.UK os oes gennych un o'r canlynol:",
+        "listItem1": "trwydded yrru'r DU",
+        "listItem2": "pasbort y DU",
+        "insetPassportExpiry" : "Os yw eich pasbort wedi dod i ben, gallwch barhau i'w ddefnyddio i brofi pwy ydych chi hyd at 18 mis ar ôl y dyddiad dod i ben."
+      },
+      "section2": {
+        "subHeading" : "Oes gennych chi ID gyda llun?",
+        "radioOption1" : "Oes",
+        "radioOption2" : "Na",
+        "errorMessage": "Dewiswch opsiwn"
+      }
+    },
+    "noPhotoId" : {
+      "title": "Mae'n ddrwg gennym, ni allwn brofi pwy ydych chi",
+      "header": "Mae'n ddrwg gennym, ni allwn brofi pwy ydych chi",
+      "section1": {
+        "paragraph1" : "Ar hyn o bryd gallwch ond profi pwy ydych chi gyda'ch cyfrif GOV.UK os oes gennych ID gyda llun."
+      },
+      "section2": {
+        "subHeading" : "Beth allwch chi ei wneud",
+        "paragraph1" : "Parhau i'r gwasanaeth roeddech yn ceisio ei ddefnyddio a chwilio am ffyrdd eraill i brofi pwy ydych chi."
       }
     }
   }

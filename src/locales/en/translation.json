@@ -1628,7 +1628,7 @@
       }
     },
     "photoId" : {
-      "title": "Confirm you have photo id",
+      "title": "You must have a photo ID to prove your identity this way",
       "header": "You must have a photo ID to prove your identity this way",
       "section1": {
         "paragraph1" : "You can only prove your identity with your GOV.UK account if you have one of the following:",
@@ -1638,7 +1638,6 @@
       },
       "section2": {
         "subHeading" : "Do you have a photo ID?",
-        "insetPassportExpiry" : "If your passport has expired, you can still use it to prove your identity up until 18 months after the expiry date.",
         "radioOption1" : "Yes",
         "radioOption2" : "No",
         "errorMessage": "Select an option"
