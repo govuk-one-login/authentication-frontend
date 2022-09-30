@@ -15,7 +15,12 @@ import {
   OIDC_ERRORS,
   PATH_NAMES,
 } from "../../../app.constants";
-import { noPhotoIdGet, noPhotoIdPost, photoIdGet, photoIdPost } from "../photo-id-controller";
+import {
+  noPhotoIdGet,
+  noPhotoIdPost,
+  photoIdGet,
+  photoIdPost,
+} from "../photo-id-controller";
 
 describe("photo-id controller", () => {
   let req: RequestOutput;
@@ -47,30 +52,34 @@ describe("photo-id controller", () => {
   describe("photoIdGet", () => {
     it("Should render photo-id page for user to confirm they have a photo id", async () => {
       photoIdGet(req as Request, res as Response);
-      expect(res.render).to.have.been.calledWith("photo-id/index.njk")
-    })
-  })
+      expect(res.render).to.have.been.calledWith("photo-id/index.njk");
+    });
+  });
 
   describe("photoIdPost", () => {
     it("Should redirect to Create or sign in when use selects Yes", () => {
       req.body.havePhotoId = "true";
       photoIdPost(req as Request, res as Response);
-      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE)
-    })
+      expect(res.redirect).to.have.been.calledWith(
+        PATH_NAMES.SIGN_IN_OR_CREATE
+      );
+    });
 
     it("Should redirect to no photo id when use selects No", () => {
       req.body.havePhotoId = "false";
       photoIdPost(req as Request, res as Response);
-      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.NO_PHOTO_ID)
-    })
-  })
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.NO_PHOTO_ID);
+    });
+  });
 
   describe("noPhotoIdGet", () => {
     it("Should render no-photo-id page", async () => {
       noPhotoIdGet(req as Request, res as Response);
-      expect(res.render).to.have.been.calledWith("photo-id/index-no-photo-id.njk")
-    })
-  })
+      expect(res.render).to.have.been.calledWith(
+        "photo-id/index-no-photo-id.njk"
+      );
+    });
+  });
 
   describe("noPhotoIdPost", () => {
     it("Should red", async () => {
@@ -83,8 +92,6 @@ describe("photo-id controller", () => {
           IPV_ERROR_CODES.ACCOUNT_NOT_CREATED
         )}&state=${encodeURIComponent(STATE)}`
       );
-
-    })
-  })
-
-})
+    });
+  });
+});

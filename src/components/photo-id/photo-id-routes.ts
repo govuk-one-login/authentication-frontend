@@ -6,10 +6,10 @@ import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-
 import {
   photoIdGet,
   photoIdPost,
-  noPhotoIdGet, noPhotoIdPost,
+  noPhotoIdGet,
+  noPhotoIdPost,
 } from "./photo-id-controller";
 import { validatePhotoIdRequest } from "./photo-id-validation";
-
 
 const router = express.Router();
 
@@ -41,6 +41,5 @@ router.post(
   allowUserJourneyMiddleware,
   noPhotoIdPost
 );
-
 
 export { router as photoIdRouter };

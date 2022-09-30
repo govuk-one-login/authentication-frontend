@@ -117,7 +117,7 @@ function registerRoutes(app: express.Application) {
   app.use(docCheckingAppRouter);
   app.use(docCheckingAppCallbackRouter);
   app.use(errorPageRouter);
-  app.use(photoIdRouter)
+  app.use(photoIdRouter);
 }
 
 async function createApp(): Promise<express.Application> {
