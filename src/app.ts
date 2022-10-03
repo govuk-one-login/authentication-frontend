@@ -75,6 +75,7 @@ import { setupAuthenticatorAppRouter } from "./components/setup-authenticator-ap
 import { enterAuthenticatorAppCodeRouter } from "./components/enter-authenticator-app-code/enter-authenticator-app-code-routes";
 import { cookiesRouter } from "./components/common/cookies/cookies-routes";
 import { errorPageRouter } from "./components/common/errors/error-routes";
+import { photoIdRouter } from "./components/photo-id/photo-id-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -116,6 +117,7 @@ function registerRoutes(app: express.Application) {
   app.use(docCheckingAppRouter);
   app.use(docCheckingAppCallbackRouter);
   app.use(errorPageRouter);
+  app.use(photoIdRouter);
 }
 
 async function createApp(): Promise<express.Application> {

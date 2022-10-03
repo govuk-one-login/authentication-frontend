@@ -47,6 +47,8 @@ const USER_JOURNEY_EVENTS = {
   MFA_OPTION_SMS_SELECTED: "MFA_OPTION_SMS_SELECTED",
   VERIFY_AUTH_APP_CODE: "VERIFY_AUTH_APP_CODE",
   AUTH_APP_CODE_VERIFIED: "AUTH_APP_CODE_VERIFIED",
+  PHOTO_ID: "PHOTO_ID",
+  NO_PHOTO_ID: "NO_PHOTO_ID",
 };
 
 const authStateMachine = createMachine(
@@ -112,9 +114,7 @@ const authStateMachine = createMachine(
             { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
             { target: [PATH_NAMES.PROVE_IDENTITY] },
           ],
-          [USER_JOURNEY_EVENTS.CREATE_OR_SIGN_IN]: [
-            PATH_NAMES.SIGN_IN_OR_CREATE,
-          ],
+          [USER_JOURNEY_EVENTS.PHOTO_ID]: [PATH_NAMES.PHOTO_ID],
         },
       },
       [PATH_NAMES.ENTER_EMAIL_SIGN_IN]: {
@@ -505,6 +505,25 @@ const authStateMachine = createMachine(
       },
       [PATH_NAMES.AUTH_CODE]: {
         type: "final",
+      },
+      [PATH_NAMES.PHOTO_ID]: {
+        on: {
+          [USER_JOURNEY_EVENTS.CREATE_OR_SIGN_IN]: [
+            PATH_NAMES.SIGN_IN_OR_CREATE,
+          ],
+          [USER_JOURNEY_EVENTS.NO_PHOTO_ID]: [PATH_NAMES.NO_PHOTO_ID],
+        },
+        meta: {
+          optionalPaths: [
+            PATH_NAMES.PROVE_IDENTITY_WELCOME,
+            PATH_NAMES.NO_PHOTO_ID,
+          ],
+        },
+      },
+      [PATH_NAMES.NO_PHOTO_ID]: {
+        meta: {
+          optionalPaths: [PATH_NAMES.PHOTO_ID],
+        },
       },
     },
   },
