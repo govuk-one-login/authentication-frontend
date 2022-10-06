@@ -5,15 +5,20 @@
 {% block content %}
 
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeInvalid.header' | translate }}</h1>
-
-<p class="govuk-body">{{'pages.securityCodeInvalid.info.paragraph1' | translate}}</p>
+{% if isBlocked %}
+    <p class="govuk-body">{{'pages.securityCodeInvalid.info.paragraph1' | translate}}</p>
+{% endif %}
 <p class="govuk-body">
     {% if isAuthApp == true %}
         {{'pages.securityCodeInvalid.authAppInfo.paragraph2Start' | translate}}
         <a class="govuk-link" rel="noreferrer" href="{{ newCodeLink }}">{{'pages.securityCodeInvalid.authAppInfo.link' | translate}}</a>
         {{'pages.securityCodeInvalid.authAppInfo.paragraph2End' | translate}}
     {% else %}
-        {{'pages.securityCodeInvalid.info.paragraph2Start' | translate}}
+        {% if isBlocked %}
+            {{'pages.securityCodeInvalid.info.paragraph2Start' | translate}}
+        {% else %}
+            {{'pages.securityCodeInvalid.info.paragraph2Unblocked' | translate}}
+        {% endif %}
         <a class="govuk-link" rel="noreferrer" href="{{ newCodeLink }}">{{'pages.securityCodeInvalid.info.link' | translate}}</a>
         {{'pages.securityCodeInvalid.info.paragraph2End' | translate}}
     {% endif %}
