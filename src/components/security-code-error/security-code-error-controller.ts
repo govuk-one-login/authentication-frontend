@@ -42,9 +42,8 @@ function getNewCodePath(actionType: SecurityCodeErrorType) {
       return PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER;
     case SecurityCodeErrorType.EmailMaxCodesSent:
     case SecurityCodeErrorType.EmailBlocked:
-      return PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT;
     case SecurityCodeErrorType.EmailMaxRetries:
-      return PATH_NAMES.CHECK_YOUR_EMAIL;
+      return PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT;
     case SecurityCodeErrorType.AuthAppMfaMaxRetries:
       return PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE;
   }
