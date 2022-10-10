@@ -14,6 +14,8 @@ import xss from "xss";
 export function resendEmailCodeGet(req: Request, res: Response): void {
   res.render("resend-email-code/index.njk", {
     emailAddress: req.session.user.email,
+    requestNewCode:
+      req.query.requestNewCode && req.query.requestNewCode === "true",
   });
 }
 
@@ -31,7 +33,9 @@ export function resendEmailCodePost(
       NOTIFICATION_TYPE.VERIFY_EMAIL,
       req.ip,
       persistentSessionId,
-      xss(req.cookies.lng as string)
+      xss(req.cookies.lng as string),
+      undefined,
+      xss(req.body.requestNewCode as string) === "true"
     );
 
     if (!sendNotificationResponse.success) {

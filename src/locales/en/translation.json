@@ -425,6 +425,7 @@
       "header": "You entered the wrong security code too many times",
       "info": {
         "paragraph1": "You need to wait 15 minutes.",
+        "paragraph2Unblocked": "You need to ",
         "paragraph2Start": "You can then ",
         "link": "get a new code",
         "paragraph2End": " and try again."
