@@ -1271,61 +1271,61 @@
       }
     },
     "contactUsPublic": {
-      "title": "Cysylltu â ni",
-      "header": "Cyfrif GOV.UK: rhoi gwybod am broblem neu roi adborth",
+      "title": "Contact us",
+      "header": "GOV.UK account: report a problem or give feedback",
       "section1": {
-        "paragraph1": "Defnyddiwch y ffurflen hon i:",
-        "bulletPoint1": "ddweud wrthym am broblem rydych yn ei chael gyda'ch cyfrif GOV.UK",
-        "bulletPoint2": "awgrymu gwelliannau neu roi adborth am eich profiad o ddefnyddio eich cyfrif GOV.UK",
-        "paragraph2": "Ein horiau swyddfa yw 9:30am tan 5:30pm, o ddydd Llun i ddydd Gwener. Byddwn yn ymateb i chi drwy e-bost mewn 2 ddiwrnod gwaith."
+        "paragraph1": "Use this form to:",
+        "bulletPoint1": "tell us about a problem you’re having with your GOV.UK account",
+        "bulletPoint2": "suggest improvements or give feedback about your experience using your GOV.UK account",
+        "paragraph2": "Our office hours are 9:30am to 5:30pm, Monday to Friday. We'll respond to you by email in 2 working days."
       },
       "section3": {
-        "header": "Am beth rydych yn cysylltu â ni?",
-        "radio1": "Problem creu cyfrif GOV.UK",
-        "radio2": "Problem mewngofnodi i'ch cyfrif GOV.UK",
-        "radio3": "Problem profi eich hunaniaeth",
-        "radio4": "Problem arall wrth ddefnyddio eich cyfrif GOV.UK",
-        "radio5": "Tanysgrifiadau e-bost GOV.UK",
-        "radio6": "Awgrym neu adborth am ddefnyddio'ch cyfrif GOV.UK",
-        "errorMessage": "Dewiswch reswm dros gysylltu â ni"
+        "header": "What are you contacting us about?",
+        "radio1": "A problem creating a GOV.UK account",
+        "radio2": "A problem signing in to your GOV.UK account",
+        "radio3": "A problem proving your identity",
+        "radio4": "Another problem using your GOV.UK account",
+        "radio5": "GOV.UK email subscriptions",
+        "radio6": "A suggestion or feedback about using your GOV.UK account",
+        "errorMessage": "Select a reason for contacting us"
       },
-      "submitButtonText": "Anfon",
+      "submitButtonText": "Submit",
       "submitButtonLink": "/contact-us-submit"
     },
     "contactUsFurtherInformation": {
       "signingIn": {
-        "title": "Problem mewngofnodi i'ch cyfrif GOV.UK",
-        "header": "Problem mewngofnodi i'ch cyfrif GOV.UK",
+        "title": "A problem signing in to your GOV.UK account",
+        "header": "A problem signing in to your GOV.UK account",
         "section1": {
-          "header": "Dywedwch wrthym beth ddigwyddodd",
-          "radio1": "Ni chawsoch god diogelwch",
-          "radio2": "Nid oedd y cod diogelwch yn gweithio",
-          "radio3": "Rydych wedi newid eich rhif ffôn neu wedi colli eich ffôn",
-          "radio4": "Rydych wedi anghofio eich cyfrinair",
-          "radio5": "Dywedwyd wrthych 'na ellir dod o hyd' i'ch cyfrif",
-          "radio6": "Roedd problem dechnegol (er enghraifft, nid oedd y gwasanaeth ar gael)",
-          "radio7": "Rhywbeth arall",
-          "errorMessage": "Dewiswch y broblem oedd gennych wrth fewngofnodi i'ch cyfrif"
+          "header": "Tell us what happened",
+          "radio1": "You did not get a security code",
+          "radio2": "The security code did not work",
+          "radio3": "You've changed your phone number or lost your phone",
+          "radio4": "You’ve forgotten your password",
+          "radio5": "You’ve been told your account ‘cannot be found’",
+          "radio6": "There was a technical problem (for example, the service was unavailable)",
+          "radio7": "Something else",
+          "errorMessage": "Select the problem you had when signing in to your account"
         }
       },
       "accountCreation": {
-        "title": "Problem creu cyfrif GOV.UK",
-        "header": "Problem creu cyfrif GOV.UK",
+        "title": "A problem creating a GOV.UK account",
+        "header": "A problem creating a GOV.UK account",
         "section1": {
-          "header": "Dywedwch wrthym beth ddigwyddodd",
-          "radio1": "Ni chawsoch god diogelwch",
-          "radio2": "Nid oedd y cod diogelwch yn gweithio",
-          "radio3": "Nid oes gennych rif ffôn symudol y DU",
-          "radio4": "Roedd problem dechnegol (er enghraifft, nid oedd y gwasanaeth ar gael)",
-          "radio5": "Rhywbeth arall",
-          "radio6": "Roedd gennych broblem gydag ap dilysydd",
-          "errorMessage": "Dewiswch y broblem oedd gennych wrth greu cyfrif"
+          "header": "Tell us what happened",
+          "radio1": "You did not get a security code",
+          "radio2": "The security code did not work",
+          "radio3": "You do not have a UK mobile phone number",
+          "radio4": "There was a technical problem (for example, the service was unavailable)",
+          "radio5": "Something else",
+          "radio6": "You had a problem with an authenticator app",
+          "errorMessage": "Select the problem you had when creating an account"
         }
       }
     },
     "contactUsQuestions": {
       "personalInformation": {
-        "paragraph1": "Peidiwch â chynnwys gwybodaeth bersonol nac ariannol, er enghraifft eich rhif Yswiriant Gwladol neu fanylion cerdyn credyd."
+        "paragraph1": "Do not include personal or financial information, for example your National Insurance number or credit card details."
       },
       "replyByEmail": {
         "validationError": {
@@ -1335,85 +1335,85 @@
         }
       },
       "emailReply": {
-        "header": "Allwn ni ymateb i chi drwy e-bost?",
-        "emailLabel": "Cyfeiriad e-bost",
-        "emailHint": "Byddwn ond yn defnyddio hyn i ymateb i'ch neges",
-        "nameLabel": "Enw (Dewisol)",
-        "privacyNote": "Darllenwch ein <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">hysbysiad preifatrwydd</a> am fwy o wybodaeth am sut rydym yn defnyddio eich gwybodaeth bersonol."
+        "header": "Can we reply to you by email?",
+        "emailLabel": "Email address",
+        "emailHint": "We will only use this to reply to your message",
+        "nameLabel": "Name (Optional)",
+        "privacyNote": "Read our <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">privacy notice</a> for more information on how we use your personal information."
       },
       "anotherProblem": {
-        "title": "Problem arall wrth ddefnyddio eich cyfrif GOV.UK",
-        "header": "Problem arall wrth ddefnyddio eich cyfrif GOV.UK",
+        "title": "Another problem using your GOV.UK account",
+        "header": "Another problem using your GOV.UK account",
         "section1": {
-          "header": "Beth oeddech chi'n ceisio ei wneud?",
-          "errorMessage": "Rhowch beth oeddech chi'n ceisio ei wneud"
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
         },
         "section2": {
-          "header": "Beth ddigwyddodd?",
-          "paragraph1": "Er enghraifft, a oedd problem dechnegol?",
-          "errorMessage": "Rhowch beth ddigwyddodd"
+          "header": "What happened?",
+          "paragraph1": "For example, was there a technical problem?",
+          "errorMessage": "Enter what happened"
         }
       },
       "authenticatorApp": {
-        "title": "Roedd gennych broblem gydag ap dilysydd",
-        "header": "Roedd gennych broblem gydag ap dilysydd",
+        "title": "You had a problem with an authenticator app",
+        "header": "You had a problem with an authenticator app",
         "section1": {
-          "header": "Beth oeddech chi'n ceisio ei wneud?",
-          "errorMessage": "Rhowch beth oeddech chi'n ceisio ei wneud"
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
         },
         "section2": {
-          "header": "Beth ddigwyddodd?",
-          "paragraph1": "Er enghraifft, roedd gennych broblem gyda'r cod QR neu ddod o hyd i ap dilysydd",
-          "errorMessage": "Rhowch beth ddigwyddodd"
+          "header": "What happened?",
+          "paragraph1": "For example, you had a problem with the QR code or finding an authenticator app",
+          "errorMessage": "Enter what happened"
         }
       },
       "emailSubscriptions": {
-        "title": "Eich tanysgrifiadau e-bost GOV.UK",
-        "header": "Eich tanysgrifiadau e-bost GOV.UK",
+        "title": "Your GOV.UK email subscriptions",
+        "header": "Your GOV.UK email subscriptions",
         "section1": {
-          "header": "Beth oeddech chi'n ceisio ei wneud a beth ddigwyddodd?",
-          "errorMessage": "Rhowch beth oeddech chi'n ceisio ei wneud a beth ddigwyddodd"
+          "header": "What were you trying to do and what happened?",
+          "errorMessage": "Enter what you were trying to do and what happened"
         },
         "section2": {
-          "header": "Ydych chi eisiau dweud unrhyw beth arall wrthym",
-          "paragraph1": "Er enghraifft, os ydych eisiau ychwanegu mwy o fanylion neu roi adborth"
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give feedback"
         }
       },
       "suggestionOrFeedback": {
-        "title": "Awgrym neu adborth am ddefnyddio'ch cyfrif GOV.UK",
-        "header": "Awgrym neu adborth am ddefnyddio'ch cyfrif GOV.UK",
+        "title": "A suggestion or feedback about using your GOV.UK account",
+        "header": "A suggestion or feedback about using your GOV.UK account",
         "section1": {
-          "header": "Eich awgrym neu adborth",
-          "errorMessage": "Rhowch eich awgrym neu adborth"
+          "header": "Your suggestion or feedback",
+          "errorMessage": "Enter your suggestion or feedback"
         }
       },
       "technicalError": {
-        "title": "Roedd gwall technegol",
-        "header": "Roedd gwall technegol",
+        "title": "There was a technical error",
+        "header": "There was a technical error",
         "section1": {
-          "header": "Beth oeddech chi'n ceisio ei wneud?",
-          "errorMessage": "Rhowch beth oeddech chi'n ceisio ei wneud"
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
         },
         "section2": {
-          "header": "Beth ddigwyddodd?",
-          "paragraph1": "Wedi cynnwys manylion y gwall",
-          "errorMessage": "Rhowch beth ddigwyddodd"
+          "header": "What happened?",
+          "paragraph1": "Included details of the error",
+          "errorMessage": "Enter what happened"
         },
         "section3": {
-          "header": "Os yn bosib, dywedwch wrthym URL y dudalen y digwyddodd y gwall arno?"
+          "header": "If possible, tell us the URL of the page the error happened on?"
         }
       },
       "provingIdentity": {
-        "title": "Problem profi eich hunaniaeth",
-        "header": "Problem profi eich hunaniaeth",
+        "title": "A problem proving your identity",
+        "header": "A problem proving your identity",
         "section1": {
-          "header": "Beth oeddech chi'n ceisio ei wneud?",
-          "errorMessage": "Rhowch beth oeddech chi'n ceisio ei wneud"
+          "header": "What were you trying to do?",
+          "errorMessage": "Enter what you were trying to do"
         },
         "section2": {
-          "header": "Beth ddigwyddodd?",
-          "paragraph1": "Er enghraifft, a wnaethoch chi weld unrhyw rybudd neu negeseuon gwall?",
-          "errorMessage": "Rhowch beth ddigwyddodd"
+          "header": "What happened?",
+          "paragraph1": "For example, did you see any warning or error messages?",
+          "errorMessage": "Enter what happened"
         }
       },
       "securityCodeSentMethod": {
@@ -1423,38 +1423,38 @@
         "errorMessage": "Dewiswch os anfonwyd y cod trwy e-bost neu neges destun"
       },
       "noSecurityCode": {
-        "title": "Ni chawsoch god diogelwch",
-        "header": "Ni chawsoch god diogelwch",
+        "title": "You did not get a security code",
+        "header": "You did not get a security code",
         "section1": {
-          "header": "Sut oeddech chi'n disgwyl cael y cod diogelwch?",
-          "errorMessage": "Dewiswch os oeddech yn disgwyl cael y cod trwy e-bost, neges destun neu ap dilysydd",
-          "errorMessageSignIn": "Dewiswch os oeddech yn disgwyl cael y cod trwy neges destun neu ap dilysydd"
+          "header": "How did you expect to get the security code?",
+          "errorMessage": "Select whether you expected to get the code by email, text message or authenticator app",
+          "errorMessageSignIn": "Select whether you expected to get the code by text message or authenticator app"
 
         },
         "section2": {
-          "header": "Ydych chi eisiau dweud unrhyw beth arall wrthym",
-          "hintText": "Gallwch ychwanegu mwy o fanylion, fel beth oeddech yn ceisio ei wneud, neu roi adborth i ni"
+          "header": "Anything else you want to tell us",
+          "hintText": "You can add more detail, such as what you were trying to do, or give us feedback"
         }
       },
       "invalidSecurityCode": {
-        "title": "Nid yw'r cod diogelwch yn gweithio",
-        "header": "Nid yw'r cod diogelwch yn gweithio",
+        "title": "The security code does not work",
+        "header": "The security code does not work",
         "section1": {
-          "header": "Sut gawsoch chi'r cod diogelwch?",
-          "errorMessage": "Dewiswch os gawsoch chi'r cod trwy e-bost, neges destun neu ap dilysydd",
-          "errorMessageSignIn": "Dewiswch os gawsoch chi'r cod trwy neges destun neu ap dilysydd"
+          "header": "How did you get the security code?",
+          "errorMessage": "Select whether you got the code by email, text message or authenticator app",
+          "errorMessageSignIn": "Select whether you got the code by text message or authenticator app"
         },
         "section2": {
-          "header": "Ydych chi eisiau dweud unrhyw beth arall wrthym",
-          "hintText": "Gallwch ychwanegu mwy o fanylion, fel beth oeddech yn ceisio ei wneud, neu roi adborth i ni"
+          "header": "Anything else you want to tell us",
+          "hintText": "You can add more detail, such as what you were trying to do, or give us feedback"
         }
       },
       "noUKMobile": {
-        "title": "Nid oes gennych rif ffôn symudol y DU",
-        "header": "Nid oes gennych rif ffôn symudol y DU",
+        "title": "You do not have a UK mobile phone number",
+        "header": "You do not have a UK mobile phone number",
         "section1": {
-          "header": "Ydych chi eisiau dweud unrhyw beth arall wrthym",
-          "paragraph1": "Gallwch ychwanegu mwy o fanylion, fel beth oeddech yn ceisio ei wneud, neu roi adborth i ni"
+          "header": "Anything else you want to tell us",
+          "paragraph1": "You can add more detail, such as what you were trying to do, or give us feedback"
         }
       },
       "optionalDescriptionErrorMessage": {
@@ -1481,12 +1481,12 @@
         }
       },
       "accountCreationProblem": {
-        "title": "Problem arall gyda chreu cyfrif",
-        "header": "Problem arall gyda chreu cyfrif",
+        "title": "Another problem creating an account",
+        "header": "Another problem creating an account",
         "section1": {
-          "header": "Ydych chi eisiau dweud unrhyw beth arall wrthym",
-          "paragraph1": "Er enghraifft, os ydych eisiau ychwanegu mwy o fanylion neu roi adborth i ni",
-          "errorMessage": "Rhowch beth ddigwyddodd"
+          "header": "Anything else you want to tell us",
+          "paragraph1": "For example, if you want to add more detail or give us feedback",
+          "errorMessage": "Enter what happened"
         }
       },
       "signignInProblem": {
