@@ -11,29 +11,21 @@
 
     <p class="govuk-body">{{'pages.proveIdentityWelcome.section1.paragraph1' | translate}}</p>
 
-    {{ govukInsetText({
-        html: 'pages.proveIdentityWelcome.section1.insetTextPassport' | translate
-    }) }}
-
-    <h2 class="govuk-heading-m">{{'pages.proveIdentityWelcome.section2.subHeading' | translate}}</h2>
-
-    <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph1' | translate}}</p>
-
     {% if supportLanguageCY %}
         {% set insetTextInnerHtml %}
-        {{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.paragraph1' | translate }}
-        <a href="{{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkHref' | translate }}" class="govuk-link" rel="noreferrer">
-            {{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkText.inPageLanguage' | translate }}
-            <span lang="{{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkText.destinationLanguageCode' | translate }}">{{ 'pages.proveIdentityWelcome.section2.insetAlternativeLanguage.linkText.inDestinationLanguage' | translate }}</span>
-        </a>.
+            {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.paragraph1' | translate }}
+            <a href="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkHref' | translate }}" class="govuk-link" rel="noreferrer">
+                {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inPageLanguage' | translate }}
+                <span lang="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.destinationLanguageCode' | translate }}">{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inDestinationLanguage' | translate }}</span>
+            </a>.
         {% endset %}
 
         {{ govukInsetText({
-        html: insetTextInnerHtml
+            html: insetTextInnerHtml
         }) }}
     {% else %}
         {{ govukInsetText({
-            html: 'pages.proveIdentityWelcome.section2.insetTextEnglishOnly' | translate
+            text: 'pages.proveIdentityWelcome.section1.insetTextEnglishOnly' | translate
         }) }}
     {% endif %}
 

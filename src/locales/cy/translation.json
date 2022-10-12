@@ -1555,7 +1555,7 @@
       "section3": {
         "subHeading": "Dewiswch ffordd i brofi pwy ydych chi",
         "radioOption1": "Parhau i fewngofnodi neu greu cyfrif GOV.UK",
-        "radioOption1HintText": "You'll need your photo ID to prove your identity this way.",
+        "radioOption1HintText": "Byddwch angen eich ID gyda llun i brofi pwy ydych chi yn y ffordd yma",
         "radioOption2": "Profi pwy ydych chi mewn ffordd arall",
         "radioOption2HintText": "Gallwch brofi pwy ydych chi ar-lein gyda GOV.UK Verify neu fynd â'ch dogfennau adnabod i gael eu gwirio yn bersonol.",
         "errorMessage": "Dewiswch opsiwn"
