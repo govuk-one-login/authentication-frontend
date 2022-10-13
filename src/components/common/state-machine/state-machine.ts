@@ -164,12 +164,12 @@ const authStateMachine = createMachine(
         on: {
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
             {
-              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
-              cond: "requiresMFAAuthAppCode",
-            },
-            {
               target: [PATH_NAMES.GET_SECURITY_CODES],
               cond: "isAccountPartCreated",
+            },
+            {
+              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
+              cond: "requiresMFAAuthAppCode",
             },
             { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
             {
@@ -297,12 +297,12 @@ const authStateMachine = createMachine(
         on: {
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
             {
-              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
-              cond: "requiresMFAAuthAppCode",
-            },
-            {
               target: [PATH_NAMES.GET_SECURITY_CODES],
               cond: "isAccountPartCreated",
+            },
+            {
+              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
+              cond: "requiresMFAAuthAppCode",
             },
             { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
             {
@@ -547,7 +547,7 @@ const authStateMachine = createMachine(
         context.isAuthenticated === false,
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
-        context.isMfaMethodVerified === true,
+        context.requiresTwoFactorAuth === true,
     },
   }
 );
