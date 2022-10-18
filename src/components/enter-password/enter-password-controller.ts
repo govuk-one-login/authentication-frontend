@@ -89,7 +89,8 @@ export function enterPasswordPost(
         fromAccountExists
           ? ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE
           : ENTER_PASSWORD_TEMPLATE,
-        error
+        error,
+        { email }
       );
     }
 
