@@ -26,7 +26,7 @@ export function securityCodeCannotRequestCodeGet(
   req: Request,
   res: Response
 ): void {
-  res.render("security-code-error/index-wait.njk", {
+  res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
   });
 }
