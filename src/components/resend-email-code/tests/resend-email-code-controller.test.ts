@@ -7,6 +7,7 @@ import { Request, Response } from "express";
 import {
   resendEmailCodePost,
   resendEmailCodeGet,
+  securityCodeCheckTimeLimit,
 } from "../resend-email-code-controller";
 import { PATH_NAMES } from "../../../app.constants";
 import {
@@ -64,6 +65,54 @@ describe("resend email controller", () => {
       );
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.CHECK_YOUR_EMAIL);
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+    });
+  });
+
+  describe("securityCodeCheckTimeLimit", () => {
+    it("should render security-code-error/index-wait.njk if `sendNotificationResponse.success` is false", async () => {
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: false,
+        }),
+      };
+
+      res.locals.sessionId = "123456-djjad";
+      req.session.user = {
+        email: "test@test.com",
+      };
+      req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
+
+      await securityCodeCheckTimeLimit(fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.been.calledWith(
+        "security-code-error/index-wait.njk"
+      );
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+    });
+
+    it("should redirect to /resend-email-code if `sendNotificationResponse.success` is true", async () => {
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      res.locals.sessionId = "123456-djjad";
+      req.session.user = {
+        email: "test@test.com",
+      };
+      req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
+
+      await securityCodeCheckTimeLimit(fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.been.calledWith("/resend-email-code");
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
     });
   });
