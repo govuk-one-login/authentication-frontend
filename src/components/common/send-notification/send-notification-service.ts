@@ -19,7 +19,8 @@ export function sendNotificationService(
     sourceIp: string,
     persistentSessionId: string,
     userLanguage: string,
-    phoneNumber?: string
+    phoneNumber?: string,
+    requestNewCode?: boolean
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const payload: any = {
       email,
@@ -28,6 +29,10 @@ export function sendNotificationService(
 
     if (phoneNumber) {
       payload.phoneNumber = phoneNumber;
+    }
+
+    if (requestNewCode) {
+      payload.requestNewCode = requestNewCode;
     }
 
     const response = await axios.client.post<DefaultApiResponse>(

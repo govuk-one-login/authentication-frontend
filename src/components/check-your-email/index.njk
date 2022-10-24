@@ -14,7 +14,7 @@
   <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.checkYourEmail.header' | translate}}</h1>
 
   {{ govukInsetText({
-    html: 'pages.checkYourEmail.text' | translate + '<span class="govuk-body govuk-!-font-weight-bold">' + email + '</span>'
+    html: 'pages.checkYourEmail.text' | translate + '<span class="govuk-body govuk-!-font-weight-bold permit-reflow">' + email + '</span>'
   }) }}
 
   <p class="govuk-body">{{'pages.checkYourEmail.info.paragraph1' | translate}}</p>
@@ -34,6 +34,7 @@
     classes: "govuk-input--width-10",
     inputmode: "numeric",
     spellcheck: false,
+    autocomplete: "one-time-code",
     errorMessage: {
         text: errors['code'].text
     } if (errors['code'])})

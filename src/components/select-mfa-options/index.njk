@@ -19,13 +19,13 @@
   <p class="govuk-body">{{'pages.getSecurityCodes.authAppDetails.paragraph2' | translate}}</p>
 {% endset %}
 
-  {% if isAccountPartCreated %}
-    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.getSecurityCodes.headerAccountPartCreated' | translate}}</h1>
-    <p class="govuk-body">{{'pages.getSecurityCodes.summaryAccountPartCreated' | translate}}</p>
-  {% else %}
-    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.getSecurityCodes.header' | translate}}</h1>
-    <p class="govuk-body">{{'pages.getSecurityCodes.summary' | translate}}</p>
-  {% endif %}
+{% if isAccountPartCreated %}
+  {% set radioHeading = 'pages.getSecurityCodes.headerAccountPartCreated' | translate %}
+  {% set radioHintText = 'pages.getSecurityCodes.summaryAccountPartCreated' | translate %}
+{% else %}
+  {% set radioHeading = 'pages.getSecurityCodes.header' | translate %}
+  {% set radioHintText = 'pages.getSecurityCodes.summary' | translate %}
+{% endif %}
 
 <form action="/get-security-codes" method="post" novalidate>
 
@@ -34,6 +34,16 @@
 
 {{ govukRadios({
   name: "mfaOptions",
+  fieldset: {
+    legend: {
+      text: radioHeading,
+      isPageHeading: true,
+      classes: "govuk-fieldset__legend--l"
+    }
+  },
+  hint: {
+    text: radioHintText
+  },
   items: [
     {
       text: 'pages.getSecurityCodes.secondFactorRadios.textMessageText' | translate,

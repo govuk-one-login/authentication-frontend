@@ -9,6 +9,7 @@ export interface SendNotificationServiceInterface {
     sourceIp: string,
     persistentSessionId: string,
     userLanguage: string,
-    phoneNumber?: string
+    phoneNumber?: string,
+    requestNewCode?: boolean
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

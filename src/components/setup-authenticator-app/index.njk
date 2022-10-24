@@ -33,7 +33,7 @@
 
   <p class="govuk-body">
     {{ 'pages.setupAuthenticatorApp.secretKeyLabelText' | translate }}
-    <span id="secret-key" class="govuk-body govuk-!-font-weight-bold">{{secretKey}}</span>
+    <span id="secret-key" class="govuk-body govuk-!-font-weight-bold permit-reflow">{{secretKey}}</span>
   </p>
   <p class="govuk-body">{{'pages.setupAuthenticatorApp.step3' | translate }}</p>
   <p class="govuk-body">{{'pages.setupAuthenticatorApp.step4' | translate }}</p>
@@ -55,7 +55,7 @@
   name: "code",
   inputmode: "numeric",
   spellcheck: false,
-  autocomplete:"off",
+  autocomplete: "one-time-code",
   errorMessage: {
   text: errors['code'].text
   } if (errors['code'])})

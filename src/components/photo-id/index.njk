@@ -1,0 +1,64 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% set showBack = true %}
+{% set hrefBack = 'prove-identity-welcome' %}
+{% set pageTitleName = 'pages.photoId.title' | translate %}
+
+{% block content %}
+
+    {% include "common/errors/errorSummary.njk" %}
+
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.photoId.header' | translate}}</h1>
+
+    <p class="govuk-body">{{'pages.photoId.section1.paragraph1' | translate}}</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>{{'pages.photoId.section1.listItem1' | translate}}</li>
+        <li>{{'pages.photoId.section1.listItem2' | translate}}</li>
+    </ul>
+
+    {{ govukInsetText({
+        html: 'pages.photoId.section1.insetPassportExpiry' | translate
+    }) }}
+
+    <form id="form-tracking" action="/photo-id" method="post" novalidate="novalidate">
+
+        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+        {{ govukRadios({
+            name:"havePhotoId",
+            fieldset: {
+                legend: {
+                    text: 'pages.photoId.section2.subHeading' | translate,
+                    isPageHeading: false,
+                    classes: "govuk-fieldset__legend--m"
+                }
+            },
+            items: [
+                {
+                    value: "true",
+                    text: 'pages.photoId.section2.radioOption1' | translate
+                },
+                {
+                    value: "false",
+                    text: 'pages.photoId.section2.radioOption2' | translate
+                }
+            ],
+            errorMessage: {
+                text: errors['havePhotoId'].text
+            } if (errors['havePhotoId'])
+        }) }}
+
+        {{ govukButton({
+            "text": button_text|default('general.continue.label' | translate, true),
+            "type": "Submit",
+            "preventDoubleClick": true
+        }) }}
+
+    </form>
+{% endblock %}

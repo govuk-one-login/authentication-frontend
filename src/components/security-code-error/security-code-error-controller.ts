@@ -6,6 +6,7 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
   res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
+    isBlocked: req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries,
   });
 }
 
@@ -52,8 +53,9 @@ function getNewCodePath(actionType: SecurityCodeErrorType) {
       return PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER;
     case SecurityCodeErrorType.EmailMaxCodesSent:
     case SecurityCodeErrorType.EmailBlocked:
-    case SecurityCodeErrorType.EmailMaxRetries:
       return PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT;
+    case SecurityCodeErrorType.EmailMaxRetries:
+      return PATH_NAMES.RESEND_EMAIL_CODE + "?requestNewCode=true";
     case SecurityCodeErrorType.AuthAppMfaMaxRetries:
       return PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE;
   }
