@@ -102,7 +102,7 @@ describe("landing controller", () => {
       expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
     });
 
-    it("should redirect to /uplift page when uplift query param set", async () => {
+    it("should redirect to /uplift page when uplift query param set and MfaType is SMS", async () => {
       const fakeLandingService: LandingServiceInterface = {
         start: sinon.fake.returns({
           data: {
@@ -112,7 +112,11 @@ describe("landing controller", () => {
               clientName: "Test client",
               cookieConsentShared: true,
             },
-            user: { upliftRequired: true, authenticated: true },
+            user: {
+              upliftRequired: true,
+              authenticated: true,
+              mfaMethodType: "SMS",
+            },
           },
           success: true,
         }),
@@ -129,6 +133,41 @@ describe("landing controller", () => {
       );
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.UPLIFT_JOURNEY);
+    });
+
+    it("should redirect to /enter-authenticator-app-code page when uplift query param set and MfaMethodType is AUTH_APP", async () => {
+      const fakeLandingService: LandingServiceInterface = {
+        start: sinon.fake.returns({
+          data: {
+            client: {
+              scopes: ["openid", "profile"],
+              serviceType: "MANDATORY",
+              clientName: "Test client",
+              cookieConsentShared: true,
+            },
+            user: {
+              upliftRequired: true,
+              authenticated: true,
+              mfaMethodType: "AUTH_APP",
+            },
+          },
+          success: true,
+        }),
+      };
+
+      const fakeCookieConsentService: CookieConsentServiceInterface = {
+        getCookieConsent: sinon.fake(),
+        createConsentCookieValue: sinon.fake(),
+      };
+
+      await landingGet(fakeLandingService, fakeCookieConsentService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
+      );
     });
 
     it("should redirect to /auth-code when existing session", async () => {

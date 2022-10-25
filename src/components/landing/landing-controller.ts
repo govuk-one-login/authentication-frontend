@@ -95,6 +95,7 @@ export function landingGet(
         isAuthenticated: req.session.user.isAuthenticated,
         prompt: req.session.client.prompt,
         skipAuthentication: req.session.user.docCheckingAppUser,
+        mfaMethodType: startAuthResponse.data.user.mfaMethodType,
       },
       sessionId
     );

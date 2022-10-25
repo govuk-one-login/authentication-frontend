@@ -22,6 +22,7 @@ export interface UserSessionInfo {
   cookieConsent?: string;
   gaCrossDomainTrackingId?: string;
   docCheckingAppUser: boolean;
+  mfaMethodType?: string;
 }
 
 export interface LandingServiceInterface {
