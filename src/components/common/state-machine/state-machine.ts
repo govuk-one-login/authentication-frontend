@@ -76,6 +76,10 @@ const authStateMachine = createMachine(
               cond: "isIdentityRequired",
             },
             { target: [PATH_NAMES.ENTER_PASSWORD], cond: "requiresLogin" },
+            {
+              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
+              cond: "requiresAuthAppUplift",
+            },
             { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
             {
               target: [PATH_NAMES.SHARE_INFO],
@@ -110,6 +114,10 @@ const authStateMachine = createMachine(
             {
               target: [PATH_NAMES.ENTER_PASSWORD],
               cond: "requiresLogin",
+            },
+            {
+              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
+              cond: "requiresAuthAppUplift",
             },
             { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
             { target: [PATH_NAMES.PROVE_IDENTITY] },
@@ -534,6 +542,10 @@ const authStateMachine = createMachine(
         context.isLatestTermsAndConditionsAccepted === false,
       requiresUplift: (context) =>
         context.requiresUplift === true && context.isAuthenticated === true,
+      requiresAuthAppUplift: (context) =>
+        context.requiresUplift === true &&
+        context.isAuthenticated === true &&
+        context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP,
       requiresTwoFactorAuth: (context) =>
         context.requiresTwoFactorAuth === true,
       isAccountPartCreated: (context) => context.isMfaMethodVerified === false,
