@@ -21,6 +21,8 @@
             {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inPageLanguage' | translate }}
             <span lang="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.destinationLanguageCode' | translate }}">{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inDestinationLanguage' | translate }}</span>
         </a>.
+        {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguageAppWarning' | translate | safe }}
+
         {% endset %}
 
         {{ govukInsetText({
@@ -43,7 +45,7 @@
     <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph2' | translate}}</p>
 
     <ul class="govuk-list govuk-list--bullet">
-        <li>{{'pages.proveIdentityWelcome.section2.listItem2_1' | translate}}</li>
+        <li>{{'pages.proveIdentityWelcome.section2.listItem2_1' | translate | safe }}</li>
         <li>{{'pages.proveIdentityWelcome.section2.listItem2_2' | translate}}</li>
     </ul>
 
