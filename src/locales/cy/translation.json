@@ -1541,7 +1541,7 @@
           "linkHref": "?lng=en"
         },
         "insetTextEnglishOnly": "Ar hyn o bryd dim ond yn Saesneg mae'r gwasanaeth hwn ar gael.",
-        "insetAlternativeLanguageAppWarning": "Mae’r ap GOV.UK ID Check ond ar gael yn Saesneg yn unig ar hyn o bryd."
+        "insetAlternativeLanguageAppWarning": "Mae’r ap <span lang=\"en\">GOV.UK ID Check</span> ond ar gael yn Saesneg yn unig ar hyn o bryd."
       },
       "section2": {
         "paragraph1": "Byddwch angen:",
@@ -1549,7 +1549,7 @@
         "listItem1_2": "eich cyfeiriad presennol (efallai y byddwch angen eich cyfeiriad blaenorol hefyd os ydych wedi symud yn ddiweddar)",
         "listItem1_3": "eich ID gyda llun",
         "paragraph2": "Fe allwch wedyn naill ai:",
-        "listItem2_1": "llwytho llun o’ch ID gyda llun gan ddefnyddio’r ap GOV.UK ID Check (dim ond yn Saesneg y mae’r ap ar gael ar hyn o bryd)",
+        "listItem2_1": "llwytho llun o’ch ID gyda llun gan ddefnyddio’r ap <span lang=\"en\">GOV.UK ID Check</span> (dim ond yn Saesneg y mae’r ap ar gael ar hyn o bryd)",
         "listItem2_2": "rhoi y manylion o'ch ID gyda llun ac ateb rai cwestiynau diogelwch mai dim ond chi ddylai wybod yr atebion iddynt",
         "paragraph3": "We'll only use the information you give us to make sure that you are who you say you are."
       },
