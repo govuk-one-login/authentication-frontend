@@ -4,27 +4,32 @@ const express = require("express");
 const axios = require("axios").default;
 const url = require("url");
 const querystring = require("querystring");
+const { randomBytes } = require("crypto");
 const app = express();
-const port = 2000;
+const port = process.env.PORT;
 
-const AUTHORIZE_REQUEST =
-  process.env.API_BASE_URL +
-  "/authorize?" +
-  "scope=openid+phone+email&" +
-  "response_type=code&" +
-  "redirect_uri=https%3A%2F%2F" + process.env.STUB_HOSTNAME + "%2Foidc%2Fauthorization-code%2Fcallback&" +
-  "state=sEazICy8jKFFlt-NLSw5yqYRA2r4q5BZGcAf9sYeWRg&" +
-  "nonce=gyRdMfQGsQS9BvhU-lBwENOZ0UU&" +
-  "client_id=" + process.env.TEST_CLIENT_ID +
-  "&cookie_consent=accept" +
-  "&_ga=test" +
-  getUILocales(); 
+function createAuthorizeRequest() {
+  const vtr = process.env.VTR ? "vtr=" + encodeURI(process.env.VTR) : "";
 
-console.log(AUTHORIZE_REQUEST);
+  return process.env.API_BASE_URL +
+    "/authorize?" +
+    vtr +
+    "&scope=openid+phone+email" +
+    "&response_type=code" +
+    "&redirect_uri=https%3A%2F%2F" + process.env.STUB_HOSTNAME + "%2Foidc%2Fauthorization-code%2Fcallback" +
+    "&state=" + randomBytes(32).toString("base64url") +
+    "&nonce=" + randomBytes(32).toString("base64url") +
+    "&client_id=" + process.env.TEST_CLIENT_ID +
+    "&cookie_consent=accept" +
+    "&_ga=test" +
+    getUILocales();
+}
 
 app.get("/", (req, res) => {
+  const authRequest = createAuthorizeRequest();
+  console.log(authRequest);
   axios
-    .get(AUTHORIZE_REQUEST, {
+    .get(authRequest, {
       validateStatus: (status) => {
         return status >= 200 && status <= 304;
       },
@@ -69,7 +74,7 @@ app.listen(port, () => {
 });
 
 function getCookieValue(cookie, cookieName) {
-  var value;
+  let value;
   cookie.forEach((item) => {
     const name = item.split("=")[0].toLowerCase().trim();
     if (name.indexOf(cookieName) !== -1) {

@@ -41,28 +41,42 @@ When starting for the first time, or after a clean, the frontend will take a few
 
 To find out if the application has started, open a console window on the frontend docker container and view the logs. If the server has started successfully you will see this message `Server listening on port 3000`.  If this does not appear try forcing node to restart by updating one of the `.njk` files.
 
-Navigate to the stub app [http://localhost:2000](http://localhost:2000).  This acts like a local client to create a backend session and redirect to the start page.
+There are two stub apps you can use to start a journey. 
+
+To start an auth only journey with MFA required ("Cm"), navigate to the stub app on port 2000 [http://localhost:2000](http://localhost:2000).  This acts like a local client to create a backend session and redirect to the start page.
+
+To start an auth only journey with no MFA ("Cl"), navigate to the stub app on port 5000 [http://localhost:5000](http://localhost:5000).
 
 Changes made locally will automatically be deployed after a few seconds. You should check the docker console to check that your changes have been picked up by the restart.
 
-### Switching between different Scopes and Levels of Confidence
+### Switching between different Vectors of Trust
 
-In the deployed stubs, you are given the option in a UI to select things like scopes and desired level of confidence. When running locally, it does not work the same way as you never see a stub UI. These equivalent parameters are defined in `dev-app.js`. In order to change them, you need to tweak the `AUTHORIZE_REQUEST` constant. One easy way to see a valid 'shape' for your desired set of options is to use a deployed stub (e.g. the Build environment stub), inspect the network calls, and have a look at the request payload directed to the `/authorize` endpoint. You can copy any relevant parts across into `dev-app.js`. For example, to increase Levels of Confidence from P0 to P2, you would need to add this line. Note that this must be URL encoded so `[` becomes `%5B` for example:
+You can further tweak the vector of trust (VTR) requested by the stub client on port 5000 by editing `docker-compose.yml`
+and changing the `VTR` environment variable for the `di-auth-stub-no-mfa` service:
 
 ```
-const AUTHORIZE_REQUEST =
-  process.env.API_BASE_URL +
-  "/authorize?" +
-  "vtr=%5B%22P2.Cl.Cm%22%5D&" + <= THIS LINE
-  "scope=openid+phone+email&" +
-  "response_type=code&" +
-  "redirect_uri=https%3A%2F%2F" + process.env.STUB_HOSTNAME + "%2Foidc%2Fauthorization-code%2Fcallback&" +
-  "state=sEazICy8jKFFlt-NLSw5yqYRA2r4q5BZGcAf9sYeWRg&" +
-  "nonce=gyRdMfQGsQS9BvhU-lBwENOZ0UU&" +
-  "client_id=" + process.env.TEST_CLIENT_ID +
-  "&cookie_consent=accept" +
-  "&_ga=test";
+  di-auth-stub-no-mfa:
+    build:
+      context: .
+      dockerfile: Dockerfile-stub
+    links:
+      - di-auth-frontend
+    ports:
+      - "5000:5000"
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT}
+      - API_BASE_URL=${API_BASE_URL}
+      - FRONTEND_API_BASE_URL=${FRONTEND_API_BASE_URL}
+      - TEST_CLIENT_ID=${TEST_CLIENT_ID}
+      - STUB_HOSTNAME=${STUB_HOSTNAME}
+      - UI_LOCALES=${UI_LOCALES}
+      - VTR=["Cl"] <== Edit this line 
+      - PORT=5000
 ```
+
+You can also add an additional service with a different VTR by duplicating the `di-auth-stub-no-mfa` service,
+giving it a new name and amending the `PORT` and `VTR` environment variables. The `ports` entry, must reflect the port
+number in the `PORT` environment variable. Each service must have a unique port number.
 
 ### Running the tests
 
