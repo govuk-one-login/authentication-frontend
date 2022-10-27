@@ -56,7 +56,7 @@
     "semi": true
   },
   "dependencies": {
-    "aws-sdk": "^2.1066.0",
+    "aws-sdk": "^2.1230.0",
     "axios": "^0.25.0",
     "connect-redis": "^6.0.0",
     "cookie-parser": "^1.4.5",
