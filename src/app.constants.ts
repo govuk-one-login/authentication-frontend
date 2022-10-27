@@ -52,6 +52,7 @@ export const PATH_NAMES = {
   ERROR_PAGE: "/error",
   PHOTO_ID: "/photo-id",
   NO_PHOTO_ID: "/no-photo-id",
+  SECURITY_CODE_ENTERED_EXCEEDED: "/security-code-entered-exceeded",
 };
 
 export const HTTP_STATUS_CODES = {

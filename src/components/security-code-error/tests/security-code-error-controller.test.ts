@@ -8,6 +8,7 @@ import {
   securityCodeCannotRequestCodeGet,
   securityCodeInvalidGet,
   securityCodeTriesExceededGet,
+  securityCodeEnteredExceededGet,
 } from "../security-code-error-controller";
 import { SecurityCodeErrorType } from "../../common/constants";
 import {
@@ -60,6 +61,18 @@ describe("security code  controller", () => {
 
       expect(res.render).to.have.calledWith(
         "security-code-error/index-wait.njk"
+      );
+    });
+  });
+
+  describe("securityCodeEnteredExceededGet", () => {
+    it("should render security code invalid request view", () => {
+      req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
+
+      securityCodeEnteredExceededGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-security-code-entered-exceeded.njk"
       );
     });
   });

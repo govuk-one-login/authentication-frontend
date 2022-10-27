@@ -1651,6 +1651,16 @@
         "subHeading" : "What you can do",
         "paragraph1" : "If your passport has expired, you can still use it to prove your identity up until 18 months after the expiry date."
       }
+    },
+    "securityCodeEnteredExceeded": {
+      "title": "You cannot get a new security code at the moment ",
+      "header": "You cannot get a new security code at the moment ",
+      "info": {
+        "paragraph1": "This is because you entered the security code too many times.",
+        "paragraph2Start": "You can ",
+        "link": "get a new code",
+        "paragraph2End": " after 15 minutes."
+      }
     }
   }
 }

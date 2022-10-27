@@ -6,6 +6,7 @@ import {
   securityCodeCannotRequestCodeGet,
   securityCodeInvalidGet,
   securityCodeTriesExceededGet,
+  securityCodeEnteredExceededGet,
 } from "./security-code-error-controller";
 
 const router = express.Router();
@@ -26,6 +27,12 @@ router.get(
   PATH_NAMES.SECURITY_CODE_WAIT,
   validateSessionMiddleware,
   securityCodeCannotRequestCodeGet
+);
+
+router.get(
+  PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
+  validateSessionMiddleware,
+  securityCodeEnteredExceededGet
 );
 
 export { router as securityCodeErrorRouter };

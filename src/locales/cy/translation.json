@@ -1651,6 +1651,16 @@
         "subHeading" : "Beth allwch chi ei wneud",
         "paragraph1" : "Parhau i'r gwasanaeth roeddech yn ceisio ei ddefnyddio a chwilio am ffyrdd eraill i brofi pwy ydych chi."
       }
+    },
+    "securityCodeEnteredExceeded": {
+      "title": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
+      "header": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
+      "info": {
+        "paragraph1": "Mae hyn oherwydd eich bod wedi rhoi'r cod diogelwch ormod o weithiau.",
+        "paragraph2Start": "Gallwch ",
+        "link": "gael cod newydd",
+        "paragraph2End": " ar ôl 15 munud."
+      }
     }
   }
 }
