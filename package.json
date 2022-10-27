@@ -72,7 +72,7 @@
     "i18next-fs-backend": "^1.1.1",
     "i18next-http-middleware": "^3.2.0",
     "jsdom": "^19.0.0",
-    "libphonenumber-js": "^1.9.44",
+    "libphonenumber-js": "^1.10.13",
     "nunjucks": "^3.2.3",
     "@otplib/core": "^12.0.1",
     "@otplib/plugin-base32-enc-dec": "^12.0.1",
