@@ -1,4 +1,7 @@
-import { isValidPhoneNumber } from "libphonenumber-js/mobile";
+import {
+  isValidPhoneNumber,
+  parsePhoneNumberWithError,
+} from "libphonenumber-js/mobile";
 
 const ALLOWED_TEST_NUMBERS = [
   "07700900000",
@@ -10,10 +13,15 @@ const ALLOWED_TEST_NUMBERS = [
 ];
 
 export function containsUKMobileNumber(value: string): boolean {
-  return (
-    ALLOWED_TEST_NUMBERS.includes(value) ||
-    (isValidPhoneNumber(value, "GB") && /^([+?44]{2}|[07]{2}).*$/.test(value))
-  );
+  try {
+    return (
+      ALLOWED_TEST_NUMBERS.includes(value) ||
+      (isValidPhoneNumber(value, "GB") &&
+        parsePhoneNumberWithError(value, "GB").countryCallingCode === "44")
+    );
+  } catch {
+    return false;
+  }
 }
 
 export function containsInternationalMobileNumber(value: string): boolean {

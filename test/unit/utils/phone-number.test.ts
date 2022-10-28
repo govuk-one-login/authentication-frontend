@@ -25,6 +25,10 @@ describe("phone-number", () => {
       expect(containsUKMobileNumber("07911 123456")).to.equal(true);
     });
 
+    it("should return true when Isle of Man phone number entered", () => {
+      expect(containsUKMobileNumber("+44 7624 311111")).to.equal(true);
+    });
+
     it("should return false when invalid UK mobile phone number entered", () => {
       expect(containsUKMobileNumber("06911123456")).to.equal(false);
     });
@@ -71,6 +75,10 @@ describe("phone-number", () => {
 
     it("should return false when starting with +33 without 0", () => {
       expect(containsUKMobileNumber("+33645453322")).to.equal(false);
+    });
+
+    it("should return false when starting with 0033", () => {
+      expect(containsUKMobileNumber("0033 645453322")).to.equal(false);
     });
 
     it("should return false when only a single 4 is present", () => {
