@@ -70,6 +70,38 @@ resource "aws_cloudwatch_log_subscription_filter" "ecs_frontend_task_log_subscri
   }
 }
 
+resource "aws_cloudwatch_log_metric_filter" "get_requests_filter" {
+  name           = "${var.environment}-all-get-requests-with-language-dimension"
+  pattern        = "{$.req.method = \"GET\" && $.req.url != \"/healthcheck/\"}"
+  log_group_name = aws_cloudwatch_log_group.ecs_frontend_task_log.name
+
+  metric_transformation {
+    name      = "${var.environment}-all-get-requests-with-language-dimension"
+    namespace = "Authentication"
+    dimensions = {
+      language = "$.res.languageFromCookie",
+      urlPath  = "$.req.url"
+    }
+    value = "1"
+  }
+}
+
+resource "aws_cloudwatch_log_metric_filter" "language_change_events_filter" {
+  name           = "${var.environment}-language-change-events"
+  pattern        = "{$.req.method = \"GET\" && $.req.url = \"*lng*\" && $.req.url != \"/healthcheck/\"}"
+  log_group_name = aws_cloudwatch_log_group.ecs_frontend_task_log.name
+
+  metric_transformation {
+    name      = "${var.environment}-language-change-events"
+    namespace = "Authentication"
+    dimensions = {
+      language = "$.res.languageFromCookie",
+      urlPath  = "$.req.url"
+    }
+    value = "1"
+  }
+}
+
 resource "aws_cloudwatch_log_group" "alb_waf_log" {
   // Frustratingly, the log group name has to begin with "aws-waf-logs-" so we can't follow our normal convention here
   name              = "aws-waf-logs-frontend-alb-${var.environment}"
