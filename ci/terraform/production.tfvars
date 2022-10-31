@@ -10,6 +10,5 @@ frontend_auto_scaling_max_count = 12
 ecs_desired_count               = 4
 
 logging_endpoint_arns = [
-  "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prod",
   "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
 ]
