@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { NOTIFICATION_TYPE } from "../../app.constants";
+import { NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants";
 import {
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
@@ -49,6 +49,43 @@ export function resendEmailCodePost(
         sendNotificationResponse.data.message,
         sendNotificationResponse.data.code
       );
+    }
+
+    return res.redirect(
+      getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
+        null,
+        sessionId
+      )
+    );
+  };
+}
+
+export function securityCodeCheckTimeLimit(
+  notificationService: SendNotificationServiceInterface = sendNotificationService()
+): ExpressRouteFunc {
+  return async function (req: Request, res: Response) {
+    const email = req.session.user.email.toLowerCase();
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+
+    const sendNotificationResponse = await notificationService.sendNotification(
+      sessionId,
+      clientSessionId,
+      email,
+      NOTIFICATION_TYPE.VERIFY_EMAIL,
+      req.ip,
+      persistentSessionId,
+      xss(req.cookies.lng as string),
+      undefined,
+      xss(req.body.requestNewCode as string) === "true"
+    );
+
+    if (!sendNotificationResponse.success) {
+      return res.render("security-code-error/index-wait.njk", {
+        newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
+      });
     }
 
     return res.redirect(

@@ -60,7 +60,7 @@ describe("security code  controller", () => {
       securityCodeCannotRequestCodeGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
-        "security-code-error/index-wait.njk"
+        "security-code-error/index-too-many-requests.njk"
       );
     });
   });

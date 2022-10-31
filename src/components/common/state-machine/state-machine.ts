@@ -533,6 +533,11 @@ const authStateMachine = createMachine(
           optionalPaths: [PATH_NAMES.PHOTO_ID],
         },
       },
+      [PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT]: {
+        on: {
+          [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.RESEND_EMAIL_CODE],
+        },
+      },
     },
   },
   {
