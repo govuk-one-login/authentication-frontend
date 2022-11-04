@@ -1661,6 +1661,19 @@
         "link": "gael cod newydd",
         "paragraph2End": " ar ôl 15 munud."
       }
+    },
+    "signInRetryBlocked": {
+      "title": "Mae eich cyfrif wedi'i gloi",
+      "header": "Mae eich cyfrif wedi'i gloi",
+      "paragraph": "Mae hyn oherwydd eich bod wedi rhoi'r cyfrinair anghywir i mewn fwy na 5 gwaith y tro diwethaf i chi geisio mewngofnodi. Mae hyn er mwyn cadw eich cyfrif yn ddiogel.",
+      "info": {
+        "paragraph1Start": "Gallwch ",
+        "firstLink": "geisio mewngofnodi eto",
+        "paragraph1End": " ar ôl i 15 munud fynd heibio.",
+        "paragraph2Start": "Gallwch hefyd ",
+        "secondLink": "ailosod eich cyfrinair",
+        "paragraph2End": "."
+      }
     }
   }
 }

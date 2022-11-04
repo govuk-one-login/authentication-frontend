@@ -1,0 +1,30 @@
+@@ -0,0 +1,26 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set pageTitleName = 'pages.signInRetryBlocked.title' | translate %}
+
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.signInRetryBlocked.header' | translate}}</h1>
+
+<p class="govuk-body">{{'pages.signInRetryBlocked.paragraph' | translate}}</p>
+
+<p class="govuk-body">
+    {{'pages.signInRetryBlocked.info.paragraph1Start' | translate}}
+    <a class="govuk-link" rel="noreferrer" href={{ newLink }}>{{'pages.signInRetryBlocked.info.firstLink' | translate}}</a>
+    {{'pages.signInRetryBlocked.info.paragraph1End' | translate}}
+</p>
+
+<p class="govuk-body">
+    {{'pages.signInRetryBlocked.info.paragraph2Start' | translate}}
+    <a class="govuk-link" rel="noreferrer" href="/reset-password">{{'pages.signInRetryBlocked.info.secondLink' | translate}}</a>
+    {{'pages.signInRetryBlocked.info.paragraph2End' | translate}}
+</p>
+
+{% endblock %}
