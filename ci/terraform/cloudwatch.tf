@@ -79,8 +79,7 @@ resource "aws_cloudwatch_log_metric_filter" "get_requests_filter" {
     name      = "${var.environment}-all-get-requests-with-language-dimension"
     namespace = "Authentication"
     dimensions = {
-      language = "$.res.languageFromCookie",
-      urlPath  = "$.req.url"
+      language = "$.res.languageFromCookie"
     }
     value = "1"
   }
