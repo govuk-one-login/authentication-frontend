@@ -87,7 +87,7 @@ resource "aws_cloudwatch_log_metric_filter" "get_requests_filter" {
 
 resource "aws_cloudwatch_log_metric_filter" "language_change_events_filter" {
   name           = "${var.environment}-language-change-events"
-  pattern        = "{$.req.method = \"GET\" && $.req.url = \"*lng*\" && $.req.url != \"/healthcheck/\"}"
+  pattern        = "{$.req.method = \"GET\" && $.req.url = \"*lng=\" && $.req.url != \"/healthcheck/\"}"
   log_group_name = aws_cloudwatch_log_group.ecs_frontend_task_log.name
 
   metric_transformation {
