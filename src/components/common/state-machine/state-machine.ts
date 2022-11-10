@@ -330,6 +330,7 @@ const authStateMachine = createMachine(
             PATH_NAMES.ACCOUNT_LOCKED,
             PATH_NAMES.SIGN_IN_OR_CREATE,
             PATH_NAMES.RESET_PASSWORD_REQUEST,
+            PATH_NAMES.SIGN_IN_RETRY_BLOCKED,
           ],
         },
       },

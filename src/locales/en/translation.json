@@ -1661,6 +1661,19 @@
         "link": "get a new code",
         "paragraph2End": " after 15 minutes."
       }
+    },
+    "signInRetryBlocked": {
+      "title": "Your account is locked",
+      "header": "Your account is locked",
+      "paragraph": "This is because you entered the wrong password more than 5 times the last time you tried to sign in. This is to keep your account secure.",
+      "info": {
+        "paragraph1Start": "You can ",
+        "firstLink": "try to sign in again",
+        "paragraph1End": " after 15 minutes have passed.",
+        "paragraph2Start": "You can also ",
+        "secondLink": "reset your password",
+        "paragraph2End": "."
+      }
     }
   }
 }

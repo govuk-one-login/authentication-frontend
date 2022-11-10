@@ -17,6 +17,8 @@ import { BadRequestError } from "../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { MFA_METHOD_TYPE } from "../../app.constants";
 import xss from "xss";
+import { EnterEmailServiceInterface } from "../enter-email/types";
+import { enterEmailService } from "../enter-email/enter-email-service";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -31,11 +33,41 @@ export function enterPasswordGet(req: Request, res: Response): void {
   res.render(ENTER_PASSWORD_TEMPLATE);
 }
 
+export function enterSignInRetryBlockedGet(
+  service: EnterEmailServiceInterface = enterEmailService()
+): ExpressRouteFunc {
+  return async function (req: Request, res: Response) {
+    const email = req.session.user.email.toLowerCase();
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+
+    const checkUserIsBlockedResponse = await service.userExists(
+      sessionId,
+      email,
+      req.ip,
+      clientSessionId,
+      persistentSessionId
+    );
+
+    if (
+      !checkUserIsBlockedResponse.success &&
+      checkUserIsBlockedResponse.data.code === ERROR_CODES.ACCOUNT_LOCKED
+    ) {
+      return res.render("enter-password/index-sign-in-retry-blocked.njk", {
+        newLink: "/sign-in-retry-blocked",
+      });
+    }
+
+    return res.render(ENTER_PASSWORD_TEMPLATE);
+  };
+}
+
 export function enterPasswordAccountLockedGet(
   req: Request,
   res: Response
 ): void {
-  res.render("enter-password/index-account-locked.njk");
+  res.render("enter-password/index-account-locked.njk", {
+    newLink: "/sign-in-retry-blocked",
+  });
 }
 
 export function enterPasswordAccountExistsGet(

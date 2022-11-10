@@ -35,6 +35,7 @@ export const PATH_NAMES = {
   RESEND_EMAIL_CODE: "/resend-email-code",
   SIGNED_OUT: "/signed-out",
   ACCOUNT_LOCKED: "/account-locked",
+  SIGN_IN_RETRY_BLOCKED: "/sign-in-retry-blocked",
   UPLIFT_JOURNEY: "/uplift",
   CONTACT_US: "/contact-us",
   CONTACT_US_SUBMIT_SUCCESS: "/contact-us-submit-success",

@@ -6,6 +6,7 @@ import { Request, Response } from "express";
 import {
   enterPasswordGet,
   enterPasswordPost,
+  enterSignInRetryBlockedGet,
 } from "../enter-password-controller";
 
 import { PATH_NAMES } from "../../../app.constants";
@@ -17,6 +18,8 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
+import { EnterEmailServiceInterface } from "../../enter-email/types";
+import { ERROR_CODES } from "../../common/constants";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
@@ -199,6 +202,62 @@ describe("enter password controller", () => {
         )(req as Request, res as Response)
       ).to.be.rejectedWith(Error, "Internal server error");
       expect(fakeService.loginUser).to.have.been.calledOnce;
+    });
+  });
+
+  describe("enterSignInRetryBlockedGet", () => {
+    const SESSION_ID = "123456-djjad";
+    const CLIENT_SESSION_ID = "00000-djjad";
+    const PERSISTENT_SESSION_ID = "dips-123456-abc";
+    const EMAIL = "joe.bloggs@test.com";
+
+    it("should render /enter-password view when account is unblocked", async () => {
+      const fakeService: EnterEmailServiceInterface = {
+        userExists: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      res.locals.sessionId = SESSION_ID;
+      res.locals.clientSessionId = CLIENT_SESSION_ID;
+      res.locals.persistentSessionId = PERSISTENT_SESSION_ID;
+      req.session.user = {
+        email: EMAIL,
+      };
+
+      await enterSignInRetryBlockedGet(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith("enter-password/index.njk");
+    });
+
+    it("should render /sign-in-retry-blocked page when account is locked", async () => {
+      const fakeService: EnterEmailServiceInterface = {
+        userExists: sinon.fake.returns({
+          success: false,
+          data: {
+            code: ERROR_CODES.ACCOUNT_LOCKED,
+          },
+        }),
+      };
+
+      res.locals.sessionId = SESSION_ID;
+      res.locals.clientSessionId = CLIENT_SESSION_ID;
+      res.locals.persistentSessionId = PERSISTENT_SESSION_ID;
+      req.session.user = {
+        email: EMAIL,
+      };
+
+      await enterSignInRetryBlockedGet(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        "enter-password/index-sign-in-retry-blocked.njk"
+      );
     });
   });
 });

@@ -6,6 +6,7 @@ import {
   enterPasswordAccountLockedGet,
   enterPasswordGet,
   enterPasswordPost,
+  enterSignInRetryBlockedGet,
 } from "./enter-password-controller";
 import {
   validateEnterPasswordAccountExistsRequest,
@@ -36,6 +37,11 @@ router.get(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   enterPasswordAccountLockedGet
+);
+
+router.get(
+  PATH_NAMES.SIGN_IN_RETRY_BLOCKED,
+  asyncHandler(enterSignInRetryBlockedGet())
 );
 
 router.post(
