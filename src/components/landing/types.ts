@@ -12,6 +12,7 @@ export interface ClientInfo {
   cookieConsentShared: boolean;
   redirectUri: string;
   state: string;
+  isOneLoginService?: boolean;
 }
 
 export interface UserSessionInfo {

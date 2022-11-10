@@ -112,3 +112,7 @@ export function getAnalyticsCookieDomain(): string {
 export function getServiceDomain(): string {
   return process.env.SERVICE_DOMAIN;
 }
+
+export function getServiceSignInLink(): string {
+  return process.env.SERVICE_SIGN_IN_LINK || "https://www.gov.uk/sign-in";
+}

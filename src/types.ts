@@ -58,4 +58,5 @@ export interface UserSessionClient {
   prompt?: string;
   redirectUri?: string;
   state?: string;
+  isOneLoginService?: boolean;
 }
