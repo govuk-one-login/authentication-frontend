@@ -195,6 +195,16 @@
         "bulletPoint2": "a working UK phone number with signal, so we can send you a security code"
       }
     },
+    "accountNotFoundOneLogin": {
+      "title": "No GOV.UK account found",
+      "header": "No GOV.UK account found",
+      "paragraph1": "There is no GOV.UK account for ",
+      "insetText1": "GOV.UK accounts are new. At the moment, they are separate from other government accounts.",
+      "paragraph2": "If you’re trying to access your account for a government service, such as Universal Credit or your personal tax account, sign in to your account for that service.",
+      "signInToServiceButtonText": "Sign in to a service",
+      "tryAnotherLinkText": "Try another email address",
+      "tryAnotherLinkHref": "/enter-email-existing-account"
+    },
     "accountNotFoundMandatory": {
       "title": "No GOV.UK account found",
       "header": "No GOV.UK account found",

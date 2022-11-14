@@ -51,13 +51,28 @@ describe("account not found controller", () => {
       );
     });
 
-    it("should redirect to /check-your-email when no account exists", async () => {
-      const fakeService: SendNotificationServiceInterface = {
+    it("should render the account not found optional view when the service is part of One Login", () => {
+      req.session.client.isOneLoginService = true;
+      accountNotFoundGet(req, res);
+
+      expect(res.render).to.have.calledWith(
+        "account-not-found/index-one-login.njk"
+      );
+    });
+  });
+
+  describe("accountNotFoundPost", () => {
+    let fakeService: SendNotificationServiceInterface;
+
+    beforeEach(() => {
+      fakeService = {
         sendNotification: sinon.fake.returns({
           success: true,
         }),
       };
+    });
 
+    it("should redirect to /check-your-email when no account exists", async () => {
       req.body.email = "test.test.com";
       res.locals.sessionId = "sadl990asdald";
 
@@ -65,6 +80,22 @@ describe("account not found controller", () => {
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_EMAIL);
       expect(fakeService.sendNotification).to.have.been.calledOnce;
+    });
+
+    it("should redirect to GOV.UK service sign-in page when One Login service", async () => {
+      const fakeService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: true,
+        }),
+      };
+      req.body.optionSelected = "sign-in-to-a-service";
+
+      await accountNotFoundPost(fakeService)(req, res);
+
+      expect(res.redirect).to.have.been.calledWith(
+        "https://www.gov.uk/sign-in"
+      );
+      expect(fakeService.sendNotification).to.have.not.been.called;
     });
   });
 });

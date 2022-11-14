@@ -10,9 +10,14 @@ import {
 } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import xss from "xss";
+import { getServiceSignInLink } from "../../config";
 
 export function accountNotFoundGet(req: Request, res: Response): void {
-  if (req.session.client.serviceType === SERVICE_TYPE.OPTIONAL) {
+  if (req.session.client.isOneLoginService) {
+    res.render("account-not-found/index-one-login.njk", {
+      email: req.session.user.email,
+    });
+  } else if (req.session.client.serviceType === SERVICE_TYPE.OPTIONAL) {
     res.render("account-not-found/index-optional.njk");
   } else {
     res.render("account-not-found/index-mandatory.njk", {
@@ -25,6 +30,10 @@ export function accountNotFoundPost(
   service: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
+    if (req.body.optionSelected === "sign-in-to-a-service") {
+      return res.redirect(getServiceSignInLink());
+    }
+
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const result = await service.sendNotification(

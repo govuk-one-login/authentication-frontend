@@ -70,6 +70,8 @@ export function landingGet(
     req.session.client.prompt = loginPrompt;
     req.session.client.redirectUri = startAuthResponse.data.client.redirectUri;
     req.session.client.state = startAuthResponse.data.client.state;
+    req.session.client.isOneLoginService =
+      startAuthResponse.data.client.isOneLoginService;
 
     req.session.user.isIdentityRequired =
       startAuthResponse.data.user.identityRequired;
