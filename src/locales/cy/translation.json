@@ -111,6 +111,18 @@
         "govUKHomepageButtonHref": "https://www.gov.uk/",
         "govUKHomepageButtonText": "Ewch i hafan GOV.UK"
       }
+    },
+    "sessionRequiredMidJourneyError": {
+      "title": "Sorry, you cannot access your account from this page",
+      "header": "Sorry, you cannot access your account from this page",
+      "content": {
+        "paragraph1": {
+          "text1": "Go to your GOV.UK account",
+          "text2": ", or find the service you need from the ",
+          "text3": "GOV.UK homepage"
+        },
+        "govUKHomepageButtonHref": "https://www.gov.uk/"
+      }
     }
   },
   "pages": {
