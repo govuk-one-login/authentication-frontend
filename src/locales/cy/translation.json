@@ -208,13 +208,13 @@
       }
     },
     "accountNotFoundOneLogin": {
-      "title": "No GOV.UK account found",
-      "header": "No GOV.UK account found",
-      "paragraph1": "There is no GOV.UK account for ",
-      "insetText1": "GOV.UK accounts are new. At the moment, they are separate from other government accounts.",
-      "paragraph2": "If you’re trying to access your account for a government service, such as Universal Credit or your personal tax account, sign in to your account for that service.",
-      "signInToServiceButtonText": "Sign in to a service",
-      "tryAnotherLinkText": "Try another email address",
+      "title": "Ni ddarganfyddwyd cyfrif GOV.UK",
+      "header": "Ni ddarganfyddwyd cyfrif GOV.UK",
+      "paragraph1": "Nid oes cyfrif GOV.UK ar gyfer ",
+      "insetText1": "Mae cyfrifon GOV.UK yn newydd. Ar hyn o bryd, maent ar wahân i gyfrifon eraill y llywodraeth.",
+      "paragraph2": "Os ydych chi'n ceisio cael mynediad i'ch cyfrif ar gyfer gwasanaeth y llywodraeth, fel Credyd Cynhwysol neu'ch cyfrif treth personol, mewngofnodwch i'ch cyfrif ar gyfer y gwasanaeth hwnnw.",
+      "signInToServiceButtonText": "Mewngofnodi i wasanaeth",
+      "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
       "tryAnotherLinkHref": "/enter-email-existing-account"
     },
     "accountNotFoundMandatory": {
