@@ -173,8 +173,8 @@ export const EXTERNAL_LINKS = {
 };
 
 export const OIDC_PROMPT = {
-  LOGIN: "LOGIN",
-  NONE: "NONE",
+  LOGIN: "login",
+  NONE: "none",
 };
 
 export const OIDC_ERRORS = {
