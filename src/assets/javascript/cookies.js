@@ -91,6 +91,20 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     loadGtmScript();
     initGtm();
     initLinkerHandlers();
+    pushLanguageToDataLayer();
+  }
+
+  function pushLanguageToDataLayer() {
+    var language = document.querySelector('html') &&
+        document.querySelector('html').getAttribute('lang');
+
+    if (language) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "langEvent",
+        language: language
+      });
+    }
   }
 
   function loadGtmScript() {
