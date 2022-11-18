@@ -113,13 +113,13 @@
       }
     },
     "sessionRequiredMidJourneyError": {
-      "title": "Sorry, you cannot access your account from this page",
-      "header": "Sorry, you cannot access your account from this page",
+      "title": "Mae'n ddrwg gennym, ni allwch gael mynediad i'ch cyfrif o'r dudalen hon",
+      "header": "Mae'n ddrwg gennym, ni allwch gael mynediad i'ch cyfrif o'r dudalen hon",
       "content": {
         "paragraph1": {
-          "text1": "Go to your GOV.UK account",
-          "text2": ", or find the service you need from the ",
-          "text3": "GOV.UK homepage"
+          "text1": "Ewch i'ch cyfrif GOV.UK",
+          "text2": ", neu dewch o hyd i'r gwasanaeth rydych ei angen o ",
+          "text3": "hafan GOV.UK "
         },
         "govUKHomepageButtonHref": "https://www.gov.uk/"
       }
