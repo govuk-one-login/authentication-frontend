@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { HTTP_STATUS_CODES } from "../app.constants";
+import { getAccountManagementUrl } from "../config";
+import { ERROR_MESSAGES, HTTP_STATUS_CODES } from "../app.constants";
 
 export function serverErrorHandler(
   err: any,
@@ -9,6 +10,16 @@ export function serverErrorHandler(
 ): void {
   if (res.headersSent) {
     return next(err);
+  }
+
+  if (
+    res.statusCode == HTTP_STATUS_CODES.UNAUTHORIZED &&
+    err.message === ERROR_MESSAGES.INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST
+  ) {
+    return res.render(
+      "common/errors/mid-journey-direct-navigation-without-session.njk",
+      { accountManagementUrl: getAccountManagementUrl() }
+    );
   }
 
   if (res.statusCode == HTTP_STATUS_CODES.UNAUTHORIZED) {

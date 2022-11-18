@@ -98,7 +98,10 @@ export const API_ENDPOINTS = {
 export const ERROR_MESSAGES = {
   FAILED_HTTP_REQUEST: "Failed HTTP request",
   INVALID_CSRF_TOKEN: "Invalid CSRF token",
-  INVALID_SESSION: "Invalid session",
+  INVALID_SESSION_GOV_UK_INTERNAL_REQUEST:
+    "Invalid session and referrer has gov.uk domain",
+  INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST:
+    "Invalid session and referrer does not have gov.uk",
   INVALID_HTTP_REQUEST: "Invalid HTTP request",
   FORBIDDEN: "Unauthorized HTTP request",
   INTERNAL_SERVER_ERROR: "Internal server error",
