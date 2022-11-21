@@ -56,6 +56,8 @@
     "semi": true
   },
   "dependencies": {
+    "@otplib/core": "^12.0.1",
+    "@otplib/plugin-base32-enc-dec": "^12.0.1",
     "aws-sdk": "^2.1066.0",
     "axios": "^0.25.0",
     "connect-redis": "^6.0.0",
@@ -74,8 +76,6 @@
     "jsdom": "^19.0.0",
     "libphonenumber-js": "^1.9.44",
     "nunjucks": "^3.2.3",
-    "@otplib/core": "^12.0.1",
-    "@otplib/plugin-base32-enc-dec": "^12.0.1",
     "pino": "^7.6.0",
     "pino-http": "^6.6.0",
     "prettier": "^2.7.1",
@@ -120,7 +120,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.1",
-    "mocha": "^9.2.0",
+    "mocha": "10.1.0",
     "mock-req-res": "^1.2.0",
     "nock": "^13.2.1",
     "nodemon": "2.0.19",
