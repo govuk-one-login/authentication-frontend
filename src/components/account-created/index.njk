@@ -15,7 +15,7 @@
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
     {{ govukButton({
-        "text": button_text|default('pages.accountCreated.continue' | translate, true),
+        "text": "pages.accountCreated.continue" | translate,
         "type": "Submit",
         "preventDoubleClick": true
     }) }}
@@ -24,7 +24,7 @@
     <h1 class="govuk-body govuk-bold">{{'pages.accountCreated.progressSaved' | translate}}</h1>
 
     {{ govukButton({
-        "text": button_text|default('pages.accountCreated.continue' | translate, true),
+        "text": "pages.accountCreated.continue" | translate,
         "preventDoubleClick": true
     }) }}
 
