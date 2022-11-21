@@ -46,6 +46,7 @@ export interface UserSession {
   identityProcessCheckStart?: number;
   authAppSecret?: string;
   authAppQrCodeUrl?: string;
+  isPasswordChangeRequired?: boolean;
 }
 
 export interface UserSessionClient {

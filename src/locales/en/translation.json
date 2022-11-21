@@ -1163,6 +1163,7 @@
       "header": "Reset your password",
       "password": {
         "label": "Enter a new password",
+        "paragraphRequired": "You need to change your password.  This is because your current password is not secure enough.",
         "paragraph1": "Your password must:",
         "bulletPoint1": "be at least 8 characters long",
         "bulletPoint2": "include letters and numbers",

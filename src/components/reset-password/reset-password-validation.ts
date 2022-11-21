@@ -2,6 +2,7 @@ import { body } from "express-validator";
 import { containsNumber, containsNumbersOnly } from "../../utils/strings";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
+import { Request } from "express";
 
 export function validateResetPasswordRequest(): ValidationChainFunc {
   return [
@@ -46,6 +47,14 @@ export function validateResetPasswordRequest(): ValidationChainFunc {
         }
         return true;
       }),
-    validateBodyMiddleware("reset-password/index.njk"),
+    validateBodyMiddleware("reset-password/index.njk", postValidationLocals),
   ];
 }
+
+const postValidationLocals = function locals(
+  req: Request
+): Record<string, unknown> {
+  return {
+    isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
+  };
+};

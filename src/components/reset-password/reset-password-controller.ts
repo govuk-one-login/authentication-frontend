@@ -26,6 +26,12 @@ export function resetPasswordGet(req: Request, res: Response): void {
   res.render(resetPasswordTemplate);
 }
 
+export function resetPasswordRequiredGet(req: Request, res: Response): void {
+  res.render(resetPasswordTemplate, {
+    isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
+  });
+}
+
 export function resetPasswordPost(
   resetService: ResetPasswordServiceInterface = resetPasswordService(),
   loginService: EnterPasswordServiceInterface = enterPasswordService(),
@@ -53,14 +59,18 @@ export function resetPasswordPost(
           "password",
           req.t("pages.resetPassword.password.validationError.samePassword")
         );
-        return renderBadRequest(res, req, resetPasswordTemplate, error);
+        return renderBadRequest(res, req, resetPasswordTemplate, error, {
+          isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
+        });
       }
       if (updatePasswordResponse.data.code === ERROR_CODES.PASSWORD_IS_COMMON) {
         const error = formatValidationError(
           "password",
           req.t("pages.createPassword.password.validationError.commonPassword")
         );
-        return renderBadRequest(res, req, resetPasswordTemplate, error);
+        return renderBadRequest(res, req, resetPasswordTemplate, error, {
+          isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
+        });
       } else {
         throw new BadRequestError(
           updatePasswordResponse.data.message,
@@ -91,6 +101,9 @@ export function resetPasswordPost(
       loginResponse.data.latestTermsAndConditionsAccepted;
     req.session.user.isAccountPartCreated =
       !loginResponse.data.mfaMethodVerified;
+    if (req.session.user.isPasswordChangeRequired) {
+      req.session.user.isPasswordChangeRequired = false;
+    }
 
     if (
       loginResponse.data.mfaMethodVerified &&
