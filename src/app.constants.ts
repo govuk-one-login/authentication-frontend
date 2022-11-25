@@ -14,6 +14,7 @@ export const PATH_NAMES = {
   ENTER_PASSWORD_ACCOUNT_EXISTS: "/enter-password-account-exists",
   RESET_PASSWORD_CHECK_EMAIL: "/reset-password-check-email",
   RESET_PASSWORD: "/reset-password",
+  RESET_PASSWORD_REQUIRED: "/reset-password-required",
   RESET_PASSWORD_REQUEST: "/reset-password-request",
   RESET_PASSWORD_RESEND_CODE: "/reset-password-resend-code",
   CREATE_ACCOUNT_CHECK_EMAIL: "/check-email",

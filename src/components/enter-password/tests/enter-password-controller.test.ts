@@ -38,8 +38,8 @@ describe("enter password controller", () => {
     sinon.restore();
   });
 
-  describe("enterEmailGet", () => {
-    it("should render enter email view", () => {
+  describe("enterPasswordGet", () => {
+    it("should render enter password view", () => {
       enterPasswordGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("enter-password/index.njk");
@@ -175,6 +175,50 @@ describe("enter password controller", () => {
         PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS
       );
       expect(req.session.user.isAccountPartCreated).to.be.eq(false);
+    });
+
+    it("should redirect to reset-password-required when the existing password is common and supportPasswordResetRequired() is enabled", async () => {
+      process.env.SUPPORT_PASSWORD_RESET_REQUIRED = "1";
+      const fakeService: EnterPasswordServiceInterface = {
+        loginUser: sinon.fake.returns({
+          data: {
+            redactedPhoneNumber: "******3456",
+            mfaRequired: true,
+            consentRequired: false,
+            latestTermsAndConditionsAccepted: true,
+            mfaMethodVerified: true,
+            mfaMethodType: "SMS",
+            passwordChangeRequired: true,
+          },
+          success: true,
+        }),
+      };
+
+      const fakeMfaService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      req.body["password"] = "password";
+
+      await enterPasswordPost(
+        false,
+        fakeService,
+        fakeMfaService
+      )(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.RESET_PASSWORD_REQUIRED
+      );
+      expect(req.session.user.isAccountPartCreated).to.be.eq(false);
+      expect(fakeMfaService.sendMfaCode).not.to.have.been.called;
     });
 
     it("should throw error when API call throws error", async () => {
