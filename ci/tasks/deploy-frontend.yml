@@ -27,7 +27,7 @@ params:
   BASIC_AUTH_BYPASS_CIDR_BLOCKS: '[]'
   SUPPORT_MFA_OPTIONS: "0"
   SUPPORT_LANGUAGE_CY: "0"
-  SUPPORT_PASSWORD_RESET_REQUIRED: "0"
+  SUPPORT_PASSWORD_RESET_REQUIRED: "1"
 inputs:
   - name: frontend-src
   - name: frontend-image
