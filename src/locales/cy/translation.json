@@ -1618,8 +1618,13 @@
         "paragraph2": "Os nad oes gennych ffôn clyfar neu lechen, chwiliwch ar-lein am ap dilysydd ar gyfer eich cyfrifiadur.",
         "paragraph3": "Gallwch ddefnyddio unrhyw ap dilysydd."
       },
-      "step2": "2. Defnyddiwch eich ap dilysydd i sganio’r cod QR neu teipiwch yr allwedd gyfrinachol i’ch ap dilysydd.  Mae rhai apiau dilysydd yn galw’r allwedd gyfrinachol yn ’cod’.",
-      "secretKeyLabelText": "Allwedd gyfrinachol: ",
+      "step2": "2. Defnyddiwch eich ap dilysydd i sganio'r cod QR.",
+      "cannotScanDetails": {
+        "summaryText": "Ni allaf sganio'r cod QR",
+        "paragraph1": "Gallwch roi yr allwedd gyfrinachol i'ch ap dilysydd yn lle hynny.",
+        "paragraph2": "Allwedd gyfrinachol: ",
+        "paragraph3": "Mae rhai apiau dilysydd yn galw'r allwedd gyfrinachol yn 'cod'."
+      },
       "step3": "3. Bydd yr ap dilysydd yn dangos cod diogelwch.",
       "step4": "4. Rhowch y cod diogelwch.",
       "code": {
