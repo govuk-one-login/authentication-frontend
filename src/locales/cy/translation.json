@@ -314,10 +314,7 @@
       "header": "Creu eich cyfrinair",
       "password": {
         "label": "Rhowch gyfrinair",
-        "paragraph1": "Mae’n rhaid i’ch cyfrinair:",
-        "bulletPoint1": "fod yn o leiaf 8 nod o hyd",
-        "bulletPoint2": "cynnwys llythrennau a rhifau",
-        "paragraph2": "Peidiwch defnyddio cyfrinair cyffredin iawn, fel ’password’ neu ddilyniant o rifau.",
+        "hintText": "Mae'n rhaid iddo fod yn o leiaf 8 nod o hyd a rhaid cynnwys llythrennau a rhifau. Peidiwch defnyddio cyfrinair cyffredin iawn, fel ’password’ neu ddilyniant o rifau.",
         "validationError": {
           "required": "Rhowch eich cyfrinair",
           "maxLength": "Mae’n rhaid i’ch cyfrinair fod yn llai na 256 nod",
