@@ -7,6 +7,7 @@ import {
   resetPasswordGet,
   resetPasswordPost,
   resetPasswordRequestGet,
+  resetPasswordRequiredGet,
 } from "./reset-password-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
@@ -24,6 +25,16 @@ router.get(
 
 router.post(
   PATH_NAMES.RESET_PASSWORD,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
+  validateResetPasswordRequest(),
+  asyncHandler(resetPasswordPost())
+);
+
+router.get(PATH_NAMES.RESET_PASSWORD_REQUIRED, resetPasswordRequiredGet);
+
+router.post(
+  PATH_NAMES.RESET_PASSWORD_REQUIRED,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateResetPasswordRequest(),

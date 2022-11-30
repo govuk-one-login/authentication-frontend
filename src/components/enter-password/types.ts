@@ -7,6 +7,7 @@ export interface UserLoginResponse extends DefaultApiResponse {
   consentRequired?: boolean;
   mfaMethodType?: string;
   mfaMethodVerified?: boolean;
+  passwordChangeRequired?: boolean;
 }
 
 export interface EnterPasswordServiceInterface {

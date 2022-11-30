@@ -768,6 +768,7 @@
         "paragraph1": "The following parts of GOV.UK accounts are not fully accessible:",
         "bulletPoint1": "it’s not possible to stop or change the length of the time-out when you use, sign in to or create an account",
         "bulletPoint2": "it’s not possible for a screen reader to know when the emails we send are in a language other than English",
+        "bulletPoint3": "one page reloads automatically after a set time limit, and it’s not possible to stop or delay this",
         "paragraph2": "We’ll update this page when issues are fixed or with information about when we plan to fix them."
       },
       "section3": {
@@ -1163,6 +1164,7 @@
       "header": "Reset your password",
       "password": {
         "label": "Enter a new password",
+        "paragraphRequired": "You need to change your password.  This is because your current password is not secure enough.",
         "paragraph1": "Your password must:",
         "bulletPoint1": "be at least 8 characters long",
         "bulletPoint2": "include letters and numbers",

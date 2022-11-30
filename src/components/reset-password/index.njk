@@ -12,7 +12,14 @@
 
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resetPassword.header' | translate}}</h1>
 
-<form action="/reset-password" method="post" novalidate>
+{% if isPasswordChangeRequired %}
+    <p class="govuk-body">{{'pages.resetPassword.password.paragraphRequired' | translate}}</p>
+    {% set actionUrl = '/reset-password-required' %}
+{% else %}
+    {% set actionUrl = '/reset-password' %}
+{% endif %}
+
+<form action="{{actionUrl}}" method="post" novalidate>
 
     <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
@@ -58,7 +65,7 @@
     }) }}
 
     {{ govukButton({
-        "text": button_text|default("general.continue.label" | translate, true),
+        "text": "general.continue.label" | translate,
         "type": "Submit",
         "preventDoubleClick": true
     }) }}

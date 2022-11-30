@@ -19,6 +19,7 @@ import { MFA_METHOD_TYPE } from "../../app.constants";
 import xss from "xss";
 import { EnterEmailServiceInterface } from "../enter-email/types";
 import { enterEmailService } from "../enter-email/enter-email-service";
+import { supportPasswordResetRequired } from "../../config";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -126,16 +127,21 @@ export function enterPasswordPost(
       );
     }
 
+    const isPasswordChangeRequired =
+      supportPasswordResetRequired() && userLogin.data.passwordChangeRequired;
+
     req.session.user.phoneNumber = userLogin.data.redactedPhoneNumber;
     req.session.user.isConsentRequired = userLogin.data.consentRequired;
     req.session.user.isAccountPartCreated = !userLogin.data.mfaMethodVerified;
     req.session.user.isLatestTermsAndConditionsAccepted =
       userLogin.data.latestTermsAndConditionsAccepted;
+    req.session.user.isPasswordChangeRequired = isPasswordChangeRequired;
 
     if (
       userLogin.data.mfaRequired &&
       userLogin.data.mfaMethodVerified &&
-      userLogin.data.mfaMethodType === MFA_METHOD_TYPE.SMS
+      userLogin.data.mfaMethodType === MFA_METHOD_TYPE.SMS &&
+      !isPasswordChangeRequired
     ) {
       const result = await mfaCodeService.sendMfaCode(
         sessionId,
@@ -169,6 +175,7 @@ export function enterPasswordPost(
           isConsentRequired: req.session.user.isConsentRequired,
           mfaMethodType: userLogin.data.mfaMethodType,
           isMfaMethodVerified: userLogin.data.mfaMethodVerified,
+          isPasswordChangeRequired: isPasswordChangeRequired,
         },
         sessionId
       )

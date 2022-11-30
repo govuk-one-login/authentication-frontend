@@ -1163,6 +1163,7 @@
       "header": "Ailosod eich cyfrinair",
       "password": {
         "label": "Rhowch gyfrinair newydd",
+        "paragraphRequired": "Mae angen i chi newid eich cyfrinair. Mae hyn oherwydd nad yw eich cyfrinair presennol yn ddigon diogel.",
         "paragraph1": "Mae’n rhaid i’ch cyfrinair:",
         "bulletPoint1": "fod yn o leiaf 8 nod o hyd",
         "bulletPoint2": "cynnwys llythrennau a rhifau",
