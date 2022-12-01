@@ -8,7 +8,7 @@ export function validatePhotoIdRequest(): ValidationChainFunc {
       .if(check("auth").isEmpty())
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t("pages.photoId.section2.errorMessage", {
+        return req.t("pages.photoId.section3.errorMessage", {
           value,
         });
       }),
