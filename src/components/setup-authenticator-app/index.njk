@@ -12,10 +12,19 @@
 
   {% include "common/errors/errorSummary.njk" %}
 
-  {% set insetTextHtml %}
+  {% set noAuthAppInsetTextHtml %}
   <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph1' | translate}}</p>
   <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph2' | translate}}</p>
   <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph3' | translate}}</p>
+  {% endset %}
+
+  {% set cannotScanInsetTextHtml %}
+  <p class="govuk-body">{{'pages.setupAuthenticatorApp.cannotScanDetails.paragraph1' | translate}}</p>
+  <p class="govuk-body">
+    {{'pages.setupAuthenticatorApp.cannotScanDetails.paragraph2' | translate}}
+    <span id="secret-key" class="govuk-body govuk-!-font-weight-bold govuk-!-display-block permit-reflow">{{secretKey}}</span>
+  </p>
+  <p class="govuk-body">{{'pages.setupAuthenticatorApp.cannotScanDetails.paragraph3' | translate}}</p>
   {% endset %}
 
   <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.setupAuthenticatorApp.header' | translate }}</h1>
@@ -23,18 +32,19 @@
   <p class="govuk-body">{{'pages.setupAuthenticatorApp.step1' | translate }}</p>
   {{ govukDetails({
         summaryText: 'pages.setupAuthenticatorApp.noAuthAppDetails.summaryText' | translate,
-        html: insetTextHtml
-    }) }}
+        html: noAuthAppInsetTextHtml
+  }) }}
   <p class="govuk-body">{{'pages.setupAuthenticatorApp.step2' | translate }}</p>
 
   <p class="govuk-body">
     <img id="qr-code" src="{{qrCode}}" alt="QR Code Image">
   </p>
 
-  <p class="govuk-body">
-    {{ 'pages.setupAuthenticatorApp.secretKeyLabelText' | translate }}
-    <span id="secret-key" class="govuk-body govuk-!-font-weight-bold permit-reflow">{{secretKey}}</span>
-  </p>
+  {{ govukDetails({
+    summaryText: 'pages.setupAuthenticatorApp.cannotScanDetails.summaryText' | translate,
+    html: cannotScanInsetTextHtml
+  }) }}
+
   <p class="govuk-body">{{'pages.setupAuthenticatorApp.step3' | translate }}</p>
   <p class="govuk-body">{{'pages.setupAuthenticatorApp.step4' | translate }}</p>
 

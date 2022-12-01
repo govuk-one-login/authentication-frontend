@@ -1619,8 +1619,13 @@
         "paragraph2": "If you don’t have a smartphone or tablet, search online for an authenticator app for your computer.",
         "paragraph3": "You can use any authenticator app."
       },
-      "step2": "2. Use your authenticator app to scan the QR code or type the secret key into your authenticator app.  Some authenticator apps call the secret key a ’code’.",
-      "secretKeyLabelText": "Secret key: ",
+      "step2": "2. Use your authenticator app to scan the QR code.",
+      "cannotScanDetails": {
+        "summaryText": "I cannot scan the QR code",
+        "paragraph1": "You can enter the secret key into your authenticator app instead.",
+        "paragraph2": "Secret key: ",
+        "paragraph3": "Some authenticator apps call the secret key a 'code'."
+      },
       "step3": "3. The authenticator app will show a security code.",
       "step4": "4. Enter the security code.",
       "code": {
