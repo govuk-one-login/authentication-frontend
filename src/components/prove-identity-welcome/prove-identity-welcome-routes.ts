@@ -8,7 +8,6 @@ import {
   proveIdentityWelcomeGet,
   proveIdentityWelcomePost,
 } from "./prove-identity-welcome-controller";
-import { validateProveIdentityWelcomeRequest } from "./prove-identity-welcome-validation";
 
 const router = express.Router();
 
@@ -21,7 +20,6 @@ router.get(
 
 router.post(
   PATH_NAMES.PROVE_IDENTITY_WELCOME,
-  validateProveIdentityWelcomeRequest(),
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   proveIdentityWelcomePost

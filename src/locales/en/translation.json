@@ -1535,27 +1535,21 @@
         "insetAlternativeLanguageAppWarning": "The GOV.UK ID Check app is currently only available in English."
       },
       "section2": {
-        "paragraph1": "You’ll need:",
-        "listItem1_1": "a GOV.UK account - we’ll ask you to create or sign in to your account when you continue",
-        "listItem1_2": "your current home address (you might also need your previous address if you’ve recently moved)",
-        "listItem1_3": "your photo ID",
-        "paragraph2": "You can then either:",
-        "listItem2_1": "upload a picture of your photo ID using the GOV.UK ID Check app (the app is currently only available in English)",
-        "listItem2_2": "enter details from your photo ID and answer some security questions that only you should know the answer to",
-        "paragraph3": "We’ll only use the information you give us to make sure that you are who you say you are."
-      },
-      "section3": {
-        "subHeading": "Choose a way to prove your identity",
-        "radioOption1": "Continue to sign in or create a GOV.UK account",
-        "radioOption1HintText": "You’ll need your photo ID to prove your identity this way.",
-        "radioOption2": "Prove your identity another way",
-        "radioOption2HintText": "You can prove your identity online with GOV.UK Verify or take your identity documents to be checked in person.",
-        "errorMessage": "Select an option"
+        "paragraph1": "You'll need:",
+        "listItem1_1": "a GOV.UK account – we’ll ask you to create or sign in to your account when you continue",
+        "listItem1_2": "your photo ID",
+        "listItem1_3": "your current home address (you might also need your previous address if you’ve recently moved)",
+        "paragraph2": "We’ll only use the information you give us to make sure that you are who you say you are."
       },
       "existingSession": {
         "section3": {
           "radioOption1": "Continue with your GOV.UK account"
-        }
+        },
+        "paragraph1": "You'll need:",
+        "listItem1_1": "a GOV.UK account – we’ll ask you to create or sign in to your account when you continue",
+        "listItem1_2": "your photo ID",
+        "listItem1_3": "your current home address (you might also need your previous address if you’ve recently moved)",
+        "paragraph2": "We’ll only use the information you give us to make sure that you are who you say you are."
       }
     },
     "proveIdentityCheck": {

@@ -1520,7 +1520,7 @@
       "title": "Profi pwy ydych chi gyda chyfrif GOV.UK",
       "header": "Profi pwy ydych chi gyda chyfrif GOV.UK",
       "section1": {
-        "paragraph1": "Ar hyn o bryd gallwch ond profi pwy ydych chi gyda’ch cyfrif GOV.UK os oes gennych basbort y DU.",
+        "paragraph1": "Bydd yn cymryd tua 10 munud i chi brofi pwy ydych chi yn y ffordd hyn.",
         "insetAlternativeLanguage": {
           "paragraph1": "Mae’r gwasanaeth hwn hefyd ar gael yn ",
           "linkText": {
@@ -1530,31 +1530,14 @@
           },
           "linkHref": "?lng=en"
         },
-        "insetTextEnglishOnly": "Ar hyn o bryd dim ond yn Saesneg mae’r gwasanaeth hwn ar gael.",
-        "insetAlternativeLanguageAppWarning": "Mae’r ap <span lang=\"en\">GOV.UK ID Check</span> ond ar gael yn Saesneg yn unig ar hyn o bryd."
+        "insetAlternativeLanguageAppWarning": "Mae’r ap GOV.UK ID Check ond ar gael yn Saesneg yn unig ar hyn o bryd."
       },
       "section2": {
         "paragraph1": "Byddwch angen:",
-        "listItem1_1": "cyfrif GOV.UK - byddwn yn gofyn i chi greu neu fewngofnodi i’ch cyfrif pan fyddwch yn parhau",
-        "listItem1_2": "eich cyfeiriad presennol (efallai y byddwch angen eich cyfeiriad blaenorol hefyd os ydych wedi symud yn ddiweddar)",
-        "listItem1_3": "eich ID gyda llun",
-        "paragraph2": "Fe allwch wedyn naill ai:",
-        "listItem2_1": "llwytho llun o’ch ID gyda llun gan ddefnyddio’r ap <span lang=\"en\">GOV.UK ID Check</span> (dim ond yn Saesneg y mae’r ap ar gael ar hyn o bryd)",
-        "listItem2_2": "rhoi y manylion o’ch ID gyda llun ac ateb rai cwestiynau diogelwch mai dim ond chi ddylai wybod yr atebion iddynt",
-        "paragraph3": "Byddwn ond yn defnyddio’r wybodaeth rydych yn ei rhoi i ni i wneud yn siwr mai chi yw pwy rydych yn ei ddweud ydych chi."
-      },
-      "section3": {
-        "subHeading": "Dewiswch ffordd i brofi pwy ydych chi",
-        "radioOption1": "Parhau i fewngofnodi neu greu cyfrif GOV.UK",
-        "radioOption1HintText": "Byddwch angen eich ID gyda llun i brofi pwy ydych chi yn y ffordd yma",
-        "radioOption2": "Profi pwy ydych chi mewn ffordd arall",
-        "radioOption2HintText": "Gallwch brofi pwy ydych chi ar-lein gyda GOV.UK Verify neu fynd â’ch dogfennau adnabod i gael eu gwirio yn bersonol.",
-        "errorMessage": "Dewiswch opsiwn"
-      },
-      "existingSession": {
-        "section3": {
-          "radioOption1": "Parhau gyda’ch cyfrif GOV.UK"
-        }
+        "listItem1_1": "cyfrif GOV.UK – byddwn yn gofyn i chi greu neu fewngofnodi i’ch cyfrif pan fyddwch yn parhau",
+        "listItem1_2": "eich ID gyda llun",
+        "listItem1_3": "eich cyfeiriad presennol (efallai y byddwch angen eich cyfeiriad blaenorol hefyd os ydych wedi symud yn ddiweddar)",
+        "paragraph2": "Byddwn ond yn defnyddio’r wybodaeth rydych yn ei rhoi i ni i wneud yn siwr mai chi yw pwy rydych yn ei ddweud ydych chi."
       }
     },
     "proveIdentityCheck": {
