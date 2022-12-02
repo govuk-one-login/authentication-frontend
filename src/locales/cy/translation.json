@@ -373,7 +373,8 @@
     "accountCreated": {
       "title": "Rydych wedi creu eich cyfrif GOV.UK",
       "header": "Rydych wedi creu eich cyfrif GOV.UK",
-      "text": "Nawr ewch yn eich blaen i ddefnyddio’r gwasanaeth.",
+      "text": "Nawr ewch yn eich blaen i ddefnyddio’r ",
+      "textEnd": " gwasanaeth.",
       "inset": "Mae eich cynnydd ar ",
       "insetContinued": " wedi cael ei arbed.",
       "continue": "Parhau",
