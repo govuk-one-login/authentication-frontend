@@ -91,7 +91,6 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     loadGtmScript();
     initGtm();
     initLinkerHandlers();
-    pushLanguageToDataLayer();
   }
 
   function pushLanguageToDataLayer() {
@@ -142,6 +141,7 @@ var cookies = function (trackingId, analyticsCookieDomain) {
       gtag(sessionJourney);
     }
 
+    pushLanguageToDataLayer();
     gtag({ "gtm.start": new Date().getTime(), event: "gtm.js" });
   }
 
