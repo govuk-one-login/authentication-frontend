@@ -1219,7 +1219,7 @@
       "header": "Rydych wedi ceisio ailosod eich cyfrinair ormod o weithiau",
       "paragraph1": "Mae angen i chi aros am 15 munud.",
       "paragraph2": "Yna gallwch ",
-     "resetPasswordLinkText": "ailosod eich cyfrinair",
+      "resetPasswordLinkText": "ailosod eich cyfrinair",
       "paragraph3": " a cheisio mewngofnodi eto."
     },
     "resetPasswordAttemptBlocked": {
@@ -1227,7 +1227,7 @@
       "header": "Ni allwch ailosod eich cyfrinair ar hyn o bryd",
       "paragraph1": "Mae hyn oherwydd i chi geisio ailosod eich cyfrinair ormod o weithiau y tro diwethaf i chi geisio mewngofnodi.",
       "paragraph2": "Gallwch ",
-     "resetPasswordLinkText": "ailosod eich cyfrinair",
+      "resetPasswordLinkText": "ailosod eich cyfrinair",
       "paragraph3": " ar ôl i 15 munud fynd heibio."
     },
     "accountLocked": {
@@ -1446,7 +1446,6 @@
           "header": "How did you expect to get the security code?",
           "errorMessage": "Select whether you expected to get the code by email, text message or authenticator app",
           "errorMessageSignIn": "Select whether you expected to get the code by text message or authenticator app"
-
         },
         "section2": {
           "header": "Anything else you want to tell us",
@@ -1631,8 +1630,8 @@
       "code": {
         "label": "Cod diogelwch",
         "hintText": "Dyma’r rhif 6-digid a ddangosir yn eich ap dilysydd",
-        "validationError":{
-         "required": "Rhowch y cod diogelwch a ddangosir yn eich ap dilysydd",
+        "validationError": {
+          "required": "Rhowch y cod diogelwch a ddangosir yn eich ap dilysydd",
           "invalidCode": "Nid yw’r cod diogelwch rydych wedi’i roi yn gywir, ceisiwch ei roi i mewn eto neu aros i’ch ap dilysydd roi cod newydd i chi",
           "length": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig"
         }
@@ -1651,31 +1650,35 @@
         }
       }
     },
-    "photoId" : {
-      "title": "Mae’n rhaid i chi gael ID gyda llun i brofi pwy ydych chi yn y ffordd yma",
-      "header": "Mae’n rhaid i chi gael ID gyda llun i brofi pwy ydych chi yn y ffordd yma",
+    "photoId": {
+      "title": "Mae’n rhaid i chi gael ID llun er mwyn profi pwy ydych gyda chyfrif GOV.UK",
+      "header": "Mae’n rhaid i chi gael ID llun er mwyn profi pwy ydych gyda chyfrif GOV.UK",
+      "introParagraph": "Gallwch ond brofi pwy ydych chi gyda chyfrif GOV.UK os oes gennych un o’r mathau canlynol o ID llun.",
       "section1": {
-        "paragraph1" : "Gallwch ond profi pwy ydych chi gyda’ch cyfrif GOV.UK os oes gennych un o’r canlynol:",
-        "listItem1": "trwydded yrru’r DU",
-        "listItem2": "pasbort y DU",
-        "insetPassportExpiry" : "Os yw eich pasbort wedi dod i ben, gallwch barhau i’w ddefnyddio i brofi pwy ydych chi hyd at 18 mis ar ôl y dyddiad dod i ben."
+        "subHeading": "Trwydded yrru y DU gyda llun",
+        "paragraph1": "Byddwch angen trwydded yrru lawn neu dros dro dilys gyda’ch llun arno."
       },
       "section2": {
-        "subHeading" : "Oes gennych chi ID gyda llun?",
-        "radioOption1" : "Oes",
-        "radioOption2" : "Na",
+        "subHeading": "Pasbort biometrig y DU neu ddim o’r DU",
+        "paragraph1": "Mae gan basbortau biometrig (neu ‘ePassports’) symbol hirsgwar bach ar y clawr blaen. Gallwch eu defnyddio i fynd trwy eGiatiau mewn meysydd awyr a gorsafoedd trên.",
+        "expiredNote": "Os oes gennych basbort biometrig y DU sydd wedi dod i ben, gallwch barhau i’w ddefnyddio i brofi pwy ydych chi am hyd at 18 mis ar ôl y dyddiad dod i ben."
+      },
+      "section3": {
+        "subHeading": "Oes gennych chi un o’r mathau hyn o ID llun?",
+        "radioOption1": "Oes",
+        "radioOption2": "Na",
         "errorMessage": "Dewiswch opsiwn"
       }
     },
-    "noPhotoId" : {
+    "noPhotoId": {
       "title": "Mae’n ddrwg gennym, ni allwn brofi pwy ydych chi",
       "header": "Mae’n ddrwg gennym, ni allwn brofi pwy ydych chi",
       "section1": {
-        "paragraph1" : "Ar hyn o bryd gallwch ond profi pwy ydych chi gyda’ch cyfrif GOV.UK os oes gennych ID gyda llun."
+        "paragraph1": "Ar hyn o bryd gallwch ond profi pwy ydych chi gyda’ch cyfrif GOV.UK os oes gennych ID gyda llun."
       },
       "section2": {
-        "subHeading" : "Beth allwch chi ei wneud",
-        "paragraph1" : "Parhau i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a chwilio am ffyrdd eraill i brofi pwy ydych chi."
+        "subHeading": "Beth allwch chi ei wneud",
+        "paragraph1": "Parhau i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a chwilio am ffyrdd eraill i brofi pwy ydych chi."
       }
     },
     "securityCodeEnteredExceeded": {

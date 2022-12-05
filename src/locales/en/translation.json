@@ -1447,7 +1447,6 @@
           "header": "How did you expect to get the security code?",
           "errorMessage": "Select whether you expected to get the code by email, text message or authenticator app",
           "errorMessageSignIn": "Select whether you expected to get the code by text message or authenticator app"
-
         },
         "section2": {
           "header": "Anything else you want to tell us",
@@ -1632,8 +1631,8 @@
       "code": {
         "label": "Security code",
         "hintText": "This is the 6-digit number shown in your authenticator app",
-        "validationError":{
-         "required": "Enter the security code shown in your authenticator app",
+        "validationError": {
+          "required": "Enter the security code shown in your authenticator app",
           "invalidCode": "The security code you entered is not correct, try entering it again or wait for for your authenticator app to give you a new code",
           "length": "Enter the security code using only 6 digits"
         }
@@ -1652,31 +1651,35 @@
         }
       }
     },
-    "photoId" : {
-      "title": "You must have a photo ID to prove your identity this way",
-      "header": "You must have a photo ID to prove your identity this way",
+    "photoId": {
+      "title": "You must have a photo ID to prove your identity with a GOV.UK account",
+      "header": "You must have a photo ID to prove your identity with a GOV.UK account",
+      "introParagraph": "You can only prove your identity with a GOV.UK account if you have one of the following types of photo ID.",
       "section1": {
-        "paragraph1" : "You can only prove your identity with your GOV.UK account if you have one of the following:",
-        "listItem1": "a UK driving licence",
-        "listItem2": "a UK passport",
-        "insetPassportExpiry" : "If your passport has expired, you can still use it to prove your identity up until 18 months after the expiry date."
+        "subHeading": "UK photocard driving licence",
+        "paragraph1": "You’ll need a valid full or provisional driving licence with your photo on it."
       },
       "section2": {
-        "subHeading" : "Do you have a photo ID?",
-        "radioOption1" : "Yes",
-        "radioOption2" : "No",
+        "subHeading": "UK or non-UK biometric passport",
+        "paragraph1": "Biometric passports (or ‘ePassports’) have a small rectangular symbol on the front cover. You can use them to go through eGates at airports and train stations.",
+        "expiredNote": "If you have an expired UK biometric passport, you can still use it to prove your identity up to 18 months after the expiry date."
+      },
+      "section3": {
+        "subHeading": "Do you have one of these types of photo ID?",
+        "radioOption1": "Yes",
+        "radioOption2": "No",
         "errorMessage": "Select an option"
       }
     },
-    "noPhotoId" : {
+    "noPhotoId": {
       "title": "No photo id",
       "header": "Sorry, we cannot prove your identity",
       "section1": {
-        "paragraph1" : "You can currently only prove your identity with your GOV.UK account if you have a photo ID."
+        "paragraph1": "You can currently only prove your identity with your GOV.UK account if you have a photo ID."
       },
       "section2": {
-        "subHeading" : "What you can do",
-        "paragraph1" : "Continue to the service you were trying to use and look for other ways to prove your identity."
+        "subHeading": "What you can do",
+        "paragraph1": "Continue to the service you were trying to use and look for other ways to prove your identity."
       }
     },
     "securityCodeEnteredExceeded": {
