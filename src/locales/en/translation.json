@@ -181,32 +181,6 @@
         }
       }
     },
-    "enterEmail": {
-      "title": "Sign in to or create your GOV.UK account",
-      "header": "Sign in to or create your GOV.UK account",
-      "text": "A GOV.UK account is separate from other government accounts (for example a personal tax account or Government Gateway).",
-      "email": {
-        "label": "Email address",
-        "text": "To sign in or create an account, enter your email address",
-        "validationError": {
-          "required": "Enter your email address",
-          "length": "Email address must be 256 characters or fewer",
-          "email": "Enter an email address in the correct format, like name@example.com"
-        }
-      },
-      "details": {
-        "summary": "A GOV.UK account will:",
-        "bulletPoint1": "let you reuse and share your data to ensure that government services are quicker to interact with",
-        "bulletPoint2": "suggest GOV.UK guidance and information that is relevant to you",
-        "bulletPoint3": "tell you when content you’re interested in has been updated",
-        "bulletPoint4": "help you set up reminders for tasks you may need to complete later"
-      },
-      "whatYouNeed": {
-        "summary": "What you need to create a GOV.UK account",
-        "bulletPoint1": "an email address",
-        "bulletPoint2": "a working UK phone number with signal, so we can send you a security code"
-      }
-    },
     "accountNotFoundOneLogin": {
       "title": "No GOV.UK account found",
       "header": "No GOV.UK account found",

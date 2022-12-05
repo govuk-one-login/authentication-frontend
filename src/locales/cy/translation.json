@@ -181,32 +181,6 @@
         }
       }
     },
-    "enterEmail": {
-      "title": "Mewngofnodwch i neu greu eich cyfrif GOV.UK",
-      "header": "Mewngofnodwch i neu greu eich cyfrif GOV.UK",
-      "text": "Mae cyfrif GOV.UK ar wahân i gyfrifon eraill y llywodraeth (er enghraifft cyfrif treth personol neu Borth y Llywodraeth).",
-      "email": {
-        "label": "Cyfeiriad e-bost",
-        "text": "I fewngofnodi neu greu cyfrif, rhowch eich cyfeiriad e-bost",
-        "validationError": {
-          "required": "Rhowch eich cyfeiriad e-bost",
-          "length": "Rhaid i gyfeiriad e-bost fod yn 256 nod neu lai",
-          "email": "Rhowch gyfeiriad e-bost yn y ffurf cywir, fel name@example.com"
-        }
-      },
-      "details": {
-        "summary": "Bydd cyfrif GOV.UK:",
-        "bulletPoint1": "yn gadael i chi ailddefnyddio a rhannu eich data i sicrhau bod gwasanaethau’r llywodraeth yn gyflymach i ryngweithio â hwy",
-        "bulletPoint2": "yn awgrymu canllawiau a gwybodaeth GOV.UK sy’n berthnasol i chi",
-        "bulletPoint3": "yn dweud wrthych pan fydd cynnwys sydd gennych ddiddordeb ynddo wedi’i ddiweddaru",
-        "bulletPoint4": "yn eich helpu i sefydlu nodyn atgoffa ar gyfer tasgau y gallech fod angen eu cwblhau yn nes ymlaen"
-      },
-      "whatYouNeed": {
-        "summary": "Beth rydych ei angen i greu cyfrif GOV.UK",
-        "bulletPoint1": "cyfeiriad e-bost",
-        "bulletPoint2": "rhif ffôn y DU sy’n gweithio gyda signal, fel y gallwn anfon cod diogelwch atoch"
-      }
-    },
     "accountNotFoundOneLogin": {
       "title": "Ni ddarganfyddwyd cyfrif GOV.UK",
       "header": "Ni ddarganfyddwyd cyfrif GOV.UK",
