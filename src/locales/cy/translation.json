@@ -1626,10 +1626,10 @@
       "step4": "4. Rhowch y cod diogelwch.",
       "code": {
         "label": "Cod diogelwch",
-        "hintText": "Dyma'r rhif 6-digid a ddangosir yn eich ap dilysydd",
+        "hintText": "Dyma’r rhif 6-digid a ddangosir yn eich ap dilysydd",
         "validationError": {
           "required": "Rhowch y cod diogelwch a ddangosir yn eich ap dilysydd",
-          "invalidCode": "Nid yw'r cod diogelwch rydych wedi'i roi yn gywir, ceisiwch ei roi i mewn eto neu aros i'ch ap dilysydd roi cod newydd i chi",
+          "invalidCode": "Nid yw’r cod diogelwch rydych wedi’i roi yn gywir, ceisiwch ei roi i mewn eto neu aros i’ch ap dilysydd roi cod newydd i chi",
           "length": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig"
         }
       },
@@ -1668,14 +1668,14 @@
       }
     },
     "noPhotoId": {
-      "title": "Mae'n ddrwg gennym, ni allwn brofi pwy ydych chi",
-      "header": "Mae'n ddrwg gennym, ni allwn brofi pwy ydych chi",
+      "title": "Mae’n ddrwg gennym, ni allwn brofi pwy ydych chi",
+      "header": "Mae’n ddrwg gennym, ni allwn brofi pwy ydych chi",
       "section1": {
-        "paragraph1": "Ar hyn o bryd gallwch ond profi pwy ydych chi gyda'ch cyfrif GOV.UK os oes gennych ID gyda llun."
+        "paragraph1": "Ar hyn o bryd gallwch ond profi pwy ydych chi gyda’ch cyfrif GOV.UK os oes gennych ID gyda llun."
       },
       "section2": {
         "subHeading": "Beth allwch chi ei wneud",
-        "paragraph1": "Parhau i'r gwasanaeth roeddech yn ceisio ei ddefnyddio a chwilio am ffyrdd eraill i brofi pwy ydych chi."
+        "paragraph1": "Parhau i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a chwilio am ffyrdd eraill i brofi pwy ydych chi."
       }
     },
     "securityCodeEnteredExceeded": {
