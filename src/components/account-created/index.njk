@@ -8,14 +8,14 @@
     
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.accountCreated.header' | translate}}</h1>
 
-<p class="govuk-body">{{'pages.accountCreated.text' | translate}}</p>
+<p class="govuk-body">{{'pages.accountCreated.text' | translate}} {{name}} {{'pages.accountCreated.textEnd' | translate}}</p>
 
 <form id="form-tracking" action="/account-created" method="post" novalidate>
 <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
     {{ govukButton({
-        "text": button_text|default('pages.accountCreated.continue' | translate, true),
+        "text": "pages.accountCreated.continue" | translate,
         "type": "Submit",
         "preventDoubleClick": true
     }) }}
@@ -24,7 +24,7 @@
     <h1 class="govuk-body govuk-bold">{{'pages.accountCreated.progressSaved' | translate}}</h1>
 
     {{ govukButton({
-        "text": button_text|default('pages.accountCreated.continue' | translate, true),
+        "text": "pages.accountCreated.continue" | translate,
         "preventDoubleClick": true
     }) }}
 
