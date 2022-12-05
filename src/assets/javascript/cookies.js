@@ -94,14 +94,22 @@ var cookies = function (trackingId, analyticsCookieDomain) {
   }
 
   function pushLanguageToDataLayer() {
-    var language = document.querySelector('html') &&
+    var languageCode = document.querySelector('html') &&
         document.querySelector('html').getAttribute('lang');
 
-    if (language) {
+    var languageNames = {
+      'en':'english',
+      'cy':'welsh'
+    }
+
+    if (languageCode && languageNames[languageCode]) {
+
       window.dataLayer = window.dataLayer || [];
+
       window.dataLayer.push({
         event: "langEvent",
-        language: language
+        language: languageNames[languageCode],
+        languagecode: languageCode
       });
     }
   }
