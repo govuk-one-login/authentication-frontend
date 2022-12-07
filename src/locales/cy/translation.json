@@ -1278,6 +1278,7 @@
         "radio4": "Another problem using your GOV.UK account",
         "radio5": "GOV.UK email subscriptions",
         "radio6": "A suggestion or feedback about using your GOV.UK account",
+        "idCheckApp": "A problem proving your identity using the GOV.UK ID Check app",
         "errorMessage": "Select a reason for contacting us"
       },
       "submitButtonText": "Submit",
