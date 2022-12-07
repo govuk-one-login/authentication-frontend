@@ -131,6 +131,8 @@ export const ZENDESK_THEMES = {
   NO_PHONE_NUMBER_ACCESS: "no_phone_number_access",
   PROVING_IDENTITY: "proving_identity",
   AUTHENTICATOR_APP_PROBLEM: "authenticator_app_problem",
+  ID_CHECK_APP: "id_check_app",
+  LINKING_PROBLEM: "linking_problem",
 };
 
 export enum NOTIFICATION_TYPE {

@@ -17,6 +17,10 @@
     {% set pageTitleName = 'pages.contactUsFurtherInformation.accountCreation.title' | translate %}
 {% endif %}
 
+{% if theme == 'id_check_app' %}
+    {% set pageTitleName = 'pages.contactUsFurtherInformation.idCheckApp.title' | translate %}
+{% endif %}
+
 {% block content %}
 {% include "common/errors/errorSummary.njk" %}
 
@@ -28,7 +32,8 @@
         {% include 'contact-us/further-information/_account-creation-further-information.njk' %}
     {% endif %}
 
+    {% if theme == 'id_check_app' %}
+        {% include 'contact-us/further-information/_id-check-app-further-information.njk' %}
+    {% endif %}
+
 {% endblock %}
-
-
-

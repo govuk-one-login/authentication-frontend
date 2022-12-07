@@ -30,6 +30,15 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value }
         );
       }),
+    body("serviceTryingToUse")
+      .optional()
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.serviceTryingToUse.errorMessage",
+          { value }
+        );
+      }),
     body("additionalDescription")
       .optional()
       .notEmpty()
@@ -115,6 +124,12 @@ export function getErrorMessageForIssueDescription(
   }
   if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
     return "pages.contactUsQuestions.authenticatorApp.section1.errorMessage";
+  }
+  if (
+    theme === ZENDESK_THEMES.ID_CHECK_APP &&
+    subtheme === ZENDESK_THEMES.LINKING_PROBLEM
+  ) {
+    return "pages.contactUsQuestions.linkingProblem.section1.errorMessage";
   }
 }
 

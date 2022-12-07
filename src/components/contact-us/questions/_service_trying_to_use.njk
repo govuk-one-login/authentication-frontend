@@ -1,0 +1,15 @@
+{{ govukInput({
+    label: {
+        text: 'pages.contactUsQuestions.serviceTryingToUse.header' | translate,
+        classes: "govuk-label--s"
+    },
+    id: "serviceTryingToUse",
+    name: "serviceTryingToUse",
+    value: serviceTryingToUse,
+    hint: {
+        text: 'pages.contactUsQuestions.serviceTryingToUse.hint' | translate
+    },
+    errorMessage: {
+        text: errors['serviceTryingToUse'].text
+    } if (errors['serviceTryingToUse'])
+}) }}

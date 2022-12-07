@@ -31,6 +31,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.provingIdentity.title",
   [ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM]:
     "pages.contactUsQuestions.authenticatorApp.title",
+  [ZENDESK_THEMES.LINKING_PROBLEM]:
+    "pages.contactUsQuestions.linkingProblem.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
@@ -66,9 +68,11 @@ export function contactUsFormPost(req: Request, res: Response): void {
     referer: req.body.referer,
   }).toString();
   if (
-    [ZENDESK_THEMES.ACCOUNT_CREATION, ZENDESK_THEMES.SIGNING_IN].includes(
-      req.body.theme
-    )
+    [
+      ZENDESK_THEMES.ACCOUNT_CREATION,
+      ZENDESK_THEMES.SIGNING_IN,
+      ZENDESK_THEMES.ID_CHECK_APP,
+    ].includes(req.body.theme)
   ) {
     url = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
   }
@@ -136,6 +140,7 @@ export function contactUsQuestionsFormPost(
         additionalDescription: req.body.additionalDescription,
         optionalDescription: req.body.optionalDescription,
         moreDetailDescription: req.body.moreDetailDescription,
+        serviceTryingToUse: req.body.serviceTryingToUse,
       },
       themes: { theme: req.body.theme, subtheme: req.body.subtheme },
       subject: "GOV.UK Accounts Feedback",
@@ -268,6 +273,12 @@ export function getQuestionsFromFormType(
         "pages.contactUsQuestions.provingIdentity.section2.header"
       ),
     },
+    idCheckApp: {
+      issueDescription: req.t("pages.contactUsQuestions.linkingProblem.header"),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header"
+      ),
+    },
   };
 
   return formTypeToQuestions[formType];
@@ -283,8 +294,13 @@ export function getQuestionFromThemes(
     signing_in: req.t("pages.contactUsPublic.section3.signingIn"),
     proving_identity: req.t("pages.contactUsPublic.section3.provingIdentity"),
     something_else: req.t("pages.contactUsPublic.section3.somethingElse"),
-    email_subscriptions: req.t("pages.contactUsPublic.section3.emailSubscriptions"),
-    suggestions_feedback: req.t("pages.contactUsPublic.section3.suggestionsFeedback"),
+    email_subscriptions: req.t(
+      "pages.contactUsPublic.section3.emailSubscriptions"
+    ),
+    suggestions_feedback: req.t(
+      "pages.contactUsPublic.section3.suggestionsFeedback"
+    ),
+    id_check_app: req.t("pages.contactUsPublic.section3.idCheckApp"),
   };
   const signinSubthemeToQuestions: { [key: string]: any } = {
     no_security_code: req.t(
@@ -329,6 +345,13 @@ export function getQuestionFromThemes(
       "pages.contactUsFurtherInformation.accountCreation.section1.radio6"
     ),
   };
+
+  const idCheckAppSubthemeToQuestions: { [key: string]: any } = {
+    linking_problem: req.t(
+      "pages.contactUsFurtherInformation.idCheckApp.section1.linkingProblem"
+    ),
+  };
+
   const themeQuestion = themesToQuestions[theme];
   let subthemeQuestion;
   if (subtheme) {
@@ -337,6 +360,9 @@ export function getQuestionFromThemes(
     }
     if (theme == ZENDESK_THEMES.SIGNING_IN) {
       subthemeQuestion = signinSubthemeToQuestions[subtheme];
+    }
+    if (theme == ZENDESK_THEMES.ID_CHECK_APP) {
+      subthemeQuestion = idCheckAppSubthemeToQuestions[subtheme];
     }
   }
   return {

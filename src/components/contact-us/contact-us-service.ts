@@ -100,6 +100,11 @@ export function contactUsService(
       htmlBody.push(`<p>${descriptions.moreDetailDescription}</p>`);
     }
 
+    if (descriptions.serviceTryingToUse) {
+      htmlBody.push(`<span>[${questions.serviceTryingToUse}]</span>`);
+      htmlBody.push(`<p>${descriptions.serviceTryingToUse}</p>`);
+    }
+
     htmlBody.push(`<span>[Ticket Identifier]</span>`);
     if (optionalData.ticketIdentifier) {
       htmlBody.push(`<p>${optionalData.ticketIdentifier}</p>`);

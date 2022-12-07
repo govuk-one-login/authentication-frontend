@@ -17,6 +17,9 @@ export function validateContactUsRequest(
         } else if (req.body.theme === "account_creation") {
           errorMessage =
             "pages.contactUsFurtherInformation.accountCreation.section1.errorMessage";
+        } else if (req.body.theme === "id_check_app") {
+          errorMessage =
+            "pages.contactUsFurtherInformation.idCheckApp.section1.errorMessage";
         }
 
         return req.t(errorMessage, {
