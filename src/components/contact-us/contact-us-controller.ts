@@ -279,12 +279,12 @@ export function getQuestionFromThemes(
   subtheme?: string
 ): ThemeQuestions {
   const themesToQuestions: { [key: string]: any } = {
-    account_creation: req.t("pages.contactUsPublic.section3.radio1"),
-    signing_in: req.t("pages.contactUsPublic.section3.radio2"),
-    proving_identity: req.t("pages.contactUsPublic.section3.radio3"),
-    something_else: req.t("pages.contactUsPublic.section3.radio4"),
-    email_subscriptions: req.t("pages.contactUsPublic.section3.radio5"),
-    suggestions_feedback: req.t("pages.contactUsPublic.section3.radio6"),
+    account_creation: req.t("pages.contactUsPublic.section3.accountCreation"),
+    signing_in: req.t("pages.contactUsPublic.section3.signingIn"),
+    proving_identity: req.t("pages.contactUsPublic.section3.provingIdentity"),
+    something_else: req.t("pages.contactUsPublic.section3.somethingElse"),
+    email_subscriptions: req.t("pages.contactUsPublic.section3.emailSubscriptions"),
+    suggestions_feedback: req.t("pages.contactUsPublic.section3.suggestionsFeedback"),
   };
   const signinSubthemeToQuestions: { [key: string]: any } = {
     no_security_code: req.t(
