@@ -7,17 +7,17 @@
 {% set pageTitleName = 'pages.proveIdentityWelcome.title' | translate %}
 
 {% block content %}
-    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.proveIdentityWelcome.header' | translate}}</h1>
+    <h1 class="govuk-heading-l">{{ 'pages.proveIdentityWelcome.header' | translate }}</h1>
 
-    <p class="govuk-body">{{'pages.proveIdentityWelcome.section1.paragraph1' | translate}}</p>
-
+    <p class="govuk-body">{{ 'pages.proveIdentityWelcome.section1.paragraph1' | translate }}</p>
     {% if supportLanguageCY %}
         {% set insetTextInnerHtml %}
             {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.paragraph1' | translate }}
-            <a href="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkHref' | translate }}" class="govuk-link" rel="noreferrer">
+            <a href="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkHref' | translate }}"
+               class="govuk-link" rel="noreferrer">
                 {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inPageLanguage' | translate }}
-                <span lang="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.destinationLanguageCode' | translate }}">{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inDestinationLanguage' | translate }}</span>
-            </a>.
+                <span lang="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.destinationLanguageCode' | translate }}">{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inDestinationLanguage' | translate }}</span></a>.
+            {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguageAppWarning' | translate | safe }}
         {% endset %}
 
         {{ govukInsetText({
@@ -29,58 +29,24 @@
         }) }}
     {% endif %}
 
-    <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph1' | translate}}</p>
+    <p class="govuk-body">{{ 'pages.proveIdentityWelcome.section2.paragraph1' | translate }}</p>
 
     <ul class="govuk-list govuk-list--bullet">
-        <li>{{'pages.proveIdentityWelcome.section2.listItem1_2' | translate}}</li>
-        <li>{{'pages.proveIdentityWelcome.section2.listItem1_3' | translate}}</li>
+        <li>{{ 'pages.proveIdentityWelcome.section2.listItem1_2' | translate }}</li>
+        <li>{{ 'pages.proveIdentityWelcome.section2.listItem1_3' | translate }}</li>
     </ul>
 
-    <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph2' | translate}}</p>
-
-    <ul class="govuk-list govuk-list--bullet">
-        <li>{{'pages.proveIdentityWelcome.section2.listItem2_1' | translate}}</li>
-        <li>{{'pages.proveIdentityWelcome.section2.listItem2_2' | translate}}</li>
-    </ul>
-
-    <p class="govuk-body">{{'pages.proveIdentityWelcome.section2.paragraph3' | translate}}</p>
+    <p class="govuk-body">{{ 'pages.proveIdentityWelcome.section2.paragraph2' | translate }}</p>
 
     <form id="form-tracking" action="/prove-identity-welcome" method="post" novalidate="novalidate">
 
-        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-
-        {{ govukRadios({
-            name:"chooseWayPyi",
-            fieldset: {
-                legend: {
-                    text: 'pages.proveIdentityWelcome.section3.subHeading' | translate,
-                    isPageHeading: false,
-                    classes: "govuk-fieldset__legend--m"
-                }
-            },
-            items: [
-                {
-                    value: "continue",
-                    text: 'pages.proveIdentityWelcome.existingSession.section3.radioOption1' | translate
-                },
-                {
-                    value: "redirect",
-                    text: 'pages.proveIdentityWelcome.section3.radioOption2' | translate,
-                    hint: {
-                    text: 'pages.proveIdentityWelcome.section3.radioOption2HintText' | translate
-                }
-                }
-            ],
-            errorMessage: {
-                text: errors['chooseWayPyi'].text
-            } if (errors['chooseWayPyi'])
-        }) }}
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
         {{ govukButton({
-        "text": "general.continue.label" | translate,
-        "type": "Submit",
-        "preventDoubleClick": true
-    }) }}
+            "text": "general.continue.label" | translate,
+            "type": "Submit",
+            "preventDoubleClick": true
+        }) }}
 
     </form>
 {% endblock %}
