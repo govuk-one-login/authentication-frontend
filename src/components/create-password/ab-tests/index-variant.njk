@@ -1,0 +1,82 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "common/show-password/macro.njk" import govukInputWithShowPassword %}
+
+{% set pageTitleName = 'abTestPages.createPassword.title' | translate %}
+
+{% block content %}
+
+    {% include "common/errors/errorSummary.njk" %}
+
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'abTestPages.createPassword.header' | translate}}</h1>
+
+    <form action="/create-password" method="post" novalidate>
+
+        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+        <p class="govuk-body">{{'abTestPages.createPassword.password.paragraph1' | translate}}</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>{{ 'abTestPages.createPassword.password.bulletPoint1' | translate}}</li>
+            <li>{{ 'abTestPages.createPassword.password.bulletPoint2' | translate}}</li>
+        </ul>
+
+        <p class="govuk-body">{{'abTestPages.createPassword.password.paragraph2' | translate}}</p>
+
+        {{ govukInputWithShowPassword(
+            'abTestPages.createPassword.password.label'  | translate,
+            "password",
+            errors,
+            {
+                show: 'general.showPassword.show' | translate,
+                hide: 'general.showPassword.hide' | translate,
+                showFullText: 'general.showPassword.showFullText' | translate,
+                hideFullText: 'general.showPassword.hideFullText' | translate,
+                announceShown: 'general.showPassword.announceShown' | translate,
+                announceHidden: 'general.showPassword.announceHidden' | translate
+            },
+            'new-password'
+        ) }}
+
+        {{ govukInputWithShowPassword(
+            'abTestPages.createPassword.confirmPassword.label' | translate,
+            "confirm-password",
+            errors,
+            {
+                show: 'general.showPassword.show' | translate,
+                hide: 'general.showPassword.hide' | translate,
+                showFullText: 'general.showPassword.showFullText' | translate,
+                hideFullText: 'general.showPassword.hideFullText' | translate,
+                announceShown: 'general.showPassword.announceShown' | translate,
+                announceHidden: 'general.showPassword.announceHidden' | translate
+            },
+            'new-password'
+        ) }}
+
+        {{ govukDetails({
+            summaryText: 'abTestPages.createPassword.securePasswordDetails.summary' | translate,
+            text: 'abTestPages.createPassword.securePasswordDetails.text' | translate
+        }) }}
+
+        <h2 class="govuk-heading-s">{{'abTestPages.createPassword.termsOfUse.heading' | translate}}</h2>
+
+        <p class="govuk-body">{{'abTestPages.createPassword.termsOfUse.paragraph1' | translate}}</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li><a href="{{'abTestPages.createPassword.termsOfUse.bullet1LinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener" target="_blank">{{'abTestPages.createPassword.termsOfUse.bullet1LinkText'| translate}}</a>{{'abTestPages.createPassword.termsOfUse.bullet1Text'| translate}}</li>
+            <li><a href="{{'abTestPages.createPassword.termsOfUse.bullet2LinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener" target="_blank">{{'abTestPages.createPassword.termsOfUse.bullet2LinkText'| translate}}</a></li>
+        </ul>
+
+        {{ govukButton({
+            "text": button_text|default("general.continue.label" | translate, true),
+            "type": "Submit",
+            "preventDoubleClick": true
+        }) }}
+
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="/public/scripts/showPassword.js"></script>
+{% endblock %}

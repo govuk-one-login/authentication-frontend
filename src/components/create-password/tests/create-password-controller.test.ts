@@ -41,6 +41,16 @@ describe("create-password controller", () => {
     });
   });
 
+  describe("createPasswordGetABScenario", () => {
+    it("should render create password view", () => {
+
+      req.session.user.abTest = true;
+      createPasswordGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith("create-password/index-variant.njk");
+    });
+  });
+
   describe("createPasswordPost", () => {
     it("should redirect to get security codes when 2 factor is required", async () => {
       const fakeService: CreatePasswordServiceInterface = {

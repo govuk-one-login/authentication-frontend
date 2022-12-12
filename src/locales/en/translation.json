@@ -1673,5 +1673,44 @@
         "paragraph2End": "."
       }
     }
+  },
+  "abTestPages": {
+    "createPassword": {
+      "title": "Create your password",
+      "header": "Create your password",
+      "password": {
+        "label": "Enter a password",
+        "paragraph1": "Your password must:",
+        "bulletPoint1": "be at least 8 characters long",
+        "bulletPoint2": "include letters and numbers",
+        "paragraph2": "Do not use a very common password, such as ‘password’ or a sequence of numbers.",
+        "validationError": {
+          "required": "Enter your password",
+          "maxLength": "Your password must be less than 256 characters",
+          "commonPassword": "Enter a stronger password. Do not use very common passwords, such as ‘password’ or a sequence of numbers.",
+          "alphaNumeric": "Your password must be at least 8 characters long and must include letters and numbers"
+        }
+      },
+      "confirmPassword": {
+        "label": "Re-type password",
+        "validationError": {
+          "required": "Re-type your password",
+          "matches": "Enter the same password in both fields"
+        }
+      },
+      "securePasswordDetails": {
+        "summary": "How to create a secure password",
+        "text": "A good way to create a secure and memorable password is to use 3 random words. You can use numbers, symbols and spaces."
+      },
+      "termsOfUse": {
+        "heading": "Agree to our terms of use",
+        "paragraph1": "By continuing, you confirm that you agree to our:",
+        "bullet1LinkText": "privacy notice (opens in a new tab)",
+        "bullet1Text": ", which explains how we use your personal information",
+        "bullet1LinkHref": "/privacy-notice",
+        "bullet2LinkText": "terms and conditions (opens in a new tab)",
+        "bullet2LinkHref": "/terms-and-conditions"
+      }
+    }
   }
 }

@@ -33,6 +33,7 @@ export interface Error {
 }
 
 export interface UserSession {
+  abTest?: boolean;
   isAuthenticated?: boolean;
   email?: string;
   phoneNumber?: string;
