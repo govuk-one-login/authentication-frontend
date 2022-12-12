@@ -22,6 +22,7 @@ Create a copy of the .env.sample file and rename it .env and fill in below value
 ENVIRONMENT=development
 API_BASE_URL=
 FRONTEND_API_BASE_URL=
+TEST_CLIENT_ID=
 SESSION_EXPIRY=30000
 SESSION_SECRET=123456
 API_KEY=
@@ -30,6 +31,8 @@ SERVICE_DOMAIN=localhost
 ```
 
 You can find the `API_BASE_URL` in [Concourse](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-deployment) under the outputs within the deploy-oidc-api-{environment} job, where {environment} is the name of the environment you want to connect to.
+
+`TEST_CLIENT_ID` must be a client configured in the client registry of the environment you are connecting to.  Look in the `environment-client-registry` DynamoDb table and retrieve the value of the `ClientID` field for the relevant client.
 
 `UI_LOCALES` can be used be the stub to request specific locales when authorising.  Only 'en' and 'cy' are supported.
 
