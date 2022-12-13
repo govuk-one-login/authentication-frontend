@@ -33,7 +33,6 @@ export interface Error {
 }
 
 export interface UserSession {
-  abTest?: boolean;
   isAuthenticated?: boolean;
   email?: string;
   phoneNumber?: string;
@@ -48,6 +47,7 @@ export interface UserSession {
   authAppSecret?: string;
   authAppQrCodeUrl?: string;
   isPasswordChangeRequired?: boolean;
+  featureFlags?: any;
 }
 
 export interface UserSessionClient {

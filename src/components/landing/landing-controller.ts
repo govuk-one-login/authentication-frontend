@@ -82,7 +82,9 @@ export function landingGet(
     req.session.user.docCheckingAppUser =
       startAuthResponse.data.user.docCheckingAppUser;
 
-    req.session.user.abTest = true;
+    if (startAuthResponse.data.featureFlags) {
+      req.session.user.featureFlags = startAuthResponse.data.featureFlags;
+    }
 
     const nextState = req.session.user.isAuthenticated
       ? USER_JOURNEY_EVENTS.EXISTING_SESSION
