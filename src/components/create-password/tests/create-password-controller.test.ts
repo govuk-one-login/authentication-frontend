@@ -46,88 +46,90 @@ describe("create-password controller", () => {
     it("should render create password view with feature flags", () => {
       createPasswordGet(req as Request, res as Response);
 
-      req.session.user.featureFlags.updatePasswordHintTextVersion = '1';
+      req.session.user.featureFlags.updatePasswordHintTextVersion = "1";
       expect(res.render).to.have.calledWith("create-password/index.njk");
     });
 
-  describe("createPasswordGetABScenario", () => {
-    it("should render create password view", () => {
+    describe("createPasswordGetABScenario", () => {
+      it("should render create password view", () => {
+        req.session.user.featureFlags.updatePasswordHintTextVersion = "2";
+        createPasswordGet(req as Request, res as Response);
 
-      req.session.user.featureFlags.updatePasswordHintTextVersion = '2';
-      createPasswordGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("create-password/ab-tests/index-variant.njk");
-    });
-  });
-
-  describe("createPasswordPost", () => {
-    it("should redirect to get security codes when 2 factor is required", async () => {
-      const fakeService: CreatePasswordServiceInterface = {
-        signUpUser: sinon.fake.returns({
-          data: {
-            consentRequired: false,
-          },
-          success: true,
-        }),
-      };
-
-      req.body.password = "password1";
-      req.session.user.email = "joe.bloggs@test.com";
-      res.locals.sessionId = "34234dsf";
-
-      await createPasswordPost(fakeService)(req as Request, res as Response);
-
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
-      expect(fakeService.signUpUser).to.have.been.calledOnce;
+        expect(res.render).to.have.calledWith(
+          "create-password/ab-tests/index-variant.njk"
+        );
+      });
     });
 
-    it("should throw error when session is not populated", async () => {
-      const fakeService: CreatePasswordServiceInterface = {
-        signUpUser: sinon.fake(),
-      };
+    describe("createPasswordPost", () => {
+      it("should redirect to get security codes when 2 factor is required", async () => {
+        const fakeService: CreatePasswordServiceInterface = {
+          signUpUser: sinon.fake.returns({
+            data: {
+              consentRequired: false,
+            },
+            success: true,
+          }),
+        };
 
-      req.body.password = "password1";
-      req.session.user = undefined;
+        req.body.password = "password1";
+        req.session.user.email = "joe.bloggs@test.com";
+        res.locals.sessionId = "34234dsf";
 
-      await expect(
-        createPasswordPost(fakeService)(req as Request, res as Response)
-      ).to.be.rejectedWith(
-        TypeError,
-        "Cannot read properties of undefined (reading 'email')"
-      );
-      expect(fakeService.signUpUser).to.have.not.been.called;
-    });
+        await createPasswordPost(fakeService)(req as Request, res as Response);
 
-    it("should throw error when password field is not in body", async () => {
-      const fakeService: CreatePasswordServiceInterface = {
-        signUpUser: sinon.fake(),
-      };
+        expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
+        expect(fakeService.signUpUser).to.have.been.calledOnce;
+      });
 
-      req.body = undefined;
-      req.session.user.email = "joe.bloggs@test.com";
+      it("should throw error when session is not populated", async () => {
+        const fakeService: CreatePasswordServiceInterface = {
+          signUpUser: sinon.fake(),
+        };
 
-      await expect(
-        createPasswordPost(fakeService)(req as Request, res as Response)
-      ).to.be.rejectedWith(
-        TypeError,
-        "Cannot read properties of undefined (reading 'password')"
-      );
-      expect(fakeService.signUpUser).to.have.not.been.called;
-    });
+        req.body.password = "password1";
+        req.session.user = undefined;
 
-    it("should throw error when API call returns error", async () => {
-      const error = new Error("Internal server error");
-      const fakeService: CreatePasswordServiceInterface = {
-        signUpUser: sinon.fake.throws(error),
-      };
+        await expect(
+          createPasswordPost(fakeService)(req as Request, res as Response)
+        ).to.be.rejectedWith(
+          TypeError,
+          "Cannot read properties of undefined (reading 'email')"
+        );
+        expect(fakeService.signUpUser).to.have.not.been.called;
+      });
 
-      req.body.password = "password1";
-      req.session.user.email = "joe.bloggs@test.com";
+      it("should throw error when password field is not in body", async () => {
+        const fakeService: CreatePasswordServiceInterface = {
+          signUpUser: sinon.fake(),
+        };
 
-      await expect(
-        createPasswordPost(fakeService)(req as Request, res as Response)
-      ).to.be.rejectedWith(Error, "Internal server error");
-      expect(fakeService.signUpUser).to.have.been.called;
+        req.body = undefined;
+        req.session.user.email = "joe.bloggs@test.com";
+
+        await expect(
+          createPasswordPost(fakeService)(req as Request, res as Response)
+        ).to.be.rejectedWith(
+          TypeError,
+          "Cannot read properties of undefined (reading 'password')"
+        );
+        expect(fakeService.signUpUser).to.have.not.been.called;
+      });
+
+      it("should throw error when API call returns error", async () => {
+        const error = new Error("Internal server error");
+        const fakeService: CreatePasswordServiceInterface = {
+          signUpUser: sinon.fake.throws(error),
+        };
+
+        req.body.password = "password1";
+        req.session.user.email = "joe.bloggs@test.com";
+
+        await expect(
+          createPasswordPost(fakeService)(req as Request, res as Response)
+        ).to.be.rejectedWith(Error, "Internal server error");
+        expect(fakeService.signUpUser).to.have.been.called;
+      });
     });
   });
 });
