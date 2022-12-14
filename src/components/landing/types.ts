@@ -3,7 +3,7 @@ import { ApiResponseResult, DefaultApiResponse } from "../../types";
 export interface StartAuthResponse extends DefaultApiResponse {
   client: ClientInfo;
   user: UserSessionInfo;
-  featureFlags?: {};
+  featureFlags?: Record<string, unknown>;
 }
 
 export interface ClientInfo {
