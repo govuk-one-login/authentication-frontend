@@ -345,10 +345,9 @@
       }
     },
     "accountCreated": {
-      "title": "You've created your GOV.UK account",
-      "header": "You've created your GOV.UK account",
-      "text": "Now continue to use the ",
-      "textEnd": " service.",
+      "title": "You’ve created your GOV.UK account",
+      "header": "You’ve created your GOV.UK account",
+      "text": "Now continue to use the service.",
       "inset": "Your progress on ",
       "insetContinued": " has been saved.",
       "continue": "Continue",
