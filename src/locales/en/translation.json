@@ -1654,7 +1654,7 @@
       "title": "You cannot get a new security code at the moment ",
       "header": "You cannot get a new security code at the moment ",
       "info": {
-        "paragraph1": "This is because you entered the security code too many times.",
+        "paragraph1": "This is because you entered the wrong security code too many times.",
         "paragraph2Start": "You can ",
         "link": "get a new code",
         "paragraph2End": " after 15 minutes."
