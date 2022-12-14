@@ -12,7 +12,7 @@
 
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'abTestPages.createPassword.header' | translate}}</h1>
 
-    <form action="/create-password" method="post" novalidate>
+    <form action="/create-password" data-ab-test="variant-b" method="post" novalidate>
 
         <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
