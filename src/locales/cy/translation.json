@@ -1660,5 +1660,44 @@
         "paragraph2End": "."
       }
     }
+  },
+  "abTestPages": {
+    "createPassword": {
+      "title": "Creu eich cyfrinair",
+      "header": "Creu eich cyfrinair",
+      "password": {
+        "label": "Rhowch gyfrinair",
+        "paragraph1": "Mae'n rhaid i'ch cyfrinair:",
+        "bulletPoint1": "fod yn o leiaf 8 nod o hyd",
+        "bulletPoint2": "cynnwys llythrennau a rhifau",
+        "paragraph2": "Peidiwch defnyddio cyfrinair cyffredin iawn, fel 'password' neu ddilyniant o rifau.",
+        "validationError": {
+          "required": "Rhowch eich cyfrinair",
+          "maxLength": "Mae'n rhaid i'ch cyfrinair fod yn llai na 256 nod",
+          "commonPassword": "Rhowch gyfrinair cryfach. Peidiwch defnyddio cyfrineiriau cyffredin iawn, fel 'password' neu ddilyniant o rifau.",
+          "alphaNumeric": "Mae'n rhaid i'ch cyfrinair fod yn o leiaf 8 nod o hyd a rhaid iddo gynnwys llythrennau a rhifau"
+        }
+      },
+      "confirmPassword": {
+        "label": "Ail deipiwch y cyfrinair",
+        "validationError": {
+          "required": "Ail deipiwch eich cyfrinair",
+          "matches": "Rhowch yr un cyfrinair yn y ddau faes"
+        }
+      },
+      "securePasswordDetails": {
+        "summary": "Sut i greu cyfrinair diogel",
+        "text": "Ffordd dda o greu cyfrinair diogel a chofiadwy yw defnyddio 3 gair ar hap. Gallwch ddefnyddio rhifau, symbolau a gofodau."
+      },
+      "termsOfUse": {
+        "heading": "Cytuno i'n telerau defnyddio",
+        "paragraph1": "Drwy barhau, rydych yn cadarnhau eich bod yn cytuno i'n:",
+        "bullet1LinkText": "hysbysiad preifatrwydd (agor mewn tab newydd)",
+        "bullet1Text": ", sy'n egluro sut rydym yn defnyddio eich gwybodaeth bersonol",
+        "bullet1LinkHref": "/privacy-notice",
+        "bullet2LinkText": "telerau ac amodau (agor mewn tab newydd)",
+        "bullet2LinkHref": "/terms-and-conditions"
+      }
+    }
   }
 }

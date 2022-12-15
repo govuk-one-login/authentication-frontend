@@ -87,6 +87,23 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     return cookieConsent ? cookieConsent.analytics : false;
   }
 
+  function pushABTestVariantToDataLayer() {
+    var path = window.location.pathname;
+
+    if(path === '/create-password') {
+      var matchedElement = document.querySelector('[data-ab-test]');
+
+      if(matchedElement && matchedElement.dataset.abTest) {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: "abTestEvent",
+            variant: matchedElement.dataset.abTest,
+            page: path
+          });
+      }
+    }
+  }
+
   function initAnalytics() {
     loadGtmScript();
     initGtm();
@@ -150,6 +167,7 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     }
 
     pushLanguageToDataLayer();
+    pushABTestVariantToDataLayer();
     gtag({ "gtm.start": new Date().getTime(), event: "gtm.js" });
   }
 
