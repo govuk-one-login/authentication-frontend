@@ -12,4 +12,3 @@ RUN yarn install
 EXPOSE $PORT
 
 CMD ["yarn", "dummy-server"]
-

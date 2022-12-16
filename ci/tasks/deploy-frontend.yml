@@ -42,19 +42,19 @@ run:
       export IMAGE_URI=$(cat frontend-image/repository)
       export IMAGE_TAG=$(cat frontend-image/tag)
       export IMAGE_DIGEST=$(cat frontend-image/digest)
-      
+
       export SIDECAR_IMAGE_URI=$(cat basic-auth-sidecar-image/repository)
       export SIDECAR_IMAGE_TAG=$(cat basic-auth-sidecar-image/tag)
       export SIDECAR_IMAGE_DIGEST=$(cat basic-auth-sidecar-image/digest)
-      
+
       NORMALISED_BASIC_AUTH_USERNAME="${BASIC_AUTH_USERNAME}"
       NORMALISED_BASIC_AUTH_PASSWORD="${BASIC_AUTH_PASSWORD}"
-      
+
       if [ ${NORMALISED_BASIC_AUTH_PASSWORD} == "none" ]; then
         NORMALISED_BASIC_AUTH_USERNAME=""
         NORMALISED_BASIC_AUTH_PASSWORD=""
       fi
-      
+
       cd "frontend-src/ci/terraform/"
       terraform init -input=false \
         -backend-config "role_arn=${DEPLOYER_ROLE_ARN}" \
