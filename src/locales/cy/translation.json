@@ -536,15 +536,15 @@
       "doNotAgree": "Nid wyf yn cytuno"
     },
     "updatedTermsAndCondsMandatory": {
-      "title": "Cytuno i’r telerau defnydd wedi’u diweddaru i fynd yn eich blaen",
-      "header": "Cytuno i’r telerau defnydd wedi’u diweddaru i fynd yn eich blaen",
+      "title": "Cytuno i’r telerau defnydd diwygiedig i barhau",
+      "header": "Cytuno i’r telerau defnydd diwygiedig i barhau",
       "info": {
         "text": "Mae angen i chi gytuno i’n",
         "and": "a",
         "termsAndConditionsText": "telerau ac amodau",
         "privacyNoticeText": "hysbysiad preifatrwydd",
         "cookiesPolicyText": "polisi cwcis",
-        "end": "wedi’u diweddaru i barhau i ddefnyddio eich cyfrif."
+        "end": "diwygiedig i ddefnyddio’r gwasanaeth hwn."
       },
       "section2": {
         "paragraph1": "Os nad ydych yn cytuno i’r telerau newydd, ni allwch ddefnyddio eich cyfrif GOV.UK.",
