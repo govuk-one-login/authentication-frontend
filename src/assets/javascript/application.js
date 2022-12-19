@@ -61,8 +61,8 @@ function initEnterPhoneNumber() {
     }
 
     if (cookies.isOnCookiesPage()) {
-      cookies.cookiesPageInit();	
-    } else {	
+      cookies.cookiesPageInit();
+    } else {
       cookies.cookieBannerInit();
     }
   }

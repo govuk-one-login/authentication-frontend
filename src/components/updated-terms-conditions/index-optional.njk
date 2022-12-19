@@ -9,10 +9,7 @@
 
 <p class="govuk-body govuk-white-text">
     {{ 'pages.updatedTermsAndCondsOptional.paragraph1' | translate }}
-</p>
-
-<p class="govuk-body govuk-white-text">
-    {{ 'pages.updatedTermsAndCondsOptional.paragraph2' | translate + clientInfo.client_name + 'pages.updatedTermsAndCondsOptional.paragraph2Continued' | translate }}
+    <a class="govuk-white-text" href="{{ redirectUri }}">{{ 'pages.updatedTermsAndCondsOptional.paragraph1Continued' | translate }}</a>
 </p>
 
 <form id="form-tracking" action="/updated-terms-and-conditions" method="post" novalidate>
@@ -20,23 +17,18 @@
     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
     {{ govukButton({
-        "text": 'pages.updatedTermsAndCondsOptional.agreeAndContinue' | translate,
+        "text": 'pages.updatedTermsAndCondsOptional.agreeToTheTerms' | translate,
         "type": "Submit",
         "preventDoubleClick": true,
         classes: 'govuk-blue-text govuk-white-button inverted-button',
-        "name": "acceptOrReject",
+        "name": "termsAndConditionsResult",
         "value": "accept"
     }) }}
 
-    <br />
-    {{ govukButton({
-        "text": 'pages.updatedTermsAndCondsOptional.goBackToService' | translate + clientName,
-        "type": "Submit",
-        "preventDoubleClick": true,
-        classes: 'govuk-btn-link inverted-button-link',
-        "name": "acceptOrReject",
-        "value": "reject"
-    }) }}
-
 </form>
+
+<a href="{{ redirectUri }}" class="govuk-white-link inverted-button-link govuk-body">
+    {{'pages.updatedTermsAndCondsOptional.continueWithoutSaving' | translate}}
+</a>
+
 {% endblock %}

@@ -1,0 +1,33 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+
+  - repo: https://github.com/awslabs/cfn-python-lint
+    rev: v0.72.2
+    hooks:
+      - id: cfn-python-lint
+        exclude: ^(ci|.github)/.*|docker-compose.*|.pre-commit-config.yaml$
+        files: ^.*\.(yml|yaml)$
+
+  - repo: https://github.com/alphagov/di-pre-commit-hooks.git
+    rev: 0.0.1
+    hooks:
+      - id: terraform-format
+      - id: terraform-validate
+
+  - repo: local
+    hooks:
+      - id: eslint
+        name: Run ESLint
+        language: docker_image
+        entry: node:18.12.1-alpine3.16 sh -c "yarn install && yarn lint"
+        pass_filenames: false
+      - id: prettier
+        name: Run Prettier
+        language: docker_image
+        entry: node:18.12.1-alpine3.16 sh -c "yarn install && yarn pretty"
+        pass_filenames: false
