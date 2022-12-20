@@ -564,6 +564,26 @@
       "agreeAndContinue": "Agree and continue",
       "goBackToService": "Complete your "
     },
+    "updatedTermsAndCondsRejected": {
+      "title": "Agree to the updated terms of use to continue",
+      "header": "Agree to the updated terms of use to continue",
+      "info": {
+        "text": "You need to agree to our updated",
+        "and": "and",
+        "termsAndConditionsText": "terms and conditions",
+        "privacyNoticeText": "privacy notice",
+        "cookiesPolicyText": "cookies policy",
+        "end": "to keep using your account."
+      },
+      "section2": {
+        "paragraph1": "If you do not agree to the new terms, you cannot use your GOV.UK account.",
+        "govUkHomePageText": "Go to the GOV.UK homepage.",
+        "paragraph2": "If you no longer need your account, or want to delete information saved in your account, you can ",
+        "contactUsText": "contact us."
+      },
+      "agreeAndContinue": "Agree and continue",
+      "goBackToService": "Go back to "
+    },
     "cookiePolicy": {
       "title": "GOV.UK accounts cookies policy",
       "header": "GOV.UK accounts cookies policy",

@@ -15,10 +15,14 @@ export function updatedTermsConditionsGet(req: Request, res: Response): void {
 }
 
 export function updatedTermsRejectedGet(req: Request, res: Response): void {
-  const view =
-    req.session.client.serviceType === SERVICE_TYPE.OPTIONAL
-      ? "index-optional.njk"
-      : "index-mandatory.njk";
+  let view: string;
+  if (req.session.client.serviceType === SERVICE_TYPE.OPTIONAL) {
+    view = "index-optional.njk";
+  } else if (req.session.client.serviceType === SERVICE_TYPE.MANDATORY) {
+    view = "index-mandatory.njk";
+  } else {
+    view = "index-rejected.njk";
+  }
 
   return res.render("updated-terms-conditions/" + view, {
     clientName: req.session.client.name,
