@@ -35,6 +35,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.linkingProblem.title",
   [ZENDESK_THEMES.TAKING_PHOTO_OF_ID_PROBLEM]:
     "pages.contactUsQuestions.takingPhotoOfIdProblem.title",
+  [ZENDESK_THEMES.FACE_SCANNING_PROBLEM]:
+    "pages.contactUsQuestions.faceScanningProblem.title",
 };
 
 const somethingElseSubThemeToPageTitle = {

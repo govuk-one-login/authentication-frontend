@@ -78,4 +78,8 @@
         {% include 'contact-us/questions/_id-check-app-taking-photo-of-id-problem.njk' %}
     {% endif %}
 
+    {% if (theme == 'id_check_app') and (subtheme == 'face_scanning_problem') %}
+        {% include 'contact-us/questions/_id-check-app-face-scanning-problem.njk' %}
+    {% endif %}
+
 {% endblock %}
