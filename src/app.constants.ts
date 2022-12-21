@@ -133,6 +133,7 @@ export const ZENDESK_THEMES = {
   AUTHENTICATOR_APP_PROBLEM: "authenticator_app_problem",
   ID_CHECK_APP: "id_check_app",
   LINKING_PROBLEM: "linking_problem",
+  TAKING_PHOTO_OF_ID_PROBLEM: "taking_photo_of_id_problem",
 };
 
 export enum NOTIFICATION_TYPE {

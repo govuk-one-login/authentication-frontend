@@ -33,6 +33,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.authenticatorApp.title",
   [ZENDESK_THEMES.LINKING_PROBLEM]:
     "pages.contactUsQuestions.linkingProblem.title",
+  [ZENDESK_THEMES.TAKING_PHOTO_OF_ID_PROBLEM]:
+    "pages.contactUsQuestions.takingPhotoOfIdProblem.title",
 };
 
 const somethingElseSubThemeToPageTitle = {

@@ -1528,6 +1528,15 @@
           "paragraph1": "For example, did you see any warning or error messages?",
           "errorMessage": "Enter what happened"
         }
+      },
+      "takingPhotoOfIdProblem": {
+        "title": "You had a problem taking a photo of your identity document using the GOV.UK ID Check app",
+        "header": "You had a problem taking a photo of your identity document using the GOV.UK ID Check app",
+        "section1":{
+          "header": "What happened?",
+          "paragraph1": "For example, did you see any warning or error messages?",
+          "errorMessage": "Enter what happened"
+        }
       }
     },
     "contactUsSubmitSuccess": {

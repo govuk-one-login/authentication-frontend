@@ -1,0 +1,45 @@
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+    {{ 'pages.contactUsQuestions.takingPhotoOfIdProblem.header' | translate }}
+</h1>
+
+<form action="/contact-us-questions" method="post" novalidate>
+
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <input type="hidden" name="theme" value="{{theme}}"/>
+    <input type="hidden" name="subtheme" value="{{subtheme}}"/>
+    <input type="hidden" name="backurl" value="{{backurl}}"/>
+    <input type="hidden" name="formType" value="idCheckApp"/>
+    <input type="hidden" name="referer" value="{{referer}}"/>
+
+    {{ govukTextarea({
+        label: {
+            text: 'pages.contactUsQuestions.takingPhotoOfIdProblem.section1.header' | translate,
+            classes: "govuk-label--s"
+        },
+        hint: {
+            text: 'pages.contactUsQuestions.takingPhotoOfIdProblem.section1.paragraph1' | translate
+        },
+        id: "issueDescription",
+        name: "issueDescription",
+        value: issueDescription,
+        errorMessage: {
+            text: errors['issueDescription'].text
+        } if (errors['issueDescription'])
+    }) }}
+
+    {{ govukWarningText({
+        text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
+        iconFallbackText: "Warning"
+    }) }}
+
+    {% include 'contact-us/questions/_service_trying_to_use.njk' %}
+
+    {% include 'contact-us/questions/_reply_by_email.njk' %}
+
+    {{ govukButton({
+        "text": "general.sendMessage" | translate,
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+
+</form>
