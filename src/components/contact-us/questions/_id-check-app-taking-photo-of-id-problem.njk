@@ -11,21 +11,7 @@
     <input type="hidden" name="formType" value="idCheckApp"/>
     <input type="hidden" name="referer" value="{{referer}}"/>
 
-    {{ govukTextarea({
-        label: {
-            text: 'pages.contactUsQuestions.takingPhotoOfIdProblem.section1.header' | translate,
-            classes: "govuk-label--s"
-        },
-        hint: {
-            text: 'pages.contactUsQuestions.takingPhotoOfIdProblem.section1.paragraph1' | translate
-        },
-        id: "issueDescription",
-        name: "issueDescription",
-        value: issueDescription,
-        errorMessage: {
-            text: errors['issueDescription'].text
-        } if (errors['issueDescription'])
-    }) }}
+    {% include 'contact-us/questions/_what_happened.njk' %}
 
     {{ govukWarningText({
         text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,

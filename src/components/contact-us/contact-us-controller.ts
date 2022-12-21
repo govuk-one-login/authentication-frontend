@@ -278,7 +278,9 @@ export function getQuestionsFromFormType(
       ),
     },
     idCheckApp: {
-      issueDescription: req.t("pages.contactUsQuestions.linkingProblem.header"),
+      issueDescription: `${req.t(
+        "pages.contactUsQuestions.whatHappened.header"
+      )} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1")}`,
       serviceTryingToUse: req.t(
         "pages.contactUsQuestions.serviceTryingToUse.header"
       ),
@@ -353,6 +355,12 @@ export function getQuestionFromThemes(
   const idCheckAppSubthemeToQuestions: { [key: string]: any } = {
     linking_problem: req.t(
       "pages.contactUsFurtherInformation.idCheckApp.section1.linkingProblem"
+    ),
+    taking_photo_of_id_problem: req.t(
+      "pages.contactUsFurtherInformation.idCheckApp.section1.photoProblem"
+    ),
+    face_scanning_problem: req.t(
+      "pages.contactUsFurtherInformation.idCheckApp.section1.faceScanningProblem"
     ),
   };
 

@@ -129,7 +129,7 @@ export function getErrorMessageForIssueDescription(
     theme === ZENDESK_THEMES.ID_CHECK_APP &&
     subtheme === ZENDESK_THEMES.LINKING_PROBLEM
   ) {
-    return "pages.contactUsQuestions.linkingProblem.section1.errorMessage";
+    return "pages.contactUsQuestions.whatHappened.errorMessage";
   }
 }
 
