@@ -1411,7 +1411,7 @@
         },
         "section2": {
           "header": "What happened?",
-          "paragraph1": "Included details of the error",
+          "paragraph1": "Include details of the error",
           "errorMessage": "Enter what happened"
         },
         "section3": {
