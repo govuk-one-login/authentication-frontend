@@ -104,6 +104,9 @@ export function getErrorMessageForIssueDescription(
   if (theme === ZENDESK_THEMES.PROVING_IDENTITY) {
     return "pages.contactUsQuestions.provingIdentity.section1.errorMessage";
   }
+  if (theme === ZENDESK_THEMES.ID_CHECK_APP) {
+    return "pages.contactUsQuestions.whatHappened.errorMessage";
+  }
   if (subtheme === ZENDESK_THEMES.ACCOUNT_NOT_FOUND) {
     return "pages.contactUsQuestions.accountNotFound.section1.errorMessage";
   }
@@ -124,12 +127,6 @@ export function getErrorMessageForIssueDescription(
   }
   if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
     return "pages.contactUsQuestions.authenticatorApp.section1.errorMessage";
-  }
-  if (
-    theme === ZENDESK_THEMES.ID_CHECK_APP &&
-    subtheme === ZENDESK_THEMES.LINKING_PROBLEM
-  ) {
-    return "pages.contactUsQuestions.whatHappened.errorMessage";
   }
 }
 
