@@ -1403,8 +1403,8 @@
         }
       },
       "technicalError": {
-        "title": "There was a technical error",
-        "header": "There was a technical error",
+        "title": "There was a technical problem",
+        "header": "There was a technical problem",
         "section1": {
           "header": "What were you trying to do?",
           "errorMessage": "Enter what you were trying to do"
