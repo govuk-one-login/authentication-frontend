@@ -1659,6 +1659,16 @@
         "paragraph2End": " after 15 minutes."
       }
     },
+    "securityCodeAuthAppEnteredExceeded": {
+      "title": "You cannot enter a security code at the moment ",
+      "header": "You cannot enter a security code at the moment ",
+      "info": {
+        "paragraph1": "This is because you entered the wrong security code too many times.",
+        "paragraph2Start": "You can ",
+        "link": "try again",
+        "paragraph2End": " after 15 minutes."
+      }
+    },
     "signInRetryBlocked": {
       "title": "Your account is locked",
       "header": "Your account is locked",

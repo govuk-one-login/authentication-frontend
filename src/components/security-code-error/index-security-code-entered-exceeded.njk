@@ -1,16 +1,29 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitleName = 'pages.securityCodeEnteredExceeded.title' | translate %}
+{% if isAuthApp %}
+    {% set pageTitleName = 'pages.securityCodeAuthAppEnteredExceeded.title' | translate %}
+{% else %}
+    {% set pageTitleName = 'pages.securityCodeEnteredExceeded.title' | translate %}
+{% endif %}
 
 {% block content %}
-    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeEnteredExceeded.header' | translate }}</h1>
-
-    <p class="govuk-body">{{'pages.securityCodeEnteredExceeded.info.paragraph1' | translate}}</p>
-    <p class="govuk-body">
-        {{'pages.securityCodeEnteredExceeded.info.paragraph2Start' | translate}}
-        <a class="govuk-link" rel="noreferrer" href="{{ newCodeLink }}">{{'pages.securityCodeEnteredExceeded.info.link' | translate}}</a>
-        {{'pages.securityCodeEnteredExceeded.info.paragraph2End' | translate}}
-    </p>
+    {% if isAuthApp %}
+        <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeAuthAppEnteredExceeded.header' | translate }}</h1>
+        <p class="govuk-body">{{'pages.securityCodeAuthAppEnteredExceeded.info.paragraph1' | translate}}</p>
+        <p class="govuk-body">
+            {{'pages.securityCodeAuthAppEnteredExceeded.info.paragraph2Start' | translate}}
+            <a class="govuk-link" rel="noreferrer" href="{{ newCodeLink }}">{{'pages.securityCodeAuthAppEnteredExceeded.info.link' | translate}}</a>
+            {{'pages.securityCodeAuthAppEnteredExceeded.info.paragraph2End' | translate}}
+        </p>
+    {% else %}
+        <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeEnteredExceeded.header' | translate }}</h1>
+        <p class="govuk-body">{{'pages.securityCodeEnteredExceeded.info.paragraph1' | translate}}</p>
+        <p class="govuk-body">
+            {{'pages.securityCodeEnteredExceeded.info.paragraph2Start' | translate}}
+            <a class="govuk-link" rel="noreferrer" href="{{ newCodeLink }}">{{'pages.securityCodeEnteredExceeded.info.link' | translate}}</a>
+            {{'pages.securityCodeEnteredExceeded.info.paragraph2End' | translate}}
+        </p>
+    {% endif %}
 
 {% endblock %}
