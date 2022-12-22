@@ -30,15 +30,6 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value }
         );
       }),
-    body("serviceTryingToUse")
-      .optional()
-      .notEmpty()
-      .withMessage((value, { req }) => {
-        return req.t(
-          "pages.contactUsQuestions.serviceTryingToUse.errorMessage",
-          { value }
-        );
-      }),
     body("additionalDescription")
       .optional()
       .notEmpty()
@@ -57,6 +48,15 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.optionalDescriptionErrorMessage.message",
+          { value }
+        );
+      }),
+    body("serviceTryingToUse")
+      .optional()
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.serviceTryingToUse.errorMessage",
           { value }
         );
       }),
@@ -104,6 +104,12 @@ export function getErrorMessageForIssueDescription(
   if (theme === ZENDESK_THEMES.PROVING_IDENTITY) {
     return "pages.contactUsQuestions.provingIdentity.section1.errorMessage";
   }
+  if (
+    theme === ZENDESK_THEMES.ID_CHECK_APP &&
+    subtheme === ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR
+  ) {
+    return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.errorMessage";
+  }
   if (theme === ZENDESK_THEMES.ID_CHECK_APP) {
     return "pages.contactUsQuestions.whatHappened.errorMessage";
   }
@@ -148,5 +154,8 @@ export function getErrorMessageForAdditionalDescription(
   }
   if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
     return "pages.contactUsQuestions.authenticatorApp.section2.errorMessage";
+  }
+  if (subtheme === ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR) {
+    return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.errorMessage";
   }
 }

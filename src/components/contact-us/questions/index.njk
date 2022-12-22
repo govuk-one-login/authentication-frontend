@@ -82,4 +82,8 @@
         {% include 'contact-us/questions/_id-check-app-face-scanning-problem.njk' %}
     {% endif %}
 
+    {% if (theme == 'id_check_app') and (subtheme == 'id_check_app_technical_problem') %}
+        {% include 'contact-us/questions/_id-check-app-technical-problem.njk' %}
+    {% endif %}
+
 {% endblock %}
