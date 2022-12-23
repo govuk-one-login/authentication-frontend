@@ -392,6 +392,12 @@ export function getQuestionFromThemes(
     face_scanning_problem: req.t(
       "pages.contactUsFurtherInformation.idCheckApp.section1.faceScanningProblem"
     ),
+    id_check_app_technical_problem: req.t(
+      "pages.contactUsFurtherInformation.idCheckApp.section1.technicalError"
+    ),
+    id_check_app_something_else: req.t(
+      "pages.contactUsFurtherInformation.idCheckApp.section1.somethingElse"
+    ),
   };
 
   const themeQuestion = themesToQuestions[theme];
