@@ -110,6 +110,12 @@ export function getErrorMessageForIssueDescription(
   ) {
     return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.errorMessage";
   }
+  if (
+    theme === ZENDESK_THEMES.ID_CHECK_APP &&
+    subtheme === ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE
+  ) {
+    return "pages.contactUsQuestions.idCheckAppSomethingElse.section1.errorMessage";
+  }
   if (theme === ZENDESK_THEMES.ID_CHECK_APP) {
     return "pages.contactUsQuestions.whatHappened.errorMessage";
   }
@@ -156,6 +162,9 @@ export function getErrorMessageForAdditionalDescription(
     return "pages.contactUsQuestions.authenticatorApp.section2.errorMessage";
   }
   if (subtheme === ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR) {
+    return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.errorMessage";
+  }
+  if (subtheme === ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
     return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.errorMessage";
   }
 }

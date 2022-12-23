@@ -39,6 +39,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.faceScanningProblem.title",
   [ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
     "pages.contactUsQuestions.idCheckAppTechnicalProblem.title",
+  [ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
+    "pages.contactUsQuestions.idCheckAppSomethingElse.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
@@ -47,6 +49,8 @@ const somethingElseSubThemeToPageTitle = {
   [ZENDESK_THEMES.SIGNING_IN]: "pages.contactUsQuestions.signingIn.title",
   [ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
     "pages.contactUsQuestions.idCheckAppTechnicalError.title",
+  [ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
+    "pages.contactUsQuestions.idCheckAppSomethingElse.title",
 };
 
 export function contactUsGet(req: Request, res: Response): void {
@@ -292,6 +296,17 @@ export function getQuestionsFromFormType(
     idCheckAppTechnicalProblem: {
       issueDescription: req.t(
         "pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.header"
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.whatHappened.header"
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header"
+      ),
+    },
+    idCheckAppSomethingElse: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.idCheckAppSomethingElse.section1.header"
       ),
       additionalDescription: req.t(
         "pages.contactUsQuestions.whatHappened.header"
