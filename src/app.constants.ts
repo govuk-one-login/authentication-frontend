@@ -139,6 +139,15 @@ export const ZENDESK_THEMES = {
   ID_CHECK_APP_SOMETHING_ELSE: "id_check_app_something_else",
 };
 
+export const ZENDESK_FIELD_MAX_LENGTH = 1200;
+
+export const PLACEHOLDER_REPLACEMENTS = [
+  {
+    search: "[maximumCharacters]",
+    replacement: ZENDESK_FIELD_MAX_LENGTH.toLocaleString(),
+  },
+];
+
 export enum NOTIFICATION_TYPE {
   VERIFY_EMAIL = "VERIFY_EMAIL",
   VERIFY_PHONE_NUMBER = "VERIFY_PHONE_NUMBER",

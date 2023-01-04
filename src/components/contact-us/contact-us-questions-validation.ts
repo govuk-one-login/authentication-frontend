@@ -1,7 +1,7 @@
 import { body, check } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
-import { ZENDESK_THEMES } from "../../app.constants";
+import { ZENDESK_FIELD_MAX_LENGTH, ZENDESK_THEMES } from "../../app.constants";
 
 export function validateContactUsQuestionsRequest(): ValidationChainFunc {
   return [
@@ -57,6 +57,15 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.serviceTryingToUse.errorMessage",
+          { value }
+        );
+      }),
+    body("moreDetailDescription")
+      .optional()
+      .isLength({ max: ZENDESK_FIELD_MAX_LENGTH })
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.optionalDescriptionErrorMessage.entryTooLongMessage",
           { value }
         );
       }),

@@ -1,5 +1,9 @@
 import { Response, Request } from "express";
-import { HTTP_STATUS_CODES } from "../app.constants";
+import {
+  HTTP_STATUS_CODES,
+  ZENDESK_FIELD_MAX_LENGTH,
+  PLACEHOLDER_REPLACEMENTS,
+} from "../app.constants";
 import { Error } from "../types";
 
 export const isObjectEmpty = (obj: Record<string, unknown>): boolean => {
@@ -18,6 +22,20 @@ export function formatValidationError(
   return error;
 }
 
+export function replaceErrorMessagePlaceholders(errors: { [k: string]: Error }): {
+  [p: string]: Error;
+} {
+  for (const error in errors) {
+    PLACEHOLDER_REPLACEMENTS.forEach((i) => {
+      errors[error].text = errors[error].text?.replace(
+        i.search,
+        `${i.replacement}`
+      );
+    });
+  }
+  return errors;
+}
+
 export function renderBadRequest(
   res: Response,
   req: Request,
@@ -26,6 +44,8 @@ export function renderBadRequest(
   postValidationLocals?: Record<string, unknown>
 ): void {
   res.status(HTTP_STATUS_CODES.BAD_REQUEST);
+
+  errors = replaceErrorMessagePlaceholders(errors);
 
   const errorValues = Object.values(errors);
   const uniqueErrorList = [
@@ -36,6 +56,7 @@ export function renderBadRequest(
     errorList: uniqueErrorList,
     ...req.body,
     language: req.i18n.language,
+    zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
   };
   const params = postValidationLocals
     ? { ...errorParams, ...postValidationLocals }

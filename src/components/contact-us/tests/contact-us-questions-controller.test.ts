@@ -7,7 +7,10 @@ import {
   contactUsQuestionsFormPost,
   contactUsQuestionsGet,
 } from "../contact-us-controller";
-import { ZENDESK_THEMES } from "../../../app.constants";
+import {
+  ZENDESK_THEMES,
+  ZENDESK_FIELD_MAX_LENGTH,
+} from "../../../app.constants";
 import { ContactUsServiceInterface } from "../types";
 
 describe("contact us questions controller", () => {
@@ -46,6 +49,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us",
         pageTitleHeading: "pages.contactUsQuestions.anotherProblem.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
     it("should render contact-us-questions if a 'GOV.UK email subscriptions' radio option was chosen", () => {
@@ -60,6 +64,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us",
         pageTitleHeading: "pages.contactUsQuestions.emailSubscriptions.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
     it("should render contact-us-questions if a 'A suggestion or feedback' radio option was chosen", () => {
@@ -74,6 +79,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us",
         pageTitleHeading: "pages.contactUsQuestions.suggestionOrFeedback.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
 
@@ -89,6 +95,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us",
         pageTitleHeading: "pages.contactUsQuestions.provingIdentity.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
 
@@ -113,6 +120,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
     it("should render contact-us-questions if a 'the security code did not work' radio option was chosen", () => {
@@ -128,6 +136,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
     it("should render contact-us-questions if a 'You do not have access to the phone number' radio option was chosen", () => {
@@ -143,6 +152,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.noPhoneNumberAccess.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
     it("should render contact-us-questions if a 'You've forgotten your password' radio option was chosen", () => {
@@ -158,6 +168,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.forgottenPassword.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
     it("should render contact-us-questions if a 'Your account cannot be found' radio option was chosen", () => {
@@ -173,6 +184,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.accountNotFound.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
     it("should render contact-us-questions if a 'technical problem' radio option was chosen", () => {
@@ -188,6 +200,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
     it("should render contact-us-questions if a 'something else' radio option was chosen", () => {
@@ -203,6 +216,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.anotherProblem.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
   });
@@ -221,6 +235,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
     it("should render contact-us-questions if a 'the security code did not work' radio option was chosen", () => {
@@ -236,6 +251,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
     it("should render contact-us-questions if a 'You do not have a UK number' radio option was chosen", () => {
@@ -251,6 +267,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.noUKMobile.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
     it("should render contact-us-questions if a 'technical problem' radio option was chosen", () => {
@@ -266,6 +283,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
     it("should render contact-us-questions if a 'something else' radio option was chosen", () => {
@@ -281,6 +299,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.accountCreation.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
     it("should render contact-us-questions if a 'problem with authenticator app' radio option was chosen", () => {
@@ -296,6 +315,7 @@ describe("contact us questions controller", () => {
         backurl: "/contact-us-further-information",
         pageTitleHeading: "pages.contactUsQuestions.authenticatorApp.title",
         referer: REFERER,
+        zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
       });
     });
 

@@ -1476,7 +1476,8 @@
         }
       },
       "optionalDescriptionErrorMessage": {
-        "message": "Enter more detail"
+        "message": "Enter more detail",
+        "entryTooLongMessage": "Anything else you want to tell us must be [maximumCharacters] characters or less"
       },
       "forgottenPassword": {
         "title": "You’ve forgotten your password",

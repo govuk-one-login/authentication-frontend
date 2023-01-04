@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { PATH_NAMES, SUPPORT_TYPE, ZENDESK_THEMES } from "../../app.constants";
+import {
+  PATH_NAMES,
+  SUPPORT_TYPE,
+  ZENDESK_THEMES,
+  ZENDESK_FIELD_MAX_LENGTH,
+} from "../../app.constants";
 import { contactUsService } from "./contact-us-service";
 import { ContactUsServiceInterface, Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
@@ -133,6 +138,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     backurl: req.headers.referer,
     referer: req.query.referer,
     pageTitleHeading: pageTitle,
+    zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
   });
 }
 

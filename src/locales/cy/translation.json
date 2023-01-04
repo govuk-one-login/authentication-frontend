@@ -1475,7 +1475,8 @@
         }
       },
       "optionalDescriptionErrorMessage": {
-        "message": "Rhowch fwy o fanylion"
+        "message": "Rhowch fwy o fanylion",
+        "entryTooLongMessage": "Anything else you want to tell us must be [maximumCharacters] characters or less",
       },
       "forgottenPassword": {
         "title": "Rydych wedi anghofio eich cyfrinair",
