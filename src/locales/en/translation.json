@@ -152,9 +152,13 @@
       "signInText": "sign in",
       "moreAbout": {
         "header": "About GOV.UK accounts",
-        "paragraph1": "GOV.UK accounts are new. At the moment you can only use your GOV.UK account with a few services.",
-        "paragraph2": "GOV.UK accounts are currently separate from other government accounts (for example Government Gateway or Universal Credit).",
-        "paragraph3": "In the future, you’ll be able to use your GOV.UK account to sign in to most services on GOV.UK."
+        "paragraph1": "GOV.UK accounts are new. At the moment you can only use your GOV.UK account with:",
+        "listItem1": "Apply for a vehicle operator licence",
+        "listItem2": "GOV.UK email subscriptions ",
+        "listItem3": "LITE (Licensing for International Trade and Enterprise)",
+        "listItem4": "Request a basic DBS check",
+        "paragraph2": "GOV.UK accounts do not work with all government accounts and services yet (for example Government Gateway or Universal Credit).",
+        "paragraph3": "In the future, you'll be able to use your GOV.UK account to access all services on GOV.UK."
       },
       "createButtonText": "Create a GOV.UK account"
     },
