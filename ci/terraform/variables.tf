@@ -61,6 +61,11 @@ variable "support_password_reset_required" {
   type = string
 }
 
+variable "support_id_check_app_forms" {
+  type    = string
+  default = "0"
+}
+
 variable "zone_id" {
   default = null
 }

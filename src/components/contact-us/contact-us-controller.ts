@@ -5,6 +5,7 @@ import { ContactUsServiceInterface, Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
 import crypto from "crypto";
 import { logger } from "../../utils/logger";
+import { supportIdCheckAppForms } from "../../config";
 
 const themeToPageTitle = {
   [ZENDESK_THEMES.ACCOUNT_NOT_FOUND]:
@@ -70,6 +71,7 @@ export function contactUsGet(req: Request, res: Response): void {
 
   return res.render("contact-us/index-public-contact-us.njk", {
     referer: referer,
+    showIdCheckAppFormOption: supportIdCheckAppForms(),
   });
 }
 

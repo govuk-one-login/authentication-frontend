@@ -36,16 +36,8 @@
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
 
-    {{ govukRadios({
-        name: "theme",
-        fieldset: {
-            legend: {
-                text: 'pages.contactUsPublic.section3.header' | translate,
-                isPageHeading: false,
-                classes: "govuk-fieldset__legend--m"
-            }
-        },
-        items: [
+    {% if showIdCheckAppFormOption === true %}
+        {% set items = [
             {
                 value: "account_creation",
                 text: 'pages.contactUsPublic.section3.accountCreation' | translate
@@ -74,7 +66,46 @@
                 value: "suggestions_feedback",
                 text: 'pages.contactUsPublic.section3.suggestionsFeedback' | translate
             }
-        ],
+        ] %}
+    {% else %}
+        {% set items = [
+            {
+                value: "account_creation",
+                text: 'pages.contactUsPublic.section3.accountCreation' | translate
+            },
+            {
+                value: "signing_in",
+                text: 'pages.contactUsPublic.section3.signingIn' | translate
+            },
+            {
+                value: "something_else",
+                text: 'pages.contactUsPublic.section3.somethingElse' | translate
+            },
+            {
+                value: "proving_identity",
+                text: 'pages.contactUsPublic.section3.provingIdentity' | translate
+            },
+            {
+                value: "email_subscriptions",
+                text: 'pages.contactUsPublic.section3.emailSubscriptions' | translate
+            },
+            {
+                value: "suggestions_feedback",
+                text: 'pages.contactUsPublic.section3.suggestionsFeedback' | translate
+            }
+        ] %}
+    {% endif %}
+
+    {{ govukRadios({
+        name: "theme",
+        fieldset: {
+            legend: {
+                text: 'pages.contactUsPublic.section3.header' | translate,
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
+            }
+        },
+        items: items,
           errorMessage: {
           text: errors['theme'].text
           } if (errors['theme'])
