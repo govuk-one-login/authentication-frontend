@@ -22,7 +22,9 @@ export function formatValidationError(
   return error;
 }
 
-export function replaceErrorMessagePlaceholders(errors: { [k: string]: Error }): {
+export function replaceErrorMessagePlaceholders(errors: {
+  [k: string]: Error;
+}): {
   [p: string]: Error;
 } {
   for (const error in errors) {

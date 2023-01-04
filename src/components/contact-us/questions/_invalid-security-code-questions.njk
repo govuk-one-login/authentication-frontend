@@ -14,7 +14,7 @@
 {% set radioHeader = 'pages.contactUsQuestions.invalidSecurityCode.section1.header' | translate %}
 {% include "contact-us/questions/_security_send_method.njk" %}
 
-{{ govukTextarea({
+{{ govukCharacterCount({
     label: {
       text: 'pages.contactUsQuestions.invalidSecurityCode.section2.header' | translate,
       classes: "govuk-label--s"
@@ -25,6 +25,7 @@
     id: "moreDetailDescription",
     name: "moreDetailDescription",
     value: moreDetailDescription,
+    maxlength: zendeskFieldMaxLength,
     errorMessage: {
         text: errors['moreDetailDescription'].text
     } if (errors['moreDetailDescription'])
