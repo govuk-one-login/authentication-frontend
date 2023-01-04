@@ -1475,6 +1475,12 @@
           "paragraph1": "You can add more detail, such as what you were trying to do, or give us feedback"
         }
       },
+      "issueDescriptionErrorMessage": {
+        "entryTooLongMessage": "What were you trying to do must be [maximumCharacters] characters or less"
+      },
+      "additionalDescriptionErrorMessage": {
+        "entryTooLongMessage": "What happened must be [maximumCharacters] characters or less"
+      },
       "optionalDescriptionErrorMessage": {
         "message": "Enter more detail",
         "entryTooLongMessage": "Anything else you want to tell us must be [maximumCharacters] characters or less"

@@ -30,6 +30,15 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value }
         );
       }),
+    body("issueDescription")
+      .optional()
+      .isLength({ max: ZENDESK_FIELD_MAX_LENGTH })
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage",
+          { value }
+        );
+      }),
     body("additionalDescription")
       .optional()
       .notEmpty()
@@ -39,6 +48,15 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
             req.body.theme,
             req.body.subtheme
           ),
+          { value }
+        );
+      }),
+    body("additionalDescription")
+      .optional()
+      .isLength({ max: ZENDESK_FIELD_MAX_LENGTH })
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.additionalDescriptionErrorMessage.entryTooLongMessage",
           { value }
         );
       }),
