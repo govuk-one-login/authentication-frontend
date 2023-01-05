@@ -209,6 +209,12 @@ export function getErrorMessageForIssueDescriptionWhereLengthExceeded(
   ) {
     return "pages.contactUsQuestions.accountNotFound.section1.entryTooLongErrorMessage";
   }
+  if (
+    theme === ZENDESK_THEMES.SIGNING_IN &&
+    subtheme === ZENDESK_THEMES.TECHNICAL_ERROR
+  ) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
+  }
 }
 
 export function getErrorMessageForAdditionalDescription(
