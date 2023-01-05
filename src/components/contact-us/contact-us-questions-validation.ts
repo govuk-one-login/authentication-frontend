@@ -35,7 +35,10 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .isLength({ max: ZENDESK_FIELD_MAX_LENGTH })
       .withMessage((value, { req }) => {
         return req.t(
-          "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage",
+          getErrorMessageForIssueDescriptionWhereLengthExceeded(
+            req.body.theme,
+            req.body.subtheme
+          ),
           { value }
         );
       }),
@@ -166,6 +169,30 @@ export function getErrorMessageForIssueDescription(
   }
   if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
     return "pages.contactUsQuestions.authenticatorApp.section1.errorMessage";
+  }
+}
+
+export function getErrorMessageForIssueDescriptionWhereLengthExceeded(
+  theme: string,
+  subtheme: string
+): string {
+  if (
+    theme === ZENDESK_THEMES.ACCOUNT_CREATION &&
+    subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM
+  ) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
+  }
+  if (
+    theme === ZENDESK_THEMES.ACCOUNT_CREATION &&
+    subtheme === ZENDESK_THEMES.TECHNICAL_ERROR
+  ) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
+  }
+  if (
+    theme === ZENDESK_THEMES.ACCOUNT_CREATION &&
+    subtheme === ZENDESK_THEMES.SOMETHING_ELSE
+  ) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.anythingElseTooLongMessage";
   }
 }
 
