@@ -14,7 +14,7 @@
 {% set radioHeader = 'pages.contactUsQuestions.noPhoneNumberAccess.section1.header' | translate %}
 {% include "contact-us/questions/_security_send_method.njk" %}
 
-{{ govukTextarea({
+{{ govukCharacterCount({
     label: {
       text: 'pages.contactUsQuestions.noPhoneNumberAccess.section2.header' | translate,
       classes: "govuk-label--s"
@@ -24,6 +24,7 @@
       },
     id: "optionalDescription",
     name: "optionalDescription",
+    maxlength: zendeskFieldMaxLength,
     value: optionalDescription,
     errorMessage: {
         text: errors['optionalDescription'].text
