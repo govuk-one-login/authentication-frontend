@@ -203,6 +203,12 @@ export function getErrorMessageForIssueDescriptionWhereLengthExceeded(
   ) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.anythingElseTooLongMessage";
   }
+  if (
+    theme === ZENDESK_THEMES.SIGNING_IN &&
+    subtheme === ZENDESK_THEMES.ACCOUNT_NOT_FOUND
+  ) {
+    return "pages.contactUsQuestions.accountNotFound.section1.entryTooLongErrorMessage";
+  }
 }
 
 export function getErrorMessageForAdditionalDescription(

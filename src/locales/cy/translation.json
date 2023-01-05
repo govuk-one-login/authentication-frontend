@@ -1529,7 +1529,8 @@
         "section1": {
           "header": "Pa wasanaeth oeddech chi’n ceisio ei ddefnyddio?",
           "paragraph1": "Er enghraifft, eich tanysgrifiadau e-bost GOV.UK, eich cyfrif treth personol neu Gredyd Cynhwysol",
-          "errorMessage": "Rhowch ba wasanaeth roeddech yn ceisio ei ddefnyddio"
+          "errorMessage": "Rhowch ba wasanaeth roeddech yn ceisio ei ddefnyddio",
+          "entryTooLongErrorMessage": "What service were you trying to use must be [maximumCharacters] characters or less"
         },
         "section2": {
           "header": "Ydych chi eisiau dweud unrhyw beth arall wrthym",

@@ -1530,7 +1530,8 @@
         "section1": {
           "header": "What service were you trying to use?",
           "paragraph1": "For example, your GOV.UK email subscriptions, your personal tax account or Universal Credit",
-          "errorMessage": "Enter what service you were trying to use"
+          "errorMessage": "Enter what service you were trying to use",
+          "entryTooLongErrorMessage": "What service were you trying to use must be [maximumCharacters] characters or less"
         },
         "section2": {
           "header": "Anything else you want to tell us",
