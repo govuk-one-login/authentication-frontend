@@ -63,6 +63,15 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value }
         );
       }),
+    body("optionalDescription")
+      .optional()
+      .isLength({ max: ZENDESK_FIELD_MAX_LENGTH })
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.optionalDescriptionErrorMessage.entryTooLongMessage",
+          { value }
+        );
+      }),
     body("moreDetailDescription")
       .optional()
       .notEmpty()
