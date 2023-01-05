@@ -51,6 +51,15 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value }
         );
       }),
+    body("serviceTryingToUse")
+      .optional()
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.serviceTryingToUse.errorMessage",
+          { value }
+        );
+      }),
     body("contact")
       .notEmpty()
       .withMessage((value, { req }) => {
@@ -95,6 +104,21 @@ export function getErrorMessageForIssueDescription(
   if (theme === ZENDESK_THEMES.PROVING_IDENTITY) {
     return "pages.contactUsQuestions.provingIdentity.section1.errorMessage";
   }
+  if (
+    theme === ZENDESK_THEMES.ID_CHECK_APP &&
+    subtheme === ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR
+  ) {
+    return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.errorMessage";
+  }
+  if (
+    theme === ZENDESK_THEMES.ID_CHECK_APP &&
+    subtheme === ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE
+  ) {
+    return "pages.contactUsQuestions.idCheckAppSomethingElse.section1.errorMessage";
+  }
+  if (theme === ZENDESK_THEMES.ID_CHECK_APP) {
+    return "pages.contactUsQuestions.whatHappened.errorMessage";
+  }
   if (subtheme === ZENDESK_THEMES.ACCOUNT_NOT_FOUND) {
     return "pages.contactUsQuestions.accountNotFound.section1.errorMessage";
   }
@@ -136,5 +160,11 @@ export function getErrorMessageForAdditionalDescription(
   }
   if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
     return "pages.contactUsQuestions.authenticatorApp.section2.errorMessage";
+  }
+  if (subtheme === ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR) {
+    return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.errorMessage";
+  }
+  if (subtheme === ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
+    return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.errorMessage";
   }
 }

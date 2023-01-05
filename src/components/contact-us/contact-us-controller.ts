@@ -5,6 +5,7 @@ import { ContactUsServiceInterface, Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
 import crypto from "crypto";
 import { logger } from "../../utils/logger";
+import { supportIdCheckAppForms } from "../../config";
 
 const themeToPageTitle = {
   [ZENDESK_THEMES.ACCOUNT_NOT_FOUND]:
@@ -31,12 +32,26 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.provingIdentity.title",
   [ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM]:
     "pages.contactUsQuestions.authenticatorApp.title",
+  [ZENDESK_THEMES.LINKING_PROBLEM]:
+    "pages.contactUsQuestions.linkingProblem.title",
+  [ZENDESK_THEMES.TAKING_PHOTO_OF_ID_PROBLEM]:
+    "pages.contactUsQuestions.takingPhotoOfIdProblem.title",
+  [ZENDESK_THEMES.FACE_SCANNING_PROBLEM]:
+    "pages.contactUsQuestions.faceScanningProblem.title",
+  [ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
+    "pages.contactUsQuestions.idCheckAppTechnicalProblem.title",
+  [ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
+    "pages.contactUsQuestions.idCheckAppSomethingElse.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
   [ZENDESK_THEMES.ACCOUNT_CREATION]:
     "pages.contactUsQuestions.accountCreation.title",
   [ZENDESK_THEMES.SIGNING_IN]: "pages.contactUsQuestions.signingIn.title",
+  [ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
+    "pages.contactUsQuestions.idCheckAppTechnicalError.title",
+  [ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
+    "pages.contactUsQuestions.idCheckAppSomethingElse.title",
 };
 
 export function contactUsGet(req: Request, res: Response): void {
@@ -56,6 +71,7 @@ export function contactUsGet(req: Request, res: Response): void {
 
   return res.render("contact-us/index-public-contact-us.njk", {
     referer: referer,
+    showIdCheckAppFormOption: supportIdCheckAppForms(),
   });
 }
 
@@ -66,9 +82,11 @@ export function contactUsFormPost(req: Request, res: Response): void {
     referer: req.body.referer,
   }).toString();
   if (
-    [ZENDESK_THEMES.ACCOUNT_CREATION, ZENDESK_THEMES.SIGNING_IN].includes(
-      req.body.theme
-    )
+    [
+      ZENDESK_THEMES.ACCOUNT_CREATION,
+      ZENDESK_THEMES.SIGNING_IN,
+      ZENDESK_THEMES.ID_CHECK_APP,
+    ].includes(req.body.theme)
   ) {
     url = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
   }
@@ -136,6 +154,7 @@ export function contactUsQuestionsFormPost(
         additionalDescription: req.body.additionalDescription,
         optionalDescription: req.body.optionalDescription,
         moreDetailDescription: req.body.moreDetailDescription,
+        serviceTryingToUse: req.body.serviceTryingToUse,
       },
       themes: { theme: req.body.theme, subtheme: req.body.subtheme },
       subject: "GOV.UK Accounts Feedback",
@@ -268,6 +287,36 @@ export function getQuestionsFromFormType(
         "pages.contactUsQuestions.provingIdentity.section2.header"
       ),
     },
+    idCheckApp: {
+      issueDescription: `${req.t(
+        "pages.contactUsQuestions.whatHappened.header"
+      )} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1")}`,
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header"
+      ),
+    },
+    idCheckAppTechnicalProblem: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.header"
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.whatHappened.header"
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header"
+      ),
+    },
+    idCheckAppSomethingElse: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.idCheckAppSomethingElse.section1.header"
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.whatHappened.header"
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header"
+      ),
+    },
   };
 
   return formTypeToQuestions[formType];
@@ -279,12 +328,17 @@ export function getQuestionFromThemes(
   subtheme?: string
 ): ThemeQuestions {
   const themesToQuestions: { [key: string]: any } = {
-    account_creation: req.t("pages.contactUsPublic.section3.radio1"),
-    signing_in: req.t("pages.contactUsPublic.section3.radio2"),
-    proving_identity: req.t("pages.contactUsPublic.section3.radio3"),
-    something_else: req.t("pages.contactUsPublic.section3.radio4"),
-    email_subscriptions: req.t("pages.contactUsPublic.section3.radio5"),
-    suggestions_feedback: req.t("pages.contactUsPublic.section3.radio6"),
+    account_creation: req.t("pages.contactUsPublic.section3.accountCreation"),
+    signing_in: req.t("pages.contactUsPublic.section3.signingIn"),
+    proving_identity: req.t("pages.contactUsPublic.section3.provingIdentity"),
+    something_else: req.t("pages.contactUsPublic.section3.somethingElse"),
+    email_subscriptions: req.t(
+      "pages.contactUsPublic.section3.emailSubscriptions"
+    ),
+    suggestions_feedback: req.t(
+      "pages.contactUsPublic.section3.suggestionsFeedback"
+    ),
+    id_check_app: req.t("pages.contactUsPublic.section3.idCheckApp"),
   };
   const signinSubthemeToQuestions: { [key: string]: any } = {
     no_security_code: req.t(
@@ -329,6 +383,25 @@ export function getQuestionFromThemes(
       "pages.contactUsFurtherInformation.accountCreation.section1.radio6"
     ),
   };
+
+  const idCheckAppSubthemeToQuestions: { [key: string]: any } = {
+    linking_problem: req.t(
+      "pages.contactUsFurtherInformation.idCheckApp.section1.linkingProblem"
+    ),
+    taking_photo_of_id_problem: req.t(
+      "pages.contactUsFurtherInformation.idCheckApp.section1.photoProblem"
+    ),
+    face_scanning_problem: req.t(
+      "pages.contactUsFurtherInformation.idCheckApp.section1.faceScanningProblem"
+    ),
+    id_check_app_technical_problem: req.t(
+      "pages.contactUsFurtherInformation.idCheckApp.section1.technicalError"
+    ),
+    id_check_app_something_else: req.t(
+      "pages.contactUsFurtherInformation.idCheckApp.section1.somethingElse"
+    ),
+  };
+
   const themeQuestion = themesToQuestions[theme];
   let subthemeQuestion;
   if (subtheme) {
@@ -337,6 +410,9 @@ export function getQuestionFromThemes(
     }
     if (theme == ZENDESK_THEMES.SIGNING_IN) {
       subthemeQuestion = signinSubthemeToQuestions[subtheme];
+    }
+    if (theme == ZENDESK_THEMES.ID_CHECK_APP) {
+      subthemeQuestion = idCheckAppSubthemeToQuestions[subtheme];
     }
   }
   return {
