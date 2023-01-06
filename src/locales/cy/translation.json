@@ -1713,16 +1713,6 @@
         "paragraph2End": " ar ôl 15 munud."
       }
     },
-    "securityCodeAuthAppEnteredExceeded": {
-      "title": "Ni allwch roi cod diogelwch ar hyn o bryd ",
-      "header": "Ni allwch roi cod diogelwch ar hyn o bryd ",
-      "info": {
-        "paragraph1": "Mae hyn oherwydd eich bod wedi rhoi y cod diogelwch gormod o weithau.",
-        "paragraph2Start": "Gallwch ",
-        "link": "roi cynnig arall",
-        "paragraph2End": " ar ôl 15 munud."
-      }
-    },
     "signInRetryBlocked": {
       "title": "Mae eich cyfrif wedi’i gloi",
       "header": "Mae eich cyfrif wedi’i gloi",
