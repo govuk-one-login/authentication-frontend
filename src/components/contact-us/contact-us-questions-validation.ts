@@ -224,6 +224,12 @@ export function getErrorMessageForIssueDescriptionWhereLengthExceeded(
   if (theme === ZENDESK_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
+  if (
+    theme === ZENDESK_THEMES.ID_CHECK_APP &&
+    subtheme === ZENDESK_THEMES.LINKING_PROBLEM
+  ) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.whatHappenedTooLongMessage";
+  }
 }
 
 export function getErrorMessageForAdditionalDescription(
