@@ -10,20 +10,21 @@
 <input type="hidden" name="formType" value="provingIdentity"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
 
-{{ govukTextarea({
+{{ govukCharacterCount({
     label: {
       text: 'pages.contactUsQuestions.provingIdentity.section1.header' | translate,
       classes: "govuk-label--s"
     },
     id: "issueDescription",
     name: "issueDescription",
+    maxlength: zendeskFieldMaxLength,
     value: issueDescription,
     errorMessage: {
         text: errors['issueDescription'].text
     } if (errors['issueDescription'])
 }) }}
 
-{{ govukTextarea({
+{{ govukCharacterCount({
     label: {
       text: 'pages.contactUsQuestions.provingIdentity.section2.header' | translate,
       classes: "govuk-label--s"
@@ -33,6 +34,7 @@
       },
     id: "additionalDescription",
     name: "additionalDescription",
+    maxlength: zendeskFieldMaxLength,
     value: additionalDescription,
     errorMessage: {
         text: errors['additionalDescription'].text

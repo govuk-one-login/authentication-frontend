@@ -254,6 +254,9 @@ export function getErrorMessageForIssueDescriptionWhereLengthExceeded(
   ) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
+  if (theme === ZENDESK_THEMES.PROVING_IDENTITY) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
+  }
 }
 
 export function getErrorMessageForAdditionalDescription(
