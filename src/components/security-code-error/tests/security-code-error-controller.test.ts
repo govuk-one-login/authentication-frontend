@@ -66,13 +66,25 @@ describe("security code  controller", () => {
   });
 
   describe("securityCodeEnteredExceededGet", () => {
-    it("should render security code invalid request view", () => {
+    it("should render security code invalid request view when SMS code has been used max number of times", () => {
       req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
 
       securityCodeEnteredExceededGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
-        "security-code-error/index-security-code-entered-exceeded.njk"
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        { newCodeLink: "/enter-code", isAuthApp: false }
+      );
+    });
+
+    it("should render security code invalid request view when Auth App code has been used max number of times", () => {
+      req.query.actionType = SecurityCodeErrorType.AuthAppMfaMaxRetries;
+
+      securityCodeEnteredExceededGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        { newCodeLink: "/enter-authenticator-app-code", isAuthApp: true }
       );
     });
   });
