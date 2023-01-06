@@ -13,7 +13,7 @@
 
     {% include "common/errors/errorSummary.njk" %}
 
-    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.photoId.header' | translate}}</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.noPhotoId.header' | translate}}</h1>
 
     <p class="govuk-body">{{'pages.noPhotoId.section1.paragraph1' | translate}}</p>
 
@@ -32,4 +32,8 @@
         }) }}
 
     </form>
+
+    <p class="govuk-body"><a target="_blank" rel="noopener noreferrer" href="{{'general.contactAccounts.contactLinkHref' | translate}}" class="govuk-link">{{'general.contactAccounts.contactLinkText' | translate}}</a></p>
+
+
 {% endblock %}

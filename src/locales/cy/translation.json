@@ -44,6 +44,10 @@
     "continue": {
       "label": "Parhau"
     },
+    "contactAccounts": {
+      "contactLinkHref": "https://signin.account.gov.uk/contact-us",
+      "contactLinkText": "Cysylltu â thîm cyfrif GOV.UK (agor mewn tab newydd)"
+    },
     "header": {
       "homepageHref": "https://www.gov.uk/"
     },
@@ -1692,14 +1696,14 @@
       }
     },
     "noPhotoId": {
-      "title": "Mae’n ddrwg gennym, ni allwn brofi pwy ydych chi",
-      "header": "Mae’n ddrwg gennym, ni allwn brofi pwy ydych chi",
+      "title": "Mae’n rhaid i chi gael ID llun er mwyn profi pwy ydych chi fel hyn",
+      "header": "Mae’n rhaid i chi gael ID llun er mwyn profi pwy ydych chi fel hyn",
       "section1": {
-        "paragraph1": "Ar hyn o bryd gallwch ond profi pwy ydych chi gyda’ch cyfrif GOV.UK os oes gennych ID gyda llun."
+        "paragraph1": "Ar hyn o bryd, dim ond os oes gennych ID llun y gallwch brofi pwy ydych chi gyda’ch cyfrif GOV.UK."
       },
       "section2": {
         "subHeading": "Beth allwch chi ei wneud",
-        "paragraph1": "Parhau i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a chwilio am ffyrdd eraill i brofi pwy ydych chi."
+        "paragraph1": "Ewch yn eich blaen i’r gwasanaeth roeddech chi’n ceisio ei ddefnyddio a chwilio am ffyrdd eraill i brofi pwy ydych chi."
       }
     },
     "securityCodeEnteredExceeded": {
