@@ -260,6 +260,9 @@ export function getErrorMessageForIssueDescriptionWhereLengthExceeded(
   if (theme === ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
+  if (theme === ZENDESK_THEMES.SUGGESTIONS_FEEDBACK) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.suggestionFeedbackTooLongMessage";
+  }
 }
 
 export function getErrorMessageForAdditionalDescription(

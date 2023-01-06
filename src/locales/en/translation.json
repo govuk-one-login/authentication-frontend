@@ -1478,7 +1478,8 @@
       "issueDescriptionErrorMessage": {
         "entryTooLongMessage": "What were you trying to do must be [maximumCharacters] characters or less",
         "anythingElseTooLongMessage": "Anything else you want to tell us must be [maximumCharacters] characters or less",
-        "whatHappenedTooLongMessage": "What happened must be [maximumCharacters] characters or less"
+        "whatHappenedTooLongMessage": "What happened must be [maximumCharacters] characters or less",
+        "suggestionFeedbackTooLongMessage": "Your suggestion or feedback must be [maximumCharacters] characters or less"
       },
       "additionalDescriptionErrorMessage": {
         "entryTooLongMessage": "What happened must be [maximumCharacters] characters or less"
