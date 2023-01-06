@@ -560,13 +560,12 @@
       "goBackToService": "Ewch yn ôl i "
     },
     "updatedTermsAndCondsOptional": {
-      "title": "Cytuno i’r telerau defnydd wedi’u diweddaru i fynd yn eich blaen",
-      "header": "Cytuno i’r telerau defnydd wedi’u diweddaru i fynd yn eich blaen",
-      "paragraph1": "Mae angen i chi gytuno i’n diweddariad o’r",
-      "paragraph2": "Gallwch ddal cwblhau eich ",
-      "paragraph2Continued": " heb ei arbed.",
-      "agreeAndContinue": "Cytuno a pharhau",
-      "goBackToService": "Cwblhewch eich "
+      "title": "Mae angen i chi gytuno i’r telerau defnydd diwygiedig i arbed eich cynnydd",
+      "header": "Mae angen i chi gytuno i’r telerau defnydd diwygiedig i arbed eich cynnydd",
+      "paragraph1": "Os nad ydych yn cytuno, gallwch ",
+      "paragraph1Continued": "barhau heb arbed eich cynnydd.",
+      "agreeToTheTerms": "Cytuno i’r telerau",
+      "continueWithoutSaving": "Parhau heb arbed"
     },
     "cookiePolicy": {
       "title": "Polisi cwcis cyfrifon GOV.UK",

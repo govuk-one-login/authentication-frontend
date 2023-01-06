@@ -560,13 +560,12 @@
       "goBackToService": "Go back to "
     },
     "updatedTermsAndCondsOptional": {
-      "title": "Agree to the updated terms of use to continue",
-      "header": "Agree to the updated terms of use to continue",
-      "paragraph1": "You need to agree to our updated",
-      "paragraph2": "You can still complete your ",
-      "paragraph2Continued": " without saving it.",
-      "agreeAndContinue": "Agree and continue",
-      "goBackToService": "Complete your "
+      "title": "You need to agree to the updated terms of use to save your progress",
+      "header": "You need to agree to the updated terms of use to save your progress",
+      "paragraph1": "If you do not agree, you can ",
+      "paragraph1Continued": "continue without saving your progress.",
+      "agreeToTheTerms": "Agree to the terms",
+      "continueWithoutSaving": "Continue without saving"
     },
     "cookiePolicy": {
       "title": "GOV.UK accounts cookies policy",
