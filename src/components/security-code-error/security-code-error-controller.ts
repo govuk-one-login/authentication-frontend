@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { SecurityCodeErrorType } from "../common/constants";
+import {
+  SecurityCodeErrorType,
+  pathWithQueryParam,
+  SECURITY_CODE_ERROR,
+} from "../common/constants";
 import { PATH_NAMES } from "../../app.constants";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
@@ -15,7 +19,6 @@ export function securityCodeTriesExceededGet(
   res: Response
 ): void {
   res.cookie("re", "true", { maxAge: 15 * 60 * 1000, httpOnly: true });
-
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isResendCodeRequest: req.query.isResendCodeRequest,
@@ -36,7 +39,10 @@ export function securityCodeEnteredExceededGet(
   res: Response
 ): void {
   res.render("security-code-error/index-security-code-entered-exceeded.njk", {
-    newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
+    newCodeLink: isAuthApp(req.query.actionType as SecurityCodeErrorType)
+      ? PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
+      : PATH_NAMES.RESEND_MFA_CODE,
+    isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
   });
 }
 
@@ -46,7 +52,17 @@ function getNewCodePath(actionType: SecurityCodeErrorType) {
     case SecurityCodeErrorType.MfaBlocked:
       return PATH_NAMES.RESEND_MFA_CODE;
     case SecurityCodeErrorType.MfaMaxRetries:
-      return PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED;
+      return pathWithQueryParam(
+        PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
+        SECURITY_CODE_ERROR,
+        SecurityCodeErrorType.MfaMaxRetries
+      );
+    case SecurityCodeErrorType.AuthAppMfaMaxRetries:
+      return pathWithQueryParam(
+        PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
+        SECURITY_CODE_ERROR,
+        SecurityCodeErrorType.AuthAppMfaMaxRetries
+      );
     case SecurityCodeErrorType.OtpMaxCodesSent:
     case SecurityCodeErrorType.OtpBlocked:
     case SecurityCodeErrorType.OtpMaxRetries:
@@ -55,9 +71,11 @@ function getNewCodePath(actionType: SecurityCodeErrorType) {
     case SecurityCodeErrorType.EmailBlocked:
       return PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
     case SecurityCodeErrorType.EmailMaxRetries:
-      return PATH_NAMES.RESEND_EMAIL_CODE + "?requestNewCode=true";
-    case SecurityCodeErrorType.AuthAppMfaMaxRetries:
-      return PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE;
+      return pathWithQueryParam(
+        PATH_NAMES.RESEND_EMAIL_CODE,
+        "requestNewCode",
+        "true"
+      );
   }
 }
 
