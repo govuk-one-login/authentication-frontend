@@ -11,7 +11,7 @@
 <input type="hidden" name="formType" value="signingInProblem"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
 
-{{ govukTextarea({
+{{ govukCharacterCount({
     label: {
       text: 'pages.contactUsQuestions.signignInProblem.section1.header' | translate,
       classes: "govuk-label--s"
@@ -21,6 +21,7 @@
       },
     id: "issueDescription",
     name: "issueDescription",
+    maxlength: zendeskFieldMaxLength,
     value: issueDescription,
     errorMessage: {
         text: errors['issueDescription'].text
