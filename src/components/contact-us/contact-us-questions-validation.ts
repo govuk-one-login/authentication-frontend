@@ -236,6 +236,12 @@ export function getErrorMessageForIssueDescriptionWhereLengthExceeded(
   ) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.whatHappenedTooLongMessage";
   }
+  if (
+    theme === ZENDESK_THEMES.ID_CHECK_APP &&
+    subtheme === ZENDESK_THEMES.FACE_SCANNING_PROBLEM
+  ) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.whatHappenedTooLongMessage";
+  }
 }
 
 export function getErrorMessageForAdditionalDescription(
