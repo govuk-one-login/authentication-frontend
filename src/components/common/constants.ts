@@ -1,7 +1,7 @@
 import { PATH_NAMES } from "../../app.constants";
 import { getNextState } from "./state-machine/state-machine";
 
-export const SECURITY_CODE_ERROR = "actionType";
+const SECURITY_CODE_ERROR = "actionType";
 
 export enum SecurityCodeErrorType {
   MfaMaxCodesSent = "mfaMaxCodesSent",
@@ -120,11 +120,11 @@ export function getErrorPathByCode(errorCode: number): string | undefined {
   return nextPath;
 }
 
-export function pathWithQueryParam(
+function pathWithQueryParam(
   path: string,
   queryParam?: string,
   value?: string | SecurityCodeErrorType
-): string {
+) {
   if (queryParam && value) {
     const queryParams = new URLSearchParams({
       [queryParam]: value,

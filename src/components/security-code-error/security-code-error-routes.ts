@@ -1,6 +1,6 @@
 import { PATH_NAMES } from "../../app.constants";
 
-import express from "express";
+import * as express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import {
   securityCodeCannotRequestCodeGet,
