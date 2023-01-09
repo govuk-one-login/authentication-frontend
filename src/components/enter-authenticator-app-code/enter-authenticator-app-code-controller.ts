@@ -12,7 +12,7 @@ import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation";
-import { MFA_METHOD_TYPE } from "../../app.constants";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 
 const TEMPLATE_NAME = "enter-authenticator-app-code/index.njk";
@@ -21,7 +21,17 @@ export function enterAuthenticatorAppCodeGet(
   req: Request,
   res: Response
 ): void {
-  res.render(TEMPLATE_NAME);
+  if (
+    req.session.user.wrongCodeEnteredLock &&
+    new Date().toUTCString() < req.session.user.wrongCodeEnteredLock
+  ) {
+    res.render("security-code-error/index-security-code-entered-exceeded.njk", {
+      newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+      isAuthApp: true,
+    });
+  } else {
+    res.render(TEMPLATE_NAME);
+  }
 }
 
 export const enterAuthenticatorAppCodePost = (

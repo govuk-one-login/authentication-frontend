@@ -17,13 +17,18 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
+import { PATH_NAMES } from "../../../app.constants";
 
 describe("security code  controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest();
+    req = mockRequest({
+      path: PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
+      session: { client: {}, user: { featureFlags: {} } },
+      log: { info: sinon.fake() },
+    });
     res = mockResponse();
   });
 
@@ -33,6 +38,9 @@ describe("security code  controller", () => {
 
   describe("securityCodeExpiredGet", () => {
     it("should render security code expired view", () => {
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
       req.query.actionType = SecurityCodeErrorType.EmailMaxCodesSent;
 
       securityCodeInvalidGet(req as Request, res as Response);

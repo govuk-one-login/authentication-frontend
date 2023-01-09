@@ -193,4 +193,9 @@ export const IPV_ERROR_CODES = {
   IDENTITY_PROCESSING_TIMEOUT: "Identity check timeout",
 };
 
+export const LOCKED_COOKIE_OTP_VALUES = {
+  WRONG_CODE_USED_TOO_MANY_TIMES: "wrongCodeEnteredTooManyTimes",
+  CODE_REQUESTED_TOO_MANY_TIMES: "codeRequestedTooManyTimes",
+};
+
 export const COOKIES_PREFERENCES_SET = "cookies_preferences_set";

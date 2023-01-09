@@ -7,10 +7,17 @@ import {
 import { PATH_NAMES } from "../../app.constants";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
+  const isNotEmailCode =
+    req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries;
+  if (isNotEmailCode) {
+    req.session.user.wrongCodeEnteredLock = new Date(
+      Date.now() + 15 * 60000
+    ).toUTCString();
+  }
   res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
-    isBlocked: req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries,
+    isBlocked: isNotEmailCode,
   });
 }
 
@@ -18,7 +25,9 @@ export function securityCodeTriesExceededGet(
   req: Request,
   res: Response
 ): void {
-  res.cookie("re", "true", { maxAge: 15 * 60 * 1000, httpOnly: true });
+  req.session.user.codeRequestLock = new Date(
+    Date.now() + 15 * 60000
+  ).toUTCString();
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isResendCodeRequest: req.query.isResendCodeRequest,
