@@ -59,7 +59,7 @@ export function contactUsService(
     htmlBody.push(`<p>${themeQuestions.themeQuestion}</p>`);
 
     if (themeQuestions.subthemeQuestion) {
-      htmlBody.push(`<span>[Subtheme]</span>`);
+      htmlBody.push(`<span>[Issue]</span>`);
       htmlBody.push(`<p>${themeQuestions.subthemeQuestion}</p>`);
     }
 
