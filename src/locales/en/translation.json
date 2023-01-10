@@ -152,9 +152,13 @@
       "signInText": "sign in",
       "moreAbout": {
         "header": "About GOV.UK accounts",
-        "paragraph1": "GOV.UK accounts are new. At the moment you can only use your GOV.UK account with a few services.",
-        "paragraph2": "GOV.UK accounts are currently separate from other government accounts (for example Government Gateway or Universal Credit).",
-        "paragraph3": "In the future, you’ll be able to use your GOV.UK account to sign in to most services on GOV.UK."
+        "paragraph1": "GOV.UK accounts are new. At the moment you can only use your GOV.UK account with:",
+        "listItem1": "Apply for a vehicle operator licence",
+        "listItem2": "GOV.UK email subscriptions ",
+        "listItem3": "LITE (Licensing for International Trade and Enterprise)",
+        "listItem4": "Request a basic DBS check",
+        "paragraph2": "GOV.UK accounts do not work with all government accounts and services yet (for example Government Gateway or Universal Credit).",
+        "paragraph3": "In the future, you'll be able to use your GOV.UK account to access all services on GOV.UK."
       },
       "createButtonText": "Create a GOV.UK account"
     },
@@ -551,13 +555,12 @@
       "goBackToServiceEnd": " service"
     },
     "updatedTermsAndCondsOptional": {
-      "title": "Agree to the updated terms of use to continue",
-      "header": "Agree to the updated terms of use to continue",
-      "paragraph1": "You need to agree to our updated",
-      "paragraph2": "You can still complete your ",
-      "paragraph2Continued": " without saving it.",
-      "agreeAndContinue": "Agree and continue",
-      "goBackToService": "Complete your "
+      "title": "You need to agree to the updated terms of use to save your progress",
+      "header": "You need to agree to the updated terms of use to save your progress",
+      "paragraph1": "If you do not agree, you can ",
+      "paragraph1Continued": "continue without saving your progress.",
+      "agreeToTheTerms": "Agree to the terms",
+      "continueWithoutSaving": "Continue without saving"
     },
     "cookiePolicy": {
       "title": "GOV.UK accounts cookies policy",
@@ -1267,12 +1270,13 @@
       },
       "section3": {
         "header": "What are you contacting us about?",
-        "radio1": "A problem creating a GOV.UK account",
-        "radio2": "A problem signing in to your GOV.UK account",
-        "radio3": "A problem proving your identity",
-        "radio4": "Another problem using your GOV.UK account",
-        "radio5": "GOV.UK email subscriptions",
-        "radio6": "A suggestion or feedback about using your GOV.UK account",
+        "accountCreation": "A problem creating a GOV.UK account",
+        "signingIn": "A problem signing in to your GOV.UK account",
+        "provingIdentity": "A problem proving your identity",
+        "somethingElse": "Another problem using your GOV.UK account",
+        "emailSubscriptions": "GOV.UK email subscriptions",
+        "suggestionsFeedback": "A suggestion or feedback about using your GOV.UK account",
+        "idCheckApp": "A problem proving your identity using the GOV.UK ID Check app",
         "errorMessage": "Select a reason for contacting us"
       },
       "submitButtonText": "Submit",
@@ -1307,11 +1311,34 @@
           "radio6": "You had a problem with an authenticator app",
           "errorMessage": "Select the problem you had when creating an account"
         }
+      },
+      "idCheckApp": {
+        "title": "A problem proving your identity using the GOV.UK ID Check app",
+        "header": "A problem proving your identity using the GOV.UK ID Check app",
+        "section1": {
+          "header": "Tell us what happened",
+          "linkingProblem": "You had a problem linking the app to your web browser",
+          "photoProblem": "You had a problem taking a photo of your identity document (for example, passport or driving licence)",
+          "faceScanningProblem": "You had a problem scanning your face",
+          "technicalError": "There was a technical problem (for example you saw an error message)",
+          "somethingElse": "Something else",
+          "errorMessage": "Select the problem you had when proving your identity using the GOV.UK ID Check app"
+        }
       }
     },
     "contactUsQuestions": {
       "personalInformation": {
-        "paragraph1": "Do not include personal or financial information, for example your National Insurance number or credit card details."
+        "paragraph1": "Do not include personal or financial information, for example your passport or credit card details."
+      },
+      "whatHappened": {
+        "header": "What happened?",
+        "paragraph1": "For example, did you see any warning or error messages?",
+        "errorMessage": "Enter what happened"
+      },
+      "serviceTryingToUse": {
+        "header": "What service were you trying to use?",
+        "hint": "For example, get a DBS check",
+        "errorMessage": "Enter the name of the service"
       },
       "replyByEmail": {
         "validationError": {
@@ -1374,15 +1401,15 @@
         }
       },
       "technicalError": {
-        "title": "There was a technical error",
-        "header": "There was a technical error",
+        "title": "There was a technical problem",
+        "header": "There was a technical problem",
         "section1": {
           "header": "What were you trying to do?",
           "errorMessage": "Enter what you were trying to do"
         },
         "section2": {
           "header": "What happened?",
-          "paragraph1": "Included details of the error",
+          "paragraph1": "Include details of the error",
           "errorMessage": "Enter what happened"
         },
         "section3": {
@@ -1494,6 +1521,44 @@
         "section2": {
           "header": "Anything else you want to tell us",
           "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "linkingProblem": {
+          "title": "You had a problem linking the app to your web browser",
+          "header": "You had a problem linking the app to your web browser"
+      },
+      "takingPhotoOfIdProblem": {
+          "title": "You had a problem taking a photo of your identity document using the GOV.UK ID Check app",
+          "header": "You had a problem taking a photo of your identity document using the GOV.UK ID Check app"
+      },
+      "faceScanningProblem": {
+        "title": "You had a problem scanning your face using the GOV.UK ID Check app",
+        "header": "You had a problem scanning your face using the GOV.UK ID Check app"
+      },
+      "idCheckAppTechnicalProblem": {
+        "title": "You had a technical problem",
+        "section1": {
+          "title": "You had a technical problem",
+          "header": "What were you trying to do?",
+          "errorMessage": "Tell us what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "Include details of the error",
+          "errorMessage": "Tell us what happened"
+        }
+      },
+      "idCheckAppSomethingElse": {
+        "title": "Another problem with the GOV.UK ID Check app",
+        "section1": {
+          "title": "Another problem with the GOV.UK ID Check app",
+          "header": "What were you trying to do?",
+          "errorMessage": "Tell us what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "For example, was there a technical problem?",
+          "errorMessage": "Tell us what happened"
         }
       }
     },

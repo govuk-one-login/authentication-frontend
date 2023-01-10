@@ -23,6 +23,7 @@ export interface Questions {
   optionalDescription?: string;
   moreDetailDescription?: string;
   radioButtons?: string;
+  serviceTryingToUse?: string;
 }
 
 export interface ThemeQuestions {
@@ -35,6 +36,7 @@ export interface Descriptions {
   additionalDescription?: string;
   optionalDescription?: string;
   moreDetailDescription?: string;
+  serviceTryingToUse?: string;
 }
 
 export interface Themes {

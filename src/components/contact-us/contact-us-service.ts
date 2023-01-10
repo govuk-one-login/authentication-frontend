@@ -59,7 +59,7 @@ export function contactUsService(
     htmlBody.push(`<p>${themeQuestions.themeQuestion}</p>`);
 
     if (themeQuestions.subthemeQuestion) {
-      htmlBody.push(`<span>[Tell us what happened?]</span>`);
+      htmlBody.push(`<span>[Issue]</span>`);
       htmlBody.push(`<p>${themeQuestions.subthemeQuestion}</p>`);
     }
 
@@ -98,6 +98,11 @@ export function contactUsService(
     if (descriptions.moreDetailDescription) {
       htmlBody.push(`<span>[${questions.moreDetailDescription}]</span>`);
       htmlBody.push(`<p>${descriptions.moreDetailDescription}</p>`);
+    }
+
+    if (descriptions.serviceTryingToUse) {
+      htmlBody.push(`<span>[${questions.serviceTryingToUse}]</span>`);
+      htmlBody.push(`<p>${descriptions.serviceTryingToUse}</p>`);
     }
 
     htmlBody.push(`<span>[Ticket Identifier]</span>`);

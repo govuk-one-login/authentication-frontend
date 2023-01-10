@@ -1,0 +1,15 @@
+{{ govukTextarea({
+    label: {
+        text: 'pages.contactUsQuestions.whatHappened.header' | translate,
+        classes: "govuk-label--s"
+    },
+    hint: {
+        text: 'pages.contactUsQuestions.whatHappened.paragraph1' | translate
+    },
+    id: "issueDescription",
+    name: "issueDescription",
+    value: issueDescription,
+    errorMessage: {
+        text: errors['issueDescription'].text
+    } if (errors['issueDescription'])
+}) }}

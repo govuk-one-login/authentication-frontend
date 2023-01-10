@@ -1,5 +1,5 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsQuestions.noUKMobile.header' | translate }}
+  {{ 'pages.contactUsQuestions.linkingProblem.header' | translate }}
 </h1>
 
 <form action="/contact-us-questions" method="post" novalidate>
@@ -8,29 +8,17 @@
 <input type="hidden" name="theme" value="{{theme}}"/>
 <input type="hidden" name="subtheme" value="{{subtheme}}"/>
 <input type="hidden" name="backurl" value="{{backurl}}"/>
-<input type="hidden" name="formType" value="noUKMobile"/>
+<input type="hidden" name="formType" value="idCheckApp"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
 
-{{ govukTextarea({
-    label: {
-      text: 'pages.contactUsQuestions.noUKMobile.section1.header' | translate,
-      classes: "govuk-label--s"
-    },
-    hint: {
-        text: 'pages.contactUsQuestions.noUKMobile.section1.paragraph1' | translate
-      },
-    id: "moreDetailDescription",
-    name: "moreDetailDescription",
-    value: moreDetailDescription,
-    errorMessage: {
-        text: errors['moreDetailDescription'].text
-    } if (errors['moreDetailDescription'])
-}) }}
+{% include 'contact-us/questions/_what_happened.njk' %}
 
 {{ govukWarningText({
     text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
     iconFallbackText: "Warning"
 }) }}
+
+{% include 'contact-us/questions/_service_trying_to_use.njk' %}
 
 {% include 'contact-us/questions/_reply_by_email.njk' %}
 

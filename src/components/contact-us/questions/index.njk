@@ -70,4 +70,24 @@
         {% include 'contact-us/questions/_proving-identity-problem-questions.njk' %}
     {% endif %}
 
+    {% if (theme == 'id_check_app') and (subtheme == 'linking_problem') %}
+        {% include 'contact-us/questions/_id-check-app-linking-problem.njk' %}
+    {% endif %}
+
+    {% if (theme == 'id_check_app') and (subtheme == 'taking_photo_of_id_problem') %}
+        {% include 'contact-us/questions/_id-check-app-taking-photo-of-id-problem.njk' %}
+    {% endif %}
+
+    {% if (theme == 'id_check_app') and (subtheme == 'face_scanning_problem') %}
+        {% include 'contact-us/questions/_id-check-app-face-scanning-problem.njk' %}
+    {% endif %}
+
+    {% if (theme == 'id_check_app') and (subtheme == 'id_check_app_technical_problem') %}
+        {% include 'contact-us/questions/_id-check-app-technical-problem.njk' %}
+    {% endif %}
+
+    {% if (theme == 'id_check_app') and (subtheme == 'id_check_app_something_else') %}
+        {% include 'contact-us/questions/_id-check-app-something-else.njk' %}
+    {% endif %}
+
 {% endblock %}

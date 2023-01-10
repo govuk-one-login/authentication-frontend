@@ -35,13 +35,13 @@ You can find the `API_BASE_URL` in [Concourse](https://cd.gds-reliability.engine
 
 Run `docker-compose up` or the `startup.sh` script.
 
-In `docker-compose.yaml` you will see three services which need to be started to run the frontend locally, the frontend itself, a lightweight stub client, and a redis instance. 
+In `docker-compose.yaml` you will see three services which need to be started to run the frontend locally, the frontend itself, a lightweight stub client, and a redis instance.
 
 When starting for the first time, or after a clean, the frontend will take a few minutes to start as node needs to install all the dependencies.
 
 To find out if the application has started, open a console window on the frontend docker container and view the logs. If the server has started successfully you will see this message `Server listening on port 3000`.  If this does not appear try forcing node to restart by updating one of the `.njk` files.
 
-There are two stub apps you can use to start a journey. 
+There are two stub apps you can use to start a journey.
 
 To start an auth only journey with MFA required ("Cm"), navigate to the stub app on port 2000 [http://localhost:2000](http://localhost:2000).  This acts like a local client to create a backend session and redirect to the start page.
 
@@ -70,7 +70,7 @@ and changing the `VTR` environment variable for the `di-auth-stub-no-mfa` servic
       - TEST_CLIENT_ID=${TEST_CLIENT_ID}
       - STUB_HOSTNAME=${STUB_HOSTNAME}
       - UI_LOCALES=${UI_LOCALES}
-      - VTR=["Cl"] <== Edit this line 
+      - VTR=["Cl"] <== Edit this line
       - PORT=5000
 ```
 

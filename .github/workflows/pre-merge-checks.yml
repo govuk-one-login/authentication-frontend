@@ -23,9 +23,9 @@ jobs:
           - 6389:6379
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js 18.x
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 18.12.1
       - name: Install dependencies
@@ -57,4 +57,3 @@ jobs:
       SUPPORT_INTERNATIONAL_NUMBERS: 1
       SUPPORT_MFA_OPTIONS: 1
       ZENDESK_API_URL: https://zendesk.com
-

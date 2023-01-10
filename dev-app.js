@@ -56,7 +56,7 @@ app.get("/", (req, res) => {
 
       console.log(`Session is: ${sessionCookieValue}`);
       console.log(`lng is: ${lngCookieValue}`);
-      
+
       const location = url.parse(response.headers.location, true);
 
       res.redirect(
@@ -87,7 +87,7 @@ function getCookieValue(cookie, cookieName) {
 function getUILocales() {
   const uiLocales = process.env.UI_LOCALES;
   if (uiLocales && uiLocales.length > 0) {
-    return "&ui_locales=" + uiLocales; 
+    return "&ui_locales=" + uiLocales;
   } else {
     return "";
   }
