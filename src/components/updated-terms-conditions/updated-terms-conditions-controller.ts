@@ -22,6 +22,7 @@ export function updatedTermsRejectedGet(req: Request, res: Response): void {
 
   return res.render("updated-terms-conditions/" + view, {
     clientName: req.session.client.name,
+    redirectUri: req.session.client.redirectUri,
   });
 }
 
