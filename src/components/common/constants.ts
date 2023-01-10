@@ -82,11 +82,6 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.EmailMaxCodesSent
   ),
-  [ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED]: pathWithQueryParam(
-    PATH_NAMES["SECURITY_CODE_WAIT"],
-    SECURITY_CODE_ERROR,
-    SecurityCodeErrorType.OtpBlocked
-  ),
   [ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_INVALID"],
     SECURITY_CODE_ERROR,
