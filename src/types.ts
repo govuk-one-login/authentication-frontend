@@ -48,6 +48,8 @@ export interface UserSession {
   authAppQrCodeUrl?: string;
   isPasswordChangeRequired?: boolean;
   featureFlags?: any;
+  wrongCodeEnteredLock?: string;
+  codeRequestLock?: string;
 }
 
 export interface UserSessionClient {

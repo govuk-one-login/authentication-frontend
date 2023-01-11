@@ -1,7 +1,7 @@
 import { PATH_NAMES } from "../../app.constants";
 import { getNextState } from "./state-machine/state-machine";
 
-const SECURITY_CODE_ERROR = "actionType";
+export const SECURITY_CODE_ERROR = "actionType";
 
 export enum SecurityCodeErrorType {
   MfaMaxCodesSent = "mfaMaxCodesSent",
@@ -82,11 +82,6 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.EmailMaxCodesSent
   ),
-  [ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED]: pathWithQueryParam(
-    PATH_NAMES["SECURITY_CODE_WAIT"],
-    SECURITY_CODE_ERROR,
-    SecurityCodeErrorType.OtpBlocked
-  ),
   [ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_INVALID"],
     SECURITY_CODE_ERROR,
@@ -120,11 +115,11 @@ export function getErrorPathByCode(errorCode: number): string | undefined {
   return nextPath;
 }
 
-function pathWithQueryParam(
+export function pathWithQueryParam(
   path: string,
   queryParam?: string,
   value?: string | SecurityCodeErrorType
-) {
+): string {
   if (queryParam && value) {
     const queryParams = new URLSearchParams({
       [queryParam]: value,
