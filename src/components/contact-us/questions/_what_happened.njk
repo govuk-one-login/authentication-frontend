@@ -11,6 +11,6 @@
     maxlength: zendeskFieldMaxLength,
     value: issueDescription,
     errorMessage: {
-        text: errors['issueDescription'].text
+        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['issueDescription'])
 }) }}

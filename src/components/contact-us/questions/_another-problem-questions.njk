@@ -21,7 +21,7 @@
     maxlength: zendeskFieldMaxLength,
     value: issueDescription,
     errorMessage: {
-        text: errors['issueDescription'].text
+        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['issueDescription'])
 }) }}
 
@@ -38,7 +38,7 @@
     maxlength: zendeskFieldMaxLength,
     value: additionalDescription,
     errorMessage: {
-        text: errors['additionalDescription'].text
+        text: errors['additionalDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['additionalDescription'])
 }) }}
 

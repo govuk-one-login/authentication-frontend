@@ -1,10 +1,10 @@
-import { Response, Request } from "express";
+import { Request, Response } from "express";
 import {
   HTTP_STATUS_CODES,
-  ZENDESK_FIELD_MAX_LENGTH,
   PLACEHOLDER_REPLACEMENTS,
+  ZENDESK_FIELD_MAX_LENGTH,
 } from "../app.constants";
-import { Error } from "../types";
+import { Error, PlaceholderReplacement } from "../types";
 
 export const isObjectEmpty = (obj: Record<string, unknown>): boolean => {
   return Object.keys(obj).length === 0;
@@ -22,20 +22,35 @@ export function formatValidationError(
   return error;
 }
 
-export function replaceErrorMessagePlaceholders(errors: {
-  [k: string]: Error;
-}): {
-  [p: string]: Error;
-} {
-  for (const error in errors) {
-    PLACEHOLDER_REPLACEMENTS.forEach((i) => {
-      errors[error].text = errors[error].text?.replace(
-        i.search,
-        `${i.replacement}`
-      );
+export function deDuplicateErrorList(errors: { [k: string]: Error }): Error[] {
+  const errorValues = Object.values(errors);
+  return [
+    ...new Map(
+      errorValues.map((error) => {
+        return [error.text, error];
+      })
+    ).values(),
+  ];
+}
+
+export function replaceErrorMessagePlaceholders(
+  errors: Error[],
+  placeholders: PlaceholderReplacement[]
+): Error[] {
+  return errors.map((error) => {
+    const errorCopy: Error = { ...error };
+
+    placeholders.forEach((placeholder) => {
+      if (errorCopy.text?.includes(placeholder.search)) {
+        errorCopy.text = errorCopy.text.replace(
+          placeholder.search,
+          placeholder.replacement
+        );
+      }
     });
-  }
-  return errors;
+
+    return errorCopy;
+  });
 }
 
 export function renderBadRequest(
@@ -47,15 +62,13 @@ export function renderBadRequest(
 ): void {
   res.status(HTTP_STATUS_CODES.BAD_REQUEST);
 
-  errors = replaceErrorMessagePlaceholders(errors);
+  const uniqueErrorList: Error[] = deDuplicateErrorList(errors);
+  const uniqueErrorListWithPlaceholdersReplaced: Error[] =
+    replaceErrorMessagePlaceholders(uniqueErrorList, PLACEHOLDER_REPLACEMENTS);
 
-  const errorValues = Object.values(errors);
-  const uniqueErrorList = [
-    ...new Map(errorValues.map((error) => [error.text, error])).values(),
-  ];
   const errorParams = {
     errors,
-    errorList: uniqueErrorList,
+    errorList: uniqueErrorListWithPlaceholdersReplaced,
     ...req.body,
     language: req.i18n.language,
     zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,

@@ -32,6 +32,11 @@ export interface Error {
   href: string;
 }
 
+export interface PlaceholderReplacement {
+  search: string;
+  replacement: string;
+}
+
 export interface UserSession {
   isAuthenticated?: boolean;
   email?: string;
