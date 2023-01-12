@@ -44,6 +44,10 @@
     "continue": {
       "label": "Continue"
     },
+    "contactAccounts": {
+      "contactLinkHref": "https://signin.account.gov.uk/contact-us",
+      "contactLinkText": "Contact the GOV.UK account team (opens in a new tab)"
+    },
     "header": {
       "homepageHref": "https://www.gov.uk/"
     },
@@ -1704,8 +1708,8 @@
       }
     },
     "noPhotoId": {
-      "title": "No photo id",
-      "header": "Sorry, we cannot prove your identity",
+      "title": "You must have a photo ID to prove your identity this way",
+      "header": "You must have a photo ID to prove your identity this way",
       "section1": {
         "paragraph1": "You can currently only prove your identity with your GOV.UK account if you have a photo ID."
       },
