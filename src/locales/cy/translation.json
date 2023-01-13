@@ -1299,9 +1299,7 @@
         "suggestionsFeedback": "A suggestion or feedback about using your GOV.UK account",
         "idCheckApp": "A problem proving your identity using the GOV.UK ID Check app",
         "errorMessage": "Select a reason for contacting us"
-      },
-      "submitButtonText": "Submit",
-      "submitButtonLink": "/contact-us-submit"
+      }
     },
     "contactUsFurtherInformation": {
       "signingIn": {
