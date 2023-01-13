@@ -10,6 +10,14 @@ import {
 import { defaultZendeskClient } from "../../utils/zendesk";
 import { getZendeskGroupIdPublic } from "../../config";
 import { CreateTicketPayload, ZendeskInterface } from "../../utils/types";
+import { ZENDESK_THEMES } from "../../app.constants";
+
+export function getZendeskIdentifierTag(theme: string): string {
+  if (theme === ZENDESK_THEMES.ID_CHECK_APP) {
+    return "sign_in_app";
+  }
+  return "govuk_sign_in";
+}
 
 export function contactUsService(
   zendeskClient: ZendeskInterface = defaultZendeskClient
@@ -31,7 +39,10 @@ export function contactUsService(
           ),
         },
         group_id: getZendeskGroupIdPublic(),
-        tags: ["govuk_sign_in", ...prefixThemeTags(contactForm.themes)],
+        tags: [
+          getZendeskIdentifierTag(contactForm.themes.theme),
+          ...prefixThemeTags(contactForm.themes),
+        ],
       },
     };
 
