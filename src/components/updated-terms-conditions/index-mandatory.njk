@@ -32,33 +32,10 @@
         "value": "accept"
     }) }}
 
-    <br />
-
-    <p class="govuk-body govuk-white-text">
-        {{ 'pages.updatedTermsAndCondsMandatory.section2.paragraph1' | translate }}
-        {{ govukButton({
-            "text": 'pages.updatedTermsAndCondsMandatory.section2.govUkHomePageText' | translate,
-            "type": "Submit",
-            "preventDoubleClick": true,
-            classes: 'govuk-btn-link',
-            "name": "termsAndConditionsResult",
-            "value": "govUk"
-        }) }}
-    </p>
-
-    <p class="govuk-body govuk-white-text">
-        {{ 'pages.updatedTermsAndCondsMandatory.section2.paragraph2' | translate }}
-        {{ govukButton({
-            "text": 'pages.updatedTermsAndCondsMandatory.section2.contactUsText' | translate,
-            "type": "Submit",
-            "preventDoubleClick": true,
-            classes: 'govuk-btn-link',
-            "name": "termsAndConditionsResult",
-            "value": "contactUs"
-        }) }}
-    </p>
-
-
-
 </form>
+
+<a href={{ redirectUri }} class="govuk-white-link inverted-button-link govuk-body">
+    {{ 'pages.updatedTermsAndCondsMandatory.goBackToService' | translate }}
+</a>
+
 {% endblock %}

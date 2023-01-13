@@ -544,6 +544,28 @@
       "doNotAgree": "Nid wyf yn cytuno"
     },
     "updatedTermsAndCondsMandatory": {
+      "title": "Cytuno i’r telerau defnydd diwygiedig i barhau",
+      "header": "Cytuno i’r telerau defnydd diwygiedig i barhau",
+      "info": {
+        "text": "Mae angen i chi gytuno i’n",
+        "and": "a",
+        "termsAndConditionsText": "telerau ac amodau",
+        "privacyNoticeText": "hysbysiad preifatrwydd",
+        "cookiesPolicyText": "polisi cwcis",
+        "end": "diwygiedig i ddefnyddio’r gwasanaeth hwn."
+      },
+      "agreeAndContinue": "Cytuno a pharhau",
+      "goBackToService": "Ewch yn ôl i’r gwasanaeth roeddech yn ei ddefnyddio."
+    },
+    "updatedTermsAndCondsOptional": {
+      "title": "Mae angen i chi gytuno i’r telerau defnydd diwygiedig i arbed eich cynnydd",
+      "header": "Mae angen i chi gytuno i’r telerau defnydd diwygiedig i arbed eich cynnydd",
+      "paragraph1": "Os nad ydych yn cytuno, gallwch ",
+      "paragraph1Continued": "barhau heb arbed eich cynnydd.",
+      "agreeToTheTerms": "Cytuno i’r telerau",
+      "continueWithoutSaving": "Parhau heb arbed"
+    },
+    "updatedTermsAndCondsNonServiceRejected": {
       "title": "Cytuno i’r telerau defnydd wedi’u diweddaru i fynd yn eich blaen",
       "header": "Cytuno i’r telerau defnydd wedi’u diweddaru i fynd yn eich blaen",
       "info": {
@@ -560,16 +582,7 @@
         "paragraph2": "Os nad ydych angen eich cyfrif mwyach, neu os ydych am ddileu gwybodaeth sydd wedi’i arbed yn eich cyfrif, gallwch ",
         "contactUsText": "gysylltu â ni."
       },
-      "agreeAndContinue": "Cytuno a pharhau",
-      "goBackToService": "Ewch yn ôl i "
-    },
-    "updatedTermsAndCondsOptional": {
-      "title": "Mae angen i chi gytuno i’r telerau defnydd diwygiedig i arbed eich cynnydd",
-      "header": "Mae angen i chi gytuno i’r telerau defnydd diwygiedig i arbed eich cynnydd",
-      "paragraph1": "Os nad ydych yn cytuno, gallwch ",
-      "paragraph1Continued": "barhau heb arbed eich cynnydd.",
-      "agreeToTheTerms": "Cytuno i’r telerau",
-      "continueWithoutSaving": "Parhau heb arbed"
+      "agreeAndContinue": "Cytuno a pharhau"
     },
     "cookiePolicy": {
       "title": "Polisi cwcis cyfrifon GOV.UK",
