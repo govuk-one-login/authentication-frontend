@@ -11,7 +11,7 @@
 <input type="hidden" name="formType" value="authenticatorApp"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
 
-{{ govukTextarea({
+{{ govukCharacterCount({
     label: {
       text: 'pages.contactUsQuestions.authenticatorApp.section1.header' | translate,
       classes: "govuk-label--s"
@@ -19,12 +19,13 @@
     id: "issueDescription",
     name: "issueDescription",
     value: issueDescription,
+    maxlength: zendeskFieldMaxLength,
     errorMessage: {
-        text: errors['issueDescription'].text
+        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['issueDescription'])
 }) }}
 
-{{ govukTextarea({
+{{ govukCharacterCount({
     label: {
       text: 'pages.contactUsQuestions.authenticatorApp.section2.header' | translate,
       classes: "govuk-label--s"
@@ -35,8 +36,9 @@
     id: "additionalDescription",
     name: "additionalDescription",
     value: additionalDescription,
+    maxlength: zendeskFieldMaxLength,
     errorMessage: {
-        text: errors['additionalDescription'].text
+        text: errors['additionalDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['additionalDescription'])
 }) }}
 

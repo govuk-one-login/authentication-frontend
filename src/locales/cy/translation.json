@@ -1477,8 +1477,18 @@
           "paragraph1": "You can add more detail, such as what you were trying to do, or give us feedback"
         }
       },
+      "issueDescriptionErrorMessage": {
+        "entryTooLongMessage": "What were you trying to do must be [maximumCharacters] characters or less",
+        "anythingElseTooLongMessage": "Anything else you want to tell us must be [maximumCharacters] characters or less",
+        "whatHappenedTooLongMessage": "What happened must be [maximumCharacters] characters or less",
+        "suggestionFeedbackTooLongMessage": "Your suggestion or feedback must be [maximumCharacters] characters or less"
+      },
+      "additionalDescriptionErrorMessage": {
+        "entryTooLongMessage": "What happened must be [maximumCharacters] characters or less"
+      },
       "optionalDescriptionErrorMessage": {
-        "message": "Rhowch fwy o fanylion"
+        "message": "Enter more detail",
+        "entryTooLongMessage": "Anything else you want to tell us must be [maximumCharacters] characters or less"
       },
       "forgottenPassword": {
         "title": "Rydych wedi anghofio eich cyfrinair",
@@ -1524,7 +1534,8 @@
         "section1": {
           "header": "Pa wasanaeth oeddech chi’n ceisio ei ddefnyddio?",
           "paragraph1": "Er enghraifft, eich tanysgrifiadau e-bost GOV.UK, eich cyfrif treth personol neu Gredyd Cynhwysol",
-          "errorMessage": "Rhowch ba wasanaeth roeddech yn ceisio ei ddefnyddio"
+          "errorMessage": "Rhowch ba wasanaeth roeddech yn ceisio ei ddefnyddio",
+          "entryTooLongErrorMessage": "What service were you trying to use must be [maximumCharacters] characters or less"
         },
         "section2": {
           "header": "Ydych chi eisiau dweud unrhyw beth arall wrthym",

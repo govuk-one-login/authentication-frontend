@@ -11,7 +11,7 @@
 <input type="hidden" name="formType" value="noUKMobile"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
 
-{{ govukTextarea({
+{{ govukCharacterCount({
     label: {
       text: 'pages.contactUsQuestions.noUKMobile.section1.header' | translate,
       classes: "govuk-label--s"
@@ -21,9 +21,10 @@
       },
     id: "moreDetailDescription",
     name: "moreDetailDescription",
+    maxlength: zendeskFieldMaxLength,
     value: moreDetailDescription,
     errorMessage: {
-        text: errors['moreDetailDescription'].text
+        text: errors['moreDetailDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['moreDetailDescription'])
 }) }}
 

@@ -1478,8 +1478,18 @@
           "paragraph1": "You can add more detail, such as what you were trying to do, or give us feedback"
         }
       },
+      "issueDescriptionErrorMessage": {
+        "entryTooLongMessage": "What were you trying to do must be [maximumCharacters] characters or less",
+        "anythingElseTooLongMessage": "Anything else you want to tell us must be [maximumCharacters] characters or less",
+        "whatHappenedTooLongMessage": "What happened must be [maximumCharacters] characters or less",
+        "suggestionFeedbackTooLongMessage": "Your suggestion or feedback must be [maximumCharacters] characters or less"
+      },
+      "additionalDescriptionErrorMessage": {
+        "entryTooLongMessage": "What happened must be [maximumCharacters] characters or less"
+      },
       "optionalDescriptionErrorMessage": {
-        "message": "Enter more detail"
+        "message": "Enter more detail",
+        "entryTooLongMessage": "Anything else you want to tell us must be [maximumCharacters] characters or less"
       },
       "forgottenPassword": {
         "title": "You’ve forgotten your password",
@@ -1525,7 +1535,8 @@
         "section1": {
           "header": "What service were you trying to use?",
           "paragraph1": "For example, your GOV.UK email subscriptions, your personal tax account or Universal Credit",
-          "errorMessage": "Enter what service you were trying to use"
+          "errorMessage": "Enter what service you were trying to use",
+          "entryTooLongErrorMessage": "What service were you trying to use must be [maximumCharacters] characters or less"
         },
         "section2": {
           "header": "Anything else you want to tell us",

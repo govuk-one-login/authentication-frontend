@@ -1,6 +1,10 @@
-import { Response, Request } from "express";
-import { HTTP_STATUS_CODES } from "../app.constants";
-import { Error } from "../types";
+import { Request, Response } from "express";
+import {
+  HTTP_STATUS_CODES,
+  PLACEHOLDER_REPLACEMENTS,
+  ZENDESK_FIELD_MAX_LENGTH,
+} from "../app.constants";
+import { Error, PlaceholderReplacement } from "../types";
 
 export const isObjectEmpty = (obj: Record<string, unknown>): boolean => {
   return Object.keys(obj).length === 0;
@@ -18,6 +22,37 @@ export function formatValidationError(
   return error;
 }
 
+export function deDuplicateErrorList(errors: { [k: string]: Error }): Error[] {
+  const errorValues = Object.values(errors);
+  return [
+    ...new Map(
+      errorValues.map((error) => {
+        return [error.text, error];
+      })
+    ).values(),
+  ];
+}
+
+export function replaceErrorMessagePlaceholders(
+  errors: Error[],
+  placeholders: PlaceholderReplacement[]
+): Error[] {
+  return errors.map((error) => {
+    const errorCopy: Error = { ...error };
+
+    placeholders.forEach((placeholder) => {
+      if (errorCopy.text?.includes(placeholder.search)) {
+        errorCopy.text = errorCopy.text.replace(
+          placeholder.search,
+          placeholder.replacement
+        );
+      }
+    });
+
+    return errorCopy;
+  });
+}
+
 export function renderBadRequest(
   res: Response,
   req: Request,
@@ -27,15 +62,16 @@ export function renderBadRequest(
 ): void {
   res.status(HTTP_STATUS_CODES.BAD_REQUEST);
 
-  const errorValues = Object.values(errors);
-  const uniqueErrorList = [
-    ...new Map(errorValues.map((error) => [error.text, error])).values(),
-  ];
+  const uniqueErrorList: Error[] = deDuplicateErrorList(errors);
+  const uniqueErrorListWithPlaceholdersReplaced: Error[] =
+    replaceErrorMessagePlaceholders(uniqueErrorList, PLACEHOLDER_REPLACEMENTS);
+
   const errorParams = {
     errors,
-    errorList: uniqueErrorList,
+    errorList: uniqueErrorListWithPlaceholdersReplaced,
     ...req.body,
     language: req.i18n.language,
+    zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
   };
   const params = postValidationLocals
     ? { ...errorParams, ...postValidationLocals }

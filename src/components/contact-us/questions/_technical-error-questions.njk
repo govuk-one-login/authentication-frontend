@@ -11,20 +11,21 @@
 <input type="hidden" name="formType" value="technicalError"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
 
-{{ govukTextarea({
+{{ govukCharacterCount({
     label: {
       text: 'pages.contactUsQuestions.technicalError.section1.header' | translate,
       classes: "govuk-label--s"
     },
     id: "issueDescription",
     name: "issueDescription",
+    maxlength: zendeskFieldMaxLength,
     value: issueDescription,
     errorMessage: {
-        text: errors['issueDescription'].text
+        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['issueDescription'])
 }) }}
 
-{{ govukTextarea({
+{{ govukCharacterCount({
     label: {
       text: 'pages.contactUsQuestions.technicalError.section2.header' | translate,
       classes: "govuk-label--s"
@@ -34,9 +35,10 @@
       },
     id: "additionalDescription",
     name: "additionalDescription",
+    maxlength: zendeskFieldMaxLength,
     value: additionalDescription,
     errorMessage: {
-        text: errors['additionalDescription'].text
+        text: errors['additionalDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['additionalDescription'])
 }) }}
 

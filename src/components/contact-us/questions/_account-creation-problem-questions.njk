@@ -11,7 +11,7 @@
 <input type="hidden" name="formType" value="accountCreationProblem"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
 
-{{ govukTextarea({
+{{ govukCharacterCount({
     label: {
       text: 'pages.contactUsQuestions.accountCreationProblem.section1.header' | translate,
       classes: "govuk-label--s"
@@ -21,9 +21,10 @@
       },
     id: "issueDescription",
     name: "issueDescription",
+    maxlength: zendeskFieldMaxLength,
     value: issueDescription,
     errorMessage: {
-        text: errors['issueDescription'].text
+        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['issueDescription'])
 }) }}
 
