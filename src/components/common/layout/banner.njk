@@ -4,11 +4,11 @@
 {% endset %}
 
 {% set acceptHtml %}
-  <p class="govuk-body">{{ 'general.cookie.cookieBanner.cookeBannerAccept.paragraph1' | translate }}<a class="govuk-link" href="https://www.gov.uk/help/cookies">{{ 'general.cookie.cookieBanner.changeCookiePreferencesLink' | translate }}</a> {{ 'general.cookie.cookieBanner.cookeBannerAccept.paragraph2' | translate }}</p>
+  <p class="govuk-body">{{ 'general.cookie.cookieBanner.cookeBannerAccept.paragraph1' | translate }}<a class="govuk-link" href="/cookies">{{ 'general.cookie.cookieBanner.changeCookiePreferencesLink' | translate }}</a> {{ 'general.cookie.cookieBanner.cookeBannerAccept.paragraph2' | translate }}</p>
 {% endset %}
 
 {% set rejectedHtml %}
-  <p class="govuk-body">{{ 'general.cookie.cookieBanner.cookeBannerReject.paragraph1' | translate }}<a class="govuk-link" href="https://www.gov.uk/help/cookies">{{ 'general.cookie.cookieBanner.changeCookiePreferencesLink' | translate }}</a> {{ 'general.cookie.cookieBanner.cookeBannerReject.paragraph2' | translate }}</p>
+  <p class="govuk-body">{{ 'general.cookie.cookieBanner.cookeBannerReject.paragraph1' | translate }}<a class="govuk-link" href="/cookies">{{ 'general.cookie.cookieBanner.changeCookiePreferencesLink' | translate }}</a> {{ 'general.cookie.cookieBanner.cookeBannerReject.paragraph2' | translate }}</p>
 {% endset %}
 
 {{ govukCookieBanner({
