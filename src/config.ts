@@ -62,10 +62,6 @@ export function supportPasswordResetRequired(): boolean {
   return process.env.SUPPORT_PASSWORD_RESET_REQUIRED === "1";
 }
 
-export function supportIdCheckAppForms(): boolean {
-  return process.env.SUPPORT_ID_CHECK_APP_FORMS === "1";
-}
-
 export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
   const hostKey = `${appEnv}-${process.env.REDIS_KEY}-redis-master-host`;
   const portKey = `${appEnv}-${process.env.REDIS_KEY}-redis-port`;

@@ -93,10 +93,6 @@ locals {
         value = var.support_password_reset_required
       },
       {
-        name  = "SUPPORT_ID_CHECK_APP_FORMS"
-        value = var.support_id_check_app_forms
-      },
-      {
         name  = "ZENDESK_API_TOKEN"
         value = var.zendesk_api_token
       },
