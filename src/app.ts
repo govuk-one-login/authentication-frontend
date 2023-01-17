@@ -76,6 +76,7 @@ import { enterAuthenticatorAppCodeRouter } from "./components/enter-authenticato
 import { cookiesRouter } from "./components/common/cookies/cookies-routes";
 import { errorPageRouter } from "./components/common/errors/error-routes";
 import { photoIdRouter } from "./components/photo-id/photo-id-routes";
+import { forceEnLanguageForSupportForms } from "./middleware/force-en-language-for-support-forms";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -178,6 +179,7 @@ async function createApp(): Promise<express.Application> {
   app.use(getSessionIdMiddleware);
   app.post("*", sanitizeRequestMiddleware);
   app.use(csrfMiddleware);
+  app.use(forceEnLanguageForSupportForms);
   app.use(setHtmlLangMiddleware);
   app.use(initialiseSessionMiddleware);
   app.use(crossDomainTrackingMiddleware);
