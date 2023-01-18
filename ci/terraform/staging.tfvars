@@ -1,5 +1,6 @@
 environment         = "staging"
 common_state_bucket = "di-auth-staging-tfstate"
+redis_node_size     = "cache.m4.xlarge"
 
 frontend_auto_scaling_enabled   = true
 frontend_task_definition_cpu    = 512
