@@ -1,28 +1,28 @@
-{% extends "common/layout/base.njk" %}
+{% extends "contact-us/common-english-only/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 
-{% set pageTitleName = 'pages.contactUsSubmitSuccess.title' | translate %}
+{% set pageTitleName = 'pages.contactUsSubmitSuccess.title' | translateEnOnly %}
 
 {% block content %}
 
 {% set html %}
-<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
-<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
+<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translateEnOnly }}</p>
+<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translateEnOnly }}</a>
 {% endset %}
 
 {{ govukPanel({
-    titleText: 'pages.contactUsSubmitSuccess.header' | translate
+    titleText: 'pages.contactUsSubmitSuccess.header' | translateEnOnly
 }) }}
 
-<p class="govuk-body">{{'pages.contactUsSubmitSuccess.paragraph1' | translate }}</p>
+<p class="govuk-body">{{'pages.contactUsSubmitSuccess.paragraph1' | translateEnOnly }}</p>
 
-<p class="govuk-body">{{'pages.contactUsSubmitSuccess.paragraph2' | translate }}</p>
+<p class="govuk-body">{{'pages.contactUsSubmitSuccess.paragraph2' | translateEnOnly }}</p>
 
 <p class="govuk-body">
-    <a href="{{'pages.contactUsSubmitSuccess.paragraph3.linkHref' | translate}}" class="govuk-link">
-        {{'pages.contactUsSubmitSuccess.paragraph3.linkText' | translate}}
+    <a href="{{'pages.contactUsSubmitSuccess.paragraph3.linkHref' | translateEnOnly }}" class="govuk-link">
+        {{'pages.contactUsSubmitSuccess.paragraph3.linkText' | translateEnOnly }}
     </a>
 </p>
 

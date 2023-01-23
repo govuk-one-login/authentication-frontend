@@ -1,5 +1,5 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-    {{ 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.title' | translate }}
+    {{ 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.title' | translateEnOnly }}
 </h1>
 
 <form action="/contact-us-questions" method="post" novalidate>
@@ -13,7 +13,7 @@
 
     {{ govukCharacterCount({
         label: {
-            text: 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.header' | translate,
+            text: 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.header' | translateEnOnly,
             classes: "govuk-label--s"
         },
         id: "issueDescription",
@@ -21,29 +21,29 @@
         maxlength: zendeskFieldMaxLength,
         value: issueDescription,
         errorMessage: {
-            text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+            text: errors['issueDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
         } if (errors['issueDescription'])
     }) }}
 
     {{ govukCharacterCount({
         label: {
-            text: 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.header' | translate,
+            text: 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.header' | translateEnOnly,
             classes: "govuk-label--s"
         },
         hint: {
-            text: 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.paragraph1' | translate
+            text: 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.paragraph1' | translateEnOnly
         },
         id: "additionalDescription",
         name: "additionalDescription",
         maxlength: zendeskFieldMaxLength,
         value: additionalDescription,
         errorMessage: {
-            text: errors['additionalDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+            text: errors['additionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
         } if (errors['additionalDescription'])
     }) }}
 
     {{ govukWarningText({
-        text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
+        text:'pages.contactUsQuestions.personalInformation.paragraph1' | translateEnOnly,
         iconFallbackText: "Warning"
     }) }}
 
@@ -52,7 +52,7 @@
     {% include 'contact-us/questions/_reply_by_email.njk' %}
 
     {{ govukButton({
-        "text": "general.sendMessage" | translate,
+        "text": "general.sendMessage" | translateEnOnly,
         "type": "Submit",
         "preventDoubleClick": true
     }) }}

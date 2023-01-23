@@ -18,6 +18,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
             suffix,
           {
             value,
+            lng: "en",
           }
         );
       }),
@@ -27,7 +28,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           getErrorMessageForIssueDescription(req.body.theme, req.body.subtheme),
-          { value }
+          { value, lng: "en" }
         );
       }),
     body("issueDescription")
@@ -39,7 +40,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
             req.body.theme,
             req.body.subtheme
           ),
-          { value }
+          { value, lng: "en" }
         );
       }),
     body("additionalDescription")
@@ -51,7 +52,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
             req.body.theme,
             req.body.subtheme
           ),
-          { value }
+          { value, lng: "en" }
         );
       }),
     body("additionalDescription")
@@ -60,7 +61,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.additionalDescriptionErrorMessage.entryTooLongMessage",
-          { value }
+          { value, lng: "en" }
         );
       }),
     body("optionalDescription")
@@ -69,7 +70,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.optionalDescriptionErrorMessage.entryTooLongMessage",
-          { value }
+          { value, lng: "en" }
         );
       }),
     body("moreDetailDescription")
@@ -78,7 +79,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.optionalDescriptionErrorMessage.message",
-          { value }
+          { value, lng: "en" }
         );
       }),
     body("serviceTryingToUse")
@@ -87,7 +88,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.serviceTryingToUse.errorMessage",
-          { value }
+          { value, lng: "en" }
         );
       }),
     body("moreDetailDescription")
@@ -96,7 +97,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.optionalDescriptionErrorMessage.entryTooLongMessage",
-          { value }
+          { value, lng: "en" }
         );
       }),
     body("contact")
@@ -104,7 +105,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.replyByEmail.validationError.noBoxSelected",
-          { value }
+          { value, lng: "en" }
         );
       }),
     body("email")
@@ -113,14 +114,14 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.replyByEmail.validationError.noEmailAddress",
-          { value }
+          { value, lng: "en" }
         );
       })
       .isEmail()
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.replyByEmail.validationError.invalidFormat",
-          { value }
+          { value, lng: "en" }
         );
       }),
     validateBodyMiddleware("contact-us/questions/index.njk"),

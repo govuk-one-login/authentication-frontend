@@ -1,5 +1,5 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsQuestions.linkingProblem.header' | translate }}
+  {{ 'pages.contactUsQuestions.linkingProblem.header' | translateEnOnly }}
 </h1>
 
 <form action="/contact-us-questions" method="post" novalidate>
@@ -14,7 +14,7 @@
 {% include 'contact-us/questions/_what_happened.njk' %}
 
 {{ govukWarningText({
-    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
+    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translateEnOnly,
     iconFallbackText: "Warning"
 }) }}
 
@@ -23,7 +23,7 @@
 {% include 'contact-us/questions/_reply_by_email.njk' %}
 
 {{ govukButton({
-    "text": "general.sendMessage" | translate,
+    "text": "general.sendMessage" | translateEnOnly,
     "type": "Submit",
     "preventDoubleClick": true
 }) }}

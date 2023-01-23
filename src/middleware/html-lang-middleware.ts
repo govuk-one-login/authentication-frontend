@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { PATH_NAMES } from "../app.constants";
 
 export function setHtmlLangMiddleware(
   req: Request,
@@ -6,7 +7,8 @@ export function setHtmlLangMiddleware(
   next: NextFunction
 ): void {
   if (req.i18n) {
-    res.locals.htmlLang = req.i18n.language;
+    const re = new RegExp(`^${PATH_NAMES.CONTACT_US}`);
+    res.locals.htmlLang = re.test(req.url) ? "en" : req.i18n.language;
   }
   next();
 }
