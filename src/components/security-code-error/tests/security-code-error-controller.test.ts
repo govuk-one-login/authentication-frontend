@@ -101,7 +101,11 @@ describe("security code  controller", () => {
       securityCodeInvalidGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("security-code-error/index.njk", {
-        newCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
+        newCodeLink: pathWithQueryParam(
+          PATH_NAMES.RESEND_MFA_CODE,
+          "isResendCodeRequest",
+          "true"
+        ),
         isAuthApp: false,
         isBlocked: true,
       });

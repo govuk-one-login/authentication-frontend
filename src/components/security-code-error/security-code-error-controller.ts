@@ -14,7 +14,7 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
       Date.now() + 15 * 60000
     ).toUTCString();
   }
-  res.render("security-code-error/index.njk", {
+  return res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
     isBlocked: isNotEmailCode,
@@ -74,8 +74,13 @@ function getNewCodePath(actionType: SecurityCodeErrorType) {
       );
     case SecurityCodeErrorType.OtpMaxCodesSent:
     case SecurityCodeErrorType.OtpBlocked:
-    case SecurityCodeErrorType.OtpMaxRetries:
       return PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER;
+    case SecurityCodeErrorType.OtpMaxRetries:
+      return pathWithQueryParam(
+        PATH_NAMES.RESEND_MFA_CODE,
+        "isResendCodeRequest",
+        "true"
+      );
     case SecurityCodeErrorType.EmailMaxCodesSent:
     case SecurityCodeErrorType.EmailBlocked:
       return PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
