@@ -18,5 +18,13 @@ export function configureNunjucks(
     return translate(key, options);
   });
 
+  nunjucksEnv.addFilter(
+    "translateEnOnly",
+    function (key: string, options?: any) {
+      const translate = i18next.getFixedT("en");
+      return translate(key, options);
+    }
+  );
+
   return nunjucksEnv;
 }

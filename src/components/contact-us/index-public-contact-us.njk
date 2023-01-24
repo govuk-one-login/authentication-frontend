@@ -1,4 +1,4 @@
-{% extends "common/layout/base.njk" %}
+{% extends "contact-us/common-english-only/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
@@ -7,28 +7,28 @@
 
 {% set showBack = true %}
 {% set hrefBack = referer %}
-{% set pageTitleName = 'pages.contactUsPublic.title' | translate %}
+{% set pageTitleName = 'pages.contactUsPublic.title' | translateEnOnly %}
 
 {% block content %}
 
-    {% include "common/errors/errorSummary.njk" %}
+    {% include "contact-us/common-english-only/errors/errorSummary.njk" %}
 
 {% set html %}
-<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
-<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
+<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translateEnOnly }}</p>
+<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translateEnOnly }}</a>
 {% endset %}
 
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsPublic.header' | translate }}
+  {{ 'pages.contactUsPublic.header' | translateEnOnly }}
 </h1>
 
-<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph1' | translate }}</p>
+<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph1' | translateEnOnly }}</p>
 <ul class="govuk-list govuk-list--bullet">
- <li>{{ 'pages.contactUsPublic.section1.bulletPoint1' | translate}}</li>
- <li>{{ 'pages.contactUsPublic.section1.bulletPoint2' | translate}}</li>
+ <li>{{ 'pages.contactUsPublic.section1.bulletPoint1' | translateEnOnly }}</li>
+ <li>{{ 'pages.contactUsPublic.section1.bulletPoint2' | translateEnOnly }}</li>
 </ul>
 
-<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph2' | translate }}</p>
+<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph2' | translateEnOnly }}</p>
 
 <form action="/contact-us" method="post" novalidate>
 
@@ -38,31 +38,31 @@
     {% set items = [
         {
             value: "account_creation",
-            text: 'pages.contactUsPublic.section3.accountCreation' | translate
+            text: 'pages.contactUsPublic.section3.accountCreation' | translateEnOnly
         },
         {
             value: "signing_in",
-            text: 'pages.contactUsPublic.section3.signingIn' | translate
+            text: 'pages.contactUsPublic.section3.signingIn' | translateEnOnly
         },
         {
             value: "something_else",
-            text: 'pages.contactUsPublic.section3.somethingElse' | translate
+            text: 'pages.contactUsPublic.section3.somethingElse' | translateEnOnly
         },
         {
             value: "id_check_app",
-            text: 'pages.contactUsPublic.section3.idCheckApp' | translate
+            text: 'pages.contactUsPublic.section3.idCheckApp' | translateEnOnly
         },
         {
             value: "proving_identity",
-            text: 'pages.contactUsPublic.section3.provingIdentity' | translate
+            text: 'pages.contactUsPublic.section3.provingIdentity' | translateEnOnly
         },
         {
             value: "email_subscriptions",
-            text: 'pages.contactUsPublic.section3.emailSubscriptions' | translate
+            text: 'pages.contactUsPublic.section3.emailSubscriptions' | translateEnOnly
         },
         {
             value: "suggestions_feedback",
-            text: 'pages.contactUsPublic.section3.suggestionsFeedback' | translate
+            text: 'pages.contactUsPublic.section3.suggestionsFeedback' | translateEnOnly
         }
     ] %}
 
@@ -70,7 +70,7 @@
         name: "theme",
         fieldset: {
             legend: {
-                text: 'pages.contactUsPublic.section3.header' | translate,
+                text: 'pages.contactUsPublic.section3.header' | translateEnOnly,
                 isPageHeading: false,
                 classes: "govuk-fieldset__legend--m"
             }
@@ -83,7 +83,7 @@
 
 
 {{ govukButton({
-    "text": "general.continue.label" | translate,
+    "text": "pages.contactUsPublic.continueLabel" | translateEnOnly,
     "type": "Submit",
     "preventDoubleClick": true
 }) }}

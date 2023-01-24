@@ -1,16 +1,16 @@
 {{ govukCharacterCount({
     label: {
-        text: 'pages.contactUsQuestions.whatHappened.header' | translate,
+        text: 'pages.contactUsQuestions.whatHappened.header' | translateEnOnly,
         classes: "govuk-label--s"
     },
     hint: {
-        text: 'pages.contactUsQuestions.whatHappened.paragraph1' | translate
+        text: 'pages.contactUsQuestions.whatHappened.paragraph1' | translateEnOnly
     },
     id: "issueDescription",
     name: "issueDescription",
     maxlength: zendeskFieldMaxLength,
     value: issueDescription,
     errorMessage: {
-        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['issueDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['issueDescription'])
 }) }}

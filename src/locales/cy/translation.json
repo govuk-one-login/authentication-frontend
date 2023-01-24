@@ -759,6 +759,7 @@
         "paragraph1": "Nid yw’r rhannau canlynol o gyfrifon GOV.UK yn gwbl hygyrch:",
         "bulletPoint1": "nid yw’n bosib stopio na newid hyd yr amseru allan pan fyddwch yn defnyddio, mewngofnodi i neu greu cyfrif",
         "bulletPoint2": "nid yw’n bosib i ddarllenydd sgrin wybod pryd mae’r e-byst rydym yn eu hanfon mewn iaith ar wahân i’r Saesneg",
+        "bulletPoint3": "one page reloads automatically after a set time limit, and it’s not possible to stop or delay this",
         "paragraph2": "Byddwn yn diweddaru’r dudalen hon pan fydd y materion wedi cael eu datrys neu gyda gwybodaeth ynghylch pryd rydym yn bwriadu eu datrys."
       },
       "section3": {
@@ -1300,8 +1301,7 @@
         "idCheckApp": "A problem proving your identity using the GOV.UK ID Check app",
         "errorMessage": "Select a reason for contacting us"
       },
-      "submitButtonText": "Submit",
-      "submitButtonLink": "/contact-us-submit"
+      "continueLabel": "Continue"
     },
     "contactUsFurtherInformation": {
       "signingIn": {
@@ -1622,9 +1622,20 @@
           },
           "linkHref": "?lng=en"
         },
+        "insetTextEnglishOnly": "This service is currently only available in English.",
         "insetAlternativeLanguageAppWarning": "Mae’r ap GOV.UK ID Check ond ar gael yn Saesneg yn unig ar hyn o bryd."
       },
       "section2": {
+        "paragraph1": "Byddwch angen:",
+        "listItem1_1": "cyfrif GOV.UK – byddwn yn gofyn i chi greu neu fewngofnodi i’ch cyfrif pan fyddwch yn parhau",
+        "listItem1_2": "eich ID gyda llun",
+        "listItem1_3": "eich cyfeiriad presennol (efallai y byddwch angen eich cyfeiriad blaenorol hefyd os ydych wedi symud yn ddiweddar)",
+        "paragraph2": "Byddwn ond yn defnyddio’r wybodaeth rydych yn ei rhoi i ni i wneud yn siwr mai chi yw pwy rydych yn ei ddweud ydych chi."
+      },
+      "existingSession": {
+        "section3": {
+          "radioOption1": "Continue with your GOV.UK account"
+        },
         "paragraph1": "Byddwch angen:",
         "listItem1_1": "cyfrif GOV.UK – byddwn yn gofyn i chi greu neu fewngofnodi i’ch cyfrif pan fyddwch yn parhau",
         "listItem1_2": "eich ID gyda llun",

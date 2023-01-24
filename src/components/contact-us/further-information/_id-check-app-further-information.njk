@@ -1,5 +1,5 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsFurtherInformation.idCheckApp.header' | translate }}
+  {{ 'pages.contactUsFurtherInformation.idCheckApp.header' | translateEnOnly }}
 </h1>
 
 <form action="/contact-us-further-information" method="post" novalidate>
@@ -11,23 +11,23 @@
         {% set items = [
                 {
                     value: "linking_problem",
-                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.linkingProblem' | translate
+                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.linkingProblem' | translateEnOnly
                 },
                 {
                     value: "taking_photo_of_id_problem",
-                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.photoProblem' | translate
+                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.photoProblem' | translateEnOnly
                 },
                 {
                     value: "face_scanning_problem",
-                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.faceScanningProblem' | translate
+                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.faceScanningProblem' | translateEnOnly
                 },
                 {
                     value: "id_check_app_technical_problem",
-                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.technicalError' | translate
+                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.technicalError' | translateEnOnly
                 },
                 {
                     value: "id_check_app_something_else",
-                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.somethingElse' | translate
+                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.somethingElse' | translateEnOnly
                 }
             ]
         %}
@@ -36,7 +36,7 @@
         name: "subtheme",
         fieldset: {
             legend: {
-                text: 'pages.contactUsFurtherInformation.idCheckApp.section1.header' | translate,
+                text: 'pages.contactUsFurtherInformation.idCheckApp.section1.header' | translateEnOnly,
                 isPageHeading: false,
                 classes: "govuk-fieldset__legend--m"
             }
@@ -49,7 +49,7 @@
 
 
 {{ govukButton({
-    "text": "general.continue.label" | translate,
+    "text": "general.continue.label" | translateEnOnly,
     "type": "Submit",
     "preventDoubleClick": true
 }) }}

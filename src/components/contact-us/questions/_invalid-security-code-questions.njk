@@ -1,5 +1,5 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsQuestions.invalidSecurityCode.header' | translate }}
+  {{ 'pages.contactUsQuestions.invalidSecurityCode.header' | translateEnOnly }}
 </h1>
 
 <form action="/contact-us-questions?radio_buttons=true" method="post" novalidate>
@@ -11,35 +11,35 @@
 <input type="hidden" name="formType" value="invalidSecurityCode"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
 
-{% set radioHeader = 'pages.contactUsQuestions.invalidSecurityCode.section1.header' | translate %}
+{% set radioHeader = 'pages.contactUsQuestions.invalidSecurityCode.section1.header' | translateEnOnly %}
 {% include "contact-us/questions/_security_send_method.njk" %}
 
 {{ govukCharacterCount({
     label: {
-      text: 'pages.contactUsQuestions.invalidSecurityCode.section2.header' | translate,
+      text: 'pages.contactUsQuestions.invalidSecurityCode.section2.header' | translateEnOnly,
       classes: "govuk-label--s"
     },
     hint: {
-        text: 'pages.contactUsQuestions.invalidSecurityCode.section2.hintText' | translate
+        text: 'pages.contactUsQuestions.invalidSecurityCode.section2.hintText' | translateEnOnly
       },
     id: "moreDetailDescription",
     name: "moreDetailDescription",
     value: moreDetailDescription,
     maxlength: zendeskFieldMaxLength,
     errorMessage: {
-        text: errors['moreDetailDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['moreDetailDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['moreDetailDescription'])
 }) }}
 
 {{ govukWarningText({
-    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
+    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translateEnOnly,
     iconFallbackText: "Warning"
 }) }}
 
 {% include 'contact-us/questions/_reply_by_email.njk' %}
 
 {{ govukButton({
-    "text": "general.sendMessage" | translate,
+    "text": "general.sendMessage" | translateEnOnly,
     "type": "Submit",
     "preventDoubleClick": true
 }) }}

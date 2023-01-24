@@ -1301,8 +1301,7 @@
         "idCheckApp": "A problem proving your identity using the GOV.UK ID Check app",
         "errorMessage": "Select a reason for contacting us"
       },
-      "submitButtonText": "Submit",
-      "submitButtonLink": "/contact-us-submit"
+      "continueLabel": "Continue"
     },
     "contactUsFurtherInformation": {
       "signingIn": {

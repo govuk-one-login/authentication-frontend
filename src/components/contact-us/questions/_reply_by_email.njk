@@ -8,10 +8,10 @@
   spellcheck: false,
   classes: "govuk-!-width-two-thirds",
   label: {
-    text: 'pages.contactUsQuestions.emailReply.emailLabel' | translate
+    text: 'pages.contactUsQuestions.emailReply.emailLabel' | translateEnOnly
   },
   hint: {
-      text: 'pages.contactUsQuestions.emailReply.emailHint' | translate
+      text: 'pages.contactUsQuestions.emailReply.emailHint' | translateEnOnly
   },
   errorMessage: {
       text: errors['email'].text
@@ -24,18 +24,18 @@
   spellcheck: false,
   classes: "govuk-!-width-two-thirds",
   label: {
-    text: 'pages.contactUsQuestions.emailReply.nameLabel' | translate
+    text: 'pages.contactUsQuestions.emailReply.nameLabel' | translateEnOnly
   }
 }) }}
 <br />
-<p class="govuk-body">{{'pages.contactUsQuestions.emailReply.privacyNote' | translate | replace("#PRIVACY_NOTICE_LINK", '<a class="govuk-link" href="/privacy-notice" rel="noreferrer noopener" target="_blank">privacy notice</a>') | safe }}</p>
+<p class="govuk-body">{{'pages.contactUsQuestions.emailReply.privacyNote' | translateEnOnly | replace("#PRIVACY_NOTICE_LINK", '<a class="govuk-link" href="/privacy-notice" rel="noreferrer noopener" target="_blank">privacy notice</a>') | safe }}</p>
 {% endset -%}
 
 {{ govukRadios({
   name: "contact",
   fieldset: {
     legend: {
-      text: 'pages.contactUsQuestions.emailReply.header' | translate,
+      text: 'pages.contactUsQuestions.emailReply.header' | translateEnOnly,
       isPageHeading: false,
       classes: "govuk-fieldset__legend--m"
     }
@@ -43,7 +43,7 @@
   items: [
     {
       value: "true",
-      text: 'general.yes' | translate,
+      text: 'general.yes' | translateEnOnly,
       checked: contact === 'true',
       conditional: {
         html: emailHtml
@@ -51,7 +51,7 @@
     },
     {
       value: "false",
-      text: 'general.no' | translate,
+      text: 'general.no' | translateEnOnly,
       checked: contact === 'false'
     }
     ],

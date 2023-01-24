@@ -1,5 +1,5 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsQuestions.emailSubscriptions.header' | translate }}
+  {{ 'pages.contactUsQuestions.emailSubscriptions.header' | translateEnOnly }}
 </h1>
 
 <form action="/contact-us-questions" method="post" novalidate>
@@ -12,7 +12,7 @@
 
 {{ govukCharacterCount({
     label: {
-      text: 'pages.contactUsQuestions.emailSubscriptions.section1.header' | translate,
+      text: 'pages.contactUsQuestions.emailSubscriptions.section1.header' | translateEnOnly,
       classes: "govuk-label--s"
     },
     id: "issueDescription",
@@ -20,29 +20,29 @@
     maxlength: zendeskFieldMaxLength,
     value: issueDescription,
     errorMessage: {
-        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['issueDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['issueDescription'])
 }) }}
 
 {{ govukCharacterCount({
     label: {
-      text: 'pages.contactUsQuestions.emailSubscriptions.section2.header' | translate,
+      text: 'pages.contactUsQuestions.emailSubscriptions.section2.header' | translateEnOnly,
       classes: "govuk-label--s"
     },
     hint: {
-        text: 'pages.contactUsQuestions.emailSubscriptions.section2.paragraph1' | translate
+        text: 'pages.contactUsQuestions.emailSubscriptions.section2.paragraph1' | translateEnOnly
       },
     id: "optionalDescription",
     name: "optionalDescription",
     maxlength: zendeskFieldMaxLength,
     value: optionalDescription,
     errorMessage: {
-        text: errors['optionalDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['optionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['optionalDescription'])
 }) }}
 
 {{ govukWarningText({
-    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
+    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translateEnOnly,
     iconFallbackText: "Warning"
 }) }}
 
@@ -50,7 +50,7 @@
 
 
 {{ govukButton({
-    "text": "general.sendMessage" | translate,
+    "text": "general.sendMessage" | translateEnOnly,
     "type": "Submit",
     "preventDoubleClick": true
 }) }}
