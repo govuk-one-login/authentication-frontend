@@ -13,12 +13,12 @@
 
     {% include 'contact-us/questions/_what_happened.njk' %}
 
+    {% include 'contact-us/questions/_service_trying_to_use.njk' %}
+
     {{ govukWarningText({
         text:'pages.contactUsQuestions.personalInformation.paragraph1' | translateEnOnly,
         iconFallbackText: "Warning"
     }) }}
-
-    {% include 'contact-us/questions/_service_trying_to_use.njk' %}
 
     {% include 'contact-us/questions/_reply_by_email.njk' %}
 
