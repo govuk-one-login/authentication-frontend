@@ -290,6 +290,9 @@ export function getQuestionsFromFormType(
       additionalDescription: req.t(
         "pages.contactUsQuestions.provingIdentity.section2.header"
       ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header"
+      ),
     },
     idCheckApp: {
       issueDescription: `${req.t(
