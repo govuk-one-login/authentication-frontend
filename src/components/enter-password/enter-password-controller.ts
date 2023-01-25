@@ -19,7 +19,6 @@ import { MFA_METHOD_TYPE } from "../../app.constants";
 import xss from "xss";
 import { EnterEmailServiceInterface } from "../enter-email/types";
 import { enterEmailService } from "../enter-email/enter-email-service";
-import { supportPasswordResetRequired } from "../../config";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -127,8 +126,7 @@ export function enterPasswordPost(
       );
     }
 
-    const isPasswordChangeRequired =
-      supportPasswordResetRequired() && userLogin.data.passwordChangeRequired;
+    const isPasswordChangeRequired = userLogin.data.passwordChangeRequired;
 
     req.session.user.phoneNumber = userLogin.data.redactedPhoneNumber;
     req.session.user.isConsentRequired = userLogin.data.consentRequired;

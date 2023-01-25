@@ -53,10 +53,6 @@ variable "support_language_cy" {
   type = string
 }
 
-variable "support_password_reset_required" {
-  type = string
-}
-
 variable "zone_id" {
   default = null
 }

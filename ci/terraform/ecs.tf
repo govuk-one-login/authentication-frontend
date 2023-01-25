@@ -85,10 +85,6 @@ locals {
         value = var.support_language_cy
       },
       {
-        name  = "SUPPORT_PASSWORD_RESET_REQUIRED"
-        value = var.support_password_reset_required
-      },
-      {
         name  = "ZENDESK_API_TOKEN"
         value = var.zendesk_api_token
       },

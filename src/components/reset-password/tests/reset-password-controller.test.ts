@@ -99,8 +99,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
         params.passwordChangeRequired,
       () => {
         it("should redirect to /enter-code when password updated and phone number verified", async () => {
-          process.env.SUPPORT_PASSWORD_RESET_REQUIRED =
-            params.supportPasswordResetRequired;
           const fakeResetService: ResetPasswordServiceInterface = {
             updatePassword: sinon.fake.returns({ success: true }),
           };
@@ -150,8 +148,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
         });
 
         it("should redirect to /get-security-codes when password updated and mfa method not verified", async () => {
-          process.env.SUPPORT_PASSWORD_RESET_REQUIRED =
-            params.supportPasswordResetRequired;
           const fakeResetService: ResetPasswordServiceInterface = {
             updatePassword: sinon.fake.returns({ success: true }),
           };
@@ -196,8 +192,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
     );
 
     it("should request 2fa when password updated even for non 2fa service", async () => {
-      process.env.SUPPORT_PASSWORD_RESET_REQUIRED =
-        params.supportPasswordResetRequired;
       const fakeResetService: ResetPasswordServiceInterface = {
         updatePassword: sinon.fake.returns({ success: true }),
       };
