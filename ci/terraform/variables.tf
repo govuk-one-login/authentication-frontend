@@ -49,10 +49,6 @@ variable "support_international_numbers" {
   type = string
 }
 
-variable "support_mfa_options" {
-  type = string
-}
-
 variable "support_language_cy" {
   type = string
 }
