@@ -22,7 +22,6 @@ params:
   ZENDESK_GROUP_ID_PUBLIC: ((build-zendesk-group-id-public))
   BASIC_AUTH_USERNAME: ((no-basic-auth-username))
   BASIC_AUTH_PASSWORD: ((no-basic-auth-password))
-  SUPPORT_INTERNATIONAL_NUMBERS: "0"
   INCOMING_TRAFFIC_CIDR_BLOCKS: '["0.0.0.0/0"]'
   BASIC_AUTH_BYPASS_CIDR_BLOCKS: '[]'
   SUPPORT_MFA_OPTIONS: "0"
@@ -84,7 +83,6 @@ run:
         -var "sidecar_image_uri=${SIDECAR_IMAGE_URI}" \
         -var "sidecar_image_tag=${SIDECAR_IMAGE_TAG}" \
         -var "sidecar_image_digest=${SIDECAR_IMAGE_DIGEST}" \
-        -var "support_international_numbers=${SUPPORT_INTERNATIONAL_NUMBERS}" \
         -var "support_mfa_options=${SUPPORT_MFA_OPTIONS}" \
         -var "support_language_cy=${SUPPORT_LANGUAGE_CY}" \
         -var "support_password_reset_required=${SUPPORT_PASSWORD_RESET_REQUIRED}" \
