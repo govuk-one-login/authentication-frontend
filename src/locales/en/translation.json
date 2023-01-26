@@ -1452,8 +1452,9 @@
       },
       "securityCodeSentMethod": {
         "radio1": "Email",
-        "radio2": "Text message",
-        "radio3": "Authenticator app",
+        "radio2": "Text message to a UK phone number",
+        "radio3": "Text message to a phone number from a different country",
+        "radio4": "Authenticator app",
         "errorMessage": "Select whether the code was sent by email or text message"
       },
       "noSecurityCode": {

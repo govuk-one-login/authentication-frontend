@@ -80,8 +80,12 @@ export function contactUsService(
         case "email":
           securityCodeMethod = "Email";
           break;
-        case "text_message":
-          securityCodeMethod = "Text message";
+        case "text_message_uk_number":
+          securityCodeMethod = "Text message to a UK phone number";
+          break;
+        case "text_message_international_number":
+          securityCodeMethod =
+            "Text message to a phone number from a different country";
           break;
         case "authenticator_app":
           securityCodeMethod = "Authenticator app";

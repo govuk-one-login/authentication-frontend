@@ -1,4 +1,4 @@
-{% if theme == 'account_creation' %}
+{% if theme == 'account_creation' or theme == 'signing_in' %}
     {{ govukRadios({
         name: "securityCodeSentMethod",
         fieldset: {
@@ -15,14 +15,19 @@
                 text: 'pages.contactUsQuestions.securityCodeSentMethod.radio1' | translateEnOnly
             },
             {
-                value: "text_message",
-                checked: securityCodeSentMethod === 'text_message',
+                value: "text_message_uk_number",
+                checked: securityCodeSentMethod === 'text_message_uk_number',
                 text: 'pages.contactUsQuestions.securityCodeSentMethod.radio2' | translateEnOnly
+            },
+            {
+                value: "text_message_international_number",
+                checked: securityCodeSentMethod === 'text_message_international_number',
+                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio3' | translateEnOnly
             },
             {
                 value: "authenticator_app",
                 checked: securityCodeSentMethod === 'authenticator_app',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio3' | translateEnOnly
+                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio4' | translateEnOnly
             }
         ],
         errorMessage: {
