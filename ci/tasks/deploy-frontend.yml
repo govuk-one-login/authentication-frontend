@@ -24,9 +24,7 @@ params:
   BASIC_AUTH_PASSWORD: ((no-basic-auth-password))
   INCOMING_TRAFFIC_CIDR_BLOCKS: '["0.0.0.0/0"]'
   BASIC_AUTH_BYPASS_CIDR_BLOCKS: '[]'
-  SUPPORT_MFA_OPTIONS: "0"
   SUPPORT_LANGUAGE_CY: "0"
-  SUPPORT_PASSWORD_RESET_REQUIRED: "1"
 inputs:
   - name: frontend-src
   - name: frontend-image
@@ -83,9 +81,7 @@ run:
         -var "sidecar_image_uri=${SIDECAR_IMAGE_URI}" \
         -var "sidecar_image_tag=${SIDECAR_IMAGE_TAG}" \
         -var "sidecar_image_digest=${SIDECAR_IMAGE_DIGEST}" \
-        -var "support_mfa_options=${SUPPORT_MFA_OPTIONS}" \
         -var "support_language_cy=${SUPPORT_LANGUAGE_CY}" \
-        -var "support_password_reset_required=${SUPPORT_PASSWORD_RESET_REQUIRED}" \
         -var "basic_auth_username=${NORMALISED_BASIC_AUTH_USERNAME}" \
         -var "basic_auth_password=${NORMALISED_BASIC_AUTH_PASSWORD}" \
         -var "incoming_traffic_cidr_blocks=${INCOMING_TRAFFIC_CIDR_BLOCKS}" \

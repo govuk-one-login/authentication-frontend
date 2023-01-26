@@ -50,16 +50,8 @@ export function supportInternationalNumbers(): boolean {
   return process.env.SUPPORT_INTERNATIONAL_NUMBERS === "1";
 }
 
-export function supportMFAOptions(): boolean {
-  return process.env.SUPPORT_MFA_OPTIONS === "1";
-}
-
 export function supportLanguageCY(): boolean {
   return process.env.SUPPORT_LANGUAGE_CY === "1";
-}
-
-export function supportPasswordResetRequired(): boolean {
-  return process.env.SUPPORT_PASSWORD_RESET_REQUIRED === "1";
 }
 
 export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {

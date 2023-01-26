@@ -55,5 +55,4 @@ jobs:
       REDIS_HOST: localhost
       REDIS_PORT: 6389
       SUPPORT_INTERNATIONAL_NUMBERS: 1
-      SUPPORT_MFA_OPTIONS: 1
       ZENDESK_API_URL: https://zendesk.com

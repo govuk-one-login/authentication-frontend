@@ -49,15 +49,7 @@ variable "support_international_numbers" {
   type = string
 }
 
-variable "support_mfa_options" {
-  type = string
-}
-
 variable "support_language_cy" {
-  type = string
-}
-
-variable "support_password_reset_required" {
   type = string
 }
 

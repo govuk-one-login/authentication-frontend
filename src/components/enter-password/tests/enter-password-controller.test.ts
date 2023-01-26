@@ -178,7 +178,6 @@ describe("enter password controller", () => {
     });
 
     it("should redirect to reset-password-required when the existing password is common and supportPasswordResetRequired() is enabled", async () => {
-      process.env.SUPPORT_PASSWORD_RESET_REQUIRED = "1";
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sinon.fake.returns({
           data: {

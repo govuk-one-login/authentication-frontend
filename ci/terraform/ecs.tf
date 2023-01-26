@@ -81,16 +81,8 @@ locals {
         value = var.support_international_numbers
       },
       {
-        name  = "SUPPORT_MFA_OPTIONS"
-        value = var.support_mfa_options
-      },
-      {
         name  = "SUPPORT_LANGUAGE_CY"
         value = var.support_language_cy
-      },
-      {
-        name  = "SUPPORT_PASSWORD_RESET_REQUIRED"
-        value = var.support_password_reset_required
       },
       {
         name  = "ZENDESK_API_TOKEN"
