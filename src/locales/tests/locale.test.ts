@@ -19,15 +19,15 @@ export function traverseObjectProperties(
 export function testExpectation(key: string, value: string): void {
   expect(value).to.not.contain(
     "'",
-    "translated values should not contain dumb quotes"
+    "translated values should not contain typographically incorrect quotes (aka 'straight quotes')"
   );
 }
 
 describe("locale files", () => {
-  it("should not contain any dumb quotes in Welsh translations", () => {
+  it("should not contain any typographically incorrect quotes (aka 'straight quotes') in Welsh translations", () => {
     traverseObjectProperties(welshTranslations, testExpectation);
   });
-  it("should not contain any dumb quotes in English translations", () => {
+  it("should not contain any typographically incorrect quotes (aka 'straight quotes') in English translations", () => {
     traverseObjectProperties(englishTranslations, testExpectation);
   });
 });
