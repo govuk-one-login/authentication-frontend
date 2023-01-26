@@ -12,7 +12,7 @@ gtm_id                  = ""
 support_language_cy     = "1"
 support_mfa_options     = "1"
 
-support_international_numbers   = 0
+support_international_numbers   = "0"
 frontend_task_definition_cpu    = 256
 frontend_task_definition_memory = 512
 frontend_auto_scaling_enabled   = true
