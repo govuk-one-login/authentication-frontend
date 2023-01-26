@@ -296,7 +296,7 @@
       "header": "Creu eich cyfrinair",
       "password": {
         "label": "Rhowch gyfrinair",
-        "hintText": "Mae'n rhaid iddo fod yn o leiaf 8 nod o hyd a rhaid cynnwys llythrennau a rhifau. Peidiwch defnyddio cyfrinair cyffredin iawn, fel ’password’ neu ddilyniant o rifau.",
+        "hintText": "Mae’n rhaid iddo fod yn o leiaf 8 nod o hyd a rhaid cynnwys llythrennau a rhifau. Peidiwch defnyddio cyfrinair cyffredin iawn, fel ’password’ neu ddilyniant o rifau.",
         "validationError": {
           "required": "Rhowch eich cyfrinair",
           "maxLength": "Mae’n rhaid i’ch cyfrinair fod yn llai na 256 nod",
@@ -1678,12 +1678,12 @@
         "paragraph2": "Os nad oes gennych ffôn clyfar neu lechen, chwiliwch ar-lein am ap dilysydd ar gyfer eich cyfrifiadur.",
         "paragraph3": "Gallwch ddefnyddio unrhyw ap dilysydd."
       },
-      "step2": "2. Defnyddiwch eich ap dilysydd i sganio'r cod QR.",
+      "step2": "2. Defnyddiwch eich ap dilysydd i sganio’r cod QR.",
       "cannotScanDetails": {
-        "summaryText": "Ni allaf sganio'r cod QR",
-        "paragraph1": "Gallwch roi yr allwedd gyfrinachol i'ch ap dilysydd yn lle hynny.",
+        "summaryText": "Ni allaf sganio’r cod QR",
+        "paragraph1": "Gallwch roi yr allwedd gyfrinachol i’ch ap dilysydd yn lle hynny.",
         "paragraph2": "Allwedd gyfrinachol: ",
-        "paragraph3": "Mae rhai apiau dilysydd yn galw'r allwedd gyfrinachol yn 'cod'."
+        "paragraph3": "Mae rhai apiau dilysydd yn galw’r allwedd gyfrinachol yn ‘cod’."
       },
       "step3": "3. Bydd yr ap dilysydd yn dangos cod diogelwch.",
       "step4": "4. Rhowch y cod diogelwch.",
@@ -1781,15 +1781,15 @@
       "header": "Creu eich cyfrinair",
       "password": {
         "label": "Rhowch gyfrinair",
-        "paragraph1": "Mae'n rhaid i'ch cyfrinair:",
+        "paragraph1": "Mae’n rhaid i’ch cyfrinair:",
         "bulletPoint1": "fod yn o leiaf 8 nod o hyd",
         "bulletPoint2": "cynnwys llythrennau a rhifau",
-        "paragraph2": "Peidiwch defnyddio cyfrinair cyffredin iawn, fel 'password' neu ddilyniant o rifau.",
+        "paragraph2": "Peidiwch defnyddio cyfrinair cyffredin iawn, fel ‘password’ neu ddilyniant o rifau.",
         "validationError": {
           "required": "Rhowch eich cyfrinair",
-          "maxLength": "Mae'n rhaid i'ch cyfrinair fod yn llai na 256 nod",
-          "commonPassword": "Rhowch gyfrinair cryfach. Peidiwch defnyddio cyfrineiriau cyffredin iawn, fel 'password' neu ddilyniant o rifau.",
-          "alphaNumeric": "Mae'n rhaid i'ch cyfrinair fod yn o leiaf 8 nod o hyd a rhaid iddo gynnwys llythrennau a rhifau"
+          "maxLength": "Mae’n rhaid i’ch cyfrinair fod yn llai na 256 nod",
+          "commonPassword": "Rhowch gyfrinair cryfach. Peidiwch defnyddio cyfrineiriau cyffredin iawn, fel ‘password’ neu ddilyniant o rifau.",
+          "alphaNumeric": "Mae’n rhaid i’ch cyfrinair fod yn o leiaf 8 nod o hyd a rhaid iddo gynnwys llythrennau a rhifau"
         }
       },
       "confirmPassword": {
@@ -1804,10 +1804,10 @@
         "text": "Ffordd dda o greu cyfrinair diogel a chofiadwy yw defnyddio 3 gair ar hap. Gallwch ddefnyddio rhifau, symbolau a gofodau."
       },
       "termsOfUse": {
-        "heading": "Cytuno i'n telerau defnyddio",
-        "paragraph1": "Drwy barhau, rydych yn cadarnhau eich bod yn cytuno i'n:",
+        "heading": "Cytuno i’n telerau defnyddio",
+        "paragraph1": "Drwy barhau, rydych yn cadarnhau eich bod yn cytuno i’n:",
         "bullet1LinkText": "hysbysiad preifatrwydd (agor mewn tab newydd)",
-        "bullet1Text": ", sy'n egluro sut rydym yn defnyddio eich gwybodaeth bersonol",
+        "bullet1Text": ", sy’n egluro sut rydym yn defnyddio eich gwybodaeth bersonol",
         "bullet1LinkHref": "/privacy-notice",
         "bullet2LinkText": "telerau ac amodau (agor mewn tab newydd)",
         "bullet2LinkHref": "/terms-and-conditions"
