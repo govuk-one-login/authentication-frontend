@@ -1,3 +1,48 @@
+{% if theme == 'account_creation' %}
+    {% set items = [
+        {
+            value: "email",
+            checked: securityCodeSentMethod === 'email',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.radio1' | translateEnOnly
+        },
+        {
+            value: "text_message_uk_number",
+            checked: securityCodeSentMethod === 'text_message_uk_number',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.radio2' | translateEnOnly
+        },
+        {
+            value: "text_message_international_number",
+            checked: securityCodeSentMethod === 'text_message_international_number',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.radio3' | translateEnOnly
+        },
+        {
+            value: "authenticator_app",
+            checked: securityCodeSentMethod === 'authenticator_app',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.radio4' | translateEnOnly
+        }
+    ] %}
+{% endif %}
+
+{% if theme == 'signing_in' %}
+    {% set items = [
+        {
+            value: "text_message_uk_number",
+            checked: securityCodeSentMethod === 'text_message_uk_number',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.radio2' | translateEnOnly
+        },
+        {
+            value: "text_message_international_number",
+            checked: securityCodeSentMethod === 'text_message_international_number',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.radio3' | translateEnOnly
+        },
+        {
+            value: "authenticator_app",
+            checked: securityCodeSentMethod === 'authenticator_app',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.radio4' | translateEnOnly
+        }
+    ] %}
+{% endif %}
+
 {% if theme == 'account_creation' or theme == 'signing_in' %}
     {{ govukRadios({
         name: "securityCodeSentMethod",
@@ -8,28 +53,7 @@
                 classes: "govuk-fieldset__legend--m"
             }
         },
-        items: [
-            {
-                value: "email",
-                checked: securityCodeSentMethod === 'email',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio1' | translateEnOnly
-            },
-            {
-                value: "text_message_uk_number",
-                checked: securityCodeSentMethod === 'text_message_uk_number',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio2' | translateEnOnly
-            },
-            {
-                value: "text_message_international_number",
-                checked: securityCodeSentMethod === 'text_message_international_number',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio3' | translateEnOnly
-            },
-            {
-                value: "authenticator_app",
-                checked: securityCodeSentMethod === 'authenticator_app',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.radio4' | translateEnOnly
-            }
-        ],
+        items: items,
         errorMessage: {
             text: errors['securityCodeSentMethod'].text
         } if (errors['securityCodeSentMethod'])
