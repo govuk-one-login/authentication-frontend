@@ -986,8 +986,10 @@
         "bulletPoint6": {
           "text1": "gwybodaeth am sut rydych yn defnyddio eich cyfrif a gwefan GOV.UK, sy’n cael ei gasglu yng nghofnodion y system, a chan gwcis Google Analytics os ydych yn rhoi caniatâd - mae’r ",
           "linkText1": "hysbysiad preifatrwydd GOV.UK",
-          "and": " a ",
+          "comma": " , ",
           "linkText2": "pholisi cwcis GOV.UK",
+          "and": " a ",
+          "linkText3": "Polisi cwcis cyfrifon GOV.UK",
           "text2": " yn darparu mwy o wybodaeth am hyn"
         },
         "bulletPoint7": "dynodwyr ar-lein, fel eich cyfeiriad Protocol Rhyngrwyd (IP), a gwybodaeth dechnegol am y ddyfais rydych yn ei defnyddio gan gynnwys y model, porwr gwe a system weithredu, sy’n cael ei gasglu’n awtomatig mewn cofnodion system pan fyddwch yn defnyddio GOV.UK",

@@ -986,8 +986,10 @@
         "bulletPoint6": {
           "text1": "information on how you use your account and the GOV.UK website, which is collected in the system logs, and by Google Analytics cookies if you give consent - the ",
           "linkText1": "GOV.UK privacy notice",
-          "and": " and ",
+          "comma": " , ",
           "linkText2": "GOV.UK cookies policy",
+          "and": " and ",
+          "linkText3": "GOV.UK accounts cookies policy",
           "text2": " provide more information about this"
         },
         "bulletPoint7": "online identifiers, such as your Internet Protocol (IP) address, and technical information about the device you use including the model, web browser and operating system, which is automatically collected in system logs when you use GOV.UK",
