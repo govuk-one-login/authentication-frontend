@@ -85,7 +85,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#phoneNumber-error").text()).to.contains(
-          "Enter a phone number"
+          "Enter a UK mobile phone number"
         );
       })
       .expect(400, done);
@@ -198,7 +198,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#internationalPhoneNumber-error").text()).to.contains(
-          "Enter a phone number"
+          "Enter a mobile phone number"
         );
         expect($("#phoneNumber-error").text()).to.contains("");
       })
@@ -219,7 +219,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#internationalPhoneNumber-error").text()).to.contains(
-          "Enter a phone number in the correct format"
+          "Enter a mobile phone number in the correct format, including the country code"
         );
         expect($("#phoneNumber-error").text()).to.contains("");
       })
@@ -240,7 +240,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#internationalPhoneNumber-error").text()).to.contains(
-          "Enter a phone number using only numbers or the + symbol"
+          "Enter a mobile phone number using only numbers or the + symbol"
         );
         expect($("#phoneNumber-error").text()).to.contains("");
       })
@@ -261,7 +261,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#internationalPhoneNumber-error").text()).to.contains(
-          "Enter a phone number in the correct format"
+          "Enter a mobile phone number in the correct format, including the country code"
         );
         expect($("#phoneNumber-error").text()).to.contains("");
       })
@@ -282,7 +282,7 @@ describe("Integration::enter phone number", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#internationalPhoneNumber-error").text()).to.contains(
-          "Enter a phone number in the correct format"
+          "Enter a mobile phone number in the correct format, including the country code"
         );
         expect($("#phoneNumber-error").text()).to.contains("");
       })
