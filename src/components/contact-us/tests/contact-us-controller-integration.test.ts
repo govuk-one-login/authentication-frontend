@@ -106,7 +106,7 @@ describe("Integration:: contact us - public user", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#subtheme-error").text()).to.contains(
-          "Select the problem you had when signing in to your account"
+          "Select the problem you had when signing in to your GOV.UK One Login"
         );
       })
       .expect(400, done);
