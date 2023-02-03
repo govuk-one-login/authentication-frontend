@@ -158,9 +158,10 @@
         "header": "About GOV.UK accounts",
         "paragraph1": "GOV.UK accounts are new. At the moment you can only use your GOV.UK account with:",
         "listItem1": "Apply for a vehicle operator licence",
-        "listItem2": "GOV.UK email subscriptions ",
-        "listItem3": "LITE (Licensing for International Trade and Enterprise)",
-        "listItem4": "Request a basic DBS check",
+        "listItem2": "Apply to become a registered social worker in England",
+        "listItem3": "GOV.UK email subscriptions ",
+        "listItem4": "LITE (Licensing for International Trade and Enterprise)",
+        "listItem5": "Request a basic DBS check",
         "paragraph2": "GOV.UK accounts do not work with all government accounts and services yet (for example Government Gateway or Universal Credit).",
         "paragraph3": "In the future, you’ll be able to use your GOV.UK account to access all services on GOV.UK."
       },
