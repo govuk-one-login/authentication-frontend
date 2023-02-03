@@ -335,7 +335,7 @@
       "ukPhoneNumber": {
         "label": "Rhif ffôn symudol y DU",
         "validationError": {
-          "required": "Rhowch rif ffôn",
+          "required": "Rhowch rif ffôn symudol y DU",
           "international": "Rhowch rif ffôn symudol yn y DU",
           "length": "Rhowch rif ffôn symudol yn y DU, fel 07700 900000",
           "plusNumericOnly": "Rhowch rif ffôn symudol yn y DU gan ddefnyddio rhifau yn unig neu’r symbol +"
@@ -344,11 +344,11 @@
       "internationalPhoneNumber": {
         "checkBoxLabel": "Nid oes gennyf rif ffôn symudol y DU",
         "label": "Rhif ffôn symudol",
-        "hint": "Dylech gynnwys y cod gwlad, er enghraifft +3537777666555",
+        "hint": "Dylech gynnwys y cod gwlad, er enghraifft +33 am Ffrainc",
         "validationError": {
-          "required": "Rhowch rif ffôn",
-          "plusNumericOnly": "Rhowch rif ffôn gan ddefnyddio rhifau yn unig neu’r symbol +",
-          "internationalFormat": "Rhowch rif ffôn yn y ffurf cywir"
+          "required": "Rhowch rif ffôn symudol",
+          "plusNumericOnly": "Rhowch rif ffôn symudol gan ddefnyddio rhifau yn unig neu’r symbol +",
+          "internationalFormat": "Rhowch rif ffôn symudol yn y ffurf gywir, gan gynnwys y cod gwlad"
         }
       }
     },
