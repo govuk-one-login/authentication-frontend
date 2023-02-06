@@ -1610,8 +1610,8 @@
       "header": "placeholder"
     },
     "proveIdentityWelcome": {
-      "title": "Profi pwy ydych chi gyda chyfrif GOV.UK",
-      "header": "Profi pwy ydych chi gyda chyfrif GOV.UK",
+      "title": "Profi pwy ydych chi gyda GOV.UK One Login",
+      "header": "Profi pwy ydych chi gyda GOV.UK One Login",
       "section1": {
         "paragraph1": "Bydd yn cymryd tua 10 munud i chi brofi pwy ydych chi yn y ffordd hyn.",
         "insetAlternativeLanguage": {
@@ -1628,7 +1628,7 @@
       },
       "section2": {
         "paragraph1": "Byddwch angen:",
-        "listItem1_1": "cyfrif GOV.UK – byddwn yn gofyn i chi greu neu fewngofnodi i’ch cyfrif pan fyddwch yn parhau",
+        "listItem1_1": "GOV.UK One Login – byddwn yn gofyn i chi fewngofnodi neu greu un pan fyddwch yn parhau",
         "listItem1_2": "eich ID gyda llun",
         "listItem1_3": "eich cyfeiriad presennol (efallai y byddwch angen eich cyfeiriad blaenorol hefyd os ydych wedi symud yn ddiweddar)",
         "paragraph2": "Byddwn ond yn defnyddio’r wybodaeth rydych yn ei rhoi i ni i wneud yn siwr mai chi yw pwy rydych yn ei ddweud ydych chi."
@@ -1702,9 +1702,9 @@
       }
     },
     "photoId": {
-      "title": "Mae’n rhaid i chi gael ID llun er mwyn profi pwy ydych gyda chyfrif GOV.UK",
-      "header": "Mae’n rhaid i chi gael ID llun er mwyn profi pwy ydych gyda chyfrif GOV.UK",
-      "introParagraph": "Gallwch ond brofi pwy ydych chi gyda chyfrif GOV.UK os oes gennych un o’r mathau canlynol o ID llun.",
+      "title": "Mae’n rhaid i chi gael ID gyda llun i brofi pwy ydych chi gyda GOV.UK One Login",
+      "header": "Mae’n rhaid i chi gael ID gyda llun i brofi pwy ydych chi gyda GOV.UK One Login",
+      "introParagraph": "Gallwch ond profi pwy ydych chi gyda GOV.UK One Login os oes gennych un o’r mathau canlynol o ID gyda llun.",
       "section1": {
         "subHeading": "Trwydded yrru y DU gyda llun",
         "paragraph1": "Byddwch angen trwydded yrru lawn neu dros dro dilys gyda’ch llun arno."
@@ -1725,7 +1725,7 @@
       "title": "Mae’n rhaid i chi gael ID llun er mwyn profi pwy ydych chi fel hyn",
       "header": "Mae’n rhaid i chi gael ID llun er mwyn profi pwy ydych chi fel hyn",
       "section1": {
-        "paragraph1": "Ar hyn o bryd, dim ond os oes gennych ID llun y gallwch brofi pwy ydych chi gyda’ch cyfrif GOV.UK."
+        "paragraph1": "Ar hyn o bryd gallwch ond profi pwy ydych chi gyda GOV.UK One Login os oes gennych ID gyda llun."
       },
       "section2": {
         "subHeading": "Beth allwch chi ei wneud",
