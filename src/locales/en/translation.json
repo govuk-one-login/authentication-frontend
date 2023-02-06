@@ -822,7 +822,7 @@
           "text1": "Please read these terms and conditions, the ",
           "linkText1": "GOV.UK One Login privacy notice",
           "text2": " and the ",
-          "linkText2": "GOV.UK accounts cookies policy",
+          "linkText2": "GOV.UK One Login cookies policy",
           "text3": "before using GOV.UK One Login. The privacy notice explains the terms on which we process any personal data we collect from you or that you provide to us. The cookie policy gives information about the cookies we use and how we use them when you use GOV.UK One Login."
         },
         "paragraph4": "By registering for and continuing to use GOV.UK One Login, you agree to these terms and conditions, the privacy notice and cookies policy.",
@@ -843,7 +843,7 @@
         "header": "Keeping your GOV.UK One Login secure",
         "paragraph1": {
           "text1": "We have many measures in place to keep your information safe, but as the owner of your GOV.UK One Login, you also have some responsibility for its security. For example you should choose a strong password and ensure you keep it secure. The UK’s National Cyber Security Centre (NCSC) provides ",
-          "linkText": "advice on online security."
+          "linkText": "advice on online security"
         },
         "paragraph2": "If you think that someone knows the username and password to your GOV.UK One Login, you must reset your password as soon as possible."
       },
@@ -987,10 +987,10 @@
         "bulletPoint6": {
           "text1": "information on how you use your GOV.UK One Login and the GOV.UK website, which is collected in the system logs, and by Google Analytics cookies if you give consent - the ",
           "linkText1": "GOV.UK privacy notice",
-          "comma": " , ",
+          "comma": ", ",
           "linkText2": "GOV.UK cookies policy",
           "and": " and ",
-          "linkText3": "GOV.UK accounts cookies policy",
+          "linkText3": "GOV.UK One Login cookies policy",
           "text2": " provide more information about this"
         },
         "bulletPoint7": "online identifiers, such as your Internet Protocol (IP) address, and technical information about the device you use including the model, web browser and operating system, which is automatically collected in system logs when you use GOV.UK",
