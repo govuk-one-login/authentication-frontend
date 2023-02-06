@@ -1632,16 +1632,6 @@
         "listItem1_2": "eich ID gyda llun",
         "listItem1_3": "eich cyfeiriad presennol (efallai y byddwch angen eich cyfeiriad blaenorol hefyd os ydych wedi symud yn ddiweddar)",
         "paragraph2": "Byddwn ond yn defnyddio’r wybodaeth rydych yn ei rhoi i ni i wneud yn siwr mai chi yw pwy rydych yn ei ddweud ydych chi."
-      },
-      "existingSession": {
-        "section3": {
-          "radioOption1": "Continue with your GOV.UK account"
-        },
-        "paragraph1": "Byddwch angen:",
-        "listItem1_1": "cyfrif GOV.UK – byddwn yn gofyn i chi greu neu fewngofnodi i’ch cyfrif pan fyddwch yn parhau",
-        "listItem1_2": "eich ID gyda llun",
-        "listItem1_3": "eich cyfeiriad presennol (efallai y byddwch angen eich cyfeiriad blaenorol hefyd os ydych wedi symud yn ddiweddar)",
-        "paragraph2": "Byddwn ond yn defnyddio’r wybodaeth rydych yn ei rhoi i ni i wneud yn siwr mai chi yw pwy rydych yn ei ddweud ydych chi."
       }
     },
     "proveIdentityCheck": {

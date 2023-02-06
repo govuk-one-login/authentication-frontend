@@ -1632,16 +1632,6 @@
         "listItem1_2": "your photo ID",
         "listItem1_3": "your current home address (you might also need your previous address if you’ve recently moved)",
         "paragraph2": "We’ll only use the information you give us to make sure that you are who you say you are."
-      },
-      "existingSession": {
-        "section3": {
-          "radioOption1": "Continue with your GOV.UK account"
-        },
-        "paragraph1": "You’ll need:",
-        "listItem1_1": "a GOV.UK account – we’ll ask you to create or sign in to your account when you continue",
-        "listItem1_2": "your photo ID",
-        "listItem1_3": "your current home address (you might also need your previous address if you’ve recently moved)",
-        "paragraph2": "We’ll only use the information you give us to make sure that you are who you say you are."
       }
     },
     "proveIdentityCheck": {
