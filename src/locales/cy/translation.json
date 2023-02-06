@@ -2,7 +2,6 @@
   "general": {
     "provider": "GOV.UK",
     "pageTitle": "Mewngofnodi i GOV.UK",
-    "serviceName": "Mewngofnodwch i neu greu eich cyfrif GOV.UK",
     "serviceNameTitle": "GOV.UK One Login",
     "errorTitlePrefix": "Gwall",
     "back": "Yn ôl",

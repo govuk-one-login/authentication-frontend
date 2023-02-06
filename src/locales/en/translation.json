@@ -2,7 +2,6 @@
   "general": {
     "provider": "GOV.UK",
     "pageTitle": "GOV.UK Sign in",
-    "serviceName": "Sign in to or create your GOV.UK account",
     "serviceNameTitle": "GOV.UK One Login",
     "errorTitlePrefix": "Error",
     "back": "Back",
