@@ -693,7 +693,7 @@
       "analytics": {
         "header": "Cwcis sy’n mesur sut rydych yn defnyddio eich GOV.UK One Login",
         "info": {
-          "paragraph1": "Rydym yn defnyddio cwcis Google Analytics i gasglu gwybodaeth dienw am sut rydych yn defnyddio’ch cyfrif GOV.UK, er enghraifft pa dudalennau rydych yn ymweld â hwy a beth rydych yn clicio arno.",
+          "paragraph1": "Rydym yn defnyddio cwcis Google Analytics i gasglu gwybodaeth dienw am sut rydych yn defnyddio GOV.UK One Login, er enghraifft pa dudalennau rydych yn ymweld â hwy a beth rydych yn clicio arno.",
           "paragraph2": "Mae hyn yn ein helpu ni i ddeall sut allwn ni wella GOV.UK One Login."
         },
         "table": {

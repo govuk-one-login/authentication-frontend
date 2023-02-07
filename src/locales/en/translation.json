@@ -693,7 +693,7 @@
       "analytics": {
         "header": "Cookies that measure how you use GOV.UK One Login",
         "info": {
-          "paragraph1": "We use Google Analytics cookies to collect anonymised information about how you use your GOV.UK account, for example what pages you visit and what you click on.",
+          "paragraph1": "We use Google Analytics cookies to collect anonymised information about how you use your GOV.UK One Login, for example what pages you visit and what you click on.",
           "paragraph2": "This helps us understand how we can improve GOV.UK One Login"
         },
         "table": {
