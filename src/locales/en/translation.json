@@ -487,6 +487,23 @@
         "text 2": " if the code is not working or you did not receive it."
       }
     },
+    "youNeedToEnterASecurityCode": {
+      "title": "You need to enter a security code",
+      "header": "You need to enter a security code",
+      "paragraph1": "This helps your GOV.UK account secure.",
+      "paragraph2": "To get a security code, open the ",
+      "authenticatorApp": "authenticator app ",
+      "paragraph2End": "you used to create your GOV.UK account",
+      "paragraph3": "We sent a code to the phone number linked to your account.",
+      "paragraph4": "It might take a few minutes for the code to arrive. The code will expire after 15 minutes.",
+      "enterSecurityCode": "Enter the security code",
+      "enterSecurityCodeSummary": "This is the 6-digit number shown in your authenticator app",
+      "enter6DigitSecurityCode": "Enter the 6 digit security code",
+      "problemsWithTheCode": "Problems with the code?",
+      "sendTheCodeAgain": "Send the code again",
+      "sendTheCodeAgainEnd": " if the code is not working or you did not receive it.",
+      "continue": "Continue"
+    },
     "resendMfaCode": {
       "title": "Get security code",
       "header": "Get security code",

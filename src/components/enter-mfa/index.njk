@@ -2,17 +2,30 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% set pageTitleName = 'pages.enterMfa.title' | translate %}
+{% set pageTitleName = 'pages.youNeedToEnterASecurityCode.title' | translate %}
 
 {% block content %}
 
   {% include "common/errors/errorSummary.njk" %}
 
-  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterMfa.header' | translate }}</h1>
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.youNeedToEnterASecurityCode.header' | translate }}</h1>
 
-  <p class="govuk-body">{{'pages.enterMfa.info.paragraph1' | translate }}</p>
-  <p class="govuk-body">{{'pages.enterMfa.info.paragraph2' | translate }}</p>
+  <p class="govuk-body">{{'pages.youNeedToEnterASecurityCode.paragraph1' | translate }}</p>
+
+  {% if isAuthApp %}
+
+  {% else %}
+    {% set insetTextHtml %}
+    <p class="govuk-body">{{'pages.youNeedToEnterASecurityCode.paragraph3' | translate }}</p>
+    {% endset %}
+
+    {{ govukInsetText({
+        html: insetTextHtml
+      }) }}
+    <p class="govuk-body">{{'pages.youNeedToEnterASecurityCode.paragraph4' | translate }}</p>
+  {% endif %}
 
   <form id="form-tracking" action="/enter-code" method="post" novalidate="novalidate">
     <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
@@ -35,8 +48,7 @@
 
     {% set detailsHTML %}
     <p class="govuk-body">
-      {{'pages.enterMfa.details.text1' | translate}}
-      <a href="{{'pages.enterMfa.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterMfa.details.sendCodeLinkText'| translate}}</a>
+      <a href="{{'pages.youNeedToEnterASecurityCode.sendTheCodeAgain' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.youNeedToEnterASecurityCode.sendTheCodeAgain'| translate}}</a>
       {{'pages.enterMfa.details.text 2' | translate}}
     </p>
     {% endset %}
