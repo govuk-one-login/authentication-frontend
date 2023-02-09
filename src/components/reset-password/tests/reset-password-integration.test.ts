@@ -159,7 +159,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#password-error").text()).to.contains(
-          "Your account is already using that password. Enter a different password"
+          "You are already using that password. Enter a different password"
         );
       })
       .expect(400, done);

@@ -2,8 +2,7 @@
   "general": {
     "provider": "GOV.UK",
     "pageTitle": "Mewngofnodi i GOV.UK",
-    "serviceName": "Mewngofnodwch i neu greu eich cyfrif GOV.UK",
-    "serviceNameTitle": "Cyfrif GOV.UK",
+    "serviceNameTitle": "GOV.UK One Login",
     "errorTitlePrefix": "Gwall",
     "back": "Yn ôl",
     "warning": "Rhybudd",
@@ -13,13 +12,13 @@
       "tag": "beta",
       "content": "Mae hwn yn wasanaeth newydd – bydd eich <a  href=\"/contact-us?supportType=PUBLIC\" class=\"govuk-link\" rel=\"noopener\" target=\"_blank\">adborth (agor mewn tab newydd)</a> yn ein helpu i’w wella."
     },
-    "authenticatorAppIssuer": "Cyfrif GOV.UK",
+    "authenticatorAppIssuer": "GOV.UK One Login",
     "yes": "Gallwch",
     "no": "Na",
     "cookie": {
       "cookieBanner": {
-        "title": "Cwcis ar gyfrif GOV.UK",
-        "heading": "Cwcis ar gyfrif GOV.UK",
+        "title": "Cwcis ar GOV.UK One Login",
+        "heading": "Cwcis ar GOV.UK One Login",
         "paragraph1": "Rydym yn defnyddio rhai cwcis hanfodol i wneud i’r gwasanaeth hwn weithio.",
         "paragraph2": "Hoffem hefyd ddefnyddio cwcis dadansoddi er mwyn i ni allu deall sut rydych yn defnyddio’r gwasanaeth a gwneud gwelliannau.",
         "buttonAcceptText": "Derbyn cwcis dadansoddi",
@@ -46,7 +45,7 @@
     },
     "contactAccounts": {
       "contactLinkHref": "https://signin.account.gov.uk/contact-us",
-      "contactLinkText": "Cysylltu â thîm cyfrif GOV.UK (agor mewn tab newydd)"
+      "contactLinkText": "Cysylltu â thîm GOV.UK One Login (agor mewn tab newydd)"
     },
     "header": {
       "homepageHref": "https://www.gov.uk/"
@@ -117,11 +116,11 @@
       }
     },
     "sessionRequiredMidJourneyError": {
-      "title": "Sorry, you cannot access your account from this page",
-      "header": "Sorry, you cannot access your account from this page",
+      "title": "Mae’n ddrwg gennym, ni allwch gael mynediad i GOV.UK One Login o’r dudalen hon",
+      "header": "Mae’n ddrwg gennym, ni allwch gael mynediad i GOV.UK One Login o’r dudalen hon",
       "content": {
         "paragraph1": {
-          "text1": "Go to your GOV.UK account",
+          "text1": "Ewch i’ch GOV.UK One Login",
           "text2": ", or find the service you need from the ",
           "text3": "GOV.UK homepage"
         },
@@ -132,19 +131,19 @@
   "pages": {
     "signInOrCreate": {
       "mandatory": {
-        "title": "Creu cyfrif GOV.UK neu fewngofnodi",
-        "header": "Creu cyfrif GOV.UK neu fewngofnodi"
+        "title": "Creu GOV.UK One Login neu fewngofnodi",
+        "header": "Creu GOV.UK One Login neu fewngofnodi"
       },
       "optional": {
-        "title": "Creu cyfrif i arbed eich cynnydd",
-        "header": "Creu cyfrif i arbed eich cynnydd"
+        "title": "Creu GOV.UK One Login neu fewngofnodi i arbed eich cynnydd",
+        "header": "Creu GOV.UK One Login neu fewngofnodi i arbed eich cynnydd"
       },
       "paragraph": "Byddwch angen:",
       "bullet1": "cyfeiriad e-bost",
       "bullet2": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol y DU neu’n ap dilysydd",
       "bullet2IntNumbers": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol neu’n ap dilysydd",
       "insetAlternativeLanguage": {
-        "paragraph1": "Mae’r cyfrif GOV.UK hefyd ar gael ",
+        "paragraph1": "Mae GOV.UK One Login hefyd ar gael ",
         "linkText": {
           "inPageLanguage": "yn Saesneg",
           "inDestinationLanguage": "(English)",
@@ -152,20 +151,20 @@
         },
         "linkHref": "?lng=en"
       },
-      "paragraph2": "Os oes gennych gyfrif GOV.UK yn barod gallwch",
+      "paragraph2": "Os oes gennych GOV.UK One Login yn barod gallwch",
       "signInText": "fewngofnodi",
       "moreAbout": {
-        "header": "Am gyfrifon GOV.UK",
-        "paragraph1": "Mae cyfrifon GOV.UK yn newydd. Ar hyn o bryd gallwch ond defnyddio eich cyfrif GOV.UK gyda:",
+        "header": "Am GOV.UK One Login",
+        "paragraph1": "Mae GOV.UK One Login yn newydd. Ar hyn o bryd gallwch ond defnyddio eich GOV.UK One Login gyda:",
         "listItem1": "Gwneud cais am drwydded gweithredwr cerbyd",
         "listItem2": "Gwneud cais i ddod yn weithiwr cymdeithasol cofrestredig yn Lloegr",
         "listItem3": "Tanysgrifiadau e-byst GOV.UK",
         "listItem4": "LITE (Trwyddedu ar gyfer Masnach a Menter Ryngwladol)",
         "listItem5": "Gwneud cais am wiriad DBS sylfaenol",
-        "paragraph2": "Nid yw cyfrifon GOV.UK yn gweithio gyda phob cyfrif neu wasanaeth y llywodraeth hyd yma (er enghraifft Porth y Llywodraeth neu Gredyd Cynhwysol).",
-        "paragraph3": "Yn y dyfodol, byddwch yn gallu defnyddio eich cyfrif GOV.UK i gael mynediad i holl wasanaethau ar GOV.UK."
+        "paragraph2": "Nid yw GOV.UK One Login yn gweithio gyda phob cyfrif neu wasanaeth y llywodraeth hyd yma (er enghraifft Porth y Llywodraeth neu Gredyd Cynhwysol).",
+        "paragraph3": "Yn y dyfodol, byddwch yn gallu defnyddio eich GOV.UK One Login i gael mynediad i holl wasanaethau ar GOV.UK."
       },
-      "createButtonText": "Creu cyfrif GOV.UK"
+      "createButtonText": "Creu GOV.UK One Login"
     },
     "enterEmailCreateAccount": {
       "title": "Rhowch eich cyfeiriad e-bost",
@@ -179,8 +178,8 @@
       }
     },
     "enterEmailExistingAccount": {
-      "title": "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch cyfrif GOV.UK",
-      "header": "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch cyfrif GOV.UK",
+      "title": "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch GOV.UK One Login",
+      "header": "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch GOV.UK One Login",
       "email": {
         "label": "Cyfeiriad e-bost",
         "validationError": {
@@ -191,34 +190,34 @@
       }
     },
     "accountNotFoundOneLogin": {
-      "title": "Ni ddarganfyddwyd cyfrif GOV.UK",
-      "header": "Ni ddarganfyddwyd cyfrif GOV.UK",
-      "paragraph1": "Nid oes cyfrif GOV.UK ar gyfer ",
-      "insetText1": "Mae cyfrifon GOV.UK yn newydd. Ar hyn o bryd, maent ar wahân i gyfrifon eraill y llywodraeth.",
+      "title": "Ni ddarganfyddwyd GOV.UK One Login",
+      "header": "Ni ddarganfyddwyd GOV.UK One Login",
+      "paragraph1": "Nid oes GOV.UK One Login ar gyfer ",
+      "insetText1": "Mae GOV.UK One Login yn newydd. Nid yw yn gweithio gyda phob cyfrif neu wasanaeth y llywodraeth hyd yma.",
       "paragraph2": "Os ydych chi’n ceisio cael mynediad i’ch cyfrif ar gyfer gwasanaeth y llywodraeth, fel Credyd Cynhwysol neu’ch cyfrif treth personol, mewngofnodwch i’ch cyfrif ar gyfer y gwasanaeth hwnnw.",
       "signInToServiceButtonText": "Mewngofnodi i wasanaeth",
       "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
       "tryAnotherLinkHref": "/enter-email-existing-account"
     },
     "accountNotFoundMandatory": {
-      "title": "Ni ddarganfyddwyd cyfrif GOV.UK",
-      "header": "Ni ddarganfyddwyd cyfrif GOV.UK",
-      "paragraph1": "Nid oes cyfrif GOV.UK ar gyfer ",
-      "insetText1": "Mae cyfrifon GOV.UK yn newydd. Ar hyn o bryd, maent ar wahân i gyfrifon eraill y llywodraeth, fel Porth y Llywodraeth neu Gredyd Cynhwysol.",
-      "paragraph2": "Mae angen i chi greu cyfrif GOV.UK hyd yn oed os oes gennych fath arall o gyfrif llywodraeth yn barod.",
-      "createAccountButtonText": "Creu cyfrif GOV.UK",
+      "title": "Ni ddarganfyddwyd GOV.UK One Login",
+      "header": "Ni ddarganfyddwyd GOV.UK One Login",
+      "paragraph1": "Nid oes GOV.UK One Login ar gyfer ",
+      "insetText1": "Mae GOV.UK One Login yn newydd. Nid yw yn gweithio gyda phob cyfrif neu wasanaeth y llywodraeth hyd yma, er enghraifft Porth y Llywodraeth neu Gredyd Cynhwysol.",
+      "paragraph2": "Mae angen i chi greu GOV.UK One Login hyd yn oed os oes gennych gyfrif ar gyfer adran arall o’r llywodraeth yn barod.",
+      "createAccountButtonText": "Creu GOV.UK One Login",
       "createAccountButtonHref": "/enter-email",
       "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
       "tryAnotherLinkHref": "/enter-email-existing-account"
     },
     "accountNotFoundOptional": {
-      "title": "Ni ddarganfyddwyd cyfrif GOV.UK",
-      "header": "Ni ddarganfyddwyd cyfrif GOV.UK",
+      "title": "Ni ddarganfyddwyd GOV.UK One Login",
+      "header": "Ni ddarganfyddwyd GOV.UK One Login",
       "paragraph1": "Ni allem ddod o hyd i gyfrif GOV.UK sy’n ddefnyddio’r cyfeiriad e-bost hwn.",
       "insetText1": "Efallai bod gennych gyfrifon eraill y llywodraeth fel Porth y Llywodraeth neu eich cyfrif treth personol.",
       "insetText2": "Mae’r cyfrif GOV.UK ar wahân i’r cyfrifon eraill hyn gan y llywodraeth.",
-      "insetText3": "Mae angen i chi greu cyfrif GOV.UK, hyd yn oed os oes gennych gyfrif llywodraeth arall.",
-      "createAccountButtonText": "Creu cyfrif GOV.UK",
+      "insetText3": "Mae angen i chi greu GOV.UK One Login, hyd yn oed os oes gennych gyfrif llywodraeth arall.",
+      "createAccountButtonText": "Creu GOV.UK One Login",
       "createAccountButtonHref": "/enter-email",
       "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
       "tryAnotherLinkHref": "/enter-email-existing-account"
@@ -239,9 +238,9 @@
       }
     },
     "enterPasswordAccountExists": {
-      "title": "Mae gennych gyfrif GOV.UK",
-      "header": "Mae gennych gyfrif GOV.UK",
-      "paragraph1": "Mae yna gyfrif GOV.UK eisoes yn defnyddio ",
+      "title": "Mae gennych GOV.UK One Login",
+      "header": "Mae gennych GOV.UK One Login",
+      "paragraph1": "Mae yna GOV.UK One Login eisoes yn defnyddio ",
       "info": "Rhowch eich cyfrinair i fewngofnodi.",
       "password": {
         "label": "Cyfrinair",
@@ -354,8 +353,8 @@
       }
     },
     "accountCreated": {
-      "title": "Rydych wedi creu eich cyfrif GOV.UK",
-      "header": "Rydych wedi creu eich cyfrif GOV.UK",
+      "title": "Rydych wedi creu eich GOV.UK One Login",
+      "header": "Rydych wedi creu eich GOV.UK One Login",
       "text": "Nawr ewch yn eich blaen i ddefnyddio’r gwasanaeth.",
       "inset": "Mae eich cynnydd ar ",
       "insetContinued": " wedi cael ei arbed.",
@@ -463,14 +462,20 @@
       "header": "Gwiriwch eich ffôn",
       "info": {
         "paragraph1": "Rydym wedi anfon cod at y rhif ffôn yn gysylltiedig â’ch cyfrif.",
-        "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud."
+        "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud.",
+        "paragraph3": "I gael cod diogelwch, agorwch yr ",
+        "authenticatorApp": "ap dilysydd ",
+        "paragraph3End": "rydych wedi’i ddefnyddio i greu eich GOV.UK One Login",
+        "paragraph4": "We sent a code to the phone number linked to your account."
       },
       "resend": {
         "link": "Gofynnwch am god newydd",
         "paragraph1": "os nad yw’r cod yn gweithio neu mae wedi dod i ben, neu ni dderbynioch un."
       },
       "code": {
-        "label": "Rhowch y cod diogelwch 6 digid",
+        "label": "Rhowch y cod diogelwch",
+        "label2": "Rhowch y cod diogelwch 6 digid",
+        "labelSummary": "Dyma’r rhif 6-digid a ddangosir yn eich ap dilysydd",
         "validationError": {
           "required": "Rhowch y cod diogelwch",
           "maxLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
@@ -481,8 +486,7 @@
       },
       "details": {
         "summaryText": "Problemau gyda’r cod?",
-        "text1": "Gallwn ",
-        "sendCodeLinkText": "anfon y cod eto",
+        "sendTheCodeAgain": "Anfon y cod eto",
         "sendCodeLinkHref": "/resend-code",
         "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn."
       }
@@ -493,7 +497,7 @@
       "continue": "Cael cod diogelwch",
       "message": "Gall negeseuon testun weithiau gymryd ychydig funudau i gyrraedd.",
       "phoneNumber": {
-        "default": "Byddwn yn anfon cod at y rhif ffôn sy’n gysylltiedig â’ch cyfrif",
+        "default": "Byddwn yn anfon cod at y rhif ffôn sy’n gysylltiedig â’ch GOV.UK One Login",
         "isResendCodeRequest": "Byddwn yn anfon cod i: [mobile]."
       },
       "email": {
@@ -508,19 +512,19 @@
       "govukLinkText": "Ewch i hafan GOV.UK",
       "paragraph1": "neu",
       "signInLinkText": "mewngofnodwch",
-      "paragraph2": "i’ch cyfrif GOV.UK."
+      "paragraph2": "i’ch GOV.UK One Login."
     },
     "shareInfo": {
-      "title": "Rhannu gwybodaeth o’ch cyfrif GOV.UK",
-      "header": "Rhannu gwybodaeth o’ch cyfrif GOV.UK",
+      "title": "Rhannu gwybodaeth o’ch GOV.UK One Login",
+      "header": "Rhannu gwybodaeth o’ch GOV.UK One Login",
       "continue": "Parhau",
       "bulletPointSectionHeader": "Mae’r gwasanaeth hwn angen defnyddio eich:",
-      "paragraph1": "Rydych wedi ychwanegu’r wybodaeth hon i’ch cyfrif GOV.UK pan wnaethoch greu’r cyfrif. Gallwch ddewis ei rannu gyda’r gwasanaeth yn lle ei roi i mewn eto pan fyddwch yn defnyddio’r gwasanaeth.",
+      "paragraph1": "Rydych wedi ychwanegu’r wybodaeth hon i’ch GOV.UK One Login pan wnaethoch ei greu. Gallwch ddewis ei rannu gyda’r gwasanaeth yn lle ei roi i mewn eto pan fyddwch yn defnyddio’r gwasanaeth.",
       "paragraph2": "Bydd y gwasanaeth ond yn defnyddio’r wybodaeth yma i gysylltu â chi am y gwasanaeth. Ni fydd yn rhannu eich gwybodaeth ag unrhyw un arall. Bydd yn cadw eich gwybodaeth cyhyd ag y mae ei angen neu mae’r gyfraith yn ei gwneud yn ofynnol iddo.",
-      "paragraph3": "Os ydych yn dewis peidio rhannu gwybodaeth o’ch cyfrif GOV.UK, efallai y dal gofynnir i chi am y wybodaeth honno wrth i chi ddefnyddio’r gwasanaeth. Er enghraifft os ydych yn dewis peidio rhannu eich cyfeiriad e-bost a’ch rhif ffôn ac mae’r gwasanaeth angen ffordd i gysylltu â chi.",
-      "essentialHeader": "Ydych chi eisiau rhannu gwybodaeth o’ch cyfrif GOV.UK? ",
+      "paragraph3": "Os ydych yn dewis peidio â rhannu gwybodaeth o’ch GOV.UK One Login,efallai y gofynnir i chi am y wybodaeth honno o hyd wrth i chi ddefnyddio’r gwasanaeth. Er enghraifft os ydych yn dewis peidio â rhannu eich cyfeiriad e-bost a’ch rhif ffôn ac mae’r gwasanaeth angen ffordd i gysylltu â chi.",
+      "essentialHeader": "Ydych chi eisiau rhannu gwybodaeth o’ch GOV.UK One Login? ",
       "radios": {
-        "shareMy": "Ydych chi eisiau rhannu gwybodaeth o’ch cyfrif GOV.UK?",
+        "shareMy": "Ydych chi eisiau rhannu gwybodaeth o’ch GOV.UK One Login?",
         "radioText": {
           "agree": "Rhannwch fy nghyfeiriad e-bost a’m rhif ffôn",
           "doNotAgree": "Peidiwch rhannu fy nghyfeiriad e-bost â’m rhif ffôn",
@@ -529,8 +533,8 @@
       }
     },
     "updatedTermsAndConds": {
-      "title": "Diweddariad telerau defnyddio cyfrif GOV.UK",
-      "header": "Diweddariad telerau defnyddio cyfrif GOV.UK",
+      "title": "Diweddariad telerau defnyddio GOV.UK One Login",
+      "header": "Diweddariad telerau defnyddio GOV.UK One Login",
       "paragraph1": {
         "text": "Rydym wedi diweddaru ein ",
         "and": "a",
@@ -575,26 +579,26 @@
         "termsAndConditionsText": "telerau ac amodau",
         "privacyNoticeText": "hysbysiad preifatrwydd",
         "cookiesPolicyText": "polisi cwcis",
-        "end": "wedi’u diweddaru i barhau i ddefnyddio eich cyfrif."
+        "end": "i barhau i ddefnyddio eich cyfrif."
       },
       "section2": {
-        "paragraph1": "Os nad ydych yn cytuno i’r telerau newydd, ni allwch ddefnyddio eich cyfrif GOV.UK.",
+        "paragraph1": "Os nad ydych yn cytuno i’r telerau newydd, ni allwch ddefnyddio eich GOV.UK One Login.",
         "govUkHomePageText": "Ewch i hafan GOV.UK.",
-        "paragraph2": "Os nad ydych angen eich cyfrif mwyach, neu os ydych am ddileu gwybodaeth sydd wedi’i arbed yn eich cyfrif, gallwch ",
+        "paragraph2": "Os nad ydych angen eich GOV.UK One Login mwyach, neu os ydych am ddileu gwybodaeth sydd wedi’i arbed yn eich GOV.UK One Login, gallwch ",
         "contactUsText": "gysylltu â ni."
       },
       "agreeAndContinue": "Cytuno a pharhau"
     },
     "cookiePolicy": {
-      "title": "Polisi cwcis cyfrifon GOV.UK",
-      "header": "Polisi cwcis cyfrifon GOV.UK",
+      "title": "Polisi cwcis GOV.UK One Login",
+      "header": "Polisi cwcis GOV.UK One Login",
       "info": {
-        "paragraph1": "Dim ond cyfrifon GOV.UK. mae’r polisi cwcis hwn yn ei gwmpasu. Darllenwch brif ",
+        "paragraph1": "Dim ond ar gyfer GOV.UK One Login mae’r polisi cwcis hwn yn ei gwmpasu. Darllenwch brif ",
         "govUkCookiesLinkHref": "https://www.gov.uk/help/cookies",
         "govUkCookiesLinkText": "bolisi cwcis GOV.UK",
         "paragraph2": " i gael gwybod am gwcis sy’n cael eu defnyddio ar GOV.UK.",
-        "paragraph3": "Mae cwcis yn ffeiliau sy’n cael eu cadw ar eich ffôn, llechen neu gyfrifiadur pan fyddwch yn ymweld â gwefan. Rydym yn defnyddio cwcis i wneud i cyfrif GOV.UK weithio.",
-        "paragraph4": "Efallai y byddwn hefyd yn defnyddio cwcis dadansoddeg i ddysgu am sut rydych yn defnyddio’r cyfrif a’n helpu i’w wella. Byddwn yn gofyn am eich caniatâd cyn i ni wneud hyn.",
+        "paragraph3": "Mae cwcis yn ffeiliau sy’n cael eu cadw ar eich ffôn, llechen neu gyfrifiadur pan fyddwch yn ymweld â gwefan. Rydym yn defnyddio cwcis i wneud i GOV.UK One Login weithio.",
+        "paragraph4": "Efallai y byddwn hefyd yn defnyddio cwcis dadansoddeg i ddysgu am sut rydych yn defnyddio GOV.UK One Login a’n helpu i’w wella. Byddwn yn gofyn am eich caniatâd cyn i ni wneud hyn.",
         "paragraph5": "Nid yw cwcis yn cael eu defnyddio i’ch adnabod chi’n bersonol.",
         "paragraph6": "Darganfyddwch fwy am",
         "linkHref": "https://ico.org.uk/your-data-matters/online/cookies/",
@@ -605,7 +609,7 @@
         "header": "Cwcis hollol hanfodol",
         "info": {
           "paragraph1": "Rydym yn defnyddio cwcis hanfodol i:",
-          "bulletPoint1": "wneud i’r cyfrif weithio",
+          "bulletPoint1": "wneud i GOV.UK One Login weithio",
           "bulletPoint2": "cadw eich gwybodaeth yn ddiogel",
           "bulletPoint3": "canfod gweithgarwch twyllodrus neu faleisus ac achosion o dorri ein telerau ac amodau",
           "table": {
@@ -656,7 +660,7 @@
       },
       "cookiesMessage": {
         "header": "Neges cwcis",
-        "paragraph1": "Efallai y gwelwch faner pan fyddwch yn defnyddio eich cyfrif GOV.UK yn eich gwahodd i dderbyn cwcis neu adolygu eich gosodiadau. Byddwn yn gosod cwcis i: ",
+        "paragraph1": "Efallai y gwelwch faner pan fyddwch yn defnyddio eich GOV.UK One Login yn eich gwahodd i dderbyn cwcis neu adolygu eich gosodiadau. Byddwn yn gosod cwcis i: ",
         "bulletPoint1": "adael i’ch cyfrifiadur wybod eich bod wedi gweld y neges hon fel nad yw’n cael ei ddangos i chi eto",
         "bulletPoint2": "storio eich gosodiadau",
         "table": {
@@ -675,8 +679,8 @@
       },
       "settingsCookies": {
         "header": "Cwcis sy’n cofio eich gosodiadau",
-        "paragraph1": "Mae’r cwcis hyn yn gwneud pethau fel cofio eich dewisiadau a’r dewisiadau rydych yn eu gwneud, er mwyn personoli eich profiad o ddefnyddio eich cyfrif GOV.UK.",
-        "paragraph2": "Rydym yn gosod cwci pan fyddwch yn defnyddio eich cyfrif GOV.UK i arbed eich dewis iaith. Ar hyn o bryd, mae hyn yn mynd yn ddiofyn i’r Saesneg.",
+        "paragraph1": "Mae’r cwcis hyn yn gwneud pethau fel cofio eich dewisiadau a’r dewisiadau rydych yn eu gwneud, er mwyn personoli eich profiad o ddefnyddio eich GOV.UK One Login.",
+        "paragraph2": "Rydym yn gosod cwci pan fyddwch yn defnyddio eich GOV.UK One Login i arbed eich dewis iaith. Ar hyn o bryd, mae hyn yn mynd yn ddiofyn i’r Saesneg.",
         "table": {
           "headers": {
             "col1": "Enw",
@@ -685,17 +689,17 @@
           },
           "rows": {
             "row1": {
-              "col2": "Cofio’r iaith rydych yn defnyddio’r cyfrif ynddi",
+              "col2": "Cofio’r iaith rydych yn defnyddio yn GOV.UK One Login",
               "col3": "1 flwyddyn"
             }
           }
         }
       },
       "analytics": {
-        "header": "Cwcis sy’n mesur sut rydych yn defnyddio eich cyfrif GOV.UK",
+        "header": "Cwcis sy’n mesur sut rydych yn defnyddio eich GOV.UK One Login",
         "info": {
-          "paragraph1": "Rydym yn defnyddio cwcis Google Analytics i gasglu gwybodaeth dienw am sut rydych yn defnyddio’ch cyfrif GOV.UK, er enghraifft pa dudalennau rydych yn ymweld â hwy a beth rydych yn clicio arno.",
-          "paragraph2": "Mae hyn yn ein helpu ni i ddeall sut allwn ni wella’r cyfrif."
+          "paragraph1": "Rydym yn defnyddio cwcis Google Analytics i gasglu gwybodaeth dienw am sut rydych yn defnyddio GOV.UK One Login, er enghraifft pa dudalennau rydych yn ymweld â hwy a beth rydych yn clicio arno.",
+          "paragraph2": "Mae hyn yn ein helpu ni i ddeall sut allwn ni wella GOV.UK One Login."
         },
         "table": {
           "headers": {
@@ -705,23 +709,23 @@
           },
           "rows": {
             "row1": {
-              "col2": "Ein helpu i gyfrif faint o bobl sy’n ymweld â chyfrif GOV.UK trwy wirio a ydych wedi ymweld o’r blaen",
+              "col2": "Ein helpu i gyfrif faint o bobl sy’n ymweld â GOV.UK trwy wirio a ydych wedi ymweld o’r blaen",
               "col3": "2 flynedd"
             },
             "row2": {
-              "col2": "Ein helpu i gyfrif faint o bobl sy’n ymweld â chyfrif GOV.UK trwy wirio a ydych wedi ymweld o’r blaen",
+              "col2": "Ein helpu i gyfrif faint o bobl sy’n ymweld â GOV.UK trwy wirio a ydych wedi ymweld o’r blaen",
               "col3": "24 awr"
             },
             "row3": {
-              "col2": "Ein helpu i gyfrif faint o bobl sy’n ymweld â chyfrif GOV.UK trwy wirio a ydych wedi ymweld o’r blaen",
+              "col2": "Ein helpu i gyfrif faint o bobl sy’n ymweld â GOV.UK trwy wirio a ydych wedi ymweld o’r blaen",
               "col3": "Pan fyddwch yn cau eich porwr gwe"
             }
           }
         }
       },
       "settings": {
-        "yesRadioButton": "Defnyddiwch gwcis sy’n mesur sut rwy’n defnyddio fy nghyfrif GOV.UK",
-        "noRadioButton": "Peidiwch defnyddio cwcis sy’n mesur sut rwy’n defnyddio fy nghyfrif GOV.UK",
+        "yesRadioButton": "Defnyddiwch gwcis sy’n mesur sut rwy’n defnyddio GOV.UK One Login",
+        "noRadioButton": "Peidiwch â defnyddio cwcis sy’n mesur sut rwy’n defnyddio GOV.UK One Login",
         "saveButton": "Arbed gosodiadau cwcis"
       },
       "successBanner": {
@@ -731,46 +735,46 @@
       }
     },
     "accessibilityStatement": {
-      "title": "Datganiad hygyrchedd ar gyfer cyfrifon GOV.UK",
-      "header": "Datganiad hygyrchedd ar gyfer cyfrifon GOV.UK",
+      "title": "Datganiad hygyrchedd ar gyfer GOV.UK One Login",
+      "header": "Datganiad hygyrchedd ar gyfer GOV.UK One Login",
       "content": {
-        "paragraph1": "Mae cyfrifon GOV.UK yn rhan o wefan ehangach GOV.UK. Mae ",
+        "paragraph1": "Mae GOV.UK One Login yn rhan o wefan ehangach GOV.UK. Mae ",
         "linkText": "datganiad hygyrchedd ar ar wahân ar gyfer prif wefan GOV.UK",
-        "paragraph2": "Mae’r dudalen hon ond yn cynnwys gwybodaeth am gyfrifon GOV.UK, sydd ar gael yn www.signin.account.gov.uk."
+        "paragraph2": "Mae’r dudalen hon ond yn cynnwys gwybodaeth am GOV.UK One Login, sydd ar gael yn www.signin.account.gov.uk."
       },
       "section1": {
-        "header": "Defnyddio cyfrifon GOV.UK",
+        "header": "Defnyddio GOV.UK One Login",
         "paragraph1": {
-          "text1": "Mae cyfrifon GOV.UK yn cael eu rhedeg gan y ",
+          "text1": "Mae GOV.UK One Login yn cael eu rhedeg gan y ",
           "linkText": "Gwasanaeth Digidol y Llywodraeth (GDS)",
-          "text2": ", rhan o Swyddfa’r Cabinet. Rydym am i gynifer o bobl â phosibl allu defnyddio’r wefan hon. Er enghraifft, mae hynny’n golygu y dylech allu:"
+          "text2": ", rhan o Swyddfa’r Cabinet. Rydym am i gynifer o bobl â phosibl allu defnyddio GOV.UK One Login. Er enghraifft, mae hynny’n golygu y dylech allu:"
         },
         "bulletPoint1": "newid lliwiau, lefelau cyferbyniad a ffontiau",
         "bulletPoint2": "chwyddo hyd at 300% heb i’r testun ollwng oddi ar y sgrin",
-        "bulletPoint3": "llywio’r rhan fwyaf o’r wefan drwy ddefnyddio bysellfwrdd yn unig",
-        "bulletPoint4": "llywio’r rhan fwyaf o’r wefan drwy ddefnyddio meddalwedd adnabod lleferydd",
-        "bulletPoint5": "gwrando ar y rhan fwyaf o’r wefan drwy ddefnyddio darllenydd sgrin (gan gynnwys y fersiynau diweddaraf o JAWS, NVDA a VoiceOver)",
-        "paragraph2": "Rydym hefyd wedi gwneud testun yn y cyfrif mor syml â phosibl i’w ddeall.",
+        "bulletPoint3": "llywio’r rhan fwyaf o GOV.UK One Login drwy ddefnyddio bysellfwrdd yn unig",
+        "bulletPoint4": "llywio’r rhan fwyaf o GOV.UK One Login drwy ddefnyddio meddalwedd adnabod lleferydd",
+        "bulletPoint5": "gwrando ar y rhan fwyaf o GOV.UK One Login drwy ddefnyddio darllenydd sgrin (gan gynnwys y fersiynau diweddaraf o JAWS, NVDA a VoiceOver)",
+        "paragraph2": "Rydym hefyd wedi gwneud testun yn GOV.UK One Login mor syml â phosibl i’w ddeall.",
         "linkText": "Mae gan AbilityNet",
         "linkHref": "https://mcmw.abilitynet.org.uk/",
         "paragraph3": "gyngor ar sut i wneud eich dyfais yn haws i’w defnyddio os oes gennych anabledd."
       },
       "section2": {
-        "header": "Pa mor hygyrch yw cyfrifon GOV.UK ",
-        "paragraph1": "Nid yw’r rhannau canlynol o gyfrifon GOV.UK yn gwbl hygyrch:",
-        "bulletPoint1": "nid yw’n bosib stopio na newid hyd yr amseru allan pan fyddwch yn defnyddio, mewngofnodi i neu greu cyfrif",
+        "header": "Pa mor hygyrch yw GOV.UK One Login ",
+        "paragraph1": "Nid yw’r rhannau canlynol o GOV.UK One Login yn gwbl hygyrch:",
+        "bulletPoint1": "nid yw’n bosib stopio na newid hyd yr amseru allan pan fyddwch yn defnyddio, mewngofnodi i neu greu GOV.UK One Login",
         "bulletPoint2": "nid yw’n bosib i ddarllenydd sgrin wybod pryd mae’r e-byst rydym yn eu hanfon mewn iaith ar wahân i’r Saesneg",
         "bulletPoint3": "one page reloads automatically after a set time limit, and it’s not possible to stop or delay this",
         "paragraph2": "Byddwn yn diweddaru’r dudalen hon pan fydd y materion wedi cael eu datrys neu gyda gwybodaeth ynghylch pryd rydym yn bwriadu eu datrys."
       },
       "section3": {
-        "header": "Beth i’w wneud os ydych yn cael trafferth defnyddio cyfrifon GOV.UK",
-        "paragraph1": "Os ydych yn cael trafferth defnyddio cyfrifon GOV.UK, ",
+        "header": "Beth i’w wneud os ydych yn cael trafferth defnyddio GOV.UK One Login",
+        "paragraph1": "Os ydych yn cael trafferth defnyddio GOV.UK One Login, ",
         "linkText": "cysylltwch â ni"
       },
       "section4": {
-        "header": "Rhoi gwybod am broblemau hygyrchedd gyda cyfrifon GOV.UK",
-        "paragraph1": "Rydym bob amser yn ceisio gwella hygyrchedd cyfrifon GOV.UK. Os byddwch yn dod o hyd i unrhyw broblemau nad ydynt wedi’u rhestru ar y dudalen hon neu’n credu nad ydym yn cwrdd â gofynion hygyrchedd, ",
+        "header": "Rhoi gwybod am broblemau hygyrchedd gyda GOV.UK One Login",
+        "paragraph1": "Rydym bob amser yn ceisio gwella hygyrchedd GOV.UK One Login. Os byddwch yn dod o hyd i unrhyw broblemau nad ydynt wedi’u rhestru ar y dudalen hon neu’n credu nad ydym yn cwrdd â gofynion hygyrchedd, ",
         "linkText": "cysylltwch â ni"
       },
       "section5": {
@@ -780,11 +784,11 @@
         "linkText": "cysylltwch â’r Gwasanaeth Cynghori a Chymorth Cydraddoldeb (EASS)"
       },
       "section6": {
-        "header": "Gwybodaeth dechnegol am hygyrchedd cyfrifon GOV.UK",
-        "paragraph1": "Mae Gwasanaeth Digidol y Llywodraeth wedi ymrwymo i wneud cyfrifon GOV.UK yn hygyrch, yn unol â Rheoliadau Cyrff y Sector Cyhoeddus (Gwefannau a Cheisiadau Symudol) (Rhif 2) Hygyrchedd 2018.",
+        "header": "Gwybodaeth dechnegol am hygyrchedd GOV.UK One Login",
+        "paragraph1": "Mae Gwasanaeth Digidol y Llywodraeth wedi ymrwymo i wneud GOV.UK One Login yn hygyrch, yn unol â Rheoliadau Cyrff y Sector Cyhoeddus (Gwefannau a Cheisiadau Symudol) (Rhif 2) Hygyrchedd 2018.",
         "subHeader": "Statws cydymffurfio",
         "paragraph2": {
-          "text1": "Mae cyfrifon GOV.UK yn cydymffurfio’n rhannol â safon AA",
+          "text1": "Mae GOV.UK One Login yn cydymffurfio’n rhannol â safon AA",
           "linkText": "Canllawiau Hygyrchedd Cynnwys Gwe fersiwn 2.1",
           "text2": " oherwydd y diffyg cydymffurfiaeth a restrir isod."
         }
@@ -793,7 +797,7 @@
         "header": "Cynnwys anhygyrch",
         "paragraph1": "Nid yw’r cynnwys a restrir isod yn hygyrch am y rhesymau canlynol.",
         "subHeader": "Diffyg cydymffurfio â’r rheoliadau hygyrchedd",
-        "paragraph2": "Pan fyddwch yn creu cyfrif neu fewngofnodi, os nad ydych yn gwneud unrhyw beth am 2 awr, bydd y broses yn stopio (amseru allan) neu byddwch yn cael eich allgofnodi. Nid yw yn bosib addasu, ymestyn na diffodd yr amseru allan. Mae hyn yn methu maen prawf llwyddiant WCAG 2.1  2.2.1 (Addasu Amseru)."
+        "paragraph2": "Pan fyddwch yn creu GOV.UK One Login neu fewngofnodi, os nad ydych yn gwneud unrhyw beth am 2 awr, bydd y broses yn stopio (amseru allan) neu byddwch yn cael eich allgofnodi. Nid yw’n bosibl addasu, ymestyn na diffodd yr amseru allan. Mae hyn yn methu maen prawf llwyddiant WCAG 2.1  2.2.1 (Addasu Amseru)."
       },
       "section8": {
         "header": "Beth rydym yn ei wneud i wella hygyrchedd",
@@ -802,63 +806,63 @@
       "section9": {
         "header": "Paratoi’r datganiad hygyrchedd hwn",
         "paragraph1": "Paratowyd y datganiad hwn ar 4 Tachwedd 2020. Cafodd ei adolygu ddiwethaf ar 29 Mehefin 2022.",
-        "paragraph2": "Cafodd cyfrifon GOV.UK eu profi ddiwethaf ar 13 Mehefin 2022. Cynhaliwyd y prawf gan y Ganolfan Hygyrchedd Digidol (DAC), a gynhyrchodd adroddiad archwilio hygyrchedd ar 17 Mehefin 2022. Asesodd DAC gyfrifon GOV.UK yn erbyn y Canllawiau Hygyrchedd Cynnwys Gwe WCAG 2.1."
+        "paragraph2": "Cafodd GOV.UK One Login ei brofi ddiwethaf ar 13 Mehefin 2022. Cynhaliwyd y prawf gan y Ganolfan Hygyrchedd Digidol (DAC), a gynhyrchodd adroddiad archwilio hygyrchedd ar 17 Mehefin 2022. Asesodd DAC GOV.UK One Login yn erbyn y Canllawiau Hygyrchedd Cynnwys Gwe WCAG 2.1."
       }
     },
     "termsAndConditions": {
-      "title": "Telerau ac amodau cyfrif GOV.UK",
-      "header": "Telerau ac amodau cyfrif GOV.UK",
+      "title": "Telerau ac amodau GOV.UK One Login",
+      "header": "Telerau ac amodau GOV.UK One Login",
       "section1": {
         "paragraph1": {
-          "text1": "Mae’r telerau ac amodau hyn yn ymdrin yn benodol â chyfrifon GOV.UK. Gallwch ddefnyddio cyfrif GOV.UK i gael mynediad i a defnyddio rhai o wasanaethau a nodweddion y llywodraeth. Mae gan dudalennau sy’n rhan o’r cyfrif GOV.UK urlau sy’n cynnwys account.gov.uk. Os ydych yn defnyddio rhannau eraill o GOV.UK dylech hefyd ddarllen y ",
+          "text1": "Mae’r telerau ac amodau hyn yn ymdrin yn benodol â GOV.UK One Login. Gallwch ddefnyddio GOV.UK One Login i gael mynediad i a defnyddio rhai o wasanaethau a nodweddion y llywodraeth. Mae gan dudalennau sy’n rhan o GOV.UK One Login urls sy’n cynnwys account.gov.uk. Os ydych yn defnyddio rhannau eraill o GOV.UK dylech hefyd ddarllen y ",
           "linkText": "telerau ac amodau ar gyfer GOV.UK"
         },
         "paragraph2": {
-          "text1": "Rheolir y cyfrif GOV.UK gan ",
+          "text1": "Rheolir y GOV.UK One Login gan ",
           "linkText": "Gwasanaeth Digidol y Llywodraeth",
           "text2": " (GDS) ar ran y Goron. Mae GDS yn rhan o Swyddfa’r Cabinet a chaiff ei gyfeirio ato fel ’ni’ o hyn ymlaen."
         },
         "paragraph3": {
           "text1": "Darllenwch y telerau ac amodau hyn, yr ",
-          "linkText1": "hysbysiad preifatrwydd cyfrifon GOV.UK",
+          "linkText1": "hysbysiad preifatrwydd GOV.UK One Login",
           "text2": " a ",
           "linkText2": "Polisi cwcis cyfrifon GOV.UK",
-          "text3": "cyn defnyddio’r cyfrif GOV.UK. Mae’r hysbysiad preifatrwydd yn egluro’r telerau rydym yn prosesu unrhyw ddata personol y byddwn yn ei gasglu gennych neu eich bod yn ei ddarparu i ni. Mae’r polisi cwcis yn rhoi gwybodaeth am y cwcis rydym yn eu defnyddio a sut rydym yn eu defnyddio pan rydych yn defnyddio GOV.UK neu eich cyfrif GOV.UK."
+          "text3": "cyn defnyddio’r GOV.UK One Login. Mae’r hysbysiad preifatrwydd yn egluro’r telerau rydym yn prosesu unrhyw ddata personol y byddwn yn ei gasglu gennych neu eich bod yn ei ddarparu i ni. Mae’r polisi cwcis yn rhoi gwybodaeth am y cwcis rydym yn eu defnyddio a sut rydym yn eu defnyddio pan rydych yn defnyddio GOV.UK neu eich GOV.UK One Login."
         },
-        "paragraph4": "Drwy gofrestru ar gyfer a pharhau i ddefnyddio cyfrif GOV.UK, rydych yn cytuno i’r telerau ac amodau hyn, yr hysbysiad preifatrwydd a’r polisi cwcis.",
+        "paragraph4": "Drwy gofrestru ar gyfer a pharhau i ddefnyddio GOV.UK One Login, rydych yn cytuno i’r telerau ac amodau hyn, yr hysbysiad preifatrwydd a’r polisi cwcis.",
         "subHeader": "Newidiadau i’r telerau ac amodau hyn",
         "paragraph5": "Gallwn ddiweddaru’r telerau hyn, yn ogystal â’r polisi cwcis a’r hysbysiad preifatrwydd, ar unrhyw adeg heb rybudd.",
-        "paragraph6": "Os ydym yn newid y telerau ac amodau, byddwn yn gofyn i chi eu derbyn y tro nesaf y byddwch yn mewngofnodi i’ch cyfrif."
+        "paragraph6": "Os ydym yn newid y telerau ac amodau, byddwn yn gofyn i chi eu derbyn y tro nesaf y byddwch yn mewngofnodi i GOV.UK One Login."
       },
       "section2": {
-        "header": "Cael mynydiad i’ch cyfrif GOV.UK",
-        "paragraph1": "Rydych yn gyfrifol am wneud yr holl drefniadau i chi gael mynediad i’ch cyfrif GOV.UK. Mae hyn yn cynnwys darparu eich dyfais eich hun, system weithredu, porwr a chysylltiad rhyngrwyd. Dylech ddefnyddio dyfais sy’n defnyddio system weithredu Windows, OS, iOS neu Android. Rydym yn argymell eich bod yn defnyddio un o’r porwyr canlynol:",
+        "header": "Cael mynydiad i’ch GOV.UK One Login",
+        "paragraph1": "Rydych yn gyfrifol am wneud yr holl drefniadau i chi gael mynediad i’ch GOV.UK One Login. Mae hyn yn cynnwys darparu eich dyfais eich hun, system weithredu, porwr a chysylltiad rhyngrwyd. Dylech ddefnyddio dyfais sy’n defnyddio system weithredu Windows, OS, iOS neu Android. Rydym yn argymell eich bod yn defnyddio un o’r porwyr canlynol:",
         "bulletPoint1": "Y fersiwn diweddaraf o Google Chrome, Microsoft Edge, Mozilla Firefox, Samsung Internet neu Internet Explorer",
         "bulletPoint2": "Safari 12 neu ddiweddarach",
         "bulletPoint3": "Safari ar gyfer iOS 12.1 neu ddiweddarach",
-        "paragraph2": "Nid ydym yn gwarantu y bydd eich cyfrif GOV.UK bob amser ar gael, neu bydd y mynediad iddo yn ddi-wall. Byddwn yn darparu ffordd i chi roi gwybod am broblemau gyda’ch cyfrif.",
-        "paragraph3": "Gallwn atal, stopio, dileu, diweddaru neu newid y cyfrif GOV.UK heb rybudd ar unrhyw adeg."
+        "paragraph2": "Nid ydym yn gwarantu y bydd GOV.UK One Login bob amser ar gael, neu bydd y mynediad iddo yn ddi-wall. Byddwn yn darparu ffordd i chi roi gwybod am broblemau gyda GOV.UK One Login.",
+        "paragraph3": "Gallwn atal, stopio, dileu, diweddaru neu newid y GOV.UK One Login heb rybudd ar unrhyw adeg."
       },
       "section3": {
-        "header": "Cadw’ch cyfrif yn ddiogel",
+        "header": "Cadw eich GOV.UK One Login yn ddiogel",
         "paragraph1": {
-          "text1": "Mae gennym lawer o fesurau mewn lle i gadw’ch gwybodaeth yn ddiogel, ond fel perchennog eich cyfrif GOV.UK, mae gennych chi hefyd rywfaint o gyfrifoldeb am ddiogelwch eich cyfrif. Er enghraifft, dylech ddewis cyfrinair cryf ar gyfer eich cyfrif a sicrhau eich bod yn ei gadw’n ddiogel. Mae Canolfan Seiberddiogelwch Genedlaethol y DU (NCSC) yn darparu ",
-          "linkText": "cyngor ar gadw’ch cyfrifon ar-lein yn ddiogel"
+          "text1": "Mae gennym lawer o fesurau mewn lle i gadw’ch gwybodaeth yn ddiogel, ond fel perchennog eich GOV.UK One Login, mae gennych chi hefyd rywfaint o gyfrifoldeb am ei ddiogelwch. Er enghraifft, dylech ddewis cyfrinair cryf ar gyfer eich cyfrif a sicrhau eich bod yn ei gadw’n ddiogel. Mae Canolfan Seiberddiogelwch Genedlaethol y DU (NCSC) yn darparu ",
+          "linkText": "cyngor ddiogelwch ar-lein"
         },
-        "paragraph2": "Os ydych yn meddwl bod rhywun yn gwybod yr enw defnyddiwr a’r cyfrinair ar gyfer eich cyfrif GOV.UK, rhaid i chi ailosod eich cyfrinair cyn gynted â phosibl."
+        "paragraph2": "Os ydych yn meddwl bod rhywun yn gwybod yr enw defnyddiwr a’r cyfrinair ar gyfer eich GOV.UK One Login, rhaid i chi ailosod eich cyfrinair cyn gynted â phosibl."
       },
       "section4": {
-        "header": "Defnyddio eich cyfrif GOV.UK",
-        "paragraph1": "Byddwch yn defnyddio eich cyfrif i gael mynediad at wasanaethau’r llywodraeth ac i ddim pwrpas arall.",
+        "header": "Defnyddio eich GOV.UK One Login",
+        "paragraph1": "Byddwch yn defnyddio eich GOV.UK One Login i gael mynediad at wasanaethau’r llywodraeth ac nid at unrhyw  bwrpas arall.",
         "paragraph2": "Oni bai bod y gyfraith yn ei ganiatáu neu o dan y telerau ac amodau hyn, rhaid i chi:",
-        "bulletPoint1": "ddim copïo’r cyfrif GOV.UK ac eithrio lle mae copïo’n gysylltiedig â defnydd arferol",
-        "bulletPoint2": "ddim rhentu, prydlesu, is-drwyddedu, benthyca, cyfieithu, uno, addasu neu amrywio’r cyfrif GOV.UK",
-        "bulletPoint3": "ddim cyfuno neu’n ymgorffori’r cyfrif GOV.UK gydag unrhyw raglenni neu wasanaethau eraill",
-        "bulletPoint4": "peidio â dadosod, dadgrynhoi, gwrth-beiriannu na chreu gweithiau deilliadol yn seiliedig ar unrhyw ran o’r cyfrif",
-        "bulletPoint5": "cydymffurfio â’r holl ddeddfau rheoli technoleg neu allforio sy’n berthnasol i’r dechnoleg a ddefnyddir gan y cyfrif GOV.UK",
-        "paragraph3": "Rhaid i chi beidio defnyddio eich cyfrif GOV.UK:",
+        "bulletPoint1": "peidio â chopïo GOV.UK One Login ac eithrio lle mae copïo’n gysylltiedig â defnydd arferol",
+        "bulletPoint2": "peidio â rhentu, prydlesu, is-drwyddedu, benthyca, cyfieithu, uno, addasu neu amrywio GOV.UK One Login",
+        "bulletPoint3": "ddim cyfuno nac ymgorffori GOV.UK One Login gydag unrhyw raglenni neu wasanaethau eraill",
+        "bulletPoint4": "peidio â dadosod, dadgrynhoi, gwrth-beiriannu na chreu gweithiau deilliadol yn seiliedig ar unrhyw ran o GOV.UK One Login",
+        "bulletPoint5": "cydymffurfio â’r holl ddeddfau rheoli technoleg neu allforio sy’n berthnasol i’r dechnoleg a ddefnyddir gan GOV.UK One Login",
+        "paragraph3": "Rhaid i chi beidio â defnyddio eich GOV.UK One Login:",
         "bulletPoint6": "i drosglwyddo unrhyw ddeunydd sy’n sarhaus neu dramgwyddus",
-        "bulletPoint7": "i gasglu unrhyw ddata neu geisio difrïo unrhyw drosglwyddiadau i neu o’r gweinyddwyr sy’n rhedeg GOV.UK cyfrif",
+        "bulletPoint7": "i gasglu unrhyw ddata neu geisio difrïo unrhyw drosglwyddiadau i neu o’r gweinyddwyr sy’n rhedeg GOV.UK One Login",
         "bulletPoint8": "mewn ffordd a allai niweidio, analluogi, gorbwysleisio, amharu neu gyfaddawdu ein systemau neu ddiogelwch",
         "bulletPoint9": "mewn ffordd sy’n ymyrryd â defnyddwyr eraill",
         "bulletPoint10": "mewn unrhyw ddull anghyfreithlon neu dwyllodrus neu at unrhyw bwrpas anghyfreithlon neu dwyllodrus",
@@ -867,12 +871,12 @@
         "bulletPoint13": "i drosglwyddo, anfon neu uwchlwytho unrhyw ddata sy’n cynnwys firysau, ceffylau Trojan, mwydod, spyware neu unrhyw raglenni niweidiol eraill a gynlluniwyd i effeithio’n andwyol ar weithrediad meddalwedd neu galedwedd cyfrifiadurol",
         "bulletPoint14": "mewn cysylltiad ag unrhyw fath o ymosodiad gwadu gwasanaeth neu at unrhyw bwrpas maleisus",
         "bulletPoint15": "gyda manylion cofrestredig rhywun arall, oni bai bod gennych yr awdurdod i wneud hynny ganddynt hwy",
-        "paragraph4": "Os byddwch yn torri unrhyw un o’r telerau ac amodau hyn, gallwn eich atal rhag cael mynediad i’ch cyfrif GOV.UK a gallwn gymryd camau i orfodi’r telerau ac amodau hyn a chymryd camau eraill fel y bo’n briodol lle rydym wedi dioddef colled. Os, drwy wneud unrhyw un o’r gweithredoedd uchod, rydych hefyd yn cyflawni trosedd, gallwn roi gwybod i’r awdurdodau gorfodi’r gyfraith perthnasol. Efallai y byddwn yn cydweithredu â’r awdurdodau hynny drwy ddatgelu eich hunaniaeth iddynt hwy."
+        "paragraph4": "Os byddwch yn torri unrhyw un o’r telerau ac amodau hyn, gallwn eich atal rhag cael mynediad i’ch GOV.UK One Login a gallwn gymryd camau i orfodi’r telerau ac amodau hyn a chymryd camau eraill fel y bo’n briodol lle rydym wedi dioddef colled. Os, drwy wneud unrhyw un o’r gweithredoedd uchod, rydych hefyd yn cyflawni trosedd, gallwn roi gwybod i’r awdurdodau gorfodi’r gyfraith perthnasol. Efallai y byddwn yn cydweithredu â’r awdurdodau hynny drwy ddatgelu eich hunaniaeth iddynt hwy."
       },
       "section5": {
-        "header": "Dileu eich cyfrif",
+        "header": "Dileu eich GOV.UK One Login",
         "paragraph1": {
-          "text1": "Gallwch ddileu eich cyfrif a’r wybodaeth ynddo yn barhaol ar unrhyw adeg trwy fewngofnodi i’ch cyfrif neu ",
+          "text1": "Gallwch ddileu eich GOV.UK One Login a’r wybodaeth ynddo yn barhaol ar unrhyw adeg drwy fewngofnodi neu ",
           "linkText1": "gysylltu â ni",
           "text2": "Byddwn yn cadw cofnod o wybodaeth benodol, yn unol â’n ",
           "linkText2": "hysbysiad preifatrwydd",
@@ -881,7 +885,7 @@
       },
       "section6": {
         "header": "Newidiadau",
-        "paragraph1": "Gallwn wneud newidiadau a gwelliannau i’r cyfrif GOV.UK ar unrhyw adeg a heb rybudd i:",
+        "paragraph1": "Gallwn wneud newidiadau a gwelliannau i GOV.UK One Login ar unrhyw adeg a heb rybudd i:",
         "bulletPoint1": "gwneud gwelliannau technegol neu gywiriadau",
         "bulletPoint2": "gwella perfformiad y gwasanaeth",
         "bulletPoint3": "gwella ymarferoldeb",
@@ -891,30 +895,30 @@
       },
       "section7": {
         "header": "Gwasanaethau a thrafodion",
-        "paragraph1": "Gallwch ddefnyddio eich cyfrif GOV.UK i gael mynediad at wasanaethau’r llywodraeth ar-lein. Gall y gwasanaethau hyn gael eu rheoli gan GDS, Swyddfa’r Cabinet neu adran neu asiantaeth arall o’r llywodraeth.",
+        "paragraph1": "Gallwch ddefnyddio eich GOV.UK One Login i gael mynediad at wasanaethau ar-lein y llywodraeth. Gall y gwasanaethau hyn gael eu rheoli gan GDS, Swyddfa’r Cabinet neu adran neu asiantaeth arall o’r llywodraeth.",
         "paragraph2": "Bydd gan bob gwasanaeth ei delerau ac amodau hysbysiadau preifatrwydd a pholisïau cwcis ei hun, ar wahân, sy’n berthnasol i’r defnydd o’r gwasanaeth hwnnw. Dylech ddarllen rhain cyn defnyddio’r gwasanaeth.",
-        "paragraph3": "Os yw gwasanaeth sy’n cael ei redeg gan adran neu asiantaeth arall y llywodraeth yn stopio bod yn hygyrch gyda chyfrifon GOV.UK bydd y gwasanaeth yn cysylltu â chi i ddweud wrthych beth ddylech ei wneud."
+        "paragraph3": "Os yw gwasanaeth sy’n cael ei redeg gan adran neu asiantaeth arall y llywodraeth yn stopio bod yn hygyrch gyda GOV.UK One Login bydd y gwasanaeth yn cysylltu â chi i ddweud wrthych beth ddylech ei wneud."
       },
       "section8": {
         "header": "Ein cyfrifoldeb cyfreithiol i chi",
-        "paragraph1": "Mae’r cyfrif GOV.UK yn offeryn ac nid oes gennym unrhyw atebolrwydd i chi ar gyfer gwasanaethau’r llywodraeth ar-lein rydych yn cael mynediad atynt gan ddefnyddio’r cyfrif GOV.UK. Mae atebolrwydd i chi yn disgyn i ddarparwr gwasanaeth y llywodraeth.",
-        "paragraph2": "Er ein bod yn gwneud ymdrechion rhesymol i ddarparu, cynnal a diweddaru gwasanaeth cyfrif GOV.UK cadarn, fe’i darperir ’fel y mae’. Nid ydym yn gwneud unrhyw sylwadau mynegiannol neu ymhlyg neu warantau y bydd eich mynediad at, neu ddefnydd o, gyfrif GOV.UK, yn ddi-dor neu’n gwbl ddiogel.",
-        "paragraph3": "Ni fyddwn yn atebol nac yn gyfrifol am unrhyw golled neu ddifrod a achosir gan feirws, ymosodiad atal gwasanaeth neu unrhyw ddeunydd niweidiol arall a all heintio’ch dyfais, offer, rhaglenni, data neu ddeunydd perchnogol arall oherwydd eich defnydd o gyfrif GOV.UK.",
+        "paragraph1": "Mae’r GOV.UK One Login yn declyn ac nid oes gennym unrhyw atebolrwydd i chi ar gyfer gwasanaethau ar-lein y llywodraeth rydych yn cael mynediad atynt gan ddefnyddio GOV.UK One Login. Darparwr gwasanaeth y llywodraeth sy’n atebol i chi.",
+        "paragraph2": "Er ein bod yn gwneud ymdrechion rhesymol i ddarparu, cynnal a diweddaru gwasanaeth GOV.UK One Login cadarn, fe’i darperir ’fel y mae’. Nid ydym yn gwneud unrhyw sylwadau mynegiannol nac ymhlyg neu warantau y bydd eich mynediad at, neu ddefnydd o, GOV.UK One Login, yn ddi-dor neu’n gwbl ddiogel.",
+        "paragraph3": "Ni fyddwn yn atebol nac yn gyfrifol am unrhyw golled neu ddifrod a achosir gan feirws, ymosodiad atal gwasanaeth neu unrhyw ddeunydd niweidiol arall a all heintio’ch dyfais, offer, rhaglenni, data neu ddeunydd perchnogol arall oherwydd eich defnydd o GOV.UK One Login.",
         "subHeader1": "Colled a difrod",
         "paragraph4": "Nid oes dim byd yn y telerau ac amodau hyn yn eithrio neu’n cyfyngu ar ein rhwymedigaeth am:",
         "bulletPoint1": "marwolaeth neu anaf personol o ganlyniad i’n esgeulustod",
         "bulletPoint2": "twyll neu gamliwio twyllodrus",
         "bulletPoint3": "unrhyw atebolrwydd arall na ellir ei eithrio neu ei gyfyngu o dan gyfraith Lloegr",
         "paragraph5": "Nid ydym yn atebol am unrhyw:",
-        "bulletPoint4": "colled neu ddifrod a allai ddod o ddefnyddio’r cyfrif GOV.UK nad yw’n cael ei achosi oherwydd i ni dorri’r telerau ac amodau hyn",
+        "bulletPoint4": "colled neu ddifrod a allai ddod o ddefnyddio GOV.UK One Login nad yw’n cael ei achosi oherwydd i ni dorri’r telerau ac amodau hyn",
         "bulletPoint5": "colled neu ddifrod i ddyfais neu gynnwys digidol sy’n perthyn i chi",
-        "bulletPoint6": "colled neu ddifrod sy’n deillio o anallu i gael mynediad neu ddefnyddio eich cyfrif GOV.UK",
-        "bulletPoint7": "colledion anuniongyrchol neu ddilynol na ellid eu rhagweld i chi a ni pan ddechreuoch ddefnyddio eich cyfrif GOV.UK (mae colled neu iawndal yn ’rhagweladwy’ pan fyddant yn ganlyniad amlwg o  ni’n torri’r telerau ac amodau hyn neu os oeddent yn cael eu hystyried gennych chi a ni pan ddechreuoch ddefnyddio’r cyfrif GOV.UK)",
+        "bulletPoint6": "colled neu ddifrod sy’n deillio o anallu i gael mynediad neu ddefnyddio eich GOV.UK One Login",
+        "bulletPoint7": "colledion anuniongyrchol neu ddilynol nad oedd modd i chi a ni eu rhagweld pan ddechreuoch ddefnyddio GOV.UK One Login (mae colled neu iawndal yn ’rhagweladwy’ pan fyddant yn ganlyniad amlwg i ni dorri’r telerau ac amodau hyn neu os oeddent yn cael eu hystyried gennych chi a ni pan ddechreuoch ddefnyddio GOV.UK One Login)",
         "bulletPoint8": "colli elw, refeniw, contractau, cynilion, ewyllys da a gwariant wedi’i wastraffu",
         "paragraph6": "Nid yw GDS yn atebol am ei fethiant i gydymffurfio â’r telerau ac amodau oherwydd amgylchiadau sydd y tu hwnt i reolaeth GDS.",
         "paragraph7": "Nid yw hyn yn effeithio ar unrhyw hawliau cyfreithiol sydd gennych fel defnyddiwr mewn perthynas â gwasanaethau neu feddalwedd diffygiol. Ceir cyngor am eich hawliau cyfreithiol gan eich Cyngor ar Bopeth leol neu Swyddfa Safonau Masnach.",
-        "subHeader2": "Dolenni o’r cyfrif GOV.UK",
-        "paragraph8": "Nid ydym yn gyfrifol am unrhyw ddolenni o’ch cyfrif GOV.UK i wefannau sy’n cael eu rheoli gan adrannau ac asiantaethau eraill y llywodraeth, darparwyr gwasanaethau neu sefydliadau eraill. Nid oes gennym unrhyw reolaeth dros y cynnwys ar y gwefannau hyn.",
+        "subHeader2": "Dolenni o GOV.UK One Login",
+        "paragraph8": "Nid ydym yn gyfrifol am unrhyw ddolenni o’ch GOV.UK One Login i wefannau sy’n cael eu rheoli gan adrannau ac asiantaethau eraill y llywodraeth, darparwyr gwasanaethau neu sefydliadau eraill. Nid oes gennym unrhyw reolaeth dros y cynnwys ar y gwefannau hyn.",
         "paragraph9": "Nid ydym yn gyfrifol am:",
         "bulletPoint9": "ddiogelu unrhyw wybodaeth rydych yn ei roi i’r gwefannau hyn",
         "bulletPoint10": "unrhyw golled neu ddifrod a allai ddod o’ch defnydd o’r gwefannau hyn, neu unrhyw wefannau eraill y maent yn cysylltu â hwy",
@@ -928,7 +932,7 @@
       },
       "section10": {
         "header": "Cyfraith lywodraethol",
-        "paragraph1": "Mae cyfreithiau Lloegr yn berthnasol yn unig i’r telerau ac amodau hyn ac i’r holl faterion sy’n ymwneud â defnyddio cyfrifon GOV.UK. Bydd unrhyw achos gweithredu sy’n codi o dan neu mewn cysylltiad â’r telerau ac amodau hyn neu eich defnydd o gyfrifon GOV.UK yn ddarostyngedig i awdurdodaeth unigryw llysoedd Lloegr."
+        "paragraph1": "Mae cyfreithiau Lloegr yn berthnasol yn unig i’r telerau ac amodau hyn ac i’r holl faterion sy’n ymwneud â defnyddio GOV.UK One Login. Bydd unrhyw achos gweithredu sy’n codi o dan neu mewn cysylltiad â’r telerau ac amodau hyn neu eich defnydd o GOV.UK One Login yn ddarostyngedig i awdurdodaeth unigryw llysoedd Lloegr."
       },
       "section11": {
         "header": "Cysylltu â ni",
@@ -937,7 +941,7 @@
           "text1": " os oes gennych:"
         },
         "bulletPoint1": "cwestiynau am y telerau ac amodau hyn",
-        "bulletPoint2": "cwestiynau neu gŵyn am y cyfrif GOV.UK",
+        "bulletPoint2": "cwestiynau neu gŵyn am GOV.UK One Login",
         "paragraph2": {
           "text1": "Darganfyddwch fwy ",
           "linkText": "am GDS a’n rôl"
@@ -945,26 +949,26 @@
       }
     },
     "privacy": {
-      "title": "Hysbysiad preifatrwydd cyfrifon GOV.UK",
-      "header": "Hysbysiad preifatrwydd cyfrifon GOV.UK",
+      "title": "Hysbysiad preifatrwydd GOV.UK One Login",
+      "header": "Hysbysiad preifatrwydd GOV.UK One Login",
       "section1": {
         "header": "Pwy ydym ni",
         "paragraph1": {
-          "text1": "Mae cyfrifon GOV.UK yn cael eu darparu gan ",
+          "text1": "Mae GOV.UK One Login yn cael ei ddarparu gan ",
           "linkText": "Gwasanaeth Digidol y Llywodraeth (GDS)",
           "text2": ", rhan o Swyddfa’r Cabinet. Mae sôn am ’ni’ yn yr hysbysiad preifatrwydd hwn yn cyfeirio at GDS."
         },
         "paragraph2": {
-          "text1": "Mae’r hysbysiad preifatrwydd hwn ond yn cwmpasu cyfrifon GOV.UK. Darllenwch brif ",
+          "text1": "Mae’r hysbysiad preifatrwydd hwn ond yn cwmpasu GOV.UK One Login. Darllenwch brif ",
           "linkText": "hysbysiad preifatrwydd GOV.UK",
           "text2": " i ddarganfod sut mae eich gwybodaeth bersonol yn cael ei chasglu a’i phrosesu pan fyddwch yn defnyddio’r wefan GOV.UK."
         },
         "paragraph3": "Swyddfa’r Cabinet yw rheolydd data’r wybodaeth bersonol a ddarperir gennych i ni pan fyddwch yn:",
-        "bulletPoint1": "creu cyfrif GOV.UK",
-        "bulletPoint2": "defnyddio eich cyfrif GOV.UK i gael mynediad at wasanaeth ar-lein y llywodraeth",
+        "bulletPoint1": "creu GOV.UK One Login",
+        "bulletPoint2": "defnyddio eich GOV.UK One Login i gael mynediad at wasanaeth ar-lein y llywodraeth",
         "bulletPoint3": "cysylltu â ni",
-        "paragraph4": "Pan fyddwch yn darparu gwybodaeth i wasanaeth arall y llywodraeth tra rydych wedi mewngofnodi i’ch cyfrif, yr adran o’r llywodraeth sy’n rhedeg y gwasanaeth yw’r rheolwr data. Bydd ganddynt eu hysbysiad preifatrwydd eu hunain i egluro sut maent yn prosesu’ch gwybodaeth. Nid oes gennym fynediad i’r wybodaeth rydych yn ei darparu i wasanaethau sy’n cael eu rhedeg gan adrannau eraill y llywodraeth.",
-        "paragraph5": "Pan fyddwch yn profi eich hunaniaeth gyda chyfrif GOV.UK, byddwn yn:",
+        "paragraph4": "Pan fyddwch yn darparu gwybodaeth i wasanaeth arall y llywodraeth tra rydych wedi mewngofnodi i GOV.UK One Login, yr adran o’r llywodraeth sy’n rhedeg y gwasanaeth yw’r rheolwr data. Bydd ganddynt eu hysbysiad preifatrwydd eu hunain i egluro sut maent yn prosesu’ch gwybodaeth. Nid oes gennym fynediad i’r wybodaeth rydych yn ei darparu i wasanaethau sy’n cael eu rhedeg gan adrannau eraill y llywodraeth.",
+        "paragraph5": "Pan fyddwch yn profi eich hunaniaeth gyda GOV.UK One Login, byddwn yn:",
         "bulletPoint4": "gofyn i chi am fanylion eich pasbort - byddwn yn gwirio’r rhain gyda Swyddfa Pasbort EM (HMPO)",
         "bulletPoint5": {
           "text3": "gwirio eich gwybodaeth gyda",
@@ -977,32 +981,32 @@
       },
       "section2": {
         "header": "Pa wybodaeth rydym yn ei chasglu",
-        "paragraph1": "Pan fyddwch yn defnyddio gwasanaeth sydd angen cyfrif GOV.UK, byddwn yn derbyn gwybodaeth am y gwasanaeth pan fydd yn eich cyfeirio at:",
-        "bulletPoint1": "creu neu fewngofnodi i mewn i gyfrif",
+        "paragraph1": "Pan fyddwch yn defnyddio gwasanaeth sydd angen GOV.UK One Login, byddwn yn derbyn gwybodaeth am y gwasanaeth pan fydd yn eich cyfeirio at:",
+        "bulletPoint1": "creu GOV.UK One Login neu fewngofnodi",
         "bulletPoint2": "profi eich hunaniaeth",
-        "paragraph2": "Mae’r wybodaeth rydym yn ei chasglu pan fyddwch yn creu ac yn defnyddio cyfrif GOV.UK yn cynnwys:",
-        "bulletPoint3": "gwybodaeth bersonol sylfaenol sydd ei angen i sefydlu a dilysu eich cyfrif, gan gynnwys eich cyfeiriad e-bost a rhif ffôn symudol",
+        "paragraph2": "Mae’r wybodaeth rydym yn ei chasglu pan fyddwch yn creu ac yn defnyddio GOV.UK One Login yn cynnwys:",
+        "bulletPoint3": "gwybodaeth bersonol sylfaenol sydd ei hangen i sefydlu a dilysu eich GOV.UK One Login, gan gynnwys eich cyfeiriad e-bost a rhif ffôn symudol, os ydych yn dewis cael codau diogelwch ar gyfer mewngofnodi drwy neges destun",
         "bulletPoint4": "gwybodaeth arall sydd ei angen i brofi pwy ydych chi, fel eich enw, dyddiad geni, manylion pasbort a hanes cyfeiriad",
-        "bulletPoint5": "unrhyw wybodaeth rydych yn dewis ei arbed i’ch cyfrif, er enghraifft eich dewisiadau tanysgrifio e-bost GOV.UK",
+        "bulletPoint5": "unrhyw wybodaeth rydych yn dewis ei harbed i’ch GOV.UK One Login, er enghraifft eich dewisiadau tanysgrifio e-bost GOV.UK",
         "bulletPoint6": {
-          "text1": "gwybodaeth am sut rydych yn defnyddio eich cyfrif a gwefan GOV.UK, sy’n cael ei gasglu yng nghofnodion y system, a chan gwcis Google Analytics os ydych yn rhoi caniatâd - mae’r ",
+          "text1": "gwybodaeth am sut rydych yn defnyddio eich GOV.UK One Login a gwefan GOV.UK, sy’n cael ei gasglu yng nghofnodion y system, a chan gwcis Google Analytics os ydych yn rhoi caniatâd - mae’r ",
           "linkText1": "hysbysiad preifatrwydd GOV.UK",
-          "comma": " , ",
+          "comma": ", ",
           "linkText2": "pholisi cwcis GOV.UK",
           "and": " a ",
-          "linkText3": "Polisi cwcis cyfrifon GOV.UK",
+          "linkText3": "polisi cwcis GOV.UK One Login",
           "text2": " yn darparu mwy o wybodaeth am hyn"
         },
         "bulletPoint7": "dynodwyr ar-lein, fel eich cyfeiriad Protocol Rhyngrwyd (IP), a gwybodaeth dechnegol am y ddyfais rydych yn ei defnyddio gan gynnwys y model, porwr gwe a system weithredu, sy’n cael ei gasglu’n awtomatig mewn cofnodion system pan fyddwch yn defnyddio GOV.UK",
-        "bulletPoint8": "cwestiynau, ymholiadau neu adborth rydych yn eu gadael, gan gynnwys eich enw a’ch cyfeiriad e-bost, os byddwch yn eu darparu ar y ffurflen gyswllt cyfrifon GOV.UK",
-        "bulletPoint9": "os oeddech chi’n gallu profi eich hunaniaeth gyda’ch cyfrif GOV.UK",
+        "bulletPoint8": "cwestiynau, ymholiadau neu adborth rydych yn eu gadael, gan gynnwys eich enw a’ch cyfeiriad e-bost, os byddwch yn eu darparu ar y ffurflen gyswllt GOV.UK One Login",
+        "bulletPoint9": "os oeddech chi’n gallu profi eich hunaniaeth gyda’ch GOV.UK One Login",
         "bulletPoint10": "pa sefydliadau, gwasanaethau neu wybodaeth roeddem yn eu defnyddio i brofi pwy ydych chi",
-        "paragraph3": "Pan fyddwch yn creu cyfrif, bydd yn cynhyrchu dynodwr cyfrif unigryw yn awtomatig."
+        "paragraph3": "Pan fyddwch yn creu GOV.UK One Login, bydd yn cynhyrchu dynodwr cyfrif unigryw yn awtomatig."
       },
       "section3": {
         "header": "Pam rydym angen eich gwybodaeth",
         "paragraph1": "Rydym yn casglu eich gwybodaeth bersonol i:",
-        "bulletPoint1": "ddarparu cyfrif GOV.UK i chi fel y gallwch ei ddefnyddio i gael mynediad at wasanaethau ar-lein y llywodraeth",
+        "bulletPoint1": "ddarparu GOV.UK One Login i chi fel y gallwch ei ddefnyddio i gael mynediad at wasanaethau ar-lein y llywodraeth",
         "bulletPoint2": "profi eich hunaniaeth",
         "bulletPoint3": {
           "text1": "cadw eich dewisiadau, er enghraifft eich dewisiadau diweddaru tanysgrifiad e-bost ",
@@ -1012,25 +1016,25 @@
         "paragraph2": "Rydym hefyd yn defnyddio eich gwybodaeth i:",
         "bulletPoint4": "cadw eich cyfrif yn ddiogel (gan ddefnyddio eich cyfeiriad e-bost, rhif ffôn, cyfrinair a chofnodion system)",
         "bulletPoint5": "monitro, canfod ac ymchwilio i dwyll",
-        "bulletPoint6": "dweud wrth y gwasanaethau rydych yn eu cyrchu trwy eich cyfrif GOV.UK eich bod wedi mewngofnodi’n llwyddiannus",
-        "bulletPoint7": "rhoi i’r gwasanaethau’r llywodraeth rydych yn eu cyrchu trwy eich cyfrif a’r adrannau sy’n eu rhedeg y wybodaeth rydych yn cytuno’n benodol i ni rannu, er enghraifft eich e-bost a’ch rhif ffôn",
-        "bulletPoint8": "eich darparu gyda chofnod o sut mae eich cyfrif wedi cael ei ddefnyddio, er enghraifft, pryd y mewngofnodwyd ddiwethaf a pha wasanaethau y mae wedi cael ei ddefnyddio gyda nhw",
-        "bulletPoint9": "cysylltu â chi am unrhyw doriadau, problemau neu newidiadau arfaethedig a allai effeithio ar eich cyfrif (gan ddefnyddio eich cyfeiriad e-bost)",
-        "bulletPoint10": "cysylltu â chi i ofyn am adborth ar eich cyfrif, os ydych wedi rhoi caniatâd i ni (gan ddefnyddio eich cyfeiriad e-bost)",
+        "bulletPoint6": "dweud wrth y gwasanaethau rydych yn eu cyrchu trwy eich GOV.UK One Login eich bod wedi mewngofnodi’n llwyddiannus",
+        "bulletPoint7": "rhoi i’r gwasanaethau’r llywodraeth rydych yn eu cyrchu trwy eich GOV.UK One Login a’r adrannau sy’n eu rhedeg â gwybodaeth rydych yn cytuno’n benodol i ni ei rhannu, er enghraifft eich e-bost a’ch rhif ffôn",
+        "bulletPoint8": "eich darparu gyda chofnod o sut mae eich GOV.UK One Login wedi cael ei ddefnyddio, er enghraifft, pryd y’i mewngofnodwyd ddiwethaf a pha wasanaethau y mae wedi cael ei ddefnyddio gyda nhw",
+        "bulletPoint9": "cysylltu â chi am unrhyw doriadau, problemau neu newidiadau arfaethedig a allai effeithio ar eich GOV.UK One Login (gan ddefnyddio eich cyfeiriad e-bost)",
+        "bulletPoint10": "cysylltu â chi i ofyn am adborth ar eich GOV.UK One Login, os ydych wedi rhoi caniatâd i ni (gan ddefnyddio eich cyfeiriad e-bost)",
         "bulletPoint11": {
-          "text3": "gwella a deall sut rydych yn defnyddio eich cyfrif GOV.UK",
+          "text3": "gwella a deall sut rydych yn defnyddio eich GOV.UK One Login",
           "linkText": "defnyddio cwcis Google Analytics",
           "text4": "(gallwch ddewis peidio â derbyn y cwcis hyn)"
         },
         "bulletPoint12": "ymateb i unrhyw adborth rydych yn ei anfon atom, os ydych chi wedi gofyn i ni wneud",
-        "paragraph3": "Gallwn hefyd ddefnyddio eich gwybodaeth i gynhyrchu adroddiadau dienw am gyfrifon GOV.UK. Mae hyn yn ein helpu i ddeall lle y gallwn wneud gwelliannau i gyfrifon GOV.UK."
+        "paragraph3": "Gallwn hefyd ddefnyddio eich gwybodaeth i gynhyrchu adroddiadau dienw am GOV.UK One Login. Mae hyn yn ein helpu i ddeall lle y gallwn wneud gwelliannau i GOV.UK One Login."
       },
       "section4": {
         "header": "Ein sail gyfreithiol dros brosesu’ch gwybodaeth",
         "paragraph1": "Pan fyddwn yn prosesu gwybodaeth ar gyfer monitro diogelwch a thwyll, y sail gyfreithiol yw ein buddiannau cyfreithlon.",
-        "paragraph2": "Pan fyddwn yn prosesu gwybodaeth i wneud gwelliannau i gyfrifon GOV.UK, y sail gyfreithiol yw eich caniatâd penodol. Mae hyn yn cynnwys:",
-        "bulletPoint1": "casglu a dadansoddi gwybodaeth am sut rydych yn defnyddio eich cyfrif GOV.UK gan ddefnyddio cwcis Google Analytics",
-        "bulletPoint2": "anfon e-bost atoch i ofyn am adborth am eich cyfrif",
+        "paragraph2": "Pan fyddwn yn prosesu gwybodaeth i wneud gwelliannau i GOV.UK One Login, y sail gyfreithiol yw eich caniatâd penodol. Mae hyn yn cynnwys:",
+        "bulletPoint1": "casglu a dadansoddi gwybodaeth am sut rydych yn defnyddio eich GOV.UK One Login gan ddefnyddio cwcis Google Analytics",
+        "bulletPoint2": "anfon e-bost atoch i ofyn am adborth am GOV.UK One Login",
         "paragraph3": "Y sail gyfreithiol ar gyfer prosesu’r holl ddata personol arall yw ei fod yn angenrheidiol wrth arfer ein swyddogaethau fel adran o’r llywodraeth."
       },
       "section5": {
@@ -1039,15 +1043,15 @@
         "bulletPoint1": "gwerthu neu rentu eich gwybodaeth i drydydd partïon",
         "bulletPoint2": "rhannu eich gwybodaeth gyda thrydydd partïon at ddibenion marchnata",
         "subHeader1": "Rhannu eich gwybodaeth gyda gwasanaethau ar-lein y llywodraeth a’r adrannau sy’n eu rhedeg",
-        "paragraph2": "Byddwn yn dweud wrth y gwasanaethau y byddwch yn cyrchu trwy eich cyfrif pan fyddwch yn llwyddo i greu eich cyfrif neu’n mewngofnodi fel y gallant ganiatáu i chi ddefnyddio’r gwasanaeth.",
-        "paragraph3": "Efallai y bydd gwasanaethau rydych yn eu cyrchu trwy eich cyfrif yn gofyn i chi rannu gwybodaeth rydych wedi ei arbed yn eich cyfrif GOV.UK. Pan fyddant yn gwneud hyn, byddwn yn dweud wrthych pa wybodaeth maent wedi gofyn amdano, a byddwn ond yn rhannu’r wybodaeth os ydych yn cytuno.",
-        "paragraph4": "Os nad ydych yn dewis rhannu’r wybodaeth hon o’ch cyfrif GOV.UK, efallai y gofynnir i chi ddarparu’r un wybodaeth yn uniongyrchol i’r gwasanaeth yn nes ymlaen.",
-        "paragraph5": "Bydd gan bob gwasanaeth y byddwch yn cyrchu drwy eich cyfrif GOV.UK ei delerau ac amodau a’i hysbysiad preifatrwydd ei hun. Dylech ddarllen y rhain yn ogystal â thelerau ac amodau cyfrifon GOV.UK a’r hysbysiad preifatrwydd hwn, fel eich bod yn deall sut mae eich gwybodaeth bersonol yn cael ei rheoli.",
+        "paragraph2": "Byddwn yn dweud wrth y gwasanaethau y byddwch yn cyrchu trwy eich cyfrif pan fyddwch yn llwyddo i greu eich GOV.UK One Login neu’n mewngofnodi fel y gallant ganiatáu i chi ddefnyddio’r gwasanaeth.",
+        "paragraph3": "Efallai y bydd gwasanaethau rydych yn eu cyrchu trwy eich cyfrif yn gofyn i chi rannu gwybodaeth rydych wedi ei harbed yn eich GOV.UK One Login. Pan fyddant yn gwneud hyn, byddwn yn dweud wrthych pa wybodaeth maent wedi gofyn amdani, a byddwn ond yn rhannu’r wybodaeth os ydych yn cytuno.",
+        "paragraph4": "Os nad ydych yn dewis rhannu’r wybodaeth hon o’ch GOV.UK One Login, efallai y gofynnir i chi ddarparu’r un wybodaeth yn uniongyrchol i’r gwasanaeth yn nes ymlaen.",
+        "paragraph5": "Bydd gan bob gwasanaeth y byddwch yn cyrchu drwy eich GOV.UK One Login ei delerau ac amodau a’i hysbysiad preifatrwydd ei hun. Dylech ddarllen y rhain yn ogystal â thelerau ac amodau GOV.UK One Login a’r hysbysiad preifatrwydd hwn, fel eich bod yn deall sut mae eich gwybodaeth bersonol yn cael ei rheoli.",
         "subHeader2": "Rhannu eich gwybodaeth i brofi pwy ydych chi",
         "paragraph6": "Byddwn yn rhannu eich gwybodaeth gyda HMPO ac Experian pan fyddwn yn profi eich hunaniaeth. Byddwn ond yn rhoi’r wybodaeth maent ei hangen i wneud y gwiriad hwn. Byddant yn cadw eich manylion cyhyd ag y mae angen iddynt neu bod y gyfraith angen iddynt wneud hynny.",
         "subHeader3": "Rhannu eich gwybodaeth i amddiffyn rhag twyll",
         "paragraph7": "Er mwyn amddiffyn rhag trosedd a thwyll, efallai y byddwn weithiau’n rhannu gwybodaeth gyda:",
-        "bulletPoint3": "adrannau’r llywodraeth sy’n rhedeg y gwasanaethau rydych yn eu cyrchu drwy eich cyfrif",
+        "bulletPoint3": "adrannau’r llywodraeth sy’n rhedeg y gwasanaethau rydych yn eu cyrchu drwy eich GOV.UK One Login",
         "bulletPoint4": "sefydliadau eraill yn y sector cyhoeddus, megis y Swyddfa Gartref",
         "bulletPoint5": "asiantaethau gorfodi’r gyfraith",
         "bulletPoint6": "asiantaethau cyfeirio credyd",
@@ -1056,7 +1060,7 @@
         "bulletPoint8": "rhifau ffôn",
         "bulletPoint9": "cyfeiriadau e-bost",
         "bulletPoint10": "cyfeiriadau a lleoliadau IP",
-        "bulletPoint11": "dynodwyr cyfrif unigryw",
+        "bulletPoint11": "dynodwyr unigryw",
         "bulletPoint12": "gwybodaeth am y dyfeisiau sy’n cael eu defnyddio",
         "bulletPoint13": "manylion pasbort, gan gynnwys enw a dyddiad geni",
         "bulletPoint14": "hanes cyfeiriad",
@@ -1066,29 +1070,29 @@
       "section6": {
         "header": "Pa mor hir rydym yn cadw eich gwybodaeth",
         "paragraph1": "Rydym yn storio eich gwybodaeth bersonol cyhyd ag y bo’n rhesymol angenrheidiol a chyfiawn yn gyfreithiol.",
-        "paragraph2": "Byddwn yn cadw eich cyfrif ac unrhyw wybodaeth a arbedir ynddo cyhyd ag y byddwch yn ei ddefnyddio. Os ydych yn dileu eich cyfrif neu os na fyddwch yn mewngofnodi am 2 flynedd, byddwn yn dileu’r holl wybodaeth sy’n gysylltiedig ag ef. Bydd unrhyw wybodaeth rydych yn ei ddileu o’ch cyfrif yn cael ei dileu yn barhaol.",
+        "paragraph2": "Byddwn yn cadw eich GOV.UK One Login ac unrhyw wybodaeth a arbedir ynddo cyhyd ag y byddwch yn ei ddefnyddio. Os ydych yn dileu eich GOV.UK One Login neu os na fyddwch yn mewngofnodi am 2 flynedd, byddwn yn dileu’r holl wybodaeth sy’n gysylltiedig ag ef. Bydd unrhyw wybodaeth rydych yn ei dileu o’ch GOV.UK One Login yn cael ei dileu yn barhaol.",
         "paragraph3": "Byddwn yn cadw eich data adborth am 2 flynedd.",
         "paragraph4": "Byddwn yn dileu cofnod mynediad data ar ôl 365 diwrnod.",
-        "paragraph5": "Byddwn yn storio gwybodaeth am y camau rydych yn eu cymryd a sut rydych yn defnyddio’r cyfrif am 7 mlynedd, at ddibenion monitro twyll."
+        "paragraph5": "Byddwn yn storio gwybodaeth am y camau rydych yn eu cymryd a sut rydych yn defnyddio GOV.UK One Login am 7 mlynedd, at ddibenion monitro twyll."
       },
       "section7": {
         "header": "Amddiffyn preifatrwydd plant",
-        "paragraph1": "Nid yw cyfrifon GOV.UK wedi’u cynllunio, neu wedi’u targedu’n fwriadol, ar gyfer plant 13 oed neu iau. Nid ydym yn casglu na chadw gwybodaeth yn fwriadol am unrhyw un dan 13 oed."
+        "paragraph1": "Nid yw GOV.UK One Login wedi’i gynllunio, neu wedi’i dargedu’n fwriadol, ar gyfer plant 13 oed neu iau. Nid ydym yn casglu na chadw gwybodaeth yn fwriadol am unrhyw un dan 13 oed."
       },
       "section8": {
         "header": "Ble mae eich gwybodaeth yn cael ei brosesu a’i storio",
-        "paragraph1": "Mae’r holl ddata a gwybodaeth bersonol sy’n gysylltiedig â’ch cyfrif GOV.UK yn cael ei storio yn y DU neu yn yr Ardal Economaidd Ewropeaidd (AEE). Mae’r AEE wedi cael ei asesu gan Swyddfa’r Comisiynydd Gwybodaeth fel un sydd â amddiffyniadau cyfreithiol digonol ar gyfer preifatrwydd data yn unol â’r rhai yn y DU.",
+        "paragraph1": "Mae’r holl ddata a gwybodaeth bersonol sy’n gysylltiedig â’ch GOV.UK One Login yn cael ei storio yn y DU neu yn yr Ardal Economaidd Ewropeaidd (AEE). Mae’r AEE wedi cael ei asesu gan Swyddfa’r Comisiynydd Gwybodaeth fel un sydd â amddiffyniadau cyfreithiol digonol ar gyfer preifatrwydd data yn unol â’r rhai yn y DU.",
         "paragraph2": "Pan fydd ein cyflenwyr angen mynediad i’ch data, efallai y byddant yn gwneud hynny o’r tu allan i’r AEE. Gall data a gesglir gan Google Analytics gael ei drosglwyddo y tu allan i’r Ardal Economaidd Ewropeaidd (AEE) i’w brosesu. Pan fydd y naill neu’r llall o’r pethau hyn yn digwydd, byddwn yn sicrhau bod eich gwybodaeth yr un mor ddiogel, er enghraifft drwy gynnwys cymalau ychwanegol yn ein contractau gyda chyflenwyr."
       },
       "section9": {
         "header": "Sut rydym yn diogelu eich gwybodaeth bersonol a’i chadw’n ddiogel",
         "paragraph1": "Rydym wedi ymrwymo i wneud popeth o fewn ein gallu i gadw’ch gwybodaeth yn ddiogel. Rydym wedi sefydlu systemau a phrosesau i atal mynediad neu ddatgelu eich gwybodaeth heb awdurdod - er enghraifft, rydym yn defnyddio lefelau amrywiol o amgryptio. Rydym hefyd yn sicrhau bod unrhyw drydydd parti rydym yn delio yn cadw’r holl wybodaeth bersonol y maent yn ei phrosesu ar ein rhan yn ddiogel.",
-        "paragraph2": "Fel perchennog eich cyfrif GOV.UK, mae gennych chi hefyd rywfaint o gyfrifoldeb am ddiogelwch eich cyfrif. Er enghraifft, dylech:",
+        "paragraph2": "Fel perchennog eich GOV.UK One Login, mae gennych chi hefyd rywfaint o gyfrifoldeb am ei ddiogelwch. Er enghraifft, dylech:",
         "bulletPoint1": {
-          "text1": "dewis cyfrinair cryf ar gyfer eich cyfrif a sicrhewch eich bod yn ei gadw’n ddiogel - mae Canolfan Seiberddiogelwch Genedlaethol y DU (NCSC) yn darparu ",
-          "linkText": "cyngor ar gadw’ch cyfrifon ar-lein yn ddiogel"
+          "text1": "ddewis cyfrinair cryf a sicrhau eich bod yn ei gadw’n ddiogel - mae Canolfan Seiberddiogelwch Genedlaethol y DU (NCSC) yn darparu ",
+          "linkText": "cyngor ar ddiogelwch ar-lein"
         },
-        "bulletPoint2": "cysylltwch â ni ar unwaith os ydych yn amau bod eich cyfrif wedi cael ei gyfaddawdu"
+        "bulletPoint2": "cysylltwch â ni ar unwaith os ydych yn amau bod eich GOV.UK One Login wedi cael ei gyfaddawdu"
       },
       "section10": {
         "header": "Prosesu awtomataidd",
@@ -1099,12 +1103,12 @@
       },
       "section11": {
         "header": "Eich hawliau",
-        "paragraph1": "Pan fyddwch wedi mewngofnodi i’ch cyfrif gallwch:",
-        "bulletPoint1": "gyrchu yr holl wybodaeth bersonol sy’n gysylltiedig â’ch cyfrif GOV.UK",
+        "paragraph1": "Pan fyddwch wedi mewngofnodi i GOV.UK One Login gallwch:",
+        "bulletPoint1": "gyrchu yr holl wybodaeth bersonol sy’n gysylltiedig â’ch GOV.UK One Login",
         "bulletPoint2": "newid neu ddiweddaru eich gwybodaeth fel eich cyfeiriad e-bost, cyfrinair a dewisiadau tanysgrifio e-bost",
         "bulletPoint3": "newid eich caniatâd i gwcis nad ydynt yn hanfodol neu ddweud wrthym sut rydych am i ni gysylltu â chi",
-        "bulletPoint4": "dileu gwybodaeth o’ch cyfrif (ar wahân i’ch cyfeiriad e-bost, rhif ffôn symudol a chyfrinair oherwydd ni allwch gael mynediad i’ch cyfrif hebddynt)",
-        "bulletPoint5": "dileu eich cyfrif GOV.UK yn gyfan gwbl",
+        "bulletPoint4": "dileu gwybodaeth o’ch GOV.UK One Login (ar wahân i’ch cyfeiriad e-bost, cyfrinair a rhif ffôn symudol, os nad oes gennych ffordd arall i ddilysu eich GOV.UK One Login, oherwydd ni allwch gael mynediad i’ch GOV.UK One Login hebddynt)",
+        "bulletPoint5": "dileu eich GOV.UK One Login yn gyfan gwbl",
         "paragraph2": "Gallwch hefyd:",
         "bulletPoint6": "dynnu eich caniatâd yn ôl i’ch gwybodaeth bersonol gael ei brosesu gan ddefnyddio data neu adborth dadansoddi’r we",
         "bulletPoint7": "gwrthwynebu sut mae eich gwybodaeth bersonol yn cael ei phrosesu",
@@ -1165,7 +1169,7 @@
         "validationError": {
           "required": "Rhowch eich cyfrinair",
           "maxLength": "Mae’n rhaid i’ch cyfrinair fod yn llai na 256 nod",
-          "samePassword": "Mae eich cyfrif eisoes yn defnyddio’r cyfrinair hwnnw. Rhowch gyfrinair gwahanol",
+          "samePassword": "Rydych eisoes yn defnyddio’r cyfrinair hwnnw. Rhowch gyfrinair gwahanol",
           "alphaNumeric": "Mae’n rhaid i’ch cyfrinair fod yn o leiaf 8 nod o hyd a rhaid iddo gynnwys llythrennau a rhifau"
         }
       },
@@ -1229,7 +1233,7 @@
     "accountLocked": {
       "title": "Rydych wedi rhoi’r cyfrinair anghywir i mewn ormod o weithiau",
       "header": "Rydych wedi rhoi’r cyfrinair anghywir i mewn ormod o weithiau",
-      "paragraph": "Rydych chi wedi cael eich cloi allan o’ch cyfrif oherwydd eich bod wedi rhoi’r cyfrinair anghywir i mewn fwy na 5 gwaith. Mae hyn er mwyn cadw eich cyfrif yn ddiogel.",
+      "paragraph": "Rydych chi wedi cael eich cloi allan o’ch GOV.UK One Login oherwydd eich bod wedi rhoi’r cyfrinair anghywir i mewn fwy na 5 gwaith. Mae hyn er mwyn cadw eich cyfrif yn ddiogel.",
       "subHeader": "Beth nesaf",
       "bulletPointSection": {
         "title": "Gallwch:",
@@ -1241,8 +1245,8 @@
     "browserBackButtonError": {
       "title": "Mae’n ddrwg gennym, ni allwch fynd yn ôl o’r dudalen honno",
       "header": "Mae’n ddrwg gennym, ni allwch fynd yn ôl o’r dudalen honno",
-      "paragraph1": "Bydd angen i chi ddechrau eto i greu eich cyfrif neu fewngofnodi.",
-      "returnToAccountCreationButtonText": "Yn ôl i greu eich cyfrif neu mewngofnodi",
+      "paragraph1": "Bydd angen i chi ddechrau eto i greu eich GOV.UK One Login neu fewngofnodi.",
+      "returnToAccountCreationButtonText": "Yn ôl i greu eich GOV.UK One Login neu fewngofnodi.",
       "returnToAccountCreationButtonLink": "/sign-in-or-create"
     },
     "support": {
@@ -1285,21 +1289,21 @@
     },
     "contactUsPublic": {
       "title": "Contact us",
-      "header": "GOV.UK account: report a problem or give feedback",
+      "header": "GOV.UK One Login: rhoi gwybod am broblem neu roi adborth",
       "section1": {
         "paragraph1": "Use this form to:",
-        "bulletPoint1": "tell us about a problem you’re having with your GOV.UK account",
-        "bulletPoint2": "suggest improvements or give feedback about your experience using your GOV.UK account",
+        "bulletPoint1": "dywedwch wrthym am broblem rydych chi’n ei chael gyda’ch GOV.UK One Login",
+        "bulletPoint2": "awgrymu gwelliannau neu roi adborth am eich profiad o ddefnyddio eich GOV.UK One Login",
         "paragraph2": "Our office hours are 9:30am to 5:30pm, Monday to Friday. We’ll respond to you by email in 2 working days."
       },
       "section3": {
         "header": "What are you contacting us about?",
-        "accountCreation": "A problem creating a GOV.UK account",
-        "signingIn": "A problem signing in to your GOV.UK account",
+        "accountCreation": "Problem creu GOV.UK One Login",
+        "signingIn": "Problem mewngofnodi i’ch GOV.UK One Login",
         "provingIdentity": "A problem proving your identity",
-        "somethingElse": "Another problem using your GOV.UK account",
+        "somethingElse": "Problem arall wrth ddefnyddio eich GOV.UK One Login",
         "emailSubscriptions": "GOV.UK email subscriptions",
-        "suggestionsFeedback": "A suggestion or feedback about using your GOV.UK account",
+        "suggestionsFeedback": "Awgrym neu adborth am ddefnyddio eich GOV.UK One Login",
         "idCheckApp": "A problem proving your identity using the GOV.UK ID Check app",
         "errorMessage": "Select a reason for contacting us"
       },
@@ -1307,23 +1311,23 @@
     },
     "contactUsFurtherInformation": {
       "signingIn": {
-        "title": "A problem signing in to your GOV.UK account",
-        "header": "A problem signing in to your GOV.UK account",
+        "title": "Problem mewngofnodi i’ch GOV.UK One Login",
+        "header": "Problem mewngofnodi i’ch GOV.UK One Login",
         "section1": {
           "header": "Tell us what happened",
           "radio1": "You did not get a security code",
           "radio2": "The security code did not work",
           "radio3": "You’ve changed your phone number or lost your phone",
           "radio4": "You’ve forgotten your password",
-          "radio5": "You’ve been told your account ‘cannot be found’",
+          "radio5": "Rydych wedi cael gwybod nad oes modd ‘dod o hyd’ i’ch GOV.UK One Login",
           "radio6": "There was a technical problem (for example, the service was unavailable)",
           "radio7": "Something else",
-          "errorMessage": "Select the problem you had when signing in to your account"
+          "errorMessage": "Dewiswch y broblem a gawsoch wrth fewngofnodi i’ch GOV.UK One Login"
         }
       },
       "accountCreation": {
-        "title": "A problem creating a GOV.UK account",
-        "header": "A problem creating a GOV.UK account",
+        "title": "Problem creu GOV.UK One Login",
+        "header": "Problem creu GOV.UK One Login",
         "section1": {
           "header": "Tell us what happened",
           "radio1": "You did not get a security code",
@@ -1332,7 +1336,7 @@
           "radio4": "There was a technical problem (for example, the service was unavailable)",
           "radio5": "Something else",
           "radio6": "You had a problem with an authenticator app",
-          "errorMessage": "Select the problem you had when creating an account"
+          "errorMessage": "Dewis y broblem a gawsoch chi wrth greu eich GOV.UK One Login"
         }
       },
       "idCheckApp": {
@@ -1378,8 +1382,8 @@
         "privacyNote": "Read our <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">privacy notice</a> for more information on how we use your personal information."
       },
       "anotherProblem": {
-        "title": "Another problem using your GOV.UK account",
-        "header": "Another problem using your GOV.UK account",
+        "title": "Problem arall wrth ddefnyddio eich GOV.UK One Login",
+        "header": "Problem arall wrth ddefnyddio eich GOV.UK One Login",
         "section1": {
           "header": "What were you trying to do?",
           "errorMessage": "Enter what you were trying to do"
@@ -1416,8 +1420,8 @@
         }
       },
       "suggestionOrFeedback": {
-        "title": "A suggestion or feedback about using your GOV.UK account",
-        "header": "A suggestion or feedback about using your GOV.UK account",
+        "title": "Awgrym neu adborth am ddefnyddio eich GOV.UK One Login",
+        "header": "Awgrym neu adborth am ddefnyddio eich GOV.UK One Login",
         "section1": {
           "header": "Your suggestion or feedback",
           "errorMessage": "Enter your suggestion or feedback"
@@ -1526,8 +1530,8 @@
         }
       },
       "accountCreationProblem": {
-        "title": "Another problem creating an account",
-        "header": "Another problem creating an account",
+        "title": "Problem arall wrth greu eich GOV.UK One Login",
+        "header": "Problem arall wrth greu eich GOV.UK One Login",
         "section1": {
           "header": "Anything else you want to tell us",
           "paragraph1": "For example, if you want to add more detail or give us feedback",
@@ -1535,8 +1539,8 @@
         }
       },
       "signignInProblem": {
-        "title": "Problem arall gyda mewngofnodi i’ch cyfrif",
-        "header": "Problem arall gyda mewngofnodi i’ch cyfrif",
+        "title": "Problem arall wrth fewngofnodi i’ch GOV.UK One Login",
+        "header": "Problem arall wrth fewngofnodi i’ch GOV.UK One Login",
         "section1": {
           "header": "Ydych chi eisiau dweud unrhyw beth arall wrthym",
           "paragraph1": "Er enghraifft, os ydych eisiau ychwanegu mwy o fanylion neu roi adborth i ni",
@@ -1544,8 +1548,8 @@
         }
       },
       "accountNotFound": {
-        "title": "Ni ellir dod o hyd i’ch cyfrif",
-        "header": "Ni ellir dod o hyd i’ch cyfrif",
+        "title": "Ni ellir dod o hyd i’ch GOV.UK One Login",
+        "header": "Ni ellir dod o hyd i’ch GOV.UK One Login",
         "section1": {
           "header": "Pa wasanaeth oeddech chi’n ceisio ei ddefnyddio?",
           "paragraph1": "Er enghraifft, eich tanysgrifiadau e-bost GOV.UK, eich cyfrif treth personol neu Gredyd Cynhwysol",
@@ -1611,8 +1615,8 @@
       "header": "placeholder"
     },
     "proveIdentityWelcome": {
-      "title": "Profi pwy ydych chi gyda chyfrif GOV.UK",
-      "header": "Profi pwy ydych chi gyda chyfrif GOV.UK",
+      "title": "Profi pwy ydych chi gyda GOV.UK One Login",
+      "header": "Profi pwy ydych chi gyda GOV.UK One Login",
       "section1": {
         "paragraph1": "Bydd yn cymryd tua 10 munud i chi brofi pwy ydych chi yn y ffordd hyn.",
         "insetAlternativeLanguage": {
@@ -1629,17 +1633,7 @@
       },
       "section2": {
         "paragraph1": "Byddwch angen:",
-        "listItem1_1": "cyfrif GOV.UK – byddwn yn gofyn i chi greu neu fewngofnodi i’ch cyfrif pan fyddwch yn parhau",
-        "listItem1_2": "eich ID gyda llun",
-        "listItem1_3": "eich cyfeiriad presennol (efallai y byddwch angen eich cyfeiriad blaenorol hefyd os ydych wedi symud yn ddiweddar)",
-        "paragraph2": "Byddwn ond yn defnyddio’r wybodaeth rydych yn ei rhoi i ni i wneud yn siwr mai chi yw pwy rydych yn ei ddweud ydych chi."
-      },
-      "existingSession": {
-        "section3": {
-          "radioOption1": "Continue with your GOV.UK account"
-        },
-        "paragraph1": "Byddwch angen:",
-        "listItem1_1": "cyfrif GOV.UK – byddwn yn gofyn i chi greu neu fewngofnodi i’ch cyfrif pan fyddwch yn parhau",
+        "listItem1_1": "GOV.UK One Login – byddwn yn gofyn i chi fewngofnodi neu greu un pan fyddwch yn parhau",
         "listItem1_2": "eich ID gyda llun",
         "listItem1_3": "eich cyfeiriad presennol (efallai y byddwch angen eich cyfeiriad blaenorol hefyd os ydych wedi symud yn ddiweddar)",
         "paragraph2": "Byddwn ond yn defnyddio’r wybodaeth rydych yn ei rhoi i ni i wneud yn siwr mai chi yw pwy rydych yn ei ddweud ydych chi."
@@ -1654,10 +1648,10 @@
     "getSecurityCodes": {
       "title": "Dewis sut i gael codau diogelwch",
       "header": "Dewis sut i gael codau diogelwch",
-      "summary": "I orffen creu eich cyfrif, mae angen i chi ddewis ffordd o brofi mai chi yw chi pan fyddwch yn mewngofnodi.",
-      "titleAccountPartCreated": "Gorffen creu eich cyfrif",
-      "headerAccountPartCreated": "Gorffen creu eich cyfrif",
-      "summaryAccountPartCreated": "Dewiswch ffordd o gael codau diogelwch pan fyddwch yn mewngofnodi. Mae hyn yn helpu i gadw eich cyfrif yn ddiogel.",
+      "summary": "I orffen creu eich GOV.UK One Login, mae angen i chi ddewis ffordd o brofi mai chi yw chi pan fyddwch yn mewngofnodi.",
+      "titleAccountPartCreated": "Gorffen creu eich GOV.UK One Login",
+      "headerAccountPartCreated": "Gorffen creu eich GOV.UK One Login",
+      "summaryAccountPartCreated": "Dewiswch ffordd o gael codau diogelwch pan fyddwch yn mewngofnodi. Mae hyn yn helpu i gadw eich GOV.UK One Login yn ddiogel.",
       "secondFactorRadios": {
         "textMessageText": "Neges destun",
         "authAppText": "Ap dilysydd ar gyfer ffôn clyfar, llechen neu gyfrifiadur",
@@ -1713,9 +1707,9 @@
       }
     },
     "photoId": {
-      "title": "Mae’n rhaid i chi gael ID llun er mwyn profi pwy ydych gyda chyfrif GOV.UK",
-      "header": "Mae’n rhaid i chi gael ID llun er mwyn profi pwy ydych gyda chyfrif GOV.UK",
-      "introParagraph": "Gallwch ond brofi pwy ydych chi gyda chyfrif GOV.UK os oes gennych un o’r mathau canlynol o ID llun.",
+      "title": "Mae’n rhaid i chi gael ID gyda llun i brofi pwy ydych chi gyda GOV.UK One Login",
+      "header": "Mae’n rhaid i chi gael ID gyda llun i brofi pwy ydych chi gyda GOV.UK One Login",
+      "introParagraph": "Gallwch ond profi pwy ydych chi gyda GOV.UK One Login os oes gennych un o’r mathau canlynol o ID gyda llun.",
       "section1": {
         "subHeading": "Trwydded yrru y DU gyda llun",
         "paragraph1": "Byddwch angen trwydded yrru lawn neu dros dro dilys gyda’ch llun arno."
@@ -1736,7 +1730,7 @@
       "title": "Mae’n rhaid i chi gael ID llun er mwyn profi pwy ydych chi fel hyn",
       "header": "Mae’n rhaid i chi gael ID llun er mwyn profi pwy ydych chi fel hyn",
       "section1": {
-        "paragraph1": "Ar hyn o bryd, dim ond os oes gennych ID llun y gallwch brofi pwy ydych chi gyda’ch cyfrif GOV.UK."
+        "paragraph1": "Ar hyn o bryd gallwch ond profi pwy ydych chi gyda GOV.UK One Login os oes gennych ID gyda llun."
       },
       "section2": {
         "subHeading": "Beth allwch chi ei wneud",
@@ -1764,9 +1758,9 @@
       }
     },
     "signInRetryBlocked": {
-      "title": "Mae eich cyfrif wedi’i gloi",
-      "header": "Mae eich cyfrif wedi’i gloi",
-      "paragraph": "Mae hyn oherwydd eich bod wedi rhoi’r cyfrinair anghywir i mewn fwy na 5 gwaith y tro diwethaf i chi geisio mewngofnodi. Mae hyn er mwyn cadw eich cyfrif yn ddiogel.",
+      "title": "Ni allwch fewngofnodi ar hyn o bryd",
+      "header": "Ni allwch fewngofnodi ar hyn o bryd",
+      "paragraph": "Mae hyn oherwydd eich bod wedi rhoi’r cyfrinair anghywir i mewn fwy na 5 gwaith y tro diwethaf i chi geisio mewngofnodi. Mae hyn er mwyn cadw eich GOV.UK One Login yn ddiogel.",
       "info": {
         "paragraph1Start": "Gallwch ",
         "firstLink": "geisio mewngofnodi eto",
