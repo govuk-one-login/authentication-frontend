@@ -50,6 +50,7 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.anotherProblem.title",
         referer: REFERER,
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
     it("should render contact-us-questions if a 'GOV.UK email subscriptions' radio option was chosen", () => {
@@ -62,9 +63,10 @@ describe("contact us questions controller", () => {
         theme: "email_subscriptions",
         subtheme: undefined,
         backurl: "/contact-us",
-        pageTitleHeading: "pages.contactUsQuestions.emailSubscriptions.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.emailSubscriptions.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
     it("should render contact-us-questions if a 'A suggestion or feedback' radio option was chosen", () => {
@@ -77,9 +79,10 @@ describe("contact us questions controller", () => {
         theme: "suggestions_feedback",
         subtheme: undefined,
         backurl: "/contact-us",
-        pageTitleHeading: "pages.contactUsQuestions.suggestionOrFeedback.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.suggestionOrFeedback.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
 
@@ -93,9 +96,10 @@ describe("contact us questions controller", () => {
         theme: "proving_identity",
         subtheme: undefined,
         backurl: "/contact-us",
-        pageTitleHeading: "pages.contactUsQuestions.provingIdentity.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.provingIdentity.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
 
@@ -118,9 +122,10 @@ describe("contact us questions controller", () => {
         theme: "signing_in",
         subtheme: "no_security_code",
         backurl: "/contact-us-further-information",
-        pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
     it("should render contact-us-questions if a 'the security code did not work' radio option was chosen", () => {
@@ -134,9 +139,10 @@ describe("contact us questions controller", () => {
         theme: "signing_in",
         subtheme: "invalid_security_code",
         backurl: "/contact-us-further-information",
-        pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
     it("should render contact-us-questions if a 'You do not have access to the phone number' radio option was chosen", () => {
@@ -150,9 +156,10 @@ describe("contact us questions controller", () => {
         theme: "signing_in",
         subtheme: "no_phone_number_access",
         backurl: "/contact-us-further-information",
-        pageTitleHeading: "pages.contactUsQuestions.noPhoneNumberAccess.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.noPhoneNumberAccess.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
     it("should render contact-us-questions if a 'You've forgotten your password' radio option was chosen", () => {
@@ -166,9 +173,10 @@ describe("contact us questions controller", () => {
         theme: "signing_in",
         subtheme: "forgotten_password",
         backurl: "/contact-us-further-information",
-        pageTitleHeading: "pages.contactUsQuestions.forgottenPassword.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.forgottenPassword.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
     it("should render contact-us-questions if a 'Your account cannot be found' radio option was chosen", () => {
@@ -182,9 +190,10 @@ describe("contact us questions controller", () => {
         theme: "signing_in",
         subtheme: "account_not_found",
         backurl: "/contact-us-further-information",
-        pageTitleHeading: "pages.contactUsQuestions.accountNotFound.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.accountNotFound.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
     it("should render contact-us-questions if a 'technical problem' radio option was chosen", () => {
@@ -198,9 +207,10 @@ describe("contact us questions controller", () => {
         theme: "signing_in",
         subtheme: "technical_error",
         backurl: "/contact-us-further-information",
-        pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
     it("should render contact-us-questions if a 'something else' radio option was chosen", () => {
@@ -214,9 +224,10 @@ describe("contact us questions controller", () => {
         theme: "signing_in",
         subtheme: "something_else",
         backurl: "/contact-us-further-information",
-        pageTitleHeading: "pages.contactUsQuestions.anotherProblem.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.anotherProblem.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
   });
@@ -233,9 +244,10 @@ describe("contact us questions controller", () => {
         theme: "account_creation",
         subtheme: "no_security_code",
         backurl: "/contact-us-further-information",
-        pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
     it("should render contact-us-questions if a 'the security code did not work' radio option was chosen", () => {
@@ -249,9 +261,10 @@ describe("contact us questions controller", () => {
         theme: "account_creation",
         subtheme: "invalid_security_code",
         backurl: "/contact-us-further-information",
-        pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
     it("should render contact-us-questions if a 'You do not have a UK number' radio option was chosen", () => {
@@ -265,9 +278,10 @@ describe("contact us questions controller", () => {
         theme: "account_creation",
         subtheme: "no_uk_mobile_number",
         backurl: "/contact-us-further-information",
-        pageTitleHeading: "pages.contactUsQuestions.noUKMobile.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.noUKMobile.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
     it("should render contact-us-questions if a 'technical problem' radio option was chosen", () => {
@@ -281,9 +295,10 @@ describe("contact us questions controller", () => {
         theme: "account_creation",
         subtheme: "technical_error",
         backurl: "/contact-us-further-information",
-        pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
     it("should render contact-us-questions if a 'something else' radio option was chosen", () => {
@@ -297,9 +312,10 @@ describe("contact us questions controller", () => {
         theme: "account_creation",
         subtheme: "something_else",
         backurl: "/contact-us-further-information",
-        pageTitleHeading: "pages.contactUsQuestions.accountCreation.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.accountCreation.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
     it("should render contact-us-questions if a 'problem with authenticator app' radio option was chosen", () => {
@@ -313,9 +329,10 @@ describe("contact us questions controller", () => {
         theme: "account_creation",
         subtheme: "authenticator_app_problem",
         backurl: "/contact-us-further-information",
-        pageTitleHeading: "pages.contactUsQuestions.authenticatorApp.title",
         referer: REFERER,
+        pageTitleHeading: "pages.contactUsQuestions.authenticatorApp.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+        ipnSupport: undefined,
       });
     });
 

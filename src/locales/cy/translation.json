@@ -1451,10 +1451,11 @@
         }
       },
       "securityCodeSentMethod": {
-        "radio1": "",
-        "radio2": "",
-        "radio3": "",
-        "radio4": "",
+        "email": "",
+        "textMessage": "",
+        "textMessageUkNumber": "",
+        "textMessageInternationalNumber": "",
+        "authApp": "",
         "errorMessage": ""
       },
       "noSecurityCode": {
