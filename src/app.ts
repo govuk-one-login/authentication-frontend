@@ -76,6 +76,7 @@ import { enterAuthenticatorAppCodeRouter } from "./components/enter-authenticato
 import { cookiesRouter } from "./components/common/cookies/cookies-routes";
 import { errorPageRouter } from "./components/common/errors/error-routes";
 import { photoIdRouter } from "./components/photo-id/photo-id-routes";
+import { setInternationalPhoneNumberSupportMiddleware } from "./middleware/set-international-phone-number-support-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -181,6 +182,7 @@ async function createApp(): Promise<express.Application> {
   app.use(setHtmlLangMiddleware);
   app.use(initialiseSessionMiddleware);
   app.use(crossDomainTrackingMiddleware);
+  app.use(setInternationalPhoneNumberSupportMiddleware);
 
   registerRoutes(app);
 

@@ -1452,10 +1452,12 @@
         }
       },
       "securityCodeSentMethod": {
-        "radio1": "E-bost",
-        "radio2": "Neges destun",
-        "radio3": "Ap dilysydd",
-        "errorMessage": "Dewiswch os anfonwyd y cod trwy e-bost neu neges destun"
+        "email": "",
+        "textMessage": "",
+        "textMessageUkNumber": "",
+        "textMessageInternationalNumber": "",
+        "authApp": "",
+        "errorMessage": ""
       },
       "noSecurityCode": {
         "title": "You did not get a security code",

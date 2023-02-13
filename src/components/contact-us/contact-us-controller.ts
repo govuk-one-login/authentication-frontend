@@ -137,6 +137,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     referer: req.query.referer,
     pageTitleHeading: pageTitle,
     zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+    ipnSupport: res.locals.ipnSupport,
   });
 }
 
