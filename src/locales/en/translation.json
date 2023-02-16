@@ -1724,8 +1724,8 @@
       }
     },
     "noPhotoId": {
-      "title": "You must have a photo ID to prove your identity this way",
-      "header": "You must have a photo ID to prove your identity this way",
+      "title": "You need to prove your identity another way",
+      "header": "You need to prove your identity another way",
       "section1": {
         "paragraph1": "You can currently only prove your identity with GOV.UK One Login if you have a photo ID."
       },
