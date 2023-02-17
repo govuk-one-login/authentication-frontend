@@ -88,7 +88,7 @@ export function contactUsService(
           break;
         case "text_message_international_number":
           securityCodeMethod =
-            "Text message to a phone number from a different country";
+            "Text message to a phone number from another country";
           break;
         case "authenticator_app":
           securityCodeMethod = "Authenticator app";

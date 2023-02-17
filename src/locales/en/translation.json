@@ -1455,7 +1455,7 @@
         "email": "Email",
         "textMessage": "Text message",
         "textMessageUkNumber": "Text message to a UK phone number",
-        "textMessageInternationalNumber": "Text message to a phone number from a different country",
+        "textMessageInternationalNumber": "Text message to a phone number from another country",
         "authApp": "Authenticator app",
         "errorMessage": "Select whether the code was sent by email or text message"
       },
