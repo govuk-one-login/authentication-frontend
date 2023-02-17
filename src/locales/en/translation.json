@@ -92,15 +92,18 @@
       "title": "Page not found",
       "header": "Page not found",
       "content": {
-        "paragraph1": "If you typed the web address, check it is correct.",
-        "paragraph2": "If you pasted the web address, check you copied the entire address.",
+        "paragraph1": "We cannot find the page you’re looking for.",
+        "whatYouCanDo": "What you can do",
+        "paragraph2": "If you typed the web address, check it is correct.",
+        "paragraph3": "If you pasted the web address, check you copied the entire address.",
+        "paragraph4": "You can also go to the GOV.UK homepage to find the service you were trying to use, or look for it using your search engine.",
         "govUKHomepageButtonHref": "https://www.gov.uk/",
         "govUKHomepageButtonText": "Go to the GOV.UK homepage"
       }
     },
     "error500": {
       "title": "There’s a problem with this service",
-      "header": "Sorry, there’s a problem with this service",
+      "header": "Sorry, there is a problem",
       "content": {
         "paragraph1": "Try again later."
       }
@@ -110,7 +113,8 @@
       "header": "Sorry, the page has expired",
       "content": {
         "paragraph1": "This is because you did not do anything for more than 2 hours. ",
-        "paragraph2": "You’ll need to start what you were doing again.",
+        "whatYouCanDo": "What you can do",
+        "paragraph2": "Go back to the service you were trying to use and start again. You can look for the service using your search engine or find it from the GOV.UK homepage.",
         "govUKHomepageButtonHref": "https://www.gov.uk/",
         "govUKHomepageButtonText": "Go to the GOV.UK homepage"
       }
