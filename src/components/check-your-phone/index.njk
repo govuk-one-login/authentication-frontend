@@ -57,18 +57,18 @@
         <a href="{{'pages.checkYourPhone.details.changeMfaChoiceLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.changeMfaChoiceLinkText'| translate}}</a>.
       </p>
 
-      {% endset %}
+    {% endset %}
+
+    {{ govukButton({
+      "text": "general.continue.label" | translate,
+      "type": "Submit",
+      "preventDoubleClick": true
+    }) }}
 
     {{ govukDetails({
       summaryText: 'pages.checkYourPhone.details.summaryText' | translate,
       html: detailsHTML
     }) }}
-
-    {{ govukButton({
-  "text": "general.continue.label" | translate,
-  "type": "Submit",
-  "preventDoubleClick": true
-  }) }}
 
   </form>
 

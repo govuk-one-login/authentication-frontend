@@ -49,16 +49,16 @@
     </p>
     {% endset %}
 
-    {{ govukDetails({
-  summaryText: 'pages.checkYourEmail.details.summaryText' | translate,
-  html: detailsHTML
-}) }}
-
     {{ govukButton({
-    "text": "general.continue.label" | translate,
-    "type": "Submit",
-    "preventDoubleClick": true
-}) }}
+      "text": "general.continue.label" | translate,
+      "type": "Submit",
+      "preventDoubleClick": true
+    }) }}
+
+    {{ govukDetails({
+      summaryText: 'pages.checkYourEmail.details.summaryText' | translate,
+      html: detailsHTML
+    }) }}
 
   </form>
 
