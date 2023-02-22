@@ -734,7 +734,7 @@
       "header": "Datganiad hygyrchedd ar gyfer GOV.UK One Login",
       "content": {
         "paragraph1": "Mae GOV.UK One Login yn rhan o wefan ehangach GOV.UK. Mae ",
-        "linkText": "datganiad hygyrchedd ar ar wahân ar gyfer prif wefan GOV.UK",
+        "linkText": "datganiad hygyrchedd ar wahân ar gyfer prif wefan GOV.UK",
         "paragraph2": "Mae’r dudalen hon ond yn cynnwys gwybodaeth am GOV.UK One Login, sydd ar gael yn www.signin.account.gov.uk."
       },
       "section1": {
@@ -742,7 +742,7 @@
         "paragraph1": {
           "text1": "Mae GOV.UK One Login yn cael eu rhedeg gan y ",
           "linkText": "Gwasanaeth Digidol y Llywodraeth (GDS)",
-          "text2": ", rhan o Swyddfa’r Cabinet. Rydym am i gynifer o bobl â phosibl allu defnyddio GOV.UK One Login. Er enghraifft, mae hynny’n golygu y dylech allu:"
+          "text2": ", rhan o Swyddfa’r Cabinet. Rydym am i gynifer o bobl â phosibl allu defnyddio GOV.UK One Login. Mae hynny’n golygu y dylech allu:"
         },
         "bulletPoint1": "newid lliwiau, lefelau cyferbyniad a ffontiau",
         "bulletPoint2": "chwyddo hyd at 300% heb i’r testun ollwng oddi ar y sgrin",
@@ -821,7 +821,7 @@
           "text1": "Darllenwch y telerau ac amodau hyn, yr ",
           "linkText1": "hysbysiad preifatrwydd GOV.UK One Login",
           "text2": " a ",
-          "linkText2": "Polisi cwcis cyfrifon GOV.UK",
+          "linkText2": "Pholisi cwcis cyfrifon GOV.UK",
           "text3": "cyn defnyddio’r GOV.UK One Login. Mae’r hysbysiad preifatrwydd yn egluro’r telerau rydym yn prosesu unrhyw ddata personol y byddwn yn ei gasglu gennych neu eich bod yn ei ddarparu i ni. Mae’r polisi cwcis yn rhoi gwybodaeth am y cwcis rydym yn eu defnyddio a sut rydym yn eu defnyddio pan rydych yn defnyddio GOV.UK neu eich GOV.UK One Login."
         },
         "paragraph4": "Drwy gofrestru ar gyfer a pharhau i ddefnyddio GOV.UK One Login, rydych yn cytuno i’r telerau ac amodau hyn, yr hysbysiad preifatrwydd a’r polisi cwcis.",
@@ -964,7 +964,7 @@
         "bulletPoint3": "cysylltu â ni",
         "paragraph4": "Pan fyddwch yn darparu gwybodaeth i wasanaeth arall y llywodraeth tra rydych wedi mewngofnodi i GOV.UK One Login, yr adran o’r llywodraeth sy’n rhedeg y gwasanaeth yw’r rheolwr data. Bydd ganddynt eu hysbysiad preifatrwydd eu hunain i egluro sut maent yn prosesu’ch gwybodaeth. Nid oes gennym fynediad i’r wybodaeth rydych yn ei darparu i wasanaethau sy’n cael eu rhedeg gan adrannau eraill y llywodraeth.",
         "paragraph5": "Pan fyddwch yn profi eich hunaniaeth gyda GOV.UK One Login, byddwn yn:",
-        "bulletPoint4": "gofyn i chi am fanylion eich pasbort - byddwn yn gwirio’r rhain gyda Swyddfa Pasbort EM (HMPO)",
+        "bulletPoint4": "gofyn i chi am fanylion eich pasbort - byddwn yn gwirio’r rhain gyda Swyddfa Basport EF (HMPO)",
         "bulletPoint5": {
           "text3": "gwirio eich gwybodaeth gyda",
           "linkText": "Experian",
@@ -987,9 +987,9 @@
           "text1": "gwybodaeth am sut rydych yn defnyddio eich GOV.UK One Login a gwefan GOV.UK, sy’n cael ei gasglu yng nghofnodion y system, a chan gwcis Google Analytics os ydych yn rhoi caniatâd - mae’r ",
           "linkText1": "hysbysiad preifatrwydd GOV.UK",
           "comma": ", ",
-          "linkText2": "pholisi cwcis GOV.UK",
+          "linkText2": "polisi cwcis GOV.UK",
           "and": " a ",
-          "linkText3": "polisi cwcis GOV.UK One Login",
+          "linkText3": "pholisi cwcis GOV.UK One Login",
           "text2": " yn darparu mwy o wybodaeth am hyn"
         },
         "bulletPoint7": "dynodwyr ar-lein, fel eich cyfeiriad Protocol Rhyngrwyd (IP), a gwybodaeth dechnegol am y ddyfais rydych yn ei defnyddio gan gynnwys y model, porwr gwe a system weithredu, sy’n cael ei gasglu’n awtomatig mewn cofnodion system pan fyddwch yn defnyddio GOV.UK",
@@ -1009,7 +1009,7 @@
           "text2": ""
         },
         "paragraph2": "Rydym hefyd yn defnyddio eich gwybodaeth i:",
-        "bulletPoint4": "cadw eich cyfrif yn ddiogel (gan ddefnyddio eich cyfeiriad e-bost, rhif ffôn, cyfrinair a chofnodion system)",
+        "bulletPoint4": "cadw eich GOV.UK One Login yn ddiogel (gan ddefnyddio eich cyfeiriad e-bost, rhif ffôn, cyfrinair a chofnodion system)",
         "bulletPoint5": "monitro, canfod ac ymchwilio i dwyll",
         "bulletPoint6": "dweud wrth y gwasanaethau rydych yn eu cyrchu trwy eich GOV.UK One Login eich bod wedi mewngofnodi’n llwyddiannus",
         "bulletPoint7": "rhoi i’r gwasanaethau’r llywodraeth rydych yn eu cyrchu trwy eich GOV.UK One Login a’r adrannau sy’n eu rhedeg â gwybodaeth rydych yn cytuno’n benodol i ni ei rhannu, er enghraifft eich e-bost a’ch rhif ffôn",
@@ -1018,7 +1018,7 @@
         "bulletPoint10": "cysylltu â chi i ofyn am adborth ar eich GOV.UK One Login, os ydych wedi rhoi caniatâd i ni (gan ddefnyddio eich cyfeiriad e-bost)",
         "bulletPoint11": {
           "text3": "gwella a deall sut rydych yn defnyddio eich GOV.UK One Login",
-          "linkText": "defnyddio cwcis Google Analytics",
+          "linkText": "gan ddefnyddio cwcis Google Analytics",
           "text4": "(gallwch ddewis peidio â derbyn y cwcis hyn)"
         },
         "bulletPoint12": "ymateb i unrhyw adborth rydych yn ei anfon atom, os ydych chi wedi gofyn i ni wneud",
@@ -1038,8 +1038,8 @@
         "bulletPoint1": "gwerthu neu rentu eich gwybodaeth i drydydd partïon",
         "bulletPoint2": "rhannu eich gwybodaeth gyda thrydydd partïon at ddibenion marchnata",
         "subHeader1": "Rhannu eich gwybodaeth gyda gwasanaethau ar-lein y llywodraeth a’r adrannau sy’n eu rhedeg",
-        "paragraph2": "Byddwn yn dweud wrth y gwasanaethau y byddwch yn cyrchu trwy eich cyfrif pan fyddwch yn llwyddo i greu eich GOV.UK One Login neu’n mewngofnodi fel y gallant ganiatáu i chi ddefnyddio’r gwasanaeth.",
-        "paragraph3": "Efallai y bydd gwasanaethau rydych yn eu cyrchu trwy eich cyfrif yn gofyn i chi rannu gwybodaeth rydych wedi ei harbed yn eich GOV.UK One Login. Pan fyddant yn gwneud hyn, byddwn yn dweud wrthych pa wybodaeth maent wedi gofyn amdani, a byddwn ond yn rhannu’r wybodaeth os ydych yn cytuno.",
+        "paragraph2": "Byddwn yn dweud wrth y gwasanaethau rydych yn eu cyrchu trwy eich GOV.UK One Login pan fyddwch wedi llwyddo i’w greu neu wedi mewngofnodi, fel y gallant ganiatáu i chi ddefnyddio’r gwasanaeth.",
+        "paragraph3": "Efallai bydd gwasanaethau rydych yn eu cyrchu trwy eich GOV.UK One Login yn gofyn i chi rannu gwybodaeth rydych wedi’i chadw ynddo. Pan fyddant yn gwneud hyn, byddwn yn dweud wrthych pa wybodaeth maent wedi gofyn amdani, a byddwn ond yn rhannu’r wybodaeth os ydych yn cytuno.",
         "paragraph4": "Os nad ydych yn dewis rhannu’r wybodaeth hon o’ch GOV.UK One Login, efallai y gofynnir i chi ddarparu’r un wybodaeth yn uniongyrchol i’r gwasanaeth yn nes ymlaen.",
         "paragraph5": "Bydd gan bob gwasanaeth y byddwch yn cyrchu drwy eich GOV.UK One Login ei delerau ac amodau a’i hysbysiad preifatrwydd ei hun. Dylech ddarllen y rhain yn ogystal â thelerau ac amodau GOV.UK One Login a’r hysbysiad preifatrwydd hwn, fel eich bod yn deall sut mae eich gwybodaeth bersonol yn cael ei rheoli.",
         "subHeader2": "Rhannu eich gwybodaeth i brofi pwy ydych chi",
@@ -1087,7 +1087,7 @@
           "text1": "ddewis cyfrinair cryf a sicrhau eich bod yn ei gadw’n ddiogel - mae Canolfan Seiberddiogelwch Genedlaethol y DU (NCSC) yn darparu ",
           "linkText": "cyngor ar ddiogelwch ar-lein"
         },
-        "bulletPoint2": "cysylltwch â ni ar unwaith os ydych yn amau bod eich GOV.UK One Login wedi cael ei gyfaddawdu"
+        "bulletPoint2": "cysylltu â ni ar unwaith os ydych yn amau bod eich GOV.UK One Login wedi cael ei gyfaddawdu"
       },
       "section10": {
         "header": "Prosesu awtomataidd",
@@ -1107,7 +1107,7 @@
         "paragraph2": "Gallwch hefyd:",
         "bulletPoint6": "dynnu eich caniatâd yn ôl i’ch gwybodaeth bersonol gael ei brosesu gan ddefnyddio data neu adborth dadansoddi’r we",
         "bulletPoint7": "gwrthwynebu sut mae eich gwybodaeth bersonol yn cael ei phrosesu",
-        "bulletPoint8": "gofynn fod prosesu eich gwybodaeth bersonol wedi’i gyfyngu mewn rhai amgylchiadau",
+        "bulletPoint8": "gofyn fod prosesu eich gwybodaeth bersonol wedi’i gyfyngu mewn rhai amgylchiadau",
         "bulletPoint9": "cysylltu â ni i gael help os nad ydych yn gallu profi pwy ydych chi ar-lein",
         "paragraph3": {
           "text1": "Os oes gennych unrhyw un o’r ceisiadau hyn, cysylltwch â’r ",
