@@ -92,15 +92,18 @@
       "title": "Tudalen heb ei darganfod",
       "header": "Tudalen heb ei darganfod",
       "content": {
-        "paragraph1": "Os ydych wedi teipio’r cyfeiriad gwe, edrychwch i weld ei fod yn gywir.",
-        "paragraph2": "Os ydych wedi gludo’r cyfeiriad gwe, edrychwch i weld eich bod wedi copïo’r cyfeiriad cyfan.",
+        "paragraph1": "Ni allwn ddod o hyd i’r dudalen rydych chi’n chwilio amdani.",
+        "whatYouCanDo": "Beth allwch chi ei wneud",
+        "paragraph2": "Os ydych wedi teipio’r cyfeiriad gwe, edrychwch i weld ei fod yn gywir.",
+        "paragraph3": "Os ydych wedi gludo’r cyfeiriad gwe, edrychwch i weld eich bod wedi copïo’r cyfeiriad cyfan.",
+        "paragraph4": "Gallwch hefyd fynd i hafan GOV.UK i ddod o hyd i’r gwasanaeth roeddech yn ceisio ei ddefnyddio, neu edrych amdano drwy ddefnyddio eich peiriant chwilio.",
         "govUKHomepageButtonHref": "https://www.gov.uk/",
         "govUKHomepageButtonText": "Ewch i hafan GOV.UK"
       }
     },
     "error500": {
       "title": "Mae problem gyda’r gwasanaeth hwn",
-      "header": "Mae’n ddrwg gennym, mae problem gyda’r gwasanaeth hwn",
+      "header": "Mae’n ddrwg gennym, mae problem",
       "content": {
         "paragraph1": "Rhowch gynnig arall yn nes ymlaen."
       }
@@ -110,7 +113,8 @@
       "header": "Mae’n ddrwg gennym, mae’r dudalen wedi dod i ben",
       "content": {
         "paragraph1": "Mae hyn oherwydd na wnaethoch unrhyw beth am fwy na 2 awr. ",
-        "paragraph2": "Bydd angen i chi ddechrau’r hyn roeddech yn ei wneud eto.",
+        "whatYouCanDo": "Beth allwch chi ei wneud",
+        "paragraph2": "Ewch yn ôl i’r gwasanaeth roeddech chi’n ceisio ei ddefnyddio a dechrau eto. Gallwch chwilio am y gwasanaeth gan ddefnyddio eich peiriant chwilio neu dewch o hyd iddo o hafan GOV.UK.",
         "govUKHomepageButtonHref": "https://www.gov.uk/",
         "govUKHomepageButtonText": "Ewch i hafan GOV.UK"
       }
