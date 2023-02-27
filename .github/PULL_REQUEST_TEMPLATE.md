@@ -13,6 +13,10 @@ Changes to the user interface or content should be demonstrated to Content Desig
 
 Delete this section if the PR does not change the UI.
 
+## Performance Analysis have been informed of the change
+
+- [ ] Performance Analysis have been informed of the change
+
 ## Related PRs
 
 Please include links to PRs in other repositories relevant to this PR.
