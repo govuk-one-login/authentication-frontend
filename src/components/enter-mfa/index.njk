@@ -2,6 +2,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% set pageTitleName = 'pages.enterMfa.title' | translate %}
 
@@ -9,48 +10,92 @@
 
   {% include "common/errors/errorSummary.njk" %}
 
-  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterMfa.header' | translate }}</h1>
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.enterMfa.header' | translate }}</h1>
+  <p class="govuk-body">{{ 'pages.enterMfa.info.paragraph1' | translate }} </p>
 
-  <p class="govuk-body">{{'pages.enterMfa.info.paragraph1' | translate }}</p>
-  <p class="govuk-body">{{'pages.enterMfa.info.paragraph2' | translate }}</p>
-
-  <form id="form-tracking" action="/enter-code" method="post" novalidate="novalidate">
-    <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
-    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-
-    {{ govukInput({
-  label: {
-  text: 'pages.enterMfa.code.label' | translate
-  },
-  classes: "govuk-input--width-10 govuk-!-font-weight-bold",
-  id: "code",
-  name: "code",
-  inputmode: "numeric",
-  spellcheck: false,
-  autocomplete:"off",
-  errorMessage: {
-  text: errors['code'].text
-  } if (errors['code'])})
-  }}
-
-    {% set detailsHTML %}
-    <p class="govuk-body">
-      {{'pages.enterMfa.details.text1' | translate}}
-      <a href="{{'pages.enterMfa.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterMfa.details.sendCodeLinkText'| translate}}</a>
-      {{'pages.enterMfa.details.text 2' | translate}}
-    </p>
+  {% if isAuthApp %}
+    {% set insetTextHtml %}
+      <p class="govuk-body">
+        {{ 'pages.enterMfa.info.paragraph3' | translate }}
+        <span class="govuk-!-font-weight-bold">{{ 'pages.enterMfa.info.authenticatorApp' | translate }}</span>
+        <span>{{ 'pages.enterMfa.info.paragraph3End' | translate }}</span>
+      </p>
     {% endset %}
 
-    {{ govukDetails({
-      summaryText: 'pages.enterMfa.details.summaryText' | translate,
-      html: detailsHTML
-    }) }}
+  {% else %}
+    {% set insetTextHtml %}
+      <p class="govuk-body">{{ 'pages.enterMfa.info.paragraph4' | translate }}</p>
+    {% endset %}
+
+  {% endif %}
+
+  {{ govukInsetText({
+    html: insetTextHtml
+  }) }}
+
+  {% if not isAuthApp %}
+    <p class="govuk-body">{{ 'pages.enterMfa.info.paragraph2' | translate }}</p>
+  {% endif %}
+
+  <form id="form-tracking" action="/enter-code" method="post" novalidate="novalidate">
+    <input type="hidden" name="phoneNumber" value="{{ phoneNumber }}" />
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+    {% if isAuthApp %}
+
+      {{ govukInput({
+        label: {
+          text: 'pages.enterMfa.code.label' | translate
+        },
+        hint: {
+          text: 'pages.enterMfa.code.labelSummary' | translate
+        },
+        classes: "govuk-input--width-10 govuk-!-font-weight-bold",
+        id: "code",
+        name: "code",
+        inputmode: "numeric",
+        spellcheck: false,
+        autocomplete:"off",
+        errorMessage: {
+          text: errors['code'].text
+        } if (errors['code'])}) }}
+
+    {% else %}
+
+      {{ govukInput({
+        label: {
+          text: 'pages.enterMfa.code.label2' | translate
+        },
+        classes: "govuk-input--width-10 govuk-!-font-weight-bold",
+        id: "code",
+        name: "code",
+        inputmode: "numeric",
+        spellcheck: false,
+        autocomplete:"off",
+        errorMessage: {
+          text: errors['code'].text
+        } if (errors['code'])}) }}
+
+      {% set detailsHTML %}
+        <p class="govuk-body">
+          <a href="{{ 'pages.enterMfa.details.sendCodeLinkHref' | translate }}" class="govuk-link"
+             rel="noreferrer noopener">{{ 'pages.enterMfa.details.sendTheCodeAgain'| translate }}</a>
+          {{ 'pages.enterMfa.details.text 2' | translate }}
+        </p>
+      {% endset %}
+
+      {{ govukDetails({
+        summaryText: 'pages.enterMfa.details.summaryText' | translate,
+        html: detailsHTML
+      }) }}
+
+    {% endif %}
 
     {{ govukButton({
-  "text": "general.continue.label" | translate,
-  "type": "Submit",
-  "preventDoubleClick": true
-  }) }}
+      "text": "general.continue.label" | translate,
+      "type": "Submit",
+      "preventDoubleClick": true
+    }) }}
 
   </form>
 
