@@ -489,7 +489,10 @@
         "text1": "Gallwn ",
         "sendCodeLinkText": "anfon y cod eto",
         "sendCodeLinkHref": "/resend-code",
-        "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn."
+        "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn.",
+        "changeGetSecurityCodesText": "If you cannot access the phone number for your GOV.UK One Login, you can securely ",
+        "changeGetSecurityCodesLinkText": "change how you get security codes",
+        "changeGetSecurityCodesLinkHref": "/change-security-codes"
       }
     },
     "resendMfaCode": {
@@ -504,6 +507,19 @@
       "email": {
         "recipientMessage": "Byddwn yn anfon cod i: ",
         "paragraph": "Efallai y bydd eich e-bost yn cymryd ychydig funudau i gyrraedd. Os na chewch e-bost, edrychwch ar eich ffolder spam."
+      }
+    },
+    "cannotChangeSecurityCodes": {
+      "title": "You cannot change how you get security codes at the moment",
+      "header": "You cannot change how you get security codes at the moment",
+      "info": {
+        "paragraph1": "You must wait 48 hours after resetting your password before you can change how you get security codes.",
+        "paragraph2": "This is to keep your GOV.UK One Login and the information in it secure.",
+        "canDoSubtitle": "What you can do",
+        "paragraph3": "Wait 48 hours before trying to change how you get security codes to sign in to GOV.UK One Login.",
+        "paragraph4Start": "You can also go back to the service you were trying to use. You can look for the service using your search engine or find it from the ",
+        "govukLinkHref": "https://www.gov.uk/",
+        "govukLinkText": "GOV.UK homepage"
       }
     },
     "signedOut": {

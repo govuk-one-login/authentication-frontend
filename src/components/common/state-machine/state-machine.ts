@@ -49,6 +49,7 @@ const USER_JOURNEY_EVENTS = {
   AUTH_APP_CODE_VERIFIED: "AUTH_APP_CODE_VERIFIED",
   PHOTO_ID: "PHOTO_ID",
   NO_PHOTO_ID: "NO_PHOTO_ID",
+  CHANGE_SECURITY_CODES_REQUESTED: "CHANGE_SECURITY_CODES_REQUESTED",
 };
 
 const authStateMachine = createMachine(
@@ -367,6 +368,8 @@ const authStateMachine = createMachine(
             PATH_NAMES.SECURITY_CODE_WAIT,
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+            PATH_NAMES.CHANGE_SECURITY_CODES,
+            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
           ],
         },
       },
@@ -591,6 +594,11 @@ const authStateMachine = createMachine(
       [PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT]: {
         on: {
           [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.RESEND_EMAIL_CODE],
+        },
+      },
+      [PATH_NAMES.CHANGE_SECURITY_CODES]: {
+        meta: {
+          optionalPaths: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
         },
       },
     },
