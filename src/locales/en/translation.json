@@ -155,8 +155,7 @@
         },
         "linkHref": "?lng=cy"
       },
-      "paragraph2": "If you already have a GOV.UK One Login you can",
-      "signInText": "sign in",
+      "signInText": "Sign in",
       "moreAbout": {
         "header": "About GOV.UK One Login",
         "paragraph1": "GOV.UK One Login is new. At the moment you can only use it with:",
