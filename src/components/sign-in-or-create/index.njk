@@ -68,15 +68,19 @@
     text: 'pages.signInOrCreate.createButtonText' | translate,
     value: "create",
     name: "optionSelected",
+    classes: "govuk-!-margin-right-3",
     attributes: {
       "id": "create-account-link"
     }
   }) }}
 
-    <p class="govuk-body">
-      {{ 'pages.signInOrCreate.paragraph2' | translate }}
-      <a href="/sign-in-or-create?redirectPost=true" class="govuk-link" id="sign-in-link">{{ 'pages.signInOrCreate.signInText' | translate }}</a>.
-    </p>
+    {{ govukButton({
+      text: 'pages.signInOrCreate.signInText' | translate,
+      classes: "govuk-button--secondary",
+      attributes: {
+        "id": "sign-in-button"
+      }
+    }) }}
 
   </form>
 
