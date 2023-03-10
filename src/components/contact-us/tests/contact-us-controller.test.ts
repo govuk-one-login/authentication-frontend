@@ -10,7 +10,7 @@ describe("contact us controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
-  const REFERER = "https://gov.uk/sign-in";
+  const REFERER = "http://localhost:3000/enter-email";
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -51,7 +51,7 @@ describe("contact us controller", () => {
       contactUsFormPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-further-information?theme=signing_in&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-further-information?theme=signing_in&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-further-information page when 'A problem creating a GOV.UK account' radio option is chosen", async () => {
@@ -61,7 +61,7 @@ describe("contact us controller", () => {
       contactUsFormPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-further-information?theme=account_creation&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-further-information?theme=account_creation&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'Another problem using your GOV.UK account' radio option is chosen", async () => {
@@ -71,7 +71,7 @@ describe("contact us controller", () => {
       contactUsFormPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=something_else&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=something_else&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'GOV.UK email subscriptions' radio option is chosen", async () => {
@@ -81,7 +81,7 @@ describe("contact us controller", () => {
       contactUsFormPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=email_subscriptions&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=email_subscriptions&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'A suggestion or feedback about using your GOV.UK account' radio option is chosen", async () => {
@@ -91,7 +91,7 @@ describe("contact us controller", () => {
       contactUsFormPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=suggestions_feedback&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=suggestions_feedback&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'A problem proving your identity' radio option is chosen", async () => {
@@ -101,7 +101,7 @@ describe("contact us controller", () => {
       contactUsFormPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=proving_identity&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=proving_identity&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
   });

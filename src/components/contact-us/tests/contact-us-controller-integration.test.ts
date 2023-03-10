@@ -56,6 +56,86 @@ describe("Integration:: contact us - public user", () => {
       .expect(200, done);
   });
 
+  [
+    "test123",
+    "accountCreatedEmail123",
+    "http://remotehost/something",
+    "<script>alert(123);</script>",
+  ].forEach(function (referer) {
+    it("should return contact us page removing invalid referer url", (done) => {
+      request(app)
+        .get(PATH_NAMES.CONTACT_US)
+        .query("supportType=PUBLIC")
+        .set("referer", referer)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("input[name = referer]").val()).to.not.contains(referer);
+        })
+        .expect(200, done);
+    });
+  });
+
+  [
+    "",
+    "accountCreatedEmail",
+    "emailAddressUpdatedEmail",
+    "http://localhost:8080/startpage",
+    "http://localhost/anypage",
+    "https://localhost/scenario/page",
+  ].forEach(function (referer) {
+    it("should return contact us page including valid referer url", (done) => {
+      request(app)
+        .get(PATH_NAMES.CONTACT_US)
+        .query("supportType=PUBLIC")
+        .set("referer", referer)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("input[name = referer]").val()).to.contains(referer);
+        })
+        .expect(200, done);
+    });
+  });
+
+  [
+    "test123",
+    "http://remotehost/something",
+    "<script>alert(123);</script>",
+  ].forEach(function (referer) {
+    it("should return contact us questions page removing invalid referer queryparam url", (done) => {
+      request(app)
+        .get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)
+        .query("theme=account_creation")
+        .query("subtheme=no_uk_mobile_number")
+        .query("referer=" + referer)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("input[name = referer]").val()).to.not.contains(referer);
+        })
+        .expect(200, done);
+    });
+  });
+
+  [
+    "",
+    "accountCreatedEmail",
+    "emailAddressUpdatedEmail",
+    "http://localhost:8080/startpage",
+    "http://localhost/anypage",
+    "http://localhost:3000/enter-email",
+  ].forEach(function (referer) {
+    it("should return contact us questions page including valid referer queryparam url", (done) => {
+      request(app)
+        .get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)
+        .query("theme=account_creation")
+        .query("referer=" + referer)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("input[name = referer]").val()).to.contains(referer);
+        })
+        .expect(200, done);
+    });
+  });
+
   it("should return contact us further information signing in page", (done) => {
     request(app)
       .get("/contact-us-further-information")

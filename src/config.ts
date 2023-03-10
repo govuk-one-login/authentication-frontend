@@ -106,7 +106,7 @@ export function getAnalyticsCookieDomain(): string {
 }
 
 export function getServiceDomain(): string {
-  return process.env.SERVICE_DOMAIN;
+  return process.env.SERVICE_DOMAIN || "localhost";
 }
 
 export function getServiceSignInLink(): string {
