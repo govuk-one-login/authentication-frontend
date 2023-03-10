@@ -13,7 +13,7 @@ describe("contact us further information controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
   let res: Partial<Response>;
-  const REFERER = "https://gov.uk/sign-in";
+  const REFERER = "http://localhost:3000/enter-email";
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -70,7 +70,7 @@ describe("contact us further information controller", () => {
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=signing_in&subtheme=no_security_code&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=signing_in&subtheme=no_security_code&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'The security code did not work' radio option is chosen", async () => {
@@ -80,7 +80,7 @@ describe("contact us further information controller", () => {
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=signing_in&subtheme=invalid_security_code&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=signing_in&subtheme=invalid_security_code&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'You do not have access to the phone number' radio option is chosen", async () => {
@@ -90,7 +90,7 @@ describe("contact us further information controller", () => {
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=signing_in&subtheme=no_phone_number_access&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=signing_in&subtheme=no_phone_number_access&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'You’ve forgotten your password' radio option is chosen", async () => {
@@ -100,7 +100,7 @@ describe("contact us further information controller", () => {
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=signing_in&subtheme=forgotten_password&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=signing_in&subtheme=forgotten_password&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'Your account cannot be found' radio option is chosen", async () => {
@@ -110,7 +110,7 @@ describe("contact us further information controller", () => {
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=signing_in&subtheme=account_not_found&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=signing_in&subtheme=account_not_found&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'There was a technical problem' radio option is chosen", async () => {
@@ -120,7 +120,7 @@ describe("contact us further information controller", () => {
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=signing_in&subtheme=technical_error&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=signing_in&subtheme=technical_error&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'Something else' radio option is chosen", async () => {
@@ -130,7 +130,7 @@ describe("contact us further information controller", () => {
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=signing_in&subtheme=something_else&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=signing_in&subtheme=something_else&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
   });
@@ -143,7 +143,7 @@ describe("contact us further information controller", () => {
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=account_creation&subtheme=no_security_code&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=account_creation&subtheme=no_security_code&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'The security code did not work' radio option is chosen", async () => {
@@ -153,7 +153,7 @@ describe("contact us further information controller", () => {
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=account_creation&subtheme=invalid_security_code&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=account_creation&subtheme=invalid_security_code&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'You do not have a UK mobile phone number' radio option is chosen", async () => {
@@ -163,7 +163,7 @@ describe("contact us further information controller", () => {
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=account_creation&subtheme=no_uk_mobile_number&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=account_creation&subtheme=no_uk_mobile_number&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'There was a technical problem' radio option is chosen", async () => {
@@ -173,7 +173,7 @@ describe("contact us further information controller", () => {
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=account_creation&subtheme=technical_error&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=account_creation&subtheme=technical_error&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'Something else' radio option is chosen", async () => {
@@ -183,7 +183,7 @@ describe("contact us further information controller", () => {
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=account_creation&subtheme=something_else&referer=https%3A%2F%2Fgov.uk%2Fsign-in"
+        "/contact-us-questions?theme=account_creation&subtheme=something_else&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
   });

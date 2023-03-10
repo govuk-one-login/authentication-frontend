@@ -203,3 +203,16 @@ export const IPV_ERROR_CODES = {
 };
 
 export const COOKIES_PREFERENCES_SET = "cookies_preferences_set";
+
+export const CONTACT_US_REFERER_ALLOWLIST = [
+  "",
+  "accountCreatedEmail",
+  "confirmEmailAddressEmail",
+  "passwordResetConfirmationEmail",
+  "passwordResetConfirmationSms",
+  "passwordResetRequestEmail",
+  "emailAddressUpdatedEmail",
+  "accountDeletedEmail",
+  "phoneNumberUpdatedEmail",
+  "passwordUpdatedEmail",
+];

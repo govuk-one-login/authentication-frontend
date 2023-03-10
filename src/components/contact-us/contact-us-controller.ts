@@ -4,12 +4,14 @@ import {
   SUPPORT_TYPE,
   ZENDESK_THEMES,
   ZENDESK_FIELD_MAX_LENGTH,
+  CONTACT_US_REFERER_ALLOWLIST,
 } from "../../app.constants";
 import { contactUsService } from "./contact-us-service";
 import { ContactUsServiceInterface, Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
 import crypto from "crypto";
 import { logger } from "../../utils/logger";
+import { getServiceDomain } from "../../config";
 
 const themeToPageTitle = {
   [ZENDESK_THEMES.ACCOUNT_NOT_FOUND]:
@@ -62,15 +64,26 @@ export function contactUsGet(req: Request, res: Response): void {
   if (req.query.supportType === SUPPORT_TYPE.GOV_SERVICE) {
     return res.render("contact-us/index-gov-service-contact-us.njk");
   }
-  let referer = req.headers.referer;
+  const REFERER = "referer";
+
+  let referer = validateReferer(req.get(REFERER));
 
   if (req.query.referer) {
-    referer = req.query.referer as string;
+    referer = validateReferer(req.query.referer as string);
+    logger.info(`referer with referer query param ${referer}`);
   }
 
-  if (req.headers.referer && req.headers.referer.includes("referer")) {
-    const urlObj = new URL(req.headers.referer);
-    referer = urlObj.searchParams.get("referer");
+  if (req.headers?.referer?.includes(REFERER)) {
+    try {
+      referer = validateReferer(
+        new URL(req.get(REFERER)).searchParams.get(REFERER)
+      );
+      logger.info(`referer with referer header param ${referer}`);
+    } catch {
+      logger.warn(
+        `unable to parse referer with referer param ${req.get(REFERER)}`
+      );
+    }
   }
 
   return res.render("contact-us/index-public-contact-us.njk", {
@@ -78,11 +91,32 @@ export function contactUsGet(req: Request, res: Response): void {
   });
 }
 
+function validateReferer(referer: string): string {
+  let valid = false;
+  let url;
+  try {
+    if (CONTACT_US_REFERER_ALLOWLIST.includes(referer)) {
+      valid = true;
+    } else {
+      url = new URL(referer);
+      valid = url.hostname.endsWith(getServiceDomain());
+    }
+  } catch {
+    logger.warn(`unable to parse referer ${referer}`);
+  }
+  if (valid) {
+    logger.info(`referer is empty or a valid url ${referer}`);
+  } else {
+    logger.warn(`referer is not a valid url ${referer}`);
+  }
+  return valid ? referer : "";
+}
+
 export function contactUsFormPost(req: Request, res: Response): void {
   let url = PATH_NAMES.CONTACT_US_QUESTIONS;
   const queryParams = new URLSearchParams({
     theme: req.body.theme,
-    referer: req.body.referer,
+    referer: validateReferer(req.body.referer),
   }).toString();
   if (
     [
@@ -102,7 +136,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
   }
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
-    referer: req.query.referer,
+    referer: validateReferer(req.query.referer as string),
   });
 }
 
@@ -111,7 +145,7 @@ export function furtherInformationPost(req: Request, res: Response): void {
   const queryParams = new URLSearchParams({
     theme: req.body.theme,
     subtheme: req.body.subtheme,
-    referer: req.body.referer,
+    referer: validateReferer(req.body.referer),
   }).toString();
 
   res.redirect(url + "?" + queryParams);
@@ -133,8 +167,8 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
   return res.render("contact-us/questions/index.njk", {
     theme: req.query.theme,
     subtheme: req.query.subtheme,
-    backurl: req.headers.referer,
-    referer: req.query.referer,
+    backurl: validateReferer(req.headers.referer),
+    referer: validateReferer(req.query.referer as string),
     pageTitleHeading: pageTitle,
     zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
     ipnSupport: res.locals.ipnSupport,
@@ -172,7 +206,7 @@ export function contactUsQuestionsFormPost(
       feedbackContact: req.body.contact === "true",
       questions: questions,
       themeQuestions: themeQuestions,
-      referer: req.body.referer,
+      referer: validateReferer(req.body.referer),
       securityCodeSentMethod: req.body.securityCodeSentMethod,
     });
 
