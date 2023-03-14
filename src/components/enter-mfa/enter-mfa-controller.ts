@@ -5,12 +5,14 @@ import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
 import { ExpressRouteFunc } from "../../types";
 import { ERROR_CODES } from "../common/constants";
+import { supportAccountRecovery } from "../../config";
 
 const TEMPLATE_NAME = "enter-mfa/index.njk";
 
 export function enterMfaGet(req: Request, res: Response): void {
   res.render(TEMPLATE_NAME, {
     phoneNumber: req.session.user.phoneNumber,
+    supportAccountRecovery: supportAccountRecovery() ? true : null,
   });
 }
 
