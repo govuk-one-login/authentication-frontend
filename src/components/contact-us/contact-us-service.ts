@@ -130,6 +130,11 @@ export function contactUsService(
       htmlBody.push(`<p>Unable to capture ticket identifier</p>`);
     }
 
+    if (optionalData.appErrorCode) {
+      htmlBody.push(`<span>[ID Check App error code]</span>`);
+      htmlBody.push(`<p>${optionalData.appErrorCode}</p>`);
+    }
+
     htmlBody.push(`<span>[From page]</span>`);
     if (referer) {
       htmlBody.push(`<p>${referer}</p>`);

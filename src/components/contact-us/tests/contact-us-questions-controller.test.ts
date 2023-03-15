@@ -53,6 +53,8 @@ describe("contact us questions controller", () => {
         referer: REFERER,
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
     it("should render contact-us-questions if a 'GOV.UK email subscriptions' radio option was chosen", () => {
@@ -69,6 +71,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.emailSubscriptions.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
     it("should render contact-us-questions if a 'A suggestion or feedback' radio option was chosen", () => {
@@ -85,6 +89,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.suggestionOrFeedback.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
 
@@ -102,6 +108,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.provingIdentity.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
 
@@ -128,6 +136,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
     it("should render contact-us-questions if a 'the security code did not work' radio option was chosen", () => {
@@ -145,6 +155,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
     it("should render contact-us-questions if a 'You do not have access to the phone number' radio option was chosen", () => {
@@ -162,6 +174,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.noPhoneNumberAccess.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
     it("should render contact-us-questions if a 'You've forgotten your password' radio option was chosen", () => {
@@ -179,6 +193,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.forgottenPassword.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
     it("should render contact-us-questions if a 'Your account cannot be found' radio option was chosen", () => {
@@ -196,6 +212,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.accountNotFound.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
     it("should render contact-us-questions if a 'technical problem' radio option was chosen", () => {
@@ -213,6 +231,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
     it("should render contact-us-questions if a 'something else' radio option was chosen", () => {
@@ -230,6 +250,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.anotherProblem.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
   });
@@ -250,6 +272,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
     it("should render contact-us-questions if a 'the security code did not work' radio option was chosen", () => {
@@ -267,6 +291,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
     it("should render contact-us-questions if a 'You do not have a UK number' radio option was chosen", () => {
@@ -284,6 +310,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.noUKMobile.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
     it("should render contact-us-questions if a 'technical problem' radio option was chosen", () => {
@@ -301,6 +329,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
     it("should render contact-us-questions if a 'something else' radio option was chosen", () => {
@@ -318,6 +348,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.accountCreation.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
     it("should render contact-us-questions if a 'problem with authenticator app' radio option was chosen", () => {
@@ -335,6 +367,8 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.authenticatorApp.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
+        appErrorCode: "",
+        appSessionId: "",
       });
     });
 
