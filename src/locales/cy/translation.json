@@ -125,8 +125,8 @@
       "content": {
         "paragraph1": {
           "text1": "Ewch i’ch GOV.UK One Login",
-          "text2": ", or find the service you need from the ",
-          "text3": "GOV.UK homepage"
+          "text2": ", neu dewch o hyd i’r gwasanaeth rydych ei angen o ",
+          "text3": "hafan GOV.UK "
         },
         "govUKHomepageButtonHref": "https://www.gov.uk/"
       }

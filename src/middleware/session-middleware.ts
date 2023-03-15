@@ -65,6 +65,9 @@ export function validateSessionMiddleware(
 
   res.status(401);
   next(
-    new ErrorWithLevel(ERROR_MESSAGES.INVALID_SESSION, ERROR_LOG_LEVEL.INFO)
+    new ErrorWithLevel(
+      ERROR_MESSAGES.INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST,
+      ERROR_LOG_LEVEL.INFO
+    )
   );
 }
