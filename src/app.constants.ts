@@ -96,6 +96,7 @@ export const API_ENDPOINTS = {
   DOC_CHECKING_APP_AUTHORIZE: "/doc-app-authorize",
   IPV_PROCESSING_IDENTITY: "/processing-identity",
   VERIFY_MFA_CODE: "/verify-mfa-code",
+  ACCOUNT_RECOVERY: "/account-recovery",
 };
 
 export const ERROR_MESSAGES = {
