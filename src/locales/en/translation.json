@@ -1159,8 +1159,7 @@
           "paragraph_two": "We obtain your consent to process your personal data for the following purposes:",
           "list_one": {
             "item_one": "collecting and analysing information about how you use your GOV.UK One Login using Google Analytics cookies",
-            "item_two": "emailing you to ask for feedback about GOV.UK One Login",
-            "item_three": "sharing your data with online government services where they request it for purposes that do not support GOV.UK One Login’s core authentication and identity checking purpose"
+            "item_two": "emailing you to ask for feedback about GOV.UK One Login"
           },
           "paragraph_three": "Where we rely on consent we will explain as clearly and concisely as possible how your data will be processed so you understand what you are consenting to. If you later change your mind, you can withdraw your consent at any time. How you can do this will depend on what we are processing your data for. For example, you can:",
           "list_two": {
