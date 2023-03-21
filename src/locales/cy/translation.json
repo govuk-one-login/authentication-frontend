@@ -522,6 +522,34 @@
         "govukLinkText": "GOV.UK homepage"
       }
     },
+    "checkYourEmailSecurityCodes": {
+      "title": "Check your email",
+      "header": "Check your email",
+      "info": {
+        "paragraph1": "We need to make sure this is your GOV.UK One Login before you can change how you get security codes."
+      },
+      "text": "We have sent an email to: ",
+      "code": {
+        "paragraph1": "The email contains a 6 digit security code. After you enter the code, you’ll be able to change how you get security codes when you sign in.",
+        "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
+        "paragraph3": "The code will expire after 2 hours.",
+        "label": "Enter the 6 digit security code",
+        "validationError": {
+          "required": "Enter the security code",
+          "maxLength": "Enter the security code using only 6 digits",
+          "minLength": "Enter the security code using only 6 digits",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+        }
+      },
+      "details": {
+        "summaryText": "Problems with the code?",
+        "text1": "We can ",
+        "sendCodeLinkText": "send the code again",
+        "sendCodeLinkHref": "/resend-email-code",
+        "text2": " if the code is not working or you did not receive it."
+      }
+    },
     "signedOut": {
       "title": "Rydych wedi allgofnodi",
       "header": "Rydych wedi allgofnodi",

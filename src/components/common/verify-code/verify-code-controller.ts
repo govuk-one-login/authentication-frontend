@@ -70,6 +70,9 @@ export function verifyCodePost(
       case NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE:
         nextEvent = USER_JOURNEY_EVENTS.RESET_PASSWORD_CODE_VERIFIED;
         break;
+      case NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES:
+        nextEvent = USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED;
+        break;
       default:
         throw new Error("Unknown notification type");
     }
