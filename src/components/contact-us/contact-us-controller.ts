@@ -91,6 +91,47 @@ export function contactUsGet(req: Request, res: Response): void {
   });
 }
 
+export function validateAppErrorCode(appErrorCode: string): boolean {
+  const testResult = /^(\d|[a-f]){4}$/.test(appErrorCode);
+
+  if (!testResult) {
+    logger.warn(`App error code ${appErrorCode} did not meet validation rules`);
+  }
+
+  return testResult;
+}
+
+export function getAppErrorCode(appErrorCode: string | undefined): string {
+  if (!appErrorCode) {
+    logger.info(`Error code ${appErrorCode} was falsy`);
+    return "";
+  }
+
+  return validateAppErrorCode(appErrorCode) ? appErrorCode : "";
+}
+
+export function getAppSessionId(appSessionId: string | undefined): string {
+  if (!appSessionId) {
+    logger.info(`appSessionId ${appSessionId} was falsy`);
+    return "";
+  }
+
+  return validateAppId(appSessionId) ? appSessionId : "";
+}
+
+export function validateAppId(appSessionId: string): boolean {
+  const testResult =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(
+      appSessionId
+    );
+
+  if (!testResult) {
+    logger.warn(`appSessionId ${appSessionId} did not meet validation rules`);
+  }
+
+  return testResult;
+}
+
 function validateReferer(referer: string): string {
   let valid = false;
   let url;
@@ -134,6 +175,16 @@ export function furtherInformationGet(req: Request, res: Response): void {
   if (!req.query.theme) {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
+
+  if (req.query.appErrorCode && req.query.appSessionId) {
+    return res.render("contact-us/further-information/index.njk", {
+      theme: req.query.theme,
+      referer: validateReferer(req.query.referer as string),
+      appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
+      appSessionId: getAppSessionId(req.query.appSessionId as string),
+    });
+  }
+
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
     referer: validateReferer(req.query.referer as string),
@@ -146,9 +197,14 @@ export function furtherInformationPost(req: Request, res: Response): void {
     theme: req.body.theme,
     subtheme: req.body.subtheme,
     referer: validateReferer(req.body.referer),
-  }).toString();
+  });
 
-  res.redirect(url + "?" + queryParams);
+  if (req.body.appErrorCode && req.body.appSessionId) {
+    queryParams.append("appErrorCode", getAppErrorCode(req.body.appErrorCode));
+    queryParams.append("appSessionId", getAppSessionId(req.body.appSessionId));
+  }
+
+  res.redirect(url + "?" + queryParams.toString());
 }
 
 export function contactUsQuestionsGet(req: Request, res: Response): void {
@@ -172,7 +228,17 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     pageTitleHeading: pageTitle,
     zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
     ipnSupport: res.locals.ipnSupport,
+    appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
+    appSessionId: getAppSessionId(req.query.appSessionId as string),
   });
+}
+
+export function createTicketIdentifier(appSessionId: string): string {
+  if (appSessionId) {
+    return appSessionId;
+  } else {
+    return crypto.randomBytes(20).toString("base64url");
+  }
 }
 
 export function contactUsQuestionsFormPost(
@@ -185,7 +251,10 @@ export function contactUsQuestionsFormPost(
       req.body.theme,
       req.body.subtheme
     );
-    const ticketIdentifier = crypto.randomBytes(20).toString("base64url");
+
+    const ticketIdentifier = createTicketIdentifier(
+      getAppSessionId(req.body.appSessionId)
+    );
 
     await service.contactUsSubmitForm({
       descriptions: {
@@ -202,6 +271,7 @@ export function contactUsQuestionsFormPost(
       optionalData: {
         ticketIdentifier: ticketIdentifier,
         userAgent: req.get("User-Agent"),
+        appErrorCode: getAppErrorCode(req.body.appErrorCode),
       },
       feedbackContact: req.body.contact === "true",
       questions: questions,
