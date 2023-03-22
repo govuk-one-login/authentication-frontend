@@ -76,7 +76,6 @@ import { setupAuthenticatorAppRouter } from "./components/setup-authenticator-ap
 import { enterAuthenticatorAppCodeRouter } from "./components/enter-authenticator-app-code/enter-authenticator-app-code-routes";
 import { cookiesRouter } from "./components/common/cookies/cookies-routes";
 import { errorPageRouter } from "./components/common/errors/error-routes";
-import { photoIdRouter } from "./components/photo-id/photo-id-routes";
 import { setInternationalPhoneNumberSupportMiddleware } from "./middleware/set-international-phone-number-support-middleware";
 import { cannotChangeSecurityCodesRouter } from "./components/cannot-change-security-codes/cannot-change-security-codes-routes";
 import { changeSecurityCodesRouter } from "./components/change-security-codes/change-security-codes-routes";
@@ -125,7 +124,6 @@ function registerRoutes(app: express.Application) {
   app.use(docCheckingAppRouter);
   app.use(docCheckingAppCallbackRouter);
   app.use(errorPageRouter);
-  app.use(photoIdRouter);
 }
 
 async function createApp(): Promise<express.Application> {

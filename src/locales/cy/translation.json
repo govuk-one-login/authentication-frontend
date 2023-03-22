@@ -1725,37 +1725,6 @@
         }
       }
     },
-    "photoId": {
-      "title": "Mae’n rhaid i chi gael ID gyda llun i brofi pwy ydych chi gyda GOV.UK One Login",
-      "header": "Mae’n rhaid i chi gael ID gyda llun i brofi pwy ydych chi gyda GOV.UK One Login",
-      "introParagraph": "Gallwch ond profi pwy ydych chi gyda GOV.UK One Login os oes gennych un o’r mathau canlynol o ID gyda llun.",
-      "section1": {
-        "subHeading": "Trwydded yrru y DU gyda llun",
-        "paragraph1": "Byddwch angen trwydded yrru lawn neu dros dro dilys gyda’ch llun arno."
-      },
-      "section2": {
-        "subHeading": "Pasbort biometrig y DU neu ddim o’r DU",
-        "paragraph1": "Mae gan basbortau biometrig (neu ‘ePassports’) symbol hirsgwar bach ar y clawr blaen. Gallwch eu defnyddio i fynd trwy eGiatiau mewn meysydd awyr a gorsafoedd trên.",
-        "expiredNote": "Os oes gennych basbort biometrig y DU sydd wedi dod i ben, gallwch barhau i’w ddefnyddio i brofi pwy ydych chi am hyd at 18 mis ar ôl y dyddiad dod i ben."
-      },
-      "section3": {
-        "subHeading": "Oes gennych chi un o’r mathau hyn o ID llun?",
-        "radioOption1": "Oes",
-        "radioOption2": "Na",
-        "errorMessage": "Dewiswch opsiwn"
-      }
-    },
-    "noPhotoId": {
-      "title": "Mae angen i chi brofi pwy ydych chi mewn ffordd arall",
-      "header": "Mae angen i chi brofi pwy ydych chi mewn ffordd arall",
-      "section1": {
-        "paragraph1": "Ar hyn o bryd gallwch ond profi pwy ydych chi gyda GOV.UK One Login os oes gennych ID gyda llun."
-      },
-      "section2": {
-        "subHeading": "Beth allwch chi ei wneud",
-        "paragraph1": "Ewch yn eich blaen i’r gwasanaeth roeddech chi’n ceisio ei ddefnyddio a chwilio am ffyrdd eraill i brofi pwy ydych chi."
-      }
-    },
     "securityCodeEnteredExceeded": {
       "title": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
       "header": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",

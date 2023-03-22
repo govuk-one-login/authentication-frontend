@@ -1725,37 +1725,6 @@
         }
       }
     },
-    "photoId": {
-      "title": "You must have a photo ID to prove your identity with GOV.UK One Login",
-      "header": "You must have a photo ID to prove your identity with GOV.UK One Login",
-      "introParagraph": "You can only prove your identity with GOV.UK One Login if you have one of the following types of photo ID.",
-      "section1": {
-        "subHeading": "UK photocard driving licence",
-        "paragraph1": "You’ll need a valid full or provisional driving licence with your photo on it."
-      },
-      "section2": {
-        "subHeading": "UK or non-UK biometric passport",
-        "paragraph1": "Biometric passports (or ‘ePassports’) have a small rectangular symbol on the front cover. You can use them to go through eGates at airports and train stations.",
-        "expiredNote": "If you have an expired UK biometric passport, you can still use it to prove your identity up to 18 months after the expiry date."
-      },
-      "section3": {
-        "subHeading": "Do you have one of these types of photo ID?",
-        "radioOption1": "Yes",
-        "radioOption2": "No",
-        "errorMessage": "Select an option"
-      }
-    },
-    "noPhotoId": {
-      "title": "You need to prove your identity another way",
-      "header": "You need to prove your identity another way",
-      "section1": {
-        "paragraph1": "You can currently only prove your identity with GOV.UK One Login if you have a photo ID."
-      },
-      "section2": {
-        "subHeading": "What you can do",
-        "paragraph1": "Continue to the service you were trying to use and look for other ways to prove your identity."
-      }
-    },
     "securityCodeEnteredExceeded": {
       "title": "You cannot get a new security code at the moment ",
       "header": "You cannot get a new security code at the moment ",
