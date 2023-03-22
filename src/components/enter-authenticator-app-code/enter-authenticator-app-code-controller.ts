@@ -4,9 +4,13 @@ import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
+  pathWithQueryParam,
 } from "../common/constants";
+import { supportAccountRecovery } from "../../config";
 import { VerifyMfaCodeInterface, VerifyMfaCodeConfig } from "./types";
 import { authenticatorAppCodeService } from "./enter-authenticator-app-code-service";
+import { AccountRecoveryInterface } from "../common/account-recovery/types";
+import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
 import { BadRequestError } from "../../utils/error";
 import {
   formatValidationError,
@@ -18,20 +22,63 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 const TEMPLATE_NAME = "enter-authenticator-app-code/index.njk";
 
 export function enterAuthenticatorAppCodeGet(
-  req: Request,
-  res: Response
-): void {
-  if (
-    req.session.user.wrongCodeEnteredLock &&
-    new Date().toUTCString() < req.session.user.wrongCodeEnteredLock
-  ) {
-    res.render("security-code-error/index-security-code-entered-exceeded.njk", {
-      newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
-      isAuthApp: true,
+  service: AccountRecoveryInterface = accountRecoveryService()
+): ExpressRouteFunc {
+  return async function (req: Request, res: Response) {
+    if (
+      req.session.user.wrongCodeEnteredLock &&
+      new Date().toUTCString() < req.session.user.wrongCodeEnteredLock
+    ) {
+      return res.render(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        {
+          newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+          isAuthApp: true,
+        }
+      );
+    }
+
+    const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
+
+    if (!isAccountRecoveryEnabledForEnvironment) {
+      return res.render(TEMPLATE_NAME, {
+        isAccountRecoveryPermitted: false,
+      });
+    }
+
+    const { email } = req.session.user;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+
+    const accountRecoveryResponse = await service.accountRecovery(
+      sessionId,
+      clientSessionId,
+      email,
+      req.ip,
+      persistentSessionId
+    );
+
+    if (!accountRecoveryResponse.success) {
+      throw new BadRequestError(
+        accountRecoveryResponse.data.message,
+        accountRecoveryResponse.data.code
+      );
+    }
+
+    const isAccountRecoveryPermittedForUser =
+      (req.session.user.isAccountRecoveryPermitted =
+        accountRecoveryResponse.data.accountRecoveryPermitted);
+
+    const checkEmailLink = pathWithQueryParam(
+      PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
+      "type",
+      MFA_METHOD_TYPE.AUTH_APP
+    );
+
+    return res.render(TEMPLATE_NAME, {
+      isAccountRecoveryPermitted: isAccountRecoveryPermittedForUser,
+      checkEmailLink,
     });
-  } else {
-    res.render(TEMPLATE_NAME);
-  }
+  };
 }
 
 export const enterAuthenticatorAppCodePost = (

@@ -491,8 +491,7 @@
         "sendCodeLinkHref": "/resend-code",
         "text 2": " if the code is not working or you did not receive it.",
         "changeGetSecurityCodesText": "If you cannot access the phone number for your GOV.UK One Login, you can securely ",
-        "changeGetSecurityCodesLinkText": "change how you get security codes",
-        "changeGetSecurityCodesLinkHref": "/change-security-codes"
+        "changeGetSecurityCodesLinkText": "change how you get security codes"
       }
     },
     "resendMfaCode": {
@@ -1751,6 +1750,12 @@
           "invalidFormat": "Enter the security code using only 6 digits",
           "invalidCode": "The security code you entered is not correct, try entering it again or wait for your authenticator app to give you a new code"
         }
+      },
+      "details": {
+        "summary": "I do not have access to the authenticator app",
+        "text1": "You can securely ",
+        "text2": "change how you get security codes",
+        "text3": "."
       }
     },
     "photoId": {

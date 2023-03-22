@@ -6,6 +6,7 @@ import { Request, Response } from "express";
 import { enterMfaGet, enterMfaPost } from "../enter-mfa-controller";
 
 import { VerifyCodeInterface } from "../../common/verify-code/types";
+import { AccountRecoveryInterface } from "../../common/account-recovery/types";
 import { PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import {
@@ -15,6 +16,21 @@ import {
   ResponseOutput,
 } from "mock-req-res";
 
+const fakeAccountRecoveryPermissionCheckService = (
+  desiredAccountRecoveryPermittedResponse: boolean
+) => {
+  return {
+    accountRecovery: sinon.fake.returns({
+      success: true,
+      data: {
+        accountRecoveryPermitted: desiredAccountRecoveryPermittedResponse,
+      },
+    }),
+  } as AccountRecoveryInterface;
+};
+
+const TEST_PHONE_NUMBER = "07582930495";
+
 describe("enter mfa controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
@@ -22,11 +38,17 @@ describe("enter mfa controller", () => {
   beforeEach(() => {
     req = mockRequest({
       path: PATH_NAMES.ENTER_MFA,
-      session: { client: {}, user: {} },
+      session: {
+        client: {},
+        user: {
+          phoneNumber: TEST_PHONE_NUMBER,
+        },
+      },
       log: { info: sinon.fake() },
       i18n: { language: "en" },
     });
     res = mockResponse();
+    process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
   });
 
   afterEach(() => {
@@ -34,10 +56,31 @@ describe("enter mfa controller", () => {
   });
 
   describe("enterMfaGet", () => {
-    it("should render enter mfa code view", () => {
-      enterMfaGet(req as Request, res as Response);
+    it("should render enter mfa code view with supportAccountRecovery false when disabled at environment level", async () => {
+      process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
+      await enterMfaGet(fakeAccountRecoveryPermissionCheckService(true))(
+        req as Request,
+        res as Response
+      );
 
-      expect(res.render).to.have.calledWith("enter-mfa/index.njk");
+      expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
+        phoneNumber: TEST_PHONE_NUMBER,
+        supportAccountRecovery: false,
+      });
+    });
+
+    it("should render enter mfa code view with supportAccountRecovery true when enabled at environment level, even when user is blocked from account recovery", async () => {
+      await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
+        phoneNumber: TEST_PHONE_NUMBER,
+        supportAccountRecovery: true,
+        checkEmailLink:
+          PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=SMS",
+      });
     });
   });
 

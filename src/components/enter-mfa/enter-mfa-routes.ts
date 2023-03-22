@@ -12,7 +12,7 @@ router.get(
   PATH_NAMES.ENTER_MFA,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  enterMfaGet
+  asyncHandler(enterMfaGet())
 );
 
 router.post(

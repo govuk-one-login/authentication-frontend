@@ -4,12 +4,18 @@ import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
+import { AxiosResponse } from "axios";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
+import {
+  AccountRecoveryInterface,
+  AccountRecoveryResponse,
+} from "../../common/account-recovery/types";
+import { createApiResponse } from "../../../utils/http";
 
 describe("Integration:: enter mfa", () => {
   let token: string | string[];
@@ -20,7 +26,9 @@ describe("Integration:: enter mfa", () => {
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
+    decache("../../common/account-recovery/account-recovery-service");
     const sessionMiddleware = require("../../../middleware/session-middleware");
+    const accountRecoveryService = require("../../common/account-recovery/account-recovery-service");
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -37,8 +45,25 @@ describe("Integration:: enter mfa", () => {
         next();
       });
 
+    sinon
+      .stub(accountRecoveryService, "accountRecoveryService")
+      .callsFake((): AccountRecoveryInterface => {
+        async function accountRecovery() {
+          const fakeAxiosResponse: AxiosResponse = {
+            data: {
+              accountRecoveryPermitted: true,
+            },
+            status: HTTP_STATUS_CODES.OK,
+          } as AxiosResponse;
+
+          return createApiResponse<AccountRecoveryResponse>(fakeAxiosResponse);
+        }
+
+        return { accountRecovery };
+      });
+
     app = await require("../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     request(app)
       .get(PATH_NAMES.ENTER_MFA)

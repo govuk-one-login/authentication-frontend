@@ -369,8 +369,8 @@ const authStateMachine = createMachine(
             PATH_NAMES.SECURITY_CODE_WAIT,
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
-            PATH_NAMES.CHANGE_SECURITY_CODES,
             PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
           ],
         },
       },
@@ -393,7 +393,12 @@ const authStateMachine = createMachine(
           ],
         },
         meta: {
-          optionalPaths: [PATH_NAMES.SECURITY_CODE_INVALID],
+          optionalPaths: [
+            PATH_NAMES.SECURITY_CODE_INVALID,
+            PATH_NAMES.CHECK_YOUR_EMAIL,
+            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
+            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+          ],
         },
       },
       [PATH_NAMES.UPLIFT_JOURNEY]: {
@@ -602,11 +607,6 @@ const authStateMachine = createMachine(
           [USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED]: [
             PATH_NAMES.GET_SECURITY_CODES,
           ],
-        },
-      },
-      [PATH_NAMES.CHANGE_SECURITY_CODES]: {
-        meta: {
-          optionalPaths: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
         },
       },
     },

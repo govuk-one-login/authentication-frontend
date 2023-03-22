@@ -4,12 +4,18 @@ import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
+import { AxiosResponse } from "axios";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
+import {
+  AccountRecoveryInterface,
+  AccountRecoveryResponse,
+} from "../../common/account-recovery/types";
+import { createApiResponse } from "../../../utils/http";
 
 describe("Integration:: enter authenticator app code", () => {
   let token: string | string[];
@@ -20,15 +26,23 @@ describe("Integration:: enter authenticator app code", () => {
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
+    decache("../../common/account-recovery/account-recovery-service");
     const sessionMiddleware = require("../../../middleware/session-middleware");
+    const accountRecoveryService = require("../../common/account-recovery/account-recovery-service");
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+        res.locals = {
+          ...res.locals,
+          sessionId: "tDy103saszhcxbQq0-mjdzU854",
+          clientSessionId: "test-client-session-id",
+          persistentSessionId: "test-persistent-session-id",
+        };
 
         req.session.user = {
           email: "test@test.com",
+          isAccountRecoveryPermitted: true,
           journey: {
             nextPath: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           },
@@ -36,8 +50,25 @@ describe("Integration:: enter authenticator app code", () => {
         next();
       });
 
+    sinon
+      .stub(accountRecoveryService, "accountRecoveryService")
+      .callsFake((): AccountRecoveryInterface => {
+        async function accountRecovery() {
+          const fakeAxiosResponse: AxiosResponse = {
+            data: {
+              accountRecoveryPermitted: true,
+            },
+            status: HTTP_STATUS_CODES.OK,
+          } as AxiosResponse;
+
+          return createApiResponse<AccountRecoveryResponse>(fakeAxiosResponse);
+        }
+
+        return { accountRecovery };
+      });
+
     app = await require("../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     request(app)
       .get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)

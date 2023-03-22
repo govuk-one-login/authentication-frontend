@@ -9,6 +9,7 @@ import {
 } from "../enter-authenticator-app-code-controller";
 import { PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
+import { AccountRecoveryInterface } from "../../common/account-recovery/types";
 import {
   mockRequest,
   mockResponse,
@@ -36,8 +37,17 @@ describe("enter authenticator app code controller", () => {
   });
 
   describe("enterAuthenticatorAppCodeGet", () => {
-    it("should render enter mfa code view", () => {
-      enterAuthenticatorAppCodeGet(req as Request, res as Response);
+    it("should render enter mfa code view", async () => {
+      const fakeService: AccountRecoveryInterface = {
+        accountRecovery: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      await enterAuthenticatorAppCodeGet(fakeService)(
+        req as Request,
+        res as Response
+      );
 
       expect(res.render).to.have.calledWith(
         "enter-authenticator-app-code/index.njk"
