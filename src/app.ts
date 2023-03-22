@@ -80,6 +80,7 @@ import { photoIdRouter } from "./components/photo-id/photo-id-routes";
 import { setInternationalPhoneNumberSupportMiddleware } from "./middleware/set-international-phone-number-support-middleware";
 import { cannotChangeSecurityCodesRouter } from "./components/cannot-change-security-codes/cannot-change-security-codes-routes";
 import { changeSecurityCodesRouter } from "./components/change-security-codes/change-security-codes-routes";
+import { checkYourEmailSecurityCodesRouter } from "./components/check-your-email-security-codes/check-your-email-security-codes-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -105,6 +106,7 @@ function registerRoutes(app: express.Application) {
   if (supportAccountRecovery()) {
     app.use(changeSecurityCodesRouter);
     app.use(cannotChangeSecurityCodesRouter);
+    app.use(checkYourEmailSecurityCodesRouter);
   }
   app.use(securityCodeErrorRouter);
   app.use(enterMfaRouter);
