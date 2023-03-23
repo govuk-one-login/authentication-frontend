@@ -509,18 +509,18 @@
         "paragraph": "Efallai y bydd eich e-bost yn cymryd ychydig funudau i gyrraedd. Os na chewch e-bost, edrychwch ar eich ffolder spam."
       }
     },
-    "cannotChangeSecurityCodes": {
-      "title": "You cannot change how you get security codes at the moment",
-      "header": "You cannot change how you get security codes at the moment",
+    "cannotChangeSecurityCodes": { 
+      "title": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd",
+      "header": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd", 
       "info": {
-        "paragraph1": "You must wait 48 hours after resetting your password before you can change how you get security codes.",
-        "paragraph2": "This is to keep your GOV.UK One Login and the information in it secure.",
-        "canDoSubtitle": "What you can do",
-        "paragraph3": "Wait 48 hours before trying to change how you get security codes to sign in to GOV.UK One Login.",
-        "paragraph4Start": "You can also go back to the service you were trying to use. You can look for the service using your search engine or find it from the ",
+        "paragraph1": "Mae’n rhaid i chi aros 48 awr ar ôl ailosod eich cyfrinair cyn y gallwch newid sut rydych yn cael codau diogelwch.",
+        "paragraph2": "Mae hyn er mwyn cadw eich GOV.UK One Login a’r wybodaeth sydd ynddo yn ddiogel.",
+        "canDoSubtitle": "Beth allwch chi ei wneud",
+        "paragraph3": "Arhoswch 48 awr cyn rhoi cynnig ar newid sut i gael eich codau diogelwch i fewngofnodi i GOV.UK One Login.",
+        "paragraph4Start": "Gallwch hefyd fynd yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio eich peiriant chwilio neu ddod o hyd iddo o ",
         "govukLinkHref": "https://www.gov.uk/",
-        "govukLinkText": "GOV.UK homepage"
-      }
+        "govukLinkText": "hafan GOV.UK"
+      } 
     },
     "checkYourEmailSecurityCodes": {
       "title": "Check your email",
