@@ -10,7 +10,12 @@ git@github.com:alphagov/di-authentication-frontend.git
 
 Clones the repository to the `<your_folder_name` directory.
 
-## Running the app in Docker
+## Running the app
+
+There are two different ways to run the app on a local machine:
+
+- Everything running in Docker
+- The frontend app running in a local node instance, with supporting services running in Docker
 
 Before you can run the frontend app against the backend you will need to configure some environment variables.
 
@@ -33,13 +38,39 @@ You can find the `API_BASE_URL` in [Concourse](https://cd.gds-reliability.engine
 
 `UI_LOCALES` can be used be the stub to request specific locales when authorising.  Only 'en' and 'cy' are supported.
 
-Run `docker-compose up` or the `startup.sh` script.
+### Starting all services in Docker
 
-In `docker-compose.yaml` you will see three services which need to be started to run the frontend locally, the frontend itself, a lightweight stub client, and a redis instance.
+Run one of the following:
+
+```shell script
+docker compose up 
+
+./startup.sh
+```
+
+### Starting the frontend in node locally outside of Docker
+
+In this case supporting services (redis and stubs) run in Docker but the frontend itself runs outside.  Development can be quicker and more responsive if done in this way.
+
+The startup script will do this for you so just run this command:
+
+```shell script
+./startup.sh -l
+```
+
+### General guidance on starting the application
 
 When starting for the first time, or after a clean, the frontend will take a few minutes to start as node needs to install all the dependencies.
 
 To find out if the application has started, open a console window on the frontend docker container and view the logs. If the server has started successfully you will see this message `Server listening on port 3000`.  If this does not appear try forcing node to restart by updating one of the `.njk` files.
+
+If things do not appear to be working it can be a good idea to start with a clean deployment:
+
+```shell script
+yarn clean
+```
+
+Additionaly delete the Docker images for all the frontend services in docker-compose.yml.
 
 There are two stub apps you can use to start a journey.
 
@@ -87,7 +118,7 @@ If the app is run in a container then the tests are run there too:
 ```shell script
 docker exec -it di-authentication-frontend_di-auth-frontend /bin/sh
 
-# yarn run test:unit
+yarn run test:unit
 ```
 
 ### Restarting the app
@@ -95,6 +126,27 @@ docker exec -it di-authentication-frontend_di-auth-frontend /bin/sh
 You can restart the app by re-running the `startup.sh` script, or restarting docker-compose.
 
 For a clean start run `./startup.sh -c`
+
+### Pre-flight checks
+
+Before committing or creating a PR it is a good idea to run all checks and tests.  The `pre-commit` script can be used to do this.  It runs:
+
+- All pre-commit checks defined in `.pre-commit-config.yaml`
+- The app in Docker
+- Unit tests
+- Integration tests
+
+Pre-commit checks include applying formatting, so after the script has run you may see files updated with formatting changes.  Running pre-commit before every PR ensures that all files in the repo are formatted correctly.
+
+```shell script
+./pre-commit.sh
+```
+
+You may need to install pre-commit for the script to work.
+
+```shell script
+brew install pre-commit
+```
 
 ## Other useful yarn commands
 
@@ -177,3 +229,4 @@ yarn lint
 ```
 
 Checks if the code conforms the linting standards.
+
