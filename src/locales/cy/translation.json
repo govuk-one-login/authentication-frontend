@@ -509,9 +509,9 @@
         "paragraph": "Efallai y bydd eich e-bost yn cymryd ychydig funudau i gyrraedd. Os na chewch e-bost, edrychwch ar eich ffolder spam."
       }
     },
-    "cannotChangeSecurityCodes": { 
+    "cannotChangeSecurityCodes": {
       "title": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd",
-      "header": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd", 
+      "header": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd",
       "info": {
         "paragraph1": "Mae’n rhaid i chi aros 48 awr ar ôl ailosod eich cyfrinair cyn y gallwch newid sut rydych yn cael codau diogelwch.",
         "paragraph2": "Mae hyn er mwyn cadw eich GOV.UK One Login a’r wybodaeth sydd ynddo yn ddiogel.",
@@ -520,7 +520,7 @@
         "paragraph4Start": "Gallwch hefyd fynd yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio eich peiriant chwilio neu ddod o hyd iddo o ",
         "govukLinkHref": "https://www.gov.uk/",
         "govukLinkText": "hafan GOV.UK"
-      } 
+      }
     },
     "checkYourEmailSecurityCodes": {
       "title": "Check your email",
