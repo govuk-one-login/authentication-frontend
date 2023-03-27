@@ -34,8 +34,6 @@ ANALYTICS_COOKIE_DOMAIN=localhost
 SERVICE_DOMAIN=localhost
 ```
 
-You can find the `API_BASE_URL` in [Concourse](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-deployment) under the outputs within the deploy-oidc-api-{environment} job, where {environment} is the name of the environment you want to connect to.
-
 `UI_LOCALES` can be used be the stub to request specific locales when authorising.  Only 'en' and 'cy' are supported.
 
 ### Starting all services in Docker
@@ -56,6 +54,22 @@ The startup script will do this for you so just run this command:
 
 ```shell script
 ./startup.sh -l
+```
+
+#### Options for local node running
+
+To run the integration tests when starting node locally:
+
+```shell script
+REDIS_PORT=6389 REDIS_HOST=localhost yarn test:integration
+```
+
+### Additional startup options
+
+To redirect logs to a file `logs/frontend-auth.log`:
+
+```shell script
+./startup.sh -g
 ```
 
 ### General guidance on starting the application
