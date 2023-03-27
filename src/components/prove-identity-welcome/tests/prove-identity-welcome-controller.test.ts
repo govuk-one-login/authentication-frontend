@@ -68,10 +68,12 @@ describe("prove your identity welcome controller", () => {
   });
 
   describe("proveIdentityWelcomePost", () => {
-    it("should redirect to photo-id when user not authenticated", async () => {
+    it("should redirect to sign in or create when user not authenticated", async () => {
       proveIdentityWelcomePost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.PHOTO_ID);
+      expect(res.redirect).to.have.been.calledWith(
+        PATH_NAMES.SIGN_IN_OR_CREATE
+      );
     });
 
     it("should redirect to RP redirect URI when using alternative way to prove your identity", async () => {

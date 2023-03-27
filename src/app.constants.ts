@@ -53,8 +53,6 @@ export const PATH_NAMES = {
   CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP: "/setup-authenticator-app",
   COOKIES_POLICY: "/cookies",
   ERROR_PAGE: "/error",
-  PHOTO_ID: "/photo-id",
-  NO_PHOTO_ID: "/no-photo-id",
   SECURITY_CODE_ENTERED_EXCEEDED: "/security-code-entered-exceeded",
   CHANGE_SECURITY_CODES: "/change-security-codes",
   CANNOT_CHANGE_SECURITY_CODES: "/cannot-change-security-codes",
