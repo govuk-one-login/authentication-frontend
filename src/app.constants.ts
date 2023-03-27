@@ -59,6 +59,11 @@ export const PATH_NAMES = {
   CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES: "/check-email-change-security-codes",
 };
 
+export const HREF_BACK = {
+  CHECK_YOUR_PHONE: "check-your-phone",
+  ENTER_AUTHENTICATOR_APP_CODE: "enter-authenticator-app-code",
+};
+
 export const HTTP_STATUS_CODES = {
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,

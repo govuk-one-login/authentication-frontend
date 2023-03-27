@@ -5,7 +5,7 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% set showBack = true %}
-{% set hrefBack = 'enter-email-create' %}
+{% set hrefBack = backUrl %}
 {% set pageTitleName = 'pages.checkYourEmailSecurityCodes.title' | translate %}
 
 {% block content %}
@@ -23,7 +23,7 @@
   <p class="govuk-body">{{'pages.checkYourEmailSecurityCodes.code.paragraph2' | translate}}</p>
   <p class="govuk-body">{{'pages.checkYourEmailSecurityCodes.code.paragraph3' | translate}}</p>
 
-  <form action="/check-your-email" method="post" novalidate="novalidate">
+  <form action="/check-email-change-security-codes" method="post" novalidate="novalidate">
 
     <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
     <input type="hidden" name="email" value="{{email}}"/>
