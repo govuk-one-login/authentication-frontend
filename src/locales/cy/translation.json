@@ -210,7 +210,6 @@
       "header": "Ni ddarganfyddwyd GOV.UK One Login",
       "paragraph1": "Nid oes GOV.UK One Login ar gyfer ",
       "insetText1": "Mae GOV.UK One Login yn newydd. Nid yw yn gweithio gyda phob cyfrif neu wasanaeth y llywodraeth hyd yma, er enghraifft Porth y Llywodraeth neu Gredyd Cynhwysol.",
-      "paragraph2": "Mae angen i chi greu GOV.UK One Login hyd yn oed os oes gennych gyfrif ar gyfer adran arall o’r llywodraeth yn barod.",
       "createAccountButtonText": "Creu GOV.UK One Login",
       "createAccountButtonHref": "/enter-email",
       "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",

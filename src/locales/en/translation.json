@@ -210,7 +210,6 @@
       "header": "No GOV.UK One Login found",
       "paragraph1": "There is no GOV.UK One Login for ",
       "insetText1": "GOV.UK One Login is new. It does not work with all government accounts or services yet, for example Government Gateway or Universal Credit.",
-      "paragraph2": "You need to create a GOV.UK One Login even if you already have an account for another government service.",
       "createAccountButtonText": "Create a GOV.UK One Login",
       "createAccountButtonHref": "/enter-email",
       "tryAnotherLinkText": "Try another email address",
