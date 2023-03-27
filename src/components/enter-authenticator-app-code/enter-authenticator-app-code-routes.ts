@@ -15,7 +15,7 @@ router.get(
   PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  enterAuthenticatorAppCodeGet
+  asyncHandler(enterAuthenticatorAppCodeGet())
 );
 
 router.post(

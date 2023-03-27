@@ -1,6 +1,7 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% set pageTitleName = 'pages.enterAuthenticatorAppCode.title' | translate %}
 
@@ -37,4 +38,17 @@
 
   </form>
 
+  {% if isAccountRecoveryPermitted %}
+    {% set detailsHTML %}
+      <p class="govuk-body">
+        {{'pages.enterAuthenticatorAppCode.details.text1' | translate}}
+        <a href="{{checkEmailLink}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.text2'| translate}}</a>{{'pages.enterAuthenticatorAppCode.details.text3' | translate}}
+      </p>
+    {% endset %}
+
+    {{ govukDetails({
+      summaryText: 'pages.enterAuthenticatorAppCode.details.summary' | translate,
+      html: detailsHTML
+    }) }}
+  {% endif %}
 {% endblock %}

@@ -2,6 +2,8 @@ import * as express from "express";
 import { PATH_NAMES } from "../../app.constants";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { asyncHandler } from "../../utils/async";
+import { checkAccountRecoveryPermitted } from "./check-account-recovery-middleware";
+import { sendEmailOtp } from "./send-email-otp-middleware";
 import {
   checkYourEmailSecurityCodesGet,
   checkYourEmailSecurityCodesPost,
@@ -15,6 +17,8 @@ router.get(
   PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  checkAccountRecoveryPermitted,
+  asyncHandler(sendEmailOtp),
   checkYourEmailSecurityCodesGet
 );
 
@@ -25,5 +29,4 @@ router.post(
   validateCheckYourEmailRequest(),
   asyncHandler(checkYourEmailSecurityCodesPost())
 );
-
 export { router as checkYourEmailSecurityCodesRouter };

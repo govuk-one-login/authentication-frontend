@@ -26,8 +26,8 @@ export function accountRecoveryService(
       getRequestConfig({
         sessionId,
         clientSessionId,
-        sourceIp: sourceIp,
-        persistentSessionId: persistentSessionId,
+        sourceIp,
+        persistentSessionId,
       })
     );
 

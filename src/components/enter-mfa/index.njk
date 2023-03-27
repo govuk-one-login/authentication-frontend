@@ -42,7 +42,7 @@
     <p class="govuk-body">
       {% if supportAccountRecovery %}
         {{'pages.enterMfa.details.changeGetSecurityCodesText' | translate}}
-        <a href="{{'pages.enterMfa.details.changeGetSecurityCodesLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterMfa.details.changeGetSecurityCodesLinkText'| translate}}</a>.
+        <a href={{checkEmailLink}} class="govuk-link" rel="noreferrer noopener">{{'pages.enterMfa.details.changeGetSecurityCodesLinkText'| translate}}</a>.
       {% endif %}
     </p>
     {% endset %}

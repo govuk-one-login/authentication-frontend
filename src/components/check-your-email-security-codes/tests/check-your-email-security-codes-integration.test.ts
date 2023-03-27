@@ -1,8 +1,8 @@
 import request from "supertest";
 import { describe } from "mocha";
+import { AxiosResponse } from "axios";
 import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
-// import nock from 'nock';
 import * as cheerio from "cheerio";
 import decache from "decache";
 import {
@@ -11,6 +11,9 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
+import { SendNotificationServiceInterface } from "../../common/send-notification/types";
+import { DefaultApiResponse } from "../../../types";
+import { createApiResponse } from "../../../utils/http";
 
 describe("Integration:: check your email security codes", () => {
   let token: string | string[];
@@ -21,15 +24,22 @@ describe("Integration:: check your email security codes", () => {
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
+    decache("../../common/send-notification/send-notification-service");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-
+    const sendNotificationService = require("../../common/send-notification/send-notification-service");
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+        res.locals = {
+          ...res.locals,
+          sessionId: "tDy103saszhcxbQq0-mjdzU854",
+          clientSessionId: "test-client-session-id",
+          persistentSessionId: "test-persistent-session-id",
+        };
 
         req.session.user = {
           email: "test@test.com",
+          isAccountRecoveryPermitted: true,
           journey: {
             nextPath: PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
           },
@@ -38,9 +48,25 @@ describe("Integration:: check your email security codes", () => {
         next();
       });
 
+    sinon
+      .stub(sendNotificationService, "sendNotificationService")
+      .callsFake((): SendNotificationServiceInterface => {
+        async function sendNotification() {
+          const fakeAxiosResponse: AxiosResponse = {
+            data: "test",
+            status: HTTP_STATUS_CODES.OK,
+          } as AxiosResponse;
+
+          return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
+        }
+
+        return { sendNotification };
+      });
+
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
+
     app = await require("../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     request(app)
       .get(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES)
