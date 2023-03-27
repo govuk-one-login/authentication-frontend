@@ -25,7 +25,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: "******7867",
+          phoneNumber: "7867",
           journey: {
             nextPath: PATH_NAMES.RESET_PASSWORD,
           },
