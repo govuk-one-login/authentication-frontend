@@ -155,8 +155,7 @@
         },
         "linkHref": "?lng=cy"
       },
-      "paragraph2": "If you already have a GOV.UK One Login you can",
-      "signInText": "sign in",
+      "signInText": "Sign in",
       "moreAbout": {
         "header": "About GOV.UK One Login",
         "paragraph1": "GOV.UK One Login is new. At the moment you can only use it with:",
@@ -164,8 +163,10 @@
         "listItem2": "Apply to become a registered social worker in England",
         "listItem3": "GOV.UK email subscriptions ",
         "listItem4": "LITE (Licensing for International Trade and Enterprise)",
-        "listItem5": "Request a basic DBS check",
-        "listItem6": "Sign your mortgage deed",
+        "listItem5": "Modern slavery statement registry",
+        "listItem6": "Ofqual subject matter specialist account",
+        "listItem7": "Request a basic DBS check",
+        "listItem8": "Sign your mortgage deed",
         "paragraph2": "GOV.UK One Login does not work with all government accounts or services yet (for example Government Gateway or Universal Credit).",
         "paragraph3": "In the future, you‘ll be able to use your GOV.UK One Login to access all services on GOV.UK."
       },
@@ -209,7 +210,6 @@
       "header": "No GOV.UK One Login found",
       "paragraph1": "There is no GOV.UK One Login for ",
       "insetText1": "GOV.UK One Login is new. It does not work with all government accounts or services yet, for example Government Gateway or Universal Credit.",
-      "paragraph2": "You need to create a GOV.UK One Login even if you already have an account for another government service.",
       "createAccountButtonText": "Create a GOV.UK One Login",
       "createAccountButtonHref": "/enter-email",
       "tryAnotherLinkText": "Try another email address",
@@ -493,7 +493,9 @@
         "summaryText": "Problems with the code?",
         "sendTheCodeAgain": "Send the code again",
         "sendCodeLinkHref": "/resend-code",
-        "text 2": " if the code is not working or you did not receive it."
+        "text 2": " if the code is not working or you did not receive it.",
+        "changeGetSecurityCodesText": "If you cannot access the phone number for your GOV.UK One Login, you can securely ",
+        "changeGetSecurityCodesLinkText": "change how you get security codes"
       }
     },
     "resendMfaCode": {
@@ -508,6 +510,47 @@
       "email": {
         "recipientMessage": "We will send a code to: ",
         "paragraph": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder."
+      }
+    },
+    "cannotChangeSecurityCodes": {
+      "title": "You cannot change how you get security codes at the moment",
+      "header": "You cannot change how you get security codes at the moment",
+      "info": {
+        "paragraph1": "You must wait 48 hours after resetting your password before you can change how you get security codes.",
+        "paragraph2": "This is to keep your GOV.UK One Login and the information in it secure.",
+        "canDoSubtitle": "What you can do",
+        "paragraph3": "Wait 48 hours before trying to change how you get security codes to sign in to GOV.UK One Login.",
+        "paragraph4Start": "You can also go back to the service you were trying to use. You can look for the service using your search engine or find it from the ",
+        "govukLinkHref": "https://www.gov.uk/",
+        "govukLinkText": "GOV.UK homepage"
+      }
+    },
+    "checkYourEmailSecurityCodes": {
+      "title": "Check your email",
+      "header": "Check your email",
+      "info": {
+        "paragraph1": "We need to make sure this is your GOV.UK One Login before you can change how you get security codes."
+      },
+      "text": "We have sent an email to: ",
+      "code": {
+        "paragraph1": "The email contains a 6 digit security code. After you enter the code, you’ll be able to change how you get security codes when you sign in.",
+        "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
+        "paragraph3": "The code will expire after 2 hours.",
+        "label": "Enter the 6 digit security code",
+        "validationError": {
+          "required": "Enter the security code",
+          "maxLength": "Enter the security code using only 6 digits",
+          "minLength": "Enter the security code using only 6 digits",
+          "invalidFormat": "Enter the security code using only 6 digits",
+          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+        }
+      },
+      "details": {
+        "summaryText": "Problems with the code?",
+        "text1": "We can ",
+        "sendCodeLinkText": "send the code again",
+        "sendCodeLinkHref": "/resend-email-code",
+        "text2": " if the code is not working or you did not receive it."
       }
     },
     "signedOut": {
@@ -1711,37 +1754,12 @@
           "invalidFormat": "Enter the security code using only 6 digits",
           "invalidCode": "The security code you entered is not correct, try entering it again or wait for your authenticator app to give you a new code"
         }
-      }
-    },
-    "photoId": {
-      "title": "You must have a photo ID to prove your identity with GOV.UK One Login",
-      "header": "You must have a photo ID to prove your identity with GOV.UK One Login",
-      "introParagraph": "You can only prove your identity with GOV.UK One Login if you have one of the following types of photo ID.",
-      "section1": {
-        "subHeading": "UK photocard driving licence",
-        "paragraph1": "You’ll need a valid full or provisional driving licence with your photo on it."
       },
-      "section2": {
-        "subHeading": "UK or non-UK biometric passport",
-        "paragraph1": "Biometric passports (or ‘ePassports’) have a small rectangular symbol on the front cover. You can use them to go through eGates at airports and train stations.",
-        "expiredNote": "If you have an expired UK biometric passport, you can still use it to prove your identity up to 18 months after the expiry date."
-      },
-      "section3": {
-        "subHeading": "Do you have one of these types of photo ID?",
-        "radioOption1": "Yes",
-        "radioOption2": "No",
-        "errorMessage": "Select an option"
-      }
-    },
-    "noPhotoId": {
-      "title": "You need to prove your identity another way",
-      "header": "You need to prove your identity another way",
-      "section1": {
-        "paragraph1": "You can currently only prove your identity with GOV.UK One Login if you have a photo ID."
-      },
-      "section2": {
-        "subHeading": "What you can do",
-        "paragraph1": "Continue to the service you were trying to use and look for other ways to prove your identity."
+      "details": {
+        "summary": "I do not have access to the authenticator app",
+        "text1": "You can securely ",
+        "text2": "change how you get security codes",
+        "text3": "."
       }
     },
     "securityCodeEnteredExceeded": {

@@ -125,8 +125,8 @@
       "content": {
         "paragraph1": {
           "text1": "Ewch i’ch GOV.UK One Login",
-          "text2": ", or find the service you need from the ",
-          "text3": "GOV.UK homepage"
+          "text2": ", neu dewch o hyd i’r gwasanaeth rydych ei angen o ",
+          "text3": "hafan GOV.UK "
         },
         "govUKHomepageButtonHref": "https://www.gov.uk/"
       }
@@ -155,8 +155,7 @@
         },
         "linkHref": "?lng=en"
       },
-      "paragraph2": "Os oes gennych GOV.UK One Login yn barod gallwch",
-      "signInText": "fewngofnodi",
+      "signInText": "Fewngofnodi",
       "moreAbout": {
         "header": "Am GOV.UK One Login",
         "paragraph1": "Mae GOV.UK One Login yn newydd. Ar hyn o bryd gallwch ond defnyddio eich GOV.UK One Login gyda:",
@@ -164,8 +163,10 @@
         "listItem2": "Gwneud cais i ddod yn weithiwr cymdeithasol cofrestredig yn Lloegr",
         "listItem3": "Tanysgrifiadau e-byst GOV.UK",
         "listItem4": "LITE (Trwyddedu ar gyfer Masnach a Menter Ryngwladol)",
-        "listItem5": "Gwneud cais am wiriad DBS sylfaenol",
-        "listItem6": "Llofnodwch eich gweithred morgais",
+        "listItem5": "Cofrestrfa datganiad caethwasiaeth modern",
+        "listItem6": "Cyfrif arbenigwr pwnc Ofqual",
+        "listItem7": "Gwneud cais am wiriad DBS sylfaenol",
+        "listItem8": "Llofnodwch eich gweithred morgais",
         "paragraph2": "Nid yw GOV.UK One Login yn gweithio gyda phob cyfrif neu wasanaeth y llywodraeth hyd yma (er enghraifft Porth y Llywodraeth neu Gredyd Cynhwysol).",
         "paragraph3": "Yn y dyfodol, byddwch yn gallu defnyddio eich GOV.UK One Login i gael mynediad i holl wasanaethau ar GOV.UK."
       },
@@ -209,7 +210,6 @@
       "header": "Ni ddarganfyddwyd GOV.UK One Login",
       "paragraph1": "Nid oes GOV.UK One Login ar gyfer ",
       "insetText1": "Mae GOV.UK One Login yn newydd. Nid yw yn gweithio gyda phob cyfrif neu wasanaeth y llywodraeth hyd yma, er enghraifft Porth y Llywodraeth neu Gredyd Cynhwysol.",
-      "paragraph2": "Mae angen i chi greu GOV.UK One Login hyd yn oed os oes gennych gyfrif ar gyfer adran arall o’r llywodraeth yn barod.",
       "createAccountButtonText": "Creu GOV.UK One Login",
       "createAccountButtonHref": "/enter-email",
       "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
@@ -493,7 +493,9 @@
         "summaryText": "Problemau gyda’r cod?",
         "sendTheCodeAgain": "Anfon y cod eto",
         "sendCodeLinkHref": "/resend-code",
-        "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn."
+        "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn.",
+        "changeGetSecurityCodesText": "If you cannot access the phone number for your GOV.UK One Login, you can securely ",
+        "changeGetSecurityCodesLinkText": "change how you get security codes"
       }
     },
     "resendMfaCode": {
@@ -508,6 +510,47 @@
       "email": {
         "recipientMessage": "Byddwn yn anfon cod i: ",
         "paragraph": "Efallai y bydd eich e-bost yn cymryd ychydig funudau i gyrraedd. Os na chewch e-bost, edrychwch ar eich ffolder spam."
+      }
+    },
+    "cannotChangeSecurityCodes": {
+      "title": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd",
+      "header": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd",
+      "info": {
+        "paragraph1": "Mae’n rhaid i chi aros 48 awr ar ôl ailosod eich cyfrinair cyn y gallwch newid sut rydych yn cael codau diogelwch.",
+        "paragraph2": "Mae hyn er mwyn cadw eich GOV.UK One Login a’r wybodaeth sydd ynddo yn ddiogel.",
+        "canDoSubtitle": "Beth allwch chi ei wneud",
+        "paragraph3": "Arhoswch 48 awr cyn rhoi cynnig ar newid sut i gael eich codau diogelwch i fewngofnodi i GOV.UK One Login.",
+        "paragraph4Start": "Gallwch hefyd fynd yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio eich peiriant chwilio neu ddod o hyd iddo o ",
+        "govukLinkHref": "https://www.gov.uk/",
+        "govukLinkText": "hafan GOV.UK"
+      }
+    },
+    "checkYourEmailSecurityCodes": {
+      "title": "Gwiriwch eich e-bost",
+      "header": "Gwiriwch eich e-bost",
+      "info": {
+        "paragraph1": "Mae angen i ni sicrhau mae eich GOV.UK One Login chi yw hwn cyn y gallwch newid sut i gael codau diogelwch."
+      },
+      "text": "Rydym wedi anfon e-bost at: ",
+      "code": {
+        "paragraph1": "Mae’r e-bost yn cynnwys cod diogelwch 6 digid. Ar ôl i chi roi eich cod, byddwch yn gallu newid sut i gael codau diogelwch pan fyddwch yn mewngofnodi.",
+        "paragraph2": "Efallai y bydd eich e-bost yn cymryd ychydig funudau i gyrraedd. Os na chewch e-bost, edrychwch ar eich ffolder spam.",
+        "paragraph3": "Bydd y cod yn dod i ben ar ôl 2 awr.",
+        "label": "Rhowch y cod diogelwch 6 digid",
+        "validationError": {
+          "required": "Rhowch y cod diogelwch",
+          "maxLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
+          "minLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
+          "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
+          "invalidCode": "Nid yw’r cod diogelwch rydych wedi’i roi yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi i mewn eto neu ofyn am god newydd"
+        }
+      },
+      "details": {
+        "summaryText": "Problemau gyda’r cod?",
+        "text1": "Gallwn ",
+        "sendCodeLinkText": "anfon y cod eto",
+        "sendCodeLinkHref": "/resend-email-code",
+        "text2": " neu gallwch "
       }
     },
     "signedOut": {
@@ -1711,37 +1754,12 @@
           "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
           "invalidCode": "Nid yw’r cod diogelwch rydych wedi’i roi yn gywir, ceisiwch ei roi i mewn eto neu aros i’ch ap dilysydd roi cod newydd i chi"
         }
-      }
-    },
-    "photoId": {
-      "title": "Mae’n rhaid i chi gael ID gyda llun i brofi pwy ydych chi gyda GOV.UK One Login",
-      "header": "Mae’n rhaid i chi gael ID gyda llun i brofi pwy ydych chi gyda GOV.UK One Login",
-      "introParagraph": "Gallwch ond profi pwy ydych chi gyda GOV.UK One Login os oes gennych un o’r mathau canlynol o ID gyda llun.",
-      "section1": {
-        "subHeading": "Trwydded yrru y DU gyda llun",
-        "paragraph1": "Byddwch angen trwydded yrru lawn neu dros dro dilys gyda’ch llun arno."
       },
-      "section2": {
-        "subHeading": "Pasbort biometrig y DU neu ddim o’r DU",
-        "paragraph1": "Mae gan basbortau biometrig (neu ‘ePassports’) symbol hirsgwar bach ar y clawr blaen. Gallwch eu defnyddio i fynd trwy eGiatiau mewn meysydd awyr a gorsafoedd trên.",
-        "expiredNote": "Os oes gennych basbort biometrig y DU sydd wedi dod i ben, gallwch barhau i’w ddefnyddio i brofi pwy ydych chi am hyd at 18 mis ar ôl y dyddiad dod i ben."
-      },
-      "section3": {
-        "subHeading": "Oes gennych chi un o’r mathau hyn o ID llun?",
-        "radioOption1": "Oes",
-        "radioOption2": "Na",
-        "errorMessage": "Dewiswch opsiwn"
-      }
-    },
-    "noPhotoId": {
-      "title": "Mae angen i chi brofi pwy ydych chi mewn ffordd arall",
-      "header": "Mae angen i chi brofi pwy ydych chi mewn ffordd arall",
-      "section1": {
-        "paragraph1": "Ar hyn o bryd gallwch ond profi pwy ydych chi gyda GOV.UK One Login os oes gennych ID gyda llun."
-      },
-      "section2": {
-        "subHeading": "Beth allwch chi ei wneud",
-        "paragraph1": "Ewch yn eich blaen i’r gwasanaeth roeddech chi’n ceisio ei ddefnyddio a chwilio am ffyrdd eraill i brofi pwy ydych chi."
+      "details": {
+        "summary": "Nid oes gennyf fynediad i’r ap dilysydd",
+        "text1": "Gallwch newid sut ",
+        "text2": "gallwch gael codau diogelwch yn ddiogel",
+        "text3": "."
       }
     },
     "securityCodeEnteredExceeded": {

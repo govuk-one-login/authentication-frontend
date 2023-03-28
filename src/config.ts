@@ -54,6 +54,10 @@ export function supportLanguageCY(): boolean {
   return process.env.SUPPORT_LANGUAGE_CY === "1";
 }
 
+export function supportAccountRecovery(): boolean {
+  return process.env.SUPPORT_ACCOUNT_RECOVERY === "1";
+}
+
 export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
   const hostKey = `${appEnv}-${process.env.REDIS_KEY}-redis-master-host`;
   const portKey = `${appEnv}-${process.env.REDIS_KEY}-redis-port`;
@@ -106,7 +110,7 @@ export function getAnalyticsCookieDomain(): string {
 }
 
 export function getServiceDomain(): string {
-  return process.env.SERVICE_DOMAIN;
+  return process.env.SERVICE_DOMAIN || "localhost";
 }
 
 export function getServiceSignInLink(): string {

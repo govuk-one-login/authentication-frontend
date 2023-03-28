@@ -23,6 +23,7 @@ import {
   getRedisPort,
   getSessionExpiry,
   getSessionSecret,
+  supportAccountRecovery,
 } from "./config";
 import { logErrorMiddleware } from "./middleware/log-error-middleware";
 import { getCookieLanguageMiddleware } from "./middleware/cookie-lang-middleware";
@@ -75,8 +76,9 @@ import { setupAuthenticatorAppRouter } from "./components/setup-authenticator-ap
 import { enterAuthenticatorAppCodeRouter } from "./components/enter-authenticator-app-code/enter-authenticator-app-code-routes";
 import { cookiesRouter } from "./components/common/cookies/cookies-routes";
 import { errorPageRouter } from "./components/common/errors/error-routes";
-import { photoIdRouter } from "./components/photo-id/photo-id-routes";
 import { setInternationalPhoneNumberSupportMiddleware } from "./middleware/set-international-phone-number-support-middleware";
+import { cannotChangeSecurityCodesRouter } from "./components/cannot-change-security-codes/cannot-change-security-codes-routes";
+import { checkYourEmailSecurityCodesRouter } from "./components/check-your-email-security-codes/check-your-email-security-codes-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -99,6 +101,10 @@ function registerRoutes(app: express.Application) {
   app.use(registerAccountCreatedRouter);
   app.use(footerRouter);
   app.use(checkYourPhoneRouter);
+  if (supportAccountRecovery()) {
+    app.use(cannotChangeSecurityCodesRouter);
+    app.use(checkYourEmailSecurityCodesRouter);
+  }
   app.use(securityCodeErrorRouter);
   app.use(enterMfaRouter);
   app.use(authCodeRouter);
@@ -118,7 +124,6 @@ function registerRoutes(app: express.Application) {
   app.use(docCheckingAppRouter);
   app.use(docCheckingAppCallbackRouter);
   app.use(errorPageRouter);
-  app.use(photoIdRouter);
 }
 
 async function createApp(): Promise<express.Application> {

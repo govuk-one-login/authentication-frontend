@@ -38,8 +38,8 @@
   {% endif %}
 
   <form id="form-tracking" action="/enter-code" method="post" novalidate="novalidate">
-    <input type="hidden" name="phoneNumber" value="{{ phoneNumber }}" />
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+    <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
     {% if isAuthApp %}
 
@@ -76,13 +76,19 @@
           text: errors['code'].text
         } if (errors['code'])}) }}
 
-      {% set detailsHTML %}
-        <p class="govuk-body">
-          <a href="{{ 'pages.enterMfa.details.sendCodeLinkHref' | translate }}" class="govuk-link"
-             rel="noreferrer noopener">{{ 'pages.enterMfa.details.sendTheCodeAgain'| translate }}</a>
-          {{ 'pages.enterMfa.details.text 2' | translate }}
-        </p>
-      {% endset %}
+    {% set detailsHTML %}
+      <p class="govuk-body">
+        <a href="{{ 'pages.enterMfa.details.sendCodeLinkHref' | translate }}" class="govuk-link"
+           rel="noreferrer noopener">{{ 'pages.enterMfa.details.sendTheCodeAgain'| translate }}</a>
+        {{ 'pages.enterMfa.details.text 2' | translate }}
+      </p>
+      <p class="govuk-body">
+        {% if supportAccountRecovery %}
+          {{'pages.enterMfa.details.changeGetSecurityCodesText' | translate}}
+          <a href={{checkEmailLink}} class="govuk-link" rel="noreferrer noopener">{{'pages.enterMfa.details.changeGetSecurityCodesLinkText'| translate}}</a>.
+        {% endif %}
+      </p>
+    {% endset %}
 
       {{ govukDetails({
         summaryText: 'pages.enterMfa.details.summaryText' | translate,

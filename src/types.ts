@@ -56,6 +56,7 @@ export interface UserSession {
   wrongCodeEnteredLock?: string;
   codeRequestLock?: string;
   mfaMethodType?: string;
+  isAccountRecoveryPermitted?: boolean;
 }
 
 export interface UserSessionClient {

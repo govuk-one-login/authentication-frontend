@@ -47,8 +47,8 @@ const USER_JOURNEY_EVENTS = {
   MFA_OPTION_SMS_SELECTED: "MFA_OPTION_SMS_SELECTED",
   VERIFY_AUTH_APP_CODE: "VERIFY_AUTH_APP_CODE",
   AUTH_APP_CODE_VERIFIED: "AUTH_APP_CODE_VERIFIED",
-  PHOTO_ID: "PHOTO_ID",
-  NO_PHOTO_ID: "NO_PHOTO_ID",
+  CHANGE_SECURITY_CODES_REQUESTED: "CHANGE_SECURITY_CODES_REQUESTED",
+  EMAIL_SECURITY_CODES_CODE_VERIFIED: "EMAIL_SECURITY_CODES_CODE_VERIFIED",
 };
 
 const authStateMachine = createMachine(
@@ -123,7 +123,9 @@ const authStateMachine = createMachine(
             { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
             { target: [PATH_NAMES.PROVE_IDENTITY] },
           ],
-          [USER_JOURNEY_EVENTS.PHOTO_ID]: [PATH_NAMES.PHOTO_ID],
+          [USER_JOURNEY_EVENTS.CREATE_OR_SIGN_IN]: [
+            PATH_NAMES.SIGN_IN_OR_CREATE,
+          ],
         },
       },
       [PATH_NAMES.ENTER_EMAIL_SIGN_IN]: {
@@ -367,6 +369,8 @@ const authStateMachine = createMachine(
             PATH_NAMES.SECURITY_CODE_WAIT,
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
           ],
         },
       },
@@ -389,7 +393,12 @@ const authStateMachine = createMachine(
           ],
         },
         meta: {
-          optionalPaths: [PATH_NAMES.SECURITY_CODE_INVALID],
+          optionalPaths: [
+            PATH_NAMES.SECURITY_CODE_INVALID,
+            PATH_NAMES.CHECK_YOUR_EMAIL,
+            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
+            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+          ],
         },
       },
       [PATH_NAMES.UPLIFT_JOURNEY]: {
@@ -569,28 +578,16 @@ const authStateMachine = createMachine(
       [PATH_NAMES.AUTH_CODE]: {
         type: "final",
       },
-      [PATH_NAMES.PHOTO_ID]: {
-        on: {
-          [USER_JOURNEY_EVENTS.CREATE_OR_SIGN_IN]: [
-            PATH_NAMES.SIGN_IN_OR_CREATE,
-          ],
-          [USER_JOURNEY_EVENTS.NO_PHOTO_ID]: [PATH_NAMES.NO_PHOTO_ID],
-        },
-        meta: {
-          optionalPaths: [
-            PATH_NAMES.PROVE_IDENTITY_WELCOME,
-            PATH_NAMES.NO_PHOTO_ID,
-          ],
-        },
-      },
-      [PATH_NAMES.NO_PHOTO_ID]: {
-        meta: {
-          optionalPaths: [PATH_NAMES.PHOTO_ID],
-        },
-      },
       [PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT]: {
         on: {
           [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.RESEND_EMAIL_CODE],
+        },
+      },
+      [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]: {
+        on: {
+          [USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED]: [
+            PATH_NAMES.GET_SECURITY_CODES,
+          ],
         },
       },
     },

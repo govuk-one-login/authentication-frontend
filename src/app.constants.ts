@@ -53,9 +53,15 @@ export const PATH_NAMES = {
   CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP: "/setup-authenticator-app",
   COOKIES_POLICY: "/cookies",
   ERROR_PAGE: "/error",
-  PHOTO_ID: "/photo-id",
-  NO_PHOTO_ID: "/no-photo-id",
   SECURITY_CODE_ENTERED_EXCEEDED: "/security-code-entered-exceeded",
+  CHANGE_SECURITY_CODES: "/change-security-codes",
+  CANNOT_CHANGE_SECURITY_CODES: "/cannot-change-security-codes",
+  CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES: "/check-email-change-security-codes",
+};
+
+export const HREF_BACK = {
+  CHECK_YOUR_PHONE: "check-your-phone",
+  ENTER_AUTHENTICATOR_APP_CODE: "enter-authenticator-app-code",
 };
 
 export const HTTP_STATUS_CODES = {
@@ -94,12 +100,16 @@ export const API_ENDPOINTS = {
   DOC_CHECKING_APP_AUTHORIZE: "/doc-app-authorize",
   IPV_PROCESSING_IDENTITY: "/processing-identity",
   VERIFY_MFA_CODE: "/verify-mfa-code",
+  ACCOUNT_RECOVERY: "/account-recovery",
 };
 
 export const ERROR_MESSAGES = {
   FAILED_HTTP_REQUEST: "Failed HTTP request",
   INVALID_CSRF_TOKEN: "Invalid CSRF token",
-  INVALID_SESSION: "Invalid session",
+  INVALID_SESSION_GOV_UK_INTERNAL_REQUEST:
+    "Invalid session and referrer has gov.uk domain",
+  INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST:
+    "Invalid session and referrer does not have gov.uk domain",
   INVALID_HTTP_REQUEST: "Invalid HTTP request",
   FORBIDDEN: "Unauthorized HTTP request",
   INTERNAL_SERVER_ERROR: "Internal server error",
@@ -154,6 +164,7 @@ export enum NOTIFICATION_TYPE {
   ACCOUNT_CREATED_CONFIRMATION = "ACCOUNT_CREATED_CONFIRMATION",
   MFA_SMS = "MFA_SMS",
   RESET_PASSWORD_WITH_CODE = "RESET_PASSWORD_WITH_CODE",
+  VERIFY_CHANGE_HOW_GET_SECURITY_CODES = "VERIFY_CHANGE_HOW_GET_SECURITY_CODES",
 }
 
 export const COOKIE_CONSENT = {
@@ -203,3 +214,16 @@ export const IPV_ERROR_CODES = {
 };
 
 export const COOKIES_PREFERENCES_SET = "cookies_preferences_set";
+
+export const CONTACT_US_REFERER_ALLOWLIST = [
+  "",
+  "accountCreatedEmail",
+  "confirmEmailAddressEmail",
+  "passwordResetConfirmationEmail",
+  "passwordResetConfirmationSms",
+  "passwordResetRequestEmail",
+  "emailAddressUpdatedEmail",
+  "accountDeletedEmail",
+  "phoneNumberUpdatedEmail",
+  "passwordUpdatedEmail",
+];

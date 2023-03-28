@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { ERROR_LOG_LEVEL, ERROR_MESSAGES, PATH_NAMES } from "../app.constants";
 import xss from "xss";
 import { ErrorWithLevel } from "../utils/error";
+import { getAppEnv } from "../config";
+import { ERROR_LOG_LEVEL, ERROR_MESSAGES, PATH_NAMES } from "../app.constants";
 
 export function initialiseSessionMiddleware(
   req: Request,
@@ -64,7 +65,27 @@ export function validateSessionMiddleware(
   });
 
   res.status(401);
+
+  const referrer = req.get("Referrer");
+  const isReferrerInternal =
+    getAppEnv() === "local"
+      ? referrer?.includes("localhost")
+      : referrer?.includes("gov.uk");
+
+  if (isReferrerInternal) {
+    req.log.info("request from gov.uk domain");
+    next(
+      new ErrorWithLevel(
+        ERROR_MESSAGES.INVALID_SESSION_GOV_UK_INTERNAL_REQUEST,
+        ERROR_LOG_LEVEL.INFO
+      )
+    );
+  }
+
   next(
-    new ErrorWithLevel(ERROR_MESSAGES.INVALID_SESSION, ERROR_LOG_LEVEL.INFO)
+    new ErrorWithLevel(
+      ERROR_MESSAGES.INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST,
+      ERROR_LOG_LEVEL.INFO
+    )
   );
 }
