@@ -502,7 +502,7 @@
       "message": "Text messages can sometimes take a few minutes to arrive.",
       "phoneNumber": {
         "default": "We will send the code to the phone number linked to your GOV.UK One Login.",
-        "isResendCodeRequest": "We will send a code to: [mobile]."
+        "isResendCodeRequest": "We will send a code to your phone number ending with "
       },
       "email": {
         "recipientMessage": "We will send a code to: ",
