@@ -11,6 +11,7 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { setupAuthAppService } from "./setup-authenticator-app-service";
 import { generateQRCodeValue } from "../../utils/mfa";
 import { BadRequestError } from "../../utils/error";
+import { splitSecretKeyIntoFragments } from "../../utils/strings";
 import {
   formatValidationError,
   renderBadRequest,
@@ -37,7 +38,9 @@ export async function setupAuthenticatorAppGet(
 
   res.render(TEMPLATE, {
     qrCode: req.session.user.authAppQrCodeUrl,
-    secretKey: req.session.user.authAppSecret,
+    secretKeyFragmentArray: splitSecretKeyIntoFragments(
+      req.session.user.authAppSecret
+    ),
   });
 }
 

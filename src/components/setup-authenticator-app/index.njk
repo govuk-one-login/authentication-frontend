@@ -3,6 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "common/mfa/display-secret-key.njk" import displaySecretKey %}
 
 {% set pageTitleName = 'pages.setupAuthenticatorApp.title' | translate %}
 {% set showBack = true %}
@@ -20,9 +21,9 @@
 
   {% set cannotScanInsetTextHtml %}
   <p class="govuk-body">{{'pages.setupAuthenticatorApp.cannotScanDetails.paragraph1' | translate}}</p>
-  <p class="govuk-body">
-    {{'pages.setupAuthenticatorApp.cannotScanDetails.paragraph2' | translate}}
-    <span id="secret-key" class="govuk-body govuk-!-font-weight-bold govuk-!-display-block permit-reflow">{{secretKey}}</span>
+  <p class="govuk-body" id="secret-key">
+    <span class="govuk-!-display-block">{{'pages.setupAuthenticatorApp.cannotScanDetails.paragraph2' | translate}}</span>
+    {{ displaySecretKey(secretKeyFragmentArray) }}
   </p>
   <p class="govuk-body">{{'pages.setupAuthenticatorApp.cannotScanDetails.paragraph3' | translate}}</p>
   {% endset %}
