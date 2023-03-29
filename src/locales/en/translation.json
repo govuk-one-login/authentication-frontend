@@ -158,17 +158,9 @@
       "signInText": "Sign in",
       "moreAbout": {
         "header": "About GOV.UK One Login",
-        "paragraph1": "GOV.UK One Login is new. At the moment you can only use it with:",
-        "listItem1": "Apply for a vehicle operator licence",
-        "listItem2": "Apply to become a registered social worker in England",
-        "listItem3": "GOV.UK email subscriptions ",
-        "listItem4": "LITE (Licensing for International Trade and Enterprise)",
-        "listItem5": "Modern slavery statement registry",
-        "listItem6": "Ofqual subject matter specialist account",
-        "listItem7": "Request a basic DBS check",
-        "listItem8": "Sign your mortgage deed",
-        "paragraph2": "GOV.UK One Login does not work with all government accounts or services yet (for example Government Gateway or Universal Credit).",
-        "paragraph3": "In the future, you‘ll be able to use your GOV.UK One Login to access all services on GOV.UK."
+        "paragraph1": "GOV.UK One Login is new. At the moment you can only use it to access some government services.",
+        "paragraph2": "It does not work with all government accounts or services yet (for example Government Gateway or Universal Credit).",
+        "paragraph3": "In the future, you’ll be able to use GOV.UK One Login to access all services on GOV.UK."
       },
       "createButtonText": "Create a GOV.UK One Login"
     },
