@@ -1,0 +1,11 @@
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% macro enterMfaMobile(paragraph4, paragraph2) %}
+    {% set insetTextHtml %}
+        <p class="govuk-body">{{ paragraph4 }}</p>
+    {% endset %}
+    {{ govukInsetText({
+        html: insetTextHtml
+    }) }}
+    <p class="govuk-body">{{ paragraph2 }} </p>
+{% endmacro %}

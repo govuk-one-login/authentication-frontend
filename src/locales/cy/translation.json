@@ -466,15 +466,21 @@
       "title": "Gwiriwch eich ffôn",
       "header": "Gwiriwch eich ffôn",
       "info": {
-        "paragraph1": "Rydym wedi anfon cod at y rhif ffôn sy’n gysylltiedig â’ch GOV.UK One Login.",
-        "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud."
+        "paragraph1": "Rydym wedi anfon cod at y rhif ffôn yn gysylltiedig â’ch cyfrif.",
+        "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud.",
+        "paragraph3": "I gael cod diogelwch, agorwch yr ",
+        "authenticatorApp": "ap dilysydd ",
+        "paragraph3End": "rydych wedi’i ddefnyddio i greu eich GOV.UK One Login",
+        "paragraph4": "Rydym wedi anfon cod at y rhif ffôn sy’n gysylltiedig â’ch GOV.UK One Login."
       },
       "resend": {
         "link": "Gofynnwch am god newydd",
         "paragraph1": "os nad yw’r cod yn gweithio neu mae wedi dod i ben, neu ni dderbynioch un."
       },
       "code": {
-        "label": "Rhowch y cod diogelwch 6 digid",
+        "label": "Rhowch y cod diogelwch",
+        "label2": "Rhowch y cod diogelwch 6 digid",
+        "labelSummary": "Dyma’r rhif 6-digid a ddangosir yn eich ap dilysydd",
         "validationError": {
           "required": "Rhowch y cod diogelwch",
           "maxLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
@@ -485,8 +491,7 @@
       },
       "details": {
         "summaryText": "Problemau gyda’r cod?",
-        "text1": "Gallwn ",
-        "sendCodeLinkText": "anfon y cod eto",
+        "sendTheCodeAgain": "Anfon y cod eto",
         "sendCodeLinkHref": "/resend-code",
         "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn.",
         "changeGetSecurityCodesText": "If you cannot access the phone number for your GOV.UK One Login, you can securely ",
