@@ -4,6 +4,7 @@ import {
   containsNumber,
   containsNumbersOnly,
   redactPhoneNumber,
+  splitSecretKeyIntoFragments,
 } from "../../../src/utils/strings";
 
 describe("string-helpers", () => {
@@ -56,6 +57,64 @@ describe("string-helpers", () => {
 
     it("should return undefined when phone number is is empty", () => {
       expect(redactPhoneNumber("")).to.equal(undefined);
+    });
+  });
+
+  describe("splitSecretKeyIntoFragments", () => {
+    const validSecretKey =
+      "8X6D7R4BEYF57BEHMHM9YTZMP46JEKEMSTMNELFO6A54NKMNQVCC";
+
+    const secretKeyFragments = splitSecretKeyIntoFragments(validSecretKey);
+
+    it("should split the secret key characters into an array", () => {
+      expect(secretKeyFragments).to.be.an("array");
+    });
+
+    it("should return an array with length equal to secret key length / 4", () => {
+      expect(secretKeyFragments.length).to.be.equal(validSecretKey.length / 4);
+    });
+
+    it("should return an array which, when joined, is the same as the original string", () => {
+      expect(secretKeyFragments.join("")).to.equal(validSecretKey);
+    });
+
+    it("should be able to handle different length keys", () => {
+      const differentLengthSecretKeys: string[] = [
+        "8X6D7R4BEYF57BEHMHM9YTZMP46JEKEM7R4BEYF57BEHMHM9YTZM",
+        "8X6D7R4BEYF57BEHMHM9YTZMP46JEKEM",
+        "8X6D7R4BEYF57BEHMHM",
+        "X6D7R4BEYF5",
+      ];
+
+      differentLengthSecretKeys.forEach((i) => {
+        const oddSecretKeyFragments = splitSecretKeyIntoFragments(i);
+
+        it(`should split the characters of ${i} into an array`, () => {
+          expect(oddSecretKeyFragments).to.be.an("array");
+        });
+
+        it(`should return an array where not item is more than four characters long`, () => {
+          oddSecretKeyFragments.forEach((i) => {
+            expect(i.length).to.not.be.above(4);
+          });
+        });
+
+        it(`should return an array which, when joined, is the same as the original string ${i}`, () => {
+          expect(oddSecretKeyFragments.join("")).to.equal(validSecretKey);
+        });
+      });
+    });
+
+    it("should be able to handle empty strings", () => {
+      const processedEmptyString = splitSecretKeyIntoFragments("");
+
+      it("should return an array when passed and empty string", () => {
+        expect(processedEmptyString).to.be.an("array");
+      });
+
+      it("should return an empty array when passed an empty string", () => {
+        expect(processedEmptyString).to.be.an("array").that.is.empty;
+      });
     });
   });
 });

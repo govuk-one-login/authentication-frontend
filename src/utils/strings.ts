@@ -26,3 +26,10 @@ export function sanitize(value: string): string {
   }
   return processed;
 }
+
+export function splitSecretKeyIntoFragments(secretKey: string): string[] {
+  if (secretKey.length > 0) {
+    return secretKey.match(/\w{1,4}/g);
+  }
+  return [];
+}
