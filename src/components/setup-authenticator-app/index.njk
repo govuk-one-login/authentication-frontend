@@ -21,9 +21,11 @@
 
   {% set cannotScanInsetTextHtml %}
   <p class="govuk-body">{{'pages.setupAuthenticatorApp.cannotScanDetails.paragraph1' | translate}}</p>
-  <p class="govuk-body" id="secret-key">
+  <p class="govuk-body">
     <span class="govuk-!-display-block">{{'pages.setupAuthenticatorApp.cannotScanDetails.paragraph2' | translate}}</span>
+    <span id="secret-key">
     {{ displaySecretKey(secretKeyFragmentArray) }}
+    </span>
   </p>
   <p class="govuk-body">{{'pages.setupAuthenticatorApp.cannotScanDetails.paragraph3' | translate}}</p>
   {% endset %}
