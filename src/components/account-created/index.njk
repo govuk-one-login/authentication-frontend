@@ -2,37 +2,30 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% set pageTitleName = 'pages.accountCreated.title' | translate %}
 {% block content %}
 
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.accountCreated.header' | translate}}</h1>
 
-<p class="govuk-body">{{'pages.accountCreated.text' | translate}}</p>
-
 <form id="form-tracking" action="/account-created" method="post" novalidate>
 <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+{% if serviceType === 'OPTIONAL' %}
+    <p class="govuk-body">{{'pages.accountCreated.youCanNowSaveYourProgress' | translate}}</p>
+
+    {{ govukButton({
+        "text": "pages.accountCreated.saveYourProgress" | translate,
+        "preventDoubleClick": true
+    }) }}
+{% else %}
+    <p class="govuk-body">{{'pages.accountCreated.text' | translate}}</p>
 
     {{ govukButton({
         "text": "pages.accountCreated.continue" | translate,
         "type": "Submit",
         "preventDoubleClick": true
     }) }}
-
-{% if serviceType === 'OPTIONAL' %}
-    <h1 class="govuk-body govuk-bold">{{'pages.accountCreated.progressSaved' | translate}}</h1>
-
-    {{ govukButton({
-        "text": "pages.accountCreated.continue" | translate,
-        "preventDoubleClick": true
-    }) }}
-
-    <br>
-
-    <a href="{{ logoutUrl }}" class="govuk-link govuk-body">
-        {{'pages.accountCreated.signOut' | translate}}
-    </a>
 {% endif %}
 </form>
 {% endblock %}

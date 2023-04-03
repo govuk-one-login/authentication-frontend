@@ -353,12 +353,9 @@
       "title": "Rydych wedi creu eich GOV.UK One Login",
       "header": "Rydych wedi creu eich GOV.UK One Login",
       "text": "Nawr ewch yn eich blaen i ddefnyddio’r gwasanaeth.",
-      "inset": "Mae eich cynnydd ar ",
-      "insetContinued": " wedi cael ei arbed.",
       "continue": "Parhau",
-      "signOut": "Allgofnodi",
-      "continueReport": "Parhau eich adroddiad",
-      "progressSaved": "Mae eich cynnydd wedi cael ei arbed."
+      "youCanNowSaveYourProgress": "Gallwch nawr arbed eich cynnydd.",
+      "saveYourProgress": "Arbed eich cynnydd"
     },
     "checkYourEmail": {
       "title": "Gwiriwch eich e-bost",

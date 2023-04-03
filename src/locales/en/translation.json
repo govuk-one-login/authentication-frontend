@@ -353,12 +353,9 @@
       "title": "You’ve created your GOV.UK One Login",
       "header": "You’ve created your GOV.UK One Login",
       "text": "Now continue to use the service.",
-      "inset": "Your progress on ",
-      "insetContinued": " has been saved.",
       "continue": "Continue",
-      "signOut": "Sign out",
-      "continueReport": "Continue your report",
-      "progressSaved": "Your progress has been saved."
+      "youCanNowSaveYourProgress": "You can now save your progress.",
+      "saveYourProgress": "Save your progress"
     },
     "checkYourEmail": {
       "title": "Check your email",
