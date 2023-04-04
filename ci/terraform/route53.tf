@@ -5,7 +5,7 @@ resource "aws_route53_zone" "zone" {
 resource "aws_route53_record" "frontend" {
   name    = local.frontend_fqdn
   type    = "A"
-  zone_id = local.zone_id
+  zone_id = data.aws_route53_zone.service_domain.zone_id
 
   alias {
     evaluate_target_health = false
@@ -17,7 +17,7 @@ resource "aws_route53_record" "frontend" {
 resource "aws_route53_record" "frontend_record" {
   name    = local.frontend_fqdn
   type    = "A"
-  zone_id = aws_route53_record.frontend.zone_id
+  zone_id = aws_route53_zone.zone.zone_id
 
   alias {
     evaluate_target_health = false
@@ -34,7 +34,6 @@ resource "aws_acm_certificate" "frontend_alb_certificate" {
 }
 
 resource "aws_route53_record" "frontend_alb_certificate_validation" {
-
   for_each = {
     for dvo in aws_acm_certificate.frontend_alb_certificate.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
@@ -48,11 +47,10 @@ resource "aws_route53_record" "frontend_alb_certificate_validation" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = local.zone_id
+  zone_id         = data.aws_route53_zone.service_domain.zone_id
 }
 
 resource "aws_route53_record" "frontend_validation_record" {
-
   for_each = {
     for dvo in aws_acm_certificate.frontend_alb_certificate.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
