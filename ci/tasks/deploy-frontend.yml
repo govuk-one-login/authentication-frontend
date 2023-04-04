@@ -12,8 +12,6 @@ params:
   DEPLOY_ENVIRONMENT: build
   GTM_ID: ((build-gtm-id))
   SESSION_EXPIRY: ((build-session-expiry))
-  LOGGING_ENDPOINT_ARN: "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prod"
-  LOGGING_ENDPOINT_ENABLED: "true"
   ZENDESK_USERNAME: ((build-zendesk-username))
   ZENDESK_API_TOKEN: ((build-zendesk-api-token))
   ZENDESK_GROUP_ID_PUBLIC: ((build-zendesk-group-id-public))
@@ -61,9 +59,7 @@ run:
         -var "deployer_role_arn=${DEPLOYER_ROLE_ARN}" \
         -var "common_state_bucket=${STATE_BUCKET}" \
         -var "session_expiry=${SESSION_EXPIRY}" \
-        -var "logging_endpoint_arn=${LOGGING_ENDPOINT_ARN}" \
         -var 'logging_endpoint_arns=["arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prod"]' \
-        -var "logging_endpoint_enabled=${LOGGING_ENDPOINT_ENABLED}" \
         -var "zendesk_username=${ZENDESK_USERNAME}" \
         -var "zendesk_group_id_public=${ZENDESK_GROUP_ID_PUBLIC}" \
         -var "zendesk_api_token=${ZENDESK_API_TOKEN}" \
