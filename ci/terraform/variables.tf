@@ -17,30 +17,6 @@ variable "redis_node_size" {
   default = "cache.t2.small"
 }
 
-variable "dns_state_bucket" {
-  default = ""
-}
-
-variable "dns_state_key" {
-  default = ""
-}
-
-variable "dns_state_role" {
-  default = ""
-}
-
-variable "account_management_fqdn" {
-  default = null
-}
-
-variable "oidc_api_fqdn" {
-  default = null
-}
-
-variable "frontend_fqdn" {
-  default = null
-}
-
 variable "service_domain" {
   default = null
 }
@@ -51,10 +27,6 @@ variable "support_international_numbers" {
 
 variable "support_language_cy" {
   type = string
-}
-
-variable "zone_id" {
-  default = null
 }
 
 variable "image_uri" {
@@ -137,20 +109,10 @@ variable "cloudwatch_log_retention" {
   type    = number
 }
 
-variable "logging_endpoint_arn" {
-  default = ""
-}
-
 variable "logging_endpoint_arns" {
   type        = list(string)
   default     = []
   description = "Amazon Resource Name (ARN) for the CSLS endpoints to ship logs to"
-}
-
-variable "logging_endpoint_enabled" {
-  type        = bool
-  default     = false
-  description = "Whether the service should ship its Lambda logs to the `logging_endpoint_arn`"
 }
 
 variable "zendesk_username" {
@@ -166,10 +128,6 @@ variable "zendesk_group_id_public" {
 variable "zendesk_api_token" {
   type    = string
   default = ""
-}
-
-variable "frontend_api_fqdn" {
-  default = null
 }
 
 variable "deployment_min_healthy_percent" {
