@@ -1,5 +1,9 @@
 resource "aws_route53_zone" "zone" {
   name = local.frontend_fqdn
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_route53_record" "frontend" {
