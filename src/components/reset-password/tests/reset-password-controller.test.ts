@@ -106,7 +106,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
             loginUser: sinon.fake.returns({
               success: true,
               data: {
-                redactedPhoneNumber: "******1234",
+                redactedPhoneNumber: "1234",
                 consentRequired: false,
                 latestTermsAndConditionsAccepted: true,
                 mfaMethodVerified: true,
@@ -155,7 +155,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
             loginUser: sinon.fake.returns({
               success: true,
               data: {
-                redactedPhoneNumber: "******1234",
+                redactedPhoneNumber: "1234",
                 consentRequired: false,
                 latestTermsAndConditionsAccepted: true,
                 mfaMethodVerified: false,
@@ -199,7 +199,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
         loginUser: sinon.fake.returns({
           success: true,
           data: {
-            redactedPhoneNumber: "******1234",
+            redactedPhoneNumber: "1234",
             consentRequired: false,
             latestTermsAndConditionsAccepted: true,
             mfaMethodVerified: true,

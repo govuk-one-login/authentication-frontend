@@ -390,7 +390,7 @@
       "title": "Check your phone",
       "header": "Check your phone",
       "info": {
-        "paragraph1": "We have sent a code to [mobile].",
+        "paragraph1": "We have sent a code to your phone number ending with ",
         "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes."
       },
       "code": {
@@ -489,7 +489,7 @@
       "message": "Text messages can sometimes take a few minutes to arrive.",
       "phoneNumber": {
         "default": "We will send the code to the phone number linked to your GOV.UK One Login.",
-        "isResendCodeRequest": "We will send a code to: [mobile]."
+        "isResendCodeRequest": "We will send a code to your phone number ending with "
       },
       "email": {
         "recipientMessage": "We will send a code to: ",

@@ -28,7 +28,7 @@ describe("Integration:: resend email code", () => {
 
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: "******7867",
+          phoneNumber: "7867",
           journey: {
             nextPath: PATH_NAMES.CREATE_ACCOUNT_CHECK_EMAIL,
             optionalPaths: [PATH_NAMES.RESEND_EMAIL_CODE],

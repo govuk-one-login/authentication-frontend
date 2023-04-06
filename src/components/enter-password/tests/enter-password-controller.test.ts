@@ -51,7 +51,7 @@ describe("enter password controller", () => {
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sinon.fake.returns({
           data: {
-            redactedPhoneNumber: "******3456",
+            redactedPhoneNumber: "3456",
             mfaRequired: true,
             consentRequired: false,
             latestTermsAndConditionsAccepted: true,
@@ -91,7 +91,7 @@ describe("enter password controller", () => {
         loginUser: sinon.fake.returns({
           success: true,
           data: {
-            redactedPhoneNumber: "******3456",
+            redactedPhoneNumber: "3456",
             mfaRequired: false,
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
@@ -121,7 +121,7 @@ describe("enter password controller", () => {
         loginUser: sinon.fake.returns({
           success: true,
           data: {
-            redactedPhoneNumber: "******3456",
+            redactedPhoneNumber: "3456",
             mfaMethodVerified: false,
             mfaMethodType: "SMS",
           },
@@ -149,7 +149,7 @@ describe("enter password controller", () => {
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sinon.fake.returns({
           data: {
-            redactedPhoneNumber: "******3456",
+            redactedPhoneNumber: "3456",
             latestTermsAndConditionsAccepted: false,
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
@@ -181,7 +181,7 @@ describe("enter password controller", () => {
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sinon.fake.returns({
           data: {
-            redactedPhoneNumber: "******3456",
+            redactedPhoneNumber: "3456",
             mfaRequired: true,
             consentRequired: false,
             latestTermsAndConditionsAccepted: true,

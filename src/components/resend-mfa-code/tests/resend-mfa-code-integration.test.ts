@@ -28,7 +28,7 @@ describe("Integration:: resend mfa code", () => {
 
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: "******7867",
+          phoneNumber: "7867",
           journey: {
             nextPath: PATH_NAMES.ENTER_MFA,
             optionalPaths: [PATH_NAMES.RESEND_MFA_CODE],

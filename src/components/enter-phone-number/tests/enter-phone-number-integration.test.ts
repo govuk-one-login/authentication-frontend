@@ -28,7 +28,7 @@ describe("Integration::enter phone number", () => {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: "******7867",
+          phoneNumber: "7867",
           journey: {
             nextPath: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
           },

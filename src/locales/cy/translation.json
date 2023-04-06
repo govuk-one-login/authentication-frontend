@@ -390,7 +390,7 @@
       "title": "Gwiriwch eich ffôn",
       "header": "Gwiriwch eich ffôn",
       "info": {
-        "paragraph1": "Rydym wedi anfon cod i [mobile].",
+        "paragraph1": "Rydym wedi anfon cod i’ch rhif ffôn sy’n gorffen gyda ",
         "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud."
       },
       "code": {
@@ -489,7 +489,7 @@
       "message": "Gall negeseuon testun weithiau gymryd ychydig funudau i gyrraedd.",
       "phoneNumber": {
         "default": "Byddwn yn anfon cod at y rhif ffôn sy’n gysylltiedig â’ch GOV.UK One Login",
-        "isResendCodeRequest": "Byddwn yn anfon cod i: [mobile]."
+        "isResendCodeRequest": "Byddwn yn anfon cod i’ch rhif ffôn sy’n gorffen gyda "
       },
       "email": {
         "recipientMessage": "Byddwn yn anfon cod i: ",

@@ -22,7 +22,7 @@ describe("Integration:: contact us - public user", () => {
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user.email = "test@test.com";
-        req.session.user.phoneNumber = "******7867";
+        req.session.user.phoneNumber = "7867";
 
         next();
       });

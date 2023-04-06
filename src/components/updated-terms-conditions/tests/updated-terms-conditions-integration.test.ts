@@ -30,7 +30,7 @@ describe("Integration:: updated-terms-code", () => {
 
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: "******7867",
+          phoneNumber: "7867",
           journey: {
             nextPath: PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS,
           },
