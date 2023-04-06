@@ -65,7 +65,6 @@ describe("enter mfa controller", () => {
 
       expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
         phoneNumber: TEST_PHONE_NUMBER,
-        isAuthApp: false,
         supportAccountRecovery: false,
       });
     });
@@ -78,7 +77,6 @@ describe("enter mfa controller", () => {
 
       expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
         phoneNumber: TEST_PHONE_NUMBER,
-        isAuthApp: false,
         supportAccountRecovery: true,
         checkEmailLink:
           PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=SMS",

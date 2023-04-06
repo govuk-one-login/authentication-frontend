@@ -452,24 +452,18 @@
       }
     },
     "enterMfa": {
-      "title": "You need to enter a security code",
-      "header": "You need to enter a security code",
+      "title": "Check your phone",
+      "header": "Check your phone",
       "info": {
-        "paragraph1": "This helps your GOV.UK One Login secure.",
-        "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes.",
-        "paragraph3": "To get a security code, open the ",
-        "authenticatorApp": "authenticator app ",
-        "paragraph3End": "you used to create your GOV.UK One Login",
-        "paragraph4": "We sent a code to the phone number linked to your GOV.UK One Login."
+        "paragraph1": "We sent a code to the phone number linked to your GOV.UK One Login.",
+        "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes."
       },
       "resend": {
         "link": "Request a new code",
         "paragraph1": "if the code does not work or has expired, or you did not receive one."
       },
       "code": {
-        "label": "Enter the security code",
-        "label2": "Enter the 6 digit security code",
-        "labelSummary": "This is the 6-digit number shown in your authenticator app",
+        "label": "Enter the 6 digit security code",
         "validationError": {
           "required": "Enter the security code",
           "maxLength": "Enter the security code using only 6 digits",
@@ -480,7 +474,8 @@
       },
       "details": {
         "summaryText": "Problems with the code?",
-        "sendTheCodeAgain": "Send the code again",
+        "text1": "We can ",
+        "sendCodeLinkText": "send the code again",
         "sendCodeLinkHref": "/resend-code",
         "text 2": " if the code is not working or you did not receive it.",
         "changeGetSecurityCodesText": "If you cannot access the phone number for your GOV.UK One Login, you can securely ",
