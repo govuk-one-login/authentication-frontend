@@ -25,7 +25,6 @@ export function enterMfaGet(
     if (!isAccountRecoveryEnabledForEnvironment) {
       return res.render(TEMPLATE_NAME, {
         phoneNumber: req.session.user.phoneNumber,
-        isAuthApp: req.session.user.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP,
         supportAccountRecovery: false,
       });
     }
@@ -59,7 +58,6 @@ export function enterMfaGet(
 
     res.render(TEMPLATE_NAME, {
       phoneNumber: req.session.user.phoneNumber,
-      isAuthApp: req.session.user.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP,
       supportAccountRecovery: isAccountRecoveryEnabledForEnvironment,
       checkEmailLink,
     });
