@@ -1,4 +1,7 @@
-{% if appErrorCode and appSessionId %}
+{% if appErrorCode %}
     <input type="hidden" name="appErrorCode" value="{{appErrorCode}}"/>
+{% endif %}
+
+{% if appSessionId %}
     <input type="hidden" name="appSessionId" value="{{appSessionId}}"/>
 {% endif %}
