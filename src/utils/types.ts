@@ -22,7 +22,10 @@ interface RequesterAnonymous {
 }
 
 export interface ZendeskInterface {
-  createTicket(form: CreateTicketPayload): Promise<void>;
+  createTicket(
+    form: CreateTicketPayload,
+    ticketIdentifier?: string
+  ): Promise<void>;
 }
 
 export interface RedisConfig {
