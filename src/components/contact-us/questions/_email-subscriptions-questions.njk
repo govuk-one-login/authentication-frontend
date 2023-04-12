@@ -9,6 +9,7 @@
 <input type="hidden" name="backurl" value="{{backurl}}"/>
 <input type="hidden" name="formType" value="emailSubscription"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
+{% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
 
 {{ govukCharacterCount({
     label: {

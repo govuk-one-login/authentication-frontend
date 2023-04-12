@@ -86,9 +86,14 @@ export function contactUsGet(req: Request, res: Response): void {
     }
   }
 
-  return res.render("contact-us/index-public-contact-us.njk", {
+  const options = {
     referer: referer,
-  });
+    ...(getAppSessionId(req.query.appSessionId as string) && {
+      appSessionId: getAppSessionId(req.query.appSessionId as string),
+    }),
+  };
+
+  return res.render("contact-us/index-public-contact-us.njk", options);
 }
 
 export function validateAppErrorCode(appErrorCode: string): boolean {
@@ -162,6 +167,9 @@ export function contactUsFormPost(req: Request, res: Response): void {
   const queryParams = new URLSearchParams({
     theme: req.body.theme,
     referer: validateReferer(req.body.referer),
+    ...(validateAppId(req.body.appSessionId) && {
+      appSessionId: getAppSessionId(req.body.appSessionId),
+    }),
   }).toString();
   if (
     [
