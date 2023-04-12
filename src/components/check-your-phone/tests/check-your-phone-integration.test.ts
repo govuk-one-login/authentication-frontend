@@ -2,7 +2,7 @@ import request from "supertest";
 import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
-import * as cheerio from "cheerio";
+import cheerio from "cheerio";
 import decache from "decache";
 import {
   API_ENDPOINTS,
@@ -144,7 +144,7 @@ describe("Integration:: check your phone", () => {
 
   it("should redirect to /create-password when valid code entered", (done) => {
     nock(baseApi)
-      .post(API_ENDPOINTS.VERIFY_CODE)
+      .post(API_ENDPOINTS.VERIFY_MFA_CODE)
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT, {})
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
@@ -164,7 +164,7 @@ describe("Integration:: check your phone", () => {
   });
 
   it("should return validation error when incorrect code entered", (done) => {
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).once().reply(400, {
+    nock(baseApi).post(API_ENDPOINTS.VERIFY_MFA_CODE).once().reply(400, {
       code: ERROR_CODES.INVALID_VERIFY_PHONE_NUMBER_CODE,
       success: false,
     });
@@ -187,7 +187,7 @@ describe("Integration:: check your phone", () => {
   });
 
   it("should redirect to security code expired when incorrect code has been entered 5 times", (done) => {
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
+    nock(baseApi).post(API_ENDPOINTS.VERIFY_MFA_CODE).times(6).reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_VERIFY_PHONE_NUMBER_CODE_MAX_TIMES,
       success: false,
     });

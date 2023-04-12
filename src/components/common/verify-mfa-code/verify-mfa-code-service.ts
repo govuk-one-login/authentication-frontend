@@ -2,17 +2,17 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   MFA_METHOD_TYPE,
-} from "../../app.constants";
+} from "../../../app.constants";
 import {
   createApiResponse,
   getRequestConfig,
   http,
   Http,
-} from "../../utils/http";
-import { ApiResponseResult, DefaultApiResponse } from "../../types";
-import { VerifyMfaCodeInterface } from "./types";
+} from "../../../utils/http";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types";
+import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
 
-export function authenticatorAppCodeService(
+export function verifyMfaCodeService(
   axios: Http = http
 ): VerifyMfaCodeInterface {
   const verifyMfaCode = async function (
