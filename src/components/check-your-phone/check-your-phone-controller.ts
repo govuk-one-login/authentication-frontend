@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
-import { NOTIFICATION_TYPE } from "../../app.constants";
-import { VerifyCodeInterface } from "../common/verify-code/types";
-import { codeService } from "../common/verify-code/verify-code-service";
-import { verifyCodePost } from "../common/verify-code/verify-code-controller";
+import { MFA_METHOD_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { ERROR_CODES, getNextPathAndUpdateJourney } from "../common/constants";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import xss from "xss";
+import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types";
+import { verifyMfaCodePost } from "../common/verify-mfa-code/verify-mfa-code-post";
+import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";
 
@@ -19,11 +19,12 @@ export function checkYourPhoneGet(req: Request, res: Response): void {
 }
 
 export const checkYourPhonePost = (
-  service: VerifyCodeInterface = codeService(),
+  service: VerifyMfaCodeInterface = verifyMfaCodeService(),
   notificationService: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc => {
-  return verifyCodePost(service, {
-    notificationType: NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER,
+  return verifyMfaCodePost(service, {
+    methodType: MFA_METHOD_TYPE.SMS,
+    registration: true,
     template: TEMPLATE_NAME,
     validationKey: "pages.checkYourPhone.code.validationError.invalidCode",
     validationErrorCode: ERROR_CODES.INVALID_VERIFY_PHONE_NUMBER_CODE,
