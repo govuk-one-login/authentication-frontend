@@ -48,9 +48,12 @@ export function contactUsService(
     };
 
     if (contactForm.feedbackContact && contactForm.email) {
+      const contactName = contactForm.name
+        ? contactForm.name
+        : contactForm.email;
       payload.ticket.requester = {
         email: contactForm.email,
-        name: contactForm.name,
+        name: contactName,
       };
     }
 
