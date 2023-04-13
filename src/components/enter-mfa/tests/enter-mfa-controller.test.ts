@@ -41,7 +41,7 @@ describe("enter mfa controller", () => {
       session: {
         client: {},
         user: {
-          phoneNumber: TEST_PHONE_NUMBER,
+          redactedPhoneNumber: TEST_PHONE_NUMBER,
         },
       },
       log: { info: sinon.fake() },

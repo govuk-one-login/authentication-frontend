@@ -24,7 +24,7 @@ export function enterMfaGet(
 
     if (!isAccountRecoveryEnabledForEnvironment) {
       return res.render(TEMPLATE_NAME, {
-        phoneNumber: req.session.user.phoneNumber,
+        phoneNumber: req.session.user.redactedPhoneNumber,
         supportAccountRecovery: false,
       });
     }
@@ -57,7 +57,7 @@ export function enterMfaGet(
     );
 
     res.render(TEMPLATE_NAME, {
-      phoneNumber: req.session.user.phoneNumber,
+      phoneNumber: req.session.user.redactedPhoneNumber,
       supportAccountRecovery: isAccountRecoveryEnabledForEnvironment,
       checkEmailLink,
     });

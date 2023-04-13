@@ -14,7 +14,7 @@ const TEMPLATE_NAME = "check-your-phone/index.njk";
 
 export function checkYourPhoneGet(req: Request, res: Response): void {
   res.render(TEMPLATE_NAME, {
-    phoneNumber: req.session.user.phoneNumber,
+    phoneNumber: req.session.user.redactedPhoneNumber,
   });
 }
 

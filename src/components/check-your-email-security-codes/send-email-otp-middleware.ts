@@ -12,7 +12,7 @@ export async function sendEmailOtp(
   notificationService = sendNotificationService()
 ): Promise<void> {
   const email = req.session.user.email.toLowerCase();
-  const phoneNumber = req.session.user.phoneNumber;
+  const phoneNumber = req.session.user.redactedPhoneNumber;
   const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
   const sendNotificationResponse = await notificationService.sendNotification(

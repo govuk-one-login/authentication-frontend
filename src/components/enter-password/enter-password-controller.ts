@@ -128,7 +128,7 @@ export function enterPasswordPost(
 
     const isPasswordChangeRequired = userLogin.data.passwordChangeRequired;
 
-    req.session.user.phoneNumber = userLogin.data.redactedPhoneNumber;
+    req.session.user.redactedPhoneNumber = userLogin.data.redactedPhoneNumber;
     req.session.user.isConsentRequired = userLogin.data.consentRequired;
     req.session.user.isAccountPartCreated = !userLogin.data.mfaMethodVerified;
     req.session.user.isLatestTermsAndConditionsAccepted =
