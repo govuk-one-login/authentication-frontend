@@ -7,7 +7,7 @@ import { sendNotificationService } from "../common/send-notification/send-notifi
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import xss from "xss";
 import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types";
-import { verifyMfaCodePost } from "../common/verify-mfa-code/verify-mfa-code-post";
+import { verifyMfaCodePost } from "../common/verify-mfa-code/verify-mfa-code-controller";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";

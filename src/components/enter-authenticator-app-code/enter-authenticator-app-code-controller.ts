@@ -8,7 +8,7 @@ import { accountRecoveryService } from "../common/account-recovery/account-recov
 import { BadRequestError } from "../../utils/error";
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
-import { verifyMfaCodePost } from "../common/verify-mfa-code/verify-mfa-code-post";
+import { verifyMfaCodePost } from "../common/verify-mfa-code/verify-mfa-code-controller";
 
 const TEMPLATE_NAME = "enter-authenticator-app-code/index.njk";
 
