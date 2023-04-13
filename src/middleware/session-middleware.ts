@@ -14,6 +14,11 @@ export function initialiseSessionMiddleware(
 
     const email =
       req.session && req.session.user ? req.session.user.email : undefined;
+    const redactedPhoneNumber =
+      req.session && req.session.user
+        ? req.session.user.redactedPhoneNumber
+        : undefined;
+
     const phoneNumber =
       req.session && req.session.user
         ? req.session.user.phoneNumber
@@ -21,6 +26,7 @@ export function initialiseSessionMiddleware(
 
     req.session.user = {
       email: email,
+      redactedPhoneNumber: redactedPhoneNumber,
       phoneNumber: phoneNumber,
     };
   }

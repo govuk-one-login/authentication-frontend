@@ -48,7 +48,8 @@ export function enterPhoneNumberPost(
       phoneNumber = req.body.phoneNumber;
     }
 
-    req.session.user.phoneNumber = redactPhoneNumber(phoneNumber);
+    req.session.user.redactedPhoneNumber = redactPhoneNumber(phoneNumber);
+    req.session.user.phoneNumber = phoneNumber;
 
     const updateProfileResponse = await profileService.updateProfile(
       sessionId,

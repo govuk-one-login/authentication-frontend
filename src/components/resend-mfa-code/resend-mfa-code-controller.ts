@@ -34,7 +34,7 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     });
   } else {
     res.render("resend-mfa-code/index.njk", {
-      phoneNumber: req.session.user.phoneNumber,
+      phoneNumber: req.session.user.redactedPhoneNumber,
       isResendCodeRequest: req.query?.isResendCodeRequest,
     });
   }

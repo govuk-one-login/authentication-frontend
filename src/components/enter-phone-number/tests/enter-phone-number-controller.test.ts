@@ -92,7 +92,7 @@ describe("enter phone number controller", () => {
       expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
-      expect(req.session.user.phoneNumber).to.be.eq("3990");
+      expect(req.session.user.redactedPhoneNumber).to.be.eq("3990");
     });
 
     it("should redirect to /check-your-phone when success with valid international number", async () => {
@@ -120,7 +120,7 @@ describe("enter phone number controller", () => {
       expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
-      expect(req.session.user.phoneNumber).to.be.eq("3322");
+      expect(req.session.user.redactedPhoneNumber).to.be.eq("3322");
     });
 
     it("should throw error when API call to /update-profile throws error", async () => {

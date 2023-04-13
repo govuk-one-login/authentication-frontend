@@ -40,6 +40,7 @@ export interface PlaceholderReplacement {
 export interface UserSession {
   isAuthenticated?: boolean;
   email?: string;
+  redactedPhoneNumber?: string;
   phoneNumber?: string;
   journey?: { nextPath: string; optionalPaths: string[] };
   isConsentRequired?: boolean;
