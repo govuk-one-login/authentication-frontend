@@ -3,25 +3,11 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% set pageTitleName = 'pages.enterAuthenticatorAppCode.title' | translate %}
 
 {% block content %}
 
   {% include "common/errors/errorSummary.njk" %}
-  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterAuthenticatorAppCode.header' | translate }}</h1>
-  <p class="govuk-body">{{ 'pages.enterAuthenticatorAppCode.info.paragraph1' | translate }} </p>
-
-  {% set insetTextHtml %}
-    <p class="govuk-body">
-      {{ 'pages.enterAuthenticatorAppCode.info.paragraph2' | translate }}
-      <span class="govuk-!-font-weight-bold">{{ 'pages.enterAuthenticatorAppCode.info.authenticatorApp' | translate }}</span>
-      <span>{{ 'pages.enterAuthenticatorAppCode.info.paragraph2End' | translate }}</span>
-    </p>
-  {% endset %}
-  {{ govukInsetText({
-    html: insetTextHtml
-  }) }}
 
   <form id="form-tracking" action="/enter-authenticator-app-code" method="post" novalidate="novalidate">
 
@@ -29,26 +15,26 @@
 
     {{ govukInput({
       label: {
-        text: 'pages.enterAuthenticatorAppCode.code.label' | translate
+        text: 'pages.enterAuthenticatorAppCode.header' | translate,
+        classes: "govuk-label--l",
+        isPageHeading: true
       },
-      hint: {
-        text: 'pages.enterAuthenticatorAppCode.code.labelSummary' | translate
-      },
-      classes: "govuk-input--width-10 govuk-!-font-weight-bold",
-      id: "code",
-      name: "code",
-      inputmode: "numeric",
-      spellcheck: false,
-      autocomplete:"off",
-      errorMessage: {
-        text: errors['code'].text
-      } if (errors['code'])}) }}
+    classes: "govuk-input--width-10",
+    id: "code",
+    name: "code",
+    inputmode: "numeric",
+    spellcheck: false,
+    autocomplete:"one-time-code",
+    errorMessage: {
+      text: errors['code'].text
+    } if (errors['code'])})
+  }}
 
     {{ govukButton({
-      "text": "general.continue.label" | translate,
-      "type": "Submit",
-      "preventDoubleClick": true
-    }) }}
+    "text": "general.continue.label" | translate,
+    "type": "Submit",
+    "preventDoubleClick": true
+  }) }}
 
   </form>
 

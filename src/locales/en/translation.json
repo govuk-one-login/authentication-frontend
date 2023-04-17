@@ -452,12 +452,11 @@
       }
     },
     "enterMfa": {
-      "title": "You need to enter a security code",
-      "header": "You need to enter a security code",
+      "title": "Check your phone",
+      "header": "Check your phone",
       "info": {
-        "paragraph1": "This helps your GOV.UK One Login secure.",
-        "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes.",
-        "paragraph3": "We sent a code to the phone number linked to your GOV.UK One Login."
+        "paragraph1": "We sent a code to the phone number linked to your GOV.UK One Login.",
+        "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes."
       },
       "resend": {
         "link": "Request a new code",
@@ -475,7 +474,6 @@
       },
       "details": {
         "summaryText": "Problems with the code?",
-        "sendTheCodeAgain": "Send the code again",
         "text1": "We can ",
         "sendCodeLinkText": "send the code again",
         "sendCodeLinkHref": "/resend-code",
@@ -1910,17 +1908,9 @@
       "changeMfaChoiceLinkText": "Get a code another way"
     },
     "enterAuthenticatorAppCode": {
-      "title": "You need to enter a security code",
-      "header": "You need to enter a security code",
-      "info": {
-        "paragraph1": "This helps your GOV.UK One Login secure.",
-        "paragraph2": "To get a security code, open the ",
-        "authenticatorApp": "authenticator app ",
-        "paragraph2End": "you used to create your GOV.UK One Login"
-      },
+      "title": "Enter the 6 digit security code shown in your authenticator app",
+      "header": "Enter the 6 digit security code shown in your authenticator app",
       "code": {
-        "label": "Enter the security code",
-        "labelSummary": "This is the 6-digit number shown in your authenticator app",
         "validationError": {
           "required": "Enter the security code",
           "invalidFormat": "Enter the security code using only 6 digits",
