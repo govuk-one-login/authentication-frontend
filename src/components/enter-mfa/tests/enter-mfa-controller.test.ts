@@ -3,7 +3,12 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { enterMfaGet, enterMfaPost } from "../enter-mfa-controller";
+import {
+  ENTER_MFA_DEFAULT_TEMPLATE_NAME,
+  enterMfaGet,
+  enterMfaPost,
+  UPLIFT_REQUIRED_SMS_TEMPLATE_NAME,
+} from "../enter-mfa-controller";
 
 import { VerifyCodeInterface } from "../../common/verify-code/types";
 import { AccountRecoveryInterface } from "../../common/account-recovery/types";
@@ -80,6 +85,36 @@ describe("enter mfa controller", () => {
         supportAccountRecovery: true,
         checkEmailLink:
           PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=SMS",
+      });
+    });
+
+    it("should render 2fa service uplift view when uplift is required", async () => {
+      req.session.user.isUpliftRequired = true;
+      process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
+
+      await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(UPLIFT_REQUIRED_SMS_TEMPLATE_NAME, {
+        phoneNumber: TEST_PHONE_NUMBER,
+        supportAccountRecovery: false,
+      });
+    });
+
+    it("should render default template when uplift is not required", async () => {
+      req.session.user.isUpliftRequired = false;
+      process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
+
+      await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(ENTER_MFA_DEFAULT_TEMPLATE_NAME, {
+        phoneNumber: TEST_PHONE_NUMBER,
+        supportAccountRecovery: false,
       });
     });
   });

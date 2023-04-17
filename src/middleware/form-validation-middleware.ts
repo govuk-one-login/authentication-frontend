@@ -34,3 +34,28 @@ export function validateBodyMiddleware(
     next();
   };
 }
+
+export function validateBodyMiddlewareUpliftTemplate(
+  upliftTemplate: string,
+  defaultTemplate: string,
+  postValidationLocals?: (req: Request) => Record<string, unknown>
+) {
+  return (req: Request, res: Response, next: NextFunction): any => {
+    const { isUpliftRequired } = req.session.user;
+
+    const template = isUpliftRequired ? upliftTemplate : defaultTemplate;
+
+    const errors = validationResult(req)
+      .formatWith(validationErrorFormatter)
+      .mapped();
+
+    const locals =
+      typeof postValidationLocals !== "undefined"
+        ? postValidationLocals(req)
+        : undefined;
+    if (!isObjectEmpty(errors)) {
+      return renderBadRequest(res, req, template, errors, locals);
+    }
+    next();
+  };
+}

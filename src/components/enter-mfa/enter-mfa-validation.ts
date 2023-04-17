@@ -1,6 +1,10 @@
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
+import { validateBodyMiddlewareUpliftTemplate } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 import { validateCode } from "../common/verify-code/verify-code-validation";
+import {
+  ENTER_MFA_DEFAULT_TEMPLATE_NAME,
+  UPLIFT_REQUIRED_SMS_TEMPLATE_NAME,
+} from "./enter-mfa-controller";
 
 export function validateEnterMfaRequest(): ValidationChainFunc {
   return [
@@ -10,6 +14,9 @@ export function validateEnterMfaRequest(): ValidationChainFunc {
       minLengthKey: "pages.checkYourPhone.code.validationError.minLength",
       numbersOnlyKey: "pages.checkYourPhone.code.validationError.invalidFormat",
     }),
-    validateBodyMiddleware("enter-mfa/index.njk"),
+    validateBodyMiddlewareUpliftTemplate(
+      UPLIFT_REQUIRED_SMS_TEMPLATE_NAME,
+      ENTER_MFA_DEFAULT_TEMPLATE_NAME
+    ),
   ];
 }

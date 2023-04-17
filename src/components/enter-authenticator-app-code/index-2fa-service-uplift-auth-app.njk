@@ -1,0 +1,68 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% set pageTitleName = 'pages.enterAuthenticatorAppCode.upliftRequired.title' | translate %}
+
+{% block content %}
+
+    {% include "common/errors/errorSummary.njk" %}
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterAuthenticatorAppCode.upliftRequired.header' | translate }}</h1>
+    <p class="govuk-body">{{ 'pages.enterAuthenticatorAppCode.upliftRequired.info.paragraph1' | translate }} </p>
+
+    {% set insetTextHtml %}
+        <p class="govuk-body">
+            {{ 'pages.enterAuthenticatorAppCode.upliftRequired.info.paragraph2' | translate }}
+            <span class="govuk-!-font-weight-bold">{{ 'pages.enterAuthenticatorAppCode.upliftRequired.info.authenticatorApp' | translate }}</span>
+            <span>{{ 'pages.enterAuthenticatorAppCode.upliftRequired.info.paragraph2End' | translate }}</span>
+        </p>
+    {% endset %}
+    {{ govukInsetText({
+        html: insetTextHtml
+    }) }}
+
+    <form id="form-tracking" action="/enter-authenticator-app-code" method="post" novalidate="novalidate">
+
+        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+        {{ govukInput({
+            label: {
+                text: 'pages.enterAuthenticatorAppCode.upliftRequired.code.label' | translate
+            },
+            hint: {
+                text: 'pages.enterAuthenticatorAppCode.upliftRequired.code.labelSummary' | translate
+            },
+            classes: "govuk-input--width-10 govuk-!-font-weight-bold",
+            id: "code",
+            name: "code",
+            inputmode: "numeric",
+            spellcheck: false,
+            autocomplete:"off",
+            errorMessage: {
+                text: errors['code'].text
+            } if (errors['code'])}) }}
+
+        {{ govukButton({
+            "text": "general.continue.label" | translate,
+            "type": "Submit",
+            "preventDoubleClick": true
+        }) }}
+
+    </form>
+
+    {% if isAccountRecoveryPermitted %}
+        {% set detailsHTML %}
+            <p class="govuk-body">
+                {{'pages.enterAuthenticatorAppCode.details.text1' | translate}}
+                <a href="{{checkEmailLink}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.text2'| translate}}</a>{{'pages.enterAuthenticatorAppCode.details.text3' | translate}}
+            </p>
+        {% endset %}
+
+        {{ govukDetails({
+            summaryText: 'pages.enterAuthenticatorAppCode.details.summary' | translate,
+            html: detailsHTML
+        }) }}
+    {% endif %}
+{% endblock %}
