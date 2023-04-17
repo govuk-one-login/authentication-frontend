@@ -58,16 +58,17 @@
       {% endif %}
     {% endset %}
 
-    {{ govukDetails({
-      summaryText: 'pages.enterMfa.details.summaryText' | translate,
-      html: detailsHTML
-    }) }}
-
     {{ govukButton({
       "text": "general.continue.label" | translate,
       "type": "Submit",
       "preventDoubleClick": true
     }) }}
+
+    {{ govukDetails({
+      summaryText: 'pages.enterMfa.details.summaryText' | translate,
+      html: detailsHTML
+    }) }}
+
 
   </form>
 {% endblock %}
