@@ -452,12 +452,11 @@
       }
     },
     "enterMfa": {
-      "title": "Mae angen i chi roi cod diogelwch",
-      "header": "Mae angen i chi roi cod diogelwch",
+      "title": "Gwiriwch eich ffôn",
+      "header": "Gwiriwch eich ffôn",
       "info": {
-        "paragraph1": "Mae hwn yn helpu i gadw eich GOV.UK One Login yn ddiogel.",
-        "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud.",
-        "paragraph3": "Rydym wedi anfon cod at y rhif ffôn sy’n gysylltiedig â’ch GOV.UK One Login."
+        "paragraph1": "Rydym wedi anfon cod at y rhif ffôn sy’n gysylltiedig â’ch GOV.UK One Login.",
+        "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud."
       },
       "resend": {
         "link": "Gofynnwch am god newydd",
@@ -475,7 +474,6 @@
       },
       "details": {
         "summaryText": "Problemau gyda’r cod?",
-        "sendTheCodeAgain": "Anfon y cod eto",
         "text1": "Gallwn ",
         "sendCodeLinkText": "anfon y cod eto",
         "sendCodeLinkHref": "/resend-code",
@@ -1910,17 +1908,9 @@
       "changeMfaChoiceLinkText": "Cael cod mewn ffordd arall"
     },
     "enterAuthenticatorAppCode": {
-      "title": "Mae angen i chi roi cod diogelwch",
-      "header": "Mae angen i chi roi cod diogelwch",
-      "info": {
-        "paragraph1": "Mae hwn yn helpu i gadw eich GOV.UK One Login yn ddiogel.",
-        "paragraph2": "I gael cod diogelwch, agorwch yr ",
-        "authenticatorApp": "ap dilysydd ",
-        "paragraph2End": "rydych wedi’i ddefnyddio i greu eich GOV.UK One Login"
-      },
+      "title": "Rhowch y cod diogelwch 6 digid a ddangosir yn eich ap dilysydd",
+      "header": "Rhowch y cod diogelwch 6 digid a ddangosir yn eich ap dilysydd",
       "code": {
-        "label": "Rhowch y cod diogelwch",
-        "labelSummary": "Dyma’r rhif 6-digid a ddangosir yn eich ap dilysydd",
         "validationError": {
           "required": "Rhowch y cod diogelwch",
           "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
