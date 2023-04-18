@@ -6,6 +6,8 @@
 
 {% if isAccountPartCreated %}
   {% set pageTitleName = 'pages.getSecurityCodes.titleAccountPartCreated' | translate %}
+{% elif isAccountRecoveryJourney %}
+ {% set pageTitleName = 'pages.getSecurityCodes.accountRecoveryVariants.title' | translate %}
 {% else %}
   {% set pageTitleName = 'pages.getSecurityCodes.title' | translate %}
 {% endif %}
@@ -22,12 +24,15 @@
 {% if isAccountPartCreated %}
   {% set radioHeading = 'pages.getSecurityCodes.headerAccountPartCreated' | translate %}
   {% set radioHintText = 'pages.getSecurityCodes.summaryAccountPartCreated' | translate %}
+{% elif isAccountRecoveryJourney %}
+  {% set radioHeading = 'pages.getSecurityCodes.accountRecoveryVariants.header' | translate %}
+  {% set radioHintText = 'pages.getSecurityCodes.accountRecoveryVariants.summary' | translate %}
 {% else %}
   {% set radioHeading = 'pages.getSecurityCodes.header' | translate %}
   {% set radioHintText = 'pages.getSecurityCodes.summary' | translate %}
 {% endif %}
 
-<form action="/get-security-codes" method="post" novalidate>
+<form action="/get-security-codes?accountRecovery={{isAccountRecoveryJourney}}" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="isAccountPartCreated" value="{{isAccountPartCreated}}"/>

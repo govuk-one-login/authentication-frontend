@@ -9,6 +9,7 @@ import { VerifyCodeInterface } from "./types";
 import { ExpressRouteFunc } from "../../../types";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine";
 import { NOTIFICATION_TYPE } from "../../../app.constants";
+import { pathWithQueryParam } from "../constants";
 
 interface Config {
   notificationType: NOTIFICATION_TYPE;
@@ -25,6 +26,28 @@ export function verifyCodePost(
   return async function (req: Request, res: Response) {
     const code = req.body["code"];
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+
+    // PLACEHOLDER AS API IS NOT SET UP FOR THIS NOTIFICATION TYPE YET - replaces steps after API call but will be possible to merge logic together):
+    if (
+      options.notificationType ===
+      NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES
+    ) {
+      const nextEvent = USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED;
+      let nextPath = getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        nextEvent,
+        {
+          isIdentityRequired: req.session.user.isIdentityRequired,
+          isConsentRequired: req.session.user.isConsentRequired,
+          isLatestTermsAndConditionsAccepted:
+            req.session.user.isLatestTermsAndConditionsAccepted,
+        },
+        res.locals.sessionId
+      );
+      nextPath = pathWithQueryParam(nextPath, "accountRecovery", "true");
+      res.redirect(nextPath);
+    }
 
     const result = await service.verifyCode(
       sessionId,
@@ -77,19 +100,19 @@ export function verifyCodePost(
         throw new Error("Unknown notification type");
     }
 
-    res.redirect(
-      getNextPathAndUpdateJourney(
-        req,
-        req.path,
-        nextEvent,
-        {
-          isIdentityRequired: req.session.user.isIdentityRequired,
-          isConsentRequired: req.session.user.isConsentRequired,
-          isLatestTermsAndConditionsAccepted:
-            req.session.user.isLatestTermsAndConditionsAccepted,
-        },
-        res.locals.sessionId
-      )
+    const nextPath = getNextPathAndUpdateJourney(
+      req,
+      req.path,
+      nextEvent,
+      {
+        isIdentityRequired: req.session.user.isIdentityRequired,
+        isConsentRequired: req.session.user.isConsentRequired,
+        isLatestTermsAndConditionsAccepted:
+          req.session.user.isLatestTermsAndConditionsAccepted,
+      },
+      res.locals.sessionId
     );
+
+    res.redirect(nextPath);
   };
 }
