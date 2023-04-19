@@ -86,9 +86,14 @@ export function contactUsGet(req: Request, res: Response): void {
     }
   }
 
-  return res.render("contact-us/index-public-contact-us.njk", {
+  const options = {
     referer: referer,
-  });
+    ...(getAppSessionId(req.query.appSessionId as string) && {
+      appSessionId: getAppSessionId(req.query.appSessionId as string),
+    }),
+  };
+
+  return res.render("contact-us/index-public-contact-us.njk", options);
 }
 
 export function validateAppErrorCode(appErrorCode: string): boolean {
@@ -117,6 +122,10 @@ export function getAppSessionId(appSessionId: string | undefined): string {
   }
 
   return validateAppId(appSessionId) ? appSessionId : "";
+}
+
+export function isAppJourney(appSessionId: string): boolean {
+  return validateAppId(appSessionId);
 }
 
 export function validateAppId(appSessionId: string): boolean {
@@ -158,6 +167,9 @@ export function contactUsFormPost(req: Request, res: Response): void {
   const queryParams = new URLSearchParams({
     theme: req.body.theme,
     referer: validateReferer(req.body.referer),
+    ...(validateAppId(req.body.appSessionId) && {
+      appSessionId: getAppSessionId(req.body.appSessionId),
+    }),
   }).toString();
   if (
     [
@@ -176,12 +188,14 @@ export function furtherInformationGet(req: Request, res: Response): void {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
 
-  if (req.query.appErrorCode && req.query.appSessionId) {
+  if (isAppJourney(req.query.appSessionId as string)) {
     return res.render("contact-us/further-information/index.njk", {
       theme: req.query.theme,
       referer: validateReferer(req.query.referer as string),
-      appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
       appSessionId: getAppSessionId(req.query.appSessionId as string),
+      ...(getAppErrorCode(req.query.appErrorCode as string) && {
+        appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
+      }),
     });
   }
 
@@ -199,9 +213,14 @@ export function furtherInformationPost(req: Request, res: Response): void {
     referer: validateReferer(req.body.referer),
   });
 
-  if (req.body.appErrorCode && req.body.appSessionId) {
-    queryParams.append("appErrorCode", getAppErrorCode(req.body.appErrorCode));
+  if (isAppJourney(req.body.appSessionId)) {
     queryParams.append("appSessionId", getAppSessionId(req.body.appSessionId));
+    if (req.body.appErrorCode) {
+      queryParams.append(
+        "appErrorCode",
+        getAppErrorCode(req.body.appErrorCode)
+      );
+    }
   }
 
   res.redirect(url + "?" + queryParams.toString());

@@ -11,6 +11,7 @@ import {
   getAppSessionId,
   validateAppId,
   createTicketIdentifier,
+  isAppJourney,
 } from "../contact-us-controller";
 import { SUPPORT_TYPE, ZENDESK_THEMES } from "../../../app.constants";
 
@@ -159,7 +160,7 @@ describe("appErrorCode and appSessionId query parameters", () => {
     });
   });
 
-  describe("validateAppId", () => {
+  describe("validateAppSessionId", () => {
     validAppSessionIds.forEach((i) => {
       it(`should return true when passed a valid string like ${i}`, () => {
         expect(validateAppId(i)).to.be.true;
@@ -172,19 +173,13 @@ describe("appErrorCode and appSessionId query parameters", () => {
       expect(getAppSessionId("")).to.be.equal("");
     });
 
-    [
-      "1234abcd-12ab-11aa-90aa-04938abc12ab",
-      "abc5678a-ab12-1c56-88ed-facc89109aee",
-    ].forEach((i) => {
+    validAppSessionIds.forEach((i) => {
       it(`should return the original string when passed a valid string like ${i}`, () => {
         expect(getAppSessionId(i)).to.equal(i);
       });
     });
 
-    [
-      "1234zbcd-12zb-11zz-90zz-04938zc12zb",
-      "zbc5678z-zb12-1c56-88ed-fzcc89109ee",
-    ].forEach((i) => {
+    invalidAppSessionIds.forEach((i) => {
       it(`should return "" when passed an invalid string like ${i}`, () => {
         expect(getAppErrorCode(i)).to.equal("");
       });
@@ -201,6 +196,20 @@ describe("appErrorCode and appSessionId query parameters", () => {
     invalidAppSessionIds.forEach((i) => {
       it(`should return not return the original string when passed an invalid string like ${i}`, () => {
         expect(getAppErrorCode(i)).to.not.equal(i);
+      });
+    });
+  });
+
+  describe("isAppJourney", () => {
+    validAppSessionIds.forEach((i) => {
+      it(`should return true when passed a valid appSessionId like ${i}`, () => {
+        expect(isAppJourney(i)).to.be.true;
+      });
+    });
+
+    invalidAppSessionIds.forEach((i) => {
+      it(`should return false when passed a invalid appSessionId like ${i}`, () => {
+        expect(isAppJourney(i)).to.be.false;
       });
     });
   });
