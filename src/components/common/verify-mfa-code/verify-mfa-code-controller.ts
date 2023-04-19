@@ -27,6 +27,12 @@ export function verifyMfaCodePost(
     const code = req.body["code"];
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
+    let profileInformation;
+
+    if (options.registration && options.methodType === MFA_METHOD_TYPE.SMS) {
+      profileInformation = req.session.user.phoneNumber;
+    }
+
     const result = await service.verifyMfaCode(
       options.methodType,
       code,
@@ -34,7 +40,8 @@ export function verifyMfaCodePost(
       sessionId,
       clientSessionId,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      profileInformation
     );
 
     if (!result.success) {

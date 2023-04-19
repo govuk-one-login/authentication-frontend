@@ -14,10 +14,10 @@ import {
   ResponseOutput,
 } from "mock-req-res";
 import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
-import { AuthAppServiceInterface } from "../types";
 import { ERROR_CODES } from "../../common/constants";
 import { BadRequestError } from "../../../utils/error";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
+import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
 
 describe("setup-authenticator-app controller", () => {
   let req: RequestOutput;
@@ -61,8 +61,8 @@ describe("setup-authenticator-app controller", () => {
         updateProfile: sinon.fake.returns({ success: true }),
       };
 
-      const fakeMfAService: AuthAppServiceInterface = {
-        verifyAccessCode: sinon.fake.returns({ success: true }),
+      const fakeMfAService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({ success: true }),
       };
 
       const fakeNotificationService: SendNotificationServiceInterface = {
@@ -76,7 +76,7 @@ describe("setup-authenticator-app controller", () => {
       )(req as Request, res as Response);
 
       expect(updateProfileService.updateProfile).to.have.been.calledOnce;
-      expect(fakeMfAService.verifyAccessCode).to.have.been.calledOnce;
+      expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
 
       expect(res.redirect).to.have.calledWith(
@@ -93,8 +93,8 @@ describe("setup-authenticator-app controller", () => {
         updateProfile: sinon.fake.returns({ success: true }),
       };
 
-      const fakeMfAService: AuthAppServiceInterface = {
-        verifyAccessCode: sinon.fake.returns({
+      const fakeMfAService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({
           success: false,
           data: { code: ERROR_CODES.AUTH_APP_INVALID_CODE },
         }),
@@ -111,7 +111,7 @@ describe("setup-authenticator-app controller", () => {
       )(req as Request, res as Response);
 
       expect(updateProfileService.updateProfile).to.have.been.calledOnce;
-      expect(fakeMfAService.verifyAccessCode).to.have.been.calledOnce;
+      expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.not.have.been.called;
 
       expect(res.render).to.have.been.calledWith(
@@ -129,8 +129,8 @@ describe("setup-authenticator-app controller", () => {
         updateProfile: sinon.fake.returns({ success: true }),
       };
 
-      const fakeMfAService: AuthAppServiceInterface = {
-        verifyAccessCode: sinon.fake.returns({ success: true }),
+      const fakeMfAService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({ success: true }),
       };
 
       const fakeNotificationService: SendNotificationServiceInterface = {
@@ -144,7 +144,7 @@ describe("setup-authenticator-app controller", () => {
       )(req as Request, res as Response);
 
       expect(updateProfileService.updateProfile).to.have.been.calledOnce;
-      expect(fakeMfAService.verifyAccessCode).to.have.been.calledOnce;
+      expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.PROVE_IDENTITY);
@@ -165,8 +165,8 @@ describe("setup-authenticator-app controller", () => {
         }),
       };
 
-      const fakeMfAService: AuthAppServiceInterface = {
-        verifyAccessCode: sinon.fake.returns({ success: true }),
+      const fakeMfAService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({ success: true }),
       };
 
       await expect(
@@ -190,8 +190,8 @@ describe("setup-authenticator-app controller", () => {
         }),
       };
 
-      const fakeMfAService: AuthAppServiceInterface = {
-        verifyAccessCode: sinon.fake.returns({
+      const fakeMfAService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({
           success: false,
           data: {
             code: "1234",
