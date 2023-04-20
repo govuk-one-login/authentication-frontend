@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { ERROR_CODES, pathWithQueryParam } from "../common/constants";
+import {
+  ERROR_CODES,
+  getErrorPathByCode,
+  getNextPathAndUpdateJourney,
+  pathWithQueryParam,
+} from "../common/constants";
 import { supportAccountRecovery } from "../../config";
 import { VerifyMfaCodeInterface } from "./types";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
@@ -8,7 +13,11 @@ import { accountRecoveryService } from "../common/account-recovery/account-recov
 import { BadRequestError } from "../../utils/error";
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
-import { verifyMfaCodePost } from "../common/verify-mfa-code/verify-mfa-code-controller";
+import {
+  formatValidationError,
+  renderBadRequest,
+} from "../../utils/validation";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 
 export const ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME =
   "enter-authenticator-app-code/index.njk";
@@ -84,21 +93,56 @@ export const enterAuthenticatorAppCodePost = (
   service: VerifyMfaCodeInterface = verifyMfaCodeService()
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const { isUpliftRequired } = req.session.user;
 
     const template = isUpliftRequired
       ? UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
       : ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME;
 
-    const verifyMfaCodeRequest = verifyMfaCodePost(service, {
-      methodType: MFA_METHOD_TYPE.AUTH_APP,
-      registration: false,
-      template: template,
-      validationKey:
-        "pages.enterAuthenticatorAppCode.code.validationError.invalidCode",
-      validationErrorCode: ERROR_CODES.AUTH_APP_INVALID_CODE,
-    });
+    const result = await service.verifyMfaCode(
+      MFA_METHOD_TYPE.AUTH_APP,
+      req.body["code"],
+      false,
+      sessionId,
+      clientSessionId,
+      req.ip,
+      persistentSessionId
+    );
 
-    return verifyMfaCodeRequest(req, res);
+    if (!result.success) {
+      if (result.data.code === ERROR_CODES.AUTH_APP_INVALID_CODE) {
+        const error = formatValidationError(
+          "code",
+          req.t(
+            "pages.enterAuthenticatorAppCode.code.validationError.invalidCode"
+          )
+        );
+        return renderBadRequest(res, req, template, error);
+      }
+
+      const path = getErrorPathByCode(result.data.code);
+
+      if (path) {
+        return res.redirect(path);
+      }
+
+      throw new BadRequestError(result.data.message, result.data.code);
+    }
+
+    res.redirect(
+      getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.AUTH_APP_CODE_VERIFIED,
+        {
+          isIdentityRequired: req.session.user.isIdentityRequired,
+          isConsentRequired: req.session.user.isConsentRequired,
+          isLatestTermsAndConditionsAccepted:
+            req.session.user.isLatestTermsAndConditionsAccepted,
+        },
+        res.locals.sessionId
+      )
+    );
   };
 };

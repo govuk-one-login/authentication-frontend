@@ -22,14 +22,16 @@ export function verifyMfaCodeService(
     sessionId: string,
     clientSessionId: string,
     sourceIp: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    profileInformation?: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.VERIFY_MFA_CODE,
       {
         mfaMethodType: methodType,
-        code: code,
-        isRegistration: isRegistration,
+        code,
+        isRegistration,
+        ...(profileInformation && { profileInformation }),
       },
       getRequestConfig({
         sessionId,

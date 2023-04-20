@@ -34,6 +34,9 @@
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
+    {% if appSessionId %}
+        <input type="hidden" name="appSessionId" value="{{appSessionId}}"/>
+    {% endif %}
 
     {% set items = [
         {
