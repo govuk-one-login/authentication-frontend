@@ -509,6 +509,14 @@
         "govukLinkText": "hafan GOV.UK"
       }
     },
+    "changeSecurityCodesConfirmation": {
+      "title": "Rydych wedi newid sut rydych yn cael codau diogelwch",
+      "header": "Rydych wedi newid sut rydych yn cael codau diogelwch",
+      "info": {
+        "paragraphSMS": "Byddwn yn anfon codau diogelwch i’ch rhif ffôn sy’n gorffen gyda [mobile] pan fyddwch yn mewngofnodi.",
+        "paragraphAuthApp": "Bydd angen i chi ddefnyddio’ch ap dilysydd i gael codau diogelwch pan rydych yn mewngofnodi."
+      }
+    },
     "checkYourEmailSecurityCodes": {
       "title": "Gwiriwch eich e-bost",
       "header": "Gwiriwch eich e-bost",

@@ -509,6 +509,14 @@
         "govukLinkText": "GOV.UK homepage"
       }
     },
+    "changeSecurityCodesConfirmation": {
+      "title": "You’ve changed how you get security codes",
+      "header": "You’ve changed how you get security codes",
+      "info": {
+        "paragraphSMS": "We’ll send security codes to your phone number ending with [mobile] when you sign in.",
+        "paragraphAuthApp": "You’ll need to use your authenticator app to get security codes when you sign in."
+      }
+    },
     "checkYourEmailSecurityCodes": {
       "title": "Check your email",
       "header": "Check your email",
