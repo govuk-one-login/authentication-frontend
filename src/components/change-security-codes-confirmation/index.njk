@@ -1,0 +1,25 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% set pageTitleName = 'pages.cannotChangeSecurityCodes.title' | translate %}
+{% set showBack = true %}
+{% set hrefBack = 'check-your-phone' %}
+
+{% block content %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.cannotChangeSecurityCodes.header' | translate}}</h1>
+
+<p class="govuk-body">{{'pages.cannotChangeSecurityCodes.info.paragraph1' | translate}}</p>
+<p class="govuk-body">{{'pages.cannotChangeSecurityCodes.info.paragraph2' | translate}}</p>
+
+<h2 class="govuk-heading-s">{{'pages.cannotChangeSecurityCodes.info.canDoSubtitle' | translate}}</h2>
+
+<p class="govuk-body">{{'pages.cannotChangeSecurityCodes.info.paragraph3' | translate}}</p>
+
+<p class="govuk-body">
+    {{'pages.cannotChangeSecurityCodes.info.paragraph4Start' | translate}}<a href="{{'pages.cannotChangeSecurityCodes.info.govukLinkHref' | translate}}" class="govuk-link">{{'pages.cannotChangeSecurityCodes.info.govukLinkText' | translate}}</a>.
+</p>
+
+{% endblock %}
