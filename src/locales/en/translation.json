@@ -484,7 +484,7 @@
       "upliftRequired": {
         "title": "You need to enter a security code",
         "header": "You need to enter a security code",
-        "paragraph1": "This helps your GOV.UK One Login secure.",
+        "paragraph1": "This helps keep your GOV.UK One Login secure.",
         "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes.",
         "paragraph3": "We sent a code to the phone number linked to your GOV.UK One Login.",
         "sendTheCodeAgain": "Send the code again"
@@ -1935,7 +1935,7 @@
         "title": "You need to enter a security code",
         "header": "You need to enter a security code",
         "info": {
-          "paragraph1": "This helps your GOV.UK One Login secure.",
+          "paragraph1": "This helps keep your GOV.UK One Login secure.",
           "paragraph2": "To get a security code, open the ",
           "authenticatorApp": "authenticator app ",
           "paragraph2End": "you used to create your GOV.UK One Login"
