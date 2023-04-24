@@ -1574,7 +1574,7 @@
       },
       "serviceTryingToUse": {
         "header": "What service were you trying to use?",
-        "hint": "For example, get a DBS check",
+        "hint": "If you cannot remember the name of the service, tell us what you were trying to do, for example get a DBS check. Or you can tell us the name of the government department you’ve been dealing with.",
         "errorMessage": "Enter the name of the service"
       },
       "replyByEmail": {
