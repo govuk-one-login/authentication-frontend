@@ -2,7 +2,7 @@ import request from "supertest";
 import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
-import * as cheerio from "cheerio";
+import cheerio from "cheerio";
 import decache from "decache";
 import {
   API_ENDPOINTS,
@@ -114,10 +114,6 @@ describe("Integration::setup-authenticator-app", () => {
   });
 
   it("should redirect to /account-created page when successful validation of code", (done) => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.UPDATE_PROFILE)
-      .once()
-      .reply(HTTP_STATUS_CODES.NO_CONTENT, { success: true });
     nock(baseApi)
       .post(API_ENDPOINTS.VERIFY_MFA_CODE)
       .once()
