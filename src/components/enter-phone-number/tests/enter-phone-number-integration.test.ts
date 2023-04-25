@@ -2,13 +2,9 @@ import request from "supertest";
 import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
-import * as cheerio from "cheerio";
+import cheerio from "cheerio";
 import decache from "decache";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants";
+import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
 
 describe("Integration::enter phone number", () => {
@@ -165,9 +161,6 @@ describe("Integration::enter phone number", () => {
 
   it("should redirect to /check-your-phone page when valid UK phone number entered", (done) => {
     nock(baseApi)
-      .post(API_ENDPOINTS.UPDATE_PROFILE)
-      .once()
-      .reply(HTTP_STATUS_CODES.NO_CONTENT)
       .post("/send-notification")
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
@@ -291,9 +284,6 @@ describe("Integration::enter phone number", () => {
 
   it("should redirect to /check-your-phone page when valid international phone number entered", (done) => {
     nock(baseApi)
-      .post(API_ENDPOINTS.UPDATE_PROFILE)
-      .once()
-      .reply(HTTP_STATUS_CODES.NO_CONTENT)
       .post("/send-notification")
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
@@ -313,16 +303,10 @@ describe("Integration::enter phone number", () => {
   });
 
   it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", (done) => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.UPDATE_PROFILE)
-      .times(6)
-      .reply(HTTP_STATUS_CODES.NO_CONTENT, {})
-      .post("/send-notification")
-      .times(6)
-      .reply(400, {
-        code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT,
-        success: false,
-      });
+    nock(baseApi).post("/send-notification").times(6).reply(400, {
+      code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT,
+      success: false,
+    });
 
     request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
@@ -340,16 +324,10 @@ describe("Integration::enter phone number", () => {
   });
 
   it("should redirect to /security-code-invalid-request when exceeded OTP request limit", (done) => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.UPDATE_PROFILE)
-      .once()
-      .reply(HTTP_STATUS_CODES.NO_CONTENT)
-      .post("/send-notification")
-      .once()
-      .reply(400, {
-        code: ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED,
-        success: false,
-      });
+    nock(baseApi).post("/send-notification").once().reply(400, {
+      code: ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED,
+      success: false,
+    });
 
     request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
@@ -364,27 +342,5 @@ describe("Integration::enter phone number", () => {
         `${PATH_NAMES.SECURITY_CODE_WAIT}?actionType=${SecurityCodeErrorType.OtpBlocked}`
       )
       .expect(302, done);
-  });
-
-  it("should return internal server error if /update-profile api call fails", (done) => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.UPDATE_PROFILE)
-      .once()
-      .reply(500, {
-        sessionState: "done",
-      })
-      .post("/send-notification")
-      .once()
-      .reply(200, {});
-
-    request(app)
-      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        phoneNumber: "07738394991",
-      })
-      .expect(500, done);
   });
 });

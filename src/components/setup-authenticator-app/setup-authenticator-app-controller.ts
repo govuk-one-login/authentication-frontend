@@ -1,10 +1,5 @@
 import { Request, Response } from "express";
 import QRCode from "qrcode";
-import {
-  UpdateProfileServiceInterface,
-  UpdateType,
-} from "../common/update-profile/types";
-import { updateProfileService } from "../common/update-profile/update-profile-service";
 import { ExpressRouteFunc } from "../../types";
 import { ERROR_CODES, getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
@@ -46,32 +41,12 @@ export async function setupAuthenticatorAppGet(
 
 export function setupAuthenticatorAppPost(
   service: VerifyMfaCodeInterface = verifyMfaCodeService(),
-  profileService: UpdateProfileServiceInterface = updateProfileService(),
   notificationService: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email, authAppSecret } = req.session.user;
+    const { authAppSecret } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const code = req.body.code;
-
-    const updateProfileResponse = await profileService.updateProfile(
-      sessionId,
-      clientSessionId,
-      email,
-      {
-        profileInformation: authAppSecret,
-        updateProfileType: UpdateType.REGISTER_AUTH_APP,
-      },
-      req.ip,
-      persistentSessionId
-    );
-
-    if (!updateProfileResponse.success) {
-      throw new BadRequestError(
-        updateProfileResponse.data.message,
-        updateProfileResponse.data.code
-      );
-    }
 
     const verifyAccessCodeRes = await service.verifyMfaCode(
       MFA_METHOD_TYPE.AUTH_APP,

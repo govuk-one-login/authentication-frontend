@@ -13,7 +13,6 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
-import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
 import { ERROR_CODES } from "../../common/constants";
 import { BadRequestError } from "../../../utils/error";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
@@ -57,10 +56,6 @@ describe("setup-authenticator-app controller", () => {
       req.session.user.email = "t@t.com";
       req.body.code = "123456";
 
-      const updateProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake.returns({ success: true }),
-      };
-
       const fakeMfAService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({ success: true }),
       };
@@ -69,13 +64,11 @@ describe("setup-authenticator-app controller", () => {
         sendNotification: sinon.fake(),
       };
 
-      await setupAuthenticatorAppPost(
-        fakeMfAService,
-        updateProfileService,
-        fakeNotificationService
-      )(req as Request, res as Response);
+      await setupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
 
-      expect(updateProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
 
@@ -89,10 +82,6 @@ describe("setup-authenticator-app controller", () => {
       req.session.user.email = "t@t.com";
       req.body.code = "123456";
 
-      const updateProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake.returns({ success: true }),
-      };
-
       const fakeMfAService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
           success: false,
@@ -104,13 +93,11 @@ describe("setup-authenticator-app controller", () => {
         sendNotification: sinon.fake(),
       };
 
-      await setupAuthenticatorAppPost(
-        fakeMfAService,
-        updateProfileService,
-        fakeNotificationService
-      )(req as Request, res as Response);
+      await setupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
 
-      expect(updateProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.not.have.been.called;
 
@@ -125,10 +112,6 @@ describe("setup-authenticator-app controller", () => {
       req.session.user.isIdentityRequired = true;
       req.body.code = "123456";
 
-      const updateProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake.returns({ success: true }),
-      };
-
       const fakeMfAService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({ success: true }),
       };
@@ -137,58 +120,21 @@ describe("setup-authenticator-app controller", () => {
         sendNotification: sinon.fake(),
       };
 
-      await setupAuthenticatorAppPost(
-        fakeMfAService,
-        updateProfileService,
-        fakeNotificationService
-      )(req as Request, res as Response);
+      await setupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
 
-      expect(updateProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.PROVE_IDENTITY);
     });
 
-    it("should throw error when failed to update profile", async () => {
-      req.session.user.authAppSecret = "testsecret";
-      req.session.user.email = "t@t.com";
-      req.body.code = "123456";
-
-      const updateProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake.returns({
-          success: false,
-          data: {
-            code: "1234",
-            message: "error",
-          },
-        }),
-      };
-
-      const fakeMfAService: VerifyMfaCodeInterface = {
-        verifyMfaCode: sinon.fake.returns({ success: true }),
-      };
-
-      await expect(
-        setupAuthenticatorAppPost(fakeMfAService, updateProfileService)(
-          req as Request,
-          res as Response
-        )
-      ).to.be.rejectedWith(BadRequestError, "1234:error");
-
-      expect(updateProfileService.updateProfile).to.have.been.calledOnce;
-    });
-
     it("should throw error when not a valid error from verify access code", async () => {
       req.session.user.authAppSecret = "testsecret";
       req.session.user.email = "t@t.com";
       req.body.code = "123456";
-
-      const updateProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake.returns({
-          success: true,
-        }),
-      };
 
       const fakeMfAService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
@@ -201,13 +147,11 @@ describe("setup-authenticator-app controller", () => {
       };
 
       await expect(
-        setupAuthenticatorAppPost(fakeMfAService, updateProfileService)(
+        setupAuthenticatorAppPost(fakeMfAService)(
           req as Request,
           res as Response
         )
       ).to.be.rejectedWith(BadRequestError, "1234:error");
-
-      expect(updateProfileService.updateProfile).to.have.been.calledOnce;
     });
   });
 });
