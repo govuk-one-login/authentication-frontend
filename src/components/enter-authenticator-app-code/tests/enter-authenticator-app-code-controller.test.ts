@@ -4,8 +4,10 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 import {
+  ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME,
   enterAuthenticatorAppCodeGet,
   enterAuthenticatorAppCodePost,
+  UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
 } from "../enter-authenticator-app-code-controller";
 import { PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
@@ -51,6 +53,44 @@ describe("enter authenticator app code controller", () => {
 
       expect(res.render).to.have.calledWith(
         "enter-authenticator-app-code/index.njk"
+      );
+    });
+
+    it("should render 2fa service uplift view when uplift is required ", async () => {
+      req.session.user.isUpliftRequired = true;
+
+      const fakeService: AccountRecoveryInterface = {
+        accountRecovery: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      await enterAuthenticatorAppCodeGet(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
+      );
+    });
+
+    it("should render default template when uplift is not required", async () => {
+      req.session.user.isUpliftRequired = false;
+
+      const fakeService: AccountRecoveryInterface = {
+        accountRecovery: sinon.fake.returns({
+          success: true,
+        }),
+      };
+
+      await enterAuthenticatorAppCodeGet(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME
       );
     });
   });

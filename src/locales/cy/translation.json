@@ -480,6 +480,14 @@
         "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn.",
         "changeGetSecurityCodesText": "If you cannot access the phone number for your GOV.UK One Login, you can securely ",
         "changeGetSecurityCodesLinkText": "change how you get security codes"
+      },
+      "upliftRequired": {
+        "title": "Mae angen i chi roi cod diogelwch",
+        "header": "Mae angen i chi roi cod diogelwch",
+        "paragraph1": "Mae hwn yn helpu i gadw eich GOV.UK One Login yn ddiogel.",
+        "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud.",
+        "paragraph3": "Rydym wedi anfon cod at y rhif ffôn sy’n gysylltiedig â’ch GOV.UK One Login.",
+        "sendTheCodeAgain": "Anfon y cod eto"
       }
     },
     "resendMfaCode": {
@@ -1922,6 +1930,20 @@
         "text1": "Gallwch newid sut ",
         "text2": "gallwch gael codau diogelwch yn ddiogel",
         "text3": "."
+      },
+      "upliftRequired": {
+        "title": "Mae angen i chi roi cod diogelwch",
+        "header": "Mae angen i chi roi cod diogelwch",
+        "info": {
+          "paragraph1": "Mae hwn yn helpu i gadw eich GOV.UK One Login yn ddiogel.",
+          "paragraph2": "I gael cod diogelwch, agorwch yr ",
+          "authenticatorApp": "ap dilysydd ",
+          "paragraph2End": "rydych wedi’i ddefnyddio i greu eich GOV.UK One Login"
+        },
+        "code": {
+          "label": "Rhowch y cod diogelwch",
+          "labelSummary": "Dyma’r rhif 6-digid a ddangosir yn eich ap dilysydd"
+        }
       }
     },
     "securityCodeEnteredExceeded": {
