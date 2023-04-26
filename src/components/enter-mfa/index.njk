@@ -3,6 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% set pageTitleName = 'pages.enterMfa.title' | translate %}
 
 {% block content %}
@@ -11,7 +12,14 @@
 
   <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterMfa.header' | translate }}</h1>
 
-  <p class="govuk-body">{{'pages.enterMfa.info.paragraph1' | translate }}</p>
+  {% set insetText %}
+    {{ 'pages.enterMfa.info.paragraph1' | translate }} <span class='govuk-!-font-weight-bold'>{{ phoneNumber.slice(-3) }}</span>
+  {% endset %}
+
+  {{ govukInsetText({
+    text: insetText | safe
+  }) }}
+
   <p class="govuk-body">{{'pages.enterMfa.info.paragraph2' | translate }}</p>
 
   <form id="form-tracking" action="/enter-code" method="post" novalidate="novalidate">
