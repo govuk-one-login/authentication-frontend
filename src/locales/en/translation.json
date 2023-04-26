@@ -455,8 +455,7 @@
       "title": "Check your phone",
       "header": "Check your phone",
       "info": {
-        "paragraph1": "We sent a code to the phone number linked to your GOV.UK One Login.",
-        "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes."
+        "paragraph1": "It might take a few minutes to arrive. The code will expire after 15 minutes."
       },
       "resend": {
         "link": "Request a new code",
