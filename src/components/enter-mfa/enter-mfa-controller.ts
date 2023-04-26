@@ -14,7 +14,9 @@ import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
 import { BadRequestError } from "../../utils/error";
 
-const TEMPLATE_NAME = "enter-mfa/index.njk";
+export const ENTER_MFA_DEFAULT_TEMPLATE_NAME = "enter-mfa/index.njk";
+export const UPLIFT_REQUIRED_SMS_TEMPLATE_NAME =
+  "enter-mfa/index-2fa-service-uplift-mobile-phone.njk";
 
 export function enterMfaGet(
   service: AccountRecoveryInterface = accountRecoveryService()
@@ -22,9 +24,13 @@ export function enterMfaGet(
   return async function (req: Request, res: Response) {
     const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
 
+    const templateName = req.session.user.isUpliftRequired
+      ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME
+      : ENTER_MFA_DEFAULT_TEMPLATE_NAME;
+
     if (!isAccountRecoveryEnabledForEnvironment) {
-      return res.render(TEMPLATE_NAME, {
-        phoneNumber: req.session.user.phoneNumber,
+      return res.render(templateName, {
+        phoneNumber: req.session.user.redactedPhoneNumber,
         supportAccountRecovery: false,
       });
     }
@@ -56,8 +62,8 @@ export function enterMfaGet(
       MFA_METHOD_TYPE.SMS
     );
 
-    res.render(TEMPLATE_NAME, {
-      phoneNumber: req.session.user.phoneNumber,
+    res.render(templateName, {
+      phoneNumber: req.session.user.redactedPhoneNumber,
       supportAccountRecovery: isAccountRecoveryEnabledForEnvironment,
       checkEmailLink,
     });
@@ -67,10 +73,20 @@ export function enterMfaGet(
 export const enterMfaPost = (
   service: VerifyCodeInterface = codeService()
 ): ExpressRouteFunc => {
-  return verifyCodePost(service, {
-    notificationType: NOTIFICATION_TYPE.MFA_SMS,
-    template: TEMPLATE_NAME,
-    validationKey: "pages.enterMfa.code.validationError.invalidCode",
-    validationErrorCode: ERROR_CODES.INVALID_MFA_CODE,
-  });
+  return async function (req: Request, res: Response) {
+    const { isUpliftRequired } = req.session.user;
+
+    const template = isUpliftRequired
+      ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME
+      : ENTER_MFA_DEFAULT_TEMPLATE_NAME;
+
+    const verifyCodeRequest = verifyCodePost(service, {
+      notificationType: NOTIFICATION_TYPE.MFA_SMS,
+      template: template,
+      validationKey: "pages.enterMfa.code.validationError.invalidCode",
+      validationErrorCode: ERROR_CODES.INVALID_MFA_CODE,
+    });
+
+    return verifyCodeRequest(req, res);
+  };
 };

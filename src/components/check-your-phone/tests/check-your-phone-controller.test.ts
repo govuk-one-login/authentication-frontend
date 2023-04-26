@@ -8,7 +8,6 @@ import {
   checkYourPhonePost,
 } from "../check-your-phone-controller";
 
-import { VerifyCodeInterface } from "../../common/verify-code/types";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 import { PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
@@ -18,6 +17,7 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
+import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
 
 describe("check your phone controller", () => {
   let req: RequestOutput;
@@ -48,8 +48,8 @@ describe("check your phone controller", () => {
 
   describe("checkYourPhonePost", () => {
     it("should redirect to /create-password when valid code entered", async () => {
-      const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
+      const fakeService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({
           sessionState: "PHONE_NUMBER_CODE_VERIFIED",
           success: true,
         }),
@@ -67,15 +67,15 @@ describe("check your phone controller", () => {
         res as Response
       );
 
-      expect(fakeService.verifyCode).to.have.been.calledOnce;
+      expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL
       );
     });
 
     it("should return error when invalid code entered", async () => {
-      const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
+      const fakeService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({
           success: false,
           data: {
             code: ERROR_CODES.INVALID_VERIFY_PHONE_NUMBER_CODE,
@@ -96,13 +96,13 @@ describe("check your phone controller", () => {
         res as Response
       );
 
-      expect(fakeService.verifyCode).to.have.been.calledOnce;
+      expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(res.render).to.have.been.calledWith("check-your-phone/index.njk");
     });
 
     it("should redirect to security code expired when invalid code entered more than max retries", async () => {
-      const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
+      const fakeService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({
           success: false,
           data: {
             code: ERROR_CODES.ENTERED_INVALID_VERIFY_PHONE_NUMBER_CODE_MAX_TIMES,
@@ -124,7 +124,7 @@ describe("check your phone controller", () => {
         res as Response
       );
 
-      expect(fakeService.verifyCode).to.have.been.calledOnce;
+      expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.been.calledWith(
         `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=otpMaxRetries`
       );

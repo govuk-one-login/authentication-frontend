@@ -9,7 +9,6 @@ import {
   enterPhoneNumberPost,
 } from "../enter-phone-number-controller";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
 import { PATH_NAMES } from "../../../app.constants";
 import {
   mockRequest,
@@ -74,25 +73,18 @@ describe("enter phone number controller", () => {
         }),
       };
 
-      const fakeProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake.returns({
-          success: true,
-        }),
-      };
-
       res.locals.sessionId = "123456-djjad";
       req.body.phoneNumber = "07738393990";
       req.session.user.email = "test@test.com";
 
-      await enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
+      await enterPhoneNumberPost(fakeNotificationService)(
         req as Request,
         res as Response
       );
 
-      expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
-      expect(req.session.user.phoneNumber).to.be.eq("3990");
+      expect(req.session.user.redactedPhoneNumber).to.be.eq("3990");
     });
 
     it("should redirect to /check-your-phone when success with valid international number", async () => {
@@ -102,51 +94,18 @@ describe("enter phone number controller", () => {
         }),
       };
 
-      const fakeProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake.returns({
-          success: true,
-        }),
-      };
-
       res.locals.sessionId = "123456-djjad";
       req.body.phoneNumber = "+33645453322";
       req.session.user.email = "test@test.com";
 
-      await enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
+      await enterPhoneNumberPost(fakeNotificationService)(
         req as Request,
         res as Response
       );
 
-      expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
-      expect(req.session.user.phoneNumber).to.be.eq("3322");
-    });
-
-    it("should throw error when API call to /update-profile throws error", async () => {
-      const error = new Error("Internal server error");
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
-      };
-
-      const fakeProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake.throws(error),
-      };
-
-      req.body.email = "test.test.com";
-      res.locals.sessionId = "123456-djjad";
-
-      await expect(
-        enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
-          req as Request,
-          res as Response
-        )
-      ).to.be.rejectedWith(Error, "Internal server error");
-
-      expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
-      expect(fakeNotificationService.sendNotification).to.have.not.been.called;
+      expect(req.session.user.redactedPhoneNumber).to.be.eq("3322");
     });
 
     it("should throw error when API call to /send-notification throws error", async () => {
@@ -155,21 +114,16 @@ describe("enter phone number controller", () => {
         sendNotification: sinon.fake.throws(error),
       };
 
-      const fakeProfileService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake.returns({ success: true }),
-      };
-
       req.body.email = "test.test.com";
       res.locals.sessionId = "123456-djjad";
 
       await expect(
-        enterPhoneNumberPost(fakeNotificationService, fakeProfileService)(
+        enterPhoneNumberPost(fakeNotificationService)(
           req as Request,
           res as Response
         )
       ).to.be.rejectedWith(Error, "Internal server error");
 
-      expect(fakeProfileService.updateProfile).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
     });
   });

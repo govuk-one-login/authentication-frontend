@@ -480,6 +480,14 @@
         "text 2": " if the code is not working or you did not receive it.",
         "changeGetSecurityCodesText": "If you cannot access the phone number for your GOV.UK One Login, you can securely ",
         "changeGetSecurityCodesLinkText": "change how you get security codes"
+      },
+      "upliftRequired": {
+        "title": "You need to enter a security code",
+        "header": "You need to enter a security code",
+        "paragraph1": "This helps keep your GOV.UK One Login secure.",
+        "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes.",
+        "paragraph3": "We sent a code to the phone number linked to your GOV.UK One Login.",
+        "sendTheCodeAgain": "Send the code again"
       }
     },
     "resendMfaCode": {
@@ -983,209 +991,387 @@
     "privacy": {
       "title": "GOV.UK One Login privacy notice",
       "header": "GOV.UK One Login privacy notice",
-      "section1": {
-        "header": "Who we are",
-        "paragraph1": {
-          "text1": "GOV.UK One Login is provided by the ",
-          "linkText": "Government Digital Service (GDS)",
-          "text2": ", part of the Cabinet Office. Mentions of ‘us’ and ‘we’ in this privacy notice refer to GDS."
+      "sections": {
+        "about": {
+          "header": "About GOV.UK One Login",
+          "paragraph_one": "The GOV.UK One Login system provides a single way to sign in and prove your identity when accessing government services online.",
+          "paragraph_two": {
+            "part_one": "GOV.UK One Login is provided by the",
+            "part_two": {
+              "link_text": "Government Digital Service (GDS)",
+              "link_href": "https://www.gov.uk/government/organisations/government-digital-service"
+            },
+            "part_three": ", part of the Cabinet Office."
+          },
+          "paragraph_three": "Mentions of ‘us‘ and ‘we‘ in this privacy notice refer to GDS.",
+          "paragraph_four": "The Cabinet Office, as GDS’s parent organisation, is the data controller of the personal data you provide when you use GOV.UK One Login. This means that the Cabinet Office is ultimately responsible for the personal data we collect and process on GOV.UK One Login. This includes determining things like what personal data should be collected, from whom and what it will be used for.",
+          "paragraph_five": "Other government departments are responsible for any personal data you provide when you use their online services. For example they may collect data from you either before they redirect you to GOV.UK One Login or after GOV.UK One Login returns you to their service after you’ve completed your authentication or identity checks. This means that they are data controllers for that information and will decide what data to collect from you, why they need that data and how long they keep that data for. Details of this will be in their own privacy notices."
         },
-        "paragraph2": {
-          "text1": "This privacy notice only covers GOV.UK One Login. Read the main ",
-          "linkText": "GOV.UK privacy notice",
-          "text2": " to find out how your personal information is collected and processed when you use the GOV.UK website."
+        "information_we_collect": {
+          "header": "What information we collect",
+          "sub_header": "When you authenticate your GOV.UK One Login or prove your identity",
+          "paragraph_one": "When you are referred to GOV.UK One Login by an online government service to sign in or prove your identity we will know what service you have come from.",
+          "paragraph_two": "The information we then collect from you will depend on:",
+          "list": {
+            "item_one": "whether the online government service is using GOV.UK One Login solely to log you in to their system or to prove your identity as well",
+            "item_two": "the evidence and documents you have available to prove your identity",
+            "item_three": "the type of device you use, for example a laptop, tablet or smartphone"
+          },
+          "paragraph_three": "In all cases, we will create a GOV.UK One Login using your email address. Where you choose to receive authentication codes using text message, we will also collect your phone number. If the online government service is only using GOV.UK One Login to sign you in to their service, we will not collect any further data from you.",
+          "paragraph_four": "Where online government services use GOV.UK One Login to prove your identity, we need to conduct identity checks and therefore process additional personal data."
         },
-        "paragraph3": "The Cabinet Office is the data controller of the personal information you provide to us when you:",
-        "bulletPoint1": "create a GOV.UK One Login",
-        "bulletPoint2": "use your GOV.UK One Login to access an online government service",
-        "bulletPoint3": "contact us",
-        "paragraph4": "When you provide information to another government service while signed into GOV.UK One Login, the government department that runs the service is the data controller. They will have their own privacy notice to explain how they process your information. We do not have access to the information you provide to services run by other government departments.",
-        "paragraph5": "When you prove your identity with GOV.UK One Login, we will:",
-        "bulletPoint4": "ask you for your passport details - we’ll check these with HM Passport Office (HMPO)",
-        "bulletPoint5": {
-          "text3": "check your information with",
-          "linkText": "Experian",
-          "linkHref": "https://www.experian.co.uk/privacy/privacy-and-your-data?utm_medium=internalRef&utm_source=Consumer%20Services",
-          "text4": "to make sure you’ve not been a victim of identity theft"
+        "using_id_check_app": {
+          "header": "Using the GOV.UK ID Check app to prove your identity",
+          "paragraph_one": {
+            "part_one": "This route uses the GOV.UK ID Check app which is available to smartphone users through the",
+            "link_one": {
+              "link_href": "https://play.google.com/store/apps/details?id=uk.gov.documentchecking&gl=US",
+              "link_text": "Google"
+            },
+            "part_two": " and ",
+            "link_two": {
+              "link_href": "https://apps.apple.com/gb/app/gov-uk-id-check/id1629050566",
+              "link_text": "Apple"
+            },
+            "part_three": " App Stores. It consists of a sequence of checks that are conducted by specialist identity checking service providers on our behalf."
+          },
+          "sub_header_one": "Genuine document, liveness and likeness checks",
+          "paragraph_two": "We need to check that:",
+          "list_one": {
+            "item_one": "your documents are real",
+            "item_two": "you are a real person (also known as a ‘liveness’ check)",
+            "item_three": "you are the same person as in the document photos (also known as a ‘likeness’ check)"
+          },
+          "paragraph_three": "We use an identity checking service provider called Iproov and their subcontractors Veriff and Innovalor to conduct these checks. Iproov acts as a data processor with Veriff and Innovalor as sub-processors, which means that they may only process your personal data for the sole purpose of fulfilling our instructions.",
+          "paragraph_four": "We need to check your identity document security features to prove that they are genuine documents.",
+          "list_two": {
+            "item_one": "For drivers’ licences, you will need to take a photo of the front and back of your licence with your phone camera. The App will require permission to access your camera and photos for this.",
+            "item_two": "For e-passports, the App will read your passport information from your document’s Near Field Communication (NFC) chip.",
+            "item_three": "When Iproov has completed the check, they send us the outcome of the check and your driving licence or passport information."
+          },
+          "paragraph_five": "We do a “liveness” check to prove whether a user is a real person and not anything that might impersonate an individual such as a mannequin, wax figure, 3D mask, picture or deepfake.",
+          "list_three": {
+            "item_one": "You will need to take a selfie video using your phone camera. The App will require permission to access your camera and videos for this. This check is conducted in real-time which means that neither we nor Iproov store the video.",
+            "item_two": "When Iproov has completed the check, they send us the outcome of the check."
+          },
+          "paragraph_six": "We do a likeness check to prove that you are the same person as in your identity document photo.",
+          "paragraph_seven": "This check uses a still image generated from your selfie video and your identity document photo to measure the unique patterns of your face. This is called facial biometric data. The biometric data from both images is compared to establish whether the user is the actual owner of the identity document.",
+          "paragraph_eight": "When Iproov has completed the check, they send us the outcome of the check.",
+          "sub_header_two": "Fraud check",
+          "paragraph_nine": "We use an identity checking service provider called Experian to:",
+          "list_four": {
+            "item_one": "conduct a fraud check to look for any signs that your identity has been stolen or misused",
+            "item_two": "check whether there is a record of you existing over time"
+          },
+          "paragraph_ten": {
+            "part_one": "They do so as an independent data controller in accordance with their",
+            "link": {
+              "link_text": "privacy notice",
+              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
+            }
+          },
+          "paragraph_eleven": "When you have completed the checks above using the App, you will be returned to the GOV.UK One Login website where we will collect your name, date of birth and address. We send these to Experian so they can conduct a counter fraud check.",
+          "paragraph_twelve": "When Experian has completed the check, they send us a fraud score, plus details of any associated fraudulent activity."
         },
-        "bulletPoint6": "use Experian’s data to ask you security questions that only you should know the answers to - Experian will also check that your answers match the information they already have about you",
-        "paragraph6": "HMPO and Experian will also become data controllers during this process. We do not keep any information you give us when proving your identity, including your answers to the security questions."
-      },
-      "section2": {
-        "header": "What information we collect",
-        "paragraph1": "When you use a service that requires a GOV.UK One Login, we’ll receive information about the service when it directs you to:",
-        "bulletPoint1": "create a GOV.UK One Login or sign in",
-        "bulletPoint2": "prove your identity",
-        "paragraph2": "The information we collect when you create and use a GOV.UK One Login includes:",
-        "bulletPoint3": "basic personal information needed to set up and authenticate your GOV.UK One Login, including your email address and mobile phone number, if you choose to get security codes for signing in by text message",
-        "bulletPoint4": "other information needed to prove your identity, such as your name, date of birth, passport details and address history",
-        "bulletPoint5": "any information that you choose to save to your GOV.UK One Login, for example your GOV.UK email subscription preferences",
-        "bulletPoint6": {
-          "text1": "information on how you use your GOV.UK One Login and the GOV.UK website, which is collected in the system logs, and by Google Analytics cookies if you give consent - the ",
-          "linkText1": "GOV.UK privacy notice",
-          "comma": ", ",
-          "linkText2": "GOV.UK cookies policy",
-          "and": " and ",
-          "linkText3": "GOV.UK One Login cookies policy",
-          "text2": " provide more information about this"
+        "using_web_to_prove_identity": {
+          "header": "Using your web browser to prove your identity",
+          "paragraph_one": "This route consists of 3 separate identity checks.",
+          "sub_header_one": "An identity document check",
+          "paragraph_two": "We check your passport details are genuine using the authoritative datasets held by His Majesty’s Passport Office (HMPO). You will need to provide your passport details which we then send to HMPO to validate against their records.",
+          "paragraph_three": "When HMPO have completed their checks, they send us confirmation as to whether the data matches or not and if not, the reason why it didn’t match.",
+          "paragraph_four": "HMPO does so as an independent data controller in accordance with their privacy notice.",
+          "sub_header_two": "Knowledge Based Verification check (security questions)",
+          "paragraph_five": {
+            "part_one": "We conduct a Knowledge Based Verification (KBV) check, or security questions, using questions about your credit or financial history that only you should know the answer to. This check is conducted by Experian as an independent data controller in accordance with their",
+            "link": {
+              "link_text": "privacy notice",
+              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
+            }
+          },
+          "paragraph_six": "For this check we use your name, date of birth and address to retrieve relevant questions from Experian. We collect your answers and send them to Experian to check that they match the information they already have about you.",
+          "paragraph_seven": "When Experian has completed the check they respond to us with a Pass / Fail outcome.",
+          "paragraph_eight": "GDS does not store or retain the questions or your answers.",
+          "paragraph_nine": "This check constitutes a ‘soft search’ which means that a record of the check will exist on your credit records as ‘GOV.UK One Login’. It will only be visible to you and not to any other organisations that use Experian to conduct their own credit checks. Consequently, it will not have an impact on your credit score.",
+          "sub_header_three": "Fraud check",
+          "paragraph_ten": "We also conduct the same fraud check using Experian as outlined in the ‘Using the GOV.UK ID Check app to prove your identity’ section."
         },
-        "bulletPoint7": "online identifiers, such as your Internet Protocol (IP) address, and technical information about the device you use including the model, web browser and operating system, which is automatically collected in system logs when you use GOV.UK",
-        "bulletPoint8": "questions, queries or feedback you leave, including your name and email address, if you provide them on the GOV.UK One Login contact form",
-        "bulletPoint9": "if you were able to prove your identity with your GOV.UK One Login",
-        "bulletPoint10": "what organisations, services or information we used to prove your identity",
-        "paragraph3": "When you create a GOV.UK One Login, it will automatically generate a unique identifier."
-      },
-      "section3": {
-        "header": "Why we need your information",
-        "paragraph1": "We collect your personal information to:",
-        "bulletPoint1": "provide you with a GOV.UK One Login so that you can use it to access online government services",
-        "bulletPoint2": "prove your identity",
-        "bulletPoint3": {
-          "text1": "store your preferences, for example your ",
-          "linkText": "GOV.UK",
-          "text2": "email subscription update preferences"
+        "technical_information": {
+          "header": "Technical information",
+          "paragraph_one": "We collect technical information as an integral part of providing GOV.UK One Login to you. This includes:",
+          "list": {
+            "item_one": "online identifiers, like your Internet Protocol (IP) addresses",
+            "item_two": "technical information about the device you use such as the model, web browser operating system and unique device ID",
+            "item_three": "This data is stored in system audit and security logs for system and security monitoring and technical troubleshooting purposes."
+          },
+          "paragraph_two": "This data is stored in system audit and security logs for system and security monitoring and technical troubleshooting purposes."
         },
-        "paragraph2": "We also use your information to:",
-        "bulletPoint4": "keep your GOV.UK One Login secure (using your email address, phone number if provided, password and system logs)",
-        "bulletPoint5": "monitor, detect and investigate fraud",
-        "bulletPoint6": "tell the services you access through your GOV.UK One Login that you have successfully signed in",
-        "bulletPoint7": "provide government services that you access through your GOV.UK One Login and the departments that run them with information you explicitly agree to us sharing, for example your email and telephone number",
-        "bulletPoint8": "provide you with a record of how your GOV.UK One Login has been used, for example, when it was last signed in to and what services it has been used with",
-        "bulletPoint9": "contact you about any planned interruptions, problems or changes that may affect your GOV.UK One Login (using your email address)",
-        "bulletPoint10": "contact you to ask for feedback on GOV.UK One Login, if you have given us permission to (using your email address)",
-        "bulletPoint11": {
-          "text3": "improve and understand how you use your GOV.UK One Login",
-          "linkText": "using Google Analytics cookies",
-          "text4": "(you can choose not to accept these cookies)"
+        "when_you_contact_us": {
+          "header": "When you contact us or provide feedback about the service",
+          "paragraph_one": "If you contact us for support using GOV.UK One Login’s contact forms, we will collect any identifying information you provide, such as your name and email address, plus the details of your support request.",
+          "paragraph_two": "Where you agree, we will contact you to obtain your feedback about the service. We will collect any identifying information you provide in your feedback, such as your name and email address, plus the details of your feedback."
         },
-        "bulletPoint12": "respond to any feedback you send us, if you’ve asked us to",
-        "paragraph3": "We may also use your information to produce anonymised reports about GOV.UK One Login. This helps us understand where we can make improvements to GOV.UK One Login."
-      },
-      "section4": {
-        "header": "Our legal basis for processing your information",
-        "paragraph1": "When we process information for security and fraud monitoring, the legal basis is our legitimate interests.",
-        "paragraph2": "When we process information to make improvements to GOV.UK One Login, the legal basis is your explicit consent. This includes:",
-        "bulletPoint1": "collecting and analysing information about how you use your GOV.UK One Login using Google Analytics cookies",
-        "bulletPoint2": "emailing you to ask for feedback about GOV.UK One Login",
-        "paragraph3": "The legal basis for processing all other personal data is that it’s necessary in the exercise of our functions as a government department."
-      },
-      "section5": {
-        "header": "Who we share your information with",
-        "paragraph1": "We will never:",
-        "bulletPoint1": "sell or rent your information to third parties",
-        "bulletPoint2": "share your information with third parties for marketing purposes",
-        "subHeader1": "Sharing your information with online government services and the departments that run them",
-        "paragraph2": "We’ll tell the services that you access through your GOV.UK One Login when you have successfully created it or signed in, so that they can allow you to use the service.",
-        "paragraph3": "Services you access through your GOV.UK One Login may ask you to share information you have saved in it. When they do this, we’ll tell you which information they have asked for, and will only share the information if you agree.",
-        "paragraph4": "If you do not choose to share this information from your GOV.UK One Login, you might be asked to provide the same information directly to the service later on.",
-        "paragraph5": "Each service you access through your GOV.UK One Login will have its own terms and conditions and privacy notice. You should read these as well as the GOV.UK One Login terms and conditions and this privacy notice, so that you understand how your personal information is managed.",
-        "subHeader2": "Sharing your information to prove your identity",
-        "paragraph6": "We’ll share your information with HMPO and Experian when we prove your identity. We’ll only give them the information they need to do this check. They will keep your details for as long as they need to or the law requires them to do so.",
-        "subHeader3": "Sharing your information to protect against fraud",
-        "paragraph7": "To protect against crime and fraud, we might sometimes share information with:",
-        "bulletPoint3": "government departments that run the services you access though your GOV.UK One Login",
-        "bulletPoint4": "other public sector organisations, such as the Home Office",
-        "bulletPoint5": "law enforcement agencies",
-        "bulletPoint6": "credit reference agencies",
-        "bulletPoint7": "data processors who provide relevant monitoring services",
-        "paragraph8": "The information we might share includes:",
-        "bulletPoint8": "phone numbers",
-        "bulletPoint9": "email addresses",
-        "bulletPoint10": "IP addresses and geolocations",
-        "bulletPoint11": "unique identifiers",
-        "bulletPoint12": "information about the devices being used",
-        "bulletPoint13": "passport details, including name and date of birth",
-        "bulletPoint14": "address history",
-        "subHeader4": "Sharing your information with our suppliers",
-        "paragraph9": "We work with technology suppliers, for example we use an external hosting provider. These suppliers may have access to your information as part of providing their services to us."
-      },
-      "section6": {
-        "header": "How long we keep your information",
-        "paragraph1": "We store your personal information for as long as is reasonably necessary and legally justifiable.",
-        "paragraph2": "We will keep your GOV.UK One Login and any information saved in it for as long as you use it. If you delete your GOV.UK One Login or if you don’t sign in for 2 years, we’ll delete all the information associated with it. Any information you delete from your GOV.UK One Login will be permanently deleted.",
-        "paragraph3": "We will keep your feedback data for 2 years.",
-        "paragraph4": "We will delete access log data after 365 days.",
-        "paragraph5": "We will store information about the actions you take and how you use your GOV.UK One Login for 7 years, for fraud monitoring purposes."
-      },
-      "section7": {
-        "header": "Children’s privacy protection",
-        "paragraph1": "GOV.UK One Login is not designed for, or intentionally targeted at, children 13 years of age or younger. We do not intentionally collect or maintain information about anyone under the age of 13."
-      },
-      "section8": {
-        "header": "Where your information is processed and stored",
-        "paragraph1": "All personal data and information associated with your GOV.UK One Login is stored in the UK or in the European Economic Area (EEA). The EEA has been assessed by the Information Commissioner’s Office as having adequate legal protections for data privacy in line with those in the UK.",
-        "paragraph2": "Where our suppliers require access to your data, they may do so from outside of the EEA. Data collected by Google Analytics may be transferred outside the European Economic Area (EEA) for processing. When either of these things happen, we will make sure your information is just as well protected, for example by including extra clauses in our contracts with suppliers."
-      },
-      "section9": {
-        "header": "How we protect your personal information and keep it secure",
-        "paragraph1": "We are committed to doing all that we can to keep your information secure. We have set up systems and processes to prevent unauthorised access or disclosure of your information - for example, we use varying levels of encryption. We also make sure that any third parties that we deal with keep all personal information they process on our behalf secure.",
-        "paragraph2": "As the owner of your GOV.UK One Login, you also have some responsibility for its security. For example, you should:",
-        "bulletPoint1": {
-          "text1": "choose a strong password and ensure you keep it secure - the UK’s National Cyber Security Centre (NCSC) provides ",
-          "linkText": "advice on online security"
+        "if_you_agree_to_analytics": {
+          "header": "If you agree to web / app analytics",
+          "paragraph_one": "If you give your consent, we use Google Analytics to collect information about how you use GOV.UK One Login. For example:",
+          "list": {
+            "item_one": "information about the pages you use",
+            "item_two": "how long you spend on each page",
+            "item_three": "how you got to GOV.UK One Login",
+            "item_four": "what you click on while you use the service",
+            "item_five": "technical information including IP addresses, the type of device and web browser you use",
+            "item_six": "an indication of your location (such as your city and country) using your anonymised IP address"
+          },
+          "paragraph_two": "The information collected is classed as personal data because Google Analytics assigns a unique identifier to each visitor. This does not however enable us or Google to determine your real world identity. We will also not combine analytics information with the data you provide when authenticating your GOV.UK One Login or proving your identity or any other data that we may hold in order to determine your real world identity.",
+          "paragraph_three": "We also use Firebase Crashlytics to collect information about problems you may experience when you use the GOV.UK ID Check app, such as the app crashing.",
+          "paragraph_four": "In both cases, Google acts as our data processor and we do not permit Google to use or share this data for their own purposes."
         },
-        "bulletPoint2": "contact us immediately if you suspect that your GOV.UK One Login has been compromised"
-      },
-      "section10": {
-        "header": "Automated processing",
-        "paragraph1": "Your personal information will be subject to automated decision making when:",
-        "bulletPoint1": "your passport details are checked against data held by HMPO",
-        "bulletPoint2": "Experian runs an identity fraud check to make sure you’ve not had your identity stolen",
-        "bulletPoint3": "your answers to security questions are matched against data held by Experian"
-      },
-      "section11": {
-        "header": "Your rights",
-        "paragraph1": "When you are signed in to GOV.UK One Login you can:",
-        "bulletPoint1": "access all personal information associated with your GOV.UK One Login",
-        "bulletPoint2": "change or update your information such as your email address, password and email subscription preferences",
-        "bulletPoint3": "change your consent to non-essential cookies or tell us how you want us to contact you",
-        "bulletPoint4": "delete information from your GOV.UK One Login (apart from your email address, password, and mobile phone number, if you do not have another way to authenticate your GOV.UK One Login, because you can’t access your GOV.UK One Login without them)",
-        "bulletPoint5": "delete your GOV.UK One Login entirely",
-        "paragraph2": "You can also:",
-        "bulletPoint6": "withdraw your consent for your personal information to be processed using web analytics data or feedback",
-        "bulletPoint7": "object to how your personal information is processed",
-        "bulletPoint8": "ask that the processing of your personal information is restricted in certain circumstances",
-        "bulletPoint9": "contact us to get help if you’re not able to prove your identity online",
-        "paragraph3": {
-          "text1": "If you have any of these requests, contact the ",
-          "linkText": "GDS Privacy Team"
+        "why_we_need_your_information": {
+          "header": "Why we need your information",
+          "paragraph_one": "We collect your personal information on GOV.UK One Login to:",
+          "list_one": {
+            "item_one": "provide you with a GOV.UK One Login to access online government services",
+            "item_two": "prove your identity"
+          },
+          "paragraph_two": "We also use your information to:",
+          "list_two": {
+            "item_one": "keep your GOV.UK One Login secure (using your email address, phone number, password and system logs)",
+            "item_two": "store your proven identity information within GOV.UK One Login to enable you to reuse it",
+            "item_three": "monitor, detect and investigate fraud",
+            "item_four": "provide the government service(s) that you access through GOV.UK One Login with information about the outcome of your identity check",
+            "item_five": "provide you with a record of how your GOV.UK One Login has been used, for example, when it was last signed in to and what services it has been used with",
+            "item_six": "contact you about any planned interruptions, problems or changes that may affect your GOV.UK One Login (using your email address)",
+            "item_seven": "contact you to ask for feedback on your experience of using GOV.UK One Login, if you have given us permission to respond to any feedback you send us using your email address",
+            "item_eight": "improve the service by understanding how you use it and any problems you experience using Google Analytics and Firebase Crashlytics",
+            "item_nine": "monitor the rates of successful and unsuccessful identity checking submissions and produce anonymised reports about GOV.UK One Login to help us understand where we can make improvements",
+            "item_ten": "help diagnose and fix technical or debugging issues",
+            "item_eleven": "assist in billing and reconciliation for the third party identity checking services we use",
+            "item_twelve": "monitor the system for security threats and system issues, for example outages."
+          }
+        },
+        "legal_basis": {
+          "header": "Our legal basis for processing your information",
+          "sub_header_one": "Legitimate interests (UK GDPR Article (6)(1)(f))",
+          "paragraph_one": "When we process your personal data for security monitoring purposes, the legal basis we rely on is that the processing is necessary for GDS’s legitimate interests. GDS interests in this regard are protecting GOV.UK One Login and its users against security threats.",
+          "sub_header_two": "Consent (UK GDPR Article (6)(1)(a))",
+          "paragraph_two": "We obtain your consent to process your personal data for the following purposes:",
+          "list_one": {
+            "item_one": "collecting and analysing information about how you use your GOV.UK One Login using Google Analytics cookies",
+            "item_two": "emailing you to ask for feedback about GOV.UK One Login"
+          },
+          "paragraph_three": "Where we rely on consent we will explain as clearly and concisely as possible how your data will be processed so you understand what you are consenting to. If you later change your mind, you can withdraw your consent at any time. How you can do this will depend on what we are processing your data for. For example, you can:",
+          "list_two": {
+            "item_one": {
+              "part_one": "withdraw your consent from our use of cookies using the GOV.UK One Login ",
+              "link_text": "cookie preferences page",
+              "link_href": "https://signin.account.gov.uk/cookies"
+            },
+            "item_two": {
+              "part_one": "click the unsubscribe link on emails you receive from us, or you can contact ",
+              "link_text": "GDS-Privacy-Office@digital.cabinet-office.gov.uk",
+              "link_href": "mailto:GDS-Privay-Office@digital.cabinet-office.gov.uk"
+            }
+          },
+          "sub_header_three": "Public Task (UK GDPR Article (6)(1)(e))",
+          "paragraph_four": "For all other purposes including the administration of your GOV.UK One Login, proving your identity and fraud monitoring, the legal basis is that it is necessary for the performance of a task carried out in the public interest or the exercise of our functions as a government department.",
+          "sub_header_four": "Special category data",
+          "paragraph_five": "If you prove your identity using the GOV.UK Identity Check app, you will do a likeness check which will involve processing your facial biometric data. Under UK Law, biometric data is classed as special category data and the Cabinet Office is required to have an additional legal basis to process it. The Cabinet Office processes biometric data on the legal basis that the processing is necessary for reasons of substantial public interest. UK Law also requires the Cabinet Office to meet a specific substantial public interest condition from the UK Data Protection Act 2018. The Cabinet Office relies on the following 2 conditions:",
+          "list_three": {
+            "item_one": "statutory and government purposes for identity checking (paragraph 6, schedule 1, Data Protection Act 2018)",
+            "item_two": "preventing or detecting unlawful acts for fraud detection and prevention (paragraph 10, schedule 1, Data Protection Act 2018)"
+          }
+        },
+        "who_we_share_with": {
+          "header": "Who we share your information with",
+          "sub_header_one": "Sharing your information with online government services and the departments that run them",
+          "paragraph_one": "When you sign in or prove your identity with GOV.UK One Login, we send the online government service that you are trying to access the following information:",
+          "list_one": {
+            "item_one": "the result of your identity check",
+            "item_two": "reasons for failure, if applicable",
+            "item_three": "information that enables the other government service to match you against their records, which typically includes your name, date of birth and address"
+          },
+          "paragraph_two": "Other government services process the data we share with them as independent data controllers under a Memorandum of Understanding (MoU) we have with them. Each online government service will have its own terms and conditions and privacy notice. You should read these as well as the GOV.UK One Login terms and conditions and this privacy notice, so that you understand how your personal information is managed.",
+          "sub_sub_header": "Government Gateway",
+          "paragraph_three": "Government Gateway is HMRC’s own authentication and identity checking service that enables users to access tax and other services. The GOV.UK ID Check app is integrated into the Government Gateway service, as well as into GOV.UK One Login, and therefore the personal data processing outlined in the relevant sections of this privacy notice applies to Government Gateway users of the app.",
+          "paragraph_four": "Additionally, HMRC conducts their own identity document checks against authoritative government data sources. We therefore share your driving licence and passport information with HMRC to enable them to conduct these checks.",
+          "paragraph_five": "We share the following information from your driving licence with Government Gateway:",
+          "list_two": {
+            "item_one": "first name",
+            "item_two": "last name",
+            "item_three": "date of birth",
+            "item_four": "driving licence number",
+            "item_five": "issued by (issuing authority)",
+            "item_six": "issue number",
+            "item_seven": "issue date",
+            "item_eight": "expiry date"
+          },
+          "paragraph_six": "We share the following information from your passport with Government Gateway:",
+          "list_three": {
+            "item_one": "first name",
+            "item_two": "last name",
+            "item_three": "date of birth",
+            "item_four": "document number",
+            "item_five": "expiry date",
+            "item_six": "International Civil Aviation Organisation (ICAO) Issuer code"
+          },
+          "paragraph_seven": "HMRC processes this data as an independent data controller under a Memorandum of Understanding (MoU) we have with them under and in accordance with their own privacy policies.",
+          "sub_header_two": "Sharing your information to prove your identity",
+          "paragraph_eight": "We engage specialist third party identity service providers to conduct individual identity checks on our behalf. We share your personal information with these service providers to enable them to conduct the checks.",
+          "paragraph_nine": "These service providers are:",
+          "list_four": {
+            "item_one": {
+              "part_one": "His Majesty’s Passport Office (HMPO), as an independent data controller under an MoU, to conduct passport genuine document checks. You can read ",
+              "link_text": "HMPO’s privacy notice",
+              "link_href": "https://www.gov.uk/government/statistics/hmpo-privacy-information-notice/privacy-information-notice-accessible-version"
+            },
+            "item_two": {
+              "part_one": "Experian, as an independent data controller subject to a contract with us, for Knowledge-Base Verification (KBV) and fraud checks. You can read ",
+              "link_text": "Experian’s consumer privacy notice",
+              "link_href": "https://www.experian.co.uk/legal/crain/"
+            },
+            "item_three": "iProov, as a data processor with Veriff and Innovalor as its sub-processors, subject to a contract with us, for biometric likeness checks, genuine document checks and liveness checks"
+          },
+          "paragraph_ten": "In all cases we only provide the minimum information needed to perform the checks.",
+          "sub_header_three": "Sharing your information to protect against fraud",
+          "paragraph_eleven": "To protect against crime and fraud, we might sometimes need to share information with:",
+          "list_five": {
+            "item_one": "government departments that run the services you access though your GOV.UK One Login",
+            "item_two": "other public sector organisations, such as the Home Office",
+            "item_three": "law enforcement agencies",
+            "item_four": "credit reference agencies",
+            "item_five": "data processors who provide relevant monitoring services"
+          },
+          "paragraph_twelve": "The information we might share includes:",
+          "list_six": {
+            "item_one": "phone numbers",
+            "item_two": "email addresses",
+            "item_three": "IP addresses and geolocations",
+            "item_four": "unique account identifiers",
+            "item_five": "information about the devices being used",
+            "item_six": "identity document details, including name and date of birth",
+            "item_seven": "address history"
+          },
+          "sub_header_four": "Sharing your information with our suppliers",
+          "paragraph_thirteen": "We work with technology suppliers, for example we use an external hosting provider. We do not allow our suppliers to have routine access to your data. However, there may be cases where they need access to provide their services to us such as when they provide us with technical support. Our suppliers act as data processors and are subject to contracts with us which restrict them to only processing your personal data for the sole purpose of fulfilling our instructions."
+        },
+        "how_long_we_keep_your_information": {
+          "header": "How long we keep your information",
+          "paragraph_one": "We store your personal information for no longer than is reasonably necessary and legally justifiable.",
+          "paragraph_two": "We will keep your GOV.UK One Login for as long as you wish to use it although we will delete it if you do not use it for 2 years. ",
+          "paragraph_three": "We currently store your proven identity information for 6 months.",
+          "paragraph_four": "If you choose to delete your GOV.UK One Login, we’ll delete your account and your proven identity information.",
+          "paragraph_five": "We delete your still photo generated from your selfie video, driving licence images and biometric facial data from Iproov’s systems after 30 days.",
+          "paragraph_six": "We will keep your feedback data for 2 years.",
+          "paragraph_seven": "We will store information about the actions you take when you use your GOV.UK One Login in system logs for 1 year.",
+          "paragraph_eight": "We also maintain a secure audit trail of all GOV.UK One Login audit events and activity which we retain for 7 years for fraud monitoring purposes.",
+          "paragraph_nine": "GDS does not store or retain the:",
+          "list_one": {
+            "item_one": "KBV questions we source from credit reference agencies or your answers to those questions",
+            "item_two": "selfie video you take as part of proving your identity using the GOV.UK Identity Check app"
+          }
+        },
+        "childrens_privacy_protection": {
+          "header": "Children’s privacy protection",
+          "paragraph_one": "GOV.UK One Login is not designed for, or intentionally targeted at, children 13 years of age or younger. We do not intentionally collect or maintain information about anyone under the age of 13."
+        },
+        "where_information_processed_stored": {
+          "header": "Where your information is processed and stored",
+          "paragraph_one": "All personal data processed directly for the administration of your GOV.UK One Login and for identity checking is stored in the UK or in the European Economic Area (EEA). The EEA has been assessed by the UK Government as having adequate legal protections for data privacy in line with those in the UK.",
+          "paragraph_two": "Data collected by Google Analytics may be transferred outside the European Economic Area (EEA) for processing and some of our suppliers may provide technical support from outside of the EEA. In both cases, we ensure your information is just as well protected, for example by including extra clauses in our contracts with suppliers."
+        },
+        "how_we_protect_your_information": {
+          "header": "How we protect your personal information and keep it secure",
+          "paragraph_one": "We are committed to doing all that we can to keep your information secure. We have set up systems and processes to prevent unauthorised access or disclosure of your information - for example, we use varying levels of encryption. We also make sure that any third parties that we deal with keep all personal information they process on our behalf secure.",
+          "paragraph_two": "As the owner of your GOV.UK One Login, you also have some responsibility for its security. For example, you should:",
+          "list_one": {
+            "item_one": {
+              "part_one": "choose a strong password for your GOV.UK One Login and ensure you keep it secure - the UK’s National Cyber Security Centre (NCSC) provides",
+              "link_text": "advice on keeping your online accounts secure",
+              "link_href": "https://www.ncsc.gov.uk/cyberaware/home"
+            },
+            "item_two": {
+              "link_text": "contact us immediately if you suspect that your account has been compromised",
+              "link_href": "https://signin.account.gov.uk/support"
+            }
+          }
+        },
+        "automated_decision_making": {
+          "header": "Automated decision-making",
+          "paragraph_one": "GOV.UK’s identity checking process is fully automated and therefore the majority of identity checking decisions are based solely on automated processing.",
+          "paragraph_two": "GOV.UK One Login determines what identity checks need to be conducted to prove your identity taking into account the:",
+          "list_one": {
+            "item_one": "level of confidence services need in your identity ",
+            "item_two": "evidence and documents you have available to prove your identity",
+            "item_three": "type of device you use, for example a laptop, tablet or smartphone"
+          },
+          "paragraph_three": "GOV.UK One Login then directs specialist third party identity service providers to conduct the necessary identity checking. Most of these checks are fully automated without any manual involvement. For the driving licence check conducted using the GOV.UK Identity Check app, if an automated decision cannot be made successfully, a manual checking process is then used.",
+          "paragraph_four": "GOV.UK One Login receives a response from each identity service provider which contains the outcomes of their identity checks and decides whether the outcomes of the completed checks provide the required level of confidence in your identity. ",
+          "paragraph_five": "This process is fully automated and may result in users not having their identity proven to the level required by the online government service you are trying to access. If we are not able to confirm your identity we will show you a screen that notifies you of this, provides you with instructions on what you can do next and provides you with a way to contact us.  ",
+          "paragraph_six": "Individuals or services can ask us to prove that the automated decision has been made correctly and we will generally prove that GOV.UK One Login is functioning as anticipated without error or bias. We may not be able to provide full information about individual identity checking attempts particularly where providing information would interfere with the prevention or detection of fraud or other crime."
+        },
+        "your_rights": {
+          "header": "Your rights",
+          "paragraph_one": {
+            "part_one": "UK Data Protection Law provides you with a number of rights which you can exercise by contacting the",
+            "link_text": "GDS Privacy Office",
+            "link_href": "mailto:gds-privacy-office@digital.cabinet-office.gov.uk"
+          },
+          "paragraph_two": "You have the right to:",
+          "list_one": {
+            "item_one": "request a copy of your personal information that we hold",
+            "item_two": "ask us to change your information if it is wrong or inaccurate ",
+            "item_three": "ask us to delete your information, although we may not be able to delete your information if there is a legal reason for us to retain it",
+            "item_four": "request a restriction on our use of your information. For example where it is wrong or inaccurate and you would like it to be changed before being used again",
+            "item_five": "object about how we process your personal data where we process it under the public task or legitimate interests lawful bases",
+            "item_six": "withdraw your consent where we process your personal data with your consent "
+          }
+        },
+        "contact_us_or_make_complaint": {
+          "header": "Contact us or make a complaint",
+          "paragraph_one": {
+            "part_one": "Contact the",
+            "link_text": "GDS Privacy Office",
+            "link_href": "mailto:gds-privacy-office@digital.cabinet-office.gov.uk",
+            "part_three": "if you:"
+          },
+          "list_one": {
+            "item_one": "have a question about anything in this privacy notice",
+            "item_two": "think that your personal information has been misused or mishandled",
+            "item_three": "want to make a ‘subject access request‘ to find out more about how your personal information is collected and used"
+          },
+          "paragraph_two": "You can also contact our Data Protection Officer (DPO) who provides independent advice and monitoring of our use of personal information:",
+          "data_protection_officer": {
+            "title": "Data Protection Officer",
+            "link_href": "mailto:DPO@cabinetoffice.gov.uk",
+            "link_text": "DPO@cabinetoffice.gov.uk"
+          },
+          "information_commissioner": {
+            "paragraph_one": "You can also make a complaint to the Information Commissioner, who is an independent regulator.",
+            "address_one": "Information Commissioner‘s Office",
+            "address_two": "Wycliffe House",
+            "address_three": "Water Lane",
+            "address_four": "Wilmslow",
+            "address_five": "Cheshire SK9 5AF",
+            "email": {
+              "part_one":"Email:",
+              "link_text": "icocasework@ico.org.uk",
+              "link_href": "mailto:icocasework@ico.org.uk"
+            },
+            "telephone": "Telephone: 0303 123 1113",
+            "textphone": "Textphone: 01625 545860",
+            "hours": "Monday to Friday, 9am to 4:30pm",
+            "call_charges": {
+              "link_text": "Find out about call charges",
+              "link_href": "https://www.gov.uk/call-charges"
+            },
+            "paragraph_two": "Making a complaint to the Information Commissioner will not affect your rights."
+          }
+        },
+        "changes_to_this_notice": {
+          "header": "Changes to this notice",
+          "paragraph_one": "We may change this privacy notice. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy notice will apply to you and your information immediately.",
+          "paragraph_two": "If these changes affect how your personal information is processed, GDS will let you know.",
+          "paragraph_three": "Last updated: 11 April 2023"
         }
-      },
-      "section12": {
-        "header": "Contact us or make a complaint",
-        "paragraph1": "Contact the GDS Privacy Team if you:",
-        "bulletPoint1": "have a question about anything in this privacy notice",
-        "bulletPoint2": "think that your personal information has been misused or mishandled",
-        "bulletPoint3": "want to make a ’subject access request’ to find out more about how your personal information is collected and used",
-        "paragraph2": "You can also contact our Data Protection Officer (DPO) who provides independent advice and monitoring of our use of personal information:",
-        "address1": {
-          "line1": "Data Protection Officer",
-          "email": "DPO@cabinetoffice.gov.uk",
-          "line2": "Cabinet Office",
-          "line3": "70 Whitehall",
-          "line4": "London",
-          "line5": "SW1A 2AS"
-        },
-        "paragraph3": "You can also make a complaint to the Information Commissioner, who is an independent regulator.",
-        "address2": {
-          "line1": "Information Commissioner’s Office",
-          "line2": "Wycliffe House",
-          "line3": "Water Lane",
-          "line4": "Wilmslow",
-          "line5": "Cheshire SK9 5AF",
-          "email": "icocasework@ico.org.uk",
-          "phone": "Telephone: 0303 123 1113",
-          "text": "Textphone: 01625 545860",
-          "line6": "Monday to Friday, 9am to 4:30pm",
-          "line7": "Find out about call charges"
-        },
-        "paragraph4": "Making a complaint to the Information Commissioner will not affect your rights."
-      },
-      "section13": {
-        "header": "Changes to this policy",
-        "paragraph1": "We may change this privacy policy. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy policy will apply to you and your information immediately.",
-        "paragraph2": "If these changes affect how your personal information is processed, GDS will let you know.",
-        "paragraph3": "Last updated: 29 June 2022"
       }
     },
     "resetPassword": {
@@ -1396,7 +1582,7 @@
       },
       "serviceTryingToUse": {
         "header": "What service were you trying to use?",
-        "hint": "For example, get a DBS check",
+        "hint": "If you cannot remember the name of the service, tell us what you were trying to do, for example get a DBS check. Or you can tell us the name of the government department you’ve been dealing with.",
         "errorMessage": "Enter the name of the service"
       },
       "replyByEmail": {
@@ -1596,12 +1782,12 @@
         }
       },
       "linkingProblem": {
-          "title": "You had a problem linking the app to your web browser",
-          "header": "You had a problem linking the app to your web browser"
+        "title": "You had a problem linking the app to your web browser",
+        "header": "You had a problem linking the app to your web browser"
       },
       "takingPhotoOfIdProblem": {
-          "title": "You had a problem taking a photo of your identity document using the GOV.UK ID Check app",
-          "header": "You had a problem taking a photo of your identity document using the GOV.UK ID Check app"
+        "title": "You had a problem taking a photo of your identity document using the GOV.UK ID Check app",
+        "header": "You had a problem taking a photo of your identity document using the GOV.UK ID Check app"
       },
       "faceScanningProblem": {
         "title": "You had a problem scanning your face using the GOV.UK ID Check app",
@@ -1744,6 +1930,20 @@
         "text1": "You can securely ",
         "text2": "change how you get security codes",
         "text3": "."
+      },
+      "upliftRequired": {
+        "title": "You need to enter a security code",
+        "header": "You need to enter a security code",
+        "info": {
+          "paragraph1": "This helps keep your GOV.UK One Login secure.",
+          "paragraph2": "To get a security code, open the ",
+          "authenticatorApp": "authenticator app ",
+          "paragraph2End": "you used to create your GOV.UK One Login"
+        },
+        "code": {
+          "label": "Enter the security code",
+          "labelSummary": "This is the 6-digit number shown in your authenticator app"
+        }
       }
     },
     "securityCodeEnteredExceeded": {

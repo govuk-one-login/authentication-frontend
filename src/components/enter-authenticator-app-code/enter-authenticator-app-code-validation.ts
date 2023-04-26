@@ -1,6 +1,10 @@
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
+import { validateBodyMiddlewareUpliftTemplate } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 import { validateCode } from "../common/verify-code/verify-code-validation";
+import {
+  ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME,
+  UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
+} from "./enter-authenticator-app-code-controller";
 
 export function validateEnterAuthenticatorAppCodeRequest(): ValidationChainFunc {
   return [
@@ -14,6 +18,9 @@ export function validateEnterAuthenticatorAppCodeRequest(): ValidationChainFunc 
       numbersOnlyKey:
         "pages.enterAuthenticatorAppCode.code.validationError.invalidFormat",
     }),
-    validateBodyMiddleware("enter-authenticator-app-code/index.njk"),
+    validateBodyMiddlewareUpliftTemplate(
+      UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
+      ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME
+    ),
   ];
 }

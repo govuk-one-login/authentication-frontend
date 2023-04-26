@@ -7,24 +7,33 @@ import {
   pathWithQueryParam,
 } from "../common/constants";
 import { supportAccountRecovery } from "../../config";
-import { VerifyMfaCodeInterface, VerifyMfaCodeConfig } from "./types";
-import { authenticatorAppCodeService } from "./enter-authenticator-app-code-service";
+import { VerifyMfaCodeInterface } from "./types";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
 import { BadRequestError } from "../../utils/error";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
+import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation";
-import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 
-const TEMPLATE_NAME = "enter-authenticator-app-code/index.njk";
+export const ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME =
+  "enter-authenticator-app-code/index.njk";
+export const UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME =
+  "enter-authenticator-app-code/index-2fa-service-uplift-auth-app.njk";
 
 export function enterAuthenticatorAppCodeGet(
   service: AccountRecoveryInterface = accountRecoveryService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
+    const { email, isUpliftRequired } = req.session.user;
+
+    const templateName = isUpliftRequired
+      ? UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
+      : ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME;
+
     if (
       req.session.user.wrongCodeEnteredLock &&
       new Date().toUTCString() < req.session.user.wrongCodeEnteredLock
@@ -41,12 +50,11 @@ export function enterAuthenticatorAppCodeGet(
     const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
 
     if (!isAccountRecoveryEnabledForEnvironment) {
-      return res.render(TEMPLATE_NAME, {
+      return res.render(templateName, {
         isAccountRecoveryPermitted: false,
       });
     }
 
-    const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const accountRecoveryResponse = await service.accountRecovery(
@@ -74,7 +82,7 @@ export function enterAuthenticatorAppCodeGet(
       MFA_METHOD_TYPE.AUTH_APP
     );
 
-    return res.render(TEMPLATE_NAME, {
+    return res.render(templateName, {
       isAccountRecoveryPermitted: isAccountRecoveryPermittedForUser,
       checkEmailLink,
     });
@@ -82,27 +90,19 @@ export function enterAuthenticatorAppCodeGet(
 }
 
 export const enterAuthenticatorAppCodePost = (
-  service: VerifyMfaCodeInterface = authenticatorAppCodeService()
+  service: VerifyMfaCodeInterface = verifyMfaCodeService()
 ): ExpressRouteFunc => {
-  return verifyAuthenticatorAppCodePost(service, {
-    template: TEMPLATE_NAME,
-    validationKey:
-      "pages.enterAuthenticatorAppCode.code.validationError.invalidCode",
-    validationErrorCode: ERROR_CODES.AUTH_APP_INVALID_CODE,
-  });
-};
-
-export function verifyAuthenticatorAppCodePost(
-  service: VerifyMfaCodeInterface,
-  options: VerifyMfaCodeConfig
-): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const code = req.body["code"];
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const { isUpliftRequired } = req.session.user;
+
+    const template = isUpliftRequired
+      ? UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
+      : ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME;
 
     const result = await service.verifyMfaCode(
       MFA_METHOD_TYPE.AUTH_APP,
-      code,
+      req.body["code"],
       false,
       sessionId,
       clientSessionId,
@@ -111,12 +111,14 @@ export function verifyAuthenticatorAppCodePost(
     );
 
     if (!result.success) {
-      if (result.data.code === options.validationErrorCode) {
+      if (result.data.code === ERROR_CODES.AUTH_APP_INVALID_CODE) {
         const error = formatValidationError(
           "code",
-          req.t(options.validationKey)
+          req.t(
+            "pages.enterAuthenticatorAppCode.code.validationError.invalidCode"
+          )
         );
-        return renderBadRequest(res, req, options.template, error);
+        return renderBadRequest(res, req, template, error);
       }
 
       const path = getErrorPathByCode(result.data.code);
@@ -143,4 +145,4 @@ export function verifyAuthenticatorAppCodePost(
       )
     );
   };
-}
+};

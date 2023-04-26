@@ -13,7 +13,10 @@ export class ZendeskService implements ZendeskInterface {
     this.apiUrl = config.remoteUri;
   }
 
-  async createTicket(form: CreateTicketPayload): Promise<void> {
+  async createTicket(
+    form: CreateTicketPayload,
+    ticketIdentifier?: string
+  ): Promise<void> {
     const instance = axios.create({
       baseURL: this.apiUrl,
       headers: {
@@ -26,7 +29,15 @@ export class ZendeskService implements ZendeskInterface {
       },
     });
 
-    await instance.post("/tickets.json", form);
+    await instance.post("/tickets.json", form).catch((error) => {
+      throw new Error(
+        error.response.status +
+          " " +
+          error.response.statusText +
+          " - ticketIdentifier: " +
+          ticketIdentifier
+      );
+    });
   }
 }
 

@@ -35,6 +35,10 @@ resource "aws_acm_certificate" "frontend_alb_certificate" {
   validation_method = "DNS"
 
   tags = local.default_tags
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_route53_record" "frontend_alb_certificate_validation" {

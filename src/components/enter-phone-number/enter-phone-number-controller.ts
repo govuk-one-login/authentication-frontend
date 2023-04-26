@@ -7,11 +7,6 @@ import {
   getNextPathAndUpdateJourney,
 } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
-import { updateProfileService } from "../common/update-profile/update-profile-service";
-import {
-  UpdateProfileServiceInterface,
-  UpdateType,
-} from "../common/update-profile/types";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
@@ -27,8 +22,7 @@ export function enterPhoneNumberGet(req: Request, res: Response): void {
 }
 
 export function enterPhoneNumberPost(
-  service: SendNotificationServiceInterface = sendNotificationService(),
-  profileService: UpdateProfileServiceInterface = updateProfileService()
+  service: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const hasInternationalPhoneNumber = req.body.hasInternationalPhoneNumber;
@@ -48,26 +42,8 @@ export function enterPhoneNumberPost(
       phoneNumber = req.body.phoneNumber;
     }
 
-    req.session.user.phoneNumber = redactPhoneNumber(phoneNumber);
-
-    const updateProfileResponse = await profileService.updateProfile(
-      sessionId,
-      clientSessionId,
-      email,
-      {
-        profileInformation: phoneNumber,
-        updateProfileType: UpdateType.ADD_PHONE_NUMBER,
-      },
-      req.ip,
-      persistentSessionId
-    );
-
-    if (!updateProfileResponse.success) {
-      throw new BadRequestError(
-        updateProfileResponse.data.message,
-        updateProfileResponse.data.code
-      );
-    }
+    req.session.user.redactedPhoneNumber = redactPhoneNumber(phoneNumber);
+    req.session.user.phoneNumber = phoneNumber;
 
     const sendNotificationResponse = await service.sendNotification(
       sessionId,

@@ -12,7 +12,6 @@ export async function sendEmailOtp(
   notificationService = sendNotificationService()
 ): Promise<void> {
   const email = req.session.user.email.toLowerCase();
-  const phoneNumber = req.session.user.phoneNumber;
   const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
   const sendNotificationResponse = await notificationService.sendNotification(
@@ -22,9 +21,7 @@ export async function sendEmailOtp(
     NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES,
     req.ip,
     persistentSessionId,
-    xss(req.cookies.lng as string),
-    phoneNumber,
-    false
+    xss(req.cookies.lng as string)
   );
 
   if (sendNotificationResponse.success) {

@@ -11,6 +11,7 @@ import { defaultZendeskClient } from "../../utils/zendesk";
 import { getZendeskGroupIdPublic } from "../../config";
 import { CreateTicketPayload, ZendeskInterface } from "../../utils/types";
 import { ZENDESK_THEMES } from "../../app.constants";
+import { logger } from "../../utils/logger";
 
 export function getZendeskIdentifierTag(theme: string): string {
   if (theme === ZENDESK_THEMES.ID_CHECK_APP) {
@@ -47,13 +48,56 @@ export function contactUsService(
     };
 
     if (contactForm.feedbackContact && contactForm.email) {
+      const contactName = contactForm.name
+        ? contactForm.name
+        : contactForm.email;
       payload.ticket.requester = {
         email: contactForm.email,
-        name: contactForm.name,
+        name: contactName,
       };
     }
 
-    await zendeskClient.createTicket(payload);
+    try {
+      logger.info(
+        `Submitting support ticket, see field information:
+      subject: ${contactForm?.subject?.length}
+      descriptions.issueDescription: ${
+        contactForm?.descriptions?.issueDescription?.length
+      }
+      descriptions.additionalDescription: ${
+        contactForm?.descriptions?.additionalDescription?.length
+      }
+      descriptions.optionalDescription: ${
+        contactForm?.descriptions?.optionalDescription?.length
+      }
+      descriptions.moreDetailDescription: ${
+        contactForm?.descriptions?.moreDetailDescription?.length
+      }
+      descriptions.serviceTryingToUse: ${
+        contactForm?.descriptions?.serviceTryingToUse?.length
+      }
+      optionalData.userAgent: ${contactForm?.optionalData?.userAgent}
+      optionalData.ticketIdentifier: ${
+        contactForm?.optionalData?.ticketIdentifier
+      }
+      optionalData.appSessionId: ${contactForm?.optionalData?.appSessionId}
+      optionalData.appErrorCode: ${contactForm?.optionalData?.appErrorCode}
+      referer: ${contactForm?.referer}
+      securityCodeSentMethod: ${contactForm?.securityCodeSentMethod}
+      payload.ticket.requester.email: ${
+        payload?.ticket?.requester?.email?.length
+      }
+      payload.ticket.requester.name: ${payload?.ticket?.requester?.name?.length}
+      payload.ticket.tags: ${JSON.stringify(payload?.ticket?.tags)}`
+      );
+    } catch (e) {
+      logger.error("Unable to log support ticket details due to error.", e);
+    }
+
+    await zendeskClient.createTicket(
+      payload,
+      contactForm?.optionalData?.ticketIdentifier
+    );
   };
 
   function formatCommentBody(

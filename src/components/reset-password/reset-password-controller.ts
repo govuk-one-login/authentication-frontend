@@ -95,7 +95,8 @@ export function resetPasswordPost(
       );
     }
 
-    req.session.user.phoneNumber = loginResponse.data.redactedPhoneNumber;
+    req.session.user.redactedPhoneNumber =
+      loginResponse.data.redactedPhoneNumber;
     req.session.user.isConsentRequired = loginResponse.data.consentRequired;
     req.session.user.isLatestTermsAndConditionsAccepted =
       loginResponse.data.latestTermsAndConditionsAccepted;
