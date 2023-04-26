@@ -6,6 +6,8 @@
 
 {% if isAccountPartCreated %}
   {% set pageTitleName = 'pages.getSecurityCodes.titleAccountPartCreated' | translate %}
+{% elif isAccountRecoveryJourney %}
+ {% set pageTitleName = 'pages.getSecurityCodes.accountRecoveryVariants.title' | translate %}
 {% else %}
   {% set pageTitleName = 'pages.getSecurityCodes.title' | translate %}
 {% endif %}
@@ -22,6 +24,9 @@
 {% if isAccountPartCreated %}
   {% set radioHeading = 'pages.getSecurityCodes.headerAccountPartCreated' | translate %}
   {% set radioHintText = 'pages.getSecurityCodes.summaryAccountPartCreated' | translate %}
+{% elif isAccountRecovery %}
+  {% set radioHeading = 'pages.getSecurityCodes.accountRecoveryVariants.header' | translate %}
+  {% set radioHintText = 'pages.getSecurityCodes.accountRecoveryVariants.summary' | translate %}
 {% else %}
   {% set radioHeading = 'pages.getSecurityCodes.header' | translate %}
   {% set radioHintText = 'pages.getSecurityCodes.summary' | translate %}
@@ -31,6 +36,7 @@
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="isAccountPartCreated" value="{{isAccountPartCreated}}"/>
+<input type="hidden" name="isAccountRecovery" value="{{isAccountRecovery}}"/>
 
 {{ govukRadios({
   name: "mfaOptions",

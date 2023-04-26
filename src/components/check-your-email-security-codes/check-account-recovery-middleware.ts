@@ -7,6 +7,7 @@ export function checkAccountRecoveryPermitted(
   next: NextFunction
 ): void {
   if (req.session.user.isAccountRecoveryPermitted === true) {
+    req.session.user.isCurrentlyInAccountRecoveryJourney = true;
     return next();
   }
 
