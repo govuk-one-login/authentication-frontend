@@ -17,7 +17,7 @@ export function checkAccountRecoveryPermitted(
   }
 
   if (type === MFA_METHOD_TYPE.SMS) {
-    return res.redirect(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
+    return res.redirect(PATH_NAMES.CHECK_YOUR_PHONE);
   }
 
   throw new Error(
