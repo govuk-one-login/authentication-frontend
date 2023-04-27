@@ -6,7 +6,7 @@ import { generateMfaSecret } from "../../utils/mfa";
 export function getSecurityCodesGet(req: Request, res: Response): void {
   res.render("select-mfa-options/index.njk", {
     isAccountPartCreated: req.session.user.isAccountPartCreated,
-    isAccountRecovery: req.session.user.isCurrentlyInAccountRecoveryJourney,
+    isAccountRecoveryJourney: req.session.user.isAccountRecoveryJourney,
   });
 }
 

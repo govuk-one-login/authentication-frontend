@@ -24,7 +24,7 @@
 {% if isAccountPartCreated %}
   {% set radioHeading = 'pages.getSecurityCodes.headerAccountPartCreated' | translate %}
   {% set radioHintText = 'pages.getSecurityCodes.summaryAccountPartCreated' | translate %}
-{% elif isAccountRecovery %}
+{% elif isAccountRecoveryJourney %}
   {% set radioHeading = 'pages.getSecurityCodes.accountRecoveryVariants.header' | translate %}
   {% set radioHintText = 'pages.getSecurityCodes.accountRecoveryVariants.summary' | translate %}
 {% else %}
@@ -33,10 +33,7 @@
 {% endif %}
 
 <form action="/get-security-codes" method="post" novalidate>
-
-<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-<input type="hidden" name="isAccountPartCreated" value="{{isAccountPartCreated}}"/>
-<input type="hidden" name="isAccountRecovery" value="{{isAccountRecovery}}"/>
+  <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
 {{ govukRadios({
   name: "mfaOptions",

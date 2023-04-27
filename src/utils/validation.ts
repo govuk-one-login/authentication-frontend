@@ -19,9 +19,17 @@ const convertStringBooleanPropertiesToJavaScriptBoolean = (
 ): RequestBody => {
   return Object.keys(reqBody).reduce<RequestBody>(
     (reducedObject, reqBodyObjectKey) => {
-      const value = reqBody[reqBodyObjectKey];
-      reducedObject[reqBodyObjectKey] =
-        value === "true" ? true : value === "false" ? false : value;
+      const valueInOriginalReqBody = reqBody[reqBodyObjectKey];
+      if (valueInOriginalReqBody === "true") {
+        reducedObject[reqBodyObjectKey] = true;
+      }
+
+      if (valueInOriginalReqBody === "false") {
+        reducedObject[reqBodyObjectKey] = false;
+      }
+
+      reducedObject[reqBodyObjectKey] = valueInOriginalReqBody;
+
       return reducedObject;
     },
     {}
@@ -95,5 +103,6 @@ export function renderBadRequest(
   const params = postValidationLocals
     ? { ...errorParams, ...postValidationLocals }
     : errorParams;
+
   return res.render(template, params);
 }
