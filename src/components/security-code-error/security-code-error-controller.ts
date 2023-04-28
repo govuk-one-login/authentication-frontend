@@ -90,6 +90,15 @@ function getNewCodePath(actionType: SecurityCodeErrorType) {
         "requestNewCode",
         "true"
       );
+    case SecurityCodeErrorType.ChangeSecurityCodesEmailMaxCodesSent:
+    case SecurityCodeErrorType.ChangeSecurityCodesEmailBlocked:
+      return PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
+    case SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries:
+      return pathWithQueryParam(
+        PATH_NAMES.RESEND_EMAIL_CODE,
+        "requestNewCode",
+        "true"
+      );
   }
 }
 

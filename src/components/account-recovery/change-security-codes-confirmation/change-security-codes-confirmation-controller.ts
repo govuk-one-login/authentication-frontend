@@ -25,10 +25,13 @@ export function changeSecurityCodesConfirmationGet(
         xss(req.cookies.lng as string)
       );
 
-      res.render("change-security-codes-confirmation/index.njk", {
-        mfaMethodType: type,
-        phoneNumber: req.session.user.redactedPhoneNumber,
-      });
+      res.render(
+        "account-recovery/change-security-codes-confirmation/index.njk",
+        {
+          mfaMethodType: type,
+          phoneNumber: req.session.user.redactedPhoneNumber,
+        }
+      );
     } else {
       throw new Error(
         "Attempted to access /change-security-codes-confirmation without a valid request type"

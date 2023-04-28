@@ -1,7 +1,7 @@
 import * as express from "express";
-import { PATH_NAMES } from "../../app.constants";
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { asyncHandler } from "../../utils/async";
+import { PATH_NAMES } from "../../../app.constants";
+import { validateSessionMiddleware } from "../../../middleware/session-middleware";
+import { asyncHandler } from "../../../utils/async";
 import { checkAccountRecoveryPermitted } from "./check-account-recovery-middleware";
 import { sendEmailOtp } from "./send-email-otp-middleware";
 import {
@@ -9,7 +9,7 @@ import {
   checkYourEmailSecurityCodesPost,
 } from "./check-your-email-security-codes-controller";
 import { validateCheckYourEmailRequest } from "./check-your-email-security-codes-validation";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
+import { allowUserJourneyMiddleware } from "../../../middleware/allow-user-journey-middleware";
 
 const router = express.Router();
 
