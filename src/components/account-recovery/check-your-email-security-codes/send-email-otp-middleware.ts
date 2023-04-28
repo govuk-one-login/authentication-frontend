@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { sendNotificationService } from "../common/send-notification/send-notification-service";
-import { NOTIFICATION_TYPE } from "../../app.constants";
-import { getErrorPathByCode } from "../common/constants";
-import { BadRequestError } from "../../utils/error";
+import { sendNotificationService } from "../../common/send-notification/send-notification-service";
+import { NOTIFICATION_TYPE } from "../../../app.constants";
+import { getErrorPathByCode } from "../../common/constants";
+import { BadRequestError } from "../../../utils/error";
 import xss from "xss";
 
 export async function sendEmailOtp(

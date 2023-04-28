@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { expect, sinon } from "../../../../test/utils/test-utils";
+import { expect, sinon } from "../../../../../test/utils/test-utils";
 import { describe } from "mocha";
 import { mockRequest, mockResponse } from "mock-req-res";
 
 import { sendEmailOtp } from "../send-email-otp-middleware";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { BadRequestError } from "../../../utils/error";
+import { SendNotificationServiceInterface } from "../../../common/send-notification/types";
+import { BadRequestError } from "../../../../utils/error";
 
-describe("checkAccountRecoveryPermittedMiddleware", () => {
+describe("sendEmailOTPMiddleware", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: NextFunction;

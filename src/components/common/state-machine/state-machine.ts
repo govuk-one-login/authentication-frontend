@@ -363,6 +363,9 @@ const authStateMachine = createMachine(
             },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
+          [USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_REQUESTED]: [
+            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
+          ],
         },
         meta: {
           optionalPaths: [
@@ -588,6 +591,12 @@ const authStateMachine = createMachine(
         on: {
           [USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED]: [
             PATH_NAMES.GET_SECURITY_CODES,
+          ],
+        },
+        meta: {
+          optionalPaths: [
+            PATH_NAMES.ENTER_MFA,
+            PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           ],
         },
       },

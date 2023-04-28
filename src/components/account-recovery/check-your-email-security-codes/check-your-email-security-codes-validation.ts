@@ -1,6 +1,6 @@
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
-import { ValidationChainFunc } from "../../types";
-import { validateCode } from "../common/verify-code/verify-code-validation";
+import { validateBodyMiddleware } from "../../../middleware/form-validation-middleware";
+import { ValidationChainFunc } from "../../../types";
+import { validateCode } from "../../common/verify-code/verify-code-validation";
 
 export function validateCheckYourEmailRequest(): ValidationChainFunc {
   return [

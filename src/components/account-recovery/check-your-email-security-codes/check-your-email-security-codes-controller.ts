@@ -3,14 +3,15 @@ import {
   HREF_BACK,
   MFA_METHOD_TYPE,
   NOTIFICATION_TYPE,
-} from "../../app.constants";
-import { VerifyCodeInterface } from "../common/verify-code/types";
-import { codeService } from "../common/verify-code/verify-code-service";
-import { verifyCodePost } from "../common/verify-code/verify-code-controller";
-import { ExpressRouteFunc } from "../../types";
-import { ERROR_CODES } from "../common/constants";
+} from "../../../app.constants";
+import { VerifyCodeInterface } from "../../common/verify-code/types";
+import { codeService } from "../../common/verify-code/verify-code-service";
+import { verifyCodePost } from "../../common/verify-code/verify-code-controller";
+import { ExpressRouteFunc } from "../../../types";
+import { ERROR_CODES } from "../../common/constants";
 
-const TEMPLATE_NAME = "check-your-email-security-codes/index.njk";
+const TEMPLATE_NAME =
+  "account-recovery/check-your-email-security-codes/index.njk";
 
 export function checkYourEmailSecurityCodesGet(
   req: Request,
@@ -20,7 +21,7 @@ export function checkYourEmailSecurityCodesGet(
   if (req.query.type === MFA_METHOD_TYPE.AUTH_APP) {
     backUrl = HREF_BACK.ENTER_AUTHENTICATOR_APP_CODE;
   } else if (req.query.type === MFA_METHOD_TYPE.SMS) {
-    backUrl = HREF_BACK.CHECK_YOUR_PHONE;
+    backUrl = HREF_BACK.ENTER_MFA;
   }
   res.render(TEMPLATE_NAME, {
     email: req.session.user.email,

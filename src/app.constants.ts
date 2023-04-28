@@ -63,6 +63,7 @@ export const PATH_NAMES = {
 export const HREF_BACK = {
   CHECK_YOUR_PHONE: "check-your-phone",
   ENTER_AUTHENTICATOR_APP_CODE: "enter-authenticator-app-code",
+  ENTER_MFA: "enter-code",
 };
 
 export const HTTP_STATUS_CODES = {

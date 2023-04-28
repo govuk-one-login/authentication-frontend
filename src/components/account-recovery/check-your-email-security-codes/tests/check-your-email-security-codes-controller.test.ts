@@ -1,16 +1,16 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
+import { sinon } from "../../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
-import { VerifyCodeInterface } from "../../common/verify-code/types";
+import { VerifyCodeInterface } from "../../../common/verify-code/types";
 import {
   checkYourEmailSecurityCodesGet,
   checkYourEmailSecurityCodesPost,
 } from "../check-your-email-security-codes-controller";
-import { PATH_NAMES } from "../../../app.constants";
-import { ERROR_CODES } from "../../common/constants";
+import { PATH_NAMES } from "../../../../app.constants";
+import { ERROR_CODES } from "../../../common/constants";
 import {
   mockRequest,
   mockResponse,
@@ -42,7 +42,7 @@ describe("check your email change security codes controller", () => {
       checkYourEmailSecurityCodesGet(req as Request, res as Response);
 
       expect(res.render).to.have.been.calledWith(
-        "check-your-email-security-codes/index.njk"
+        "account-recovery/check-your-email-security-codes/index.njk"
       );
     });
   });
@@ -85,7 +85,7 @@ describe("check your email change security codes controller", () => {
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.render).to.have.been.calledWith(
-        "check-your-email-security-codes/index.njk"
+        "account-recovery/check-your-email-security-codes/index.njk"
       );
     });
   });
