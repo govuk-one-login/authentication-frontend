@@ -4,7 +4,7 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
-import { cannotChangeSecurityCodesGet } from "../cannot-change-security-codes-controller";
+import { cannotChangeSecurityCodesGet } from "../change-security-codes-confirmation-controller";
 import { PATH_NAMES } from "../../../app.constants";
 import {
   mockRequest,

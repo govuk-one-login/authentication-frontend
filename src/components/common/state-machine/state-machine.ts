@@ -363,6 +363,7 @@ const authStateMachine = createMachine(
             },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
+          [USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_REQUESTED]: [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES],
         },
         meta: {
           optionalPaths: [
@@ -371,7 +372,6 @@ const authStateMachine = createMachine(
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
             PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
-            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
           ],
         },
       },
