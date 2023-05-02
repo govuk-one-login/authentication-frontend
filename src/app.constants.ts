@@ -228,4 +228,5 @@ export const CONTACT_US_REFERER_ALLOWLIST = [
   "accountDeletedEmail",
   "phoneNumberUpdatedEmail",
   "passwordUpdatedEmail",
+  "changeCodesConfirmEmail",
 ];
