@@ -68,6 +68,7 @@ const authStateMachine = createMachine(
       mfaMethodType: MFA_METHOD_TYPE.SMS,
       isMfaMethodVerified: true,
       isPasswordChangeRequired: false,
+      isAccountRecoveryJourney: false,
     },
     states: {
       [PATH_NAMES.START]: {
@@ -169,7 +170,15 @@ const authStateMachine = createMachine(
       },
       [PATH_NAMES.RESEND_EMAIL_CODE]: {
         on: {
-          [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.CHECK_YOUR_EMAIL],
+          [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [
+            {
+              target: [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES],
+              cond: "isAccountRecoveryJourney",
+            },
+            {
+              target: [PATH_NAMES.CHECK_YOUR_EMAIL],
+            },
+          ],
         },
       },
       [PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS]: {
@@ -597,6 +606,10 @@ const authStateMachine = createMachine(
           optionalPaths: [
             PATH_NAMES.ENTER_MFA,
             PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+            PATH_NAMES.RESEND_EMAIL_CODE,
+            PATH_NAMES.SECURITY_CODE_WAIT,
+            PATH_NAMES.SECURITY_CODE_INVALID,
+            PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
           ],
         },
       },
@@ -635,6 +648,7 @@ const authStateMachine = createMachine(
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.requiresTwoFactorAuth === true,
       isPasswordChangeRequired: (context) => context.isPasswordChangeRequired,
+      isAccountRecoveryJourney: (context) => context.isAccountRecoveryJourney,
     },
   }
 );

@@ -14,6 +14,11 @@ export async function sendEmailOtp(
   const email = req.session.user.email.toLowerCase();
   const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
+  if (req.session.user?.isAccountRecoveryCodeResent) {
+    req.session.user.isAccountRecoveryCodeResent = false;
+    return next();
+  }
+
   const sendNotificationResponse = await notificationService.sendNotification(
     sessionId,
     clientSessionId,

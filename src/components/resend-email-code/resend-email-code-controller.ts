@@ -25,12 +25,13 @@ export function resendEmailCodePost(
   return async function (req: Request, res: Response) {
     const email = req.session.user.email.toLowerCase();
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const isAccountRecoveryJourney = req.session.user?.isAccountRecoveryJourney;
 
     const sendNotificationResponse = await notificationService.sendNotification(
       sessionId,
       clientSessionId,
       email,
-      NOTIFICATION_TYPE.VERIFY_EMAIL,
+      getNotificationTemplateType(isAccountRecoveryJourney),
       req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
@@ -51,12 +52,18 @@ export function resendEmailCodePost(
       );
     }
 
+    if (isAccountRecoveryJourney) {
+      req.session.user.isAccountRecoveryCodeResent = true;
+    }
+
     return res.redirect(
       getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
-        null,
+        {
+          isAccountRecoveryJourney: isAccountRecoveryJourney,
+        },
         sessionId
       )
     );
@@ -69,12 +76,13 @@ export function securityCodeCheckTimeLimit(
   return async function (req: Request, res: Response) {
     const email = req.session.user.email.toLowerCase();
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const isAccountRecoveryJourney = req.session.user?.isAccountRecoveryJourney;
 
     const sendNotificationResponse = await notificationService.sendNotification(
       sessionId,
       clientSessionId,
       email,
-      NOTIFICATION_TYPE.VERIFY_EMAIL,
+      getNotificationTemplateType(isAccountRecoveryJourney),
       req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
@@ -88,14 +96,30 @@ export function securityCodeCheckTimeLimit(
       });
     }
 
+    if (isAccountRecoveryJourney) {
+      req.session.user.isAccountRecoveryCodeResent = true;
+    }
+
     return res.redirect(
       getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
-        null,
+        {
+          isAccountRecoveryJourney: isAccountRecoveryJourney,
+        },
         sessionId
       )
     );
   };
+}
+
+function getNotificationTemplateType(
+  isAccountRecoveryJourney: boolean
+): NOTIFICATION_TYPE {
+  if (isAccountRecoveryJourney) {
+    return NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES;
+  } else {
+    return NOTIFICATION_TYPE.VERIFY_EMAIL;
+  }
 }

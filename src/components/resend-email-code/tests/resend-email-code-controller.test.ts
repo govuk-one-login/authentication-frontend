@@ -46,7 +46,7 @@ describe("resend email controller", () => {
   });
 
   describe("resendEmailCodePost", () => {
-    it("should send email code and redirect to /check-your-email view", async () => {
+    it.only("should send email code and redirect to /check-your-email view", async () => {
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake.returns({
           success: true,

@@ -9,6 +9,7 @@ export function checkAccountRecoveryPermitted(
   next: NextFunction
 ): void {
   if (req.session.user.isAccountRecoveryPermitted === true) {
+    req.session.user.isAccountRecoveryJourney = true;
     getNextPathAndUpdateJourney(
       req,
       req.path,
@@ -19,6 +20,7 @@ export function checkAccountRecoveryPermitted(
     return next();
   }
 
+  req.session.user.isAccountRecoveryJourney = false;
   const type = req.query.type;
 
   if (type === MFA_METHOD_TYPE.AUTH_APP) {
