@@ -1,6 +1,7 @@
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
+  JOURNEY_TYPE,
   MFA_METHOD_TYPE,
 } from "../../../app.constants";
 import {
@@ -19,6 +20,7 @@ export function verifyMfaCodeService(
     methodType: MFA_METHOD_TYPE,
     code: string,
     isRegistration: boolean,
+    journeyType: JOURNEY_TYPE,
     sessionId: string,
     clientSessionId: string,
     sourceIp: string,
