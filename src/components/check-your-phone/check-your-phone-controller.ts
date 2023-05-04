@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { MFA_METHOD_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
+import {
+  JOURNEY_TYPE,
+  MFA_METHOD_TYPE,
+  NOTIFICATION_TYPE,
+} from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import {
   ERROR_CODES,
@@ -37,6 +41,7 @@ export const checkYourPhonePost = (
       MFA_METHOD_TYPE.SMS,
       req.body["code"],
       true,
+      JOURNEY_TYPE.REGISTRATION,
       sessionId,
       clientSessionId,
       req.ip,

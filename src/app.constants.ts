@@ -185,6 +185,12 @@ export enum MFA_METHOD_TYPE {
   AUTH_APP = "AUTH_APP",
 }
 
+export enum JOURNEY_TYPE {
+  REGISTRATION = "REGISTRATION",
+  ACCOUNT_RECOVERY = "ACCOUNT_RECOVERY",
+  SIGN_IN = "SIGN_IN",
+}
+
 export const ENVIRONMENT_NAME = {
   PROD: "production",
   DEV: "development",
