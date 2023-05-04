@@ -12,11 +12,7 @@ import {
 } from "../../utils/validation";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
-import {
-  JOURNEY_TYPE,
-  MFA_METHOD_TYPE,
-  NOTIFICATION_TYPE,
-} from "../../app.constants";
+import { MFA_METHOD_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
 import xss from "xss";
 import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
@@ -56,7 +52,6 @@ export function setupAuthenticatorAppPost(
       MFA_METHOD_TYPE.AUTH_APP,
       code,
       true,
-      JOURNEY_TYPE.REGISTRATION,
       sessionId,
       clientSessionId,
       req.ip,

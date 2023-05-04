@@ -11,7 +11,7 @@ import { VerifyMfaCodeInterface } from "./types";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
 import { BadRequestError } from "../../utils/error";
-import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 import {
   formatValidationError,
@@ -104,7 +104,6 @@ export const enterAuthenticatorAppCodePost = (
       MFA_METHOD_TYPE.AUTH_APP,
       req.body["code"],
       false,
-      JOURNEY_TYPE.SIGN_IN,
       sessionId,
       clientSessionId,
       req.ip,
