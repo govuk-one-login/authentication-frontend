@@ -43,6 +43,7 @@ describe("enter authenticator app code controller", () => {
       const fakeService: AccountRecoveryInterface = {
         accountRecovery: sinon.fake.returns({
           success: true,
+          isAccountRecoveryPermitted: true,
         }),
       };
 

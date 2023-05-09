@@ -74,8 +74,22 @@ describe("enter mfa controller", () => {
       });
     });
 
-    it("should render enter mfa code view with supportAccountRecovery true when enabled at environment level, even when user is blocked from account recovery", async () => {
+    it("should render enter mfa code view with supportAccountRecovery false when enabled at environment level, but user is blocked from account recovery", async () => {
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
+        phoneNumber: TEST_PHONE_NUMBER,
+        supportAccountRecovery: false,
+        checkEmailLink:
+          PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=SMS",
+      });
+    });
+
+    it("should render enter mfa code view with supportAccountRecovery true when enabled at environment level and user is not blocked from account recovery", async () => {
+      await enterMfaGet(fakeAccountRecoveryPermissionCheckService(true))(
         req as Request,
         res as Response
       );

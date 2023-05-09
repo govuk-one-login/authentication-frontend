@@ -64,7 +64,7 @@ export function enterMfaGet(
 
     res.render(templateName, {
       phoneNumber: req.session.user.redactedPhoneNumber,
-      supportAccountRecovery: isAccountRecoveryEnabledForEnvironment,
+      supportAccountRecovery: req.session.user.isAccountRecoveryPermitted,
       checkEmailLink,
     });
   };
