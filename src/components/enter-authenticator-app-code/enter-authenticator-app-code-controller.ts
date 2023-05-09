@@ -104,11 +104,11 @@ export const enterAuthenticatorAppCodePost = (
       MFA_METHOD_TYPE.AUTH_APP,
       req.body["code"],
       false,
-      JOURNEY_TYPE.SIGN_IN,
       sessionId,
       clientSessionId,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      JOURNEY_TYPE.SIGN_IN
     );
 
     if (!result.success) {

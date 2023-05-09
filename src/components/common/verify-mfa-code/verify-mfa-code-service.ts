@@ -24,8 +24,8 @@ export function verifyMfaCodeService(
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string,
-    profileInformation?: string,
-    journeyType?: JOURNEY_TYPE
+    journeyType?: JOURNEY_TYPE,
+    profileInformation?: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.VERIFY_MFA_CODE,

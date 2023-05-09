@@ -41,11 +41,11 @@ export const checkYourPhonePost = (
       MFA_METHOD_TYPE.SMS,
       req.body["code"],
       true,
-      JOURNEY_TYPE.REGISTRATION,
       sessionId,
       clientSessionId,
       req.ip,
       persistentSessionId,
+      JOURNEY_TYPE.REGISTRATION,
       req.session.user.phoneNumber
     );
 

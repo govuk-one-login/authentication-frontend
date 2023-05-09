@@ -56,11 +56,11 @@ export function setupAuthenticatorAppPost(
       MFA_METHOD_TYPE.AUTH_APP,
       code,
       true,
-      JOURNEY_TYPE.REGISTRATION,
       sessionId,
       clientSessionId,
       req.ip,
       persistentSessionId,
+      JOURNEY_TYPE.REGISTRATION,
       authAppSecret
     );
 
