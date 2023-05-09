@@ -10,6 +10,32 @@ export const isObjectEmpty = (obj: Record<string, unknown>): boolean => {
   return Object.keys(obj).length === 0;
 };
 
+interface RequestBody {
+  [key: string]: string | boolean;
+}
+
+const convertStringBooleanPropertiesToJavaScriptBoolean = (
+  reqBody: RequestBody
+): RequestBody => {
+  return Object.keys(reqBody).reduce<RequestBody>(
+    (reducedObject, reqBodyObjectKey) => {
+      const valueInOriginalReqBody = reqBody[reqBodyObjectKey];
+      if (valueInOriginalReqBody === "true") {
+        reducedObject[reqBodyObjectKey] = true;
+      }
+
+      if (valueInOriginalReqBody === "false") {
+        reducedObject[reqBodyObjectKey] = false;
+      }
+
+      reducedObject[reqBodyObjectKey] = valueInOriginalReqBody;
+
+      return reducedObject;
+    },
+    {}
+  );
+};
+
 export function formatValidationError(
   key: string,
   validationMessage: string
@@ -69,12 +95,14 @@ export function renderBadRequest(
   const errorParams = {
     errors,
     errorList: uniqueErrorListWithPlaceholdersReplaced,
-    ...req.body,
+    ...convertStringBooleanPropertiesToJavaScriptBoolean(req.body),
     language: req.i18n.language,
     zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
   };
+
   const params = postValidationLocals
     ? { ...errorParams, ...postValidationLocals }
     : errorParams;
+
   return res.render(template, params);
 }

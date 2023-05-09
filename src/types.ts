@@ -38,6 +38,7 @@ export interface PlaceholderReplacement {
 }
 
 export interface UserSession {
+  [key: string]: unknown;
   isAuthenticated?: boolean;
   email?: string;
   redactedPhoneNumber?: string;
@@ -57,6 +58,7 @@ export interface UserSession {
   wrongCodeEnteredLock?: string;
   codeRequestLock?: string;
   isAccountRecoveryPermitted?: boolean;
+  isAccountRecoveryJourney?: boolean;
 }
 
 export interface UserSessionClient {

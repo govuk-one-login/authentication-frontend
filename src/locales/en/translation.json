@@ -1890,7 +1890,12 @@
         "paragraph1": "An authenticator app creates a security code that helps confirm it’s you when you sign in.",
         "paragraph2": "You can use an authenticator app on your smartphone, tablet or desktop computer.  Download an authenticator app for your smartphone or tablet from your app store or search online for an authenticator app for your computer."
       },
-      "continueButtonText": "Continue"
+      "continueButtonText": "Continue",
+      "accountRecoveryVariants": {
+        "title": "How do you want to get security codes?",
+        "header": "How do you want to get security codes?",
+        "summary": "Choose how you’ll get security codes when signing in to your GOV.UK One Login. This will remove your old phone number or authenticator app from your GOV.UK One Login."
+      }
     },
     "setupAuthenticatorApp": {
       "title": "Set up an authenticator app",

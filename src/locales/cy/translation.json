@@ -1890,7 +1890,12 @@
         "paragraph1": "Mae ap dilysydd yn creu cod diogelwch sy’n helpu i gadarnhau mai chi yw chi pan fyddwch yn mewngofnodi.",
         "paragraph2": "Gallwch ddefnyddio ap dilysydd ar eich ffôn clyfar, llechen neu gyfrifiadur bwrdd gwaith.  Lawrlwythwch ap dilysydd ar gyfer eich ffôn clyfar neu lechen o’ch siop apiau neu chwiliwch ar-lein am ap dilysydd ar gyfer eich cyfrifiadur."
       },
-      "continueButtonText": "Parhau"
+      "continueButtonText": "Parhau",
+      "accountRecoveryVariants": {
+        "title": "Sut ydych chi am gael codau diogelwch?",
+        "header": "Sut ydych chi am gael codau diogelwch?",
+        "summary": "Dewis sut byddwch yn cael codau diogelwch pan rydych yn mewngofnodi i’ch GOV.UK One Login. Bydd hyn yn dileu eich hen rhif ffôn neu ap dilysydd o’ch GOV.UK One Login."
+      }
     },
     "setupAuthenticatorApp": {
       "title": "Sefydlu ap dilysydd",
