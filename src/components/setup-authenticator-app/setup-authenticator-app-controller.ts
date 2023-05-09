@@ -55,7 +55,6 @@ export function setupAuthenticatorAppPost(
     const verifyAccessCodeRes = await service.verifyMfaCode(
       MFA_METHOD_TYPE.AUTH_APP,
       code,
-      true,
       sessionId,
       clientSessionId,
       req.ip,

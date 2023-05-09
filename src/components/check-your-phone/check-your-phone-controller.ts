@@ -40,7 +40,6 @@ export const checkYourPhonePost = (
     const result = await service.verifyMfaCode(
       MFA_METHOD_TYPE.SMS,
       req.body["code"],
-      true,
       sessionId,
       clientSessionId,
       req.ip,

@@ -6,7 +6,6 @@ export interface VerifyMfaCodeInterface {
   verifyMfaCode: (
     methodType: MFA_METHOD_TYPE,
     code: string,
-    isRegistration: boolean,
     sessionId: string,
     clientSessionId: string,
     sourceIp: string,
