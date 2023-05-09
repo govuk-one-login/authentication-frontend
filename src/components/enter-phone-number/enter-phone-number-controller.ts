@@ -10,7 +10,7 @@ import { BadRequestError } from "../../utils/error";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { prependInternationalPrefix } from "../../utils/phone-number";
+import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number";
 import { supportInternationalNumbers } from "../../config";
 import xss from "xss";
 
@@ -31,11 +31,10 @@ export function enterPhoneNumberPost(
     let phoneNumber;
 
     if (
-      hasInternationalPhoneNumber &&
       hasInternationalPhoneNumber === "true" &&
       supportInternationalNumbers()
     ) {
-      phoneNumber = prependInternationalPrefix(
+      phoneNumber = convertInternationalPhoneNumberToE164Format(
         req.body.internationalPhoneNumber
       );
     } else {

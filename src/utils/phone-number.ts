@@ -25,7 +25,8 @@ export function containsUKMobileNumber(value: string): boolean {
 }
 
 export function containsInternationalMobileNumber(value: string): boolean {
-  return isValidPhoneNumber(prependInternationalPrefix(value));
+  const formattedNumber = convertInternationalPhoneNumberToE164Format(value);
+  return isValidPhoneNumber(formattedNumber);
 }
 
 export function containsLeadingPlusNumbersOrSpacesOnly(value: string): boolean {
@@ -41,6 +42,16 @@ export function lengthInRangeWithoutSpaces(
   return length >= min && length <= max;
 }
 
-export function prependInternationalPrefix(value: string): string {
-  return value.startsWith("+") ? value : "+".concat(value);
+export function convertInternationalPhoneNumberToE164Format(
+  value: string
+): string {
+  if (value.startsWith("+")) {
+    return value;
+  }
+
+  if (value.startsWith("00")) {
+    return value.replace("00", "+");
+  }
+
+  return "+".concat(value);
 }
