@@ -66,7 +66,7 @@ describe("checkAccountRecoveryPermittedMiddleware", () => {
     checkAccountRecoveryPermitted(req as Request, res as Response, next);
     expect(next).to.not.be.called;
     expect(res.redirect).to.have.been.calledOnceWith(
-      PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES
+      PATH_NAMES.CHECK_YOUR_PHONE
     );
   });
 
