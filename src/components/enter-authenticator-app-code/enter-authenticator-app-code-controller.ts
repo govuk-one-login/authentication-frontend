@@ -103,7 +103,6 @@ export const enterAuthenticatorAppCodePost = (
     const result = await service.verifyMfaCode(
       MFA_METHOD_TYPE.AUTH_APP,
       req.body["code"],
-      false,
       sessionId,
       clientSessionId,
       req.ip,
