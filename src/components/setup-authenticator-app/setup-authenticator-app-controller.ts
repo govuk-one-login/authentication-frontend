@@ -48,9 +48,18 @@ export function setupAuthenticatorAppPost(
   notificationService: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { authAppSecret } = req.session.user;
+    const {
+      authAppSecret,
+      isAccountRecoveryJourney,
+      isAccountRecoveryPermitted,
+    } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const code = req.body.code;
+
+    const journeyType =
+      isAccountRecoveryPermitted && isAccountRecoveryJourney
+        ? JOURNEY_TYPE.ACCOUNT_RECOVERY
+        : JOURNEY_TYPE.REGISTRATION;
 
     const verifyAccessCodeRes = await service.verifyMfaCode(
       MFA_METHOD_TYPE.AUTH_APP,
@@ -59,7 +68,7 @@ export function setupAuthenticatorAppPost(
       clientSessionId,
       req.ip,
       persistentSessionId,
-      JOURNEY_TYPE.REGISTRATION,
+      journeyType,
       authAppSecret
     );
 

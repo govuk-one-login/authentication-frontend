@@ -36,6 +36,13 @@ export const checkYourPhonePost = (
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const { isAccountRecoveryJourney, isAccountRecoveryPermitted } =
+      req.session.user;
+
+    const journeyType =
+      isAccountRecoveryPermitted && isAccountRecoveryJourney
+        ? JOURNEY_TYPE.ACCOUNT_RECOVERY
+        : JOURNEY_TYPE.REGISTRATION;
 
     const result = await service.verifyMfaCode(
       MFA_METHOD_TYPE.SMS,
@@ -44,7 +51,7 @@ export const checkYourPhonePost = (
       clientSessionId,
       req.ip,
       persistentSessionId,
-      JOURNEY_TYPE.REGISTRATION,
+      journeyType,
       req.session.user.phoneNumber
     );
 
