@@ -67,7 +67,7 @@ export function validateEnterPhoneNumberRequest(): ValidationChainFunc {
         return true;
       })
       .custom((value, { req }) => {
-        if (!lengthInRangeWithoutSpaces(value, 5, 25)) {
+        if (!lengthInRangeWithoutSpaces(value, 5, 26)) {
           throw new Error(
             req.t(
               "pages.enterPhoneNumber.internationalPhoneNumber.validationError.internationalFormat"
