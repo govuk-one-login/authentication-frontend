@@ -1,5 +1,28 @@
-@use "../../../node_modules/govuk-frontend/govuk/all";
-@import "../../../node_modules/govuk-frontend/govuk/base";
+@import "base";
+@import "core/all";
+@import "utilities/all";
+@import "objects/all";
+@import "overrides/all";
+
+@import "components/back-link/back-link";
+@import "components/button/button";
+@import "components/character-count/character-count";
+@import "components/checkboxes/checkboxes";
+@import "components/cookie-banner/cookie-banner";
+@import "components/details/details";
+@import "components/error-summary/error-summary";
+@import "components/footer/footer";
+@import "components/header/header";
+@import "components/input/input";
+@import "components/inset-text/inset-text";
+@import "components/notification-banner/notification-banner";
+@import "components/panel/panel";
+@import "components/phase-banner/phase-banner";
+@import "components/radios/radios";
+@import "components/skip-link/skip-link";
+@import "components/summary-list/summary-list";
+@import "components/table/table";
+@import "components/warning-text/warning-text";
 
 .interrupt-screen {
   background-color: #1d70b8;
@@ -193,7 +216,7 @@
 }
 
 .contact {
-  border-left: 1px solid all.$govuk-border-colour;
+  border-left: 1px solid $govuk-border-colour;
   padding-left: 15px;
   margin-bottom: 30px;
   margin-top: 30px;
