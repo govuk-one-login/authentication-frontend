@@ -19,7 +19,6 @@ export function verifyMfaCodeService(
   const verifyMfaCode = async function (
     methodType: MFA_METHOD_TYPE,
     code: string,
-    isRegistration: boolean,
     sessionId: string,
     clientSessionId: string,
     sourceIp: string,
@@ -32,7 +31,6 @@ export function verifyMfaCodeService(
       {
         mfaMethodType: methodType,
         code,
-        isRegistration,
         journeyType,
         ...(profileInformation && { profileInformation }),
       },
