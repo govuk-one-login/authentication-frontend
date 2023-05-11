@@ -40,12 +40,10 @@ describe("sendEmailOTPMiddleware", () => {
         success: true,
       }),
     };
-
-    await sendEmailOtp(
+    await sendEmailOtp(fakeNotificationService)(
       req as Request,
       res as Response,
-      next,
-      fakeNotificationService
+      next as NextFunction
     );
     expect(next).to.be.calledOnce;
   });
@@ -63,14 +61,13 @@ describe("sendEmailOTPMiddleware", () => {
       }),
     };
 
-    sendEmailOtp(
-      req as Request,
-      res as Response,
-      next,
-      fakeNotificationService
-    ).then((resp) => {
-      expect(resp).to.throw(BadRequestError);
-    });
+    await expect(
+      sendEmailOtp(fakeNotificationService)(
+        req as Request,
+        res as Response,
+        next as NextFunction
+      )
+    ).to.be.rejectedWith(BadRequestError, "999999999999999:test error message");
 
     expect(next).to.not.be.called;
   });

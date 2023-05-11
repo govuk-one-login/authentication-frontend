@@ -18,7 +18,7 @@ router.get(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   checkAccountRecoveryPermitted,
-  asyncHandler(sendEmailOtp),
+  asyncHandler(sendEmailOtp()),
   checkYourEmailSecurityCodesGet
 );
 
