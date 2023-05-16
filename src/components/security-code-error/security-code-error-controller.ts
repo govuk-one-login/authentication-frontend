@@ -5,13 +5,17 @@ import {
   SECURITY_CODE_ERROR,
 } from "../common/constants";
 import { PATH_NAMES } from "../../app.constants";
+import {
+  getCodeEnteredWrongBlockDurationInMinutes,
+  getCodeRequestBlockDurationInMinutes,
+} from "../../config";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
   const isNotEmailCode =
     req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries;
   if (isNotEmailCode) {
     req.session.user.wrongCodeEnteredLock = new Date(
-      Date.now() + 15 * 60000
+      Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
     ).toUTCString();
   }
   return res.render("security-code-error/index.njk", {
@@ -26,7 +30,7 @@ export function securityCodeTriesExceededGet(
   res: Response
 ): void {
   req.session.user.codeRequestLock = new Date(
-    Date.now() + 15 * 60000
+    Date.now() + getCodeRequestBlockDurationInMinutes() * 60000
   ).toUTCString();
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
