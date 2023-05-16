@@ -37,7 +37,7 @@ describe("Integration:: enter mfa", () => {
 
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: "7867",
+          phoneNumber: "+447700900000",
           journey: {
             nextPath: PATH_NAMES.ENTER_MFA,
           },

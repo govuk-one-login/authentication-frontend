@@ -5,7 +5,6 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% set pageTitleName = 'pages.enterMfa.title' | translate %}
-{% set lastThreeDigits = phoneNumber.slice(-3) %}
 
 {% block content %}
 
@@ -14,7 +13,7 @@
   <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterMfa.header' | translate }}</h1>
 
   {% set insetText %}
-    {{ 'pages.checkYourPhone.info.paragraph1' | translate }} <span class='govuk-!-font-weight-bold'>{{ lastThreeDigits }}</span>
+    {{ 'pages.checkYourPhone.info.paragraph1' | translate }} <span class='govuk-!-font-weight-bold'>{{phoneNumber.slice(-1)}}</span>
   {% endset %}
 
   {{ govukInsetText({
