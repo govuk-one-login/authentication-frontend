@@ -70,50 +70,44 @@ describe("resend email controller", () => {
   });
 
   describe("securityCodeCheckTimeLimit", () => {
-    it("should render security-code-error/index-wait.njk if `sendNotificationResponse.success` is false", async () => {
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: false,
-        }),
-      };
-
+    it("should render security-code-error/index-wait.njk if codeRequestLock is set in the future", async () => {
       res.locals.sessionId = "123456-djjad";
       req.session.user = {
         email: "test@test.com",
+        codeRequestLock: new Date(Date.now() + 15 * 60000).toUTCString(),
       };
       req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
 
-      await securityCodeCheckTimeLimit(fakeNotificationService)(
-        req as Request,
-        res as Response
-      );
+      await securityCodeCheckTimeLimit()(req as Request, res as Response);
 
       expect(res.render).to.have.been.calledWith(
         "security-code-error/index-wait.njk"
       );
-      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
     });
 
-    it("should redirect to /resend-email-code if `sendNotificationResponse.success` is true", async () => {
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
+    it("should redirect to /resend-email-code if codeRequestLock is set in the past", async () => {
+      res.locals.sessionId = "123456-djjad";
+      req.session.user = {
+        email: "test@test.com",
+        codeRequestLock: new Date(Date.now() - 15 * 60000).toUTCString(),
       };
+      req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
 
+      await securityCodeCheckTimeLimit()(req as Request, res as Response);
+
+      expect(res.redirect).to.have.been.calledWith("/resend-email-code");
+    });
+
+    it("should redirect to /resend-email-code if codeRequestLock is not set", async () => {
       res.locals.sessionId = "123456-djjad";
       req.session.user = {
         email: "test@test.com",
       };
       req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
 
-      await securityCodeCheckTimeLimit(fakeNotificationService)(
-        req as Request,
-        res as Response
-      );
+      await securityCodeCheckTimeLimit()(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith("/resend-email-code");
-      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
     });
   });
 });
