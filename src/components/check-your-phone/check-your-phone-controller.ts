@@ -73,11 +73,16 @@ export const checkYourPhonePost = (
       throw new BadRequestError(result.data.message, result.data.code);
     }
 
+    const notificationType =
+      isAccountRecoveryPermitted && isAccountRecoveryJourney
+        ? NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION
+        : NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
+
     await notificationService.sendNotification(
       res.locals.sessionId,
       res.locals.clientSessionId,
       req.session.user.email,
-      NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
+      notificationType,
       req.ip,
       res.locals.persistentSessionId,
       xss(req.cookies.lng as string)
