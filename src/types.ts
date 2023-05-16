@@ -59,6 +59,7 @@ export interface UserSession {
   codeRequestLock?: string;
   isAccountRecoveryPermitted?: boolean;
   isAccountRecoveryJourney?: boolean;
+  isAccountRecoveryCodeResent?: boolean;
 }
 
 export interface UserSessionClient {

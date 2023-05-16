@@ -54,7 +54,7 @@ describe("change security codes confirmation controller", () => {
         );
 
         expect(res.render).to.have.been.calledWith(
-          "change-security-codes-confirmation/index.njk",
+          "account-recovery/change-security-codes-confirmation/index.njk",
           { mfaMethodType: mfaMethodType, phoneNumber: "*******1234" }
         );
       });

@@ -1,5 +1,7 @@
-import { PATH_NAMES, MFA_METHOD_TYPE } from "../../app.constants";
+import { PATH_NAMES, MFA_METHOD_TYPE } from "../../../app.constants";
 import { Request, Response, NextFunction } from "express";
+import { getNextPathAndUpdateJourney } from "../../common/constants";
+import { USER_JOURNEY_EVENTS } from "../../common/state-machine/state-machine";
 
 export function checkAccountRecoveryPermitted(
   req: Request,
@@ -8,9 +10,17 @@ export function checkAccountRecoveryPermitted(
 ): void {
   if (req.session.user.isAccountRecoveryPermitted === true) {
     req.session.user.isAccountRecoveryJourney = true;
+    getNextPathAndUpdateJourney(
+      req,
+      req.path,
+      USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_REQUESTED,
+      null,
+      res.locals.sessionId
+    );
     return next();
   }
 
+  req.session.user.isAccountRecoveryJourney = false;
   const type = req.query.type;
 
   if (type === MFA_METHOD_TYPE.AUTH_APP) {
