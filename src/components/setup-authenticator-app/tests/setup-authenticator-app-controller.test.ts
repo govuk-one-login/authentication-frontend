@@ -121,7 +121,7 @@ describe("setup-authenticator-app controller", () => {
       );
 
       expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL
+        PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION_AUTH_APP
       );
     });
 

@@ -82,7 +82,7 @@ describe("check your phone controller", () => {
       );
     });
 
-    it("should redirect to /account-confirmation when valid code entered for account recovery journey (to be updated) ", async () => {
+    it("should redirect to /change-codes-confirmed when valid code entered for account recovery journey ", async () => {
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
           sessionState: "PHONE_NUMBER_CODE_VERIFIED",
@@ -117,7 +117,7 @@ describe("check your phone controller", () => {
         ""
       );
       expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL
+        PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION_SMS
       );
     });
 
