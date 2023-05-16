@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants";
+import { NOTIFICATION_TYPE } from "../../app.constants";
 import {
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
@@ -70,29 +70,20 @@ export function resendEmailCodePost(
   };
 }
 
-export function securityCodeCheckTimeLimit(
-  notificationService: SendNotificationServiceInterface = sendNotificationService()
-): ExpressRouteFunc {
+export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const email = req.session.user.email.toLowerCase();
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const { sessionId } = res.locals;
     const isAccountRecoveryJourney = req.session.user?.isAccountRecoveryJourney;
 
-    const sendNotificationResponse = await notificationService.sendNotification(
-      sessionId,
-      clientSessionId,
-      email,
-      getNotificationTemplateType(isAccountRecoveryJourney),
-      req.ip,
-      persistentSessionId,
-      xss(req.cookies.lng as string),
-      undefined,
-      xss(req.body.requestNewCode as string) === "true"
-    );
-
-    if (!sendNotificationResponse.success) {
+    if (
+      req.session.user.codeRequestLock &&
+      new Date().toUTCString() < req.session.user.codeRequestLock
+    ) {
+      const newCodeLink = req.query?.isResendCodeRequest
+        ? "/security-code-check-time-limit?isResendCodeRequest=true"
+        : "/security-code-check-time-limit";
       return res.render("security-code-error/index-wait.njk", {
-        newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
+        newCodeLink,
       });
     }
 

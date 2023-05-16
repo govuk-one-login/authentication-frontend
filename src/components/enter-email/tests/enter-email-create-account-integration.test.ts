@@ -200,7 +200,7 @@ describe("Integration::enter email (create account)", () => {
       .expect(500, done);
   });
 
-  it("should redirect to /security-code-invalid-request when exceeded OTP request limit", (done) => {
+  it("should redirect to /security-code-requested-too-many-times when exceeded OTP request limit", (done) => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
@@ -222,12 +222,12 @@ describe("Integration::enter email (create account)", () => {
       })
       .expect(
         "Location",
-        `${PATH_NAMES.SECURITY_CODE_WAIT}?actionType=${SecurityCodeErrorType.EmailBlocked}`
+        `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.EmailBlocked}`
       )
       .expect(302, done);
   });
 
-  it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", (done) => {
+  it("should redirect to /security-code-invalid-request when request OTP more than 5 times", (done) => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
@@ -249,7 +249,7 @@ describe("Integration::enter email (create account)", () => {
       })
       .expect(
         "Location",
-        `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.EmailMaxCodesSent}`
+        `${PATH_NAMES.SECURITY_CODE_WAIT}?actionType=${SecurityCodeErrorType.EmailMaxCodesSent}`
       )
       .expect(302, done);
   });

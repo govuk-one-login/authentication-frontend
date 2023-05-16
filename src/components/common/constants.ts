@@ -83,10 +83,10 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
       SECURITY_CODE_ERROR,
       SecurityCodeErrorType.OtpMaxRetries
     ),
-  [ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT]: pathWithQueryParam(
+  [ERROR_CODES.VERIFY_EMAIL_CODE_REQUEST_BLOCKED]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_REQUEST_EXCEEDED"],
     SECURITY_CODE_ERROR,
-    SecurityCodeErrorType.EmailMaxCodesSent
+    SecurityCodeErrorType.EmailBlocked
   ),
   [ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_INVALID"],
@@ -99,10 +99,10 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
       SECURITY_CODE_ERROR,
       SecurityCodeErrorType.EmailMaxRetries
     ),
-  [ERROR_CODES.VERIFY_EMAIL_CODE_REQUEST_BLOCKED]: pathWithQueryParam(
+  [ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_WAIT"],
     SECURITY_CODE_ERROR,
-    SecurityCodeErrorType.EmailBlocked
+    SecurityCodeErrorType.EmailMaxCodesSent
   ),
   [ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_INVALID"],

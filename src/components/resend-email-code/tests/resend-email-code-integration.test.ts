@@ -115,7 +115,7 @@ describe("Integration:: resend email code", () => {
       .expect(500, done);
   });
 
-  it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", (done) => {
+  it("should redirect to /security-code-invalid-request when request OTP more than 5 times", (done) => {
     nock(baseApi)
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
       .times(6)
@@ -130,12 +130,12 @@ describe("Integration:: resend email code", () => {
       })
       .expect(
         "Location",
-        "/security-code-requested-too-many-times?actionType=emailMaxCodesSent"
+        "/security-code-invalid-request?actionType=emailMaxCodesSent"
       )
       .expect(302, done);
   });
 
-  it("should redirect to /security-code-invalid-request when exceeded OTP request limit", (done) => {
+  it("should redirect to /security-code-requested-too-many-times when exceeded OTP request limit", (done) => {
     nock(baseApi)
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
       .once()
@@ -150,7 +150,7 @@ describe("Integration:: resend email code", () => {
       })
       .expect(
         "Location",
-        "/security-code-invalid-request?actionType=emailBlocked"
+        "/security-code-requested-too-many-times?actionType=emailBlocked"
       )
       .expect(302, done);
   });
