@@ -36,7 +36,8 @@ export function enterAuthenticatorAppCodeGet(
 
     if (
       req.session.user.wrongCodeEnteredLock &&
-      new Date().toUTCString() < req.session.user.wrongCodeEnteredLock
+      new Date().getTime() <
+        new Date(req.session.user.wrongCodeEnteredLock).getTime()
     ) {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",

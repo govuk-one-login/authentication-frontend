@@ -9,7 +9,8 @@ import { pathWithQueryParam } from "../common/constants";
 export function resendMfaCodeGet(req: Request, res: Response): void {
   if (
     req.session.user.wrongCodeEnteredLock &&
-    new Date().toUTCString() < req.session.user.wrongCodeEnteredLock
+    new Date().getTime() <
+      new Date(req.session.user.wrongCodeEnteredLock).getTime()
   ) {
     const newCodeLink = req.query?.isResendCodeRequest
       ? pathWithQueryParam(
@@ -24,7 +25,7 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     });
   } else if (
     req.session.user.codeRequestLock &&
-    new Date().toUTCString() < req.session.user.codeRequestLock
+    new Date().getTime() < new Date(req.session.user.codeRequestLock).getTime()
   ) {
     const newCodeLink = req.query?.isResendCodeRequest
       ? "/resend-code?isResendCodeRequest=true"
