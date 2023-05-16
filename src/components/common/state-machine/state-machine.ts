@@ -293,6 +293,10 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.SHARE_INFO],
               cond: "isConsentRequired",
             },
+            {
+              target: [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION_SMS],
+              cond: "isAccountRecoveryJourney",
+            },
             { target: [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL] },
           ],
         },
@@ -400,6 +404,10 @@ const authStateMachine = createMachine(
             {
               target: [PATH_NAMES.SHARE_INFO],
               cond: "isConsentRequired",
+            },
+            {
+              target: [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION_AUTH_APP],
+              cond: "isAccountRecoveryJourney",
             },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
@@ -611,11 +619,24 @@ const authStateMachine = createMachine(
           ],
         },
       },
-      [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]: {
+      [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION_SMS]: {
         on: {
           [USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_COMPLETED]: [
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
+        },
+        meta: {
+          optionalPaths: [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION],
+        },
+      },
+      [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION_AUTH_APP]: {
+        on: {
+          [USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_COMPLETED]: [
+            { target: [PATH_NAMES.AUTH_CODE] },
+          ],
+        },
+        meta: {
+          optionalPaths: [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION],
         },
       },
     },

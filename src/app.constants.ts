@@ -1,3 +1,8 @@
+export enum MFA_METHOD_TYPE {
+  SMS = "SMS",
+  AUTH_APP = "AUTH_APP",
+}
+
 export const PATH_NAMES = {
   START: "/",
   ACCESSIBILITY_STATEMENT: "/accessibility-statement",
@@ -57,6 +62,10 @@ export const PATH_NAMES = {
   CHANGE_SECURITY_CODES: "/change-security-codes",
   CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES: "/check-email-change-security-codes",
   CHANGE_SECURITY_CODES_CONFIRMATION: "/change-codes-confirmed",
+  CHANGE_SECURITY_CODES_CONFIRMATION_SMS:
+    "/change-codes-confirmed" + "?type=" + MFA_METHOD_TYPE.SMS,
+  CHANGE_SECURITY_CODES_CONFIRMATION_AUTH_APP:
+    "/change-codes-confirmed" + "?type=" + MFA_METHOD_TYPE.AUTH_APP,
 };
 
 export const HREF_BACK = {
@@ -178,11 +187,6 @@ export const COOKIE_CONSENT = {
 export enum SUPPORT_TYPE {
   GOV_SERVICE = "GOV_SERVICE",
   PUBLIC = "PUBLIC",
-}
-
-export enum MFA_METHOD_TYPE {
-  SMS = "SMS",
-  AUTH_APP = "AUTH_APP",
 }
 
 export enum JOURNEY_TYPE {

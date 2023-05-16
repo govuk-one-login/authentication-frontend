@@ -9,7 +9,7 @@ import {
 } from "../check-your-phone-controller";
 
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { PATH_NAMES } from "../../../app.constants";
+import { NOTIFICATION_TYPE, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import {
   mockRequest,
@@ -47,7 +47,7 @@ describe("check your phone controller", () => {
   });
 
   describe("checkYourPhonePost", () => {
-    it("should redirect to /create-password when valid code entered", async () => {
+    it("should redirect to //account-confirmation when valid code entered", async () => {
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
           sessionState: "PHONE_NUMBER_CODE_VERIFIED",
@@ -68,6 +68,54 @@ describe("check your phone controller", () => {
       );
 
       expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.calledWith(
+        "123456-djjad",
+        undefined,
+        undefined,
+        NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
+        "127.0.0.1",
+        undefined,
+        ""
+      );
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL
+      );
+    });
+
+    it("should redirect to /account-confirmation when valid code entered for account recovery journey (to be updated) ", async () => {
+      const fakeService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({
+          sessionState: "PHONE_NUMBER_CODE_VERIFIED",
+          success: true,
+        }),
+      };
+
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake(),
+      };
+
+      req.body.code = "123456";
+      res.locals.sessionId = "123456-djjad";
+      req.session.user = {
+        isAccountRecoveryPermitted: true,
+        isAccountRecoveryJourney: true,
+      };
+
+      await checkYourPhonePost(fakeService, fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.calledWith(
+        "123456-djjad",
+        undefined,
+        undefined,
+        NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION,
+        "127.0.0.1",
+        undefined,
+        ""
+      );
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL
       );
