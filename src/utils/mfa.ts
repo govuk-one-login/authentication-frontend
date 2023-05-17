@@ -21,7 +21,7 @@ export function generateMfaSecret(): string {
     keyEncoder: base32EncDec.keyEncoder,
     keyDecoder: base32EncDec.keyDecoder,
   };
-  return authenticatorGenerateSecret(32, options);
+  return authenticatorGenerateSecret(20, options);
 }
 
 export function generateQRCodeValue(
