@@ -267,7 +267,10 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
   network_mode             = "awsvpc"
   cpu                      = var.frontend_task_definition_cpu
   memory                   = var.frontend_task_definition_memory
-  container_definitions = var.basic_auth_password == "" ? jsonencode([local.frontend_container_definition]) : jsonencode([
+  container_definitions = var.basic_auth_password == "" ? jsonencode([
+    local.frontend_container_definition,
+    local.oneagent_installer_container_definition,
+    ]) : jsonencode([
     local.frontend_container_definition,
     local.sidecar_container_definition,
     local.oneagent_installer_container_definition,
