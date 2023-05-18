@@ -26,7 +26,7 @@ locals {
     environment = [
       {
         name  = "LD_PRELOAD",
-        value = "/opt/dynatrace/oneagent/agent/lib64/liboneagentproc.s"
+        value = "/opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so"
       },
       {
         name  = "NODE_ENV"
@@ -177,7 +177,7 @@ locals {
 
   oneagent_installer_container_definition = {
     name      = "oneagent-installer"
-    image     = "alpine:3"
+    image     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.eu-west-2.amazonaws.com/ecr-public/docker/library/alpine:3"
     essential = false
 
     logConfiguration = {
@@ -199,7 +199,7 @@ locals {
       },
       {
         name  = "DT_ONEAGENT_OPTIONS",
-        value = "flavor=default&include=all"
+        value = "flavor=musl&include=all"
       }
     ]
 
