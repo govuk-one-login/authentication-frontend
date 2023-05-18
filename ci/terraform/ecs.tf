@@ -26,7 +26,7 @@ locals {
     environment = [
       {
         name  = "LD_PRELOAD",
-        value = "/opt/dynatrace/oneagent/agent/lib64/liboneagentproc.s"
+        value = "/opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so"
       },
       {
         name  = "NODE_ENV"
