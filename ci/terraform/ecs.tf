@@ -199,7 +199,7 @@ locals {
       },
       {
         name  = "DT_ONEAGENT_OPTIONS",
-        value = "flavor=default&include=all"
+        value = "flavor=musl&include=all"
       }
     ]
 
