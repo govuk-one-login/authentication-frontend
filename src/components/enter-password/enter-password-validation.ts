@@ -1,6 +1,7 @@
 import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
+import { Request } from "express";
 
 export function validateEnterPasswordRequest(): ValidationChainFunc {
   return [
@@ -27,6 +28,17 @@ export function validateEnterPasswordAccountExistsRequest(): ValidationChainFunc
           }
         );
       }),
-    validateBodyMiddleware("enter-password/index-account-exists.njk"),
+    validateBodyMiddleware(
+      "enter-password/index-account-exists.njk",
+      postValidationLocals
+    ),
   ];
 }
+
+const postValidationLocals = function locals(
+  req: Request
+): Record<string, unknown> {
+  return {
+    email: req.session.user.email,
+  };
+};
