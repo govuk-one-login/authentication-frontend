@@ -25,10 +25,6 @@ locals {
     }]
     environment = [
       {
-        name  = "LD_PRELOAD",
-        value = "/opt/dynatrace/oneagent/agent/lib64/liboneagentproc.s"
-      },
-      {
         name  = "NODE_ENV"
         value = "production"
       },
@@ -109,20 +105,6 @@ locals {
         value = local.service_domain
       },
     ]
-
-    dependsOn = [
-      {
-        condition     = "COMPLETE"
-        containerName = "oneagent-installer"
-      }
-    ]
-
-    mountPoints = [
-      {
-        sourceVolume  = "oneagent"
-        containerPath = "/opt/dynatrace/oneagent"
-      }
-    ]
   }
 
   sidecar_container_definition = {
@@ -172,49 +154,6 @@ locals {
         name  = "TRUSTED_PROXIES"
         value = jsonencode(local.public_subnet_cidr_blocks)
       },
-    ]
-  }
-
-  oneagent_installer_container_definition = {
-    name      = "oneagent-installer"
-    image     = "alpine:3"
-    essential = false
-
-    logConfiguration = {
-      logDriver = "awslogs"
-      options = {
-        awslogs-group         = aws_cloudwatch_log_group.ecs_frontend_task_log.name
-        awslogs-region        = var.aws_region
-        awslogs-stream-prefix = local.service_name
-      }
-    }
-
-    entrypoint = ["/bin/sh", "-c"]
-    command    = ["ARCHIVE=$(mktemp) && wget -O $ARCHIVE \"$DT_API_URL/v1/deployment/installer/agent/unix/paas/latest?Api-Token=$DT_PAAS_TOKEN&$DT_ONEAGENT_OPTIONS\" && unzip -o -d /opt/dynatrace/oneagent $ARCHIVE && rm -f $ARCHIVE"]
-
-    environment = [
-      {
-        name  = "DT_API_URL",
-        value = "https://khw46367.live.dynatrace.com/api"
-      },
-      {
-        name  = "DT_ONEAGENT_OPTIONS",
-        value = "flavor=default&include=all"
-      }
-    ]
-
-    secrets = [
-      {
-        name      = "DT_PAAS_TOKEN"
-        valueFrom = data.aws_secretsmanager_secret.dynatrace_paas_token.arn
-      }
-    ]
-
-    mountPoints = [
-      {
-        sourceVolume  = "oneagent"
-        containerPath = "/opt/dynatrace/oneagent"
-      }
     ]
   }
 }
@@ -267,18 +206,10 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
   network_mode             = "awsvpc"
   cpu                      = var.frontend_task_definition_cpu
   memory                   = var.frontend_task_definition_memory
-  container_definitions = var.basic_auth_password == "" ? jsonencode([
-    local.frontend_container_definition,
-    local.oneagent_installer_container_definition,
-    ]) : jsonencode([
+  container_definitions = var.basic_auth_password == "" ? jsonencode([local.frontend_container_definition]) : jsonencode([
     local.frontend_container_definition,
     local.sidecar_container_definition,
-    local.oneagent_installer_container_definition,
   ])
-
-  volume {
-    name = "oneagent"
-  }
 
   tags = local.default_tags
 }
