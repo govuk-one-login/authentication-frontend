@@ -22,6 +22,7 @@ describe("Integration:: enter mfa", () => {
   let cookies: string;
   let app: any;
   let baseApi: string;
+  const PHONE_NUMBER = "7867";
 
   before(async () => {
     decache("../../../app");
@@ -37,7 +38,8 @@ describe("Integration:: enter mfa", () => {
 
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: "7867",
+          phoneNumber: PHONE_NUMBER,
+          redactedPhoneNumber: PHONE_NUMBER,
           journey: {
             nextPath: PATH_NAMES.ENTER_MFA,
           },
@@ -105,6 +107,7 @@ describe("Integration:: enter mfa", () => {
       .send({
         _csrf: token,
         code: "",
+        phoneNumber: PHONE_NUMBER,
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
@@ -121,6 +124,7 @@ describe("Integration:: enter mfa", () => {
       .send({
         _csrf: token,
         code: "2",
+        phoneNumber: PHONE_NUMBER,
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
@@ -139,6 +143,7 @@ describe("Integration:: enter mfa", () => {
       .send({
         _csrf: token,
         code: "1234567",
+        phoneNumber: PHONE_NUMBER,
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
@@ -157,6 +162,7 @@ describe("Integration:: enter mfa", () => {
       .send({
         _csrf: token,
         code: "12ert-",
+        phoneNumber: PHONE_NUMBER,
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
@@ -180,6 +186,7 @@ describe("Integration:: enter mfa", () => {
       .send({
         _csrf: token,
         code: "123456",
+        phoneNumber: PHONE_NUMBER,
       })
       .expect("Location", PATH_NAMES.AUTH_CODE)
       .expect(302, done);
@@ -198,6 +205,7 @@ describe("Integration:: enter mfa", () => {
       .send({
         _csrf: token,
         code: "123455",
+        phoneNumber: PHONE_NUMBER,
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
