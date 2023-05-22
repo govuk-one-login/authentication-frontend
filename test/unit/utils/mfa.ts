@@ -4,9 +4,9 @@ import { generateMfaSecret, generateQRCodeValue } from "../../../src/utils/mfa";
 
 describe("mfa", () => {
   describe("generateMfaSecret", () => {
-    it("should return a secret with a length of 52 chars", () => {
+    it("should return a secret with a length of 32 chars", () => {
       const secret = generateMfaSecret();
-      expect(secret.length).to.equal(52);
+      expect(secret.length).to.equal(32);
     });
   });
 
