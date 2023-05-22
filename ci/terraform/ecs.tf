@@ -25,10 +25,6 @@ locals {
     }]
     environment = [
       {
-        name  = "LD_PRELOAD",
-        value = "/opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so"
-      },
-      {
         name  = "NODE_ENV"
         value = "production"
       },
@@ -108,13 +104,6 @@ locals {
         name  = "SERVICE_DOMAIN"
         value = local.service_domain
       },
-    ]
-
-    dependsOn = [
-      {
-        condition     = "COMPLETE"
-        containerName = "oneagent-installer"
-      }
     ]
 
     mountPoints = [
@@ -269,11 +258,9 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
   memory                   = var.frontend_task_definition_memory
   container_definitions = var.basic_auth_password == "" ? jsonencode([
     local.frontend_container_definition,
-    local.oneagent_installer_container_definition,
     ]) : jsonencode([
     local.frontend_container_definition,
     local.sidecar_container_definition,
-    local.oneagent_installer_container_definition,
   ])
 
   volume {
