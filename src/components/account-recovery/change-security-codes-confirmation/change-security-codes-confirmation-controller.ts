@@ -1,30 +1,13 @@
 import { Request, Response } from "express";
-import { MFA_METHOD_TYPE, NOTIFICATION_TYPE } from "../../../app.constants";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { sendNotificationService } from "../../common/send-notification/send-notification-service";
+import { MFA_METHOD_TYPE } from "../../../app.constants";
 import { ExpressRouteFunc } from "../../../types";
-import xss from "xss";
 import { USER_JOURNEY_EVENTS } from "../../common/state-machine/state-machine";
 import { getNextPathAndUpdateJourney } from "../../common/constants";
 
-export function changeSecurityCodesConfirmationGet(
-  notificationService: SendNotificationServiceInterface = sendNotificationService()
-): ExpressRouteFunc {
+export function changeSecurityCodesConfirmationGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session.user;
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const type = req.query.type;
     if (type === MFA_METHOD_TYPE.SMS || type === MFA_METHOD_TYPE.AUTH_APP) {
-      await notificationService.sendNotification(
-        sessionId,
-        clientSessionId,
-        email,
-        NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION,
-        req.ip,
-        persistentSessionId,
-        xss(req.cookies.lng as string)
-      );
-
       res.render(
         "account-recovery/change-security-codes-confirmation/index.njk",
         {

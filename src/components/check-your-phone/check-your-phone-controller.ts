@@ -95,6 +95,8 @@ export const checkYourPhonePost = (
         USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
+          isAccountRecoveryJourney:
+            isAccountRecoveryPermitted && isAccountRecoveryJourney,
         },
         res.locals.sessionId
       )
