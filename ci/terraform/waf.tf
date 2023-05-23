@@ -108,7 +108,7 @@ resource "aws_wafv2_web_acl_logging_configuration" "frontend_alb_waf_logging_con
     default_behavior = "DROP"
 
     filter {
-      behavior = "DROP"
+      behavior = "KEEP"
 
       condition {
         action_condition {
