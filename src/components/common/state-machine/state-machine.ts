@@ -140,7 +140,10 @@ const authStateMachine = createMachine(
           ],
         },
         meta: {
-          optionalPaths: [PATH_NAMES.SIGN_IN_OR_CREATE],
+          optionalPaths: [
+            PATH_NAMES.SIGN_IN_OR_CREATE,
+            PATH_NAMES.ACCOUNT_LOCKED,
+          ],
         },
       },
       [PATH_NAMES.ACCOUNT_NOT_FOUND]: {

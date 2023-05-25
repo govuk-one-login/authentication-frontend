@@ -4,6 +4,7 @@ import { ExpressRouteFunc } from "../../types";
 import { enterEmailService } from "./enter-email-service";
 import { EnterEmailServiceInterface } from "./types";
 import {
+  ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
 } from "../common/constants";
@@ -38,6 +39,9 @@ export function enterEmailPost(
     );
 
     if (!result.success) {
+      if (result.data.code === ERROR_CODES.ACCOUNT_LOCKED) {
+        return res.redirect(getErrorPathByCode(result.data.code));
+      }
       throw new BadRequestError(result.data.message, result.data.code);
     }
 

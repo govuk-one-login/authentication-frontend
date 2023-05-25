@@ -10,7 +10,7 @@ import {
   enterEmailPost,
 } from "../enter-email-controller";
 import { EnterEmailServiceInterface } from "../types";
-import { JOURNEY_TYPE } from "../../common/constants";
+import { JOURNEY_TYPE, ERROR_CODES } from "../../common/constants";
 import { PATH_NAMES } from "../../../app.constants";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 import {
@@ -126,6 +126,26 @@ describe("enter email controller", () => {
       );
 
       expect(fakeService.userExists).not.to.been.called;
+    });
+
+    it("should redirect to /account-locked when the account is locked", async () => {
+      const fakeService: EnterEmailServiceInterface = {
+        userExists: sinon.fake.returns({
+          success: false,
+          data: {
+            code: ERROR_CODES.ACCOUNT_LOCKED,
+          },
+        }),
+      };
+
+      req.body.email = "test@test.com";
+      res.locals.sessionId = "sadl990asdald";
+      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
+
+      await enterEmailPost(fakeService)(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.ACCOUNT_LOCKED);
+      expect(fakeService.userExists).to.have.been.calledOnce;
     });
   });
 
