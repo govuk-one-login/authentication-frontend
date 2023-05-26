@@ -49,6 +49,9 @@ export const ERROR_CODES = {
 };
 
 export const ERROR_CODE_MAPPING: { [p: string]: string } = {
+  [ERROR_CODES.ACCOUNT_LOCKED]: pathWithQueryParam(
+    PATH_NAMES["ACCOUNT_LOCKED"]
+  ),
   [ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED]: pathWithQueryParam(
     PATH_NAMES["ACCOUNT_LOCKED"]
   ),
