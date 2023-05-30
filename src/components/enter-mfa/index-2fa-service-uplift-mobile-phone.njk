@@ -25,6 +25,8 @@
     <form id="form-tracking" action="/enter-code" method="post" novalidate="novalidate">
         <input type="hidden" name="phoneNumber" value="{{ phoneNumber }}" />
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        <input type="hidden" name="supportAccountRecovery" value="{{supportAccountRecovery}}"/>
+        <input type="hidden" name="checkEmailLink" value="{{checkEmailLink}}"/>
 
         {{ govukInput({
             label: {
