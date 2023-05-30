@@ -6,18 +6,33 @@ import {
 } from "../common/constants";
 import { PATH_NAMES } from "../../app.constants";
 import {
+  getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes,
   getCodeEnteredWrongBlockDurationInMinutes,
   getCodeRequestBlockDurationInMinutes,
 } from "../../config";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
   const isNotEmailCode =
-    req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries;
+    req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries &&
+    req.query.actionType !==
+      SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries;
+
   if (isNotEmailCode) {
     req.session.user.wrongCodeEnteredLock = new Date(
       Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
     ).toUTCString();
   }
+
+  if (
+    req.query.actionType ===
+    SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries
+  ) {
+    req.session.user.wrongCodeEnteredAccountRecoveryLock = new Date(
+      Date.now() +
+        getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes() * 60000
+    ).toUTCString();
+  }
+
   return res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),

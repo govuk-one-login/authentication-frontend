@@ -12,6 +12,19 @@ import { sendNotificationService } from "../common/send-notification/send-notifi
 import xss from "xss";
 
 export function resendEmailCodeGet(req: Request, res: Response): void {
+  if (
+    req.session.user.wrongCodeEnteredAccountRecoveryLock &&
+    new Date().getTime() <
+      new Date(req.session.user.wrongCodeEnteredAccountRecoveryLock).getTime()
+  ) {
+    const newCodeLink = req.query?.isResendCodeRequest
+      ? "/security-code-check-time-limit?isResendCodeRequest=true"
+      : "/security-code-check-time-limit";
+    return res.render("security-code-error/index-wait.njk", {
+      newCodeLink,
+    });
+  }
+
   res.render("resend-email-code/index.njk", {
     emailAddress: req.session.user.email,
     requestNewCode:
