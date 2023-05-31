@@ -117,7 +117,7 @@ describe("check your phone controller", () => {
         ""
       );
       expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION_SMS
+        PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION
       );
     });
 

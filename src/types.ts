@@ -60,6 +60,7 @@ export interface UserSession {
   isAccountRecoveryPermitted?: boolean;
   isAccountRecoveryJourney?: boolean;
   isAccountRecoveryCodeResent?: boolean;
+  accountRecoveryVerifiedMfaType?: string;
 }
 
 export interface UserSessionClient {

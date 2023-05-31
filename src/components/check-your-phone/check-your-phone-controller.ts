@@ -73,10 +73,16 @@ export const checkYourPhonePost = (
       throw new BadRequestError(result.data.message, result.data.code);
     }
 
-    const notificationType =
-      isAccountRecoveryPermitted && isAccountRecoveryJourney
-        ? NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION
-        : NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
+    const accountRecoveryEnabledJourney =
+      isAccountRecoveryPermitted && isAccountRecoveryJourney;
+
+    let notificationType = NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
+
+    if (accountRecoveryEnabledJourney) {
+      req.session.user.accountRecoveryVerifiedMfaType = MFA_METHOD_TYPE.SMS;
+      notificationType =
+        NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION;
+    }
 
     await notificationService.sendNotification(
       res.locals.sessionId,
@@ -95,8 +101,7 @@ export const checkYourPhonePost = (
         USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
-          isAccountRecoveryJourney:
-            isAccountRecoveryPermitted && isAccountRecoveryJourney,
+          isAccountRecoveryJourney: accountRecoveryEnabledJourney,
         },
         res.locals.sessionId
       )

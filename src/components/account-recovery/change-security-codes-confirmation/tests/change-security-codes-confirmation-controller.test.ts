@@ -38,7 +38,7 @@ describe("change security codes confirmation controller", () => {
       mfaMethodType
     ) {
       it(`should render the change security codes codes confirmation page for mfaMethodType ${mfaMethodType}`, async () => {
-        req.query.type = mfaMethodType;
+        req.session.user.accountRecoveryVerifiedMfaType = mfaMethodType;
         req.session.user.email = "security.codes.changed@testtwofactorauth.org";
         req.session.user.redactedPhoneNumber = "*******1234";
 

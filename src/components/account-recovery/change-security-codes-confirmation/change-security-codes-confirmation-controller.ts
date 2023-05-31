@@ -6,7 +6,7 @@ import { getNextPathAndUpdateJourney } from "../../common/constants";
 
 export function changeSecurityCodesConfirmationGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const type = req.query.type;
+    const type = req.session.user.accountRecoveryVerifiedMfaType;
     if (type === MFA_METHOD_TYPE.SMS || type === MFA_METHOD_TYPE.AUTH_APP) {
       res.render(
         "account-recovery/change-security-codes-confirmation/index.njk",
@@ -27,6 +27,7 @@ export function changeSecurityCodesConfirmationPost(
   req: Request,
   res: Response
 ): void {
+  req.session.user.accountRecoveryVerifiedMfaType = null;
   const nextPath = getNextPathAndUpdateJourney(
     req,
     req.path,
