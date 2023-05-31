@@ -14,6 +14,8 @@ export function validateCheckYourEmailRequest(): ValidationChainFunc {
       numbersOnlyKey:
         "pages.checkYourEmailSecurityCodes.code.validationError.invalidFormat",
     }),
-    validateBodyMiddleware("check-your-email/index.njk"),
+    validateBodyMiddleware(
+      "account-recovery/check-your-email-security-codes/index.njk"
+    ),
   ];
 }
