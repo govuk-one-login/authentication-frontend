@@ -91,11 +91,20 @@ export function setupAuthenticatorAppPost(
     }
 
     req.session.user.authAppSecret = null;
+    req.session.user.phoneNumber = null;
+    req.session.user.redactedPhoneNumber = null;
 
-    const notificationType =
-      isAccountRecoveryPermitted && isAccountRecoveryJourney
-        ? NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION
-        : NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
+    const accountRecoveryEnabledJourney =
+      isAccountRecoveryPermitted && isAccountRecoveryJourney;
+
+    let notificationType = NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
+
+    if (accountRecoveryEnabledJourney) {
+      req.session.user.accountRecoveryVerifiedMfaType =
+        MFA_METHOD_TYPE.AUTH_APP;
+      notificationType =
+        NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION;
+    }
 
     await notificationService.sendNotification(
       res.locals.sessionId,
@@ -114,8 +123,7 @@ export function setupAuthenticatorAppPost(
         USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
-          isAccountRecoveryJourney:
-            isAccountRecoveryPermitted && isAccountRecoveryJourney,
+          isAccountRecoveryJourney: accountRecoveryEnabledJourney,
         },
         sessionId
       )

@@ -260,7 +260,7 @@ const authStateMachine = createMachine(
         on: {
           [USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED]: [
             {
-              target: [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION_AUTH_APP],
+              target: [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION],
               cond: "isAccountRecoveryJourney",
             },
             {
@@ -293,7 +293,7 @@ const authStateMachine = createMachine(
         on: {
           [USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED]: [
             {
-              target: [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION_SMS],
+              target: [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION],
               cond: "isAccountRecoveryJourney",
             },
             {
@@ -627,16 +627,6 @@ const authStateMachine = createMachine(
           [USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_COMPLETED]: [
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
-        },
-      },
-      [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION_SMS]: {
-        meta: {
-          optionalPaths: [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION],
-        },
-      },
-      [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION_AUTH_APP]: {
-        meta: {
-          optionalPaths: [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION],
         },
       },
     },

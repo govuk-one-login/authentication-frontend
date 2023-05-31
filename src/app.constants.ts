@@ -62,10 +62,6 @@ export const PATH_NAMES = {
   CHANGE_SECURITY_CODES: "/change-security-codes",
   CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES: "/check-email-change-security-codes",
   CHANGE_SECURITY_CODES_CONFIRMATION: "/change-codes-confirmed",
-  CHANGE_SECURITY_CODES_CONFIRMATION_SMS:
-    "/change-codes-confirmed" + "?type=" + MFA_METHOD_TYPE.SMS,
-  CHANGE_SECURITY_CODES_CONFIRMATION_AUTH_APP:
-    "/change-codes-confirmed" + "?type=" + MFA_METHOD_TYPE.AUTH_APP,
 };
 
 export const HREF_BACK = {
