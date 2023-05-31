@@ -1052,34 +1052,41 @@
           },
           "paragraph_three": "Rydym yn defnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Iproov a’u his-gontractwyr Veriff ac Innovalor i gynnal y gwiriadau hyn. Mae Iproov yn gweithredu fel prosesydd data gyda Veriff ac Innovalor fel is-broseswyr, sy’n golygu y gallant ond prosesu eich data personol at bwrpas cyflawni ein cyfarwyddiadau.",
           "paragraph_four": "Mae angen i ni wirio eich nodweddion diogelwch eich dogfennau hunaniaeth i brofi eu bod yn ddogfennau dilys.",
+          "paragraph_five": "Ar gyfer trwyddedau gyrru, bydd angen i chi dynnu llun o flaen a chefn eich trwydded gyda chamera eich ffôn. Bydd yr ap yn gofyn am ganiatâd i fynd i mewn i’ch camera a’ch lluniau i wneud hyn.",
+          "paragraph_six": "Ar gyfer e-basbort a thrwyddedau preswyl biometrig, bydd yr ap yn darllen y wybodaeth ar eich dogfen trwy’r sglodyn near field communication (NFC).",
+          "paragraph_seven": "Rydym yn casglu’r wybodaeth ganlynol:",
           "list_two": {
-            "item_one": "Ar gyfer trwyddedau gyrru, bydd angen i chi dynnu llun o flaen a chefn eich trwydded gyda camera eich ffôn. Bydd angen caniatâd ar yr ap i gael mynediad at eich camera a’ch lluniau ar gyfer hyn.",
-            "item_two": "Ar gyfer e-basbortau, bydd yr Ap yn darllen eich gwybodaeth pasbort o sglodyn Near Field Communication (NFC).",
-            "item_three": "Pan fydd Iproov wedi cwblhau’r gwiriad, maent yn anfon canlyniad y gwiriad a’ch trwydded yrru neu wybodaeth pasbort atom ni."
+            "item_one": "enw",
+            "item_two": "dyddiad geni",
+            "item_three": "cyfeiriad (trwyddedau gyrru’n unig)",
+            "item_four": "rhif y ddogfen",
+            "item_five": "dyddiad dod i ben",
+            "item_six": "gwlad gyhoeddi",
+            "item_seven": "cenedligrwydd (heblaw am drwyddedau gyrru)",
+            "item_eight": "llun"
           },
-          "paragraph_five": "Rydym yn gwneud gwiriad \"bywiogrwydd\" i brofi a yw defnyddiwr yn berson go iawn ac nid unrhyw beth a allai dynwared unigolyn fel mannequin, ffigwr cwyr, mwgwd 3D, llun neu ffugiad dwfn.",
-          "list_three": {
-            "item_one": "Bydd angen i chi gymryd fideo hunlun gan ddefnyddio camera eich ffôn. Bydd angen caniatâd i’r ap gael mynediad at eich camera a fideos ar gyfer hyn. Mae’r gwiriad hwn yn cael ei gynnal mewn amser real sy’n golygu nad ydym ni nac Iproov yn storio’r fideo.",
-            "item_two": "Pan mae Iproov wedi cwblhau’r gwiriad, maent yn anfon canlyniad y gwiriad atom."
-          },
-          "paragraph_six": "Rydym yn gwneud gwiriad tebygrwydd i brofi mai chi yw’r un person ag yn eich dogfen hunaniaeth gyda llun.",
-          "paragraph_seven": "Mae’r gwiriad hwn yn defnyddio delwedd llonydd a gynhyrchir o’ch fideo hunlun a’r llun yn eich dogfen hunaniaeth i fesur patrymau unigryw eich wyneb. Data biometrig wynebol yw’r enw ar hyn. Mae’r data biometrig o’r ddwy ddelwedd yn cael ei gymharu i sefydlu ai’r defnyddiwr yw gwir berchennog y ddogfen hunaniaeth.",
-          "paragraph_eight": "Pan mae Iproov wedi cwblhau’r gwiriad, maent yn anfon canlyniad y gwiriad atom.",
+          "paragraph_eight": "Pan fydd Iproov wedi cwblhau’r gwiriad, byddant yn anfon canlyniad y gwiriad a gwybodaeth eich dogfen hunaniaeth atom.",
+          "paragraph_nine": "Rydym yn gwneud gwiriad \"bywiogrwydd\" i brofi a yw defnyddiwr yn berson go iawn ac nid unrhyw beth a allai dynwared unigolyn fel mannequin, ffigwr cwyr, mwgwd 3D, llun neu ffugiad dwfn.",
+          "paragraph_ten": "Bydd angen i chi gymryd fideo hunlun gan ddefnyddio camera eich ffôn. Bydd angen caniatâd i’r ap gael mynediad at eich camera a fideos ar gyfer hyn. Mae’r gwiriad hwn yn cael ei gynnal mewn amser real sy’n golygu nad ydym ni nac Iproov yn storio’r fideo.",
+          "paragraph_eleven": "Pan mae Iproov wedi cwblhau’r gwiriad, maent yn anfon canlyniad y gwiriad atom.",
+          "paragraph_twelve": "Rydym yn gwneud gwiriad tebygrwydd i brofi mai chi yw’r un person ag yn eich dogfen hunaniaeth gyda llun.",
+          "paragraph_thirteen": "Mae’r gwiriad hwn yn defnyddio delwedd llonydd a gynhyrchir o’ch fideo hunlun a’r llun yn eich dogfen hunaniaeth i fesur patrymau unigryw eich wyneb. Data biometrig wynebol yw’r enw ar hyn. Mae’r data biometrig o’r ddwy ddelwedd yn cael ei gymharu i sefydlu ai’r defnyddiwr yw gwir berchennog y ddogfen hunaniaeth.",
+          "paragraph_fourteen": "Pan mae Iproov wedi cwblhau’r gwiriad, maent yn anfon canlyniad y gwiriad atom.",
           "sub_header_two": "Gwiriad twyll",
-          "paragraph_nine": "Rydym yn defnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Experian i:",
+          "paragraph_fifteen": "Rydym yn defnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Experian i:",
           "list_four": {
             "item_one": "gynnal gwiriad twyll i chwilio am unrhyw arwyddion bod eich hunaniaeth wedi cael ei ddwyn neu ei gamddefnyddio",
             "item_two": "gwirio os oes cofnod ohonoch yn bodoli dros amser"
           },
-          "paragraph_ten": {
+          "paragraph_sixteen": {
             "part_one": "Maent yn gwneud hynny fel rheolydd data annibynnol yn unol â’u",
             "link": {
               "link_text": "hysbysiad preifatrwydd",
               "link_href": "https://www.experian.co.uk/consumer/privacy.html"
             }
           },
-          "paragraph_eleven": "Pan fyddwch wedi cwblhau’r gwiriadau uchod gan ddefnyddio’r Ap, byddwch yn cael eich dychwelyd i wefan GOV.UK One Login lle byddwn yn casglu eich enw, eich dyddiad geni a’ch cyfeiriad. Rydym yn anfon y rhain i Experian er mwyn iddynt allu cynnal gwiriad gwrth-dwyll.",
-          "paragraph_twelve": "Pan mae Experian wedi cwblhau’r gwiriad, maent yn anfon sgôr twyll atom, ynghyd â manylion am unrhyw weithgaredd twyllodrus cysylltiedig."
+          "paragraph_seventeen": "Pan fyddwch wedi cwblhau’r gwiriadau uchod gan ddefnyddio’r Ap, byddwch yn cael eich dychwelyd i wefan GOV.UK One Login lle byddwn yn casglu eich enw, eich dyddiad geni a’ch cyfeiriad. Rydym yn anfon y rhain i Experian er mwyn iddynt allu cynnal gwiriad gwrth-dwyll.",
+          "paragraph_eighteen": "Pan mae Experian wedi cwblhau’r gwiriad, maent yn anfon sgôr twyll atom, ynghyd â manylion am unrhyw weithgaredd twyllodrus cysylltiedig."
         },
         "using_web_to_prove_identity": {
           "header": "Defnyddio eich porwr gwe i brofi eich hunaniaeth",
@@ -1378,7 +1385,7 @@
           "header": "Newidiadau i’r hysbysiad hwn",
           "paragraph_one": "Efallai y byddwn yn newid yr hysbysiad preifatrwydd hwn. Yn yr achos hynny, bydd dyddiad ’diweddaru olaf’ y ddogfen hon hefyd yn newid. Bydd unrhyw newidiadau i’r hysbysiad preifatrwydd hwn yn berthnasol i chi a’ch gwybodaeth ar unwaith.",
           "paragraph_two": "Os yw’r newidiadau hyn yn effeithio ar sut mae eich gwybodaeth bersonol yn cael ei phrosesu, bydd GDS yn rhoi gwybod i chi.",
-          "paragraph_three": "Diweddarwyd diwethaf: 11 Ebrill 2023"
+          "paragraph_three": "Diweddarwyd diwethaf: 31 Mai 2023"
         }
       }
     },
