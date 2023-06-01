@@ -535,7 +535,7 @@
       "code": {
         "paragraph1": "The email contains a 6 digit security code. After you enter the code, you’ll be able to change how you get security codes when you sign in.",
         "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
-        "paragraph3": "The code will expire after 2 hours.",
+        "paragraph3": "The code will expire after 15 minutes.",
         "label": "Enter the 6 digit security code",
         "validationError": {
           "required": "Enter the security code",
