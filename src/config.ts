@@ -131,3 +131,9 @@ export function getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes(): numb
     15
   );
 }
+
+export function getCodeRequestAccountRecoveryBlockDurationInMinutes(): number {
+  return (
+    Number(process.env.CODE_REQUEST_ACCOUNT_RECOVERY_BLOCKED_MINUTES) || 15
+  );
+}

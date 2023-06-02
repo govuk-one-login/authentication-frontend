@@ -8,6 +8,7 @@ import { PATH_NAMES } from "../../app.constants";
 import {
   getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes,
   getCodeEnteredWrongBlockDurationInMinutes,
+  getCodeRequestAccountRecoveryBlockDurationInMinutes,
   getCodeRequestBlockDurationInMinutes,
 } from "../../config";
 
@@ -44,9 +45,19 @@ export function securityCodeTriesExceededGet(
   req: Request,
   res: Response
 ): void {
-  req.session.user.codeRequestLock = new Date(
-    Date.now() + getCodeRequestBlockDurationInMinutes() * 60000
-  ).toUTCString();
+  if (
+    req.query.actionType ===
+    SecurityCodeErrorType.ChangeSecurityCodesEmailMaxCodesSent
+  ) {
+    req.session.user.codeRequestAccountRecoveryLock = new Date(
+      Date.now() + getCodeRequestAccountRecoveryBlockDurationInMinutes() * 60000
+    ).toUTCString();
+  } else {
+    req.session.user.codeRequestLock = new Date(
+      Date.now() + getCodeRequestBlockDurationInMinutes() * 60000
+    ).toUTCString();
+  }
+
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isResendCodeRequest: req.query.isResendCodeRequest,

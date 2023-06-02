@@ -87,10 +87,17 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { sessionId } = res.locals;
     const isAccountRecoveryJourney = req.session.user?.isAccountRecoveryJourney;
+
+    const currentTime = new Date().getTime();
+    const codeRequestLockTime = req.session.user.codeRequestLock;
+    const codeRequestAccountRecoveryLockTime =
+      req.session.user.codeRequestAccountRecoveryLock;
+
     if (
-      req.session.user.codeRequestLock &&
-      new Date().getTime() <
-        new Date(req.session.user.codeRequestLock).getTime()
+      (codeRequestLockTime &&
+        currentTime < new Date(codeRequestLockTime).getTime()) ||
+      (codeRequestAccountRecoveryLockTime &&
+        currentTime < new Date(codeRequestAccountRecoveryLockTime).getTime())
     ) {
       const newCodeLink = req.query?.isResendCodeRequest
         ? "/security-code-check-time-limit?isResendCodeRequest=true"
