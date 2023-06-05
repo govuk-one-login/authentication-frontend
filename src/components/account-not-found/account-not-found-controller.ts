@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { NOTIFICATION_TYPE, SERVICE_TYPE } from "../../app.constants";
+import {
+  JOURNEY_TYPE,
+  NOTIFICATION_TYPE,
+  SERVICE_TYPE,
+} from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
@@ -43,7 +47,8 @@ export function accountNotFoundPost(
       NOTIFICATION_TYPE.VERIFY_EMAIL,
       req.ip,
       persistentSessionId,
-      xss(req.cookies.lng as string)
+      xss(req.cookies.lng as string),
+      JOURNEY_TYPE.REGISTRATION
     );
 
     if (!result.success) {

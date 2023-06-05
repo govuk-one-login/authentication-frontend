@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { NOTIFICATION_TYPE } from "../../app.constants";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { enterEmailService } from "./enter-email-service";
 import { EnterEmailServiceInterface } from "./types";
@@ -99,7 +99,8 @@ export function enterEmailCreatePost(
       NOTIFICATION_TYPE.VERIFY_EMAIL,
       req.ip,
       persistentSessionId,
-      xss(req.cookies.lng as string)
+      xss(req.cookies.lng as string),
+      JOURNEY_TYPE.REGISTRATION
     );
 
     if (!sendNotificationResponse.success) {

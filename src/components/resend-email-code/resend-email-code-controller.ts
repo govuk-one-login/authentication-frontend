@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { NOTIFICATION_TYPE } from "../../app.constants";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
 import {
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
@@ -40,6 +40,10 @@ export function resendEmailCodePost(
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const isAccountRecoveryJourney = req.session.user?.isAccountRecoveryJourney;
 
+    const journeyType = isAccountRecoveryJourney
+      ? JOURNEY_TYPE.ACCOUNT_RECOVERY
+      : JOURNEY_TYPE.REGISTRATION;
+
     const sendNotificationResponse = await notificationService.sendNotification(
       sessionId,
       clientSessionId,
@@ -48,6 +52,7 @@ export function resendEmailCodePost(
       req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
+      journeyType,
       undefined,
       xss(req.body.requestNewCode as string) === "true"
     );
