@@ -17,6 +17,8 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
     req.query.actionType !==
       SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries;
 
+  let isChangeSecurityCodesForAccRecovery = false;
+
   if (isNotEmailCode) {
     req.session.user.wrongCodeEnteredLock = new Date(
       Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
@@ -27,6 +29,7 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
     req.query.actionType ===
     SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries
   ) {
+    isChangeSecurityCodesForAccRecovery = true;
     req.session.user.wrongCodeEnteredAccountRecoveryLock = new Date(
       Date.now() +
         getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes() * 60000
@@ -36,7 +39,7 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
   return res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
-    isBlocked: isNotEmailCode,
+    isBlocked: isNotEmailCode || isChangeSecurityCodesForAccRecovery,
   });
 }
 
