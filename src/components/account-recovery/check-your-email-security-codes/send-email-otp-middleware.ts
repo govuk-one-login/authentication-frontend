@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { sendNotificationService } from "../../common/send-notification/send-notification-service";
-import { NOTIFICATION_TYPE } from "../../../app.constants";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../../app.constants";
 import { getErrorPathByCode } from "../../common/constants";
 import { BadRequestError } from "../../../utils/error";
 import xss from "xss";
@@ -25,7 +25,8 @@ export function sendEmailOtp(
       NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES,
       req.ip,
       persistentSessionId,
-      xss(req.cookies.lng as string)
+      xss(req.cookies.lng as string),
+      JOURNEY_TYPE.ACCOUNT_RECOVERY
     );
 
     if (sendNotificationResponse.success) {
