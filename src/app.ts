@@ -44,6 +44,7 @@ import { ENVIRONMENT_NAME } from "./app.constants";
 import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes";
 import { authCodeRouter } from "./components/auth-code/auth-code-routes";
 import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-code-routes";
+import { resendMfaCodeAccountCreationRouter } from "./components/account-creation/resend-mfa-code/resend-mfa-code-routes";
 import { resendEmailCodeRouter } from "./components/resend-email-code/resend-email-code-routes";
 import { signedOutRouter } from "./components/signed-out/signed-out-routes";
 import {
@@ -109,6 +110,7 @@ function registerRoutes(app: express.Application) {
   app.use(enterMfaRouter);
   app.use(authCodeRouter);
   app.use(resendMfaCodeRouter);
+  app.use(resendMfaCodeAccountCreationRouter);
   app.use(resendEmailCodeRouter);
   app.use(signedOutRouter);
   app.use(shareInfoRouter);

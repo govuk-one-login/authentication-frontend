@@ -1,0 +1,36 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% set pageTitleName = 'pages.resendMfaCode.title' | translate %}
+{% set showBack = true %}
+{% set hrefBack = 'enter-code' %}
+
+{% if isResendCodeRequest %}
+    {% set phoneNumberMessage %}
+       {{ 'pages.resendMfaCode.phoneNumber.isResendCodeRequest' | translate }} <span class='govuk-!-font-weight-bold'>{{ phoneNumber }}</span>
+    {% endset %}
+{% else %}
+    {% set phoneNumberMessage = 'pages.resendMfaCode.phoneNumber.default' | translate | replace("[mobile]", phoneNumber) %}
+{% endif %}
+
+{% block content %}
+    <form action="/resend-code-create-account" method="post" novalidate="novalidate">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+        <input type="hidden" name="isResendCodeRequest" value="{{isResendCodeRequest}}"/>
+
+        <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resendMfaCode.header' | translate}}</h1>
+
+        {{ govukInsetText({
+            text: phoneNumberMessage | safe
+        }) }}
+
+        <p class="govuk-body">{{'pages.resendMfaCode.message' | translate}}</p>
+        {{ govukButton({
+        "text": "pages.resendMfaCode.continue" | translate,
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+
+    </form>
+{% endblock %}

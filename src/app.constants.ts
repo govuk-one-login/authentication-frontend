@@ -38,6 +38,7 @@ export const PATH_NAMES = {
   SECURITY_CODE_CHECK_TIME_LIMIT: "/security-code-check-time-limit",
   AUTH_CODE: "/auth-code",
   RESEND_MFA_CODE: "/resend-code",
+  RESEND_MFA_CODE_ACCOUNT_CREATION: "/resend-code-create-account",
   RESEND_EMAIL_CODE: "/resend-email-code",
   SIGNED_OUT: "/signed-out",
   ACCOUNT_LOCKED: "/account-locked",
