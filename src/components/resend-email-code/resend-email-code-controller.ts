@@ -20,9 +20,12 @@ export function resendEmailCodeGet(req: Request, res: Response): void {
     const newCodeLink = req.query?.isResendCodeRequest
       ? "/security-code-check-time-limit?isResendCodeRequest=true"
       : "/security-code-check-time-limit";
-    return res.render("security-code-error/index-wait.njk", {
-      newCodeLink,
-    });
+    return res.render(
+      "security-code-error/index-security-code-entered-exceeded.njk",
+      {
+        newCodeLink,
+      }
+    );
   }
 
   res.render("resend-email-code/index.njk", {
