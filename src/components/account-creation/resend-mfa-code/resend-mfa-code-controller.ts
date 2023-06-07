@@ -49,7 +49,6 @@ export const resendMfaCodePost = (
   service: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
-    console.log("LKJDHLAKJSHAKLJSH - the post is being hit");
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const { email, phoneNumber } = req.session.user;
 

@@ -4,7 +4,9 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { generateMfaSecret } from "../../utils/mfa";
 
 export function getSecurityCodesGet(req: Request, res: Response): void {
-  if (!req.session.user.isAccountRecoveryJourney) {
+  if (req.session.user.isAccountRecoveryJourney) {
+    req.session.user.isAccountCreationJourney = false;
+  } else {
     req.session.user.isAccountCreationJourney = true;
   }
   res.render("select-mfa-options/index.njk", {
