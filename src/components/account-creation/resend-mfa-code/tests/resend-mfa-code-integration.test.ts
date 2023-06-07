@@ -9,9 +9,8 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../../app.constants";
-import { ERROR_CODES } from "../../../common/constants";
 
-describe("Integration:: resend mfa code (account creation variant)", () => {
+describe("Integration:: resend SMS mfa code (account creation variant)", () => {
   let token: string | string[];
   let cookies: string;
   let app: any;
@@ -75,26 +74,9 @@ describe("Integration:: resend mfa code (account creation variant)", () => {
       .expect(500, done);
   });
 
-  it("should redirect to /enter-code when new code requested", (done) => {
+  it("should redirect to /check-your-phone when new code requested", (done) => {
     nock(baseApi)
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
-      .once()
-      .reply(HTTP_STATUS_CODES.NO_CONTENT);
-
-    request(app)
-      .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-      })
-      .expect("Location", PATH_NAMES.ENTER_MFA)
-      .expect(302, done);
-  });
-
-  it("should redirect to /check-your-phone when new code requested as part of account creation journey", (done) => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.MFA)
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
@@ -110,18 +92,8 @@ describe("Integration:: resend mfa code (account creation variant)", () => {
       .expect(302, done);
   });
 
-  it("should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active", () => {
-    const testSpecificCookies = cookies + "; re=true";
-    request(app)
-      .get(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
-      .set("Cookie", testSpecificCookies)
-      .expect((res) => {
-        res.text.includes("You cannot get a new security code at the moment");
-      });
-  });
-
   it("should return 500 error screen when API call fails", (done) => {
-    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(500, {
+    nock(baseApi).post(API_ENDPOINTS.SEND_NOTIFICATION).once().reply(500, {
       errorCode: "1234",
     });
 
@@ -133,45 +105,5 @@ describe("Integration:: resend mfa code (account creation variant)", () => {
         _csrf: token,
       })
       .expect(500, done);
-  });
-
-  it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", (done) => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.MFA)
-      .times(6)
-      .reply(400, { code: ERROR_CODES.MFA_SMS_MAX_CODES_SENT });
-
-    request(app)
-      .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-      })
-      .expect(
-        "Location",
-        "/security-code-requested-too-many-times?actionType=mfaMaxCodesSent"
-      )
-      .expect(302, done);
-  });
-
-  it("should redirect to /security-code-invalid-request when exceeded OTP request limit", (done) => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.MFA)
-      .once()
-      .reply(400, { code: ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED });
-
-    request(app)
-      .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-      })
-      .expect(
-        "Location",
-        "/security-code-invalid-request?actionType=mfaBlocked"
-      )
-      .expect(302, done);
   });
 });
