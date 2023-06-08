@@ -82,6 +82,8 @@ export function landingGet(
     req.session.user.docCheckingAppUser =
       startAuthResponse.data.user.docCheckingAppUser;
 
+    req.session.user.isAccountCreationJourney = undefined;
+
     if (startAuthResponse.data.featureFlags) {
       req.session.user.featureFlags = startAuthResponse.data.featureFlags;
     }

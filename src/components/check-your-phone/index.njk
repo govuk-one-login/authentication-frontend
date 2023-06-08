@@ -47,7 +47,7 @@
     {% set detailsHTML %}
     <p class="govuk-body">
       {{'pages.checkYourPhone.details.text1' | translate}}
-      <a href="{{'pages.checkYourPhone.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.sendCodeLinkText'| translate}}</a>
+      <a href="{{resendCodeLink}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.sendCodeLinkText'| translate}}</a>
       {{'pages.checkYourPhone.details.text 2' | translate}}
       <a href="{{'pages.checkYourPhone.details.changePhoneNumberLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.changePhoneNumberLinkText'| translate}}</a>.
     </p>

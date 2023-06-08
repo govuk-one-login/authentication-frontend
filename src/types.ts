@@ -48,6 +48,7 @@ export interface UserSession {
   isLatestTermsAndConditionsAccepted?: boolean;
   isIdentityRequired?: boolean;
   isUpliftRequired?: boolean;
+  isAccountCreationJourney?: boolean;
   isAccountPartCreated?: boolean;
   docCheckingAppUser?: boolean;
   identityProcessCheckStart?: number;

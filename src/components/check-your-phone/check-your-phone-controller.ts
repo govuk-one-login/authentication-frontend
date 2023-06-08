@@ -3,12 +3,14 @@ import {
   JOURNEY_TYPE,
   MFA_METHOD_TYPE,
   NOTIFICATION_TYPE,
+  PATH_NAMES,
 } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
+  pathWithQueryParam,
 } from "../common/constants";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
@@ -25,8 +27,21 @@ import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-
 const TEMPLATE_NAME = "check-your-phone/index.njk";
 
 export function checkYourPhoneGet(req: Request, res: Response): void {
-  res.render(TEMPLATE_NAME, {
+  const resendCodeLink = pathWithQueryParam(
+    PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+    "isResendCodeRequest",
+    "true"
+  );
+
+  if (req.session.user.isAccountCreationJourney) {
+    return res.render(TEMPLATE_NAME, {
+      phoneNumber: req.session.user.redactedPhoneNumber,
+      resendCodeLink,
+    });
+  }
+  return res.render(TEMPLATE_NAME, {
     phoneNumber: req.session.user.redactedPhoneNumber,
+    resendCodeLink,
   });
 }
 
