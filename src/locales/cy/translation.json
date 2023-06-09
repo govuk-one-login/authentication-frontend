@@ -147,9 +147,9 @@
       "bullet2": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol y DU neu’n ap dilysydd",
       "bullet2IntNumbers": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol neu’n ap dilysydd",
       "insetAlternativeLanguage": {
-        "paragraph1": "Mae GOV.UK One Login hefyd ar gael ",
+        "paragraph1": "Gallwch hefyd ",
         "linkText": {
-          "inPageLanguage": "yn Saesneg",
+          "inPageLanguage": "ddefnyddio GOV.UK One Login yn Saesneg",
           "inDestinationLanguage": "(English)",
           "destinationLanguageCode": "en"
         },
