@@ -12,7 +12,6 @@
 
     <p class="govuk-body">{{ 'pages.proveIdentityWelcome.section1.paragraph1' | translate }}</p>
 
-    {% if supportLanguageCY %}
         {% set insetTextInnerHtml %}
             {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.paragraph1' | translate }}
             <a href="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkHref' | translate }}"
@@ -26,11 +25,6 @@
         {{ govukInsetText({
             html: insetTextInnerHtml
         }) }}
-    {% else %}
-        {{ govukInsetText({
-            text: 'pages.proveIdentityWelcome.section1.insetTextEnglishOnly' | translate
-        }) }}
-    {% endif %}
 
     <p class="govuk-body">{{ 'pages.proveIdentityWelcome.section2.paragraph1' | translate }}</p>
 

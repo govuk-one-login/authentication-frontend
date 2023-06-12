@@ -3,7 +3,6 @@ import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { IPV_ERROR_CODES, OIDC_ERRORS, PATH_NAMES } from "../../app.constants";
 import { createServiceRedirectErrorUrl } from "../../utils/error";
-import { supportLanguageCY } from "../../config";
 
 export function proveIdentityWelcomeGet(req: Request, res: Response): void {
   res.render(
@@ -17,7 +16,6 @@ export function proveIdentityWelcomeGet(req: Request, res: Response): void {
         IPV_ERROR_CODES.ACCOUNT_NOT_CREATED,
         req.session.client.state
       ),
-      supportLanguageCY: supportLanguageCY() ? true : null,
     }
   );
 }

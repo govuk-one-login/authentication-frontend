@@ -85,10 +85,6 @@ locals {
         value = var.support_international_numbers
       },
       {
-        name  = "SUPPORT_LANGUAGE_CY"
-        value = var.support_language_cy
-      },
-      {
         name  = "ZENDESK_API_TOKEN"
         value = var.zendesk_api_token
       },
