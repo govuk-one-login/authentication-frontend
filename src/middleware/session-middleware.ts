@@ -9,7 +9,7 @@ export function initialiseSessionMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  if (req.path === PATH_NAMES.START) {
+  if (req.path === PATH_NAMES.START || req.path === PATH_NAMES.AUTHORIZE) {
     req.session.client = {};
 
     const email =

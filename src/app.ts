@@ -24,6 +24,7 @@ import {
   getSessionExpiry,
   getSessionSecret,
   supportAccountRecovery,
+  supportAuthOrchSplit,
 } from "./config";
 import { logErrorMiddleware } from "./middleware/log-error-middleware";
 import { getCookieLanguageMiddleware } from "./middleware/cookie-lang-middleware";
@@ -46,6 +47,7 @@ import { authCodeRouter } from "./components/auth-code/auth-code-routes";
 import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-code-routes";
 import { resendMfaCodeAccountCreationRouter } from "./components/account-creation/resend-mfa-code/resend-mfa-code-routes";
 import { resendEmailCodeRouter } from "./components/resend-email-code/resend-email-code-routes";
+import { authorizeRouter } from "./components/authorize/authorize-routes";
 import { signedOutRouter } from "./components/signed-out/signed-out-routes";
 import {
   getSessionIdMiddleware,
@@ -105,6 +107,9 @@ function registerRoutes(app: express.Application) {
   if (supportAccountRecovery()) {
     app.use(checkYourEmailSecurityCodesRouter);
     app.use(changeSecurityCodesConfirmationRouter);
+  }
+  if (supportAuthOrchSplit()) {
+    app.use(authorizeRouter);
   }
   app.use(securityCodeErrorRouter);
   app.use(enterMfaRouter);
