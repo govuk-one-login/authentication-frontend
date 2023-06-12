@@ -5,6 +5,7 @@ export enum MFA_METHOD_TYPE {
 
 export const PATH_NAMES = {
   START: "/",
+  AUTHORIZE: "/authorize",
   ACCESSIBILITY_STATEMENT: "/accessibility-statement",
   TERMS_AND_CONDITIONS: "/terms-and-conditions",
   PRIVACY_POLICY: "/privacy-notice",

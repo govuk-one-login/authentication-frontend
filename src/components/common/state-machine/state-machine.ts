@@ -18,6 +18,7 @@ const USER_JOURNEY_EVENTS = {
   ACCOUNT_CREATED: "ACCOUNT_CREATED",
   START: "START",
   EXISTING_SESSION: "EXISTING_SESSION",
+  NO_EXISTING_SESSION: "NO_EXISTING_SESSION",
   VERIFY_MFA: "VERIFY_MFA",
   PROVE_IDENTITY: "PROVE_IDENTITY",
   PROVE_IDENTITY_CALLBACK: "PROVE_IDENTITY_CALLBACK",
@@ -91,6 +92,38 @@ const authStateMachine = createMachine(
             { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
           ],
           [USER_JOURNEY_EVENTS.LANDING]: [
+            {
+              target: [PATH_NAMES.DOC_CHECKING_APP],
+              cond: "skipAuthentication",
+            },
+            {
+              target: [PATH_NAMES.PROVE_IDENTITY_WELCOME],
+              cond: "isIdentityRequired",
+            },
+            { target: [PATH_NAMES.SIGN_IN_OR_CREATE] },
+          ],
+        },
+      },
+      [PATH_NAMES.AUTHORIZE]: {
+        on: {
+          [USER_JOURNEY_EVENTS.EXISTING_SESSION]: [
+            {
+              target: [PATH_NAMES.PROVE_IDENTITY_WELCOME],
+              cond: "isIdentityRequired",
+            },
+            { target: [PATH_NAMES.ENTER_PASSWORD], cond: "requiresLogin" },
+            {
+              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
+              cond: "requiresAuthAppUplift",
+            },
+            { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
+            {
+              target: [PATH_NAMES.SHARE_INFO],
+              cond: "isConsentRequired",
+            },
+            { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
+          ],
+          [USER_JOURNEY_EVENTS.NO_EXISTING_SESSION]: [
             {
               target: [PATH_NAMES.DOC_CHECKING_APP],
               cond: "skipAuthentication",
