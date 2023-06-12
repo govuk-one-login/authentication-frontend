@@ -147,9 +147,9 @@
       "bullet2": "a way to get security codes - this can be a UK mobile phone number or an authenticator app",
       "bullet2IntNumbers": "a way to get security codes - this can be a mobile phone number or an authenticator app",
       "insetAlternativeLanguage": {
-        "paragraph1": "GOV.UK One Login is also available ",
+        "paragraph1": "You can also ",
         "linkText": {
-          "inPageLanguage": "in Welsh",
+          "inPageLanguage": "use GOV.UK One Login in Welsh",
           "inDestinationLanguage": "(Cymraeg)",
           "destinationLanguageCode": "cy"
         },
