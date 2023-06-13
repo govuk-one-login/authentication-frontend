@@ -1624,8 +1624,8 @@
         "privacyNote": "Read our <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">privacy notice</a> for more information on how we use your personal information."
       },
       "anotherProblem": {
-        "title": "A problem using your GOV.UK One Login",
-        "header": "A problem using your GOV.UK One Login",
+        "title": "Another problem using your GOV.UK One Login",
+        "header": "Another problem using your GOV.UK One Login",
         "section1": {
           "header": "What were you trying to do?",
           "errorMessage": "Enter what you were trying to do"
