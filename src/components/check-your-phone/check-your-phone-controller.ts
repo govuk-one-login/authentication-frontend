@@ -1,10 +1,16 @@
 import { Request, Response } from "express";
-import { MFA_METHOD_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
+import {
+  JOURNEY_TYPE,
+  MFA_METHOD_TYPE,
+  NOTIFICATION_TYPE,
+  PATH_NAMES,
+} from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
+  pathWithQueryParam,
 } from "../common/constants";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
@@ -21,8 +27,21 @@ import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-
 const TEMPLATE_NAME = "check-your-phone/index.njk";
 
 export function checkYourPhoneGet(req: Request, res: Response): void {
-  res.render(TEMPLATE_NAME, {
+  const resendCodeLink = pathWithQueryParam(
+    PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+    "isResendCodeRequest",
+    "true"
+  );
+
+  if (req.session.user.isAccountCreationJourney) {
+    return res.render(TEMPLATE_NAME, {
+      phoneNumber: req.session.user.redactedPhoneNumber,
+      resendCodeLink,
+    });
+  }
+  return res.render(TEMPLATE_NAME, {
     phoneNumber: req.session.user.redactedPhoneNumber,
+    resendCodeLink,
   });
 }
 
@@ -32,15 +51,22 @@ export const checkYourPhonePost = (
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const { isAccountRecoveryJourney, isAccountRecoveryPermitted } =
+      req.session.user;
+
+    const journeyType =
+      isAccountRecoveryPermitted && isAccountRecoveryJourney
+        ? JOURNEY_TYPE.ACCOUNT_RECOVERY
+        : JOURNEY_TYPE.REGISTRATION;
 
     const result = await service.verifyMfaCode(
       MFA_METHOD_TYPE.SMS,
       req.body["code"],
-      true,
       sessionId,
       clientSessionId,
       req.ip,
       persistentSessionId,
+      journeyType,
       req.session.user.phoneNumber
     );
 
@@ -62,11 +88,22 @@ export const checkYourPhonePost = (
       throw new BadRequestError(result.data.message, result.data.code);
     }
 
+    const accountRecoveryEnabledJourney =
+      isAccountRecoveryPermitted && isAccountRecoveryJourney;
+
+    let notificationType = NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
+
+    if (accountRecoveryEnabledJourney) {
+      req.session.user.accountRecoveryVerifiedMfaType = MFA_METHOD_TYPE.SMS;
+      notificationType =
+        NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION;
+    }
+
     await notificationService.sendNotification(
       res.locals.sessionId,
       res.locals.clientSessionId,
       req.session.user.email,
-      NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
+      notificationType,
       req.ip,
       res.locals.persistentSessionId,
       xss(req.cookies.lng as string)
@@ -79,6 +116,7 @@ export const checkYourPhonePost = (
         USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
+          isAccountRecoveryJourney: accountRecoveryEnabledJourney,
         },
         res.locals.sessionId
       )

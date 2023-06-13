@@ -10,6 +10,7 @@ frontend_auto_scaling_max_count = 12
 
 support_language_cy           = "1"
 support_international_numbers = "1"
+support_account_recovery      = "1"
 
 logging_endpoint_arns = [
   "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"

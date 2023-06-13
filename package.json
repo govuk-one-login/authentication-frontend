@@ -10,7 +10,7 @@
   "scripts": {
     "build-ts": "tsc",
     "build": "yarn build-sass && yarn build-ts && yarn minfiy-build-js && yarn copy-assets",
-    "build-sass": "rm -rf dist/public/style.css && sass --no-source-map src/assets/scss/application.scss dist/public/style.css --style compressed",
+    "build-sass": "rm -rf dist/public/style.css && sass --load-path=node_modules/govuk-frontend/govuk --no-source-map --quiet-deps src/assets/scss/application.scss dist/public/style.css --style compressed",
     "clean": "rm -rf dist node_modules logs.json",
     "clean-modules": "rm -rf node_modules",
     "copy-assets": "mkdir -p dist && copyfiles -u 1 src/**/*.njk dist/ src/locales/**/** dist/ src/config/*.txt dist/ && copyfiles -u 3 src/assets/javascript/*.js dist/public/scripts -e **/all.js && cp node_modules/govuk-frontend/govuk/all.js dist/public/scripts",
@@ -30,7 +30,7 @@
     "test:coverage": "nyc report --reporter=lcov --reporter=text",
     "watch-node": "nodemon -r dotenv/config --inspect=0.0.0.0:9230 dist/server.js | pino-pretty",
     "watch-ts": "tsc -w",
-    "watch-sass": "sass --watch src/assets/scss/application.scss dist/public/style.css"
+    "watch-sass": "sass --load-path=node_modules/govuk-frontend/govuk --watch --quiet-deps src/assets/scss/application.scss dist/public/style.css"
   },
   "mocha": {
     "diff": true,

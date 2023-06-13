@@ -15,6 +15,9 @@ export enum SecurityCodeErrorType {
   EmailMaxRetries = "emailMaxRetries",
   AuthAppMfaNoCodeValidator = "authAppMfaNoCodeValidator",
   AuthAppMfaMaxRetries = "authAppMfaMaxRetries",
+  ChangeSecurityCodesEmailMaxCodesSent = "changeSecurityCodesEmailMaxCodesSent",
+  ChangeSecurityCodesEmailBlocked = "changeSecurityCodesEmailBlocked",
+  ChangeSecurityCodesEmailMaxRetries = "changeSecurityCodesEmailMaxRetries",
 }
 
 export const ERROR_CODES = {
@@ -40,9 +43,15 @@ export const ERROR_CODES = {
   AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED: 1042,
   AUTH_APP_INVALID_CODE: 1043,
   ACCOUNT_LOCKED: 1045,
+  VERIFY_CHANGE_HOW_GET_SECURITY_CODES_MAX_CODES_SENT: 1046,
+  VERIFY_CHANGE_HOW_GET_SECURITY_CODES_CODE_REQUEST_BLOCKED: 1047,
+  VERIFY_CHANGE_HOW_GET_SECURITY_CODES_INVALID_CODE: 1048,
 };
 
 export const ERROR_CODE_MAPPING: { [p: string]: string } = {
+  [ERROR_CODES.ACCOUNT_LOCKED]: pathWithQueryParam(
+    PATH_NAMES["ACCOUNT_LOCKED"]
+  ),
   [ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED]: pathWithQueryParam(
     PATH_NAMES["ACCOUNT_LOCKED"]
   ),
@@ -77,10 +86,10 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
       SECURITY_CODE_ERROR,
       SecurityCodeErrorType.OtpMaxRetries
     ),
-  [ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT]: pathWithQueryParam(
+  [ERROR_CODES.VERIFY_EMAIL_CODE_REQUEST_BLOCKED]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_REQUEST_EXCEEDED"],
     SECURITY_CODE_ERROR,
-    SecurityCodeErrorType.EmailMaxCodesSent
+    SecurityCodeErrorType.EmailBlocked
   ),
   [ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_INVALID"],
@@ -93,16 +102,34 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
       SECURITY_CODE_ERROR,
       SecurityCodeErrorType.EmailMaxRetries
     ),
-  [ERROR_CODES.VERIFY_EMAIL_CODE_REQUEST_BLOCKED]: pathWithQueryParam(
+  [ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_WAIT"],
     SECURITY_CODE_ERROR,
-    SecurityCodeErrorType.EmailBlocked
+    SecurityCodeErrorType.EmailMaxCodesSent
   ),
   [ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_INVALID"],
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.AuthAppMfaMaxRetries
   ),
+  [ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_MAX_CODES_SENT]:
+    pathWithQueryParam(
+      PATH_NAMES["SECURITY_CODE_REQUEST_EXCEEDED"],
+      SECURITY_CODE_ERROR,
+      SecurityCodeErrorType.ChangeSecurityCodesEmailMaxCodesSent
+    ),
+  [ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_INVALID_CODE]:
+    pathWithQueryParam(
+      PATH_NAMES["SECURITY_CODE_INVALID"],
+      SECURITY_CODE_ERROR,
+      SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries
+    ),
+  [ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_CODE_REQUEST_BLOCKED]:
+    pathWithQueryParam(
+      PATH_NAMES["SECURITY_CODE_WAIT"],
+      SECURITY_CODE_ERROR,
+      SecurityCodeErrorType.ChangeSecurityCodesEmailBlocked
+    ),
 };
 
 export function getErrorPathByCode(errorCode: number): string | undefined {

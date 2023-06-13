@@ -24,6 +24,7 @@ import {
   getSessionExpiry,
   getSessionSecret,
   supportAccountRecovery,
+  supportAuthOrchSplit,
 } from "./config";
 import { logErrorMiddleware } from "./middleware/log-error-middleware";
 import { getCookieLanguageMiddleware } from "./middleware/cookie-lang-middleware";
@@ -44,7 +45,9 @@ import { ENVIRONMENT_NAME } from "./app.constants";
 import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes";
 import { authCodeRouter } from "./components/auth-code/auth-code-routes";
 import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-code-routes";
+import { resendMfaCodeAccountCreationRouter } from "./components/account-creation/resend-mfa-code/resend-mfa-code-routes";
 import { resendEmailCodeRouter } from "./components/resend-email-code/resend-email-code-routes";
+import { authorizeRouter } from "./components/authorize/authorize-routes";
 import { signedOutRouter } from "./components/signed-out/signed-out-routes";
 import {
   getSessionIdMiddleware,
@@ -77,8 +80,8 @@ import { enterAuthenticatorAppCodeRouter } from "./components/enter-authenticato
 import { cookiesRouter } from "./components/common/cookies/cookies-routes";
 import { errorPageRouter } from "./components/common/errors/error-routes";
 import { setInternationalPhoneNumberSupportMiddleware } from "./middleware/set-international-phone-number-support-middleware";
-import { cannotChangeSecurityCodesRouter } from "./components/cannot-change-security-codes/cannot-change-security-codes-routes";
-import { checkYourEmailSecurityCodesRouter } from "./components/check-your-email-security-codes/check-your-email-security-codes-routes";
+import { checkYourEmailSecurityCodesRouter } from "./components/account-recovery/check-your-email-security-codes/check-your-email-security-codes-routes";
+import { changeSecurityCodesConfirmationRouter } from "./components/account-recovery/change-security-codes-confirmation/change-security-codes-confirmation-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -102,13 +105,17 @@ function registerRoutes(app: express.Application) {
   app.use(footerRouter);
   app.use(checkYourPhoneRouter);
   if (supportAccountRecovery()) {
-    app.use(cannotChangeSecurityCodesRouter);
     app.use(checkYourEmailSecurityCodesRouter);
+    app.use(changeSecurityCodesConfirmationRouter);
+  }
+  if (supportAuthOrchSplit()) {
+    app.use(authorizeRouter);
   }
   app.use(securityCodeErrorRouter);
   app.use(enterMfaRouter);
   app.use(authCodeRouter);
   app.use(resendMfaCodeRouter);
+  app.use(resendMfaCodeAccountCreationRouter);
   app.use(resendEmailCodeRouter);
   app.use(signedOutRouter);
   app.use(shareInfoRouter);

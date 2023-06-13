@@ -1,5 +1,11 @@
+export enum MFA_METHOD_TYPE {
+  SMS = "SMS",
+  AUTH_APP = "AUTH_APP",
+}
+
 export const PATH_NAMES = {
   START: "/",
+  AUTHORIZE: "/authorize",
   ACCESSIBILITY_STATEMENT: "/accessibility-statement",
   TERMS_AND_CONDITIONS: "/terms-and-conditions",
   PRIVACY_POLICY: "/privacy-notice",
@@ -33,6 +39,7 @@ export const PATH_NAMES = {
   SECURITY_CODE_CHECK_TIME_LIMIT: "/security-code-check-time-limit",
   AUTH_CODE: "/auth-code",
   RESEND_MFA_CODE: "/resend-code",
+  RESEND_MFA_CODE_ACCOUNT_CREATION: "/resend-code-create-account",
   RESEND_EMAIL_CODE: "/resend-email-code",
   SIGNED_OUT: "/signed-out",
   ACCOUNT_LOCKED: "/account-locked",
@@ -55,13 +62,14 @@ export const PATH_NAMES = {
   ERROR_PAGE: "/error",
   SECURITY_CODE_ENTERED_EXCEEDED: "/security-code-entered-exceeded",
   CHANGE_SECURITY_CODES: "/change-security-codes",
-  CANNOT_CHANGE_SECURITY_CODES: "/cannot-change-security-codes",
   CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES: "/check-email-change-security-codes",
+  CHANGE_SECURITY_CODES_CONFIRMATION: "/change-codes-confirmed",
 };
 
 export const HREF_BACK = {
   CHECK_YOUR_PHONE: "check-your-phone",
   ENTER_AUTHENTICATOR_APP_CODE: "enter-authenticator-app-code",
+  ENTER_MFA: "enter-code",
 };
 
 export const HTTP_STATUS_CODES = {
@@ -165,6 +173,7 @@ export enum NOTIFICATION_TYPE {
   MFA_SMS = "MFA_SMS",
   RESET_PASSWORD_WITH_CODE = "RESET_PASSWORD_WITH_CODE",
   VERIFY_CHANGE_HOW_GET_SECURITY_CODES = "VERIFY_CHANGE_HOW_GET_SECURITY_CODES",
+  CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION = "CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION",
 }
 
 export const COOKIE_CONSENT = {
@@ -178,9 +187,10 @@ export enum SUPPORT_TYPE {
   PUBLIC = "PUBLIC",
 }
 
-export enum MFA_METHOD_TYPE {
-  SMS = "SMS",
-  AUTH_APP = "AUTH_APP",
+export enum JOURNEY_TYPE {
+  REGISTRATION = "REGISTRATION",
+  ACCOUNT_RECOVERY = "ACCOUNT_RECOVERY",
+  SIGN_IN = "SIGN_IN",
 }
 
 export const ENVIRONMENT_NAME = {
@@ -226,4 +236,5 @@ export const CONTACT_US_REFERER_ALLOWLIST = [
   "accountDeletedEmail",
   "phoneNumberUpdatedEmail",
   "passwordUpdatedEmail",
+  "changeCodesConfirmEmail",
 ];

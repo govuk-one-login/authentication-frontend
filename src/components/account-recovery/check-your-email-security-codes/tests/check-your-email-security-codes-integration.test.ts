@@ -1,7 +1,7 @@
 import request from "supertest";
 import { describe } from "mocha";
 import { AxiosResponse } from "axios";
-import { expect, sinon } from "../../../../test/utils/test-utils";
+import { expect, sinon } from "../../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
@@ -9,11 +9,11 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { DefaultApiResponse } from "../../../types";
-import { createApiResponse } from "../../../utils/http";
+} from "../../../../app.constants";
+import { ERROR_CODES, SecurityCodeErrorType } from "../../../common/constants";
+import { SendNotificationServiceInterface } from "../../../common/send-notification/types";
+import { DefaultApiResponse } from "../../../../types";
+import { createApiResponse } from "../../../../utils/http";
 
 describe("Integration:: check your email security codes", () => {
   let token: string | string[];
@@ -22,11 +22,11 @@ describe("Integration:: check your email security codes", () => {
   let baseApi: string;
 
   before(async () => {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    decache("../../common/send-notification/send-notification-service");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
-    const sendNotificationService = require("../../common/send-notification/send-notification-service");
+    decache("../../../../app");
+    decache("../../../../middleware/session-middleware");
+    decache("../../../common/send-notification/send-notification-service");
+    const sessionMiddleware = require("../../../../middleware/session-middleware");
+    const sendNotificationService = require("../../../common/send-notification/send-notification-service");
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
@@ -65,7 +65,7 @@ describe("Integration:: check your email security codes", () => {
 
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
 
-    app = await require("../../../app").createApp();
+    app = await require("../../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     request(app)

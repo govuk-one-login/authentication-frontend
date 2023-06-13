@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { expect, sinon } from "../../../../test/utils/test-utils";
+import { expect, sinon } from "../../../../../test/utils/test-utils";
 import { describe } from "mocha";
 import { mockRequest, mockResponse } from "mock-req-res";
 
 import { checkAccountRecoveryPermitted } from "../check-account-recovery-middleware";
-import { PATH_NAMES, MFA_METHOD_TYPE } from "../../../app.constants";
+import { PATH_NAMES, MFA_METHOD_TYPE } from "../../../../app.constants";
 
 describe("checkAccountRecoveryPermittedMiddleware", () => {
   let req: Partial<Request>;
@@ -27,7 +27,10 @@ describe("checkAccountRecoveryPermittedMiddleware", () => {
           isAccountRecoveryPermitted: true,
         },
       },
+      log: { error: sinon.fake(), info: sinon.fake() },
     });
+    req.path = PATH_NAMES.ENTER_MFA;
+    res.locals.sessionId = "123456-abcdef";
     checkAccountRecoveryPermitted(req as Request, res as Response, next);
     expect(next).to.be.calledOnce;
   });
@@ -66,7 +69,7 @@ describe("checkAccountRecoveryPermittedMiddleware", () => {
     checkAccountRecoveryPermitted(req as Request, res as Response, next);
     expect(next).to.not.be.called;
     expect(res.redirect).to.have.been.calledOnceWith(
-      PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES
+      PATH_NAMES.CHECK_YOUR_PHONE
     );
   });
 

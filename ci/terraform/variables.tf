@@ -21,6 +21,10 @@ variable "service_domain" {
   default = null
 }
 
+variable "support_account_recovery" {
+  type = string
+}
+
 variable "support_international_numbers" {
   type = string
 }

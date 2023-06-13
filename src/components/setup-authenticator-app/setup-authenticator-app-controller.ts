@@ -12,7 +12,11 @@ import {
 } from "../../utils/validation";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
-import { MFA_METHOD_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
+import {
+  JOURNEY_TYPE,
+  MFA_METHOD_TYPE,
+  NOTIFICATION_TYPE,
+} from "../../app.constants";
 import xss from "xss";
 import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
@@ -44,18 +48,27 @@ export function setupAuthenticatorAppPost(
   notificationService: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { authAppSecret } = req.session.user;
+    const {
+      authAppSecret,
+      isAccountRecoveryJourney,
+      isAccountRecoveryPermitted,
+    } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const code = req.body.code;
+
+    const journeyType =
+      isAccountRecoveryPermitted && isAccountRecoveryJourney
+        ? JOURNEY_TYPE.ACCOUNT_RECOVERY
+        : JOURNEY_TYPE.REGISTRATION;
 
     const verifyAccessCodeRes = await service.verifyMfaCode(
       MFA_METHOD_TYPE.AUTH_APP,
       code,
-      true,
       sessionId,
       clientSessionId,
       req.ip,
       persistentSessionId,
+      journeyType,
       authAppSecret
     );
 
@@ -78,12 +91,26 @@ export function setupAuthenticatorAppPost(
     }
 
     req.session.user.authAppSecret = null;
+    req.session.user.phoneNumber = null;
+    req.session.user.redactedPhoneNumber = null;
+
+    const accountRecoveryEnabledJourney =
+      isAccountRecoveryPermitted && isAccountRecoveryJourney;
+
+    let notificationType = NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
+
+    if (accountRecoveryEnabledJourney) {
+      req.session.user.accountRecoveryVerifiedMfaType =
+        MFA_METHOD_TYPE.AUTH_APP;
+      notificationType =
+        NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION;
+    }
 
     await notificationService.sendNotification(
       res.locals.sessionId,
       res.locals.clientSessionId,
       req.session.user.email,
-      NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
+      notificationType,
       req.ip,
       res.locals.persistentSessionId,
       xss(req.cookies.lng as string)
@@ -96,6 +123,7 @@ export function setupAuthenticatorAppPost(
         USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
+          isAccountRecoveryJourney: accountRecoveryEnabledJourney,
         },
         sessionId
       )

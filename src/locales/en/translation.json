@@ -147,9 +147,9 @@
       "bullet2": "a way to get security codes - this can be a UK mobile phone number or an authenticator app",
       "bullet2IntNumbers": "a way to get security codes - this can be a mobile phone number or an authenticator app",
       "insetAlternativeLanguage": {
-        "paragraph1": "GOV.UK One Login is also available ",
+        "paragraph1": "You can also ",
         "linkText": {
-          "inPageLanguage": "in Welsh",
+          "inPageLanguage": "use GOV.UK One Login in Welsh",
           "inDestinationLanguage": "(Cymraeg)",
           "destinationLanguageCode": "cy"
         },
@@ -407,7 +407,6 @@
         "summaryText": "Problems with the code?",
         "text1": "We can ",
         "sendCodeLinkText": "send the code again",
-        "sendCodeLinkHref": "/resend-code?isResendCodeRequest=true",
         "text 2": " or you can ",
         "changePhoneNumberLinkText": "use a different phone number",
         "changePhoneNumberLinkHref": "/enter-phone-number",
@@ -455,7 +454,7 @@
       "title": "Check your phone",
       "header": "Check your phone",
       "info": {
-        "paragraph1": "We sent a code to the phone number linked to your GOV.UK One Login.",
+        "paragraph1": "We have sent a code to your phone number ending with ",
         "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes."
       },
       "resend": {
@@ -517,6 +516,14 @@
         "govukLinkText": "GOV.UK homepage"
       }
     },
+    "changeSecurityCodesConfirmation": {
+      "title": "You’ve changed how you get security codes",
+      "header": "You’ve changed how you get security codes",
+      "info": {
+        "paragraphSMS": "We’ll send security codes to your phone number ending with [mobile] when you sign in.",
+        "paragraphAuthApp": "You’ll need to use your authenticator app to get security codes when you sign in."
+      }
+    },
     "checkYourEmailSecurityCodes": {
       "title": "Check your email",
       "header": "Check your email",
@@ -527,7 +534,7 @@
       "code": {
         "paragraph1": "The email contains a 6 digit security code. After you enter the code, you’ll be able to change how you get security codes when you sign in.",
         "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
-        "paragraph3": "The code will expire after 2 hours.",
+        "paragraph3": "The code will expire after 15 minutes.",
         "label": "Enter the 6 digit security code",
         "validationError": {
           "required": "Enter the security code",
@@ -1044,34 +1051,41 @@
           },
           "paragraph_three": "We use an identity checking service provider called Iproov and their subcontractors Veriff and Innovalor to conduct these checks. Iproov acts as a data processor with Veriff and Innovalor as sub-processors, which means that they may only process your personal data for the sole purpose of fulfilling our instructions.",
           "paragraph_four": "We need to check your identity document security features to prove that they are genuine documents.",
+          "paragraph_five": "For driving licences, you will need to take a photo of the front and back of your licence with your phone camera. The app will require permission to access your camera and photos for this.",
+          "paragraph_six": "For e-passports and biometric residence permits, the app will read your document information from its near field communication (NFC) chip.",
+          "paragraph_seven": "We collect the following information",
           "list_two": {
-            "item_one": "For drivers’ licences, you will need to take a photo of the front and back of your licence with your phone camera. The App will require permission to access your camera and photos for this.",
-            "item_two": "For e-passports, the App will read your passport information from your document’s Near Field Communication (NFC) chip.",
-            "item_three": "When Iproov has completed the check, they send us the outcome of the check and your driving licence or passport information."
+            "item_one": "name",
+            "item_two": "date of birth",
+            "item_three": "address (driving licences only)",
+            "item_four": "document number",
+            "item_five": "expiry date",
+            "item_six": "issuing country",
+            "item_seven": "nationality (except driving licences)",
+            "item_eight": "photo image"
           },
-          "paragraph_five": "We do a “liveness” check to prove whether a user is a real person and not anything that might impersonate an individual such as a mannequin, wax figure, 3D mask, picture or deepfake.",
-          "list_three": {
-            "item_one": "You will need to take a selfie video using your phone camera. The App will require permission to access your camera and videos for this. This check is conducted in real-time which means that neither we nor Iproov store the video.",
-            "item_two": "When Iproov has completed the check, they send us the outcome of the check."
-          },
-          "paragraph_six": "We do a likeness check to prove that you are the same person as in your identity document photo.",
-          "paragraph_seven": "This check uses a still image generated from your selfie video and your identity document photo to measure the unique patterns of your face. This is called facial biometric data. The biometric data from both images is compared to establish whether the user is the actual owner of the identity document.",
-          "paragraph_eight": "When Iproov has completed the check, they send us the outcome of the check.",
+          "paragraph_eight": "When Iproov has completed the check, they send us the outcome of the check and your identity document information.",
+          "paragraph_nine": "We do a “liveness” check to prove whether a user is a real person and not anything that might impersonate an individual such as a mannequin, wax figure, 3D mask, picture or deepfake.",
+          "paragraph_ten": "You will need to take a selfie video using your phone camera. The App will require permission to access your camera and videos for this. This check is conducted in real-time which means that neither we nor Iproov store the video.",
+          "paragraph_eleven": "When Iproov has completed the check, they send us the outcome of the check.",
+          "paragraph_twelve": "We do a likeness check to prove that you are the same person as in your identity document photo.",
+          "paragraph_thirteen": "This check uses a still image generated from your selfie video and your identity document photo to measure the unique patterns of your face. This is called facial biometric data. The biometric data from both images is compared to establish whether the user is the actual owner of the identity document.",
+          "paragraph_fourteen": "When Iproov has completed the check, they send us the outcome of the check.",
           "sub_header_two": "Fraud check",
-          "paragraph_nine": "We use an identity checking service provider called Experian to:",
+          "paragraph_fifteen": "We use an identity checking service provider called Experian to:",
           "list_four": {
             "item_one": "conduct a fraud check to look for any signs that your identity has been stolen or misused",
             "item_two": "check whether there is a record of you existing over time"
           },
-          "paragraph_ten": {
+          "paragraph_sixteen": {
             "part_one": "They do so as an independent data controller in accordance with their",
             "link": {
               "link_text": "privacy notice",
               "link_href": "https://www.experian.co.uk/consumer/privacy.html"
             }
           },
-          "paragraph_eleven": "When you have completed the checks above using the App, you will be returned to the GOV.UK One Login website where we will collect your name, date of birth and address. We send these to Experian so they can conduct a counter fraud check.",
-          "paragraph_twelve": "When Experian has completed the check, they send us a fraud score, plus details of any associated fraudulent activity."
+          "paragraph_seventeen": "When you have completed the checks above using the App, you will be returned to the GOV.UK One Login website where we will collect your name, date of birth and address. We send these to Experian so they can conduct a counter fraud check.",
+          "paragraph_eighteen": "When Experian has completed the check, they send us a fraud score, plus details of any associated fraudulent activity."
         },
         "using_web_to_prove_identity": {
           "header": "Using your web browser to prove your identity",
@@ -1892,7 +1906,12 @@
         "paragraph1": "An authenticator app creates a security code that helps confirm it’s you when you sign in.",
         "paragraph2": "You can use an authenticator app on your smartphone, tablet or desktop computer.  Download an authenticator app for your smartphone or tablet from your app store or search online for an authenticator app for your computer."
       },
-      "continueButtonText": "Continue"
+      "continueButtonText": "Continue",
+      "accountRecoveryVariants": {
+        "title": "How do you want to get security codes?",
+        "header": "How do you want to get security codes?",
+        "summary": "Choose how you’ll get security codes when signing in to your GOV.UK One Login. This will remove your old phone number or authenticator app from your GOV.UK One Login."
+      }
     },
     "setupAuthenticatorApp": {
       "title": "Set up an authenticator app",

@@ -5,19 +5,41 @@ import {
   SECURITY_CODE_ERROR,
 } from "../common/constants";
 import { PATH_NAMES } from "../../app.constants";
+import {
+  getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes,
+  getCodeEnteredWrongBlockDurationInMinutes,
+  getCodeRequestBlockDurationInMinutes,
+} from "../../config";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
   const isNotEmailCode =
-    req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries;
+    req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries &&
+    req.query.actionType !==
+      SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries;
+
+  let isChangeSecurityCodesForAccRecovery = false;
+
   if (isNotEmailCode) {
     req.session.user.wrongCodeEnteredLock = new Date(
-      Date.now() + 15 * 60000
+      Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
     ).toUTCString();
   }
+
+  if (
+    req.query.actionType ===
+    SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries
+  ) {
+    isChangeSecurityCodesForAccRecovery = true;
+    req.session.user.wrongCodeEnteredAccountRecoveryLock = new Date(
+      Date.now() +
+        getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes() * 60000
+    ).toUTCString();
+  }
+
   return res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
-    isBlocked: isNotEmailCode,
+    isBlocked: isNotEmailCode || isChangeSecurityCodesForAccRecovery,
   });
 }
 
@@ -26,7 +48,7 @@ export function securityCodeTriesExceededGet(
   res: Response
 ): void {
   req.session.user.codeRequestLock = new Date(
-    Date.now() + 15 * 60000
+    Date.now() + getCodeRequestBlockDurationInMinutes() * 60000
   ).toUTCString();
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
@@ -85,6 +107,15 @@ function getNewCodePath(actionType: SecurityCodeErrorType) {
     case SecurityCodeErrorType.EmailBlocked:
       return PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
     case SecurityCodeErrorType.EmailMaxRetries:
+      return pathWithQueryParam(
+        PATH_NAMES.RESEND_EMAIL_CODE,
+        "requestNewCode",
+        "true"
+      );
+    case SecurityCodeErrorType.ChangeSecurityCodesEmailMaxCodesSent:
+    case SecurityCodeErrorType.ChangeSecurityCodesEmailBlocked:
+      return PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
+    case SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries:
       return pathWithQueryParam(
         PATH_NAMES.RESEND_EMAIL_CODE,
         "requestNewCode",

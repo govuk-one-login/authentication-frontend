@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
 import {
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
@@ -12,6 +12,22 @@ import { sendNotificationService } from "../common/send-notification/send-notifi
 import xss from "xss";
 
 export function resendEmailCodeGet(req: Request, res: Response): void {
+  if (
+    req.session.user.wrongCodeEnteredAccountRecoveryLock &&
+    new Date().getTime() <
+      new Date(req.session.user.wrongCodeEnteredAccountRecoveryLock).getTime()
+  ) {
+    const newCodeLink = req.query?.isResendCodeRequest
+      ? "/security-code-check-time-limit?isResendCodeRequest=true"
+      : "/security-code-check-time-limit";
+    return res.render(
+      "security-code-error/index-security-code-entered-exceeded.njk",
+      {
+        newCodeLink,
+      }
+    );
+  }
+
   res.render("resend-email-code/index.njk", {
     emailAddress: req.session.user.email,
     requestNewCode:
@@ -25,15 +41,21 @@ export function resendEmailCodePost(
   return async function (req: Request, res: Response) {
     const email = req.session.user.email.toLowerCase();
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const isAccountRecoveryJourney = req.session.user?.isAccountRecoveryJourney;
+
+    const journeyType = isAccountRecoveryJourney
+      ? JOURNEY_TYPE.ACCOUNT_RECOVERY
+      : JOURNEY_TYPE.REGISTRATION;
 
     const sendNotificationResponse = await notificationService.sendNotification(
       sessionId,
       clientSessionId,
       email,
-      NOTIFICATION_TYPE.VERIFY_EMAIL,
+      getNotificationTemplateType(isAccountRecoveryJourney),
       req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
+      journeyType,
       undefined,
       xss(req.body.requestNewCode as string) === "true"
     );
@@ -51,41 +73,8 @@ export function resendEmailCodePost(
       );
     }
 
-    return res.redirect(
-      getNextPathAndUpdateJourney(
-        req,
-        req.path,
-        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
-        null,
-        sessionId
-      )
-    );
-  };
-}
-
-export function securityCodeCheckTimeLimit(
-  notificationService: SendNotificationServiceInterface = sendNotificationService()
-): ExpressRouteFunc {
-  return async function (req: Request, res: Response) {
-    const email = req.session.user.email.toLowerCase();
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
-    const sendNotificationResponse = await notificationService.sendNotification(
-      sessionId,
-      clientSessionId,
-      email,
-      NOTIFICATION_TYPE.VERIFY_EMAIL,
-      req.ip,
-      persistentSessionId,
-      xss(req.cookies.lng as string),
-      undefined,
-      xss(req.body.requestNewCode as string) === "true"
-    );
-
-    if (!sendNotificationResponse.success) {
-      return res.render("security-code-error/index-wait.njk", {
-        newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
-      });
+    if (isAccountRecoveryJourney) {
+      req.session.user.isAccountRecoveryCodeResent = true;
     }
 
     return res.redirect(
@@ -93,9 +82,56 @@ export function securityCodeCheckTimeLimit(
         req,
         req.path,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
-        null,
+        {
+          isAccountRecoveryJourney: isAccountRecoveryJourney,
+        },
         sessionId
       )
     );
   };
+}
+
+export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
+  return async function (req: Request, res: Response) {
+    const { sessionId } = res.locals;
+    const isAccountRecoveryJourney = req.session.user?.isAccountRecoveryJourney;
+    if (
+      req.session.user.codeRequestLock &&
+      new Date().getTime() <
+        new Date(req.session.user.codeRequestLock).getTime()
+    ) {
+      const newCodeLink = req.query?.isResendCodeRequest
+        ? "/security-code-check-time-limit?isResendCodeRequest=true"
+        : "/security-code-check-time-limit";
+      return res.render("security-code-error/index-wait.njk", {
+        newCodeLink,
+      });
+    }
+
+    if (isAccountRecoveryJourney) {
+      req.session.user.isAccountRecoveryCodeResent = true;
+    }
+
+    return res.redirect(
+      getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
+        {
+          isAccountRecoveryJourney: isAccountRecoveryJourney,
+        },
+        sessionId
+      )
+    );
+  };
+}
+
+function getNotificationTemplateType(
+  isAccountRecoveryJourney: boolean
+): NOTIFICATION_TYPE {
+  if (isAccountRecoveryJourney) {
+    return NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES;
+  } else {
+    return NOTIFICATION_TYPE.VERIFY_EMAIL;
+  }
 }

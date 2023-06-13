@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { NOTIFICATION_TYPE } from "../../app.constants";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { redactPhoneNumber } from "../../utils/strings";
 import {
@@ -10,8 +10,11 @@ import { BadRequestError } from "../../utils/error";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { prependInternationalPrefix } from "../../utils/phone-number";
-import { supportInternationalNumbers } from "../../config";
+import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number";
+import {
+  supportAccountRecovery,
+  supportInternationalNumbers,
+} from "../../config";
 import xss from "xss";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
@@ -25,17 +28,18 @@ export function enterPhoneNumberPost(
   service: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
+    const { email, isAccountRecoveryJourney, isAccountRecoveryPermitted } =
+      req.session.user;
     const hasInternationalPhoneNumber = req.body.hasInternationalPhoneNumber;
-    const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
     let phoneNumber;
 
     if (
-      hasInternationalPhoneNumber &&
       hasInternationalPhoneNumber === "true" &&
       supportInternationalNumbers()
     ) {
-      phoneNumber = prependInternationalPrefix(
+      phoneNumber = convertInternationalPhoneNumberToE164Format(
         req.body.internationalPhoneNumber
       );
     } else {
@@ -45,6 +49,15 @@ export function enterPhoneNumberPost(
     req.session.user.redactedPhoneNumber = redactPhoneNumber(phoneNumber);
     req.session.user.phoneNumber = phoneNumber;
 
+    const accountRecovery =
+      isAccountRecoveryJourney &&
+      isAccountRecoveryPermitted &&
+      isAccountRecoveryEnabledForEnvironment;
+
+    const journeyType = accountRecovery
+      ? JOURNEY_TYPE.ACCOUNT_RECOVERY
+      : JOURNEY_TYPE.REGISTRATION;
+
     const sendNotificationResponse = await service.sendNotification(
       sessionId,
       clientSessionId,
@@ -53,6 +66,7 @@ export function enterPhoneNumberPost(
       req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
+      journeyType,
       phoneNumber
     );
 

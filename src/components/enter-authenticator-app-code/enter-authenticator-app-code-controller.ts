@@ -11,7 +11,7 @@ import { VerifyMfaCodeInterface } from "./types";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
 import { BadRequestError } from "../../utils/error";
-import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
+import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 import {
   formatValidationError,
@@ -36,7 +36,8 @@ export function enterAuthenticatorAppCodeGet(
 
     if (
       req.session.user.wrongCodeEnteredLock &&
-      new Date().toUTCString() < req.session.user.wrongCodeEnteredLock
+      new Date().getTime() <
+        new Date(req.session.user.wrongCodeEnteredLock).getTime()
     ) {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
@@ -94,20 +95,29 @@ export const enterAuthenticatorAppCodePost = (
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const { isUpliftRequired } = req.session.user;
+    const {
+      isUpliftRequired,
+      isAccountRecoveryJourney,
+      isAccountRecoveryPermitted,
+    } = req.session.user;
 
     const template = isUpliftRequired
       ? UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
       : ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME;
 
+    const journeyType =
+      isAccountRecoveryPermitted && isAccountRecoveryJourney
+        ? JOURNEY_TYPE.ACCOUNT_RECOVERY
+        : JOURNEY_TYPE.SIGN_IN;
+
     const result = await service.verifyMfaCode(
       MFA_METHOD_TYPE.AUTH_APP,
       req.body["code"],
-      false,
       sessionId,
       clientSessionId,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      journeyType
     );
 
     if (!result.success) {

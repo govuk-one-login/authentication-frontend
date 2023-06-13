@@ -26,6 +26,8 @@
     <form id="form-tracking" action="/enter-authenticator-app-code" method="post" novalidate="novalidate">
 
         <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+        <input type="hidden" name="isAccountRecoveryPermitted" value="{{isAccountRecoveryPermitted}}"/>
+        <input type="hidden" name="checkEmailLink" value="{{checkEmailLink}}"/>
 
         {{ govukInput({
             label: {
@@ -39,7 +41,7 @@
             name: "code",
             inputmode: "numeric",
             spellcheck: false,
-            autocomplete:"off",
+            autocomplete: "one-time-code",
             errorMessage: {
                 text: errors['code'].text
             } if (errors['code'])}) }}

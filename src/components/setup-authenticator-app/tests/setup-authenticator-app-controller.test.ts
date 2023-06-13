@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { PATH_NAMES } from "../../../app.constants";
+import { NOTIFICATION_TYPE, PATH_NAMES } from "../../../app.constants";
 import {
   setupAuthenticatorAppGet,
   setupAuthenticatorAppPost,
@@ -71,9 +71,57 @@ describe("setup-authenticator-app controller", () => {
 
       expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.calledWith(
+        undefined,
+        undefined,
+        "t@t.com",
+        NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
+        "127.0.0.1",
+        undefined,
+        ""
+      );
 
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL
+      );
+    });
+
+    it("should successfully validate access code and redirect to account created for account recovery journey (to be updated)", async () => {
+      req.body.code = "123456";
+      req.session.user = {
+        authAppSecret: "testsecret",
+        email: "t@t.com",
+        isAccountRecoveryPermitted: true,
+        isAccountRecoveryJourney: true,
+      };
+
+      const fakeMfAService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({ success: true }),
+      };
+
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake(),
+      };
+
+      await setupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+      expect(fakeNotificationService.sendNotification).to.have.calledWith(
+        undefined,
+        undefined,
+        "t@t.com",
+        NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION,
+        "127.0.0.1",
+        undefined,
+        ""
+      );
+
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION
       );
     });
 

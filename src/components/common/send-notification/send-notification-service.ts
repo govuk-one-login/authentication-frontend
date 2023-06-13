@@ -19,6 +19,7 @@ export function sendNotificationService(
     sourceIp: string,
     persistentSessionId: string,
     userLanguage: string,
+    journeyType?: string,
     phoneNumber?: string,
     requestNewCode?: boolean
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
@@ -33,6 +34,10 @@ export function sendNotificationService(
 
     if (requestNewCode) {
       payload.requestNewCode = requestNewCode;
+    }
+
+    if (journeyType) {
+      payload.journeyType = journeyType;
     }
 
     const response = await axios.client.post<DefaultApiResponse>(

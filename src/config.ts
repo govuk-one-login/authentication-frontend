@@ -58,6 +58,10 @@ export function supportAccountRecovery(): boolean {
   return process.env.SUPPORT_ACCOUNT_RECOVERY === "1";
 }
 
+export function supportAuthOrchSplit(): boolean {
+  return process.env.SUPPORT_AUTH_ORCH_SPLIT === "1";
+}
+
 export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
   const hostKey = `${appEnv}-${process.env.REDIS_KEY}-redis-master-host`;
   const portKey = `${appEnv}-${process.env.REDIS_KEY}-redis-port`;
@@ -115,4 +119,19 @@ export function getServiceDomain(): string {
 
 export function getServiceSignInLink(): string {
   return process.env.SERVICE_SIGN_IN_LINK || "https://www.gov.uk/sign-in";
+}
+
+export function getCodeRequestBlockDurationInMinutes(): number {
+  return Number(process.env.CODE_REQUEST_BLOCKED_MINUTES) || 15;
+}
+
+export function getCodeEnteredWrongBlockDurationInMinutes(): number {
+  return Number(process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES) || 15;
+}
+
+export function getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes(): number {
+  return (
+    Number(process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES) ||
+    15
+  );
 }

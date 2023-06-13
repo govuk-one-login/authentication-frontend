@@ -1,0 +1,28 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% set pageTitleName = 'pages.changeSecurityCodesConfirmation.title' | translate %}
+
+{% block content %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.changeSecurityCodesConfirmation.header' | translate}}</h1>
+
+<form action="/change-codes-confirmed" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
+
+{% if mfaMethodType === 'SMS' %}
+    <p class="govuk-body">{{'pages.changeSecurityCodesConfirmation.info.paragraphSMS' | translate | replace("[mobile]", phoneNumber)}}</p>
+{% elseif mfaMethodType === 'AUTH_APP' %}
+    <p class="govuk-body">{{'pages.changeSecurityCodesConfirmation.info.paragraphAuthApp' | translate}}</p>
+{% endif %}
+
+{{ govukButton({
+      "text": "general.continue.label" | translate,
+      "type": "Submit",
+      "preventDoubleClick": true
+    }) }}
+
+</form>
+
+{% endblock %}

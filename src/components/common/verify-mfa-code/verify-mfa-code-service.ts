@@ -1,6 +1,7 @@
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
+  JOURNEY_TYPE,
   MFA_METHOD_TYPE,
 } from "../../../app.constants";
 import {
@@ -18,11 +19,11 @@ export function verifyMfaCodeService(
   const verifyMfaCode = async function (
     methodType: MFA_METHOD_TYPE,
     code: string,
-    isRegistration: boolean,
     sessionId: string,
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string,
+    journeyType?: JOURNEY_TYPE,
     profileInformation?: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
@@ -30,7 +31,7 @@ export function verifyMfaCodeService(
       {
         mfaMethodType: methodType,
         code,
-        isRegistration,
+        journeyType,
         ...(profileInformation && { profileInformation }),
       },
       getRequestConfig({

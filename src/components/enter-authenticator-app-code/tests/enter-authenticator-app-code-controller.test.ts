@@ -32,6 +32,7 @@ describe("enter authenticator app code controller", () => {
       i18n: { language: "en" },
     });
     res = mockResponse();
+    process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
   });
 
   afterEach(() => {
@@ -39,10 +40,13 @@ describe("enter authenticator app code controller", () => {
   });
 
   describe("enterAuthenticatorAppCodeGet", () => {
-    it("should render enter mfa code view", async () => {
+    it("should render enter mfa code view with isAccountRecoveryPermitted true when user is permitted to perform account recovery and account recovery is enabled for environment", async () => {
       const fakeService: AccountRecoveryInterface = {
         accountRecovery: sinon.fake.returns({
           success: true,
+          data: {
+            accountRecoveryPermitted: true,
+          },
         }),
       };
 
@@ -52,7 +56,63 @@ describe("enter authenticator app code controller", () => {
       );
 
       expect(res.render).to.have.calledWith(
-        "enter-authenticator-app-code/index.njk"
+        "enter-authenticator-app-code/index.njk",
+        {
+          isAccountRecoveryPermitted: true,
+          checkEmailLink:
+            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
+            "?type=AUTH_APP",
+        }
+      );
+    });
+
+    it("should render enter mfa code view with isAccountRecoveryPermitted false when user is not permitted to perform account recovery", async () => {
+      const fakeService: AccountRecoveryInterface = {
+        accountRecovery: sinon.fake.returns({
+          success: true,
+          data: {
+            accountRecoveryPermitted: false,
+          },
+        }),
+      };
+
+      await enterAuthenticatorAppCodeGet(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        "enter-authenticator-app-code/index.njk",
+        {
+          isAccountRecoveryPermitted: false,
+          checkEmailLink:
+            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
+            "?type=AUTH_APP",
+        }
+      );
+    });
+
+    it("should render enter mfa code view with isAccountRecoveryPermitted false when account recovery is disable for the environment", async () => {
+      process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
+      const fakeService: AccountRecoveryInterface = {
+        accountRecovery: sinon.fake.returns({
+          success: true,
+          data: {
+            accountRecoveryPermitted: true,
+          },
+        }),
+      };
+
+      await enterAuthenticatorAppCodeGet(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        "enter-authenticator-app-code/index.njk",
+        {
+          isAccountRecoveryPermitted: false,
+        }
       );
     });
 
@@ -62,6 +122,9 @@ describe("enter authenticator app code controller", () => {
       const fakeService: AccountRecoveryInterface = {
         accountRecovery: sinon.fake.returns({
           success: true,
+          data: {
+            accountRecoveryPermitted: true,
+          },
         }),
       };
 
@@ -71,7 +134,13 @@ describe("enter authenticator app code controller", () => {
       );
 
       expect(res.render).to.have.calledWith(
-        UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
+        UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
+        {
+          isAccountRecoveryPermitted: true,
+          checkEmailLink:
+            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
+            "?type=AUTH_APP",
+        }
       );
     });
 
@@ -81,6 +150,9 @@ describe("enter authenticator app code controller", () => {
       const fakeService: AccountRecoveryInterface = {
         accountRecovery: sinon.fake.returns({
           success: true,
+          data: {
+            accountRecoveryPermitted: true,
+          },
         }),
       };
 
@@ -90,7 +162,13 @@ describe("enter authenticator app code controller", () => {
       );
 
       expect(res.render).to.have.calledWith(
-        ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME
+        ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME,
+        {
+          isAccountRecoveryPermitted: true,
+          checkEmailLink:
+            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
+            "?type=AUTH_APP",
+        }
       );
     });
   });
