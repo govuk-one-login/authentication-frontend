@@ -1091,9 +1091,9 @@
           "header": "Defnyddio eich porwr gwe i brofi eich hunaniaeth",
           "paragraph_one": "Mae’r llwybr hwn yn cynnwys 3 gwiriad hunaniaeth ar wahân.",
           "sub_header_one": "Gwiriad dogfen hunaniaeth",
-          "paragraph_two": "Rydym yn gwirio bod eich manylion pasbort yn ddilys gan ddefnyddio’r setiau data awdurdodol a gedwir gan Swyddfa Pasbort Ei Fawrhydi (HMPO). Bydd angen i chi ddarparu manylion eich pasbort a anfonwn wedyn i HMPO i ddilysu yn erbyn eu cofnodion.",
-          "paragraph_three": "Pan mae HMPO wedi cwblhau eu gwiriadau, maent yn anfon cadarnhad i ni a yw’r data’n cyfateb ai peidio ac os na, y rheswm pam nad oedd yn cyfateb.",
-          "paragraph_four": "Mae HMPO yn gwneud hynny fel rheolwr data annibynnol yn unol â’u hysbysiad preifatrwydd.",
+          "paragraph_two": "Rydym yn gwirio bod eich manylion pasbort neu drwydded yrru yn ddilys gan ddefnyddio’r setiau data awdurdodol a gedwir gan Swyddfa Pasbort Ei Fawrhydi (HMPO) neu’r Asiantaeth Trwyddedu Gyrwyr a Cherbydau (DVLA) yn y DU neu’r Asiantaeth Gyrwyr a Cherbydau Gogledd Iwerddon (DVA (NI)). Bydd angen i chi ddarparu manylion eich trwydded yrru neu basbort a anfonwn wedyn i HMPO, DVLA neu DVA (NI) i ddilysu yn erbyn eu cofnodion.",
+          "paragraph_three": "Pan mae HMPO, DVLA neu DVA (NI) wedi cwblhau eu gwiriadau, maent yn anfon cadarnhad i ni a yw’r data’n cyfateb ai peidio ac os na, y rheswm pam nad oedd yn cyfateb.",
+          "paragraph_four": "Mae HMPO, DVLA a DVA (NI) yn gwneud hynny fel rheolwr data annibynnol yn unol â’u hysbysiad preifatrwydd.",
           "sub_header_two": "Gwiriad Dilysu Ar Sail Gwybodaeth (cwestiynau diogelwch)",
           "paragraph_five": {
             "part_one": "Rydym yn cynnal gwiriad Dilysu Ar Sail Gwybodaeth (KBV), neu gwestiynau diogelwch, gan ddefnyddio cwestiynau am hanes eich credyd neu ariannol mai dim ond chi ddylai wybod yr ateb iddynt. Mae’r gwiriad hwn yn cael ei gynnal gan Experian fel rheolwr data annibynnol yn unol â’u",
@@ -1238,11 +1238,21 @@
               "link_href": "https://www.gov.uk/government/statistics/hmpo-privacy-information-notice/privacy-information-notice-accessible-version"
             },
             "item_two": {
+              "part_one": "Asiantaeth Trwyddedu Gyrwyr a Cherbydau (DVLA), fel rheolwr data annibynnol o dan MoU, i gynnal gwiriadau dogfen trywdded yrru Prydain Fawr gwirioneddol. Gallwch ddarllen ",
+              "link_text": "polisi preifatrwydd DVLA",
+              "link_href": "https://www.gov.uk/government/publications/dvla-privacy-policy/dvla-privacy-policy"
+            },
+            "item_three": {
+              "part_one": "Asiantaeth Gyrwyr a Cherbydau Gogledd Iwerddon (DVA NI), fel rheolwr data annibynnol o dan MoU, i gynnal gwiriadau dogfen trywdded yrru Gogledd Iwerddon gwirioneddol. Gallwch ddarllen",
+              "link_text": "polisi preifatrwydd DVA NI",
+              "link_href": "https://www.infrastructure-ni.gov.uk/publications/gdpr-privacy-notices-dfi-business-areas"
+            },
+            "item_four": {
               "part_one": "Experian, fel rheolwr data annibynnol yn amodol ar gontract gyda ni, ar gyfer Dilysu Ar Sail Gwybodaeth (KBV) a gwiriadau twyll. Gallwch ddarllen ",
               "link_text": "Hysbysiad preifatrwydd defnyddwyr Experian",
               "link_href": "https://www.experian.co.uk/legal/crain/"
             },
-            "item_three": "iProov, fel prosesydd data gyda Veriff ac Innovalor fel ei is-broseswyr, yn amodol ar gontract gyda ni, ar gyfer gwiriadau tebygrwydd biometreg, gwiriadau dogfennau gwirioneddol a gwiriadau bywiogrwydd"
+            "item_five": "iProov, fel prosesydd data gyda Veriff ac Innovalor fel ei is-broseswyr, yn amodol ar gontract gyda ni, ar gyfer gwiriadau tebygrwydd biometreg, gwiriadau dogfennau gwirioneddol a gwiriadau bywiogrwydd"
           },
           "paragraph_ten": "Ym mhob achos rydym ond yn darparu’r isafswm o wybodaeth sydd ei angen i gyflawni’r gwiriadau.",
           "sub_header_three": "Rhannu eich gwybodaeth er mwyn diogelu rhag twyll",
@@ -1384,7 +1394,7 @@
           "header": "Newidiadau i’r hysbysiad hwn",
           "paragraph_one": "Efallai y byddwn yn newid yr hysbysiad preifatrwydd hwn. Yn yr achos hynny, bydd dyddiad ’diweddaru olaf’ y ddogfen hon hefyd yn newid. Bydd unrhyw newidiadau i’r hysbysiad preifatrwydd hwn yn berthnasol i chi a’ch gwybodaeth ar unwaith.",
           "paragraph_two": "Os yw’r newidiadau hyn yn effeithio ar sut mae eich gwybodaeth bersonol yn cael ei phrosesu, bydd GDS yn rhoi gwybod i chi.",
-          "paragraph_three": "Diweddarwyd diwethaf: 31 Mai 2023"
+          "paragraph_three": "Diweddarwyd diwethaf: 15 Mehefin 2023"
         }
       }
     },

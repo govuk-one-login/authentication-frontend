@@ -1091,9 +1091,9 @@
           "header": "Using your web browser to prove your identity",
           "paragraph_one": "This route consists of 3 separate identity checks.",
           "sub_header_one": "An identity document check",
-          "paragraph_two": "We check your passport details are genuine using the authoritative datasets held by His Majesty’s Passport Office (HMPO). You will need to provide your passport details which we then send to HMPO to validate against their records.",
-          "paragraph_three": "When HMPO have completed their checks, they send us confirmation as to whether the data matches or not and if not, the reason why it didn’t match.",
-          "paragraph_four": "HMPO does so as an independent data controller in accordance with their privacy notice.",
+          "paragraph_two": "We check your passport or driving licence details are genuine using the authoritative datasets held, respectively, by HM Passport Office (HMPO) or the Driver and Vehicle Licensing Agency (DVLA) in the UK or the Driver and Vehicle Agency in Northern Ireland (DVA (NI)). You will need to provide your driving licence or passport details which we then send to HMPO, DVLA or DVA (NI) to validate against their records.",
+          "paragraph_three": "When HMPO, DVLA or DVA (NI) have completed their checks, they send us confirmation as to whether the data matches or not and if not, the reason why it didn’t match.",
+          "paragraph_four": "HMPO, DVLA and DVA (NI) do so as independent data controllers in accordance with their privacy notices.",
           "sub_header_two": "Knowledge Based Verification check (security questions)",
           "paragraph_five": {
             "part_one": "We conduct a Knowledge Based Verification (KBV) check, or security questions, using questions about your credit or financial history that only you should know the answer to. This check is conducted by Experian as an independent data controller in accordance with their",
@@ -1238,11 +1238,21 @@
               "link_href": "https://www.gov.uk/government/statistics/hmpo-privacy-information-notice/privacy-information-notice-accessible-version"
             },
             "item_two": {
+              "part_one": "the Driver and Vehicle Licensing Agency (DVLA), as an independent data controller under an MoU, for GB driving licence genuine document checks. You can read ",
+              "link_text": "DVLA’s privacy notice",
+              "link_href": "https://www.gov.uk/government/publications/dvla-privacy-policy/dvla-privacy-policy"
+            },
+            "item_three": {
+              "part_one": "the Driver and Vehicle Agency Northern Ireland (DVA NI), as an independent data controller under an MoU, for Northern Irish driving licence genuine document checks. You can read ",
+              "link_text": "DVA NI’s privacy notice",
+              "link_href": "https://www.infrastructure-ni.gov.uk/publications/gdpr-privacy-notices-dfi-business-areas"
+            },
+            "item_four": {
               "part_one": "Experian, as an independent data controller subject to a contract with us, for Knowledge-Base Verification (KBV) and fraud checks. You can read ",
               "link_text": "Experian’s consumer privacy notice",
               "link_href": "https://www.experian.co.uk/legal/crain/"
             },
-            "item_three": "iProov, as a data processor with Veriff and Innovalor as its sub-processors, subject to a contract with us, for biometric likeness checks, genuine document checks and liveness checks"
+            "item_five": "iProov, as a data processor with Veriff and Innovalor as its sub-processors, subject to a contract with us, for biometric likeness checks, genuine document checks and liveness checks"
           },
           "paragraph_ten": "In all cases we only provide the minimum information needed to perform the checks.",
           "sub_header_three": "Sharing your information to protect against fraud",
@@ -1384,7 +1394,7 @@
           "header": "Changes to this notice",
           "paragraph_one": "We may change this privacy notice. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy notice will apply to you and your information immediately.",
           "paragraph_two": "If these changes affect how your personal information is processed, GDS will let you know.",
-          "paragraph_three": "Last updated: 31 May 2023"
+          "paragraph_three": "Last updated: 15 June 2023"
         }
       }
     },
