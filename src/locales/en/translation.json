@@ -1091,7 +1091,7 @@
           "header": "Using your web browser to prove your identity",
           "paragraph_one": "This route consists of 3 separate identity checks.",
           "sub_header_one": "An identity document check",
-          "paragraph_two": "We check your passport or driving licence details are genuine using the authoritative datasets held, respectively, by HM Passport Office (HMPO) or the Driver and Vehicle Licensing Agency (DVLA) in the UK or the Driver and Vehicle Agency in Northern Ireland (DVA (NI)). You will need to provide your driving licence or passport details which we then send to HMPO, DVLA or DVA (NI) to validate against their records.",
+          "paragraph_two": "We check your passport or driving licence details are genuine using the authoritative datasets held, respectively, by HM Passport Office (HMPO) or the Driver and Vehicle Licensing Agency (DVLA) in Great Britain or the Driver and Vehicle Agency in Northern Ireland (DVA (NI)). You will need to provide your driving licence or passport details which we then send to HMPO, DVLA or DVA (NI) to validate against their records.",
           "paragraph_three": "When HMPO, DVLA or DVA (NI) have completed their checks, they send us confirmation as to whether the data matches or not and if not, the reason why it didn’t match.",
           "paragraph_four": "HMPO, DVLA and DVA (NI) do so as independent data controllers in accordance with their privacy notices.",
           "sub_header_two": "Knowledge Based Verification check (security questions)",
