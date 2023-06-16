@@ -106,7 +106,8 @@ export const checkYourPhonePost = (
       notificationType,
       req.ip,
       res.locals.persistentSessionId,
-      xss(req.cookies.lng as string)
+      xss(req.cookies.lng as string),
+      journeyType
     );
 
     return res.redirect(
