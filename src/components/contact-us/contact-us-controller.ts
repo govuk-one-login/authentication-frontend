@@ -317,135 +317,170 @@ export function getQuestionsFromFormType(
   const formTypeToQuestions: { [key: string]: any } = {
     accountCreationProblem: {
       issueDescription: req.t(
-        "pages.contactUsQuestions.accountCreationProblem.section1.paragraph1"
+        "pages.contactUsQuestions.accountCreationProblem.section1.paragraph1",
+        { lng: "en" }
       ),
     },
     accountNotFound: {
       issueDescription: req.t(
-        "pages.contactUsQuestions.accountNotFound.section1.header"
+        "pages.contactUsQuestions.accountNotFound.section1.header",
+        { lng: "en" }
       ),
       optionalDescription: req.t(
-        "pages.contactUsQuestions.accountNotFound.section2.header"
+        "pages.contactUsQuestions.accountNotFound.section2.header",
+        { lng: "en" }
       ),
     },
     anotherProblem: {
       issueDescription: req.t(
-        "pages.contactUsQuestions.anotherProblem.section1.header"
+        "pages.contactUsQuestions.anotherProblem.section1.header",
+        { lng: "en" }
       ),
       additionalDescription: req.t(
-        "pages.contactUsQuestions.anotherProblem.section2.header"
+        "pages.contactUsQuestions.anotherProblem.section2.header",
+        { lng: "en" }
       ),
     },
     authenticatorApp: {
       issueDescription: req.t(
-        "pages.contactUsQuestions.authenticatorApp.section1.header"
+        "pages.contactUsQuestions.authenticatorApp.section1.header",
+        { lng: "en" }
       ),
       additionalDescription: req.t(
-        "pages.contactUsQuestions.authenticatorApp.section2.header"
+        "pages.contactUsQuestions.authenticatorApp.section2.header",
+        { lng: "en" }
       ),
     },
     emailSubscription: {
       issueDescription: req.t(
-        "pages.contactUsQuestions.emailSubscriptions.section1.header"
+        "pages.contactUsQuestions.emailSubscriptions.section1.header",
+        { lng: "en" }
       ),
       optionalDescription: req.t(
-        "pages.contactUsQuestions.emailSubscriptions.section2.header"
+        "pages.contactUsQuestions.emailSubscriptions.section2.header",
+        { lng: "en" }
       ),
     },
     forgottenPassword: {
       optionalDescription: req.t(
-        "pages.contactUsQuestions.forgottenPassword.section1.header"
+        "pages.contactUsQuestions.forgottenPassword.section1.header",
+        { lng: "en" }
       ),
     },
     invalidSecurityCode: {
       moreDetailDescription: req.t(
-        "pages.contactUsQuestions.invalidSecurityCode.section2.header"
+        "pages.contactUsQuestions.invalidSecurityCode.section2.header",
+        { lng: "en" }
       ),
       radioButtons: req.t(
-        "pages.contactUsQuestions.invalidSecurityCode.section1.header"
+        "pages.contactUsQuestions.invalidSecurityCode.section1.header",
+        { lng: "en" }
       ),
     },
     noPhoneNumberAccess: {
       optionalDescription: req.t(
-        "pages.contactUsQuestions.noPhoneNumberAccess.section2.header"
+        "pages.contactUsQuestions.noPhoneNumberAccess.section2.header",
+        { lng: "en" }
       ),
       radioButtons: req.t(
-        "pages.contactUsQuestions.noPhoneNumberAccess.section1.header"
+        "pages.contactUsQuestions.noPhoneNumberAccess.section1.header",
+        { lng: "en" }
       ),
     },
     noSecurityCode: {
       moreDetailDescription: req.t(
-        "pages.contactUsQuestions.noSecurityCode.section2.header"
+        "pages.contactUsQuestions.noSecurityCode.section2.header",
+        { lng: "en" }
       ),
       radioButtons: req.t(
-        "pages.contactUsQuestions.noSecurityCode.section1.header"
+        "pages.contactUsQuestions.noSecurityCode.section1.header",
+        { lng: "en" }
       ),
     },
     noUKMobile: {
       moreDetailDescription: req.t(
-        "pages.contactUsQuestions.noUKMobile.section1.header"
+        "pages.contactUsQuestions.noUKMobile.section1.header",
+        { lng: "en" }
       ),
     },
     signingInProblem: {
       issueDescription: req.t(
-        "pages.contactUsQuestions.signignInProblem.section1.header"
+        "pages.contactUsQuestions.signignInProblem.section1.header",
+        { lng: "en" }
       ),
     },
     suggestionFeedback: {
       issueDescription: req.t(
-        "pages.contactUsQuestions.suggestionOrFeedback.section1.header"
+        "pages.contactUsQuestions.suggestionOrFeedback.section1.header",
+        { lng: "en" }
       ),
     },
     technicalError: {
       issueDescription: req.t(
-        "pages.contactUsQuestions.technicalError.section1.header"
+        "pages.contactUsQuestions.technicalError.section1.header",
+        { lng: "en" }
       ),
       additionalDescription: req.t(
-        "pages.contactUsQuestions.technicalError.section2.header"
+        "pages.contactUsQuestions.technicalError.section2.header",
+        { lng: "en" }
       ),
       optionalDescription: req.t(
-        "pages.contactUsQuestions.technicalError.section3.header"
+        "pages.contactUsQuestions.technicalError.section3.header",
+        { lng: "en" }
       ),
     },
     provingIdentity: {
       issueDescription: req.t(
-        "pages.contactUsQuestions.provingIdentity.section1.header"
+        "pages.contactUsQuestions.provingIdentity.section1.header",
+        { lng: "en" }
       ),
       additionalDescription: req.t(
-        "pages.contactUsQuestions.provingIdentity.section2.header"
+        "pages.contactUsQuestions.provingIdentity.section2.header",
+        { lng: "en" }
       ),
       serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header"
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
       ),
     },
     idCheckApp: {
       issueDescription: `${req.t(
-        "pages.contactUsQuestions.whatHappened.header"
-      )} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1")}`,
+        "pages.contactUsQuestions.whatHappened.header",
+        { lng: "en" }
+      )} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1", {
+        lng: "en",
+      })}`,
       serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header"
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
       ),
     },
     idCheckAppTechnicalProblem: {
       issueDescription: req.t(
-        "pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.header"
+        "pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.header",
+        { lng: "en" }
       ),
       additionalDescription: req.t(
-        "pages.contactUsQuestions.whatHappened.header"
+        "pages.contactUsQuestions.whatHappened.header",
+        { lng: "en" }
       ),
       serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header"
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
       ),
     },
     idCheckAppSomethingElse: {
       issueDescription: req.t(
-        "pages.contactUsQuestions.idCheckAppSomethingElse.section1.header"
+        "pages.contactUsQuestions.idCheckAppSomethingElse.section1.header",
+        { lng: "en" }
       ),
       additionalDescription: req.t(
-        "pages.contactUsQuestions.whatHappened.header"
+        "pages.contactUsQuestions.whatHappened.header",
+        { lng: "en" }
       ),
       serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header"
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
       ),
     },
   };
@@ -459,77 +494,107 @@ export function getQuestionFromThemes(
   subtheme?: string
 ): ThemeQuestions {
   const themesToQuestions: { [key: string]: any } = {
-    account_creation: req.t("pages.contactUsPublic.section3.accountCreation"),
-    signing_in: req.t("pages.contactUsPublic.section3.signingIn"),
-    proving_identity: req.t("pages.contactUsPublic.section3.provingIdentity"),
-    something_else: req.t("pages.contactUsPublic.section3.somethingElse"),
+    account_creation: req.t("pages.contactUsPublic.section3.accountCreation", {
+      lng: "en",
+    }),
+    signing_in: req.t("pages.contactUsPublic.section3.signingIn", {
+      lng: "en",
+    }),
+    proving_identity: req.t("pages.contactUsPublic.section3.provingIdentity", {
+      lng: "en",
+    }),
+    something_else: req.t("pages.contactUsPublic.section3.somethingElse", {
+      lng: "en",
+    }),
     email_subscriptions: req.t(
-      "pages.contactUsPublic.section3.emailSubscriptions"
+      "pages.contactUsPublic.section3.emailSubscriptions",
+      { lng: "en" }
     ),
     suggestions_feedback: req.t(
-      "pages.contactUsPublic.section3.suggestionsFeedback"
+      "pages.contactUsPublic.section3.suggestionsFeedback",
+      { lng: "en" }
     ),
-    id_check_app: req.t("pages.contactUsPublic.section3.idCheckApp"),
+    id_check_app: req.t("pages.contactUsPublic.section3.idCheckApp", {
+      lng: "en",
+    }),
   };
   const signinSubthemeToQuestions: { [key: string]: any } = {
     no_security_code: req.t(
-      "pages.contactUsFurtherInformation.signingIn.section1.radio1"
+      "pages.contactUsFurtherInformation.signingIn.section1.radio1",
+      { lng: "en" }
     ),
     invalid_security_code: req.t(
-      "pages.contactUsFurtherInformation.signingIn.section1.radio2"
+      "pages.contactUsFurtherInformation.signingIn.section1.radio2",
+      { lng: "en" }
     ),
     no_phone_number_access: req.t(
-      "pages.contactUsFurtherInformation.signingIn.section1.radio3"
+      "pages.contactUsFurtherInformation.signingIn.section1.radio3",
+      { lng: "en" }
     ),
     forgotten_password: req.t(
-      "pages.contactUsFurtherInformation.signingIn.section1.radio4"
+      "pages.contactUsFurtherInformation.signingIn.section1.radio4",
+      { lng: "en" }
     ),
     account_not_found: req.t(
-      "pages.contactUsFurtherInformation.signingIn.section1.radio5"
+      "pages.contactUsFurtherInformation.signingIn.section1.radio5",
+      { lng: "en" }
     ),
     technical_error: req.t(
-      "pages.contactUsFurtherInformation.signingIn.section1.radio6"
+      "pages.contactUsFurtherInformation.signingIn.section1.radio6",
+      { lng: "en" }
     ),
     something_else: req.t(
-      "pages.contactUsFurtherInformation.signingIn.section1.radio7"
+      "pages.contactUsFurtherInformation.signingIn.section1.radio7",
+      { lng: "en" }
     ),
   };
   const accountCreationSubthemeToQuestions: { [key: string]: any } = {
     no_security_code: req.t(
-      "pages.contactUsFurtherInformation.accountCreation.section1.radio1"
+      "pages.contactUsFurtherInformation.accountCreation.section1.radio1",
+      { lng: "en" }
     ),
     invalid_security_code: req.t(
-      "pages.contactUsFurtherInformation.accountCreation.section1.radio2"
+      "pages.contactUsFurtherInformation.accountCreation.section1.radio2",
+      { lng: "en" }
     ),
     no_uk_mobile_number: req.t(
-      "pages.contactUsFurtherInformation.accountCreation.section1.radio3"
+      "pages.contactUsFurtherInformation.accountCreation.section1.radio3",
+      { lng: "en" }
     ),
     technical_error: req.t(
-      "pages.contactUsFurtherInformation.accountCreation.section1.radio4"
+      "pages.contactUsFurtherInformation.accountCreation.section1.radio4",
+      { lng: "en" }
     ),
     something_else: req.t(
-      "pages.contactUsFurtherInformation.accountCreation.section1.radio5"
+      "pages.contactUsFurtherInformation.accountCreation.section1.radio5",
+      { lng: "en" }
     ),
     authenticator_app_problem: req.t(
-      "pages.contactUsFurtherInformation.accountCreation.section1.radio6"
+      "pages.contactUsFurtherInformation.accountCreation.section1.radio6",
+      { lng: "en" }
     ),
   };
 
   const idCheckAppSubthemeToQuestions: { [key: string]: any } = {
     linking_problem: req.t(
-      "pages.contactUsFurtherInformation.idCheckApp.section1.linkingProblem"
+      "pages.contactUsFurtherInformation.idCheckApp.section1.linkingProblem",
+      { lng: "en" }
     ),
     taking_photo_of_id_problem: req.t(
-      "pages.contactUsFurtherInformation.idCheckApp.section1.photoProblem"
+      "pages.contactUsFurtherInformation.idCheckApp.section1.photoProblem",
+      { lng: "en" }
     ),
     face_scanning_problem: req.t(
-      "pages.contactUsFurtherInformation.idCheckApp.section1.faceScanningProblem"
+      "pages.contactUsFurtherInformation.idCheckApp.section1.faceScanningProblem",
+      { lng: "en" }
     ),
     id_check_app_technical_problem: req.t(
-      "pages.contactUsFurtherInformation.idCheckApp.section1.technicalError"
+      "pages.contactUsFurtherInformation.idCheckApp.section1.technicalError",
+      { lng: "en" }
     ),
     id_check_app_something_else: req.t(
-      "pages.contactUsFurtherInformation.idCheckApp.section1.somethingElse"
+      "pages.contactUsFurtherInformation.idCheckApp.section1.somethingElse",
+      { lng: "en" }
     ),
   };
 
