@@ -477,8 +477,8 @@
         "sendCodeLinkText": "anfon y cod eto",
         "sendCodeLinkHref": "/resend-code",
         "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn.",
-        "changeGetSecurityCodesText": "If you cannot access the phone number for your GOV.UK One Login, you can securely ",
-        "changeGetSecurityCodesLinkText": "change how you get security codes"
+        "changeGetSecurityCodesText": "Os na allwch gyrchu’r rhif ffôn ar gyfer eich GOV.UK One Login, gallwch ",
+        "changeGetSecurityCodesLinkText": "newid yn ddiogel sut rydych yn cael codau diogelwch"
       },
       "upliftRequired": {
         "title": "Mae angen i chi roi cod diogelwch",
