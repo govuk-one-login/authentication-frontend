@@ -105,8 +105,10 @@ export function resetPasswordPost(
     if (req.session.user.isPasswordChangeRequired) {
       req.session.user.isPasswordChangeRequired = false;
     }
+    const mfaRequired = loginResponse.data.mfaRequired;
 
     if (
+      mfaRequired &&
       loginResponse.data.mfaMethodVerified &&
       loginResponse.data.mfaMethodType === MFA_METHOD_TYPE.SMS
     ) {
@@ -139,7 +141,7 @@ export function resetPasswordPost(
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
         {
           isConsentRequired: req.session.user.isConsentRequired,
-          requiresTwoFactorAuth: true,
+          requiresTwoFactorAuth: mfaRequired,
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
           mfaMethodType: loginResponse.data.mfaMethodType,
