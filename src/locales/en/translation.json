@@ -1864,16 +1864,15 @@
       "section1": {
         "paragraph1": "It will take you about 10 minutes to prove your identity this way.",
         "insetAlternativeLanguage": {
-          "paragraph1": "This service is also available in ",
+          "paragraph1": "You can also ",
           "linkText": {
-            "inPageLanguage": "Welsh",
+            "inPageLanguage": "use GOV.UK One Login in Welsh",
             "inDestinationLanguage": "(Cymraeg)",
             "destinationLanguageCode": "cy"
           },
           "linkHref": "?lng=cy"
         },
-        "insetTextEnglishOnly": "This service is currently only available in English.",
-        "insetAlternativeLanguageAppWarning": "The GOV.UK ID Check app is currently only available in English."
+        "insetTextEnglishOnly": "This service is currently only available in English."
       },
       "section2": {
         "paragraph1": "You’ll need:",
