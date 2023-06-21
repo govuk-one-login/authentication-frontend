@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { PATH_NAMES } from "../../../app.constants";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants";
 import {
   getSecurityCodesGet,
   getSecurityCodesPost,
@@ -60,6 +60,25 @@ describe("select-mfa-options controller", () => {
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP
       );
+    });
+
+    describe("setting selectedMfaOption in the session", () => {
+      [MFA_METHOD_TYPE.SMS, MFA_METHOD_TYPE.AUTH_APP].forEach((i) => {
+        it(`req.session.user.selectedMfaOption should be set when req.body.mfaOptions is ${i}`, async () => {
+          req.body.mfaOptions = i;
+
+          getSecurityCodesPost(req as Request, res as Response);
+
+          expect(req.session.user).to.have.property("selectedMfaOption", i);
+        });
+      });
+      it(`req.session.user.selectedMfaOption should not be set when req.body.mfaOptions is not a vaild value`, async () => {
+        req.body.mfaOptions = "NOT_OK";
+
+        getSecurityCodesPost(req as Request, res as Response);
+
+        expect(req.session.user).not.to.have.property("selectedMfaOption");
+      });
     });
   });
 });
