@@ -666,19 +666,19 @@
             },
             "rows": {
               "row1": {
-                "col2": "2 awr"
+                "col2": "1 awr"
               },
               "row2": {
                 "col2": "Pan fyddwch yn cau eich porwr gwe"
               },
               "row3": {
-                "col2": "2 awr"
+                "col2": "1 awr"
               },
               "row4": {
                 "col2": "13 mis"
               },
               "row5": {
-                "col2": "2 awr"
+                "col2": "1 awr"
               },
               "row6": {
                 "col2": "Pan fyddwch yn cau eich porwr gwe"
@@ -844,7 +844,7 @@
         "header": "Cynnwys anhygyrch",
         "paragraph1": "Nid yw’r cynnwys a restrir isod yn hygyrch am y rhesymau canlynol.",
         "subHeader": "Diffyg cydymffurfio â’r rheoliadau hygyrchedd",
-        "paragraph2": "Pan fyddwch yn creu GOV.UK One Login neu fewngofnodi, os nad ydych yn gwneud unrhyw beth am 2 awr, bydd y broses yn stopio (amseru allan) neu byddwch yn cael eich allgofnodi. Nid yw’n bosibl addasu, ymestyn na diffodd yr amseru allan. Mae hyn yn methu maen prawf llwyddiant WCAG 2.1  2.2.1 (Addasu Amseru)."
+        "paragraph2": "Pan fyddwch yn creu GOV.UK One Login neu fewngofnodi, os nad ydych yn gwneud unrhyw beth am 1 awr, bydd y broses yn stopio (amseru allan) neu byddwch yn cael eich allgofnodi. Nid yw’n bosibl addasu, ymestyn na diffodd yr amseru allan. Mae hyn yn methu maen prawf llwyddiant WCAG 2.1  2.2.1 (Addasu Amseru)."
       },
       "section8": {
         "header": "Beth rydym yn ei wneud i wella hygyrchedd",
