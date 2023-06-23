@@ -364,7 +364,7 @@
       "info": {
         "paragraph1": "The email contains a 6 digit security code.",
         "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
-        "paragraph3": "The code will expire after 2 hours."
+        "paragraph3": "The code will expire after one hour."
       },
       "code": {
         "label": "Enter the 6 digit security code",
