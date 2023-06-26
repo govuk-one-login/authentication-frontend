@@ -112,7 +112,7 @@
       "title": "Sorry, the page has expired",
       "header": "Sorry, the page has expired",
       "content": {
-        "paragraph1": "This is because you did not do anything for more than 2 hours. ",
+        "paragraph1": "This is because you have not used GOV.UK One Login for more than an hour. ",
         "whatYouCanDo": "What you can do",
         "paragraph2": "Go back to the service you were trying to use and start again. You can look for the service using your search engine or find it from the GOV.UK homepage.",
         "govUKHomepageButtonHref": "https://www.gov.uk/",
