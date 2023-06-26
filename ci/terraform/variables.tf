@@ -29,10 +29,6 @@ variable "support_international_numbers" {
   type = string
 }
 
-variable "support_language_cy" {
-  type = string
-}
-
 variable "image_uri" {
   type = string
 }

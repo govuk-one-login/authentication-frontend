@@ -37,7 +37,6 @@
       <li>{{ 'pages.signInOrCreate.bullet2' | translate }}</li>
     {% endif %}
   </ul>
-  {% if supportLanguageCY %}
     {% set altLangInsetHtml %}
     {{ 'pages.signInOrCreate.insetAlternativeLanguage.paragraph1' | translate }}
     <a href="{{ 'pages.signInOrCreate.insetAlternativeLanguage.linkHref' | translate }}" class="govuk-link" rel="noreferrer">
@@ -47,7 +46,6 @@
     {{ govukInsetText({
       html: altLangInsetHtml
     }) }}
-  {% endif %}
 
   <form action="/sign-in-or-create" method="post" novalidate="novalidate">
 

@@ -50,10 +50,6 @@ export function supportInternationalNumbers(): boolean {
   return process.env.SUPPORT_INTERNATIONAL_NUMBERS === "1";
 }
 
-export function supportLanguageCY(): boolean {
-  return process.env.SUPPORT_LANGUAGE_CY === "1";
-}
-
 export function supportAccountRecovery(): boolean {
   return process.env.SUPPORT_ACCOUNT_RECOVERY === "1";
 }
