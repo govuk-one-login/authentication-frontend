@@ -80,7 +80,7 @@ export function validateSessionMiddleware(
 
   if (isReferrerInternal) {
     req.log.info("request from gov.uk domain");
-    next(
+    return next(
       new ErrorWithLevel(
         ERROR_MESSAGES.INVALID_SESSION_GOV_UK_INTERNAL_REQUEST,
         ERROR_LOG_LEVEL.INFO
@@ -88,7 +88,7 @@ export function validateSessionMiddleware(
     );
   }
 
-  next(
+  return next(
     new ErrorWithLevel(
       ERROR_MESSAGES.INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST,
       ERROR_LOG_LEVEL.INFO
