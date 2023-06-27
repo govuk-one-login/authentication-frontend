@@ -130,6 +130,18 @@
         },
         "govUKHomepageButtonHref": "https://www.gov.uk/"
       }
+    },
+    "proveIdentityCallbackSessionExpiryError": {
+      "title": "Sorry, there is a problem",
+      "header": "Sorry, there is a problem",
+      "content": {
+        "paragraph": "We cannot return you to the service at the moment.",
+        "section1": {
+          "header": "What you can do",
+          "paragraph1": "Go back to the service you were trying to use. You can look for the service using your search engine or find it from the GOV.UK homepage.",
+          "paragraph2": "You will not need to prove your identity again."
+        }
+      }
     }
   },
   "pages": {

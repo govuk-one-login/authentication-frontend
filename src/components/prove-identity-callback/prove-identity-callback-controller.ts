@@ -54,3 +54,10 @@ export function proveIdentityCallbackGet(
     return res.redirect(redirectPath);
   };
 }
+
+export function proveIdentityCallbackSessionExpiryError(
+  req: Request,
+  res: Response
+): void {
+  res.render("prove-identity-callback/session-expiry-error.njk");
+}
