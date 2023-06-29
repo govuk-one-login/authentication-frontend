@@ -59,6 +59,7 @@ export interface UserSession {
   wrongCodeEnteredLock?: string;
   codeRequestLock?: string;
   wrongCodeEnteredAccountRecoveryLock?: string;
+  wrongCodeEnteredPasswordResetLock?: string;
   isAccountRecoveryPermitted?: boolean;
   isAccountRecoveryJourney?: boolean;
   isAccountRecoveryCodeResent?: boolean;
