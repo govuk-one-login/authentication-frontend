@@ -25,7 +25,7 @@ export function validateEnterEmailRequest(
           }
         );
       })
-      .isEmail()
+      .isEmail({ ignore_max_length: true })
       .withMessage((value, { req }) => {
         return req.t(
           "pages.enterEmailExistingAccount.email.validationError.email",
