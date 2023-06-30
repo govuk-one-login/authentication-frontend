@@ -125,6 +125,12 @@ export function getCodeRequestBlockDurationInMinutes(): number {
   return Number(process.env.CODE_REQUEST_BLOCKED_MINUTES) || 15;
 }
 
+export function getCodeRequestAccountRecoveryBlockDurationInMinutes(): number {
+  return (
+    Number(process.env.CODE_REQUEST_ACCOUNT_RECOOVERY_BLOCKED_MINUTES) || 15
+  );
+}
+
 export function getCodeEnteredWrongBlockDurationInMinutes(): number {
   return Number(process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES) || 15;
 }
