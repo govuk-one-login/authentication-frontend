@@ -130,6 +130,18 @@
         },
         "govUKHomepageButtonHref": "https://www.gov.uk/"
       }
+    },
+    "proveIdentityCallbackSessionExpiryError": {
+      "title": "Mae’n ddrwg gennym, mae problem",
+      "header": "Mae’n ddrwg gennym, mae problem",
+      "content": {
+        "paragraph": "Ni allwn eich dychwelyd i’r gwasanaeth ar hyn o bryd.",
+        "section1": {
+          "header": "Beth allwch chi ei wneud",
+          "paragraph1": "Ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio eich peiriant chwilio neu dewch o hyd iddo o hafan GOV.UK.",
+          "paragraph2": "Ni fydd angen i chi brofi eich hunaniaeth eto."
+        }
+      }
     }
   },
   "pages": {
