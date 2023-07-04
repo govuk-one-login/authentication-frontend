@@ -1072,7 +1072,7 @@
           "paragraph_thirteen": "Mae’r gwiriad hwn yn defnyddio delwedd llonydd a gynhyrchir o’ch fideo hunlun a’r llun yn eich dogfen hunaniaeth i fesur patrymau unigryw eich wyneb. Data biometrig wynebol yw’r enw ar hyn. Mae’r data biometrig o’r ddwy ddelwedd yn cael ei gymharu i sefydlu ai’r defnyddiwr yw gwir berchennog y ddogfen hunaniaeth.",
           "paragraph_fourteen": "Pan mae Iproov wedi cwblhau’r gwiriad, maent yn anfon canlyniad y gwiriad atom.",
           "sub_header_two": "Gwiriad twyll",
-          "paragraph_fifteen": "Rydym yn defnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Experian i:",
+          "paragraph_fifteen": "Rydym yn defnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Experian i gynnal archwiliad twyll i:",
           "list_four": {
             "item_one": "gynnal gwiriad twyll i chwilio am unrhyw arwyddion bod eich hunaniaeth wedi cael ei ddwyn neu ei gamddefnyddio",
             "item_two": "gwirio os oes cofnod ohonoch yn bodoli dros amser"
@@ -1107,7 +1107,71 @@
           "paragraph_eight": "Nid yw GDS yn storio nac yn cadw’r cwestiynau na’ch atebion.",
           "paragraph_nine": "Mae’r gwiriad hwn yn gyfystyr â ’chwiliad meddal’ sy’n golygu y bydd cofnod o’r gwiriad yn bodoli ar eich cofnodion credyd fel ’GOV.UK One Login’. Dim ond i chi y bydd yn weladwy ac nid i unrhyw sefydliadau eraill sy’n defnyddio Experian i gynnal eu gwiriadau credyd eu hunain. O ganlyniad, ni fydd yn cael effaith ar eich sgôr credyd.",
           "sub_header_three": "Gwiriad twyll",
-          "paragraph_ten": "Rydym hefyd yn cynnal yr un gwiriad twyll gan ddefnyddio Experian fel yr amlinellir yn yr adran ’Defnyddio ap Gwirio ID GOV.UK ID Check i brofi eich hunaniaeth’."
+          "paragraph_ten": "Rydym yn defnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Experian i gynnal archwiliad twyll i:",
+          "list": {
+            "item_one": "chwilio am unrhyw arwyddion bod eich hunaniaeth wedi cael ei ddwyn neu ei gamddefnyddio",
+            "item_two": "gwirio a oes cofnod ohonoch yn bodoli dros amser"
+          },
+          "paragraph_eleven": {
+            "part_one": "Maent yn gwneud hynny fel rheolydd data annibynnol yn unol â’u",
+            "link": {
+              "link_text": "hysbysiad preifatrwydd",
+              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
+            }
+          },
+          "paragraph_twelve": "Pan fyddwch wedi cwblhau’r gwiriadau uchod, byddwn yn casglu eich enw, dyddiad geni a chyfeiriad. Rydym yn anfon y rhain at Experian fel y gallant gynnal y gwiriad.",
+          "paragraph_thirteen": "Pan fydd Experian wedi cwblhau’r gwiriad, maent yn anfon sgôr twyll atom, ynghyd â manylion unrhyw weithgaredd twyllodrus cysylltiedig."
+        },
+        "proving_identity_at_post_office": {
+          "header": "Profi eich hunaniaeth yn y Swyddfa Bost",
+          "paragraph_one": "Mae GOV.UK One Login yn rhoi’r dewis i chi brofi eich hunaniaeth mewn Swyddfa Bost. Mae’r llwybr hwn yn cynnwys 3 gwiriad hunaniaeth ar wahân.",
+          "sub_header_one": "Gwiriad twyll",
+          "paragraph_two": "Rydym yn defnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Experian i gynnal gwiriadau twyll ar-lein i:",
+          "list_one": {
+            "item_one": "chwilio am unrhyw arwyddion bod eich hunaniaeth wedi cael ei ddwyn neu ei gamddefnyddio",
+            "item_two": "gwirio a oes cofnod ohonoch yn bodoli dros amser"
+          },
+          "paragraph_three": {
+            "part_one": "Maent yn gwneud hynny fel rheolydd data annibynnol yn unol â’u",
+            "link": {
+              "link_text": "hysbysiad preifatrwydd",
+              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
+            }
+          },
+          "paragraph_four": "Rydym yn casglu eich enw, dyddiad geni a chyfeiriad ac yn eu hanfon i Experian fel y gallant gynnal y gwiriad.",
+          "paragraph_five": "Pan fydd Experian wedi cwblhau’r gwiriad, maent yn anfon sgôr twyll atom, ynghyd â manylion unrhyw weithgaredd twyllodrus cysylltiedig.",
+          "sub_header_two": "Gwiriad dogfennau dilys a gwiriad tebygrwydd",
+          "paragraph_six": "Mae angen i ni wirio:",
+          "list_two": {
+            "item_one": "bod eich dogfennau hunaniaeth yn rhai gwirioneddol",
+            "item_two": "mai chi yw’r un person ag sydd yn y lluniau dogfen hunaniaeth (a elwir hefyd yn wiriad ’tebygrwydd’)"
+          },
+          "paragraph_seven": "Mae’r gwiriadau hyn yn cael eu cynnal gan Swyddfa’r Post a’u his-gontractwr Yoti ar ein rhan. Mae Swyddfa’r Post yn gweithredu fel prosesydd data gyda Yoti fel is-brosesydd, sy’n golygu mai dim ond at ddiben o gyflawni ein cyfarwyddiadau y gallant brosesu’ch data personol.",
+          "paragraph_eight": "Rydym yn gofyn i chi pa ddogfen hunaniaeth yr hoffech ei defnyddio i brofi pwy ydych chi. Gallwch ddefnyddio unrhyw un o’r dogfennau hunaniaeth canlynol:",
+          "list_three": {
+            "item_one": "pasbort y DU",
+            "item_two": "pasbort o’r tu allan i’r DU",
+            "item_three": "Trwydded yrru cerdyn gyda llun y DU",
+            "item_four": "Trwyddedau preswylio biometrig y DU",
+            "item_five": "trwydded yrru cerdyn gyda llun yr Undeb Ewropeaidd (UE)",
+            "item_six": "Cerdyn hunaniaeth genedlaethol o wlad Ardal Economaidd Ewropeaidd (AEE)"
+          },
+          "paragraph_nine": "Rydym yn gofyn i chi:",
+          "list_four": {
+            "item_one": "am ddyddiad dod i ben a gwlad cyhoeddi eich dogfen hunaniaeth",
+            "item_two": "i gadarnhau bod y cyfeiriad a ddarparwyd gennych yn flaenorol yn cyfateb i’r cyfeiriad a ddangosir ar eich dogfen hunaniaeth, ar gyfer dogfennau sydd â chyfeiriad arnynt.",
+            "item_three": "dewis pa gangen Swyddfa’r Post yr hoffech fynychu"
+          },
+          "paragraph_ten": "Rydym yn anfon y wybodaeth hon ynghyd â’ch enw, cyfeiriad a dyddiad geni i Swyddfa’r Post cyn i chi fynd i gangen. Rydym hefyd yn anfon e-bost atoch gyda dolen i lawrlwytho llythyr cwsmer Dilysu Mewn Cangen Swyddfa’r Post. Bydd hyn yn cynnwys cod QR a chyfarwyddiadau o beth fydd angen i chi ei wneud nesaf. Bydd angen i chi agor y ddolen, rhoi eich cyfeiriad e-bost, a lawrlwytho ac argraffu’r llythyr a mynd ag ef gyda chi pan fyddwch yn mynd i Swyddfa’r Post, neu ei ddangos ar eich dyfais.",
+          "paragraph_eleven": "Pan fyddwch yn mynd i Swyddfa’r Post, bydd aelod o staff yn sganio’r cod QR ar eich llythyr ac yn gwirio’r ddogfen hunaniaeth sydd gennych gyda chi yn erbyn y manylion a ddarparwyd gennych.",
+          "paragraph_twelve": "Yna bydd Swyddfa’r Post ac Yoti yn gwirio nodweddion diogelwch eich dogfen hunaniaeth i sicrhau ei bod yn ddogfen ddilys.",
+          "list_five": {
+            "item_one": "Ar gyfer pob dogfen hunaniaeth, bydd Swyddfa’r Post yn tynnu llun o flaen a chefn y ddogfen i wirio nodweddion diogelwch y ddogfen, fel hologramau, ac i ddarllen gwybodaeth y ddogfen.",
+            "item_two": "Ar gyfer e-basbortau y DU, bydd Swyddfa’r Post hefyd yn defnyddio tabled i wirio nodweddion diogelwch eich dogfen ac i ddarllen gwybodaeth eich dogfen o’r sglodyn NFC."
+          },
+          "paragraph_thirteen": "Bydd Swyddfa’r Post hefyd yn tynnu llun o’ch wyneb, a byddant yn mesur patrymau unigryw eich wyneb ohono. Gelwir hyn yn ddata gwyneb biometrig. Bydd y data biometrig o’ch llun yn cael ei gymharu yn erbyn y data biometrig o’r llun ar eich dogfen hunaniaeth i wirio ai chi yw perchennog gwirioneddol y ddogfen hunaniaeth.",
+          "paragraph_fourteen": "Pan fydd Swyddfa’r Post a Yoti wedi cwblhau’r gwiriadau, maent yn anfon canlyniad y gwiriad a’ch gwybodaeth dogfen hunaniaeth atom.",
+          "paragraph_fifteen": "Yna rydym yn defnyddio’ch cyfeiriad e-bost i ddweud wrthych fod canlyniadau eich gwiriad ar gael. I weld eich canlyniad a’i rannu gyda’r gwasanaeth roeddech angen profi eich hunaniaeth ar ei gyfer, bydd angen i chi fewngofnodi i GOV.UK One Login a chael eich ailgyfeirio at wasanaeth y llywodraeth roeddech yn ei ddefnyddio."
         },
         "technical_information": {
           "header": "Gwybodaeth dechnegol",
@@ -1252,7 +1316,8 @@
               "link_text": "Hysbysiad preifatrwydd defnyddwyr Experian",
               "link_href": "https://www.experian.co.uk/legal/crain/"
             },
-            "item_five": "iProov, fel prosesydd data gyda Veriff ac Innovalor fel ei is-broseswyr, yn amodol ar gontract gyda ni, ar gyfer gwiriadau tebygrwydd biometreg, gwiriadau dogfennau gwirioneddol a gwiriadau bywiogrwydd"
+            "item_five": "iProov, fel prosesydd data gyda Veriff ac Innovalor fel ei is-broseswyr, yn amodol ar gontract gyda ni, ar gyfer gwiriadau tebygrwydd biometreg, gwiriadau dogfennau gwirioneddol a gwiriadau bywiogrwydd",
+            "item_six": "Swyddfa’r Post, fel prosesydd data gyda Yoti fel ei is-brosesydd, yn amodol ar gontract gyda ni, ar gyfer gwiriadau hunaniaeth bersonol"
           },
           "paragraph_ten": "Ym mhob achos rydym ond yn darparu’r isafswm o wybodaeth sydd ei angen i gyflawni’r gwiriadau.",
           "sub_header_three": "Rhannu eich gwybodaeth er mwyn diogelu rhag twyll",
@@ -1285,9 +1350,10 @@
           "paragraph_four": "Os ydych yn dewis dileu eich GOV.UK One Login, byddwn yn dileu eich cyfrif a’ch gwybodaeth adnabod profedig.",
           "paragraph_five": "Rydym yn dileu eich llun llonydd a gynhyrchir o’ch fideo hunlun, delweddau trwydded yrru a data biometrig y wyneb o systemau Iproov ar ôl 30 diwrnod.",
           "paragraph_six": "Byddwn yn cadw eich data adborth am 2 flynedd.",
-          "paragraph_seven": "Byddwn yn storio gwybodaeth am y camau rydych yn eu cymryd pan fyddwch yn defnyddio eich GOV.UK One Login mewn logiau system am 1 flwyddyn.",
-          "paragraph_eight": "Rydym hefyd yn cynnal llwybr archwilio diogel o holl ddigwyddiadau a gweithgareddau archwilio GOV.UK One Login ac rydym yn ei gadw am 7 mlynedd at ddibenion monitro twyll.",
-          "paragraph_nine": "Nid yw GDS yn storio nac yn cadw’r:",
+          "paragraph_seven": "Mae’r gwiriad hunaniaeth bersonol yn storio eich data am 11 diwrnod i roi digon o amser i chi fynd i Swyddfa’r Post i gwblhau eich gwiriad hunaniaeth.",
+          "paragraph_eight": "Byddwn yn storio gwybodaeth am y camau rydych yn eu cymryd pan fyddwch yn defnyddio eich GOV.UK One Login mewn logiau system am 1 flwyddyn.",
+          "paragraph_nine": "Rydym hefyd yn cynnal llwybr archwilio diogel o holl ddigwyddiadau a gweithgareddau archwilio GOV.UK One Login ac rydym yn ei gadw am 7 mlynedd at ddibenion monitro twyll.",
+          "paragraph_ten": "Nid yw GDS yn storio nac yn cadw’r:",
           "list_one": {
             "item_one": "cwestiynau KBV rydym yn yn eu cyrchu gan asiantaethau gwirio credyd neu eich atebion i’r cwestiynau hynny",
             "item_two": "fideo hunlun rydych yn ei gymryd fel rhan o brofi eich hunaniaeth drwy ddefnyddio’r ap Gwirio Hunaniaeth GOV.UK"
