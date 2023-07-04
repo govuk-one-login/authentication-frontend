@@ -71,6 +71,34 @@
         {% include 'contact-us/questions/_proving-identity-problem-questions.njk' %}
     {% endif %}
 
+    {% if (theme == 'id_face_to_face') and (subtheme == 'face_to_face_details') %}
+        {% include 'contact-us/questions/_proving-identity-face-to-face-problem-entering-details.njk' %}
+    {% endif %}
+
+    {% if (theme == 'id_face_to_face') and (subtheme == 'face_to_face_letter') %}
+        {% include 'contact-us/questions/_proving-identity-face-to-face-problem-letter.njk' %}
+    {% endif %}
+
+    {% if (theme == 'id_face_to_face') and (subtheme == 'face_to_face_post_office') %}
+        {% include 'contact-us/questions/_proving-identity-face-to-face-problem-at-post-office.njk' %}
+    {% endif %}
+
+    {% if (theme == 'id_face_to_face') and (subtheme == 'face_to_face_post_office_id_results') %}
+        {% include 'contact-us/questions/_proving-identity-face-to-face-problem-finding-result.njk' %}
+    {% endif %}
+
+    {% if (theme == 'id_face_to_face') and (subtheme == 'face_to_face_post_office_service') %}
+        {% include 'contact-us/questions/_proving-identity-face-to-face-problem-continuing.njk' %}
+    {% endif %}
+
+    {% if (theme == 'id_face_to_face') and (subtheme == 'face_to_face_technical_problem') %}
+        {% include 'contact-us/questions/_proving-identity-face-to-face-technical-problem.njk' %}
+    {% endif %}
+
+    {% if (theme == 'id_face_to_face') and (subtheme == 'face_to_face_something_else') %}
+        {% include 'contact-us/questions/_proving-identity-face-to-face-another-problem.njk' %}
+    {% endif %}
+
     {% if (theme == 'id_check_app') and (subtheme == 'linking_problem') %}
         {% include 'contact-us/questions/_id-check-app-linking-problem.njk' %}
     {% endif %}

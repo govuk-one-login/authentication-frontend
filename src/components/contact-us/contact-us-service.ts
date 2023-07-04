@@ -17,6 +17,9 @@ export function getZendeskIdentifierTag(theme: string): string {
   if (theme === ZENDESK_THEMES.ID_CHECK_APP) {
     return "sign_in_app";
   }
+  if (theme === ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
+    return "id_face_to_face";
+  }
   return "govuk_sign_in";
 }
 
@@ -195,7 +198,9 @@ export function contactUsService(
   function prefixThemeTags(themes: Themes) {
     const tagPrefix = "auth_";
     const tagArray = [];
-    tagArray.push(tagPrefix + themes.theme);
+    if (themes.theme !== ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
+      tagArray.push(tagPrefix + themes.theme);
+    }
     if (themes.subtheme) {
       tagArray.push(tagPrefix + themes.subtheme);
     }

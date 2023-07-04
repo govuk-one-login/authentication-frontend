@@ -12,9 +12,9 @@
     <input type="hidden" name="referer" value="{{referer}}"/>
     {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
 
-    {% include 'contact-us/questions/_what_happened.njk' %}
+    {% include 'contact-us/questions/_id-check-app-what-happened.njk' %}
 
-    {% include 'contact-us/questions/_service_trying_to_use.njk' %}
+    {% include 'contact-us/questions/_service-trying-to-use.njk' %}
 
     {{ govukWarningText({
         text:'pages.contactUsQuestions.personalInformation.paragraph1' | translateEnOnly,

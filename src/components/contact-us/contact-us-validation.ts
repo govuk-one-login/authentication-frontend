@@ -20,6 +20,9 @@ export function validateContactUsRequest(
         } else if (req.body.theme === "id_check_app") {
           errorMessage =
             "pages.contactUsFurtherInformation.idCheckApp.section1.errorMessage";
+        } else if (req.body.theme === "id_face_to_face") {
+          errorMessage =
+            "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.errorMessage";
         }
 
         return req.t(errorMessage, {

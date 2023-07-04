@@ -32,6 +32,15 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
         );
       }),
     body("issueDescription")
+      .if(body("theme").equals(ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE))
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          getErrorMessageForIssueDescription(req.body.theme, req.body.subtheme),
+          { value, lng: "en" }
+        );
+      }),
+    body("issueDescription")
       .optional()
       .isLength({ max: ZENDESK_FIELD_MAX_LENGTH })
       .withMessage((value, { req }) => {
@@ -162,6 +171,30 @@ export function getErrorMessageForIssueDescription(
   if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
     return "pages.contactUsQuestions.authenticatorApp.section1.errorMessage";
   }
+  if (theme === ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
+    return getErrorMessageForFaceToFaceIssueDescription(subtheme);
+  }
+}
+
+export function getErrorMessageForFaceToFaceIssueDescription(
+  subtheme: string
+): string | undefined {
+  const errorMessagesForFaceToFaceIssueDescription = {
+    [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS]:
+      "pages.contactUsQuestions.provingIdentityFaceToFaceDetails.whatHappened.errorMessage",
+    [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_LETTER]:
+      "pages.contactUsQuestions.provingIdentityFaceToFaceLetter.whatHappened.errorMessage",
+    [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_AT_POST_OFFICE]:
+      "pages.contactUsQuestions.provingIdentityFaceToFacePostOffice.whatHappened.errorMessage",
+    [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_FINDING_RESULT]:
+      "pages.contactUsQuestions.provingIdentityFaceToFaceIdResults.whatHappened.errorMessage",
+    [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_CONTINUING]:
+      "pages.contactUsQuestions.provingIdentityFaceToFaceService.whatHappened.errorMessage",
+    [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM]:
+      "pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.section1.errorMessage",
+  };
+
+  return errorMessagesForFaceToFaceIssueDescription[subtheme];
 }
 
 export function getErrorMessageForAccountCreationIssueDescription(
@@ -304,5 +337,15 @@ export function getErrorMessageForAdditionalDescription(
   }
   if (subtheme === ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
     return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.errorMessage";
+  }
+  if (
+    subtheme === ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM
+  ) {
+    return "pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.section2.errorMessage";
+  }
+  if (
+    subtheme === ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM
+  ) {
+    return "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.section2.errorMessage";
   }
 }

@@ -1,5 +1,5 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-    {{ 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.title' | translateEnOnly }}
+    {{ 'pages.contactUsQuestions.provingIdentityFaceToFaceDetails.header' | translateEnOnly }}
 </h1>
 
 <form action="/contact-us-questions" method="post" novalidate>
@@ -8,14 +8,17 @@
     <input type="hidden" name="theme" value="{{theme}}"/>
     <input type="hidden" name="subtheme" value="{{subtheme}}"/>
     <input type="hidden" name="backurl" value="{{backurl}}"/>
-    <input type="hidden" name="formType" value="idCheckAppTechnicalProblem"/>
+    <input type="hidden" name="formType" value="provingIdentityFaceToFace"/>
     <input type="hidden" name="referer" value="{{referer}}"/>
     {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
 
     {{ govukCharacterCount({
         label: {
-            text: 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.header' | translateEnOnly,
+            text: 'pages.contactUsQuestions.provingIdentityFaceToFaceDetails.whatHappened.label' | translateEnOnly,
             classes: "govuk-label--s"
+        },
+        hint: {
+            text: 'pages.contactUsQuestions.provingIdentityFaceToFaceDetails.whatHappened.hint' | translateEnOnly
         },
         id: "issueDescription",
         name: "issueDescription",
@@ -24,23 +27,6 @@
         errorMessage: {
             text: errors['issueDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
         } if (errors['issueDescription'])
-    }) }}
-
-    {{ govukCharacterCount({
-        label: {
-            text: 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.header' | translateEnOnly,
-            classes: "govuk-label--s"
-        },
-        hint: {
-            text: 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.paragraph1' | translateEnOnly
-        },
-        id: "additionalDescription",
-        name: "additionalDescription",
-        maxlength: zendeskFieldMaxLength,
-        value: additionalDescription,
-        errorMessage: {
-            text: errors['additionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
-        } if (errors['additionalDescription'])
     }) }}
 
     {% include 'contact-us/questions/_service-trying-to-use.njk' %}
