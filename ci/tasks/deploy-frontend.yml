@@ -59,7 +59,6 @@ run:
         -var "deployer_role_arn=${DEPLOYER_ROLE_ARN}" \
         -var "common_state_bucket=${STATE_BUCKET}" \
         -var "session_expiry=${SESSION_EXPIRY}" \
-        -var 'logging_endpoint_arns=["arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prod"]' \
         -var "zendesk_username=${ZENDESK_USERNAME}" \
         -var "zendesk_group_id_public=${ZENDESK_GROUP_ID_PUBLIC}" \
         -var "zendesk_api_token=${ZENDESK_API_TOKEN}" \
