@@ -89,6 +89,10 @@ locals {
         value = var.support_language_cy
       },
       {
+        name  = "SUPPORT_AUTH_ORCH_SPLIT"
+        value = var.support_auth_orch_split
+      },
+      {
         name  = "ZENDESK_API_TOKEN"
         value = var.zendesk_api_token
       },
