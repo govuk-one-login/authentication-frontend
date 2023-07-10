@@ -93,6 +93,14 @@ locals {
         value = var.support_auth_orch_split
       },
       {
+        name  = "ENCRYPTION_KEY_ID"
+        value = "alias/${var.environment}-authentication-encryption-key-alias"
+      },
+      {
+        name  = "ORCH_TO_AUTH_SIGNING_KEY"
+        value = var.orch_to_auth_signing_public_key
+      },
+      {
         name  = "ZENDESK_API_TOKEN"
         value = var.zendesk_api_token
       },
