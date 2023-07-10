@@ -1,23 +1,26 @@
 import { Request, Response } from "express";
 import {
-  SecurityCodeErrorType,
   pathWithQueryParam,
   SECURITY_CODE_ERROR,
+  SecurityCodeErrorType,
 } from "../common/constants";
 import { PATH_NAMES } from "../../app.constants";
 import {
   getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes,
   getCodeEnteredWrongBlockDurationInMinutes,
   getCodeRequestBlockDurationInMinutes,
+  getPasswordResetCodeEnteredWrongBlockDurationInMinutes,
 } from "../../config";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
   const isNotEmailCode =
     req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries &&
     req.query.actionType !==
-      SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries;
+      SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries &&
+    req.query.actionType !==
+      SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries;
 
-  let isChangeSecurityCodesForAccRecovery = false;
+  let showFifteenMinutesParagraph = false;
 
   if (isNotEmailCode) {
     req.session.user.wrongCodeEnteredLock = new Date(
@@ -29,17 +32,28 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
     req.query.actionType ===
     SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries
   ) {
-    isChangeSecurityCodesForAccRecovery = true;
+    showFifteenMinutesParagraph = true;
     req.session.user.wrongCodeEnteredAccountRecoveryLock = new Date(
       Date.now() +
         getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes() * 60000
     ).toUTCString();
   }
 
+  if (
+    req.query.actionType ===
+    SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries
+  ) {
+    showFifteenMinutesParagraph = true;
+    req.session.user.wrongCodeEnteredPasswordResetLock = new Date(
+      Date.now() +
+        getPasswordResetCodeEnteredWrongBlockDurationInMinutes() * 60000
+    ).toUTCString();
+  }
+
   return res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
-    isBlocked: isNotEmailCode || isChangeSecurityCodesForAccRecovery,
+    isBlocked: isNotEmailCode || showFifteenMinutesParagraph,
   });
 }
 
@@ -106,16 +120,12 @@ function getNewCodePath(actionType: SecurityCodeErrorType) {
     case SecurityCodeErrorType.EmailMaxCodesSent:
     case SecurityCodeErrorType.EmailBlocked:
       return PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
-    case SecurityCodeErrorType.EmailMaxRetries:
-      return pathWithQueryParam(
-        PATH_NAMES.RESEND_EMAIL_CODE,
-        "requestNewCode",
-        "true"
-      );
     case SecurityCodeErrorType.ChangeSecurityCodesEmailMaxCodesSent:
     case SecurityCodeErrorType.ChangeSecurityCodesEmailBlocked:
       return PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
+    case SecurityCodeErrorType.EmailMaxRetries:
     case SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries:
+    case SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries:
       return pathWithQueryParam(
         PATH_NAMES.RESEND_EMAIL_CODE,
         "requestNewCode",

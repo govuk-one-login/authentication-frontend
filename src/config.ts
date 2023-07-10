@@ -135,3 +135,9 @@ export function getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes(): numb
     15
   );
 }
+
+export function getPasswordResetCodeEnteredWrongBlockDurationInMinutes(): number {
+  return (
+    Number(process.env.PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES) || 15
+  );
+}
