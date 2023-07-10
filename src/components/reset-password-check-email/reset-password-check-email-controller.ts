@@ -46,8 +46,8 @@ export function resetPasswordCheckEmailGet(
     ) {
       const errorTemplate =
         result.data.code === ERROR_CODES.RESET_PASSWORD_LINK_MAX_RETRIES_REACHED
-          ? "reset-password-check-email/index-exceeded-request-count.njk"
-          : "reset-password-check-email/index-request-attempt-blocked.njk";
+          ? "security-code-error/index-too-many-requests.njk"
+          : "security-code-error/index-wait.njk";
 
       return res.render(errorTemplate);
     } else {
