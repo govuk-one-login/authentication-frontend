@@ -182,3 +182,9 @@ variable "basic_auth_bypass_cidr_blocks" {
   type        = list(string)
   description = "The list of CIDR blocks allowed to bypass basic auth (if enabled)"
 }
+
+variable "password_reset_code_entered_wrong_blocked_minutes" {
+  default     = 15
+  description = "The duration, in minutes, for which a user is blocked after entering the wrong password reset code multiple times"
+}
+
