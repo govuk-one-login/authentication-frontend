@@ -1198,7 +1198,7 @@
             }
           },
           "sub_header_three": "Public Task (UK GDPR Article (6)(1)(e))",
-          "paragraph_four": "At bob diben arall gan gynnwys gweinyddu eich GOV.UK One Login, profi eich hunaniaeth a monitro twyll, y sail gyfreithiol yw ei bod yn angenrheidiol ar gyfer cyflawni tasg a gynhaliwyd er budd y cyhoedd neu arfer ein swyddogaethau fel adran o’r llywodraeth.",
+          "paragraph_four": "At bob diben arall gan gynnwys gweinyddu eich GOV.UK One Login, profi eich hunaniaeth a’ch galluogi i ailddefnyddio’r hunaniaeth brofedig honno, a monitro twyll, y sail gyfreithiol yw ei bod yn angenrheidiol ar gyfer cyflawni tasg a gyflawnir er budd y cyhoedd neu arfer ein swyddogaethau fel adran o’r llywodraeth.",
           "sub_header_four": "Data categori arbennig",
           "paragraph_five": "Os ydych yn profi eich hunaniaeth gan ddefnyddio’r ap Gwirio Hunaniaeth GOV.UK, byddwch yn gwneud gwiriad tebygrwydd a fydd yn cynnwys prosesu data biometreg eich wyneb. O dan Gyfraith y DU, mae data biometrig yn cael ei ystyried yn ddata categori arbennig ac mae’n ofynnol i Swyddfa’r Cabinet gael sail gyfreithiol ychwanegol i’w brosesu. Mae Swyddfa’r Cabinet yn prosesu data biometrig ar y sail gyfreithiol bod y prosesu yn angenrheidiol am resymau o fudd sylweddol i’r cyhoedd. Mae Cyfraith y DU hefyd yn ei gwneud yn ofynnol i Swyddfa’r Cabinet fodloni cyflwr budd cyhoeddus sylweddol penodol o Ddeddf Diogelu Data’r DU 2018. Mae Swyddfa’r Cabinet yn dibynnu ar y 2 amod canlynol:",
           "list_three": {
@@ -1292,14 +1292,13 @@
         "how_long_we_keep_your_information": {
           "header": "Pa mor hir rydym yn cadw eich gwybodaeth",
           "paragraph_one": "Rydym yn storio eich gwybodaeth bersonol am ddim mwy o amser nag sy’n rhesymol angenrheidiol ac yn gyfreithiol gyfiawn.",
-          "paragraph_two": "Byddwn yn cadw eich GOV.UK One Login cyhyd ag y dymunwch ei ddefnyddio er y byddwn yn ei ddileu os na fyddwch yn ei ddefnyddio am 2 flynedd. ",
-          "paragraph_three": "Ar hyn o bryd rydym yn storio’ch gwybodaeth hunaniaeth profedig am 6 mis.",
-          "paragraph_four": "Os ydych yn dewis dileu eich GOV.UK One Login, byddwn yn dileu eich cyfrif a’ch gwybodaeth adnabod profedig.",
-          "paragraph_five": "Rydym yn dileu eich llun llonydd a gynhyrchir o’ch fideo hunlun, delweddau trwydded yrru a data biometrig y wyneb o systemau Iproov ar ôl 30 diwrnod.",
-          "paragraph_six": "Byddwn yn cadw eich data adborth am 2 flynedd.",
-          "paragraph_seven": "Byddwn yn storio gwybodaeth am y camau rydych yn eu cymryd pan fyddwch yn defnyddio eich GOV.UK One Login mewn logiau system am 1 flwyddyn.",
-          "paragraph_eight": "Rydym hefyd yn cynnal llwybr archwilio diogel o holl ddigwyddiadau a gweithgareddau archwilio GOV.UK One Login ac rydym yn ei gadw am 7 mlynedd at ddibenion monitro twyll.",
-          "paragraph_nine": "Nid yw GDS yn storio nac yn cadw’r:",
+          "paragraph_two": "Byddwn yn cadw eich GOV.UK One Login a’ch gwybodaeth hunaniaeth profedig cyhyd ag y dymunwch ei defnyddio, er y byddwn yn ei dileu os na fyddwch yn ei defnyddio am 2 flynedd.",
+          "paragraph_three": "Os ydych yn dewis dileu eich GOV.UK One Login, byddwn yn dileu eich cyfrif a’ch gwybodaeth adnabod profedig.",
+          "paragraph_four": "Rydym yn dileu eich llun llonydd a gynhyrchir o’ch fideo hunlun, delweddau trwydded yrru a data biometrig y wyneb o systemau Iproov ar ôl 30 diwrnod.",
+          "paragraph_five": "Byddwn yn cadw eich data adborth am 2 flynedd.",
+          "paragraph_six": "Byddwn yn storio gwybodaeth am y camau rydych yn eu cymryd pan fyddwch yn defnyddio eich GOV.UK One Login mewn logiau system am 1 flwyddyn.",
+          "paragraph_seven": "Rydym hefyd yn cynnal llwybr archwilio diogel o holl ddigwyddiadau a gweithgareddau archwilio GOV.UK One Login ac rydym yn ei gadw am 7 mlynedd at ddibenion monitro twyll.",
+          "paragraph_eight": "Nid yw GDS yn storio nac yn cadw’r:",
           "list_one": {
             "item_one": "cwestiynau KBV rydym yn yn eu cyrchu gan asiantaethau gwirio credyd neu eich atebion i’r cwestiynau hynny",
             "item_two": "fideo hunlun rydych yn ei gymryd fel rhan o brofi eich hunaniaeth drwy ddefnyddio’r ap Gwirio Hunaniaeth GOV.UK"
@@ -1406,7 +1405,7 @@
           "header": "Newidiadau i’r hysbysiad hwn",
           "paragraph_one": "Efallai y byddwn yn newid yr hysbysiad preifatrwydd hwn. Yn yr achos hynny, bydd dyddiad ’diweddaru olaf’ y ddogfen hon hefyd yn newid. Bydd unrhyw newidiadau i’r hysbysiad preifatrwydd hwn yn berthnasol i chi a’ch gwybodaeth ar unwaith.",
           "paragraph_two": "Os yw’r newidiadau hyn yn effeithio ar sut mae eich gwybodaeth bersonol yn cael ei phrosesu, bydd GDS yn rhoi gwybod i chi.",
-          "paragraph_three": "Diweddarwyd diwethaf: 15 Mehefin 2023"
+          "paragraph_three": "Diweddarwyd diwethaf: 14 Gorffennaf 2023"
         }
       }
     },

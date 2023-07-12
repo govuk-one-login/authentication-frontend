@@ -1198,7 +1198,7 @@
             }
           },
           "sub_header_three": "Public Task (UK GDPR Article (6)(1)(e))",
-          "paragraph_four": "For all other purposes including the administration of your GOV.UK One Login, proving your identity and fraud monitoring, the legal basis is that it is necessary for the performance of a task carried out in the public interest or the exercise of our functions as a government department.",
+          "paragraph_four": "For all other purposes including the administration of your GOV.UK One Login, proving your identity and enabling you to reuse that proven identity, and fraud monitoring, the legal basis is that it is necessary for the performance of a task carried out in the public interest or the exercise of our functions as a government department.",
           "sub_header_four": "Special category data",
           "paragraph_five": "If you prove your identity using the GOV.UK Identity Check app, you will do a likeness check which will involve processing your facial biometric data. Under UK Law, biometric data is classed as special category data and the Cabinet Office is required to have an additional legal basis to process it. The Cabinet Office processes biometric data on the legal basis that the processing is necessary for reasons of substantial public interest. UK Law also requires the Cabinet Office to meet a specific substantial public interest condition from the UK Data Protection Act 2018. The Cabinet Office relies on the following 2 conditions:",
           "list_three": {
@@ -1292,14 +1292,13 @@
         "how_long_we_keep_your_information": {
           "header": "How long we keep your information",
           "paragraph_one": "We store your personal information for no longer than is reasonably necessary and legally justifiable.",
-          "paragraph_two": "We will keep your GOV.UK One Login for as long as you wish to use it although we will delete it if you do not use it for 2 years. ",
-          "paragraph_three": "We currently store your proven identity information for 6 months.",
-          "paragraph_four": "If you choose to delete your GOV.UK One Login, we’ll delete your account and your proven identity information.",
-          "paragraph_five": "We delete your still photo generated from your selfie video, driving licence images and biometric facial data from Iproov’s systems after 30 days.",
-          "paragraph_six": "We will keep your feedback data for 2 years.",
-          "paragraph_seven": "We will store information about the actions you take when you use your GOV.UK One Login in system logs for 1 year.",
-          "paragraph_eight": "We also maintain a secure audit trail of all GOV.UK One Login audit events and activity which we retain for 7 years for fraud monitoring purposes.",
-          "paragraph_nine": "GDS does not store or retain the:",
+          "paragraph_two": "We will keep your GOV.UK One Login and your proven identity information for as long as you wish to use it although we will delete it if you do not use it for 2 years.",
+          "paragraph_three": "If you choose to delete your GOV.UK One Login, we’ll delete your account and your proven identity information.",
+          "paragraph_four": "We delete your still photo generated from your selfie video, driving licence images and biometric facial data from Iproov’s systems after 30 days.",
+          "paragraph_five": "We will keep your feedback data for 2 years.",
+          "paragraph_six": "We will store information about the actions you take when you use your GOV.UK One Login in system logs for 1 year.",
+          "paragraph_seven": "We also maintain a secure audit trail of all GOV.UK One Login audit events and activity which we retain for 7 years for fraud monitoring purposes.",
+          "paragraph_eight": "GDS does not store or retain the:",
           "list_one": {
             "item_one": "KBV questions we source from credit reference agencies or your answers to those questions",
             "item_two": "selfie video you take as part of proving your identity using the GOV.UK Identity Check app"
@@ -1406,7 +1405,7 @@
           "header": "Changes to this notice",
           "paragraph_one": "We may change this privacy notice. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy notice will apply to you and your information immediately.",
           "paragraph_two": "If these changes affect how your personal information is processed, GDS will let you know.",
-          "paragraph_three": "Last updated: 15 June 2023"
+          "paragraph_three": "Last updated: 14 July 2023"
         }
       }
     },
