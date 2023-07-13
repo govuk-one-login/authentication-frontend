@@ -112,6 +112,10 @@ locals {
         name  = "PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES"
         value = var.password_reset_code_entered_wrong_blocked_minutes
       },
+      {
+        name  = "ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES"
+        value = var.account_recovery_code_entered_wrong_blocked_minutes
+      },
     ]
 
     mountPoints = [
