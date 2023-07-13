@@ -188,3 +188,8 @@ variable "password_reset_code_entered_wrong_blocked_minutes" {
   description = "The duration, in minutes, for which a user is blocked after entering the wrong password reset code multiple times"
 }
 
+variable "account_recovery_code_entered_wrong_blocked_minutes" {
+  default     = "15"
+  description = "The duration, in minutes, for which a user is blocked after entering the wrong account recovery code multiple times"
+}
+
