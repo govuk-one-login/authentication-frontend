@@ -8,6 +8,17 @@ export type ExpressRouteFunc = (
   next?: NextFunction
 ) => void | Promise<void>;
 
+export interface RequestGet {
+  (name: "set-cookie"): string[];
+  (name: string): string;
+}
+
+export interface ResponseRedirect {
+  (url: string): void;
+  (status: number, url: string): void;
+  (url: string, status: number): void;
+}
+
 export type ValidationChainFunc = (
   | ValidationChain
   | ((

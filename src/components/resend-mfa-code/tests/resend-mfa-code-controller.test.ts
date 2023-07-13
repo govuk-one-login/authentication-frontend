@@ -50,7 +50,7 @@ describe("resend mfa controller", () => {
         sendMfaCode: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as MfaServiceInterface;
 
       res.locals.sessionId = "123456-djjad";
       req.session.user = {

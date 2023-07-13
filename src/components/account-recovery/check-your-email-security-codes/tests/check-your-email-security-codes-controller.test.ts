@@ -53,7 +53,7 @@ describe("check your email change security codes controller", () => {
         verifyCode: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as VerifyCodeInterface;
 
       req.body.code = "123456";
       req.session.id = "123456-djjad";
@@ -73,7 +73,7 @@ describe("check your email change security codes controller", () => {
           success: false,
           data: { code: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE },
         }),
-      };
+      } as unknown as VerifyCodeInterface;
 
       req.body.code = "678988";
       req.session.id = "123456-djjad";

@@ -50,7 +50,7 @@ describe("share-info controller", () => {
         updateProfile: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as UpdateProfileServiceInterface;
 
       req.body.consentValue = true;
       res.locals.sessionId = "s-123456-djjad";
@@ -72,7 +72,7 @@ describe("share-info controller", () => {
           success: false,
           data: { code: "1000", message: "error" },
         }),
-      };
+      } as unknown as UpdateProfileServiceInterface;
 
       req.body.consentValue = true;
       res.locals.sessionId = "s-123456-djjad";

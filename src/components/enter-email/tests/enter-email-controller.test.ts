@@ -65,7 +65,7 @@ describe("enter email controller", () => {
           success: true,
           data: { doesUserExist: true },
         }),
-      };
+      } as unknown as EnterEmailServiceInterface;
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "dsad.dds";
@@ -83,7 +83,7 @@ describe("enter email controller", () => {
           success: true,
           data: { doesUserExist: false },
         }),
-      };
+      } as unknown as EnterEmailServiceInterface;
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "sadl990asdald";
@@ -136,7 +136,7 @@ describe("enter email controller", () => {
             code: ERROR_CODES.ACCOUNT_LOCKED,
           },
         }),
-      };
+      } as unknown as EnterEmailServiceInterface;
 
       req.body.email = "test@test.com";
       res.locals.sessionId = "sadl990asdald";
@@ -156,7 +156,7 @@ describe("enter email controller", () => {
           success: true,
           data: { doesUserExist: true },
         }),
-      };
+      } as unknown as EnterEmailServiceInterface;
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "dsad.dds";
@@ -176,13 +176,13 @@ describe("enter email controller", () => {
           success: true,
           data: { userExists: false },
         }),
-      };
+      } as unknown as EnterEmailServiceInterface;
 
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as SendNotificationServiceInterface;
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "sadl990asdald";

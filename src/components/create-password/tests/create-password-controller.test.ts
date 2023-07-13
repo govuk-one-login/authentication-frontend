@@ -70,7 +70,7 @@ describe("create-password controller", () => {
             },
             success: true,
           }),
-        };
+        } as unknown as CreatePasswordServiceInterface;
 
         req.body.password = "password1";
         req.session.user.email = "joe.bloggs@test.com";

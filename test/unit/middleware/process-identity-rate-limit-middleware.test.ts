@@ -14,7 +14,7 @@ describe("process identity rate limit middleware", () => {
       session: { user: {} },
     });
     const res = mockResponse();
-    const nextFunction: NextFunction = sinon.fake();
+    const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;
 
     processIdentityRateLimitMiddleware(req, res, nextFunction);
 
@@ -32,7 +32,7 @@ describe("process identity rate limit middleware", () => {
       },
     });
     const res = mockResponse();
-    const nextFunction: NextFunction = sinon.fake();
+    const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;
 
     processIdentityRateLimitMiddleware(req, res, nextFunction);
 
@@ -51,7 +51,7 @@ describe("process identity rate limit middleware", () => {
       },
     });
     const res = mockResponse();
-    const nextFunction: NextFunction = sinon.fake();
+    const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;
 
     processIdentityRateLimitMiddleware(req, res, nextFunction);
 

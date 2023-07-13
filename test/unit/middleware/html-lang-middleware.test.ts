@@ -14,7 +14,7 @@ describe("HTML-lang middleware", () => {
   beforeEach(() => {
     req = mockRequest({ i18n: { language: "en" } });
     res = mockResponse();
-    next = sinon.fake();
+    next = sinon.fake() as unknown as NextFunction;
   });
 
   afterEach(() => {

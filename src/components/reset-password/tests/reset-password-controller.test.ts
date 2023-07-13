@@ -101,7 +101,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
         it("should redirect to /enter-code when password updated and phone number verified", async () => {
           const fakeResetService: ResetPasswordServiceInterface = {
             updatePassword: sinon.fake.returns({ success: true }),
-          };
+          } as unknown as ResetPasswordServiceInterface;
           const fakeLoginService: EnterPasswordServiceInterface = {
             loginUser: sinon.fake.returns({
               success: true,
@@ -115,11 +115,11 @@ describe("reset password controller (in 6 digit code flow)", () => {
                 passwordChangeRequired: params.passwordChangeRequired,
               },
             }),
-          };
+          } as unknown as EnterPasswordServiceInterface;
           fakeLoginService.loginUser;
           const fakeMfAService: MfaServiceInterface = {
             sendMfaCode: sinon.fake.returns({ success: true }),
-          };
+          } as unknown as MfaServiceInterface;
 
           req.session.user = {
             email: "joe.bloggs@test.com",
@@ -150,7 +150,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
         it("should redirect to /get-security-codes when password updated and mfa method not verified", async () => {
           const fakeResetService: ResetPasswordServiceInterface = {
             updatePassword: sinon.fake.returns({ success: true }),
-          };
+          } as unknown as ResetPasswordServiceInterface;
           const fakeLoginService: EnterPasswordServiceInterface = {
             loginUser: sinon.fake.returns({
               success: true,
@@ -163,11 +163,11 @@ describe("reset password controller (in 6 digit code flow)", () => {
                 passwordChangeRequired: params.passwordChangeRequired,
               },
             }),
-          };
+          } as unknown as EnterPasswordServiceInterface;
           fakeLoginService.loginUser;
           const fakeMfAService: MfaServiceInterface = {
             sendMfaCode: sinon.fake.returns({ success: true }),
-          };
+          } as unknown as MfaServiceInterface;
 
           req.session.user = {
             email: "joe.bloggs@test.com",
@@ -194,7 +194,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
     it("should request 2fa when password updated even for non 2fa service", async () => {
       const fakeResetService: ResetPasswordServiceInterface = {
         updatePassword: sinon.fake.returns({ success: true }),
-      };
+      } as unknown as ResetPasswordServiceInterface;
       const fakeLoginService: EnterPasswordServiceInterface = {
         loginUser: sinon.fake.returns({
           success: true,
@@ -208,11 +208,11 @@ describe("reset password controller (in 6 digit code flow)", () => {
             passwordChangeRequired: params.passwordChangeRequired,
           },
         }),
-      };
+      } as unknown as EnterPasswordServiceInterface;
       fakeLoginService.loginUser;
       const fakeMfAService: MfaServiceInterface = {
         sendMfaCode: sinon.fake.returns({ success: true }),
-      };
+      } as unknown as MfaServiceInterface;
 
       req.session.user = {
         email: "joe.bloggs@test.com",

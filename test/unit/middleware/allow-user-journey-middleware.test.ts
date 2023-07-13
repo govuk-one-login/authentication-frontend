@@ -13,7 +13,7 @@ describe("Allow user journey middleware", () => {
       session: { user: { journey: { nextPath: PATH_NAMES.ENTER_MFA } } },
     });
     const res = mockResponse();
-    const nextFunction: NextFunction = sinon.fake();
+    const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;
 
     allowUserJourneyMiddleware(req, res, nextFunction);
 
@@ -27,7 +27,7 @@ describe("Allow user journey middleware", () => {
       session: { user: { journey: { nextPath: PATH_NAMES.ENTER_MFA } } },
     });
     const res = mockResponse();
-    const nextFunction: NextFunction = sinon.fake();
+    const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;
 
     allowUserJourneyMiddleware(req, res, nextFunction);
 
@@ -46,7 +46,7 @@ describe("Allow user journey middleware", () => {
       log: { warn: sinon.fake() },
     });
     const res = mockResponse();
-    const nextFunction: NextFunction = sinon.fake();
+    const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;
 
     allowUserJourneyMiddleware(req, res, nextFunction);
 
