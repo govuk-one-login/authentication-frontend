@@ -1948,7 +1948,7 @@
         "validationError": {
           "required": "Rhowch y cod diogelwch a ddangosir yn eich ap dilysydd",
           "invalidCode": "Nid yw’r cod diogelwch rydych wedi’i roi yn gywir, ceisiwch ei roi i mewn eto neu aros i’ch ap dilysydd roi cod newydd i chi",
-          "length": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig"
+          "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig"
         }
       },
       "continueButtonText": "Parhau",

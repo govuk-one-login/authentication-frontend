@@ -113,6 +113,25 @@ describe("Integration::setup-authenticator-app", () => {
       .expect(400, done);
   });
 
+  it("should return validation error when code has non-digit characters", (done) => {
+    request(app)
+      .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "asdfgh",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#code-error").text()).to.contains(
+          "Enter the security code using only 6 digits"
+        );
+        expect($("#secret-key").text()).to.not.be.empty;
+      })
+      .expect(400, done);
+  });
+
   it("should redirect to /account-created page when successful validation of code", (done) => {
     nock(baseApi)
       .post(API_ENDPOINTS.VERIFY_MFA_CODE)
