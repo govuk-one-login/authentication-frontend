@@ -196,4 +196,5 @@ variable "account_recovery_code_entered_wrong_blocked_minutes" {
 variable "orch_to_auth_signing_public_key" {
   description = "Public key counterpart for KMS key created in Orchestration/OIDC API"
   type        = string
+  default     = ""
 }
