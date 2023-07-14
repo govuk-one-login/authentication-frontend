@@ -51,7 +51,7 @@ describe("resend email controller", () => {
         sendNotification: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as SendNotificationServiceInterface;
 
       res.locals.sessionId = "123456-djjad";
       req.session.user = {

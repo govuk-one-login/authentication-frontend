@@ -89,6 +89,18 @@ export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
   };
 }
 
+export function getAwsRegion(): string {
+  return process.env.AWS_REGION || "eu-west-2";
+}
+
+export function getKmsKeyId(): string {
+  return process.env.ENCRYPTION_KEY_ID;
+}
+
+export function getOrchToAuthSigningPublicKey(): string {
+  return process.env.ORCH_TO_AUTH_SIGNING_KEY;
+}
+
 export function getAccountManagementUrl(): string {
   return process.env.ACCOUNT_MANAGEMENT_URL || "http://localhost:6001";
 }

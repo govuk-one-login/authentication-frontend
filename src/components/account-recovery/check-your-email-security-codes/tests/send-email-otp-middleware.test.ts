@@ -27,7 +27,7 @@ describe("sendEmailOTPMiddleware", () => {
         persistentSessionId: "test-persistent-session",
       },
     });
-    next = sinon.fake();
+    next = sinon.fake() as unknown as NextFunction;
   });
 
   afterEach(() => {
@@ -39,7 +39,7 @@ describe("sendEmailOTPMiddleware", () => {
       sendNotification: sinon.fake.returns({
         success: true,
       }),
-    };
+    } as unknown as SendNotificationServiceInterface;
     await sendEmailOtp(fakeNotificationService)(
       req as Request,
       res as Response,
@@ -59,7 +59,7 @@ describe("sendEmailOTPMiddleware", () => {
           code: UNKNOWN_ERROR_CODE,
         },
       }),
-    };
+    } as unknown as SendNotificationServiceInterface;
 
     await expect(
       sendEmailOtp(fakeNotificationService)(

@@ -61,7 +61,7 @@ describe("updated terms conditions controller", () => {
           success: true,
           sessionState: "UPDATED_TERMS_AND_CONDITIONS_ACCEPTED",
         }),
-      };
+      } as unknown as UpdateProfileServiceInterface;
 
       req.path = PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS;
       req.body.termsAndConditionsResult = "accept";
@@ -84,7 +84,7 @@ describe("updated terms conditions controller", () => {
         updateProfile: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as UpdateProfileServiceInterface;
 
       req.path = PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS;
       req.session.client.consentEnabled = true;

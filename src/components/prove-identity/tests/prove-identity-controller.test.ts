@@ -38,7 +38,7 @@ describe("prove identity controller", () => {
           success: true,
           data: { redirectUri: "https://test-ipv-authorisation-uri" },
         }),
-      };
+      } as unknown as ProveIdentityServiceInterface;
 
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
@@ -59,7 +59,7 @@ describe("prove identity controller", () => {
           success: false,
           data: { code: "1222", message: "Error occurred" },
         }),
-      };
+      } as unknown as ProveIdentityServiceInterface;
 
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";

@@ -71,7 +71,7 @@ describe("enter phone number controller", () => {
         sendNotification: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as SendNotificationServiceInterface;
 
       res.locals.sessionId = "123456-djjad";
       req.body.phoneNumber = "07738393990";
@@ -92,7 +92,7 @@ describe("enter phone number controller", () => {
         sendNotification: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as SendNotificationServiceInterface;
 
       res.locals.sessionId = "123456-djjad";
       req.body.phoneNumber = "+33645453322";

@@ -14,6 +14,7 @@ import {
   isAppJourney,
 } from "../contact-us-controller";
 import { SUPPORT_TYPE, ZENDESK_THEMES } from "../../../app.constants";
+import { RequestGet, ResponseRedirect } from "../../../types";
 
 describe("contact us controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -24,8 +25,17 @@ describe("contact us controller", () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
 
-    req = { body: {}, query: {}, headers: {}, get: sandbox.fake() };
-    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
+    req = {
+      body: {},
+      query: {},
+      headers: {},
+      get: sandbox.fake() as unknown as RequestGet,
+    };
+    res = {
+      render: sandbox.fake(),
+      redirect: sandbox.fake() as unknown as ResponseRedirect,
+      locals: {},
+    };
   });
 
   afterEach(() => {

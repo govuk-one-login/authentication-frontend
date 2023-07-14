@@ -12,6 +12,7 @@ import {
   ZENDESK_FIELD_MAX_LENGTH,
 } from "../../../app.constants";
 import { ContactUsServiceInterface } from "../types";
+import { RequestGet, ResponseRedirect } from "../../../types";
 
 describe("contact us questions controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -27,11 +28,15 @@ describe("contact us questions controller", () => {
     req = {
       body: {},
       query: {},
-      get: sandbox.fake(),
+      get: sandbox.fake() as unknown as RequestGet,
       headers: {},
       t: sandbox.fake(),
     };
-    res = { render: sandbox.fake(), redirect: sandbox.fake(), locals: {} };
+    res = {
+      render: sandbox.fake(),
+      redirect: sandbox.fake() as unknown as ResponseRedirect,
+      locals: {},
+    };
   });
 
   afterEach(() => {

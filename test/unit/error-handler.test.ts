@@ -14,7 +14,7 @@ describe("Error handlers", () => {
   beforeEach(() => {
     req = mockRequest();
     res = mockResponse();
-    next = sinon.fake();
+    next = sinon.fake() as unknown as NextFunction;
   });
 
   afterEach(() => {

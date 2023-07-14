@@ -54,7 +54,7 @@ describe("authorize controller", () => {
           },
           success: true,
         }),
-      };
+      } as unknown as AuthorizeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),
@@ -83,7 +83,7 @@ describe("authorize controller", () => {
           },
           success: true,
         }),
-      };
+      } as unknown as AuthorizeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),
@@ -91,7 +91,7 @@ describe("authorize controller", () => {
           value: JSON.stringify("cookieValue"),
           expiry: "cookieExpires",
         }),
-      };
+      } as unknown as CookieConsentServiceInterface;
 
       await authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
         req as Request,
@@ -120,7 +120,7 @@ describe("authorize controller", () => {
           },
           success: true,
         }),
-      };
+      } as unknown as AuthorizeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),
@@ -153,7 +153,7 @@ describe("authorize controller", () => {
           },
           success: true,
         }),
-      };
+      } as unknown as AuthorizeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),
@@ -191,7 +191,7 @@ describe("authorize controller", () => {
           },
           success: true,
         }),
-      };
+      } as unknown as AuthorizeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),
@@ -225,7 +225,7 @@ describe("authorize controller", () => {
           },
           success: true,
         }),
-      };
+      } as unknown as AuthorizeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),
@@ -259,7 +259,7 @@ describe("authorize controller", () => {
           },
           success: true,
         }),
-      };
+      } as unknown as AuthorizeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),
@@ -297,7 +297,7 @@ describe("authorize controller", () => {
           },
           success: true,
         }),
-      };
+      } as unknown as AuthorizeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),
@@ -334,7 +334,7 @@ describe("authorize controller", () => {
           },
           success: true,
         }),
-      };
+      } as unknown as AuthorizeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),
@@ -342,7 +342,7 @@ describe("authorize controller", () => {
           value: JSON.stringify("cookieValue"),
           expiry: "cookieExpires",
         }),
-      };
+      } as unknown as CookieConsentServiceInterface;
 
       await authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
         req as Request,
@@ -374,7 +374,7 @@ describe("authorize controller", () => {
           },
           success: true,
         }),
-      };
+      } as unknown as AuthorizeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),
@@ -382,7 +382,7 @@ describe("authorize controller", () => {
           value: JSON.stringify("cookieValue"),
           expiry: "cookieExpires",
         }),
-      };
+      } as unknown as CookieConsentServiceInterface;
 
       await authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
         req as Request,
@@ -401,7 +401,7 @@ describe("authorize controller", () => {
           },
           success: false,
         }),
-      };
+      } as unknown as AuthorizeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),
@@ -428,7 +428,7 @@ describe("authorize controller", () => {
           },
           success: false,
         }),
-      };
+      } as unknown as AuthorizeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),

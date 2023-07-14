@@ -58,7 +58,7 @@ describe("setup-authenticator-app controller", () => {
 
       const fakeMfAService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({ success: true }),
-      };
+      } as unknown as VerifyMfaCodeInterface;
 
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake(),
@@ -97,7 +97,7 @@ describe("setup-authenticator-app controller", () => {
 
       const fakeMfAService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({ success: true }),
-      };
+      } as unknown as VerifyMfaCodeInterface;
 
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake(),
@@ -135,7 +135,7 @@ describe("setup-authenticator-app controller", () => {
           success: false,
           data: { code: ERROR_CODES.AUTH_APP_INVALID_CODE },
         }),
-      };
+      } as unknown as VerifyMfaCodeInterface;
 
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake(),
@@ -162,7 +162,7 @@ describe("setup-authenticator-app controller", () => {
 
       const fakeMfAService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({ success: true }),
-      };
+      } as unknown as VerifyMfaCodeInterface;
 
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake(),
@@ -192,7 +192,7 @@ describe("setup-authenticator-app controller", () => {
             message: "error",
           },
         }),
-      };
+      } as unknown as VerifyMfaCodeInterface;
 
       await expect(
         setupAuthenticatorAppPost(fakeMfAService)(

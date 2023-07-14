@@ -31,7 +31,7 @@ const fakeAccountRecoveryPermissionCheckService = (
         accountRecoveryPermitted: desiredAccountRecoveryPermittedResponse,
       },
     }),
-  } as AccountRecoveryInterface;
+  } as unknown as AccountRecoveryInterface;
 };
 
 const TEST_PHONE_NUMBER = "07582930495";
@@ -139,7 +139,7 @@ describe("enter mfa controller", () => {
         verifyCode: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as VerifyCodeInterface;
 
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
@@ -158,7 +158,7 @@ describe("enter mfa controller", () => {
           success: false,
           data: { code: ERROR_CODES.INVALID_MFA_CODE, message: "" },
         }),
-      };
+      } as unknown as VerifyCodeInterface;
 
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
@@ -179,7 +179,7 @@ describe("enter mfa controller", () => {
           },
           success: false,
         }),
-      };
+      } as unknown as VerifyCodeInterface;
 
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";

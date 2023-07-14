@@ -52,7 +52,7 @@ describe("auth code controller", () => {
           data: { location: AUTH_CODE_DUMMY_URL },
           success: true,
         }),
-      };
+      } as unknown as AuthCodeServiceInterface;
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake.returns({
           cookie_consent: COOKIE_CONSENT.NOT_ENGAGED,
@@ -76,7 +76,7 @@ describe("auth code controller", () => {
           data: { location: AUTH_CODE_DUMMY_URL },
           success: true,
         }),
-      };
+      } as unknown as AuthCodeServiceInterface;
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake.returns({
           cookie_consent: COOKIE_CONSENT.ACCEPT,
@@ -100,7 +100,7 @@ describe("auth code controller", () => {
           data: { location: AUTH_CODE_DUMMY_URL },
           success: true,
         }),
-      };
+      } as unknown as AuthCodeServiceInterface;
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake.returns({
           cookie_consent: COOKIE_CONSENT.REJECT,
@@ -129,7 +129,7 @@ describe("auth code controller", () => {
           data: { location: AUTH_CODE_DUMMY_URL },
           success: true,
         }),
-      };
+      } as unknown as AuthCodeServiceInterface;
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),
         createConsentCookieValue: sinon.fake(),
@@ -158,7 +158,7 @@ describe("auth code controller", () => {
           data: { location: AUTH_CODE_DUMMY_URL },
           success: true,
         }),
-      };
+      } as unknown as AuthCodeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake(),
@@ -185,7 +185,7 @@ describe("auth code controller", () => {
           data: { location: AUTH_CODE_DUMMY_URL },
           success: true,
         }),
-      };
+      } as unknown as AuthCodeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
         getCookieConsent: sinon.fake.returns({
