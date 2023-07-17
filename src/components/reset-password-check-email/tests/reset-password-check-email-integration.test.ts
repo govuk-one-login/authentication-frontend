@@ -73,7 +73,7 @@ describe("Integration::reset password check email ", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($(".govuk-heading-l").text()).to.contains(
-          "You tried to reset your password too many times"
+          "You asked to resend the security code too many times"
         );
       })
       .expect(200, done);
@@ -90,7 +90,7 @@ describe("Integration::reset password check email ", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($(".govuk-heading-l").text()).to.contains(
-          "You cannot reset your password at the moment"
+          "You cannot get a new security code at the moment"
         );
       })
       .expect(200, done);
