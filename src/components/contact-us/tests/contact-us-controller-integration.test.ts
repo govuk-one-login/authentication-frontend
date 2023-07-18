@@ -279,6 +279,29 @@ describe("Integration:: contact us - public user", () => {
       .expect(400, done);
   });
 
+  describe("when a user had a problem taking a photo of your identity document using the GOV.UK ID Check app", () => {
+    it("should return validation error when user has not selected which identity document they were using", (done) => {
+      request(app)
+        .post("/contact-us-questions?radio_buttons=true")
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          theme: "id_check_app",
+          subtheme: "taking_photo_of_id_problem",
+          moreDetailDescription: "There was a problem",
+          contact: "false",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#identityDocumentUsed-error").text()).to.contains(
+            "Select which identity document you were using"
+          );
+        })
+        .expect(400, done);
+    });
+  });
+
   it("should redirect to success page when form submitted", (done) => {
     nock(zendeskApiUrl).post("/tickets.json").once().reply(200);
 

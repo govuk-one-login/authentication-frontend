@@ -8,9 +8,42 @@
     <input type="hidden" name="theme" value="{{theme}}"/>
     <input type="hidden" name="subtheme" value="{{subtheme}}"/>
     <input type="hidden" name="backurl" value="{{backurl}}"/>
-    <input type="hidden" name="formType" value="idCheckApp"/>
+    <input type="hidden" name="formType" value="idCheckAppPhotoProblem"/>
     <input type="hidden" name="referer" value="{{referer}}"/>
     {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
+
+    {% set items = [
+        {
+            value: 'passport',
+            checked: identityDocumentUsed === 'passport',
+            text: 'pages.contactUsQuestions.takingPhotoOfIdProblem.identityDocument.types.passport' | translateEnOnly
+        },
+        {
+            value: 'biometricResidencePermit',
+            checked: identityDocumentUsed === 'biometricResidencePermit',
+            text: 'pages.contactUsQuestions.takingPhotoOfIdProblem.identityDocument.types.biometricResidencePermit' | translateEnOnly
+        },
+        {
+            value: 'drivingLicence',
+            checked: identityDocumentUsed === 'drivingLicence',
+            text: 'pages.contactUsQuestions.takingPhotoOfIdProblem.identityDocument.types.drivingLicence' | translateEnOnly
+        }
+    ] %}
+
+    {{ govukRadios({
+        name: "identityDocumentUsed",
+        fieldset: {
+            legend: {
+                text: 'pages.contactUsQuestions.takingPhotoOfIdProblem.identityDocument.header' | translateEnOnly,
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--s"
+            }
+        },
+        items: items,
+        errorMessage: {
+            text: errors['identityDocumentUsed'].text
+        } if (errors['identityDocumentUsed'])
+    }) }}
 
     {% include 'contact-us/questions/_what_happened.njk' %}
 
