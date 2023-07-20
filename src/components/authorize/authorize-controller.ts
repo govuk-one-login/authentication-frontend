@@ -17,7 +17,13 @@ import { cookieConsentService } from "../common/cookie-consent/cookie-consent-se
 import { sanitize } from "../../utils/strings";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { authorizeService } from "./authorize-service";
-import { AuthorizeServiceInterface } from "./types";
+import {
+  AuthorizeServiceInterface,
+  KmsDecryptionServiceInterface,
+  JwtServiceInterface,
+} from "./types";
+import { KmsDecryptionService } from "./kms-decryption-service";
+import { JwtService } from "./jwt-service";
 
 function createConsentCookie(
   res: Response,
@@ -32,11 +38,26 @@ function createConsentCookie(
 
 export function authorizeGet(
   authService: AuthorizeServiceInterface = authorizeService(),
-  cookieService: CookieConsentServiceInterface = cookieConsentService()
+  cookieService: CookieConsentServiceInterface = cookieConsentService(),
+  kmsService: KmsDecryptionServiceInterface = new KmsDecryptionService(),
+  jwtService: JwtServiceInterface = new JwtService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const loginPrompt = sanitize(req.query.prompt as string);
+
+    if (req.query.request !== undefined) {
+      const encryptedAuthRequestJWE = req.query.request as string;
+      const authRequestJweDecryptedAsJwt = await kmsService.decrypt(
+        encryptedAuthRequestJWE
+      );
+
+      const claims = await jwtService.getPayloadWithSigCheck(
+        authRequestJweDecryptedAsJwt
+      );
+
+      jwtService.validateClaims(claims);
+    }
 
     const startAuthResponse = await authService.start(
       sessionId,

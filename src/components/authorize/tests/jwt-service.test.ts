@@ -4,7 +4,9 @@ import { JwtService } from "../jwt-service";
 import {
   JwtPayloadParseError,
   JwtSignatureVerificationError,
+  ClaimsError,
 } from "../../../utils/error";
+import { AuthorizeRequestPayload } from "../types";
 
 const validJwt =
   "eyJhbGciOiJFUzI1NiJ9.eyJjbGllbnQtbmFtZSI6ImRpLWF1dGgtc3R1Yi1yZWx5aW5nLXBhcnR5LXNhbmRwaXQifQ.FFNDcj3znW5JPillhEIgCvWFCinlX0PMdvfVxgDArYueiVH6VDvlhaZyS70ocm9eOXBlB8pe449vpJrcKllBBg";
@@ -25,7 +27,7 @@ describe("JWT service", () => {
   describe("verify", () => {
     describe("success", () => {
       it("should return true when signature is valid", async () => {
-        const result = await jwtService.verify(validJwt);
+        const result = await jwtService.signatureCheck(validJwt);
 
         expect(result).to.be.true;
       });
@@ -33,7 +35,7 @@ describe("JWT service", () => {
 
     describe("failure", () => {
       it("should return false when signature is incorrect", async () => {
-        const result = await jwtService.verify(incorrectJwtSignature);
+        const result = await jwtService.signatureCheck(incorrectJwtSignature);
 
         expect(result).to.be.false;
       });
@@ -42,7 +44,7 @@ describe("JWT service", () => {
         jwtService = new JwtService(testPublicKey);
 
         try {
-          await jwtService.verify(invalidJwtSignature);
+          await jwtService.signatureCheck(invalidJwtSignature);
           assert.fail("Expected error to be thrown");
         } catch (error) {
           expect(error).to.be.an.instanceOf(JwtSignatureVerificationError);
@@ -57,7 +59,7 @@ describe("JWT service", () => {
         jwtService = new JwtService(undefined);
 
         try {
-          await jwtService.verify(validJwt);
+          await jwtService.signatureCheck(validJwt);
           assert.fail("Expected error to be thrown");
         } catch (error) {
           expect(error).to.be.an.instanceOf(JwtSignatureVerificationError);
@@ -72,7 +74,7 @@ describe("JWT service", () => {
         jwtService = new JwtService("test-key");
 
         try {
-          await jwtService.verify(validJwt);
+          await jwtService.signatureCheck(validJwt);
           assert.fail("Expected error to be thrown");
         } catch (error) {
           expect(error).to.be.an.instanceOf(JwtSignatureVerificationError);
@@ -85,10 +87,10 @@ describe("JWT service", () => {
     });
   });
 
-  describe("getPayload", () => {
+  describe("getPayloadWithSigCheck", () => {
     describe("success", () => {
       it("should return payload from valid JWT", async () => {
-        const result = jwtService.getPayload(validJwt);
+        const result = await jwtService.getPayloadWithSigCheck(validJwt);
         expect(result).to.deep.equal({
           "client-name": "di-auth-stub-relying-party-sandpit",
         });
@@ -97,7 +99,7 @@ describe("JWT service", () => {
     describe("failure", () => {
       it("should throw error when passed invalid JWT", async () => {
         try {
-          jwtService.getPayload("a");
+          await jwtService.getPayloadWithSigCheck("a");
           assert.fail("Expected error to be thrown");
         } catch (error) {
           expect(error).to.be.an.instanceOf(JwtPayloadParseError);
@@ -106,13 +108,84 @@ describe("JWT service", () => {
       });
       it("should throw error when passed invalid JWT", async () => {
         try {
-          jwtService.getPayload("a.b.c");
+          await jwtService.getPayloadWithSigCheck("a.b.c");
           assert.fail("Expected error to be thrown");
         } catch (error) {
-          expect(error).to.be.an.instanceOf(SyntaxError);
-          expect(error.message).to.equal("Unexpected end of JSON input");
+          expect(error).to.be.an.instanceOf(JwtSignatureVerificationError);
+          expect(error.message).to.equal("Failed to verify signature");
         }
       });
     });
   });
+
+  describe("validateClaims", () => {
+    let claims: AuthorizeRequestPayload;
+    beforeEach(() => {
+      claims = createmockclaims();
+    });
+
+    it("Should return claims if correctly supplied", () => {
+      expect(jwtService.validateClaims(claims)).to.be.deep.equal(claims);
+    });
+
+    it("Should throw ClaimsError if missing claim", () => {
+      Object.keys(claims).forEach((claim) => {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { claim, ...payloadWithoutIss } = claims as any;
+          jwtService.validateClaims(payloadWithoutIss);
+        } catch (error) {
+          expect(error).to.be.an.instanceOf(ClaimsError);
+          expect(error.message).to.equal(`${claim} claim missing`);
+        }
+      });
+    });
+
+    it("Should throw ClaimsError if Token expired", () => {
+      const now: number = Math.floor(new Date().getTime() / 1000);
+      claims.exp = now - 1000;
+      try {
+        jwtService.validateClaims(claims);
+        assert.fail("Expected error to be thrown");
+      } catch (error) {
+        expect(error).to.be.an.instanceOf(ClaimsError);
+        expect(error.message).to.equal("Token expired (exp)");
+      }
+    });
+
+    it("Should throw ClaimsError if Token before nbf timestamp", () => {
+      const now: number = Math.floor(new Date().getTime() / 1000);
+      claims.nbf = now + 1000;
+      try {
+        jwtService.validateClaims(claims);
+        assert.fail("Expected error to be thrown");
+      } catch (error) {
+        expect(error).to.be.an.instanceOf(ClaimsError);
+        expect(error.message).to.equal("Token not yet valid (nbf)");
+      }
+    });
+  });
+
+  function createmockclaims(): AuthorizeRequestPayload {
+    const timestamp = Math.floor(new Date().getTime() / 1000);
+    return {
+      confidence: "Cl.Cm",
+      iss: "UNKNOWN",
+      consent_required: false,
+      client_id: "UNKNOWN",
+      govuk_signin_journey_id: "QOFzoB3o-9gGplMgdT1dJfH4vaI",
+      aud: "UNKNOWN",
+      service_type: "MANDATORY",
+      nbf: timestamp,
+      cookie_consent_shared: true,
+      scope: "openid email phone",
+      state: "WLUNPYv0RPdVjhBsG4QMHYYMhGaOc8X-t83Y1XsVh1w",
+      redirect_uri: "UNKNOWN",
+      exp: timestamp + 1000,
+      iat: timestamp,
+      client_name: "di-auth-stub-relying-party-sandpit",
+      is_one_login_service: false,
+      jti: "fvvMWAladDtl35O_xyBTRLwwojA",
+    };
+  }
 });

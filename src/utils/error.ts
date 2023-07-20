@@ -51,6 +51,13 @@ export class JwtPayloadParseError extends Error {
   }
 }
 
+export class ClaimsError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ClaimsError";
+  }
+}
+
 export class ErrorWithLevel extends Error {
   level: string;
   constructor(message: string, level: string) {

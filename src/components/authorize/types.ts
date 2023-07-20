@@ -41,10 +41,27 @@ export interface KmsDecryptionServiceInterface {
 }
 
 export interface JwtServiceInterface {
-  verify(jwt: string): Promise<boolean>;
-  getPayload(jwt: string): AuthorizeRequestPayload;
+  signatureCheck(jwt: string): Promise<boolean>;
+  getPayloadWithSigCheck(jwt: string): Promise<AuthorizeRequestPayload>;
+  validateClaims(claims: AuthorizeRequestPayload): AuthorizeRequestPayload;
 }
 
 export interface AuthorizeRequestPayload {
-  "client-name": string;
+  iss: string;
+  aud: string;
+  exp: number;
+  iat: number;
+  nbf: number;
+  jti: string;
+  client_name: string;
+  cookie_consent_shared: boolean;
+  consent_required: boolean;
+  is_one_login_service: boolean;
+  service_type: string;
+  govuk_signin_journey_id: string;
+  confidence: string;
+  state: string;
+  client_id: string;
+  scope: string;
+  redirect_uri: string;
 }
