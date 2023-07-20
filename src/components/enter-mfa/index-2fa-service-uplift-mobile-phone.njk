@@ -51,7 +51,7 @@
                 </a>
                 {{'pages.enterMfa.details.text 2' | translate}}
             </p>
-            {% if supportAccountRecovery %}
+            {% if supportAccountRecovery === true %}
                 <p class="govuk-body">
                     {{ 'pages.enterMfa.details.changeGetSecurityCodesText' | translate }}
                     <a href={{ checkEmailLink }} class="govuk-link"
