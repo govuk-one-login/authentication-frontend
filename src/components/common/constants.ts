@@ -18,6 +18,7 @@ export enum SecurityCodeErrorType {
   ChangeSecurityCodesEmailMaxCodesSent = "changeSecurityCodesEmailMaxCodesSent",
   ChangeSecurityCodesEmailBlocked = "changeSecurityCodesEmailBlocked",
   ChangeSecurityCodesEmailMaxRetries = "changeSecurityCodesEmailMaxRetries",
+  InvalidPasswordResetCodeMaxRetries = "invalidPasswordResetCodeMaxRetries",
 }
 
 export const ERROR_CODES = {
@@ -100,7 +101,7 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
     pathWithQueryParam(
       PATH_NAMES["SECURITY_CODE_INVALID"],
       SECURITY_CODE_ERROR,
-      SecurityCodeErrorType.EmailMaxRetries
+      SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries
     ),
   [ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_WAIT"],

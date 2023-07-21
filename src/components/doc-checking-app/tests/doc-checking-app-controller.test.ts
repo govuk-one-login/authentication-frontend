@@ -40,7 +40,7 @@ describe("doc checking app controller", () => {
             redirectUri: "https://test-doc-checking-authorisation-uri.com",
           },
         }),
-      };
+      } as unknown as DocCheckingAppInterface;
 
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";
@@ -61,7 +61,7 @@ describe("doc checking app controller", () => {
           success: false,
           data: { code: "1222", message: "Error occurred" },
         }),
-      };
+      } as unknown as DocCheckingAppInterface;
 
       res.locals.sessionId = "s-123456-djjad";
       res.locals.clientSessionId = "c-123456-djjad";

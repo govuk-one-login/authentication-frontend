@@ -38,7 +38,7 @@ describe("uplift journey controller", () => {
         sendMfaCode: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as MfaServiceInterface;
 
       res.locals.sessionId = "123456-djjad";
       req.session.user = {
@@ -57,7 +57,7 @@ describe("uplift journey controller", () => {
         sendMfaCode: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as MfaServiceInterface;
 
       req.query._ga = "123123.21321313.2388839";
       res.locals.sessionId = "123456-djjad";

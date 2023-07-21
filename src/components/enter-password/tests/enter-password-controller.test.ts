@@ -60,13 +60,13 @@ describe("enter password controller", () => {
           },
           success: true,
         }),
-      };
+      } as unknown as EnterPasswordServiceInterface;
 
       const fakeMfaService: MfaServiceInterface = {
         sendMfaCode: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as MfaServiceInterface;
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
@@ -97,7 +97,7 @@ describe("enter password controller", () => {
             mfaMethodType: "SMS",
           },
         }),
-      };
+      } as unknown as EnterPasswordServiceInterface;
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
@@ -126,7 +126,7 @@ describe("enter password controller", () => {
             mfaMethodType: "SMS",
           },
         }),
-      };
+      } as unknown as EnterPasswordServiceInterface;
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
@@ -156,7 +156,7 @@ describe("enter password controller", () => {
           },
           success: true,
         }),
-      };
+      } as unknown as EnterPasswordServiceInterface;
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
@@ -191,13 +191,13 @@ describe("enter password controller", () => {
           },
           success: true,
         }),
-      };
+      } as unknown as EnterPasswordServiceInterface;
 
       const fakeMfaService: MfaServiceInterface = {
         sendMfaCode: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as MfaServiceInterface;
 
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
@@ -259,7 +259,7 @@ describe("enter password controller", () => {
         userExists: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as EnterEmailServiceInterface;
 
       res.locals.sessionId = SESSION_ID;
       res.locals.clientSessionId = CLIENT_SESSION_ID;
@@ -284,7 +284,7 @@ describe("enter password controller", () => {
             code: ERROR_CODES.ACCOUNT_LOCKED,
           },
         }),
-      };
+      } as unknown as EnterEmailServiceInterface;
 
       res.locals.sessionId = SESSION_ID;
       res.locals.clientSessionId = CLIENT_SESSION_ID;

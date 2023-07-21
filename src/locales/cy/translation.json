@@ -130,6 +130,18 @@
         },
         "govUKHomepageButtonHref": "https://www.gov.uk/"
       }
+    },
+    "proveIdentityCallbackSessionExpiryError": {
+      "title": "Mae’n ddrwg gennym, mae problem",
+      "header": "Mae’n ddrwg gennym, mae problem",
+      "content": {
+        "paragraph": "Ni allwn eich dychwelyd i’r gwasanaeth ar hyn o bryd.",
+        "section1": {
+          "header": "Beth allwch chi ei wneud",
+          "paragraph1": "Ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio eich peiriant chwilio neu dewch o hyd iddo o hafan GOV.UK.",
+          "paragraph2": "Ni fydd angen i chi brofi eich hunaniaeth eto."
+        }
+      }
     }
   },
   "pages": {
@@ -1250,7 +1262,7 @@
             }
           },
           "sub_header_three": "Public Task (UK GDPR Article (6)(1)(e))",
-          "paragraph_four": "At bob diben arall gan gynnwys gweinyddu eich GOV.UK One Login, profi eich hunaniaeth a monitro twyll, y sail gyfreithiol yw ei bod yn angenrheidiol ar gyfer cyflawni tasg a gynhaliwyd er budd y cyhoedd neu arfer ein swyddogaethau fel adran o’r llywodraeth.",
+          "paragraph_four": "At bob diben arall gan gynnwys gweinyddu eich GOV.UK One Login, profi eich hunaniaeth a’ch galluogi i ailddefnyddio’r hunaniaeth brofedig honno, a monitro twyll, y sail gyfreithiol yw ei bod yn angenrheidiol ar gyfer cyflawni tasg a gyflawnir er budd y cyhoedd neu arfer ein swyddogaethau fel adran o’r llywodraeth.",
           "sub_header_four": "Data categori arbennig",
           "paragraph_five": "Os ydych yn profi eich hunaniaeth gan ddefnyddio’r ap Gwirio Hunaniaeth GOV.UK, byddwch yn gwneud gwiriad tebygrwydd a fydd yn cynnwys prosesu data biometreg eich wyneb. O dan Gyfraith y DU, mae data biometrig yn cael ei ystyried yn ddata categori arbennig ac mae’n ofynnol i Swyddfa’r Cabinet gael sail gyfreithiol ychwanegol i’w brosesu. Mae Swyddfa’r Cabinet yn prosesu data biometrig ar y sail gyfreithiol bod y prosesu yn angenrheidiol am resymau o fudd sylweddol i’r cyhoedd. Mae Cyfraith y DU hefyd yn ei gwneud yn ofynnol i Swyddfa’r Cabinet fodloni cyflwr budd cyhoeddus sylweddol penodol o Ddeddf Diogelu Data’r DU 2018. Mae Swyddfa’r Cabinet yn dibynnu ar y 2 amod canlynol:",
           "list_three": {
@@ -1460,7 +1472,7 @@
           "header": "Newidiadau i’r hysbysiad hwn",
           "paragraph_one": "Efallai y byddwn yn newid yr hysbysiad preifatrwydd hwn. Yn yr achos hynny, bydd dyddiad ’diweddaru olaf’ y ddogfen hon hefyd yn newid. Bydd unrhyw newidiadau i’r hysbysiad preifatrwydd hwn yn berthnasol i chi a’ch gwybodaeth ar unwaith.",
           "paragraph_two": "Os yw’r newidiadau hyn yn effeithio ar sut mae eich gwybodaeth bersonol yn cael ei phrosesu, bydd GDS yn rhoi gwybod i chi.",
-          "paragraph_three": "Diweddarwyd diwethaf: 15 Mehefin 2023"
+          "paragraph_three": "Diweddarwyd diwethaf: 14 Gorffennaf 2023"
         }
       }
     },
@@ -2003,7 +2015,7 @@
         "validationError": {
           "required": "Rhowch y cod diogelwch a ddangosir yn eich ap dilysydd",
           "invalidCode": "Nid yw’r cod diogelwch rydych wedi’i roi yn gywir, ceisiwch ei roi i mewn eto neu aros i’ch ap dilysydd roi cod newydd i chi",
-          "length": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig"
+          "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig"
         }
       },
       "continueButtonText": "Parhau",

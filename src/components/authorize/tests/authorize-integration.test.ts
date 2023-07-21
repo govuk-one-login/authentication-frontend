@@ -7,7 +7,6 @@ import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
 import { AuthorizeServiceInterface, StartAuthResponse } from "../types";
 import { createApiResponse } from "../../../utils/http";
 import { AxiosResponse } from "axios";
-const authorizeService = require("../authorize-service");
 
 describe("Integration:: authorize", () => {
   let app: any;
@@ -15,6 +14,9 @@ describe("Integration:: authorize", () => {
   before(async () => {
     process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
     decache("../../../app");
+    decache("../authorize-service");
+    const authorizeService = require("../authorize-service");
+
     sinon
       .stub(authorizeService, "authorizeService")
       .callsFake((): AuthorizeServiceInterface => {
@@ -59,7 +61,7 @@ describe("Integration:: authorize", () => {
     app = undefined;
   });
 
-  it.only("should redirect to /sign-in-or-create", (done) => {
+  it("should redirect to /sign-in-or-create", (done) => {
     request(app)
       .get(PATH_NAMES.AUTHORIZE)
       .expect("Location", PATH_NAMES.SIGN_IN_OR_CREATE)

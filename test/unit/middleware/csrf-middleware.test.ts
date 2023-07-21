@@ -9,7 +9,7 @@ describe("CSRF middleware", () => {
     const csrfTokenStub = sinon.fake();
     const req: any = { csrfToken: csrfTokenStub };
     const res: any = { locals: {} };
-    const nextFunction: NextFunction = sinon.fake();
+    const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;
 
     csrfMiddleware(req, res, nextFunction);
 

@@ -69,7 +69,7 @@ describe("account not found controller", () => {
         sendNotification: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as SendNotificationServiceInterface;
     });
 
     it("should redirect to /check-your-email when no account exists", async () => {
@@ -87,7 +87,7 @@ describe("account not found controller", () => {
         sendNotification: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as SendNotificationServiceInterface;
       req.body.optionSelected = "sign-in-to-a-service";
 
       await accountNotFoundPost(fakeService)(req, res);

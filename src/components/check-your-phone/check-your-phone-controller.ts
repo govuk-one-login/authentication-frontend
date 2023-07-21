@@ -25,23 +25,16 @@ import { BadRequestError } from "../../utils/error";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";
+const RESEND_CODE_LINK = pathWithQueryParam(
+  PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+  "isResendCodeRequest",
+  "true"
+);
 
 export function checkYourPhoneGet(req: Request, res: Response): void {
-  const resendCodeLink = pathWithQueryParam(
-    PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
-    "isResendCodeRequest",
-    "true"
-  );
-
-  if (req.session.user.isAccountCreationJourney) {
-    return res.render(TEMPLATE_NAME, {
-      phoneNumber: req.session.user.redactedPhoneNumber,
-      resendCodeLink,
-    });
-  }
   return res.render(TEMPLATE_NAME, {
     phoneNumber: req.session.user.redactedPhoneNumber,
-    resendCodeLink,
+    resendCodeLink: RESEND_CODE_LINK,
   });
 }
 
@@ -76,7 +69,9 @@ export const checkYourPhonePost = (
           "code",
           req.t("pages.checkYourPhone.code.validationError.invalidCode")
         );
-        return renderBadRequest(res, req, TEMPLATE_NAME, error);
+        return renderBadRequest(res, req, TEMPLATE_NAME, error, {
+          resendCodeLink: RESEND_CODE_LINK,
+        });
       }
 
       const path = getErrorPathByCode(result.data.code);

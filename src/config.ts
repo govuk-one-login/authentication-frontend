@@ -89,6 +89,18 @@ export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
   };
 }
 
+export function getAwsRegion(): string {
+  return process.env.AWS_REGION || "eu-west-2";
+}
+
+export function getKmsKeyId(): string {
+  return process.env.ENCRYPTION_KEY_ID;
+}
+
+export function getOrchToAuthSigningPublicKey(): string {
+  return process.env.ORCH_TO_AUTH_SIGNING_KEY;
+}
+
 export function getAccountManagementUrl(): string {
   return process.env.ACCOUNT_MANAGEMENT_URL || "http://localhost:6001";
 }
@@ -133,5 +145,11 @@ export function getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes(): numb
   return (
     Number(process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES) ||
     15
+  );
+}
+
+export function getPasswordResetCodeEnteredWrongBlockDurationInMinutes(): number {
+  return (
+    Number(process.env.PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES) || 15
   );
 }

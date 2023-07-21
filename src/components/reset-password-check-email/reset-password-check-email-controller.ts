@@ -32,6 +32,22 @@ export function resetPasswordCheckEmailGet(
       );
     }
 
+    if (
+      req.session.user.wrongCodeEnteredPasswordResetLock &&
+      new Date().getTime() <
+        new Date(req.session.user.wrongCodeEnteredPasswordResetLock).getTime()
+    ) {
+      const newCodeLink = req.query?.isResendCodeRequest
+        ? "/security-code-check-time-limit?isResendCodeRequest=true"
+        : "/security-code-check-time-limit";
+      return res.render(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        {
+          newCodeLink,
+        }
+      );
+    }
+
     if (!requestCode || result.success) {
       return res.render(TEMPLATE_NAME, {
         email,
@@ -46,8 +62,8 @@ export function resetPasswordCheckEmailGet(
     ) {
       const errorTemplate =
         result.data.code === ERROR_CODES.RESET_PASSWORD_LINK_MAX_RETRIES_REACHED
-          ? "reset-password-check-email/index-exceeded-request-count.njk"
-          : "reset-password-check-email/index-request-attempt-blocked.njk";
+          ? "security-code-error/index-too-many-requests.njk"
+          : "security-code-error/index-wait.njk";
 
       return res.render(errorTemplate);
     } else {

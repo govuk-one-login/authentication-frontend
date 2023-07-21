@@ -9,6 +9,7 @@ image_resource:
 params:
   DEPLOYER_ROLE_ARN: ((deployer-role-arn-non-prod))
   STATE_BUCKET: digital-identity-dev-tfstate
+  STATE_LOCKING_TABLE: digital-identity-dev-tfstate-locking
   DEPLOY_ENVIRONMENT: build
   GTM_ID: ((build-gtm-id))
   SESSION_EXPIRY: ((build-session-expiry))
@@ -47,19 +48,25 @@ run:
         NORMALISED_BASIC_AUTH_PASSWORD=""
       fi
 
+      if [[ "${DEPLOY_ENVIRONMENT}" == "build" ]]; then
+        ENABLE_STATE_LOCKING=true
+      else
+        ENABLE_STATE_LOCKING=false
+      fi
+
       cd "frontend-src/ci/terraform/"
       terraform init -input=false \
         -backend-config "role_arn=${DEPLOYER_ROLE_ARN}" \
         -backend-config "bucket=${STATE_BUCKET}" \
         -backend-config "key=frontend-${DEPLOY_ENVIRONMENT}-terraform.tfstate" \
         -backend-config "encrypt=true" \
-        -backend-config "region=eu-west-2"
+        -backend-config "region=eu-west-2" \
+        -backend-config "dynamodb_table=${STATE_LOCKING_TABLE}"
 
       terraform apply -auto-approve \
         -var "deployer_role_arn=${DEPLOYER_ROLE_ARN}" \
         -var "common_state_bucket=${STATE_BUCKET}" \
         -var "session_expiry=${SESSION_EXPIRY}" \
-        -var 'logging_endpoint_arns=["arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prod"]' \
         -var "zendesk_username=${ZENDESK_USERNAME}" \
         -var "zendesk_group_id_public=${ZENDESK_GROUP_ID_PUBLIC}" \
         -var "zendesk_api_token=${ZENDESK_API_TOKEN}" \
@@ -77,5 +84,6 @@ run:
         -var "incoming_traffic_cidr_blocks=${INCOMING_TRAFFIC_CIDR_BLOCKS}" \
         -var "basic_auth_bypass_cidr_blocks=${BASIC_AUTH_BYPASS_CIDR_BLOCKS}" \
         -var-file ${DEPLOY_ENVIRONMENT}.tfvars \
+        -lock="${ENABLE_STATE_LOCKING}"
 
       terraform output --json > ../../../terraform-outputs/${DEPLOY_ENVIRONMENT}-terraform-outputs.json

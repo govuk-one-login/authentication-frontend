@@ -17,6 +17,40 @@ export class ApiError extends Error {
   }
 }
 
+export class DecryptionError extends Error {
+  cause: Error | undefined;
+
+  constructor(message: string, cause?: Error) {
+    super(message);
+    this.name = "DecryptionError";
+    this.cause = cause;
+  }
+}
+
+export class JwtSignatureVerificationError extends Error {
+  cause: Error | undefined;
+
+  constructor(message: string, cause?: Error) {
+    super(message);
+    this.name = "JwtSignatureVerificationError";
+    this.cause = cause;
+  }
+}
+
+export class InvalidBase64Error extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "InvalidBase64Error";
+  }
+}
+
+export class JwtPayloadParseError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "JwtPayloadParseError";
+  }
+}
+
 export class ErrorWithLevel extends Error {
   level: string;
   constructor(message: string, level: string) {

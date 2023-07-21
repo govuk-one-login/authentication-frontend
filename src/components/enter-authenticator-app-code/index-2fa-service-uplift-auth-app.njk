@@ -54,7 +54,7 @@
 
     </form>
 
-    {% if isAccountRecoveryPermitted %}
+    {% if isAccountRecoveryPermitted === true %}
         {% set detailsHTML %}
             <p class="govuk-body">
                 {{'pages.enterAuthenticatorAppCode.details.text1' | translate}}

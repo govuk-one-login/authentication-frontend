@@ -45,7 +45,7 @@ describe("reset password check email controller", () => {
         resetPasswordRequest: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as ResetPasswordCheckEmailServiceInterface;
 
       req.session.user = {
         email: "joe.bloggs@test.com",
@@ -68,7 +68,7 @@ describe("reset password check email controller", () => {
         verifyCode: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as VerifyCodeInterface;
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
@@ -90,7 +90,7 @@ describe("reset password check email controller", () => {
             code: ERROR_CODES.RESET_PASSWORD_INVALID_CODE,
           },
         }),
-      };
+      } as unknown as VerifyCodeInterface;
       req.session.user = {
         email: "joe.bloggs@test.com",
       };

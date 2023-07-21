@@ -31,14 +31,14 @@ function createConsentCookie(
 }
 
 export function authorizeGet(
-  service: AuthorizeServiceInterface = authorizeService(),
+  authService: AuthorizeServiceInterface = authorizeService(),
   cookieService: CookieConsentServiceInterface = cookieConsentService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const loginPrompt = sanitize(req.query.prompt as string);
 
-    const startAuthResponse = await service.start(
+    const startAuthResponse = await authService.start(
       sessionId,
       clientSessionId,
       req.ip,
@@ -60,6 +60,8 @@ export function authorizeGet(
       throw startError;
     }
 
+    req.session.client.prompt = loginPrompt;
+
     req.session.client.serviceType = startAuthResponse.data.client.serviceType;
     req.session.client.name = startAuthResponse.data.client.clientName;
     req.session.client.scopes = startAuthResponse.data.client.scopes;
@@ -67,7 +69,6 @@ export function authorizeGet(
       startAuthResponse.data.client.cookieConsentShared;
     req.session.client.consentEnabled =
       startAuthResponse.data.user.consentRequired;
-    req.session.client.prompt = loginPrompt;
     req.session.client.redirectUri = startAuthResponse.data.client.redirectUri;
     req.session.client.state = startAuthResponse.data.client.state;
     req.session.client.isOneLoginService =

@@ -53,7 +53,7 @@ describe("check your phone controller", () => {
           sessionState: "PHONE_NUMBER_CODE_VERIFIED",
           success: true,
         }),
-      };
+      } as unknown as VerifyMfaCodeInterface;
 
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake(),
@@ -88,7 +88,7 @@ describe("check your phone controller", () => {
           sessionState: "PHONE_NUMBER_CODE_VERIFIED",
           success: true,
         }),
-      };
+      } as unknown as VerifyMfaCodeInterface;
 
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake(),
@@ -130,7 +130,7 @@ describe("check your phone controller", () => {
             message: "",
           },
         }),
-      };
+      } as unknown as VerifyMfaCodeInterface;
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake(),
       };
@@ -157,7 +157,7 @@ describe("check your phone controller", () => {
             message: "",
           },
         }),
-      };
+      } as unknown as VerifyMfaCodeInterface;
 
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake(),

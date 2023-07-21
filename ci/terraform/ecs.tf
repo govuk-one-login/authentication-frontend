@@ -89,6 +89,18 @@ locals {
         value = var.support_language_cy
       },
       {
+        name  = "SUPPORT_AUTH_ORCH_SPLIT"
+        value = var.support_auth_orch_split
+      },
+      {
+        name  = "ENCRYPTION_KEY_ID"
+        value = "alias/${var.environment}-authentication-encryption-key-alias"
+      },
+      {
+        name  = "ORCH_TO_AUTH_SIGNING_KEY"
+        value = var.orch_to_auth_signing_public_key
+      },
+      {
         name  = "ZENDESK_API_TOKEN"
         value = var.zendesk_api_token
       },
@@ -103,6 +115,14 @@ locals {
       {
         name  = "SERVICE_DOMAIN"
         value = local.service_domain
+      },
+      {
+        name  = "PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES"
+        value = var.password_reset_code_entered_wrong_blocked_minutes
+      },
+      {
+        name  = "ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES"
+        value = var.account_recovery_code_entered_wrong_blocked_minutes
       },
     ]
 

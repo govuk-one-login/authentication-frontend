@@ -247,6 +247,8 @@ var cookies = function (trackingId, analyticsCookieDomain) {
         "password reset",
         "end"
       ),
+      "/check-email-change-security-codes": generateSessionJourney("change security codes", "start"),
+      "/change-codes-confirmed": generateSessionJourney("change security codes", "end"),
     };
 
     return JOURNEY_DATA_LAYER_PATHS[url];

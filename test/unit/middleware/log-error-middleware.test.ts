@@ -17,7 +17,7 @@ describe("logErrorMiddleware", () => {
       log: { error: sinon.fake(), info: sinon.fake() },
     });
     res = mockResponse();
-    next = sinon.fake();
+    next = sinon.fake() as unknown as NextFunction;
   });
 
   afterEach(() => {

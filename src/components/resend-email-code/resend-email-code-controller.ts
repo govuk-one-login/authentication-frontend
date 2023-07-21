@@ -13,9 +13,14 @@ import xss from "xss";
 
 export function resendEmailCodeGet(req: Request, res: Response): void {
   if (
-    req.session.user.wrongCodeEnteredAccountRecoveryLock &&
-    new Date().getTime() <
-      new Date(req.session.user.wrongCodeEnteredAccountRecoveryLock).getTime()
+    (req.session.user.wrongCodeEnteredAccountRecoveryLock &&
+      new Date().getTime() <
+        new Date(
+          req.session.user.wrongCodeEnteredAccountRecoveryLock
+        ).getTime()) ||
+    (req.session.user.wrongCodeEnteredPasswordResetLock &&
+      new Date().getTime() <
+        new Date(req.session.user.wrongCodeEnteredPasswordResetLock).getTime())
   ) {
     const newCodeLink = req.query?.isResendCodeRequest
       ? "/security-code-check-time-limit?isResendCodeRequest=true"

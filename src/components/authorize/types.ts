@@ -35,3 +35,16 @@ export interface AuthorizeServiceInterface {
     persistentSessionId: string
   ) => Promise<ApiResponseResult<StartAuthResponse>>;
 }
+
+export interface KmsDecryptionServiceInterface {
+  decrypt(serializedJwe: string): Promise<string>;
+}
+
+export interface JwtServiceInterface {
+  verify(jwt: string): Promise<boolean>;
+  getPayload(jwt: string): AuthorizeRequestPayload;
+}
+
+export interface AuthorizeRequestPayload {
+  "client-name": string;
+}

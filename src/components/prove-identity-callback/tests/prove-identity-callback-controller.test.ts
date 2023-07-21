@@ -56,7 +56,7 @@ describe("prove identity callback controller", () => {
             status: IdentityProcessingStatus.COMPLETED,
           },
         }),
-      };
+      } as unknown as ProveIdentityCallbackServiceInterface;
       await proveIdentityCallbackGet(fakeProveIdentityService)(
         req as Request,
         res as Response
@@ -73,7 +73,7 @@ describe("prove identity callback controller", () => {
             status: IdentityProcessingStatus.PROCESSING,
           },
         }),
-      };
+      } as unknown as ProveIdentityCallbackServiceInterface;
 
       await proveIdentityCallbackGet(fakeProveIdentityService)(
         req as Request,
@@ -93,7 +93,7 @@ describe("prove identity callback controller", () => {
             status: IdentityProcessingStatus.ERROR,
           },
         }),
-      };
+      } as unknown as ProveIdentityCallbackServiceInterface;
 
       await proveIdentityCallbackGet(fakeProveIdentityService)(
         req as Request,

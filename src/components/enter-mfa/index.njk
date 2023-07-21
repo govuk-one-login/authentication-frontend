@@ -49,12 +49,13 @@
       <a href="{{'pages.enterMfa.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterMfa.details.sendCodeLinkText'| translate}}</a>
       {{'pages.enterMfa.details.text 2' | translate}}
     </p>
-    <p class="govuk-body">
-      {% if supportAccountRecovery %}
-        {{'pages.enterMfa.details.changeGetSecurityCodesText' | translate}}
-        <a href={{checkEmailLink}} class="govuk-link" rel="noreferrer noopener">{{'pages.enterMfa.details.changeGetSecurityCodesLinkText'| translate}}</a>.
-      {% endif %}
-    </p>
+    {% if supportAccountRecovery === true %}
+        <p class="govuk-body">
+            {{ 'pages.enterMfa.details.changeGetSecurityCodesText' | translate }}
+            <a href={{ checkEmailLink }} class="govuk-link"
+               rel="noreferrer noopener">{{ 'pages.enterMfa.details.changeGetSecurityCodesLinkText'| translate }}</a>.
+        </p>
+    {% endif %}
     {% endset %}
 
     {{ govukButton({

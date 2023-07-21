@@ -172,6 +172,25 @@ describe("Integration:: enter authenticator app code", () => {
       .expect(400, done);
   });
 
+  it("following a validation error it should not include link to change security codes where account recovery is not permitted", (done) => {
+    request(app)
+      .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "12ert-",
+        isAccountRecoveryPermitted: false,
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("body").text()).to.not.contains(
+          "You can securely change how you get security codes"
+        );
+      })
+      .expect(400, done);
+  });
+
   it("should redirect to /auth-code when valid code entered", (done) => {
     nock(baseApi)
       .post(API_ENDPOINTS.VERIFY_MFA_CODE)

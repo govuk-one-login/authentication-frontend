@@ -13,7 +13,7 @@ describe("checkAccountRecoveryPermittedMiddleware", () => {
 
   beforeEach(() => {
     res = mockResponse();
-    next = sinon.fake();
+    next = sinon.fake() as unknown as NextFunction;
   });
 
   afterEach(() => {

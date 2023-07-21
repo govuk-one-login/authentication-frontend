@@ -48,7 +48,7 @@ describe("enter authenticator app code controller", () => {
             accountRecoveryPermitted: true,
           },
         }),
-      };
+      } as unknown as AccountRecoveryInterface;
 
       await enterAuthenticatorAppCodeGet(fakeService)(
         req as Request,
@@ -74,7 +74,7 @@ describe("enter authenticator app code controller", () => {
             accountRecoveryPermitted: false,
           },
         }),
-      };
+      } as unknown as AccountRecoveryInterface;
 
       await enterAuthenticatorAppCodeGet(fakeService)(
         req as Request,
@@ -101,7 +101,7 @@ describe("enter authenticator app code controller", () => {
             accountRecoveryPermitted: true,
           },
         }),
-      };
+      } as unknown as AccountRecoveryInterface;
 
       await enterAuthenticatorAppCodeGet(fakeService)(
         req as Request,
@@ -126,7 +126,7 @@ describe("enter authenticator app code controller", () => {
             accountRecoveryPermitted: true,
           },
         }),
-      };
+      } as unknown as AccountRecoveryInterface;
 
       await enterAuthenticatorAppCodeGet(fakeService)(
         req as Request,
@@ -154,7 +154,7 @@ describe("enter authenticator app code controller", () => {
             accountRecoveryPermitted: true,
           },
         }),
-      };
+      } as unknown as AccountRecoveryInterface;
 
       await enterAuthenticatorAppCodeGet(fakeService)(
         req as Request,
@@ -179,7 +179,7 @@ describe("enter authenticator app code controller", () => {
         verifyMfaCode: sinon.fake.returns({
           success: true,
         }),
-      };
+      } as unknown as VerifyMfaCodeInterface;
 
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
@@ -202,7 +202,7 @@ describe("enter authenticator app code controller", () => {
             message: "",
           },
         }),
-      };
+      } as unknown as VerifyMfaCodeInterface;
 
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
@@ -228,7 +228,7 @@ describe("enter authenticator app code controller", () => {
           },
           success: false,
         }),
-      };
+      } as unknown as VerifyMfaCodeInterface;
 
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
