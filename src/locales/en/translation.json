@@ -1873,15 +1873,15 @@
       "title": "Prove your identity with GOV.UK One Login",
       "header": "Prove your identity with GOV.UK One Login",
       "section1": {
-        "paragraph1": "It will take you about 10 minutes to prove your identity this way.",
         "insetAlternativeLanguage": {
-          "paragraph1": "You can also ",
+          "start": "You can also ",
           "linkText": {
             "inPageLanguage": "use GOV.UK One Login in Welsh",
             "inDestinationLanguage": "(Cymraeg)",
             "destinationLanguageCode": "cy"
           },
-          "linkHref": "?lng=cy"
+          "linkHref": "?lng=cy",
+          "end": "Not all ways to prove your identity are available in Welsh yet."
         },
         "insetTextEnglishOnly": "This service is currently only available in English."
       },
@@ -1889,8 +1889,7 @@
         "paragraph1": "You’ll need:",
         "listItem1_1": "a GOV.UK One Login – we’ll ask you to sign in or create one when you continue",
         "listItem1_2": "your photo ID",
-        "listItem1_3": "your current home address (you might also need your previous address if you’ve recently moved)",
-        "paragraph2": "We’ll only use the information you give us to make sure that you are who you say you are."
+        "listItem1_3": "your current home address (you might also need your previous address if you’ve recently moved)"
       }
     },
     "proveIdentityCheck": {

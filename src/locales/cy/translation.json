@@ -1873,15 +1873,15 @@
       "title": "Profi pwy ydych chi gyda GOV.UK One Login",
       "header": "Profi pwy ydych chi gyda GOV.UK One Login",
       "section1": {
-        "paragraph1": "Bydd yn cymryd tua 10 munud i chi brofi pwy ydych chi yn y ffordd hyn.",
         "insetAlternativeLanguage": {
-          "paragraph1": "Gallwch hefyd ",
+          "start": "Gallwch hefyd ",
           "linkText": {
             "inPageLanguage": "ddefnyddio GOV.UK One Login yn Saesneg",
             "inDestinationLanguage": "(English)",
             "destinationLanguageCode": "en"
           },
-          "linkHref": "?lng=en"
+          "linkHref": "?lng=en",
+          "end": ""
         },
         "insetTextEnglishOnly": "This service is currently only available in English."
       },
@@ -1889,8 +1889,7 @@
         "paragraph1": "Byddwch angen:",
         "listItem1_1": "GOV.UK One Login – byddwn yn gofyn i chi fewngofnodi neu greu un pan fyddwch yn parhau",
         "listItem1_2": "eich ID gyda llun",
-        "listItem1_3": "eich cyfeiriad presennol (efallai y byddwch angen eich cyfeiriad blaenorol hefyd os ydych wedi symud yn ddiweddar)",
-        "paragraph2": "Byddwn ond yn defnyddio’r wybodaeth rydych yn ei rhoi i ni i wneud yn siwr mai chi yw pwy rydych yn ei ddweud ydych chi."
+        "listItem1_3": "eich cyfeiriad presennol (efallai y byddwch angen eich cyfeiriad blaenorol hefyd os ydych wedi symud yn ddiweddar)"
       }
     },
     "proveIdentityCheck": {

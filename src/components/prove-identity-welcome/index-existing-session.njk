@@ -9,14 +9,22 @@
 {% block content %}
     <h1 class="govuk-heading-l">{{ 'pages.proveIdentityWelcome.header' | translate }}</h1>
 
-    <p class="govuk-body">{{ 'pages.proveIdentityWelcome.section1.paragraph1' | translate }}</p>
+
+    <p class="govuk-body">{{ 'pages.proveIdentityWelcome.section2.paragraph1' | translate }}</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>{{ 'pages.proveIdentityWelcome.section2.listItem1_2' | translate }}</li>
+        <li>{{ 'pages.proveIdentityWelcome.section2.listItem1_3' | translate }}</li>
+    </ul>
+
     {% if supportLanguageCY %}
         {% set insetTextInnerHtml %}
-            {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.paragraph1' | translate }}
+            {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.start' | translate }}
             <a href="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkHref' | translate }}"
-               class="govuk-link" rel="noreferrer">
-                {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inPageLanguage' | translate }}
+               class="govuk-link"
+               rel="noreferrer">{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inPageLanguage' | translate }}
                 <span lang="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.destinationLanguageCode' | translate }}">{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inDestinationLanguage' | translate }}</span></a>.
+            {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.end' | translate }}
         {% endset %}
 
         {{ govukInsetText({
@@ -27,15 +35,6 @@
             text: 'pages.proveIdentityWelcome.section1.insetTextEnglishOnly' | translate
         }) }}
     {% endif %}
-
-    <p class="govuk-body">{{ 'pages.proveIdentityWelcome.section2.paragraph1' | translate }}</p>
-
-    <ul class="govuk-list govuk-list--bullet">
-        <li>{{ 'pages.proveIdentityWelcome.section2.listItem1_2' | translate }}</li>
-        <li>{{ 'pages.proveIdentityWelcome.section2.listItem1_3' | translate }}</li>
-    </ul>
-
-    <p class="govuk-body">{{ 'pages.proveIdentityWelcome.section2.paragraph2' | translate }}</p>
 
     <form id="form-tracking" action="/prove-identity-welcome" method="post" novalidate="novalidate">
 
