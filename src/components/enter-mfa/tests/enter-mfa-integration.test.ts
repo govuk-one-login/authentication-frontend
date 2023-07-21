@@ -89,6 +89,26 @@ describe("Integration:: enter mfa", () => {
     request(app).get(PATH_NAMES.ENTER_MFA).expect(200, done);
   });
 
+  it("following a validation error it should not include link to change security codes where account recovery is not permitted", (done) => {
+    request(app)
+      .get(PATH_NAMES.ENTER_MFA)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123456",
+        phoneNumber: PHONE_NUMBER,
+        supportAccountRecovery: false,
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("body").text()).to.not.contains(
+          "You can securely change how you get security codes"
+        );
+      })
+      .expect(200, done);
+  });
+
   it("should return error when csrf not present", (done) => {
     request(app)
       .post(PATH_NAMES.ENTER_MFA)
