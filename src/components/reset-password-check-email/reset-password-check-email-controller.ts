@@ -58,6 +58,7 @@ export function resetPasswordCheckEmailGet(
       [
         ERROR_CODES.RESET_PASSWORD_LINK_MAX_RETRIES_REACHED,
         ERROR_CODES.RESET_PASSWORD_LINK_BLOCKED,
+        ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES,
       ].includes(result.data.code)
     ) {
       const errorTemplate =
