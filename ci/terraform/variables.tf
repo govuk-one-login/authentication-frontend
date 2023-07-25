@@ -193,6 +193,16 @@ variable "account_recovery_code_entered_wrong_blocked_minutes" {
   description = "The duration, in minutes, for which a user is blocked after entering the wrong account recovery code multiple times"
 }
 
+variable "code_request_blocked_minutes" {
+  default     = "15"
+  description = "The duration, in minutes, for which a user is blocked after requesting the wrong code multiple times"
+}
+
+variable "code_entered_wrong_blocked_minutes" {
+  default     = "15"
+  description = "The duration, in minutes, for which a user is blocked after entering the wrong code multiple times"
+}
+
 variable "orch_to_auth_signing_public_key" {
   description = "Public key counterpart for KMS key created in Orchestration/OIDC API"
   type        = string

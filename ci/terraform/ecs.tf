@@ -124,6 +124,14 @@ locals {
         name  = "ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES"
         value = var.account_recovery_code_entered_wrong_blocked_minutes
       },
+      {
+        name  = "CODE_REQUEST_BLOCKED_MINUTES"
+        value = var.code_request_blocked_minutes
+      },
+      {
+        name  = "CODE_ENTERED_WRONG_BLOCKED_MINUTES"
+        value = var.code_entered_wrong_blocked_minutes
+      },
     ]
 
     mountPoints = [
