@@ -11,6 +11,8 @@ support_account_recovery                            = "1"
 support_auth_orch_split                             = "1"
 password_reset_code_entered_wrong_blocked_minutes   = "0.5"
 account_recovery_code_entered_wrong_blocked_minutes = "0.5"
+code_request_blocked_minutes                        = "0.5"
+code_entered_wrong_blocked_minutes                  = "0.5"
 
 logging_endpoint_arns = [
   "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
