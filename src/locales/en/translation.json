@@ -1084,9 +1084,9 @@
           "paragraph_thirteen": "This check uses a still image generated from your selfie video and your identity document photo to measure the unique patterns of your face. This is called facial biometric data. The biometric data from both images is compared to establish whether the user is the actual owner of the identity document.",
           "paragraph_fourteen": "When Iproov has completed the check, they send us the outcome of the check.",
           "sub_header_two": "Fraud check",
-          "paragraph_fifteen": "We use an identity checking service provider called Experian to:",
+          "paragraph_fifteen": "We use an identity checking service provider called Experian to conduct a fraud check to:",
           "list_four": {
-            "item_one": "conduct a fraud check to look for any signs that your identity has been stolen or misused",
+            "item_one": "look for any signs that your identity has been stolen or misused",
             "item_two": "check whether there is a record of you existing over time"
           },
           "paragraph_sixteen": {
@@ -1119,7 +1119,71 @@
           "paragraph_eight": "GDS does not store or retain the questions or your answers.",
           "paragraph_nine": "This check constitutes a ‘soft search’ which means that a record of the check will exist on your credit records as ‘GOV.UK One Login’. It will only be visible to you and not to any other organisations that use Experian to conduct their own credit checks. Consequently, it will not have an impact on your credit score.",
           "sub_header_three": "Fraud check",
-          "paragraph_ten": "We also conduct the same fraud check using Experian as outlined in the ‘Using the GOV.UK ID Check app to prove your identity’ section."
+          "paragraph_ten": "We use an identity checking service provider called Experian to conduct a fraud check to:",
+          "list": {
+            "item_one": "look for any signs that your identity has been stolen or misused",
+            "item_two": "check whether there is a record of you existing over time"
+          },
+          "paragraph_eleven": {
+            "part_one": "They do so as an independent data controller in accordance with their ",
+            "link": {
+              "link_text": "privacy notice",
+              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
+            }
+          },
+          "paragraph_twelve": "When you have completed the checks above, we will collect your name, date of birth and address. We send these to Experian so they can conduct the check.",
+          "paragraph_thirteen": "When Experian has completed the check, they send us a fraud score, plus details of any associated fraudulent activity."
+        },
+        "proving_identity_at_post_office": {
+          "header": "Proving your identity at a Post Office",
+          "paragraph_one": "GOV.UK One Login gives you the option to prove your identity at a Post Office. This route consists of 3 separate identity checks.",
+          "sub_header_one": "Fraud check",
+          "paragraph_two": "We use an identity checking service provider called Experian to conduct on online fraud check to:",
+          "list_one": {
+            "item_one": "look for any signs that your identity has been stolen or misused",
+            "item_two": "check whether there is a record of you existing over time"
+          },
+          "paragraph_three": {
+            "part_one": "They do so as an independent data controller in accordance with their",
+            "link": {
+              "link_text": "privacy notice",
+              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
+            }
+          },
+          "paragraph_four": "We collect your name, date of birth and address and send them to Experian so they can conduct the check.",
+          "paragraph_five": "When Experian has completed the check, they send us a fraud score, plus details of any associated fraudulent activity.",
+          "sub_header_two": "Genuine document check and likeness check",
+          "paragraph_six": "We need to check that:",
+          "list_two": {
+            "item_one": "your identity documents are real",
+            "item_two": "you are the same person as in the identity document photos (also known as a ‘likeness’ check)"
+          },
+          "paragraph_seven": "These checks are conducted by the Post Office and their subcontractor Yoti on our behalf. The Post Office acts as a data processor with Yoti as a sub-processor, which means that they may only process your personal data for the sole purpose of fulfilling our instructions.",
+          "paragraph_eight": "We ask you what identity document you would like to use to prove your identity. You can use any of the following identity documents:",
+          "list_three": {
+            "item_one": "UK passport",
+            "item_two": "non-UK passport",
+            "item_three": "UK photocard driving licence",
+            "item_four": "UK biometric residence permits",
+            "item_five": "European Union (EU) photocard driving licence",
+            "item_six": "National identity card from a European Economic Area (EEA) country"
+          },
+          "paragraph_nine": "We ask you:",
+          "list_four": {
+            "item_one": "for your identity document’s expiry date and issuing country ",
+            "item_two": "to confirm that the address you provided previously matches the address shown on your identity document, for documents that have an address on them.",
+            "item_three": "to choose which Post Office branch you would like to attend"
+          },
+          "paragraph_ten": "We send this information plus your name, address and date of birth to the Post Office before you go to a branch. We also send you an email with a link to download a Post Office In Branch Verification customer letter. This will contain a QR code and instructions about what you will need to do next. You will need to open the link, enter your email address, and download and print the letter and take it with you when you attend the Post Office, or show it on your device.",
+          "paragraph_eleven": "When you attend the Post Office, a member of staff will scan the QR code on your letter and check the identity document you have with you against the details you provided.",
+          "paragraph_twelve": "The Post Office and Yoti will then check your identity document security features to make sure it is a genuine document.",
+          "list_five": {
+            "item_one": "For all identity documents, the Post Office will take a photo of the front and back of the document to check the document’s security features, such as holograms, and to read the document information.",
+            "item_two": "For UK e-passports, the Post Office will also use a tablet to check your document’s security features and to read your document information from the NFC chip."
+          },
+          "paragraph_thirteen": "The Post Office will also take a photo of your face,from which they will measure the unique patterns of your face. This is called facial biometric data. The biometric data from your photo will be compared against the biometric data from the photo on your identity document to check whether you are the actual owner of the identity document.",
+          "paragraph_fourteen": "When the Post Office and Yoti have completed the checks, they send us the result of the check and your identity document information.",
+          "paragraph_fifteen": "We then use your email address to tell you that the results of your check are available.To see your result and share it with the service you needed to prove your identity for, you will need to sign in to GOV.UK One Login and be redirected to the government service you were using."
         },
         "technical_information": {
           "header": "Technical information",
@@ -1264,7 +1328,8 @@
               "link_text": "Experian’s consumer privacy notice",
               "link_href": "https://www.experian.co.uk/legal/crain/"
             },
-            "item_five": "iProov, as a data processor with Veriff and Innovalor as its sub-processors, subject to a contract with us, for biometric likeness checks, genuine document checks and liveness checks"
+            "item_five": "iProov, as a data processor with Veriff and Innovalor as its sub-processors, subject to a contract with us, for biometric likeness checks, genuine document checks and liveness checks",
+            "item_six": "Post Office, as a data processor with Yoti as its sub-processor, subject to a contract with us, for in-person identity checks "
           },
           "paragraph_ten": "In all cases we only provide the minimum information needed to perform the checks.",
           "sub_header_three": "Sharing your information to protect against fraud",
@@ -1292,13 +1357,15 @@
         "how_long_we_keep_your_information": {
           "header": "How long we keep your information",
           "paragraph_one": "We store your personal information for no longer than is reasonably necessary and legally justifiable.",
-          "paragraph_two": "We will keep your GOV.UK One Login and your proven identity information for as long as you wish to use it although we will delete it if you do not use it for 2 years.",
-          "paragraph_three": "If you choose to delete your GOV.UK One Login, we’ll delete your account and your proven identity information.",
-          "paragraph_four": "We delete your still photo generated from your selfie video, driving licence images and biometric facial data from Iproov’s systems after 30 days.",
-          "paragraph_five": "We will keep your feedback data for 2 years.",
-          "paragraph_six": "We will store information about the actions you take when you use your GOV.UK One Login in system logs for 1 year.",
-          "paragraph_seven": "We also maintain a secure audit trail of all GOV.UK One Login audit events and activity which we retain for 7 years for fraud monitoring purposes.",
-          "paragraph_eight": "GDS does not store or retain the:",
+          "paragraph_two": "We will keep your GOV.UK One Login for as long as you wish to use it although we will delete it if you do not use it for 2 years. ",
+          "paragraph_three": "We currently store your proven identity information for 6 months.",
+          "paragraph_four": "If you choose to delete your GOV.UK One Login, we’ll delete your account and your proven identity information.",
+          "paragraph_five": "We delete your still photo generated from your selfie video, driving licence images and biometric facial data from Iproov’s systems after 30 days.",
+          "paragraph_six": "The in-person identity check stores your data for 11 days to give you enough time to go to the Post Office to complete your identity check.",
+          "paragraph_seven": "We will keep your feedback data for 2 years.",
+          "paragraph_eight": "We will store information about the actions you take when you use your GOV.UK One Login in system logs for 1 year.",
+          "paragraph_nine": "We also maintain a secure audit trail of all GOV.UK One Login audit events and activity which we retain for 7 years for fraud monitoring purposes.",
+          "paragraph_ten": "GDS does not store or retain the:",
           "list_one": {
             "item_one": "KBV questions we source from credit reference agencies or your answers to those questions",
             "item_two": "selfie video you take as part of proving your identity using the GOV.UK Identity Check app"
@@ -1405,7 +1472,7 @@
           "header": "Changes to this notice",
           "paragraph_one": "We may change this privacy notice. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy notice will apply to you and your information immediately.",
           "paragraph_two": "If these changes affect how your personal information is processed, GDS will let you know.",
-          "paragraph_three": "Last updated: 14 July 2023"
+          "paragraph_three": "Last updated: 27 July 2023"
         }
       }
     },
