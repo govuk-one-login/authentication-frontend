@@ -17,7 +17,11 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
-import { AuthorizeServiceInterface } from "../types";
+import {
+  AuthorizeServiceInterface,
+  JwtServiceInterface,
+  KmsDecryptionServiceInterface,
+} from "../types";
 import { BadRequestError } from "../../../utils/error";
 
 describe("authorize controller", () => {
@@ -444,6 +448,48 @@ describe("authorize controller", () => {
         .to.eventually.be.rejectedWith("1001:Request is missing parameters")
         .and.be.an.instanceOf(BadRequestError)
         .and.not.to.have.property("level");
+    });
+
+    it("should get claims when jwe passed in", async () => {
+      req.query.request = "JWE";
+      const fakeCookieConsentService: CookieConsentServiceInterface = {
+        getCookieConsent: sinon.fake(),
+        createConsentCookieValue: sinon.fake(),
+      };
+      const fakeAuthorizeService: AuthorizeServiceInterface = {
+        start: sinon.fake.returns({
+          data: {
+            client: {
+              scopes: ["openid", "profile"],
+              serviceType: "MANDATORY",
+              clientName: "Test client",
+              cookieConsentShared: true,
+            },
+            user: {
+              consentRequired: false,
+              identityRequired: false,
+              upliftRequired: false,
+              authenticated: true,
+            },
+          },
+          success: true,
+        }),
+      } as unknown as AuthorizeServiceInterface;
+      const fakeKms: KmsDecryptionServiceInterface = {
+        decrypt: sinon.fake.returns("jwt"),
+      };
+      const fakejwt: JwtServiceInterface = {
+        getPayloadWithSigCheck: sinon.fake.returns({ test: "test" }),
+        signatureCheck: sinon.fake.returns(true),
+        validateClaims: sinon.stub().returnsArg(0),
+      };
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKms,
+        fakejwt
+      )(req as Request, res as Response);
+      expect(fakejwt.validateClaims).to.have.returned({ test: "test" });
     });
   });
 });
