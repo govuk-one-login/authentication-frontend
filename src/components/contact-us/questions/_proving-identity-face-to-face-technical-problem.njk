@@ -1,5 +1,5 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-    {{ 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.title' | translateEnOnly }}
+    {{ 'pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.section1.title' | translateEnOnly }}
 </h1>
 
 <form action="/contact-us-questions" method="post" novalidate>
@@ -8,13 +8,13 @@
     <input type="hidden" name="theme" value="{{theme}}"/>
     <input type="hidden" name="subtheme" value="{{subtheme}}"/>
     <input type="hidden" name="backurl" value="{{backurl}}"/>
-    <input type="hidden" name="formType" value="idCheckAppTechnicalProblem"/>
+    <input type="hidden" name="formType" value="provingIdentityFaceToFaceTechnicalProblem"/>
     <input type="hidden" name="referer" value="{{referer}}"/>
     {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
 
     {{ govukCharacterCount({
         label: {
-            text: 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.header' | translateEnOnly,
+            text: 'pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.section1.header' | translateEnOnly,
             classes: "govuk-label--s"
         },
         id: "issueDescription",
@@ -28,11 +28,11 @@
 
     {{ govukCharacterCount({
         label: {
-            text: 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.header' | translateEnOnly,
+            text: 'pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.section2.header' | translateEnOnly,
             classes: "govuk-label--s"
         },
         hint: {
-            text: 'pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.paragraph1' | translateEnOnly
+            text: 'pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.section2.paragraph1' | translateEnOnly
         },
         id: "additionalDescription",
         name: "additionalDescription",

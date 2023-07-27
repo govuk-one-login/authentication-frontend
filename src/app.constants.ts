@@ -157,6 +157,19 @@ export const ZENDESK_THEMES = {
   FACE_SCANNING_PROBLEM: "face_scanning_problem",
   ID_CHECK_APP_TECHNICAL_ERROR: "id_check_app_technical_problem",
   ID_CHECK_APP_SOMETHING_ELSE: "id_check_app_something_else",
+  PROVING_IDENTITY_FACE_TO_FACE: "id_face_to_face",
+  PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS:
+    "face_to_face_details",
+  PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_LETTER: "face_to_face_letter",
+  PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_AT_POST_OFFICE:
+    "face_to_face_post_office",
+  PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_FINDING_RESULT:
+    "face_to_face_post_office_id_results",
+  PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_CONTINUING:
+    "face_to_face_post_office_service",
+  PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM:
+    "face_to_face_technical_problem",
+  PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM: "face_to_face_something_else",
 };
 
 export const ZENDESK_FIELD_MAX_LENGTH = 1200;

@@ -20,6 +20,10 @@
     {% set pageTitleName = 'pages.contactUsFurtherInformation.idCheckApp.title' | translateEnOnly %}
 {% endif %}
 
+{% if theme == 'id_face_to_face' %}
+    {% set pageTitleName = 'pages.contactUsFurtherInformation.provingIdentityFaceToFace.title' | translateEnOnly %}
+{% endif %}
+
 {% block content %}
 {% include "contact-us/common-english-only/errors/errorSummary.njk" %}
 
@@ -33,6 +37,10 @@
 
     {% if theme == 'id_check_app' %}
         {% include 'contact-us/further-information/_id-check-app-further-information.njk' %}
+    {% endif %}
+
+    {% if theme == 'id_face_to_face' %}
+        {% include 'contact-us/further-information/_proving-identity-post-office-further-information.njk' %}
     {% endif %}
 
 {% endblock %}

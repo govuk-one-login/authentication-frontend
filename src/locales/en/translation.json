@@ -1625,6 +1625,7 @@
         "emailSubscriptions": "GOV.UK email subscriptions",
         "suggestionsFeedback": "A suggestion or feedback about using your GOV.UK One Login",
         "idCheckApp": "A problem proving your identity using the GOV.UK ID Check app",
+        "provingIdentityFaceToFace": "A problem proving your identity with the Post Office",
         "errorMessage": "Select a reason for contacting us"
       },
       "continueLabel": "Continue"
@@ -1670,6 +1671,21 @@
           "technicalError": "There was a technical problem (for example you saw an error message)",
           "somethingElse": "Something else",
           "errorMessage": "Select the problem you had when proving your identity using the GOV.UK ID Check app"
+        }
+      },
+      "provingIdentityFaceToFace": {
+        "title": "A problem proving your identity with the Post Office",
+        "header": "A problem proving your identity with the Post Office",
+        "section1": {
+          "header": "Tell us what happened",
+          "problemEnteringDetails": "You had a problem entering your details",
+          "problemPostOfficeLetter": "You had a problem with your Post Office customer letter",
+          "problemAtPostOffice": "You had a problem at the Post Office",
+          "problemFindingResult": "You had a problem finding out the result of your identity check",
+          "problemContinuing": "You had a problem continuing to the service you want to use",
+          "technicalProblem": "There was a technical problem (for example, you saw an error message)",
+          "anotherProblem": "Something else",
+          "errorMessage": "Select the problem you had when proving your identity with the Post Office"
         }
       }
     },
@@ -1918,6 +1934,77 @@
         "section2": {
           "header": "What happened?",
           "paragraph1": "For example, was there a technical problem?",
+          "errorMessage": "Tell us what happened"
+        }
+      },
+      "provingIdentityFaceToFaceDetails": {
+        "title": "A problem entering your details",
+        "header": "A problem entering your details",
+        "whatHappened": {
+          "label": "Tell us what happened",
+          "hint": "For example, you had a problem entering your personal details or details from your photo ID, such as your passport or driving licence.",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "provingIdentityFaceToFaceLetter": {
+        "title": "A problem with your Post Office customer letter",
+        "header": "A problem with your Post Office customer letter",
+        "whatHappened": {
+          "label": "Tell us what happened",
+          "hint": "For example, you had a problem receiving, downloading or viewing your Post Office customer letter.",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "provingIdentityFaceToFacePostOffice": {
+        "title": "A problem at the Post Office",
+        "header": "A problem at the Post Office",
+        "whatHappened": {
+          "label": "Tell us what happened",
+          "hint": "For example, the Post Office staff were unable to scan your photo ID, such as your passport or driving licence.",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "provingIdentityFaceToFaceIdResults": {
+        "title": "A problem finding out the result of your identity check",
+        "header": "A problem finding out the result of your identity check",
+        "whatHappened": {
+          "label": "Tell us what happened",
+          "hint": "For example, you couldn’t see your identity check result after you signed in.",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "provingIdentityFaceToFaceService": {
+        "title": "A problem continuing to the service you want to use",
+        "header": "A problem continuing to the service you want to use",
+        "whatHappened": {
+          "label": "Tell us what happened",
+          "hint": "For example, you could not find your way back to the service you want to use.",
+          "errorMessage": "Enter what happened"
+        }
+      },
+      "provingIdentityFaceToFaceTechnicalProblem": {
+        "title": "There was a technical problem",
+        "section1": {
+          "title": "What were you trying to do?",
+          "header": "What were you trying to do?",
+          "errorMessage": "Tell us what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "For example, did you see an error message?",
+          "errorMessage": "Tell us what happened"
+        }
+      },
+      "provingIdentityFaceToFaceSomethingElse": {
+        "title": "Another problem with proving your identity with the Post Office",
+        "section1": {
+          "title": "Another problem with proving your identity with the Post Office",
+          "header": "What were you trying to do?",
+          "errorMessage": "Tell us what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "For example, did you see an error message?",
           "errorMessage": "Tell us what happened"
         }
       }

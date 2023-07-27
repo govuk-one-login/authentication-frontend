@@ -42,7 +42,21 @@
     } if (errors['additionalDescription'])
 }) }}
 
-{% include 'contact-us/questions/_service_trying_to_use.njk' %}
+{{ govukInput({
+    label: {
+        text: 'pages.contactUsQuestions.serviceTryingToUse.header' | translateEnOnly,
+        classes: "govuk-label--s"
+    },
+    id: "serviceTryingToUse",
+    name: "serviceTryingToUse",
+    value: serviceTryingToUse,
+    hint: {
+        text: 'pages.contactUsQuestions.serviceTryingToUse.hint' | translateEnOnly
+    },
+    errorMessage: {
+        text: errors['serviceTryingToUse'].text
+    } if (errors['serviceTryingToUse'])
+}) }}
 
 {{ govukWarningText({
     text:'pages.contactUsQuestions.personalInformation.paragraph1' | translateEnOnly,

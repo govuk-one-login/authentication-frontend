@@ -1,0 +1,64 @@
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+    {{ "pages.contactUsFurtherInformation.provingIdentityFaceToFace.header" | translateEnOnly }}
+</h1>
+
+<form action="/contact-us-further-information" method="post" novalidate>
+
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <input type="hidden" name="theme" value="{{theme}}"/>
+    <input type="hidden" name="referer" value="{{referer}}"/>
+
+    {% include "contact-us/questions/_id-check-app-hidden-fields.njk" %}
+
+    {{ govukRadios({
+        name: "subtheme",
+        fieldset: {
+            legend: {
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.header" | translateEnOnly,
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
+            }
+        },
+        items: [
+            {
+                value: "face_to_face_details",
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemEnteringDetails" | translateEnOnly
+            },
+            {
+                value: "face_to_face_letter",
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemPostOfficeLetter" | translateEnOnly
+            },
+            {
+                value: "face_to_face_post_office",
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemAtPostOffice" | translateEnOnly
+            },
+            {
+                value: "face_to_face_post_office_id_results",
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemFindingResult" | translateEnOnly
+            },
+            {
+                value: "face_to_face_post_office_service",
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemContinuing" | translateEnOnly
+            },
+            {
+                value: "face_to_face_technical_problem",
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.technicalProblem" | translateEnOnly
+            },
+            {
+                value: "face_to_face_something_else",
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.anotherProblem" | translateEnOnly
+            }
+        ],
+        errorMessage: {
+            text: errors["subtheme"].text
+        } if (errors["subtheme"])
+    }) }}
+
+
+    {{ govukButton({
+        "text": "general.continue.label" | translateEnOnly,
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+
+</form>

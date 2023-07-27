@@ -48,6 +48,20 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.idCheckAppTechnicalProblem.title",
   [ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
     "pages.contactUsQuestions.idCheckAppSomethingElse.title",
+  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS]:
+    "pages.contactUsQuestions.provingIdentityFaceToFaceDetails.title",
+  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_LETTER]:
+    "pages.contactUsQuestions.provingIdentityFaceToFaceLetter.title",
+  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_AT_POST_OFFICE]:
+    "pages.contactUsQuestions.provingIdentityFaceToFacePostOffice.title",
+  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_FINDING_RESULT]:
+    "pages.contactUsQuestions.provingIdentityFaceToFaceIdResults.title",
+  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_CONTINUING]:
+    "pages.contactUsQuestions.provingIdentityFaceToFaceService.title",
+  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM]:
+    "pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.title",
+  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM]:
+    "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
@@ -176,6 +190,7 @@ export function contactUsFormPost(req: Request, res: Response): void {
       ZENDESK_THEMES.ACCOUNT_CREATION,
       ZENDESK_THEMES.SIGNING_IN,
       ZENDESK_THEMES.ID_CHECK_APP,
+      ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE,
     ].includes(req.body.theme)
   ) {
     url = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
@@ -264,7 +279,10 @@ export function contactUsQuestionsFormPost(
   service: ContactUsServiceInterface = contactUsService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const questions = getQuestionsFromFormType(req, req.body.formType);
+    const questions = getQuestionsFromFormTypeForZendeskMessageBody(
+      req,
+      req.body.formType
+    );
     const themeQuestions = getQuestionFromThemes(
       req,
       req.body.theme,
@@ -284,7 +302,7 @@ export function contactUsQuestionsFormPost(
         serviceTryingToUse: req.body.serviceTryingToUse,
       },
       themes: { theme: req.body.theme, subtheme: req.body.subtheme },
-      subject: "GOV.UK Accounts Feedback",
+      subject: "GOV.UK One Login",
       email: req.body.email,
       name: req.body.name,
       optionalData: {
@@ -310,7 +328,7 @@ export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
   res.render("contact-us/index-submit-success.njk");
 }
 
-export function getQuestionsFromFormType(
+export function getQuestionsFromFormTypeForZendeskMessageBody(
   req: Request,
   formType: string
 ): Questions {
@@ -483,6 +501,54 @@ export function getQuestionsFromFormType(
         { lng: "en" }
       ),
     },
+    provingIdentityFaceToFace: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.provingIdentityFaceToFaceDetails.whatHappened.label",
+        {
+          lng: "en",
+        }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.whatHappened.header",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
+    provingIdentityFaceToFaceTechnicalProblem: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.section1.title",
+        {
+          lng: "en",
+        }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.whatHappened.header",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
+    provingIdentityFaceToFaceSomethingElse: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.section1.header",
+        {
+          lng: "en",
+        }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.section2.header",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
   };
 
   return formTypeToQuestions[formType];
@@ -517,6 +583,12 @@ export function getQuestionFromThemes(
     id_check_app: req.t("pages.contactUsPublic.section3.idCheckApp", {
       lng: "en",
     }),
+    id_face_to_face: req.t(
+      "pages.contactUsPublic.section3.provingIdentityFaceToFace",
+      {
+        lng: "en",
+      }
+    ),
   };
   const signinSubthemeToQuestions: { [key: string]: any } = {
     no_security_code: req.t(
@@ -598,6 +670,37 @@ export function getQuestionFromThemes(
     ),
   };
 
+  const provingIdentityFaceToFaceSubthemeToQuestion: { [key: string]: any } = {
+    face_to_face_details: req.t(
+      "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemEnteringDetails",
+      { lng: "en" }
+    ),
+    face_to_face_letter: req.t(
+      "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemPostOfficeLetter",
+      { lng: "en" }
+    ),
+    face_to_face_post_office: req.t(
+      "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemAtPostOffice",
+      { lng: "en" }
+    ),
+    face_to_face_post_office_id_results: req.t(
+      "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemFindingResult",
+      { lng: "en" }
+    ),
+    face_to_face_post_office_service: req.t(
+      "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemContinuing",
+      { lng: "en" }
+    ),
+    face_to_face_technical_problem: req.t(
+      "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.technicalProblem",
+      { lng: "en" }
+    ),
+    face_to_face_something_else: req.t(
+      "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.anotherProblem",
+      { lng: "en" }
+    ),
+  };
+
   const themeQuestion = themesToQuestions[theme];
   let subthemeQuestion;
   if (subtheme) {
@@ -609,6 +712,9 @@ export function getQuestionFromThemes(
     }
     if (theme == ZENDESK_THEMES.ID_CHECK_APP) {
       subthemeQuestion = idCheckAppSubthemeToQuestions[subtheme];
+    }
+    if (theme == ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
+      subthemeQuestion = provingIdentityFaceToFaceSubthemeToQuestion[subtheme];
     }
   }
   return {
