@@ -6,7 +6,6 @@ import {
   JwtSignatureVerificationError,
   ClaimsError,
 } from "../../../utils/error";
-import { AuthorizeRequestPayload } from "../types";
 
 const validJwt =
   "eyJhbGciOiJFUzI1NiJ9.eyJjbGllbnQtbmFtZSI6ImRpLWF1dGgtc3R1Yi1yZWx5aW5nLXBhcnR5LXNhbmRwaXQifQ.FFNDcj3znW5JPillhEIgCvWFCinlX0PMdvfVxgDArYueiVH6VDvlhaZyS70ocm9eOXBlB8pe449vpJrcKllBBg";
@@ -119,7 +118,7 @@ describe("JWT service", () => {
   });
 
   describe("validateClaims", () => {
-    let claims: AuthorizeRequestPayload;
+    let claims: any;
     beforeEach(() => {
       claims = createmockclaims();
     });
@@ -132,13 +131,25 @@ describe("JWT service", () => {
       Object.keys(claims).forEach((claim) => {
         try {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { claim, ...payloadWithoutIss } = claims as any;
-          jwtService.validateClaims(payloadWithoutIss);
+          const { claim, ...payloadWithoutClaim } = claims as any;
+          jwtService.validateClaims(payloadWithoutClaim);
         } catch (error) {
           expect(error).to.be.an.instanceOf(ClaimsError);
           expect(error.message).to.equal(`${claim} claim missing`);
         }
       });
+    });
+
+    it("Check that multiple errors return in one message", () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { aud, iss, ...payloadWithoutClaim } = claims as any;
+      try {
+        jwtService.validateClaims(payloadWithoutClaim);
+      } catch (error) {
+        expect(error).to.be.an.instanceOf(ClaimsError);
+        expect(error.message).to.contain("iss claim missing");
+        expect(error.message).to.contain("aud claim missing");
+      }
     });
 
     it("Should throw ClaimsError if Token expired", () => {
@@ -166,7 +177,7 @@ describe("JWT service", () => {
     });
   });
 
-  function createmockclaims(): AuthorizeRequestPayload {
+  function createmockclaims(): any {
     const timestamp = Math.floor(new Date().getTime() / 1000);
     return {
       confidence: "Cl.Cm",

@@ -1,4 +1,4 @@
-import { AuthorizeRequestPayload, JwtServiceInterface } from "./types";
+import { JwtServiceInterface } from "./types";
 import crypto from "crypto";
 import format from "ecdsa-sig-formatter";
 import { getOrchToAuthSigningPublicKey } from "../../config";
@@ -7,6 +7,7 @@ import {
   JwtPayloadParseError,
   JwtSignatureVerificationError,
 } from "../../utils/error";
+import { getClaimsObject, getKnownClaims } from "./claims-config";
 
 export class JwtService implements JwtServiceInterface {
   private readonly publicKey;
@@ -30,7 +31,7 @@ export class JwtService implements JwtServiceInterface {
     }
   }
 
-  async getPayloadWithSigCheck(jwt: string): Promise<AuthorizeRequestPayload> {
+  async getPayloadWithSigCheck(jwt: string): Promise<any> {
     const jwtElements = jwt.split(".");
     if (jwtElements.length !== 3) {
       throw new JwtPayloadParseError("JWT was not three elements");
@@ -45,38 +46,40 @@ export class JwtService implements JwtServiceInterface {
     return JSON.parse(buffer.toString());
   }
 
-  validateClaims(claims: AuthorizeRequestPayload): AuthorizeRequestPayload {
-    const expectedkeys = [
-      "iss",
-      "aud",
-      "exp",
-      "iat",
-      "nbf",
-      "jti",
-      "client_name",
-      "cookie_consent_shared",
-      "consent_required",
-      "is_one_login_service",
-      "service_type",
-      "govuk_signin_journey_id",
-      "confidence",
-      "state",
-      "client_id",
-      "scope",
-      "redirect_uri",
-    ];
+  validateClaims(claims: any): any {
+    const errors = [];
+
+    const claimsfields = getClaimsObject();
+    const expectedkeys = Object.keys(claimsfields);
+
     expectedkeys.forEach((claim) => {
       if (!Object.prototype.hasOwnProperty.call(claims, claim)) {
-        throw new ClaimsError(`${claim} claim missing`);
+        errors.push(`${claim} claim missing`);
       }
     });
 
     if (claims.exp <= Math.floor(new Date().getTime() / 1000)) {
-      throw new ClaimsError("Token expired (exp)");
+      errors.push("Token expired (exp)");
     }
 
     if (claims.nbf > Math.floor(new Date().getTime() / 1000)) {
-      throw new ClaimsError("Token not yet valid (nbf)");
+      errors.push("Token not yet valid (nbf)");
+    }
+
+    if (errors.length > 0) {
+      throw new ClaimsError(errors.join("\r\n"));
+    }
+
+    const requiredclaims = getKnownClaims();
+
+    Object.keys(requiredclaims).forEach((claim) => {
+      if (requiredclaims[claim] !== claims[claim]) {
+        errors.push(`${claim} has incorrect value`);
+      }
+    });
+
+    if (errors.length > 0) {
+      throw new ClaimsError(errors.join("\r\n"));
     }
 
     return claims;
