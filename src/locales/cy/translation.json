@@ -1905,7 +1905,16 @@
       },
       "takingPhotoOfIdProblem": {
         "title": "You had a problem taking a photo of your identity document using the GOV.UK ID Check app",
-        "header": "You had a problem taking a photo of your identity document using the GOV.UK ID Check app"
+        "header": "You had a problem taking a photo of your identity document using the GOV.UK ID Check app",
+        "identityDocument": {
+          "header": "Which identity document were you using?",
+          "errorMessage": "Select which identity document you were using",
+          "types": {
+            "passport": "Passport",
+            "biometricResidencePermit": "Biometric residence permit",
+            "drivingLicence": "Driving licence"
+          }
+        }
       },
       "faceScanningProblem": {
         "title": "You had a problem scanning your face using the GOV.UK ID Check app",

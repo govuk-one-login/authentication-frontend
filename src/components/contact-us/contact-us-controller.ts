@@ -315,6 +315,7 @@ export function contactUsQuestionsFormPost(
       themeQuestions: themeQuestions,
       referer: validateReferer(req.body.referer),
       securityCodeSentMethod: req.body.securityCodeSentMethod,
+      identityDocumentUsed: req.body.identityDocumentUsed,
     });
 
     logger.info(
@@ -470,6 +471,22 @@ export function getQuestionsFromFormTypeForZendeskMessageBody(
       })}`,
       serviceTryingToUse: req.t(
         "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
+    idCheckAppPhotoProblem: {
+      issueDescription: `${req.t(
+        "pages.contactUsQuestions.whatHappened.header",
+        { lng: "en" }
+      )} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1", {
+        lng: "en",
+      })}`,
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+      radioButtons: req.t(
+        "pages.contactUsQuestions.takingPhotoOfIdProblem.identityDocument.header",
         { lng: "en" }
       ),
     },
