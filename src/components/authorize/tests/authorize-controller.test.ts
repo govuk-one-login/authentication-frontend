@@ -476,11 +476,11 @@ describe("authorize controller", () => {
         }),
       } as unknown as AuthorizeServiceInterface;
       const fakeKms: KmsDecryptionServiceInterface = {
-        decrypt: sinon.fake.returns("jwt"),
+        decrypt: sinon.fake.returns(Promise.resolve("jwt")),
       };
       const fakejwt: JwtServiceInterface = {
-        getPayloadWithSigCheck: sinon.fake.returns({ test: "test" }),
-        signatureCheck: sinon.fake.returns(true),
+        getPayloadWithSigCheck: sinon.fake.returns(Promise.resolve({ test: "test" })),
+        signatureCheck: sinon.fake.returns(Promise.resolve(true)),
         validateClaims: sinon.stub().returnsArg(0),
       };
       await authorizeGet(

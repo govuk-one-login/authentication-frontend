@@ -6,6 +6,7 @@ import {
   JwtSignatureVerificationError,
   ClaimsError,
 } from "../../../utils/error";
+import { getKnownClaims } from "../claims-config";
 
 const validJwt =
   "eyJhbGciOiJFUzI1NiJ9.eyJjbGllbnQtbmFtZSI6ImRpLWF1dGgtc3R1Yi1yZWx5aW5nLXBhcnR5LXNhbmRwaXQifQ.FFNDcj3znW5JPillhEIgCvWFCinlX0PMdvfVxgDArYueiVH6VDvlhaZyS70ocm9eOXBlB8pe449vpJrcKllBBg";
@@ -129,10 +130,11 @@ describe("JWT service", () => {
 
     it("Should throw ClaimsError if missing claim", () => {
       Object.keys(claims).forEach((claim) => {
+        const withoutClaim = {...claims};
         try {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { claim, ...payloadWithoutClaim } = claims as any;
-          jwtService.validateClaims(payloadWithoutClaim);
+          delete withoutClaim[claim];
+          jwtService.validateClaims(withoutClaim);
+          assert.fail("Expected error to be thrown");
         } catch (error) {
           expect(error).to.be.an.instanceOf(ClaimsError);
           expect(error.message).to.equal(`${claim} claim missing`);
@@ -140,7 +142,20 @@ describe("JWT service", () => {
       });
     });
 
-    it("Check that multiple errors return in one message", () => {
+    it("should throw a claims error if incorrect value for claim", () => {
+      const knowClaim = Object.keys(getKnownClaims())[0];
+      claims[knowClaim] = "Incorrect value";
+
+      try {
+        jwtService.validateClaims(claims);
+        assert.fail("Expected error to be thrown");
+      } catch (error) {
+        expect(error).to.be.an.instanceOf(ClaimsError);
+        expect(error.message).to.equal(`${knowClaim} has incorrect value`)
+      }
+    });
+
+    it("should check that multiple errors return in one message", () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { aud, iss, ...payloadWithoutClaim } = claims as any;
       try {
