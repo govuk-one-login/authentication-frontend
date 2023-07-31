@@ -22,7 +22,7 @@ import {
   JwtServiceInterface,
   KmsDecryptionServiceInterface,
 } from "../types";
-import { BadRequestError } from "../../../utils/error";
+import { BadRequestError, QueryParamsError } from "../../../utils/error";
 
 describe("authorize controller", () => {
   let req: RequestOutput;
@@ -35,6 +35,10 @@ describe("authorize controller", () => {
       log: { info: sinon.fake() },
       t: sinon.fake(),
       i18n: { language: "en" },
+      query: {
+        client_id: "orchestrationAuth",
+        response_type: "code"
+      }
     });
     res = mockResponse();
   });
@@ -490,6 +494,58 @@ describe("authorize controller", () => {
         fakejwt
       )(req as Request, res as Response);
       expect(fakejwt.validateClaims).to.have.returned({ test: "test" });
+    });
+
+    describe("Query parameters validation", () => {
+      let fakeAuthorizeService: AuthorizeServiceInterface;
+      let fakeCookieConsentService: CookieConsentServiceInterface;
+
+      beforeEach(() => {
+        fakeAuthorizeService = {
+          start: sinon.fake.returns({
+            data: {
+              client: {
+                scopes: ["openid", "profile"],
+                serviceType: "MANDATORY",
+                clientName: "Test client",
+                cookieConsentShared: true,
+              },
+              user: {},
+            },
+            success: true,
+          }),
+        } as unknown as AuthorizeServiceInterface;
+  
+        fakeCookieConsentService = {
+          getCookieConsent: sinon.fake(),
+          createConsentCookieValue: sinon.fake(),
+        };
+      });
+
+
+      it("should throw an error if client_id does not exist in the query params" , async () => {
+        delete req.query.client_id;
+  
+        await expect(authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(req as Request, res as Response))
+        .to.eventually.be.rejectedWith("Client ID does not exist")
+        .and.be.an.instanceOf(QueryParamsError);
+      });
+
+      it("should throw an error if response_type does not exist in the query params" , async () => {
+        delete req.query.response_type;
+  
+        await expect(authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(req as Request, res as Response))
+        .to.eventually.be.rejectedWith("Response type does not exist")
+        .and.be.an.instanceOf(QueryParamsError);
+      });
+
+      it("should throw an error if client_id value is incorrect in the query params" , async () => {
+        req.query.client_id = "wrong_client id"
+  
+        await expect(authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(req as Request, res as Response))
+        .to.eventually.be.rejectedWith("Client ID value is incorrect")
+        .and.be.an.instanceOf(QueryParamsError);
+      });
     });
   });
 });

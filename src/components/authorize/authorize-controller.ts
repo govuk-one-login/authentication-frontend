@@ -7,7 +7,7 @@ import {
   API_ERROR_CODES,
 } from "../../app.constants";
 import { getNextPathAndUpdateJourney } from "../common/constants";
-import { BadRequestError } from "../../utils/error";
+import { BadRequestError, QueryParamsError } from "../../utils/error";
 import { ExpressRouteFunc } from "../../types";
 import {
   CookieConsentModel,
@@ -24,6 +24,7 @@ import {
 } from "./types";
 import { KmsDecryptionService } from "./kms-decryption-service";
 import { JwtService } from "./jwt-service";
+import { expectedClientId } from "./claims-config";
 
 function createConsentCookie(
   res: Response,
@@ -45,6 +46,11 @@ export function authorizeGet(
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const loginPrompt = sanitize(req.query.prompt as string);
+
+    const clientId = req.query.client_id as string;
+    const responseType = req.query.response_type as string;
+
+    validateQueryParams(clientId, responseType);
 
     if (req.query.request !== undefined) {
       const encryptedAuthRequestJWE = req.query.request as string;
@@ -152,4 +158,18 @@ export function authorizeGet(
 
     return res.redirect(redirectPath);
   };
+}
+
+function validateQueryParams(client_id: string, response_type: string) {
+  if (client_id === undefined) {
+    throw new QueryParamsError("Client ID does not exist");
+  }
+
+  if (response_type ===  undefined) {
+    throw new QueryParamsError("Response type does not exist");
+  }
+
+  if (client_id !== expectedClientId) {
+    throw new QueryParamsError("Client ID value is incorrect");
+  }
 }

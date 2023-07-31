@@ -51,6 +51,13 @@ export class JwtPayloadParseError extends Error {
   }
 }
 
+export class QueryParamsError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "QueryParamsError";
+  }
+}
+
 export class ClaimsError extends Error {
   constructor(message: string) {
     super(message);
