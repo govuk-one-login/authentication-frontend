@@ -130,7 +130,7 @@ describe("JWT service", () => {
 
     it("Should throw ClaimsError if missing claim", () => {
       Object.keys(claims).forEach((claim) => {
-        const withoutClaim = {...claims};
+        const withoutClaim = { ...claims };
         try {
           delete withoutClaim[claim];
           jwtService.validateClaims(withoutClaim);
@@ -142,17 +142,22 @@ describe("JWT service", () => {
       });
     });
 
-    it("should throw a claims error if incorrect value for claim", () => {
-      const knowClaim = Object.keys(getKnownClaims())[0];
-      claims[knowClaim] = "Incorrect value";
+    it("Should throw ClaimsError if type of claim is incorrect", () => {
+      type nonExisitngType = { notatype: null };
 
-      try {
-        jwtService.validateClaims(claims);
-        assert.fail("Expected error to be thrown");
-      } catch (error) {
-        expect(error).to.be.an.instanceOf(ClaimsError);
-        expect(error.message).to.equal(`${knowClaim} has incorrect value`)
-      }
+      Object.keys(claims).forEach((claim) => {
+        const incorrectTypeClaim = { ...claims };
+        try {
+          delete incorrectTypeClaim[claim];
+          incorrectTypeClaim[claim] = {} as nonExisitngType;
+
+          jwtService.validateClaims(incorrectTypeClaim);
+          assert.fail("Expected error to be thrown");
+        } catch (error) {
+          expect(error).to.be.an.instanceOf(ClaimsError);
+          expect(error.message).to.equal(`${claim} claim type is incorrect`);
+        }
+      });
     });
 
     it("should check that multiple errors return in one message", () => {
@@ -164,6 +169,19 @@ describe("JWT service", () => {
         expect(error).to.be.an.instanceOf(ClaimsError);
         expect(error.message).to.contain("iss claim missing");
         expect(error.message).to.contain("aud claim missing");
+      }
+    });
+
+    it("should throw a claims error if incorrect value for claim", () => {
+      const knowClaim = Object.keys(getKnownClaims())[0];
+      claims[knowClaim] = "Incorrect value";
+
+      try {
+        jwtService.validateClaims(claims);
+        assert.fail("Expected error to be thrown");
+      } catch (error) {
+        expect(error).to.be.an.instanceOf(ClaimsError);
+        expect(error.message).to.equal(`${knowClaim} has incorrect value`);
       }
     });
 

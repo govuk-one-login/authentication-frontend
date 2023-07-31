@@ -64,6 +64,7 @@ describe("Integration:: authorize", () => {
   it("should redirect to /sign-in-or-create", (done) => {
     request(app)
       .get(PATH_NAMES.AUTHORIZE)
+      .query({ client_id: "orchestrationAuth", response_type: "code" })
       .expect("Location", PATH_NAMES.SIGN_IN_OR_CREATE)
       .expect(302, done);
   });

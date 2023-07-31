@@ -47,14 +47,36 @@ export class JwtService implements JwtServiceInterface {
   }
 
   validateClaims(claims: any): Claims {
-    const errors = [];
+    this.checkClaimsShapeAndType(claims);
 
-    const claimsfields = getClaimsObject();
-    const expectedkeys = Object.keys(claimsfields);
+    this.checkClaimsProperties(claims);
 
-    expectedkeys.forEach((claim) => {
+    return claims;
+  }
+
+  checkClaimsShapeAndType(claims: any): void {
+    const errors: string[] = [];
+
+    Object.entries(getClaimsObject()).forEach(([claim, claimValue]) => {
       if (!Object.prototype.hasOwnProperty.call(claims, claim)) {
         errors.push(`${claim} claim missing`);
+      } else if (typeof claims[claim] !== typeof claimValue) {
+        errors.push(`${claim} claim type is incorrect`);
+      }
+    });
+
+    if (errors.length > 0) {
+      throw new ClaimsError(errors.join("\r\n"));
+    }
+  }
+
+  checkClaimsProperties(claims: any): void {
+    const errors: string[] = [];
+    const requiredclaims = getKnownClaims();
+
+    Object.keys(requiredclaims).forEach((claim) => {
+      if (requiredclaims[claim] !== claims[claim]) {
+        errors.push(`${claim} has incorrect value`);
       }
     });
 
@@ -69,19 +91,5 @@ export class JwtService implements JwtServiceInterface {
     if (errors.length > 0) {
       throw new ClaimsError(errors.join("\r\n"));
     }
-
-    const requiredclaims = getKnownClaims();
-
-    Object.keys(requiredclaims).forEach((claim) => {
-      if (requiredclaims[claim] !== claims[claim]) {
-        errors.push(`${claim} has incorrect value`);
-      }
-    });
-
-    if (errors.length > 0) {
-      throw new ClaimsError(errors.join("\r\n"));
-    }
-
-    return claims;
   }
 }

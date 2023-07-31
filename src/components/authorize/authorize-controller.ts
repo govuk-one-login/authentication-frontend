@@ -62,7 +62,9 @@ export function authorizeGet(
         authRequestJweDecryptedAsJwt
       );
 
-      jwtService.validateClaims(claims);
+      const validateClaims = jwtService.validateClaims(claims);
+
+      validateQueryParamsAgainstClaims(clientId, validateClaims.client_id);
     }
 
     const startAuthResponse = await authService.start(
@@ -160,16 +162,27 @@ export function authorizeGet(
   };
 }
 
-function validateQueryParams(client_id: string, response_type: string) {
-  if (client_id === undefined) {
+function validateQueryParams(clientId: string, responseType: string) {
+  if (clientId === undefined) {
     throw new QueryParamsError("Client ID does not exist");
   }
 
-  if (response_type ===  undefined) {
+  if (responseType === undefined) {
     throw new QueryParamsError("Response type does not exist");
   }
 
-  if (client_id !== expectedClientId) {
+  if (clientId !== expectedClientId) {
     throw new QueryParamsError("Client ID value is incorrect");
+  }
+}
+
+function validateQueryParamsAgainstClaims(
+  requestClientId: string,
+  claimsClientId: string
+) {
+  if (requestClientId !== claimsClientId) {
+    throw new QueryParamsError(
+      "Request Client ID does not equal Claims Client ID"
+    );
   }
 }
