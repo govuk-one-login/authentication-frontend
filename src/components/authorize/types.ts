@@ -1,4 +1,5 @@
 import { ApiResponseResult, DefaultApiResponse } from "../../types";
+import { Claims } from "./claims-config";
 
 export interface StartAuthResponse extends DefaultApiResponse {
   client: ClientInfo;
@@ -43,5 +44,5 @@ export interface KmsDecryptionServiceInterface {
 export interface JwtServiceInterface {
   signatureCheck(jwt: string): Promise<boolean>;
   getPayloadWithSigCheck(jwt: string): Promise<any>;
-  validateClaims(claims: any): any;
+  validateClaims(claims: any): Claims;
 }

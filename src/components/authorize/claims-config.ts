@@ -7,6 +7,11 @@ export function getKnownClaims(): {
   };
 }
 
+// Single source of truth for claims type and claims object keys
+
+export type Claims = typeof claimsInstance;
+// construct object for type
+const claimsInstance = getClaimsObject();
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function getClaimsObject() {
   return {

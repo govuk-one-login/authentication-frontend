@@ -7,7 +7,7 @@ import {
   JwtPayloadParseError,
   JwtSignatureVerificationError,
 } from "../../utils/error";
-import { getClaimsObject, getKnownClaims } from "./claims-config";
+import { Claims, getClaimsObject, getKnownClaims } from "./claims-config";
 
 export class JwtService implements JwtServiceInterface {
   private readonly publicKey;
@@ -46,7 +46,7 @@ export class JwtService implements JwtServiceInterface {
     return JSON.parse(buffer.toString());
   }
 
-  validateClaims(claims: any): any {
+  validateClaims(claims: any): Claims {
     const errors = [];
 
     const claimsfields = getClaimsObject();
