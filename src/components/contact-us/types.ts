@@ -10,6 +10,7 @@ export interface ContactForm {
   themeQuestions: ThemeQuestions;
   referer: string;
   securityCodeSentMethod?: string;
+  identityDocumentUsed?: string;
 }
 
 export interface OptionalData {

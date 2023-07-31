@@ -22,6 +22,16 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           }
         );
       }),
+    body("identityDocumentUsed")
+      .if(body("theme").equals("id_check_app"))
+      .if(body("subtheme").equals("taking_photo_of_id_problem"))
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.takingPhotoOfIdProblem.identityDocument.errorMessage",
+          { value, lng: "en" }
+        );
+      }),
     body("issueDescription")
       .optional()
       .notEmpty()

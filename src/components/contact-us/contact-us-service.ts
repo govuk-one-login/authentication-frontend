@@ -23,6 +23,50 @@ export function getZendeskIdentifierTag(theme: string): string {
   return "govuk_sign_in";
 }
 
+export function prepareIdentityDocumentTitleForZendesk(
+  identityDocumentUsed: string
+): string {
+  let documentUsedDescription = "";
+  switch (identityDocumentUsed) {
+    case "passport":
+      documentUsedDescription = "Passport";
+      break;
+    case "biometricResidencePermit":
+      documentUsedDescription = "Biometric residence permit";
+      break;
+    case "drivingLicence":
+      documentUsedDescription = "Driving licence";
+  }
+
+  return documentUsedDescription;
+}
+
+export function prepareSecurityCodeSendMethodTitleForZendesk(
+  securityCodeSentMethod: string
+): string {
+  let securityCodeMethod = "";
+  switch (securityCodeSentMethod) {
+    case "email":
+      securityCodeMethod = "Email";
+      break;
+    case "text_message":
+      securityCodeMethod = "Text message";
+      break;
+    case "text_message_uk_number":
+      securityCodeMethod = "Text message to a UK phone number";
+      break;
+    case "text_message_international_number":
+      securityCodeMethod =
+        "Text message to a phone number from another country";
+      break;
+    case "authenticator_app":
+      securityCodeMethod = "Authenticator app";
+      break;
+  }
+
+  return securityCodeMethod;
+}
+
 export function contactUsService(
   zendeskClient: ZendeskInterface = defaultZendeskClient
 ): ContactUsServiceInterface {
@@ -39,7 +83,8 @@ export function contactUsService(
             contactForm.questions,
             contactForm.themeQuestions,
             contactForm.referer,
-            contactForm.securityCodeSentMethod
+            contactForm.securityCodeSentMethod,
+            contactForm.identityDocumentUsed
           ),
         },
         group_id: getZendeskGroupIdPublic(),
@@ -109,7 +154,8 @@ export function contactUsService(
     questions: Questions,
     themeQuestions: ThemeQuestions,
     referer: string,
-    securityCodeSentMethod: string
+    securityCodeSentMethod: string,
+    identityDocumentUsed: string
   ) {
     const htmlBody = [];
 
@@ -121,28 +167,20 @@ export function contactUsService(
       htmlBody.push(`<p>${themeQuestions.subthemeQuestion}</p>`);
     }
 
-    if (securityCodeSentMethod) {
-      let securityCodeMethod = "";
-      switch (securityCodeSentMethod) {
-        case "email":
-          securityCodeMethod = "Email";
-          break;
-        case "text_message":
-          securityCodeMethod = "Text message";
-          break;
-        case "text_message_uk_number":
-          securityCodeMethod = "Text message to a UK phone number";
-          break;
-        case "text_message_international_number":
-          securityCodeMethod =
-            "Text message to a phone number from another country";
-          break;
-        case "authenticator_app":
-          securityCodeMethod = "Authenticator app";
-          break;
-      }
+    if (identityDocumentUsed) {
       htmlBody.push(`<span>[${questions.radioButtons}]</span>`);
-      htmlBody.push(`<p>${securityCodeMethod}</p>`);
+      htmlBody.push(
+        `<p>${prepareIdentityDocumentTitleForZendesk(identityDocumentUsed)}</p>`
+      );
+    }
+
+    if (securityCodeSentMethod) {
+      htmlBody.push(`<span>[${questions.radioButtons}]</span>`);
+      htmlBody.push(
+        `<p>${prepareSecurityCodeSendMethodTitleForZendesk(
+          securityCodeSentMethod
+        )}</p>`
+      );
     }
 
     if (descriptions.issueDescription) {
