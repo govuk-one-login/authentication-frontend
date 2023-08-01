@@ -596,57 +596,14 @@
       "header": "Diweddariad telerau defnyddio GOV.UK One Login",
       "paragraph1": {
         "text": "Rydym wedi diweddaru ein ",
-        "and": "a",
         "termsAndConditionsHref": "terms-and-conditions",
         "termsAndConditionsText": "telerau ac amodau",
+        "and": "a",
         "privacyNoticeHref": "/privacy-notice",
-        "privacyNoticeText": "hysbysiad preifatrwydd",
-        "cookiesPolicyText": "polisi cwcis"
+        "privacyNoticeText": "hysbysiad preifatrwydd"
       },
       "paragraph2": "Drwy barhau rydych yn cytuno i’n telerau defnydd wedi’u diweddaru.",
-      "agreeAndContinue": "Cytuno a pharhau",
-      "doNotAgree": "Nid wyf yn cytuno"
-    },
-    "updatedTermsAndCondsMandatory": {
-      "title": "Cytuno i’r telerau defnydd diwygiedig i barhau",
-      "header": "Cytuno i’r telerau defnydd diwygiedig i barhau",
-      "info": {
-        "text": "Mae angen i chi gytuno i’n",
-        "and": "a",
-        "termsAndConditionsText": "telerau ac amodau",
-        "privacyNoticeText": "hysbysiad preifatrwydd",
-        "cookiesPolicyText": "polisi cwcis",
-        "end": "diwygiedig i ddefnyddio’r gwasanaeth hwn."
-      },
-      "agreeAndContinue": "Cytuno a pharhau",
-      "goBackToService": "Ewch yn ôl i’r gwasanaeth roeddech yn ei ddefnyddio."
-    },
-    "updatedTermsAndCondsOptional": {
-      "title": "Mae angen i chi gytuno i’r telerau defnydd diwygiedig i arbed eich cynnydd",
-      "header": "Mae angen i chi gytuno i’r telerau defnydd diwygiedig i arbed eich cynnydd",
-      "paragraph1": "Os nad ydych yn cytuno, gallwch ",
-      "paragraph1Continued": "barhau heb arbed eich cynnydd.",
-      "agreeToTheTerms": "Cytuno i’r telerau",
-      "continueWithoutSaving": "Parhau heb arbed"
-    },
-    "updatedTermsAndCondsNonServiceRejected": {
-      "title": "Cytuno i’r telerau defnydd wedi’u diweddaru i fynd yn eich blaen",
-      "header": "Cytuno i’r telerau defnydd wedi’u diweddaru i fynd yn eich blaen",
-      "info": {
-        "text": "Mae angen i chi gytuno i’n",
-        "and": "a",
-        "termsAndConditionsText": "telerau ac amodau",
-        "privacyNoticeText": "hysbysiad preifatrwydd",
-        "cookiesPolicyText": "polisi cwcis",
-        "end": "i barhau i ddefnyddio eich cyfrif."
-      },
-      "section2": {
-        "paragraph1": "Os nad ydych yn cytuno i’r telerau newydd, ni allwch ddefnyddio eich GOV.UK One Login.",
-        "govUkHomePageText": "Ewch i hafan GOV.UK.",
-        "paragraph2": "Os nad ydych angen eich GOV.UK One Login mwyach, neu os ydych am ddileu gwybodaeth sydd wedi’i arbed yn eich GOV.UK One Login, gallwch ",
-        "contactUsText": "gysylltu â ni."
-      },
-      "agreeAndContinue": "Cytuno a pharhau"
+      "agreeAndContinue": "Parhau"
     },
     "cookiePolicy": {
       "title": "Polisi cwcis GOV.UK One Login",

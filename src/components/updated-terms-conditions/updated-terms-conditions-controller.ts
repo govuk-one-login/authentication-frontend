@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
 import { BadRequestError } from "../../utils/error";
-import { EXTERNAL_LINKS, PATH_NAMES, SERVICE_TYPE } from "../../app.constants";
+import { EXTERNAL_LINKS, PATH_NAMES } from "../../app.constants";
 import {
   UpdateProfileServiceInterface,
   UpdateType,
@@ -12,23 +12,6 @@ import { getNextPathAndUpdateJourney } from "../common/constants";
 
 export function updatedTermsConditionsGet(req: Request, res: Response): void {
   res.render("updated-terms-conditions/index.njk");
-}
-
-export function updatedTermsRejectedGet(req: Request, res: Response): void {
-  let view: string;
-
-  if (req.session.client.serviceType === SERVICE_TYPE.OPTIONAL) {
-    view = "index-optional.njk";
-  } else if (req.session.client.serviceType === SERVICE_TYPE.MANDATORY) {
-    view = "index-mandatory.njk";
-  } else {
-    view = "index-non-service-rejected.njk";
-  }
-
-  return res.render("updated-terms-conditions/" + view, {
-    clientName: req.session.client.name,
-    redirectUri: req.session.client.redirectUri,
-  });
 }
 
 export function updatedTermsConditionsPost(

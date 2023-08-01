@@ -10,12 +10,10 @@
 <p class="govuk-body govuk-white-text">
     {{ 'pages.updatedTermsAndConds.paragraph1.text' | translate }}
     <a class="govuk-white-text"
-       href="{{ 'pages.updatedTermsAndConds.paragraph1.termsAndConditionsHref' | translate }}">{{ 'pages.updatedTermsAndConds.paragraph1.termsAndConditionsText' | translate }}</a>,
-    <a class="govuk-white-text"
-       href="{{ 'pages.updatedTermsAndConds.paragraph1.privacyNoticeHref' | translate }}">{{ 'pages.updatedTermsAndConds.paragraph1.privacyNoticeText' | translate }}</a>
+       href="{{ 'pages.updatedTermsAndConds.paragraph1.termsAndConditionsHref' | translate }}">{{ 'pages.updatedTermsAndConds.paragraph1.termsAndConditionsText' | translate }}</a>
     {{ 'pages.updatedTermsAndConds.paragraph1.and' | translate }}
     <a class="govuk-white-text"
-       href="/cookies">{{ 'pages.updatedTermsAndConds.paragraph1.cookiesPolicyText' | translate }}</a>.
+       href="{{ 'pages.updatedTermsAndConds.paragraph1.privacyNoticeHref' | translate }}">{{ 'pages.updatedTermsAndConds.paragraph1.privacyNoticeText' | translate }}</a>.
 </p>
 <p class="govuk-body govuk-white-text">{{ 'pages.updatedTermsAndConds.paragraph2' | translate }}</p>
 
@@ -33,10 +31,6 @@
     }) }}
 
     <br >
-
-    <a href="/updated-terms-and-conditions-disagree" class="govuk-white-link inverted-button-link govuk-body">
-        {{'pages.updatedTermsAndConds.doNotAgree' | translate}}
-    </a>
 
 </form>
 {% endblock %}

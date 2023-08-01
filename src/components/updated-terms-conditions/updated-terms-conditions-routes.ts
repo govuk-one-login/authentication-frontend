@@ -4,7 +4,6 @@ import * as express from "express";
 import {
   updatedTermsConditionsGet,
   updatedTermsConditionsPost,
-  updatedTermsRejectedGet,
 } from "./updated-terms-conditions-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { asyncHandler } from "../../utils/async";
@@ -17,13 +16,6 @@ router.get(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   updatedTermsConditionsGet
-);
-
-router.get(
-  PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS_DISAGREE,
-  validateSessionMiddleware,
-  allowUserJourneyMiddleware,
-  updatedTermsRejectedGet
 );
 
 router.post(
