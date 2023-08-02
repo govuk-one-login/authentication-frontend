@@ -56,6 +56,7 @@ export function authorizeGet(
     const authRequestJweDecryptedAsJwt = await kmsService.decrypt(
       encryptedAuthRequestJWE
     );
+
     const claims = await jwtService.getPayloadWithSigCheck(
       authRequestJweDecryptedAsJwt
     );
@@ -76,7 +77,7 @@ export function authorizeGet(
       if (
         startAuthResponse.data.code &&
         startAuthResponse.data.code ===
-        API_ERROR_CODES.SESSION_ID_MISSING_OR_INVALID
+          API_ERROR_CODES.SESSION_ID_MISSING_OR_INVALID
       ) {
         startError.level = ERROR_LOG_LEVEL.INFO;
       }

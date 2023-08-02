@@ -209,27 +209,27 @@ describe("JWT service", () => {
       }
     });
   });
-
-  function createmockclaims(): any {
-    const timestamp = Math.floor(new Date().getTime() / 1000);
-    return {
-      confidence: "Cl.Cm",
-      iss: "UNKNOWN",
-      consent_required: false,
-      client_id: "UNKNOWN",
-      govuk_signin_journey_id: "QOFzoB3o-9gGplMgdT1dJfH4vaI",
-      aud: "UNKNOWN",
-      service_type: "MANDATORY",
-      nbf: timestamp,
-      cookie_consent_shared: true,
-      scope: "openid email phone",
-      state: "WLUNPYv0RPdVjhBsG4QMHYYMhGaOc8X-t83Y1XsVh1w",
-      redirect_uri: "UNKNOWN",
-      exp: timestamp + 1000,
-      iat: timestamp,
-      client_name: "di-auth-stub-relying-party-sandpit",
-      is_one_login_service: false,
-      jti: "fvvMWAladDtl35O_xyBTRLwwojA",
-    };
-  }
 });
+
+export function createmockclaims(): any {
+  const timestamp = Math.floor(new Date().getTime() / 1000);
+  return {
+    confidence: "Cl.Cm",
+    iss: "UNKNOWN",
+    consent_required: false,
+    client_id: "UNKNOWN",
+    govuk_signin_journey_id: "QOFzoB3o-9gGplMgdT1dJfH4vaI",
+    aud: "UNKNOWN",
+    service_type: "MANDATORY",
+    nbf: timestamp,
+    cookie_consent_shared: true,
+    scope: "openid email phone",
+    state: "WLUNPYv0RPdVjhBsG4QMHYYMhGaOc8X-t83Y1XsVh1w",
+    redirect_uri: "UNKNOWN",
+    exp: timestamp + 1000,
+    iat: timestamp,
+    client_name: "di-auth-stub-relying-party-sandpit",
+    is_one_login_service: false,
+    jti: "fvvMWAladDtl35O_xyBTRLwwojA",
+  };
+}

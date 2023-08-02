@@ -72,15 +72,20 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-        res as Response
-      );
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
     });
 
     it("should redirect to /sign-in-or-create page with cookie preferences set", async () => {
-      authServiceResponseData.data.user = { cookieConsent: COOKIE_CONSENT.ACCEPT }
+      authServiceResponseData.data.user = {
+        cookieConsent: COOKIE_CONSENT.ACCEPT,
+      };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
@@ -91,10 +96,12 @@ describe("authorize controller", () => {
         }),
       } as unknown as CookieConsentServiceInterface;
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(
-        req as Request,
-        res as Response
-      );
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
 
       expect(res.cookie).to.have.been.called;
       expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
@@ -105,7 +112,7 @@ describe("authorize controller", () => {
         upliftRequired: true,
         authenticated: true,
         mfaMethodType: "SMS",
-      }
+      };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
@@ -113,9 +120,12 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-        res as Response
-      );
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.UPLIFT_JOURNEY);
     });
@@ -125,7 +135,7 @@ describe("authorize controller", () => {
         upliftRequired: true,
         authenticated: true,
         mfaMethodType: "AUTH_APP",
-      }
+      };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
@@ -133,9 +143,12 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-        res as Response
-      );
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
@@ -149,7 +162,7 @@ describe("authorize controller", () => {
         identityRequired: false,
         upliftRequired: false,
         authenticated: true,
-      }
+      };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
@@ -157,9 +170,12 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-        res as Response
-      );
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
     });
@@ -170,7 +186,7 @@ describe("authorize controller", () => {
         identityRequired: false,
         upliftRequired: false,
         authenticated: true,
-      }
+      };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
@@ -178,9 +194,12 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-        res as Response
-      );
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.SHARE_INFO);
     });
@@ -191,7 +210,7 @@ describe("authorize controller", () => {
         identityRequired: true,
         upliftRequired: false,
         authenticated: true,
-      }
+      };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
@@ -199,9 +218,12 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-        res as Response
-      );
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.PROVE_IDENTITY_WELCOME
@@ -223,9 +245,12 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-        res as Response
-      );
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_PASSWORD);
     });
@@ -250,9 +275,12 @@ describe("authorize controller", () => {
         }),
       } as unknown as CookieConsentServiceInterface;
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-        res as Response
-      );
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
 
       expect(res.cookie).to.have.been.called;
       expect(res.redirect).to.have.calledWith(
@@ -278,9 +306,12 @@ describe("authorize controller", () => {
         }),
       } as unknown as CookieConsentServiceInterface;
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-        res as Response
-      );
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.DOC_CHECKING_APP);
     });
@@ -302,9 +333,12 @@ describe("authorize controller", () => {
       };
 
       await expect(
-        authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-          res as Response
-        )
+        authorizeGet(
+          fakeAuthorizeService,
+          fakeCookieConsentService,
+          fakeKmsDecryptionService,
+          fakeJwtService
+        )(req as Request, res as Response)
       )
         .to.eventually.be.rejectedWith("1000:Session-Id is missing or invalid")
         .and.be.an.instanceOf(BadRequestError)
@@ -328,9 +362,12 @@ describe("authorize controller", () => {
       };
 
       await expect(
-        authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-          res as Response
-        )
+        authorizeGet(
+          fakeAuthorizeService,
+          fakeCookieConsentService,
+          fakeKmsDecryptionService,
+          fakeJwtService
+        )(req as Request, res as Response)
       )
         .to.eventually.be.rejectedWith("1001:Request is missing parameters")
         .and.be.an.instanceOf(BadRequestError)
@@ -378,9 +415,12 @@ describe("authorize controller", () => {
       delete req.query.client_id;
 
       await expect(
-        authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-          res as Response
-        )
+        authorizeGet(
+          fakeAuthorizeService,
+          fakeCookieConsentService,
+          fakeKmsDecryptionService,
+          fakeJwtService
+        )(req as Request, res as Response)
       )
         .to.eventually.be.rejectedWith("Client ID does not exist")
         .and.be.an.instanceOf(QueryParamsError);
@@ -390,9 +430,12 @@ describe("authorize controller", () => {
       delete req.query.response_type;
 
       await expect(
-        authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-          res as Response
-        )
+        authorizeGet(
+          fakeAuthorizeService,
+          fakeCookieConsentService,
+          fakeKmsDecryptionService,
+          fakeJwtService
+        )(req as Request, res as Response)
       )
         .to.eventually.be.rejectedWith("Response type does not exist")
         .and.be.an.instanceOf(QueryParamsError);
@@ -402,9 +445,12 @@ describe("authorize controller", () => {
       req.query.client_id = "wrong_client id";
 
       await expect(
-        authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
-          res as Response
-        )
+        authorizeGet(
+          fakeAuthorizeService,
+          fakeCookieConsentService,
+          fakeKmsDecryptionService,
+          fakeJwtService
+        )(req as Request, res as Response)
       )
         .to.eventually.be.rejectedWith("Client ID value is incorrect")
         .and.be.an.instanceOf(QueryParamsError);
@@ -431,6 +477,6 @@ describe("authorize controller", () => {
         user: {},
       },
       success: true,
-    }
+    };
   }
 });
