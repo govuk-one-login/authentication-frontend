@@ -59,9 +59,7 @@ export function authorizeGet(
     const claims = await jwtService.getPayloadWithSigCheck(
       authRequestJweDecryptedAsJwt
     );
-    const validateClaims = jwtService.validateClaims(claims);
-
-    validateQueryParamsAgainstClaims(clientId, validateClaims.client_id);
+    jwtService.validateClaims(claims);
 
     const startAuthResponse = await authService.start(
       sessionId,
@@ -169,16 +167,5 @@ function validateQueryParams(clientId: string, responseType: string) {
 
   if (clientId !== expectedClientId) {
     throw new QueryParamsError("Client ID value is incorrect");
-  }
-}
-
-function validateQueryParamsAgainstClaims(
-  requestClientId: string,
-  claimsClientId: string
-) {
-  if (requestClientId !== claimsClientId) {
-    throw new QueryParamsError(
-      "Request Client ID does not equal Claims Client ID"
-    );
   }
 }
