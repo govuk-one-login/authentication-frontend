@@ -52,20 +52,16 @@ export function authorizeGet(
 
     validateQueryParams(clientId, responseType);
 
-    if (req.query.request !== undefined) {
-      const encryptedAuthRequestJWE = req.query.request as string;
-      const authRequestJweDecryptedAsJwt = await kmsService.decrypt(
-        encryptedAuthRequestJWE
-      );
+    const encryptedAuthRequestJWE = req.query.request as string;
+    const authRequestJweDecryptedAsJwt = await kmsService.decrypt(
+      encryptedAuthRequestJWE
+    );
+    const claims = await jwtService.getPayloadWithSigCheck(
+      authRequestJweDecryptedAsJwt
+    );
+    const validateClaims = jwtService.validateClaims(claims);
 
-      const claims = await jwtService.getPayloadWithSigCheck(
-        authRequestJweDecryptedAsJwt
-      );
-
-      const validateClaims = jwtService.validateClaims(claims);
-
-      validateQueryParamsAgainstClaims(clientId, validateClaims.client_id);
-    }
+    validateQueryParamsAgainstClaims(clientId, validateClaims.client_id);
 
     const startAuthResponse = await authService.start(
       sessionId,
@@ -82,7 +78,7 @@ export function authorizeGet(
       if (
         startAuthResponse.data.code &&
         startAuthResponse.data.code ===
-          API_ERROR_CODES.SESSION_ID_MISSING_OR_INVALID
+        API_ERROR_CODES.SESSION_ID_MISSING_OR_INVALID
       ) {
         startError.level = ERROR_LOG_LEVEL.INFO;
       }

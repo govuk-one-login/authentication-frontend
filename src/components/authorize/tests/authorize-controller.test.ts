@@ -29,6 +29,8 @@ describe("authorize controller", () => {
   let res: ResponseOutput;
   let authServiceResponseData: any;
   let fakeAuthorizeService: AuthorizeServiceInterface;
+  let fakeKmsDecryptionService: KmsDecryptionServiceInterface;
+  let fakeJwtService: JwtServiceInterface;
 
   beforeEach(() => {
     req = mockRequest({
@@ -44,6 +46,17 @@ describe("authorize controller", () => {
     });
     res = mockResponse();
     authServiceResponseData = createAuthServiceReponseData();
+
+    fakeKmsDecryptionService = {
+      decrypt: sinon.fake.returns(Promise.resolve("jwt")),
+    };
+    fakeJwtService = {
+      getPayloadWithSigCheck: sinon.fake.returns(
+        Promise.resolve({ client_id: req.query.client_id } as any)
+      ),
+      signatureCheck: sinon.fake.returns(Promise.resolve(true)),
+      validateClaims: sinon.stub().returnsArg(0),
+    };
   });
 
   afterEach(() => {
@@ -59,8 +72,7 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-        req as Request,
+      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
         res as Response
       );
 
@@ -79,7 +91,7 @@ describe("authorize controller", () => {
         }),
       } as unknown as CookieConsentServiceInterface;
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
+      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(
         req as Request,
         res as Response
       );
@@ -101,8 +113,7 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-        req as Request,
+      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
         res as Response
       );
 
@@ -122,8 +133,7 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-        req as Request,
+      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
         res as Response
       );
 
@@ -147,8 +157,7 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-        req as Request,
+      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
         res as Response
       );
 
@@ -169,8 +178,7 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-        req as Request,
+      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
         res as Response
       );
 
@@ -191,8 +199,7 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-        req as Request,
+      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
         res as Response
       );
 
@@ -216,8 +223,7 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-        req as Request,
+      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
         res as Response
       );
 
@@ -244,8 +250,7 @@ describe("authorize controller", () => {
         }),
       } as unknown as CookieConsentServiceInterface;
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-        req as Request,
+      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
         res as Response
       );
 
@@ -273,8 +278,7 @@ describe("authorize controller", () => {
         }),
       } as unknown as CookieConsentServiceInterface;
 
-      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-        req as Request,
+      await authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
         res as Response
       );
 
@@ -298,8 +302,7 @@ describe("authorize controller", () => {
       };
 
       await expect(
-        authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-          req as Request,
+        authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
           res as Response
         )
       )
@@ -325,8 +328,7 @@ describe("authorize controller", () => {
       };
 
       await expect(
-        authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-          req as Request,
+        authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
           res as Response
         )
       )
@@ -348,24 +350,14 @@ describe("authorize controller", () => {
         getCookieConsent: sinon.fake(),
         createConsentCookieValue: sinon.fake(),
       };
-      const fakeKms: KmsDecryptionServiceInterface = {
-        decrypt: sinon.fake.returns(Promise.resolve("jwt")),
-      };
-      const fakejwt: JwtServiceInterface = {
-        getPayloadWithSigCheck: sinon.fake.returns(
-          Promise.resolve({ client_id: req.query.client_id } as any)
-        ),
-        signatureCheck: sinon.fake.returns(Promise.resolve(true)),
-        validateClaims: sinon.stub().returnsArg(0),
-      };
 
       await authorizeGet(
         fakeAuthorizeService,
         fakeCookieConsentService,
-        fakeKms,
-        fakejwt
+        fakeKmsDecryptionService,
+        fakeJwtService
       )(req as Request, res as Response);
-      expect(fakejwt.validateClaims).to.have.returned({
+      expect(fakeJwtService.validateClaims).to.have.returned({
         client_id: "orchestrationAuth",
       });
     });
@@ -386,8 +378,7 @@ describe("authorize controller", () => {
       delete req.query.client_id;
 
       await expect(
-        authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-          req as Request,
+        authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
           res as Response
         )
       )
@@ -399,8 +390,7 @@ describe("authorize controller", () => {
       delete req.query.response_type;
 
       await expect(
-        authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-          req as Request,
+        authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
           res as Response
         )
       )
@@ -412,8 +402,7 @@ describe("authorize controller", () => {
       req.query.client_id = "wrong_client id";
 
       await expect(
-        authorizeGet(fakeAuthorizeService, fakeCookieConsentService)(
-          req as Request,
+        authorizeGet(fakeAuthorizeService, fakeCookieConsentService, fakeKmsDecryptionService, fakeJwtService)(req as Request,
           res as Response
         )
       )
