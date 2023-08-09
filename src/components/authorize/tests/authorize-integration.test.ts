@@ -12,14 +12,12 @@ import {
 } from "../types";
 import { createApiResponse } from "../../../utils/http";
 import { AxiosResponse } from "axios";
-import { createmockclaims } from "./jwt-service.test";
-import * as jose from "jose";
+import { createmockclaims, getPrivateKey, getPublicKey } from "./test-data";
 import { JwtService } from "../jwt-service";
+import { createJwt } from "./test-data";
 
 describe("Integration:: authorize", () => {
   let app: any;
-  let keyPair: jose.GenerateKeyPairResult<jose.KeyLike>;
-  let publicKey: string;
 
   before(async () => {
     process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
@@ -30,8 +28,9 @@ describe("Integration:: authorize", () => {
     const authorizeService = require("../authorize-service");
     const KmsDecryptionService = require("../kms-decryption-service");
     const jwtService = require("../jwt-service");
-    keyPair = await jose.generateKeyPair("ES256");
-    publicKey = await jose.exportSPKI(keyPair.publicKey);
+    const publicKey = getPublicKey();
+    const privateKey = await getPrivateKey();
+    const jwt = await createJwt(createmockclaims(), privateKey);
 
     sinon
       .stub(authorizeService, "authorizeService")
@@ -69,7 +68,7 @@ describe("Integration:: authorize", () => {
       .stub(KmsDecryptionService, "KmsDecryptionService")
       .callsFake((): KmsDecryptionServiceInterface => {
         async function decrypt() {
-          return Promise.resolve(createValidJwtWithClaims(keyPair.privateKey));
+          return Promise.resolve(jwt);
         }
         return { decrypt };
       });
@@ -101,12 +100,4 @@ describe("Integration:: authorize", () => {
       .expect("Location", PATH_NAMES.SIGN_IN_OR_CREATE)
       .expect(302, done);
   });
-
-  async function createValidJwtWithClaims(privateKey: jose.KeyLike) {
-    const claims = createmockclaims() as jose.JWTPayload;
-    const jwt = await new jose.SignJWT(claims)
-      .setProtectedHeader({ alg: "ES256" })
-      .sign(privateKey);
-    return jwt;
-  }
 });

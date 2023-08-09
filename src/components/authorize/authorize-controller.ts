@@ -57,10 +57,11 @@ export function authorizeGet(
       encryptedAuthRequestJWE
     );
 
-    const claims = await jwtService.getPayloadWithSigCheck(
+    const claims = await jwtService.getPayloadWithValidation(
       authRequestJweDecryptedAsJwt
     );
-    jwtService.validateClaims(claims);
+
+    jwtService.validateCustomClaims(claims);
 
     const startAuthResponse = await authService.start(
       sessionId,

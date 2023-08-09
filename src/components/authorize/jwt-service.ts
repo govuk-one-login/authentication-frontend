@@ -1,13 +1,8 @@
 import { JwtServiceInterface } from "./types";
-import crypto from "crypto";
-import format from "ecdsa-sig-formatter";
 import { getOrchToAuthSigningPublicKey } from "../../config";
-import {
-  ClaimsError,
-  JwtPayloadParseError,
-  JwtSignatureVerificationError,
-} from "../../utils/error";
+import { JwtClaimsValueError, JwtValidationError } from "../../utils/error";
 import { Claims, getClaimsObject, getKnownClaims } from "./claims-config";
+import * as jose from "jose";
 
 export class JwtService implements JwtServiceInterface {
   private readonly publicKey;
@@ -16,80 +11,27 @@ export class JwtService implements JwtServiceInterface {
     this.publicKey = publicKey;
   }
 
-  async signatureCheck(urlEncodedJwt: string): Promise<boolean> {
+  async getPayloadWithValidation(jwt: string): Promise<any> {
     try {
-      const [header, payload, signature] = urlEncodedJwt.split(".");
-      const derSignature = format.joseToDer(signature, "ES256");
-      const verify = crypto.createVerify("sha256");
-      verify.update(header + "." + payload);
-      return verify.verify(this.publicKey, derSignature);
+      const tempkey = await jose.importSPKI(this.publicKey, "ES256");
+      const { payload } = await jose.jwtVerify(jwt, tempkey, {
+        requiredClaims: Object.keys(getClaimsObject()),
+        clockTolerance: 30,
+      });
+      return Promise.resolve(payload);
     } catch (error) {
-      throw new JwtSignatureVerificationError(
-        "Failed to verify signature",
-        error
-      );
+      throw new JwtValidationError(error.message);
     }
   }
 
-  async getPayloadWithSigCheck(jwt: string): Promise<any> {
-    const jwtElements = jwt.split(".");
-    if (jwtElements.length !== 3) {
-      throw new JwtPayloadParseError("JWT was not three elements");
-    }
-
-    if ((await this.signatureCheck(jwt)) === false) {
-      throw new JwtSignatureVerificationError("Jwt Signature is not valid");
-    }
-    const payload = jwtElements[1];
-    const buffer = Buffer.from(payload, "base64url");
-
-    return JSON.parse(buffer.toString());
-  }
-
-  validateClaims(claims: any): Claims {
-    this.checkClaimsShapeAndType(claims);
-
-    this.checkClaimsProperties(claims);
-
-    return claims;
-  }
-
-  checkClaimsShapeAndType(claims: any): void {
-    const errors: string[] = [];
-
-    Object.entries(getClaimsObject()).forEach(([claim, claimValue]) => {
-      if (!Object.prototype.hasOwnProperty.call(claims, claim)) {
-        errors.push(`${claim} claim missing`);
-      } else if (typeof claims[claim] !== typeof claimValue) {
-        errors.push(`${claim} claim type is incorrect`);
-      }
-    });
-
-    if (errors.length > 0) {
-      throw new ClaimsError(errors.join("\r\n"));
-    }
-  }
-
-  checkClaimsProperties(claims: any): void {
-    const errors: string[] = [];
+  validateCustomClaims(claims: any): Claims {
     const requiredclaims = getKnownClaims();
 
     Object.keys(requiredclaims).forEach((claim) => {
       if (requiredclaims[claim] !== claims[claim]) {
-        errors.push(`${claim} has incorrect value`);
+        throw new JwtClaimsValueError(`${claim} has incorrect value`);
       }
     });
-
-    if (claims.exp <= Math.floor(new Date().getTime() / 1000)) {
-      errors.push("Token expired (exp)");
-    }
-
-    if (claims.nbf > Math.floor(new Date().getTime() / 1000)) {
-      errors.push("Token not yet valid (nbf)");
-    }
-
-    if (errors.length > 0) {
-      throw new ClaimsError(errors.join("\r\n"));
-    }
+    return claims;
   }
 }

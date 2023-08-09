@@ -1,235 +1,159 @@
 import { beforeEach, describe } from "mocha";
 import { assert, expect } from "chai";
 import { JwtService } from "../jwt-service";
-import {
-  JwtPayloadParseError,
-  JwtSignatureVerificationError,
-  ClaimsError,
-} from "../../../utils/error";
+import { JwtValidationError, JwtClaimsValueError } from "../../../utils/error";
 import { getKnownClaims } from "../claims-config";
-
-const validJwt =
-  "eyJhbGciOiJFUzI1NiJ9.eyJjbGllbnQtbmFtZSI6ImRpLWF1dGgtc3R1Yi1yZWx5aW5nLXBhcnR5LXNhbmRwaXQifQ.FFNDcj3znW5JPillhEIgCvWFCinlX0PMdvfVxgDArYueiVH6VDvlhaZyS70ocm9eOXBlB8pe449vpJrcKllBBg";
-const incorrectJwtSignature =
-  "eyJhbGciOiJFUzI1NiJ9.eyJjbGllbnQtbmFtZSI6ImRpLWF1dGgtc3R1Yi1yZWx5aW5nLXBhcnR5LXNhbmRwaXQifQ.FFNDcj3znW5JPillhEIgCvWFCinlX0PMdvfVxgDArYueiVH6VDvlhaZyS80ocm9eOXBlB8pe449vpJrcKllBBg";
-const invalidJwtSignature =
-  "eyJhbGciOiJFUzI1NiJ9.eyJjbGllbnQtbmFtZSI6ImRpLWF1dGgtc3R1Yi1yZWx5aW5nLXBhcnR5LXNhbmRwaXQifQ.FFNDcj3znW5JPillhEIgCvWFCinlX0PMdvfVxgDArYueiVH6VDvlhaZyS80ocm9eOXBlB8pe";
-const testPublicKey =
-  "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAESyWJU5s5F4jSovHsh9y133/Ogf5P\nx78OrfDJqiMMI2p8Warbq0ppcbWvbihK6rAXTH7bPIeOHOeU9cKAEl5NdQ==\n-----END PUBLIC KEY-----";
+import {
+  createJwt,
+  createmockclaims,
+  getPrivateKey,
+  getWrongPrivateKey,
+  getPublicKey,
+} from "./test-data";
+import { KeyLike } from "jose";
 
 describe("JWT service", () => {
+  let claims: any;
+  let publicKey: string;
+  let privateKey: KeyLike;
+  let wrongPrivateKey: KeyLike;
+  let validJwt: string;
   let jwtService: JwtService;
 
-  beforeEach(() => {
-    jwtService = new JwtService(testPublicKey);
+  beforeEach(async () => {
+    claims = createmockclaims();
+    publicKey = getPublicKey();
+    privateKey = await getPrivateKey();
+    wrongPrivateKey = await getWrongPrivateKey();
+    validJwt = await createJwt(createmockclaims(), privateKey);
+    jwtService = new JwtService(publicKey);
   });
 
-  describe("verify", () => {
-    describe("success", () => {
-      it("should return true when signature is valid", async () => {
-        const result = await jwtService.signatureCheck(validJwt);
+  describe("getPayloadWithValidation", () => {
+    it("should return payload from valid JWT", async () => {
+      const result = await jwtService.getPayloadWithValidation(validJwt);
+      expect(result).to.deep.equal(createmockclaims());
+    });
 
-        expect(result).to.be.true;
+    describe("Validate jwt", () => {
+      it("should throw an error when passed non-JWT format", async () => {
+        try {
+          await jwtService.getPayloadWithValidation("a");
+          assert.fail("Expected error to be thrown");
+        } catch (error) {
+          expect(error).to.be.an.instanceOf(JwtValidationError);
+          expect(error.message).to.equal("Invalid Compact JWS");
+        }
+      });
+
+      it("should throw error when header incorrect", async () => {
+        jwtService = new JwtService(publicKey);
+        const [, payload, sig] = validJwt.split(".");
+        const modified = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.${payload}.${sig}`;
+        try {
+          await jwtService.getPayloadWithValidation(modified);
+          assert.fail("Expected error to be thrown");
+        } catch (error) {
+          expect(error).to.be.an.instanceOf(JwtValidationError);
+        }
+      });
+
+      it("should throw error when jwt payload changed", async () => {
+        jwtService = new JwtService(publicKey);
+        const [header, , sig] = validJwt.split(".");
+
+        const modified = `${header}.eyJjbGllbnQtbmFtZSI6ImRpLWF1dGgtc3R1Yi1yZWx5aW5nLXBhcnR5LXNhbmRwaXQifQ.${sig}`;
+        try {
+          await jwtService.getPayloadWithValidation(modified);
+          assert.fail("Expected error to be thrown");
+        } catch (error) {
+          expect(error).to.be.an.instanceOf(JwtValidationError);
+          expect(error.message).to.equal("signature verification failed");
+        }
+      });
+
+      it("should throw error when jwt isn't signed with the correct public key", async () => {
+        const JwtWrongSig = await createJwt(
+          createmockclaims(),
+          wrongPrivateKey
+        );
+        jwtService = new JwtService(publicKey);
+
+        try {
+          await jwtService.getPayloadWithValidation(JwtWrongSig);
+          assert.fail("Expected error to be thrown");
+        } catch (error) {
+          expect(error).to.be.an.instanceOf(JwtValidationError);
+          expect(error.message).to.equal("signature verification failed");
+        }
       });
     });
 
-    describe("failure", () => {
-      it("should return false when signature is incorrect", async () => {
-        const result = await jwtService.signatureCheck(incorrectJwtSignature);
-
-        expect(result).to.be.false;
-      });
-
-      it("should return false when signature is invalid", async () => {
-        jwtService = new JwtService(testPublicKey);
-
-        try {
-          await jwtService.signatureCheck(invalidJwtSignature);
-          assert.fail("Expected error to be thrown");
-        } catch (error) {
-          expect(error).to.be.an.instanceOf(JwtSignatureVerificationError);
-          expect(error.message).to.equal("Failed to verify signature");
-          expect(error.cause.message).to.equal(
-            '"ES256" signatures must be "64" bytes, saw "54"'
-          );
-        }
-      });
-
-      it("should return false when public key is missing", async () => {
-        jwtService = new JwtService(undefined);
-
-        try {
-          await jwtService.signatureCheck(validJwt);
-          assert.fail("Expected error to be thrown");
-        } catch (error) {
-          expect(error).to.be.an.instanceOf(JwtSignatureVerificationError);
-          expect(error.message).to.equal("Failed to verify signature");
-          expect(error.cause.message).to.equal(
-            'The "key" argument must be of type string or an instance of ArrayBuffer, Buffer, TypedArray, DataView, KeyObject, or CryptoKey. Received undefined'
-          );
-        }
-      });
-
-      it("should return false when public key is invalid (but not missing)", async () => {
-        jwtService = new JwtService("test-key");
-
-        try {
-          await jwtService.signatureCheck(validJwt);
-          assert.fail("Expected error to be thrown");
-        } catch (error) {
-          expect(error).to.be.an.instanceOf(JwtSignatureVerificationError);
-          expect(error.message).to.equal("Failed to verify signature");
-          expect(error.cause.message).to.equal(
-            "error:1E08010C:DECODER routines::unsupported"
-          );
-        }
-      });
-    });
-  });
-
-  describe("getPayloadWithSigCheck", () => {
-    describe("success", () => {
-      it("should return payload from valid JWT", async () => {
-        const result = await jwtService.getPayloadWithSigCheck(validJwt);
-        expect(result).to.deep.equal({
-          "client-name": "di-auth-stub-relying-party-sandpit",
+    describe("Validate Generic Claims", () => {
+      it("should throw error if missing claims", async () => {
+        Object.keys(claims).forEach(async (claim) => {
+          const withoutClaim = { ...claims };
+          try {
+            delete withoutClaim[claim];
+            const jwtMissingClaim = await createJwt(withoutClaim, privateKey);
+            jwtService.getPayloadWithValidation(jwtMissingClaim);
+            assert.fail("Expected error to be thrown");
+          } catch (error) {
+            expect(error).to.be.an.instanceOf(JwtValidationError);
+            expect(error.message).to.equal(`${claim} claim missing`);
+          }
         });
       });
-    });
-    describe("failure", () => {
-      it("should throw error when passed invalid JWT", async () => {
+
+      it("should throw error if Token expired", async () => {
+        const now: number = Math.floor(new Date().getTime() / 1000);
+        claims.exp = now - 1000;
         try {
-          await jwtService.getPayloadWithSigCheck("a");
+          const expiredJwt = await createJwt(claims, privateKey);
+          await jwtService.getPayloadWithValidation(expiredJwt);
           assert.fail("Expected error to be thrown");
         } catch (error) {
-          expect(error).to.be.an.instanceOf(JwtPayloadParseError);
-          expect(error.message).to.equal("JWT was not three elements");
+          expect(error).to.be.an.instanceOf(JwtValidationError);
+          expect(error.message).to.equal('"exp" claim timestamp check failed');
         }
       });
-      it("should throw error when passed invalid JWT", async () => {
+
+      it("should throw error if Token before nbf timestamp", async () => {
+        const now: number = Math.floor(new Date().getTime() / 1000);
+        claims.nbf = now + 1000;
         try {
-          await jwtService.getPayloadWithSigCheck("a.b.c");
+          const nbfJwt = await createJwt(claims, privateKey);
+          await jwtService.getPayloadWithValidation(nbfJwt);
           assert.fail("Expected error to be thrown");
         } catch (error) {
-          expect(error).to.be.an.instanceOf(JwtSignatureVerificationError);
-          expect(error.message).to.equal("Failed to verify signature");
+          expect(error).to.be.an.instanceOf(JwtValidationError);
+          expect(error.message).to.equal('"nbf" claim timestamp check failed');
         }
       });
     });
   });
 
-  describe("validateClaims", () => {
+  describe("validateCustomClaims", () => {
     let claims: any;
     beforeEach(() => {
       claims = createmockclaims();
     });
 
-    it("Should return claims if correctly supplied", () => {
-      expect(jwtService.validateClaims(claims)).to.be.deep.equal(claims);
+    it("should return claims if correctly supplied", () => {
+      expect(jwtService.validateCustomClaims(claims)).to.be.deep.equal(claims);
     });
 
-    it("Should throw ClaimsError if missing claim", () => {
-      Object.keys(claims).forEach((claim) => {
-        const withoutClaim = { ...claims };
-        try {
-          delete withoutClaim[claim];
-          jwtService.validateClaims(withoutClaim);
-          assert.fail("Expected error to be thrown");
-        } catch (error) {
-          expect(error).to.be.an.instanceOf(ClaimsError);
-          expect(error.message).to.equal(`${claim} claim missing`);
-        }
-      });
-    });
-
-    it("Should throw ClaimsError if type of claim is incorrect", () => {
-      type nonExisitngType = { notatype: null };
-
-      Object.keys(claims).forEach((claim) => {
-        const incorrectTypeClaim = { ...claims };
-        try {
-          delete incorrectTypeClaim[claim];
-          incorrectTypeClaim[claim] = {} as nonExisitngType;
-
-          jwtService.validateClaims(incorrectTypeClaim);
-          assert.fail("Expected error to be thrown");
-        } catch (error) {
-          expect(error).to.be.an.instanceOf(ClaimsError);
-          expect(error.message).to.equal(`${claim} claim type is incorrect`);
-        }
-      });
-    });
-
-    it("should check that multiple errors return in one message", () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { aud, iss, ...payloadWithoutClaim } = claims as any;
-      try {
-        jwtService.validateClaims(payloadWithoutClaim);
-      } catch (error) {
-        expect(error).to.be.an.instanceOf(ClaimsError);
-        expect(error.message).to.contain("iss claim missing");
-        expect(error.message).to.contain("aud claim missing");
-      }
-    });
-
-    it("should throw a claims error if incorrect value for claim", () => {
+    it("should throw error if incorrect value for claim", () => {
       const knowClaim = Object.keys(getKnownClaims())[0];
       claims[knowClaim] = "Incorrect value";
 
       try {
-        jwtService.validateClaims(claims);
+        jwtService.validateCustomClaims(claims);
         assert.fail("Expected error to be thrown");
       } catch (error) {
-        expect(error).to.be.an.instanceOf(ClaimsError);
+        expect(error).to.be.an.instanceOf(JwtClaimsValueError);
         expect(error.message).to.equal(`${knowClaim} has incorrect value`);
-      }
-    });
-
-    it("Should throw ClaimsError if Token expired", () => {
-      const now: number = Math.floor(new Date().getTime() / 1000);
-      claims.exp = now - 1000;
-      try {
-        jwtService.validateClaims(claims);
-        assert.fail("Expected error to be thrown");
-      } catch (error) {
-        expect(error).to.be.an.instanceOf(ClaimsError);
-        expect(error.message).to.equal("Token expired (exp)");
-      }
-    });
-
-    it("Should throw ClaimsError if Token before nbf timestamp", () => {
-      const now: number = Math.floor(new Date().getTime() / 1000);
-      claims.nbf = now + 1000;
-      try {
-        jwtService.validateClaims(claims);
-        assert.fail("Expected error to be thrown");
-      } catch (error) {
-        expect(error).to.be.an.instanceOf(ClaimsError);
-        expect(error.message).to.equal("Token not yet valid (nbf)");
       }
     });
   });
 });
-
-export function createmockclaims(): any {
-  const timestamp = Math.floor(new Date().getTime() / 1000);
-  return {
-    confidence: "Cl.Cm",
-    iss: "UNKNOWN",
-    consent_required: false,
-    client_id: "UNKNOWN",
-    govuk_signin_journey_id: "QOFzoB3o-9gGplMgdT1dJfH4vaI",
-    aud: "UNKNOWN",
-    service_type: "MANDATORY",
-    nbf: timestamp,
-    cookie_consent_shared: true,
-    scope: "openid email phone",
-    state: "WLUNPYv0RPdVjhBsG4QMHYYMhGaOc8X-t83Y1XsVh1w",
-    redirect_uri: "UNKNOWN",
-    exp: timestamp + 1000,
-    iat: timestamp,
-    client_name: "di-auth-stub-relying-party-sandpit",
-    is_one_login_service: false,
-    jti: "fvvMWAladDtl35O_xyBTRLwwojA",
-  };
-}

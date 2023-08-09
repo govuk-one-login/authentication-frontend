@@ -51,11 +51,10 @@ describe("authorize controller", () => {
       decrypt: sinon.fake.returns(Promise.resolve("jwt")),
     };
     fakeJwtService = {
-      getPayloadWithSigCheck: sinon.fake.returns(
+      getPayloadWithValidation: sinon.fake.returns(
         Promise.resolve({ client_id: req.query.client_id } as any)
       ),
-      signatureCheck: sinon.fake.returns(Promise.resolve(true)),
-      validateClaims: sinon.stub().returnsArg(0),
+      validateCustomClaims: sinon.stub().returnsArg(0),
     };
   });
 
@@ -394,7 +393,7 @@ describe("authorize controller", () => {
         fakeKmsDecryptionService,
         fakeJwtService
       )(req as Request, res as Response);
-      expect(fakeJwtService.validateClaims).to.have.returned({
+      expect(fakeJwtService.validateCustomClaims).to.have.returned({
         client_id: "orchestrationAuth",
       });
     });

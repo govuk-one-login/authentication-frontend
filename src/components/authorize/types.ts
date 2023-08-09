@@ -42,7 +42,6 @@ export interface KmsDecryptionServiceInterface {
 }
 
 export interface JwtServiceInterface {
-  signatureCheck(jwt: string): Promise<boolean>;
-  getPayloadWithSigCheck(jwt: string): Promise<any>;
-  validateClaims(claims: any): Claims;
+  getPayloadWithValidation(jwt: string): Promise<any>;
+  validateCustomClaims(claims: any): Claims;
 }
