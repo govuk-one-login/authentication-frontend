@@ -2,6 +2,8 @@ import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 import { Request } from "express";
+import { generateQRCodeValue } from "../../utils/mfa";
+import { splitSecretKeyIntoFragments } from "../../utils/strings";
 
 export function validateSetupAuthAppRequest(): ValidationChainFunc {
   return [
@@ -36,6 +38,8 @@ const postValidationLocals = function locals(
 ): Record<string, unknown> {
   return {
     qrCode: req.session.user.authAppQrCodeUrl,
-    secretKey: req.session.user.authAppSecret,
+    secretKeyFragmentArray: splitSecretKeyIntoFragments(
+      req.session.user.authAppSecret
+    ),
   };
 };

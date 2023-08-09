@@ -43,6 +43,9 @@ export function proveIdentityCallbackGet(
         sessionId
       );
     } else {
+      req.log.warn({
+        msg: `Identity processing failed with status ${response?.data?.status} for client session ID ${clientSessionId}`,
+      });
       redirectPath = createServiceRedirectErrorUrl(
         req.session.client.redirectUri,
         OIDC_ERRORS.ACCESS_DENIED,
