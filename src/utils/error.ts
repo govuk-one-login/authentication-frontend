@@ -54,7 +54,7 @@ export class QueryParamsError extends Error {
 export class JwtClaimsValueError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = "ClaimsError";
+    this.name = "JwtClaimsValueError";
   }
 }
 

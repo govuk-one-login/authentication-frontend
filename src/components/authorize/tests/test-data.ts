@@ -6,7 +6,7 @@ export function createmockclaims(): any {
     confidence: "Cl.Cm",
     iss: "UNKNOWN",
     consent_required: false,
-    client_id: "UNKNOWN",
+    client_id: "orchestrationAuth",
     govuk_signin_journey_id: "QOFzoB3o-9gGplMgdT1dJfH4vaI",
     aud: "UNKNOWN",
     service_type: "MANDATORY",

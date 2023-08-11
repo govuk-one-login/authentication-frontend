@@ -61,8 +61,6 @@ export function authorizeGet(
       authRequestJweDecryptedAsJwt
     );
 
-    jwtService.validateCustomClaims(claims);
-
     const startAuthResponse = await authService.start(
       sessionId,
       clientSessionId,

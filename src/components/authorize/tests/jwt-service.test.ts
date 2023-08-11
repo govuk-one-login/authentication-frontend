@@ -131,29 +131,31 @@ describe("JWT service", () => {
         }
       });
     });
-  });
 
-  describe("validateCustomClaims", () => {
-    let claims: any;
-    beforeEach(() => {
-      claims = createmockclaims();
-    });
+    describe("validateCustomClaims", () => {
+      let claims: any;
+      beforeEach(() => {
+        claims = createmockclaims();
+      });
 
-    it("should return claims if correctly supplied", () => {
-      expect(jwtService.validateCustomClaims(claims)).to.be.deep.equal(claims);
-    });
+      it("should return claims if correctly supplied", () => {
+        expect(jwtService.validateCustomClaims(claims)).to.be.deep.equal(
+          claims
+        );
+      });
 
-    it("should throw error if incorrect value for claim", () => {
-      const knowClaim = Object.keys(getKnownClaims())[0];
-      claims[knowClaim] = "Incorrect value";
+      it("should throw error if incorrect value for claim", () => {
+        const knowClaim = Object.keys(getKnownClaims())[0];
+        claims[knowClaim] = "Incorrect value";
 
-      try {
-        jwtService.validateCustomClaims(claims);
-        assert.fail("Expected error to be thrown");
-      } catch (error) {
-        expect(error).to.be.an.instanceOf(JwtClaimsValueError);
-        expect(error.message).to.equal(`${knowClaim} has incorrect value`);
-      }
+        try {
+          jwtService.validateCustomClaims(claims);
+          assert.fail("Expected error to be thrown");
+        } catch (error) {
+          expect(error).to.be.an.instanceOf(JwtClaimsValueError);
+          expect(error.message).to.equal(`${knowClaim} has incorrect value`);
+        }
+      });
     });
   });
 });

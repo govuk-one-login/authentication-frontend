@@ -4,7 +4,7 @@ export function getKnownClaims(): {
   [key: string]: string | boolean | number;
 } {
   return {
-    client_id: "UNKNOWN",
+    client_id: "orchestrationAuth",
     aud: "UNKNOWN",
   };
 }

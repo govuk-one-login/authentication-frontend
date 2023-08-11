@@ -54,7 +54,6 @@ describe("authorize controller", () => {
       getPayloadWithValidation: sinon.fake.returns(
         Promise.resolve({ client_id: req.query.client_id } as any)
       ),
-      validateCustomClaims: sinon.stub().returnsArg(0),
     };
   });
 
@@ -387,15 +386,17 @@ describe("authorize controller", () => {
         createConsentCookieValue: sinon.fake(),
       };
 
+      const fakeJwtServiceAny = fakeJwtService as any;
+
       await authorizeGet(
         fakeAuthorizeService,
         fakeCookieConsentService,
         fakeKmsDecryptionService,
-        fakeJwtService
+        fakeJwtServiceAny
       )(req as Request, res as Response);
-      expect(fakeJwtService.validateCustomClaims).to.have.returned({
-        client_id: "orchestrationAuth",
-      });
+      expect(
+        await fakeJwtServiceAny.getPayloadWithValidation.returnValues[0]
+      ).to.deep.equal({ client_id: req.query.client_id } as any);
     });
   });
 
