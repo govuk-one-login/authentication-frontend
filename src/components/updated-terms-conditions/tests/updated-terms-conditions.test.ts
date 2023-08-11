@@ -6,15 +6,10 @@ import { Request, Response } from "express";
 import {
   updatedTermsConditionsGet,
   updatedTermsConditionsPost,
-  updatedTermsRejectedGet,
 } from "../updated-terms-conditions-controller";
 
 import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
-import {
-  EXTERNAL_LINKS,
-  PATH_NAMES,
-  SERVICE_TYPE,
-} from "../../../app.constants";
+import { EXTERNAL_LINKS, PATH_NAMES } from "../../../app.constants";
 import {
   mockRequest,
   mockResponse,
@@ -142,43 +137,6 @@ describe("updated terms conditions controller", () => {
       expect(fakeService.updateProfile).not.to.been.called;
       expect(res.redirect).to.have.calledWith(
         `${PATH_NAMES.CONTACT_US}?supportType=PUBLIC`
-      );
-    });
-  });
-
-  describe("updatedTermsRejectedGet", () => {
-    it("should redirect to optional service reject page when service type is Optional", async () => {
-      req.session.client.serviceType = SERVICE_TYPE.OPTIONAL;
-      req.session.client.name = "client name";
-      req.session.client.redirectUri = "redirect uri";
-
-      await updatedTermsRejectedGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "updated-terms-conditions/index-optional.njk"
-      );
-    });
-
-    it("should redirect to mandatory service reject page when service type is Mandatory", async () => {
-      req.session.client.serviceType = SERVICE_TYPE.MANDATORY;
-      req.session.client.name = "client name";
-      req.session.client.redirectUri = "redirect uri";
-
-      await updatedTermsRejectedGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "updated-terms-conditions/index-mandatory.njk"
-      );
-    });
-
-    it("should redirect to non-service reject page when service type is not set", async () => {
-      req.session.client.name = "client name";
-      req.session.client.redirectUri = "redirect uri";
-
-      await updatedTermsRejectedGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "updated-terms-conditions/index-non-service-rejected.njk"
       );
     });
   });

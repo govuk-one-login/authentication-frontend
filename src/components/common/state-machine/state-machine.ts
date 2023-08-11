@@ -476,9 +476,6 @@ const authStateMachine = createMachine(
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
-        meta: {
-          optionalPaths: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS_DISAGREE],
-        },
       },
       [PATH_NAMES.SHARE_INFO]: {
         on: {

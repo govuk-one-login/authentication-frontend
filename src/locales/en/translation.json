@@ -596,57 +596,14 @@
       "header": "GOV.UK One Login terms of use update",
       "paragraph1": {
         "text": "We’ve updated our ",
-        "and": "and",
         "termsAndConditionsHref": "terms-and-conditions",
         "termsAndConditionsText": "terms and conditions",
+        "and": "and",
         "privacyNoticeHref": "/privacy-notice",
-        "privacyNoticeText": "privacy notice",
-        "cookiesPolicyText": "cookies policy"
+        "privacyNoticeText": "privacy notice"
       },
       "paragraph2": "By continuing you agree to our updated terms of use.",
-      "agreeAndContinue": "Agree and continue",
-      "doNotAgree": "I do not agree"
-    },
-    "updatedTermsAndCondsMandatory": {
-      "title": "Agree to the updated terms of use to continue",
-      "header": "Agree to the updated terms of use to continue",
-      "info": {
-        "text": "You need to agree to our updated",
-        "and": "and",
-        "termsAndConditionsText": "terms and conditions",
-        "privacyNoticeText": "privacy notice",
-        "cookiesPolicyText": "cookies policy",
-        "end": "to use this service."
-      },
-      "agreeAndContinue": "Agree and continue",
-      "goBackToService": "Go back to the service your were using."
-    },
-    "updatedTermsAndCondsOptional": {
-      "title": "You need to agree to the updated terms of use to save your progress",
-      "header": "You need to agree to the updated terms of use to save your progress",
-      "paragraph1": "If you do not agree, you can ",
-      "paragraph1Continued": "continue without saving your progress.",
-      "agreeToTheTerms": "Agree to the terms",
-      "continueWithoutSaving": "Continue without saving"
-    },
-    "updatedTermsAndCondsNonServiceRejected": {
-      "title": "Agree to the updated terms of use to continue",
-      "header": "Agree to the updated terms of use to continue",
-      "info": {
-        "text": "You need to agree to our updated",
-        "and": "and",
-        "termsAndConditionsText": "terms and conditions",
-        "privacyNoticeText": "privacy notice",
-        "cookiesPolicyText": "cookies policy",
-        "end": "to keep using your GOV.UK One Login."
-      },
-      "section2": {
-        "paragraph1": "If you do not agree to the new terms, you cannot use your GOV.UK One Login.",
-        "govUkHomePageText": "Go to the GOV.UK homepage.",
-        "paragraph2": "If you no longer need your GOV.UK One Login, or want to delete information saved in your GOV.UK One Login, you can ",
-        "contactUsText": "contact us."
-      },
-      "agreeAndContinue": "Agree and continue"
+      "agreeAndContinue": "Continue"
     },
     "cookiePolicy": {
       "title": "GOV.UK One Login cookies policy",
