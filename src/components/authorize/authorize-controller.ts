@@ -85,17 +85,16 @@ export function authorizeGet(
 
     req.session.client.prompt = loginPrompt;
 
-    req.session.client.serviceType = startAuthResponse.data.client.serviceType;
-    req.session.client.name = startAuthResponse.data.client.clientName;
-    req.session.client.scopes = startAuthResponse.data.client.scopes;
-    req.session.client.cookieConsentEnabled =
-      startAuthResponse.data.client.cookieConsentShared;
+    req.session.client.serviceType = claims.service_type;
+    req.session.client.name = claims.client_name;
+    req.session.client.scopes = claims.scope.split(" ");
+    req.session.client.cookieConsentEnabled = claims.cookie_consent_shared;
+    req.session.client.redirectUri = claims.redirect_uri;
+    req.session.client.state = claims.state;
+    req.session.client.isOneLoginService = claims.is_one_login_service;
+
     req.session.client.consentEnabled =
       startAuthResponse.data.user.consentRequired;
-    req.session.client.redirectUri = startAuthResponse.data.client.redirectUri;
-    req.session.client.state = startAuthResponse.data.client.state;
-    req.session.client.isOneLoginService =
-      startAuthResponse.data.client.isOneLoginService;
 
     req.session.user.isIdentityRequired =
       startAuthResponse.data.user.identityRequired;
