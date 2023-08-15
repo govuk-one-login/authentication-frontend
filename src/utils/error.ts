@@ -1,8 +1,8 @@
 export class BadRequestError extends Error {
   private status: number;
   level?: string;
-  constructor(message: string, code: number | string) {
-    super(`${code}:${message}`);
+  constructor(message: string, code?: number | string) {
+    super(code ? `${code}:${message}` : `${message}`);
     this.status = 400;
   }
 }

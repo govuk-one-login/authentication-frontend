@@ -49,17 +49,20 @@ export function authorizeGet(
 
     const clientId = req.query.client_id as string;
     const responseType = req.query.response_type as string;
+    let claims;
+    try {
+      validateQueryParams(clientId, responseType);
 
-    validateQueryParams(clientId, responseType);
-
-    const encryptedAuthRequestJWE = req.query.request as string;
-    const authRequestJweDecryptedAsJwt = await kmsService.decrypt(
-      encryptedAuthRequestJWE
-    );
-
-    const claims = await jwtService.getPayloadWithValidation(
-      authRequestJweDecryptedAsJwt
-    );
+      const encryptedAuthRequestJWE = req.query.request as string;
+      const authRequestJweDecryptedAsJwt = await kmsService.decrypt(
+        encryptedAuthRequestJWE
+      );
+      claims = await jwtService.getPayloadWithValidation(
+        authRequestJweDecryptedAsJwt
+      );
+    } catch (error) {
+      throw new BadRequestError(error.message);
+    }
 
     const startAuthResponse = await authService.start(
       sessionId,

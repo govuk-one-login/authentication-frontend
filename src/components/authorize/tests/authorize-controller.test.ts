@@ -22,7 +22,7 @@ import {
   JwtServiceInterface,
   KmsDecryptionServiceInterface,
 } from "../types";
-import { BadRequestError, QueryParamsError } from "../../../utils/error";
+import { BadRequestError } from "../../../utils/error";
 import { createmockclaims } from "./test-data";
 import { Claims } from "../claims-config";
 
@@ -429,7 +429,7 @@ describe("authorize controller", () => {
         )(req as Request, res as Response)
       )
         .to.eventually.be.rejectedWith("Response type is not set")
-        .and.be.an.instanceOf(QueryParamsError);
+        .and.be.an.instanceOf(BadRequestError);
     });
 
     it("should throw an error if response_type is null in the query params", async () => {
@@ -444,7 +444,7 @@ describe("authorize controller", () => {
         )(req as Request, res as Response)
       )
         .to.eventually.be.rejectedWith("Response type is not set")
-        .and.be.an.instanceOf(QueryParamsError);
+        .and.be.an.instanceOf(BadRequestError);
     });
 
     it("should throw an error if client_id value is incorrect in the query params", async () => {
@@ -459,7 +459,7 @@ describe("authorize controller", () => {
         )(req as Request, res as Response)
       )
         .to.eventually.be.rejectedWith("Client ID value is incorrect")
-        .and.be.an.instanceOf(QueryParamsError);
+        .and.be.an.instanceOf(BadRequestError);
     });
   });
 
