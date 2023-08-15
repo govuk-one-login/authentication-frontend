@@ -4,9 +4,8 @@ import {
   COOKIES_PREFERENCES_SET,
   PATH_NAMES,
   ERROR_LOG_LEVEL,
-  API_ERROR_CODES,
 } from "../../app.constants";
-import { getNextPathAndUpdateJourney } from "../common/constants";
+import { getNextPathAndUpdateJourney, ERROR_CODES } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
 import { ExpressRouteFunc } from "../../types";
 import {
@@ -53,7 +52,7 @@ export function landingGet(
       if (
         startAuthResponse.data.code &&
         startAuthResponse.data.code ===
-          API_ERROR_CODES.SESSION_ID_MISSING_OR_INVALID
+          ERROR_CODES.SESSION_ID_MISSING_OR_INVALID
       ) {
         startError.level = ERROR_LOG_LEVEL.INFO;
       }

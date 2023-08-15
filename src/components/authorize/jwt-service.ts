@@ -12,7 +12,7 @@ export class JwtService implements JwtServiceInterface {
   }
 
   async getPayloadWithValidation(jwt: string): Promise<Claims> {
-    let claims: any;
+    let claims: jose.JWTPayload;
     try {
       const tempkey = await jose.importSPKI(this.publicKey, "ES256");
       claims = (
@@ -25,8 +25,7 @@ export class JwtService implements JwtServiceInterface {
       throw new JwtValidationError(error.message);
     }
 
-    const validatedClaims: Claims = this.validateCustomClaims(claims);
-    return validatedClaims;
+    return this.validateCustomClaims(claims);
   }
 
   validateCustomClaims(claims: any): Claims {

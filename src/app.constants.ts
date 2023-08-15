@@ -83,10 +83,6 @@ export const HTTP_STATUS_CODES = {
   REDIRECT: 303,
 };
 
-export const API_ERROR_CODES = {
-  SESSION_ID_MISSING_OR_INVALID: 1000,
-};
-
 export enum LOCALE {
   EN = "en",
   CY = "cy",
