@@ -24,7 +24,7 @@ import {
 } from "./types";
 import { KmsDecryptionService } from "./kms-decryption-service";
 import { JwtService } from "./jwt-service";
-import { expectedClientId } from "./claims-config";
+import { EXPECTED_CLIENT_ID } from "./claims-config";
 
 function createConsentCookie(
   res: Response,
@@ -167,7 +167,7 @@ function validateQueryParams(clientId: string, responseType: string) {
     throw new QueryParamsError("Response type does not exist");
   }
 
-  if (clientId !== expectedClientId) {
+  if (clientId !== EXPECTED_CLIENT_ID) {
     throw new QueryParamsError("Client ID value is incorrect");
   }
 }

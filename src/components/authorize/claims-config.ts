@@ -1,4 +1,4 @@
-export const expectedClientId = "orchestrationAuth";
+export const EXPECTED_CLIENT_ID = "orchestrationAuth";
 
 export function getKnownClaims(): {
   [key: string]: string | boolean | number;
