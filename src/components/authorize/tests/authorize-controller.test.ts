@@ -410,21 +410,6 @@ describe("authorize controller", () => {
       };
     });
 
-    it("should throw an error if client_id does not exist in the query params", async () => {
-      delete req.query.client_id;
-
-      await expect(
-        authorizeGet(
-          fakeAuthorizeService,
-          fakeCookieConsentService,
-          fakeKmsDecryptionService,
-          fakeJwtService
-        )(req as Request, res as Response)
-      )
-        .to.eventually.be.rejectedWith("Client ID does not exist")
-        .and.be.an.instanceOf(QueryParamsError);
-    });
-
     it("should throw an error if response_type does not exist in the query params", async () => {
       delete req.query.response_type;
 
@@ -436,7 +421,22 @@ describe("authorize controller", () => {
           fakeJwtService
         )(req as Request, res as Response)
       )
-        .to.eventually.be.rejectedWith("Response type does not exist")
+        .to.eventually.be.rejectedWith("Response type is not set")
+        .and.be.an.instanceOf(QueryParamsError);
+    });
+
+    it("should throw an error if response_type is null in the query params", async () => {
+      req.query.response_type = null as unknown as string;
+
+      await expect(
+        authorizeGet(
+          fakeAuthorizeService,
+          fakeCookieConsentService,
+          fakeKmsDecryptionService,
+          fakeJwtService
+        )(req as Request, res as Response)
+      )
+        .to.eventually.be.rejectedWith("Response type is not set")
         .and.be.an.instanceOf(QueryParamsError);
     });
 

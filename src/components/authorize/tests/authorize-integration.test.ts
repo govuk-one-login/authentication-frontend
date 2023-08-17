@@ -12,9 +12,13 @@ import {
 } from "../types";
 import { createApiResponse } from "../../../utils/http";
 import { AxiosResponse } from "axios";
-import { createmockclaims, getPrivateKey, getPublicKey } from "./test-data";
+import {
+  createJwt,
+  createmockclaims,
+  getPrivateKey,
+  getPublicKey,
+} from "./test-data";
 import { JwtService } from "../jwt-service";
-import { createJwt } from "./test-data";
 
 describe("Integration:: authorize", () => {
   let app: any;

@@ -159,12 +159,8 @@ export function authorizeGet(
 }
 
 function validateQueryParams(clientId: string, responseType: string) {
-  if (clientId === undefined) {
-    throw new QueryParamsError("Client ID does not exist");
-  }
-
-  if (responseType === undefined) {
-    throw new QueryParamsError("Response type does not exist");
+  if (responseType == null) {
+    throw new QueryParamsError("Response type is not set");
   }
 
   if (clientId !== EXPECTED_CLIENT_ID) {
