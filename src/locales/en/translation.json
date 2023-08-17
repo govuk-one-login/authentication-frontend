@@ -85,6 +85,14 @@
       "hideFullText": "Hide password",
       "announceShown": "Your password is shown",
       "announceHidden": "Your password is hidden"
+    },
+    "showRetypedPassword": {
+      "show": "Show",
+      "hide": "Hide",
+      "showFullText": "Show retyped password",
+      "hideFullText": "Hide retyped password",
+      "announceShown": "Your retyped password is shown",
+      "announceHidden": "Your retyped password is hidden"
     }
   },
   "error": {
