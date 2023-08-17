@@ -1021,7 +1021,7 @@
           "paragraph_three": "We use an identity checking service provider called Iproov and their subcontractors Veriff and Innovalor to conduct these checks. Iproov acts as a data processor with Veriff and Innovalor as sub-processors, which means that they may only process your personal data for the sole purpose of fulfilling our instructions.",
           "paragraph_four": "We need to check your identity document security features to prove that they are genuine documents.",
           "paragraph_five": "For driving licences, you will need to take a photo of the front and back of your licence with your phone camera. The app will require permission to access your camera and photos for this.",
-          "paragraph_six": "For e-passports and biometric residence permits, the app will read your document information from its near field communication (NFC) chip.",
+          "paragraph_six": "For e-passports, biometric residence permits and cards, and frontier worker permits the app will read your document information from its near field communication (NFC) chip.",
           "paragraph_seven": "We collect the following information",
           "list_two": {
             "item_one": "name",
