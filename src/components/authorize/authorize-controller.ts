@@ -7,7 +7,7 @@ import {
   API_ERROR_CODES,
 } from "../../app.constants";
 import { getNextPathAndUpdateJourney } from "../common/constants";
-import { BadRequestError } from "../../utils/error";
+import { BadRequestError, QueryParamsError } from "../../utils/error";
 import { ExpressRouteFunc } from "../../types";
 import {
   CookieConsentModel,
@@ -17,7 +17,14 @@ import { cookieConsentService } from "../common/cookie-consent/cookie-consent-se
 import { sanitize } from "../../utils/strings";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { authorizeService } from "./authorize-service";
-import { AuthorizeServiceInterface } from "./types";
+import {
+  AuthorizeServiceInterface,
+  KmsDecryptionServiceInterface,
+  JwtServiceInterface,
+} from "./types";
+import { KmsDecryptionService } from "./kms-decryption-service";
+import { JwtService } from "./jwt-service";
+import { EXPECTED_CLIENT_ID } from "./claims-config";
 
 function createConsentCookie(
   res: Response,
@@ -32,11 +39,29 @@ function createConsentCookie(
 
 export function authorizeGet(
   authService: AuthorizeServiceInterface = authorizeService(),
-  cookieService: CookieConsentServiceInterface = cookieConsentService()
+  cookieService: CookieConsentServiceInterface = cookieConsentService(),
+  kmsService: KmsDecryptionServiceInterface = new KmsDecryptionService(),
+  jwtService: JwtServiceInterface = new JwtService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const loginPrompt = sanitize(req.query.prompt as string);
+
+    const clientId = req.query.client_id as string;
+    const responseType = req.query.response_type as string;
+
+    validateQueryParams(clientId, responseType);
+
+    const encryptedAuthRequestJWE = req.query.request as string;
+    const authRequestJweDecryptedAsJwt = await kmsService.decrypt(
+      encryptedAuthRequestJWE
+    );
+
+    const claims = await jwtService.getPayloadWithValidation(
+      authRequestJweDecryptedAsJwt
+    );
+
+    jwtService.validateCustomClaims(claims);
 
     const startAuthResponse = await authService.start(
       sessionId,
@@ -131,4 +156,14 @@ export function authorizeGet(
 
     return res.redirect(redirectPath);
   };
+}
+
+function validateQueryParams(clientId: string, responseType: string) {
+  if (responseType == null) {
+    throw new QueryParamsError("Response type is not set");
+  }
+
+  if (clientId !== EXPECTED_CLIENT_ID) {
+    throw new QueryParamsError("Client ID value is incorrect");
+  }
 }

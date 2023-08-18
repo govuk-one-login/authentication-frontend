@@ -27,12 +27,12 @@ export class DecryptionError extends Error {
   }
 }
 
-export class JwtSignatureVerificationError extends Error {
+export class JwtValidationError extends Error {
   cause: Error | undefined;
 
   constructor(message: string, cause?: Error) {
     super(message);
-    this.name = "JwtSignatureVerificationError";
+    this.name = "JwtValidationError";
     this.cause = cause;
   }
 }
@@ -44,10 +44,17 @@ export class InvalidBase64Error extends Error {
   }
 }
 
-export class JwtPayloadParseError extends Error {
+export class QueryParamsError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = "JwtPayloadParseError";
+    this.name = "QueryParamsError";
+  }
+}
+
+export class JwtClaimsValueError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ClaimsError";
   }
 }
 

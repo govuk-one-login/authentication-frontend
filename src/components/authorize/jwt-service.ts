@@ -1,11 +1,8 @@
-import { AuthorizeRequestPayload, JwtServiceInterface } from "./types";
-import crypto from "crypto";
-import format from "ecdsa-sig-formatter";
+import { JwtServiceInterface } from "./types";
 import { getOrchToAuthSigningPublicKey } from "../../config";
-import {
-  JwtPayloadParseError,
-  JwtSignatureVerificationError,
-} from "../../utils/error";
+import { JwtClaimsValueError, JwtValidationError } from "../../utils/error";
+import { Claims, getClaimsObject, getKnownClaims } from "./claims-config";
+import * as jose from "jose";
 
 export class JwtService implements JwtServiceInterface {
   private readonly publicKey;
@@ -14,28 +11,27 @@ export class JwtService implements JwtServiceInterface {
     this.publicKey = publicKey;
   }
 
-  async verify(urlEncodedJwt: string): Promise<boolean> {
+  async getPayloadWithValidation(jwt: string): Promise<any> {
     try {
-      const [header, payload, signature] = urlEncodedJwt.split(".");
-      const derSignature = format.joseToDer(signature, "ES256");
-      const verify = crypto.createVerify("sha256");
-      verify.update(header + "." + payload);
-      return verify.verify(this.publicKey, derSignature);
+      const tempkey = await jose.importSPKI(this.publicKey, "ES256");
+      const { payload } = await jose.jwtVerify(jwt, tempkey, {
+        requiredClaims: Object.keys(getClaimsObject()),
+        clockTolerance: 30,
+      });
+      return Promise.resolve(payload);
     } catch (error) {
-      throw new JwtSignatureVerificationError(
-        "Failed to verify signature",
-        error
-      );
+      throw new JwtValidationError(error.message);
     }
   }
 
-  getPayload(jwt: string): AuthorizeRequestPayload {
-    const jwtElements = jwt.split(".");
-    if (jwtElements.length !== 3) {
-      throw new JwtPayloadParseError("JWT was not three elements");
-    }
-    const payload = jwtElements[1];
-    const buffer = Buffer.from(payload, "base64url");
-    return JSON.parse(buffer.toString());
+  validateCustomClaims(claims: any): Claims {
+    const requiredclaims = getKnownClaims();
+
+    Object.keys(requiredclaims).forEach((claim) => {
+      if (requiredclaims[claim] !== claims[claim]) {
+        throw new JwtClaimsValueError(`${claim} has incorrect value`);
+      }
+    });
+    return claims;
   }
 }
