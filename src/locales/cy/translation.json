@@ -85,6 +85,14 @@
       "hideFullText": "Cuddio cyfrinair",
       "announceShown": "Mae eich cyfrinair wedi’i ddangos",
       "announceHidden": "Mae eich cyfrinair wedi’i guddio"
+    },
+    "showRetypedPassword": {
+      "show": "Dangos",
+      "hide": "Cuddio",
+      "showFullText": "Dangos cyfrinair wedi’i aildeipio",
+      "hideFullText": "Cuddio cyfrinair wedi’i aildeipio",
+      "announceShown": "Mae eich cyfrinair wedi’i aildeipio wedi cael ei ddangos",
+      "announceHidden": "Mae eich cyfrinair wedi’i aildeipio wedi cael ei guddio"
     }
   },
   "error": {
