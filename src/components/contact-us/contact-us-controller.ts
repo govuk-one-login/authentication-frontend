@@ -12,6 +12,7 @@ import { ExpressRouteFunc } from "../../types";
 import crypto from "crypto";
 import { logger } from "../../utils/logger";
 import { getServiceDomain } from "../../config";
+import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
 
 const themeToPageTitle = {
   [ZENDESK_THEMES.ACCOUNT_NOT_FOUND]:
@@ -176,6 +177,18 @@ function validateReferer(referer: string): string {
   return valid ? referer : "";
 }
 
+export function getPreferredLanguage(languageCode: string): string {
+  if (languageCode === "en") {
+    return "English";
+  }
+
+  if (languageCode === "cy") {
+    return "Welsh";
+  }
+
+  return "Language code not set";
+}
+
 export function contactUsFormPost(req: Request, res: Response): void {
   let url = PATH_NAMES.CONTACT_US_QUESTIONS;
   const queryParams = new URLSearchParams({
@@ -275,11 +288,60 @@ export function createTicketIdentifier(appSessionId: string): string {
   }
 }
 
-export function contactUsQuestionsFormPost(
+export function contactUsQuestionsFormPostToSmartAgent(
+  service = contactUsServiceSmartAgent()
+): ExpressRouteFunc {
+  return async function (req: Request, res: Response) {
+    const ticketIdentifier = createTicketIdentifier(
+      getAppSessionId(req.body.appSessionId)
+    );
+
+    const questions = getQuestionsFromFormTypeForMessageBody(
+      req,
+      req.body.formType
+    );
+
+    const themeQuestions = getQuestionFromThemes(
+      req,
+      req.body.theme,
+      req.body.subtheme
+    );
+
+    await service.contactUsSubmitFormSmartAgent({
+      descriptions: {
+        issueDescription: req.body.issueDescription,
+        additionalDescription: req.body.additionalDescription,
+        optionalDescription: req.body.optionalDescription,
+        moreDetailDescription: req.body.moreDetailDescription,
+        serviceTryingToUse: req.body.serviceTryingToUse,
+      },
+      themes: { theme: req.body.theme, subtheme: req.body.subtheme },
+      subject: "GOV.UK One Login",
+      email: req.body.email,
+      name: req.body.name,
+      optionalData: {
+        ticketIdentifier: ticketIdentifier,
+        userAgent: req.get("User-Agent"),
+        appErrorCode: getAppErrorCode(req.body.appErrorCode),
+      },
+      feedbackContact: req.body.contact === "true",
+      questions: questions,
+      themeQuestions: themeQuestions,
+      referer: validateReferer(req.body.referer),
+      preferredLanguage: getPreferredLanguage(res.locals.language),
+      securityCodeSentMethod: req.body.securityCodeSentMethod,
+      identityDocumentUsed: req.body.identityDocumentUsed,
+    });
+
+    return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
+  };
+}
+
+export function contactUsQuestionsFormPostToZendesk(
   service: ContactUsServiceInterface = contactUsService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const questions = getQuestionsFromFormTypeForZendeskMessageBody(
+    const questions = getQuestionsFromFormTypeForMessageBody(
       req,
       req.body.formType
     );
@@ -329,7 +391,7 @@ export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
   res.render("contact-us/index-submit-success.njk");
 }
 
-export function getQuestionsFromFormTypeForZendeskMessageBody(
+export function getQuestionsFromFormTypeForMessageBody(
   req: Request,
   formType: string
 ): Questions {
