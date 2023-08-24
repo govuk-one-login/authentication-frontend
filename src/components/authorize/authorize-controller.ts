@@ -4,9 +4,8 @@ import {
   COOKIES_PREFERENCES_SET,
   PATH_NAMES,
   ERROR_LOG_LEVEL,
-  API_ERROR_CODES,
 } from "../../app.constants";
-import { getNextPathAndUpdateJourney } from "../common/constants";
+import { getNextPathAndUpdateJourney, ERROR_CODES } from "../common/constants";
 import { BadRequestError, QueryParamsError } from "../../utils/error";
 import { ExpressRouteFunc } from "../../types";
 import {
@@ -49,19 +48,20 @@ export function authorizeGet(
 
     const clientId = req.query.client_id as string;
     const responseType = req.query.response_type as string;
+    let claims;
+    try {
+      validateQueryParams(clientId, responseType);
 
-    validateQueryParams(clientId, responseType);
-
-    const encryptedAuthRequestJWE = req.query.request as string;
-    const authRequestJweDecryptedAsJwt = await kmsService.decrypt(
-      encryptedAuthRequestJWE
-    );
-
-    const claims = await jwtService.getPayloadWithValidation(
-      authRequestJweDecryptedAsJwt
-    );
-
-    jwtService.validateCustomClaims(claims);
+      const encryptedAuthRequestJWE = req.query.request as string;
+      const authRequestJweDecryptedAsJwt = await kmsService.decrypt(
+        encryptedAuthRequestJWE
+      );
+      claims = await jwtService.getPayloadWithValidation(
+        authRequestJweDecryptedAsJwt
+      );
+    } catch (error) {
+      throw new BadRequestError(error.message);
+    }
 
     const startAuthResponse = await authService.start(
       sessionId,
@@ -78,7 +78,7 @@ export function authorizeGet(
       if (
         startAuthResponse.data.code &&
         startAuthResponse.data.code ===
-          API_ERROR_CODES.SESSION_ID_MISSING_OR_INVALID
+          ERROR_CODES.SESSION_ID_MISSING_OR_INVALID
       ) {
         startError.level = ERROR_LOG_LEVEL.INFO;
       }
@@ -87,17 +87,16 @@ export function authorizeGet(
 
     req.session.client.prompt = loginPrompt;
 
-    req.session.client.serviceType = startAuthResponse.data.client.serviceType;
-    req.session.client.name = startAuthResponse.data.client.clientName;
-    req.session.client.scopes = startAuthResponse.data.client.scopes;
-    req.session.client.cookieConsentEnabled =
-      startAuthResponse.data.client.cookieConsentShared;
+    req.session.client.serviceType = claims.service_type;
+    req.session.client.name = claims.client_name;
+    req.session.client.scopes = claims.scope.split(" ");
+    req.session.client.cookieConsentEnabled = claims.cookie_consent_shared;
+    req.session.client.redirectUri = claims.redirect_uri;
+    req.session.client.state = claims.state;
+    req.session.client.isOneLoginService = claims.is_one_login_service;
+
     req.session.client.consentEnabled =
       startAuthResponse.data.user.consentRequired;
-    req.session.client.redirectUri = startAuthResponse.data.client.redirectUri;
-    req.session.client.state = startAuthResponse.data.client.state;
-    req.session.client.isOneLoginService =
-      startAuthResponse.data.client.isOneLoginService;
 
     req.session.user.isIdentityRequired =
       startAuthResponse.data.user.identityRequired;

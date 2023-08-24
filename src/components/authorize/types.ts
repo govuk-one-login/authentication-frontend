@@ -2,19 +2,8 @@ import { ApiResponseResult, DefaultApiResponse } from "../../types";
 import { Claims } from "./claims-config";
 
 export interface StartAuthResponse extends DefaultApiResponse {
-  client: ClientInfo;
   user: UserSessionInfo;
   featureFlags?: Record<string, unknown>;
-}
-
-export interface ClientInfo {
-  clientName: string;
-  scopes: string[];
-  serviceType: string;
-  cookieConsentShared: boolean;
-  redirectUri: string;
-  state: string;
-  isOneLoginService?: boolean;
 }
 
 export interface UserSessionInfo {
@@ -42,6 +31,5 @@ export interface KmsDecryptionServiceInterface {
 }
 
 export interface JwtServiceInterface {
-  getPayloadWithValidation(jwt: string): Promise<any>;
-  validateCustomClaims(claims: any): Claims;
+  getPayloadWithValidation(jwt: string): Promise<Claims>;
 }

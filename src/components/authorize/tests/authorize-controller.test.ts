@@ -22,7 +22,9 @@ import {
   JwtServiceInterface,
   KmsDecryptionServiceInterface,
 } from "../types";
-import { BadRequestError, QueryParamsError } from "../../../utils/error";
+import { BadRequestError } from "../../../utils/error";
+import { createmockclaims } from "./test-data";
+import { Claims } from "../claims-config";
 
 describe("authorize controller", () => {
   let req: RequestOutput;
@@ -31,8 +33,10 @@ describe("authorize controller", () => {
   let fakeAuthorizeService: AuthorizeServiceInterface;
   let fakeKmsDecryptionService: KmsDecryptionServiceInterface;
   let fakeJwtService: JwtServiceInterface;
+  let mockClaims: Claims;
 
   beforeEach(() => {
+    mockClaims = createmockclaims();
     req = mockRequest({
       path: PATH_NAMES.AUTHORIZE,
       session: { client: {}, user: {} },
@@ -51,10 +55,7 @@ describe("authorize controller", () => {
       decrypt: sinon.fake.returns(Promise.resolve("jwt")),
     };
     fakeJwtService = {
-      getPayloadWithValidation: sinon.fake.returns(
-        Promise.resolve({ client_id: req.query.client_id } as any)
-      ),
-      validateCustomClaims: sinon.stub().returnsArg(0),
+      getPayloadWithValidation: sinon.fake.returns(Promise.resolve(mockClaims)),
     };
   });
 
@@ -256,7 +257,6 @@ describe("authorize controller", () => {
 
     it("should redirect to /sign-in-or-create page with _ga query param when present", async () => {
       const gaTrackingId = "2.172053219.3232.1636392870-444224.1635165988";
-      authServiceResponseData.data.client.consentEnabled = true;
       authServiceResponseData.data.user = {
         consentRequired: false,
         identityRequired: false,
@@ -288,8 +288,6 @@ describe("authorize controller", () => {
     });
 
     it("should redirect to /doc-checking-app when doc check app user", async () => {
-      authServiceResponseData.data.client.cookieConsentShared = false;
-      authServiceResponseData.data.client.consentEnabled = false;
       authServiceResponseData.data.user = {
         authenticated: false,
         consentRequired: false,
@@ -373,7 +371,7 @@ describe("authorize controller", () => {
         .and.not.to.have.property("level");
     });
 
-    it("should get claims when jwe passed in", async () => {
+    it("should set session fields from jwt claims", async () => {
       req.query.request = "JWE";
       authServiceResponseData.data.user = {
         consentRequired: false,
@@ -393,9 +391,18 @@ describe("authorize controller", () => {
         fakeKmsDecryptionService,
         fakeJwtService
       )(req as Request, res as Response);
-      expect(fakeJwtService.validateCustomClaims).to.have.returned({
-        client_id: "orchestrationAuth",
-      });
+      expect(req.session.client.name).to.equal(mockClaims.client_name);
+      expect(req.session.client.scopes).to.deep.equal(
+        mockClaims.scope.split(" ")
+      );
+      expect(req.session.client.cookieConsentEnabled).to.equal(
+        mockClaims.cookie_consent_shared
+      );
+      expect(req.session.client.redirectUri).to.equal(mockClaims.redirect_uri);
+      expect(req.session.client.state).to.equal(mockClaims.state);
+      expect(req.session.client.isOneLoginService).to.equal(
+        mockClaims.is_one_login_service
+      );
     });
   });
 
@@ -422,7 +429,7 @@ describe("authorize controller", () => {
         )(req as Request, res as Response)
       )
         .to.eventually.be.rejectedWith("Response type is not set")
-        .and.be.an.instanceOf(QueryParamsError);
+        .and.be.an.instanceOf(BadRequestError);
     });
 
     it("should throw an error if response_type is null in the query params", async () => {
@@ -437,7 +444,7 @@ describe("authorize controller", () => {
         )(req as Request, res as Response)
       )
         .to.eventually.be.rejectedWith("Response type is not set")
-        .and.be.an.instanceOf(QueryParamsError);
+        .and.be.an.instanceOf(BadRequestError);
     });
 
     it("should throw an error if client_id value is incorrect in the query params", async () => {
@@ -452,7 +459,7 @@ describe("authorize controller", () => {
         )(req as Request, res as Response)
       )
         .to.eventually.be.rejectedWith("Client ID value is incorrect")
-        .and.be.an.instanceOf(QueryParamsError);
+        .and.be.an.instanceOf(BadRequestError);
     });
   });
 
@@ -467,12 +474,6 @@ describe("authorize controller", () => {
   function createAuthServiceReponseData(): any {
     return {
       data: {
-        client: {
-          scopes: ["openid", "profile"],
-          serviceType: "MANDATORY",
-          clientName: "Test client",
-          cookieConsentShared: true,
-        },
         user: {},
       },
       success: true,

@@ -11,17 +11,21 @@ export class JwtService implements JwtServiceInterface {
     this.publicKey = publicKey;
   }
 
-  async getPayloadWithValidation(jwt: string): Promise<any> {
+  async getPayloadWithValidation(jwt: string): Promise<Claims> {
+    let claims: jose.JWTPayload;
     try {
       const tempkey = await jose.importSPKI(this.publicKey, "ES256");
-      const { payload } = await jose.jwtVerify(jwt, tempkey, {
-        requiredClaims: Object.keys(getClaimsObject()),
-        clockTolerance: 30,
-      });
-      return Promise.resolve(payload);
+      claims = (
+        await jose.jwtVerify(jwt, tempkey, {
+          requiredClaims: Object.keys(getClaimsObject()),
+          clockTolerance: 30,
+        })
+      ).payload;
     } catch (error) {
       throw new JwtValidationError(error.message);
     }
+
+    return this.validateCustomClaims(claims);
   }
 
   validateCustomClaims(claims: any): Claims {
