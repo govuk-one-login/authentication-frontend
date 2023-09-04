@@ -24,6 +24,7 @@ import {
 import { KmsDecryptionService } from "./kms-decryption-service";
 import { JwtService } from "./jwt-service";
 import { EXPECTED_CLIENT_ID } from "./claims-config";
+import { appendQueryParamIfHasValue } from "../../utils/url";
 
 function createConsentCookie(
   res: Response,
@@ -153,7 +154,18 @@ export function authorizeGet(
       }
     }
 
-    return res.redirect(redirectPath);
+    const faceToFaceRpGoogleAnalyticsParamKey = "result";
+    const faceToFaceRpGoogleAnalyticsParamValue = sanitize(
+      req.query[faceToFaceRpGoogleAnalyticsParamKey] as string
+    );
+
+    return res.redirect(
+      appendQueryParamIfHasValue(
+        redirectPath,
+        faceToFaceRpGoogleAnalyticsParamKey,
+        faceToFaceRpGoogleAnalyticsParamValue
+      )
+    );
   };
 }
 
