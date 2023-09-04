@@ -56,6 +56,22 @@ The startup script will do this for you so just run this command:
 ./startup.sh -l
 ```
 
+#### Options for local node running
+
+To run the integration tests when starting node locally:
+
+```shell script
+REDIS_PORT=6389 REDIS_HOST=localhost yarn test:integration
+```
+
+### Additional startup options
+
+To redirect logs to a file `logs/frontend-auth.log`:
+
+```shell script
+./startup.sh -g
+```
+
 ### General guidance on starting the application
 
 When starting for the first time, or after a clean, the frontend will take a few minutes to start as node needs to install all the dependencies.

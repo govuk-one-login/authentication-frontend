@@ -26,6 +26,8 @@ services:
     restart: on-failure
     networks:
       - di-net
+    mem_limit: 768m
+    mem_reservation: 512m
 
   redis:
     image: redis:6.0.5-alpine
@@ -33,6 +35,8 @@ services:
       - "6389:6379"
     networks:
       - di-net
+    mem_limit: 128m
+    mem_reservation: 64m
 
   di-auth-stub-default:
     build:
@@ -53,6 +57,8 @@ services:
     restart: on-failure
     networks:
       - di-net
+    mem_limit: 128m
+    mem_reservation: 64m
 
   di-auth-stub-no-mfa:
     build:
@@ -74,6 +80,8 @@ services:
     restart: on-failure
     networks:
       - di-net
+    mem_limit: 128m
+    mem_reservation: 64m
 
 networks:
   di-net:
