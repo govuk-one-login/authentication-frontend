@@ -4,41 +4,22 @@ import { sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import decache from "decache";
 import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
-import {
-  AuthorizeServiceInterface,
-  JwtServiceInterface,
-  KmsDecryptionServiceInterface,
-  StartAuthResponse,
-} from "../types";
+import { LandingServiceInterface, StartAuthResponse } from "../types";
 import { createApiResponse } from "../../../utils/http";
 import { AxiosResponse } from "axios";
-import {
-  createJwt,
-  createmockclaims,
-  getPrivateKey,
-  getPublicKey,
-} from "./test-data";
-import { JwtService } from "../jwt-service";
 
-describe("Integration:: authorize", () => {
+describe("Integration:: landing", () => {
   let app: any;
 
   before(async () => {
-    process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
+    process.env.SUPPORT_AUTH_ORCH_SPLIT = "0";
     decache("../../../app");
-    decache("../authorize-service");
-    decache("../kms-decryption-service");
-    decache("../jwt-service");
-    const authorizeService = require("../authorize-service");
-    const KmsDecryptionService = require("../kms-decryption-service");
-    const jwtService = require("../jwt-service");
-    const publicKey = getPublicKey();
-    const privateKey = await getPrivateKey();
-    const jwt = await createJwt(createmockclaims(), privateKey);
+    decache("../landing-service");
+    const landingService = require("../landing-service");
 
     sinon
-      .stub(authorizeService, "authorizeService")
-      .callsFake((): AuthorizeServiceInterface => {
+      .stub(landingService, "landingService")
+      .callsFake((): LandingServiceInterface => {
         async function start() {
           const fakeAxiosResponse: AxiosResponse = {
             data: {
@@ -67,20 +48,6 @@ describe("Integration:: authorize", () => {
 
         return { start };
       });
-
-    sinon
-      .stub(KmsDecryptionService, "KmsDecryptionService")
-      .callsFake((): KmsDecryptionServiceInterface => {
-        async function decrypt() {
-          return Promise.resolve(jwt);
-        }
-        return { decrypt };
-      });
-
-    sinon.stub(jwtService, "JwtService").callsFake((): JwtServiceInterface => {
-      return new JwtService(publicKey);
-    });
-
     app = await require("../../../app").createApp();
   });
 
@@ -95,23 +62,15 @@ describe("Integration:: authorize", () => {
 
   it("should redirect to /sign-in-or-create", (done) => {
     request(app)
-      .get(PATH_NAMES.AUTHORIZE)
-      .query({
-        client_id: "orchestrationAuth",
-        response_type: "code",
-        request: "SomeJWE",
-      })
+      .get(PATH_NAMES.START)
       .expect("Location", PATH_NAMES.SIGN_IN_OR_CREATE)
       .expect(302, done);
   });
 
   it("should redirect to /sign-in-or-create with Google Analytics tag if 'result' query exists", (done) => {
     request(app)
-      .get(PATH_NAMES.AUTHORIZE)
+      .get(PATH_NAMES.START)
       .query({
-        client_id: "orchestrationAuth",
-        response_type: "code",
-        request: "SomeJWE",
         result: "test-result",
       })
       .expect("Location", PATH_NAMES.SIGN_IN_OR_CREATE + "?result=test-result")

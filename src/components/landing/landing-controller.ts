@@ -17,6 +17,7 @@ import { sanitize } from "../../utils/strings";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { landingService } from "./landing-service";
 import { LandingServiceInterface } from "./types";
+import { appendQueryParamIfHasValue } from "../../utils/url";
 
 function createConsentCookie(
   res: Response,
@@ -127,6 +128,17 @@ export function landingGet(
       }
     }
 
-    return res.redirect(redirectPath);
+    const faceToFaceRpGoogleAnalyticsParamKey = "result";
+    const faceToFaceRpGoogleAnalyticsParamValue = sanitize(
+      req.query[faceToFaceRpGoogleAnalyticsParamKey] as string
+    );
+
+    return res.redirect(
+      appendQueryParamIfHasValue(
+        redirectPath,
+        faceToFaceRpGoogleAnalyticsParamKey,
+        faceToFaceRpGoogleAnalyticsParamValue
+      )
+    );
   };
 }
