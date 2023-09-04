@@ -30,7 +30,7 @@ export function getRefererFrom(referer: string): string {
   if (referer) {
     try {
       const refererUrl = new URL(referer);
-      return refererUrl.pathname + refererUrl.search;
+      return refererUrl.pathname;
     } catch (error) {
       return undefined;
     }
