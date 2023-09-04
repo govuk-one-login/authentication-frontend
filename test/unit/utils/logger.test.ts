@@ -26,30 +26,28 @@ describe("logger", () => {
       ).to.equal("/hello/good/morning");
     });
 
-    it("should return path and query from a url", () => {
+    it("should return path but not a query param from a url", () => {
       expect(getRefererFrom("http://localhost:8080/hello?world=true")).to.equal(
-        "/hello?world=true"
+        "/hello"
       );
     });
 
-    it("should return query only from a url", () => {
-      expect(getRefererFrom("http://localhost:8080?world=true")).to.equal(
-        "/?world=true"
-      );
+    it("should not return query only from a url", () => {
+      expect(getRefererFrom("http://localhost:8080?world=true")).to.equal("/");
     });
 
-    it("should return a longer path and query from a url", () => {
+    it("should return a longer path but not a query param from a url", () => {
       expect(
         getRefererFrom("http://localhost:8080/hello/good/morning?world=true")
-      ).to.equal("/hello/good/morning?world=true");
+      ).to.equal("/hello/good/morning");
     });
 
-    it("should return a longer path and two query params from a url", () => {
+    it("should return a longer path but not two query params from a url", () => {
       expect(
         getRefererFrom(
           "http://localhost:8080/hello/good/morning?world=true&morning=good"
         )
-      ).to.equal("/hello/good/morning?world=true&morning=good");
+      ).to.equal("/hello/good/morning");
     });
 
     it("should return empty path from a url", () => {

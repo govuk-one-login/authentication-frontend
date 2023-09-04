@@ -10,7 +10,7 @@ const logger = pino({
       return {
         id: req.id,
         method: req.method,
-        url: req.url?.path,
+        url: req.path,
         from: getRefererFrom(req.headers.referer),
       };
     },
@@ -30,7 +30,7 @@ export function getRefererFrom(referer: string): string {
   if (referer) {
     try {
       const refererUrl = new URL(referer);
-      return refererUrl.pathname + refererUrl.search;
+      return refererUrl.pathname;
     } catch (error) {
       return undefined;
     }
