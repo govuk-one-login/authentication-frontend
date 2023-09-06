@@ -9,30 +9,43 @@ export function getKnownClaims(): {
   };
 }
 
-// Single source of truth for claims type and claims object keys
+export type Claims = {
+  iss: string;
+  aud: string;
+  exp: number;
+  iat: number;
+  nbf: number;
+  jti: string;
+  client_name: string;
+  cookie_consent_shared: boolean;
+  consent_required: boolean;
+  is_one_login_service: boolean;
+  service_type: string;
+  govuk_signin_journey_id: string;
+  confidence: string;
+  state: string;
+  client_id: string;
+  scope: string;
+  redirect_uri: string;
+  claim?: string;
+};
 
-export type Claims = typeof claimsInstance;
-// construct object for type
-const claimsInstance = getClaimsObject();
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function getClaimsObject() {
-  return {
-    iss: "",
-    aud: "",
-    exp: NaN,
-    iat: NaN,
-    nbf: NaN,
-    jti: "",
-    client_name: "",
-    cookie_consent_shared: false,
-    consent_required: false,
-    is_one_login_service: false,
-    service_type: "",
-    govuk_signin_journey_id: "",
-    confidence: "",
-    state: "",
-    client_id: "",
-    scope: "",
-    redirect_uri: "",
-  };
-}
+export const requiredClaimsKeys = [
+  "iss",
+  "aud",
+  "exp",
+  "iat",
+  "nbf",
+  "jti",
+  "client_name",
+  "cookie_consent_shared",
+  "consent_required",
+  "is_one_login_service",
+  "service_type",
+  "govuk_signin_journey_id",
+  "confidence",
+  "state",
+  "client_id",
+  "scope",
+  "redirect_uri",
+];
