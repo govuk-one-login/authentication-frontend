@@ -25,7 +25,6 @@ export type Claims = {
   confidence: string;
   state: string;
   client_id: string;
-  scope: string;
   redirect_uri: string;
   claim?: string;
 };
@@ -46,6 +45,5 @@ export const requiredClaimsKeys = [
   "confidence",
   "state",
   "client_id",
-  "scope",
   "redirect_uri",
 ];

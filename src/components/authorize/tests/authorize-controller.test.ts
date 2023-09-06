@@ -392,9 +392,6 @@ describe("authorize controller", () => {
         fakeJwtService
       )(req as Request, res as Response);
       expect(req.session.client.name).to.equal(mockClaims.client_name);
-      expect(req.session.client.scopes).to.deep.equal(
-        mockClaims.scope.split(" ")
-      );
       expect(req.session.client.cookieConsentEnabled).to.equal(
         mockClaims.cookie_consent_shared
       );
@@ -403,6 +400,73 @@ describe("authorize controller", () => {
       expect(req.session.client.isOneLoginService).to.equal(
         mockClaims.is_one_login_service
       );
+      expect(req.session.client.claim).to.be.deep.equal([
+        "email_verified",
+        "public_subject_id",
+        "email",
+      ]);
+    });
+
+    it("claims should be undefined when optional claims missing", async () => {
+      req.query.request = "JWE";
+      authServiceResponseData.data.user = {
+        consentRequired: false,
+        identityRequired: false,
+        upliftRequired: false,
+        authenticated: true,
+      };
+      fakeAuthorizeService = mockAuthService(authServiceResponseData);
+      const fakeCookieConsentService: CookieConsentServiceInterface = {
+        getCookieConsent: sinon.fake(),
+        createConsentCookieValue: sinon.fake(),
+      };
+
+      delete mockClaims.claim;
+
+      fakeJwtService = {
+        getPayloadWithValidation: sinon.fake.returns(
+          Promise.resolve(mockClaims)
+        ),
+      };
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+      expect(req.session.client.claim).to.be.equal(undefined);
+    });
+
+    it("claim should be undefined when json empty", async () => {
+      req.query.request = "JWE";
+      authServiceResponseData.data.user = {
+        consentRequired: false,
+        identityRequired: false,
+        upliftRequired: false,
+        authenticated: true,
+      };
+      fakeAuthorizeService = mockAuthService(authServiceResponseData);
+      const fakeCookieConsentService: CookieConsentServiceInterface = {
+        getCookieConsent: sinon.fake(),
+        createConsentCookieValue: sinon.fake(),
+      };
+
+      mockClaims.claim = "{}";
+
+      fakeJwtService = {
+        getPayloadWithValidation: sinon.fake.returns(
+          Promise.resolve(mockClaims)
+        ),
+      };
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+      expect(req.session.client.claim).to.be.equal(undefined);
     });
   });
 

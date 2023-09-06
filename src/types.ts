@@ -88,4 +88,5 @@ export interface UserSessionClient {
   redirectUri?: string;
   state?: string;
   isOneLoginService?: boolean;
+  claim?: string[];
 }
