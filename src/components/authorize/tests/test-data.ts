@@ -20,6 +20,8 @@ export function createmockclaims(): any {
     client_name: "di-auth-stub-relying-party-sandpit",
     is_one_login_service: false,
     jti: "fvvMWAladDtl35O_xyBTRLwwojA",
+    claim:
+      '{"userinfo": {"email_verified": null, "public_subject_id": null, "email": null}}',
   };
 }
 

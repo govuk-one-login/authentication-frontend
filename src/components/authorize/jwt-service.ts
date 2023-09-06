@@ -25,6 +25,10 @@ export class JwtService implements JwtServiceInterface {
       throw new JwtValidationError(error.message);
     }
 
+    if (claims["claim"] !== undefined) {
+      this.validateClaimObject(claims["claim"] as string);
+    }
+
     return this.validateCustomClaims(claims);
   }
 
@@ -37,5 +41,14 @@ export class JwtService implements JwtServiceInterface {
       }
     });
     return claims;
+  }
+
+  validateClaimObject(claim: string): string {
+    try {
+      JSON.parse(claim);
+      return claim;
+    } catch {
+      throw new JwtValidationError("claim object is not a valid json object");
+    }
   }
 }
