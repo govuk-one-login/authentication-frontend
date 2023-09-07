@@ -31,6 +31,7 @@ describe("authorize controller", () => {
   let res: ResponseOutput;
   let authServiceResponseData: any;
   let fakeAuthorizeService: AuthorizeServiceInterface;
+  let fakeCookieConsentService: CookieConsentServiceInterface;
   let fakeKmsDecryptionService: KmsDecryptionServiceInterface;
   let fakeJwtService: JwtServiceInterface;
   let mockClaims: Claims;
@@ -51,9 +52,27 @@ describe("authorize controller", () => {
     res = mockResponse();
     authServiceResponseData = createAuthServiceReponseData();
 
+    fakeAuthorizeService = mockAuthService({
+      data: {
+        user: {
+          consentRequired: false,
+          identityRequired: false,
+          upliftRequired: false,
+          authenticated: true,
+        },
+      },
+      success: true,
+    });
+
+    fakeCookieConsentService = {
+      getCookieConsent: sinon.fake(),
+      createConsentCookieValue: sinon.fake(),
+    };
+
     fakeKmsDecryptionService = {
       decrypt: sinon.fake.returns(Promise.resolve("jwt")),
     };
+
     fakeJwtService = {
       getPayloadWithValidation: sinon.fake.returns(Promise.resolve(mockClaims)),
     };
@@ -66,11 +85,6 @@ describe("authorize controller", () => {
   describe("authorizeGet", () => {
     it("should redirect to /sign-in-or-create page when no existing session for user", async () => {
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
-
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake(),
-      };
 
       await authorizeGet(
         fakeAuthorizeService,
@@ -115,11 +129,6 @@ describe("authorize controller", () => {
       };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake(),
-      };
-
       await authorizeGet(
         fakeAuthorizeService,
         fakeCookieConsentService,
@@ -138,11 +147,6 @@ describe("authorize controller", () => {
       };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake(),
-      };
-
       await authorizeGet(
         fakeAuthorizeService,
         fakeCookieConsentService,
@@ -157,18 +161,6 @@ describe("authorize controller", () => {
 
     it("should redirect to /auth-code when existing session", async () => {
       req.session.user.isAuthenticated = true;
-      authServiceResponseData.data.user = {
-        consentRequired: false,
-        identityRequired: false,
-        upliftRequired: false,
-        authenticated: true,
-      };
-      fakeAuthorizeService = mockAuthService(authServiceResponseData);
-
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake(),
-      };
 
       await authorizeGet(
         fakeAuthorizeService,
@@ -189,11 +181,6 @@ describe("authorize controller", () => {
       };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake(),
-      };
-
       await authorizeGet(
         fakeAuthorizeService,
         fakeCookieConsentService,
@@ -213,11 +200,6 @@ describe("authorize controller", () => {
       };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake(),
-      };
-
       await authorizeGet(
         fakeAuthorizeService,
         fakeCookieConsentService,
@@ -232,18 +214,6 @@ describe("authorize controller", () => {
 
     it("should redirect to /enter-password page when prompt is login", async () => {
       req.query.prompt = OIDC_PROMPT.LOGIN;
-      authServiceResponseData.data.user = {
-        consentRequired: false,
-        identityRequired: false,
-        upliftRequired: false,
-        authenticated: true,
-      };
-      fakeAuthorizeService = mockAuthService(authServiceResponseData);
-
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake(),
-      };
 
       await authorizeGet(
         fakeAuthorizeService,
@@ -295,14 +265,6 @@ describe("authorize controller", () => {
       };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake.returns({
-          value: JSON.stringify("cookieValue"),
-          expiry: "cookieExpires",
-        }),
-      } as unknown as CookieConsentServiceInterface;
-
       await authorizeGet(
         fakeAuthorizeService,
         fakeCookieConsentService,
@@ -323,11 +285,6 @@ describe("authorize controller", () => {
           success: false,
         }),
       } as unknown as AuthorizeServiceInterface;
-
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake(),
-      };
 
       await expect(
         authorizeGet(
@@ -353,11 +310,6 @@ describe("authorize controller", () => {
         }),
       } as unknown as AuthorizeServiceInterface;
 
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake(),
-      };
-
       await expect(
         authorizeGet(
           fakeAuthorizeService,
@@ -373,17 +325,6 @@ describe("authorize controller", () => {
 
     it("should set session fields from jwt claims", async () => {
       req.query.request = "JWE";
-      authServiceResponseData.data.user = {
-        consentRequired: false,
-        identityRequired: false,
-        upliftRequired: false,
-        authenticated: true,
-      };
-      fakeAuthorizeService = mockAuthService(authServiceResponseData);
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake(),
-      };
 
       await authorizeGet(
         fakeAuthorizeService,
@@ -409,17 +350,6 @@ describe("authorize controller", () => {
 
     it("claims should be undefined when optional claims missing", async () => {
       req.query.request = "JWE";
-      authServiceResponseData.data.user = {
-        consentRequired: false,
-        identityRequired: false,
-        upliftRequired: false,
-        authenticated: true,
-      };
-      fakeAuthorizeService = mockAuthService(authServiceResponseData);
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake(),
-      };
 
       delete mockClaims.claim;
 
@@ -440,18 +370,6 @@ describe("authorize controller", () => {
 
     it("claim should be undefined when json empty", async () => {
       req.query.request = "JWE";
-      authServiceResponseData.data.user = {
-        consentRequired: false,
-        identityRequired: false,
-        upliftRequired: false,
-        authenticated: true,
-      };
-      fakeAuthorizeService = mockAuthService(authServiceResponseData);
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake(),
-      };
-
       mockClaims.claim = "{}";
 
       fakeJwtService = {
