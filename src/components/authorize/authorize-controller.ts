@@ -88,9 +88,15 @@ export function authorizeGet(
 
     req.session.client.prompt = loginPrompt;
 
+    if (claims.claim !== undefined) {
+      const claim = JSON.parse(claims.claim);
+      if (claim.userinfo !== undefined) {
+        req.session.client.claim = Object.keys(claim.userinfo);
+      }
+    }
+
     req.session.client.serviceType = claims.service_type;
     req.session.client.name = claims.client_name;
-    req.session.client.scopes = claims.scope.split(" ");
     req.session.client.cookieConsentEnabled = claims.cookie_consent_shared;
     req.session.client.redirectUri = claims.redirect_uri;
     req.session.client.state = claims.state;

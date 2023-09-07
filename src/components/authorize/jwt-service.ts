@@ -1,7 +1,7 @@
 import { JwtServiceInterface } from "./types";
 import { getOrchToAuthSigningPublicKey } from "../../config";
 import { JwtClaimsValueError, JwtValidationError } from "../../utils/error";
-import { Claims, getClaimsObject, getKnownClaims } from "./claims-config";
+import { Claims, requiredClaimsKeys, getKnownClaims } from "./claims-config";
 import * as jose from "jose";
 
 export class JwtService implements JwtServiceInterface {
@@ -17,12 +17,16 @@ export class JwtService implements JwtServiceInterface {
       const tempkey = await jose.importSPKI(this.publicKey, "ES256");
       claims = (
         await jose.jwtVerify(jwt, tempkey, {
-          requiredClaims: Object.keys(getClaimsObject()),
+          requiredClaims: requiredClaimsKeys,
           clockTolerance: 30,
         })
       ).payload;
     } catch (error) {
       throw new JwtValidationError(error.message);
+    }
+
+    if (claims["claim"] !== undefined) {
+      this.validateClaimObject(claims["claim"] as string);
     }
 
     return this.validateCustomClaims(claims);
@@ -37,5 +41,14 @@ export class JwtService implements JwtServiceInterface {
       }
     });
     return claims;
+  }
+
+  validateClaimObject(claim: string): string {
+    try {
+      JSON.parse(claim);
+      return claim;
+    } catch {
+      throw new JwtValidationError("claim object is not a valid json object");
+    }
   }
 }

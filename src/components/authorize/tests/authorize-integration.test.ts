@@ -45,7 +45,6 @@ describe("Integration:: authorize", () => {
               client: {
                 serviceType: "MANDATORY",
                 clientName: "test-client",
-                scopes: ["openid"],
                 cookieConsentEnabled: true,
                 consentEnabled: true,
                 redirectUri: "http://test-redirect.gov.uk/callback",

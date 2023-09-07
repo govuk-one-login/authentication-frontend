@@ -87,6 +87,36 @@ describe("JWT service", () => {
           expect(error.message).to.equal("signature verification failed");
         }
       });
+
+      it("should throw error when jwt contains invalid claim object", async () => {
+        const claims = createmockclaims();
+        claims["claim"] = "not a json";
+
+        const jwtWithInvalidClaimObject = await createJwt(claims, privateKey);
+        jwtService = new JwtService(publicKey);
+
+        try {
+          await jwtService.getPayloadWithValidation(jwtWithInvalidClaimObject);
+          assert.fail("Expected error to be thrown");
+        } catch (error) {
+          expect(error).to.be.an.instanceOf(JwtValidationError);
+          expect(error.message).to.equal(
+            "claim object is not a valid json object"
+          );
+        }
+      });
+
+      it("should pass validation when jwt does not contain claim object", async () => {
+        const claims = createmockclaims();
+        delete claims["claim"];
+
+        const jwtWithoutClaimObject = await createJwt(claims, privateKey);
+        jwtService = new JwtService(publicKey);
+        const result = await jwtService.getPayloadWithValidation(
+          jwtWithoutClaimObject
+        );
+        expect(result).to.deep.equal(claims);
+      });
     });
 
     describe("Validate Generic Claims", () => {
@@ -128,6 +158,30 @@ describe("JWT service", () => {
         } catch (error) {
           expect(error).to.be.an.instanceOf(JwtValidationError);
           expect(error.message).to.equal('"nbf" claim timestamp check failed');
+        }
+      });
+    });
+
+    describe("Validate Claims claim object", () => {
+      it("should return claims if a valid claim object", async () => {
+        const claimObject =
+          '{"userinfo": {"email_verified": null, "public_subject_id": null, "email": null}}';
+        expect(jwtService.validateClaimObject(claimObject)).to.be.deep.equal(
+          claimObject
+        );
+      });
+
+      it("should return claims if a invalid claim object", async () => {
+        const claimObject = "not a json string";
+
+        try {
+          jwtService.validateClaimObject(claimObject);
+          assert.fail("Expected error to be thrown");
+        } catch (error) {
+          expect(error).to.be.an.instanceOf(JwtValidationError);
+          expect(error.message).to.equal(
+            "claim object is not a valid json object"
+          );
         }
       });
     });
