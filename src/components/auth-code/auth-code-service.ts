@@ -1,4 +1,4 @@
-import { ApiResponseResult } from "../../types";
+import { ApiResponseResult, UserSessionClient } from "../../types";
 import { API_ENDPOINTS } from "../../app.constants";
 import {
   createApiResponse,
@@ -7,25 +7,48 @@ import {
   Http,
 } from "../../utils/http";
 import { AuthCodeResponse, AuthCodeServiceInterface } from "./types";
-import { getApiBaseUrl } from "../../config";
+import {
+  getApiBaseUrl,
+  getFrontendApiBaseUrl,
+  supportAuthOrchSplit,
+} from "../../config";
+import { AxiosResponse } from "axios";
 
 export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
   const getAuthCode = async function (
     sessionId: string,
     clientSessionId: string,
     sourceIp: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    clientSession: UserSessionClient
   ): Promise<ApiResponseResult<AuthCodeResponse>> {
-    const response = await axios.client.get(
-      API_ENDPOINTS.AUTH_CODE,
-      getRequestConfig({
-        baseURL: getApiBaseUrl(),
-        sessionId: sessionId,
-        clientSessionId: clientSessionId,
-        sourceIp: sourceIp,
-        persistentSessionId: persistentSessionId,
-      })
-    );
+    const baseUrl = supportAuthOrchSplit()
+      ? getFrontendApiBaseUrl()
+      : getApiBaseUrl();
+    const config = getRequestConfig({
+      baseURL: baseUrl,
+      sessionId: sessionId,
+      clientSessionId: clientSessionId,
+      sourceIp: sourceIp,
+      persistentSessionId: persistentSessionId,
+    });
+
+    let response: AxiosResponse;
+
+    if (supportAuthOrchSplit()) {
+      const body = {
+        claim: clientSession.claim,
+        state: clientSession.state,
+        "redirect-uri": clientSession.redirectUri,
+      };
+      response = await axios.client.post(
+        API_ENDPOINTS.ORCH_AUTH_CODE,
+        body,
+        config
+      );
+    } else {
+      response = await axios.client.get(API_ENDPOINTS.AUTH_CODE, config);
+    }
 
     return createApiResponse<AuthCodeResponse>(response);
   };
