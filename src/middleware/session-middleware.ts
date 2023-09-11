@@ -62,13 +62,15 @@ export function validateSessionMiddleware(
     return next();
   }
 
-  req.session.destroy((error) => {
-    if (error) {
-      req.log.error(`Failed to delete session: ${error}`);
-    } else {
-      req.log.info("Session destroyed");
-    }
-  });
+  req.session = null;
+
+  // req.session.destroy((error) => {
+  //   if (error) {
+  //     req.log.error(`Failed to delete session: ${error}`);
+  //   } else {
+  //     req.log.info("Session destroyed");
+  //   }
+  // });
 
   res.status(401);
 
