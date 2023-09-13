@@ -1062,7 +1062,8 @@
             }
           },
           "paragraph_seventeen": "When you have completed the checks above using the App, you will be returned to the GOV.UK One Login website where we will collect your name, date of birth and address. We send these to Experian so they can conduct a counter fraud check.",
-          "paragraph_eighteen": "When Experian has completed the check, they send us a fraud score, plus details of any associated fraudulent activity."
+          "paragraph_eighteen": "When Experian has completed the check, they send us a fraud score, plus details of any associated fraudulent activity.",
+          "paragraph_nineteen": "This fraud check will not affect your credit score, as it is a ‘soft search’. An entry about it will be added to your credit record, but it will only be visible to you. Other organisations that use Experian to run their own credit checks will not be able to see it."
         },
         "using_web_to_prove_identity": {
           "header": "Using your web browser to prove your identity",
@@ -1082,7 +1083,7 @@
           "paragraph_six": "For this check we use your name, date of birth and address to retrieve relevant questions from Experian. We collect your answers and send them to Experian to check that they match the information they already have about you.",
           "paragraph_seven": "When Experian has completed the check they respond to us with a Pass / Fail outcome.",
           "paragraph_eight": "GDS does not store or retain the questions or your answers.",
-          "paragraph_nine": "This check constitutes a ‘soft search’ which means that a record of the check will exist on your credit records as ‘GOV.UK One Login’. It will only be visible to you and not to any other organisations that use Experian to conduct their own credit checks. Consequently, it will not have an impact on your credit score.",
+          "paragraph_nine": "This fraud check will not affect your credit score, as it is a ‘soft search’. An entry about it will be added to your credit record, but it will only be visible to you. Other organisations that use Experian to run their own credit checks will not be able to see it.",
           "sub_header_three": "Fraud check",
           "paragraph_ten": "We use an identity checking service provider called Experian to conduct a fraud check to:",
           "list": {
@@ -1097,7 +1098,8 @@
             }
           },
           "paragraph_twelve": "When you have completed the checks above, we will collect your name, date of birth and address. We send these to Experian so they can conduct the check.",
-          "paragraph_thirteen": "When Experian has completed the check, they send us a fraud score, plus details of any associated fraudulent activity."
+          "paragraph_thirteen": "When Experian has completed the check, they send us a fraud score, plus details of any associated fraudulent activity.",
+          "paragraph_fourteen": "This fraud check will not affect your credit score, as it is a ‘soft search’. An entry about it will be added to your credit record, but it will only be visible to you. Other organisations that use Experian to run their own credit checks will not be able to see it."
         },
         "proving_identity_at_post_office": {
           "header": "Proving your identity at a Post Office",
@@ -1117,6 +1119,7 @@
           },
           "paragraph_four": "We collect your name, date of birth and address and send them to Experian so they can conduct the check.",
           "paragraph_five": "When Experian has completed the check, they send us a fraud score, plus details of any associated fraudulent activity.",
+          "paragraph_five_one": "This fraud check will not affect your credit score, as it is a ‘soft search’. An entry about it will be added to your credit record, but it will only be visible to you. Other organisations that use Experian to run their own credit checks will not be able to see it.",
           "sub_header_two": "Genuine document check and likeness check",
           "paragraph_six": "We need to check that:",
           "list_two": {
@@ -1322,7 +1325,7 @@
         "how_long_we_keep_your_information": {
           "header": "How long we keep your information",
           "paragraph_one": "We store your personal information for no longer than is reasonably necessary and legally justifiable.",
-          "paragraph_two": "We will keep your GOV.UK One Login for as long as you wish to use it although we will delete it if you do not use it for 2 years. ",
+          "paragraph_two": "We will keep your GOV.UK One Login for as long as you wish to use it although we will delete it if you do not use it for 3 years. ",
           "paragraph_three": "If you choose to delete your GOV.UK One Login, we’ll delete your account and your proven identity information.",
           "paragraph_four": "We delete your still photo generated from your selfie video, driving licence images and biometric facial data from Iproov’s systems after 30 days.",
           "paragraph_five": "The in-person identity check stores your data for 11 days to give you enough time to go to the Post Office to complete your identity check.",
@@ -1436,7 +1439,7 @@
           "header": "Changes to this notice",
           "paragraph_one": "We may change this privacy notice. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy notice will apply to you and your information immediately.",
           "paragraph_two": "If these changes affect how your personal information is processed, GDS will let you know.",
-          "paragraph_three": "Last updated: 31 August 2023"
+          "paragraph_three": "Last updated: 13 September 2023"
         }
       }
     },

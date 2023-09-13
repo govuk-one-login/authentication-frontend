@@ -1062,7 +1062,8 @@
             }
           },
           "paragraph_seventeen": "Pan fyddwch wedi cwblhau’r gwiriadau uchod gan ddefnyddio’r Ap, byddwch yn cael eich dychwelyd i wefan GOV.UK One Login lle byddwn yn casglu eich enw, eich dyddiad geni a’ch cyfeiriad. Rydym yn anfon y rhain i Experian er mwyn iddynt allu cynnal gwiriad gwrth-dwyll.",
-          "paragraph_eighteen": "Pan mae Experian wedi cwblhau’r gwiriad, maent yn anfon sgôr twyll atom, ynghyd â manylion am unrhyw weithgaredd twyllodrus cysylltiedig."
+          "paragraph_eighteen": "Pan mae Experian wedi cwblhau’r gwiriad, maent yn anfon sgôr twyll atom, ynghyd â manylion am unrhyw weithgaredd twyllodrus cysylltiedig.",
+          "paragraph_nineteen": "Ni fydd y gwiriad twyll hwn yn effeithio ar eich sgôr credyd, gan ei fod yn ’chwiliad meddal’. Bydd cofnod amdano yn cael ei ychwanegu at eich cofnod credyd, ond dim ond i chi y bydd yn weladwy. Ni fydd sefydliadau eraill sy’n defnyddio Experian i gynnal eu gwiriadau credyd eu hunain yn gallu ei weld."
         },
         "using_web_to_prove_identity": {
           "header": "Defnyddio eich porwr gwe i brofi eich hunaniaeth",
@@ -1082,7 +1083,7 @@
           "paragraph_six": "Ar gyfer y gwiriad hwn rydym yn defnyddio eich enw, dyddiad geni a chyfeiriad i adfer cwestiynau perthnasol gan Experian. Rydym yn casglu eich atebion ac yn eu hanfon i Experian i wirio eu bod yn cyd-fynd â’r wybodaeth sydd ganddynt amdanoch chi yn barod.",
           "paragraph_seven": "Pan mae Experian wedi cwblhau’r gwiriad maent yn ymateb i ni gyda chanlyniad Pasio / Methu.",
           "paragraph_eight": "Nid yw GDS yn storio nac yn cadw’r cwestiynau na’ch atebion.",
-          "paragraph_nine": "Mae’r gwiriad hwn yn gyfystyr â ’chwiliad meddal’ sy’n golygu y bydd cofnod o’r gwiriad yn bodoli ar eich cofnodion credyd fel ’GOV.UK One Login’. Dim ond i chi y bydd yn weladwy ac nid i unrhyw sefydliadau eraill sy’n defnyddio Experian i gynnal eu gwiriadau credyd eu hunain. O ganlyniad, ni fydd yn cael effaith ar eich sgôr credyd.",
+          "paragraph_nine": "Ni fydd y gwiriad twyll hwn yn effeithio ar eich sgôr credyd, gan ei fod yn ’chwiliad meddal’. Bydd cofnod amdano yn cael ei ychwanegu at eich cofnod credyd, ond dim ond i chi y bydd yn weladwy. Ni fydd sefydliadau eraill sy’n defnyddio Experian i gynnal eu gwiriadau credyd eu hunain yn gallu ei weld.",
           "sub_header_three": "Gwiriad twyll",
           "paragraph_ten": "Rydym yn defnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Experian i gynnal archwiliad twyll i:",
           "list": {
@@ -1097,7 +1098,8 @@
             }
           },
           "paragraph_twelve": "Pan fyddwch wedi cwblhau’r gwiriadau uchod, byddwn yn casglu eich enw, dyddiad geni a chyfeiriad. Rydym yn anfon y rhain at Experian fel y gallant gynnal y gwiriad.",
-          "paragraph_thirteen": "Pan fydd Experian wedi cwblhau’r gwiriad, maent yn anfon sgôr twyll atom, ynghyd â manylion unrhyw weithgaredd twyllodrus cysylltiedig."
+          "paragraph_thirteen": "Pan fydd Experian wedi cwblhau’r gwiriad, maent yn anfon sgôr twyll atom, ynghyd â manylion unrhyw weithgaredd twyllodrus cysylltiedig.",
+          "paragraph_fourteen": "Ni fydd y gwiriad twyll hwn yn effeithio ar eich sgôr credyd, gan ei fod yn ’chwiliad meddal’. Bydd cofnod amdano yn cael ei ychwanegu at eich cofnod credyd, ond dim ond i chi y bydd yn weladwy. Ni fydd sefydliadau eraill sy’n defnyddio Experian i gynnal eu gwiriadau credyd eu hunain yn gallu ei weld."
         },
         "proving_identity_at_post_office": {
           "header": "Profi eich hunaniaeth yn y Swyddfa Bost",
@@ -1117,6 +1119,7 @@
           },
           "paragraph_four": "Rydym yn casglu eich enw, dyddiad geni a chyfeiriad ac yn eu hanfon i Experian fel y gallant gynnal y gwiriad.",
           "paragraph_five": "Pan fydd Experian wedi cwblhau’r gwiriad, maent yn anfon sgôr twyll atom, ynghyd â manylion unrhyw weithgaredd twyllodrus cysylltiedig.",
+          "paragraph_five_one": "Ni fydd y gwiriad twyll hwn yn effeithio ar eich sgôr credyd, gan ei fod yn ’chwiliad meddal’. Bydd cofnod amdano yn cael ei ychwanegu at eich cofnod credyd, ond dim ond i chi y bydd yn weladwy. Ni fydd sefydliadau eraill sy’n defnyddio Experian i gynnal eu gwiriadau credyd eu hunain yn gallu ei weld.",
           "sub_header_two": "Gwiriad dogfennau dilys a gwiriad tebygrwydd",
           "paragraph_six": "Mae angen i ni wirio:",
           "list_two": {
@@ -1322,7 +1325,7 @@
         "how_long_we_keep_your_information": {
           "header": "Pa mor hir rydym yn cadw eich gwybodaeth",
           "paragraph_one": "Rydym yn storio eich gwybodaeth bersonol am ddim mwy o amser nag sy’n rhesymol angenrheidiol ac yn gyfreithiol gyfiawn.",
-          "paragraph_two": "Byddwn yn cadw eich GOV.UK One Login cyhyd ag y dymunwch ei ddefnyddio er y byddwn yn ei ddileu os na fyddwch yn ei ddefnyddio am 2 flynedd. ",
+          "paragraph_two": "Byddwn yn cadw eich GOV.UK One Login cyhyd ag y dymunwch ei ddefnyddio er y byddwn yn ei ddileu os na fyddwch yn ei ddefnyddio am 3 flynedd. ",
           "paragraph_three": "Os ydych yn dewis dileu eich GOV.UK One Login, byddwn yn dileu eich cyfrif a’ch gwybodaeth adnabod profedig.",
           "paragraph_four": "Rydym yn dileu eich llun llonydd a gynhyrchir o’ch fideo hunlun, delweddau trwydded yrru a data biometrig y wyneb o systemau Iproov ar ôl 30 diwrnod.",
           "paragraph_five": "Byddwn yn cadw eich data adborth am 2 flynedd.",
@@ -1436,7 +1439,7 @@
           "header": "Newidiadau i’r hysbysiad hwn",
           "paragraph_one": "Efallai y byddwn yn newid yr hysbysiad preifatrwydd hwn. Yn yr achos hynny, bydd dyddiad ’diweddaru olaf’ y ddogfen hon hefyd yn newid. Bydd unrhyw newidiadau i’r hysbysiad preifatrwydd hwn yn berthnasol i chi a’ch gwybodaeth ar unwaith.",
           "paragraph_two": "Os yw’r newidiadau hyn yn effeithio ar sut mae eich gwybodaeth bersonol yn cael ei phrosesu, bydd GDS yn rhoi gwybod i chi.",
-          "paragraph_three": "Diweddarwyd diwethaf: 31 Awst 2023"
+          "paragraph_three": "Diweddarwyd diwethaf: 13 Medi 2023"
         }
       }
     },
