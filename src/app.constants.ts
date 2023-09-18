@@ -97,6 +97,7 @@ export const API_ENDPOINTS = {
   UPDATE_PROFILE: "/update-profile",
   MFA: "/mfa",
   AUTH_CODE: "/auth-code",
+  ORCH_AUTH_CODE: "/orch-auth-code",
   START: "/start",
   RESET_PASSWORD_REQUEST: "/reset-password-request",
   RESET_PASSWORD: "/reset-password",

@@ -1,4 +1,8 @@
-import { ApiResponseResult, DefaultApiResponse } from "../../types";
+import {
+  ApiResponseResult,
+  DefaultApiResponse,
+  UserSessionClient,
+} from "../../types";
 
 export interface AuthCodeResponse extends DefaultApiResponse {
   location: string;
@@ -9,6 +13,7 @@ export interface AuthCodeServiceInterface {
     sessionId: string,
     clientSessionId: string,
     sourceIp: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    clientSession: UserSessionClient
   ) => Promise<ApiResponseResult<AuthCodeResponse>>;
 }
