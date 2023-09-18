@@ -20,8 +20,7 @@ export function authCodeGet(
       sessionId,
       clientSessionId,
       req.ip,
-      persistentSessionId,
-      req.session.client
+      persistentSessionId
     );
 
     if (!result.success) {
