@@ -4,7 +4,7 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 import {
-  contactUsQuestionsFormPost,
+  contactUsQuestionsFormPostToZendesk,
   contactUsQuestionsGet,
 } from "../contact-us-controller";
 import {
@@ -383,7 +383,7 @@ describe("contact us questions controller", () => {
           contactUsSubmitForm: sandbox.fake(),
         };
 
-        await contactUsQuestionsFormPost(fakeService)(
+        await contactUsQuestionsFormPostToZendesk(fakeService)(
           req as Request,
           res as Response
         );

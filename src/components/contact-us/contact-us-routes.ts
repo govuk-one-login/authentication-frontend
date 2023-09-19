@@ -8,11 +8,13 @@ import {
   furtherInformationGet,
   contactUsQuestionsGet,
   furtherInformationPost,
-  contactUsQuestionsFormPost,
+  contactUsQuestionsFormPostToZendesk,
+  contactUsQuestionsFormPostToSmartAgent,
 } from "./contact-us-controller";
 import { validateContactUsRequest } from "./contact-us-validation";
 import { validateContactUsQuestionsRequest } from "./contact-us-questions-validation";
 import { asyncHandler } from "../../utils/async";
+import { supportSmartAgent } from "../../config";
 
 const router = express.Router();
 
@@ -35,11 +37,19 @@ router.post(
 
 router.get(PATH_NAMES.CONTACT_US_QUESTIONS, contactUsQuestionsGet);
 
-router.post(
-  PATH_NAMES.CONTACT_US_QUESTIONS,
-  validateContactUsQuestionsRequest(),
-  asyncHandler(contactUsQuestionsFormPost())
-);
+if (supportSmartAgent()) {
+  router.post(
+    PATH_NAMES.CONTACT_US_QUESTIONS,
+    validateContactUsQuestionsRequest(),
+    asyncHandler(contactUsQuestionsFormPostToSmartAgent())
+  );
+} else {
+  router.post(
+    PATH_NAMES.CONTACT_US_QUESTIONS,
+    validateContactUsQuestionsRequest(),
+    asyncHandler(contactUsQuestionsFormPostToZendesk())
+  );
+}
 
 router.get(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS, contactUsSubmitSuccessGet);
 

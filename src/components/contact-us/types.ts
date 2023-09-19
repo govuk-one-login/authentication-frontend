@@ -9,6 +9,7 @@ export interface ContactForm {
   questions: Questions;
   themeQuestions: ThemeQuestions;
   referer: string;
+  preferredLanguage?: string;
   securityCodeSentMethod?: string;
   identityDocumentUsed?: string;
 }
@@ -49,4 +50,32 @@ export interface Themes {
 
 export interface ContactUsServiceInterface {
   contactUsSubmitForm: (contactForm: ContactForm) => Promise<void>;
+}
+
+export interface SmartAgentCustomAttributes {
+  "sa-ticket-id"?: string;
+  "sa-tag-customer-name"?: string;
+  "sa-tag-customer-email"?: string;
+  "sa-tag-telephone-number"?: string;
+  "sa-tag-primary-intent-user-selection"?: string;
+  "sa-useragent"?: string;
+  "sa-identity-document"?: string;
+  "sa-webformrefer"?: string;
+  "sa-security-code-sent-method"?: string;
+  "sa-tag-secondary-reason-user-selection"?: string;
+  "sa-themequestion"?: string;
+  "sa-subthemequestion"?: string;
+  "sa-additional-description"?: string;
+  "sa-more-detailed-description"?: string;
+  "sa-optional-description"?: string;
+  "sa-issue-description"?: string;
+  "sa-tag-what-gov-service"?: string;
+  "sa-tag-permission-to-email"?: string;
+  "sa-tag-preferred-language"?: string;
+}
+
+export interface SmartAgentTicket {
+  email?: string;
+  message: string;
+  customAttributes?: SmartAgentCustomAttributes;
 }

@@ -12,6 +12,7 @@ import {
   validateAppId,
   createTicketIdentifier,
   isAppJourney,
+  getPreferredLanguage,
 } from "../contact-us-controller";
 import { SUPPORT_TYPE, ZENDESK_THEMES } from "../../../app.constants";
 import { RequestGet, ResponseRedirect } from "../../../types";
@@ -207,6 +208,20 @@ describe("appErrorCode and appSessionId query parameters", () => {
       it(`should return not return the original string when passed an invalid string like ${i}`, () => {
         expect(getAppErrorCode(i)).to.not.equal(i);
       });
+    });
+  });
+
+  describe("getPreferredLanguage", () => {
+    it("should return 'English' when passed 'en'", () => {
+      expect(getPreferredLanguage("en")).to.equal("English");
+    });
+
+    it("should return 'Welsh' when passed 'en'", () => {
+      expect(getPreferredLanguage("cy")).to.equal("Welsh");
+    });
+
+    it("should return 'Language code note set' when passed an unexpected value", () => {
+      expect(getPreferredLanguage("ex")).to.equal("Language code not set");
     });
   });
 

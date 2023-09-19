@@ -62,6 +62,10 @@ export function supportAuthOrchSplit(): boolean {
   return process.env.SUPPORT_AUTH_ORCH_SPLIT === "1";
 }
 
+export function supportSmartAgent(): boolean {
+  return process.env.SUPPORT_SMART_AGENT === "1";
+}
+
 export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
   const hostKey = `${appEnv}-${process.env.REDIS_KEY}-redis-master-host`;
   const portKey = `${appEnv}-${process.env.REDIS_KEY}-redis-port`;
@@ -127,6 +131,17 @@ export function getAnalyticsCookieDomain(): string {
 
 export function getServiceDomain(): string {
   return process.env.SERVICE_DOMAIN || "localhost";
+}
+
+export function getSmartAgentApiKey(): string {
+  return process.env.SMARTAGENT_API_KEY || "";
+}
+export function getSmartAgentApiUrl(): string {
+  return process.env.SMARTAGENT_API_URL || "";
+}
+
+export function getSmartAgentWebformId(): string {
+  return process.env.SMARTAGENT_WEBFORM_ID || "";
 }
 
 export function getServiceSignInLink(): string {
