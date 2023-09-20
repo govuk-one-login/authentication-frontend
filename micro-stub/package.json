@@ -1,0 +1,17 @@
+{
+  "name": "di-auth-micro-stub",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": "18.12.1"
+  },
+  "scripts": {
+    "dummy-server": "node micro-stub-server.js"
+  },
+  "dependencies": {
+    "axios": "^0.25.0",
+    "express": "^4.17.2"
+  }
+}

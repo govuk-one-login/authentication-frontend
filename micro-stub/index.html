@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auth Micro-Stub</title>
+</head>
+<body>
+    <main id="main-content" role="main">
+        <h1 id="page-title">Auth Micro-Stub</h1>
+        <form method="get" action="http://localhost:9000/authorize" id="auth-form">
+            <fieldset>
+                <legend>
+                    <h3>Scopes</h3>
+                </legend>
+                <div>
+                    <input id="scopes-openid" name="scopes" type="checkbox" value="openid" checked disabled>
+                    <label for="scopes-openid">openid</label>
+                </div>
+                <div>
+                    <input id="scopes-email" name="scopes-email" type="checkbox" value="email" checked>
+                    <label for="scopes-email">email address</label>
+                </div>
+                <div>
+                    <input id="scopes-phone" name="scopes-phone" type="checkbox" value="phone" checked>
+                    <label for="scopes-phone">phone number</label>
+                </div>
+            </fieldset> 
+
+            <fieldset>
+                <legend>
+                    <h3>Prompt</h3>
+                </legend>
+                <div>
+                    <input id="prompt-none" name="prompt" type="radio" value="none" checked>
+                    <label for="prompt-none">none</label>
+                </div>
+                <div>
+                    <input id="prompt-login" name="prompt" type="radio" value="login">
+                    <label for="prompt-login">login</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>
+                    <h3>Second factor auth</h3>
+                </legend>
+                <div>
+                    <input id="2fa-on" name="2fa" type="radio" value="Cl.Cm" checked>
+                    <label for="2fa-on">2FA</label>
+                </div>
+                <div>
+                    <input id="2fa-off" name="2fa" type="radio" value="Cl">
+                    <label for="2fa-off">No 2FA</label>
+                </div>
+            </fieldset>
+
+            <fieldset id="confidence-fieldset">
+                <legend>
+                    <h3>Level of confidence - only P0 possible in build</h3>
+                </legend>
+                <div>
+                    <input id="loc-none" name="loc" type="radio" value="" checked>
+                    <label for="loc-none">Do not request LoC</label>
+                </div>
+                <div>
+                    <input id="loc-P0" name="loc" type="radio" value="P0">
+                    <label for="loc-P0">P0 (None - equivalent to above)</label>
+                </div>
+                <div>
+                    <input id="loc-P1" name="loc" type="radio" value="P1" disabled>
+                    <label for="loc-P1">P1</label>
+                </div>
+                <div>
+                    <input id="loc-P2" name="loc" type="radio" value="P2">
+                    <label for="loc-P2">P2 (MVP)</label>
+                </div>
+                <div>
+                    <input id="loc-P3" name="loc" type="radio" value="P3" disabled>
+                    <label for="loc-P3">P3</label>
+                </div>
+                <div>
+                    <input id="loc-P4" name="loc" type="radio" value="P4" disabled>
+                    <label for="loc-P4">P4</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>
+                    <h3>Claims - only affects P2+ Level of Confidence journeys</h3>
+                </legend>
+                <div>
+                    <input id="claims-core-identity" name="claims-core-identity" type="checkbox" value="https://vocab.account.gov.uk/v1/coreIdentityJWT" checked>
+                    <label for="claims-core-identity">core identity</label>
+                </div>
+                <div>
+                    <input id="claims-passport" name="claims-passport" type="checkbox" value="https://vocab.account.gov.uk/v1/passport" checked>
+                    <label for="claims-passport">passport</label>
+                </div>
+                <div>
+                    <input id="claims-address" name="claims-address" type="checkbox" value="https://vocab.account.gov.uk/v1/address" checked>
+                    <label for="claims-address">address</label>
+                </div>
+                <div>
+                    <input id="claims-driving-permit" name="claims-driving-permit" type="checkbox" value="https://vocab.account.gov.uk/v1/drivingPermit">
+                    <label for="claims-driving-permit">driving permit</label>
+                </div>
+            </fieldset> 
+
+            <fieldset>
+                <legend>
+                    <h3>Language (ui_locales)</h3>
+                </legend>
+                <div class="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="lng-none" name="lng" type="radio" value="" checked>
+                        <label class="govuk-label govuk-radios__label" for="lng-none">
+                            none
+                        </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="lng-en" name="lng" type="radio" value="en">
+                        <label class="govuk-label govuk-radios__label" for="lng-en">
+                            English - en
+                        </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="lng-cy" name="lng" type="radio" value="cy">
+                        <label class="govuk-label govuk-radios__label" for="lng-cy">
+                            Welsh (Cymraeg) - cy
+                        </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="lng-cy-AR" name="lng" type="radio" value="cy-AR">
+                        <label class="govuk-label govuk-radios__label" for="lng-cy-AR">
+                            Welsh (Cymraeg) - Argentina - cy-AR
+                        </label>
+                    </div>
+            </fieldset>
+
+            <br>
+
+            <button id="govuk-signin-button" type="submit">Continue</button>
+        </form>
+    </main>
+</body>
+</html>
