@@ -10,6 +10,8 @@ import { Http } from "../../../utils/http";
 
 describe("authentication auth code service", () => {
   const redirectUriSentToAuth = "/redirect-uri";
+  const rpSectorHostSentToAuth = "https://rp.redirect.uri";
+  const isAccountCreationJourneyUserSession = true;
   const redirectUriReturnedFromResponse =
     "/redirect-here?with-some-params=added-by-the-endpoint";
   const apiBaseUrl = "/base-url";
@@ -55,6 +57,11 @@ describe("authentication auth code service", () => {
         claim: claim,
         state: state,
         redirectUri: redirectUriSentToAuth,
+        rpSectorHost: rpSectorHostSentToAuth,
+      };
+
+      const userSessionClient = {
+        isAccountCreationJourney: isAccountCreationJourneyUserSession,
       };
 
       const result = await service.getAuthCode(
@@ -62,13 +69,16 @@ describe("authentication auth code service", () => {
         "clientSessionId",
         "sourceIp",
         "persistentSessionId",
-        sessionClient
+        sessionClient,
+        userSessionClient
       );
 
       const expectedBody = {
         claim: claim,
         state: state,
         "redirect-uri": redirectUriSentToAuth,
+        "rp-sector-uri": rpSectorHostSentToAuth,
+        "is-new-account": isAccountCreationJourneyUserSession,
       };
 
       expect(
@@ -96,6 +106,7 @@ describe("authentication auth code service", () => {
         "clientSessionId",
         "sourceIp",
         "persistentSessionId",
+        {},
         {}
       );
 

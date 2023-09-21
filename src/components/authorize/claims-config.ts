@@ -26,6 +26,7 @@ export type Claims = {
   state: string;
   client_id: string;
   redirect_uri: string;
+  rp_sector_host: string;
   claim?: string;
 };
 
@@ -46,4 +47,5 @@ export const requiredClaimsKeys = [
   "state",
   "client_id",
   "redirect_uri",
+  "rp_sector_host",
 ];

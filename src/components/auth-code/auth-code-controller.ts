@@ -21,7 +21,8 @@ export function authCodeGet(
       clientSessionId,
       req.ip,
       persistentSessionId,
-      req.session.client
+      req.session.client,
+      req.session.user
     );
 
     if (!result.success) {
