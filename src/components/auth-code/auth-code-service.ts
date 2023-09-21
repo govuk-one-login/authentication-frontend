@@ -1,4 +1,4 @@
-import { ApiResponseResult, UserSessionClient } from "../../types";
+import { ApiResponseResult, UserSession, UserSessionClient } from "../../types";
 import { API_ENDPOINTS } from "../../app.constants";
 import {
   createApiResponse,
@@ -20,7 +20,8 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string,
-    clientSession: UserSessionClient
+    clientSession: UserSessionClient,
+    userSession: UserSession
   ): Promise<ApiResponseResult<AuthCodeResponse>> {
     const baseUrl = supportAuthOrchSplit()
       ? getFrontendApiBaseUrl()
@@ -40,6 +41,8 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
         claim: clientSession.claim,
         state: clientSession.state,
         "redirect-uri": clientSession.redirectUri,
+        "rp-sector-uri": clientSession.rpSectorHost,
+        "is-new-account": userSession?.isAccountCreationJourney ?? false,
       };
       response = await axios.client.post(
         API_ENDPOINTS.ORCH_AUTH_CODE,

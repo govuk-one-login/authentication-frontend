@@ -19,6 +19,7 @@ export function createmockclaims(): any {
     iat: timestamp,
     client_name: "di-auth-stub-relying-party-sandpit",
     is_one_login_service: false,
+    rp_sector_host: "https://rp.sector.uri",
     jti: "fvvMWAladDtl35O_xyBTRLwwojA",
     claim:
       '{"userinfo": {"email_verified": null, "public_subject_id": null, "email": null}}',

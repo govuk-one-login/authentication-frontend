@@ -1,6 +1,7 @@
 import {
   ApiResponseResult,
   DefaultApiResponse,
+  UserSession,
   UserSessionClient,
 } from "../../types";
 
@@ -14,6 +15,7 @@ export interface AuthCodeServiceInterface {
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string,
-    clientSession: UserSessionClient
+    clientSession: UserSessionClient,
+    userSession: UserSession
   ) => Promise<ApiResponseResult<AuthCodeResponse>>;
 }

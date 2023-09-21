@@ -89,4 +89,5 @@ export interface UserSessionClient {
   state?: string;
   isOneLoginService?: boolean;
   claim?: string[];
+  rpSectorHost?: string;
 }
