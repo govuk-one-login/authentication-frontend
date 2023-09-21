@@ -8,7 +8,9 @@ import {
   OptionalData,
   Questions,
   SmartAgentCustomAttributes,
+  Themes,
 } from "./types";
+import { ZENDESK_THEMES } from "../../app.constants";
 
 export function prepareSecurityCodeSendMethodTitle(
   securityCodeSentMethod: string
@@ -51,6 +53,30 @@ export function prepareIdentityDocumentTitle(
   }
 
   return documentUsedDescription;
+}
+
+export function getIdentifierTag(theme: string): string {
+  if (theme === ZENDESK_THEMES.ID_CHECK_APP) {
+    return "sign_in_app";
+  }
+  if (theme === ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
+    return "id_face_to_face";
+  }
+  return "govuk_sign_in";
+}
+
+export function getThemeTag(themes: Themes): string {
+  if (themes.theme !== ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
+    return `auth_${themes.theme}`;
+  }
+  return "";
+}
+
+export function getSubthemeTag(themes: Themes): string {
+  if (themes.subtheme) {
+    return `auth_${themes.subtheme}`;
+  }
+  return "";
 }
 
 export function contactUsServiceSmartAgent(
@@ -156,6 +182,14 @@ export function contactUsServiceSmartAgent(
     customAttributes["sa-tag-permission-to-email"] = `Permission to email ${
       contactForm.feedbackContact ? "granted" : "denied"
     }`;
+
+    customAttributes["sa-tag-identifier"] = getIdentifierTag(
+      contactForm.themes.theme
+    );
+
+    customAttributes["sa-tag-theme"] = getThemeTag(contactForm.themes);
+
+    customAttributes["sa-tag-subtheme"] = getSubthemeTag(contactForm.themes);
 
     return customAttributes;
   }
