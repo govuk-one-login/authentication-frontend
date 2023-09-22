@@ -113,6 +113,22 @@ locals {
         value = var.zendesk_username
       },
       {
+        name  = "SUPPORT_SMART_AGENT"
+        value = var.support_smart_agent
+      },
+      {
+        name  = "SMARTAGENT_API_KEY"
+        value = var.smartagent_api_key
+      },
+      {
+        name  = "SMARTAGENT_API_URL"
+        value = var.smartagent_api_url
+      },
+      {
+        name  = "SMARTAGENT_WEBFORM_ID"
+        value = var.smartagent_webform_id
+      },
+      {
         name  = "SERVICE_DOMAIN"
         value = local.service_domain
       },

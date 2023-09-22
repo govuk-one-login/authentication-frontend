@@ -38,6 +38,11 @@ variable "support_auth_orch_split" {
   default = "0"
 }
 
+variable "support_smart_agent" {
+  type    = string
+  default = "0"
+}
+
 variable "image_uri" {
   type = string
 }
@@ -122,6 +127,18 @@ variable "logging_endpoint_arns" {
   type        = list(string)
   default     = []
   description = "Amazon Resource Name (ARN) for the CSLS endpoints to ship logs to"
+}
+
+variable "smartagent_webform_id" {
+  type = string
+}
+
+variable "smartagent_api_key" {
+  type = string
+}
+
+variable "smartagent_api_url" {
+  type = string
 }
 
 variable "zendesk_username" {
