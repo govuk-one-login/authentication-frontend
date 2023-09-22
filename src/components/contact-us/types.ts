@@ -72,6 +72,9 @@ export interface SmartAgentCustomAttributes {
   "sa-tag-what-gov-service"?: string;
   "sa-tag-permission-to-email"?: string;
   "sa-tag-preferred-language"?: string;
+  "sa-tag-identifier"?: string;
+  "sa-tag-theme"?: string;
+  "sa-tag-subtheme"?: string;
 }
 
 export interface SmartAgentTicket {
