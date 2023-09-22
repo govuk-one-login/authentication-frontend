@@ -1,20 +1,22 @@
-#!/usr/bin/env bash
+#!/bin/bash
+set -euo pipefail
 
-ENVIRONMENT=$1
+ENVIRONMENT="${1}"
 
 if [ "$ENVIRONMENT" = "dev" ]; then
-	ENVIRONMENT="build";
+  ENVIRONMENT="build"
 fi
 
-secrets=$(aws secretsmanager list-secrets --filter Key="name",Values="/deploy/$ENVIRONMENT/" --region eu-west-2 | jq -c '.SecretList[]')
+secrets="$(
+  aws secretsmanager list-secrets \
+    --filter "Key=\"name\",Values=\"/deploy/${ENVIRONMENT}/\"" --region eu-west-2 |
+    jq -r '.SecretList[]|[.ARN,(.Name|split("/")|last)]|@tsv'
+)"
 
-for i in $secrets; do
-  arn=$(echo $i | jq -r '.ARN')
-  name=$(echo $i | jq -r '.Name | split("/") | last')
-  value=$(aws secretsmanager get-secret-value --region eu-west-2 --secret-id $arn | jq -r '.SecretString')
-  VAR=(TF_VAR_$name=$value)
-  export $VAR
-done
+while IFS=$'\t' read -r arn name; do
+  value=$(aws secretsmanager get-secret-value --secret-id "${arn}" | jq -r '.SecretString')
+  export "TF_VAR_${name}"="${value}"
+done <<<"${secrets}"
 
 if [ "$TF_VAR_basic_auth_password" = "none" ]; then
   export TF_VAR_basic_auth_username=""
