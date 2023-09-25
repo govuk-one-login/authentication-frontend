@@ -1,4 +1,8 @@
 import * as jose from "jose";
+import {
+  getOrchToAuthExpectedAudience,
+  getOrchToAuthExpectedClientId,
+} from "../../../config";
 
 export function createmockclaims(): any {
   const timestamp = Math.floor(new Date().getTime() / 1000);
@@ -6,9 +10,9 @@ export function createmockclaims(): any {
     confidence: "Cl.Cm",
     iss: "UNKNOWN",
     consent_required: false,
-    client_id: "orchestrationAuth",
+    client_id: getOrchToAuthExpectedClientId(),
     govuk_signin_journey_id: "QOFzoB3o-9gGplMgdT1dJfH4vaI",
-    aud: "UNKNOWN",
+    aud: getOrchToAuthExpectedAudience(),
     service_type: "MANDATORY",
     nbf: timestamp,
     cookie_consent_shared: true,

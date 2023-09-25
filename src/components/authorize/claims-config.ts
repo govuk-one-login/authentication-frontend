@@ -1,11 +1,14 @@
-export const EXPECTED_CLIENT_ID = "orchestrationAuth";
+import {
+  getOrchToAuthExpectedAudience,
+  getOrchToAuthExpectedClientId,
+} from "../../config";
 
 export function getKnownClaims(): {
   [key: string]: string | boolean | number;
 } {
   return {
-    client_id: "orchestrationAuth",
-    aud: "UNKNOWN",
+    client_id: getOrchToAuthExpectedClientId(),
+    aud: getOrchToAuthExpectedAudience(),
   };
 }
 

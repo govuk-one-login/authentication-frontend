@@ -20,3 +20,5 @@ logging_endpoint_arns = [
 ]
 
 orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENRdvNXHwk1TvrgFUsWXAE5oDTcPr\nCBp6HxbvYDLsqwNHiDFEzCwvbXKY2QQR/Rtel0o156CtU9k1lCZJGAsSIA==\n-----END PUBLIC KEY-----"
+orch_to_auth_client_id          = "orchestrationAuth"
+orch_to_auth_audience           = "https://signin.build.account.gov.uk/"

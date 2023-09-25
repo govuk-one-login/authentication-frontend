@@ -23,8 +23,8 @@ import {
 } from "./types";
 import { KmsDecryptionService } from "./kms-decryption-service";
 import { JwtService } from "./jwt-service";
-import { EXPECTED_CLIENT_ID } from "./claims-config";
 import { appendQueryParamIfHasValue } from "../../utils/url";
+import { getOrchToAuthExpectedClientId } from "../../config";
 
 function createConsentCookie(
   res: Response,
@@ -181,7 +181,7 @@ function validateQueryParams(clientId: string, responseType: string) {
     throw new QueryParamsError("Response type is not set");
   }
 
-  if (clientId !== EXPECTED_CLIENT_ID) {
+  if (clientId !== getOrchToAuthExpectedClientId()) {
     throw new QueryParamsError("Client ID value is incorrect");
   }
 }

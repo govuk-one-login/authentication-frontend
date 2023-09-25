@@ -19,6 +19,7 @@ import {
   getPublicKey,
 } from "./test-data";
 import { JwtService } from "../jwt-service";
+import { getOrchToAuthExpectedClientId } from "../../../config";
 
 describe("Integration:: authorize", () => {
   let app: any;
@@ -96,7 +97,7 @@ describe("Integration:: authorize", () => {
     request(app)
       .get(PATH_NAMES.AUTHORIZE)
       .query({
-        client_id: "orchestrationAuth",
+        client_id: getOrchToAuthExpectedClientId(),
         response_type: "code",
         request: "SomeJWE",
       })
@@ -108,7 +109,7 @@ describe("Integration:: authorize", () => {
     request(app)
       .get(PATH_NAMES.AUTHORIZE)
       .query({
-        client_id: "orchestrationAuth",
+        client_id: getOrchToAuthExpectedClientId(),
         response_type: "code",
         request: "SomeJWE",
         result: "test-result",
