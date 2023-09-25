@@ -101,6 +101,14 @@ locals {
         value = var.orch_to_auth_signing_public_key
       },
       {
+        name  = "ORCH_TO_AUTH_CLIENT_ID"
+        value = var.orch_to_auth_client_id
+      },
+      {
+        name  = "ORCH_TO_AUTH_AUDIENCE"
+        value = var.orch_to_auth_audience
+      },
+      {
         name  = "ZENDESK_API_TOKEN"
         value = var.zendesk_api_token
       },

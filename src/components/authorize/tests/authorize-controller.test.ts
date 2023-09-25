@@ -25,6 +25,7 @@ import {
 import { BadRequestError } from "../../../utils/error";
 import { createmockclaims } from "./test-data";
 import { Claims } from "../claims-config";
+import { getOrchToAuthExpectedClientId } from "../../../config";
 
 describe("authorize controller", () => {
   let req: RequestOutput;
@@ -45,7 +46,7 @@ describe("authorize controller", () => {
       t: sinon.fake(),
       i18n: { language: "en" },
       query: {
-        client_id: "orchestrationAuth",
+        client_id: getOrchToAuthExpectedClientId(),
         response_type: "code",
       },
     });

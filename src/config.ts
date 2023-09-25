@@ -105,6 +105,14 @@ export function getOrchToAuthSigningPublicKey(): string {
   return process.env.ORCH_TO_AUTH_SIGNING_KEY;
 }
 
+export function getOrchToAuthExpectedClientId(): string {
+  return process.env.ORCH_TO_AUTH_CLIENT_ID || "UNKNOWN";
+}
+
+export function getOrchToAuthExpectedAudience(): string {
+  return process.env.ORCH_TO_AUTH_AUDIENCE || "UNKNOWN";
+}
+
 export function getAccountManagementUrl(): string {
   return process.env.ACCOUNT_MANAGEMENT_URL || "http://localhost:6001";
 }
