@@ -5,16 +5,16 @@ CLEAN=0
 LOCAL=0
 while getopts "cl" opt; do
   case ${opt} in
-    l)
-        LOCAL=1
-      ;;
-    c)
-        CLEAN=1
-      ;;
-    *)
-        usage
-        exit 1
-      ;;
+  l)
+    LOCAL=1
+    ;;
+  c)
+    CLEAN=1
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
   esac
 done
 
@@ -31,7 +31,7 @@ docker-compose down
 if [ $LOCAL == "1" ]; then
   echo "Starting frontend local service..."
   docker compose -f "docker-compose.yml" up -d --wait --no-deps redis di-auth-stub-default di-auth-stub-no-mfa
-  export $(grep -v '^#' .env | xargs)
+  export "$(grep -v '^#' .env | xargs)"
   export REDIS_PORT=6389
   export REDIS_HOST=localhost
   yarn install && yarn copy-assets && yarn dev

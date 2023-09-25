@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 REPO_NAME="frontend-image-repository"
 REPO_URL="706615647326.dkr.ecr.eu-west-2.amazonaws.com/frontend-image-repository"
 IMAGE_TAG=latest
@@ -33,22 +33,23 @@ if [[ $# == 0 ]]; then
 fi
 while [[ $# -gt 0 ]]; do
   case $1 in
-    -b|--build)
-      BUILD=1
-      ;;
-    -t|--terraform)
-      OIDC=1
-      ;;
-    --destroy)
-      TERRAFORM_OPTS="-destroy"
-      ;;
-    -p|--prompt)
-      TERRAFORM_OPTS=""
-      ;;
-    *)
-      usage
-      exit 1
-      ;;
+  -b | --build)
+    BUILD=1
+    ;;
+  -t | --terraform)
+    # shellcheck disable=SC2034
+    OIDC=1
+    ;;
+  --destroy)
+    TERRAFORM_OPTS="-destroy"
+    ;;
+  -p | --prompt)
+    TERRAFORM_OPTS=""
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
   esac
   shift
 done
@@ -74,11 +75,11 @@ fi
 
 if [[ $TERRAFORM == "1" ]]; then
   echo -n "Getting AWS credentials ... "
-  eval $(gds aws digital-identity-dev -e)
+  eval "$(gds aws digital-identity-dev -e)"
   echo "done!"
 
   echo "Running Terraform..."
-  pushd "${DIR}/ci/terraform" > /dev/null
+  pushd "${DIR}/ci/terraform" >/dev/null
   rm -rf .terraform/
   terraform init -backend-config=sandpit.hcl
   terraform apply ${TERRAFORM_OPTS} -var-file sandpit.tfvars -var "image_uri=${REPO_URL}" -var "image_digest=${IMAGE_DIGEST}"
@@ -92,4 +93,4 @@ if [[ $TERRAFORM == "1" ]]; then
 fi
 
 echo "Deployment complete!"
-popd > /dev/null
+popd >/dev/null
