@@ -74,7 +74,7 @@ describe("authentication auth code service", () => {
       );
 
       const expectedBody = {
-        claim: claim,
+        claims: claim,
         state: state,
         "redirect-uri": redirectUriSentToAuth,
         "rp-sector-uri": rpSectorHostSentToAuth,

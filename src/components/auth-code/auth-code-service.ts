@@ -38,7 +38,7 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
 
     if (supportAuthOrchSplit()) {
       const body = {
-        claim: clientSession.claim,
+        claims: clientSession.claim,
         state: clientSession.state,
         "redirect-uri": clientSession.redirectUri,
         "rp-sector-uri": clientSession.rpSectorHost,
