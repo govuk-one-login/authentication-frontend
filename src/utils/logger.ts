@@ -10,7 +10,7 @@ const logger = pino({
       return {
         id: req.id,
         method: req.method,
-        url: req.path,
+        url: req.url,
         from: getRefererFrom(req.headers.referer),
       };
     },
