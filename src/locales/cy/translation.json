@@ -10,7 +10,11 @@
     "sendMessage": "Anfon neges",
     "phaseBanner": {
       "tag": "beta",
-      "content": "Mae hwn yn wasanaeth newydd – bydd eich <a  href=\"/contact-us?supportType=PUBLIC\" class=\"govuk-link\" rel=\"noopener\" target=\"_blank\">adborth (agor mewn tab newydd)</a> yn ein helpu i’w wella."
+      "message": {
+        "start": "Mae hwn yn wasanaeth newydd – bydd eich ",
+        "linkText": "adborth (agor mewn tab newydd)",
+        "end": " yn ein helpu i’w wella."
+      }
     },
     "authenticatorAppIssuer": "GOV.UK One Login",
     "yes": "Gallwch",
@@ -44,7 +48,7 @@
       "label": "Parhau"
     },
     "contactAccounts": {
-      "contactLinkHref": "https://signin.account.gov.uk/contact-us",
+      "contactLinkHref": "https://signin.account.gov.uk/support",
       "contactLinkText": "Cysylltu â thîm GOV.UK One Login (agor mewn tab newydd)"
     },
     "header": {
@@ -1358,8 +1362,7 @@
               "link_href": "https://www.ncsc.gov.uk/cyberaware/home"
             },
             "item_two": {
-              "link_text": "cysylltwch â ni ar unwaith os ydych yn amau bod eich cyfrif wedi cael ei gyfaddawdu",
-              "link_href": "https://signin.account.gov.uk/support"
+              "link_text": "cysylltwch â ni ar unwaith os ydych yn amau bod eich cyfrif wedi cael ei gyfaddawdu"
             }
           }
         },

@@ -46,13 +46,17 @@
 }) }}
 {% endblock %}
 
+{% set phaseBannerText %}
+    {{ 'general.phaseBanner.message.start' | translateEnOnly }} <a href="{{ contactUsLinkUrl }}" class="govuk-link" rel="noopener" target="_blank">{{ 'general.phaseBanner.message.linkText' | translateEnOnly }}</a> {{ 'general.phaseBanner.message.end' | translateEnOnly }}
+{% endset %}
+
 {% block main %}
       <div class="govuk-width-container {{ containerClasses }}">
         {{ govukPhaseBanner({
           tag: {
             text: 'general.phaseBanner.tag' | translateEnOnly
           },
-          html: 'general.phaseBanner.content' | translateEnOnly
+          html: phaseBannerText | translateEnOnly
         }) }}
 	      {% block beforeContent %}{% endblock %}
 	      {% if showBack %}
@@ -92,7 +96,7 @@
               text: 'general.footer.privacy.linkText' | translateEnOnly
           },
           {
-                href: "/contact-us?supportType=PUBLIC",
+              href: contactUsLinkUrl,
               attributes: {target: "_blank"},
               text: 'general.footer.support.linkText' | translateEnOnly
           }

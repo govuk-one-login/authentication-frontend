@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PATH_NAMES } from "../../../app.constants";
+import { PATH_NAMES, SUPPORT_TYPE } from "../../../app.constants";
 
 export function privacyStatementGet(req: Request, res: Response): void {
   res.render("common/footer/privacy-statement.njk");
@@ -18,9 +18,17 @@ export function supportGet(req: Request, res: Response): void {
 }
 
 export function supportPost(req: Request, res: Response): void {
-  res.redirect(
-    appendQueryParam("supportType", req.body.supportType, PATH_NAMES.CONTACT_US)
-  );
+  if (req.body.supportType === SUPPORT_TYPE.GOV_SERVICE) {
+    res.redirect(
+      appendQueryParam(
+        "supportType",
+        req.body.supportType,
+        PATH_NAMES.CONTACT_US
+      )
+    );
+  } else {
+    res.redirect(res.locals.contactUsLinkUrl);
+  }
 }
 
 function appendQueryParam(param: string, value: string, url: string) {

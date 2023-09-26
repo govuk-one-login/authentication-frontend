@@ -66,6 +66,10 @@ export function supportSmartAgent(): boolean {
   return process.env.SUPPORT_SMART_AGENT === "1";
 }
 
+export function getSupportLinkUrl(): string {
+  return process.env.URL_FOR_SUPPORT_LINKS || "/contact-us";
+}
+
 export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
   const hostKey = `${appEnv}-${process.env.REDIS_KEY}-redis-master-host`;
   const portKey = `${appEnv}-${process.env.REDIS_KEY}-redis-port`;
