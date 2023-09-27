@@ -82,6 +82,7 @@ import { errorPageRouter } from "./components/common/errors/error-routes";
 import { setInternationalPhoneNumberSupportMiddleware } from "./middleware/set-international-phone-number-support-middleware";
 import { checkYourEmailSecurityCodesRouter } from "./components/account-recovery/check-your-email-security-codes/check-your-email-security-codes-routes";
 import { changeSecurityCodesConfirmationRouter } from "./components/account-recovery/change-security-codes-confirmation/change-security-codes-confirmation-routes";
+import { outboundContactUsLinksMiddleware } from "./middleware/outbound-contact-us-links-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -195,6 +196,7 @@ async function createApp(): Promise<express.Application> {
   app.use(initialiseSessionMiddleware);
   app.use(crossDomainTrackingMiddleware);
   app.use(setInternationalPhoneNumberSupportMiddleware);
+  app.use(outboundContactUsLinksMiddleware);
 
   registerRoutes(app);
 

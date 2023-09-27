@@ -10,7 +10,11 @@
     "sendMessage": "Send message",
     "phaseBanner": {
       "tag": "beta",
-      "content": "This is a new service – your <a  href=\"/contact-us?supportType=PUBLIC\" class=\"govuk-link\" rel=\"noopener\" target=\"_blank\">feedback (opens in new tab)</a> will help us to improve it."
+      "message": {
+        "start": "This is a new service – your ",
+        "linkText": "feedback (opens in new tab)",
+        "end": " will help us to improve it."
+      }
     },
     "authenticatorAppIssuer": "GOV.UK One Login",
     "yes": "Yes",
@@ -44,7 +48,7 @@
       "label": "Continue"
     },
     "contactAccounts": {
-      "contactLinkHref": "https://signin.account.gov.uk/contact-us",
+      "contactLinkHref": "https://signin.account.gov.uk/support",
       "contactLinkText": "Contact the GOV.UK One Login team (opens in a new tab)"
     },
     "header": {
@@ -1358,8 +1362,7 @@
               "link_href": "https://www.ncsc.gov.uk/cyberaware/home"
             },
             "item_two": {
-              "link_text": "contact us immediately if you suspect that your account has been compromised",
-              "link_href": "https://signin.account.gov.uk/support"
+              "link_text": "contact us immediately if you suspect that your account has been compromised"
             }
           }
         },
