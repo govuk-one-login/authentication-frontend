@@ -12,6 +12,7 @@ export interface ContactForm {
   preferredLanguage?: string;
   securityCodeSentMethod?: string;
   identityDocumentUsed?: string;
+  fromURL?: string;
 }
 
 export interface OptionalData {

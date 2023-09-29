@@ -10,6 +10,7 @@ import {
   furtherInformationPost,
   contactUsQuestionsFormPostToZendesk,
   contactUsQuestionsFormPostToSmartAgent,
+  contactUsGetFromTriagePage,
 } from "./contact-us-controller";
 import { validateContactUsRequest } from "./contact-us-validation";
 import { validateContactUsQuestionsRequest } from "./contact-us-questions-validation";
@@ -19,6 +20,7 @@ import { supportSmartAgent } from "../../config";
 const router = express.Router();
 
 router.get(PATH_NAMES.CONTACT_US, contactUsGet);
+router.get(PATH_NAMES.CONTACT_US_FROM_TRIAGE_PAGE, contactUsGetFromTriagePage);
 router.post(
   PATH_NAMES.CONTACT_US,
   validateContactUsRequest("contact-us/index-public-contact-us.njk", "theme"),

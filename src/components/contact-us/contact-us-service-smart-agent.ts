@@ -79,6 +79,16 @@ export function getSubthemeTag(themes: Themes): string {
   return "";
 }
 
+export function getRefererTag(contactForm: ContactForm): string {
+  if (contactForm.fromURL) {
+    return `Referer obtained via Triage page fromURL: ${contactForm.fromURL}`;
+  } else if (contactForm.referer) {
+    return contactForm.referer;
+  } else {
+    return "Referer not provided";
+  }
+}
+
 export function contactUsServiceSmartAgent(
   smartAgentClient: SmartAgentService = defaultSmartAgentClient
 ): {
@@ -137,9 +147,7 @@ export function contactUsServiceSmartAgent(
       contactForm.identityDocumentUsed
     );
 
-    customAttributes["sa-webformrefer"] = contactForm.referer
-      ? contactForm.referer
-      : "Unable to capture referer";
+    customAttributes["sa-webformrefer"] = getRefererTag(contactForm);
 
     customAttributes["sa-tag-preferred-language"] =
       contactForm.preferredLanguage;

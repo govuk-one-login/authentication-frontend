@@ -44,6 +44,7 @@ export const PATH_NAMES = {
   SIGN_IN_RETRY_BLOCKED: "/sign-in-retry-blocked",
   UPLIFT_JOURNEY: "/uplift",
   CONTACT_US: "/contact-us",
+  CONTACT_US_FROM_TRIAGE_PAGE: "/contact-us-from-triage-page",
   CONTACT_US_SUBMIT_SUCCESS: "/contact-us-submit-success",
   CONTACT_US_FURTHER_INFORMATION: "/contact-us-further-information",
   CONTACT_US_QUESTIONS: "/contact-us-questions",

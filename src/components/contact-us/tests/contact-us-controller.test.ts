@@ -13,6 +13,7 @@ import {
   createTicketIdentifier,
   isAppJourney,
   getPreferredLanguage,
+  contactUsGetFromTriagePage,
 } from "../contact-us-controller";
 import { SUPPORT_TYPE, ZENDESK_THEMES } from "../../../app.constants";
 import { RequestGet, ResponseRedirect } from "../../../types";
@@ -63,7 +64,93 @@ describe("contact us controller", () => {
     });
   });
 
+  describe("contactUsGetFromTriagePage", () => {
+    it("should redirect to /contact-us and carry the fromURL forward", async () => {
+      req.query.fromURL = "http://localhost/enter-email";
+
+      contactUsGetFromTriagePage(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(
+        "/contact-us?fromURL=http%3A%2F%2Flocalhost%2Fenter-email"
+      );
+    });
+
+    it("should not carry the fromURL forward if it is not valid", async () => {
+      req.query.fromURL = "https://unsuitableurl.com";
+
+      contactUsGetFromTriagePage(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith("/contact-us?");
+    });
+
+    describe("redirect to /contact-us-further-information when the theme is ID Check App", async () => {
+      it("should include all ID Check App properties as query parameters when they have been provided and are valid", async () => {
+        req.query.theme = ZENDESK_THEMES.ID_CHECK_APP;
+        req.query.fromURL = "http://localhost/enter-email";
+        req.query.appSessionId = "1234abcd-12ab-11aa-90aa-04938abc12ab";
+        req.query.appErrorCode = "aed1";
+
+        contactUsGetFromTriagePage(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-further-information?appSessionId=1234abcd-12ab-11aa-90aa-04938abc12ab&appErrorCode=aed1&fromURL=http%3A%2F%2Flocalhost%2Fenter-email&theme=id_check_app"
+        );
+      });
+
+      it("should not include the fromURL when it is not valid", async () => {
+        req.query.theme = ZENDESK_THEMES.ID_CHECK_APP;
+        req.query.fromURL = "https://unsuitableurl.com";
+        req.query.appSessionId = "1234abcd-12ab-11aa-90aa-04938abc12ab";
+        req.query.appErrorCode = "aed1";
+
+        contactUsGetFromTriagePage(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-further-information?appSessionId=1234abcd-12ab-11aa-90aa-04938abc12ab&appErrorCode=aed1&theme=id_check_app"
+        );
+      });
+
+      it("should not include the appSessionId when it is not valid", async () => {
+        req.query.theme = ZENDESK_THEMES.ID_CHECK_APP;
+        req.query.fromURL = "http://localhost/enter-email";
+        req.query.appSessionId = "1234";
+        req.query.appErrorCode = "aed1";
+
+        contactUsGetFromTriagePage(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-further-information?appErrorCode=aed1&fromURL=http%3A%2F%2Flocalhost%2Fenter-email&theme=id_check_app"
+        );
+      });
+
+      it("should not include the appErrorCode when it is not valid", async () => {
+        req.query.theme = ZENDESK_THEMES.ID_CHECK_APP;
+        req.query.fromURL = "http://localhost/enter-email";
+        req.query.appSessionId = "1234abcd-12ab-11aa-90aa-04938abc12ab";
+        req.query.appErrorCode = "abcdef";
+
+        contactUsGetFromTriagePage(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-further-information?appSessionId=1234abcd-12ab-11aa-90aa-04938abc12ab&fromURL=http%3A%2F%2Flocalhost%2Fenter-email&theme=id_check_app"
+        );
+      });
+    });
+  });
+
   describe("contactUsFormPost", () => {
+    it("should carry forward fromURL when redirecting to /contact-us-further-information", async () => {
+      req.body.theme = ZENDESK_THEMES.SIGNING_IN;
+      req.body.referer = REFERER;
+      req.body.fromURL = "http://localhost/enter-email";
+
+      contactUsFormPost(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(
+        "/contact-us-further-information?theme=signing_in&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email&fromURL=http%3A%2F%2Flocalhost%2Fenter-email"
+      );
+    });
+
     it("should redirect /contact-us-further-information page when 'A problem signing in to your GOV.UK account' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.SIGNING_IN;
       req.body.referer = REFERER;

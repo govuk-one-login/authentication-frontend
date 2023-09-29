@@ -4,7 +4,7 @@ import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
-import { PATH_NAMES } from "../../../app.constants";
+import { PATH_NAMES, ZENDESK_THEMES } from "../../../app.constants";
 
 describe("Integration:: contact us - public user", () => {
   let token: string | string[];
@@ -343,5 +343,26 @@ describe("Integration:: contact us - public user", () => {
       })
       .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
       .expect(302, done);
+  });
+
+  describe("Links to /contact-us-from-triage-page", () => {
+    it("should redirect to /contact-us", (done) => {
+      request(app)
+        .get("/contact-us-from-triage-page")
+        .query("fromURL=http//localhost/sign-in-or-create")
+        .expect("Location", `${PATH_NAMES.CONTACT_US}?`)
+        .expect(302, done);
+    });
+
+    it("should redirect to /contact-us-further-information", (done) => {
+      request(app)
+        .get("/contact-us-from-triage-page")
+        .query(`theme=${ZENDESK_THEMES.ID_CHECK_APP}`)
+        .expect(
+          "Location",
+          `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${ZENDESK_THEMES.ID_CHECK_APP}`
+        )
+        .expect(302, done);
+    });
   });
 });
