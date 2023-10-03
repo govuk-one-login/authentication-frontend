@@ -2,6 +2,7 @@ import express from "express";
 import * as nunjucks from "nunjucks";
 import i18next from "i18next";
 import { Environment } from "nunjucks";
+import { supportWelshInSupportForms } from "../config";
 
 export function configureNunjucks(
   app: express.Application,
@@ -21,7 +22,12 @@ export function configureNunjucks(
   nunjucksEnv.addFilter(
     "translateEnOnly",
     function (key: string, options?: any) {
-      const translate = i18next.getFixedT("en");
+      let translate;
+      if (supportWelshInSupportForms()) {
+        translate = i18next.getFixedT(this.ctx.i18n.language);
+      } else {
+        translate = i18next.getFixedT("en");
+      }
       return translate(key, options);
     }
   );

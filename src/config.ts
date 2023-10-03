@@ -66,6 +66,10 @@ export function supportSmartAgent(): boolean {
   return process.env.SUPPORT_SMART_AGENT === "1";
 }
 
+export function supportWelshInSupportForms(): boolean {
+  return process.env.SUPPORT_WELSH_LANGUAGE_IN_SUPPORT_FORMS === "1";
+}
+
 export function getSupportLinkUrl(): string {
   return process.env.URL_FOR_SUPPORT_LINKS || "/contact-us";
 }
