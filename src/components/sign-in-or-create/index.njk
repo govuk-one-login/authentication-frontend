@@ -4,12 +4,7 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
-{% if serviceType === 'OPTIONAL' %}
-  {% set pageTitleVariableName = 'pages.signInOrCreate.optional.title' %}
-{% endif %}
-{% if serviceType === 'MANDATORY' %}
-  {% set pageTitleVariableName = 'pages.signInOrCreate.mandatory.title' %}
-{% endif %}
+{% set pageTitleVariableName = 'pages.signInOrCreate.mandatory.title' %}
 
 {% set pageTitleName = pageTitleVariableName | translate %}
 
@@ -22,11 +17,7 @@
 {% block content %}
   {% include "common/errors/errorSummary.njk" %}
 
-  {% if serviceType === 'OPTIONAL' %}
-    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.signInOrCreate.optional.header' | translate}}</h1>
-  {% else %}
-    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.signInOrCreate.mandatory.header' | translate}}</h1>
-  {% endif %}
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.signInOrCreate.mandatory.header' | translate}}</h1>
 
   <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph' | translate }}</p>
   <ul class="govuk-list govuk-list--bullet">
