@@ -82,6 +82,12 @@ export function contactUsGet(req: Request, res: Response): void {
   const REFERER = "referer";
 
   let referer = validateReferer(req.get(REFERER));
+  let fromURL;
+
+  if (req.query.fromURL) {
+    fromURL = validateReferer(req.query.fromURL as string);
+    logger.info(`fromURL query param received with value ${fromURL}`);
+  }
 
   if (req.query.referer) {
     referer = validateReferer(req.query.referer as string);
@@ -103,12 +109,37 @@ export function contactUsGet(req: Request, res: Response): void {
 
   const options = {
     referer: referer,
+    fromURL: fromURL,
     ...(getAppSessionId(req.query.appSessionId as string) && {
       appSessionId: getAppSessionId(req.query.appSessionId as string),
     }),
   };
 
   return res.render("contact-us/index-public-contact-us.njk", options);
+}
+
+export function contactUsGetFromTriagePage(req: Request, res: Response): void {
+  const queryParams = new URLSearchParams({
+    ...(validateAppId(req.query.appSessionId as string) && {
+      appSessionId: getAppSessionId(req.query.appSessionId as string),
+    }),
+    ...(getAppErrorCode(req.query.appErrorCode as string) && {
+      appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
+    }),
+    ...(validateReferer(req.query.fromURL as string) && {
+      fromURL: validateReferer(req.query.fromURL as string),
+    }),
+  });
+
+  if (req.query.theme === ZENDESK_THEMES.ID_CHECK_APP) {
+    queryParams.append("theme", req.query.theme);
+
+    return res.redirect(
+      PATH_NAMES.CONTACT_US_FURTHER_INFORMATION + "?" + queryParams.toString()
+    );
+  }
+
+  return res.redirect(PATH_NAMES.CONTACT_US + "?" + queryParams.toString());
 }
 
 export function validateAppErrorCode(appErrorCode: string): boolean {
@@ -197,7 +228,12 @@ export function contactUsFormPost(req: Request, res: Response): void {
     ...(validateAppId(req.body.appSessionId) && {
       appSessionId: getAppSessionId(req.body.appSessionId),
     }),
-  }).toString();
+  });
+
+  if (req.body.fromURL) {
+    queryParams.append("fromURL", validateReferer(req.body.fromURL));
+  }
+
   if (
     [
       ZENDESK_THEMES.ACCOUNT_CREATION,
@@ -208,7 +244,7 @@ export function contactUsFormPost(req: Request, res: Response): void {
   ) {
     url = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
   }
-  res.redirect(url + "?" + queryParams);
+  res.redirect(url + "?" + queryParams.toString());
 }
 
 export function furtherInformationGet(req: Request, res: Response): void {
@@ -220,6 +256,9 @@ export function furtherInformationGet(req: Request, res: Response): void {
     return res.render("contact-us/further-information/index.njk", {
       theme: req.query.theme,
       referer: validateReferer(req.query.referer as string),
+      ...(validateReferer(req.query.fromURL as string) && {
+        fromURL: validateReferer(req.query.fromURL as string),
+      }),
       appSessionId: getAppSessionId(req.query.appSessionId as string),
       ...(getAppErrorCode(req.query.appErrorCode as string) && {
         appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
@@ -229,6 +268,9 @@ export function furtherInformationGet(req: Request, res: Response): void {
 
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
+    ...(validateReferer(req.query.fromURL as string) && {
+      fromURL: validateReferer(req.query.fromURL as string),
+    }),
     referer: validateReferer(req.query.referer as string),
   });
 }
@@ -239,6 +281,9 @@ export function furtherInformationPost(req: Request, res: Response): void {
     theme: req.body.theme,
     subtheme: req.body.subtheme,
     referer: validateReferer(req.body.referer),
+    ...(validateReferer(req.body.fromURL) && {
+      fromURL: validateReferer(req.body.fromURL),
+    }),
   });
 
   if (isAppJourney(req.body.appSessionId)) {
@@ -272,6 +317,9 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     subtheme: req.query.subtheme,
     backurl: validateReferer(req.headers.referer),
     referer: validateReferer(req.query.referer as string),
+    ...(validateReferer(req.query.fromURL as string) && {
+      fromURL: validateReferer(req.query.fromURL as string),
+    }),
     pageTitleHeading: pageTitle,
     zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
     ipnSupport: res.locals.ipnSupport,
@@ -328,6 +376,9 @@ export function contactUsQuestionsFormPostToSmartAgent(
       questions: questions,
       themeQuestions: themeQuestions,
       referer: validateReferer(req.body.referer),
+      ...(validateReferer(req.body.fromURL) && {
+        fromURL: validateReferer(req.body.fromURL),
+      }),
       preferredLanguage: getPreferredLanguage(res.locals.language),
       securityCodeSentMethod: req.body.securityCodeSentMethod,
       identityDocumentUsed: req.body.identityDocumentUsed,
