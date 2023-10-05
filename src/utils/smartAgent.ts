@@ -1,6 +1,7 @@
 import axios from "axios";
 import smartAgentConfig, { SmartAgentConfig } from "../config/smartAgent";
 import { SmartAgentTicket } from "../components/contact-us/types";
+import { logger } from "./logger";
 
 export class SmartAgentService {
   private readonly webformID: string;
@@ -31,8 +32,14 @@ export class SmartAgentService {
         }
       )
       .catch((error) => {
+        logger.info(`Error posting to SmartAgent API`);
+        logger.info(`webformID is ${this.webformID}`);
+        logger.info(`apiKey is ${this.apiKey}`);
+        logger.info(`apiUrl is ${this.apiUrl}`);
+
+        logger.error(error.toJSON());
         throw new Error(
-          error.response.status + " " + error.response.statusText
+          `${error?.response?.status} ${error?.response?.statusText}`
         );
       });
   }
