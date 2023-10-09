@@ -141,7 +141,7 @@ locals {
         value = local.service_domain
       },
       {
-        name  = "SUPPORT_WELSH_LANGuAGE_IN_SUPPORT_FORMS"
+        name  = "SUPPORT_WELSH_LANGUAGE_IN_SUPPORT_FORMS"
         value = var.support_welsh_language_in_support_forms
       },
       {
