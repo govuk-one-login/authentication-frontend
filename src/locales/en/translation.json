@@ -1660,6 +1660,17 @@
       }
     },
     "contactUsQuestions": {
+      "characterCountComponent": {
+        "charactersAtLimitText": "You have %{count} characters remaining",
+        "charactersUnderLimitText": {
+          "other": "You have %{count} characters remaining",
+          "one": "One character to go"
+        },
+        "charactersOverLimitText": {
+          "other": "You have %{count} characters too many",
+          "one": "One character too many"
+        }
+      },
       "personalInformation": {
         "paragraph1": "Do not include personal or financial information, for example your passport or credit card details."
       },
