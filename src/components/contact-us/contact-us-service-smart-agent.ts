@@ -149,6 +149,9 @@ export function contactUsServiceSmartAgent(
 
     customAttributes["sa-webformrefer"] = getRefererTag(contactForm);
 
+    customAttributes["sa-app-error-code"] =
+      contactForm.optionalData.appErrorCode;
+
     customAttributes["sa-tag-preferred-language"] =
       contactForm.preferredLanguage;
 
