@@ -76,6 +76,7 @@ export interface SmartAgentCustomAttributes {
   "sa-tag-identifier"?: string;
   "sa-tag-theme"?: string;
   "sa-tag-subtheme"?: string;
+  "sa-app-error-code"?: string;
 }
 
 export interface SmartAgentTicket {
