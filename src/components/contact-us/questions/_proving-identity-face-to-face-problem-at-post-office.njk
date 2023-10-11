@@ -2,7 +2,7 @@
     {{ 'pages.contactUsQuestions.provingIdentityFaceToFacePostOffice.header' | translateEnOnly }}
 </h1>
 
-<form action="/contact-us-questions" method="post" novalidate>
+’<form action="{{formSubmissionUrl}}" method="post" novalidate>
 
     <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
     <input type="hidden" name="theme" value="{{theme}}"/>

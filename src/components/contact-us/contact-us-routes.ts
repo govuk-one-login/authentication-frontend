@@ -53,6 +53,12 @@ if (supportSmartAgent()) {
   );
 }
 
+router.post(
+  PATH_NAMES.CONTACT_US_TESTING_SMARTAGENT_IN_LIVE,
+  validateContactUsQuestionsRequest(),
+  asyncHandler(contactUsQuestionsFormPostToSmartAgent())
+);
+
 router.get(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS, contactUsSubmitSuccessGet);
 
 export { router as contactUsRouter };

@@ -146,6 +146,10 @@ variable "smartagent_api_url" {
   type = string
 }
 
+variable "client_name_that_directs_all_contact_form_submissions_to_smartagent" {
+  type = string
+}
+
 variable "zendesk_username" {
   type    = string
   default = ""
