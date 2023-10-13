@@ -252,9 +252,13 @@ export function furtherInformationGet(req: Request, res: Response): void {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
 
+  const backLinkHref =
+    validateReferer(req.get("referer")) || PATH_NAMES.CONTACT_US;
+
   if (isAppJourney(req.query.appSessionId as string)) {
     return res.render("contact-us/further-information/index.njk", {
       theme: req.query.theme,
+      hrefBack: backLinkHref,
       referer: validateReferer(req.query.referer as string),
       ...(validateReferer(req.query.fromURL as string) && {
         fromURL: validateReferer(req.query.fromURL as string),
