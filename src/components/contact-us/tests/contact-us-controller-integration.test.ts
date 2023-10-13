@@ -364,5 +364,33 @@ describe("Integration:: contact us - public user", () => {
         )
         .expect(302, done);
     });
+
+    it("should use the referer for the back link where the referer is valid", (done) => {
+      request(app)
+        .get("/contact-us-from-triage-page")
+        .set("referer", "accountCreatedEmail")
+        .query(`theme=${ZENDESK_THEMES.ID_CHECK_APP}`)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($(".govuk-back-link").first().attr("href")).to.equal(
+            "accountCreatedEmail"
+          );
+        })
+        .expect(200, done);
+    });
+
+    it("should use `/contact-us` in the back link where the referer is not valid", (done) => {
+      request(app)
+        .get("/contact-us-from-triage-page")
+        .set("referer", "http://example.com")
+        .query(`theme=${ZENDESK_THEMES.ID_CHECK_APP}`)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($(".govuk-back-link").first().attr("href")).to.equal(
+            "/contact-us"
+          );
+        })
+        .expect(200, done);
+    });
   });
 });
