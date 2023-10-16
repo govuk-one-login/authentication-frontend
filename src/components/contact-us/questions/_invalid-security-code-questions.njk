@@ -2,7 +2,7 @@
   {{ 'pages.contactUsQuestions.invalidSecurityCode.header' | translateEnOnly }}
 </h1>
 
-<form action="/contact-us-questions?radio_buttons=true" method="post" novalidate>
+<form action="{{formSubmissionUrl}}?radio_buttons=true" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="theme" value="{{theme}}"/>

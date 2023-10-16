@@ -137,6 +137,10 @@ locals {
         value = var.smartagent_webform_id
       },
       {
+        name  = "CLIENT_NAME_THAT_DIRECTS_ALL_CONTACT_FORM_SUBMISSIONS_TO_SMARTAGENT",
+        value = var.client_name_that_directs_all_contact_form_submissions_to_smartagent
+      },
+      {
         name  = "SERVICE_DOMAIN"
         value = local.service_domain
       },

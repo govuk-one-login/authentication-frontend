@@ -10,6 +10,7 @@ import {
 import {
   ZENDESK_THEMES,
   ZENDESK_FIELD_MAX_LENGTH,
+  PATH_NAMES,
 } from "../../../app.constants";
 import { ContactUsServiceInterface } from "../types";
 import { RequestGet, ResponseRedirect } from "../../../types";
@@ -51,6 +52,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "something_else",
         subtheme: undefined,
         backurl: BACKURL,
@@ -69,6 +71,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "email_subscriptions",
         subtheme: undefined,
         backurl: BACKURL,
@@ -87,6 +90,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "suggestions_feedback",
         subtheme: undefined,
         backurl: BACKURL,
@@ -106,6 +110,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "proving_identity",
         subtheme: undefined,
         backurl: BACKURL,
@@ -134,6 +139,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "no_security_code",
         backurl: REFERER_HEADER,
@@ -153,6 +159,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "invalid_security_code",
         backurl: REFERER_HEADER,
@@ -172,6 +179,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "no_phone_number_access",
         backurl: REFERER_HEADER,
@@ -191,6 +199,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "forgotten_password",
         backurl: REFERER_HEADER,
@@ -210,6 +219,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "account_not_found",
         backurl: REFERER_HEADER,
@@ -229,6 +239,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "technical_error",
         backurl: REFERER_HEADER,
@@ -248,6 +259,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "something_else",
         backurl: REFERER_HEADER,
@@ -270,6 +282,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "account_creation",
         subtheme: "no_security_code",
         backurl: REFERER_HEADER,
@@ -289,6 +302,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "account_creation",
         subtheme: "invalid_security_code",
         backurl: REFERER_HEADER,
@@ -308,6 +322,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "account_creation",
         subtheme: "no_uk_mobile_number",
         backurl: REFERER_HEADER,
@@ -327,6 +342,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "account_creation",
         subtheme: "technical_error",
         backurl: REFERER_HEADER,
@@ -346,6 +362,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "account_creation",
         subtheme: "something_else",
         backurl: REFERER_HEADER,
@@ -365,6 +382,7 @@ describe("contact us questions controller", () => {
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "account_creation",
         subtheme: "authenticator_app_problem",
         backurl: REFERER_HEADER,

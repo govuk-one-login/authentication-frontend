@@ -11,7 +11,10 @@ import { ContactUsServiceInterface, Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
 import crypto from "crypto";
 import { logger } from "../../utils/logger";
-import { getServiceDomain } from "../../config";
+import {
+  getClientNameThatDirectsAllContactFormSubmissionsToSmartAgent,
+  getServiceDomain,
+} from "../../config";
 import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
 
 const themeToPageTitle = {
@@ -299,7 +302,22 @@ export function furtherInformationPost(req: Request, res: Response): void {
   res.redirect(url + "?" + queryParams.toString());
 }
 
+export function setContactFormSubmissionUrlBasedOnClientName(
+  clientName: string,
+  clientNameThatDirectsAllContactFormSubmissionsToSmartAgent: string
+): string {
+  return clientName ===
+    clientNameThatDirectsAllContactFormSubmissionsToSmartAgent
+    ? PATH_NAMES.CONTACT_US_TESTING_SMARTAGENT_IN_LIVE
+    : PATH_NAMES.CONTACT_US_QUESTIONS;
+}
+
 export function contactUsQuestionsGet(req: Request, res: Response): void {
+  const formSubmissionUrl = setContactFormSubmissionUrlBasedOnClientName(
+    req?.session?.client?.name,
+    getClientNameThatDirectsAllContactFormSubmissionsToSmartAgent()
+  );
+
   if (!req.query.theme) {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
@@ -313,6 +331,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     pageTitle = themeToPageTitle[req.query.subtheme as string];
   }
   return res.render("contact-us/questions/index.njk", {
+    formSubmissionUrl: formSubmissionUrl,
     theme: req.query.theme,
     subtheme: req.query.subtheme,
     backurl: validateReferer(req.headers.referer),
