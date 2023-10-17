@@ -12,6 +12,8 @@ support_international_numbers                                       = "1"
 support_account_recovery                                            = "1"
 support_smart_agent                                                 = "0"
 client_name_that_directs_all_contact_form_submissions_to_smartagent = "di-auth-stub-relying-party-production"
+support_welsh_language_in_support_forms                             = "0"
+url_for_support_links                                               = "/contact-us"
 
 logging_endpoint_arns = [
   "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
