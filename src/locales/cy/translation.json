@@ -1892,7 +1892,7 @@
           "errorMessage": "Dewiswch pa ddogfen hunaniaeth oeddech chi’n ei defnyddio",
           "types": {
             "passport": "Pasbort",
-            "biometricResidencePermit": "Trwydded preswylio biometrig",
+            "biometricResidencePermit": "Trwydded breswylio biometrig neu gerdyn preswylio biometrig",
             "drivingLicence": "Trwydded yrru"
           }
         }
