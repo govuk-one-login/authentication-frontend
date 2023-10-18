@@ -1808,8 +1808,8 @@
         }
       },
       "noUKMobile": {
-        "title": "You do not have a UK mobile phone number",
-        "header": "You do not have a UK mobile phone number",
+        "title": "Another problem with a phone number",
+        "header": "Another problem with a phone number",
         "section1": {
           "header": "Anything else you want to tell us",
           "paragraph1": "You can add more detail, such as what you were trying to do, or give us feedback"

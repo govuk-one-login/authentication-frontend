@@ -1808,8 +1808,8 @@
         }
       },
       "noUKMobile": {
-        "title": "Nid oes gennych rif ffôn symudol y DU",
-        "header": "Nid oes gennych rif ffôn symudol y DU",
+        "title": "Problem arall gyda rhif ffôn",
+        "header": "Problem arall gyda rhif ffôn",
         "section1": {
           "header": "Ydych chi eisiau dweud unrhyw beth arall wrthym",
           "paragraph1": "Gallwch ychwanegu mwy o fanylion, fel beth oeddech yn ceisio ei wneud, neu roi adborth i ni"
