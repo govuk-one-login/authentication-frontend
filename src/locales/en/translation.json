@@ -1892,7 +1892,7 @@
           "errorMessage": "Select which identity document you were using",
           "types": {
             "passport": "Passport",
-            "biometricResidencePermit": "Biometric residence permit",
+            "biometricResidencePermit": "Biometric residence permit or biometric residence card",
             "drivingLicence": "Driving licence"
           }
         }
