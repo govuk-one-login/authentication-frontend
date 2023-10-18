@@ -1807,7 +1807,7 @@
           "hintText": "You can add more detail, such as what you were trying to do, or give us feedback"
         }
       },
-      "noUKMobile": {
+      "signInPhoneNumberIssue": {
         "title": "Another problem with a phone number",
         "header": "Another problem with a phone number",
         "section1": {

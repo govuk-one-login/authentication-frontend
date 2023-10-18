@@ -26,8 +26,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.noSecurityCode.title",
   [ZENDESK_THEMES.INVALID_SECURITY_CODE]:
     "pages.contactUsQuestions.invalidSecurityCode.title",
-  [ZENDESK_THEMES.NO_UK_MOBILE_NUMBER]:
-    "pages.contactUsQuestions.noUKMobile.title",
+  [ZENDESK_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE]:
+    "pages.contactUsQuestions.signInPhoneNumberIssue.title",
   [ZENDESK_THEMES.FORGOTTEN_PASSWORD]:
     "pages.contactUsQuestions.forgottenPassword.title",
   [ZENDESK_THEMES.NO_PHONE_NUMBER_ACCESS]:
@@ -552,9 +552,9 @@ export function getQuestionsFromFormTypeForMessageBody(
         { lng: "en" }
       ),
     },
-    noUKMobile: {
+    signInPhoneNumberIssue: {
       moreDetailDescription: req.t(
-        "pages.contactUsQuestions.noUKMobile.section1.header",
+        "pages.contactUsQuestions.signInPhoneNumberIssue.section1.header",
         { lng: "en" }
       ),
     },
@@ -782,7 +782,7 @@ export function getQuestionFromThemes(
       "pages.contactUsFurtherInformation.accountCreation.section1.radio2",
       { lng: "en" }
     ),
-    no_uk_mobile_number: req.t(
+    sign_in_phone_number_issue: req.t(
       "pages.contactUsFurtherInformation.accountCreation.section1.radio3",
       { lng: "en" }
     ),
