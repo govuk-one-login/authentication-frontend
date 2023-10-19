@@ -146,11 +146,6 @@ variable "smartagent_api_url" {
   type = string
 }
 
-variable "url_for_support_links" {
-  type    = string
-  default = "/contact-us"
-}
-
 variable "client_name_that_directs_all_contact_form_submissions_to_smartagent" {
   type = string
 }
