@@ -1661,7 +1661,7 @@
     },
     "contactUsQuestions": {
       "characterCountComponent": {
-        "charactersAtLimitText": "Mae gennych 0 nod ar ôl",
+        "charactersAtLimitText": "Mae gennych 0 nod yn weddill",
         "charactersUnderLimitText": {
           "other": "Mae gennych %{count} nod ar ôl",
           "one": "Un nod i fynd"
