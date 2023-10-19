@@ -1826,8 +1826,22 @@
         "title": "Problem arall gyda rhif ffôn",
         "header": "Problem arall gyda rhif ffôn",
         "section1": {
-          "header": "Ydych chi eisiau dweud unrhyw beth arall wrthym",
-          "paragraph1": "Gallwch ychwanegu mwy o fanylion, fel beth oeddech yn ceisio ei wneud, neu roi adborth i ni"
+          "header": "Beth oeddech chi’n ceisio ei wneud?",
+          "errorMessage": "Rhowch yr hyn roeddech yn ceisio ei wneud"
+        },
+        "section2": {
+          "header": "Beth ddigwyddodd?",
+          "hintText": "Er enghraifft ni dderbyniwyd eich rhif ffôn, neu fe gawsoch drafferth rhoi cod gwlad i mewn",
+          "errorMessage": "Rhowch beth ddigwyddodd"
+        },
+        "section3": {
+          "header": "O ba wlad mae eich rhif ffôn?",
+          "hintText": "Peidiwch â rhoi eich rhif ffôn",
+          "ifBlankErrorMessage": "Rhowch o ba wlad y mae eich rhif ffôn yn dod",
+          "ifTooLongErrorMessage": "Rhowch y wlad gan ddefnyddio llai na 256 nod"
+        },
+        "personalInformation": {
+          "paragraph": "Peidiwch â chynnwys gwybodaeth bersonol fel eich rhif ffôn, manylion pasbort neu fanylion cardiau credyd."
         }
       },
       "issueDescriptionErrorMessage": {

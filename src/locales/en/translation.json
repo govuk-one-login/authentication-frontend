@@ -1826,8 +1826,22 @@
         "title": "Another problem with a phone number",
         "header": "Another problem with a phone number",
         "section1": {
-          "header": "Anything else you want to tell us",
-          "paragraph1": "You can add more detail, such as what you were trying to do, or give us feedback"
+          "header": "What were you trying to do",
+          "errorMessage": "Enter what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "hintText": "For example your phone number was not accepted, or you had trouble entering a country code",
+          "errorMessage": "Enter what happened"
+        },
+        "section3": {
+          "header": "What country is your phone number from?",
+          "hintText": "Do not enter your phone number",
+          "ifBlankErrorMessage": "Enter which country your phone number is from",
+          "ifTooLongErrorMessage": "Enter the country using less than 256 characters"
+        },
+        "personalInformation": {
+          "paragraph": "Do not include personal information such as your phone number, passport details or credit card details."
         }
       },
       "issueDescriptionErrorMessage": {
