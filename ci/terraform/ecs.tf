@@ -165,7 +165,7 @@ locals {
         value = var.code_entered_wrong_blocked_minutes
       },
     ]
-    secrets =[
+    secrets = [
       {
         name  = "DT_TENANT"
         value = jsondecode(data.aws_secretsmanager_secret_version.dynatrace_secrets.secret_string)["DT_TENANT"]
