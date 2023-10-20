@@ -388,5 +388,14 @@ describe("appErrorCode and appSessionId query parameters", () => {
         expect(validateReferer(item, serviceDomain)).to.equal("");
       });
     });
+
+    it("should return the URL when it is encoded as a URI component", () => {
+      validReferers.forEach((item) => {
+        const encodedItem = encodeURIComponent(item);
+        expect(validateReferer(encodedItem, serviceDomain)).to.equal(
+          encodedItem
+        );
+      });
+    });
   });
 });

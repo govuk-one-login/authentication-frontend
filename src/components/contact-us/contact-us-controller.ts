@@ -203,7 +203,7 @@ export function validateReferer(
     if (CONTACT_US_REFERER_ALLOWLIST.includes(referer)) {
       valid = true;
     } else {
-      url = new URL(referer);
+      url = new URL(decodeURIComponent(referer));
       valid = url.hostname.endsWith(serviceDomain);
     }
   } catch {
