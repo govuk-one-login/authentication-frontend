@@ -15,11 +15,13 @@ import {
   getPreferredLanguage,
   contactUsGetFromTriagePage,
   setContactFormSubmissionUrlBasedOnClientName,
+  validateReferer,
 } from "../contact-us-controller";
 import {
   PATH_NAMES,
   SUPPORT_TYPE,
   ZENDESK_THEMES,
+  CONTACT_US_REFERER_ALLOWLIST,
 } from "../../../app.constants";
 import { RequestGet, ResponseRedirect } from "../../../types";
 
@@ -347,6 +349,44 @@ describe("appErrorCode and appSessionId query parameters", () => {
           "di-auth-stub-relying-party-production"
         )
       ).to.equal(PATH_NAMES.CONTACT_US_QUESTIONS);
+    });
+  });
+
+  describe("validateReferer", () => {
+    const serviceDomain = "account.gov.uk";
+    const validReferers = [
+      "https://app.staging.account.gov.uk",
+      "https://integration.account.gov.uk",
+      "https://account.gov.uk",
+    ];
+    const badReferers = ["https://app.staging.account.gov", "https://gov.uk"];
+    const referersWithoutScheme = [
+      "app.staging.account.gov.uk",
+      "account.gov.uk",
+    ];
+
+    it("should return the referer for all values in the allow list", () => {
+      CONTACT_US_REFERER_ALLOWLIST.forEach((item) => {
+        expect(validateReferer(item, serviceDomain)).to.equal(item);
+      });
+    });
+
+    it("should return the referer when the referer ends with the service domain", () => {
+      validReferers.forEach((item) => {
+        expect(validateReferer(item, serviceDomain)).to.equal(item);
+      });
+    });
+
+    it("should return an empty string when the referer does not end with the service domain", () => {
+      badReferers.forEach((item) => {
+        expect(validateReferer(item, serviceDomain)).to.equal("");
+      });
+    });
+
+    it("should throw if passed a referer that is not a URL", () => {
+      referersWithoutScheme.forEach((item) => {
+        expect(validateReferer(item, serviceDomain)).to.equal("");
+      });
     });
   });
 });
