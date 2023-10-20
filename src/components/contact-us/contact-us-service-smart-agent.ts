@@ -81,7 +81,9 @@ export function getSubthemeTag(themes: Themes): string {
 
 export function getRefererTag(contactForm: ContactForm): string {
   if (contactForm.fromURL) {
-    return `Referer obtained via Triage page fromURL: ${contactForm.fromURL}`;
+    return `Referer obtained via Triage page fromURL: ${decodeURIComponent(
+      contactForm.fromURL
+    )}`;
   } else if (contactForm.referer) {
     return contactForm.referer;
   } else {
