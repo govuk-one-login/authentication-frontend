@@ -237,49 +237,6 @@ locals {
       },
     ]
   }
-
-  # oneagent_installer_container_definition = {
-  #   name      = "oneagent-installer"
-  #   image     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.eu-west-2.amazonaws.com/ecr-public/docker/library/alpine:3"
-  #   essential = false
-
-  #   logConfiguration = {
-  #     logDriver = "awslogs"
-  #     options = {
-  #       awslogs-group         = aws_cloudwatch_log_group.ecs_frontend_task_log.name
-  #       awslogs-region        = var.aws_region
-  #       awslogs-stream-prefix = local.service_name
-  #     }
-  #   }
-
-  #   entrypoint = ["/bin/sh", "-c"]
-  #   command    = ["ARCHIVE=$(mktemp) && wget -O $ARCHIVE \"$DT_API_URL/v1/deployment/installer/agent/unix/paas/latest?Api-Token=$DT_PAAS_TOKEN&$DT_ONEAGENT_OPTIONS\" && unzip -o -d /opt/dynatrace/oneagent $ARCHIVE && rm -f $ARCHIVE"]
-
-  #   environment = [
-  #     {
-  #       name  = "DT_API_URL",
-  #       value = "https://khw46367.live.dynatrace.com/api"
-  #     },
-  #     {
-  #       name  = "DT_ONEAGENT_OPTIONS",
-  #       value = "flavor=musl&include=all"
-  #     }
-  #   ]
-
-  #   secrets = [
-  #     {
-  #       name      = "DT_PAAS_TOKEN"
-  #       valueFrom = data.aws_secretsmanager_secret.dynatrace_paas_token.arn
-  #     }
-  #   ]
-
-  #   mountPoints = [
-  #     {
-  #       sourceVolume  = "oneagent"
-  #       containerPath = "/opt/dynatrace/oneagent"
-  #     }
-  #   ]
-  # }
 }
 
 resource "random_string" "session_secret" {
@@ -336,10 +293,6 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
     local.frontend_container_definition,
     local.sidecar_container_definition,
   ])
-
-  # volume {
-  #   name = "oneagent"
-  # }
 
   tags = local.default_tags
 }
