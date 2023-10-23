@@ -78,29 +78,32 @@ const somethingElseSubThemeToPageTitle = {
     "pages.contactUsQuestions.idCheckAppSomethingElse.title",
 };
 
+const serviceDomain = getServiceDomain();
+
 export function contactUsGet(req: Request, res: Response): void {
   if (req.query.supportType === SUPPORT_TYPE.GOV_SERVICE) {
     return res.render("contact-us/index-gov-service-contact-us.njk");
   }
   const REFERER = "referer";
 
-  let referer = validateReferer(req.get(REFERER));
+  let referer = validateReferer(req.get(REFERER), serviceDomain);
   let fromURL;
 
   if (req.query.fromURL) {
-    fromURL = validateReferer(req.query.fromURL as string);
+    fromURL = validateReferer(req.query.fromURL as string, serviceDomain);
     logger.info(`fromURL query param received with value ${fromURL}`);
   }
 
   if (req.query.referer) {
-    referer = validateReferer(req.query.referer as string);
+    referer = validateReferer(req.query.referer as string, serviceDomain);
     logger.info(`referer with referer query param ${referer}`);
   }
 
   if (req.headers?.referer?.includes(REFERER)) {
     try {
       referer = validateReferer(
-        new URL(req.get(REFERER)).searchParams.get(REFERER)
+        new URL(req.get(REFERER)).searchParams.get(REFERER),
+        serviceDomain
       );
       logger.info(`referer with referer header param ${referer}`);
     } catch {
@@ -129,8 +132,8 @@ export function contactUsGetFromTriagePage(req: Request, res: Response): void {
     ...(getAppErrorCode(req.query.appErrorCode as string) && {
       appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
     }),
-    ...(validateReferer(req.query.fromURL as string) && {
-      fromURL: validateReferer(req.query.fromURL as string),
+    ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
+      fromURL: validateReferer(req.query.fromURL as string, serviceDomain),
     }),
   });
 
@@ -190,15 +193,18 @@ export function validateAppId(appSessionId: string): boolean {
   return testResult;
 }
 
-function validateReferer(referer: string): string {
+export function validateReferer(
+  referer: string,
+  serviceDomain: string
+): string {
   let valid = false;
   let url;
   try {
     if (CONTACT_US_REFERER_ALLOWLIST.includes(referer)) {
       valid = true;
     } else {
-      url = new URL(referer);
-      valid = url.hostname.endsWith(getServiceDomain());
+      url = new URL(decodeURIComponent(referer));
+      valid = url.hostname.endsWith(serviceDomain);
     }
   } catch {
     logger.warn(`unable to parse referer ${referer}`);
@@ -227,14 +233,17 @@ export function contactUsFormPost(req: Request, res: Response): void {
   let url = PATH_NAMES.CONTACT_US_QUESTIONS;
   const queryParams = new URLSearchParams({
     theme: req.body.theme,
-    referer: validateReferer(req.body.referer),
+    referer: validateReferer(req.body.referer, serviceDomain),
     ...(validateAppId(req.body.appSessionId) && {
       appSessionId: getAppSessionId(req.body.appSessionId),
     }),
   });
 
   if (req.body.fromURL) {
-    queryParams.append("fromURL", validateReferer(req.body.fromURL));
+    queryParams.append(
+      "fromURL",
+      validateReferer(req.body.fromURL, serviceDomain)
+    );
   }
 
   if (
@@ -256,15 +265,15 @@ export function furtherInformationGet(req: Request, res: Response): void {
   }
 
   const backLinkHref =
-    validateReferer(req.get("referer")) || PATH_NAMES.CONTACT_US;
+    validateReferer(req.get("referer"), serviceDomain) || PATH_NAMES.CONTACT_US;
 
   if (isAppJourney(req.query.appSessionId as string)) {
     return res.render("contact-us/further-information/index.njk", {
       theme: req.query.theme,
       hrefBack: backLinkHref,
-      referer: validateReferer(req.query.referer as string),
-      ...(validateReferer(req.query.fromURL as string) && {
-        fromURL: validateReferer(req.query.fromURL as string),
+      referer: validateReferer(req.query.referer as string, serviceDomain),
+      ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
+        fromURL: validateReferer(req.query.fromURL as string, serviceDomain),
       }),
       appSessionId: getAppSessionId(req.query.appSessionId as string),
       ...(getAppErrorCode(req.query.appErrorCode as string) && {
@@ -275,10 +284,10 @@ export function furtherInformationGet(req: Request, res: Response): void {
 
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
-    ...(validateReferer(req.query.fromURL as string) && {
-      fromURL: validateReferer(req.query.fromURL as string),
+    ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
+      fromURL: validateReferer(req.query.fromURL as string, serviceDomain),
     }),
-    referer: validateReferer(req.query.referer as string),
+    referer: validateReferer(req.query.referer as string, serviceDomain),
   });
 }
 
@@ -287,9 +296,9 @@ export function furtherInformationPost(req: Request, res: Response): void {
   const queryParams = new URLSearchParams({
     theme: req.body.theme,
     subtheme: req.body.subtheme,
-    referer: validateReferer(req.body.referer),
-    ...(validateReferer(req.body.fromURL) && {
-      fromURL: validateReferer(req.body.fromURL),
+    referer: validateReferer(req.body.referer, serviceDomain),
+    ...(validateReferer(req.body.fromURL, serviceDomain) && {
+      fromURL: validateReferer(req.body.fromURL, serviceDomain),
     }),
   });
 
@@ -338,10 +347,10 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     formSubmissionUrl: formSubmissionUrl,
     theme: req.query.theme,
     subtheme: req.query.subtheme,
-    backurl: validateReferer(req.headers.referer),
-    referer: validateReferer(req.query.referer as string),
-    ...(validateReferer(req.query.fromURL as string) && {
-      fromURL: validateReferer(req.query.fromURL as string),
+    backurl: validateReferer(req.headers.referer, serviceDomain),
+    referer: validateReferer(req.query.referer as string, serviceDomain),
+    ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
+      fromURL: validateReferer(req.query.fromURL as string, serviceDomain),
     }),
     pageTitleHeading: pageTitle,
     zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -398,9 +407,9 @@ export function contactUsQuestionsFormPostToSmartAgent(
       feedbackContact: req.body.contact === "true",
       questions: questions,
       themeQuestions: themeQuestions,
-      referer: validateReferer(req.body.referer),
-      ...(validateReferer(req.body.fromURL) && {
-        fromURL: validateReferer(req.body.fromURL),
+      referer: validateReferer(req.body.referer, serviceDomain),
+      ...(validateReferer(req.body.fromURL, serviceDomain) && {
+        fromURL: validateReferer(req.body.fromURL, serviceDomain),
       }),
       preferredLanguage: getPreferredLanguage(res.locals.language),
       securityCodeSentMethod: req.body.securityCodeSentMethod,
@@ -449,7 +458,7 @@ export function contactUsQuestionsFormPostToZendesk(
       feedbackContact: req.body.contact === "true",
       questions: questions,
       themeQuestions: themeQuestions,
-      referer: validateReferer(req.body.referer),
+      referer: validateReferer(req.body.referer, serviceDomain),
       securityCodeSentMethod: req.body.securityCodeSentMethod,
       identityDocumentUsed: req.body.identityDocumentUsed,
     });

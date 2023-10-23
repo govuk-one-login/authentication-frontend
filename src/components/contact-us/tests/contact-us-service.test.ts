@@ -64,5 +64,14 @@ describe("contact-us-service", () => {
 
       expect(getRefererTag(form)).to.equal("Referer not provided");
     });
+
+    it("should return the referer when the fromURL is encoded as a URI component", () => {
+      form.referer = "https://localhost:3000/enter-mfa";
+      form.fromURL = encodeURIComponent("https://localhost:3000/enter-email");
+
+      expect(getRefererTag(form)).to.equal(
+        "Referer obtained via Triage page fromURL: https://localhost:3000/enter-email"
+      );
+    });
   });
 });
