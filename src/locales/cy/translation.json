@@ -1168,9 +1168,24 @@
           "paragraph_two": "Mae’r data hwn yn cael ei storio mewn awdit system a logiau diogelwch ar gyfer monitro system a diogelwch a dibenion datrys problemau technegol."
         },
         "when_you_contact_us": {
-          "header": "Pan fyddwch yn cysylltu â ni neu’n rhoi adborth am y gwasanaeth",
-          "paragraph_one": "Os ydych yn cysylltu â ni am gymorth gyda defnyddio ffurflenni cyswllt GOV.UK One Login, byddwn yn casglu unrhyw wybodaeth sy’n eich adnabod rydych yn ei ddarparu, fel eich enw a’ch cyfeiriad e-bost, ynghyd â manylion eich cais am gymorth.",
-          "paragraph_two": "Ble rydych yn cytuno, byddwn yn cysylltu â chi er mwyn cael eich adborth am y gwasanaeth. Byddwn yn casglu unrhyw wybodaeth sy’n eich adnabod y byddwch yn ei rhoi yn eich adborth, fel eich enw a’ch cyfeiriad e-bost, ynghyd â manylion eich adborth."
+          "header": "Pan fyddwch yn cysylltu â ni am help neu i roi adborth",
+          "paragraph_one": {
+            "part_one": "Mae nifer o ffyrdd i gysylltu â ni os ydych angen help gyda GOV.UK One Login. Maent ar y dudalen ",
+            "link_text": "Cysylltu â GOV.UK One Login.",
+            "link_href": "https://home.account.gov.uk/contact-gov-uk-one-login",
+            "part_two": "."
+          },
+          "paragraph_two": "Os ydych yn cysylltu â ni am help, byddwn yn casglu:",
+          "list": {
+            "item_one": "gwybodaeth amdanoch fel eich enw, rhif ffôn a chyfeiriad e-bost, a byddwn yn defnyddio’r wybodaeth hon i gysylltu â chi am eich ymholiad ac i nodi eich GOV.UK One Login os oes angen",
+            "item_two": "manylion eich cais am help",
+            "item_three": "eich dewis iaith (Cymraeg neu Saesneg) fel y gallwn gysylltu â chi yn yr iaith honno"
+          },
+          "paragraph_three": "Pan fyddwch yn cysylltu â ni, peidiwch â chynnwys unrhyw wybodaeth sensitif neu ariannol amdanoch chi eich hun. Os byddwch yn dewis rhannu manylion amdanoch chi eich hun i roi cyd-destun ychwanegol i`ch ymholiad, byddwn yn storio`r wybodaeth honno yn ein systemau.",
+          "paragraph_four": "Os ydych yn dweud wrthym eich bod angen addasiad, fel bod angen i staff y ganolfan alwadau siarad yn arafach, byddwn yn gofyn i chi a hoffech i ni wneud nodyn o hynny. Mae hyn er mwyn i staff ein canolfan alwadau fod yn ymwybodol eich bod angen addasiad os byddwch yn cysylltu â ni eto.",
+          "paragraph_five": "Rydym yn storio recordiadau o`r holl sgyrsiau ffôn. Rydym yn defnyddio`r rhain ar gyfer monitro a chanfod twyll, datrys cwynion, monitro safon a hyfforddiant a gwella ein gwasanaeth.",
+          "paragraph_six": "Os byddwch yn cysylltu â ni drwy ein ffurflen we, rydym yn casglu gwybodaeth dechnegol am eich dyfais fel yr amlinellir yn adran `Gwybodaeth dechnegol` o’r hysbysiad hwn.",
+          "paragraph_seven": "Os ydych chi`n cytuno i gymryd rhan yn ein harolwg am yr help a gawsoch, rydym yn casglu eich atebion i`r cwestiynau. Mae`r rhain yn cael eu cysylltu â`r cofnod o`r adeg y gwnaethoch gysylltu â ni, sy`n cynnwys gwybodaeth fel eich enw, cyfeiriad e-bost neu rif ffôn."
         },
         "if_you_agree_to_analytics": {
           "header": "Os ydych yn cytuno i ddadansoddi gwe / ap",
@@ -1202,12 +1217,11 @@
             "item_four": "darparu gwasanaeth(au) y llywodraeth rydych yn cael mynediad iddynt drwy GOV.UK One Login gyda gwybodaeth am ganlyniad eich gwiriad hunaniaeth",
             "item_five": "eich darparu gyda chofnod o sut mae eich GOV.UK One Login wedi cael ei ddefnyddio, er enghraifft, pan gafodd ei fewngofnodi iddo ddiwethaf a pha wasanaethau mae wedi cael ei ddefnyddio gyda",
             "item_six": "cysylltu â chi am unrhyw ymyrraeth arfaethedig, problemau neu newidiadau a allai effeithio ar eich GOV.UK One Login (gan ddefnyddio eich cyfeiriad e-bost)",
-            "item_seven": "cysylltu â chi i ofyn am adborth ar eich profiad o ddefnyddio GOV.UK One Login, os ydych wedi rhoi caniatâd i ni ymateb i unrhyw adborth rydych yn ei anfon atom gan ddefnyddio eich cyfeiriad e-bost",
-            "item_eight": "gwella’r gwasanaeth drwy ddeall sut rydych yn ei ddefnyddio ac unrhyw broblemau rydych yn eu profi wrth ddefnyddio Google Analytics a Firebase Crashlytics",
-            "item_nine": "monitro cyfraddau cyflwyno gwiriadau hunaniaeth lwyddiannus ac aflwyddiannus a chynhyrchu adroddiadau dienw am GOV.UK One Login i’n helpu i ddeall ble gallwn ni wneud gwelliannau",
-            "item_ten": "helpu i ddarganfod a thrwsio materion technegol neu ddadfygio",
-            "item_eleven": "cynorthwyo mewn filio a chymodi ar gyfer y gwasanaethau gwirio hunaniaeth trydydd parti rydym yn eu defnyddio",
-            "item_twelve": "monitro’r system ar gyfer bygythiadau diogelwch a materion system, er enghraifft toriad i’r gwasanaeth."
+            "item_seven": "gwella`r gwasanaeth trwy ddeall sut rydych yn ei ddefnyddio ac unrhyw broblemau rydych yn eu profi, er enghraifft defnyddio Google Analytics, Firebase Crashlytics ac arolwg adborth y ganolfan gyswllt",
+            "item_eight": "monitro cyfraddau cyflwyno gwiriadau hunaniaeth lwyddiannus ac aflwyddiannus a chynhyrchu adroddiadau dienw am GOV.UK One Login i’n helpu i ddeall ble gallwn ni wneud gwelliannau",
+            "item_nine": "helpu i ddarganfod a thrwsio materion technegol neu ddadfygio",
+            "item_ten": "cynorthwyo mewn filio a chymodi ar gyfer y gwasanaethau gwirio hunaniaeth trydydd parti rydym yn eu defnyddio",
+            "item_eleven": "monitro’r system ar gyfer bygythiadau diogelwch a materion system, er enghraifft toriad i’r gwasanaeth."
           }
         },
         "legal_basis": {
@@ -1218,7 +1232,8 @@
           "paragraph_two": "Rydym yn cael eich caniatâd i brosesu eich data personol ar gyfer y dibenion canlynol:",
           "list_one": {
             "item_one": "casglu a dadansoddi gwybodaeth am sut rydych yn defnyddio eich GOV.UK One Login gan ddefnyddio cwcis Google Analytics",
-            "item_two": "eich e-bostio i ofyn am adborth am GOV.UK One Login"
+            "item_two": "casglu a phrosesu eich ymatebion i`n harolwg am yr help a gawsoch",
+            "item_three": "cofnodi unrhyw addasiadau rydych yn dweud wrthym amdanynt pan fyddwch yn cysylltu â ni am help"
           },
           "paragraph_three": "Lle byddwn yn dibynnu ar ganiatâd byddwn yn esbonio mor glir a chryno â phosibl sut bydd eich data’n cael ei brosesu fel eich bod yn deall beth rydych yn cydsynio iddo. Os byddwch yn newid eich meddwl yn ddiweddarach, gallwch dynnu eich caniatâd yn ôl ar unrhyw adeg. Bydd sut gallwch wneud hyn yn dibynnu ar beth rdym yn prosesu eich data ar ei gyfer. Er enghraifft, gallwch:",
           "list_two": {
@@ -1240,7 +1255,9 @@
           "list_three": {
             "item_one": "dibenion statudol a llywodraethol ar gyfer gwirio hunaniaeth (paragraff 6, atodlen 1, Deddf Diogelu Data 2018)",
             "item_two": "atal neu ganfod gweithredoedd anghyfreithlon ar gyfer canfod ac atal twyll (paragraff 10, atodlen 1, Deddf Diogelu Data 2018)"
-          }
+          },
+          "paragraph_six": "Gofynnwn i chi beidio â rhannu unrhyw wybodaeth sensitif amdanoch chi eich hun pan fyddwch yn cysylltu â ni am help neu i roi adborth. Os byddwch yn dewis darparu gwybodaeth o`r fath, rydym yn ei phrosesu ar y sail gyfreithiol bod y prosesu`n angenrheidiol am resymau sydd o fudd sylweddol i`r cyhoedd. Yn ogystal, rydym yn dibynnu ar yr amod dibenion statudol a dibenion y llywodraeth yn Neddf Diogelu Data 2018.",
+          "paragraph_seven": "Pan fyddwn yn prosesu eich data categori arbennig i gofnodi unrhyw addasiadau rydych yn dweud wrthym amdanynt pan fyddwch yn cysylltu â ni am gymorth, y sail gyfreithiol rydym yn dibynnu arni yw eich caniatâd penodol."
         },
         "who_we_share_with": {
           "header": "Gyda phwy rydym yn rhannu eich gwybodaeth",
@@ -1324,7 +1341,7 @@
             "item_seven": "hanes cyfeiriad"
           },
           "sub_header_four": "Rhannu eich gwybodaeth gyda’n cyflenwyr",
-          "paragraph_thirteen": "Rydym yn gweithio gyda chyflenwyr technoleg, er enghraifft rydym yn defnyddio darparwr cynnal allanol. Nid ydym yn caniatáu i’n cyflenwyr gael mynediad rheolaidd i’ch data. Fodd bynnag, mae’n bosib y bydd achosion lle mae angen mynediad arnynt i ddarparu eu gwasanaethau i ni fel pan fyddant yn darparu cymorth technegol i ni. Mae ein cyflenwyr yn gweithredu fel proseswyr data ac yn destun i gontractau gyda ni sy’n eu cyfyngu i brosesu eich data personol ond at y diben o gyflawni ein cyfarwyddiadau."
+          "paragraph_thirteen": "Rydym yn gweithio gyda chyflenwyr technoleg, er enghraifft rydym yn defnyddio darparwr cynnal allanol a darparwr canolfan gyswllt. Rydym ond yn rhoi mynediad i`n cyflenwyr i`ch gwybodaeth os ydynt ei hangen i ddarparu eu gwasanaeth. Mae ein cyflenwyr yn gweithredu fel proseswyr data ac maent yn ddarostyngedig i gontractau gyda ni sy`n eu cyfyngu i brosesu eich data personol ond at ddiben darparu eu gwasanaethau yn unol â`n cyfarwyddiadau."
         },
         "how_long_we_keep_your_information": {
           "header": "Pa mor hir rydym yn cadw eich gwybodaeth",
@@ -1333,10 +1350,11 @@
           "paragraph_three": "Os ydych yn dewis dileu eich GOV.UK One Login, byddwn yn dileu eich cyfrif a’ch gwybodaeth adnabod profedig.",
           "paragraph_four": "Rydym yn dileu eich llun llonydd a gynhyrchir o’ch fideo hunlun, delweddau trwydded yrru a data biometrig y wyneb o systemau Iproov ar ôl 30 diwrnod.",
           "paragraph_five": "Byddwn yn cadw eich data adborth am 2 flynedd.",
-          "paragraph_six": "Mae’r gwiriad hunaniaeth bersonol yn storio eich data am 11 diwrnod i roi digon o amser i chi fynd i Swyddfa’r Post i gwblhau eich gwiriad hunaniaeth.",
-          "paragraph_seven": "Byddwn yn storio gwybodaeth am y camau rydych yn eu cymryd pan fyddwch yn defnyddio eich GOV.UK One Login mewn logiau system am 1 flwyddyn.",
-          "paragraph_eight": "Rydym hefyd yn cynnal llwybr archwilio diogel o holl ddigwyddiadau a gweithgareddau archwilio GOV.UK One Login ac rydym yn ei gadw am 7 mlynedd at ddibenion monitro twyll.",
-          "paragraph_nine": "Nid yw GDS yn storio nac yn cadw’r:",
+          "paragraph_six": "Byddwn yn storio`r wybodaeth rydym yn ei chasglu pan fyddwch yn cysylltu â ni am flwyddyn. Mae hyn yn cynnwys recordiadau galwadau.",
+          "paragraph_seven": "Mae’r gwiriad hunaniaeth bersonol yn storio eich data am 11 diwrnod i roi digon o amser i chi fynd i Swyddfa’r Post i gwblhau eich gwiriad hunaniaeth.",
+          "paragraph_eight": "Byddwn yn storio gwybodaeth am y camau rydych yn eu cymryd pan fyddwch yn defnyddio eich GOV.UK One Login mewn logiau system am 1 flwyddyn.",
+          "paragraph_nine": "Rydym hefyd yn cynnal llwybr archwilio diogel o holl ddigwyddiadau a gweithgareddau archwilio GOV.UK One Login ac rydym yn ei gadw am 7 mlynedd at ddibenion monitro twyll.",
+          "paragraph_ten": "Nid yw GDS yn storio nac yn cadw’r:",
           "list_one": {
             "item_one": "cwestiynau KBV rydym yn yn eu cyrchu gan asiantaethau gwirio credyd neu eich atebion i’r cwestiynau hynny",
             "item_two": "fideo hunlun rydych yn ei gymryd fel rhan o brofi eich hunaniaeth drwy ddefnyddio’r ap Gwirio Hunaniaeth GOV.UK"
@@ -1442,7 +1460,7 @@
           "header": "Newidiadau i’r hysbysiad hwn",
           "paragraph_one": "Efallai y byddwn yn newid yr hysbysiad preifatrwydd hwn. Yn yr achos hynny, bydd dyddiad ’diweddaru olaf’ y ddogfen hon hefyd yn newid. Bydd unrhyw newidiadau i’r hysbysiad preifatrwydd hwn yn berthnasol i chi a’ch gwybodaeth ar unwaith.",
           "paragraph_two": "Os yw’r newidiadau hyn yn effeithio ar sut mae eich gwybodaeth bersonol yn cael ei phrosesu, bydd GDS yn rhoi gwybod i chi.",
-          "paragraph_three": "Diweddarwyd diwethaf: 13 Medi 2023"
+          "paragraph_three": "Diweddarwyd diwethaf: 30 Hydref 2023"
         }
       }
     },
