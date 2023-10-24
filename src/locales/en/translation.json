@@ -1155,7 +1155,7 @@
           },
           "paragraph_thirteen": "The Post Office will also take a photo of your face,from which they will measure the unique patterns of your face. This is called facial biometric data. The biometric data from your photo will be compared against the biometric data from the photo on your identity document to check whether you are the actual owner of the identity document.",
           "paragraph_fourteen": "When the Post Office and Yoti have completed the checks, they send us the result of the check and your identity document information.",
-          "paragraph_fifteen": "We then use your email address to tell you that the results of your check are available.To see your result and share it with the service you needed to prove your identity for, you will need to sign in to GOV.UK One Login and be redirected to the government service you were using."
+          "paragraph_fifteen": "We then use your email address to tell you that the results of your check are available. To see your result and share it with the service you needed to prove your identity for, you will need to sign in to GOV.UK One Login and be redirected to the government service you were using."
         },
         "technical_information": {
           "header": "Technical information",
