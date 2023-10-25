@@ -163,12 +163,12 @@ describe("contact us further information controller", () => {
     });
     it("should redirect /contact-us-questions page when 'You do not have a UK mobile phone number' radio option is chosen", async () => {
       req.body.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
-      req.body.subtheme = ZENDESK_THEMES.NO_UK_MOBILE_NUMBER;
+      req.body.subtheme = ZENDESK_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE;
       req.body.referer = REFERER;
       furtherInformationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=account_creation&subtheme=no_uk_mobile_number&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        "/contact-us-questions?theme=account_creation&subtheme=sign_in_phone_number_issue&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
     });
     it("should redirect /contact-us-questions page when 'There was a technical problem' radio option is chosen", async () => {

@@ -144,7 +144,7 @@ export const ZENDESK_THEMES = {
   TECHNICAL_ERROR: "technical_error",
   NO_SECURITY_CODE: "no_security_code",
   INVALID_SECURITY_CODE: "invalid_security_code",
-  NO_UK_MOBILE_NUMBER: "no_uk_mobile_number",
+  SIGN_IN_PHONE_NUMBER_ISSUE: "sign_in_phone_number_issue",
   FORGOTTEN_PASSWORD: "forgotten_password",
   NO_PHONE_NUMBER_ACCESS: "no_phone_number_access",
   PROVING_IDENTITY: "proving_identity",

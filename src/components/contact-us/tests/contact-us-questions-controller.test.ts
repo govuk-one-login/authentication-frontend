@@ -314,9 +314,9 @@ describe("contact us questions controller", () => {
         appSessionId: "",
       });
     });
-    it("should render contact-us-questions if a 'You do not have a UK number' radio option was chosen", () => {
+    it("should render contact-us-questions if a 'You have another problem with a phone number' radio option was chosen", () => {
       req.query.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
-      req.query.subtheme = ZENDESK_THEMES.NO_UK_MOBILE_NUMBER;
+      req.query.subtheme = ZENDESK_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
       contactUsQuestionsGet(req as Request, res as Response);
@@ -324,10 +324,11 @@ describe("contact us questions controller", () => {
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "account_creation",
-        subtheme: "no_uk_mobile_number",
+        subtheme: "sign_in_phone_number_issue",
         backurl: REFERER_HEADER,
         referer: REFERER,
-        pageTitleHeading: "pages.contactUsQuestions.noUKMobile.title",
+        pageTitleHeading:
+          "pages.contactUsQuestions.signInPhoneNumberIssue.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
         ipnSupport: undefined,
         appErrorCode: "",

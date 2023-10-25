@@ -105,7 +105,7 @@ describe("Integration:: contact us - public user", () => {
       request(app)
         .get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)
         .query("theme=account_creation")
-        .query("subtheme=no_uk_mobile_number")
+        .query("subtheme=sign_in_phone_number_issue")
         .query("referer=" + referer)
         .expect(function (res) {
           const $ = cheerio.load(res.text);
