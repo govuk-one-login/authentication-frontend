@@ -287,6 +287,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
       fromURL: validateReferer(req.query.fromURL as string, serviceDomain),
     }),
+    hrefBack: backLinkHref,
     referer: validateReferer(req.query.referer as string, serviceDomain),
   });
 }

@@ -7,7 +7,7 @@ import {
   furtherInformationGet,
   furtherInformationPost,
 } from "../contact-us-controller";
-import { ZENDESK_THEMES } from "../../../app.constants";
+import { PATH_NAMES, ZENDESK_THEMES } from "../../../app.constants";
 import { RequestGet, ResponseRedirect } from "../../../types";
 
 describe("contact us further information controller", () => {
@@ -42,6 +42,7 @@ describe("contact us further information controller", () => {
         {
           theme: "signing_in",
           referer: REFERER,
+          hrefBack: PATH_NAMES.CONTACT_US,
         }
       );
     });
@@ -56,6 +57,7 @@ describe("contact us further information controller", () => {
         {
           theme: "account_creation",
           referer: REFERER,
+          hrefBack: PATH_NAMES.CONTACT_US,
         }
       );
     });
