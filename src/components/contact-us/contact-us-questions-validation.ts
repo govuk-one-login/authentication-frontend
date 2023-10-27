@@ -154,6 +154,27 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
         );
       }),
+    body("country")
+      .optional()
+      .custom((value, { req }) => {
+        if (
+          req.body.securityCodeSentMethod ===
+          "text_message_international_number"
+        ) {
+          if (!value) {
+            throw new Error(
+              req.t(
+                "pages.contactUsQuestions.textMessageInternationNumberConditionalSection.errorIfBlank",
+                {
+                  value,
+                  lng: setLanguageToReflectSupportForWelsh(req.i18n.lng),
+                }
+              )
+            );
+          }
+        }
+        return true;
+      }),
     body("countryPhoneNumberFrom")
       .optional()
       .notEmpty()
