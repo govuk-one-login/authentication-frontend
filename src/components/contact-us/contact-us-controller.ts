@@ -417,6 +417,9 @@ export function contactUsQuestionsFormPostToSmartAgent(
       identityDocumentUsed: req.body.identityDocumentUsed,
     });
 
+    logger.info(
+      `Support ticket submitted to SmartAgent with id ${ticketIdentifier} for session ${res.locals.sessionId}`
+    );
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
   };
 }
