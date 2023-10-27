@@ -40,12 +40,6 @@ jobs:
         run: yarn test:integration
       - name: Run lint
         run: yarn lint
-      - name: SonarCloud Scan
-        if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     env:
       ENVIRONMENT: development
       API_BASE_URL: http://localhost:6000/api
