@@ -1155,7 +1155,7 @@
           },
           "paragraph_thirteen": "The Post Office will also take a photo of your face,from which they will measure the unique patterns of your face. This is called facial biometric data. The biometric data from your photo will be compared against the biometric data from the photo on your identity document to check whether you are the actual owner of the identity document.",
           "paragraph_fourteen": "When the Post Office and Yoti have completed the checks, they send us the result of the check and your identity document information.",
-          "paragraph_fifteen": "We then use your email address to tell you that the results of your check are available.To see your result and share it with the service you needed to prove your identity for, you will need to sign in to GOV.UK One Login and be redirected to the government service you were using."
+          "paragraph_fifteen": "We then use your email address to tell you that the results of your check are available. To see your result and share it with the service you needed to prove your identity for, you will need to sign in to GOV.UK One Login and be redirected to the government service you were using."
         },
         "technical_information": {
           "header": "Technical information",
@@ -1168,9 +1168,23 @@
           "paragraph_two": "This data is stored in system audit and security logs for system and security monitoring and technical troubleshooting purposes."
         },
         "when_you_contact_us": {
-          "header": "When you contact us or provide feedback about the service",
-          "paragraph_one": "If you contact us for support using GOV.UK One Login’s contact forms, we will collect any identifying information you provide, such as your name and email address, plus the details of your support request.",
-          "paragraph_two": "Where you agree, we will contact you to obtain your feedback about the service. We will collect any identifying information you provide in your feedback, such as your name and email address, plus the details of your feedback."
+          "header": "When you contact us for help or to provide feedback",
+          "paragraph_one": {
+            "part_one": "There are a number of ways to contact us if you need help with GOV.UK One Login. They are on the",
+            "link_text": "Contact GOV.UK One Login",
+            "link_href": "https://home.account.gov.uk/contact-gov-uk-one-login",
+            "part_two": "page."
+          },
+          "paragraph_two": "If you contact us for help, we will collect:",
+          "list": {
+            "item_one": "information about you such as your name, telephone number and email address, and use this information to contact you about your enquiry and to identify your GOV.UK One Login if necessary",
+            "item_two": "the details of your help request",
+            "item_three": "your preferred language (English or Welsh) so we can contact you in that language"
+          },
+          "paragraph_three": "When you contact us do not include any sensitive or financial information about yourself. If you choose to share details about yourself to give extra context for your enquiry, we will store that information in our systems.",
+          "paragraph_four": "We store recordings of all telephone conversations. We use these for monitoring and detecting fraud, resolving complaints, quality monitoring and training, and improving our service.",
+          "paragraph_five": "If you contact us through our web form, we collect technical information about your device as outlined in the ‘Technical information‘ section of this notice.",
+          "paragraph_six": "If you agree to take part in our survey about the help you received, we collect your answers to the questions. These are linked to the record of when you contacted us, which includes information such as your name, email address or telephone number."
         },
         "if_you_agree_to_analytics": {
           "header": "If you agree to web / app analytics",
@@ -1202,12 +1216,11 @@
             "item_four": "provide the government service(s) that you access through GOV.UK One Login with information about the outcome of your identity check",
             "item_five": "provide you with a record of how your GOV.UK One Login has been used, for example, when it was last signed in to and what services it has been used with",
             "item_six": "contact you about any planned interruptions, problems or changes that may affect your GOV.UK One Login (using your email address)",
-            "item_seven": "contact you to ask for feedback on your experience of using GOV.UK One Login, if you have given us permission to respond to any feedback you send us using your email address",
-            "item_eight": "improve the service by understanding how you use it and any problems you experience using Google Analytics and Firebase Crashlytics",
-            "item_nine": "monitor the rates of successful and unsuccessful identity checking submissions and produce anonymised reports about GOV.UK One Login to help us understand where we can make improvements",
-            "item_ten": "help diagnose and fix technical or debugging issues",
-            "item_eleven": "assist in billing and reconciliation for the third party identity checking services we use",
-            "item_twelve": "monitor the system for security threats and system issues, for example outages."
+            "item_seven": "improve the service by understanding how you use it and any problems you experience, for example using Google Analytics, Firebase Crashlytics and the contact centre feedback survey",
+            "item_eight": "monitor the rates of successful and unsuccessful identity checking submissions and produce anonymised reports about GOV.UK One Login to help us understand where we can make improvements",
+            "item_nine": "help diagnose and fix technical or debugging issues",
+            "item_ten": "assist in billing and reconciliation for the third party identity checking services we use",
+            "item_eleven": "monitor the system for security threats and system issues, for example outages."
           }
         },
         "legal_basis": {
@@ -1218,7 +1231,7 @@
           "paragraph_two": "We obtain your consent to process your personal data for the following purposes:",
           "list_one": {
             "item_one": "collecting and analysing information about how you use your GOV.UK One Login using Google Analytics cookies",
-            "item_two": "emailing you to ask for feedback about GOV.UK One Login"
+            "item_two": "collecting and processing your responses to our survey about the help you received"
           },
           "paragraph_three": "Where we rely on consent we will explain as clearly and concisely as possible how your data will be processed so you understand what you are consenting to. If you later change your mind, you can withdraw your consent at any time. How you can do this will depend on what we are processing your data for. For example, you can:",
           "list_two": {
@@ -1240,7 +1253,8 @@
           "list_three": {
             "item_one": "statutory and government purposes for identity checking (paragraph 6, schedule 1, Data Protection Act 2018)",
             "item_two": "preventing or detecting unlawful acts for fraud detection and prevention (paragraph 10, schedule 1, Data Protection Act 2018)"
-          }
+          },
+          "paragraph_six": "We ask that you do not share any sensitive information about yourself when you contact us for help or to give feedback. If you choose to provide such information we process it on the legal basis that the processing is necessary for reasons of substantial public interest. In addition we rely on the statutory and government purposes condition in the Data Protection Act 2018."
         },
         "who_we_share_with": {
           "header": "Who we share your information with",
@@ -1324,7 +1338,7 @@
             "item_seven": "address history"
           },
           "sub_header_four": "Sharing your information with our suppliers",
-          "paragraph_thirteen": "We work with technology suppliers, for example we use an external hosting provider. We do not allow our suppliers to have routine access to your data. However, there may be cases where they need access to provide their services to us such as when they provide us with technical support. Our suppliers act as data processors and are subject to contracts with us which restrict them to only processing your personal data for the sole purpose of fulfilling our instructions."
+          "paragraph_thirteen": "We work with technology suppliers, for example we use an external hosting provider and a contact centre provider. We only give our suppliers access to your information if they need it to provide their service. Our suppliers act as data processors and are subject to contracts with us which restrict them to only processing your personal data for the sole purpose of providing their services in accordance with our instructions."
         },
         "how_long_we_keep_your_information": {
           "header": "How long we keep your information",
@@ -1333,10 +1347,11 @@
           "paragraph_three": "If you choose to delete your GOV.UK One Login, we’ll delete your account and your proven identity information.",
           "paragraph_four": "We delete your still photo generated from your selfie video, driving licence images and biometric facial data from Iproov’s systems after 30 days.",
           "paragraph_five": "The in-person identity check stores your data for 11 days to give you enough time to go to the Post Office to complete your identity check.",
-          "paragraph_six": "We will keep your feedback data for 2 years.",
-          "paragraph_seven": "We will store information about the actions you take when you use your GOV.UK One Login in system logs for 1 year.",
-          "paragraph_eight": "We also maintain a secure audit trail of all GOV.UK One Login audit events and activity which we retain for 7 years for fraud monitoring purposes.",
-          "paragraph_nine": "GDS does not store or retain the:",
+          "paragraph_six": "We will store the information we collect when you contact us for help for one year. This includes call recordings.",
+          "paragraph_seven": "We will keep your feedback data for 2 years.",
+          "paragraph_eight": "We will store information about the actions you take when you use your GOV.UK One Login in system logs for 1 year.",
+          "paragraph_nine": "We also maintain a secure audit trail of all GOV.UK One Login audit events and activity which we retain for 7 years for fraud monitoring purposes.",
+          "paragraph_ten": "GDS does not store or retain the:",
           "list_one": {
             "item_one": "KBV questions we source from credit reference agencies or your answers to those questions",
             "item_two": "selfie video you take as part of proving your identity using the GOV.UK Identity Check app"
@@ -1442,7 +1457,7 @@
           "header": "Changes to this notice",
           "paragraph_one": "We may change this privacy notice. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy notice will apply to you and your information immediately.",
           "paragraph_two": "If these changes affect how your personal information is processed, GDS will let you know.",
-          "paragraph_three": "Last updated: 13 September 2023"
+          "paragraph_three": "Last updated: 30 October 2023"
         }
       }
     },
