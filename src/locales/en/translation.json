@@ -1182,10 +1182,9 @@
             "item_three": "your preferred language (English or Welsh) so we can contact you in that language"
           },
           "paragraph_three": "When you contact us do not include any sensitive or financial information about yourself. If you choose to share details about yourself to give extra context for your enquiry, we will store that information in our systems.",
-          "paragraph_four": "If you tell us that you need an adjustment, such as requiring call centre staff to speak more slowly, we will ask you if you would like us to make a note of that. This is so that our call centre staff will be aware that you need an adjustment if you contact us again.",
-          "paragraph_five": "We store recordings of all telephone conversations. We use these for monitoring and detecting fraud, resolving complaints, quality monitoring and training, and improving our service.",
-          "paragraph_six": "If you contact us through our web form, we collect technical information about your device as outlined in the ‘Technical information‘ section of this notice.",
-          "paragraph_seven": "If you agree to take part in our survey about the help you received, we collect your answers to the questions. These are linked to the record of when you contacted us, which includes information such as your name, email address or telephone number."
+          "paragraph_four": "We store recordings of all telephone conversations. We use these for monitoring and detecting fraud, resolving complaints, quality monitoring and training, and improving our service.",
+          "paragraph_five": "If you contact us through our web form, we collect technical information about your device as outlined in the ‘Technical information‘ section of this notice.",
+          "paragraph_six": "If you agree to take part in our survey about the help you received, we collect your answers to the questions. These are linked to the record of when you contacted us, which includes information such as your name, email address or telephone number."
         },
         "if_you_agree_to_analytics": {
           "header": "If you agree to web / app analytics",
@@ -1232,8 +1231,7 @@
           "paragraph_two": "We obtain your consent to process your personal data for the following purposes:",
           "list_one": {
             "item_one": "collecting and analysing information about how you use your GOV.UK One Login using Google Analytics cookies",
-            "item_two": "collecting and processing your responses to our survey about the help you received",
-            "item_three": "to record any adjustments that you tell us about when you contact us for help  "
+            "item_two": "collecting and processing your responses to our survey about the help you received"
           },
           "paragraph_three": "Where we rely on consent we will explain as clearly and concisely as possible how your data will be processed so you understand what you are consenting to. If you later change your mind, you can withdraw your consent at any time. How you can do this will depend on what we are processing your data for. For example, you can:",
           "list_two": {
@@ -1256,8 +1254,7 @@
             "item_one": "statutory and government purposes for identity checking (paragraph 6, schedule 1, Data Protection Act 2018)",
             "item_two": "preventing or detecting unlawful acts for fraud detection and prevention (paragraph 10, schedule 1, Data Protection Act 2018)"
           },
-          "paragraph_six": "We ask that you do not share any sensitive information about yourself when you contact us for help or to give feedback. If you choose to provide such information we process it on the legal basis that the processing is necessary for reasons of substantial public interest. In addition we rely on the statutory and government purposes condition in the Data Protection Act 2018.",
-          "paragraph_seven": "When we process your special category data to record any adjustments that you tell us about when you contact us for help, the legal basis we rely on is your explicit consent."
+          "paragraph_six": "We ask that you do not share any sensitive information about yourself when you contact us for help or to give feedback. If you choose to provide such information we process it on the legal basis that the processing is necessary for reasons of substantial public interest. In addition we rely on the statutory and government purposes condition in the Data Protection Act 2018."
         },
         "who_we_share_with": {
           "header": "Who we share your information with",

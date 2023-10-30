@@ -1182,10 +1182,9 @@
             "item_three": "eich dewis iaith (Cymraeg neu Saesneg) fel y gallwn gysylltu â chi yn yr iaith honno"
           },
           "paragraph_three": "Pan fyddwch yn cysylltu â ni, peidiwch â chynnwys unrhyw wybodaeth sensitif neu ariannol amdanoch chi eich hun. Os byddwch yn dewis rhannu manylion amdanoch chi eich hun i roi cyd-destun ychwanegol i`ch ymholiad, byddwn yn storio`r wybodaeth honno yn ein systemau.",
-          "paragraph_four": "Os ydych yn dweud wrthym eich bod angen addasiad, fel bod angen i staff y ganolfan alwadau siarad yn arafach, byddwn yn gofyn i chi a hoffech i ni wneud nodyn o hynny. Mae hyn er mwyn i staff ein canolfan alwadau fod yn ymwybodol eich bod angen addasiad os byddwch yn cysylltu â ni eto.",
-          "paragraph_five": "Rydym yn storio recordiadau o`r holl sgyrsiau ffôn. Rydym yn defnyddio`r rhain ar gyfer monitro a chanfod twyll, datrys cwynion, monitro safon a hyfforddiant a gwella ein gwasanaeth.",
-          "paragraph_six": "Os byddwch yn cysylltu â ni drwy ein ffurflen we, rydym yn casglu gwybodaeth dechnegol am eich dyfais fel yr amlinellir yn adran `Gwybodaeth dechnegol` o’r hysbysiad hwn.",
-          "paragraph_seven": "Os ydych chi`n cytuno i gymryd rhan yn ein harolwg am yr help a gawsoch, rydym yn casglu eich atebion i`r cwestiynau. Mae`r rhain yn cael eu cysylltu â`r cofnod o`r adeg y gwnaethoch gysylltu â ni, sy`n cynnwys gwybodaeth fel eich enw, cyfeiriad e-bost neu rif ffôn."
+          "paragraph_four": "Rydym yn storio recordiadau o`r holl sgyrsiau ffôn. Rydym yn defnyddio`r rhain ar gyfer monitro a chanfod twyll, datrys cwynion, monitro safon a hyfforddiant a gwella ein gwasanaeth.",
+          "paragraph_five": "Os byddwch yn cysylltu â ni drwy ein ffurflen we, rydym yn casglu gwybodaeth dechnegol am eich dyfais fel yr amlinellir yn adran `Gwybodaeth dechnegol` o’r hysbysiad hwn.",
+          "paragraph_six": "Os ydych chi`n cytuno i gymryd rhan yn ein harolwg am yr help a gawsoch, rydym yn casglu eich atebion i`r cwestiynau. Mae`r rhain yn cael eu cysylltu â`r cofnod o`r adeg y gwnaethoch gysylltu â ni, sy`n cynnwys gwybodaeth fel eich enw, cyfeiriad e-bost neu rif ffôn."
         },
         "if_you_agree_to_analytics": {
           "header": "Os ydych yn cytuno i ddadansoddi gwe / ap",
@@ -1232,8 +1231,7 @@
           "paragraph_two": "Rydym yn cael eich caniatâd i brosesu eich data personol ar gyfer y dibenion canlynol:",
           "list_one": {
             "item_one": "casglu a dadansoddi gwybodaeth am sut rydych yn defnyddio eich GOV.UK One Login gan ddefnyddio cwcis Google Analytics",
-            "item_two": "casglu a phrosesu eich ymatebion i`n harolwg am yr help a gawsoch",
-            "item_three": "cofnodi unrhyw addasiadau rydych yn dweud wrthym amdanynt pan fyddwch yn cysylltu â ni am help"
+            "item_two": "casglu a phrosesu eich ymatebion i`n harolwg am yr help a gawsoch"
           },
           "paragraph_three": "Lle byddwn yn dibynnu ar ganiatâd byddwn yn esbonio mor glir a chryno â phosibl sut bydd eich data’n cael ei brosesu fel eich bod yn deall beth rydych yn cydsynio iddo. Os byddwch yn newid eich meddwl yn ddiweddarach, gallwch dynnu eich caniatâd yn ôl ar unrhyw adeg. Bydd sut gallwch wneud hyn yn dibynnu ar beth rdym yn prosesu eich data ar ei gyfer. Er enghraifft, gallwch:",
           "list_two": {
@@ -1256,8 +1254,7 @@
             "item_one": "dibenion statudol a llywodraethol ar gyfer gwirio hunaniaeth (paragraff 6, atodlen 1, Deddf Diogelu Data 2018)",
             "item_two": "atal neu ganfod gweithredoedd anghyfreithlon ar gyfer canfod ac atal twyll (paragraff 10, atodlen 1, Deddf Diogelu Data 2018)"
           },
-          "paragraph_six": "Gofynnwn i chi beidio â rhannu unrhyw wybodaeth sensitif amdanoch chi eich hun pan fyddwch yn cysylltu â ni am help neu i roi adborth. Os byddwch yn dewis darparu gwybodaeth o`r fath, rydym yn ei phrosesu ar y sail gyfreithiol bod y prosesu`n angenrheidiol am resymau sydd o fudd sylweddol i`r cyhoedd. Yn ogystal, rydym yn dibynnu ar yr amod dibenion statudol a dibenion y llywodraeth yn Neddf Diogelu Data 2018.",
-          "paragraph_seven": "Pan fyddwn yn prosesu eich data categori arbennig i gofnodi unrhyw addasiadau rydych yn dweud wrthym amdanynt pan fyddwch yn cysylltu â ni am gymorth, y sail gyfreithiol rydym yn dibynnu arni yw eich caniatâd penodol."
+          "paragraph_six": "Gofynnwn i chi beidio â rhannu unrhyw wybodaeth sensitif amdanoch chi eich hun pan fyddwch yn cysylltu â ni am help neu i roi adborth. Os byddwch yn dewis darparu gwybodaeth o`r fath, rydym yn ei phrosesu ar y sail gyfreithiol bod y prosesu`n angenrheidiol am resymau sydd o fudd sylweddol i`r cyhoedd. Yn ogystal, rydym yn dibynnu ar yr amod dibenion statudol a dibenion y llywodraeth yn Neddf Diogelu Data 2018."
         },
         "who_we_share_with": {
           "header": "Gyda phwy rydym yn rhannu eich gwybodaeth",
