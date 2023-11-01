@@ -157,6 +157,7 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     ];
 
     var sessionJourney = getJourneyMapping(window.location.pathname);
+    const customParam = document.getElementById("custom-param").value;
 
     function gtag(obj) {
       dataLayer.push(obj);
@@ -164,6 +165,12 @@ var cookies = function (trackingId, analyticsCookieDomain) {
 
     if (sessionJourney) {
       gtag(sessionJourney);
+    }
+
+    if (customParam) {
+      gtag({
+        customParam,
+      });
     }
 
     pushLanguageToDataLayer();
