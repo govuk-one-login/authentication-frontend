@@ -1,9 +1,12 @@
 environment         = "build"
 common_state_bucket = "digital-identity-dev-tfstate"
 
-frontend_auto_scaling_enabled   = true
+frontend_auto_scaling_v2_enabled = true
+
 frontend_task_definition_cpu    = 512
 frontend_task_definition_memory = 1024
+frontend_auto_scaling_min_count = 1
+frontend_auto_scaling_max_count = 3
 
 support_welsh_language_in_support_forms                             = "1"
 support_smart_agent                                                 = "1"

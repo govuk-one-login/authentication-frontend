@@ -38,7 +38,7 @@ while [[ $# -gt 0 ]]; do
     ;;
   -t | --terraform)
     # shellcheck disable=SC2034
-    OIDC=1
+    TERRAFORM=1
     ;;
   --destroy)
     TERRAFORM_OPTS="-destroy"

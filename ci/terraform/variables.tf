@@ -80,6 +80,10 @@ variable "frontend_auto_scaling_enabled" {
   default = false
 }
 
+variable "frontend_auto_scaling_v2_enabled" {
+  default = false
+}
+
 variable "frontend_auto_scaling_min_count" {
   type    = number
   default = 2
