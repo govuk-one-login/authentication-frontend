@@ -51,7 +51,7 @@
 {% endset %}
 
 {% block main %}
-      <input type="hidden" class="custom-gtm-param" name="param-name" value="param-value"/>
+      <input type="hidden" class="custom-gtm-param" name="is-account-recovery-journey" value="{{ isAccountRecoveryJourney }}"/>
       <div class="govuk-width-container {{ containerClasses }}">
         {{ govukPhaseBanner({
           tag: {
