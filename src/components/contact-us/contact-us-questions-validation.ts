@@ -121,15 +121,6 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
         );
       }),
-    body("moreDetailDescription")
-      .optional()
-      .isLength({ max: ZENDESK_FIELD_MAX_LENGTH })
-      .withMessage((value, { req }) => {
-        return req.t(
-          "pages.contactUsQuestions.optionalDescriptionErrorMessage.entryTooLongMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
-        );
-      }),
     body("contact")
       .notEmpty()
       .withMessage((value, { req }) => {
