@@ -41,7 +41,7 @@ SERVICE_DOMAIN=localhost
 Run one of the following:
 
 ```shell script
-docker compose up 
+docker compose up
 
 ./startup.sh
 ```
@@ -227,4 +227,3 @@ yarn lint
 ```
 
 Checks if the code conforms the linting standards.
-
