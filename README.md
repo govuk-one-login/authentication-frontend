@@ -119,6 +119,18 @@ docker exec -it di-authentication-frontend_di-auth-frontend /bin/sh
 yarn run test:unit
 ```
 
+### Running the integration tests
+
+To run the integration tests, you will need to have environment variables set. 
+Make a copy of the .env.sample file, name it .env, and fill in the TEST_CLIENT_ID. 
+You can retrieve the client id from the `build-client-registry` under the entry for `di-auth-stub-relying-party-build`
+
+```shell script
+docker exec -it di-authentication-frontend_di-auth-frontend /bin/sh
+
+yarn run test:integration
+```
+
 ### Restarting the app
 
 You can restart the app by re-running the `startup.sh` script, or restarting docker-compose.
