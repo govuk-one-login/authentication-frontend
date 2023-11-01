@@ -51,7 +51,7 @@
 {% endset %}
 
 {% block main %}
-      <input type="hidden" id="custom-param" value="param-value"/>
+      <input type="hidden" class="custom-gtm-param" name="param-name" value="param-value"/>
       <div class="govuk-width-container {{ containerClasses }}">
         {{ govukPhaseBanner({
           tag: {

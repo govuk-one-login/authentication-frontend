@@ -157,7 +157,7 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     ];
 
     var sessionJourney = getJourneyMapping(window.location.pathname);
-    const customParam = document.getElementById("custom-param").value;
+    const customParams = document.getElementsByClassName("custom-gtm-param");
 
     function gtag(obj) {
       dataLayer.push(obj);
@@ -167,9 +167,17 @@ var cookies = function (trackingId, analyticsCookieDomain) {
       gtag(sessionJourney);
     }
 
-    if (customParam) {
+    if (customParams.length) {
+      let customParamCollector = {};
+      for (var i = 0; i < customParams.length; i++) {
+        const customParam = customParams[i];
+        customParamCollector = {
+          ...customParamCollector,
+          [customParam.name]: customParam.value,
+        };
+      }
       gtag({
-        customParam,
+        customGtmParams: customParamCollector,
       });
     }
 
