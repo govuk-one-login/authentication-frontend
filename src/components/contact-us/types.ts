@@ -43,6 +43,7 @@ export interface Descriptions {
   optionalDescription?: string;
   moreDetailDescription?: string;
   serviceTryingToUse?: string;
+  countryPhoneNumberFrom?: string;
 }
 
 export interface Themes {
