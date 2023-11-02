@@ -253,7 +253,7 @@ describe("Integration:: contact us - public user", () => {
         additionalDescription: "additional",
         contact: "false",
         securityCodeSentMethod: "text_message_international_number",
-        country: "",
+        country: " ",
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
