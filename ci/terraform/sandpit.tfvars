@@ -23,6 +23,7 @@ support_welsh_language_in_support_forms = "1"
 url_for_support_links                   = "https://home.build.account.gov.uk/contact-gov-uk-one-login"
 
 orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAESyWJU5s5F4jSovHsh9y133/Ogf5P\nx78OrfDJqiMMI2p8Warbq0ppcbWvbihK6rAXTH7bPIeOHOeU9cKAEl5NdQ==\n-----END PUBLIC KEY-----"
+orch_to_auth_client_id          = "orchestrationAuth"
 
 logging_endpoint_arns = [
   "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
