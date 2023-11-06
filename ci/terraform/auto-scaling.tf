@@ -1,4 +1,5 @@
 
+# TODO: fully replace frontend_auto_scaling_* with frontend_auto_scaling_*_v2 after performance testing
 resource "aws_appautoscaling_target" "frontend_auto_scaling_target" {
   count              = var.frontend_auto_scaling_enabled ? 1 : 0
   min_capacity       = var.frontend_auto_scaling_min_count
