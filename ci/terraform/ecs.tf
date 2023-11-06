@@ -168,10 +168,6 @@ locals {
         name  = "CODE_ENTERED_WRONG_BLOCKED_MINUTES"
         value = var.code_entered_wrong_blocked_minutes
       },
-      {
-        name  = "FRAME_ANCESTORS_FORM_ACTIONS_CSP_HEADERS"
-        value = var.frame_ancestors_form_actions_csp_headers
-      },
     ]
 
     mountPoints = [
