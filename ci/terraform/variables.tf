@@ -251,3 +251,9 @@ variable "orch_to_auth_audience" {
   type        = string
   default     = ""
 }
+
+variable "frame_ancestors_form_actions_csp_headers" {
+  description = "When true, sets frame-ancestors and form-action CSP headers in reponses"
+  type        = string
+  default     = "0"
+}

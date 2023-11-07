@@ -29,3 +29,5 @@ orch_to_auth_audience           = "https://signin.sandpit.account.gov.uk/"
 logging_endpoint_arns = [
   "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
 ]
+
+frame_ancestors_form_actions_csp_headers = "1"

@@ -164,7 +164,7 @@ async function createApp(): Promise<express.Application> {
     );
 
   app.use(i18nextMiddleware.handle(i18next));
-  app.use(helmet(helmetConfiguration));
+  app.use(helmet(helmetConfiguration()));
 
   const redisConfig = isProduction
     ? await getRedisConfig(getAppEnv())
