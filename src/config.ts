@@ -191,3 +191,7 @@ export function getPasswordResetCodeEnteredWrongBlockDurationInMinutes(): number
     Number(process.env.PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES) || 15
   );
 }
+
+export function supportFrameAncestorsFormActionsCspHeaders(): boolean {
+  return process.env.FRAME_ANCESTORS_FORM_ACTIONS_CSP_HEADERS === "1";
+}
