@@ -224,7 +224,7 @@ export function contactUsService(
       htmlBody.push(`<span>[ID Check App error code]</span>`);
       htmlBody.push(`<p>${optionalData.appErrorCode}</p>`);
     }
-    
+
     if (questions.country) {
       htmlBody.push(`<span>[ID Check App error code]</span>`);
       htmlBody.push(`<p>${questions.country}</p>`);
