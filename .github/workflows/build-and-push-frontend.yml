@@ -2,7 +2,7 @@ name: Build frontend
 env:
   AWS_REGION: eu-west-2
 
-#Deployer role is github actions publish code singning role, ECR repo are from AWS Tooling acct
+#Deployer role is github actions publish code signing role & ECR repo are from Prod AWS Tooling acct
 
 on:
   push:
