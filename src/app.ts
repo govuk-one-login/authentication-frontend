@@ -8,8 +8,6 @@ import i18nextMiddleware from "i18next-http-middleware";
 import * as path from "path";
 import { configureNunjucks } from "./config/nunchucks";
 import { i18nextConfigurationOptions } from "./config/i18next";
-import { helmetConfiguration } from "./config/helmet";
-import helmet from "helmet";
 
 import { setHtmlLangMiddleware } from "./middleware/html-lang-middleware";
 import i18next from "i18next";
@@ -83,6 +81,7 @@ import { setInternationalPhoneNumberSupportMiddleware } from "./middleware/set-i
 import { checkYourEmailSecurityCodesRouter } from "./components/account-recovery/check-your-email-security-codes/check-your-email-security-codes-routes";
 import { changeSecurityCodesConfirmationRouter } from "./components/account-recovery/change-security-codes-confirmation/change-security-codes-confirmation-routes";
 import { outboundContactUsLinksMiddleware } from "./middleware/outbound-contact-us-links-middleware";
+import { setCspHeaders } from "./middleware/set-csp-headers-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -164,7 +163,7 @@ async function createApp(): Promise<express.Application> {
     );
 
   app.use(i18nextMiddleware.handle(i18next));
-  app.use(helmet(helmetConfiguration()));
+  app.use(setCspHeaders);
 
   const redisConfig = isProduction
     ? await getRedisConfig(getAppEnv())

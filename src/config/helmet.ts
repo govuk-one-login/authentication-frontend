@@ -2,7 +2,9 @@ import helmet from "helmet";
 import e, { Request, Response } from "express";
 import { supportFrameAncestorsFormActionsCspHeaders } from "../config";
 // Helmet does not export the config type - This is the way the recommend getting it on GitHub.
-export function helmetConfiguration(): Parameters<typeof helmet>[0] {
+export function helmetConfiguration(
+  req: Request
+): Parameters<typeof helmet>[0] {
   const helmetConfig: {
     permittedCrossDomainPolicies: boolean;
     referrerPolicy: boolean;
@@ -63,14 +65,21 @@ export function helmetConfiguration(): Parameters<typeof helmet>[0] {
     expectCt: false,
   };
   if (supportFrameAncestorsFormActionsCspHeaders()) {
-    helmetConfig.contentSecurityPolicy.directives["frame-ancestors"] = [
-      "'self'",
-      "https://*.account.gov.uk",
-    ];
-    helmetConfig.contentSecurityPolicy.directives["form-action"] = [
-      "'self'",
-      "https://*.account.gov.uk",
-    ];
+    if (req.url == "/enter-code") {
+      helmetConfig.contentSecurityPolicy.directives["frame-ancestors"] = [
+        "'self'",
+        "https://*.account.gov.uk",
+      ];
+    } else {
+      helmetConfig.contentSecurityPolicy.directives["frame-ancestors"] = [
+        "'self'",
+        "https://*.account.gov.uk",
+      ];
+      helmetConfig.contentSecurityPolicy.directives["form-action"] = [
+        "'self'",
+        "https://*.account.gov.uk",
+      ];
+    }
   }
   return helmetConfig;
 }
