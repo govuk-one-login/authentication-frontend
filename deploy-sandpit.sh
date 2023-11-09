@@ -54,8 +54,14 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
+if [[ -z "${AWS_ACCESS_KEY_ID:-}" || -z "${AWS_SECRET_ACCESS_KEY:-}" ]]; then
+  echo "!! AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY must be set in the environment." >&2
+  echo "!! Perhaps you meant: gds aws digital-identity-dev -- ${0}" >&2
+  exit 1
+fi
+
 echo "Generating temporary ECR credentials..."
-gds aws di-tools-dev -- aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin "${REPO_URL}"
+aws di-tools-dev -- aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin "${REPO_URL}"
 
 if [[ $BUILD == "1" ]]; then
   echo "Building image..."
@@ -75,7 +81,7 @@ fi
 
 if [[ $TERRAFORM == "1" ]]; then
   echo -n "Getting AWS credentials ... "
-  eval "$(gds aws digital-identity-dev -e)"
+  eval "$(aws digital-identity-dev -e)"
   echo "done!"
 
   echo "Running Terraform..."
