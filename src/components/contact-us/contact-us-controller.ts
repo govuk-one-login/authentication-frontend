@@ -407,6 +407,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
         ticketIdentifier: ticketIdentifier,
         userAgent: req.get("User-Agent"),
         appErrorCode: getAppErrorCode(req.body.appErrorCode),
+        country:req.body.country,
       },
       feedbackContact: req.body.contact === "true",
       questions: questions,

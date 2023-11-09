@@ -225,9 +225,9 @@ export function contactUsService(
       htmlBody.push(`<p>${optionalData.appErrorCode}</p>`);
     }
 
-    if (questions.country) {
-      htmlBody.push(`<span>[ID Check App error code]</span>`);
-      htmlBody.push(`<p>${questions.country}</p>`);
+    if (optionalData.country) {
+      htmlBody.push(`<span>[Which Country?]</span>`);
+      htmlBody.push(`<p>${optionalData.country}</p>`);
     }
 
     htmlBody.push(`<span>[From page]</span>`);
