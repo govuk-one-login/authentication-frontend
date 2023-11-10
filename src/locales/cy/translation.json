@@ -1715,7 +1715,7 @@
       },
       "textMessageInternationNumberConditionalSection": { 
           "heading": "Pa wlad?", 
-          "hintText": "peidiwch â rhoi eich rhif ffôn", 
+          "hintText": "Peidiwch â rhoi eich rhif ffôn", 
           "errorIfBlank": "Rhowch o ba wlad y mae eich rhif ffôn yn dod" 
       },
       "anotherProblem": {
