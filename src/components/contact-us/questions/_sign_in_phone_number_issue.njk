@@ -56,7 +56,10 @@
     charactersOverLimitText: {
         other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translateEnOnly,
         one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translateEnOnly
-    }
+    },
+    errorMessage: {
+        text: errors['additionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+    } if (errors['additionalDescription'])
 }) }}
 
 {{ govukInput({
@@ -64,13 +67,15 @@
         text: 'pages.contactUsQuestions.signInPhoneNumberIssue.section3.header' | translateEnOnly,
         classes: "govuk-label--s"
     },
+    hint: {
+        text: 'pages.contactUsQuestions.signInPhoneNumberIssue.section3.hintText' | translateEnOnly
+    },
     id: "countryPhoneNumberFrom",
     name: "countryPhoneNumberFrom",
     value: countryPhoneNumberFrom,
-    spellcheck: false,
-    hint: {
-        text: 'pages.contactUsQuestions.signInPhoneNumberIssue.section3.hintText' | translateEnOnly
-    }
+    errorMessage: {
+        text: errors['countryPhoneNumberFrom'].text | translateEnOnly
+    } if (errors['countryPhoneNumberFrom'])
 }) }}
 
 {{ govukWarningText({

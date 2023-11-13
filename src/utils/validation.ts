@@ -3,6 +3,7 @@ import {
   HTTP_STATUS_CODES,
   PLACEHOLDER_REPLACEMENTS,
   ZENDESK_FIELD_MAX_LENGTH,
+  ZENDESK_COUNTRY_MAX_LENGTH,
 } from "../app.constants";
 import { Error, PlaceholderReplacement } from "../types";
 
@@ -98,6 +99,7 @@ export function renderBadRequest(
     ...convertStringBooleanPropertiesToJavaScriptBoolean(req.body),
     language: req.i18n.language,
     zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+    zendeskCountryMaxLength: ZENDESK_COUNTRY_MAX_LENGTH,
   };
 
   const params = postValidationLocals

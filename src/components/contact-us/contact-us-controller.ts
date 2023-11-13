@@ -4,6 +4,7 @@ import {
   SUPPORT_TYPE,
   ZENDESK_THEMES,
   ZENDESK_FIELD_MAX_LENGTH,
+  ZENDESK_COUNTRY_MAX_LENGTH,
   CONTACT_US_REFERER_ALLOWLIST,
 } from "../../app.constants";
 import { contactUsService } from "./contact-us-service";
@@ -355,6 +356,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     }),
     pageTitleHeading: pageTitle,
     zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
+    zendeskCountryMaxLength: ZENDESK_COUNTRY_MAX_LENGTH,
     ipnSupport: res.locals.ipnSupport,
     appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
     appSessionId: getAppSessionId(req.query.appSessionId as string),
@@ -566,8 +568,16 @@ export function getQuestionsFromFormTypeForMessageBody(
       ),
     },
     signInPhoneNumberIssue: {
-      moreDetailDescription: req.t(
+      issueDescription: req.t(
         "pages.contactUsQuestions.signInPhoneNumberIssue.section1.header",
+        { lng: "en" }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.signInPhoneNumberIssue.section2.header",
+        { lng: "en" }
+      ),
+      countryPhoneNumberFrom: req.t(
+        "pages.contactUsQuestions.signInPhoneNumberIssue.section3.header",
         { lng: "en" }
       ),
     },

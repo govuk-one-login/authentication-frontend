@@ -302,6 +302,86 @@ describe("Integration:: contact us - public user", () => {
     });
   });
 
+  describe("when a user had a problem with their phone number when creating an account", () => {
+    const phoneNumberIssueData = (
+      issueDescription: string,
+      additionalDescription: string,
+      countryPhoneNumberFrom: string
+    ) => {
+      return {
+        _csrf: token,
+        theme: "account_creation",
+        subtheme: "sign_in_phone_number_issue",
+        issueDescription: issueDescription,
+        additionalDescription: additionalDescription,
+        countryPhoneNumberFrom: countryPhoneNumberFrom,
+        contact: "false",
+        formType: "signInPhoneNumberIssue",
+        referer: "https://gov.uk/sign-in",
+      };
+    };
+
+    const expectValidationError = (
+      data: Record<string, unknown>,
+      errorElement: string,
+      errorDescription: string,
+      done: Mocha.Done
+    ) => {
+      request(app)
+        .post("/contact-us-questions")
+        .type("form")
+        .set("Cookie", cookies)
+        .send(data)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($(errorElement).text()).to.contains(errorDescription);
+        })
+        .expect(400, done);
+    };
+
+    it("should return validation error when user has not entered what they were trying to do", (done) => {
+      const data = phoneNumberIssueData("", "additional detail", "UK");
+      expectValidationError(
+        data,
+        "#issueDescription-error",
+        "Enter what you were trying to do",
+        done
+      );
+    });
+
+    it("should return validation error when user has not entered what happened", (done) => {
+      const data = phoneNumberIssueData("more detail", "", "UK");
+      expectValidationError(
+        data,
+        "#additionalDescription-error",
+        "Enter what happened",
+        done
+      );
+    });
+
+    it("should return validation error when user has not entered country the phone number is from", (done) => {
+      const data = phoneNumberIssueData("more detail", "additional detail", "");
+      expectValidationError(
+        data,
+        "#countryPhoneNumberFrom-error",
+        "Enter which country your phone number is from",
+        done
+      );
+    });
+
+    it("should redirect to success page when valid form submitted", (done) => {
+      nock(zendeskApiUrl).post("/tickets.json").once().reply(200);
+
+      request(app)
+        .post("/contact-us-questions")
+        .type("form")
+        .set("Cookie", cookies)
+        .send(phoneNumberIssueData("detail", "description", "UK"))
+        .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
+        .expect(302, done);
+    });
+  });
+
   it("should redirect to success page when form submitted", (done) => {
     nock(zendeskApiUrl).post("/tickets.json").once().reply(200);
 

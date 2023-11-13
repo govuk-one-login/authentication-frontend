@@ -29,6 +29,7 @@ export interface Questions {
   moreDetailDescription?: string;
   radioButtons?: string;
   serviceTryingToUse?: string;
+  countryPhoneNumberFrom?: string;
 }
 
 export interface ThemeQuestions {
