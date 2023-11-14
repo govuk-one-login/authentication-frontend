@@ -1713,6 +1713,11 @@
         "nameLabel": "Enw (Dewisol)",
         "privacyNote": "Darllenwch ein <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">hysbysiad preifatrwydd</a> am fwy o wybodaeth am sut rydym yn defnyddio eich gwybodaeth bersonol."
       },
+      "textMessageInternationNumberConditionalSection": { 
+          "heading": "Pa wlad?", 
+          "hintText": "Peidiwch â rhoi eich rhif ffôn", 
+          "errorIfBlank": "Rhowch o ba wlad y mae eich rhif ffôn yn dod" 
+      },
       "anotherProblem": {
         "title": "Problem wrth ddefnyddio eich GOV.UK One Login",
         "header": "Problem wrth ddefnyddio eich GOV.UK One Login",

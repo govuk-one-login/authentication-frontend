@@ -241,6 +241,29 @@ describe("Integration:: contact us - public user", () => {
     );
   });
 
+  it("should return validation error when user selected Text message to a phone number from another country and left the Which country field empty", (done) => {
+    request(app)
+      .post("/contact-us-questions?radio_buttons=true")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        theme: "account_creation",
+        subtheme: "invalid_security_code",
+        additionalDescription: "additional",
+        contact: "false",
+        securityCodeSentMethod: "text_message_international_number",
+        country: " ",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#country-error").text()).to.contains(
+          "Enter which country your phone number is from"
+        );
+      })
+      .expect(400, done);
+  });
+
   it("should return validation error when user selected yes to contact for feedback but email is in an invalid format", (done) => {
     const data = {
       _csrf: token,

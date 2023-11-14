@@ -20,6 +20,7 @@ export interface OptionalData {
   ticketIdentifier?: string;
   appSessionId?: string;
   appErrorCode?: string;
+  country?: string;
 }
 
 export interface Questions {
@@ -79,6 +80,7 @@ export interface SmartAgentCustomAttributes {
   "sa-tag-theme"?: string;
   "sa-tag-subtheme"?: string;
   "sa-app-error-code"?: string;
+  "sa-security-mobile-country"?: string;
 }
 
 export interface SmartAgentTicket {

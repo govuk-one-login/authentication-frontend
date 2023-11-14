@@ -225,6 +225,11 @@ export function contactUsService(
       htmlBody.push(`<p>${optionalData.appErrorCode}</p>`);
     }
 
+    if (optionalData.country) {
+      htmlBody.push(`<span>[Which Country?]</span>`);
+      htmlBody.push(`<p>${optionalData.country}</p>`);
+    }
+
     htmlBody.push(`<span>[From page]</span>`);
     if (referer) {
       htmlBody.push(`<p>${referer}</p>`);

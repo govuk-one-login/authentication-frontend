@@ -165,6 +165,9 @@ export function contactUsServiceSmartAgent(
     customAttributes["sa-security-code-sent-method"] =
       prepareSecurityCodeSendMethodTitle(contactForm.securityCodeSentMethod);
 
+    customAttributes["sa-security-mobile-country"] =
+      contactForm.optionalData.country;
+
     customAttributes["sa-tag-secondary-reason-user-selection"] =
       contactForm.themeQuestions.subthemeQuestion;
 
