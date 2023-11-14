@@ -1,7 +1,11 @@
 import { body, check } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
-import { ZENDESK_FIELD_MAX_LENGTH, ZENDESK_THEMES } from "../../app.constants";
+import {
+  ZENDESK_FIELD_MAX_LENGTH,
+  ZENDESK_THEMES,
+  ZENDESK_COUNTRY_MAX_LENGTH,
+} from "../../app.constants";
 import { supportWelshInSupportForms } from "../../config";
 
 export function setLanguageToReflectSupportForWelsh(
@@ -150,6 +154,24 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
         );
       }),
+    body("countryPhoneNumberFrom")
+      .optional()
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.signInPhoneNumberIssue.section3.ifBlankErrorMessage",
+          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+        );
+      }),
+    body("countryPhoneNumberFrom")
+      .optional()
+      .isLength({ max: ZENDESK_COUNTRY_MAX_LENGTH })
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.signInPhoneNumberIssue.section3.ifTooLongErrorMessage",
+          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+        );
+      }),
     validateBodyMiddleware("contact-us/questions/index.njk"),
   ];
 }
@@ -223,6 +245,9 @@ export function getErrorMessageForAccountCreationIssueDescription(
   if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
     return "pages.contactUsQuestions.anotherProblem.section1.errorMessage";
   }
+  if (subtheme === ZENDESK_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE) {
+    return "pages.contactUsQuestions.signInPhoneNumberIssue.section1.errorMessage";
+  }
 }
 
 export function getErrorMessageForSigningInIssueDescription(
@@ -294,6 +319,9 @@ export function getLengthExceededErrorMessageForAccountCreationIssueDescription(
   if (subtheme === ZENDESK_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.anythingElseTooLongMessage";
   }
+  if (subtheme === ZENDESK_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
+  }
 }
 
 export function getLengthExceededErrorMessageForIdCheckAppIssueDescription(
@@ -364,5 +392,8 @@ export function getErrorMessageForAdditionalDescription(
     subtheme === ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM
   ) {
     return "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.section2.errorMessage";
+  }
+  if (subtheme === ZENDESK_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE) {
+    return "pages.contactUsQuestions.signInPhoneNumberIssue.section2.errorMessage";
   }
 }

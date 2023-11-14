@@ -29,6 +29,7 @@ export interface Questions {
   moreDetailDescription?: string;
   radioButtons?: string;
   serviceTryingToUse?: string;
+  countryPhoneNumberFrom?: string;
 }
 
 export interface ThemeQuestions {
@@ -42,6 +43,7 @@ export interface Descriptions {
   optionalDescription?: string;
   moreDetailDescription?: string;
   serviceTryingToUse?: string;
+  countryPhoneNumberFrom?: string;
 }
 
 export interface Themes {

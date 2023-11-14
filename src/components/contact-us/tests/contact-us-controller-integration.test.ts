@@ -49,6 +49,25 @@ describe("Integration:: contact us - public user", () => {
     app = undefined;
   });
 
+  const expectValidationErrorOnPost = (
+    url: string,
+    data: Record<string, unknown>,
+    errorElement: string,
+    errorDescription: string,
+    done: Mocha.Done
+  ) => {
+    request(app)
+      .post(url)
+      .type("form")
+      .set("Cookie", cookies)
+      .send(data)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($(errorElement).text()).to.contains(errorDescription);
+      })
+      .expect(400, done);
+  };
+
   it("should return contact us page", (done) => {
     request(app)
       .get(PATH_NAMES.CONTACT_US)
@@ -175,130 +194,171 @@ describe("Integration:: contact us - public user", () => {
   });
 
   it("should return validation error when no radio boxes are selected on the signing in contact-us-further-information page", (done) => {
-    request(app)
-      .post("/contact-us-further-information")
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        theme: "signing_in",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#subtheme-error").text()).to.contains(
-          "Select the problem you had when signing in to your GOV.UK One Login"
-        );
-      })
-      .expect(400, done);
+    const data = {
+      _csrf: token,
+      theme: "signing_in",
+    };
+    expectValidationErrorOnPost(
+      "/contact-us-further-information",
+      data,
+      "#subtheme-error",
+      "Select the problem you had when signing in to your GOV.UK One Login",
+      done
+    );
   });
 
   it("should return validation error when issue description are not entered on the contact-us-questions page", (done) => {
-    request(app)
-      .post("/contact-us-questions")
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        issueDescription: "",
-        theme: "signing_in",
-        subtheme: "technical_error",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#issueDescription-error").text()).to.contains(
-          "Enter what you were trying to do"
-        );
-      })
-      .expect(400, done);
+    const data = {
+      _csrf: token,
+      issueDescription: "",
+      theme: "signing_in",
+      subtheme: "technical_error",
+    };
+    expectValidationErrorOnPost(
+      "/contact-us-questions",
+      data,
+      "#issueDescription-error",
+      "Enter what you were trying to do",
+      done
+    );
   });
 
   it("should return validation error when user selected yes to contact for feedback and left email field empty", (done) => {
-    request(app)
-      .post("/contact-us-questions")
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        theme: "signing_in",
-        subtheme: "something_else",
-        issueDescription: "issue",
-        additionalDescription: "additional",
-        contact: "true",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#email-error").text()).to.contains(
-          "Enter your email address"
-        );
-      })
-      .expect(400, done);
+    const data = {
+      _csrf: token,
+      theme: "signing_in",
+      subtheme: "something_else",
+      issueDescription: "issue",
+      additionalDescription: "additional",
+      contact: "true",
+    };
+    expectValidationErrorOnPost(
+      "/contact-us-questions",
+      data,
+      "#email-error",
+      "Enter your email address",
+      done
+    );
   });
 
   it("should return validation error when user selected yes to contact for feedback but email is in an invalid format", (done) => {
-    request(app)
-      .post("/contact-us-questions")
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        theme: "signing_in",
-        subtheme: "something_else",
-        issueDescription: "issue",
-        additionalDescription: "additional",
-        contact: "true",
-        email: "test",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#email-error").text()).to.contains(
-          "Enter an email address in the correct format, like name@example.com"
-        );
-      })
-      .expect(400, done);
+    const data = {
+      _csrf: token,
+      theme: "signing_in",
+      subtheme: "something_else",
+      issueDescription: "issue",
+      additionalDescription: "additional",
+      contact: "true",
+      email: "test",
+    };
+    expectValidationErrorOnPost(
+      "/contact-us-questions",
+      data,
+      "#email-error",
+      "Enter an email address in the correct format, like name@example.com",
+      done
+    );
   });
 
   it("should return validation error when user has not selected how the security code was sent whilst creating an account", (done) => {
-    request(app)
-      .post("/contact-us-questions?radio_buttons=true")
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        theme: "account_creation",
-        subtheme: "no_security_code",
-        moreDetailDescription: "issue",
-        formType: "noSecurityCode",
-        contact: "false",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#securityCodeSentMethod-error").text()).to.contains(
-          "Select whether you expected to get the code by email, text message or authenticator app"
-        );
-      })
-      .expect(400, done);
+    const data = {
+      _csrf: token,
+      theme: "account_creation",
+      subtheme: "no_security_code",
+      moreDetailDescription: "issue",
+      formType: "noSecurityCode",
+      contact: "false",
+    };
+    expectValidationErrorOnPost(
+      "/contact-us-questions?radio_buttons=true",
+      data,
+      "#securityCodeSentMethod-error",
+      "Select whether you expected to get the code by email, text message or authenticator app",
+      done
+    );
   });
 
   describe("when a user had a problem taking a photo of your identity document using the GOV.UK ID Check app", () => {
     it("should return validation error when user has not selected which identity document they were using", (done) => {
+      const data = {
+        _csrf: token,
+        theme: "id_check_app",
+        subtheme: "taking_photo_of_id_problem",
+        moreDetailDescription: "There was a problem",
+        contact: "false",
+      };
+      expectValidationErrorOnPost(
+        "/contact-us-questions?radio_buttons=true",
+        data,
+        "#identityDocumentUsed-error",
+        "Select which identity document you were using",
+        done
+      );
+    });
+  });
+
+  describe("when a user had a problem with their phone number when creating an account", () => {
+    const phoneNumberIssueData = (
+      issueDescription: string,
+      additionalDescription: string,
+      countryPhoneNumberFrom: string
+    ) => {
+      return {
+        _csrf: token,
+        theme: "account_creation",
+        subtheme: "sign_in_phone_number_issue",
+        issueDescription: issueDescription,
+        additionalDescription: additionalDescription,
+        countryPhoneNumberFrom: countryPhoneNumberFrom,
+        contact: "false",
+        formType: "signInPhoneNumberIssue",
+        referer: "https://gov.uk/sign-in",
+      };
+    };
+
+    it("should return validation error when user has not entered what they were trying to do", (done) => {
+      const data = phoneNumberIssueData("", "additional detail", "UK");
+      expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#issueDescription-error",
+        "Enter what you were trying to do",
+        done
+      );
+    });
+
+    it("should return validation error when user has not entered what happened", (done) => {
+      const data = phoneNumberIssueData("more detail", "", "UK");
+      expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#additionalDescription-error",
+        "Enter what happened",
+        done
+      );
+    });
+
+    it("should return validation error when user has not entered country the phone number is from", (done) => {
+      const data = phoneNumberIssueData("more detail", "additional detail", "");
+      expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#countryPhoneNumberFrom-error",
+        "Enter which country your phone number is from",
+        done
+      );
+    });
+
+    it("should redirect to success page when valid form submitted", (done) => {
+      nock(zendeskApiUrl).post("/tickets.json").once().reply(200);
+
       request(app)
-        .post("/contact-us-questions?radio_buttons=true")
+        .post("/contact-us-questions")
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          theme: "id_check_app",
-          subtheme: "taking_photo_of_id_problem",
-          moreDetailDescription: "There was a problem",
-          contact: "false",
-        })
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($("#identityDocumentUsed-error").text()).to.contains(
-            "Select which identity document you were using"
-          );
-        })
-        .expect(400, done);
+        .send(phoneNumberIssueData("detail", "description", "UK"))
+        .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
+        .expect(302, done);
     });
   });
 

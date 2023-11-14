@@ -18,13 +18,10 @@
       text: 'pages.contactUsQuestions.signInPhoneNumberIssue.section1.header' | translateEnOnly,
       classes: "govuk-label--s"
     },
-    hint: {
-        text: 'pages.contactUsQuestions.signInPhoneNumberIssue.section1.paragraph1' | translateEnOnly
-      },
-    id: "moreDetailDescription",
-    name: "moreDetailDescription",
+    id: "issueDescription",
+    name: "issueDescription",
     maxlength: zendeskFieldMaxLength,
-    value: moreDetailDescription,
+    value: issueDescription,
     charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translateEnOnly,
     charactersUnderLimitText: {
         other: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.other' | translateEnOnly,
@@ -35,12 +32,54 @@
         one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translateEnOnly
     },
     errorMessage: {
-        text: errors['moreDetailDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
-    } if (errors['moreDetailDescription'])
+        text: errors['issueDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+    } if (errors['issueDescription'])
+}) }}
+
+{{ govukCharacterCount({
+    label: {
+      text: 'pages.contactUsQuestions.signInPhoneNumberIssue.section2.header' | translateEnOnly,
+      classes: "govuk-label--s"
+    },
+    hint: {
+        text: 'pages.contactUsQuestions.signInPhoneNumberIssue.section2.hintText' | translateEnOnly
+      },
+    id: "additionalDescription",
+    name: "additionalDescription",
+    maxlength: zendeskFieldMaxLength,
+    value: additionalDescription,
+    charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translateEnOnly,
+    charactersUnderLimitText: {
+        other: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.other' | translateEnOnly,
+        one: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.one' | translateEnOnly
+    },
+    charactersOverLimitText: {
+        other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translateEnOnly,
+        one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translateEnOnly
+    },
+    errorMessage: {
+        text: errors['additionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+    } if (errors['additionalDescription'])
+}) }}
+
+{{ govukInput({
+    label: {
+        text: 'pages.contactUsQuestions.signInPhoneNumberIssue.section3.header' | translateEnOnly,
+        classes: "govuk-label--s"
+    },
+    hint: {
+        text: 'pages.contactUsQuestions.signInPhoneNumberIssue.section3.hintText' | translateEnOnly
+    },
+    id: "countryPhoneNumberFrom",
+    name: "countryPhoneNumberFrom",
+    value: countryPhoneNumberFrom,
+    errorMessage: {
+        text: errors['countryPhoneNumberFrom'].text | translateEnOnly
+    } if (errors['countryPhoneNumberFrom'])
 }) }}
 
 {{ govukWarningText({
-    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translateEnOnly,
+    text:'pages.contactUsQuestions.signInPhoneNumberIssue.personalInformation.paragraph' | translateEnOnly,
     iconFallbackText: "Warning"
 }) }}
 

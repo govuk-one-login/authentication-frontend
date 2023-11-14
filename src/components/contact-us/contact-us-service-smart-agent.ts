@@ -123,6 +123,11 @@ export function contactUsServiceSmartAgent(
       message.push(`<p>${descriptions.moreDetailDescription}</p>`);
     }
 
+    if (descriptions.countryPhoneNumberFrom) {
+      message.push(`<h3>${questions.countryPhoneNumberFrom}</h3>`);
+      message.push(`<p>${descriptions.countryPhoneNumberFrom}</p>`);
+    }
+
     return message.join("");
   }
 

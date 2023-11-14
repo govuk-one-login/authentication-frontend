@@ -171,11 +171,16 @@ export const ZENDESK_THEMES = {
 };
 
 export const ZENDESK_FIELD_MAX_LENGTH = 1200;
+export const ZENDESK_COUNTRY_MAX_LENGTH = 256;
 
 export const PLACEHOLDER_REPLACEMENTS = [
   {
     search: "[maximumCharacters]",
     replacement: ZENDESK_FIELD_MAX_LENGTH.toLocaleString(),
+  },
+  {
+    search: "[maximumCountryCharacters]",
+    replacement: ZENDESK_COUNTRY_MAX_LENGTH.toLocaleString(),
   },
 ];
 

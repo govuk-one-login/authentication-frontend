@@ -208,6 +208,11 @@ export function contactUsService(
       htmlBody.push(`<p>${descriptions.serviceTryingToUse}</p>`);
     }
 
+    if (descriptions.countryPhoneNumberFrom) {
+      htmlBody.push(`<span>[${questions.countryPhoneNumberFrom}]</span>`);
+      htmlBody.push(`<p>${descriptions.countryPhoneNumberFrom}</p>`);
+    }
+
     htmlBody.push(`<span>[Ticket Identifier]</span>`);
     if (optionalData.ticketIdentifier) {
       htmlBody.push(`<p>${optionalData.ticketIdentifier}</p>`);
