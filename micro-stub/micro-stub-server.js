@@ -7,6 +7,11 @@ const querystring = require("querystring");
 const { randomBytes } = require("crypto");
 const app = express();
 const port = process.env.PORT;
+const path = require("path");
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'))
+})
 
 app.get("/authorize", (req, res) => {
   const authRequest = getAuthorizeRequest(req.query);
