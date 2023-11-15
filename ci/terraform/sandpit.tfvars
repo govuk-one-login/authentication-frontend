@@ -17,8 +17,6 @@ support_international_numbers = "1"
 frontend_task_definition_cpu     = 256
 frontend_task_definition_memory  = 512
 frontend_auto_scaling_v2_enabled = true
-frontend_auto_scaling_min_count  = 1
-frontend_auto_scaling_max_count  = 2
 
 support_smart_agent                     = "1"
 support_welsh_language_in_support_forms = "1"
