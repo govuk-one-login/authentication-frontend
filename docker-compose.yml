@@ -3,6 +3,7 @@ version: '3.8'
 services:
   di-auth-frontend:
     container_name: di-authentication-frontend_di-auth-frontend
+    platform: linux/arm64/v8
     build:
       context: .
       dockerfile: local.Dockerfile
@@ -43,6 +44,7 @@ services:
           - ./micro-stub:/app
 
   di-auth-stub-micro-server:
+    platform: linux/arm64/v8
     build:
       context: ./micro-stub
     depends_on:
