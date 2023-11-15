@@ -15,32 +15,6 @@
 
 {{ govukCharacterCount({
     label: {
-      text: 'pages.contactUsQuestions.accountNotFound.section1.header' | translateEnOnly,
-      classes: "govuk-label--s"
-    },
-    hint: {
-        text: 'pages.contactUsQuestions.accountNotFound.section1.paragraph1' | translateEnOnly
-      },
-    id: "issueDescription",
-    name: "issueDescription",
-    maxlength: zendeskFieldMaxLength,
-    value: issueDescription,
-    charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translateEnOnly,
-    charactersUnderLimitText: {
-        other: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.other' | translateEnOnly,
-        one: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.one' | translateEnOnly
-    },
-    charactersOverLimitText: {
-        other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translateEnOnly,
-        one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translateEnOnly
-    },
-    errorMessage: {
-        text: errors['issueDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
-    } if (errors['issueDescription'])
-}) }}
-
-{{ govukCharacterCount({
-    label: {
       text: 'pages.contactUsQuestions.accountNotFound.section2.header' | translateEnOnly,
       classes: "govuk-label--s"
     },
@@ -64,6 +38,8 @@
         text: errors['optionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['optionalDescription'])
 }) }}
+
+{% include "contact-us/questions/_service-trying-to-use.njk" %}
 
 {{ govukWarningText({
     text:'pages.contactUsQuestions.personalInformation.paragraph1' | translateEnOnly,

@@ -504,6 +504,10 @@ export function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.accountNotFound.section2.header",
         { lng: "en" }
       ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
     },
     anotherProblem: {
       issueDescription: req.t(
@@ -514,6 +518,10 @@ export function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.anotherProblem.section2.header",
         { lng: "en" }
       ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
     },
     authenticatorApp: {
       issueDescription: req.t(
@@ -522,6 +530,10 @@ export function getQuestionsFromFormTypeForMessageBody(
       ),
       additionalDescription: req.t(
         "pages.contactUsQuestions.authenticatorApp.section2.header",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
         { lng: "en" }
       ),
     },
@@ -540,6 +552,10 @@ export function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.forgottenPassword.section1.header",
         { lng: "en" }
       ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
     },
     invalidSecurityCode: {
       moreDetailDescription: req.t(
@@ -548,6 +564,10 @@ export function getQuestionsFromFormTypeForMessageBody(
       ),
       radioButtons: req.t(
         "pages.contactUsQuestions.invalidSecurityCode.section1.header",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
         { lng: "en" }
       ),
     },
@@ -560,6 +580,10 @@ export function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.noPhoneNumberAccess.section1.header",
         { lng: "en" }
       ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
     },
     noSecurityCode: {
       moreDetailDescription: req.t(
@@ -568,6 +592,10 @@ export function getQuestionsFromFormTypeForMessageBody(
       ),
       radioButtons: req.t(
         "pages.contactUsQuestions.noSecurityCode.section1.header",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
         { lng: "en" }
       ),
     },
@@ -582,6 +610,10 @@ export function getQuestionsFromFormTypeForMessageBody(
       ),
       countryPhoneNumberFrom: req.t(
         "pages.contactUsQuestions.signInPhoneNumberIssue.section3.header",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
         { lng: "en" }
       ),
     },
