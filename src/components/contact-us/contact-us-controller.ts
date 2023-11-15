@@ -15,6 +15,7 @@ import { logger } from "../../utils/logger";
 import {
   getClientNameThatDirectsAllContactFormSubmissionsToSmartAgent,
   getServiceDomain,
+  getSupportLinkUrl,
 } from "../../config";
 import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
 
@@ -114,15 +115,57 @@ export function contactUsGet(req: Request, res: Response): void {
     }
   }
 
+  const supportLinkURL = getSupportLinkUrl();
+
   const options = {
     referer: referer,
     fromURL: fromURL,
+    hrefBack: prepareBackLink(req, supportLinkURL, serviceDomain),
     ...(getAppSessionId(req.query.appSessionId as string) && {
       appSessionId: getAppSessionId(req.query.appSessionId as string),
     }),
   };
 
   return res.render("contact-us/index-public-contact-us.njk", options);
+}
+
+export function prepareBackLink(
+  req: Request,
+  supportLinkURL: string,
+  serviceDomain: string
+) {
+  let hrefBack: string;
+
+  if (req.path.endsWith(PATH_NAMES.CONTACT_US)) {
+    hrefBack = supportLinkURL;
+  } else if (req.path.endsWith(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)) {
+    hrefBack = PATH_NAMES.CONTACT_US;
+  } else if (req.path.endsWith(PATH_NAMES.CONTACT_US_QUESTIONS)) {
+    if (req.query.fromURL && req.query.theme === ZENDESK_THEMES.ID_CHECK_APP) {
+      hrefBack = supportLinkURL;
+    } else {
+      hrefBack = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
+    }
+  } else {
+    hrefBack = PATH_NAMES.CONTACT_US;
+  }
+
+  const queryParams = new URLSearchParams();
+
+  if (validateReferer(req.query.fromURL as string, serviceDomain)) {
+    queryParams.append("fromURL", req.query.fromURL as string);
+  }
+
+  if (
+    req.query.theme &&
+    Object.values(ZENDESK_THEMES).includes(req.query.theme as string)
+  ) {
+    queryParams.append("theme", req.query.theme as string);
+  }
+
+  return queryParams.toString().length > 0
+    ? hrefBack + "?" + queryParams.toString()
+    : hrefBack;
 }
 
 export function contactUsGetFromTriagePage(req: Request, res: Response): void {
@@ -261,12 +304,12 @@ export function contactUsFormPost(req: Request, res: Response): void {
 }
 
 export function furtherInformationGet(req: Request, res: Response): void {
+  const supportLinkURL = getSupportLinkUrl();
+  const backLinkHref = prepareBackLink(req, supportLinkURL, serviceDomain);
+
   if (!req.query.theme) {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
-
-  const backLinkHref =
-    validateReferer(req.get("referer"), serviceDomain) || PATH_NAMES.CONTACT_US;
 
   if (isAppJourney(req.query.appSessionId as string)) {
     return res.render("contact-us/further-information/index.njk", {
@@ -328,6 +371,8 @@ export function setContactFormSubmissionUrlBasedOnClientName(
 }
 
 export function contactUsQuestionsGet(req: Request, res: Response): void {
+  const supportLinkURL = getSupportLinkUrl();
+
   const formSubmissionUrl = setContactFormSubmissionUrlBasedOnClientName(
     req?.session?.client?.name,
     getClientNameThatDirectsAllContactFormSubmissionsToSmartAgent()

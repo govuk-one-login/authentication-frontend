@@ -16,6 +16,7 @@ import {
   contactUsGetFromTriagePage,
   setContactFormSubmissionUrlBasedOnClientName,
   validateReferer,
+  prepareBackLink,
 } from "../contact-us-controller";
 import {
   PATH_NAMES,
@@ -24,6 +25,7 @@ import {
   CONTACT_US_REFERER_ALLOWLIST,
 } from "../../../app.constants";
 import { RequestGet, ResponseRedirect } from "../../../types";
+import { getServiceDomain, getSupportLinkUrl } from "../../../config";
 
 describe("contact us controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -35,6 +37,7 @@ describe("contact us controller", () => {
     sandbox = sinon.createSandbox();
 
     req = {
+      path: PATH_NAMES.CONTACT_US,
       body: {},
       query: {},
       headers: {},
@@ -396,6 +399,114 @@ describe("appErrorCode and appSessionId query parameters", () => {
           encodedItem
         );
       });
+    });
+  });
+});
+
+describe("prepareBackLink", () => {
+  let sandbox: sinon.SinonSandbox;
+  let req: Partial<Request>;
+  let res: Partial<Response>;
+  let supportLinkURL: string;
+  let serviceDomain: string;
+
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+
+    serviceDomain = getServiceDomain();
+
+    req = {
+      url: "",
+      path: "",
+      body: {},
+      query: {},
+      headers: {},
+      get: sandbox.fake() as unknown as RequestGet,
+    };
+    res = {
+      render: sandbox.fake(),
+      redirect: sandbox.fake() as unknown as ResponseRedirect,
+      locals: {},
+    };
+
+    supportLinkURL = getSupportLinkUrl();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
+
+  it("should return the supportLinkURL when the req.path ends with the CONTACT_US path", () => {
+    req.path = PATH_NAMES.CONTACT_US;
+    expect(
+      prepareBackLink(req as Request, supportLinkURL, serviceDomain)
+    ).to.equal(supportLinkURL);
+  });
+
+  it("should return the CONTACT_US path when the req.path ends with the CONTACT_US_FURTHER_INFORMATION path", () => {
+    req.path = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
+    expect(
+      prepareBackLink(req as Request, supportLinkURL, serviceDomain)
+    ).to.equal(PATH_NAMES.CONTACT_US);
+  });
+
+  it("should return the CONTACT_US_FURTHER_INFORMATION path when the req.path ends with the CONTACT_US_QUESTIONS path", () => {
+    req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
+    expect(
+      prepareBackLink(req as Request, supportLinkURL, serviceDomain)
+    ).to.equal(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION);
+  });
+
+  it("should return the supportLinkURL with a fromURL parameter when one is included in the req.url", () => {
+    req.query.fromURL = `https://${getServiceDomain()}${PATH_NAMES.CONTACT_US}`;
+    const fromURL =
+      "?fromURL=" +
+      encodeURIComponent(
+        `https://${getServiceDomain()}${PATH_NAMES.CONTACT_US}`
+      );
+
+    expect(
+      prepareBackLink(req as Request, supportLinkURL, serviceDomain)
+    ).to.equal(supportLinkURL + fromURL);
+  });
+
+  it("should omit the fromURL from the backlink where the one included in req.url is not valid", () => {
+    req.url = `https://${getServiceDomain()}${
+      PATH_NAMES.CONTACT_US
+    }?fromURL=${encodeURIComponent("https://www.example.com")}`;
+
+    expect(
+      prepareBackLink(req as Request, supportLinkURL, serviceDomain)
+    ).to.equal(supportLinkURL);
+  });
+
+  it("should include the `theme` where the theme is valid", () => {
+    req.query.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
+    req.url = `https://${getServiceDomain()}${PATH_NAMES.CONTACT_US}?theme=${
+      ZENDESK_THEMES.ACCOUNT_CREATION
+    }`;
+
+    const theme = `?theme=${ZENDESK_THEMES.ACCOUNT_CREATION}`;
+
+    expect(
+      prepareBackLink(req as Request, supportLinkURL, serviceDomain)
+    ).to.equal(supportLinkURL + theme);
+  });
+
+  describe("dynamic back links on CONTACT_US_FURTHER_INFORMATION", () => {
+    it("should return the CONTACT_US path when the", () => {
+      req.path = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
+      expect(
+        prepareBackLink(req as Request, supportLinkURL, serviceDomain)
+      ).to.equal(PATH_NAMES.CONTACT_US);
+    });
+    it("should return the `supportLinkURL` if there is a fromURL and the theme is ID_CHECK_APP", () => {
+      req.path = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
+      req.query.fromURL = PATH_NAMES.DOC_CHECKING_APP;
+      req.query.theme = ZENDESK_THEMES.ID_CHECK_APP;
+      expect(
+        prepareBackLink(req as Request, supportLinkURL, serviceDomain)
+      ).to.equal(`${supportLinkURL}?theme=${ZENDESK_THEMES.ID_CHECK_APP}`);
     });
   });
 });
