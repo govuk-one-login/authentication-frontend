@@ -1,26 +1,7 @@
-data "aws_secretsmanager_secret" "dynatrace_paas_token" {
-  name = "DynatracePaaSToken"
+data "aws_secretsmanager_secret" "dynatrace_secrets" {
+  arn = var.environment == "production" ? "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables" : "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
 }
 
-data "aws_iam_policy_document" "dynatrace_paas_token" {
-  statement {
-    sid    = "AllowGetSecret"
-    effect = "Allow"
-
-    actions = [
-      "secretsmanager:GetSecretValue",
-    ]
-
-    resources = [
-      data.aws_secretsmanager_secret.dynatrace_paas_token.arn,
-    ]
-  }
-}
-
-resource "aws_iam_policy" "dynatrace_paas_token" {
-  policy      = data.aws_iam_policy_document.dynatrace_paas_token.json
-  path        = "/${var.environment}/secretsmanager/dynatrace_paas_token/"
-  name_prefix = "dynatrace_paas_token"
-
-  tags = local.default_tags
+data "aws_secretsmanager_secret_version" "dynatrace_secrets" {
+  secret_id = data.aws_secretsmanager_secret.dynatrace_secrets.id
 }
