@@ -1,6 +1,7 @@
 import helmet from "helmet";
 import e, { Request, Response } from "express";
 import { supportFrameAncestorsFormActionsCspHeaders } from "../config";
+import { PATH_NAMES } from "../app.constants";
 // Helmet does not export the config type - This is the way the recommend getting it on GitHub.
 export function helmetConfiguration(
   req: Request
@@ -65,7 +66,14 @@ export function helmetConfiguration(
     expectCt: false,
   };
   if (supportFrameAncestorsFormActionsCspHeaders()) {
-    if (req.url == "/enter-code") {
+    if (
+      [
+        PATH_NAMES.ENTER_MFA,
+        PATH_NAMES.ENTER_PASSWORD,
+        PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL,
+        PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS,
+      ].includes(req.url)
+    ) {
       helmetConfig.contentSecurityPolicy.directives["frame-ancestors"] = [
         "'self'",
         "https://*.account.gov.uk",
