@@ -1,28 +1,28 @@
 #!/bin/sh
 set -euo
 
-if [ -z "$BASIC_AUTH_USERNAME" ]; then
+if [ -z "${BASIC_AUTH_USERNAME}" ]; then
   echo >&2 "BASIC_AUTH_USERNAME must be set"
   exit 1
 fi
 
-if [ -z "$BASIC_AUTH_PASSWORD" ]; then
+if [ -z "${BASIC_AUTH_PASSWORD}" ]; then
   echo >&2 "BASIC_AUTH_PASSWORD must be set"
   exit 1
 fi
 
-if [ -z "$PROXY_PASS" ]; then
+if [ -z "${PROXY_PASS}" ]; then
   echo >&2 "PROXY_PASS must be set"
   exit 1
 fi
 
 touch /etc/nginx/allow-list.conf
-if [ -n "$IP_ALLOW_LIST" ]; then
+if [ -n "${IP_ALLOW_LIST:-}" ]; then
   echo "${IP_ALLOW_LIST}" | jq -r '"allow " + .[] + ";"' >>/etc/nginx/allow-list.conf
 fi
 
 touch /etc/nginx/trusted-proxies.conf
-if [ -n "$TRUSTED_PROXIES" ]; then
+if [ -n "${TRUSTED_PROXIES:-}" ]; then
   echo "${TRUSTED_PROXIES}" | jq -r '"set_real_ip_from " + .[] + ";"' >>/etc/nginx/trusted-proxies.conf
 fi
 
