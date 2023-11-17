@@ -2,6 +2,17 @@
 version: '3.8'
 
 services:
+  basic-auth-sidecar:
+    build:
+      context: basic-auth-sidecar
+    ports:
+      - "3001:8080"
+    networks:
+      ingress:
+    environment:
+      BASIC_AUTH_USERNAME: local-user
+      BASIC_AUTH_PASSWORD: local-pass
+      PROXY_PASS: http://di-auth-frontend:3000
   di-auth-frontend:
     container_name: di-authentication-frontend_di-auth-frontend
     build:
@@ -25,6 +36,7 @@ services:
       - SUPPORT_ACCOUNT_RECOVERY=${SUPPORT_ACCOUNT_RECOVERY}
     restart: on-failure
     networks:
+      - ingress
       - di-net
 
   redis:
@@ -77,3 +89,4 @@ services:
 
 networks:
   di-net:
+  ingress:
