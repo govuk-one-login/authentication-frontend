@@ -43,6 +43,9 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
         excluded_rule {
           name = "GenericRFI_BODY"
         }
+        excluded_rule {
+          name = "SizeRestrictions_QUERYSTRING"
+        }
         dynamic "excluded_rule" {
           for_each = var.environment != "production" ? ["1"] : []
           content {
@@ -82,6 +85,86 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafBaduleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "default_query_param_limit"
+    priority = 4
+
+    action {
+      block {}
+    }
+
+    statement {
+      and_statement {
+        statement {
+          size_constraint_statement {
+            comparison_operator = "GT"
+            size                = 2048
+            field_to_match {
+              query_string {}
+            }
+            text_transformation {
+              priority = 0
+              type     = "NONE"
+            }
+          }
+        }
+
+        statement {
+          not_statement {
+            statement {
+              byte_match_statement {
+                positional_constraint = "EXACTLY"
+                search_string         = "/authorize"
+                field_to_match {
+                  uri_path {}
+                }
+                text_transformation {
+                  priority = 0
+                  type     = "LOWERCASE"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafQueryParamSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "extended_query_param_limit"
+    priority = 5
+
+    action {
+      block {}
+    }
+
+    statement {
+      size_constraint_statement {
+        comparison_operator = "GT"
+        size                = 4096
+        field_to_match {
+          query_string {}
+        }
+        text_transformation {
+          priority = 0
+          type     = "NONE"
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafAuthorizeQueryParamSet"
       sampled_requests_enabled   = true
     }
   }
