@@ -494,6 +494,10 @@ export function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.accountCreationProblem.section1.paragraph1",
         { lng: "en" }
       ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
     },
     accountNotFound: {
       issueDescription: req.t(
@@ -622,6 +626,10 @@ export function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.signignInProblem.section1.header",
         { lng: "en" }
       ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
     },
     suggestionFeedback: {
       issueDescription: req.t(
@@ -640,6 +648,10 @@ export function getQuestionsFromFormTypeForMessageBody(
       ),
       optionalDescription: req.t(
         "pages.contactUsQuestions.technicalError.section3.header",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
         { lng: "en" }
       ),
     },
