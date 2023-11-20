@@ -42,6 +42,7 @@ function createConsentCookie(
   res.cookie(COOKIES_PREFERENCES_SET, consentCookieValue.value, {
     expires: consentCookieValue.expiry,
     secure: true,
+    httpOnly: true,
     domain: res.locals.analyticsCookieDomain,
   });
 }
