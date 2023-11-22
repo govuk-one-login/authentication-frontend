@@ -16,10 +16,12 @@
             "/node_modules/@types"
         ]
     },
-    "include": ["src/**/*.ts"],
+    "include": ["src/**/*.ts", "src/**/*.mjs"],
+
     "exclude": [
-      "test",
+        "test",
         "coverage",
-        "src/components/**/tests"
+        "src/components/**/tests",
+        "src/assets/javascript/tests"
     ]
 }

@@ -113,8 +113,15 @@
 
 {% block bodyEnd %}
     {% block scripts %}{% endblock %}
-  <script type="text/javascript" src="/public/scripts/cookies.js"></script>
-  <script type="text/javascript"  src="/public/scripts/application.js"></script>
+  <script type="text/javascript"  src="/public/scripts/phonenumber.js"></script>
+  <script type="text/javascript"  src="/public/scripts/radiobutton.js"></script>
+  <script type="text/javascript"  src="/public/scripts/showpassword.js"></script>
+  <script type="text/javascript"  src="/public/scripts/analytics.js"></script>
   <script type="text/javascript"  src="/public/scripts/all.js"></script>
-  <script type="text/javascript" nonce='{{scriptNonce}}'>window.GOVSignIn.appInit("{{gtmId}}", "{{ analyticsCookieDomain }}")</script>
+  <script type="module" src="/public/scripts/application-module.js">
+    applicationModule.init({
+        uaTrackingId: "{{gtmId}}",
+        analyticsCookieDomain: "{{analyticsCookieDomain}}"
+    });
+  </script>
 {% endblock %}
