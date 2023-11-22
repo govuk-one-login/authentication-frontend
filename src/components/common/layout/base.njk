@@ -113,10 +113,10 @@
 
 {% block bodyEnd %}
     {% block scripts %}{% endblock %}
-  <script type="text/javascript"  src="/public/scripts/phonenumber.mjs"></script>
-  <script type="text/javascript"  src="/public/scripts/radiobutton.mjs"></script>
-  <script type="text/javascript"  src="/public/scripts/showpassword.mjs"></script>
-  <script type="text/javascript"  src="/public/scripts/analytics.mjs"></script>
+  <script type="module"  src="/public/scripts/phonenumber.mjs"></script>
+  <script type="module"  src="/public/scripts/radiobutton.mjs"></script>
+  <script type="module"  src="/public/scripts/showpassword.mjs"></script>
+  <script type="module"  src="/public/scripts/analytics.mjs"></script>
   <script type="text/javascript"  src="/public/scripts/all.js"></script>
   <script type="module" src="/public/scripts/application-module.mjs">
     applicationModule.init({
@@ -124,5 +124,4 @@
         analyticsCookieDomain: "{{analyticsCookieDomain}}"
     });
   </script>
-
 {% endblock %}
