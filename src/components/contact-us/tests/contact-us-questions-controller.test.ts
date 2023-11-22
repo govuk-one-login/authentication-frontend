@@ -22,7 +22,6 @@ describe("contact us questions controller", () => {
   let res: Partial<Response>;
   const REFERER = "http://localhost:3000/enter-email";
   const REFERER_HEADER = "http://localhost/contact-us-further-information";
-  const BACKURL = "http://localhost:3000/contact-us";
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -48,15 +47,16 @@ describe("contact us questions controller", () => {
   describe("contactUsQuestionsGetFromContactUsPage", () => {
     it("should render contact-us-questions if a 'another problem using your account' radio option was chosen", () => {
       req.query.theme = ZENDESK_THEMES.SOMETHING_ELSE;
-      req.headers.referer = BACKURL;
+      req.headers.referer = REFERER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "something_else",
         subtheme: undefined,
-        backurl: BACKURL,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.SOMETHING_ELSE}`,
         pageTitleHeading: "pages.contactUsQuestions.anotherProblem.title",
         referer: REFERER,
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -68,15 +68,16 @@ describe("contact us questions controller", () => {
     });
     it("should render contact-us-questions if a 'GOV.UK email subscriptions' radio option was chosen", () => {
       req.query.theme = ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS;
-      req.headers.referer = BACKURL;
+      req.headers.referer = REFERER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "email_subscriptions",
         subtheme: undefined,
-        backurl: BACKURL,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.emailSubscriptions.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -88,15 +89,16 @@ describe("contact us questions controller", () => {
     });
     it("should render contact-us-questions if a 'A suggestion or feedback' radio option was chosen", () => {
       req.query.theme = ZENDESK_THEMES.SUGGESTIONS_FEEDBACK;
-      req.headers.referer = BACKURL;
+      req.headers.referer = REFERER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "suggestions_feedback",
         subtheme: undefined,
-        backurl: BACKURL,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.SUGGESTIONS_FEEDBACK}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.suggestionOrFeedback.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -109,15 +111,16 @@ describe("contact us questions controller", () => {
 
     it("should render contact-us-questions if a 'A problem proving your identity' radio option was chosen", () => {
       req.query.theme = ZENDESK_THEMES.PROVING_IDENTITY;
-      req.headers.referer = BACKURL;
+      req.headers.referer = REFERER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "proving_identity",
         subtheme: undefined,
-        backurl: BACKURL,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.PROVING_IDENTITY}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.provingIdentity.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -129,6 +132,7 @@ describe("contact us questions controller", () => {
     });
 
     it("should redirect to contact-us when no theme is present in request", () => {
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith("/contact-us");
@@ -141,13 +145,14 @@ describe("contact us questions controller", () => {
       req.query.subtheme = ZENDESK_THEMES.NO_SECURITY_CODE;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "no_security_code",
-        backurl: REFERER_HEADER,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.SIGNING_IN}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -162,13 +167,14 @@ describe("contact us questions controller", () => {
       req.query.subtheme = ZENDESK_THEMES.INVALID_SECURITY_CODE;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "invalid_security_code",
-        backurl: REFERER_HEADER,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.SIGNING_IN}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -183,13 +189,14 @@ describe("contact us questions controller", () => {
       req.query.subtheme = ZENDESK_THEMES.NO_PHONE_NUMBER_ACCESS;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "no_phone_number_access",
-        backurl: REFERER_HEADER,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.SIGNING_IN}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.noPhoneNumberAccess.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -204,13 +211,14 @@ describe("contact us questions controller", () => {
       req.query.subtheme = ZENDESK_THEMES.FORGOTTEN_PASSWORD;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "forgotten_password",
-        backurl: REFERER_HEADER,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.SIGNING_IN}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.forgottenPassword.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -225,13 +233,14 @@ describe("contact us questions controller", () => {
       req.query.subtheme = ZENDESK_THEMES.ACCOUNT_NOT_FOUND;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "account_not_found",
-        backurl: REFERER_HEADER,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.SIGNING_IN}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.accountNotFound.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -246,13 +255,14 @@ describe("contact us questions controller", () => {
       req.query.subtheme = ZENDESK_THEMES.TECHNICAL_ERROR;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "technical_error",
-        backurl: REFERER_HEADER,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.SIGNING_IN}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -267,13 +277,14 @@ describe("contact us questions controller", () => {
       req.query.subtheme = ZENDESK_THEMES.SOMETHING_ELSE;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "signing_in",
         subtheme: "something_else",
-        backurl: REFERER_HEADER,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.SIGNING_IN}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.anotherProblem.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -291,13 +302,14 @@ describe("contact us questions controller", () => {
       req.query.subtheme = ZENDESK_THEMES.NO_SECURITY_CODE;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "account_creation",
         subtheme: "no_security_code",
-        backurl: REFERER_HEADER,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.ACCOUNT_CREATION}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -312,13 +324,14 @@ describe("contact us questions controller", () => {
       req.query.subtheme = ZENDESK_THEMES.INVALID_SECURITY_CODE;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "account_creation",
         subtheme: "invalid_security_code",
-        backurl: REFERER_HEADER,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.ACCOUNT_CREATION}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -333,13 +346,14 @@ describe("contact us questions controller", () => {
       req.query.subtheme = ZENDESK_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "account_creation",
         subtheme: "sign_in_phone_number_issue",
-        backurl: REFERER_HEADER,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.ACCOUNT_CREATION}`,
         referer: REFERER,
         pageTitleHeading:
           "pages.contactUsQuestions.signInPhoneNumberIssue.title",
@@ -355,13 +369,14 @@ describe("contact us questions controller", () => {
       req.query.subtheme = ZENDESK_THEMES.TECHNICAL_ERROR;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "account_creation",
         subtheme: "technical_error",
-        backurl: REFERER_HEADER,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.ACCOUNT_CREATION}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -376,13 +391,14 @@ describe("contact us questions controller", () => {
       req.query.subtheme = ZENDESK_THEMES.SOMETHING_ELSE;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "account_creation",
         subtheme: "something_else",
-        backurl: REFERER_HEADER,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.ACCOUNT_CREATION}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.accountCreation.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
@@ -397,13 +413,14 @@ describe("contact us questions controller", () => {
       req.query.subtheme = ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM;
       req.headers.referer = REFERER_HEADER;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
       contactUsQuestionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
         formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
         theme: "account_creation",
         subtheme: "authenticator_app_problem",
-        backurl: REFERER_HEADER,
+        backurl: `/contact-us-further-information?theme=${ZENDESK_THEMES.ACCOUNT_CREATION}`,
         referer: REFERER,
         pageTitleHeading: "pages.contactUsQuestions.authenticatorApp.title",
         zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,

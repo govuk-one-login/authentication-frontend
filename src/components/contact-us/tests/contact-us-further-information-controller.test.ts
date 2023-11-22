@@ -35,6 +35,7 @@ describe("contact us further information controller", () => {
     it("should render signing in further information if a problem signing in to your account radio option was chosen", () => {
       req.query.theme = ZENDESK_THEMES.SIGNING_IN;
       req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
       furtherInformationGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
@@ -42,12 +43,13 @@ describe("contact us further information controller", () => {
         {
           theme: "signing_in",
           referer: REFERER,
-          hrefBack: PATH_NAMES.CONTACT_US,
+          hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${ZENDESK_THEMES.SIGNING_IN}`,
         }
       );
     });
 
     it("should render account creation further information if a creating an account radio option was chosen", () => {
+      req.path = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
       req.query.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
       req.query.referer = REFERER;
       furtherInformationGet(req as Request, res as Response);
@@ -57,12 +59,13 @@ describe("contact us further information controller", () => {
         {
           theme: "account_creation",
           referer: REFERER,
-          hrefBack: PATH_NAMES.CONTACT_US,
+          hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${ZENDESK_THEMES.ACCOUNT_CREATION}`,
         }
       );
     });
 
     it("should redirect to contact-us when no theme is present in request", () => {
+      req.path = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
       furtherInformationGet(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith("/contact-us");
