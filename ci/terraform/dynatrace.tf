@@ -1,26 +1,33 @@
-data "aws_secretsmanager_secret" "dynatrace_paas_token" {
-  name = "DynatracePaaSToken"
-}
-
-data "aws_iam_policy_document" "dynatrace_paas_token" {
+data "aws_iam_policy_document" "dynatrace_policy" {
   statement {
-    sid    = "AllowGetSecret"
     effect = "Allow"
 
     actions = [
+      "secretsmanager:ListSecrets",
       "secretsmanager:GetSecretValue",
     ]
 
     resources = [
-      data.aws_secretsmanager_secret.dynatrace_paas_token.arn,
+      "arn:aws:secretsmanager:eu-west-2:216552277552:secret:*"
+    ]
+  }
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "kms:Decrypt",
+    ]
+
+    resources = [
+      "arn:aws:kms:eu-west-2:216552277552:key/*"
     ]
   }
 }
 
-resource "aws_iam_policy" "dynatrace_paas_token" {
-  policy      = data.aws_iam_policy_document.dynatrace_paas_token.json
-  path        = "/${var.environment}/secretsmanager/dynatrace_paas_token/"
-  name_prefix = "dynatrace_paas_token"
+resource "aws_iam_policy" "dynatrace_policy" {
+  policy      = data.aws_iam_policy_document.dynatrace_policy.json
+  path        = "/${var.environment}/"
+  name_prefix = "dynatrace-secret-policy"
 
   tags = local.default_tags
 }

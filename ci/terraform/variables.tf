@@ -261,3 +261,6 @@ variable "frame_ancestors_form_actions_csp_headers" {
   type        = string
   default     = "0"
 }
+
+variable "dynatrace_secret_arn" {
+}
