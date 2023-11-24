@@ -67,10 +67,6 @@ export function helmetConfiguration(): Parameters<typeof helmet>[0] {
       "'self'",
       "https://*.account.gov.uk",
     ];
-    helmetConfig.contentSecurityPolicy.directives["form-action"] = [
-      "'self'",
-      "https://*.account.gov.uk",
-    ];
   }
   return helmetConfig;
 }
