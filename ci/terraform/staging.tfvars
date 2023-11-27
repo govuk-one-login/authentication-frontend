@@ -21,3 +21,4 @@ logging_endpoint_arns = [
 ]
 
 dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
+frame_ancestors_form_actions_csp_headers = "1"
