@@ -270,3 +270,9 @@ variable "support_2fa_b4_password_reset" {
   type        = string
   default     = "0"
 }
+
+variable "support_account_interventions" {
+  description = "When true, turns on account interventions in environment"
+  type        = string
+  default     = "0"
+}

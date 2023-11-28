@@ -199,3 +199,6 @@ export function supportFrameAncestorsFormActionsCspHeaders(): boolean {
 export function support2FABeforePasswordReset(): boolean {
   return process.env.SUPPORT_2FA_B4_PASSWORD_RESET === "1";
 }
+export function supportAccountInterventions(): boolean {
+  return process.env.SUPPORT_ACCOUNT_INTERVENTIONS === "1";
+}
