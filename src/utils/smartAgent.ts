@@ -39,7 +39,7 @@ export class SmartAgentService {
 
         logger.error(error.toJSON());
         throw new Error(
-          `${error?.response?.status} ${error?.response?.statusText}`
+          `Failed contact form submission to SmartAgent: ${error?.response?.status} ${error?.response?.statusText}. Ticket identifier: ${payload.customAttributes["sa-ticket-id"]}`
         );
       });
   }

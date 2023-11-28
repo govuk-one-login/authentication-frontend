@@ -31,11 +31,7 @@ export class ZendeskService implements ZendeskInterface {
 
     await instance.post("/tickets.json", form).catch((error) => {
       throw new Error(
-        error.response.status +
-          " " +
-          error.response.statusText +
-          " - ticketIdentifier: " +
-          ticketIdentifier
+        `Failed contact form submission to Zendesk: ${error.response.status} ${error.response.statusText}. TicketIdentifier: ${ticketIdentifier}`
       );
     });
   }
