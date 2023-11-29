@@ -23,6 +23,7 @@ import {
   getRedisPort,
   getSessionExpiry,
   getSessionSecret,
+  supportAccountInterventions,
   supportAccountRecovery,
   supportAuthOrchSplit,
 } from "./config";
@@ -83,6 +84,7 @@ import { setInternationalPhoneNumberSupportMiddleware } from "./middleware/set-i
 import { checkYourEmailSecurityCodesRouter } from "./components/account-recovery/check-your-email-security-codes/check-your-email-security-codes-routes";
 import { changeSecurityCodesConfirmationRouter } from "./components/account-recovery/change-security-codes-confirmation/change-security-codes-confirmation-routes";
 import { outboundContactUsLinksMiddleware } from "./middleware/outbound-contact-us-links-middleware";
+import { accountInterventionRouter } from "./components/account-intervention/password-reset-required/password-reset-required-router";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -132,6 +134,9 @@ function registerRoutes(app: express.Application) {
   app.use(docCheckingAppRouter);
   app.use(docCheckingAppCallbackRouter);
   app.use(errorPageRouter);
+  if (supportAccountInterventions()) {
+    app.use(accountInterventionRouter);
+  }
 }
 
 async function createApp(): Promise<express.Application> {

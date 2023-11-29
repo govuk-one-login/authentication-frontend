@@ -67,6 +67,7 @@ export const PATH_NAMES = {
   CHANGE_SECURITY_CODES: "/change-security-codes",
   CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES: "/check-email-change-security-codes",
   CHANGE_SECURITY_CODES_CONFIRMATION: "/change-codes-confirmed",
+  PASSWORD_RESET_REQUIRED: "/password-reset-required",
 };
 
 export const HREF_BACK = {
