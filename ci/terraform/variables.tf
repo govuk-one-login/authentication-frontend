@@ -264,3 +264,9 @@ variable "frame_ancestors_form_actions_csp_headers" {
 
 variable "dynatrace_secret_arn" {
 }
+
+variable "support_2fa_b4_password_reset" {
+  description = "When true enables 2FA before password reset"
+  type        = string
+  default     = "0"
+}

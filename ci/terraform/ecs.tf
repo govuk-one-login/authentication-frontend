@@ -172,6 +172,10 @@ locals {
         name  = "FRAME_ANCESTORS_FORM_ACTIONS_CSP_HEADERS"
         value = var.frame_ancestors_form_actions_csp_headers
       },
+      {
+        name  = "SUPPORT_2FA_B4_PASSWORD_RESET"
+        value = var.support_2fa_b4_password_reset
+      }
     ]
 
     secrets = [
