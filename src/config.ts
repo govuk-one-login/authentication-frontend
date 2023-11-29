@@ -195,3 +195,7 @@ export function getPasswordResetCodeEnteredWrongBlockDurationInMinutes(): number
 export function supportFrameAncestorsFormActionsCspHeaders(): boolean {
   return process.env.FRAME_ANCESTORS_FORM_ACTIONS_CSP_HEADERS === "1";
 }
+
+export function support2FABeforePasswordReset(): boolean {
+  return process.env.SUPPORT_2FA_B4_PASSWORD_RESET === "1";
+}
