@@ -8,6 +8,7 @@ import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
 import { NOTIFICATION_TYPE } from "../../app.constants";
+import { support2FABeforePasswordReset } from "../../config";
 
 const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
@@ -49,7 +50,9 @@ export function resetPasswordCheckEmailGet(
     }
 
     if (!requestCode || result.success) {
+      const support2FABeforePasswordResetFlag = support2FABeforePasswordReset();
       return res.render(TEMPLATE_NAME, {
+        support2FABeforePasswordResetFlag,
         email,
       });
     }

@@ -10,17 +10,26 @@
 
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resetPasswordCheckEmail.header' | translate}}</h1>
 
+    {% if support2FABeforePasswordResetFlag %}
+
+    <p class="govuk-body" id="confirmationParagraph">
+            {{
+            'pages.resetPasswordCheckEmail.paragraph1' | translate
+            }}
+    </p>
+    {% endif %}
+
     <p class="govuk-body">
         {{ govukInsetText({
-        html: 'pages.resetPasswordCheckEmail.paragraph1' | translate + '<span class="govuk-body govuk-!-font-weight-bold">' + email + '</span>'
+        html: 'pages.resetPasswordCheckEmail.paragraph2' | translate + '<span class="govuk-body govuk-!-font-weight-bold">' + email + '</span>'
     }) }}
     </p>
-
-    <p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph2' | translate}}</p>
 
     <p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph3' | translate}}</p>
 
     <p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph4' | translate}}</p>
+
+    <p class="govuk-body">{{'pages.resetPasswordCheckEmail.paragraph5' | translate}}</p>
 
     <form action="/reset-password-check-email" method="post" novalidate="novalidate">
 
