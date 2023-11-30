@@ -55,11 +55,12 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo "Generating temporary ECR credentials..."
-gds aws di-tools-dev -- aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin "${REPO_URL}"
+eval "$(aws configure export-credentials --profile auth-dev-tools-admin --format env)"
+aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin "${REPO_URL}"
 
 if [[ $BUILD == "1" ]]; then
   echo "Building image..."
-  docker buildx build --platform=linux/amd64 -t "${REPO_NAME}" .
+  docker buildx build --platform=linux/amd64 --file sandpit.Dockerfile -t "${REPO_NAME}" .
   echo "Tagging image..."
   docker tag "${REPO_NAME}:latest" "${REPO_URL}:${IMAGE_TAG}"
 
@@ -75,7 +76,7 @@ fi
 
 if [[ $TERRAFORM == "1" ]]; then
   echo -n "Getting AWS credentials ... "
-  eval "$(gds aws digital-identity-dev -e)"
+  eval "$(aws configure export-credentials --profile auth-dev-admin --format env)"
   echo "done!"
 
   echo "Running Terraform..."
@@ -89,7 +90,6 @@ if [[ $TERRAFORM == "1" ]]; then
     aws ecs wait services-stable --services "sandpit-frontend-ecs-service" --cluster "sandpit-app-cluster"
     echo "done!"
   fi
-
 fi
 
 echo "Deployment complete!"
