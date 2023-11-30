@@ -71,6 +71,65 @@ describe("contact us controller", () => {
         "contact-us/index-public-contact-us.njk"
       );
     });
+
+    it("should render contact us gov page with no hidden inputs passed in", () => {
+      req.query.referer = "";
+      req.query.fromURL = "";
+
+      contactUsGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "contact-us/index-public-contact-us.njk",
+        {
+          referer: "",
+          fromURL: undefined,
+          hrefBack: PATH_NAMES.CONTACT_US,
+        }
+      );
+    });
+
+    it("should render contact us gov page with hidden inputs passed in", () => {
+      req.query.referer = REFERER;
+      const FROM_URL = "http://localhost/enter-email";
+      req.query.fromURL = FROM_URL;
+      const fromUrlEncoded = encodeURIComponent(FROM_URL);
+
+      contactUsGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "contact-us/index-public-contact-us.njk",
+        {
+          referer: encodeURIComponent(REFERER),
+          fromURL: fromUrlEncoded,
+          hrefBack: `${PATH_NAMES.CONTACT_US}?fromURL=${fromUrlEncoded}`,
+        }
+      );
+    });
+
+    it("should render contact us gov page with null referer with injection", () => {
+      const serviceDomain = "account.gov.uk";
+      const scriptReferers = [
+        "accountCreatedEmail<script>alert()</script>/" + serviceDomain,
+        "accountCreatedEmail&lt;script&gt;alert()&lt;/script&gt;/" +
+          serviceDomain,
+        "accountCreatedEmail\u003Cscript\u003Ealert()\u003C/script\u003E/" +
+          serviceDomain,
+      ];
+      scriptReferers.forEach((referer) => {
+        req.query.referer = referer;
+
+        contactUsGet(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWith(
+          "contact-us/index-public-contact-us.njk",
+          {
+            referer: "",
+            fromURL: undefined,
+            hrefBack: PATH_NAMES.CONTACT_US,
+          }
+        );
+      });
+    });
   });
 
   describe("contactUsGetFromTriagePage", () => {
@@ -150,8 +209,8 @@ describe("contact us controller", () => {
   describe("contactUsFormPost", () => {
     it("should carry forward fromURL when redirecting to /contact-us-further-information", async () => {
       req.body.theme = CONTACT_US_THEMES.SIGNING_IN;
-      req.body.referer = REFERER;
-      req.body.fromURL = "http://localhost/enter-email";
+      req.body.referer = encodeURIComponent(REFERER);
+      req.body.fromURL = encodeURIComponent("http://localhost/enter-email");
 
       contactUsFormPost(req as Request, res as Response);
 
@@ -376,7 +435,7 @@ describe("appErrorCode and appSessionId query parameters", () => {
       validReferers.forEach((item) => {
         const encodedItem = encodeURIComponent(item);
         expect(validateReferer(encodedItem, serviceDomain)).to.equal(
-          encodedItem
+          decodeURIComponent(encodedItem)
         );
       });
     });

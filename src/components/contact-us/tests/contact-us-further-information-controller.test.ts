@@ -42,7 +42,7 @@ describe("contact us further information controller", () => {
         "contact-us/further-information/index.njk",
         {
           theme: "signing_in",
-          referer: REFERER,
+          referer: encodeURIComponent(REFERER),
           hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
         }
       );
@@ -58,7 +58,7 @@ describe("contact us further information controller", () => {
         "contact-us/further-information/index.njk",
         {
           theme: "account_creation",
-          referer: REFERER,
+          referer: encodeURIComponent(REFERER),
           hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
         }
       );
