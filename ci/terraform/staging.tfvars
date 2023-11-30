@@ -13,6 +13,7 @@ support_language_cy                                                 = "1"
 support_international_numbers                                       = "1"
 support_account_recovery                                            = "1"
 support_smart_agent                                                 = "1"
+support_account_interventions                                       = "0"
 client_name_that_directs_all_contact_form_submissions_to_smartagent = ""
 url_for_support_links                                               = "https://home.staging.account.gov.uk/contact-gov-uk-one-login"
 
