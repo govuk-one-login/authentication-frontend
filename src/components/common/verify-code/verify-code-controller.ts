@@ -9,6 +9,7 @@ import { VerifyCodeInterface } from "./types";
 import { ExpressRouteFunc } from "../../../types";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine";
 import { NOTIFICATION_TYPE } from "../../../app.constants";
+import { support2FABeforePasswordReset } from "../../../config";
 
 interface Config {
   notificationType: NOTIFICATION_TYPE;
@@ -16,6 +17,7 @@ interface Config {
   validationKey: string;
   validationErrorCode: number;
   callback?: (req: Request, res: Response) => void;
+  journeyType?: string;
 }
 
 export function verifyCodePost(
@@ -32,7 +34,8 @@ export function verifyCodePost(
       options.notificationType,
       clientSessionId,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      options.journeyType
     );
 
     if (!result.success) {
@@ -87,6 +90,7 @@ export function verifyCodePost(
           isConsentRequired: req.session.user.isConsentRequired,
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
+          support2FABeforePasswordReset: support2FABeforePasswordReset(),
         },
         res.locals.sessionId
       )

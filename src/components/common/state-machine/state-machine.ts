@@ -73,6 +73,7 @@ const authStateMachine = createMachine(
       isMfaMethodVerified: true,
       isPasswordChangeRequired: false,
       isAccountRecoveryJourney: false,
+      support2FABeforePasswordReset: false,
       isReauthenticationRequired: false,
     },
     states: {
@@ -504,11 +505,26 @@ const authStateMachine = createMachine(
       [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL]: {
         on: {
           [USER_JOURNEY_EVENTS.RESET_PASSWORD_CODE_VERIFIED]: [
-            PATH_NAMES.RESET_PASSWORD,
+            {
+              target: [PATH_NAMES.RESET_PASSWORD_2FA_SMS],
+              cond: "support2FABeforePasswordReset",
+            },
+            {
+              target: [PATH_NAMES.RESET_PASSWORD],
+            },
           ],
         },
         meta: {
           optionalPaths: [PATH_NAMES.RESET_PASSWORD_RESEND_CODE],
+        },
+      },
+      [PATH_NAMES.RESET_PASSWORD_2FA_SMS]: {
+        on: {
+          [USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED]: [
+            {
+              target: [PATH_NAMES.RESET_PASSWORD],
+            },
+          ],
         },
       },
       [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]: {
@@ -521,6 +537,10 @@ const authStateMachine = createMachine(
       [PATH_NAMES.RESET_PASSWORD]: {
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
+            {
+              target: [PATH_NAMES.AUTH_CODE],
+              cond: "support2FABeforePasswordReset",
+            },
             {
               target: [PATH_NAMES.GET_SECURITY_CODES],
               cond: "isAccountPartCreated",
@@ -692,6 +712,8 @@ const authStateMachine = createMachine(
         context.isLatestTermsAndConditionsAccepted === false,
       requiresUplift: (context) =>
         context.requiresUplift === true && context.isAuthenticated === true,
+      isReauthenticationRequired: (context) =>
+        context.isReauthenticationRequired,
       requiresAuthAppUplift: (context) =>
         context.requiresUplift === true &&
         context.isAuthenticated === true &&
@@ -712,8 +734,8 @@ const authStateMachine = createMachine(
         context.requiresTwoFactorAuth === true,
       isPasswordChangeRequired: (context) => context.isPasswordChangeRequired,
       isAccountRecoveryJourney: (context) => context.isAccountRecoveryJourney,
-      isReauthenticationRequired: (context) =>
-        context.isReauthenticationRequired,
+      support2FABeforePasswordReset: (context) =>
+        context.support2FABeforePasswordReset,
     },
   }
 );

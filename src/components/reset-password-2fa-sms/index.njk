@@ -1,0 +1,79 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% set pageTitleName = 'pages.checkYourPhone.title' | translate %}
+{% set showBack = true %}
+{% set hrefBack = 'pages.checkYourPhone.details.changePhoneNumberLinkHref' | translate %}
+
+{% block content %}
+
+    {% include "common/errors/errorSummary.njk" %}
+
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.checkYourPhone.header' | translate }}</h1>
+
+    {% set insetText %}
+        {{ 'pages.checkYourPhone.info.paragraph1' | translate }} <span class='govuk-!-font-weight-bold'>{{ phoneNumber }}</span>
+    {% endset %}
+
+    {{ govukInsetText({
+        text: insetText | safe
+    }) }}
+
+    <p class="govuk-body">{{'pages.checkYourPhone.info.paragraph2' | translate }}</p>
+
+    <form action="/reset-password-2fa-sms" method="post" novalidate="novalidate">
+
+        <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+        <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
+
+        {{ govukInput({
+            label: {
+                text: 'pages.checkYourPhone.code.label' | translate
+            },
+            classes: "govuk-input--width-10 govuk-!-font-weight-bold",
+            id: "code",
+            name: "code",
+            inputmode: "numeric",
+            spellcheck: false,
+            autocomplete:"one-time-code",
+            errorMessage: {
+                text: errors['code'].text
+            } if (errors['code'])})
+        }}
+
+        {% set detailsHTML %}
+            <p class="govuk-body">
+                {{'pages.checkYourPhone.details.text1' | translate}}
+                <a href="{{resendCodeLink}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.sendCodeLinkText'| translate}}</a>
+                {{'pages.checkYourPhone.details.text 2' | translate}}
+                <a href="{{'pages.checkYourPhone.details.changePhoneNumberLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.changePhoneNumberLinkText'| translate}}</a>.
+            </p>
+        {% endset %}
+
+        {% set detailsHTML %}
+
+            {{detailsHTML | safe}}
+
+            <p class="govuk-body">
+                <a href="{{'pages.checkYourPhone.details.changeMfaChoiceLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.changeMfaChoiceLinkText'| translate}}</a>.
+            </p>
+
+        {% endset %}
+
+        {{ govukButton({
+            "text": "general.continue.label" | translate,
+            "type": "Submit",
+            "preventDoubleClick": true
+        }) }}
+
+        {{ govukDetails({
+            summaryText: 'pages.checkYourPhone.details.summaryText' | translate,
+            html: detailsHTML
+        }) }}
+
+    </form>
+
+{% endblock %}
