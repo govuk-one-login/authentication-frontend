@@ -35,6 +35,8 @@ describe("Integration::reset password check email ", () => {
       });
 
     app = await require("../../../app").createApp();
+
+    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     nock(baseApi).post("/reset-password-request").once().reply(204);
@@ -60,6 +62,17 @@ describe("Integration::reset password check email ", () => {
   it("should return reset password check email page", (done) => {
     nock(baseApi).post("/reset-password-request").once().reply(204);
     request(app).get("/reset-password-check-email").expect(200, done);
+  });
+
+  it("should include confirmation paragraph inside the reponse body", (done) => {
+    nock(baseApi).post("/reset-password-request").once().reply(204);
+    request(app)
+      .get("/reset-password-check-email")
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#confirmationParagraph").length).to.eq(1);
+      })
+      .expect(200, done);
   });
 
   it("should return error page when 6 password reset codes requested", (done) => {

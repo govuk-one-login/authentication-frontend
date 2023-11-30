@@ -277,10 +277,11 @@
     "resetPasswordCheckEmail": {
       "title": "Gwiriwch eich e-bost",
       "header": "Gwiriwch eich e-bost",
-      "paragraph1": "Rydym wedi anfon e-bost at: ",
-      "paragraph2": "Mae’r e-bost yn cynnwys cod diogelwch 6 digid.",
-      "paragraph3": "Efallai y bydd eich e-bost yn cymryd ychydig funudau i gyrraedd. Os na chewch e-bost, edrychwch ar eich ffolder spam.",
-      "paragraph4": "Bydd y cod yn dod i ben ar ôl 15 munud.",
+      "paragraph1": "Mae angen i ni sicrhau mai hwn yw eich GOV.UK One Login cyn y gallwch ailosod eich cyfrinair.",
+      "paragraph2": "Rydym wedi anfon e-bost at: ",
+      "paragraph3": "Mae’r e-bost yn cynnwys cod diogelwch 6 digid.",
+      "paragraph4": "Efallai y bydd eich e-bost yn cymryd ychydig funudau i gyrraedd. Os na chewch e-bost, edrychwch ar eich ffolder spam.",
+      "paragraph5": "Bydd y cod yn dod i ben ar ôl 15 munud.",
       "code": {
         "label": "Rhowch y cod diogelwch 6 digid",
         "validationError": {
@@ -1713,10 +1714,10 @@
         "nameLabel": "Enw (Dewisol)",
         "privacyNote": "Darllenwch ein <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">hysbysiad preifatrwydd</a> am fwy o wybodaeth am sut rydym yn defnyddio eich gwybodaeth bersonol."
       },
-      "textMessageInternationNumberConditionalSection": { 
-          "heading": "Pa wlad?", 
-          "hintText": "Peidiwch â rhoi eich rhif ffôn", 
-          "errorIfBlank": "Rhowch o ba wlad y mae eich rhif ffôn yn dod" 
+      "textMessageInternationNumberConditionalSection": {
+          "heading": "Pa wlad?",
+          "hintText": "Peidiwch â rhoi eich rhif ffôn",
+          "errorIfBlank": "Rhowch o ba wlad y mae eich rhif ffôn yn dod"
       },
       "anotherProblem": {
         "title": "Problem wrth ddefnyddio eich GOV.UK One Login",

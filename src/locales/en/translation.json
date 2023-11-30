@@ -277,10 +277,11 @@
     "resetPasswordCheckEmail": {
       "title": "Check your email",
       "header": "Check your email",
-      "paragraph1": "We have sent an email to: ",
-      "paragraph2": "The email contains a 6 digit security code.",
-      "paragraph3": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
-      "paragraph4": "The code will expire after 15 minutes.",
+      "paragraph1": "We need to make sure this is your GOV.UK One Login before you can reset your password.",
+      "paragraph2": "We have sent an email to: ",
+      "paragraph3": "The email contains a 6 digit security code.",
+      "paragraph4": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
+      "paragraph5": "The code will expire after 15 minutes.",
       "code": {
         "label": "Enter the 6 digit security code",
         "validationError": {
