@@ -2195,6 +2195,11 @@
         "secondLink": "reset your password",
         "paragraph2End": "."
       }
+    },
+    "needToResetPassword": {
+      "header": "You need to reset your password",
+      "paragraph1": "To keep your GOV.UK One Login safe, you need to reset your password.",
+      "paragraph2": "We’ll send a code to your email address, which you can use to reset your password."
     }
   },
   "abTestPages": {

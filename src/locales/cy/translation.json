@@ -2195,6 +2195,11 @@
         "secondLink": "ailosod eich cyfrinair",
         "paragraph2End": "."
       }
+    },
+    "needToResetPassword": {
+      "header": "Mae angen i chi ailosod eich cyfrinair",
+      "paragraph1": "Er mwyn cadw eich GOV.UK One Login yn ddiogel, mae angen i chi ailosod eich cyfrinair.",
+      "paragraph2": "Byddwn yn anfon cod i’ch cyfeiriad e-bost, y gallwch ei ddefnyddio i ailosod eich cyfrinair."
     }
   },
   "abTestPages": {
