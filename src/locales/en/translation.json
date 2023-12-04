@@ -2200,6 +2200,17 @@
       "header": "You need to reset your password",
       "paragraph1": "To keep your GOV.UK One Login safe, you need to reset your password.",
       "paragraph2": "We’ll send a code to your email address, which you can use to reset your password."
+    },
+    "permanentlyLockedScreen": {
+      "header": "Your GOV.UK  One Login has been permanently locked",
+      "section1": {
+        "paragraph1": "You cannot sign in and you cannot use your GOV.UK  One Login to access government services."
+      },
+      "section2": {
+        "heading": "What you can do",
+        "paragraph1": "Go back to the service you were trying to use. You can look for the service using your search engine or find it from the GOV.UK  homepage.",
+        "paragraph2": "You can create a new GOV.UK  One Login with a different email address."
+      }
     }
   },
   "abTestPages": {

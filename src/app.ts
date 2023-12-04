@@ -85,6 +85,7 @@ import { checkYourEmailSecurityCodesRouter } from "./components/account-recovery
 import { changeSecurityCodesConfirmationRouter } from "./components/account-recovery/change-security-codes-confirmation/change-security-codes-confirmation-routes";
 import { outboundContactUsLinksMiddleware } from "./middleware/outbound-contact-us-links-middleware";
 import { accountInterventionRouter } from "./components/account-intervention/password-reset-required/password-reset-required-router";
+import { permanentlyBlockedRouter } from "./components/account-intervention/permanently-blocked/permanently-blocked-router";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -136,6 +137,7 @@ function registerRoutes(app: express.Application) {
   app.use(errorPageRouter);
   if (supportAccountInterventions()) {
     app.use(accountInterventionRouter);
+    app.use(permanentlyBlockedRouter);
   }
 }
 

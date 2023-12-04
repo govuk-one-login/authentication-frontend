@@ -2200,6 +2200,17 @@
       "header": "Mae angen i chi ailosod eich cyfrinair",
       "paragraph1": "Er mwyn cadw eich GOV.UK One Login yn ddiogel, mae angen i chi ailosod eich cyfrinair.",
       "paragraph2": "Byddwn yn anfon cod i’ch cyfeiriad e-bost, y gallwch ei ddefnyddio i ailosod eich cyfrinair."
+    },
+    "permanentlyLockedScreen": {
+      "header": "Mae eich GOV.UK One Login wedi ei gloi yn barhaol",
+      "section1": {
+        "paragraph1": "Ni allwch fewngofnodi ac ni allwch ddefnyddio eich GOV.UK One Login i gael mynediad at wasanaethau’r llywodraeth."
+      },
+      "section2": {
+        "heading": "Beth allwch chi ei wneud",
+        "paragraph1": "Ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o’r hafan GOV.UK.",
+        "paragraph2": "Gallwch greu GOV.UK One Login newydd gyda chyfeiriad e-bost gwahanol."
+      }
     }
   },
   "abTestPages": {
