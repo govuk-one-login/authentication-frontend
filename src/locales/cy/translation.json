@@ -2211,6 +2211,17 @@
         "paragraph1": "Ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o’r hafan GOV.UK.",
         "paragraph2": "Gallwch greu GOV.UK One Login newydd gyda chyfeiriad e-bost gwahanol."
       }
+    },
+    "suspendedPageScreen": {
+      "heading": "Mae’n ddrwg gennym, mae problem",
+      "section1": {
+        "paragraph1": "Nid yw eich GOV.UK One Login ar gael ar hyn o bryd."
+      },
+      "section2": {
+        "heading": "Beth allwch chi ei wneud",
+        "paragraph1": "Dewch yn ôl yn nes ymlaen. Dylai eich GOV.UK One Login fod ar gael eto mewn [3 diwrnod gwaith].",
+        "paragraph2": "Gallwch hefyd fynd yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o’r hafan GOV.UK."
+      }
     }
   },
   "abTestPages": {

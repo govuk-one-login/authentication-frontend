@@ -2211,6 +2211,17 @@
         "paragraph1": "Go back to the service you were trying to use. You can look for the service using your search engine or find it from the GOV.UK  homepage.",
         "paragraph2": "You can create a new GOV.UK  One Login with a different email address."
       }
+    },
+    "suspendedPageScreen": {
+      "heading": "Sorry, there is a problem",
+      "section1": {
+        "paragraph1": "Your GOV.UK  One Login is not available at the moment."
+      },
+      "section2": {
+        "heading": "What you can do",
+        "paragraph1": "Come back later. Your GOV.UK  One Login should be available again in [3 working days].",
+        "paragraph2": "You can also go back to the service you were trying to use. You can look for the service using your search engine or find it from the GOV.UK homepage."
+      }
     }
   },
   "abTestPages": {
