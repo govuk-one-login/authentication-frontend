@@ -136,5 +136,13 @@ describe("state-machine", () => {
       );
       expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
     });
+
+    it("should move from password reset required to check your email when email verification code sent event", () => {
+      const nextState = getNextState(
+        PATH_NAMES.PASSWORD_RESET_REQUIRED,
+        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.CHECK_YOUR_EMAIL);
+    });
   });
 });
