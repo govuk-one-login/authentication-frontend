@@ -1,5 +1,9 @@
 import { MfaServiceInterface } from "./types";
-import { API_ENDPOINTS, HTTP_STATUS_CODES, NOTIFICATION_TYPE } from "../../../app.constants";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  NOTIFICATION_TYPE,
+} from "../../../app.constants";
 import {
   createApiResponse,
   getRequestConfig,

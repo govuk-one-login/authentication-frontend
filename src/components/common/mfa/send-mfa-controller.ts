@@ -22,7 +22,9 @@ export function sendMfaGeneric(
       email,
       req.ip,
       persistentSessionId,
-      isResendCodeRequest? NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER: NOTIFICATION_TYPE.MFA_SMS,
+      isResendCodeRequest
+        ? NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER
+        : NOTIFICATION_TYPE.MFA_SMS,
       xss(req.cookies.lng as string)
     );
 
