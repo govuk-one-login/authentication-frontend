@@ -4,7 +4,7 @@ import { MfaServiceInterface } from "./types";
 import { getErrorPathByCode, getNextPathAndUpdateJourney } from "../constants";
 import { BadRequestError } from "../../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine";
-import { PATH_NAMES } from "../../../app.constants";
+import { NOTIFICATION_TYPE, PATH_NAMES } from "../../../app.constants";
 import { sanitize } from "../../../utils/strings";
 import xss from "xss";
 
@@ -22,7 +22,7 @@ export function sendMfaGeneric(
       email,
       req.ip,
       persistentSessionId,
-      isResendCodeRequest,
+      isResendCodeRequest? NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER: NOTIFICATION_TYPE.MFA_SMS,
       xss(req.cookies.lng as string)
     );
 

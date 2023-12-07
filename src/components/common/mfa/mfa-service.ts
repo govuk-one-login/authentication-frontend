@@ -1,5 +1,5 @@
 import { MfaServiceInterface } from "./types";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, NOTIFICATION_TYPE } from "../../../app.constants";
 import {
   createApiResponse,
   getRequestConfig,
@@ -15,14 +15,14 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
     emailAddress: string,
     sourceIp: string,
     persistentSessionId: string,
-    isResendCodeRequest: boolean,
+    notificationType: NOTIFICATION_TYPE,
     userLanguage: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.MFA,
       {
         email: emailAddress,
-        isResendCodeRequest,
+        notificationType,
       },
       getRequestConfig({
         sessionId: sessionId,
