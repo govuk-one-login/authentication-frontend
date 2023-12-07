@@ -632,7 +632,17 @@ const authStateMachine = createMachine(
         },
       },
       [PATH_NAMES.AUTH_CODE]: {
-        type: "final",
+        on: {
+          [USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION]: [
+            PATH_NAMES.PASSWORD_RESET_REQUIRED,
+          ],
+          [USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_PERMANENT,
+          ],
+          [USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_TEMPORARY,
+          ],
+        },
       },
       [PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT]: {
         on: {

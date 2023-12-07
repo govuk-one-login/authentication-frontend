@@ -7,6 +7,7 @@ export const PATH_NAMES = {
   START: "/",
   AUTHORIZE: "/authorize",
   ACCESSIBILITY_STATEMENT: "/accessibility-statement",
+  ACCOUNT_INTERVENTIONS: "/account-interventions",
   TERMS_AND_CONDITIONS: "/terms-and-conditions",
   PRIVACY_POLICY: "/privacy-notice",
   PRIVACY_STATEMENT: "/privacy-statement",
@@ -95,6 +96,7 @@ export enum LOCALE {
 }
 
 export const API_ENDPOINTS = {
+  ACCOUNT_INTERVENTIONS: "/account-interventions",
   USER_EXISTS: "/user-exists",
   SIGNUP_USER: "/signup",
   SEND_NOTIFICATION: "/send-notification",
