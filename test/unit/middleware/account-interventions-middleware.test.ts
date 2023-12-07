@@ -7,6 +7,7 @@ import { Http } from "../../../src/utils/http";
 import { expect } from "chai";
 import { accountInterventionsMiddleware } from "../../../src/middleware/account-interventions-middleware";
 import { getNextPathAndUpdateJourney } from "../../../src/components/common/constants";
+import { USER_JOURNEY_EVENTS } from "../../../src/components/common/state-machine/state-machine";
 
 describe("account interventions middleware", () => {
   const http = new Http();
@@ -43,6 +44,16 @@ describe("account interventions middleware", () => {
     await accountInterventionsMiddleware(req, mockResponse(), next, http);
 
     expect(next).to.have.been.called;
+  });
+
+  it("Should call getNextPathAndUpdateJourney with the PASSWORD_RESET_INTERVENTION user journey event when password_reset_required === true in the response", async () => {
+    const accountInterventionsResponse = responseData(true, false, false)
+
+    postStub.resolves(Promise.resolve(accountInterventionsResponse));
+    await accountInterventionsMiddleware(req, mockResponse(), next, http);
+
+    expect(req.session.user.journey).to.equal(USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION)
+    expect(getNextPathAndUpdateJourney).to.have.been.called;
   });
 
   //TODO: check * request will include the session-id, client-session-id and persistent-session-id in the header.

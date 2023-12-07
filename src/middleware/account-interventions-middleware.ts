@@ -8,5 +8,6 @@ export async function accountInterventionsMiddleware(
   next: NextFunction,
   axios: Http
 ) {
-  Promise.resolve()
+  await Promise.resolve();
+  return next();
 }
