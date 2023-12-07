@@ -40,8 +40,11 @@ describe("account interventions middleware", () => {
   it("Should call next when the account interventions response indicates no interventions", async () => {
     const accountInterventionsResponse = responseData(false, false, false)
 
+    const fakeCallback = sinon.fake();
+    const fakeCallbackSpy = sinon.spy(fakeCallback);
+
     postStub.resolves(Promise.resolve(accountInterventionsResponse));
-    await accountInterventionsMiddleware(req, mockResponse(), next, http);
+    await accountInterventionsMiddleware(req, mockResponse(), next, http, fakeCallbackSpy);
 
     expect(next).to.have.been.called;
   });
@@ -49,11 +52,13 @@ describe("account interventions middleware", () => {
   it("Should call getNextPathAndUpdateJourney with the PASSWORD_RESET_INTERVENTION user journey event when password_reset_required === true in the response", async () => {
     const accountInterventionsResponse = responseData(true, false, false)
 
-    postStub.resolves(Promise.resolve(accountInterventionsResponse));
-    await accountInterventionsMiddleware(req, mockResponse(), next, http);
+    const fakeCallback = sinon.fake();
+    const fakeCallbackSpy = sinon.spy(fakeCallback);
 
-    expect(req.session.user.journey).to.equal(USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION)
-    expect(getNextPathAndUpdateJourney).to.have.been.called;
+    postStub.resolves(Promise.resolve(accountInterventionsResponse));
+    await accountInterventionsMiddleware(req, mockResponse(), next, http, fakeCallbackSpy);
+
+    expect(fakeCallbackSpy).to.have.been.calledWith(req, PATH_NAMES.ENTER_MFA, USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION, null, null);
   });
 
   //TODO: check * request will include the session-id, client-session-id and persistent-session-id in the header.
