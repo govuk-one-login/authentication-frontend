@@ -147,6 +147,7 @@ export function enterPasswordPost(
         email,
         req.ip,
         persistentSessionId,
+        false,
         NOTIFICATION_TYPE.MFA_SMS,
         xss(req.cookies.lng as string)
       );

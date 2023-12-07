@@ -19,6 +19,7 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
     emailAddress: string,
     sourceIp: string,
     persistentSessionId: string,
+    isResendCodeRequest: boolean,
     notificationType: NOTIFICATION_TYPE,
     userLanguage: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
@@ -26,6 +27,7 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
       API_ENDPOINTS.MFA,
       {
         email: emailAddress,
+        isResendCodeRequest,
         notificationType,
       },
       getRequestConfig({

@@ -22,6 +22,7 @@ export function sendMfaGeneric(
       email,
       req.ip,
       persistentSessionId,
+      isResendCodeRequest,
       isResendCodeRequest
         ? NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER
         : NOTIFICATION_TYPE.MFA_SMS,
