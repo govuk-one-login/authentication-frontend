@@ -1,4 +1,8 @@
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  JOURNEY_TYPE,
+} from "../../../app.constants";
 import {
   createApiResponse,
   getRequestConfig,
@@ -15,13 +19,15 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
     notificationType: string,
     clientSessionId: string,
     sourceIp: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    journeyType?: JOURNEY_TYPE
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.VERIFY_CODE,
       {
         code,
         notificationType,
+        journeyType,
       },
       getRequestConfig({
         sessionId,

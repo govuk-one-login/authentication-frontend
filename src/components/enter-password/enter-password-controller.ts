@@ -15,7 +15,7 @@ import {
 } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { MFA_METHOD_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
+import { MFA_METHOD_TYPE } from "../../app.constants";
 import xss from "xss";
 import { EnterEmailServiceInterface } from "../enter-email/types";
 import { enterEmailService } from "../enter-email/enter-email-service";
@@ -148,7 +148,6 @@ export function enterPasswordPost(
         req.ip,
         persistentSessionId,
         false,
-        NOTIFICATION_TYPE.MFA_SMS,
         xss(req.cookies.lng as string)
       );
 

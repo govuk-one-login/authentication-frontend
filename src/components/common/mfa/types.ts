@@ -1,4 +1,4 @@
-import { NOTIFICATION_TYPE } from "src/app.constants";
+import { JOURNEY_TYPE } from "src/app.constants";
 import { ApiResponseResult, DefaultApiResponse } from "../../../types";
 
 export interface MfaServiceInterface {
@@ -9,7 +9,7 @@ export interface MfaServiceInterface {
     sourceIp: string,
     persistentSessionId: string,
     isResendCodeRequest: boolean,
-    notificationType: NOTIFICATION_TYPE,
-    userLanguage: string
+    userLanguage: string,
+    journeyType?: JOURNEY_TYPE
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

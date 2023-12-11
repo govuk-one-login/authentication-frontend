@@ -17,7 +17,7 @@ import { EnterPasswordServiceInterface } from "../enter-password/types";
 import { enterPasswordService } from "../enter-password/enter-password-service";
 import { MfaServiceInterface } from "../common/mfa/types";
 import { mfaService } from "../common/mfa/mfa-service";
-import { MFA_METHOD_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
+import { MFA_METHOD_TYPE } from "../../app.constants";
 import xss from "xss";
 
 const resetPasswordTemplate = "reset-password/index.njk";
@@ -117,7 +117,6 @@ export function resetPasswordPost(
         req.ip,
         persistentSessionId,
         false,
-        NOTIFICATION_TYPE.MFA_SMS,
         xss(req.cookies.lng as string)
       );
 
