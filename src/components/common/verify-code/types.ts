@@ -1,4 +1,3 @@
-import { JOURNEY_TYPE } from "src/app.constants";
 import { ApiResponseResult, DefaultApiResponse } from "../../../types";
 
 export interface VerifyCodeInterface {
@@ -9,6 +8,6 @@ export interface VerifyCodeInterface {
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string,
-    journeyType?: JOURNEY_TYPE
+    journeyType?: string
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }
