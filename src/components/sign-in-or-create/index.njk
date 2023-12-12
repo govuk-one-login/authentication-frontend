@@ -9,65 +9,66 @@
 {% set pageTitleName = pageTitleVariableName | translate %}
 
 {% set moreAboutTextHtml %}
-<p class="govuk-body">{{'pages.signInOrCreate.moreAbout.paragraph1' | translate}}</p>
-<p class="govuk-body">{{'pages.signInOrCreate.moreAbout.paragraph2' | translate}}</p>
-<p class="govuk-body">{{'pages.signInOrCreate.moreAbout.paragraph3' | translate}}</p>
+    <p class="govuk-body">{{ 'pages.signInOrCreate.moreAbout.paragraph1' | translate }}</p>
+    <p class="govuk-body">{{ 'pages.signInOrCreate.moreAbout.paragraph2' | translate }}</p>
+    <p class="govuk-body">{{ 'pages.signInOrCreate.moreAbout.paragraph3' | translate }}</p>
 {% endset %}
 
 {% block content %}
-  {% include "common/errors/errorSummary.njk" %}
+    {% include "common/errors/errorSummary.njk" %}
 
-  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.signInOrCreate.mandatory.header' | translate}}</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.signInOrCreate.mandatory.header' | translate }}</h1>
 
-  <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph' | translate }}</p>
-  <ul class="govuk-list govuk-list--bullet">
-    <li>{{ 'pages.signInOrCreate.bullet1' | translate }}</li>
-    {% if supportInternationalNumbers %}
-      <li>{{ 'pages.signInOrCreate.bullet2IntNumbers' | translate }}</li>
-    {% else %}
-      <li>{{ 'pages.signInOrCreate.bullet2' | translate }}</li>
+    <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph' | translate }}</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>{{ 'pages.signInOrCreate.bullet1' | translate }}</li>
+        {% if supportInternationalNumbers %}
+            <li>{{ 'pages.signInOrCreate.bullet2IntNumbers' | translate }}</li>
+        {% else %}
+            <li>{{ 'pages.signInOrCreate.bullet2' | translate }}</li>
+        {% endif %}
+    </ul>
+    {% if supportLanguageCY %}
+        {% set altLangInsetHtml %}
+            {{ 'pages.signInOrCreate.insetAlternativeLanguage.paragraph1' | translate }}
+            <a href="{{ 'pages.signInOrCreate.insetAlternativeLanguage.linkHref' | translate }}" class="govuk-link" rel="noreferrer">
+                {{ 'pages.signInOrCreate.insetAlternativeLanguage.linkText.inPageLanguage' | translate }}
+                <span lang="{{ 'pages.signInOrCreate.insetAlternativeLanguage.linkText.destinationLanguageCode' | translate }}">{{ 'pages.signInOrCreate.insetAlternativeLanguage.linkText.inDestinationLanguage' | translate }}</span></a>.
+        {% endset %}
+        {{ govukInsetText({
+            html: altLangInsetHtml
+        }) }}
     {% endif %}
-  </ul>
-  {% if supportLanguageCY %}
-    {% set altLangInsetHtml %}
-    {{ 'pages.signInOrCreate.insetAlternativeLanguage.paragraph1' | translate }}
-    <a href="{{ 'pages.signInOrCreate.insetAlternativeLanguage.linkHref' | translate }}" class="govuk-link" rel="noreferrer">
-      {{ 'pages.signInOrCreate.insetAlternativeLanguage.linkText.inPageLanguage' | translate }}
-      <span lang="{{ 'pages.signInOrCreate.insetAlternativeLanguage.linkText.destinationLanguageCode' | translate }}">{{ 'pages.signInOrCreate.insetAlternativeLanguage.linkText.inDestinationLanguage' | translate }}</span></a>.
-    {% endset %}
-    {{ govukInsetText({
-      html: altLangInsetHtml
+
+    <form action="/sign-in-or-create" method="post" novalidate="novalidate">
+
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        <input type="hidden" name="supportInternationalNumbers" value="{{ supportInternationalNumbers }}" />
+
+        {{ govukButton({
+            text: 'pages.signInOrCreate.createButtonText' | translate,
+            value: "create",
+            name: "optionSelected",
+            classes: "govuk-!-margin-right-3",
+            attributes: {
+                "id": "create-account-link"
+            }
+        }) }}
+        <div>
+            {{ govukButton({
+                text: 'pages.signInOrCreate.signInText' | translate,
+                classes: "govuk-button--secondary",
+                attributes: {
+                    "id": "sign-in-button"
+                }
+            }) }}
+        </div>
+
+    </form>
+
+    {{ govukDetails({
+        summaryText: 'pages.signInOrCreate.moreAbout.header' | translate,
+        html: moreAboutTextHtml
     }) }}
-  {% endif %}
-
-  <form action="/sign-in-or-create" method="post" novalidate="novalidate">
-
-    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-    <input type="hidden" name="supportInternationalNumbers" value="{{supportInternationalNumbers}}"/>
-
-    {{ govukButton({
-    text: 'pages.signInOrCreate.createButtonText' | translate,
-    value: "create",
-    name: "optionSelected",
-    classes: "govuk-!-margin-right-3",
-    attributes: {
-      "id": "create-account-link"
-    }
-  }) }}
-
-    {{ govukButton({
-      text: 'pages.signInOrCreate.signInText' | translate,
-      classes: "govuk-button--secondary",
-      attributes: {
-        "id": "sign-in-button"
-      }
-    }) }}
-
-  </form>
-
-  {{ govukDetails({
-  summaryText: 'pages.signInOrCreate.moreAbout.header' | translate,
-  html: moreAboutTextHtml
-  }) }}
 
 {% endblock %}
