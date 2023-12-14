@@ -1,6 +1,16 @@
 import { body, ValidationChain } from "express-validator";
 import { containsNumbersOnly } from "../../../utils/strings";
 
+export function removeWhiteSpace(value: string): string {
+  const re = /[\r\n\t\f\v\s]/g;
+
+  return value.replace(re, "");
+}
+
+export function whitespaceSanitizer(): ValidationChain {
+  return body("code").customSanitizer(removeWhiteSpace);
+}
+
 export function validateCode(validationMessageKeys: {
   requiredKey: string;
   maxLengthKey: string;
