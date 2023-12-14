@@ -342,11 +342,27 @@ describe("authorize controller", () => {
       expect(req.session.client.isOneLoginService).to.equal(
         mockClaims.is_one_login_service
       );
+
       expect(req.session.client.claim).to.be.deep.equal([
         "email_verified",
         "public_subject_id",
         "email",
       ]);
+    });
+
+    it("should set session reauthenticate session field from jwt claims when claim is present", async () => {
+      req.query.request = "JWE";
+      mockClaims.reauthenticate = "123456";
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+      expect(req.session.user.reauthenticate).to.equal(
+        mockClaims.reauthenticate
+      );
     });
 
     it("claims should be undefined when optional claims missing", async () => {

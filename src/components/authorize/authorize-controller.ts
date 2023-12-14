@@ -117,6 +117,7 @@ export function authorizeGet(
       startAuthResponse.data.user.docCheckingAppUser;
 
     req.session.user.isAccountCreationJourney = undefined;
+    req.session.user.reauthenticate = claims.reauthenticate;
 
     if (startAuthResponse.data.featureFlags) {
       req.session.user.featureFlags = startAuthResponse.data.featureFlags;
