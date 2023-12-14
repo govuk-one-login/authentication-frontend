@@ -35,6 +35,15 @@ describe("JWT service", () => {
       expect(result).to.deep.equal(createmockclaims());
     });
 
+    it("should consider a jwt with a reautheticate claim as valid", async () => {
+      const jwtWithReautheticateClaim = createmockclaims();
+      jwtWithReautheticateClaim.reauthenticate = "123456";
+      const jwt = await createJwt(jwtWithReautheticateClaim, privateKey);
+
+      const result = await jwtService.getPayloadWithValidation(jwt);
+      expect(result).to.deep.equal(jwtWithReautheticateClaim);
+    });
+
     describe("Validate jwt", () => {
       it("should throw an error when passed non-JWT format", async () => {
         try {
