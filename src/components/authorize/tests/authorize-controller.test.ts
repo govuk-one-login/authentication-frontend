@@ -213,6 +213,49 @@ describe("authorize controller", () => {
       );
     });
 
+    it("should redirect to sign in when reauthentication is requested and user is not authenticated and support reauthenticate feature flag is on", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+      mockClaims.reauthenticate = "123456";
+      authServiceResponseData.data.user = {
+        consentRequired: false,
+        identityRequired: false,
+        upliftRequired: false,
+        authenticated: false,
+      };
+      fakeAuthorizeService = mockAuthService(authServiceResponseData);
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
+    });
+
+    //note that this is currently the same behaviour with the feature flag on or off. This will change if we decide on a different initial page for the reauth journey
+    it("should redirect to sign in when reauthentication is requested and user has an existing session but support reauthenticate feature flag is off", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "0";
+      mockClaims.reauthenticate = "123456";
+      authServiceResponseData.data.user = {
+        consentRequired: false,
+        identityRequired: false,
+        upliftRequired: false,
+        authenticated: false,
+      };
+      fakeAuthorizeService = mockAuthService(authServiceResponseData);
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
+    });
+
     it("should redirect to /enter-password page when prompt is login", async () => {
       req.query.prompt = OIDC_PROMPT.LOGIN;
 
@@ -351,6 +394,7 @@ describe("authorize controller", () => {
     });
 
     it("should set session reauthenticate session field from jwt claims when claim is present", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
       req.query.request = "JWE";
       mockClaims.reauthenticate = "123456";
 
@@ -363,6 +407,20 @@ describe("authorize controller", () => {
       expect(req.session.user.reauthenticate).to.equal(
         mockClaims.reauthenticate
       );
+    });
+
+    it("should not set session reauthenticate session field from jwt claims when claim is present", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "0";
+      req.query.request = "JWE";
+      mockClaims.reauthenticate = "123456";
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+      expect(req.session.user.reauthenticate).to.eq(null);
     });
 
     it("claims should be undefined when optional claims missing", async () => {

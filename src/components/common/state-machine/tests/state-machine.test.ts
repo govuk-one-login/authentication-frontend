@@ -144,5 +144,32 @@ describe("state-machine", () => {
       );
       expect(nextState.value).to.equal(PATH_NAMES.CHECK_YOUR_EMAIL);
     });
+
+    it("should move from authorize to sign or create when reauthentication is requested and the user is already logged in", () => {
+      const nextState = getNextState(
+        PATH_NAMES.AUTHORIZE,
+        USER_JOURNEY_EVENTS.EXISTING_SESSION,
+        { isAuthenticated: true, isReauthenticationRequired: true }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
+    });
+
+    it("should move from authorize to sign or create when reauthentication is requested and the user is not logged in", () => {
+      const nextState = getNextState(
+        PATH_NAMES.AUTHORIZE,
+        USER_JOURNEY_EVENTS.NO_EXISTING_SESSION,
+        { isReauthenticationRequired: true }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
+    });
+
+    it("should move from authorize to auth code create when the user is already logged in", () => {
+      const nextState = getNextState(
+        PATH_NAMES.AUTHORIZE,
+        USER_JOURNEY_EVENTS.EXISTING_SESSION,
+        { isAuthenticated: true }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
+    });
   });
 });
