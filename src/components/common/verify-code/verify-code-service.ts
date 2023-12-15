@@ -15,13 +15,15 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
     notificationType: string,
     clientSessionId: string,
     sourceIp: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    journeyType?: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.VERIFY_CODE,
       {
         code,
         notificationType,
+        journeyType,
       },
       getRequestConfig({
         sessionId,

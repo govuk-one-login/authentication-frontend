@@ -7,6 +7,7 @@ export interface VerifyCodeInterface {
     notificationType: string,
     clientSessionId: string,
     sourceIp: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    journeyType?: string
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }
