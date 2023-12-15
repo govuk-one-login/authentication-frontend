@@ -179,6 +179,10 @@ locals {
       {
         name  = "SUPPORT_ACCOUNT_INTERVENTIONS"
         value = var.support_account_interventions
+      },
+      {
+        name  = "SUPPORT_REAUTHENTICATION"
+        value = var.support_reauthentication
       }
     ]
 
