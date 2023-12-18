@@ -11,10 +11,7 @@ import {
 } from "../../utils/validation";
 
 export function createPasswordGet(req: Request, res: Response): void {
-  if (req.session.user.featureFlags?.updatePasswordHintTextVersion === "2") {
-    return res.render("create-password/ab-tests/index-variant.njk");
-  }
-  res.render("create-password/index.njk");
+  return res.render("create-password/index.njk");
 }
 
 export function createPasswordPost(
