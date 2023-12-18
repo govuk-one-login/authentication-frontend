@@ -203,3 +203,7 @@ export function support2FABeforePasswordReset(): boolean {
 export function supportAccountInterventions(): boolean {
   return process.env.SUPPORT_ACCOUNT_INTERVENTIONS === "1";
 }
+
+export function supportReauthentication(): boolean {
+  return process.env.SUPPORT_REAUTHENTICATION === "1";
+}

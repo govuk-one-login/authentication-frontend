@@ -276,3 +276,9 @@ variable "support_account_interventions" {
   type        = string
   default     = "0"
 }
+
+variable "support_reauthentication" {
+  description = "When true, turns on re-authentication in environment"
+  type        = string
+  default     = "0"
+}
