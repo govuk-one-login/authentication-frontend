@@ -7,6 +7,7 @@ import {
   http,
   Http,
 } from "../../utils/http";
+import { supportReauthentication } from "../../config";
 
 export function authorizeService(
   axios: Http = http
@@ -15,8 +16,13 @@ export function authorizeService(
     sessionId: string,
     clientSessionId: string,
     sourceIp: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    reauthenticate?: string
   ): Promise<ApiResponseResult<StartAuthResponse>> {
+    let reauthenticateOption = undefined;
+    if (supportReauthentication() && reauthenticate) {
+      reauthenticateOption = reauthenticate !== "";
+    }
     const response = await axios.client.get<StartAuthResponse>(
       API_ENDPOINTS.START,
       getRequestConfig({
@@ -24,6 +30,7 @@ export function authorizeService(
         clientSessionId: clientSessionId,
         sourceIp: sourceIp,
         persistentSessionId: persistentSessionId,
+        reauthenticate: reauthenticateOption,
       })
     );
 

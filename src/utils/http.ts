@@ -25,6 +25,7 @@ export interface ConfigOptions {
   persistentSessionId?: string;
   baseURL?: string;
   userLanguage?: string;
+  reauthenticate?: boolean;
 }
 
 export function createApiResponse<T>(
@@ -69,6 +70,10 @@ export function getRequestConfig(options: ConfigOptions): AxiosRequestConfig {
 
   if (options.baseURL) {
     config.baseURL = options.baseURL;
+  }
+
+  if (options.reauthenticate) {
+    config.headers["Reauthenticate"] = options.reauthenticate;
   }
 
   if (options.userLanguage) {
