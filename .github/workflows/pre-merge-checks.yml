@@ -36,6 +36,8 @@ jobs:
         run: yarn build
       - name: Run unit tests
         run: yarn test:unit
+      - name: Run test coverage
+        run: yarn test:coverage
       - name: Run integration tests
         run: yarn test:integration
       - name: Run lint
