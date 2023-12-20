@@ -115,6 +115,7 @@ export const API_ENDPOINTS = {
   IPV_PROCESSING_IDENTITY: "/processing-identity",
   VERIFY_MFA_CODE: "/verify-mfa-code",
   ACCOUNT_RECOVERY: "/account-recovery",
+  CHECK_REAUTH_USERS: "/check-reauth-users",
 };
 
 export const ERROR_MESSAGES = {
