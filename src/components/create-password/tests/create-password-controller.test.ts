@@ -33,32 +33,11 @@ describe("create-password controller", () => {
     sinon.restore();
   });
 
-  describe("createPasswordGet no feature flags", () => {
-    it("should render create password view when no feature flags", () => {
+  describe("createPasswordGet", () => {
+    it("should render create password view", () => {
       createPasswordGet(req as Request, res as Response);
 
-      req.session.user.featureFlags = null;
       expect(res.render).to.have.calledWith("create-password/index.njk");
-    });
-  });
-
-  describe("createPasswordGet with feature flag existing version", () => {
-    it("should render create password view with feature flags", () => {
-      createPasswordGet(req as Request, res as Response);
-
-      req.session.user.featureFlags.updatePasswordHintTextVersion = "1";
-      expect(res.render).to.have.calledWith("create-password/index.njk");
-    });
-
-    describe("createPasswordGetABScenario", () => {
-      it("should render create password view", () => {
-        req.session.user.featureFlags.updatePasswordHintTextVersion = "2";
-        createPasswordGet(req as Request, res as Response);
-
-        expect(res.render).to.have.calledWith(
-          "create-password/ab-tests/index-variant.njk"
-        );
-      });
     });
 
     describe("createPasswordPost", () => {
