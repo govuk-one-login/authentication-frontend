@@ -25,7 +25,7 @@ describe("Integration:: authorize", () => {
   let app: any;
 
   before(async () => {
-    process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
+    process.env.SUPPORT_AUTHORIZE_CONTROLLER = "1";
     decache("../../../app");
     decache("../authorize-service");
     decache("../kms-decryption-service");

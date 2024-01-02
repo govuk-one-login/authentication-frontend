@@ -43,6 +43,11 @@ variable "support_auth_orch_split" {
   default = "0"
 }
 
+variable "support_authorize_controller" {
+  type    = string
+  default = "0"
+}
+
 variable "support_smart_agent" {
   type    = string
   default = "0"
