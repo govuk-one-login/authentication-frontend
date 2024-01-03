@@ -49,11 +49,6 @@
     {% if theme == 'signing_in' %}
         {% set items = [
             {
-                value: "email",
-                checked: securityCodeSentMethod === 'email',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.email' | translateEnOnly
-            },
-            {
                 value: "text_message_uk_number",
                 checked: securityCodeSentMethod === 'text_message_uk_number',
                 text: 'pages.contactUsQuestions.securityCodeSentMethod.textMessageUkNumber' | translateEnOnly
