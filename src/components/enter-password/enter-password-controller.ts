@@ -15,7 +15,7 @@ import {
 } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { MFA_METHOD_TYPE } from "../../app.constants";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 import xss from "xss";
 import { EnterEmailServiceInterface } from "../enter-email/types";
 import { enterEmailService } from "../enter-email/enter-email-service";
@@ -78,6 +78,16 @@ export function enterPasswordAccountExistsGet(
   res.render(ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE, {
     email: email,
   });
+}
+
+export function getErrorPathByCodeForPasswordFailures(
+  errorCode: number
+): string | undefined {
+  if (errorCode === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
+    return PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED;
+  } else {
+    return getErrorPathByCode(errorCode);
+  }
 }
 
 export function enterPasswordPost(
@@ -152,7 +162,7 @@ export function enterPasswordPost(
       );
 
       if (!result.success) {
-        const path = getErrorPathByCode(result.data.code);
+        const path = getErrorPathByCodeForPasswordFailures(result.data.code);
 
         if (path) {
           return res.redirect(path);

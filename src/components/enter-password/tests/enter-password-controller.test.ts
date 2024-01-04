@@ -7,6 +7,7 @@ import {
   enterPasswordGet,
   enterPasswordPost,
   enterSignInRetryBlockedGet,
+  getErrorPathByCodeForPasswordFailures,
 } from "../enter-password-controller";
 
 import { PATH_NAMES } from "../../../app.constants";
@@ -19,7 +20,7 @@ import {
   ResponseOutput,
 } from "mock-req-res";
 import { EnterEmailServiceInterface } from "../../enter-email/types";
-import { ERROR_CODES } from "../../common/constants";
+import { ERROR_CODES, getErrorPathByCode } from "../../common/constants";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
@@ -302,5 +303,26 @@ describe("enter password controller", () => {
         "enter-password/index-sign-in-retry-blocked.njk"
       );
     });
+  });
+});
+
+describe("getErrorPathByCodeForPasswordFailures", () => {
+  it("should return PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED when passed ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES", () => {
+    expect(
+      getErrorPathByCodeForPasswordFailures(
+        ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
+      )
+    ).to.eq(PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED);
+  });
+
+  it("should otherwise return the same value as getErrorPathByCode would", () => {
+    for (const [key, value] of Object.entries(ERROR_CODES)) {
+      if (value !== ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
+        expect(getErrorPathByCodeForPasswordFailures(value)).to.eq(
+          getErrorPathByCode(value),
+          `Argument ${key} returned a different value`
+        );
+      }
+    }
   });
 });
