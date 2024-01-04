@@ -24,7 +24,10 @@ import {
 import { KmsDecryptionService } from "./kms-decryption-service";
 import { JwtService } from "./jwt-service";
 import { appendQueryParamIfHasValue } from "../../utils/url";
-import { getOrchToAuthExpectedClientId } from "../../config";
+import {
+  getOrchToAuthExpectedClientId,
+  supportReauthentication,
+} from "../../config";
 
 function createConsentCookie(
   res: Response,
@@ -69,7 +72,8 @@ export function authorizeGet(
       sessionId,
       clientSessionId,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      claims.reauthenticate
     );
 
     if (!startAuthResponse.success) {
@@ -117,6 +121,11 @@ export function authorizeGet(
       startAuthResponse.data.user.docCheckingAppUser;
 
     req.session.user.isAccountCreationJourney = undefined;
+    let reauthenticate = null;
+    if (supportReauthentication()) {
+      reauthenticate = claims.reauthenticate;
+    }
+    req.session.user.reauthenticate = reauthenticate;
 
     if (startAuthResponse.data.featureFlags) {
       req.session.user.featureFlags = startAuthResponse.data.featureFlags;
@@ -138,6 +147,7 @@ export function authorizeGet(
         prompt: req.session.client.prompt,
         skipAuthentication: req.session.user.docCheckingAppUser,
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
+        isReauthenticationRequired: req.session.user.reauthenticate,
       },
       sessionId
     );

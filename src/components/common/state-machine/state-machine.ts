@@ -73,6 +73,7 @@ const authStateMachine = createMachine(
       isMfaMethodVerified: true,
       isPasswordChangeRequired: false,
       isAccountRecoveryJourney: false,
+      isReauthenticationRequired: false,
     },
     states: {
       [PATH_NAMES.START]: {
@@ -124,9 +125,17 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.SHARE_INFO],
               cond: "isConsentRequired",
             },
+            {
+              target: [PATH_NAMES.SIGN_IN_OR_CREATE],
+              cond: "isReauthenticationRequired",
+            },
             { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
           ],
           [USER_JOURNEY_EVENTS.NO_EXISTING_SESSION]: [
+            {
+              target: [PATH_NAMES.SIGN_IN_OR_CREATE],
+              cond: "isReauthenticationRequired",
+            },
             {
               target: [PATH_NAMES.DOC_CHECKING_APP],
               cond: "skipAuthentication",
@@ -703,6 +712,8 @@ const authStateMachine = createMachine(
         context.requiresTwoFactorAuth === true,
       isPasswordChangeRequired: (context) => context.isPasswordChangeRequired,
       isAccountRecoveryJourney: (context) => context.isAccountRecoveryJourney,
+      isReauthenticationRequired: (context) =>
+        context.isReauthenticationRequired,
     },
   }
 );

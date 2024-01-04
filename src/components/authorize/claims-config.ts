@@ -30,6 +30,7 @@ export type Claims = {
   client_id: string;
   redirect_uri: string;
   rp_sector_host: string;
+  reauthenticate?: string;
   claim?: string;
 };
 
