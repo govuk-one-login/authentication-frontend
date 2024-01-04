@@ -12,6 +12,7 @@ gtm_id                        = ""
 support_language_cy           = "1"
 support_account_recovery      = "1"
 support_auth_orch_split       = "1"
+support_authorize_controller  = "1"
 support_international_numbers = "1"
 
 frontend_task_definition_cpu     = 256

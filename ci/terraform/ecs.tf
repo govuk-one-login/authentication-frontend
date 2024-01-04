@@ -93,6 +93,10 @@ locals {
         value = var.support_auth_orch_split
       },
       {
+        name  = "SUPPORT_AUTHORIZE_CONTROLLER"
+        value = var.support_authorize_controller
+      },
+      {
         name  = "ENCRYPTION_KEY_ID"
         value = "alias/${var.environment}-authentication-encryption-key-alias"
       },

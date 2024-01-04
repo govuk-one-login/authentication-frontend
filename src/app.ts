@@ -25,7 +25,7 @@ import {
   getSessionSecret,
   supportAccountInterventions,
   supportAccountRecovery,
-  supportAuthOrchSplit,
+  supportAuthorizeController,
 } from "./config";
 import { logErrorMiddleware } from "./middleware/log-error-middleware";
 import { getCookieLanguageMiddleware } from "./middleware/cookie-lang-middleware";
@@ -113,7 +113,7 @@ function registerRoutes(app: express.Application) {
     app.use(checkYourEmailSecurityCodesRouter);
     app.use(changeSecurityCodesConfirmationRouter);
   }
-  if (supportAuthOrchSplit()) {
+  if (supportAuthorizeController()) {
     app.use(authorizeRouter);
   }
   app.use(securityCodeErrorRouter);
