@@ -134,17 +134,8 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
     ),
 };
 
-export function getErrorPathByCode(
-  errorCode: number,
-  override: { errorCodeToOverride?: number; path?: string } = {}
-): string | undefined {
-  let nextPath;
-
-  if (errorCode === override?.errorCodeToOverride) {
-    nextPath = override.path;
-  } else {
-    nextPath = ERROR_CODE_MAPPING[errorCode.toString()];
-  }
+export function getErrorPathByCode(errorCode: number): string | undefined {
+  const nextPath = ERROR_CODE_MAPPING[errorCode.toString()];
 
   if (!nextPath) {
     return undefined;

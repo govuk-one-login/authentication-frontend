@@ -152,10 +152,17 @@ export function enterPasswordPost(
       );
 
       if (!result.success) {
-        const path = getErrorPathByCode(result.data.code, {
-          errorCodeToOverride: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
-          path: PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-        });
+        if (result.data.code === ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
+          return res.render("security-code-error/index-wait.njk");
+        }
+
+        if (result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
+          return res.render(
+            "security-code-error/index-security-code-entered-exceeded.njk"
+          );
+        }
+
+        const path = getErrorPathByCode(result.data.code);
 
         if (path) {
           return res.redirect(path);
