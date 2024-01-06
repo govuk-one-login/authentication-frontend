@@ -40,7 +40,7 @@ export function enterEmailPost(
 
     if (!result.success) {
       if (result.data.code === ERROR_CODES.ACCOUNT_LOCKED) {
-        return res.redirect(getErrorPathByCode(result.data.code));
+        return res.render("enter-password/index-sign-in-retry-blocked.njk");
       }
       throw new BadRequestError(result.data.message, result.data.code);
     }
