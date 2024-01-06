@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { sendNotificationService } from "../../common/send-notification/send-notification-service";
 import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../../app.constants";
-import { getErrorPathByCode } from "../../common/constants";
+import { ERROR_CODES, getErrorPathByCode } from "../../common/constants";
 import { BadRequestError } from "../../../utils/error";
 import xss from "xss";
 import { ExpressRouteFunc } from "../../../types";
@@ -31,6 +31,13 @@ export function sendEmailOtp(
 
     if (sendNotificationResponse.success) {
       return next();
+    }
+
+    if (
+      sendNotificationResponse.data?.code ===
+      ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_CODE_REQUEST_BLOCKED
+    ) {
+      return res.render("security-code-error/index-wait.njk");
     }
 
     const path = sendNotificationResponse.data?.code
