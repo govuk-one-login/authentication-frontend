@@ -23,6 +23,7 @@ import {
   getRedisPort,
   getSessionExpiry,
   getSessionSecret,
+  support2FABeforePasswordReset,
   supportAccountInterventions,
   supportAccountRecovery,
   supportAuthorizeController,
@@ -61,6 +62,7 @@ import { accountNotFoundRouter } from "./components/account-not-found/account-no
 import { resetPasswordCheckEmailRouter } from "./components/reset-password-check-email/reset-password-check-email-routes";
 import { setLocalVarsMiddleware } from "./middleware/set-local-vars-middleware";
 import { resetPasswordRouter } from "./components/reset-password/reset-password-routes";
+import { resetPassword2FARouter } from "./components/reset-password-2fa-sms/reset-password-2fa-sms-routes";
 import { noCacheMiddleware } from "./middleware/no-cache-middleware";
 import { checkYourEmailRouter } from "./components/check-your-email/check-your-email-routes";
 import { securityCodeErrorRouter } from "./components/security-code-error/security-code-error-routes";
@@ -126,6 +128,9 @@ function registerRoutes(app: express.Application) {
   app.use(shareInfoRouter);
   app.use(updatedTermsConditionsRouter);
   app.use(resetPasswordRouter);
+  if (support2FABeforePasswordReset()) {
+    app.use(resetPassword2FARouter);
+  }
   app.use(upliftJourneyRouter);
   app.use(contactUsRouter);
   app.use(healthcheckRouter);

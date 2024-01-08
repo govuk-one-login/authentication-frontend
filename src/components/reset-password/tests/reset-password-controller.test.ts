@@ -54,6 +54,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
     });
     res = mockResponse();
     res.locals.sessionId = "s-123456-djjad";
+    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
   });
 
   afterEach(() => {
@@ -146,6 +147,44 @@ describe("reset password controller (in 6 digit code flow)", () => {
 
           expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
         });
+
+        it(
+          "should redirect to /auth-code if support2FABeforePasswordReset " +
+            "flag is set to true",
+          async () => {
+            const fakeResetService: ResetPasswordServiceInterface = {
+              updatePassword: sinon.fake.returns({ success: true }),
+            } as unknown as ResetPasswordServiceInterface;
+            const fakeLoginService: EnterPasswordServiceInterface = {
+              loginUser: sinon.fake.returns({
+                success: true,
+                data: {
+                  redactedPhoneNumber: "1234",
+                  consentRequired: false,
+                  latestTermsAndConditionsAccepted: true,
+                  mfaMethodVerified: true,
+                  mfaMethodType: MFA_METHOD_TYPE.SMS,
+                  mfaRequired: true,
+                  passwordChangeRequired: params.passwordChangeRequired,
+                },
+              }),
+            } as unknown as EnterPasswordServiceInterface;
+            fakeLoginService.loginUser;
+            const fakeMfAService: MfaServiceInterface = {
+              sendMfaCode: sinon.fake.returns({ success: true }),
+            } as unknown as MfaServiceInterface;
+
+            process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+
+            await resetPasswordPost(
+              fakeResetService,
+              fakeLoginService,
+              fakeMfAService
+            )(req as Request, res as Response);
+
+            expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
+          }
+        );
 
         it("should redirect to /get-security-codes when password updated and mfa method not verified", async () => {
           const fakeResetService: ResetPasswordServiceInterface = {

@@ -20,6 +20,7 @@ export const PATH_NAMES = {
   ENTER_PASSWORD_ACCOUNT_EXISTS: "/enter-password-account-exists",
   RESET_PASSWORD_CHECK_EMAIL: "/reset-password-check-email",
   RESET_PASSWORD: "/reset-password",
+  RESET_PASSWORD_2FA_SMS: "/reset-password-2fa-sms",
   RESET_PASSWORD_REQUIRED: "/reset-password-required",
   RESET_PASSWORD_REQUEST: "/reset-password-request",
   RESET_PASSWORD_RESEND_CODE: "/reset-password-resend-code",
@@ -212,6 +213,7 @@ export enum JOURNEY_TYPE {
   REGISTRATION = "REGISTRATION",
   ACCOUNT_RECOVERY = "ACCOUNT_RECOVERY",
   SIGN_IN = "SIGN_IN",
+  PASSWORD_RESET_MFA = "PASSWORD_RESET_MFA",
 }
 
 export const ENVIRONMENT_NAME = {

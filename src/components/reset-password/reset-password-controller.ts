@@ -19,6 +19,7 @@ import { MfaServiceInterface } from "../common/mfa/types";
 import { mfaService } from "../common/mfa/mfa-service";
 import { MFA_METHOD_TYPE } from "../../app.constants";
 import xss from "xss";
+import { support2FABeforePasswordReset } from "../../config";
 
 const resetPasswordTemplate = "reset-password/index.njk";
 
@@ -107,6 +108,7 @@ export function resetPasswordPost(
     }
 
     if (
+      !support2FABeforePasswordReset() &&
       loginResponse.data.mfaMethodVerified &&
       loginResponse.data.mfaMethodType === MFA_METHOD_TYPE.SMS
     ) {
@@ -144,6 +146,7 @@ export function resetPasswordPost(
             req.session.user.isLatestTermsAndConditionsAccepted,
           mfaMethodType: loginResponse.data.mfaMethodType,
           isMfaMethodVerified: loginResponse.data.mfaMethodVerified,
+          support2FABeforePasswordReset: support2FABeforePasswordReset(),
         },
         res.locals.sessionId
       )

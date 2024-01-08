@@ -33,6 +33,7 @@ describe("reset password check email controller", () => {
     });
     res = mockResponse();
     res.locals.sessionId = "s-123456-djjad";
+    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
   });
 
   afterEach(() => {
@@ -80,6 +81,26 @@ describe("reset password check email controller", () => {
       );
 
       expect(res.redirect).to.have.calledWith("/reset-password");
+    });
+
+    it("should redirect to check_phone if code entered is correct and feature flag is turned on", async () => {
+      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+      const fakeService: VerifyCodeInterface = {
+        verifyCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as VerifyCodeInterface;
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      req.body.code = "123456";
+      req.session.id = "123456-djjad";
+      await resetPasswordCheckEmailPost(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith("/reset-password-2fa-sms");
     });
 
     it("should render check email page with errors if incorrect code entered", async () => {

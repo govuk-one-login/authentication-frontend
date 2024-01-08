@@ -514,6 +514,45 @@
         "sendTheCodeAgain": "Anfon y cod eto"
       }
     },
+    "passwordResetMfaSms": {
+      "title": "Gwiriwch eich ffôn",
+      "header": "Gwiriwch eich ffôn",
+      "info": {
+        "paragraph1": "Rydym wedi anfon cod i’ch rhif ffôn sy’n gorffen gyda ",
+        "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud."
+      },
+      "resend": {
+        "link": "Gofynnwch am god newydd",
+        "paragraph1": "os nad yw’r cod yn gweithio neu mae wedi dod i ben, neu ni dderbynioch un."
+      },
+      "code": {
+        "label": "Rhowch y cod diogelwch 6 digid",
+        "validationError": {
+          "required": "Rhowch y cod diogelwch",
+          "maxLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
+          "minLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
+          "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
+          "invalidCode": "Nid yw’r cod diogelwch rydych wedi’i roi yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi i mewn eto neu ofyn am god newydd"
+        }
+      },
+      "details": {
+        "summaryText": "Problemau gyda’r cod?",
+        "text1": "Gallwn ",
+        "sendCodeLinkText": "anfon y cod eto",
+        "sendCodeLinkHref": "/resend-code",
+        "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn.",
+        "changeGetSecurityCodesText": "Os na allwch gyrchu’r rhif ffôn ar gyfer eich GOV.UK One Login, gallwch ",
+        "changeGetSecurityCodesLinkText": "newid yn ddiogel sut rydych yn cael codau diogelwch"
+      },
+      "upliftRequired": {
+        "title": "Mae angen i chi roi cod diogelwch",
+        "header": "Mae angen i chi roi cod diogelwch",
+        "paragraph1": "Mae hwn yn helpu i gadw eich GOV.UK One Login yn ddiogel.",
+        "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud.",
+        "paragraph3": "Rydym wedi anfon cod at y rhif ffôn sy’n gysylltiedig â’ch GOV.UK One Login.",
+        "sendTheCodeAgain": "Anfon y cod eto"
+      }
+    },
     "resendMfaCode": {
       "title": "Cael cod diogelwch",
       "header": "Cael cod diogelwch",
