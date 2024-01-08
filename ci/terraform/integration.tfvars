@@ -20,3 +20,7 @@ logging_endpoint_arns = [
 
 dynatrace_secret_arn                     = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
 frame_ancestors_form_actions_csp_headers = "1"
+
+orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzzwKLypUL89WVaeTbfBZu0Fws8T7\nppx89XLVfgXIoCs2P//N5qdghvzgNIgVehQ7CkzyorO/lnRlWPfjCG4Oxw==\n-----END PUBLIC KEY-----"
+orch_to_auth_client_id          = "orchestrationAuth"
+orch_to_auth_audience           = "https://signin.integration.account.gov.uk/"
