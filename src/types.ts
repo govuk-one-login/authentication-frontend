@@ -76,6 +76,7 @@ export interface UserSession {
   isAccountRecoveryCodeResent?: boolean;
   accountRecoveryVerifiedMfaType?: string;
   reauthenticate?: string;
+  authCodeReturnToRP?: boolean;
 }
 
 export interface UserSessionClient {
