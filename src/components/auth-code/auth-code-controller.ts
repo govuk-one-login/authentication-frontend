@@ -24,6 +24,7 @@ export function authCodeGet(
       req.session.client,
       req.session.user
     );
+    req.session.user.authCodeReturnToRP = false;
 
     if (!result.success) {
       throw new BadRequestError(result.data.message, result.data.code);

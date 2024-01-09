@@ -23,7 +23,7 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
     clientSession: UserSessionClient,
     userSession: UserSession
   ): Promise<ApiResponseResult<AuthCodeResponse>> {
-    const baseUrl = supportAuthOrchSplit()
+    const baseUrl = shouldCallOrchAuthCode(userSession)
       ? getFrontendApiBaseUrl()
       : getApiBaseUrl();
     const config = getRequestConfig({
@@ -36,7 +36,7 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
 
     let response: AxiosResponse;
 
-    if (supportAuthOrchSplit()) {
+    if (shouldCallOrchAuthCode(userSession)) {
       const body = {
         claims: clientSession.claim,
         state: clientSession.state,
@@ -55,6 +55,10 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
 
     return createApiResponse<AuthCodeResponse>(response);
   };
+
+  function shouldCallOrchAuthCode(userSession: UserSession) {
+    return supportAuthOrchSplit() && !userSession.authCodeReturnToRP;
+  }
 
   return {
     getAuthCode,

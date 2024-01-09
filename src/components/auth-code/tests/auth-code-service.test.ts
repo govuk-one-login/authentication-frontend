@@ -96,6 +96,29 @@ describe("authentication auth code service", () => {
       expect(getStub.notCalled).to.be.true;
       expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);
     });
+
+    it("should make a request for an RP auth code following the prove identity callback page", async () => {
+      process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
+
+      const result = await service.getAuthCode(
+        "sessionId",
+        "clientSessionId",
+        "sourceIp",
+        "persistentSessionId",
+        {},
+        { authCodeReturnToRP: true }
+      );
+
+      expect(
+        getStub.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
+          headers: sinon.match.object,
+          baseURL: apiBaseUrl,
+          proxy: sinon.match.bool,
+        })
+      ).to.be.true;
+      expect(postStub.notCalled).to.be.true;
+      expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);
+    });
   });
 
   describe("with auth orch split feature flag off", () => {
