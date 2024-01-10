@@ -1,3 +1,30 @@
+# The IP address blocks below are referenced from here:
+# https://sites.google.com/a/digital.cabinet-office.gov.uk/gds/working-at-gds/gds-internal-it/gds-internal-it-network-public-ip-addresses
+resource "aws_wafv2_ip_set" "gds_ip_set" {
+  name               = "${var.environment}-gds-ip-set"
+  scope              = "REGIONAL"
+  ip_address_version = "IPV4"
+
+  addresses = [
+    "217.196.229.77/32",
+    "217.196.229.79/32",
+    "217.196.229.80/32", # (BYOD VPN Only)
+    "217.196.229.81/32",
+    "51.149.8.0/25",   # (GDS and CO VPN)
+    "51.149.8.128/29", # (BYOD VPN only)
+    "213.86.153.212",
+    "213.86.153.213",
+    "213.86.153.214",
+    "213.86.153.235",
+    "213.86.153.236",
+    "213.86.153.237",
+    "213.86.153.211",
+    "213.86.153.231",
+  ]
+
+  tags = local.default_tags
+}
+
 resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
   name  = "${var.environment}-frontend-alb-waf-web-acl"
   scope = "REGIONAL"
@@ -6,11 +33,41 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
     allow {}
   }
 
+  dynamic "rule" {
+    for_each = var.environment == "staging" ? [1] : []
+    content {
+      name     = "GDSIPs"
+      priority = 10
+
+      action {
+        allow {}
+      }
+
+      statement {
+        ip_set_reference_statement {
+          arn = aws_wafv2_ip_set.gds_ip_set.arn
+
+          ip_set_forwarded_ip_config {
+            fallback_behavior = "MATCH"
+            header_name       = "X-Forwarded-For"
+            position          = "FIRST"
+          }
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafGDSIPs"
+        sampled_requests_enabled   = false
+      }
+    }
+  }
+
   rule {
     action {
       block {}
     }
-    priority = 1
+    priority = 20
     name     = "${var.environment}-frontend-alb-waf-rate-based-rule"
     statement {
       rate_based_statement {
@@ -29,7 +86,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
     override_action {
       none {}
     }
-    priority = 2
+    priority = 30
     name     = "${var.environment}-frontend-alb-common-rule-set"
 
     statement {
@@ -72,7 +129,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
     override_action {
       none {}
     }
-    priority = 3
+    priority = 40
     name     = "${var.environment}-frontend-alb-bad-rule-set"
 
     statement {
@@ -91,7 +148,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
 
   rule {
     name     = "default_query_param_limit"
-    priority = 4
+    priority = 50
 
     action {
       block {}
@@ -142,7 +199,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
 
   rule {
     name     = "extended_query_param_limit"
-    priority = 5
+    priority = 60
 
     action {
       block {}
