@@ -16,16 +16,22 @@ if [ -z "${PROXY_PASS}" ]; then
   exit 1
 fi
 
-touch /etc/nginx/allow-list.conf
+IP_BLOCK_MATCHER="private_ranges"
 if [ -n "${IP_ALLOW_LIST:-}" ]; then
-  echo "${IP_ALLOW_LIST}" | jq -r '"allow " + .[] + ";"' >>/etc/nginx/allow-list.conf
+  IP_BLOCK_MATCHER="$(echo "${IP_ALLOW_LIST}" | jq -r '. | join(" ")')"
 fi
+unset IP_ALLOW_LIST
+export IP_BLOCK_MATCHER
 
-touch /etc/nginx/trusted-proxies.conf
+TRUSTED_PROXIES_IPS=""
 if [ -n "${TRUSTED_PROXIES:-}" ]; then
-  echo "${TRUSTED_PROXIES}" | jq -r '"set_real_ip_from " + .[] + ";"' >>/etc/nginx/trusted-proxies.conf
+  TRUSTED_PROXIES_IPS="$(echo "${TRUSTED_PROXIES}" | jq -r '. | join(" ")')"
 fi
+unset TRUSTED_PROXIES
+export TRUSTED_PROXIES_IPS
 
-htpasswd -bBc /etc/nginx/.htpasswd "${BASIC_AUTH_USERNAME}" "${BASIC_AUTH_PASSWORD}"
+HASHED_PASSWORD="$(caddy hash-password --plaintext "${BASIC_AUTH_PASSWORD}")"
+unset BASIC_AUTH_PASSWORD
+export HASHED_PASSWORD
 
-exec /docker-entrypoint.sh "$@"
+exec "$@"
