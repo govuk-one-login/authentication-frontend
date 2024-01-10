@@ -9,10 +9,14 @@
 
     <p class="govuk-body">{{'pages.needToResetPassword.paragraph2' | translate }}</p>
 
+    <form action={{ resetPasswordCheckEmailURL }} method="get" novalidate="novalidate">
+
     {{ govukButton({
       "text": "general.continue.label" | translate,
       "type": "Submit",
       "preventDoubleClick": true
     }) }}
+
+    </form>
 
 {% endblock %}
