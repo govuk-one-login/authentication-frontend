@@ -703,8 +703,8 @@ const authStateMachine = createMachine(
         },
       },
       [PATH_NAMES.PASSWORD_RESET_REQUIRED]: {
-        on: {
-          [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.CHECK_YOUR_EMAIL],
+        meta: {
+          optionalPaths: [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL],
         },
       },
       [PATH_NAMES.UNAVAILABLE_PERMANENT]: {
