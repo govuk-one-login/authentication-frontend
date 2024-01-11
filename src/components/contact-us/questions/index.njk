@@ -1,4 +1,4 @@
-{% extends "contact-us/common-english-only/layout/base.njk" %}
+{% extends "common/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
@@ -10,10 +10,10 @@
 {% set showBack = true %}
 {% set hrefBack = backurl %}
 
-{% set pageTitleName = pageTitleHeading | translateEnOnly %}
+{% set pageTitleName = pageTitleHeading | translate %}
 
 {% block content %}
-{% include "contact-us/common-english-only/errors/errorSummary.njk" %}
+{% include "common/errors/errorSummary.njk" %}
 
     {% if subtheme == 'account_not_found' %}
         {% include 'contact-us/questions/_account-not-found-questions.njk' %}

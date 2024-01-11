@@ -1,5 +1,5 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsQuestions.accountNotFound.header' | translateEnOnly }}
+  {{ 'pages.contactUsQuestions.accountNotFound.header' | translate }}
 </h1>
 
 <form action="{{formSubmissionUrl}}" method="post" novalidate>
@@ -15,41 +15,41 @@
 
 {{ govukCharacterCount({
     label: {
-      text: 'pages.contactUsQuestions.accountNotFound.section2.header' | translateEnOnly,
+      text: 'pages.contactUsQuestions.accountNotFound.section2.header' | translate,
       classes: "govuk-label--s"
     },
     hint: {
-        text: 'pages.contactUsQuestions.accountNotFound.section2.paragraph1' | translateEnOnly
+        text: 'pages.contactUsQuestions.accountNotFound.section2.paragraph1' | translate
       },
     id: "optionalDescription",
     name: "optionalDescription",
     maxlength: zendeskFieldMaxLength,
     value: optionalDescription,
-    charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translateEnOnly,
+    charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translate,
     charactersUnderLimitText: {
-        other: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.other' | translateEnOnly,
-        one: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.one' | translateEnOnly
+        other: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.other' | translate,
+        one: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.one' | translate
     },
     charactersOverLimitText: {
-        other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translateEnOnly,
-        one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translateEnOnly
+        other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translate,
+        one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translate
     },
     errorMessage: {
-        text: errors['optionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['optionalDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
     } if (errors['optionalDescription'])
 }) }}
 
 {% include "contact-us/questions/_service-trying-to-use.njk" %}
 
 {{ govukWarningText({
-    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translateEnOnly,
+    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
     iconFallbackText: "Warning"
 }) }}
 
 {% include 'contact-us/questions/_reply_by_email.njk' %}
 
 {{ govukButton({
-    "text": "general.sendMessage" | translateEnOnly,
+    "text": "general.sendMessage" | translate,
     "type": "Submit",
     "preventDoubleClick": true
 }) }}

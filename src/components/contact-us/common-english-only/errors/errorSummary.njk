@@ -1,5 +1,5 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {{ govukErrorSummary({
-titleText: 'general.errorSummaryTitle' | translateEnOnly,
+titleText: 'general.errorSummaryTitle' | translate,
 errorList: errorList
 }) if (errorList) }}

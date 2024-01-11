@@ -1,4 +1,4 @@
-{% extends "contact-us/common-english-only/layout/base.njk" %}
+{% extends "common/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
@@ -8,23 +8,23 @@
 {% set showBack = true %}
 
 {% if theme == 'signing_in' %}
-    {% set pageTitleName = 'pages.contactUsFurtherInformation.signingIn.title' | translateEnOnly %}
+    {% set pageTitleName = 'pages.contactUsFurtherInformation.signingIn.title' | translate %}
 {% endif %}
 
 {% if theme == 'account_creation' %}
-    {% set pageTitleName = 'pages.contactUsFurtherInformation.accountCreation.title' | translateEnOnly %}
+    {% set pageTitleName = 'pages.contactUsFurtherInformation.accountCreation.title' | translate %}
 {% endif %}
 
 {% if theme == 'id_check_app' %}
-    {% set pageTitleName = 'pages.contactUsFurtherInformation.idCheckApp.title' | translateEnOnly %}
+    {% set pageTitleName = 'pages.contactUsFurtherInformation.idCheckApp.title' | translate %}
 {% endif %}
 
 {% if theme == 'id_face_to_face' %}
-    {% set pageTitleName = 'pages.contactUsFurtherInformation.provingIdentityFaceToFace.title' | translateEnOnly %}
+    {% set pageTitleName = 'pages.contactUsFurtherInformation.provingIdentityFaceToFace.title' | translate %}
 {% endif %}
 
 {% block content %}
-{% include "contact-us/common-english-only/errors/errorSummary.njk" %}
+{% include "common/errors/errorSummary.njk" %}
 
     {% if theme == 'signing_in' %}
         {% include 'contact-us/further-information/_signing-in-further-information.njk' %}
