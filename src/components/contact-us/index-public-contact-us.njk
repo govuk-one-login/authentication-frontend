@@ -6,28 +6,28 @@
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% set showBack = true %}
-{% set pageTitleName = 'pages.contactUsPublic.title' | translateEnOnly %}
+{% set pageTitleName = 'pages.contactUsPublic.title' | translate %}
 
 {% block content %}
 
     {% include "contact-us/common-english-only/errors/errorSummary.njk" %}
 
 {% set html %}
-<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translateEnOnly }}</p>
-<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translateEnOnly }}</a>
+<p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>
+<a class="govuk-notification-banner__link" id="go-back-link" href="#">{{ 'pages.cookiePolicy.successBanner.linkText' | translate }}</a>
 {% endset %}
 
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsPublic.header' | translateEnOnly }}
+  {{ 'pages.contactUsPublic.header' | translate }}
 </h1>
 
-<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph1' | translateEnOnly }}</p>
+<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph1' | translate }}</p>
 <ul class="govuk-list govuk-list--bullet">
- <li>{{ 'pages.contactUsPublic.section1.bulletPoint1' | translateEnOnly }}</li>
- <li>{{ 'pages.contactUsPublic.section1.bulletPoint2' | translateEnOnly }}</li>
+ <li>{{ 'pages.contactUsPublic.section1.bulletPoint1' | translate }}</li>
+ <li>{{ 'pages.contactUsPublic.section1.bulletPoint2' | translate }}</li>
 </ul>
 
-<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph2' | translateEnOnly }}</p>
+<p class="govuk-body">{{'pages.contactUsPublic.section1.paragraph2' | translate }}</p>
 
 <form action="/contact-us" method="post" novalidate>
 
@@ -41,35 +41,35 @@
     {% set items = [
         {
             value: "account_creation",
-            text: 'pages.contactUsPublic.section3.accountCreation' | translateEnOnly
+            text: 'pages.contactUsPublic.section3.accountCreation' | translate
         },
         {
             value: "signing_in",
-            text: 'pages.contactUsPublic.section3.signingIn' | translateEnOnly
+            text: 'pages.contactUsPublic.section3.signingIn' | translate
         },
         {
             value: "something_else",
-            text: 'pages.contactUsPublic.section3.somethingElse' | translateEnOnly
+            text: 'pages.contactUsPublic.section3.somethingElse' | translate
         },
         {
             value: "id_check_app",
-            text: 'pages.contactUsPublic.section3.idCheckApp' | translateEnOnly
+            text: 'pages.contactUsPublic.section3.idCheckApp' | translate
         },
         {
             value: "id_face_to_face",
-            text: 'pages.contactUsPublic.section3.provingIdentityFaceToFace' | translateEnOnly
+            text: 'pages.contactUsPublic.section3.provingIdentityFaceToFace' | translate
         },
         {
             value: "proving_identity",
-            text: 'pages.contactUsPublic.section3.provingIdentity' | translateEnOnly
+            text: 'pages.contactUsPublic.section3.provingIdentity' | translate
         },
         {
             value: "email_subscriptions",
-            text: 'pages.contactUsPublic.section3.emailSubscriptions' | translateEnOnly
+            text: 'pages.contactUsPublic.section3.emailSubscriptions' | translate
         },
         {
             value: "suggestions_feedback",
-            text: 'pages.contactUsPublic.section3.suggestionsFeedback' | translateEnOnly
+            text: 'pages.contactUsPublic.section3.suggestionsFeedback' | translate
         }
     ] %}
 
@@ -77,7 +77,7 @@
         name: "theme",
         fieldset: {
             legend: {
-                text: 'pages.contactUsPublic.section3.header' | translateEnOnly,
+                text: 'pages.contactUsPublic.section3.header' | translate,
                 isPageHeading: false,
                 classes: "govuk-fieldset__legend--m"
             }
@@ -90,7 +90,7 @@
 
 
 {{ govukButton({
-    "text": "pages.contactUsPublic.continueLabel" | translateEnOnly,
+    "text": "pages.contactUsPublic.continueLabel" | translate,
     "type": "Submit",
     "preventDoubleClick": true
 }) }}

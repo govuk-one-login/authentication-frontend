@@ -1,5 +1,5 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsFurtherInformation.accountCreation.header' | translateEnOnly }}
+  {{ 'pages.contactUsFurtherInformation.accountCreation.header' | translate }}
 </h1>
 
 <form action="/contact-us-further-information" method="post" novalidate>
@@ -14,27 +14,27 @@
         {% set items = [
                 {
                     value: "no_security_code",
-                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio1' | translateEnOnly
+                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio1' | translate
                 },
                 {
                     value: "invalid_security_code",
-                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio2' | translateEnOnly
+                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio2' | translate
                 },
                 {
                     value: "sign_in_phone_number_issue",
-                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio3' | translateEnOnly
+                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio3' | translate
                 },
                 {
                     value: "authenticator_app_problem",
-                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio6' | translateEnOnly
+                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio6' | translate
                 },
                 {
                     value: "technical_error",
-                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio4' | translateEnOnly
+                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio4' | translate
                 },
                 {
                     value: "something_else",
-                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio5' | translateEnOnly
+                    text: 'pages.contactUsFurtherInformation.accountCreation.section1.radio5' | translate
                 }
             ]
         %}
@@ -43,7 +43,7 @@
         name: "subtheme",
         fieldset: {
             legend: {
-                text: 'pages.contactUsFurtherInformation.accountCreation.section1.header' | translateEnOnly,
+                text: 'pages.contactUsFurtherInformation.accountCreation.section1.header' | translate,
                 isPageHeading: false,
                 classes: "govuk-fieldset__legend--m"
             }
@@ -56,7 +56,7 @@
 
 
 {{ govukButton({
-    "text": "general.continue.label" | translateEnOnly,
+    "text": "general.continue.label" | translate,
     "type": "Submit",
     "preventDoubleClick": true
 }) }}
