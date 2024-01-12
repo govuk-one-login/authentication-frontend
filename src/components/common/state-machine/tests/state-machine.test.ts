@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { getNextState, USER_JOURNEY_EVENTS } from "../state-machine";
-import { PATH_NAMES } from "../../../../app.constants";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../../app.constants";
 
 describe("state-machine", () => {
   describe("getNextState - login journey (2fa)", () => {
@@ -162,6 +162,69 @@ describe("state-machine", () => {
         { isAuthenticated: true }
       );
       expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
+    });
+  });
+
+  describe("getNextState - password reset", () => {
+    [
+      {
+        context: {
+          requiresTwoFactorAuth: true,
+          isMfaMethodVerified: false,
+          mfaMethodType: MFA_METHOD_TYPE.SMS,
+        },
+        destination: PATH_NAMES.GET_SECURITY_CODES,
+      },
+      {
+        context: {
+          requiresTwoFactorAuth: true,
+          mfaMethodType: MFA_METHOD_TYPE.SMS,
+          isLatestTermsAndConditionsAccepted: false,
+        },
+        destination: PATH_NAMES.ENTER_MFA,
+      },
+      {
+        context: {
+          requiresTwoFactorAuth: true,
+          mfaMethodType: MFA_METHOD_TYPE.AUTH_APP,
+          isLatestTermsAndConditionsAccepted: false,
+        },
+        destination: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+      },
+      {
+        context: {
+          requiresTwoFactorAuth: false,
+          isLatestTermsAndConditionsAccepted: false,
+        },
+        destination: PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS,
+      },
+      {
+        context: { requiresTwoFactorAuth: false, isMfaMethodVerified: false },
+        destination: PATH_NAMES.GET_SECURITY_CODES,
+      },
+      {
+        context: {
+          requiresTwoFactorAuth: false,
+          mfaMethodType: MFA_METHOD_TYPE.SMS,
+        },
+        destination: PATH_NAMES.AUTH_CODE,
+      },
+      {
+        context: {
+          requiresTwoFactorAuth: false,
+          mfaMethodType: MFA_METHOD_TYPE.AUTH_APP,
+        },
+        destination: PATH_NAMES.AUTH_CODE,
+      },
+    ].forEach((test) => {
+      it(`should move from ${PATH_NAMES.RESET_PASSWORD} to ${test.destination}`, () => {
+        const nextState = getNextState(
+          PATH_NAMES.RESET_PASSWORD,
+          USER_JOURNEY_EVENTS.PASSWORD_CREATED,
+          test.context
+        );
+        expect(nextState.value).to.equal(test.destination);
+      });
     });
   });
 });

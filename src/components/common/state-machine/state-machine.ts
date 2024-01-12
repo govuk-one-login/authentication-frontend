@@ -538,10 +538,6 @@ const authStateMachine = createMachine(
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
             {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "support2FABeforePasswordReset",
-            },
-            {
               target: [PATH_NAMES.GET_SECURITY_CODES],
               cond: "isAccountPartCreated",
             },

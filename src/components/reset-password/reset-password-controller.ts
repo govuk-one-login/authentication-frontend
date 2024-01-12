@@ -141,12 +141,11 @@ export function resetPasswordPost(
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
         {
           isConsentRequired: req.session.user.isConsentRequired,
-          requiresTwoFactorAuth: true,
+          requiresTwoFactorAuth: !support2FABeforePasswordReset(),
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
           mfaMethodType: loginResponse.data.mfaMethodType,
           isMfaMethodVerified: loginResponse.data.mfaMethodVerified,
-          support2FABeforePasswordReset: support2FABeforePasswordReset(),
         },
         res.locals.sessionId
       )
