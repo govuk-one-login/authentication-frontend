@@ -8,7 +8,7 @@
     },
     id: "issueDescription",
     name: "issueDescription",
-    maxlength: zendeskFieldMaxLength,
+    maxlength: contactUsFieldMaxLength,
     value: issueDescription,
     charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translateEnOnly,
     charactersUnderLimitText: {
@@ -20,6 +20,6 @@
         one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translateEnOnly
     },
     errorMessage: {
-        text: errors['issueDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['issueDescription'].text | translateEnOnly | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
     } if (errors['issueDescription'])
 }) }}

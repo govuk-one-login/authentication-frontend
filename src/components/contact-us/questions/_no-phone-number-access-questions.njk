@@ -26,7 +26,7 @@
       },
     id: "optionalDescription",
     name: "optionalDescription",
-    maxlength: zendeskFieldMaxLength,
+    maxlength: contactUsFieldMaxLength,
     value: optionalDescription,
     charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translateEnOnly,
     charactersUnderLimitText: {
@@ -38,7 +38,7 @@
         one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translateEnOnly
     },
     errorMessage: {
-        text: errors['optionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['optionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
     } if (errors['optionalDescription'])
 }) }}
 

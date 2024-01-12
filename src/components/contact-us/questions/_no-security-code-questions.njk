@@ -36,9 +36,9 @@
         other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translateEnOnly,
         one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translateEnOnly
     },
-    maxlength: zendeskFieldMaxLength,
+    maxlength: contactUsFieldMaxLength,
     errorMessage: {
-        text: errors['moreDetailDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['moreDetailDescription'].text | translateEnOnly | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
     } if (errors['moreDetailDescription'])
 }) }}
 
