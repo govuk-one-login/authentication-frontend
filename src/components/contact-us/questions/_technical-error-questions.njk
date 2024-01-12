@@ -20,7 +20,7 @@
     },
     id: "issueDescription",
     name: "issueDescription",
-    maxlength: zendeskFieldMaxLength,
+    maxlength: contactUsFieldMaxLength,
     value: issueDescription,
     charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translate,
     charactersUnderLimitText: {
@@ -32,7 +32,7 @@
         one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translate
     },
     errorMessage: {
-        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
     } if (errors['issueDescription'])
 }) }}
 
@@ -46,7 +46,7 @@
       },
     id: "additionalDescription",
     name: "additionalDescription",
-    maxlength: zendeskFieldMaxLength,
+    maxlength: contactUsFieldMaxLength,
     value: additionalDescription,
     charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translate,
     charactersUnderLimitText: {
@@ -58,7 +58,7 @@
         one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translateEnOnly
     },
     errorMessage: {
-        text: errors['additionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['additionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
     } if (errors['additionalDescription'])
 }) }}
 

@@ -19,7 +19,7 @@
     },
     id: "issueDescription",
     name: "issueDescription",
-    maxlength: zendeskFieldMaxLength,
+    maxlength: contactUsFieldMaxLength,
     value: issueDescription,
     charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translate,
     charactersUnderLimitText: {
@@ -31,7 +31,7 @@
         one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translate
     },
     errorMessage: {
-        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
     } if (errors['issueDescription'])
 }) }}
 
@@ -45,7 +45,7 @@
       },
     id: "optionalDescription",
     name: "optionalDescription",
-    maxlength: zendeskFieldMaxLength,
+    maxlength: contactUsFieldMaxLength,
     value: optionalDescription,
     charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translate,
     charactersUnderLimitText: {
@@ -57,7 +57,7 @@
         one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translate
     },
     errorMessage: {
-        text: errors['optionalDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['optionalDescription'].text | translate | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
     } if (errors['optionalDescription'])
 }) }}
 
