@@ -12,7 +12,6 @@ import {
   PATH_NAMES,
   ZENDESK_COUNTRY_MAX_LENGTH,
 } from "../../../app.constants";
-import { ContactUsServiceInterface } from "../types";
 import { RequestGet, ResponseRedirect } from "../../../types";
 
 describe("contact us questions controller", () => {

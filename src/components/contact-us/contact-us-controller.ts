@@ -7,8 +7,7 @@ import {
   ZENDESK_COUNTRY_MAX_LENGTH,
   CONTACT_US_REFERER_ALLOWLIST,
 } from "../../app.constants";
-import { contactUsService } from "./contact-us-service";
-import { ContactUsServiceInterface, Questions, ThemeQuestions } from "./types";
+import { Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
 import crypto from "crypto";
 import { logger } from "../../utils/logger";
