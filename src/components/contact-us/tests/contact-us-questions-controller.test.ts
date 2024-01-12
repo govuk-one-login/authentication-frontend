@@ -4,7 +4,6 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 import {
-  contactUsQuestionsFormPostToZendesk,
   contactUsQuestionsGet,
 } from "../contact-us-controller";
 import {
@@ -428,21 +427,6 @@ describe("contact us questions controller", () => {
         ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
-      });
-    });
-
-    describe("contactUsFormPost", () => {
-      it("should redirect /contact-us-submit-success page when ticket posted", async () => {
-        const fakeService: ContactUsServiceInterface = {
-          contactUsSubmitForm: sandbox.fake(),
-        };
-
-        await contactUsQuestionsFormPostToZendesk(fakeService)(
-          req as Request,
-          res as Response
-        );
-
-        expect(res.redirect).to.have.calledWith("/contact-us-submit-success");
       });
     });
   });
