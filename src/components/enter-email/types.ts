@@ -3,6 +3,7 @@ import { ApiResponseResult, DefaultApiResponse } from "../../types";
 export interface UserExists extends DefaultApiResponse {
   email: string;
   doesUserExist: boolean;
+  mfaMethodType: string;
 }
 
 export interface EnterEmailServiceInterface {
