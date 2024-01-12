@@ -475,58 +475,6 @@ export function contactUsQuestionsFormPostToSmartAgent(
   };
 }
 
-export function contactUsQuestionsFormPostToZendesk(
-  service: ContactUsServiceInterface = contactUsService()
-): ExpressRouteFunc {
-  return async function (req: Request, res: Response) {
-    const questions = getQuestionsFromFormTypeForMessageBody(
-      req,
-      req.body.formType
-    );
-    const themeQuestions = getQuestionFromThemes(
-      req,
-      req.body.theme,
-      req.body.subtheme
-    );
-
-    const ticketIdentifier = createTicketIdentifier(
-      getAppSessionId(req.body.appSessionId)
-    );
-
-    await service.contactUsSubmitForm({
-      descriptions: {
-        issueDescription: req.body.issueDescription,
-        additionalDescription: req.body.additionalDescription,
-        optionalDescription: req.body.optionalDescription,
-        moreDetailDescription: req.body.moreDetailDescription,
-        serviceTryingToUse: req.body.serviceTryingToUse,
-        countryPhoneNumberFrom: req.body.countryPhoneNumberFrom,
-      },
-      themes: { theme: req.body.theme, subtheme: req.body.subtheme },
-      subject: "GOV.UK One Login",
-      email: req.body.email,
-      name: req.body.name,
-      optionalData: {
-        ticketIdentifier: ticketIdentifier,
-        userAgent: req.get("User-Agent"),
-        appErrorCode: getAppErrorCode(req.body.appErrorCode),
-        country: req.body.country,
-      },
-      feedbackContact: req.body.contact === "true",
-      questions: questions,
-      themeQuestions: themeQuestions,
-      referer: validateReferer(req.body.referer, serviceDomain),
-      securityCodeSentMethod: req.body.securityCodeSentMethod,
-      identityDocumentUsed: req.body.identityDocumentUsed,
-    });
-
-    logger.info(
-      `Support ticket submitted with id ${ticketIdentifier} for session ${res.locals.sessionId}`
-    );
-    return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
-  };
-}
-
 export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
   res.render("contact-us/index-submit-success.njk");
 }
