@@ -89,6 +89,7 @@ import { outboundContactUsLinksMiddleware } from "./middleware/outbound-contact-
 import { accountInterventionRouter } from "./components/account-intervention/password-reset-required/password-reset-required-router";
 import { permanentlyBlockedRouter } from "./components/account-intervention/permanently-blocked/permanently-blocked-router";
 import { temporarilyBlockedRouter } from "./components/account-intervention/temporarily-blocked/temporarily-blocked-router";
+import { resetPassword2FAAuthAppRouter } from "./components/reset-password-2fa-auth-app/reset-password-2fa-auth-app-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -130,6 +131,7 @@ function registerRoutes(app: express.Application) {
   app.use(resetPasswordRouter);
   if (support2FABeforePasswordReset()) {
     app.use(resetPassword2FARouter);
+    app.use(resetPassword2FAAuthAppRouter);
   }
   app.use(upliftJourneyRouter);
   app.use(contactUsRouter);

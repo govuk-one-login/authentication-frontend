@@ -507,7 +507,11 @@ const authStateMachine = createMachine(
           [USER_JOURNEY_EVENTS.RESET_PASSWORD_CODE_VERIFIED]: [
             {
               target: [PATH_NAMES.RESET_PASSWORD_2FA_SMS],
-              cond: "support2FABeforePasswordReset",
+              cond: "requiresResetPasswordMFASmsCode",
+            },
+            {
+              target: [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP],
+              cond: "requiresResetPasswordMFAAuthAppCode",
             },
             {
               target: [PATH_NAMES.RESET_PASSWORD],
@@ -516,6 +520,11 @@ const authStateMachine = createMachine(
         },
         meta: {
           optionalPaths: [PATH_NAMES.RESET_PASSWORD_RESEND_CODE],
+        },
+      },
+      [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP]: {
+        on: {
+          [USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED]: [PATH_NAMES.RESET_PASSWORD],
         },
       },
       [PATH_NAMES.RESET_PASSWORD_2FA_SMS]: {
@@ -738,6 +747,15 @@ const authStateMachine = createMachine(
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.requiresTwoFactorAuth === true,
+      requiresMFASmsCode: (context) =>
+        context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
+        context.requiresTwoFactorAuth === true,
+      requiresResetPasswordMFAAuthAppCode: (context) =>
+        context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
+        context.support2FABeforePasswordReset === true,
+      requiresResetPasswordMFASmsCode: (context) =>
+        context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
+        context.support2FABeforePasswordReset === true,
       isPasswordChangeRequired: (context) => context.isPasswordChangeRequired,
       isAccountRecoveryJourney: (context) => context.isAccountRecoveryJourney,
       support2FABeforePasswordReset: (context) =>

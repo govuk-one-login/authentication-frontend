@@ -93,6 +93,7 @@ describe("reset password check email controller", () => {
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
+      req.session.user.enterEmailMfaType = "SMS";
       req.body.code = "123456";
       req.session.id = "123456-djjad";
       await resetPasswordCheckEmailPost(fakeService)(
