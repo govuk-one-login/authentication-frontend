@@ -64,10 +64,21 @@ export function resetPasswordCheckEmailGet(
         ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES,
       ].includes(result.data.code)
     ) {
-      const errorTemplate =
+      let errorTemplate: string;
+
+      if (
         result.data.code === ERROR_CODES.RESET_PASSWORD_LINK_MAX_RETRIES_REACHED
-          ? "security-code-error/index-too-many-requests.njk"
-          : "security-code-error/index-wait.njk";
+      ) {
+        errorTemplate = "security-code-error/index-too-many-requests.njk";
+      } else if (
+        result.data.code ===
+        ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES
+      ) {
+        errorTemplate =
+          "security-code-error/index-security-code-entered-exceeded.njk";
+      } else {
+        errorTemplate = "security-code-error/index-wait.njk";
+      }
 
       return res.render(errorTemplate);
     } else {
