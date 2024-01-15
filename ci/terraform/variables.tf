@@ -29,11 +29,6 @@ variable "support_international_numbers" {
   type = string
 }
 
-variable "support_welsh_language_in_support_forms" {
-  type    = string
-  default = "0"
-}
-
 variable "support_language_cy" {
   type = string
 }

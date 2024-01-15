@@ -5,7 +5,6 @@ frontend_auto_scaling_enabled   = true
 frontend_task_definition_cpu    = 512
 frontend_task_definition_memory = 1024
 
-support_welsh_language_in_support_forms                             = "1"
 support_international_numbers                                       = "1"
 support_language_cy                                                 = "1"
 support_account_recovery                                            = "1"
