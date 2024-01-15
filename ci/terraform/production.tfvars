@@ -13,7 +13,6 @@ support_account_recovery                                            = "1"
 support_smart_agent                                                 = "1"
 support_account_interventions                                       = "0"
 client_name_that_directs_all_contact_form_submissions_to_smartagent = "di-auth-stub-relying-party-production"
-support_welsh_language_in_support_forms                             = "1"
 url_for_support_links                                               = "https://home.account.gov.uk/contact-gov-uk-one-login"
 
 logging_endpoint_arns = [

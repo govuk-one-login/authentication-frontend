@@ -153,10 +153,6 @@ locals {
         value = local.service_domain
       },
       {
-        name  = "SUPPORT_WELSH_LANGUAGE_IN_SUPPORT_FORMS"
-        value = var.support_welsh_language_in_support_forms
-      },
-      {
         name  = "PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES"
         value = var.password_reset_code_entered_wrong_blocked_minutes
       },

@@ -8,7 +8,6 @@ frontend_task_definition_memory                                     = 2048
 frontend_auto_scaling_min_count                                     = 3
 frontend_auto_scaling_max_count                                     = 30
 ecs_desired_count                                                   = 3
-support_welsh_language_in_support_forms                             = "1"
 support_language_cy                                                 = "1"
 support_international_numbers                                       = "1"
 support_account_recovery                                            = "1"
