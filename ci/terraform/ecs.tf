@@ -125,10 +125,6 @@ locals {
         value = var.zendesk_username
       },
       {
-        name  = "SUPPORT_SMART_AGENT"
-        value = var.support_smart_agent
-      },
-      {
         name  = "SMARTAGENT_API_KEY"
         value = var.smartagent_api_key
       },

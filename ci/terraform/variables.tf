@@ -43,11 +43,6 @@ variable "support_authorize_controller" {
   default = "0"
 }
 
-variable "support_smart_agent" {
-  type    = string
-  default = "0"
-}
-
 variable "image_uri" {
   type = string
 }

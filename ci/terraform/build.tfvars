@@ -6,7 +6,6 @@ frontend_auto_scaling_v2_enabled = true
 frontend_task_definition_cpu    = 512
 frontend_task_definition_memory = 1024
 
-support_smart_agent                                                 = "1"
 support_international_numbers                                       = "1"
 support_language_cy                                                 = "1"
 support_account_recovery                                            = "1"
