@@ -98,7 +98,7 @@ resource "aws_appautoscaling_target" "frontend_auto_scaling_target_v2" {
 
 resource "aws_appautoscaling_policy" "frontend_auto_scaling_policy_scale_out" {
   count              = var.frontend_auto_scaling_v2_enabled ? 1 : 0
-  name               = "${var.environment}-frontend_auto_scaling_policy_scale_in"
+  name               = "${var.environment}-frontend_auto_scaling_policy_scale_out"
   policy_type        = "StepScaling"
   resource_id        = aws_appautoscaling_target.frontend_auto_scaling_target_v2[0].resource_id
   scalable_dimension = aws_appautoscaling_target.frontend_auto_scaling_target_v2[0].scalable_dimension
