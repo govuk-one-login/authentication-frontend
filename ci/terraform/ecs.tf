@@ -113,18 +113,6 @@ locals {
         value = var.orch_to_auth_audience
       },
       {
-        name  = "ZENDESK_API_TOKEN"
-        value = var.zendesk_api_token
-      },
-      {
-        name  = "ZENDESK_GROUP_ID_PUBLIC"
-        value = var.zendesk_group_id_public
-      },
-      {
-        name  = "ZENDESK_USERNAME"
-        value = var.zendesk_username
-      },
-      {
         name  = "SMARTAGENT_API_KEY"
         value = var.smartagent_api_key
       },
