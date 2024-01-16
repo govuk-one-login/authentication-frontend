@@ -139,7 +139,10 @@ export function prepareBackLink(
   if (req.path.endsWith(PATH_NAMES.CONTACT_US)) {
     hrefBack = supportLinkURL;
   } else if (req.path.endsWith(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)) {
-    if (req.query.fromURL && req.query.theme === CONTACT_US_THEMES.ID_CHECK_APP) {
+    if (
+      req.query.fromURL &&
+      req.query.theme === CONTACT_US_THEMES.ID_CHECK_APP
+    ) {
       hrefBack = supportLinkURL;
     } else {
       hrefBack = PATH_NAMES.CONTACT_US;
@@ -360,24 +363,9 @@ export function furtherInformationPost(req: Request, res: Response): void {
   res.redirect(url + "?" + queryParams.toString());
 }
 
-export function setContactFormSubmissionUrlBasedOnClientName(
-  clientName: string,
-  clientNameThatDirectsAllContactFormSubmissionsToSmartAgent: string
-): string {
-  return clientName ===
-    clientNameThatDirectsAllContactFormSubmissionsToSmartAgent
-    ? PATH_NAMES.CONTACT_US_TESTING_SMARTAGENT_IN_LIVE
-    : PATH_NAMES.CONTACT_US_QUESTIONS;
-}
-
 export function contactUsQuestionsGet(req: Request, res: Response): void {
   const supportLinkURL = getSupportLinkUrl();
   const backLinkHref = prepareBackLink(req, supportLinkURL, serviceDomain);
-
-  const formSubmissionUrl = setContactFormSubmissionUrlBasedOnClientName(
-    req?.session?.client?.name,
-    getClientNameThatDirectsAllContactFormSubmissionsToSmartAgent()
-  );
 
   if (!req.query.theme) {
     return res.redirect(PATH_NAMES.CONTACT_US);
@@ -392,7 +380,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     pageTitle = themeToPageTitle[req.query.subtheme as string];
   }
   return res.render("contact-us/questions/index.njk", {
-    formSubmissionUrl: formSubmissionUrl,
+    formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
     theme: req.query.theme,
     subtheme: req.query.subtheme,
     backurl: backLinkHref,
