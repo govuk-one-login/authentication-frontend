@@ -11,11 +11,7 @@ import { Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
 import crypto from "crypto";
 import { logger } from "../../utils/logger";
-import {
-  getClientNameThatDirectsAllContactFormSubmissionsToSmartAgent,
-  getServiceDomain,
-  getSupportLinkUrl,
-} from "../../config";
+import { getServiceDomain, getSupportLinkUrl } from "../../config";
 import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
 
 const themeToPageTitle = {

@@ -156,13 +156,6 @@ export function getSmartAgentWebformId(): string {
   return process.env.SMARTAGENT_WEBFORM_ID || "";
 }
 
-export function getClientNameThatDirectsAllContactFormSubmissionsToSmartAgent(): string {
-  return (
-    process.env
-      .CLIENT_NAME_THAT_DIRECTS_ALL_CONTACT_FORM_SUBMISSIONS_TO_SMARTAGENT || ""
-  );
-}
-
 export function getServiceSignInLink(): string {
   return process.env.SERVICE_SIGN_IN_LINK || "https://www.gov.uk/sign-in";
 }
