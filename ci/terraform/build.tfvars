@@ -16,7 +16,6 @@ password_reset_code_entered_wrong_blocked_minutes                   = "0.5"
 account_recovery_code_entered_wrong_blocked_minutes                 = "0.5"
 code_request_blocked_minutes                                        = "0.5"
 code_entered_wrong_blocked_minutes                                  = "0.5"
-client_name_that_directs_all_contact_form_submissions_to_smartagent = ""
 url_for_support_links                                               = "https://home.build.account.gov.uk/contact-gov-uk-one-login"
 
 

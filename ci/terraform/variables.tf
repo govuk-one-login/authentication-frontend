@@ -150,10 +150,6 @@ variable "url_for_support_links" {
   default = "/contact-us"
 }
 
-variable "client_name_that_directs_all_contact_form_submissions_to_smartagent" {
-  type = string
-}
-
 variable "zendesk_username" {
   type    = string
   default = ""
