@@ -150,21 +150,6 @@ variable "url_for_support_links" {
   default = "/contact-us"
 }
 
-variable "zendesk_username" {
-  type    = string
-  default = ""
-}
-
-variable "zendesk_group_id_public" {
-  type    = string
-  default = ""
-}
-
-variable "zendesk_api_token" {
-  type    = string
-  default = ""
-}
-
 variable "deployment_min_healthy_percent" {
   default = 50
 }

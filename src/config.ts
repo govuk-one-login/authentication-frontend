@@ -121,22 +121,6 @@ export function getAccountManagementUrl(): string {
   return process.env.ACCOUNT_MANAGEMENT_URL || "http://localhost:6001";
 }
 
-export function getZendeskUser(): string {
-  return process.env.ZENDESK_USERNAME;
-}
-
-export function getZendeskToken(): string {
-  return process.env.ZENDESK_API_TOKEN;
-}
-
-export function getZendeskAPIUrl(): string {
-  return process.env.ZENDESK_API_URL ?? "https://govuk.zendesk.com/api/v2/";
-}
-
-export function getZendeskGroupIdPublic(): number {
-  return Number(process.env.ZENDESK_GROUP_ID_PUBLIC);
-}
-
 export function getAnalyticsCookieDomain(): string {
   return process.env.ANALYTICS_COOKIE_DOMAIN;
 }
