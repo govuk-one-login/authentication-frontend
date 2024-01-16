@@ -14,7 +14,6 @@ import {
   isAppJourney,
   getPreferredLanguage,
   contactUsGetFromTriagePage,
-  setContactFormSubmissionUrlBasedOnClientName,
   validateReferer,
   prepareBackLink,
 } from "../contact-us-controller";
@@ -333,25 +332,6 @@ describe("appErrorCode and appSessionId query parameters", () => {
       it(`should return false when passed a invalid appSessionId like ${i}`, () => {
         expect(isAppJourney(i)).to.be.false;
       });
-    });
-  });
-
-  describe("setContactFormSubmissionUrlBasedOnClientName", () => {
-    it("should return the value of PATH_NAMES.CONTACT_US_TESTING_SMARTAGENT_IN_LIVE where there's a match", () => {
-      expect(
-        setContactFormSubmissionUrlBasedOnClientName(
-          "di-auth-stub-relying-party-production",
-          "di-auth-stub-relying-party-production"
-        )
-      ).to.equal(PATH_NAMES.CONTACT_US_TESTING_SMARTAGENT_IN_LIVE);
-    });
-    it("should return the value of PATH_NAMES.CONTACT_US_QUESTIONS where there is no match", () => {
-      expect(
-        setContactFormSubmissionUrlBasedOnClientName(
-          "di-auth-stub-relying-party-build",
-          "di-auth-stub-relying-party-production"
-        )
-      ).to.equal(PATH_NAMES.CONTACT_US_QUESTIONS);
     });
   });
 
