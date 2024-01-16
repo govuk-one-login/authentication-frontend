@@ -1,4 +1,4 @@
-{% extends "contact-us/common-english-only/layout/base.njk" %}
+{% extends "common/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
@@ -10,7 +10,7 @@
 
 {% block content %}
 
-    {% include "contact-us/common-english-only/errors/errorSummary.njk" %}
+    {% include "common/errors/errorSummary.njk" %}
 
 {% set html %}
 <p class="govuk-body">{{ 'pages.cookiePolicy.successBanner.paragraph1' | translate }}</p>

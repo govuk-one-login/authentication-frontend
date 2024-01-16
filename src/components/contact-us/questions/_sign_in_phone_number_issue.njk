@@ -58,35 +58,35 @@
         one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translate
     },
     errorMessage: {
-        text: errors['additionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
+        text: errors['additionalDescription'].text | translate | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
     } if (errors['additionalDescription'])
 }) }}
 
 {{ govukInput({
     label: {
-        text: 'pages.contactUsQuestions.signInPhoneNumberIssue.section3.header' | translateEnOnly,
+        text: 'pages.contactUsQuestions.signInPhoneNumberIssue.section3.header' | translate,
         classes: "govuk-label--s"
     },
     hint: {
-        text: 'pages.contactUsQuestions.signInPhoneNumberIssue.section3.hintText' | translateEnOnly
+        text: 'pages.contactUsQuestions.signInPhoneNumberIssue.section3.hintText' | translate
     },
     id: "countryPhoneNumberFrom",
     name: "countryPhoneNumberFrom",
     value: countryPhoneNumberFrom,
     errorMessage: {
-        text: errors['countryPhoneNumberFrom'].text | translateEnOnly
+        text: errors['countryPhoneNumberFrom'].text | translate
     } if (errors['countryPhoneNumberFrom'])
 }) }}
 
 {{ govukWarningText({
-    text:'pages.contactUsQuestions.signInPhoneNumberIssue.personalInformation.paragraph' | translateEnOnly,
+    text:'pages.contactUsQuestions.signInPhoneNumberIssue.personalInformation.paragraph' | translate,
     iconFallbackText: "Warning"
 }) }}
 
 {% include 'contact-us/questions/_reply_by_email.njk' %}
 
 {{ govukButton({
-    "text": "general.sendMessage" | translateEnOnly,
+    "text": "general.sendMessage" | translate,
     "type": "Submit",
     "preventDoubleClick": true
 }) }}

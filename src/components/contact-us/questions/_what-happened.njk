@@ -1,25 +1,25 @@
 {{ govukCharacterCount({
     label: {
-        text: 'pages.contactUsQuestions.whatHappened.header' | translateEnOnly,
+        text: 'pages.contactUsQuestions.whatHappened.header' | translate,
         classes: "govuk-label--s"
     },
     hint: {
-        text: 'pages.contactUsQuestions.whatHappened.paragraph1' | translateEnOnly
+        text: 'pages.contactUsQuestions.whatHappened.paragraph1' | translate
     },
     id: "issueDescription",
     name: "issueDescription",
     maxlength: contactUsFieldMaxLength,
     value: issueDescription,
-    charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translateEnOnly,
+    charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translate,
     charactersUnderLimitText: {
-        other: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.other' | translateEnOnly,
-        one: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.one' | translateEnOnly
+        other: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.other' | translate,
+        one: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.one' | translate
     },
     charactersOverLimitText: {
-        other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translateEnOnly,
-        one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translateEnOnly
+        other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translate,
+        one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translate
     },
     errorMessage: {
-        text: errors['issueDescription'].text | translateEnOnly | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
+        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
     } if (errors['issueDescription'])
 }) }}

@@ -47,32 +47,32 @@
     id: "additionalDescription",
     name: "additionalDescription",
     value: additionalDescription,
-    charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translateEnOnly,
+    charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translate,
     charactersUnderLimitText: {
-        other: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.other' | translateEnOnly,
-        one: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.one' | translateEnOnly
+        other: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.other' | translate,
+        one: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.one' | translate
     },
     charactersOverLimitText: {
-        other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translateEnOnly,
-        one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translateEnOnly
+        other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translate,
+        one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translate
     },
     maxlength: contactUsFieldMaxLength,
     errorMessage: {
-        text: errors['additionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
+        text: errors['additionalDescription'].text | translate | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
     } if (errors['additionalDescription'])
 }) }}
 
 {% include "contact-us/questions/_service-trying-to-use.njk" %}
 
 {{ govukWarningText({
-    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translateEnOnly,
+    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
     iconFallbackText: "Warning"
 }) }}
 
 {% include 'contact-us/questions/_reply_by_email.njk' %}
 
 {{ govukButton({
-    "text": "general.sendMessage" | translateEnOnly,
+    "text": "general.sendMessage" | translate,
     "type": "Submit",
     "preventDoubleClick": true
 }) }}

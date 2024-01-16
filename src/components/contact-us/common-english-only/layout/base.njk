@@ -26,14 +26,14 @@
 
 {% block pageTitle %}
     {% if error or errors %}
-        {{ 'general.errorTitlePrefix' | translateEnOnly }}
+        {{ 'general.errorTitlePrefix' | translate }}
         -
     {% endif %}
     {% if pageTitleName %}
         {{ pageTitleName }}
         -
     {% endif %}
-    {{ 'general.serviceNameTitle' | translateEnOnly }}
+    {{ 'general.serviceNameTitle' | translate }}
 {% endblock %}
 
 {% block bodyStart %}
@@ -42,26 +42,26 @@
 
 {% block header %}
   {{ govukHeader({
-  homepageUrl: 'general.header.homepageHref' | translateEnOnly
+  homepageUrl: 'general.header.homepageHref' | translate
 }) }}
 {% endblock %}
 
 {% set phaseBannerText %}
-    {{ 'general.phaseBanner.message.start' | translateEnOnly }} <a href="{{ contactUsLinkUrl }}" class="govuk-link" rel="noopener" target="_blank">{{ 'general.phaseBanner.message.linkText' | translateEnOnly }}</a> {{ 'general.phaseBanner.message.end' | translateEnOnly }}
+    {{ 'general.phaseBanner.message.start' | translate }} <a href="{{ contactUsLinkUrl }}" class="govuk-link" rel="noopener" target="_blank">{{ 'general.phaseBanner.message.linkText' | translate }}</a> {{ 'general.phaseBanner.message.end' | translate }}
 {% endset %}
 
 {% block main %}
       <div class="govuk-width-container {{ containerClasses }}">
         {{ govukPhaseBanner({
           tag: {
-            text: 'general.phaseBanner.tag' | translateEnOnly
+            text: 'general.phaseBanner.tag' | translate
           },
-          html: phaseBannerText | translateEnOnly
+          html: phaseBannerText | translate
         }) }}
 	      {% block beforeContent %}{% endblock %}
 	      {% if showBack %}
 	        {{ govukBackLink({
-                text: "general.back" | translateEnOnly,
+                text: "general.back" | translate,
                 href: hrefBack
             }) }}
           {% endif %}
@@ -81,32 +81,32 @@
         items: [
           {
             href: "/accessibility-statement",
-            text: 'general.footer.accessibilityStatement.linkText' | translateEnOnly
+            text: 'general.footer.accessibilityStatement.linkText' | translate
           },
           {
             href: "/cookies",
-            text: 'general.footer.cookies.linkText' | translateEnOnly
+            text: 'general.footer.cookies.linkText' | translate
           },
           {
             href: "/terms-and-conditions",
-            text: 'general.footer.terms.linkText' | translateEnOnly
+            text: 'general.footer.terms.linkText' | translate
           },
           {
               href: "/privacy-notice",
-              text: 'general.footer.privacy.linkText' | translateEnOnly
+              text: 'general.footer.privacy.linkText' | translate
           },
           {
               href: contactUsLinkUrl,
               attributes: {target: "_blank"},
-              text: 'general.footer.support.linkText' | translateEnOnly
+              text: 'general.footer.support.linkText' | translate
           }
         ]
       },
       contentLicence: {
-        text: 'general.footer.contentLicence.linkText' | translateEnOnly | safe
+        text: 'general.footer.contentLicence.linkText' | translate | safe
       },
       copyright: {
-        text: 'general.footer.copyright.linkText' | translateEnOnly
+        text: 'general.footer.copyright.linkText' | translate
       }
     }) }}
     {% endblock %}

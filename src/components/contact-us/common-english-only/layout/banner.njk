@@ -1,35 +1,35 @@
 {% set html %}
-<p class="govuk-body">{{ 'general.cookie.cookieBanner.paragraph1' | translateEnOnly }}</p>
-<p class="govuk-body">{{ 'general.cookie.cookieBanner.paragraph2' | translateEnOnly }}</p>
+<p class="govuk-body">{{ 'general.cookie.cookieBanner.paragraph1' | translate }}</p>
+<p class="govuk-body">{{ 'general.cookie.cookieBanner.paragraph2' | translate }}</p>
 {% endset %}
 
 {% set acceptHtml %}
-  <p class="govuk-body">{{ 'general.cookie.cookieBanner.cookeBannerAccept.paragraph1' | translateEnOnly }}<a class="govuk-link" href="/cookies">{{ 'general.cookie.cookieBanner.changeCookiePreferencesLink' | translateEnOnly }}</a> {{ 'general.cookie.cookieBanner.cookeBannerAccept.paragraph2' | translateEnOnly }}</p>
+  <p class="govuk-body">{{ 'general.cookie.cookieBanner.cookeBannerAccept.paragraph1' | translate }}<a class="govuk-link" href="/cookies">{{ 'general.cookie.cookieBanner.changeCookiePreferencesLink' | translate }}</a> {{ 'general.cookie.cookieBanner.cookeBannerAccept.paragraph2' | translate }}</p>
 {% endset %}
 
 {% set rejectedHtml %}
-  <p class="govuk-body">{{ 'general.cookie.cookieBanner.cookeBannerReject.paragraph1' | translateEnOnly }}<a class="govuk-link" href="/cookies">{{ 'general.cookie.cookieBanner.changeCookiePreferencesLink' | translateEnOnly }}</a> {{ 'general.cookie.cookieBanner.cookeBannerReject.paragraph2' | translateEnOnly }}</p>
+  <p class="govuk-body">{{ 'general.cookie.cookieBanner.cookeBannerReject.paragraph1' | translate }}<a class="govuk-link" href="/cookies">{{ 'general.cookie.cookieBanner.changeCookiePreferencesLink' | translate }}</a> {{ 'general.cookie.cookieBanner.cookeBannerReject.paragraph2' | translate }}</p>
 {% endset %}
 
 {{ govukCookieBanner({
-  ariaLabel: 'general.cookie.cookieBanner.title' | translateEnOnly,
+  ariaLabel: 'general.cookie.cookieBanner.title' | translate,
   name: "gov-uk-cookie-banner",
   messages: [
     {
-      headingText: 'general.cookie.cookieBanner.heading' | translateEnOnly,
+      headingText: 'general.cookie.cookieBanner.heading' | translate,
       html: html,
       attributes: {
                   "id": "cookies-banner-main"
                 },
       actions: [
         {
-          text: 'general.cookie.cookieBanner.buttonAcceptText' | translateEnOnly,
+          text: 'general.cookie.cookieBanner.buttonAcceptText' | translate,
           type: "button",
           name: "cookiesAccept",
           value: "accept"
         },
         {
-          text: 'general.cookie.cookieBanner.buttonRejectText' | translateEnOnly,
+          text: 'general.cookie.cookieBanner.buttonRejectText' | translate,
           type: "button",
           name: "cookiesReject",
           value: "reject"
@@ -47,12 +47,12 @@
       },
       actions: [
         {
-          text: 'general.cookie.cookieBanner.cookieBannerHideLink' | translateEnOnly,
+          text: 'general.cookie.cookieBanner.cookieBannerHideLink' | translate,
           href: "#",
           type: "button",
           classes:"cookie-hide-button",
           attributes: {
-            "aria-label": 'general.cookie.cookieBanner.cookieBannerHideLink' | translateEnOnly
+            "aria-label": 'general.cookie.cookieBanner.cookieBannerHideLink' | translate
           }
         }
       ],
@@ -65,12 +65,12 @@
       },
       actions: [
         {
-          text: 'general.cookie.cookieBanner.cookieBannerHideLink' | translateEnOnly,
+          text: 'general.cookie.cookieBanner.cookieBannerHideLink' | translate,
           href: "#",
           type: "button",
           classes:"cookie-hide-button",
           attributes: {
-            "aria-label": 'general.cookie.cookieBanner.cookieBannerHideLink' | translateEnOnly
+            "aria-label": 'general.cookie.cookieBanner.cookieBannerHideLink' | translate
           }
         }
       ],
