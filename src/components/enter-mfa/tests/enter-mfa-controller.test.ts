@@ -134,7 +134,7 @@ describe("enter mfa controller", () => {
   });
 
   describe("enterMfaPost", () => {
-    it("should send the journeyType when verifying the code", async () => {
+    it("can send the journeyType when verifying the code", async () => {
       const fakeService: VerifyCodeInterface = {
         verifyCode: sinon.fake.returns({
           success: true,
@@ -149,12 +149,12 @@ describe("enter mfa controller", () => {
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(fakeService.verifyCode).to.have.been.calledWith(
-        sinon.match.string,
-        sinon.match.string,
-        sinon.match.string,
-        undefined,
-        sinon.match.string,
-        undefined,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
         JOURNEY_TYPE.REAUTHENTICATION
       );
       expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);

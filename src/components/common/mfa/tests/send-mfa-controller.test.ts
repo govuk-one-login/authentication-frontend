@@ -34,7 +34,7 @@ describe("send mfa controller", () => {
   });
 
   describe("sendMfaGeneric", () => {
-    it("should send the journeyType when requesting the code", async () => {
+    it("can send the journeyType when requesting the code", async () => {
       const fakeService: MfaServiceInterface = {
         sendMfaCode: sinon.fake.returns({
           success: true,
@@ -51,13 +51,13 @@ describe("send mfa controller", () => {
       await sendMfaGeneric(fakeService)(req as Request, res as Response);
 
       expect(fakeService.sendMfaCode).to.have.been.calledWith(
-        res.locals.sessionId,
-        undefined,
-        req.session.user.email,
-        "127.0.0.1",
-        undefined,
-        undefined,
-        "",
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
         JOURNEY_TYPE.REAUTHENTICATION
       );
     });

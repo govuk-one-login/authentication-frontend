@@ -2,7 +2,11 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { NOTIFICATION_TYPE, PATH_NAMES } from "../../../app.constants";
+import {
+  JOURNEY_TYPE,
+  NOTIFICATION_TYPE,
+  PATH_NAMES,
+} from "../../../app.constants";
 import {
   setupAuthenticatorAppGet,
   setupAuthenticatorAppPost,
@@ -51,6 +55,39 @@ describe("setup-authenticator-app controller", () => {
   });
 
   describe("setupAuthenticatorAppPost", () => {
+    it("can send the journeyType when sending the MFA code", async () => {
+      req.session.user.authAppSecret = "testsecret";
+      req.session.user.email = "t@t.com";
+      req.session.user.isAccountRecoveryPermitted = true;
+      req.session.user.isAccountRecoveryJourney = true;
+      req.body.code = "123456";
+
+      const fakeMfAService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({ success: true }),
+      } as unknown as VerifyMfaCodeInterface;
+
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake(),
+      };
+
+      await setupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
+      expect(fakeMfAService.verifyMfaCode).to.have.been.calledWithExactly(
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        JOURNEY_TYPE.ACCOUNT_RECOVERY,
+        sinon.match.any
+      );
+    });
+
     it("should successfully validate access code and redirect to account created", async () => {
       req.session.user.authAppSecret = "testsecret";
       req.session.user.email = "t@t.com";
