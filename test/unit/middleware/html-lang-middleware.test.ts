@@ -4,7 +4,6 @@ import { NextFunction, Request, Response } from "express";
 import { sinon } from "../../utils/test-utils";
 import { setHtmlLangMiddleware } from "../../../src/middleware/html-lang-middleware";
 import { mockRequest, mockResponse } from "mock-req-res";
-import { PATH_NAMES } from "../../../src/app.constants";
 
 describe("HTML-lang middleware", () => {
   let req: Partial<Request>;
