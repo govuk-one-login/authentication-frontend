@@ -57,3 +57,4 @@ jobs:
       REDIS_HOST: localhost
       REDIS_PORT: 6389
       SUPPORT_INTERNATIONAL_NUMBERS: 1
+      SMARTAGENT_API_URL: https://de2ghtit0q15h.cloudfront.net
