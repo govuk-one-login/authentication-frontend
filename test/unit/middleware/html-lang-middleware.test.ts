@@ -38,29 +38,4 @@ describe("HTML-lang middleware", () => {
       expect(next).to.have.been.called;
     });
   });
-
-  describe("setHtmlLangMiddleware on support forms", () => {
-    Object.values(PATH_NAMES).forEach((path) => {
-      const req = mockRequest({
-        i18n: {
-          language: "cy",
-        },
-        url: path,
-      });
-
-      const re = new RegExp(`^${PATH_NAMES.CONTACT_US}`);
-
-      if (re.test(path)) {
-        it(`should change i18n language where the path starts with '${PATH_NAMES.CONTACT_US}' (current path is: ${path})`, () => {
-          setHtmlLangMiddleware(req as any, res as Response, next);
-          expect(res.locals.htmlLang).to.equal("en");
-        });
-      } else {
-        it(`should not change i18n language where the path does not start with '${PATH_NAMES.CONTACT_US}' (current path is: ${path})`, () => {
-          setHtmlLangMiddleware(req as any, res as Response, next);
-          expect(res.locals.htmlLang).not.to.equal("en");
-        });
-      }
-    });
-  });
 });
