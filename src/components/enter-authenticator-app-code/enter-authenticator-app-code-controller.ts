@@ -6,7 +6,10 @@ import {
   getNextPathAndUpdateJourney,
   pathWithQueryParam,
 } from "../common/constants";
-import { supportAccountRecovery } from "../../config";
+import {
+  getCodeEnteredWrongBlockDurationInMinutes,
+  supportAccountRecovery,
+} from "../../config";
 import { VerifyMfaCodeInterface } from "./types";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
@@ -129,6 +132,15 @@ export const enterAuthenticatorAppCodePost = (
           )
         );
         return renderBadRequest(res, req, template, error);
+      }
+
+      if (
+        result.data.code ===
+        ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED
+      ) {
+        req.session.user.wrongCodeEnteredLock = new Date(
+          Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
+        ).toUTCString();
       }
 
       const path = getErrorPathByCode(result.data.code);

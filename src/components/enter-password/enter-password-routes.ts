@@ -22,7 +22,7 @@ router.get(
   PATH_NAMES.ENTER_PASSWORD,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  enterPasswordGet
+  asyncHandler(enterPasswordGet())
 );
 
 router.get(

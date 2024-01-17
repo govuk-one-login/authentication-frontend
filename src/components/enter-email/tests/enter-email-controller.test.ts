@@ -144,7 +144,9 @@ describe("enter email controller", () => {
 
       await enterEmailPost(fakeService)(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.ACCOUNT_LOCKED);
+      expect(res.render).to.have.calledWith(
+        "enter-password/index-sign-in-retry-blocked.njk"
+      );
       expect(fakeService.userExists).to.have.been.calledOnce;
     });
   });

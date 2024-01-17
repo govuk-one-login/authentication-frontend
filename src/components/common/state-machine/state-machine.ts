@@ -127,7 +127,7 @@ const authStateMachine = createMachine(
               cond: "isConsentRequired",
             },
             {
-              target: [PATH_NAMES.SIGN_IN_OR_CREATE],
+              target: [PATH_NAMES.ENTER_PASSWORD],
               cond: "isReauthenticationRequired",
             },
             { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
@@ -537,10 +537,6 @@ const authStateMachine = createMachine(
       [PATH_NAMES.RESET_PASSWORD]: {
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "support2FABeforePasswordReset",
-            },
             {
               target: [PATH_NAMES.GET_SECURITY_CODES],
               cond: "isAccountPartCreated",
