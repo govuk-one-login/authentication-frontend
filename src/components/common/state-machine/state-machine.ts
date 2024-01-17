@@ -588,51 +588,7 @@ const authStateMachine = createMachine(
           ],
         },
       },
-      [PATH_NAMES.RESET_PASSWORD_REQUIRED]: {
-        on: {
-          [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
-            {
-              target: [PATH_NAMES.GET_SECURITY_CODES],
-              cond: "isAccountPartCreated",
-            },
-            {
-              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
-              cond: "requiresMFAAuthAppCode",
-            },
-            { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
-            {
-              target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
-              cond: "isLatestTermsAndConditionsAccepted",
-            },
-            {
-              target: [PATH_NAMES.SHARE_INFO],
-              cond: "isConsentRequired",
-            },
-            { target: [PATH_NAMES.AUTH_CODE] },
-          ],
-        },
-        [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
-          on: {
-            [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [
-              PATH_NAMES.CHECK_YOUR_PHONE,
-            ],
-          },
-          meta: {
-            optionalPaths: [
-              PATH_NAMES.SECURITY_CODE_WAIT,
-              PATH_NAMES.SECURITY_CODE_INVALID,
-              PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
-            ],
-          },
-        },
-        meta: {
-          optionalPaths: [
-            PATH_NAMES.ENTER_EMAIL_SIGN_IN,
-            PATH_NAMES.ACCOUNT_LOCKED,
-            PATH_NAMES.SIGN_IN_OR_CREATE,
-          ],
-        },
-      },
+      [PATH_NAMES.RESET_PASSWORD_REQUIRED]: {},
       [PATH_NAMES.PROVE_IDENTITY]: {
         on: {
           [USER_JOURNEY_EVENTS.PROVE_IDENTITY_INIT]: [
