@@ -1,12 +1,12 @@
-FROM caddy:2.7-alpine
+FROM nginx:alpine
 
 ENV NGINX_PORT=8080
 
-RUN apk add --no-cache --update jq
+RUN apk add --no-cache --update \
+      apache2-utils jq
 
 COPY entrypoint.sh /entrypoint.sh
+COPY nginx.conf /etc/nginx/templates/default.conf.template
 
-COPY Caddyfile /etc/caddy/Caddyfile
-
-CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+CMD ["nginx", "-g", "daemon off;"]
 ENTRYPOINT ["/entrypoint.sh"]
