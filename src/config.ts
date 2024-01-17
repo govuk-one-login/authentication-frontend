@@ -133,7 +133,9 @@ export function getSmartAgentApiKey(): string {
   return process.env.SMARTAGENT_API_KEY || "";
 }
 export function getSmartAgentApiUrl(): string {
-  return process.env.SMARTAGENT_API_URL || "";
+  return (
+    process.env.SMARTAGENT_API_URL || "https://de2ghtit0q15h.cloudfront.net"
+  );
 }
 
 export function getSmartAgentWebformId(): string {
