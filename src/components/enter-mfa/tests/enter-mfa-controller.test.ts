@@ -12,7 +12,7 @@ import {
 
 import { VerifyCodeInterface } from "../../common/verify-code/types";
 import { AccountRecoveryInterface } from "../../common/account-recovery/types";
-import { PATH_NAMES } from "../../../app.constants";
+import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import {
   mockRequest,
@@ -134,6 +134,34 @@ describe("enter mfa controller", () => {
   });
 
   describe("enterMfaPost", () => {
+    it("should send the journeyType when verifying the code", async () => {
+      const fakeService: VerifyCodeInterface = {
+        verifyCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as VerifyCodeInterface;
+
+      req.body.code = "123456";
+      res.locals.sessionId = "123456-djjad";
+      req.session.user.reauthenticate = "test_data";
+
+      await enterMfaPost(fakeService)(req as Request, res as Response);
+
+      expect(fakeService.verifyCode).to.have.been.calledOnce;
+      expect(fakeService.verifyCode).to.have.been.calledWith(
+        sinon.match.string,
+        sinon.match.string,
+        sinon.match.string,
+        undefined,
+        sinon.match.string,
+        undefined,
+        JOURNEY_TYPE.REAUTHENTICATION
+      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
+      expect(req.session.user.isAccountPartCreated).to.be.eq(false);
+    });
+
     it("should redirect to /auth-code when valid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
         verifyCode: sinon.fake.returns({

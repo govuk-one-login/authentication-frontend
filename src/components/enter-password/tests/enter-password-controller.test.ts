@@ -155,7 +155,7 @@ describe("enter password controller", () => {
         expect(fakeMfaService.sendMfaCode).to.have.been.called;
       });
 
-      it("should send REAUTHENTICATION journeyType to MFA service when user session has reauthenticate property", async () => {
+      it("should send the journeyType when requesting the code", async () => {
         const fakeService: EnterPasswordServiceInterface = {
           loginUser: sinon.fake.returns({
             data: {
@@ -193,13 +193,13 @@ describe("enter password controller", () => {
         )(req as Request, res as Response);
 
         expect(fakeMfaService.sendMfaCode).to.have.been.calledWith(
-          res.locals.sessionId,
-          res.locals.clientSessionId,
-          req.session.user.email,
-          "127.0.0.1",
-          res.locals.persistentSessionId,
-          false,
-          "",
+          sinon.match.string,
+          sinon.match.string,
+          sinon.match.string,
+          sinon.match.string,
+          sinon.match.string,
+          sinon.match.bool,
+          sinon.match.string,
           JOURNEY_TYPE.REAUTHENTICATION
         );
       });

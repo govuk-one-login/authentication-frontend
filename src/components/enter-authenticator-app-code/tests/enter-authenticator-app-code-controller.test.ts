@@ -9,7 +9,7 @@ import {
   enterAuthenticatorAppCodePost,
   UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
 } from "../enter-authenticator-app-code-controller";
-import { PATH_NAMES } from "../../../app.constants";
+import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import { AccountRecoveryInterface } from "../../common/account-recovery/types";
 import {
@@ -174,6 +174,33 @@ describe("enter authenticator app code controller", () => {
   });
 
   describe("enterAuthenticatorAppCodePost", () => {
+    it("should send the journeyType when verifying the code", async () => {
+      const fakeService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as VerifyMfaCodeInterface;
+
+      req.body.code = "123456";
+      res.locals.sessionId = "123456-djjad";
+
+      await enterAuthenticatorAppCodePost(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
+      expect(fakeService.verifyMfaCode).to.have.been.calledWith(
+        sinon.match.string,
+        sinon.match.string,
+        sinon.match.string,
+        undefined,
+        sinon.match.string,
+        undefined,
+        JOURNEY_TYPE.SIGN_IN
+      );
+    });
+
     it("should redirect to /auth-code when valid code entered", async () => {
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({

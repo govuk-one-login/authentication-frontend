@@ -34,7 +34,7 @@ describe("send mfa controller", () => {
   });
 
   describe("sendMfaGeneric", () => {
-    it("should send REAUTHENTICATION journeyType to MFA service when user session has reauthenticate property", async () => {
+    it("should send the journeyType when requesting the code", async () => {
       const fakeService: MfaServiceInterface = {
         sendMfaCode: sinon.fake.returns({
           success: true,
