@@ -127,7 +127,7 @@ const authStateMachine = createMachine(
               cond: "isConsentRequired",
             },
             {
-              target: [PATH_NAMES.SIGN_IN_OR_CREATE],
+              target: [PATH_NAMES.ENTER_PASSWORD],
               cond: "isReauthenticationRequired",
             },
             { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
