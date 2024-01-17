@@ -373,7 +373,7 @@ describe("Integration:: contact us - public user", () => {
     });
 
     it("should redirect to success page when valid form submitted", (done) => {
-      nock(smartAgentApiUrl).post("/tickets.json").once().reply(200);
+      nock(smartAgentApiUrl).post("/").once().reply(200);
 
       request(app)
         .post("/contact-us-questions")
@@ -386,7 +386,7 @@ describe("Integration:: contact us - public user", () => {
   });
 
   it("should redirect to success page when form submitted", (done) => {
-    nock(smartAgentApiUrl).post("/tickets.json").once().reply(200);
+    nock(smartAgentApiUrl).post("/").once().reply(200);
 
     request(app)
       .post("/contact-us-questions")
@@ -407,7 +407,7 @@ describe("Integration:: contact us - public user", () => {
   });
 
   it("should redirect to success page when authenticator app problem form submitted", (done) => {
-    nock(smartAgentApiUrl).post("/tickets.json").once().reply(200);
+    nock(smartAgentApiUrl).post("/").once().reply(200);
 
     request(app)
       .post("/contact-us-questions")
