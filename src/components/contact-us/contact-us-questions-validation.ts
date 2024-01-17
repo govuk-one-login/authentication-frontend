@@ -398,7 +398,8 @@ export function getErrorMessageForAdditionalDescription(
     return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.errorMessage";
   }
   if (
-    subtheme === CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM
+    subtheme ===
+    CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM
   ) {
     return "pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.section2.errorMessage";
   }
