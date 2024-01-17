@@ -9,15 +9,18 @@
 }
 
 {$NGINX_HOST}:{$NGINX_PORT} {
-	@ipblocked not client_ip {$IP_BLOCK_MATCHER}
+	log {
+		output stdout
+		format json
+	}
+	@basicauth not client_ip {$IP_BLOCK_MATCHER}
 
 	handle /healthcheck {
 		respond "OK" 200
 	}
 
 	handle /* {
-		respond @ipblocked "Nope" 403
-		basicauth {
+		basicauth @basicauth {
 			{$BASIC_AUTH_USERNAME} {$HASHED_PASSWORD}
 		}
 		reverse_proxy {$PROXY_PASS} {
