@@ -1,0 +1,27 @@
+{
+	http_port {$NGINX_PORT}
+	admin off
+	auto_https off
+	persist_config off
+	servers {$NGINX_HOST}:{$NGINX_PORT} {
+		trusted_proxies static {$TRUSTED_PROXIES_IPS}
+	}
+}
+
+{$NGINX_HOST}:{$NGINX_PORT} {
+	@ipblocked not client_ip {$IP_BLOCK_MATCHER}
+
+	handle /healthcheck {
+		respond "OK" 200
+	}
+
+	handle /* {
+		respond @ipblocked "Nope" 403
+		basicauth {
+			{$BASIC_AUTH_USERNAME} {$HASHED_PASSWORD}
+		}
+		reverse_proxy {$PROXY_PASS} {
+			header_up -Authorization
+		}
+	}
+}
