@@ -7,6 +7,7 @@ import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine";
 import { PATH_NAMES } from "../../../app.constants";
 import { sanitize } from "../../../utils/strings";
 import xss from "xss";
+import { getJourneyTypeFromUserSession } from "../journey/journey";
 
 export function sendMfaGeneric(
   mfaCodeService: MfaServiceInterface
@@ -23,7 +24,8 @@ export function sendMfaGeneric(
       req.ip,
       persistentSessionId,
       isResendCodeRequest,
-      xss(req.cookies.lng as string)
+      xss(req.cookies.lng as string),
+      getJourneyTypeFromUserSession(req.session.user)
     );
 
     if (!result.success) {
