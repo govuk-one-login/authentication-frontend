@@ -3,9 +3,7 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import {
-  contactUsQuestionsGet,
-} from "../contact-us-controller";
+import { contactUsQuestionsGet } from "../contact-us-controller";
 import {
   CONTACT_US_THEMES,
   CONTACT_US_FIELD_MAX_LENGTH,
