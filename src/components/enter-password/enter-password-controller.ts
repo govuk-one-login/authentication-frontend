@@ -178,7 +178,9 @@ export function enterPasswordPost(
         persistentSessionId,
         false,
         xss(req.cookies.lng as string),
-        getJourneyTypeFromUserSession(req.session.user)
+        getJourneyTypeFromUserSession(req.session.user, {
+          includeReauthentication: true,
+        })
       );
 
       if (!result.success) {
