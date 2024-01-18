@@ -118,13 +118,18 @@ export function enterPasswordPost(
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
+    const journeyType = getJourneyTypeFromUserSession(req.session.user, {
+      includeReauthentication: true,
+    });
+
     const userLogin = await service.loginUser(
       sessionId,
       email,
       req.body["password"],
       clientSessionId,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      journeyType
     );
 
     if (!userLogin.success) {
@@ -178,9 +183,7 @@ export function enterPasswordPost(
         persistentSessionId,
         false,
         xss(req.cookies.lng as string),
-        getJourneyTypeFromUserSession(req.session.user, {
-          includeReauthentication: true,
-        })
+        journeyType
       );
 
       if (!result.success) {
