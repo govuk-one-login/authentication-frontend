@@ -20,6 +20,7 @@ import {
 import xss from "xss";
 import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
+import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 
 const TEMPLATE = "setup-authenticator-app/index.njk";
 
@@ -56,10 +57,10 @@ export function setupAuthenticatorAppPost(
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const code = req.body.code;
 
-    const journeyType =
-      isAccountRecoveryPermitted && isAccountRecoveryJourney
-        ? JOURNEY_TYPE.ACCOUNT_RECOVERY
-        : JOURNEY_TYPE.REGISTRATION;
+    const journeyType = getJourneyTypeFromUserSession(req.session.user, {
+      includeAccountRecovery: true,
+      fallbackJourneyType: JOURNEY_TYPE.REGISTRATION,
+    });
 
     const verifyAccessCodeRes = await service.verifyMfaCode(
       MFA_METHOD_TYPE.AUTH_APP,

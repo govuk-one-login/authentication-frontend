@@ -1,4 +1,5 @@
 import { ApiResponseResult, DefaultApiResponse } from "../../../types";
+import { JOURNEY_TYPE } from "../../../app.constants";
 
 export interface MfaServiceInterface {
   sendMfaCode: (
@@ -9,6 +10,6 @@ export interface MfaServiceInterface {
     persistentSessionId: string,
     isResendCodeRequest: boolean,
     userLanguage: string,
-    journeyType?: string
+    journeyType?: JOURNEY_TYPE
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

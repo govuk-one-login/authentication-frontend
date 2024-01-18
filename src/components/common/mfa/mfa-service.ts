@@ -1,5 +1,9 @@
 import { MfaServiceInterface } from "./types";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  JOURNEY_TYPE,
+} from "../../../app.constants";
 import {
   createApiResponse,
   getRequestConfig,
@@ -17,7 +21,7 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
     persistentSessionId: string,
     isResendCodeRequest: boolean,
     userLanguage: string,
-    journeyType?: string
+    journeyType?: JOURNEY_TYPE
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.MFA,
