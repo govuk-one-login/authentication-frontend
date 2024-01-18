@@ -1,11 +1,15 @@
 import request from "supertest";
 import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
 import decache from "decache";
 
 import cheerio from "cheerio";
-import { PATH_NAMES } from "../../../app.constants";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../../app.constants";
+import nock = require("nock");
 
 describe("Integration::reset password check email ", () => {
   let app: any;
@@ -18,11 +22,12 @@ describe("Integration::reset password check email ", () => {
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
 
+    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-
         req.session.user = {
           email: "test@test.com",
           journey: {
@@ -30,13 +35,11 @@ describe("Integration::reset password check email ", () => {
             optionalPaths: [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL],
           },
         };
-
+        req.session.user.enterEmailMfaType = "SMS";
         next();
       });
 
     app = await require("../../../app").createApp();
-
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     nock(baseApi).post("/reset-password-request").once().reply(204);
@@ -132,5 +135,23 @@ describe("Integration::reset password check email ", () => {
   it("should return internal server error when /reset-password-request API call response is 500", (done) => {
     nock(baseApi).post("/reset-password-request").once().reply(500, {});
     request(app).get("/reset-password-check-email").expect(500, done);
+  });
+
+  it("should redirect to /reset-password-2fa-sms if user's 2FA is set to SMS", (done) => {
+    nock(baseApi)
+      .persist()
+      .post(API_ENDPOINTS.VERIFY_CODE)
+      .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
+
+    request(app)
+      .post("/reset-password-check-email")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123456",
+      })
+      .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_SMS)
+      .expect(302, done);
   });
 });
