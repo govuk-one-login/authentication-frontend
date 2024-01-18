@@ -124,7 +124,10 @@ export function enterPasswordPost(
       req.body["password"],
       clientSessionId,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      getJourneyTypeFromUserSession(req.session.user, {
+        includeReauthentication: true,
+      })
     );
 
     if (!userLogin.success) {

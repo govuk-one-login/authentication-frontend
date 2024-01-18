@@ -219,6 +219,53 @@ describe("enter password controller", () => {
       });
     });
 
+    it("can send the journeyType when sending the password", async () => {
+      const fakeService: EnterPasswordServiceInterface = {
+        loginUser: sinon.fake.returns({
+          data: {
+            redactedPhoneNumber: "3456",
+            mfaRequired: true,
+            consentRequired: false,
+            latestTermsAndConditionsAccepted: true,
+            mfaMethodVerified: true,
+            mfaMethodType: "SMS",
+          },
+          success: true,
+        }),
+      } as unknown as EnterPasswordServiceInterface;
+
+      const fakeMfaService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as MfaServiceInterface;
+
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        reauthenticate: "test_data",
+      };
+      req.body["password"] = "password";
+
+      await enterPasswordPost(
+        false,
+        fakeService,
+        fakeMfaService
+      )(req as Request, res as Response);
+
+      expect(fakeService.loginUser).to.have.calledWith(
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        JOURNEY_TYPE.REAUTHENTICATION
+      );
+    });
+
     it("should redirect to enter-code when the password is correct", async () => {
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sinon.fake.returns({
