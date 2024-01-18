@@ -13,6 +13,7 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
+import * as journey from "../../journey/journey";
 
 describe("send mfa controller", () => {
   let req: RequestOutput;
@@ -41,6 +42,11 @@ describe("send mfa controller", () => {
         }),
       } as unknown as MfaServiceInterface;
 
+      const getJourneyTypeFromUserSessionSpy = sinon.spy(
+        journey,
+        "getJourneyTypeFromUserSession"
+      );
+
       res.locals.sessionId = "123456-djjad";
       req.session.user = {
         email: "test@test.com",
@@ -50,7 +56,15 @@ describe("send mfa controller", () => {
 
       await sendMfaGeneric(fakeService)(req as Request, res as Response);
 
-      expect(fakeService.sendMfaCode).to.have.been.calledWith(
+      expect(
+        getJourneyTypeFromUserSessionSpy
+      ).to.have.been.calledOnceWithExactly(req.session.user, {
+        includeReauthentication: true,
+      });
+      expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
+        JOURNEY_TYPE.REAUTHENTICATION
+      );
+      expect(fakeService.sendMfaCode).to.have.been.calledOnceWithExactly(
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,

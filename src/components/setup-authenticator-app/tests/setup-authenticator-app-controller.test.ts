@@ -21,6 +21,7 @@ import { ERROR_CODES } from "../../common/constants";
 import { BadRequestError } from "../../../utils/error";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
+import * as journey from "../../common/journey/journey";
 
 describe("setup-authenticator-app controller", () => {
   let req: RequestOutput;
@@ -70,13 +71,26 @@ describe("setup-authenticator-app controller", () => {
         sendNotification: sinon.fake(),
       };
 
+      const getJourneyTypeFromUserSessionSpy = sinon.spy(
+        journey,
+        "getJourneyTypeFromUserSession"
+      );
+
       await setupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
         req as Request,
         res as Response
       );
 
-      expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
-      expect(fakeMfAService.verifyMfaCode).to.have.been.calledWithExactly(
+      expect(
+        getJourneyTypeFromUserSessionSpy
+      ).to.have.been.calledOnceWithExactly(req.session.user, {
+        includeAccountRecovery: true,
+        fallbackJourneyType: JOURNEY_TYPE.REGISTRATION,
+      });
+      expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
+        JOURNEY_TYPE.ACCOUNT_RECOVERY
+      );
+      expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnceWithExactly(
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,

@@ -22,6 +22,7 @@ import {
   ResponseOutput,
 } from "mock-req-res";
 import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
+import * as journey from "../../common/journey/journey";
 
 describe("check your phone controller", () => {
   let req: RequestOutput;
@@ -63,6 +64,11 @@ describe("check your phone controller", () => {
         sendNotification: sinon.fake(),
       };
 
+      const getJourneyTypeFromUserSessionSpy = sinon.spy(
+        journey,
+        "getJourneyTypeFromUserSession"
+      );
+
       req.body.code = "123456";
       req.session.user.isAccountRecoveryPermitted = true;
       req.session.user.isAccountRecoveryJourney = true;
@@ -73,8 +79,16 @@ describe("check your phone controller", () => {
         res as Response
       );
 
-      expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
-      expect(fakeService.verifyMfaCode).to.have.calledWith(
+      expect(
+        getJourneyTypeFromUserSessionSpy
+      ).to.have.been.calledOnceWithExactly(req.session.user, {
+        includeAccountRecovery: true,
+        fallbackJourneyType: JOURNEY_TYPE.REGISTRATION,
+      });
+      expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
+        JOURNEY_TYPE.ACCOUNT_RECOVERY
+      );
+      expect(fakeService.verifyMfaCode).to.have.been.calledOnceWithExactly(
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,

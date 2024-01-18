@@ -20,6 +20,7 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
+import * as journey from "../../common/journey/journey";
 
 const fakeAccountRecoveryPermissionCheckService = (
   desiredAccountRecoveryPermittedResponse: boolean
@@ -141,14 +142,26 @@ describe("enter mfa controller", () => {
         }),
       } as unknown as VerifyCodeInterface;
 
+      const getJourneyTypeFromUserSessionSpy = sinon.spy(
+        journey,
+        "getJourneyTypeFromUserSession"
+      );
+
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
       req.session.user.reauthenticate = "test_data";
 
       await enterMfaPost(fakeService)(req as Request, res as Response);
 
-      expect(fakeService.verifyCode).to.have.been.calledOnce;
-      expect(fakeService.verifyCode).to.have.been.calledWith(
+      expect(
+        getJourneyTypeFromUserSessionSpy
+      ).to.have.been.calledOnceWithExactly(req.session.user, {
+        includeReauthentication: true,
+      });
+      expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
+        JOURNEY_TYPE.REAUTHENTICATION
+      );
+      expect(fakeService.verifyCode).to.have.been.calledOnceWithExactly(
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
@@ -157,9 +170,6 @@ describe("enter mfa controller", () => {
         sinon.match.any,
         JOURNEY_TYPE.REAUTHENTICATION
       );
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
-      expect(req.session.user.isAccountPartCreated).to.be.eq(false);
     });
 
     it("should redirect to /auth-code when valid code entered", async () => {

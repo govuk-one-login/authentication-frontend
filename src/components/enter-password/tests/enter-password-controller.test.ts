@@ -21,6 +21,7 @@ import {
 import { EnterEmailServiceInterface } from "../../enter-email/types";
 import { ERROR_CODES } from "../../common/constants";
 import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
+import * as journey from "../../common/journey/journey";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
@@ -177,6 +178,11 @@ describe("enter password controller", () => {
           }),
         } as unknown as MfaServiceInterface;
 
+        const getJourneyTypeFromUserSessionSpy = sinon.spy(
+          journey,
+          "getJourneyTypeFromUserSession"
+        );
+
         res.locals.sessionId = "123456-djjad";
         res.locals.clientSessionId = "00000-djjad";
         res.locals.persistentSessionId = "dips-123456-abc";
@@ -192,7 +198,15 @@ describe("enter password controller", () => {
           fakeMfaService
         )(req as Request, res as Response);
 
-        expect(fakeMfaService.sendMfaCode).to.have.been.calledWith(
+        expect(
+          getJourneyTypeFromUserSessionSpy
+        ).to.have.been.calledOnceWithExactly(req.session.user, {
+          includeReauthentication: true,
+        });
+        expect(
+          getJourneyTypeFromUserSessionSpy.getCall(0).returnValue
+        ).to.equal(JOURNEY_TYPE.REAUTHENTICATION);
+        expect(fakeMfaService.sendMfaCode).to.have.been.calledOnceWithExactly(
           sinon.match.any,
           sinon.match.any,
           sinon.match.any,

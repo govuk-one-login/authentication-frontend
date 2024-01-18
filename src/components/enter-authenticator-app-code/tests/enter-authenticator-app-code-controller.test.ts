@@ -19,6 +19,7 @@ import {
   ResponseOutput,
 } from "mock-req-res";
 import { VerifyMfaCodeInterface } from "../types";
+import * as journey from "../../common/journey/journey";
 
 describe("enter authenticator app code controller", () => {
   let req: RequestOutput;
@@ -181,6 +182,11 @@ describe("enter authenticator app code controller", () => {
         }),
       } as unknown as VerifyMfaCodeInterface;
 
+      const getJourneyTypeFromUserSessionSpy = sinon.spy(
+        journey,
+        "getJourneyTypeFromUserSession"
+      );
+
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
 
@@ -189,8 +195,17 @@ describe("enter authenticator app code controller", () => {
         res as Response
       );
 
-      expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
-      expect(fakeService.verifyMfaCode).to.have.been.calledWith(
+      expect(
+        getJourneyTypeFromUserSessionSpy
+      ).to.have.been.calledOnceWithExactly(req.session.user, {
+        includeAccountRecovery: true,
+        includeReauthentication: true,
+        fallbackJourneyType: JOURNEY_TYPE.SIGN_IN,
+      });
+      expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
+        JOURNEY_TYPE.SIGN_IN
+      );
+      expect(fakeService.verifyMfaCode).to.have.been.calledOnceWithExactly(
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
