@@ -3,10 +3,10 @@ common_state_bucket = "di-auth-staging-tfstate"
 redis_node_size     = "cache.m4.xlarge"
 
 frontend_auto_scaling_v2_enabled                                    = true
-frontend_task_definition_cpu                                        = 512
-frontend_task_definition_memory                                     = 1024
+frontend_task_definition_cpu                                        = 1024
+frontend_task_definition_memory                                     = 2048
 frontend_auto_scaling_min_count                                     = 3
-frontend_auto_scaling_max_count                                     = 12
+frontend_auto_scaling_max_count                                     = 30
 ecs_desired_count                                                   = 3
 support_welsh_language_in_support_forms                             = "1"
 support_language_cy                                                 = "1"
