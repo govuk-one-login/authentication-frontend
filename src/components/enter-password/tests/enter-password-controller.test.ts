@@ -240,6 +240,11 @@ describe("enter password controller", () => {
         }),
       } as unknown as MfaServiceInterface;
 
+      const getJourneyTypeFromUserSessionSpy = sinon.spy(
+        journey,
+        "getJourneyTypeFromUserSession"
+      );
+
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
@@ -255,6 +260,14 @@ describe("enter password controller", () => {
         fakeMfaService
       )(req as Request, res as Response);
 
+      expect(
+        getJourneyTypeFromUserSessionSpy
+      ).to.have.been.calledOnceWithExactly(req.session.user, {
+        includeReauthentication: true,
+      });
+      expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
+        JOURNEY_TYPE.REAUTHENTICATION
+      );
       expect(fakeService.loginUser).to.have.calledWith(
         sinon.match.any,
         sinon.match.any,
