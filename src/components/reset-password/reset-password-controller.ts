@@ -146,6 +146,7 @@ export function resetPasswordPost(
             req.session.user.isLatestTermsAndConditionsAccepted,
           mfaMethodType: loginResponse.data.mfaMethodType,
           isMfaMethodVerified: loginResponse.data.mfaMethodVerified,
+          support2FABeforePasswordReset: support2FABeforePasswordReset(),
         },
         res.locals.sessionId
       )

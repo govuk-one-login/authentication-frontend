@@ -1,0 +1,56 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% set pageTitleName = 'pages.enterAuthenticatorAppCode.title' | translate %}
+
+{% block content %}
+
+  {% include "common/errors/errorSummary.njk" %}
+
+  <form id="form-tracking" action="/reset-password-2fa-auth-app" method="post" novalidate="novalidate">
+
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <input type="hidden" name="isAccountRecoveryPermitted" value="{{isAccountRecoveryPermitted}}"/>
+    <input type="hidden" name="checkEmailLink" value="{{checkEmailLink}}"/>
+
+    {{ govukInput({
+      label: {
+        text: 'pages.enterAuthenticatorAppCode.header' | translate,
+        classes: "govuk-label--l",
+        isPageHeading: true
+      },
+    classes: "govuk-input--width-10",
+    id: "code",
+    name: "code",
+    inputmode: "numeric",
+    spellcheck: false,
+    autocomplete:"one-time-code",
+    errorMessage: {
+      text: errors['code'].text
+    } if (errors['code'])})
+  }}
+
+    {{ govukButton({
+    "text": "general.continue.label" | translate,
+    "type": "Submit",
+    "preventDoubleClick": true
+  }) }}
+
+  </form>
+
+  {% if isAccountRecoveryPermitted === true %}
+    {% set detailsHTML %}
+      <p class="govuk-body">
+        {{'pages.enterAuthenticatorAppCode.details.text1' | translate}}
+        <a href="{{checkEmailLink}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.text2'| translate}}</a>{{'pages.enterAuthenticatorAppCode.details.text3' | translate}}
+      </p>
+    {% endset %}
+
+    {{ govukDetails({
+      summaryText: 'pages.enterAuthenticatorAppCode.details.summary' | translate,
+      html: detailsHTML
+    }) }}
+  {% endif %}
+{% endblock %}

@@ -1,6 +1,6 @@
 import request from "supertest";
 import { describe } from "mocha";
-import { expect, sinon } from "../../../../test/utils/test-utils";
+import { sinon } from "../../../../test/utils/test-utils";
 import decache from "decache";
 
 import cheerio from "cheerio";
@@ -22,7 +22,7 @@ describe("Integration::reset password check email ", () => {
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
 
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
+    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -35,7 +35,7 @@ describe("Integration::reset password check email ", () => {
             optionalPaths: [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL],
           },
         };
-        req.session.user.enterEmailMfaType = "SMS";
+        req.session.user.enterEmailMfaType = "AUTH_APP";
         next();
       });
 
@@ -67,66 +67,7 @@ describe("Integration::reset password check email ", () => {
     request(app).get("/reset-password-check-email").expect(200, done);
   });
 
-  it("should return error page when 6 password reset codes requested", (done) => {
-    nock(baseApi)
-      .post("/reset-password-request")
-      .times(6)
-      .reply(400, { code: 1022 });
-
-    request(app)
-      .get("/reset-password-check-email")
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($(".govuk-heading-l").text()).to.contains(
-          "You asked to resend the security code too many times"
-        );
-      })
-      .expect(200, done);
-  });
-
-  it("should return error page when blocked from requesting codes", (done) => {
-    nock(baseApi)
-      .post("/reset-password-request")
-      .once()
-      .reply(400, { code: 1023 });
-
-    request(app)
-      .get("/reset-password-check-email")
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($(".govuk-heading-l").text()).to.contains(
-          "You cannot get a new security code at the moment"
-        );
-      })
-      .expect(200, done);
-  });
-
-  it("should redisplay page with error", (done) => {
-    nock(baseApi).post("/verify-code").reply(400, { code: 1021 });
-
-    request(app)
-      .post("/reset-password-check-email")
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        code: "123456",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#code-error").text()).to.contains(
-          "The security code you entered is not correct"
-        );
-      })
-      .expect(400, done);
-  });
-
-  it("should return internal server error when /reset-password-request API call response is 500", (done) => {
-    nock(baseApi).post("/reset-password-request").once().reply(500, {});
-    request(app).get("/reset-password-check-email").expect(500, done);
-  });
-
-  it("should redirect to /reset-password if code is correct", (done) => {
+  it("should redirect to /reset-password-2fa-auth-app if user's 2FA is set to AUTH_APP", (done) => {
     nock(baseApi)
       .persist()
       .post(API_ENDPOINTS.VERIFY_CODE)
@@ -140,7 +81,7 @@ describe("Integration::reset password check email ", () => {
         _csrf: token,
         code: "123456",
       })
-      .expect("Location", PATH_NAMES.RESET_PASSWORD)
+      .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
       .expect(302, done);
   });
 });

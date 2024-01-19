@@ -22,6 +22,7 @@ import { enterEmailService } from "../enter-email/enter-email-service";
 import { supportReauthentication } from "../../config";
 import { CheckReauthServiceInterface } from "../check-reauth-users/types";
 import { checkReauthUsersService } from "../check-reauth-users/check-reauth-users-service";
+import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -117,13 +118,18 @@ export function enterPasswordPost(
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
+    const journeyType = getJourneyTypeFromUserSession(req.session.user, {
+      includeReauthentication: true,
+    });
+
     const userLogin = await service.loginUser(
       sessionId,
       email,
       req.body["password"],
       clientSessionId,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      journeyType
     );
 
     if (!userLogin.success) {
@@ -176,7 +182,8 @@ export function enterPasswordPost(
         req.ip,
         persistentSessionId,
         false,
-        xss(req.cookies.lng as string)
+        xss(req.cookies.lng as string),
+        journeyType
       );
 
       if (!result.success) {

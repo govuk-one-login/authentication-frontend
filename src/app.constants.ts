@@ -70,6 +70,7 @@ export const PATH_NAMES = {
   PASSWORD_RESET_REQUIRED: "/password-reset-required",
   UNAVAILABLE_PERMANENT: "/unavailable-permanent",
   UNAVAILABLE_TEMPORARY: "/unavailable-temporary",
+  RESET_PASSWORD_2FA_AUTH_APP: "/reset-password-2fa-auth-app",
 };
 
 export const HREF_BACK = {
@@ -215,6 +216,7 @@ export enum JOURNEY_TYPE {
   ACCOUNT_RECOVERY = "ACCOUNT_RECOVERY",
   SIGN_IN = "SIGN_IN",
   PASSWORD_RESET_MFA = "PASSWORD_RESET_MFA",
+  REAUTHENTICATION = "REAUTHENTICATION",
 }
 
 export const ENVIRONMENT_NAME = {

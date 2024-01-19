@@ -93,6 +93,7 @@ describe("reset password check email controller", () => {
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
+      req.session.user.enterEmailMfaType = "SMS";
       req.body.code = "123456";
       req.session.id = "123456-djjad";
       await resetPasswordCheckEmailPost(fakeService)(
@@ -100,7 +101,32 @@ describe("reset password check email controller", () => {
         res as Response
       );
 
-      expect(res.redirect).to.have.calledWith("/reset-password-2fa-sms");
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.RESET_PASSWORD_2FA_SMS
+      );
+    });
+
+    it("should redirect to check_auth_app if code entered is correct and feature flag is turned on", async () => {
+      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+      const fakeService: VerifyCodeInterface = {
+        verifyCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as VerifyCodeInterface;
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      req.session.user.enterEmailMfaType = "AUTH_APP";
+      req.body.code = "123456";
+      req.session.id = "123456-djjad";
+      await resetPasswordCheckEmailPost(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP
+      );
     });
 
     it("should render check email page with errors if incorrect code entered", async () => {

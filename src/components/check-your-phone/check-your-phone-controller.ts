@@ -23,6 +23,7 @@ import {
 } from "../../utils/validation";
 import { BadRequestError } from "../../utils/error";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
+import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";
 const RESEND_CODE_LINK = pathWithQueryParam(
@@ -47,10 +48,10 @@ export const checkYourPhonePost = (
     const { isAccountRecoveryJourney, isAccountRecoveryPermitted } =
       req.session.user;
 
-    const journeyType =
-      isAccountRecoveryPermitted && isAccountRecoveryJourney
-        ? JOURNEY_TYPE.ACCOUNT_RECOVERY
-        : JOURNEY_TYPE.REGISTRATION;
+    const journeyType = getJourneyTypeFromUserSession(req.session.user, {
+      includeAccountRecovery: true,
+      fallbackJourneyType: JOURNEY_TYPE.REGISTRATION,
+    });
 
     const result = await service.verifyMfaCode(
       MFA_METHOD_TYPE.SMS,

@@ -9,7 +9,7 @@ import {
   enterAuthenticatorAppCodePost,
   UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
 } from "../enter-authenticator-app-code-controller";
-import { PATH_NAMES } from "../../../app.constants";
+import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import { AccountRecoveryInterface } from "../../common/account-recovery/types";
 import {
@@ -19,6 +19,7 @@ import {
   ResponseOutput,
 } from "mock-req-res";
 import { VerifyMfaCodeInterface } from "../types";
+import * as journey from "../../common/journey/journey";
 
 describe("enter authenticator app code controller", () => {
   let req: RequestOutput;
@@ -174,6 +175,47 @@ describe("enter authenticator app code controller", () => {
   });
 
   describe("enterAuthenticatorAppCodePost", () => {
+    it("can send the journeyType when verifying the code", async () => {
+      const fakeService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as VerifyMfaCodeInterface;
+
+      const getJourneyTypeFromUserSessionSpy = sinon.spy(
+        journey,
+        "getJourneyTypeFromUserSession"
+      );
+
+      req.body.code = "123456";
+      res.locals.sessionId = "123456-djjad";
+
+      await enterAuthenticatorAppCodePost(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(
+        getJourneyTypeFromUserSessionSpy
+      ).to.have.been.calledOnceWithExactly(req.session.user, {
+        includeAccountRecovery: true,
+        includeReauthentication: true,
+        fallbackJourneyType: JOURNEY_TYPE.SIGN_IN,
+      });
+      expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
+        JOURNEY_TYPE.SIGN_IN
+      );
+      expect(fakeService.verifyMfaCode).to.have.been.calledOnceWithExactly(
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        JOURNEY_TYPE.SIGN_IN
+      );
+    });
+
     it("should redirect to /auth-code when valid code entered", async () => {
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({

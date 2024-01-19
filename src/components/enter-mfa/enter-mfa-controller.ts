@@ -13,6 +13,7 @@ import { supportAccountRecovery } from "../../config";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
 import { BadRequestError } from "../../utils/error";
+import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 
 export const ENTER_MFA_DEFAULT_TEMPLATE_NAME = "enter-mfa/index.njk";
 export const UPLIFT_REQUIRED_SMS_TEMPLATE_NAME =
@@ -85,6 +86,9 @@ export const enterMfaPost = (
       template: template,
       validationKey: "pages.enterMfa.code.validationError.invalidCode",
       validationErrorCode: ERROR_CODES.INVALID_MFA_CODE,
+      journeyType: getJourneyTypeFromUserSession(req.session.user, {
+        includeReauthentication: true,
+      }),
     });
 
     return verifyCodeRequest(req, res);
