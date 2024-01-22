@@ -55,6 +55,7 @@ describe("check your email controller", () => {
 
       req.body.code = "123456";
       req.session.id = "123456-djjad";
+      req.session.user.email = "test@test.com";
 
       await checkYourEmailPost(fakeService)(req as Request, res as Response);
 
@@ -74,6 +75,7 @@ describe("check your email controller", () => {
 
       req.body.code = "678988";
       req.session.id = "123456-djjad";
+      req.session.user.email = "test@test.com";
 
       await checkYourEmailPost(fakeService)(req as Request, res as Response);
 

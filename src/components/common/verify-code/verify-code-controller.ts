@@ -9,7 +9,11 @@ import { VerifyCodeInterface } from "./types";
 import { ExpressRouteFunc } from "../../../types";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine";
 import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../../app.constants";
-import { support2FABeforePasswordReset } from "../../../config";
+import {
+  support2FABeforePasswordReset,
+  supportAccountInterventions,
+} from "../../../config";
+import { AccountInterventionsInterface } from "../../account-intervention/types";
 
 interface Config {
   notificationType: NOTIFICATION_TYPE;
@@ -22,9 +26,11 @@ interface Config {
 
 export function verifyCodePost(
   service: VerifyCodeInterface,
+  accountInterventionsService: AccountInterventionsInterface,
   options: Config
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
+    const email = req.session.user.email.toLowerCase();
     const code = req.body["code"];
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
@@ -62,6 +68,7 @@ export function verifyCodePost(
     }
 
     let nextEvent;
+    let accountInterventionsResponse;
 
     switch (options.notificationType) {
       case NOTIFICATION_TYPE.VERIFY_EMAIL:
@@ -78,6 +85,26 @@ export function verifyCodePost(
         break;
       default:
         throw new Error("Unknown notification type");
+    }
+    if (supportAccountInterventions()) {
+      if (
+        nextEvent === USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED
+      ) {
+        accountInterventionsResponse =
+          await accountInterventionsService.accountInterventionStatus(
+            sessionId,
+            email,
+            req.ip,
+            clientSessionId,
+            persistentSessionId
+          );
+        if (accountInterventionsResponse.data.blocked) {
+          nextEvent = USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION;
+        }
+        if (accountInterventionsResponse.data.temporarilySuspended) {
+          nextEvent = USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION;
+        }
+      }
     }
 
     res.redirect(
