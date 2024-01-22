@@ -22,6 +22,7 @@ function createAuthorizeRequest() {
     "&client_id=" + process.env.TEST_CLIENT_ID +
     "&cookie_consent=accept" +
     "&_ga=test" +
+    getIDToken() +
     getUILocales();
 }
 
@@ -88,6 +89,15 @@ function getUILocales() {
   const uiLocales = process.env.UI_LOCALES;
   if (uiLocales && uiLocales.length > 0) {
     return "&ui_locales=" + uiLocales;
+  } else {
+    return "";
+  }
+}
+
+function getIDToken() {
+  const idToken = process.env.ID_TOKEN_VALUE;
+  if (idToken) {
+    return "&id_token_hint=" + idToken + "&prompt=login";
   } else {
     return "";
   }
