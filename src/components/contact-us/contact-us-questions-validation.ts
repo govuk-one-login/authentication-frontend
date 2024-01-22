@@ -6,13 +6,6 @@ import {
   ZENDESK_THEMES,
   ZENDESK_COUNTRY_MAX_LENGTH,
 } from "../../app.constants";
-import { supportWelshInSupportForms } from "../../config";
-
-export function setLanguageToReflectSupportForWelsh(
-  lang: "cy" | "en"
-): "cy" | "en" {
-  return supportWelshInSupportForms() ? lang : "en";
-}
 
 export function validateContactUsQuestionsRequest(): ValidationChainFunc {
   return [
@@ -29,7 +22,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
             suffix,
           {
             value,
-            lng: setLanguageToReflectSupportForWelsh(req.i18n.lng),
+            lng: req.i18n.lng,
           }
         );
       }),
@@ -40,7 +33,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.takingPhotoOfIdProblem.identityDocument.errorMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("issueDescription")
@@ -49,7 +42,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           getErrorMessageForIssueDescription(req.body.theme, req.body.subtheme),
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("issueDescription")
@@ -58,7 +51,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           getErrorMessageForIssueDescription(req.body.theme, req.body.subtheme),
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("issueDescription")
@@ -70,7 +63,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
             req.body.theme,
             req.body.subtheme
           ),
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("additionalDescription")
@@ -82,7 +75,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
             req.body.theme,
             req.body.subtheme
           ),
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("additionalDescription")
@@ -91,7 +84,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.additionalDescriptionErrorMessage.entryTooLongMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("optionalDescription")
@@ -100,7 +93,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.optionalDescriptionErrorMessage.entryTooLongMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("moreDetailDescription")
@@ -109,7 +102,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.optionalDescriptionErrorMessage.message",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("serviceTryingToUse")
@@ -118,7 +111,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.serviceTryingToUse.errorMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("moreDetailDescription")
@@ -127,7 +120,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.optionalDescriptionErrorMessage.entryTooLongMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("contact")
@@ -135,7 +128,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.replyByEmail.validationError.noBoxSelected",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("email")
@@ -144,14 +137,14 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.replyByEmail.validationError.noEmailAddress",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       })
       .isEmail()
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.replyByEmail.validationError.invalidFormat",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("country")
@@ -167,7 +160,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
                 "pages.contactUsQuestions.textMessageInternationNumberConditionalSection.errorIfBlank",
                 {
                   value,
-                  lng: setLanguageToReflectSupportForWelsh(req.i18n.lng),
+                  lng: req.i18n.lng,
                 }
               )
             );
@@ -181,7 +174,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.signInPhoneNumberIssue.section3.ifBlankErrorMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("countryPhoneNumberFrom")
@@ -190,7 +183,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.signInPhoneNumberIssue.section3.ifTooLongErrorMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     validateBodyMiddleware("contact-us/questions/index.njk"),
