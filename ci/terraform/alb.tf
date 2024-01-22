@@ -107,8 +107,8 @@ resource "aws_alb_listener" "frontend_alb_listener_http" {
 data "aws_elb_service_account" "main" {}
 
 resource "aws_s3_bucket" "alb-accesslog" {
-  count  = var.environment == "production" ? 1 : 0
-  bucket = "${var.environment}-frontend-alb-access-logs"
+  count         = var.environment == "production" ? 1 : 0
+  bucket        = "${var.environment}-frontend-alb-access-logs"
   force_destroy = true
 }
 
