@@ -1,5 +1,5 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-    {{ "pages.contactUsFurtherInformation.provingIdentityFaceToFace.header" | translateEnOnly }}
+    {{ "pages.contactUsFurtherInformation.provingIdentityFaceToFace.header" | translate }}
 </h1>
 
 <form action="/contact-us-further-information" method="post" novalidate>
@@ -15,7 +15,7 @@
         name: "subtheme",
         fieldset: {
             legend: {
-                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.header" | translateEnOnly,
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.header" | translate,
                 isPageHeading: false,
                 classes: "govuk-fieldset__legend--m"
             }
@@ -23,31 +23,31 @@
         items: [
             {
                 value: "face_to_face_details",
-                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemEnteringDetails" | translateEnOnly
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemEnteringDetails" | translate
             },
             {
                 value: "face_to_face_letter",
-                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemPostOfficeLetter" | translateEnOnly
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemPostOfficeLetter" | translate
             },
             {
                 value: "face_to_face_post_office",
-                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemAtPostOffice" | translateEnOnly
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemAtPostOffice" | translate
             },
             {
                 value: "face_to_face_post_office_id_results",
-                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemFindingResult" | translateEnOnly
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemFindingResult" | translate
             },
             {
                 value: "face_to_face_post_office_service",
-                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemContinuing" | translateEnOnly
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.problemContinuing" | translate
             },
             {
                 value: "face_to_face_technical_problem",
-                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.technicalProblem" | translateEnOnly
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.technicalProblem" | translate
             },
             {
                 value: "face_to_face_something_else",
-                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.anotherProblem" | translateEnOnly
+                text: "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.anotherProblem" | translate
             }
         ],
         errorMessage: {
@@ -57,7 +57,7 @@
 
 
     {{ govukButton({
-        "text": "general.continue.label" | translateEnOnly,
+        "text": "general.continue.label" | translate,
         "type": "Submit",
         "preventDoubleClick": true
     }) }}
