@@ -8,7 +8,7 @@ import { BadRequestError } from "../../../utils/error";
 import { VerifyCodeInterface } from "./types";
 import { ExpressRouteFunc } from "../../../types";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine";
-import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../../app.constants";
+import { NOTIFICATION_TYPE } from "../../../app.constants";
 import { support2FABeforePasswordReset } from "../../../config";
 
 interface Config {
@@ -17,7 +17,7 @@ interface Config {
   validationKey: string;
   validationErrorCode: number;
   callback?: (req: Request, res: Response) => void;
-  journeyType?: JOURNEY_TYPE;
+  journeyType?: string;
 }
 
 export function verifyCodePost(

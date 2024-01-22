@@ -21,7 +21,6 @@ import {
   renderBadRequest,
 } from "../../utils/validation";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 
 export const ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME =
   "enter-authenticator-app-code/index.njk";
@@ -99,11 +98,20 @@ export const enterAuthenticatorAppCodePost = (
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const { isUpliftRequired } = req.session.user;
+    const {
+      isUpliftRequired,
+      isAccountRecoveryJourney,
+      isAccountRecoveryPermitted,
+    } = req.session.user;
 
     const template = isUpliftRequired
       ? UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
       : ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME;
+
+    const journeyType =
+      isAccountRecoveryPermitted && isAccountRecoveryJourney
+        ? JOURNEY_TYPE.ACCOUNT_RECOVERY
+        : JOURNEY_TYPE.SIGN_IN;
 
     const result = await service.verifyMfaCode(
       MFA_METHOD_TYPE.AUTH_APP,
@@ -112,11 +120,7 @@ export const enterAuthenticatorAppCodePost = (
       clientSessionId,
       req.ip,
       persistentSessionId,
-      getJourneyTypeFromUserSession(req.session.user, {
-        includeAccountRecovery: true,
-        includeReauthentication: true,
-        fallbackJourneyType: JOURNEY_TYPE.SIGN_IN,
-      })
+      journeyType
     );
 
     if (!result.success) {

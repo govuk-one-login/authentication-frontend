@@ -2,11 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import {
-  JOURNEY_TYPE,
-  NOTIFICATION_TYPE,
-  PATH_NAMES,
-} from "../../../app.constants";
+import { NOTIFICATION_TYPE, PATH_NAMES } from "../../../app.constants";
 import {
   setupAuthenticatorAppGet,
   setupAuthenticatorAppPost,
@@ -21,7 +17,6 @@ import { ERROR_CODES } from "../../common/constants";
 import { BadRequestError } from "../../../utils/error";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
-import * as journey from "../../common/journey/journey";
 
 describe("setup-authenticator-app controller", () => {
   let req: RequestOutput;
@@ -56,52 +51,6 @@ describe("setup-authenticator-app controller", () => {
   });
 
   describe("setupAuthenticatorAppPost", () => {
-    it("can send the journeyType when sending the MFA code", async () => {
-      req.session.user.authAppSecret = "testsecret";
-      req.session.user.email = "t@t.com";
-      req.session.user.isAccountRecoveryPermitted = true;
-      req.session.user.isAccountRecoveryJourney = true;
-      req.body.code = "123456";
-
-      const fakeMfAService: VerifyMfaCodeInterface = {
-        verifyMfaCode: sinon.fake.returns({ success: true }),
-      } as unknown as VerifyMfaCodeInterface;
-
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake(),
-      };
-
-      const getJourneyTypeFromUserSessionSpy = sinon.spy(
-        journey,
-        "getJourneyTypeFromUserSession"
-      );
-
-      await setupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
-        req as Request,
-        res as Response
-      );
-
-      expect(
-        getJourneyTypeFromUserSessionSpy
-      ).to.have.been.calledOnceWithExactly(req.session.user, {
-        includeAccountRecovery: true,
-        fallbackJourneyType: JOURNEY_TYPE.REGISTRATION,
-      });
-      expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
-        JOURNEY_TYPE.ACCOUNT_RECOVERY
-      );
-      expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnceWithExactly(
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        JOURNEY_TYPE.ACCOUNT_RECOVERY,
-        sinon.match.any
-      );
-    });
-
     it("should successfully validate access code and redirect to account created", async () => {
       req.session.user.authAppSecret = "testsecret";
       req.session.user.email = "t@t.com";

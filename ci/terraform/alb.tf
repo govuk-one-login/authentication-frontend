@@ -5,7 +5,20 @@ resource "aws_lb" "frontend_alb" {
   security_groups    = [aws_security_group.frontend_alb_sg.id]
   subnets            = local.public_subnet_ids
 
+  depends_on = [
+    aws_s3_bucket_policy.allow_access_alb
+  ]
+
   enable_deletion_protection = false
+
+  dynamic "access_logs" {
+    for_each = var.environment == "production" ? [1] : []
+    content {
+      bucket  = aws_s3_bucket.alb-accesslog[0].bucket
+      enabled = true
+      prefix  = "frontend-alb"
+    }
+  }
 
   tags = local.default_tags
 }
@@ -87,4 +100,40 @@ resource "aws_alb_listener" "frontend_alb_listener_http" {
   }
 
   tags = local.default_tags
+}
+
+#S3 Bucket for ElB access logs 
+
+data "aws_elb_service_account" "main" {}
+
+resource "aws_s3_bucket" "alb-accesslog" {
+  count  = var.environment == "production" ? 1 : 0
+  bucket = "${var.environment}-frontend-alb-access-logs"
+  force_destroy = true
+}
+
+resource "aws_s3_bucket_policy" "allow_access_alb" {
+  count  = var.environment == "production" ? 1 : 0
+  bucket = aws_s3_bucket.alb-accesslog[0].id
+  policy = data.aws_iam_policy_document.s3_bucket_lb_write[0].json
+}
+
+data "aws_iam_policy_document" "s3_bucket_lb_write" {
+  count     = var.environment == "production" ? 1 : 0
+  policy_id = "s3_bucket_lb_logs"
+
+  statement {
+    actions = [
+      "s3:PutObject",
+    ]
+    effect = "Allow"
+    resources = [
+      "${aws_s3_bucket.alb-accesslog[0].arn}/*",
+    ]
+
+    principals {
+      identifiers = ["${data.aws_elb_service_account.main.arn}"]
+      type        = "AWS"
+    }
+  }
 }

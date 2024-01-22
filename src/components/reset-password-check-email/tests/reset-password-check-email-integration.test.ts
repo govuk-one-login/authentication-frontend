@@ -22,7 +22,7 @@ describe("Integration::reset password check email ", () => {
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
 
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
+    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -65,6 +65,17 @@ describe("Integration::reset password check email ", () => {
   it("should return reset password check email page", (done) => {
     nock(baseApi).post("/reset-password-request").once().reply(204);
     request(app).get("/reset-password-check-email").expect(200, done);
+  });
+
+  it("should include confirmation paragraph inside the reponse body", (done) => {
+    nock(baseApi).post("/reset-password-request").once().reply(204);
+    request(app)
+      .get("/reset-password-check-email")
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#confirmationParagraph").length).to.eq(1);
+      })
+      .expect(200, done);
   });
 
   it("should return error page when 6 password reset codes requested", (done) => {
@@ -126,7 +137,7 @@ describe("Integration::reset password check email ", () => {
     request(app).get("/reset-password-check-email").expect(500, done);
   });
 
-  it("should redirect to /reset-password if code is correct", (done) => {
+  it("should redirect to /reset-password-2fa-sms if user's 2FA is set to SMS", (done) => {
     nock(baseApi)
       .persist()
       .post(API_ENDPOINTS.VERIFY_CODE)
@@ -140,7 +151,7 @@ describe("Integration::reset password check email ", () => {
         _csrf: token,
         code: "123456",
       })
-      .expect("Location", PATH_NAMES.RESET_PASSWORD)
+      .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_SMS)
       .expect(302, done);
   });
 });

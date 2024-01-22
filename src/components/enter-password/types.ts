@@ -1,5 +1,4 @@
 import { ApiResponseResult, DefaultApiResponse } from "../../types";
-import { JOURNEY_TYPE } from "../../app.constants";
 
 export interface UserLoginResponse extends DefaultApiResponse {
   redactedPhoneNumber?: string;
@@ -18,7 +17,6 @@ export interface EnterPasswordServiceInterface {
     password: string,
     clientSessionId: string,
     sourceIp: string,
-    persistentSessionId: string,
-    journeyType?: JOURNEY_TYPE
+    persistentSessionId: string
   ) => Promise<ApiResponseResult<UserLoginResponse>>;
 }

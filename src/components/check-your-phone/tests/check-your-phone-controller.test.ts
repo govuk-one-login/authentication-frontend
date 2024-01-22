@@ -9,11 +9,7 @@ import {
 } from "../check-your-phone-controller";
 
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import {
-  JOURNEY_TYPE,
-  NOTIFICATION_TYPE,
-  PATH_NAMES,
-} from "../../../app.constants";
+import { NOTIFICATION_TYPE, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import {
   mockRequest,
@@ -22,7 +18,6 @@ import {
   ResponseOutput,
 } from "mock-req-res";
 import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
-import * as journey from "../../common/journey/journey";
 
 describe("check your phone controller", () => {
   let req: RequestOutput;
@@ -52,54 +47,6 @@ describe("check your phone controller", () => {
   });
 
   describe("checkYourPhonePost", () => {
-    it("can send the journeyType when requesting the MFA code", async () => {
-      const fakeService: VerifyMfaCodeInterface = {
-        verifyMfaCode: sinon.fake.returns({
-          sessionState: "PHONE_NUMBER_CODE_VERIFIED",
-          success: true,
-        }),
-      } as unknown as VerifyMfaCodeInterface;
-
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake(),
-      };
-
-      const getJourneyTypeFromUserSessionSpy = sinon.spy(
-        journey,
-        "getJourneyTypeFromUserSession"
-      );
-
-      req.body.code = "123456";
-      req.session.user.isAccountRecoveryPermitted = true;
-      req.session.user.isAccountRecoveryJourney = true;
-      res.locals.sessionId = "123456-djjad";
-
-      await checkYourPhonePost(fakeService, fakeNotificationService)(
-        req as Request,
-        res as Response
-      );
-
-      expect(
-        getJourneyTypeFromUserSessionSpy
-      ).to.have.been.calledOnceWithExactly(req.session.user, {
-        includeAccountRecovery: true,
-        fallbackJourneyType: JOURNEY_TYPE.REGISTRATION,
-      });
-      expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
-        JOURNEY_TYPE.ACCOUNT_RECOVERY
-      );
-      expect(fakeService.verifyMfaCode).to.have.been.calledOnceWithExactly(
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        JOURNEY_TYPE.ACCOUNT_RECOVERY,
-        sinon.match.any
-      );
-    });
-
     it("should redirect to //account-confirmation when valid code entered", async () => {
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
