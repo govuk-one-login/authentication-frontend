@@ -4,7 +4,7 @@ import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
-import { PATH_NAMES, ZENDESK_THEMES } from "../../../app.constants";
+import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants";
 
 describe("Integration:: contact us - public user", () => {
   let token: string | string[];
@@ -440,10 +440,10 @@ describe("Integration:: contact us - public user", () => {
     it("should redirect to /contact-us-further-information", (done) => {
       request(app)
         .get("/contact-us-from-triage-page")
-        .query(`theme=${ZENDESK_THEMES.ID_CHECK_APP}`)
+        .query(`theme=${CONTACT_US_THEMES.ID_CHECK_APP}`)
         .expect(
           "Location",
-          `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${ZENDESK_THEMES.ID_CHECK_APP}`
+          `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.ID_CHECK_APP}`
         )
         .expect(302, done);
     });

@@ -10,7 +10,7 @@ import {
   SmartAgentCustomAttributes,
   Themes,
 } from "./types";
-import { ZENDESK_THEMES } from "../../app.constants";
+import { CONTACT_US_THEMES } from "../../app.constants";
 
 export function prepareSecurityCodeSendMethodTitle(
   securityCodeSentMethod: string
@@ -56,17 +56,17 @@ export function prepareIdentityDocumentTitle(
 }
 
 export function getIdentifierTag(theme: string): string {
-  if (theme === ZENDESK_THEMES.ID_CHECK_APP) {
+  if (theme === CONTACT_US_THEMES.ID_CHECK_APP) {
     return "sign_in_app";
   }
-  if (theme === ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
+  if (theme === CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
     return "id_face_to_face";
   }
   return "govuk_sign_in";
 }
 
 export function getThemeTag(themes: Themes): string {
-  if (themes.theme !== ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
+  if (themes.theme !== CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
     return `auth_${themes.theme}`;
   }
   return "";
