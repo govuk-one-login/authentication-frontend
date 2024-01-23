@@ -10,7 +10,7 @@ describe("Integration:: contact us - public user", () => {
   let token: string | string[];
   let cookies: string;
   let app: any;
-  let zendeskApiUrl: string;
+  let smartAgentApiUrl: string;
 
   before(async () => {
     decache("../../../app");
@@ -28,7 +28,7 @@ describe("Integration:: contact us - public user", () => {
       });
 
     app = await require("../../../app").createApp();
-    zendeskApiUrl = process.env.ZENDESK_API_URL;
+    smartAgentApiUrl = process.env.SMARTAGENT_API_URL;
 
     request(app)
       .get(PATH_NAMES.CONTACT_US)
@@ -373,7 +373,7 @@ describe("Integration:: contact us - public user", () => {
     });
 
     it("should redirect to success page when valid form submitted", (done) => {
-      nock(zendeskApiUrl).post("/tickets.json").once().reply(200);
+      nock(smartAgentApiUrl).post("/").once().reply(200);
 
       request(app)
         .post("/contact-us-questions")
@@ -386,7 +386,7 @@ describe("Integration:: contact us - public user", () => {
   });
 
   it("should redirect to success page when form submitted", (done) => {
-    nock(zendeskApiUrl).post("/tickets.json").once().reply(200);
+    nock(smartAgentApiUrl).post("/").once().reply(200);
 
     request(app)
       .post("/contact-us-questions")
@@ -407,7 +407,7 @@ describe("Integration:: contact us - public user", () => {
   });
 
   it("should redirect to success page when authenticator app problem form submitted", (done) => {
-    nock(zendeskApiUrl).post("/tickets.json").once().reply(200);
+    nock(smartAgentApiUrl).post("/").once().reply(200);
 
     request(app)
       .post("/contact-us-questions")

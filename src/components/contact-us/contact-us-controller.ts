@@ -7,16 +7,11 @@ import {
   ZENDESK_COUNTRY_MAX_LENGTH,
   CONTACT_US_REFERER_ALLOWLIST,
 } from "../../app.constants";
-import { contactUsService } from "./contact-us-service";
-import { ContactUsServiceInterface, Questions, ThemeQuestions } from "./types";
+import { Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
 import crypto from "crypto";
 import { logger } from "../../utils/logger";
-import {
-  getClientNameThatDirectsAllContactFormSubmissionsToSmartAgent,
-  getServiceDomain,
-  getSupportLinkUrl,
-} from "../../config";
+import { getServiceDomain, getSupportLinkUrl } from "../../config";
 import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
 
 const themeToPageTitle = {
@@ -361,24 +356,9 @@ export function furtherInformationPost(req: Request, res: Response): void {
   res.redirect(url + "?" + queryParams.toString());
 }
 
-export function setContactFormSubmissionUrlBasedOnClientName(
-  clientName: string,
-  clientNameThatDirectsAllContactFormSubmissionsToSmartAgent: string
-): string {
-  return clientName ===
-    clientNameThatDirectsAllContactFormSubmissionsToSmartAgent
-    ? PATH_NAMES.CONTACT_US_TESTING_SMARTAGENT_IN_LIVE
-    : PATH_NAMES.CONTACT_US_QUESTIONS;
-}
-
 export function contactUsQuestionsGet(req: Request, res: Response): void {
   const supportLinkURL = getSupportLinkUrl();
   const backLinkHref = prepareBackLink(req, supportLinkURL, serviceDomain);
-
-  const formSubmissionUrl = setContactFormSubmissionUrlBasedOnClientName(
-    req?.session?.client?.name,
-    getClientNameThatDirectsAllContactFormSubmissionsToSmartAgent()
-  );
 
   if (!req.query.theme) {
     return res.redirect(PATH_NAMES.CONTACT_US);
@@ -393,7 +373,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     pageTitle = themeToPageTitle[req.query.subtheme as string];
   }
   return res.render("contact-us/questions/index.njk", {
-    formSubmissionUrl: formSubmissionUrl,
+    formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
     theme: req.query.theme,
     subtheme: req.query.subtheme,
     backurl: backLinkHref,
@@ -470,58 +450,6 @@ export function contactUsQuestionsFormPostToSmartAgent(
 
     logger.info(
       `Support ticket submitted to SmartAgent with id ${ticketIdentifier} for session ${res.locals.sessionId}`
-    );
-    return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
-  };
-}
-
-export function contactUsQuestionsFormPostToZendesk(
-  service: ContactUsServiceInterface = contactUsService()
-): ExpressRouteFunc {
-  return async function (req: Request, res: Response) {
-    const questions = getQuestionsFromFormTypeForMessageBody(
-      req,
-      req.body.formType
-    );
-    const themeQuestions = getQuestionFromThemes(
-      req,
-      req.body.theme,
-      req.body.subtheme
-    );
-
-    const ticketIdentifier = createTicketIdentifier(
-      getAppSessionId(req.body.appSessionId)
-    );
-
-    await service.contactUsSubmitForm({
-      descriptions: {
-        issueDescription: req.body.issueDescription,
-        additionalDescription: req.body.additionalDescription,
-        optionalDescription: req.body.optionalDescription,
-        moreDetailDescription: req.body.moreDetailDescription,
-        serviceTryingToUse: req.body.serviceTryingToUse,
-        countryPhoneNumberFrom: req.body.countryPhoneNumberFrom,
-      },
-      themes: { theme: req.body.theme, subtheme: req.body.subtheme },
-      subject: "GOV.UK One Login",
-      email: req.body.email,
-      name: req.body.name,
-      optionalData: {
-        ticketIdentifier: ticketIdentifier,
-        userAgent: req.get("User-Agent"),
-        appErrorCode: getAppErrorCode(req.body.appErrorCode),
-        country: req.body.country,
-      },
-      feedbackContact: req.body.contact === "true",
-      questions: questions,
-      themeQuestions: themeQuestions,
-      referer: validateReferer(req.body.referer, serviceDomain),
-      securityCodeSentMethod: req.body.securityCodeSentMethod,
-      identityDocumentUsed: req.body.identityDocumentUsed,
-    });
-
-    logger.info(
-      `Support ticket submitted with id ${ticketIdentifier} for session ${res.locals.sessionId}`
     );
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
   };
