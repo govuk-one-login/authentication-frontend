@@ -52,10 +52,6 @@ export interface Themes {
   subtheme?: string;
 }
 
-export interface ContactUsServiceInterface {
-  contactUsSubmitForm: (contactForm: ContactForm) => Promise<void>;
-}
-
 export interface SmartAgentCustomAttributes {
   "sa-ticket-id"?: string;
   "sa-tag-customer-name"?: string;

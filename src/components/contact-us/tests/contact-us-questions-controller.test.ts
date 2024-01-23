@@ -4,7 +4,7 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 import {
-  contactUsQuestionsFormPostToZendesk,
+  contactUsQuestionsFormPostToSmartAgent,
   contactUsQuestionsGet,
 } from "../contact-us-controller";
 import {
@@ -13,7 +13,6 @@ import {
   PATH_NAMES,
   ZENDESK_COUNTRY_MAX_LENGTH,
 } from "../../../app.constants";
-import { ContactUsServiceInterface } from "../types";
 import { RequestGet, ResponseRedirect } from "../../../types";
 
 describe("contact us questions controller", () => {
@@ -433,11 +432,11 @@ describe("contact us questions controller", () => {
 
     describe("contactUsFormPost", () => {
       it("should redirect /contact-us-submit-success page when ticket posted", async () => {
-        const fakeService: ContactUsServiceInterface = {
-          contactUsSubmitForm: sandbox.fake(),
+        const fakeService = {
+          contactUsSubmitFormSmartAgent: sandbox.fake(),
         };
 
-        await contactUsQuestionsFormPostToZendesk(fakeService)(
+        await contactUsQuestionsFormPostToSmartAgent(fakeService)(
           req as Request,
           res as Response
         );
