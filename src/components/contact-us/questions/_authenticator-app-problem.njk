@@ -30,9 +30,9 @@
         other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translate,
         one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translate
     },
-    maxlength: zendeskFieldMaxLength,
+    maxlength: contactUsFieldMaxLength,
     errorMessage: {
-        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
     } if (errors['issueDescription'])
 }) }}
 
@@ -56,9 +56,9 @@
         other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translate,
         one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translate
     },
-    maxlength: zendeskFieldMaxLength,
+    maxlength: contactUsFieldMaxLength,
     errorMessage: {
-        text: errors['additionalDescription'].text | translate | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['additionalDescription'].text | translate | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
     } if (errors['additionalDescription'])
 }) }}
 

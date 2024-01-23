@@ -20,7 +20,7 @@ import {
 import {
   PATH_NAMES,
   SUPPORT_TYPE,
-  ZENDESK_THEMES,
+  CONTACT_US_THEMES,
   CONTACT_US_REFERER_ALLOWLIST,
 } from "../../../app.constants";
 import { RequestGet, ResponseRedirect } from "../../../types";
@@ -94,7 +94,7 @@ describe("contact us controller", () => {
 
     describe("redirect to /contact-us-further-information when the theme is ID Check App", async () => {
       it("should include all ID Check App properties as query parameters when they have been provided and are valid", async () => {
-        req.query.theme = ZENDESK_THEMES.ID_CHECK_APP;
+        req.query.theme = CONTACT_US_THEMES.ID_CHECK_APP;
         req.query.fromURL = "http://localhost/enter-email";
         req.query.appSessionId = "1234abcd-12ab-11aa-90aa-04938abc12ab";
         req.query.appErrorCode = "aed1";
@@ -107,7 +107,7 @@ describe("contact us controller", () => {
       });
 
       it("should not include the fromURL when it is not valid", async () => {
-        req.query.theme = ZENDESK_THEMES.ID_CHECK_APP;
+        req.query.theme = CONTACT_US_THEMES.ID_CHECK_APP;
         req.query.fromURL = "https://unsuitableurl.com";
         req.query.appSessionId = "1234abcd-12ab-11aa-90aa-04938abc12ab";
         req.query.appErrorCode = "aed1";
@@ -120,7 +120,7 @@ describe("contact us controller", () => {
       });
 
       it("should not include the appSessionId when it is not valid", async () => {
-        req.query.theme = ZENDESK_THEMES.ID_CHECK_APP;
+        req.query.theme = CONTACT_US_THEMES.ID_CHECK_APP;
         req.query.fromURL = "http://localhost/enter-email";
         req.query.appSessionId = "1234";
         req.query.appErrorCode = "aed1";
@@ -133,7 +133,7 @@ describe("contact us controller", () => {
       });
 
       it("should not include the appErrorCode when it is not valid", async () => {
-        req.query.theme = ZENDESK_THEMES.ID_CHECK_APP;
+        req.query.theme = CONTACT_US_THEMES.ID_CHECK_APP;
         req.query.fromURL = "http://localhost/enter-email";
         req.query.appSessionId = "1234abcd-12ab-11aa-90aa-04938abc12ab";
         req.query.appErrorCode = "abcdef";
@@ -149,7 +149,7 @@ describe("contact us controller", () => {
 
   describe("contactUsFormPost", () => {
     it("should carry forward fromURL when redirecting to /contact-us-further-information", async () => {
-      req.body.theme = ZENDESK_THEMES.SIGNING_IN;
+      req.body.theme = CONTACT_US_THEMES.SIGNING_IN;
       req.body.referer = REFERER;
       req.body.fromURL = "http://localhost/enter-email";
 
@@ -161,7 +161,7 @@ describe("contact us controller", () => {
     });
 
     it("should redirect /contact-us-further-information page when 'A problem signing in to your GOV.UK account' radio option is chosen", async () => {
-      req.body.theme = ZENDESK_THEMES.SIGNING_IN;
+      req.body.theme = CONTACT_US_THEMES.SIGNING_IN;
       req.body.referer = REFERER;
 
       contactUsFormPost(req as Request, res as Response);
@@ -171,7 +171,7 @@ describe("contact us controller", () => {
       );
     });
     it("should redirect /contact-us-further-information page when 'A problem creating a GOV.UK account' radio option is chosen", async () => {
-      req.body.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
+      req.body.theme = CONTACT_US_THEMES.ACCOUNT_CREATION;
       req.body.referer = REFERER;
 
       contactUsFormPost(req as Request, res as Response);
@@ -181,7 +181,7 @@ describe("contact us controller", () => {
       );
     });
     it("should redirect /contact-us-questions page when 'Another problem using your GOV.UK account' radio option is chosen", async () => {
-      req.body.theme = ZENDESK_THEMES.SOMETHING_ELSE;
+      req.body.theme = CONTACT_US_THEMES.SOMETHING_ELSE;
       req.body.referer = REFERER;
 
       contactUsFormPost(req as Request, res as Response);
@@ -191,7 +191,7 @@ describe("contact us controller", () => {
       );
     });
     it("should redirect /contact-us-questions page when 'GOV.UK email subscriptions' radio option is chosen", async () => {
-      req.body.theme = ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS;
+      req.body.theme = CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS;
       req.body.referer = REFERER;
 
       contactUsFormPost(req as Request, res as Response);
@@ -201,7 +201,7 @@ describe("contact us controller", () => {
       );
     });
     it("should redirect /contact-us-questions page when 'A suggestion or feedback about using your GOV.UK account' radio option is chosen", async () => {
-      req.body.theme = ZENDESK_THEMES.SUGGESTIONS_FEEDBACK;
+      req.body.theme = CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
       req.body.referer = REFERER;
 
       contactUsFormPost(req as Request, res as Response);
@@ -211,7 +211,7 @@ describe("contact us controller", () => {
       );
     });
     it("should redirect /contact-us-questions page when 'A problem proving your identity' radio option is chosen", async () => {
-      req.body.theme = ZENDESK_THEMES.PROVING_IDENTITY;
+      req.body.theme = CONTACT_US_THEMES.PROVING_IDENTITY;
       req.body.referer = REFERER;
 
       contactUsFormPost(req as Request, res as Response);
@@ -447,12 +447,12 @@ describe("prepareBackLink", () => {
   });
 
   it("should include the `theme` where the theme is valid", () => {
-    req.query.theme = ZENDESK_THEMES.ACCOUNT_CREATION;
+    req.query.theme = CONTACT_US_THEMES.ACCOUNT_CREATION;
     req.url = `https://${getServiceDomain()}${PATH_NAMES.CONTACT_US}?theme=${
-      ZENDESK_THEMES.ACCOUNT_CREATION
+      CONTACT_US_THEMES.ACCOUNT_CREATION
     }`;
 
-    const theme = `?theme=${ZENDESK_THEMES.ACCOUNT_CREATION}`;
+    const theme = `?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`;
 
     expect(
       prepareBackLink(req as Request, supportLinkURL, serviceDomain)
@@ -469,10 +469,10 @@ describe("prepareBackLink", () => {
     it("should return the `supportLinkURL` if there is a fromURL and the theme is ID_CHECK_APP", () => {
       req.path = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
       req.query.fromURL = PATH_NAMES.DOC_CHECKING_APP;
-      req.query.theme = ZENDESK_THEMES.ID_CHECK_APP;
+      req.query.theme = CONTACT_US_THEMES.ID_CHECK_APP;
       expect(
         prepareBackLink(req as Request, supportLinkURL, serviceDomain)
-      ).to.equal(`${supportLinkURL}?theme=${ZENDESK_THEMES.ID_CHECK_APP}`);
+      ).to.equal(`${supportLinkURL}?theme=${CONTACT_US_THEMES.ID_CHECK_APP}`);
     });
   });
 });
