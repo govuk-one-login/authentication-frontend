@@ -1,9 +1,10 @@
 environment         = "integration"
 common_state_bucket = "digital-identity-dev-tfstate"
 
-frontend_auto_scaling_enabled   = false
-frontend_task_definition_cpu    = 512
-frontend_task_definition_memory = 1024
+frontend_auto_scaling_enabled    = false
+frontend_auto_scaling_v2_enabled = true
+frontend_task_definition_cpu     = 512
+frontend_task_definition_memory  = 1024
 
 support_welsh_language_in_support_forms                             = "1"
 support_international_numbers                                       = "1"
