@@ -93,4 +93,5 @@ export interface UserSessionClient {
   isOneLoginService?: boolean;
   claim?: string[];
   rpSectorHost?: string;
+  rpRedirectUri?: string;
 }
