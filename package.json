@@ -122,7 +122,7 @@
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "husky": "^7.0.1",
+    "husky": "^9.0.6",
     "mocha": "10.1.0",
     "mock-req-res": "^1.2.0",
     "nock": "^13.2.1",
