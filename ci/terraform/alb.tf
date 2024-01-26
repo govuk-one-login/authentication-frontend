@@ -9,7 +9,7 @@ resource "aws_lb" "frontend_alb" {
     aws_s3_bucket_policy.allow_access_alb
   ]
 
-  enable_deletion_protection = false
+  enable_deletion_protection = true
 
   dynamic "access_logs" {
     for_each = var.environment == "production" ? [1] : []
