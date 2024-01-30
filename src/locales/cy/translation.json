@@ -2233,11 +2233,13 @@
       }
     },
     "needToResetPassword": {
+      "title": "Mae angen i chi ailosod eich cyfrinair",
       "header": "Mae angen i chi ailosod eich cyfrinair",
       "paragraph1": "Er mwyn cadw eich GOV.UK One Login yn ddiogel, mae angen i chi ailosod eich cyfrinair.",
       "paragraph2": "Byddwn yn anfon cod i’ch cyfeiriad e-bost, y gallwch ei ddefnyddio i ailosod eich cyfrinair."
     },
     "permanentlyLockedScreen": {
+      "title": "Mae eich GOV.UK One Login wedi ei gloi yn barhaol",
       "header": "Mae eich GOV.UK One Login wedi ei gloi yn barhaol",
       "section1": {
         "paragraph1": "Ni allwch fewngofnodi ac ni allwch ddefnyddio eich GOV.UK One Login i gael mynediad at wasanaethau’r llywodraeth."
@@ -2249,6 +2251,7 @@
       }
     },
     "suspendedPageScreen": {
+      "title": "Mae’n ddrwg gennym, mae problem",
       "heading": "Mae’n ddrwg gennym, mae problem",
       "section1": {
         "paragraph1": "Nid yw eich GOV.UK One Login ar gael ar hyn o bryd."

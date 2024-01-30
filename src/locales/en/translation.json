@@ -2233,12 +2233,14 @@
       }
     },
     "needToResetPassword": {
+      "title": "You need to reset your password",
       "header": "You need to reset your password",
       "paragraph1": "To keep your GOV.UK One Login safe, you need to reset your password.",
       "paragraph2": "We’ll send a code to your email address, which you can use to reset your password."
     },
     "permanentlyLockedScreen": {
-      "header": "Your GOV.UK  One Login has been permanently locked",
+      "title": "Your GOV.UK One Login has been permanently locked",
+      "header": "Your GOV.UK One Login has been permanently locked",
       "section1": {
         "paragraph1": "You cannot sign in and you cannot use your GOV.UK  One Login to access government services."
       },
@@ -2249,6 +2251,7 @@
       }
     },
     "suspendedPageScreen": {
+      "title": "Sorry, there is a problem",
       "heading": "Sorry, there is a problem",
       "section1": {
         "paragraph1": "Your GOV.UK  One Login is not available at the moment."
