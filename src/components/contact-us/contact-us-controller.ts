@@ -2,81 +2,76 @@ import { Request, Response } from "express";
 import {
   PATH_NAMES,
   SUPPORT_TYPE,
-  ZENDESK_THEMES,
-  ZENDESK_FIELD_MAX_LENGTH,
-  ZENDESK_COUNTRY_MAX_LENGTH,
+  CONTACT_US_THEMES,
+  CONTACT_US_FIELD_MAX_LENGTH,
+  CONTACT_US_COUNTRY_MAX_LENGTH,
   CONTACT_US_REFERER_ALLOWLIST,
 } from "../../app.constants";
-import { contactUsService } from "./contact-us-service";
-import { ContactUsServiceInterface, Questions, ThemeQuestions } from "./types";
+import { Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
 import crypto from "crypto";
 import { logger } from "../../utils/logger";
-import {
-  getClientNameThatDirectsAllContactFormSubmissionsToSmartAgent,
-  getServiceDomain,
-  getSupportLinkUrl,
-} from "../../config";
+import { getServiceDomain, getSupportLinkUrl } from "../../config";
 import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
 
 const themeToPageTitle = {
-  [ZENDESK_THEMES.ACCOUNT_NOT_FOUND]:
+  [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:
     "pages.contactUsQuestions.accountNotFound.title",
-  [ZENDESK_THEMES.TECHNICAL_ERROR]:
+  [CONTACT_US_THEMES.TECHNICAL_ERROR]:
     "pages.contactUsQuestions.technicalError.title",
-  [ZENDESK_THEMES.NO_SECURITY_CODE]:
+  [CONTACT_US_THEMES.NO_SECURITY_CODE]:
     "pages.contactUsQuestions.noSecurityCode.title",
-  [ZENDESK_THEMES.INVALID_SECURITY_CODE]:
+  [CONTACT_US_THEMES.INVALID_SECURITY_CODE]:
     "pages.contactUsQuestions.invalidSecurityCode.title",
-  [ZENDESK_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE]:
+  [CONTACT_US_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE]:
     "pages.contactUsQuestions.signInPhoneNumberIssue.title",
-  [ZENDESK_THEMES.FORGOTTEN_PASSWORD]:
+  [CONTACT_US_THEMES.FORGOTTEN_PASSWORD]:
     "pages.contactUsQuestions.forgottenPassword.title",
-  [ZENDESK_THEMES.NO_PHONE_NUMBER_ACCESS]:
+  [CONTACT_US_THEMES.NO_PHONE_NUMBER_ACCESS]:
     "pages.contactUsQuestions.noPhoneNumberAccess.title",
-  [ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS]:
+  [CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS]:
     "pages.contactUsQuestions.emailSubscriptions.title",
-  [ZENDESK_THEMES.SOMETHING_ELSE]:
+  [CONTACT_US_THEMES.SOMETHING_ELSE]:
     "pages.contactUsQuestions.anotherProblem.title",
-  [ZENDESK_THEMES.SUGGESTIONS_FEEDBACK]:
+  [CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK]:
     "pages.contactUsQuestions.suggestionOrFeedback.title",
-  [ZENDESK_THEMES.PROVING_IDENTITY]:
+  [CONTACT_US_THEMES.PROVING_IDENTITY]:
     "pages.contactUsQuestions.provingIdentity.title",
-  [ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM]:
+  [CONTACT_US_THEMES.AUTHENTICATOR_APP_PROBLEM]:
     "pages.contactUsQuestions.authenticatorApp.title",
-  [ZENDESK_THEMES.LINKING_PROBLEM]:
+  [CONTACT_US_THEMES.LINKING_PROBLEM]:
     "pages.contactUsQuestions.linkingProblem.title",
-  [ZENDESK_THEMES.TAKING_PHOTO_OF_ID_PROBLEM]:
+  [CONTACT_US_THEMES.TAKING_PHOTO_OF_ID_PROBLEM]:
     "pages.contactUsQuestions.takingPhotoOfIdProblem.title",
-  [ZENDESK_THEMES.FACE_SCANNING_PROBLEM]:
+  [CONTACT_US_THEMES.FACE_SCANNING_PROBLEM]:
     "pages.contactUsQuestions.faceScanningProblem.title",
-  [ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
+  [CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
     "pages.contactUsQuestions.idCheckAppTechnicalProblem.title",
-  [ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
+  [CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
     "pages.contactUsQuestions.idCheckAppSomethingElse.title",
-  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS]:
+  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS]:
     "pages.contactUsQuestions.provingIdentityFaceToFaceDetails.title",
-  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_LETTER]:
+  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_LETTER]:
     "pages.contactUsQuestions.provingIdentityFaceToFaceLetter.title",
-  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_AT_POST_OFFICE]:
+  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_AT_POST_OFFICE]:
     "pages.contactUsQuestions.provingIdentityFaceToFacePostOffice.title",
-  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_FINDING_RESULT]:
+  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_FINDING_RESULT]:
     "pages.contactUsQuestions.provingIdentityFaceToFaceIdResults.title",
-  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_CONTINUING]:
+  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_CONTINUING]:
     "pages.contactUsQuestions.provingIdentityFaceToFaceService.title",
-  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM]:
+  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM]:
     "pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.title",
-  [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM]:
+  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM]:
     "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
-  [ZENDESK_THEMES.ACCOUNT_CREATION]:
+  [CONTACT_US_THEMES.ACCOUNT_CREATION]:
     "pages.contactUsQuestions.accountCreation.title",
-  [ZENDESK_THEMES.SIGNING_IN]: "pages.contactUsQuestions.signingIn.title",
-  [ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
+  [CONTACT_US_THEMES.SIGNING_IN]: "pages.contactUsQuestions.signingIn.title",
+  [CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
     "pages.contactUsQuestions.idCheckAppTechnicalError.title",
-  [ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
+  [CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
     "pages.contactUsQuestions.idCheckAppSomethingElse.title",
 };
 
@@ -140,7 +135,10 @@ export function prepareBackLink(
   if (req.path.endsWith(PATH_NAMES.CONTACT_US)) {
     hrefBack = supportLinkURL;
   } else if (req.path.endsWith(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)) {
-    if (req.query.fromURL && req.query.theme === ZENDESK_THEMES.ID_CHECK_APP) {
+    if (
+      req.query.fromURL &&
+      req.query.theme === CONTACT_US_THEMES.ID_CHECK_APP
+    ) {
       hrefBack = supportLinkURL;
     } else {
       hrefBack = PATH_NAMES.CONTACT_US;
@@ -159,7 +157,7 @@ export function prepareBackLink(
 
   if (
     req.query.theme &&
-    Object.values(ZENDESK_THEMES).includes(req.query.theme as string)
+    Object.values(CONTACT_US_THEMES).includes(req.query.theme as string)
   ) {
     queryParams.append("theme", req.query.theme as string);
   }
@@ -182,7 +180,7 @@ export function contactUsGetFromTriagePage(req: Request, res: Response): void {
     }),
   });
 
-  if (req.query.theme === ZENDESK_THEMES.ID_CHECK_APP) {
+  if (req.query.theme === CONTACT_US_THEMES.ID_CHECK_APP) {
     queryParams.append("theme", req.query.theme);
 
     return res.redirect(
@@ -293,10 +291,10 @@ export function contactUsFormPost(req: Request, res: Response): void {
 
   if (
     [
-      ZENDESK_THEMES.ACCOUNT_CREATION,
-      ZENDESK_THEMES.SIGNING_IN,
-      ZENDESK_THEMES.ID_CHECK_APP,
-      ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE,
+      CONTACT_US_THEMES.ACCOUNT_CREATION,
+      CONTACT_US_THEMES.SIGNING_IN,
+      CONTACT_US_THEMES.ID_CHECK_APP,
+      CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE,
     ].includes(req.body.theme)
   ) {
     url = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
@@ -361,39 +359,24 @@ export function furtherInformationPost(req: Request, res: Response): void {
   res.redirect(url + "?" + queryParams.toString());
 }
 
-export function setContactFormSubmissionUrlBasedOnClientName(
-  clientName: string,
-  clientNameThatDirectsAllContactFormSubmissionsToSmartAgent: string
-): string {
-  return clientName ===
-    clientNameThatDirectsAllContactFormSubmissionsToSmartAgent
-    ? PATH_NAMES.CONTACT_US_TESTING_SMARTAGENT_IN_LIVE
-    : PATH_NAMES.CONTACT_US_QUESTIONS;
-}
-
 export function contactUsQuestionsGet(req: Request, res: Response): void {
   const supportLinkURL = getSupportLinkUrl();
   const backLinkHref = prepareBackLink(req, supportLinkURL, serviceDomain);
-
-  const formSubmissionUrl = setContactFormSubmissionUrlBasedOnClientName(
-    req?.session?.client?.name,
-    getClientNameThatDirectsAllContactFormSubmissionsToSmartAgent()
-  );
 
   if (!req.query.theme) {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
   let pageTitle = themeToPageTitle[req.query.theme as string];
   if (
-    req.query.subtheme === ZENDESK_THEMES.SOMETHING_ELSE &&
-    req.query.theme === ZENDESK_THEMES.ACCOUNT_CREATION
+    req.query.subtheme === CONTACT_US_THEMES.SOMETHING_ELSE &&
+    req.query.theme === CONTACT_US_THEMES.ACCOUNT_CREATION
   ) {
     pageTitle = somethingElseSubThemeToPageTitle[req.query.theme as string];
   } else if (req.query.subtheme) {
     pageTitle = themeToPageTitle[req.query.subtheme as string];
   }
   return res.render("contact-us/questions/index.njk", {
-    formSubmissionUrl: formSubmissionUrl,
+    formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
     theme: req.query.theme,
     subtheme: req.query.subtheme,
     backurl: backLinkHref,
@@ -402,8 +385,8 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
       fromURL: validateReferer(req.query.fromURL as string, serviceDomain),
     }),
     pageTitleHeading: pageTitle,
-    zendeskFieldMaxLength: ZENDESK_FIELD_MAX_LENGTH,
-    zendeskCountryMaxLength: ZENDESK_COUNTRY_MAX_LENGTH,
+    contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
+    contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
     ipnSupport: res.locals.ipnSupport,
     appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
     appSessionId: getAppSessionId(req.query.appSessionId as string),
@@ -470,58 +453,6 @@ export function contactUsQuestionsFormPostToSmartAgent(
 
     logger.info(
       `Support ticket submitted to SmartAgent with id ${ticketIdentifier} for session ${res.locals.sessionId}`
-    );
-    return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
-  };
-}
-
-export function contactUsQuestionsFormPostToZendesk(
-  service: ContactUsServiceInterface = contactUsService()
-): ExpressRouteFunc {
-  return async function (req: Request, res: Response) {
-    const questions = getQuestionsFromFormTypeForMessageBody(
-      req,
-      req.body.formType
-    );
-    const themeQuestions = getQuestionFromThemes(
-      req,
-      req.body.theme,
-      req.body.subtheme
-    );
-
-    const ticketIdentifier = createTicketIdentifier(
-      getAppSessionId(req.body.appSessionId)
-    );
-
-    await service.contactUsSubmitForm({
-      descriptions: {
-        issueDescription: req.body.issueDescription,
-        additionalDescription: req.body.additionalDescription,
-        optionalDescription: req.body.optionalDescription,
-        moreDetailDescription: req.body.moreDetailDescription,
-        serviceTryingToUse: req.body.serviceTryingToUse,
-        countryPhoneNumberFrom: req.body.countryPhoneNumberFrom,
-      },
-      themes: { theme: req.body.theme, subtheme: req.body.subtheme },
-      subject: "GOV.UK One Login",
-      email: req.body.email,
-      name: req.body.name,
-      optionalData: {
-        ticketIdentifier: ticketIdentifier,
-        userAgent: req.get("User-Agent"),
-        appErrorCode: getAppErrorCode(req.body.appErrorCode),
-        country: req.body.country,
-      },
-      feedbackContact: req.body.contact === "true",
-      questions: questions,
-      themeQuestions: themeQuestions,
-      referer: validateReferer(req.body.referer, serviceDomain),
-      securityCodeSentMethod: req.body.securityCodeSentMethod,
-      identityDocumentUsed: req.body.identityDocumentUsed,
-    });
-
-    logger.info(
-      `Support ticket submitted with id ${ticketIdentifier} for session ${res.locals.sessionId}`
     );
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
   };
@@ -975,16 +906,16 @@ export function getQuestionFromThemes(
   const themeQuestion = themesToQuestions[theme];
   let subthemeQuestion;
   if (subtheme) {
-    if (theme == ZENDESK_THEMES.ACCOUNT_CREATION) {
+    if (theme == CONTACT_US_THEMES.ACCOUNT_CREATION) {
       subthemeQuestion = accountCreationSubthemeToQuestions[subtheme];
     }
-    if (theme == ZENDESK_THEMES.SIGNING_IN) {
+    if (theme == CONTACT_US_THEMES.SIGNING_IN) {
       subthemeQuestion = signinSubthemeToQuestions[subtheme];
     }
-    if (theme == ZENDESK_THEMES.ID_CHECK_APP) {
+    if (theme == CONTACT_US_THEMES.ID_CHECK_APP) {
       subthemeQuestion = idCheckAppSubthemeToQuestions[subtheme];
     }
-    if (theme == ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
+    if (theme == CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
       subthemeQuestion = provingIdentityFaceToFaceSubthemeToQuestion[subtheme];
     }
   }

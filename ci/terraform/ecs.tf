@@ -113,22 +113,6 @@ locals {
         value = var.orch_to_auth_audience
       },
       {
-        name  = "ZENDESK_API_TOKEN"
-        value = var.zendesk_api_token
-      },
-      {
-        name  = "ZENDESK_GROUP_ID_PUBLIC"
-        value = var.zendesk_group_id_public
-      },
-      {
-        name  = "ZENDESK_USERNAME"
-        value = var.zendesk_username
-      },
-      {
-        name  = "SUPPORT_SMART_AGENT"
-        value = var.support_smart_agent
-      },
-      {
         name  = "SMARTAGENT_API_KEY"
         value = var.smartagent_api_key
       },
@@ -145,16 +129,8 @@ locals {
         value = var.url_for_support_links
       },
       {
-        name  = "CLIENT_NAME_THAT_DIRECTS_ALL_CONTACT_FORM_SUBMISSIONS_TO_SMARTAGENT",
-        value = var.client_name_that_directs_all_contact_form_submissions_to_smartagent
-      },
-      {
         name  = "SERVICE_DOMAIN"
         value = local.service_domain
-      },
-      {
-        name  = "SUPPORT_WELSH_LANGUAGE_IN_SUPPORT_FORMS"
-        value = var.support_welsh_language_in_support_forms
       },
       {
         name  = "PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES"

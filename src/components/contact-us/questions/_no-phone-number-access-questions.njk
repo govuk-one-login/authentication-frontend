@@ -1,5 +1,5 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsQuestions.noPhoneNumberAccess.header' | translateEnOnly }}
+  {{ 'pages.contactUsQuestions.noPhoneNumberAccess.header' | translate }}
 </h1>
 
 <form action="{{formSubmissionUrl}}?radio_buttons=true" method="post" novalidate>
@@ -13,46 +13,46 @@
 <input type="hidden" name="referer" value="{{referer}}"/>
 {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
 
-{% set radioHeader = 'pages.contactUsQuestions.noPhoneNumberAccess.section1.header' | translateEnOnly %}
+{% set radioHeader = 'pages.contactUsQuestions.noPhoneNumberAccess.section1.header' | translate %}
 {% include "contact-us/questions/_security_send_method.njk" %}
 
 {{ govukCharacterCount({
     label: {
-      text: 'pages.contactUsQuestions.noPhoneNumberAccess.section2.header' | translateEnOnly,
+      text: 'pages.contactUsQuestions.noPhoneNumberAccess.section2.header' | translate,
       classes: "govuk-label--s"
     },
     hint: {
-        text: 'pages.contactUsQuestions.noPhoneNumberAccess.section2.paragraph1' | translateEnOnly
+        text: 'pages.contactUsQuestions.noPhoneNumberAccess.section2.paragraph1' | translate
       },
     id: "optionalDescription",
     name: "optionalDescription",
-    maxlength: zendeskFieldMaxLength,
+    maxlength: contactUsFieldMaxLength,
     value: optionalDescription,
-    charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translateEnOnly,
+    charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translate,
     charactersUnderLimitText: {
-        other: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.other' | translateEnOnly,
-        one: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.one' | translateEnOnly
+        other: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.other' | translate,
+        one: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.one' | translate
     },
     charactersOverLimitText: {
-        other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translateEnOnly,
-        one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translateEnOnly
+        other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translate,
+        one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translate
     },
     errorMessage: {
-        text: errors['optionalDescription'].text | translateEnOnly | replace('[maximumCharacters]', zendeskFieldMaxLength.toLocaleString())
+        text: errors['optionalDescription'].text | translate | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
     } if (errors['optionalDescription'])
 }) }}
 
 {% include "contact-us/questions/_service-trying-to-use.njk" %}
 
 {{ govukWarningText({
-    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translateEnOnly,
+    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
     iconFallbackText: "Warning"
 }) }}
 
 {% include 'contact-us/questions/_reply_by_email.njk' %}
 
 {{ govukButton({
-    "text": "general.sendMessage" | translateEnOnly,
+    "text": "general.sendMessage" | translate,
     "type": "Submit",
     "preventDoubleClick": true
 }) }}

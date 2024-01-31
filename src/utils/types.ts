@@ -21,13 +21,6 @@ interface RequesterAnonymous {
   email?: string;
 }
 
-export interface ZendeskInterface {
-  createTicket(
-    form: CreateTicketPayload,
-    ticketIdentifier?: string
-  ): Promise<void>;
-}
-
 export interface RedisConfig {
   host: string;
   port: number;

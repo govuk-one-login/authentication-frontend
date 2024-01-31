@@ -66,14 +66,6 @@ export function supportAuthorizeController(): boolean {
   return process.env.SUPPORT_AUTHORIZE_CONTROLLER === "1";
 }
 
-export function supportSmartAgent(): boolean {
-  return process.env.SUPPORT_SMART_AGENT === "1";
-}
-
-export function supportWelshInSupportForms(): boolean {
-  return process.env.SUPPORT_WELSH_LANGUAGE_IN_SUPPORT_FORMS === "1";
-}
-
 export function getSupportLinkUrl(): string {
   return process.env.URL_FOR_SUPPORT_LINKS || "/contact-us";
 }
@@ -129,22 +121,6 @@ export function getAccountManagementUrl(): string {
   return process.env.ACCOUNT_MANAGEMENT_URL || "http://localhost:6001";
 }
 
-export function getZendeskUser(): string {
-  return process.env.ZENDESK_USERNAME;
-}
-
-export function getZendeskToken(): string {
-  return process.env.ZENDESK_API_TOKEN;
-}
-
-export function getZendeskAPIUrl(): string {
-  return process.env.ZENDESK_API_URL ?? "https://govuk.zendesk.com/api/v2/";
-}
-
-export function getZendeskGroupIdPublic(): number {
-  return Number(process.env.ZENDESK_GROUP_ID_PUBLIC);
-}
-
 export function getAnalyticsCookieDomain(): string {
   return process.env.ANALYTICS_COOKIE_DOMAIN;
 }
@@ -162,13 +138,6 @@ export function getSmartAgentApiUrl(): string {
 
 export function getSmartAgentWebformId(): string {
   return process.env.SMARTAGENT_WEBFORM_ID || "";
-}
-
-export function getClientNameThatDirectsAllContactFormSubmissionsToSmartAgent(): string {
-  return (
-    process.env
-      .CLIENT_NAME_THAT_DIRECTS_ALL_CONTACT_FORM_SUBMISSIONS_TO_SMARTAGENT || ""
-  );
 }
 
 export function getServiceSignInLink(): string {

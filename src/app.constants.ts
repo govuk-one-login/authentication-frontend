@@ -50,8 +50,6 @@ export const PATH_NAMES = {
   CONTACT_US_SUBMIT_SUCCESS: "/contact-us-submit-success",
   CONTACT_US_FURTHER_INFORMATION: "/contact-us-further-information",
   CONTACT_US_QUESTIONS: "/contact-us-questions",
-  CONTACT_US_TESTING_SMARTAGENT_IN_LIVE:
-    "/contact-us-questions-testing-smartagent-in-production",
   PROVE_IDENTITY: "/prove-identity",
   DOC_CHECKING_APP: "/doc-checking-app",
   DOC_CHECKING_APP_CALLBACK: "/doc-app-callback",
@@ -142,7 +140,7 @@ export const SERVICE_TYPE = {
   OPTIONAL: "OPTIONAL",
 };
 
-export const ZENDESK_THEMES = {
+export const CONTACT_US_THEMES = {
   ACCOUNT_CREATION: "account_creation",
   SIGNING_IN: "signing_in",
   SOMETHING_ELSE: "something_else",
@@ -178,17 +176,17 @@ export const ZENDESK_THEMES = {
   PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM: "face_to_face_something_else",
 };
 
-export const ZENDESK_FIELD_MAX_LENGTH = 1200;
-export const ZENDESK_COUNTRY_MAX_LENGTH = 256;
+export const CONTACT_US_FIELD_MAX_LENGTH = 1200;
+export const CONTACT_US_COUNTRY_MAX_LENGTH = 256;
 
 export const PLACEHOLDER_REPLACEMENTS = [
   {
     search: "[maximumCharacters]",
-    replacement: ZENDESK_FIELD_MAX_LENGTH.toLocaleString(),
+    replacement: CONTACT_US_FIELD_MAX_LENGTH.toLocaleString(),
   },
   {
     search: "[maximumCountryCharacters]",
-    replacement: ZENDESK_COUNTRY_MAX_LENGTH.toLocaleString(),
+    replacement: CONTACT_US_COUNTRY_MAX_LENGTH.toLocaleString(),
   },
 ];
 

@@ -29,11 +29,6 @@ variable "support_international_numbers" {
   type = string
 }
 
-variable "support_welsh_language_in_support_forms" {
-  type    = string
-  default = "0"
-}
-
 variable "support_language_cy" {
   type = string
 }
@@ -44,11 +39,6 @@ variable "support_auth_orch_split" {
 }
 
 variable "support_authorize_controller" {
-  type    = string
-  default = "0"
-}
-
-variable "support_smart_agent" {
   type    = string
   default = "0"
 }
@@ -158,25 +148,6 @@ variable "smartagent_api_url" {
 variable "url_for_support_links" {
   type    = string
   default = "/contact-us"
-}
-
-variable "client_name_that_directs_all_contact_form_submissions_to_smartagent" {
-  type = string
-}
-
-variable "zendesk_username" {
-  type    = string
-  default = ""
-}
-
-variable "zendesk_group_id_public" {
-  type    = string
-  default = ""
-}
-
-variable "zendesk_api_token" {
-  type    = string
-  default = ""
 }
 
 variable "deployment_min_healthy_percent" {

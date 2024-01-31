@@ -2,17 +2,10 @@ import { body, check } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 import {
-  ZENDESK_FIELD_MAX_LENGTH,
-  ZENDESK_THEMES,
-  ZENDESK_COUNTRY_MAX_LENGTH,
+  CONTACT_US_FIELD_MAX_LENGTH,
+  CONTACT_US_THEMES,
+  CONTACT_US_COUNTRY_MAX_LENGTH,
 } from "../../app.constants";
-import { supportWelshInSupportForms } from "../../config";
-
-export function setLanguageToReflectSupportForWelsh(
-  lang: "cy" | "en"
-): "cy" | "en" {
-  return supportWelshInSupportForms() ? lang : "en";
-}
 
 export function validateContactUsQuestionsRequest(): ValidationChainFunc {
   return [
@@ -29,7 +22,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
             suffix,
           {
             value,
-            lng: setLanguageToReflectSupportForWelsh(req.i18n.lng),
+            lng: req.i18n.lng,
           }
         );
       }),
@@ -40,7 +33,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.takingPhotoOfIdProblem.identityDocument.errorMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("issueDescription")
@@ -49,28 +42,28 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           getErrorMessageForIssueDescription(req.body.theme, req.body.subtheme),
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("issueDescription")
-      .if(body("theme").equals(ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE))
+      .if(body("theme").equals(CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE))
       .notEmpty()
       .withMessage((value, { req }) => {
         return req.t(
           getErrorMessageForIssueDescription(req.body.theme, req.body.subtheme),
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("issueDescription")
       .optional()
-      .isLength({ max: ZENDESK_FIELD_MAX_LENGTH })
+      .isLength({ max: CONTACT_US_FIELD_MAX_LENGTH })
       .withMessage((value, { req }) => {
         return req.t(
           getLengthExceededErrorMessageForIssueDescription(
             req.body.theme,
             req.body.subtheme
           ),
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("additionalDescription")
@@ -82,25 +75,25 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
             req.body.theme,
             req.body.subtheme
           ),
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("additionalDescription")
       .optional()
-      .isLength({ max: ZENDESK_FIELD_MAX_LENGTH })
+      .isLength({ max: CONTACT_US_FIELD_MAX_LENGTH })
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.additionalDescriptionErrorMessage.entryTooLongMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("optionalDescription")
       .optional()
-      .isLength({ max: ZENDESK_FIELD_MAX_LENGTH })
+      .isLength({ max: CONTACT_US_FIELD_MAX_LENGTH })
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.optionalDescriptionErrorMessage.entryTooLongMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("moreDetailDescription")
@@ -109,7 +102,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.optionalDescriptionErrorMessage.message",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("serviceTryingToUse")
@@ -118,16 +111,16 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.serviceTryingToUse.errorMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("moreDetailDescription")
       .optional()
-      .isLength({ max: ZENDESK_FIELD_MAX_LENGTH })
+      .isLength({ max: CONTACT_US_FIELD_MAX_LENGTH })
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.optionalDescriptionErrorMessage.entryTooLongMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("contact")
@@ -135,7 +128,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.replyByEmail.validationError.noBoxSelected",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("email")
@@ -144,14 +137,14 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.replyByEmail.validationError.noEmailAddress",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       })
       .isEmail()
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.replyByEmail.validationError.invalidFormat",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("country")
@@ -167,7 +160,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
                 "pages.contactUsQuestions.textMessageInternationNumberConditionalSection.errorIfBlank",
                 {
                   value,
-                  lng: setLanguageToReflectSupportForWelsh(req.i18n.lng),
+                  lng: req.i18n.lng,
                 }
               )
             );
@@ -181,16 +174,16 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.signInPhoneNumberIssue.section3.ifBlankErrorMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("countryPhoneNumberFrom")
       .optional()
-      .isLength({ max: ZENDESK_COUNTRY_MAX_LENGTH })
+      .isLength({ max: CONTACT_US_COUNTRY_MAX_LENGTH })
       .withMessage((value, { req }) => {
         return req.t(
           "pages.contactUsQuestions.signInPhoneNumberIssue.section3.ifTooLongErrorMessage",
-          { value, lng: setLanguageToReflectSupportForWelsh(req.i18n.lng) }
+          { value, lng: req.i18n.lng }
         );
       }),
     validateBodyMiddleware("contact-us/questions/index.njk"),
@@ -201,37 +194,37 @@ export function getErrorMessageForIssueDescription(
   theme: string,
   subtheme: string
 ): string | undefined {
-  if (theme === ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS) {
+  if (theme === CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS) {
     return "pages.contactUsQuestions.emailSubscriptions.section1.errorMessage";
   }
-  if (theme === ZENDESK_THEMES.SOMETHING_ELSE) {
+  if (theme === CONTACT_US_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.anotherProblem.section1.errorMessage";
   }
-  if (theme === ZENDESK_THEMES.SUGGESTIONS_FEEDBACK) {
+  if (theme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK) {
     return "pages.contactUsQuestions.suggestionOrFeedback.section1.errorMessage";
   }
-  if (theme === ZENDESK_THEMES.PROVING_IDENTITY) {
+  if (theme === CONTACT_US_THEMES.PROVING_IDENTITY) {
     return "pages.contactUsQuestions.provingIdentity.section1.errorMessage";
   }
-  if (theme === ZENDESK_THEMES.ID_CHECK_APP) {
+  if (theme === CONTACT_US_THEMES.ID_CHECK_APP) {
     return getErrorMessageForIdCheckAppIssueDescription(subtheme);
   }
-  if (subtheme === ZENDESK_THEMES.ACCOUNT_NOT_FOUND) {
+  if (subtheme === CONTACT_US_THEMES.ACCOUNT_NOT_FOUND) {
     return "pages.contactUsQuestions.accountNotFound.section1.errorMessage";
   }
-  if (subtheme === ZENDESK_THEMES.TECHNICAL_ERROR) {
+  if (subtheme === CONTACT_US_THEMES.TECHNICAL_ERROR) {
     return "pages.contactUsQuestions.technicalError.section1.errorMessage";
   }
-  if (theme === ZENDESK_THEMES.SIGNING_IN) {
+  if (theme === CONTACT_US_THEMES.SIGNING_IN) {
     return getErrorMessageForSigningInIssueDescription(subtheme);
   }
-  if (theme === ZENDESK_THEMES.ACCOUNT_CREATION) {
+  if (theme === CONTACT_US_THEMES.ACCOUNT_CREATION) {
     return getErrorMessageForAccountCreationIssueDescription(subtheme);
   }
-  if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
+  if (subtheme === CONTACT_US_THEMES.AUTHENTICATOR_APP_PROBLEM) {
     return "pages.contactUsQuestions.authenticatorApp.section1.errorMessage";
   }
-  if (theme === ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
+  if (theme === CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
     return getErrorMessageForFaceToFaceIssueDescription(subtheme);
   }
 }
@@ -240,17 +233,17 @@ export function getErrorMessageForFaceToFaceIssueDescription(
   subtheme: string
 ): string | undefined {
   const errorMessagesForFaceToFaceIssueDescription = {
-    [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS]:
+    [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS]:
       "pages.contactUsQuestions.provingIdentityFaceToFaceDetails.whatHappened.errorMessage",
-    [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_LETTER]:
+    [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_LETTER]:
       "pages.contactUsQuestions.provingIdentityFaceToFaceLetter.whatHappened.errorMessage",
-    [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_AT_POST_OFFICE]:
+    [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_AT_POST_OFFICE]:
       "pages.contactUsQuestions.provingIdentityFaceToFacePostOffice.whatHappened.errorMessage",
-    [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_FINDING_RESULT]:
+    [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_FINDING_RESULT]:
       "pages.contactUsQuestions.provingIdentityFaceToFaceIdResults.whatHappened.errorMessage",
-    [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_CONTINUING]:
+    [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_CONTINUING]:
       "pages.contactUsQuestions.provingIdentityFaceToFaceService.whatHappened.errorMessage",
-    [ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM]:
+    [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM]:
       "pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.section1.errorMessage",
   };
 
@@ -260,13 +253,13 @@ export function getErrorMessageForFaceToFaceIssueDescription(
 export function getErrorMessageForAccountCreationIssueDescription(
   subtheme: string
 ): string | undefined {
-  if (subtheme === ZENDESK_THEMES.SOMETHING_ELSE) {
+  if (subtheme === CONTACT_US_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.accountCreationProblem.section1.errorMessage";
   }
-  if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
+  if (subtheme === CONTACT_US_THEMES.AUTHENTICATOR_APP_PROBLEM) {
     return "pages.contactUsQuestions.anotherProblem.section1.errorMessage";
   }
-  if (subtheme === ZENDESK_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE) {
+  if (subtheme === CONTACT_US_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE) {
     return "pages.contactUsQuestions.signInPhoneNumberIssue.section1.errorMessage";
   }
 }
@@ -274,7 +267,7 @@ export function getErrorMessageForAccountCreationIssueDescription(
 export function getErrorMessageForSigningInIssueDescription(
   subtheme: string
 ): string | undefined {
-  if (subtheme === ZENDESK_THEMES.SOMETHING_ELSE) {
+  if (subtheme === CONTACT_US_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.signignInProblem.section1.errorMessage";
   }
 }
@@ -282,19 +275,19 @@ export function getErrorMessageForSigningInIssueDescription(
 export function getErrorMessageForIdCheckAppIssueDescription(
   subtheme: string
 ): string | undefined {
-  if (subtheme === ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR) {
+  if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR) {
     return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.errorMessage";
   }
-  if (subtheme === ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
+  if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
     return "pages.contactUsQuestions.idCheckAppSomethingElse.section1.errorMessage";
   }
-  if (subtheme === ZENDESK_THEMES.TAKING_PHOTO_OF_ID_PROBLEM) {
+  if (subtheme === CONTACT_US_THEMES.TAKING_PHOTO_OF_ID_PROBLEM) {
     return "pages.contactUsQuestions.whatHappened.errorMessage";
   }
-  if (subtheme === ZENDESK_THEMES.LINKING_PROBLEM) {
+  if (subtheme === CONTACT_US_THEMES.LINKING_PROBLEM) {
     return "pages.contactUsQuestions.whatHappened.errorMessage";
   }
-  if (subtheme === ZENDESK_THEMES.FACE_SCANNING_PROBLEM) {
+  if (subtheme === CONTACT_US_THEMES.FACE_SCANNING_PROBLEM) {
     return "pages.contactUsQuestions.whatHappened.errorMessage";
   }
 }
@@ -303,27 +296,27 @@ export function getLengthExceededErrorMessageForIssueDescription(
   theme: string,
   subtheme: string
 ): string | undefined {
-  if (theme === ZENDESK_THEMES.ACCOUNT_CREATION) {
+  if (theme === CONTACT_US_THEMES.ACCOUNT_CREATION) {
     return getLengthExceededErrorMessageForAccountCreationIssueDescription(
       subtheme
     );
   }
-  if (theme === ZENDESK_THEMES.SIGNING_IN) {
+  if (theme === CONTACT_US_THEMES.SIGNING_IN) {
     return getLengthExceededErrorMessageForSigningInIssueDescription(subtheme);
   }
-  if (theme === ZENDESK_THEMES.SOMETHING_ELSE) {
+  if (theme === CONTACT_US_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
-  if (theme === ZENDESK_THEMES.ID_CHECK_APP) {
+  if (theme === CONTACT_US_THEMES.ID_CHECK_APP) {
     return getLengthExceededErrorMessageForIdCheckAppIssueDescription(subtheme);
   }
-  if (theme === ZENDESK_THEMES.PROVING_IDENTITY) {
+  if (theme === CONTACT_US_THEMES.PROVING_IDENTITY) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
-  if (theme === ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS) {
+  if (theme === CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
-  if (theme === ZENDESK_THEMES.SUGGESTIONS_FEEDBACK) {
+  if (theme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.suggestionFeedbackTooLongMessage";
   }
 }
@@ -331,16 +324,16 @@ export function getLengthExceededErrorMessageForIssueDescription(
 export function getLengthExceededErrorMessageForAccountCreationIssueDescription(
   subtheme: string
 ): string | undefined {
-  if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
+  if (subtheme === CONTACT_US_THEMES.AUTHENTICATOR_APP_PROBLEM) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
-  if (subtheme === ZENDESK_THEMES.TECHNICAL_ERROR) {
+  if (subtheme === CONTACT_US_THEMES.TECHNICAL_ERROR) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
-  if (subtheme === ZENDESK_THEMES.SOMETHING_ELSE) {
+  if (subtheme === CONTACT_US_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.anythingElseTooLongMessage";
   }
-  if (subtheme === ZENDESK_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE) {
+  if (subtheme === CONTACT_US_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
 }
@@ -348,19 +341,19 @@ export function getLengthExceededErrorMessageForAccountCreationIssueDescription(
 export function getLengthExceededErrorMessageForIdCheckAppIssueDescription(
   subtheme: string
 ): string | undefined {
-  if (subtheme === ZENDESK_THEMES.LINKING_PROBLEM) {
+  if (subtheme === CONTACT_US_THEMES.LINKING_PROBLEM) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.whatHappenedTooLongMessage";
   }
-  if (subtheme === ZENDESK_THEMES.TAKING_PHOTO_OF_ID_PROBLEM) {
+  if (subtheme === CONTACT_US_THEMES.TAKING_PHOTO_OF_ID_PROBLEM) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.whatHappenedTooLongMessage";
   }
-  if (subtheme === ZENDESK_THEMES.FACE_SCANNING_PROBLEM) {
+  if (subtheme === CONTACT_US_THEMES.FACE_SCANNING_PROBLEM) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.whatHappenedTooLongMessage";
   }
-  if (subtheme === ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR) {
+  if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
-  if (subtheme === ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
+  if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
 }
@@ -368,13 +361,13 @@ export function getLengthExceededErrorMessageForIdCheckAppIssueDescription(
 export function getLengthExceededErrorMessageForSigningInIssueDescription(
   subtheme: string
 ): string | undefined {
-  if (subtheme === ZENDESK_THEMES.ACCOUNT_NOT_FOUND) {
+  if (subtheme === CONTACT_US_THEMES.ACCOUNT_NOT_FOUND) {
     return "pages.contactUsQuestions.accountNotFound.section1.entryTooLongErrorMessage";
   }
-  if (subtheme === ZENDESK_THEMES.TECHNICAL_ERROR) {
+  if (subtheme === CONTACT_US_THEMES.TECHNICAL_ERROR) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
-  if (subtheme === ZENDESK_THEMES.SOMETHING_ELSE) {
+  if (subtheme === CONTACT_US_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.anythingElseTooLongMessage";
   }
 }
@@ -383,38 +376,39 @@ export function getErrorMessageForAdditionalDescription(
   theme: string,
   subtheme: string
 ): string | undefined {
-  if (theme === ZENDESK_THEMES.EMAIL_SUBSCRIPTIONS) {
+  if (theme === CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS) {
     return "pages.contactUsQuestions.emailSubscriptions.section1.errorMessage";
   }
-  if (theme === ZENDESK_THEMES.SOMETHING_ELSE) {
+  if (theme === CONTACT_US_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.anotherProblem.section2.errorMessage";
   }
-  if (theme === ZENDESK_THEMES.PROVING_IDENTITY) {
+  if (theme === CONTACT_US_THEMES.PROVING_IDENTITY) {
     return "pages.contactUsQuestions.provingIdentity.section2.errorMessage";
   }
-  if (subtheme === ZENDESK_THEMES.TECHNICAL_ERROR) {
+  if (subtheme === CONTACT_US_THEMES.TECHNICAL_ERROR) {
     return "pages.contactUsQuestions.technicalError.section2.errorMessage";
   }
-  if (subtheme === ZENDESK_THEMES.AUTHENTICATOR_APP_PROBLEM) {
+  if (subtheme === CONTACT_US_THEMES.AUTHENTICATOR_APP_PROBLEM) {
     return "pages.contactUsQuestions.authenticatorApp.section2.errorMessage";
   }
-  if (subtheme === ZENDESK_THEMES.ID_CHECK_APP_TECHNICAL_ERROR) {
+  if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR) {
     return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.errorMessage";
   }
-  if (subtheme === ZENDESK_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
+  if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
     return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.errorMessage";
   }
   if (
-    subtheme === ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM
+    subtheme ===
+    CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM
   ) {
     return "pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.section2.errorMessage";
   }
   if (
-    subtheme === ZENDESK_THEMES.PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM
+    subtheme === CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM
   ) {
     return "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.section2.errorMessage";
   }
-  if (subtheme === ZENDESK_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE) {
+  if (subtheme === CONTACT_US_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE) {
     return "pages.contactUsQuestions.signInPhoneNumberIssue.section2.errorMessage";
   }
 }
