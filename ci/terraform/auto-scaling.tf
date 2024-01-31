@@ -111,6 +111,12 @@ resource "aws_appautoscaling_policy" "frontend_auto_scaling_policy_scale_out" {
     min_adjustment_magnitude = 5
 
     step_adjustment {
+      metric_interval_lower_bound = 0
+      metric_interval_upper_bound = 20
+      scaling_adjustment          = 100
+    }
+
+    step_adjustment {
       metric_interval_lower_bound = 20
       metric_interval_upper_bound = 30
       scaling_adjustment          = 200

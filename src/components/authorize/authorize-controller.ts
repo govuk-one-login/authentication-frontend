@@ -107,6 +107,7 @@ export function authorizeGet(
     req.session.client.state = claims.state;
     req.session.client.isOneLoginService = claims.is_one_login_service;
     req.session.client.rpSectorHost = claims.rp_sector_host;
+    req.session.client.rpRedirectUri = claims.rp_redirect_uri;
 
     req.session.client.consentEnabled =
       startAuthResponse.data.user.consentRequired;

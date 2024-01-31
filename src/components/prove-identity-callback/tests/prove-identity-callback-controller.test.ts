@@ -33,6 +33,7 @@ describe("prove identity callback controller", () => {
       session: {
         client: {
           redirectUri: "http://someservice.com/auth",
+          rpRedirectUri: "http://rpservice.com/auth",
           clientName: "test service",
           state: STATE,
         },
@@ -107,6 +108,32 @@ describe("prove identity callback controller", () => {
           IPV_ERROR_CODES.IDENTITY_PROCESSING_TIMEOUT
         )}&state=${encodeURIComponent(STATE)}`
       );
+    });
+
+    it("should redirect back to service when identity processing has errored and split is enabled", async () => {
+      process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
+      const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
+        processIdentity: sinon.fake.returns({
+          success: true,
+          data: {
+            status: IdentityProcessingStatus.ERROR,
+          },
+        }),
+      } as unknown as ProveIdentityCallbackServiceInterface;
+
+      await proveIdentityCallbackGet(fakeProveIdentityService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.been.calledWith(
+        `http://rpservice.com/auth?error=${
+          OIDC_ERRORS.ACCESS_DENIED
+        }&error_description=${encodeURIComponent(
+          IPV_ERROR_CODES.IDENTITY_PROCESSING_TIMEOUT
+        )}&state=${encodeURIComponent(STATE)}`
+      );
+      process.env.SUPPORT_AUTH_ORCH_SPLIT = "0";
     });
   });
 });
