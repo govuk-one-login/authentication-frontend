@@ -270,5 +270,50 @@ describe("reset password controller (in 6 digit code flow)", () => {
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
     });
+
+    it("should not request 2fa and not login user when user already logged in", async () => {
+      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+      const fakeResetService: ResetPasswordServiceInterface = {
+        updatePassword: sinon.fake.returns({ success: true }),
+      } as unknown as ResetPasswordServiceInterface;
+      const fakeLoginService: EnterPasswordServiceInterface = {
+        loginUser: sinon.fake.returns({
+          success: true,
+          data: {
+            redactedPhoneNumber: "1234",
+            consentRequired: false,
+            latestTermsAndConditionsAccepted: true,
+            mfaMethodVerified: true,
+            mfaRequired: false,
+            mfaMethodType: MFA_METHOD_TYPE.SMS,
+            passwordChangeRequired: params.passwordChangeRequired,
+          },
+        }),
+      } as unknown as EnterPasswordServiceInterface;
+      fakeLoginService.loginUser;
+      const fakeMfAService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({ success: true }),
+      } as unknown as MfaServiceInterface;
+
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        isAuthenticated: true,
+        isAccountPartCreated: false,
+        accountRecoveryVerifiedMfaType: MFA_METHOD_TYPE.SMS,
+      };
+      req.body.password = "Password1";
+
+      await resetPasswordPost(
+        fakeResetService,
+        fakeLoginService,
+        fakeMfAService
+      )(req as Request, res as Response);
+
+      expect(fakeResetService.updatePassword).to.have.been.calledOnce;
+      expect(fakeLoginService.loginUser).to.not.have.been.called;
+      expect(fakeMfAService.sendMfaCode).to.not.have.been.called;
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
+    });
   });
 });
