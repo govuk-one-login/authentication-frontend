@@ -79,67 +79,59 @@ export function resetPasswordPost(
         );
       }
     }
-    let mfaMethodType;
-    let isMfaMethodVerified;
-    if (support2FABeforePasswordReset && req.session.user.isAuthenticated) {
-      mfaMethodType = req.session.user.accountRecoveryVerifiedMfaType;
-      isMfaMethodVerified = !req.session.user.isAccountPartCreated;
-    } else {
-      const loginResponse = await loginService.loginUser(
+
+    const loginResponse = await loginService.loginUser(
+      sessionId,
+      email,
+      newPassword,
+      clientSessionId,
+      req.ip,
+      persistentSessionId
+    );
+
+    if (!loginResponse.success) {
+      throw new BadRequestError(
+        loginResponse.data.message,
+        loginResponse.data.code
+      );
+    }
+
+    req.session.user.redactedPhoneNumber =
+      loginResponse.data.redactedPhoneNumber;
+    req.session.user.isConsentRequired = loginResponse.data.consentRequired;
+    req.session.user.isLatestTermsAndConditionsAccepted =
+      loginResponse.data.latestTermsAndConditionsAccepted;
+    req.session.user.isAccountPartCreated =
+      !loginResponse.data.mfaMethodVerified;
+    if (req.session.user.isPasswordChangeRequired) {
+      req.session.user.isPasswordChangeRequired = false;
+    }
+
+    if (
+      !support2FABeforePasswordReset() &&
+      loginResponse.data.mfaMethodVerified &&
+      loginResponse.data.mfaMethodType === MFA_METHOD_TYPE.SMS
+    ) {
+      const mfaResponse = await mfaCodeService.sendMfaCode(
         sessionId,
-        email,
-        newPassword,
         clientSessionId,
+        email,
         req.ip,
-        persistentSessionId
+        persistentSessionId,
+        false,
+        xss(req.cookies.lng as string)
       );
 
-      if (!loginResponse.success) {
-        throw new BadRequestError(
-          loginResponse.data.message,
-          loginResponse.data.code
-        );
-      }
-
-      req.session.user.redactedPhoneNumber =
-        loginResponse.data.redactedPhoneNumber;
-      req.session.user.isConsentRequired = loginResponse.data.consentRequired;
-      req.session.user.isLatestTermsAndConditionsAccepted =
-        loginResponse.data.latestTermsAndConditionsAccepted;
-      req.session.user.isAccountPartCreated =
-        !loginResponse.data.mfaMethodVerified;
-      if (req.session.user.isPasswordChangeRequired) {
-        req.session.user.isPasswordChangeRequired = false;
-      }
-
-      if (
-        !support2FABeforePasswordReset() &&
-        loginResponse.data.mfaMethodVerified &&
-        loginResponse.data.mfaMethodType === MFA_METHOD_TYPE.SMS
-      ) {
-        const mfaResponse = await mfaCodeService.sendMfaCode(
-          sessionId,
-          clientSessionId,
-          email,
-          req.ip,
-          persistentSessionId,
-          false,
-          xss(req.cookies.lng as string)
-        );
-
-        if (!mfaResponse.success) {
-          const path = getErrorPathByCode(mfaResponse.data.code);
-          if (path) {
-            return res.redirect(path);
-          }
-          throw new BadRequestError(
-            mfaResponse.data.message,
-            mfaResponse.data.code
-          );
+      if (!mfaResponse.success) {
+        const path = getErrorPathByCode(mfaResponse.data.code);
+        if (path) {
+          return res.redirect(path);
         }
+        throw new BadRequestError(
+          mfaResponse.data.message,
+          mfaResponse.data.code
+        );
       }
-      mfaMethodType = loginResponse.data.mfaMethodType;
-      isMfaMethodVerified = loginResponse.data.mfaMethodVerified;
     }
 
     return res.redirect(
@@ -152,8 +144,8 @@ export function resetPasswordPost(
           requiresTwoFactorAuth: !support2FABeforePasswordReset(),
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
-          mfaMethodType: mfaMethodType,
-          isMfaMethodVerified: isMfaMethodVerified,
+          mfaMethodType: loginResponse.data.mfaMethodType,
+          isMfaMethodVerified: loginResponse.data.mfaMethodVerified,
           support2FABeforePasswordReset: support2FABeforePasswordReset(),
         },
         res.locals.sessionId
