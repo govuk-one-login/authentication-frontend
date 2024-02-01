@@ -56,11 +56,14 @@ app.get("/", (req, res) => {
 
       console.log(`Session is: ${sessionCookieValue}`);
       console.log(`lng is: ${lngCookieValue}`);
-
+      
       const location = url.parse(response.headers.location, true);
+      const redirect = "http://localhost:3000/authorize?" + querystring.stringify(location.query)
+
+      console.log(`orch response location query is: ${redirect}`);
 
       res.redirect(
-        "http://localhost:3000/?" + querystring.stringify(location.query)
+          redirect
       );
     })
     .catch(function (error) {
