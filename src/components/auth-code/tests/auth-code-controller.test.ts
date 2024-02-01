@@ -45,6 +45,30 @@ describe("auth code controller", () => {
   });
 
   describe("authCodeGet", () => {
+    it("should remove the reauthenticate user session property", async () => {
+      const fakeAuthCodeService: AuthCodeServiceInterface = {
+        getAuthCode: sinon.fake.returns({
+          data: { location: AUTH_CODE_DUMMY_URL },
+          success: true,
+        }),
+      } as unknown as AuthCodeServiceInterface;
+      const fakeCookieConsentService: CookieConsentServiceInterface = {
+        getCookieConsent: sinon.fake.returns({
+          cookie_consent: COOKIE_CONSENT.ACCEPT,
+        }),
+        createConsentCookieValue: sinon.fake(),
+      };
+
+      req.session.user.reauthenticate = "test_data";
+
+      await authCodeGet(fakeAuthCodeService, fakeCookieConsentService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(req.session.user.reauthenticate).to.equal(undefined);
+    });
+
     it("should redirect to the auth code url with cookie consent param set as not-engaged", async () => {
       req.cookies = {};
       const fakeAuthCodeService: AuthCodeServiceInterface = {
