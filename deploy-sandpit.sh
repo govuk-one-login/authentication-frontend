@@ -88,7 +88,7 @@ if [[ $TERRAFORM == "1" ]]; then
 
   if [[ $TERRAFORM_OPTS != "-destroy" ]]; then
     echo -n "Waiting for ECS deployment to complete ... "
-    aws ecs wait services-stable --services "sandpit-frontend-ecs-service" --cluster "sandpit-app-cluster"
+    aws --region eu-west-2 ecs wait services-stable --services "sandpit-frontend-ecs-service" --cluster "sandpit-app-cluster"
     echo "done!"
   fi
   popd >/dev/null
