@@ -6,26 +6,25 @@ REPO_NAME="frontend-image-repository"
 REPO_URL="706615647326.dkr.ecr.eu-west-2.amazonaws.com/frontend-image-repository"
 IMAGE_TAG=latest
 
-envvalue=( "authdev1" "authdev2"  )
+envvalue=("authdev1" "authdev2")
 
 select word in "${envvalue[@]}"; do
-    if [[ -z "$word" ]]; then
-        printf '"%s" is not a valid choice\n' "$REPLY" >&2
-    else
-        user_in="$(( REPLY - 1 ))"
-        break
-    fi
+  if [[ -z "$word" ]]; then
+    printf '"%s" is not a valid choice\n' "$REPLY" >&2
+  else
+    user_in="$((REPLY - 1))"
+    break
+  fi
 done
 
-for (( i = 0; i < ${#envvalue[@]}; ++i )); do
-    if (( i == user_in )); then
-        printf 'You picked "%s"\n' "${envvalue[$i]}"
-        export env=${envvalue[$i]}
-        printf "deploying in enviorment %s\n" "$env"
-        read -r -p "Press enter to continue or ctr c to abort"
-    fi
+for ((i = 0; i < ${#envvalue[@]}; ++i)); do
+  if ((i == user_in)); then
+    printf 'You picked "%s"\n' "${envvalue[$i]}"
+    export env=${envvalue[$i]}
+    printf "deploying in enviorment %s\n" "$env"
+    read -r -p "Press enter to continue or ctr c to abort"
+  fi
 done
-
 
 function usage() {
   cat <<USAGE
@@ -48,10 +47,12 @@ USAGE
 BUILD=0
 TERRAFORM=0
 TERRAFORM_OPTS="-auto-approve"
+
 if [[ $# == 0 ]]; then
   BUILD=1
   TERRAFORM=1
 fi
+
 while [[ $# -gt 0 ]]; do
   case $1 in
   -b | --build)
@@ -76,7 +77,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo "Generating temporary ECR credentials..."
-#Add you Tools DEV account Profile if diffrent name in below command 
+#Add you Tools DEV account Profile if diffrent name in below command
 aws ecr get-login-password --region eu-west-2 --profile di-tools-dev | docker login --username AWS --password-stdin "${REPO_URL}"
 
 if [[ $BUILD == "1" ]]; then
@@ -97,7 +98,7 @@ fi
 
 if [[ $TERRAFORM == "1" ]]; then
   echo -n "Getting AWS credentials ... "
-  ###Export The di-Auth-devlopment account profile below 
+  ###Export The di-Auth-devlopment account profile below
   export AWS_PROFILE=di-auth-dev
   echo "done!"
 
