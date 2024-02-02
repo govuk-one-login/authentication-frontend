@@ -48,7 +48,7 @@ BUILD=0
 TERRAFORM=0
 TERRAFORM_OPTS="-auto-approve"
 
-if [[ $# == 0 ]]; then
+if [[ $# == 0 ]] || [[ $* == "-p" ]]; then
   BUILD=1
   TERRAFORM=1
 fi
@@ -114,7 +114,7 @@ if [[ $TERRAFORM == "1" ]]; then
     echo "done!"
   fi
 
+  popd >/dev/null
 fi
 
 echo "Deployment complete!"
-popd >/dev/null
