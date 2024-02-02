@@ -91,12 +91,12 @@ variable "frontend_auto_scaling_max_count" {
 
 variable "frontend_auto_scaling_policy_memory_target" {
   type    = number
-  default = 75
+  default = 60
 }
 
 variable "frontend_auto_scaling_policy_cpu_target" {
   type    = number
-  default = 65
+  default = 20
 }
 
 variable "frontend_auto_scaling_policy_scale_out_cooldown" {
