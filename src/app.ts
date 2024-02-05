@@ -13,6 +13,7 @@ import helmet from "helmet";
 
 import { setHtmlLangMiddleware } from "./middleware/html-lang-middleware";
 import i18next from "i18next";
+import compression from "compression";
 import Backend from "i18next-fs-backend";
 
 import {
@@ -156,6 +157,7 @@ async function createApp(): Promise<express.Application> {
 
   app.enable("trust proxy");
 
+  app.use(compression());
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(noCacheMiddleware);
