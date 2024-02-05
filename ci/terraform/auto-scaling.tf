@@ -54,7 +54,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_scale_out_alarm" {
   namespace           = "AWS/ECS"
   period              = 60
   statistic           = "Average"
-  threshold           = 60
+  threshold           = 50
   datapoints_to_alarm = 2
 
   dimensions = {
@@ -75,7 +75,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_scale_in_alarm" {
   namespace           = "AWS/ECS"
   period              = 60
   statistic           = "Average"
-  threshold           = 60
+  threshold           = 50
   datapoints_to_alarm = 5
 
   dimensions = {
@@ -107,29 +107,23 @@ resource "aws_appautoscaling_policy" "frontend_auto_scaling_policy_scale_out" {
   step_scaling_policy_configuration {
     adjustment_type          = "PercentChangeInCapacity"
     metric_aggregation_type  = "Average"
-    cooldown                 = 120
-    min_adjustment_magnitude = 5
+    cooldown                 = 60
+    min_adjustment_magnitude = 10
 
     step_adjustment {
       metric_interval_lower_bound = 0
-      metric_interval_upper_bound = 20
-      scaling_adjustment          = 100
-    }
-
-    step_adjustment {
-      metric_interval_lower_bound = 20
-      metric_interval_upper_bound = 30
-      scaling_adjustment          = 200
-    }
-
-    step_adjustment {
-      metric_interval_lower_bound = 30
-      metric_interval_upper_bound = 35
+      metric_interval_upper_bound = 10
       scaling_adjustment          = 300
     }
 
     step_adjustment {
-      metric_interval_lower_bound = 35
+      metric_interval_lower_bound = 10
+      metric_interval_upper_bound = 30
+      scaling_adjustment          = 400
+    }
+
+    step_adjustment {
+      metric_interval_lower_bound = 30
       scaling_adjustment          = 500
     }
   }
@@ -146,11 +140,11 @@ resource "aws_appautoscaling_policy" "frontend_auto_scaling_policy_scale_in" {
   step_scaling_policy_configuration {
     adjustment_type          = "PercentChangeInCapacity"
     metric_aggregation_type  = "Average"
-    cooldown                 = 120
+    cooldown                 = 60
     min_adjustment_magnitude = 5
 
     step_adjustment {
-      metric_interval_upper_bound = -40
+      metric_interval_upper_bound = -30
       scaling_adjustment          = -50
     }
   }
