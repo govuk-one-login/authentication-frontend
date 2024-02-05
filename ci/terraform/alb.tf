@@ -1,9 +1,10 @@
 resource "aws_lb" "frontend_alb" {
-  name               = "${var.environment}-frontend"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.frontend_alb_sg.id]
-  subnets            = local.public_subnet_ids
+  name                       = "${var.environment}-frontend"
+  internal                   = false
+  load_balancer_type         = "application"
+  security_groups            = [aws_security_group.frontend_alb_sg.id]
+  subnets                    = local.public_subnet_ids
+  drop_invalid_header_fields = true
 
   depends_on = [
     aws_s3_bucket_policy.allow_access_alb
