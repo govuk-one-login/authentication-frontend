@@ -20,6 +20,12 @@ resource "aws_wafv2_ip_set" "gds_ip_set" {
     "213.86.153.237/32",
     "213.86.153.211/32",
     "213.86.153.231/32",
+
+    # The following are Pentesters, requested on AUT-2360
+    "51.142.180.30/32",
+    "185.120.72.241/32",
+    "185.120.72.242/32",
+    "185.120.72.243/32"
   ]
 
   tags = local.default_tags
