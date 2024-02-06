@@ -29,3 +29,5 @@ pre-commit run --all-files
 yarn test:unit
 
 REDIS_PORT=6389 REDIS_HOST=localhost yarn test:integration
+
+./shutdown.sh
