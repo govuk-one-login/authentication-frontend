@@ -92,6 +92,7 @@ export function verifyCodePost(
             req.session.user.isLatestTermsAndConditionsAccepted,
           support2FABeforePasswordReset: support2FABeforePasswordReset(),
           mfaMethodType: req.session.user.enterEmailMfaType,
+          isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
         },
         res.locals.sessionId
       )

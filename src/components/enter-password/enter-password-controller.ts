@@ -19,7 +19,10 @@ import { MFA_METHOD_TYPE } from "../../app.constants";
 import xss from "xss";
 import { EnterEmailServiceInterface } from "../enter-email/types";
 import { enterEmailService } from "../enter-email/enter-email-service";
-import { supportReauthentication } from "../../config";
+import {
+  support2FABeforePasswordReset,
+  supportReauthentication,
+} from "../../config";
 import { CheckReauthServiceInterface } from "../check-reauth-users/types";
 import { checkReauthUsersService } from "../check-reauth-users/check-reauth-users-service";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
@@ -219,6 +222,7 @@ export function enterPasswordPost(
           mfaMethodType: userLogin.data.mfaMethodType,
           isMfaMethodVerified: userLogin.data.mfaMethodVerified,
           isPasswordChangeRequired: isPasswordChangeRequired,
+          support2FABeforePasswordReset: support2FABeforePasswordReset(),
         },
         sessionId
       )
