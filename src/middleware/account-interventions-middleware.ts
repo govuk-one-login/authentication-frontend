@@ -22,15 +22,6 @@ export function accountInterventionsMiddleware(
           persistentSessionId
         );
 
-      if (accountInterventionsResponse.data.passwordResetRequired) {
-        res.redirect(
-          getNextPathAndUpdateJourney(
-            req,
-            req.path,
-            USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION
-          )
-        );
-      }
       if (accountInterventionsResponse.data.blocked) {
         res.redirect(
           getNextPathAndUpdateJourney(
@@ -40,12 +31,12 @@ export function accountInterventionsMiddleware(
           )
         );
       }
-      if (accountInterventionsResponse.data.temporarilySuspended) {
+      if (accountInterventionsResponse.data.passwordResetRequired) {
         res.redirect(
           getNextPathAndUpdateJourney(
             req,
             req.path,
-            USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION
+            USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION
           )
         );
       }

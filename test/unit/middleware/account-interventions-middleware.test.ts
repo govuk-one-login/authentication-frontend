@@ -135,7 +135,7 @@ describe("accountInterventionsMiddleware", () => {
       res as Response,
       next as NextFunction
     );
-    expect(res.redirect).to.have.been.calledWith(
+    expect(res.redirect).to.not.have.been.calledWith(
       PATH_NAMES.UNAVAILABLE_TEMPORARY
     );
   });
