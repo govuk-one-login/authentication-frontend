@@ -45,6 +45,7 @@ export function enterEmailPost(
       throw new BadRequestError(result.data.message, result.data.code);
     }
     req.session.user.enterEmailMfaType = result.data.mfaMethodType;
+    req.session.user.redactedPhoneNumber = result.data.phoneNumberLastThree;
     const nextState = result.data.doesUserExist
       ? USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS
       : USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND;
