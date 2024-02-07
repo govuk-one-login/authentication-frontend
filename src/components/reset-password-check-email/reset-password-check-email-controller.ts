@@ -9,6 +9,8 @@ import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
 import { NOTIFICATION_TYPE } from "../../app.constants";
 import { support2FABeforePasswordReset } from "../../config";
+import { AccountInterventionsInterface } from "../account-intervention/types";
+import { accountInterventionService } from "../account-intervention/account-intervention-service";
 
 const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
@@ -88,9 +90,10 @@ export function resetPasswordCheckEmailGet(
 }
 
 export function resetPasswordCheckEmailPost(
-  service: VerifyCodeInterface = codeService()
+  service: VerifyCodeInterface = codeService(),
+  accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
 ): ExpressRouteFunc {
-  return verifyCodePost(service, {
+  return verifyCodePost(service, accountInterventionsService, {
     notificationType: NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE,
     template: TEMPLATE_NAME,
     validationKey:

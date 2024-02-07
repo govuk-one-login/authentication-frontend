@@ -150,6 +150,7 @@ describe("enter mfa controller", () => {
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
       req.session.user.reauthenticate = "test_data";
+      req.session.user.email = "test@test.com";
 
       await enterMfaPost(fakeService)(req as Request, res as Response);
 
@@ -181,6 +182,7 @@ describe("enter mfa controller", () => {
 
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
+      req.session.user.email = "test@test.com";
 
       await enterMfaPost(fakeService)(req as Request, res as Response);
 
@@ -201,6 +203,7 @@ describe("enter mfa controller", () => {
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
       res.locals.sessionId = "123456-djjad";
+      req.session.user.email = "test@test.com";
 
       await enterMfaPost(fakeService)(req as Request, res as Response);
 
@@ -222,6 +225,7 @@ describe("enter mfa controller", () => {
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
       res.locals.sessionId = "123456-djjad";
+      req.session.user.email = "test@test.com";
 
       await enterMfaPost(fakeService)(req as Request, res as Response);
 

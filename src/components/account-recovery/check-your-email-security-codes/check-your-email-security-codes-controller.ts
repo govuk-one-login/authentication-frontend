@@ -9,6 +9,8 @@ import { codeService } from "../../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../../common/verify-code/verify-code-controller";
 import { ExpressRouteFunc } from "../../../types";
 import { ERROR_CODES } from "../../common/constants";
+import { AccountInterventionsInterface } from "../../account-intervention/types";
+import { accountInterventionService } from "../../account-intervention/account-intervention-service";
 
 const TEMPLATE_NAME =
   "account-recovery/check-your-email-security-codes/index.njk";
@@ -30,9 +32,10 @@ export function checkYourEmailSecurityCodesGet(
 }
 
 export const checkYourEmailSecurityCodesPost = (
-  service: VerifyCodeInterface = codeService()
+  service: VerifyCodeInterface = codeService(),
+  accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
 ): ExpressRouteFunc => {
-  return verifyCodePost(service, {
+  return verifyCodePost(service, accountInterventionsService, {
     notificationType: NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES,
     template: TEMPLATE_NAME,
     validationKey:

@@ -688,6 +688,12 @@ const authStateMachine = createMachine(
           [USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED]: [
             PATH_NAMES.GET_SECURITY_CODES,
           ],
+          [USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_TEMPORARY,
+          ],
+          [USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_PERMANENT,
+          ],
         },
         meta: {
           optionalPaths: [

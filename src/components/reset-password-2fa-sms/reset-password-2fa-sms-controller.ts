@@ -9,6 +9,8 @@ import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
 import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
+import { AccountInterventionsInterface } from "../account-intervention/types";
+import { accountInterventionService } from "../account-intervention/account-intervention-service";
 
 const TEMPLATE_NAME = "reset-password-2fa-sms/index.njk";
 export function resetPassword2FASmsGet(
@@ -42,9 +44,10 @@ export function resetPassword2FASmsGet(
   };
 }
 export function resetPassword2FASmsPost(
-  service: VerifyCodeInterface = codeService()
+  service: VerifyCodeInterface = codeService(),
+  accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
 ): ExpressRouteFunc {
-  return verifyCodePost(service, {
+  return verifyCodePost(service, accountInterventionsService, {
     notificationType: NOTIFICATION_TYPE.MFA_SMS,
     template: TEMPLATE_NAME,
     validationKey: "pages.passwordResetMfaSms.code.validationError.invalidCode",
