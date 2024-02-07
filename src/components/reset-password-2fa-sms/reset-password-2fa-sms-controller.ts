@@ -3,9 +3,17 @@ import { ExpressRouteFunc } from "src/types";
 import xss from "xss";
 import { MfaServiceInterface } from "../common/mfa/types";
 import { mfaService } from "../common/mfa/mfa-service";
-import { ERROR_CODES, getErrorPathByCode } from "../common/constants";
+import {
+  ERROR_CODES,
+  getErrorPathByCode,
+  pathWithQueryParam,
+} from "../common/constants";
 import { BadRequestError } from "../../utils/error";
-import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
+import {
+  JOURNEY_TYPE,
+  NOTIFICATION_TYPE,
+  PATH_NAMES,
+} from "../../app.constants";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
 import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
@@ -13,6 +21,12 @@ import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 
 const TEMPLATE_NAME = "reset-password-2fa-sms/index.njk";
+const RESEND_CODE_LINK = pathWithQueryParam(
+  PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+  "isResendCodeRequest",
+  "true"
+);
+
 export function resetPassword2FASmsGet(
   mfaCodeService: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
@@ -40,7 +54,10 @@ export function resetPassword2FASmsGet(
         mfaResponse.data.code
       );
     }
-    res.render(TEMPLATE_NAME, {});
+    return res.render(TEMPLATE_NAME, {
+      phoneNumber: req.session.user.redactedPhoneNumber,
+      resendCodeLink: RESEND_CODE_LINK,
+    });
   };
 }
 export function resetPassword2FASmsPost(
