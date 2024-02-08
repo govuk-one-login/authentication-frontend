@@ -1376,9 +1376,9 @@
   integrity sha512-QCWHkbMv4Y5U9oW10Uxbr45qMMSzl4OzijsozynUAgx3kEHUdXB00udx2dWDQ7f2TU2a2uuiFaRZjCe3unPpeg==
 
 "@types/mock-req-res@^1.1.3":
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/@types/mock-req-res/-/mock-req-res-1.1.3.tgz"
-  integrity sha512-PCU+7tdt69K54yr0yBEiPruTmraHY4OlUgSL+Kbdp8knt67W9epbvjKmUHVsQspT1SfyiXaw69wWF5bLfXv6vg==
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@types/mock-req-res/-/mock-req-res-1.1.6.tgz#bd5652a51974ffca0a5a1ea993d9a534d632b768"
+  integrity sha512-g6R3h/PBYo+jv7e3CVhu+GoNsrmm6lh3wfFTtSoONN7JXDngDqrqoo/SxLeMLFob1UNjddm84UyK/av8qhkcBA==
   dependencies:
     "@types/express" "*"
     "@types/sinon" "*"
@@ -3731,9 +3731,9 @@ mocha@10.1.0:
     yargs-unparser "2.0.0"
 
 mock-req-res@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.npmjs.org/mock-req-res/-/mock-req-res-1.2.0.tgz"
-  integrity sha512-QSgNO7KQBwNEWWffZyg6iMNWxcpeYLF/Wdkgsem3xD80tYw//QEqbvAM0JWB72f4bxz99DFdGKCPdaomdS56JA==
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/mock-req-res/-/mock-req-res-1.2.1.tgz#01ec8b1ad103e73ed287701f0904423b7d53480b"
+  integrity sha512-UCEI1xvq0pnfyTySAWcWeIJhAoHYdt47EWFUZO+qN7lu1dBjZYFUNzuByEGs1NdQ17Isb2LKpt5/dqq8t10gFQ==
 
 ms@2.0.0:
   version "2.0.0"
