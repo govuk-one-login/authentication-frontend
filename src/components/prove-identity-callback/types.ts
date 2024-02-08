@@ -10,12 +10,25 @@ export interface ProveIdentityCallbackServiceInterface {
   ) => Promise<ApiResponseResult<ProcessIdentityResponse>>;
 }
 
-export interface ProcessIdentityResponse extends DefaultApiResponse {
-  status: IdentityProcessingStatus;
+export type ProcessIdentityResponse =
+  | ProcessIdentitySPOTResponse
+  | ProcessIdentityInterventionResponse;
+
+interface ProcessIdentitySPOTResponse extends DefaultApiResponse {
+  status:
+    | IdentityProcessingStatus.COMPLETED
+    | IdentityProcessingStatus.PROCESSING
+    | IdentityProcessingStatus.ERROR;
+}
+
+interface ProcessIdentityInterventionResponse extends DefaultApiResponse {
+  status: IdentityProcessingStatus.INTERVENTION;
+  redirectUrl: string;
 }
 
 export enum IdentityProcessingStatus {
   COMPLETED = "COMPLETED",
   ERROR = "ERROR",
   PROCESSING = "PROCESSING",
+  INTERVENTION = "INTERVENTION",
 }
