@@ -1730,6 +1730,19 @@
           "anotherProblem": "Something else",
           "errorMessage": "Select the problem you had when proving your identity with the Post Office"
         }
+      },
+      "provingIdentity": {
+        "title": "A problem proving your identity",
+        "header": "A problem proving your identity",
+        "section1": {
+          "header": "Tell us what happened",
+          "radio1": "You had a problem answering security questions",
+          "radio2": "You had a problem with your identity document",
+          "radio3": "You need to update your personal information",
+          "radio4": "There was a technical problem (for example, you saw an error message)",
+          "radio5": "Something else",
+          "errorMessage": "Select the problem you had proving your identity"
+        }
       }
     },
     "contactUsQuestions": {
@@ -1836,19 +1849,6 @@
         },
         "section3": {
           "header": "If possible, tell us the URL of the page the error happened on?"
-        }
-      },
-      "provingIdentity": {
-        "title": "A problem proving your identity",
-        "header": "A problem proving your identity",
-        "section1": {
-          "header": "What were you trying to do?",
-          "errorMessage": "Enter what you were trying to do"
-        },
-        "section2": {
-          "header": "What happened?",
-          "paragraph1": "For example, did you see any warning or error messages?",
-          "errorMessage": "Enter what happened"
         }
       },
       "securityCodeSentMethod": {
@@ -2088,6 +2088,22 @@
           "header": "What happened?",
           "paragraph1": "For example, did you see an error message?",
           "errorMessage": "Tell us what happened"
+        }
+      },
+      "provingIdentityProblemAnsweringSecurityQuestions": {
+        "title": "A problem answering security questions",
+        "header": "A problem answering security questions",
+        "section1": {
+          "label": "Anything else you need to tell us?",
+          "hint": "For example, if you want to add more detail"
+        }
+      },
+      "provingIdentity": {
+        "section1": {
+          "errorMessage": "Enter more detail"
+        },
+        "section2": {
+          "errorMessage": "Enter what happened"
         }
       }
     },
