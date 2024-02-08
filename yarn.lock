@@ -1314,9 +1314,9 @@
   integrity sha512-t73xJJrvdTjXrn4jLS9VSGRbz0nUY3cl2DMGDU48lKl+HR9dbbjW2A9r3g40VA++mQpy6uuHg33gy7du2BKpog==
 
 "@types/csurf@^1.11.2":
-  version "1.11.2"
-  resolved "https://registry.npmjs.org/@types/csurf/-/csurf-1.11.2.tgz"
-  integrity sha512-9bc98EnwmC1S0aSJiA8rWwXtgXtXHHOQOsGHptImxFgqm6CeH+mIOunHRg6+/eg2tlmDMX3tY7XrWxo2M/nUNQ==
+  version "1.11.5"
+  resolved "https://registry.yarnpkg.com/@types/csurf/-/csurf-1.11.5.tgz#16c3502fb534004a04d9cb8a48f031577528573b"
+  integrity sha512-5rw87+5YGixyL2W8wblSUl5DSZi5YOlXE6Awwn2ofLvqKr/1LruKffrQipeJKUX44VaxKj8m5es3vfhltJTOoA==
   dependencies:
     "@types/express-serve-static-core" "*"
 
