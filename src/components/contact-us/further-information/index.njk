@@ -23,6 +23,10 @@
     {% set pageTitleName = 'pages.contactUsFurtherInformation.provingIdentityFaceToFace.title' | translate %}
 {% endif %}
 
+{% if theme == 'proving_identity' %}
+    {% set pageTitleName = 'pages.contactUsFurtherInformation.provingIdentity.title' | translate %}
+{% endif %}
+
 {% block content %}
 {% include "common/errors/errorSummary.njk" %}
 
@@ -40,6 +44,10 @@
 
     {% if theme == 'id_face_to_face' %}
         {% include 'contact-us/further-information/_proving-identity-post-office-further-information.njk' %}
+    {% endif %}
+
+    {% if theme == 'proving_identity' %}
+        {% include 'contact-us/further-information/_proving-identity-further-information.njk' %}
     {% endif %}
 
 {% endblock %}

@@ -174,6 +174,8 @@ export const CONTACT_US_THEMES = {
   PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM:
     "face_to_face_technical_problem",
   PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM: "face_to_face_something_else",
+  PROVING_IDENTITY_PROBLEM_ANSWERING_SECURITY_QUESTIONS:
+    "proving_identity_problem_answering_security_questions",
 };
 
 export const CONTACT_US_FIELD_MAX_LENGTH = 1200;

@@ -13,7 +13,7 @@
 {% set pageTitleName = pageTitleHeading | translate %}
 
 {% block content %}
-{% include "common/errors/errorSummary.njk" %}
+    {% include "common/errors/errorSummary.njk" %}
 
     {% if subtheme == 'account_not_found' %}
         {% include 'contact-us/questions/_account-not-found-questions.njk' %}
@@ -56,7 +56,7 @@
     {% endif %}
 
     {% if theme == 'email_subscriptions' %}
-       {% include 'contact-us/questions/_email-subscriptions-questions.njk' %}
+        {% include 'contact-us/questions/_email-subscriptions-questions.njk' %}
     {% endif %}
 
     {% if theme == 'something_else' %}
@@ -65,10 +65,6 @@
 
     {% if theme == 'suggestions_feedback' %}
         {% include 'contact-us/questions/_suggestion-feedback-questions.njk' %}
-    {% endif %}
-
-    {% if theme == 'proving_identity' %}
-        {% include 'contact-us/questions/_proving-identity-problem-questions.njk' %}
     {% endif %}
 
     {% if (theme == 'id_face_to_face') and (subtheme == 'face_to_face_details') %}
@@ -117,6 +113,10 @@
 
     {% if (theme == 'id_check_app') and (subtheme == 'id_check_app_something_else') %}
         {% include 'contact-us/questions/_id-check-app-something-else.njk' %}
+    {% endif %}
+
+    {% if (theme == 'proving_identity') and (subtheme == 'proving_identity_problem_answering_security_questions') %}
+        {% include 'contact-us/questions/_proving-identity-problem-answering-security-questions.njk' %}
     {% endif %}
 
 {% endblock %}
