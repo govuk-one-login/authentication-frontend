@@ -65,6 +65,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_ANSWERING_SECURITY_QUESTIONS]:
     "pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.title",
+  [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_IDENTITY_DOCUMENT]:
+    "pages.contactUsQuestions.provingIdentityProblemWithIdentityDocument.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
@@ -768,6 +770,12 @@ export function getQuestionsFromFormTypeForMessageBody(
         { lng: "en" }
       ),
     },
+    provingIdentityProblemWithIdentityDocument: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.provingIdentityProblemWithIdentityDocument.section2.label",
+        { lng: "en" }
+      ),
+    },
   };
 
   return formTypeToQuestions[formType];
@@ -923,6 +931,10 @@ export function getQuestionFromThemes(
   const provingIdentitySubthemeToQuestion: { [key: string]: any } = {
     proving_identity_problem_answering_security_questions: req.t(
       "pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.title",
+      { lng: "en" }
+    ),
+    proving_identity_problem_with_identity_document: req.t(
+      "pages.contactUsQuestions.provingIdentityProblemWithIdentityDocument.title",
       { lng: "en" }
     ),
   };

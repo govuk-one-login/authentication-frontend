@@ -2077,6 +2077,22 @@
           "hint": "Er enghraifft, os ydych am ychwanegu mwy o fanylion"
         }
       },
+      "provingIdentityProblemWithIdentityDocument": {
+        "title": "Problem gyda’ch dogfen hunaniaeth",
+        "header": "Problem gyda’ch dogfen hunaniaeth",
+        "identityDocument": {
+          "header": "Dewiswch pa ddogfen hunaniaeth oeddech chi’n ei defnyddio",
+          "types": {
+            "passport": "Pasbort",
+            "drivingLicence": "Trwydded yrru"
+          },
+          "errorMessage": "Dewiswch pa ddogfen hunaniaeth oeddech chi’n ei defnyddio"
+        },
+        "section2": {
+          "label": "Unrhyw beth arall rydych angen dweud wrthym?",
+          "hint": "Er enghraifft, os ydych am ychwanegu mwy o fanylion"
+        }
+      },
       "provingIdentity": {
         "section1": {
           "errorMessage": "Rhowch fwy o fanylion"
