@@ -36,6 +36,20 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value, lng: req.i18n.lng }
         );
       }),
+    body("identityDocumentUsed")
+      .if(body("theme").equals("proving_identity"))
+      .if(
+        body("subtheme").equals(
+          "proving_identity_problem_with_identity_document"
+        )
+      )
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.provingIdentityProblemWithIdentityDocument.identityDocument.errorMessage",
+          { value, lng: req.i18n.lng }
+        );
+      }),
     body("issueDescription")
       .optional()
       .notEmpty()

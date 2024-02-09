@@ -1496,7 +1496,7 @@
             "address_four": "Wilmslow",
             "address_five": "Cheshire SK9 5AF",
             "email": {
-              "part_one":"Email:",
+              "part_one": "Email:",
               "link_text": "icocasework@ico.org.uk",
               "link_href": "mailto:icocasework@ico.org.uk"
             },
@@ -2094,6 +2094,22 @@
         "title": "A problem answering security questions",
         "header": "A problem answering security questions",
         "section1": {
+          "label": "Anything else you need to tell us?",
+          "hint": "For example, if you want to add more detail"
+        }
+      },
+      "provingIdentityProblemWithIdentityDocument": {
+        "title": "A problem with your identity document",
+        "header": "A problem with your identity document",
+        "identityDocument": {
+          "header": "Which identity document were you using?",
+          "types": {
+            "passport": "Passport",
+            "drivingLicence": "Driving licence"
+          },
+          "errorMessage": "Select which identity document you were using"
+        },
+        "section2": {
           "label": "Anything else you need to tell us?",
           "hint": "For example, if you want to add more detail"
         }

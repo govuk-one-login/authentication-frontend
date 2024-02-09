@@ -119,4 +119,8 @@
         {% include 'contact-us/questions/_proving-identity-problem-answering-security-questions.njk' %}
     {% endif %}
 
+    {% if (theme == 'proving_identity') and (subtheme == 'proving_identity_problem_with_identity_document') %}
+        {% include 'contact-us/questions/_proving-identity-problem-with-identity-document.njk' %}
+    {% endif %}
+
 {% endblock %}
