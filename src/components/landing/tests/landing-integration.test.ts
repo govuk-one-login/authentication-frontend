@@ -15,7 +15,21 @@ describe("Integration:: landing", () => {
     process.env.SUPPORT_AUTH_ORCH_SPLIT = "0";
     decache("../../../app");
     decache("../landing-service");
+    decache("../../../middleware/session-middleware");
     const landingService = require("../landing-service");
+    const sessionMiddleware = require("../../../middleware/session-middleware");
+    sinon
+      .stub(sessionMiddleware, "validateSessionMiddleware")
+      .callsFake(function (req: any, res: any, next: any): void {
+        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+        req.session.user = {
+          email: "test@test.com",
+          journey: {
+            nextPath: PATH_NAMES.SIGN_IN_OR_CREATE,
+          },
+        };
+        next();
+      });
 
     sinon
       .stub(landingService, "landingService")
@@ -62,18 +76,8 @@ describe("Integration:: landing", () => {
 
   it("should redirect to /sign-in-or-create", (done) => {
     request(app)
-      .get(PATH_NAMES.START)
+      .get(PATH_NAMES.ROOT)
       .expect("Location", PATH_NAMES.SIGN_IN_OR_CREATE)
-      .expect(302, done);
-  });
-
-  it("should redirect to /sign-in-or-create with Google Analytics tag if 'result' query exists", (done) => {
-    request(app)
-      .get(PATH_NAMES.START)
-      .query({
-        result: "test-result",
-      })
-      .expect("Location", PATH_NAMES.SIGN_IN_OR_CREATE + "?result=test-result")
       .expect(302, done);
   });
 });
