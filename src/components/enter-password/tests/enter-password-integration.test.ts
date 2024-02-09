@@ -4,16 +4,8 @@ import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
-import { AxiosResponse } from "axios";
-import { createApiResponse } from "../../../utils/http";
-import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
-import { DefaultApiResponse } from "../../../types";
 
 describe("Integration::enter password", () => {
   let token: string | string[];
@@ -27,7 +19,6 @@ describe("Integration::enter password", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-    const checkReauthUsersService = require("../../check-reauth-users/check-reauth-users-service");
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -45,20 +36,6 @@ describe("Integration::enter password", () => {
         };
 
         next();
-      });
-
-    sinon
-      .stub(checkReauthUsersService, "checkReauthUsersService")
-      .callsFake((): CheckReauthServiceInterface => {
-        async function checkReauthUsers() {
-          const fakeAxiosResponse: AxiosResponse = {
-            status: HTTP_STATUS_CODES.OK,
-          } as AxiosResponse;
-
-          return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
-        }
-
-        return { checkReauthUsers };
       });
 
     app = await require("../../../app").createApp();
@@ -83,11 +60,6 @@ describe("Integration::enter password", () => {
   });
 
   it("should return enter password page", (done) => {
-    request(app).get(ENDPOINT).expect(200, done);
-  });
-
-  it("should return enter password page when support reauthentication flag is on and check reauth users api call is successfull", (done) => {
-    process.env.SUPPORT_REAUTHENTICATION = "1";
     request(app).get(ENDPOINT).expect(200, done);
   });
 

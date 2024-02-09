@@ -20,7 +20,6 @@ import {
 } from "mock-req-res";
 import { EnterEmailServiceInterface } from "../../enter-email/types";
 import { ERROR_CODES } from "../../common/constants";
-import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
 import * as journey from "../../common/journey/journey";
 
 describe("enter password controller", () => {
@@ -41,77 +40,10 @@ describe("enter password controller", () => {
   });
 
   describe("enterPasswordGet", () => {
-    const fakeService: CheckReauthServiceInterface = {
-      checkReauthUsers: sinon.fake.returns({
-        success: true,
-      }),
-    } as unknown as CheckReauthServiceInterface;
-
     it("should render enter password view", async () => {
-      await enterPasswordGet(fakeService)(req as Request, res as Response);
+      enterPasswordGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("enter-password/index.njk");
-    });
-
-    it("should render enter password view when supportReauthentication flag is switched off", async () => {
-      process.env.SUPPORT_REAUTHENTICATION = "0";
-
-      await enterPasswordGet(fakeService)(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("enter-password/index.njk");
-    });
-
-    it("should render enter password view when isReautheticationRequired is false", async () => {
-      process.env.SUPPORT_REAUTHENTICATION = "1";
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
-
-      await enterPasswordGet(fakeService)(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("enter-password/index.njk");
-    });
-
-    it("should render enter password view when isReautheticationRequired is true and check service returns successfully", async () => {
-      process.env.SUPPORT_REAUTHENTICATION = "1";
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-        reauthenticate: "12345",
-      };
-
-      await enterPasswordGet(fakeService)(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("enter-password/index.njk");
-    });
-
-    it("should render 500 error view when isReautheticationRequired is true and check service fails", async () => {
-      const unsuccessfulFakeService: CheckReauthServiceInterface = {
-        checkReauthUsers: sinon.fake.returns({
-          success: false,
-        }),
-      } as unknown as CheckReauthServiceInterface;
-
-      process.env.SUPPORT_REAUTHENTICATION = "1";
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-        reauthenticate: "12345",
-      };
-
-      await enterPasswordGet(unsuccessfulFakeService)(
-        req as Request,
-        res as Response
-      );
-
-      expect(res.render).to.have.calledWith("common/errors/500.njk");
     });
   });
 

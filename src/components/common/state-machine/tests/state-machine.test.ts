@@ -143,7 +143,7 @@ describe("state-machine", () => {
         USER_JOURNEY_EVENTS.EXISTING_SESSION,
         { isAuthenticated: true, isReauthenticationRequired: true }
       );
-      expect(nextState.value).to.equal(PATH_NAMES.ENTER_PASSWORD);
+      expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
     });
 
     it("should move from authorize to sign or create when reauthentication is requested and the user is not logged in", () => {
