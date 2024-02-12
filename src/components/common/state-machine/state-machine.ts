@@ -657,6 +657,12 @@ const authStateMachine = createMachine(
       },
       [PATH_NAMES.PROVE_IDENTITY]: {
         on: {
+          [USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION]: [
+            PATH_NAMES.PASSWORD_RESET_REQUIRED,
+          ],
+          [USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_PERMANENT,
+          ],
           [USER_JOURNEY_EVENTS.PROVE_IDENTITY_INIT]: [
             PATH_NAMES.PROVE_IDENTITY_CALLBACK,
           ],

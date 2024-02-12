@@ -5,6 +5,7 @@ import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { asyncHandler } from "../../utils/async";
 import { proveIdentityGet } from "./prove-identity-controller";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
+import { accountInterventionsMiddleware } from "../../middleware/account-interventions-middleware";
 
 const router = express.Router();
 
@@ -12,6 +13,7 @@ router.get(
   PATH_NAMES.PROVE_IDENTITY,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  asyncHandler(accountInterventionsMiddleware()),
   asyncHandler(proveIdentityGet())
 );
 

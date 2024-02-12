@@ -23,16 +23,15 @@ export function accountInterventionsMiddleware(
         );
 
       if (accountInterventionsResponse.data.blocked) {
-        res.redirect(
+        return res.redirect(
           getNextPathAndUpdateJourney(
             req,
             req.path,
             USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION
           )
         );
-      }
-      if (accountInterventionsResponse.data.passwordResetRequired) {
-        res.redirect(
+      } else if (accountInterventionsResponse.data.passwordResetRequired) {
+        return res.redirect(
           getNextPathAndUpdateJourney(
             req,
             req.path,
