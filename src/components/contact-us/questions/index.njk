@@ -123,6 +123,10 @@
         {% include 'contact-us/questions/_proving-identity-problem-with-identity-document.njk' %}
     {% endif %}
 
+    {% if (theme == 'proving_identity') and (subtheme == 'proving_identity_need_to_update_personal_information') %}
+        {% include 'contact-us/questions/_proving-identity-need-to-update-personal-information.njk' %}
+    {% endif %}
+
     {% if (theme == 'proving_identity') and (subtheme == 'proving_identity_technical_problem') %}
         {% include 'contact-us/questions/_technical-error-questions.njk' %}
     {% endif %}
