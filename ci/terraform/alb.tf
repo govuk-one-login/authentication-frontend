@@ -32,8 +32,8 @@ resource "aws_alb_target_group" "frontend_alb_target_group" {
   deregistration_delay = var.deregistration_delay
 
   health_check {
-    healthy_threshold   = "3"
-    interval            = "30"
+    healthy_threshold   = "32"
+    interval            = "10"
     protocol            = "HTTP"
     matcher             = "200"
     timeout             = "3"
