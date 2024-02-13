@@ -18,6 +18,7 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { landingService } from "./landing-service";
 import { LandingServiceInterface } from "./types";
 import { appendQueryParamIfHasValue } from "../../utils/url";
+import { logger } from "../../utils/logger";
 
 function createConsentCookie(
   res: Response,
@@ -38,6 +39,7 @@ export function landingGet(
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const loginPrompt = sanitize(req.query.prompt as string);
+    logger.info(`Landing referer: ${sanitize(req.headers.referer)}`);
 
     const startAuthResponse = await service.start(
       sessionId,
