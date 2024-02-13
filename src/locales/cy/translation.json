@@ -2093,6 +2093,16 @@
           "hint": "Er enghraifft, os ydych am ychwanegu mwy o fanylion"
         }
       },
+      "provingIdentityNeedToUpdatePersonalInformation": {
+        "title": "Mae angen i chi ddiweddaru eich gwybodaeth bersonol",
+        "header": "Mae angen i chi ddiweddaru eich gwybodaeth bersonol",
+        "section1": {
+          "label": "Beth oeddech chi’n ceisio ei wneud?"
+        },
+        "section2": {
+          "label": "Unrhyw beth arall rydych angen dweud wrthym?"
+        }
+      },
       "provingIdentity": {
         "section1": {
           "errorMessage": "Rhowch fwy o fanylion"

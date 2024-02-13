@@ -2093,6 +2093,16 @@
           "hint": "For example, if you want to add more detail"
         }
       },
+      "provingIdentityNeedToUpdatePersonalInformation": {
+        "title": "You need to update your personal information",
+        "header": "You need to update your personal information",
+        "section1": {
+          "label": "What were you trying to do?"
+        },
+        "section2": {
+          "label": "Anything else you need to tell us?"
+        }
+      },
       "provingIdentity": {
         "section1": {
           "errorMessage": "Enter more detail"

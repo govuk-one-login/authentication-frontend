@@ -178,6 +178,8 @@ export const CONTACT_US_THEMES = {
     "proving_identity_problem_answering_security_questions",
   PROVING_IDENTITY_PROBLEM_WITH_IDENTITY_DOCUMENT:
     "proving_identity_problem_with_identity_document",
+  PROVING_IDENTITY_NEED_TO_UPDATE_PERSONAL_INFORMATION:
+    "proving_identity_need_to_update_personal_information",
 };
 
 export const CONTACT_US_FIELD_MAX_LENGTH = 1200;
