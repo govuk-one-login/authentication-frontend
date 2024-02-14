@@ -9,6 +9,10 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants";
+import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
+import { AxiosResponse } from "axios";
+import { createApiResponse } from "../../../utils/http";
+import { DefaultApiResponse } from "../../../types";
 
 describe("Integration::enter email", () => {
   let token: string | string[];
@@ -20,6 +24,7 @@ describe("Integration::enter email", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
+    const checkReauthUsersService = require("../../check-reauth-users/check-reauth-users-service");
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -31,9 +36,24 @@ describe("Integration::enter email", () => {
             nextPath: PATH_NAMES.ENTER_EMAIL_SIGN_IN,
             optionalPaths: [PATH_NAMES.SIGN_IN_OR_CREATE],
           },
+          reauthenticate: "12345",
         };
 
         next();
+      });
+
+    sinon
+      .stub(checkReauthUsersService, "checkReauthUsersService")
+      .callsFake((): CheckReauthServiceInterface => {
+        async function checkReauthUsers() {
+          const fakeAxiosResponse: AxiosResponse = {
+            status: HTTP_STATUS_CODES.OK,
+          } as AxiosResponse;
+
+          return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
+        }
+
+        return { checkReauthUsers };
       });
 
     app = await require("../../../app").createApp();
@@ -198,5 +218,33 @@ describe("Integration::enter email", () => {
         email: "test@test.com",
       })
       .expect(500, done);
+  });
+
+  it("should redirect to /enter-password page when email address exists and check re-auth users api call is successfully", (done) => {
+    process.env.SUPPORT_REAUTHENTICATION = "1";
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.CHECK_REAUTH_USERS)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK);
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.USER_EXISTS)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email: "test@test.com",
+        doesUserExist: true,
+      });
+
+    request(app)
+      .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        email: "test@test.com",
+      })
+      .expect("Location", PATH_NAMES.ENTER_PASSWORD)
+      .expect(302, done);
   });
 });

@@ -13,9 +13,25 @@ import { SendNotificationServiceInterface } from "../common/send-notification/ty
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import xss from "xss";
+import { CheckReauthServiceInterface } from "../check-reauth-users/types";
+import { checkReauthUsersService } from "../check-reauth-users/check-reauth-users-service";
+import { supportReauthentication } from "../../config";
+import {
+  formatValidationError,
+  renderBadRequest,
+} from "../../utils/validation";
+
+const ENTER_EMAIL_TEMPLATE = "enter-email/index-existing-account.njk";
+const RE_ENTER_EMAIL_TEMPLATE = "enter-email/index-re-enter-email-account.njk";
 
 export function enterEmailGet(req: Request, res: Response): void {
-  return res.render("enter-email/index-existing-account.njk");
+  const isReAuthenticationRequired = req.session.user.reauthenticate;
+
+  if (supportReauthentication() && isReAuthenticationRequired) {
+    return res.render(RE_ENTER_EMAIL_TEMPLATE);
+  }
+
+  return res.render(ENTER_EMAIL_TEMPLATE);
 }
 
 export function enterEmailCreateGet(req: Request, res: Response): void {
@@ -23,12 +39,32 @@ export function enterEmailCreateGet(req: Request, res: Response): void {
 }
 
 export function enterEmailPost(
-  service: EnterEmailServiceInterface = enterEmailService()
+  service: EnterEmailServiceInterface = enterEmailService(),
+  checkReauthService: CheckReauthServiceInterface = checkReauthUsersService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const email = req.body.email;
-    const sessionId = res.locals.sessionId;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     req.session.user.email = email.toLowerCase();
+    const isReAuthenticationRequired = req.session.user.reauthenticate;
+
+    if (supportReauthentication() && isReAuthenticationRequired) {
+      const checkReauth = await checkReauthService.checkReauthUsers(
+        sessionId,
+        email,
+        req.ip,
+        clientSessionId,
+        persistentSessionId
+      );
+
+      if (!checkReauth.success) {
+        const error = formatValidationError(
+          "email",
+          req.t("pages.reEnterEmailAccount.enterYourEmailAddressError")
+        );
+        return renderBadRequest(res, req, RE_ENTER_EMAIL_TEMPLATE, error);
+      }
+    }
 
     const result = await service.userExists(
       sessionId,

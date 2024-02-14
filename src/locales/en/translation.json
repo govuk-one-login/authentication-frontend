@@ -211,6 +211,13 @@
         }
       }
     },
+    "reEnterEmailAccount": {
+      "title": "Re-enter your sign-in details to continue",
+      "header": "Re-enter your sign-in details to continue",
+      "paragraph1": "For security, sign in with GOV.UK One Login again.",
+      "enterYourEmailAddress": "Enter your email address",
+      "enterYourEmailAddressError": "Enter the same email address you used to sign in"
+    },
     "accountNotFoundOneLogin": {
       "title": "No GOV.UK One Login found",
       "header": "No GOV.UK One Login found",
