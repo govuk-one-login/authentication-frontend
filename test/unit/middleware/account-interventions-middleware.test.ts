@@ -46,7 +46,7 @@ describe("accountInterventionsMiddleware", () => {
       temporarilySuspended: false,
     });
 
-    await callMiddleware(fakeAccountInterventionService);
+    await callMiddleware(false, fakeAccountInterventionService);
     expect(next).to.be.calledOnce;
   });
 
@@ -58,7 +58,7 @@ describe("accountInterventionsMiddleware", () => {
       temporarilySuspended: false,
     });
 
-    await callMiddleware(fakeAccountInterventionService);
+    await callMiddleware(false, fakeAccountInterventionService);
     expect(next).to.be.calledOnce;
   });
 
@@ -69,7 +69,7 @@ describe("accountInterventionsMiddleware", () => {
       temporarilySuspended: false,
     });
 
-    await callMiddleware(fakeAccountInterventionService);
+    await callMiddleware(false, fakeAccountInterventionService);
     expect(res.redirect).to.have.been.calledWith(
       PATH_NAMES.PASSWORD_RESET_REQUIRED
     );
@@ -82,9 +82,22 @@ describe("accountInterventionsMiddleware", () => {
       temporarilySuspended: false,
     });
 
-    await callMiddleware(fakeAccountInterventionService);
+    await callMiddleware(false, fakeAccountInterventionService);
     expect(res.redirect).to.have.been.calledWith(
       PATH_NAMES.UNAVAILABLE_PERMANENT
+    );
+  });
+
+  it("should redirect to getNextPathAndUpdateJourney with the journey being TEMPORARILY_BLOCKED_INTERVENTIONS when temporarilySuspended === true and handleSuspendedStatus === true", async () => {
+    const fakeAccountInterventionService = fakeAccountInterventionsService({
+      passwordResetRequired: false,
+      blocked: false,
+      temporarilySuspended: true,
+    });
+
+    await callMiddleware(true, fakeAccountInterventionService);
+    expect(res.redirect).to.have.been.calledWith(
+      PATH_NAMES.UNAVAILABLE_TEMPORARY
     );
   });
 
@@ -94,21 +107,21 @@ describe("accountInterventionsMiddleware", () => {
       blocked: false,
       temporarilySuspended: true,
     });
-    await callMiddleware(fakeAccountInterventionService);
 
+    await callMiddleware(false, fakeAccountInterventionService);
     expect(res.redirect).to.not.have.been.calledWith(
       PATH_NAMES.UNAVAILABLE_TEMPORARY
     );
   });
 
   const callMiddleware = (
+    handleSuspendedStatus: boolean,
     accountInterventionService: AccountInterventionsInterface
   ) => {
-    accountInterventionsMiddleware(accountInterventionService)(
-      req as Request,
-      res as Response,
-      next as NextFunction
-    );
+    accountInterventionsMiddleware(
+      handleSuspendedStatus,
+      accountInterventionService
+    )(req as Request, res as Response, next as NextFunction);
   };
 
   const fakeAccountInterventionsService = (

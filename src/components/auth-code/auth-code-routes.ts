@@ -13,7 +13,7 @@ router.get(
   PATH_NAMES.AUTH_CODE,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  asyncHandler(accountInterventionsMiddleware()),
+  asyncHandler(accountInterventionsMiddleware(false)),
   asyncHandler(authCodeGet())
 );
 
