@@ -1,7 +1,7 @@
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../src/app.constants";
 import nock = require("nock");
 
-type AccountInterventionsFlags = {
+export type AccountInterventionsFlags = {
   blocked: boolean;
   passwordResetRequired: boolean;
   temporarilySuspended: boolean;
