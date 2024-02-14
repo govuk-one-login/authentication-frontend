@@ -88,7 +88,7 @@ describe("accountInterventionsMiddleware", () => {
     );
   });
 
-  it("should redirect to getNextPathAndUpdateJourney with the journey being TEMPORARILY_BLOCKED_INTERVENTION when temporarilySuspended === true in the response and supportAccountInterventions() returns true", async () => {
+  it("should not redirect to UNAVAILABLE_TEMPORARY when temporarilySuspended === true in the response and supportAccountInterventions() returns true", async () => {
     const fakeAccountInterventionService = fakeAccountInterventionsService({
       passwordResetRequired: false,
       blocked: false,
