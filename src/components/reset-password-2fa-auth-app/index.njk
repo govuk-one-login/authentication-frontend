@@ -1,9 +1,10 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% set pageTitleName = 'pages.enterAuthenticatorAppCode.title' | translate %}
+{% set pageTitleName = 'pages.enterAuthenticatorAppCode.2FaBeforeResetPassword.title' | translate %}
 
 {% block content %}
 
@@ -15,12 +16,20 @@
     <input type="hidden" name="isAccountRecoveryPermitted" value="{{isAccountRecoveryPermitted}}"/>
     <input type="hidden" name="checkEmailLink" value="{{checkEmailLink}}"/>
 
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3" id="updatedHeading">{{'pages.enterAuthenticatorAppCode.2FaBeforeResetPassword.header' | translate }}</h1>
+
+    <p class="govuk-body">
+            {{ govukInsetText({
+            html: 'pages.enterAuthenticatorAppCode.2FaBeforeResetPassword.info.paragraph1' | translate
+             + '<span class="govuk-body govuk-!-font-weight-bold">' +  'pages.enterAuthenticatorAppCode.2FaBeforeResetPassword.info.authenticatorApp' | translate + '</span>' +
+             'pages.enterAuthenticatorAppCode.2FaBeforeResetPassword.info.paragraph1End'| translate
+        }) }}
+        </p>
+
     {{ govukInput({
-      label: {
-        text: 'pages.enterAuthenticatorAppCode.header' | translate,
-        classes: "govuk-label--l",
-        isPageHeading: true
-      },
+    label: {
+                text: 'pages.enterAuthenticatorAppCode.2FaBeforeResetPassword.code.label' | translate
+            },
     classes: "govuk-input--width-10",
     id: "code",
     name: "code",
@@ -31,6 +40,7 @@
       text: errors['code'].text
     } if (errors['code'])})
   }}
+
 
     {{ govukButton({
     "text": "general.continue.label" | translate,

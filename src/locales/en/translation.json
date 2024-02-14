@@ -2204,6 +2204,18 @@
           "label": "Enter the security code",
           "labelSummary": "This is the 6-digit number shown in your authenticator app"
         }
+      },
+      "2FaBeforeResetPassword": {
+        "title": "Enter a security code from your authenticator app",
+        "header": "Enter a security code from your authenticator app",
+        "info": {
+          "paragraph1": "To get a security code, open the ",
+          "authenticatorApp": "authenticator app ",
+          "paragraph1End": "you used to create your GOV.UK One Login"
+        },
+        "code":{
+          "label": "Enter the 6 digit security code"
+        }
       }
     },
     "securityCodeEnteredExceeded": {

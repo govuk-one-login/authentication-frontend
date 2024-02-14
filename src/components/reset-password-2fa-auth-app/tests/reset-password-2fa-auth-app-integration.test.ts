@@ -1,6 +1,6 @@
 import request from "supertest";
 import { describe } from "mocha";
-import { sinon } from "../../../../test/utils/test-utils";
+import { expect, sinon } from "../../../../test/utils/test-utils";
 import * as cheerio from "cheerio";
 import {
   API_ENDPOINTS,
@@ -61,9 +61,15 @@ describe("Integration::2fa auth app (in reset password flow)", () => {
     app = undefined;
   });
 
-  it("should return check auth app page", (done) => {
+  it("should return updated check auth app page", (done) => {
     nock(baseApi).persist().post("/mfa").reply(204);
-    request(app).get(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP).expect(200, done);
+    request(app)
+      .get(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#updatedHeading").length).to.eq(1);
+      })
+      .expect(200, done);
   });
 
   it("should redirect to reset password step when valid sms code is entered", (done) => {
