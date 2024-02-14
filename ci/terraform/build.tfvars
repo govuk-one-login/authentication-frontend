@@ -29,4 +29,3 @@ orch_to_auth_audience           = "https://signin.build.account.gov.uk/"
 
 dynatrace_secret_arn                     = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
 frame_ancestors_form_actions_csp_headers = "1"
-support_2fa_b4_password_reset            = "1"
