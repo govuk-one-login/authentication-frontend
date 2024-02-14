@@ -59,3 +59,28 @@ export function validateBodyMiddlewareUpliftTemplate(
     next();
   };
 }
+
+export function validateBodyMiddlewareReauthTemplate(
+  reAuthTemplate: string,
+  defaultTemplate: string,
+  postValidationLocals?: (req: Request) => Record<string, unknown>
+) {
+  return (req: Request, res: Response, next: NextFunction): any => {
+    const { reauthenticate } = req.session.user;
+
+    const template = reauthenticate ? reAuthTemplate : defaultTemplate;
+
+    const errors = validationResult(req)
+      .formatWith(validationErrorFormatter)
+      .mapped();
+
+    const locals =
+      typeof postValidationLocals !== "undefined"
+        ? postValidationLocals(req)
+        : undefined;
+    if (!isObjectEmpty(errors)) {
+      return renderBadRequest(res, req, template, errors, locals);
+    }
+    next();
+  };
+}

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
-import { ExpressRouteFunc } from "../../types";
+import { ExpressRouteFunc, UserSession } from "../../types";
 import { enterEmailService } from "./enter-email-service";
 import { EnterEmailServiceInterface } from "./types";
 import {
@@ -15,19 +15,29 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import xss from "xss";
 import { CheckReauthServiceInterface } from "../check-reauth-users/types";
 import { checkReauthUsersService } from "../check-reauth-users/check-reauth-users-service";
-import { supportReauthentication } from "../../config";
+import {
+  getEmailEnteredWrongBlockDurationInMinutes,
+  supportReauthentication,
+} from "../../config";
 import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation";
 
+export const RE_ENTER_EMAIL_TEMPLATE =
+  "enter-email/index-re-enter-email-account.njk";
 const ENTER_EMAIL_TEMPLATE = "enter-email/index-existing-account.njk";
-const RE_ENTER_EMAIL_TEMPLATE = "enter-email/index-re-enter-email-account.njk";
+const BLOCKED_TEMPLATE =
+  "enter-email/index-sign-in-details-entered-too-many-times.njk";
+const EMAIL_ERROR_KEY = "pages.reEnterEmailAccount.enterYourEmailAddressError";
 
 export function enterEmailGet(req: Request, res: Response): void {
   const isReAuthenticationRequired = req.session.user.reauthenticate;
 
   if (supportReauthentication() && isReAuthenticationRequired) {
+    if (isUserLockedOut(req.session.user)) {
+      return res.render(BLOCKED_TEMPLATE);
+    }
     return res.render(RE_ENTER_EMAIL_TEMPLATE);
   }
 
@@ -58,11 +68,23 @@ export function enterEmailPost(
       );
 
       if (!checkReauth.success) {
-        const error = formatValidationError(
-          "email",
-          req.t("pages.reEnterEmailAccount.enterYourEmailAddressError")
-        );
-        return renderBadRequest(res, req, RE_ENTER_EMAIL_TEMPLATE, error);
+        if (isUserLockedOut(req.session.user)) {
+          return res.render(BLOCKED_TEMPLATE);
+        }
+
+        if (
+          checkReauth.data.code ===
+          ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
+        ) {
+          return handleSessionBlocked(req, res);
+        }
+
+        if (
+          checkReauth.data.code ===
+          ERROR_CODES.RE_AUTH_CHECK_NO_USER_OR_NO_MATCH
+        ) {
+          return handleBadRequest(req, res, EMAIL_ERROR_KEY);
+        }
       }
     }
 
@@ -163,4 +185,30 @@ export function enterEmailCreatePost(
       )
     );
   };
+}
+
+function isUserLockedOut(userSession: UserSession) {
+  const lockTimestamp = userSession.wrongEmailEnteredLock;
+  return lockTimestamp && new Date() < new Date(lockTimestamp);
+}
+
+function lockUser(userSession: UserSession) {
+  const lockDurationInMinutes = getEmailEnteredWrongBlockDurationInMinutes();
+  userSession.wrongEmailEnteredLock = new Date(
+    Date.now() + lockDurationInMinutes * 60000
+  ).toUTCString();
+}
+
+function handleSessionBlocked(req: Request, res: Response) {
+  lockUser(req.session.user);
+  return res.render(BLOCKED_TEMPLATE);
+}
+
+function handleBadRequest(
+  req: Request,
+  res: Response,
+  errorMessageKey: string
+) {
+  const error = formatValidationError("email", req.t(errorMessageKey));
+  return renderBadRequest(res, req, RE_ENTER_EMAIL_TEMPLATE, error);
 }

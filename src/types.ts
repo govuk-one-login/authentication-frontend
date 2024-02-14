@@ -68,6 +68,7 @@ export interface UserSession {
   isPasswordChangeRequired?: boolean;
   featureFlags?: any;
   wrongCodeEnteredLock?: string;
+  wrongEmailEnteredLock?: string;
   codeRequestLock?: string;
   wrongCodeEnteredAccountRecoveryLock?: string;
   wrongCodeEnteredPasswordResetLock?: string;
