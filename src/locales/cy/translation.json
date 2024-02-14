@@ -2197,6 +2197,18 @@
           "label": "Rhowch y cod diogelwch",
           "labelSummary": "Dyma’r rhif 6-digid a ddangosir yn eich ap dilysydd"
         }
+      },
+      "2FaBeforeResetPassword": {
+        "title": "Enter a security code from your authenticator app",
+        "header": "Enter a security code from your authenticator app",
+        "info": {
+          "paragraph1": "I gael cod diogelwch, agorwch yr ",
+          "authenticatorApp": "ap dilysydd ",
+          "paragraph1End": "rydych wedi’i ddefnyddio i greu eich GOV.UK One Login"
+        },
+        "code":{
+          "label": "Rhowch y cod diogelwch 6 digid"
+        }
       }
     },
     "securityCodeEnteredExceeded": {
