@@ -80,6 +80,21 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
       .expect(302, done);
   });
 
+  it("should return the suspended screen when someone has a suspended intervention", (done) => {
+    setupAccountInterventionsResponse(baseApi, {
+      blocked: false,
+      passwordResetRequired: false,
+      temporarilySuspended: true,
+    });
+
+    request(app)
+      .get(ENDPOINT)
+      .expect(function (res) {
+        expect(res.headers.location).to.eq("/unavailable-temporary");
+      })
+      .expect(302, done);
+  });
+
   it("should return error when csrf not present", (done) => {
     request(app)
       .post(ENDPOINT)
