@@ -11,6 +11,7 @@ import {
 } from "./reset-password-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
+import { accountInterventionsMiddleware } from "../../middleware/account-interventions-middleware";
 
 const router = express.Router();
 
@@ -20,6 +21,7 @@ router.get(
   PATH_NAMES.RESET_PASSWORD,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  asyncHandler(accountInterventionsMiddleware()),
   resetPasswordGet
 );
 

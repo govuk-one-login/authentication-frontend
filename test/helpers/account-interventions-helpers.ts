@@ -21,3 +21,9 @@ export const setupAccountInterventionsResponse = (
       temporarilySuspended: flags.temporarilySuspended,
     });
 };
+
+export const noInterventions: AccountInterventionsFlags = {
+  blocked: false,
+  passwordResetRequired: false,
+  temporarilySuspended: false,
+};
