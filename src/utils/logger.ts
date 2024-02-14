@@ -43,18 +43,19 @@ const loggerMiddleware = PinoHttp({
   logger,
   wrapSerializers: false,
   autoLogging: {
-    ignorePaths: [
-      "/public/scripts/cookies.js",
-      "/public/scripts/all.js",
-      "/public/style.css",
-      "/public/scripts",
-      "/public/scripts/application.js",
-      "/assets/images/govuk-crest-2x.png",
-      "/assets/fonts/bold-b542beb274-v2.woff2",
-      "/assets/fonts/bold-b542beb274-v2.woff2",
-      "/assets/images/favicon.ico",
-      "/assets/fonts/light-94a07e06a1-v2.woff2",
-    ],
+    ignore: (req) =>
+      [
+        "/public/scripts/cookies.js",
+        "/public/scripts/all.js",
+        "/public/style.css",
+        "/public/scripts",
+        "/public/scripts/application.js",
+        "/assets/images/govuk-crest-2x.png",
+        "/assets/fonts/bold-b542beb274-v2.woff2",
+        "/assets/fonts/bold-b542beb274-v2.woff2",
+        "/assets/images/favicon.ico",
+        "/assets/fonts/light-94a07e06a1-v2.woff2",
+      ].includes(req.url),
   },
   customErrorMessage: function (error, res) {
     return "request errored with status code: " + res.statusCode;
