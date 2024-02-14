@@ -10,6 +10,7 @@ import {
 } from "../../../app.constants";
 import { expect } from "chai";
 import { Application } from "express";
+import { setupAccountInterventionsResponse } from "../../../../test/helpers/account-interventions-helpers";
 
 describe("Integration::prove identity", () => {
   let cookies: string;
@@ -64,9 +65,10 @@ describe("Integration::prove identity", () => {
   });
 
   it("should redirect to orchestration when the account interventions response shows no issues", async () => {
-    setupAccountInterventionsResponse({
+    setupAccountInterventionsResponse(baseApi, {
       blocked: false,
       passwordResetRequired: false,
+      temporarilySuspended: false,
     });
 
     const redirectUri = "https://some-redirect.com";
@@ -85,9 +87,10 @@ describe("Integration::prove identity", () => {
   });
 
   it("should redirect when account interventions flags user needs to reset password", async () => {
-    setupAccountInterventionsResponse({
+    setupAccountInterventionsResponse(baseApi, {
       blocked: false,
       passwordResetRequired: true,
+      temporarilySuspended: false,
     });
 
     const response = await makeRequestToProveIdentityEndpoint();
@@ -97,9 +100,10 @@ describe("Integration::prove identity", () => {
   });
 
   it("should redirect when account interventions flags user is blocked", async () => {
-    setupAccountInterventionsResponse({
+    setupAccountInterventionsResponse(baseApi, {
       blocked: true,
       passwordResetRequired: false,
+      temporarilySuspended: false,
     });
 
     const response = await makeRequestToProveIdentityEndpoint();
@@ -107,25 +111,6 @@ describe("Integration::prove identity", () => {
     expect(response.status).to.eq(302);
     expect(response.headers.location).to.eq(PATH_NAMES.UNAVAILABLE_PERMANENT);
   });
-
-  type accountInterventionsFlags = {
-    blocked: boolean;
-    passwordResetRequired: boolean;
-  };
-
-  const setupAccountInterventionsResponse = (
-    flags: accountInterventionsFlags
-  ) => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.ACCOUNT_INTERVENTIONS)
-      .once()
-      .reply(HTTP_STATUS_CODES.OK, {
-        email: "joe.bloggs@test.com",
-        passwordResetRequired: flags.passwordResetRequired,
-        blocked: flags.blocked,
-        temporarilySuspended: false,
-      });
-  };
 
   const makeRequestToProveIdentityEndpoint = () => {
     return request(app).get(PATH_NAMES.PROVE_IDENTITY).set("Cookie", cookies);
