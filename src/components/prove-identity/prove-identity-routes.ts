@@ -13,7 +13,7 @@ router.get(
   PATH_NAMES.PROVE_IDENTITY,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  asyncHandler(accountInterventionsMiddleware(false)),
+  asyncHandler(accountInterventionsMiddleware(false, true)),
   asyncHandler(proveIdentityGet())
 );
 

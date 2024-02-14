@@ -46,7 +46,7 @@ describe("accountInterventionsMiddleware", () => {
       temporarilySuspended: false,
     });
 
-    await callMiddleware(false, fakeAccountInterventionService);
+    await callMiddleware(false, false, fakeAccountInterventionService);
     expect(next).to.be.calledOnce;
   });
 
@@ -58,18 +58,18 @@ describe("accountInterventionsMiddleware", () => {
       temporarilySuspended: false,
     });
 
-    await callMiddleware(false, fakeAccountInterventionService);
+    await callMiddleware(false, false, fakeAccountInterventionService);
     expect(next).to.be.calledOnce;
   });
 
-  it("should redirect to getNextPathAndUpdateJourney with the journey being PASSWORD_RESET_INTERVENTION when passwordResetRequired === true in the response and supportAccountInterventions() returns true", async () => {
+  it("should redirect to getNextPathAndUpdateJourney with the journey being PASSWORD_RESET_INTERVENTION when passwordResetRequired === true in the response and supportAccountInterventions() returns true and handleResetPasswordStatus === true", async () => {
     const fakeAccountInterventionService = fakeAccountInterventionsService({
       passwordResetRequired: true,
       blocked: false,
       temporarilySuspended: false,
     });
 
-    await callMiddleware(false, fakeAccountInterventionService);
+    await callMiddleware(false, true, fakeAccountInterventionService);
     expect(res.redirect).to.have.been.calledWith(
       PATH_NAMES.PASSWORD_RESET_REQUIRED
     );
@@ -82,7 +82,7 @@ describe("accountInterventionsMiddleware", () => {
       temporarilySuspended: false,
     });
 
-    await callMiddleware(false, fakeAccountInterventionService);
+    await callMiddleware(false, false, fakeAccountInterventionService);
     expect(res.redirect).to.have.been.calledWith(
       PATH_NAMES.UNAVAILABLE_PERMANENT
     );
@@ -95,9 +95,27 @@ describe("accountInterventionsMiddleware", () => {
       temporarilySuspended: true,
     });
 
-    await callMiddleware(true, fakeAccountInterventionService);
+    await callMiddleware(true, false, fakeAccountInterventionService);
     expect(res.redirect).to.have.been.calledWith(
       PATH_NAMES.UNAVAILABLE_TEMPORARY
+    );
+  });
+
+  it("should not redirect to getNextPathAndUpdateJourney with the journey being RESET_PASSWORD_REQUIRED when resetPassword === true and handleResetPasswordStatus === false", async () => {
+    const fakeAccountInterventionService: AccountInterventionsInterface = {
+      accountInterventionStatus: sinon.fake.returns({
+        data: {
+          email: "test@test.com",
+          passwordResetRequired: true,
+          blocked: false,
+          temporarilySuspended: false,
+        },
+      }),
+    } as unknown as AccountInterventionsInterface;
+    await callMiddleware(true, false, fakeAccountInterventionService);
+
+    expect(res.redirect).to.not.have.been.calledWith(
+      PATH_NAMES.PASSWORD_RESET_REQUIRED
     );
   });
 
@@ -107,8 +125,8 @@ describe("accountInterventionsMiddleware", () => {
       blocked: false,
       temporarilySuspended: true,
     });
+    await callMiddleware(false, false, fakeAccountInterventionService);
 
-    await callMiddleware(false, fakeAccountInterventionService);
     expect(res.redirect).to.not.have.been.calledWith(
       PATH_NAMES.UNAVAILABLE_TEMPORARY
     );
@@ -116,10 +134,12 @@ describe("accountInterventionsMiddleware", () => {
 
   const callMiddleware = (
     handleSuspendedStatus: boolean,
+    handlePasswordResetStatus: boolean,
     accountInterventionService: AccountInterventionsInterface
   ) => {
     accountInterventionsMiddleware(
       handleSuspendedStatus,
+      handlePasswordResetStatus,
       accountInterventionService
     )(req as Request, res as Response, next as NextFunction);
   };

@@ -95,6 +95,16 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
       .expect(302, done);
   });
 
+  it("should return reset password page when someone has a reset password intervention", (done) => {
+    setupAccountInterventionsResponse(baseApi, {
+      blocked: false,
+      passwordResetRequired: true,
+      temporarilySuspended: false,
+    });
+
+    request(app).get(ENDPOINT).expect(200, done);
+  });
+
   it("should return error when csrf not present", (done) => {
     request(app)
       .post(ENDPOINT)
