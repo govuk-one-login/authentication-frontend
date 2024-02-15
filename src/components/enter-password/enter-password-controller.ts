@@ -19,7 +19,7 @@ import { MFA_METHOD_TYPE } from "../../app.constants";
 import xss from "xss";
 import { EnterEmailServiceInterface } from "../enter-email/types";
 import { enterEmailService } from "../enter-email/enter-email-service";
-import { support2FABeforePasswordReset } from "../../config";
+import { support2FABeforePasswordReset, support2hrLockout } from "../../config";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
@@ -56,6 +56,7 @@ export function enterSignInRetryBlockedGet(
     ) {
       return res.render("enter-password/index-sign-in-retry-blocked.njk", {
         newLink: "/sign-in-retry-blocked",
+        support2hrLockout: support2hrLockout(),
       });
     }
 
@@ -69,6 +70,7 @@ export function enterPasswordAccountLockedGet(
 ): void {
   res.render("enter-password/index-account-locked.njk", {
     newLink: "/sign-in-retry-blocked",
+    support2hrLockout: support2hrLockout(),
   });
 }
 

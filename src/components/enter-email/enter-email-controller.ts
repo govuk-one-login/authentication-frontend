@@ -17,6 +17,7 @@ import { CheckReauthServiceInterface } from "../check-reauth-users/types";
 import { checkReauthUsersService } from "../check-reauth-users/check-reauth-users-service";
 import {
   getEmailEnteredWrongBlockDurationInMinutes,
+  support2hrLockout,
   supportReauthentication,
 } from "../../config";
 import {
@@ -98,7 +99,9 @@ export function enterEmailPost(
 
     if (!result.success) {
       if (result.data.code === ERROR_CODES.ACCOUNT_LOCKED) {
-        return res.render("enter-password/index-sign-in-retry-blocked.njk");
+        return res.render("enter-password/index-sign-in-retry-blocked.njk", {
+          support2hrLockout: support2hrLockout(),
+        });
       }
       throw new BadRequestError(result.data.message, result.data.code);
     }
