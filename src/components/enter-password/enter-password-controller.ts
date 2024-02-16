@@ -19,15 +19,19 @@ import { MFA_METHOD_TYPE } from "../../app.constants";
 import xss from "xss";
 import { EnterEmailServiceInterface } from "../enter-email/types";
 import { enterEmailService } from "../enter-email/enter-email-service";
-import { support2FABeforePasswordReset } from "../../config";
+import { support2FABeforePasswordReset, support2hrLockout } from "../../config";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
+const ENTER_PASSWORD_VALIDATION_KEY_OLD =
+  "pages.enterPassword.password.validationError.incorrectPassword_old";
 const ENTER_PASSWORD_VALIDATION_KEY =
   "pages.enterPassword.password.validationError.incorrectPassword";
 
 const ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE =
   "enter-password/index-account-exists.njk";
+const ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY_OLD =
+  "pages.enterPasswordAccountExists.password.validationError.incorrectPassword_old";
 const ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY =
   "pages.enterPasswordAccountExists.password.validationError.incorrectPassword";
 
@@ -112,15 +116,21 @@ export function enterPasswordPost(
       ) {
         return res.redirect(getErrorPathByCode(userLogin.data.code));
       }
-
-      const error = formatValidationError(
-        "password",
-        req.t(
-          fromAccountExists
-            ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY
-            : ENTER_PASSWORD_VALIDATION_KEY
-        )
-      );
+      let validationKey;
+      if (support2hrLockout()) {
+        if (fromAccountExists) {
+          validationKey = ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY;
+        } else {
+          validationKey = ENTER_PASSWORD_VALIDATION_KEY;
+        }
+      } else {
+        if (fromAccountExists) {
+          validationKey = ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY_OLD;
+        } else {
+          validationKey = ENTER_PASSWORD_VALIDATION_KEY_OLD;
+        }
+      }
+      const error = formatValidationError("password", req.t(validationKey));
 
       return renderBadRequest(
         res,
