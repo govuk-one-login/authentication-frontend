@@ -33,17 +33,6 @@ export function accountInterventionsMiddleware(
           )
         );
       } else if (
-        accountInterventionsResponse.data.temporarilySuspended &&
-        handleSuspendedStatus
-      ) {
-        return res.redirect(
-          getNextPathAndUpdateJourney(
-            req,
-            req.path,
-            USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION
-          )
-        );
-      } else if (
         accountInterventionsResponse.data.passwordResetRequired &&
         handlePasswordResetStatus
       ) {
@@ -52,6 +41,17 @@ export function accountInterventionsMiddleware(
             req,
             req.path,
             USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION
+          )
+        );
+      } else if (
+        accountInterventionsResponse.data.temporarilySuspended &&
+        handleSuspendedStatus
+      ) {
+        return res.redirect(
+          getNextPathAndUpdateJourney(
+            req,
+            req.path,
+            USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION
           )
         );
       }

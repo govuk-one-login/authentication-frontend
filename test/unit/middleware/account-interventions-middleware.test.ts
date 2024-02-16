@@ -119,6 +119,23 @@ describe("accountInterventionsMiddleware", () => {
     );
   });
 
+  it("should redirect to getNextPathAndUpdateJourney with the journey being RESET_PASSWORD_REQUIRED when passwordResetRequired === true, temporarilySuspended === true", async () => {
+    const fakeAccountInterventionService: AccountInterventionsInterface = {
+      accountInterventionStatus: sinon.fake.returns({
+        data: {
+          email: "test@test.com",
+          passwordResetRequired: true,
+          blocked: false,
+          temporarilySuspended: true,
+        },
+      }),
+    } as unknown as AccountInterventionsInterface;
+    await callMiddleware(true, true, fakeAccountInterventionService);
+    expect(res.redirect).to.have.been.calledWith(
+      PATH_NAMES.PASSWORD_RESET_REQUIRED
+    );
+  });
+
   it("should not redirect to UNAVAILABLE_TEMPORARY when temporarilySuspended === true in the response and supportAccountInterventions() returns true", async () => {
     const fakeAccountInterventionService = fakeAccountInterventionsService({
       passwordResetRequired: false,
