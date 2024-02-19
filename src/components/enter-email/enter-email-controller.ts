@@ -46,6 +46,7 @@ export function enterEmailGet(req: Request, res: Response): void {
 }
 
 export function enterEmailCreateGet(req: Request, res: Response): void {
+  req.session.user.isAccountCreationJourney = true;
   return res.render("enter-email/index-create-account.njk");
 }
 

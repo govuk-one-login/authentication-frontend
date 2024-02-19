@@ -469,6 +469,17 @@
         "paragraph2Start": "You can then ",
         "link": "try again",
         "paragraph2End": " with a new code."
+      },
+      "2hLockout":{
+        "signInJourney":{
+          "info":{
+            "paragraph1": "You will not be able to sign in for 2 hours.",
+            "paragraph2": "What can you do",
+            "paragraph3": "Wait for 2 hours, then go back to the service you were trying to use and start again.",
+            "paragraph4": "If you need to use it sooner, you can go back to the service and look for other ways to continue.",
+            "paragraph5": "This is because you entered the wrong security code too many times the last time you tried to sign in."
+          }
+        }
       }
     },
     "securityRequestsExceededExpired": {
@@ -496,7 +507,7 @@
         "paragraph2Start": "You can ",
         "link": "get a new code",
         "paragraph2End": " after 15 minutes."
-      }, 
+      },
       "info":{
         "paragraph1":"This is because you asked to resend the security code too many times the last time you tried to sign in.",
         "paragraph1_create": "This is because you asked to resend the security code too many times.",

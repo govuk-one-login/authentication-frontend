@@ -8,6 +8,7 @@ import {
 } from "../common/constants";
 import {
   getCodeEnteredWrongBlockDurationInMinutes,
+  support2hrLockout,
   supportAccountRecovery,
 } from "../../config";
 import { VerifyMfaCodeInterface } from "./types";
@@ -48,6 +49,7 @@ export function enterAuthenticatorAppCodeGet(
         {
           newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           isAuthApp: true,
+          show2HrScreen: support2hrLockout(),
         }
       );
     }

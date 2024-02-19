@@ -26,10 +26,21 @@ export function resendEmailCodeGet(req: Request, res: Response): void {
     const newCodeLink = req.query?.isResendCodeRequest
       ? "/security-code-check-time-limit?isResendCodeRequest=true"
       : "/security-code-check-time-limit";
+
+    let show2HrScreen = false;
+    if (
+      support2hrLockout() &&
+      (req.session.user.isPasswordResetJourney ||
+        req.session.user.isAccountRecoveryJourney)
+    ) {
+      show2HrScreen = true;
+    }
+
     return res.render(
       "security-code-error/index-security-code-entered-exceeded.njk",
       {
         newCodeLink,
+        show2HrScreen: show2HrScreen,
       }
     );
   }

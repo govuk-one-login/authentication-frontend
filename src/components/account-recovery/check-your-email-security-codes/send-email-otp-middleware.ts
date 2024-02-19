@@ -1,10 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import { sendNotificationService } from "../../common/send-notification/send-notification-service";
-import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../../app.constants";
+import {
+  JOURNEY_TYPE,
+  NOTIFICATION_TYPE,
+  PATH_NAMES,
+} from "../../../app.constants";
 import { ERROR_CODES, getErrorPathByCode } from "../../common/constants";
 import { BadRequestError } from "../../../utils/error";
 import xss from "xss";
 import { ExpressRouteFunc } from "../../../types";
+import { support2hrLockout } from "../../../config";
 
 export function sendEmailOtp(
   notificationService = sendNotificationService()
@@ -38,6 +43,19 @@ export function sendEmailOtp(
       ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_CODE_REQUEST_BLOCKED
     ) {
       return res.render("security-code-error/index-wait.njk");
+    }
+    if (
+      support2hrLockout() &&
+      sendNotificationResponse.data?.code ===
+        ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_INVALID_CODE
+    ) {
+      return res.render(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        {
+          newCodeLink: PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
+          show2HrScreen: support2hrLockout(),
+        }
+      );
     }
 
     const path = sendNotificationResponse.data?.code

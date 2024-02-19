@@ -469,6 +469,17 @@
         "paragraph2Start": "Yna gallwch ",
         "link": "roi cynnig arall",
         "paragraph2End": " gyda chod newydd."
+      },
+      "2hLockout":{
+        "signInJourney":{
+          "info":{
+            "paragraph1": "Ni fyddwch yn gallu mewngofnodi am 2 awr.",
+            "paragraph2": "Beth allwch chi ei wneud",
+            "paragraph3": "Arhoswch am 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto.",
+            "paragraph4": "Os ydych angen ei ddefnyddio yn gynt, gallwch fynd yn ôl i’r gwasanaeth a chwilio am ffyrdd eraill i barhau.",
+            "paragraph5": "This is because you entered the wrong security code too many times the last time you tried to sign in."
+          }
+        }
       }
     },
     "securityRequestsExceededExpired": {

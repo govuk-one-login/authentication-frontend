@@ -187,6 +187,8 @@ export function enterPasswordPost(
       }
     }
 
+    req.session.user.isSignInJourney = true;
+
     if (
       userLogin.data.mfaRequired &&
       userLogin.data.mfaMethodVerified &&
