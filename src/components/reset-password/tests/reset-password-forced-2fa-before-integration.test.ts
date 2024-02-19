@@ -5,6 +5,10 @@ import nock = require("nock");
 import * as cheerio from "cheerio";
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants";
 import decache from "decache";
+import {
+  noInterventions,
+  setupAccountInterventionsResponse,
+} from "../../../../test/helpers/account-interventions-helpers";
 
 describe("Integration::reset password (in 2FA Before Reset Password flow)", () => {
   let token: string | string[];
@@ -39,6 +43,7 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
       });
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
+    setupAccountInterventionsResponse(baseApi, noInterventions);
 
     request(app)
       .get(ENDPOINT)
@@ -59,6 +64,8 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
   });
 
   it("should return reset password page", (done) => {
+    setupAccountInterventionsResponse(baseApi, noInterventions);
+
     request(app).get(ENDPOINT).expect(200, done);
   });
 
