@@ -100,5 +100,21 @@ describe("reset password 2fa auth app controller", () => {
         "reset-password-2fa-auth-app/index.njk"
       );
     });
+
+    it("should render security code entered too many times page view when user is account is locked from entering security codes", async () => {
+      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+      const date = new Date();
+      const futureDate = new Date(
+        date.setDate(date.getDate() + 6)
+      ).toUTCString();
+
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        reauthenticate: "1234",
+        wrongCodeEnteredLock: futureDate,
+      };
+
+      await resetPassword2FAAuthAppGet()(req as Request, res as Response);
+    });
   });
 });
