@@ -102,7 +102,7 @@ resource "aws_alb_listener" "frontend_alb_listener_http" {
   tags = local.default_tags
 }
 
-#S3 Bucket for ElB access logs 
+#S3 Bucket for ElB access logs
 
 data "aws_elb_service_account" "main" {}
 
