@@ -22,7 +22,7 @@ import { accountInterventionService } from "../account-intervention/account-inte
 
 const TEMPLATE_NAME = "reset-password-2fa-sms/index.njk";
 const RESEND_CODE_LINK = pathWithQueryParam(
-  PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+  PATH_NAMES.RESEND_MFA_CODE,
   "isResendCodeRequest",
   "true"
 );
