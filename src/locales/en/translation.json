@@ -218,6 +218,13 @@
       "enterYourEmailAddress": "Enter your email address",
       "enterYourEmailAddressError": "Enter the same email address you used to sign in"
     },
+    "enteredWrongEmail": {
+      "title": "You entered the wrong sign-in details too many times",
+      "heading": "You entered the wrong sign-in details too many times",
+      "paragraph1": "You will not be able to sign in with GOV.UK One Login for 2 hours.",
+      "subheading": "What can you do",
+      "paragraph2": "Wait 2 hours and go back to the service you were trying to use. You can look for the service using your search engine or find it from the GOV.UK homepage."
+    },
     "accountNotFoundOneLogin": {
       "title": "No GOV.UK One Login found",
       "header": "No GOV.UK One Login found",

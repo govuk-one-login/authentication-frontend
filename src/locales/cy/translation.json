@@ -218,6 +218,13 @@
       "enterYourEmailAddress": "Rhowch eich cyfeiriad e-bost",
       "enterYourEmailAddressError": "Rhowch yr un cyfeiriad e-bost rydych wedi’i ddefnyddio i fewngofnodi"
     },
+    "enteredWrongEmail": {
+      "title": "Rydych wedi rhoi eich manylion mewngofnodi yn anghywir gormod o weithiau",
+      "heading": "Rydych wedi rhoi eich manylion mewngofnodi yn anghywir gormod o weithiau",
+      "paragraph1": "Ni fyddwch yn gallu mewngofnodi gyda GOV.UK One Login am 2 .",
+      "subheading": "Beth allwch chi ei wneud",
+      "paragraph2": "Arhoswch 2 awr a mynd yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o hafan GOV.UK."
+    },
     "accountNotFoundOneLogin": {
       "title": "Ni ddarganfyddwyd GOV.UK One Login",
       "header": "Ni ddarganfyddwyd GOV.UK One Login",

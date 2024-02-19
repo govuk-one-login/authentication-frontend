@@ -1,6 +1,7 @@
 import { body } from "express-validator";
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
+import { validateBodyMiddlewareReauthTemplate } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
+import { RE_ENTER_EMAIL_TEMPLATE } from "./enter-email-controller";
 
 export function validateEnterEmailRequest(
   template = "enter-email/index-existing-account.njk"
@@ -39,7 +40,15 @@ export function validateEnterEmailRequest(
           "pages.enterEmailExistingAccount.email.validationError.email",
           { value }
         );
+      })
+      .custom((value, { req }) => {
+        if (req.session.user.reauthenticate) {
+          return req.t("pages.reEnterEmailAccount.enterYourEmailAddressError", {
+            value,
+          });
+        }
+        return true;
       }),
-    validateBodyMiddleware(template),
+    validateBodyMiddlewareReauthTemplate(RE_ENTER_EMAIL_TEMPLATE, template),
   ];
 }
