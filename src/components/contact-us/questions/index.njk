@@ -131,4 +131,8 @@
         {% include 'contact-us/questions/_technical-error-questions.njk' %}
     {% endif %}
 
+    {% if (theme == 'proving_identity') and (subtheme == 'proving_identity_something_else') %}
+        {% include 'contact-us/questions/_proving-identity-something-else.njk' %}
+    {% endif %}
+
 {% endblock %}

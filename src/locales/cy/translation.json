@@ -2123,6 +2123,16 @@
           "label": "Unrhyw beth arall rydych angen dweud wrthym?"
         }
       },
+      "provingIdentitySomethingElse": {
+        "title": "Problem arall yn profi eich hunaniaeth",
+        "header": "Problem arall yn profi eich hunaniaeth",
+        "section1": {
+          "label": "Beth oeddech chi’n ceisio ei wneud?"
+        },
+        "section2": {
+          "label": "Beth ddigwyddodd?"
+        }
+      },
       "provingIdentity": {
         "section1": {
           "errorMessage": "Rhowch fwy o fanylion"
