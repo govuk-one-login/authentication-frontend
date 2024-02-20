@@ -32,7 +32,9 @@ jobs:
       - name: Run unit tests
         run: yarn test:unit
       - name: Run integration tests
-        run: yarn test:integration
+        run: yarn test:integration-no-clear-cov
+      - name: Run test coverage
+        run: yarn test:coverage
       - name: Run lint
         run: yarn lint
       - name: SonarCloud Scan
