@@ -69,6 +69,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.provingIdentityProblemWithIdentityDocument.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_NEED_TO_UPDATE_PERSONAL_INFORMATION]:
     "pages.contactUsQuestions.provingIdentityNeedToUpdatePersonalInformation.title",
+  [CONTACT_US_THEMES.PROVING_IDENTITY_SOMETHING_ELSE]:
+    "pages.contactUsQuestions.provingIdentitySomethingElse.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
@@ -788,6 +790,16 @@ export function getQuestionsFromFormTypeForMessageBody(
         { lng: "en" }
       ),
     },
+    provingIdentitySomethingElse: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.provingIdentitySomethingElse.section1.label",
+        { lng: "en" }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.provingIdentitySomethingElse.section2.label",
+        { lng: "en" }
+      ),
+    },
   };
 
   return formTypeToQuestions[formType];
@@ -951,6 +963,10 @@ export function getQuestionFromThemes(
     ),
     proving_identity_need_to_update_personal_information: req.t(
       "pages.contactUsQuestions.provingIdentityNeedToUpdatePersonalInformation.title",
+      { lng: "en" }
+    ),
+    proving_identity_something_else: req.t(
+      "pages.contactUsQuestions.provingIdentitySomethingElse.title",
       { lng: "en" }
     ),
   };

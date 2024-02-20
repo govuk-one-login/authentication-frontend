@@ -2103,6 +2103,16 @@
           "label": "Anything else you need to tell us?"
         }
       },
+      "provingIdentitySomethingElse": {
+        "title": "Another problem proving your identity",
+        "header": "Another problem proving your identity",
+        "section1": {
+          "label": "What were you trying to do?"
+        },
+        "section2": {
+          "label": "What happened?"
+        }
+      },
       "provingIdentity": {
         "section1": {
           "errorMessage": "Enter more detail"
