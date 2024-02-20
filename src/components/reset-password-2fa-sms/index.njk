@@ -46,21 +46,10 @@
 
         {% set detailsHTML %}
             <p class="govuk-body">
-                {{'pages.checkYourPhone.details.text1' | translate}}
-                <a href="{{resendCodeLink}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.sendCodeLinkText'| translate}}</a>
-                {{'pages.checkYourPhone.details.text 2' | translate}}
-                <a href="{{'pages.checkYourPhone.details.changePhoneNumberLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.changePhoneNumberLinkText'| translate}}</a>.
+                {{'pages.passwordResetMfaSms.details.text1' | translate}}
+                <a href="{{resendCodeLink}}" class="govuk-link" rel="noreferrer noopener">{{'pages.passwordResetMfaSms.details.sendCodeLinkText'| translate}}</a>
+                {{'pages.passwordResetMfaSms.details.text 2' | translate}}
             </p>
-        {% endset %}
-
-        {% set detailsHTML %}
-
-            {{detailsHTML | safe}}
-
-            <p class="govuk-body">
-                <a href="{{'pages.checkYourPhone.details.changeMfaChoiceLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.changeMfaChoiceLinkText'| translate}}</a>.
-            </p>
-
         {% endset %}
 
         {{ govukButton({

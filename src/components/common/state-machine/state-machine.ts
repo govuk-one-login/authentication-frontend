@@ -557,6 +557,9 @@ const authStateMachine = createMachine(
             },
           ],
         },
+        meta: {
+          optionalPaths: [PATH_NAMES.RESEND_MFA_CODE],
+        },
       },
       [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]: {
         on: {
