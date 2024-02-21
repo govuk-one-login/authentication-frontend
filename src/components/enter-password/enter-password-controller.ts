@@ -19,9 +19,7 @@ import { MFA_METHOD_TYPE } from "../../app.constants";
 import xss from "xss";
 import { EnterEmailServiceInterface } from "../enter-email/types";
 import { enterEmailService } from "../enter-email/enter-email-service";
-import { supportReauthentication } from "../../config";
-import { CheckReauthServiceInterface } from "../check-reauth-users/types";
-import { checkReauthUsersService } from "../check-reauth-users/check-reauth-users-service";
+import { support2FABeforePasswordReset } from "../../config";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
@@ -33,33 +31,8 @@ const ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE =
 const ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY =
   "pages.enterPasswordAccountExists.password.validationError.incorrectPassword";
 
-export function enterPasswordGet(
-  service: CheckReauthServiceInterface = checkReauthUsersService()
-): ExpressRouteFunc {
-  return async function (req: Request, res: Response) {
-    const isReauthenticationRequired = req.session.user.reauthenticate;
-
-    if (!supportReauthentication() || !isReauthenticationRequired) {
-      return res.render(ENTER_PASSWORD_TEMPLATE);
-    }
-
-    const email = req.session.user.email.toLowerCase();
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
-    const checkReauthUserResponse = await service.checkReauthUsers(
-      sessionId,
-      email,
-      req.ip,
-      clientSessionId,
-      persistentSessionId
-    );
-
-    if (!checkReauthUserResponse.success) {
-      return res.render("common/errors/500.njk");
-    }
-
-    return res.render(ENTER_PASSWORD_TEMPLATE);
-  };
+export function enterPasswordGet(req: Request, res: Response): void {
+  res.render(ENTER_PASSWORD_TEMPLATE);
 }
 
 export function enterSignInRetryBlockedGet(
@@ -219,6 +192,7 @@ export function enterPasswordPost(
           mfaMethodType: userLogin.data.mfaMethodType,
           isMfaMethodVerified: userLogin.data.mfaMethodVerified,
           isPasswordChangeRequired: isPasswordChangeRequired,
+          support2FABeforePasswordReset: support2FABeforePasswordReset(),
         },
         sessionId
       )

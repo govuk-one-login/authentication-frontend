@@ -211,6 +211,20 @@
         }
       }
     },
+    "reEnterEmailAccount": {
+      "title": "Re-enter your sign-in details to continue",
+      "header": "Re-enter your sign-in details to continue",
+      "paragraph1": "For security, sign in with GOV.UK One Login again.",
+      "enterYourEmailAddress": "Enter your email address",
+      "enterYourEmailAddressError": "Enter the same email address you used to sign in"
+    },
+    "enteredWrongEmail": {
+      "title": "You entered the wrong sign-in details too many times",
+      "heading": "You entered the wrong sign-in details too many times",
+      "paragraph1": "You will not be able to sign in with GOV.UK One Login for 2 hours.",
+      "subheading": "What can you do",
+      "paragraph2": "Wait 2 hours and go back to the service you were trying to use. You can look for the service using your search engine or find it from the GOV.UK homepage."
+    },
     "accountNotFoundOneLogin": {
       "title": "No GOV.UK One Login found",
       "header": "No GOV.UK One Login found",
@@ -2161,7 +2175,7 @@
         "hintText": "This is the 6-digit number shown in your authenticator app",
         "validationError": {
           "required": "Enter the security code shown in your authenticator app",
-          "invalidCode": "The security code you entered is not correct, try entering it again or wait for for your authenticator app to give you a new code",
+          "invalidCode": "The security code you entered is not correct, check your authenticator app and try again",
           "invalidFormat": "Enter the security code using only 6 digits"
         }
       },
@@ -2175,7 +2189,7 @@
         "validationError": {
           "required": "Enter the security code",
           "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you entered is not correct, try entering it again or wait for your authenticator app to give you a new code"
+          "invalidCode": "The security code you entered is not correct, check your authenticator app and try again"
         }
       },
       "details": {
@@ -2196,6 +2210,18 @@
         "code": {
           "label": "Enter the security code",
           "labelSummary": "This is the 6-digit number shown in your authenticator app"
+        }
+      },
+      "2FaBeforeResetPassword": {
+        "title": "Enter a security code from your authenticator app",
+        "header": "Enter a security code from your authenticator app",
+        "info": {
+          "paragraph1": "To get a security code, open the ",
+          "authenticatorApp": "authenticator app ",
+          "paragraph1End": "you used to create your GOV.UK One Login"
+        },
+        "code":{
+          "label": "Enter the 6 digit security code"
         }
       }
     },

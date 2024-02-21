@@ -4,6 +4,7 @@ export interface UserExists extends DefaultApiResponse {
   email: string;
   doesUserExist: boolean;
   mfaMethodType: string;
+  phoneNumberLastThree?: string;
 }
 
 export interface EnterEmailServiceInterface {

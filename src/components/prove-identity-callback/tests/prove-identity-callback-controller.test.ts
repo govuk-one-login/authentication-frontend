@@ -135,5 +135,25 @@ describe("prove identity callback controller", () => {
       );
       process.env.SUPPORT_AUTH_ORCH_SPLIT = "0";
     });
+
+    it("should redirect to the provided url when the response is an intervention", async () => {
+      const redirectUrl = "https://www.example.com";
+      const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
+        processIdentity: sinon.fake.returns({
+          success: true,
+          data: {
+            status: IdentityProcessingStatus.INTERVENTION,
+            redirectUrl: redirectUrl,
+          },
+        }),
+      } as unknown as ProveIdentityCallbackServiceInterface;
+
+      await proveIdentityCallbackGet(fakeProveIdentityService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.been.calledWith(redirectUrl);
+    });
   });
 });

@@ -5,22 +5,22 @@
 
 {% block head %}
 
-  <!--[if !IE 8]><!-->
+    <!--[if !IE 8]><!-->
     <link href="/public/style.css" rel="stylesheet">
-  <!--<![endif]-->
+    <!--<![endif]-->
 
-  {# For Internet Explorer 8, you need to compile specific stylesheet #}
-  {# see https://frontend.design-system.service.gov.uk/supporting-ie8/#support-internet-explorer-8 #}
-  <!--[if IE 8]>
+    {# For Internet Explorer 8, you need to compile specific stylesheet #}
+    {# see https://frontend.design-system.service.gov.uk/supporting-ie8/#support-internet-explorer-8 #}
+    <!--[if IE 8]>
     <link href="/govuk-frontend/all-ie8.css" rel="stylesheet">
-  <![endif]-->
+    <![endif]-->
 
-  {# For older browsers to allow them to recognise HTML5 elements such as `<header>` #}
-  <!--[if lt IE 9]>
+    {# For older browsers to allow them to recognise HTML5 elements such as `<header>` #}
+    <!--[if lt IE 9]>
     <script src="/html5-shiv/html5shiv.js"></script>
-  <![endif]-->
+    <![endif]-->
 
-{% block headMetaData %}{% endblock %}
+    {% block headMetaData %}{% endblock %}
 
 {% endblock %}
 
@@ -41,80 +41,85 @@
 {% endblock %}
 
 {% block header %}
-  {{ govukHeader({
-  homepageUrl: 'general.header.homepageHref' | translate
-}) }}
+    {{ govukHeader({
+        homepageUrl: 'general.header.homepageHref' | translate,
+        useTudorCrown: true
+    }) }}
 {% endblock %}
 
 {% set phaseBannerText %}
-    {{ 'general.phaseBanner.message.start' | translate }} <a href="{{ contactUsLinkUrl }}" class="govuk-link" rel="noopener" target="_blank">{{ 'general.phaseBanner.message.linkText' | translate }}</a> {{ 'general.phaseBanner.message.end' | translate }}
+    {{ 'general.phaseBanner.message.start' | translate }} <a href="{{ contactUsLinkUrl }}" class="govuk-link"
+                                                             rel="noopener"
+                                                             target="_blank">{{ 'general.phaseBanner.message.linkText' | translate }}</a> {{ 'general.phaseBanner.message.end' | translate }}
 {% endset %}
 
 {% block main %}
-      <div class="govuk-width-container {{ containerClasses }}">
+    <div class="govuk-width-container {{ containerClasses }}">
         {{ govukPhaseBanner({
-          tag: {
-            text: 'general.phaseBanner.tag' | translate
-          },
-          html: phaseBannerText
+            tag: {
+                text: 'general.phaseBanner.tag' | translate
+            },
+            html: phaseBannerText
         }) }}
-	      {% block beforeContent %}{% endblock %}
-	      {% if showBack %}
-	        {{ govukBackLink({
+        {% block beforeContent %}{% endblock %}
+        {% if showBack %}
+            {{ govukBackLink({
                 text: "general.back" | translate,
                 href: hrefBack
             }) }}
-          {% endif %}
-	      <main class="govuk-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %} lang="{{ mainLang }}"{% endif %}>
-          <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds {{ rowClasses }}">
-              {% block content %}{% endblock %}
+        {% endif %}
+        <main class="govuk-main-wrapper {{ mainClasses }}" id="main-content"
+              role="main"{% if mainLang %} lang="{{ mainLang }}"{% endif %}>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds {{ rowClasses }}">
+                    {% block content %}{% endblock %}
+                </div>
             </div>
-          </div>
-	      </main>
-      </div>
+        </main>
+    </div>
 {% endblock %}
 
 {% block footer %}
     {{ govukFooter({
-      meta: {
-        items: [
-          {
-            href: "/accessibility-statement",
-            text: 'general.footer.accessibilityStatement.linkText' | translate
-          },
-          {
-            href: "/cookies",
-            text: 'general.footer.cookies.linkText' | translate
-          },
-          {
-            href: "/terms-and-conditions",
-            text: 'general.footer.terms.linkText' | translate
-          },
-          {
-              href: "/privacy-notice",
-              text: 'general.footer.privacy.linkText' | translate
-          },
-          {
-              href: contactUsLinkUrl,
-              attributes: {target: "_blank"},
-              text: 'general.footer.support.linkText' | translate
-          }
-        ]
-      },
-      contentLicence: {
-        text: 'general.footer.contentLicence.linkText' | translate | safe
-      },
-      copyright: {
-        text: 'general.footer.copyright.linkText' | translate
-      }
+        meta: {
+            items: [
+                {
+                    href: "/accessibility-statement",
+                    text: 'general.footer.accessibilityStatement.linkText' | translate
+                },
+                {
+                    href: "/cookies",
+                    text: 'general.footer.cookies.linkText' | translate
+                },
+                {
+                    href: "/terms-and-conditions",
+                    text: 'general.footer.terms.linkText' | translate
+                },
+                {
+                    href: "/privacy-notice",
+                    text: 'general.footer.privacy.linkText' | translate
+                },
+                {
+                    href: contactUsLinkUrl,
+                    attributes: {target: "_blank"},
+                    text: 'general.footer.support.linkText' | translate
+                }
+            ]
+        },
+        contentLicence: {
+            text: 'general.footer.contentLicence.linkText' | translate | safe
+        },
+        copyright: {
+            text: 'general.footer.copyright.linkText' | translate
+        }
     }) }}
-    {% endblock %}
+{% endblock %}
 
 {% block bodyEnd %}
     {% block scripts %}{% endblock %}
-  <script type="text/javascript" src="/public/scripts/cookies.js"></script>
-  <script type="text/javascript"  src="/public/scripts/application.js"></script>
-  <script type="text/javascript"  src="/public/scripts/all.js"></script>
-  <script type="text/javascript" nonce='{{scriptNonce}}'>window.GOVSignIn.appInit("{{gtmId}}", "{{ analyticsCookieDomain }}")</script>
+    <script type="text/javascript" src="/public/scripts/cookies.js"></script>
+    <script type="text/javascript" src="/public/scripts/application.js"></script>
+    <script type="text/javascript" src="/public/scripts/all.js"></script>
+    <script type="text/javascript"
+            nonce='{{ scriptNonce }}'>window.GOVSignIn.appInit("{{ gtmId }}", "{{ analyticsCookieDomain }}");</script>
 {% endblock %}

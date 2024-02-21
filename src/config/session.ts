@@ -1,29 +1,27 @@
-import redis, { ClientOpts } from "redis";
-import connect_redis, { RedisStore } from "connect-redis";
-import session from "express-session";
-import { getRedisHost, getRedisPort } from "../config";
+import { RedisClientOptions, createClient } from "redis";
+import RedisStore from "connect-redis";
 import { RedisConfig } from "src/utils/types";
-const RedisStore = connect_redis(session);
 
 export function getSessionStore(redisConfig: RedisConfig): RedisStore {
-  let config: ClientOpts;
-
-  if (redisConfig.isLocal) {
-    config = {
-      host: getRedisHost(),
-      port: getRedisPort(),
-    };
-  } else {
-    config = {
+  const config: RedisClientOptions = {
+    socket: {
       host: redisConfig.host,
       port: redisConfig.port,
-      password: redisConfig.password,
-      tls: true,
-    };
+    },
+  };
+
+  if (redisConfig.tls) {
+    config.socket.tls = redisConfig.tls;
+  }
+  if (redisConfig.password) {
+    config.password = redisConfig.password;
   }
 
+  const client = createClient(config);
+  client.connect();
+
   return new RedisStore({
-    client: redis.createClient(config),
+    client,
   });
 }
 

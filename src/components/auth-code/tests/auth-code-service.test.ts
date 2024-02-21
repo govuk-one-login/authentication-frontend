@@ -7,7 +7,10 @@ import { SinonStub } from "sinon";
 import { API_ENDPOINTS } from "../../../app.constants";
 import { AuthCodeServiceInterface } from "../types";
 import { Http } from "../../../utils/http";
-import { support2FABeforePasswordReset } from "../../../config";
+import {
+  support2FABeforePasswordReset,
+  support2hrLockout,
+} from "../../../config";
 
 describe("authentication auth code service", () => {
   const redirectUriSentToAuth = "/redirect-uri";
@@ -163,6 +166,26 @@ describe("authentication auth code service", () => {
       process.env.SUPPORT_2FA_B4_PASSWORD_RESET = undefined;
 
       expect(support2FABeforePasswordReset()).to.be.false;
+    });
+  });
+
+  describe("support2hrLockout() with the support 2hr lockout for password and code lockouts", () => {
+    it("should return true when SUPPORT_2HR_LOCKOUT is set to '1'", async () => {
+      process.env.SUPPORT_2HR_LOCKOUT = "1";
+
+      expect(support2hrLockout()).to.be.true;
+    });
+
+    it("should return false  when SUPPORT_2HR_LOCKOUT is set to '0'", async () => {
+      process.env.SUPPORT_2HR_LOCKOUT = "0";
+
+      expect(support2hrLockout()).to.be.false;
+    });
+
+    it("should return false when SUPPORT_2HR_LOCKOUT is undefined", async () => {
+      process.env.SUPPORT_2HR_LOCKOUT = undefined;
+
+      expect(support2hrLockout()).to.be.false;
     });
   });
 });

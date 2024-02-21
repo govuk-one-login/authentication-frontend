@@ -3,17 +3,18 @@ common_state_bucket = "di-auth-staging-tfstate"
 redis_node_size     = "cache.m4.xlarge"
 
 frontend_auto_scaling_v2_enabled = true
-frontend_task_definition_cpu     = 1024
-frontend_task_definition_memory  = 2048
-frontend_auto_scaling_min_count  = 3
-frontend_auto_scaling_max_count  = 60
-ecs_desired_count                = 3
+frontend_task_definition_cpu     = 512
+frontend_task_definition_memory  = 1024
+frontend_auto_scaling_min_count  = 4
+frontend_auto_scaling_max_count  = 240
+ecs_desired_count                = 4
 support_language_cy              = "1"
 support_international_numbers    = "1"
 support_account_recovery         = "1"
 support_account_interventions    = "1"
 support_auth_orch_split          = "1"
 support_authorize_controller     = "1"
+support_2fa_b4_password_reset    = "1"
 url_for_support_links            = "https://home.staging.account.gov.uk/contact-gov-uk-one-login"
 
 logging_endpoint_arns = [

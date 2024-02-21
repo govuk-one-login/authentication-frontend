@@ -226,7 +226,7 @@ describe("Integration:: enter authenticator app code", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains(
-          " The security code you entered is not correct, try entering it again or wait for your authenticator app to give you a new code"
+          "The security code you entered is not correct, check your authenticator app and try again"
         );
       })
       .expect(400, done);

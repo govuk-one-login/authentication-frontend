@@ -17,6 +17,7 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
+import { AccountInterventionsInterface } from "../../../account-intervention/types";
 
 describe("check your email change security codes controller", () => {
   let req: RequestOutput;
@@ -48,22 +49,70 @@ describe("check your email change security codes controller", () => {
   });
 
   describe("checkYourEmailChangeSecurityCodesPost", () => {
-    it("should redirect to /get-security-codes when valid code entered", async () => {
-      const fakeService: VerifyCodeInterface = {
+    it("should redirect to /get-security-codes and not call AIS when valid code entered and account interventions is turned on", async () => {
+      const fakeVerifyCodeService: VerifyCodeInterface = {
         verifyCode: sinon.fake.returns({
           success: true,
         }),
       } as unknown as VerifyCodeInterface;
 
+      const fakeAccountInterventionsService: AccountInterventionsInterface = {
+        accountInterventionStatus: sinon.fake.returns({
+          data: {
+            email: "test@test.com",
+            passwordResetRequired: false,
+            blocked: false,
+            temporarilySuspended: false,
+          },
+        }),
+      } as unknown as AccountInterventionsInterface;
+
       req.body.code = "123456";
       req.session.id = "123456-djjad";
+      req.session.user.email = "test@test.com";
 
-      await checkYourEmailSecurityCodesPost(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await checkYourEmailSecurityCodesPost(
+        fakeVerifyCodeService,
+        fakeAccountInterventionsService
+      )(req as Request, res as Response);
 
-      expect(fakeService.verifyCode).to.have.been.calledOnce;
+      expect(fakeAccountInterventionsService.accountInterventionStatus).to.not
+        .have.been.calledOnce;
+      expect(fakeVerifyCodeService.verifyCode).to.have.been.calledOnce;
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
+    });
+
+    it("should redirect to /get-security-codes when valid code entered and there are no interventions in place and account interventions is turned on", async () => {
+      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
+      const fakeVerifyCodeService: VerifyCodeInterface = {
+        verifyCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as VerifyCodeInterface;
+
+      const fakeAccountInterventionsService: AccountInterventionsInterface = {
+        accountInterventionStatus: sinon.fake.returns({
+          data: {
+            email: "test@test.com",
+            passwordResetRequired: false,
+            blocked: false,
+            temporarilySuspended: false,
+          },
+        }),
+      } as unknown as AccountInterventionsInterface;
+
+      req.body.code = "123456";
+      req.session.id = "123456-djjad";
+      req.session.user.email = "test@test.com";
+
+      await checkYourEmailSecurityCodesPost(
+        fakeVerifyCodeService,
+        fakeAccountInterventionsService
+      )(req as Request, res as Response);
+
+      expect(fakeAccountInterventionsService.accountInterventionStatus).to.have
+        .been.calledOnce;
+      expect(fakeVerifyCodeService.verifyCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
     });
 
@@ -77,11 +126,21 @@ describe("check your email change security codes controller", () => {
 
       req.body.code = "678988";
       req.session.id = "123456-djjad";
+      req.session.user.email = "test@test.com";
 
-      await checkYourEmailSecurityCodesPost(fakeService)(
-        req as Request,
-        res as Response
-      );
+      const fakeAccountInterventionsService: AccountInterventionsInterface = {
+        accountInterventionStatus: sinon.fake.returns({
+          email: "test@test.com",
+          passwordResetRequired: false,
+          blocked: false,
+          temporarilySuspended: false,
+        }),
+      } as unknown as AccountInterventionsInterface;
+
+      await checkYourEmailSecurityCodesPost(
+        fakeService,
+        fakeAccountInterventionsService
+      )(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.render).to.have.been.calledWith(

@@ -19,6 +19,7 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
+import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
 
 describe("enter email controller", () => {
   let req: RequestOutput;
@@ -28,6 +29,7 @@ describe("enter email controller", () => {
     req = mockRequest({
       session: { client: {}, user: {} },
       log: { info: sinon.fake() },
+      i18n: { language: "en" },
     });
     res = mockResponse();
   });
@@ -44,6 +46,72 @@ describe("enter email controller", () => {
 
       expect(res.render).to.have.calledWith(
         "enter-email/index-create-account.njk"
+      );
+    });
+
+    it("should render enter email view when supportReauthentication flag is switched off", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "0";
+
+      await enterEmailGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "enter-email/index-existing-account.njk"
+      );
+    });
+
+    it("should render enter email view when isReautheticationRequired is false", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+
+      await enterEmailGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "enter-email/index-existing-account.njk"
+      );
+    });
+
+    it("should render sign-in details entered too many times page view when reauthentication is required and user has been blocked from entering email", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
+      const date = new Date();
+      const futureDate = new Date(
+        date.setDate(date.getDate() + 6)
+      ).toUTCString();
+
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        reauthenticate: "1234",
+        wrongEmailEnteredLock: futureDate,
+      };
+
+      await enterEmailGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "enter-email/index-sign-in-details-entered-too-many-times.njk"
+      );
+    });
+
+    it("should render enter password view when isReautheticationRequired is true and check service returns successfully", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        reauthenticate: "12345",
+      };
+
+      await enterEmailGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "enter-email/index-re-enter-email-account.njk"
       );
     });
   });
@@ -148,6 +216,176 @@ describe("enter email controller", () => {
         "enter-password/index-sign-in-retry-blocked.njk"
       );
       expect(fakeService.userExists).to.have.been.calledOnce;
+    });
+
+    it("should redirect to /enter-email when re-authentication is required and re-auth check is unsuccessful", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+
+      req.body.email = "test.test.com";
+      res.locals.sessionId = "dsad.dds";
+      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        reauthenticate: "12345",
+      };
+
+      req.t = sinon.fake.returns("translated string");
+
+      const fakeUserExistsService: EnterEmailServiceInterface = {
+        userExists: sinon.fake.returns({
+          success: false,
+          data: { doesUserExist: false },
+        }),
+      } as unknown as EnterEmailServiceInterface;
+
+      const fakeCheckReauthService: CheckReauthServiceInterface = {
+        checkReauthUsers: sinon.fake.returns({
+          success: false,
+          data: {
+            code: ERROR_CODES.RE_AUTH_CHECK_NO_USER_OR_NO_MATCH,
+          },
+        }),
+      } as unknown as CheckReauthServiceInterface;
+
+      await enterEmailPost(fakeUserExistsService, fakeCheckReauthService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeCheckReauthService.checkReauthUsers).to.have.been.calledOnce;
+      expect(res.render).to.have.calledWith(
+        "enter-email/index-re-enter-email-account.njk"
+      );
+    });
+
+    it("should redirect to /enter-email when re-authentication is required and re-auth check is unsuccessful", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+
+      req.body.email = "test.test.com";
+      res.locals.sessionId = "dsad.dds";
+      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        reauthenticate: "12345",
+      };
+
+      req.t = sinon.fake.returns("translated string");
+
+      const fakeUserExistsService: EnterEmailServiceInterface = {
+        userExists: sinon.fake.returns({
+          success: false,
+          data: { doesUserExist: false },
+        }),
+      } as unknown as EnterEmailServiceInterface;
+
+      const fakeCheckReauthService: CheckReauthServiceInterface = {
+        checkReauthUsers: sinon.fake.returns({
+          success: false,
+          data: {
+            code: ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED,
+          },
+        }),
+      } as unknown as CheckReauthServiceInterface;
+
+      await enterEmailPost(fakeUserExistsService, fakeCheckReauthService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeCheckReauthService.checkReauthUsers).to.have.been.calledOnce;
+      expect(res.render).to.have.calledWith(
+        "enter-email/index-sign-in-details-entered-too-many-times.njk"
+      );
+    });
+
+    it("should redirect to sign in details entered too many times when re-authentication is required and user is blocked from entering email", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+
+      req.body.email = "test.test.com";
+      res.locals.sessionId = "dsad.dds";
+      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
+
+      const date = new Date();
+      const futureDate = new Date(
+        date.setDate(date.getDate() + 6)
+      ).toUTCString();
+
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        reauthenticate: "758e657867",
+        wrongEmailEnteredLock: futureDate,
+      };
+
+      req.t = sinon.fake.returns("translated string");
+
+      const fakeUserExistsService: EnterEmailServiceInterface = {
+        userExists: sinon.fake.returns({
+          success: false,
+          data: { doesUserExist: false },
+        }),
+      } as unknown as EnterEmailServiceInterface;
+
+      const fakeCheckReauthService: CheckReauthServiceInterface = {
+        checkReauthUsers: sinon.fake.returns({
+          success: false,
+          data: {
+            code: ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED,
+          },
+        }),
+      } as unknown as CheckReauthServiceInterface;
+
+      await enterEmailPost(fakeUserExistsService, fakeCheckReauthService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeCheckReauthService.checkReauthUsers).to.have.been.calledOnce;
+      expect(res.render).to.have.calledWith(
+        "enter-email/index-sign-in-details-entered-too-many-times.njk"
+      );
+    });
+
+    it("should redirect to /enter-password re-auth page when re-authentication is required and service call is successful", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+      req.body.email = "test.test.com";
+      res.locals.sessionId = "dsad.dds";
+      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        reauthenticate: "12345",
+      };
+
+      const fakeService: EnterEmailServiceInterface = {
+        userExists: sinon.fake.returns({
+          success: true,
+          data: { doesUserExist: true },
+        }),
+      } as unknown as EnterEmailServiceInterface;
+
+      const successfulFakeService: CheckReauthServiceInterface = {
+        checkReauthUsers: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as CheckReauthServiceInterface;
+
+      await enterEmailPost(fakeService, successfulFakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_PASSWORD);
     });
   });
 

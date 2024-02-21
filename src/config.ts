@@ -1,6 +1,7 @@
 import { RedisConfig } from "./utils/types";
 import ssm from "./utils/ssm";
 import { Parameter } from "aws-sdk/clients/ssm";
+import { ENVIRONMENT_NAME } from "./app.constants";
 
 export function getLogLevel(): string {
   return process.env.LOGS_LEVEL || "debug";
@@ -70,7 +71,12 @@ export function getSupportLinkUrl(): string {
   return process.env.URL_FOR_SUPPORT_LINKS || "/contact-us";
 }
 
-export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
+export async function getRedisConfig(): Promise<RedisConfig> {
+  if (getNodeEnv() !== ENVIRONMENT_NAME.PROD) {
+    return { host: getRedisHost(), port: getRedisPort() };
+  }
+
+  const appEnv = getAppEnv();
   const hostKey = `${appEnv}-${process.env.REDIS_KEY}-redis-master-host`;
   const portKey = `${appEnv}-${process.env.REDIS_KEY}-redis-port`;
   const passwordKey = `${appEnv}-${process.env.REDIS_KEY}-redis-password`;
@@ -87,13 +93,13 @@ export async function getRedisConfig(appEnv: string): Promise<RedisConfig> {
   }
 
   return {
-    password: result.Parameters.find((p: Parameter) => p.Name === passwordKey)
-      .Value,
     host: result.Parameters.find((p: Parameter) => p.Name === hostKey).Value,
     port: Number(
       result.Parameters.find((p: Parameter) => p.Name === portKey).Value
     ),
-    isLocal: false,
+    password: result.Parameters.find((p: Parameter) => p.Name === passwordKey)
+      .Value,
+    tls: true,
   };
 }
 
@@ -173,10 +179,18 @@ export function support2FABeforePasswordReset(): boolean {
   return process.env.SUPPORT_2FA_B4_PASSWORD_RESET === "1";
 }
 
+export function support2hrLockout(): boolean {
+  return process.env.SUPPORT_2HR_LOCKOUT === "1";
+}
+
 export function supportAccountInterventions(): boolean {
   return process.env.SUPPORT_ACCOUNT_INTERVENTIONS === "1";
 }
 
 export function supportReauthentication(): boolean {
   return process.env.SUPPORT_REAUTHENTICATION === "1";
+}
+
+export function getEmailEnteredWrongBlockDurationInMinutes(): number {
+  return Number(process.env.EMAIL_ENTERED_WRONG_BLOCKED_MINUTES) || 15;
 }

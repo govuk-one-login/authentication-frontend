@@ -3,14 +3,14 @@ import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
-import { PATH_NAMES } from "../../../app.constants";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants";
 import decache from "decache";
 import {
   noInterventions,
   setupAccountInterventionsResponse,
 } from "../../../../test/helpers/account-interventions-helpers";
 
-describe("Integration::reset password (in 6 digit code flow)", () => {
+describe("Integration::reset password (in 2FA Before Reset Password flow)", () => {
   let token: string | string[];
   let cookies: string;
   let app: any;
@@ -19,9 +19,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
   const ENDPOINT = "/reset-password";
 
   before(async () => {
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
-    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
-
+    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
@@ -36,6 +34,9 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
           journey: {
             nextPath: PATH_NAMES.RESET_PASSWORD,
           },
+          isAuthenticated: true,
+          isAccountPartCreated: false,
+          accountRecoveryVerifiedMfaType: MFA_METHOD_TYPE.SMS,
         };
 
         next();
@@ -62,48 +63,8 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
     app = undefined;
   });
 
-  it("should return reset password page when there are no interventions on a user", (done) => {
+  it("should return reset password page", (done) => {
     setupAccountInterventionsResponse(baseApi, noInterventions);
-
-    request(app).get(ENDPOINT).expect(200, done);
-  });
-
-  it("should return the blocked screen when someone has a blocked intervention", (done) => {
-    setupAccountInterventionsResponse(baseApi, {
-      blocked: true,
-      passwordResetRequired: false,
-      temporarilySuspended: false,
-    });
-
-    request(app)
-      .get(ENDPOINT)
-      .expect(function (res) {
-        expect(res.headers.location).to.eq("/unavailable-permanent");
-      })
-      .expect(302, done);
-  });
-
-  it("should return the suspended screen when someone has a suspended intervention", (done) => {
-    setupAccountInterventionsResponse(baseApi, {
-      blocked: false,
-      passwordResetRequired: false,
-      temporarilySuspended: true,
-    });
-
-    request(app)
-      .get(ENDPOINT)
-      .expect(function (res) {
-        expect(res.headers.location).to.eq("/unavailable-temporary");
-      })
-      .expect(302, done);
-  });
-
-  it("should return reset password page when someone has a reset password intervention", (done) => {
-    setupAccountInterventionsResponse(baseApi, {
-      blocked: false,
-      passwordResetRequired: true,
-      temporarilySuspended: false,
-    });
 
     request(app).get(ENDPOINT).expect(200, done);
   });
@@ -253,7 +214,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .expect(400, done);
   });
 
-  it("should redirect to MFA step when valid password entered", (done) => {
+  it("should redirect to /auth-code when valid password entered", (done) => {
     nock(baseApi).post("/reset-password").once().reply(204);
     nock(baseApi).post("/login").once().reply(200);
     nock(baseApi).post("/mfa").once().reply(204);
@@ -267,7 +228,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
         password: "Testpassword1",
         "confirm-password": "Testpassword1",
       })
-      .expect("Location", PATH_NAMES.ENTER_MFA)
+      .expect("Location", PATH_NAMES.AUTH_CODE)
       .expect(302, done);
   });
 });

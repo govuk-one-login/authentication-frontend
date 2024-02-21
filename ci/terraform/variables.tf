@@ -247,6 +247,12 @@ variable "support_2fa_b4_password_reset" {
   default     = "0"
 }
 
+variable "support_2hr_lockout" {
+  description = "When true enables 2hr lockout"
+  type        = string
+  default     = "0"
+}
+
 variable "support_account_interventions" {
   description = "When true, turns on account interventions in environment"
   type        = string

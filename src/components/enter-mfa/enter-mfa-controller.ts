@@ -14,6 +14,8 @@ import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
 import { BadRequestError } from "../../utils/error";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
+import { AccountInterventionsInterface } from "../account-intervention/types";
+import { accountInterventionService } from "../account-intervention/account-intervention-service";
 
 export const ENTER_MFA_DEFAULT_TEMPLATE_NAME = "enter-mfa/index.njk";
 export const UPLIFT_REQUIRED_SMS_TEMPLATE_NAME =
@@ -72,7 +74,8 @@ export function enterMfaGet(
 }
 
 export const enterMfaPost = (
-  service: VerifyCodeInterface = codeService()
+  service: VerifyCodeInterface = codeService(),
+  accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
     const { isUpliftRequired } = req.session.user;
@@ -81,15 +84,19 @@ export const enterMfaPost = (
       ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME
       : ENTER_MFA_DEFAULT_TEMPLATE_NAME;
 
-    const verifyCodeRequest = verifyCodePost(service, {
-      notificationType: NOTIFICATION_TYPE.MFA_SMS,
-      template: template,
-      validationKey: "pages.enterMfa.code.validationError.invalidCode",
-      validationErrorCode: ERROR_CODES.INVALID_MFA_CODE,
-      journeyType: getJourneyTypeFromUserSession(req.session.user, {
-        includeReauthentication: true,
-      }),
-    });
+    const verifyCodeRequest = verifyCodePost(
+      service,
+      accountInterventionsService,
+      {
+        notificationType: NOTIFICATION_TYPE.MFA_SMS,
+        template: template,
+        validationKey: "pages.enterMfa.code.validationError.invalidCode",
+        validationErrorCode: ERROR_CODES.INVALID_MFA_CODE,
+        journeyType: getJourneyTypeFromUserSession(req.session.user, {
+          includeReauthentication: true,
+        }),
+      }
+    );
 
     return verifyCodeRequest(req, res);
   };

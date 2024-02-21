@@ -75,6 +75,8 @@ const authStateMachine = createMachine(
       isAccountRecoveryJourney: false,
       support2FABeforePasswordReset: false,
       isReauthenticationRequired: false,
+      requiresResetPasswordMFASmsCode: false,
+      requiresResetPasswordMFAAuthAppCode: false,
     },
     states: {
       [PATH_NAMES.START]: {
@@ -127,7 +129,7 @@ const authStateMachine = createMachine(
               cond: "isConsentRequired",
             },
             {
-              target: [PATH_NAMES.ENTER_PASSWORD],
+              target: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
               cond: "isReauthenticationRequired",
             },
             { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
@@ -380,6 +382,14 @@ const authStateMachine = createMachine(
         on: {
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
             {
+              target: [PATH_NAMES.RESET_PASSWORD_2FA_SMS],
+              cond: "is2FASMSPasswordChangeRequired",
+            },
+            {
+              target: [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP],
+              cond: "is2FAAuthAppPasswordChangeRequired",
+            },
+            {
               target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],
               cond: "isPasswordChangeRequired",
             },
@@ -524,16 +534,31 @@ const authStateMachine = createMachine(
       },
       [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP]: {
         on: {
-          [USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED]: [PATH_NAMES.RESET_PASSWORD],
+          [USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED]: [
+            {
+              target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],
+              cond: "isPasswordChangeRequired",
+            },
+            {
+              target: [PATH_NAMES.RESET_PASSWORD],
+            },
+          ],
         },
       },
       [PATH_NAMES.RESET_PASSWORD_2FA_SMS]: {
         on: {
           [USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED]: [
             {
+              target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],
+              cond: "isPasswordChangeRequired",
+            },
+            {
               target: [PATH_NAMES.RESET_PASSWORD],
             },
           ],
+        },
+        meta: {
+          optionalPaths: [PATH_NAMES.RESEND_MFA_CODE],
         },
       },
       [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]: {
@@ -545,6 +570,12 @@ const authStateMachine = createMachine(
       },
       [PATH_NAMES.RESET_PASSWORD]: {
         on: {
+          [USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_PERMANENT,
+          ],
+          [USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_TEMPORARY,
+          ],
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
             {
               target: [PATH_NAMES.GET_SECURITY_CODES],
@@ -635,6 +666,12 @@ const authStateMachine = createMachine(
       },
       [PATH_NAMES.PROVE_IDENTITY]: {
         on: {
+          [USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION]: [
+            PATH_NAMES.PASSWORD_RESET_REQUIRED,
+          ],
+          [USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_PERMANENT,
+          ],
           [USER_JOURNEY_EVENTS.PROVE_IDENTITY_INIT]: [
             PATH_NAMES.PROVE_IDENTITY_CALLBACK,
           ],
@@ -687,6 +724,12 @@ const authStateMachine = createMachine(
         on: {
           [USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED]: [
             PATH_NAMES.GET_SECURITY_CODES,
+          ],
+          [USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_TEMPORARY,
+          ],
+          [USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_PERMANENT,
           ],
         },
         meta: {
@@ -754,6 +797,16 @@ const authStateMachine = createMachine(
         context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
         context.support2FABeforePasswordReset === true,
       isPasswordChangeRequired: (context) => context.isPasswordChangeRequired,
+      is2FASMSPasswordChangeRequired: (context) =>
+        context.isPasswordChangeRequired === true &&
+        context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
+        context.support2FABeforePasswordReset === true &&
+        context.requiresTwoFactorAuth === true,
+      is2FAAuthAppPasswordChangeRequired: (context) =>
+        context.isPasswordChangeRequired === true &&
+        context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
+        context.support2FABeforePasswordReset === true &&
+        context.requiresTwoFactorAuth === true,
       isAccountRecoveryJourney: (context) => context.isAccountRecoveryJourney,
       support2FABeforePasswordReset: (context) =>
         context.support2FABeforePasswordReset,

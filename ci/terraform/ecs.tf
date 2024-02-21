@@ -163,7 +163,11 @@ locals {
       {
         name  = "SUPPORT_REAUTHENTICATION"
         value = var.support_reauthentication
-      }
+      },
+      {
+        name  = "SUPPORT_2HR_LOCKOUT"
+        value = var.support_2hr_lockout
+      },
     ]
 
     secrets = [

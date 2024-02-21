@@ -6,6 +6,8 @@ import { ExpressRouteFunc } from "../types";
 import { supportAccountInterventions } from "../config";
 
 export function accountInterventionsMiddleware(
+  handleSuspendedStatus: boolean,
+  handlePasswordResetStatus: boolean,
   service = accountInterventionService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response, next: NextFunction) {
@@ -22,26 +24,30 @@ export function accountInterventionsMiddleware(
           persistentSessionId
         );
 
-      if (accountInterventionsResponse.data.passwordResetRequired) {
-        res.redirect(
-          getNextPathAndUpdateJourney(
-            req,
-            req.path,
-            USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION
-          )
-        );
-      }
       if (accountInterventionsResponse.data.blocked) {
-        res.redirect(
+        return res.redirect(
           getNextPathAndUpdateJourney(
             req,
             req.path,
             USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION
           )
         );
-      }
-      if (accountInterventionsResponse.data.temporarilySuspended) {
-        res.redirect(
+      } else if (
+        accountInterventionsResponse.data.passwordResetRequired &&
+        handlePasswordResetStatus
+      ) {
+        return res.redirect(
+          getNextPathAndUpdateJourney(
+            req,
+            req.path,
+            USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION
+          )
+        );
+      } else if (
+        accountInterventionsResponse.data.temporarilySuspended &&
+        handleSuspendedStatus
+      ) {
+        return res.redirect(
           getNextPathAndUpdateJourney(
             req,
             req.path,

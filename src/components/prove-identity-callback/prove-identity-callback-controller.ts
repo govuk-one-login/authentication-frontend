@@ -27,6 +27,10 @@ export function proveIdentityCallbackGet(
       persistentSessionId
     );
 
+    if (response.data.status === IdentityProcessingStatus.INTERVENTION) {
+      return res.redirect(response.data.redirectUrl);
+    }
+
     if (response.data.status === IdentityProcessingStatus.PROCESSING) {
       return res.render("prove-identity-callback/index.njk", {
         serviceName: clientName,

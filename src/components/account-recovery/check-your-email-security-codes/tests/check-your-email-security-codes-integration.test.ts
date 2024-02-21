@@ -14,6 +14,10 @@ import { ERROR_CODES, SecurityCodeErrorType } from "../../../common/constants";
 import { SendNotificationServiceInterface } from "../../../common/send-notification/types";
 import { DefaultApiResponse } from "../../../../types";
 import { createApiResponse } from "../../../../utils/http";
+import {
+  AccountInterventionsInterface,
+  AccountInterventionStatus,
+} from "../../../account-intervention/types";
 
 describe("Integration:: check your email security codes", () => {
   let token: string | string[];
@@ -27,6 +31,7 @@ describe("Integration:: check your email security codes", () => {
     decache("../../../common/send-notification/send-notification-service");
     const sessionMiddleware = require("../../../../middleware/session-middleware");
     const sendNotificationService = require("../../../common/send-notification/send-notification-service");
+    const accountInterventionService = require("../../../account-intervention/account-intervention-service");
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
@@ -46,6 +51,27 @@ describe("Integration:: check your email security codes", () => {
         };
 
         next();
+      });
+
+    sinon
+      .stub(accountInterventionService, "accountInterventionService")
+      .callsFake((): AccountInterventionsInterface => {
+        async function accountInterventionStatus() {
+          const fakeAxiosResponse: AxiosResponse = {
+            data: {
+              passwordResetRequired: false,
+              blocked: false,
+              temporarilySuspended: false,
+            },
+            status: HTTP_STATUS_CODES.OK,
+          } as AxiosResponse;
+
+          return createApiResponse<AccountInterventionStatus>(
+            fakeAxiosResponse
+          );
+        }
+
+        return { accountInterventionStatus };
       });
 
     sinon
@@ -173,7 +199,8 @@ describe("Integration:: check your email security codes", () => {
       .expect(400, done);
   });
 
-  it("should redirect to /create-password when valid code entered", (done) => {
+  it("should redirect to /get-security-codes when valid code entered", (done) => {
+    process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
     nock(baseApi)
       .post(API_ENDPOINTS.VERIFY_CODE)
       .once()

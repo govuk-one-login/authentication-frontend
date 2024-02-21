@@ -1,0 +1,48 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% set showBack = true %}
+{% set hrefBack = 'sign-in-or-create' %}
+{% set pageTitleName = 'pages.reEnterEmailAccount.title' | translate %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block content %}
+
+{% include "common/errors/errorSummary.njk" %}
+
+<form action="/enter-email" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+    <h1 class="govuk-heading-l">
+        {{ 'pages.reEnterEmailAccount.header' | translate }}
+    </h1>
+
+    <p class="govuk-body">{{'pages.reEnterEmailAccount.paragraph1' | translate}}</p>
+
+    {{ govukInput({
+         label: {
+                text: 'pages.reEnterEmailAccount.enterYourEmailAddress' | translate
+            },
+        id: "email",
+        name: "email",
+        value: email,
+        type: "email",
+        autocomplete: "email",
+        spellcheck: false,
+        errorMessage: {
+            text: errors['email'].text
+        } if (errors['email'])})
+    }}
+
+    {{ govukButton({
+    "text": "general.continue.label" | translate,
+    "type": "Submit",
+    "preventDoubleClick": true
+}) }}
+
+</form>
+
+{% endblock %}

@@ -1,4 +1,4 @@
-#Otheenv are Dev,build,Integration & Staging 
+#Otheenv are Dev,build,Integration & Staging
 
 locals {
   prod           = var.environment == "production" ? "account.gov.uk" : ""
