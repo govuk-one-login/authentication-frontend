@@ -28,6 +28,7 @@ import {
   getOrchToAuthExpectedClientId,
   supportReauthentication,
 } from "../../config";
+import { logger } from "../../utils/logger";
 
 function createConsentCookie(
   res: Response,
@@ -123,6 +124,10 @@ export function authorizeGet(
 
     req.session.user.isAccountCreationJourney = undefined;
     let reauthenticate = null;
+
+    logger.info(`Reauth claim length ${claims.reauthenticate?.length}`);
+    logger.info(`Support for reauth is enabled ${supportReauthentication()}`);
+
     if (supportReauthentication()) {
       reauthenticate = claims.reauthenticate;
     }
