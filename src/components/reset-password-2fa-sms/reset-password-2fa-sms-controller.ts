@@ -33,6 +33,20 @@ export function resetPassword2FASmsGet(
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+
+    if (
+      req.session.user.wrongCodeEnteredLock &&
+      new Date().getTime() <
+        new Date(req.session.user.wrongCodeEnteredLock).getTime()
+    ) {
+      return res.render(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        {
+          newCodeLink: PATH_NAMES.RESET_PASSWORD_2FA_SMS,
+        }
+      );
+    }
+
     const mfaResponse = await mfaCodeService.sendMfaCode(
       sessionId,
       clientSessionId,
