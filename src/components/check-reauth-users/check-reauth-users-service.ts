@@ -27,7 +27,7 @@ export function checkReauthUsersService(
     });
 
     const response = await axios.client.post<DefaultApiResponse>(
-      API_ENDPOINTS.CHECK_REAUTH_USERS,
+      API_ENDPOINTS.CHECK_REAUTH_USER,
       { email: lowerCaseEmail },
       config
     );

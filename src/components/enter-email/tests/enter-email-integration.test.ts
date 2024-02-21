@@ -224,7 +224,7 @@ describe("Integration::enter email", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
 
     nock(baseApi)
-      .post(API_ENDPOINTS.CHECK_REAUTH_USERS)
+      .post(API_ENDPOINTS.CHECK_REAUTH_USER)
       .once()
       .reply(HTTP_STATUS_CODES.OK);
 

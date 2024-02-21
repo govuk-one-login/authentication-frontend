@@ -152,7 +152,7 @@ describe("state-machine", () => {
         USER_JOURNEY_EVENTS.NO_EXISTING_SESSION,
         { isReauthenticationRequired: true }
       );
-      expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
+      expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
     });
 
     it("should move from authorize to auth code create when the user is already logged in", () => {

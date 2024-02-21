@@ -136,7 +136,7 @@ const authStateMachine = createMachine(
           ],
           [USER_JOURNEY_EVENTS.NO_EXISTING_SESSION]: [
             {
-              target: [PATH_NAMES.SIGN_IN_OR_CREATE],
+              target: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
               cond: "isReauthenticationRequired",
             },
             {
