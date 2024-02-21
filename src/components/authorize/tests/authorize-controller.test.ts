@@ -231,7 +231,7 @@ describe("authorize controller", () => {
         fakeJwtService
       )(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
     });
 
     //note that this is currently the same behaviour with the feature flag on or off. This will change if we decide on a different initial page for the reauth journey
