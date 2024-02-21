@@ -16,11 +16,8 @@ import i18next from "i18next";
 import Backend from "i18next-fs-backend";
 
 import {
-  getAppEnv,
   getNodeEnv,
   getRedisConfig,
-  getRedisHost,
-  getRedisPort,
   getSessionExpiry,
   getSessionSecret,
   support2FABeforePasswordReset,
@@ -182,14 +179,10 @@ async function createApp(): Promise<express.Application> {
   app.use(i18nextMiddleware.handle(i18next));
   app.use(helmet(helmetConfiguration()));
 
-  const redisConfig = isProduction
-    ? await getRedisConfig(getAppEnv())
-    : { host: getRedisHost(), port: getRedisPort(), isLocal: true };
-
   app.use(
     session({
       name: "aps",
-      store: getSessionStore(redisConfig),
+      store: getSessionStore(await getRedisConfig()),
       saveUninitialized: false,
       secret: getSessionSecret(),
       unset: "destroy",
