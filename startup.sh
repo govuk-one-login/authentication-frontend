@@ -34,7 +34,6 @@ if [ $LOCAL == "1" ]; then
   export "$(grep -v '^#' .env | xargs)"
   export REDIS_PORT=6389
   export REDIS_HOST=localhost
-  eval "$(gds aws digital-identity-dev -e)"
   yarn install && yarn copy-assets && yarn dev
 else
   echo "Starting frontend service..."
