@@ -30,8 +30,8 @@ docker-compose down
 
 if [ $LOCAL == "1" ]; then
   echo "Starting frontend local service..."
-  docker compose -f "docker-compose.yml" up -d --wait --no-deps redis di-auth-stub-default di-auth-stub-no-mfa
-  export "$(grep -v '^#' .env | xargs)"
+  docker compose -f "docker-compose.yml" up -d --wait --no-deps redis di-auth-stub-micro-ui di-auth-stub-micro-server
+  export $(grep -v '^#' .env | xargs)
   export REDIS_PORT=6389
   export REDIS_HOST=localhost
   yarn install && yarn copy-assets && yarn dev
