@@ -16,11 +16,13 @@ import {
   JOURNEY_TYPE,
   MFA_METHOD_TYPE,
   NOTIFICATION_TYPE,
+  PATH_NAMES,
 } from "../../app.constants";
 import xss from "xss";
 import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
+import { getCodeEnteredWrongBlockDurationInMinutes } from "../../config";
 
 const TEMPLATE = "setup-authenticator-app/index.njk";
 
@@ -28,6 +30,19 @@ export async function setupAuthenticatorAppGet(
   req: Request,
   res: Response
 ): Promise<void> {
+  if (
+    req.session.user.wrongCodeEnteredLock &&
+    new Date().getTime() <
+      new Date(req.session.user.wrongCodeEnteredLock).getTime()
+  ) {
+    return res.render(
+      "security-code-error/index-security-code-entered-exceeded.njk",
+      {
+        newCodeLink: PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP,
+        isAuthApp: true,
+      }
+    );
+  }
   const qrCodeText = generateQRCodeValue(
     req.session.user.authAppSecret,
     req.session.user.email,
@@ -84,7 +99,14 @@ export function setupAuthenticatorAppPost(
           secretKey: req.session.user.authAppSecret,
         });
       }
-
+      if (
+        verifyAccessCodeRes.data.code ===
+        ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED
+      ) {
+        req.session.user.wrongCodeEnteredLock = new Date(
+          Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
+        ).toUTCString();
+      }
       throw new BadRequestError(
         verifyAccessCodeRes.data.message,
         verifyAccessCodeRes.data.code
