@@ -112,10 +112,9 @@ export function contactUsGet(req: Request, res: Response): void {
 
   const supportLinkURL = getSupportLinkUrl();
   const backLinkHref = prepareBackLink(req, supportLinkURL, serviceDomain);
-
   const options = {
-    referer: referer,
-    fromURL: fromURL,
+    referer: encodeValue(referer),
+    fromURL: encodeValue(fromURL),
     hrefBack: backLinkHref,
     ...(getAppSessionId(req.query.appSessionId as string) && {
       appSessionId: getAppSessionId(req.query.appSessionId as string),
@@ -123,6 +122,19 @@ export function contactUsGet(req: Request, res: Response): void {
   };
 
   return res.render("contact-us/index-public-contact-us.njk", options);
+}
+
+function encodeValue(input: string): string {
+  try {
+    if (input && decodeURIComponent(input) === input) {
+      input = encodeURIComponent(input);
+    }
+  } catch {
+    logger.warn(`unable to encode field ${input}`);
+    //resetting value as input not in uri format (malicious?)
+    input = "";
+  }
+  return input;
 }
 
 export function prepareBackLink(
@@ -243,10 +255,11 @@ export function validateReferer(
   let valid = false;
   let url;
   try {
+    referer = decodeURIComponent(referer);
     if (CONTACT_US_REFERER_ALLOWLIST.includes(referer)) {
       valid = true;
     } else {
-      url = new URL(decodeURIComponent(referer));
+      url = new URL(referer);
       valid = url.hostname.endsWith(serviceDomain);
     }
   } catch {
@@ -314,9 +327,13 @@ export function furtherInformationGet(req: Request, res: Response): void {
     return res.render("contact-us/further-information/index.njk", {
       theme: req.query.theme,
       hrefBack: backLinkHref,
-      referer: validateReferer(req.query.referer as string, serviceDomain),
+      referer: encodeValue(
+        validateReferer(req.query.referer as string, serviceDomain)
+      ),
       ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
-        fromURL: validateReferer(req.query.fromURL as string, serviceDomain),
+        fromURL: encodeValue(
+          validateReferer(req.query.fromURL as string, serviceDomain)
+        ),
       }),
       appSessionId: getAppSessionId(req.query.appSessionId as string),
       ...(getAppErrorCode(req.query.appErrorCode as string) && {
@@ -328,10 +345,14 @@ export function furtherInformationGet(req: Request, res: Response): void {
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
-      fromURL: validateReferer(req.query.fromURL as string, serviceDomain),
+      fromURL: encodeValue(
+        validateReferer(req.query.fromURL as string, serviceDomain)
+      ),
     }),
     hrefBack: backLinkHref,
-    referer: validateReferer(req.query.referer as string, serviceDomain),
+    referer: encodeValue(
+      validateReferer(req.query.referer as string, serviceDomain)
+    ),
   });
 }
 
@@ -380,9 +401,13 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     theme: req.query.theme,
     subtheme: req.query.subtheme,
     backurl: backLinkHref,
-    referer: validateReferer(req.query.referer as string, serviceDomain),
+    referer: encodeValue(
+      validateReferer(req.query.referer as string, serviceDomain)
+    ),
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
-      fromURL: validateReferer(req.query.fromURL as string, serviceDomain),
+      fromURL: encodeValue(
+        validateReferer(req.query.fromURL as string, serviceDomain)
+      ),
     }),
     pageTitleHeading: pageTitle,
     contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,

@@ -89,6 +89,9 @@ describe("Integration:: contact us - public user", () => {
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("input[name = referer]").val()).to.not.contains(referer);
+          expect($("input[name = referer]").val()).to.not.contains(
+            encodeURIComponent(referer)
+          );
         })
         .expect(200, done);
     });
@@ -109,7 +112,9 @@ describe("Integration:: contact us - public user", () => {
         .set("referer", referer)
         .expect(function (res) {
           const $ = cheerio.load(res.text);
-          expect($("input[name = referer]").val()).to.contains(referer);
+          expect($("input[name = referer]").val()).to.contains(
+            encodeURIComponent(referer)
+          );
         })
         .expect(200, done);
     });
@@ -129,6 +134,9 @@ describe("Integration:: contact us - public user", () => {
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("input[name = referer]").val()).to.not.contains(referer);
+          expect($("input[name = referer]").val()).to.not.contains(
+            encodeURIComponent(referer)
+          );
         })
         .expect(200, done);
     });
@@ -149,7 +157,9 @@ describe("Integration:: contact us - public user", () => {
         .query("referer=" + referer)
         .expect(function (res) {
           const $ = cheerio.load(res.text);
-          expect($("input[name = referer]").val()).to.contains(referer);
+          expect($("input[name = referer]").val()).to.contains(
+            encodeURIComponent(referer)
+          );
         })
         .expect(200, done);
     });
