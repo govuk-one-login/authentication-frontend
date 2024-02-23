@@ -17,6 +17,7 @@ support_2fa_b4_password_reset                       = "1"
 password_reset_code_entered_wrong_blocked_minutes   = "0.5"
 account_recovery_code_entered_wrong_blocked_minutes = "0.5"
 code_request_blocked_minutes                        = "0.5"
+email_entered_wrong_blocked_minutes                 = "0.5"
 code_entered_wrong_blocked_minutes                  = "0.5"
 url_for_support_links                               = "https://home.build.account.gov.uk/contact-gov-uk-one-login"
 

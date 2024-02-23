@@ -165,6 +165,10 @@ locals {
         value = var.support_reauthentication
       },
       {
+        name  = "EMAIL_ENTERED_WRONG_BLOCKED_MINUTES"
+        value = var.email_entered_wrong_blocked_minutes
+      },
+      {
         name  = "SUPPORT_2HR_LOCKOUT"
         value = var.support_2hr_lockout
       },

@@ -4,7 +4,7 @@ import {
   Http,
   http,
 } from "../../utils/http";
-import { API_ENDPOINTS } from "../../app.constants";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants";
 import { CheckReauthServiceInterface } from "./types";
 import { ApiResponseResult, DefaultApiResponse } from "../../types";
 
@@ -22,6 +22,11 @@ export function checkReauthUsersService(
     const config = getRequestConfig({
       sessionId,
       sourceIp,
+      validationStatues: [
+        HTTP_STATUS_CODES.OK,
+        HTTP_STATUS_CODES.BAD_REQUEST,
+        HTTP_STATUS_CODES.NOT_FOUND,
+      ],
       clientSessionId,
       persistentSessionId,
     });
