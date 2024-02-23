@@ -472,22 +472,36 @@
     "securityRequestsExceededExpired": {
       "title": "Rydych wedi gofyn i ailanfon y cod diogelwch gormod o weithiau",
       "header": "Rydych wedi gofyn i ailanfon y cod diogelwch gormod o weithiau",
-      "info": {
+      "info_old": {
         "paragraph1": "Mae angen i chi aros am 15 munud.",
         "paragraph2Start": "Yna gallwch ",
         "link": "gael cod newydd",
         "paragraph2End": " a rhoi cynnig arall."
+      },
+      "info": {
+        "paragraph1": "Ni fyddwch yn gallu parhau am 2 awr.",
+        "subHeading": "Beth allwch chi ei wneud",
+        "paragraph2": "Arhoswch am 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto.",
+        "paragraph3": "Os ydych angen ei ddefnyddio yn gynt, gallwch fynd yn ôl i’r gwasanaeth a chwilio am ffyrdd eraill i barhau"
       }
     },
     "securityCodeWaitToRequest": {
       "title": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
       "header": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
-      "info": {
+      "header_create": "Ni allwch greu GOV.UK One Login ar hyn o bryd ",
+      "info_old": {
         "paragraph1": "Mae hyn oherwydd eich bod wedi gofyn i ailanfon cod diogelwch ormod o weithiau.",
         "paragraph2Start": "Gallwch ",
         "link": "gael cod newydd",
         "paragraph2End": " ar ôl 15 munud."
-      }
+      },
+      "info":{
+        "paragraph1":"Mae hyn oherwydd eich bod wedi gofyn i ail-anfon y cod diogelwch gormod o weithiau y tro diwethaf i chi geisio mewngofnodi.",
+        "paragraph1_create": "Mae hyn oherwydd eich bod wedi gofyn i ail-anfon y cod diogelwch gormod o weithiau.",
+        "subHeading":"Beth allwch chi ei wneud",
+        "paragraph2":"Arhoswch am 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto.",
+        "paragraph3":"Os ydych angen ei ddefnyddio yn gynt, gallwch fynd yn ôl i’r gwasanaeth a chwilio am ffyrdd eraill i barhau"
+     }
     },
     "enterMfa": {
       "title": "Gwiriwch eich ffôn",
@@ -572,6 +586,7 @@
       "header": "Cael cod diogelwch",
       "continue": "Cael cod diogelwch",
       "message": "Gall negeseuon testun weithiau gymryd ychydig funudau i gyrraedd.",
+      "paragraph1":"Gallwch ofyn am 5 cod diogelwch. Os byddwch yn gofyn am fwy na 5, byddwch yn cael eich cloi allan am 2 awr.",
       "phoneNumber": {
         "default": "Byddwn yn anfon cod at y rhif ffôn sy’n gysylltiedig â’ch GOV.UK One Login",
         "isResendCodeRequest": "Byddwn yn anfon cod i’ch rhif ffôn sy’n gorffen gyda "

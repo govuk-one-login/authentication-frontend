@@ -472,22 +472,36 @@
     "securityRequestsExceededExpired": {
       "title": "You asked to resend the security code too many times",
       "header": "You asked to resend the security code too many times",
-      "info": {
+      "info_old": {
         "paragraph1": "You need to wait 15 minutes.",
         "paragraph2Start": "You can then ",
         "link": "get a new code",
         "paragraph2End": " and try again."
+      },
+      "info": {
+        "paragraph1": "You will not be able to continue for 2 hours.",
+        "subHeading": "What you can do",
+        "paragraph2": "Wait 2 hours, then go back to the service you were trying to use and start again.",
+        "paragraph3": "If you need to use it sooner, you can go back to the service and look for other ways to continue."
       }
     },
     "securityCodeWaitToRequest": {
       "title": "You cannot get a new security code at the moment ",
       "header": "You cannot get a new security code at the moment ",
-      "info": {
+      "header_create": "You cannot create a GOV.UK One Login at the moment ",
+      "info_old": {
         "paragraph1": "This is because you asked to resend the security code too many times.",
         "paragraph2Start": "You can ",
         "link": "get a new code",
         "paragraph2End": " after 15 minutes."
-      }
+      }, 
+      "info":{
+        "paragraph1":"This is because you asked to resend the security code too many times the last time you tried to sign in.",
+        "paragraph1_create": "This is because you asked to resend the security code too many times.",
+        "subHeading":"What you can do",
+        "paragraph2":"Wait 2 hours, then go back to the service you were trying to use and start again.",
+        "paragraph3":"If you need to use it sooner, you can go back to the service and look for other ways to continue."
+     }
     },
     "enterMfa": {
       "title": "Check your phone",
@@ -572,6 +586,7 @@
       "header": "Get security code",
       "continue": "Get security code",
       "message": "Text messages can sometimes take a few minutes to arrive.",
+      "paragraph1": "You can request 5 security codes. If you request more than 5, you will be locked out for 2 hours.",
       "phoneNumber": {
         "default": "We will send the code to the phone number linked to your GOV.UK One Login.",
         "isResendCodeRequest": "We will send a code to your phone number ending with "

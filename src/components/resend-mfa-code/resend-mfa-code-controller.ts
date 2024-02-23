@@ -5,6 +5,7 @@ import { MfaServiceInterface } from "../common/mfa/types";
 import { sendMfaGeneric } from "../common/mfa/send-mfa-controller";
 import { PATH_NAMES } from "../../app.constants";
 import { pathWithQueryParam } from "../common/constants";
+import { support2hrLockout } from "../../config";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
   if (
@@ -37,6 +38,7 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     res.render("resend-mfa-code/index.njk", {
       phoneNumber: req.session.user.redactedPhoneNumber,
       isResendCodeRequest: req.query?.isResendCodeRequest,
+      support2hrLockout: support2hrLockout(),
     });
   }
 }
