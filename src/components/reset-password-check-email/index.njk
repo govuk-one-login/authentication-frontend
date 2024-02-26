@@ -5,6 +5,8 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% set pageTitleName = 'pages.resetPasswordCheckEmail.title' | translate %}
+{% set showBack = true %}
+{% set hrefBack = 'enter-password' %}
 {% block content %}
     {% include "common/errors/errorSummary.njk" %}
 

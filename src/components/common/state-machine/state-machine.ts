@@ -529,7 +529,10 @@ const authStateMachine = createMachine(
           ],
         },
         meta: {
-          optionalPaths: [PATH_NAMES.RESET_PASSWORD_RESEND_CODE],
+          optionalPaths: [
+            PATH_NAMES.ENTER_PASSWORD,
+            PATH_NAMES.RESET_PASSWORD_RESEND_CODE,
+          ],
         },
       },
       [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP]: {
