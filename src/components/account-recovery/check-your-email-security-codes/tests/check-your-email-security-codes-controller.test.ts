@@ -116,6 +116,42 @@ describe("check your email change security codes controller", () => {
       expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
     });
 
+    it("should redirect to /password-reset-required when temporarilySuspended and resetPasswordRequired statuses applied to account.", async () => {
+      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
+      const fakeVerifyCodeService: VerifyCodeInterface = {
+        verifyCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as VerifyCodeInterface;
+
+      const fakeAccountInterventionsService: AccountInterventionsInterface = {
+        accountInterventionStatus: sinon.fake.returns({
+          data: {
+            email: "test@test.com",
+            passwordResetRequired: true,
+            blocked: false,
+            temporarilySuspended: true,
+          },
+        }),
+      } as unknown as AccountInterventionsInterface;
+
+      req.body.code = "123456";
+      req.session.id = "123456-djjad";
+      req.session.user.email = "test@test.com";
+
+      await checkYourEmailSecurityCodesPost(
+        fakeVerifyCodeService,
+        fakeAccountInterventionsService
+      )(req as Request, res as Response);
+
+      expect(fakeAccountInterventionsService.accountInterventionStatus).to.have
+        .been.calledOnce;
+      expect(fakeVerifyCodeService.verifyCode).to.have.been.calledOnce;
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.PASSWORD_RESET_REQUIRED
+      );
+    });
+
     it("should return error when invalid code", async () => {
       const fakeService: VerifyCodeInterface = {
         verifyCode: sinon.fake.returns({

@@ -104,6 +104,9 @@ export function verifyCodePost(
         if (accountInterventionsResponse.data.temporarilySuspended) {
           nextEvent = USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION;
         }
+        if (accountInterventionsResponse.data.passwordResetRequired) {
+          nextEvent = USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION;
+        }
       }
     }
 
