@@ -10,7 +10,7 @@ resource "aws_lb" "frontend_alb" {
   ]
 
   enable_deletion_protection = true
-  drop_invalid_header_fields = (var.environment == "production" ? false : true)
+  drop_invalid_header_fields = true
 
   dynamic "access_logs" {
     for_each = var.environment == "production" ? [1] : []
