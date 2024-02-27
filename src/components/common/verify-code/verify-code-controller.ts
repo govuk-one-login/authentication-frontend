@@ -88,7 +88,8 @@ export function verifyCodePost(
     }
     if (supportAccountInterventions()) {
       if (
-        nextEvent === USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED
+        nextEvent === USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED ||
+        nextEvent === USER_JOURNEY_EVENTS.RESET_PASSWORD_CODE_VERIFIED
       ) {
         accountInterventionsResponse =
           await accountInterventionsService.accountInterventionStatus(
