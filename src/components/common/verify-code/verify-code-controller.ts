@@ -86,7 +86,10 @@ export function verifyCodePost(
       default:
         throw new Error("Unknown notification type");
     }
-    if (supportAccountInterventions()) {
+    if (
+      supportAccountInterventions() &&
+      !req.session.user.withinForcedPasswordResetJourney
+    ) {
       if (
         nextEvent === USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED ||
         nextEvent === USER_JOURNEY_EVENTS.RESET_PASSWORD_CODE_VERIFIED

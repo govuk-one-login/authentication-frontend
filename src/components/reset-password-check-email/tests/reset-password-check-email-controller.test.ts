@@ -159,5 +159,16 @@ describe("reset password check email controller", () => {
         PATH_NAMES.PASSWORD_RESET_REQUIRED
       );
     });
+
+    it("should redirect to /reset-password without calling the account interventions service when session.user.withinForcedPasswordResetJourney === true", async () => {
+      req.session.user.withinForcedPasswordResetJourney = true;
+      const fakeService = fakeVerifyCodeServiceHelper(true);
+      await resetPasswordCheckEmailPost(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD);
+    });
   });
 });

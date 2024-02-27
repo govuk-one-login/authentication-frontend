@@ -79,6 +79,7 @@ export interface UserSession {
   reauthenticate?: string;
   authCodeReturnToRP?: boolean;
   enterEmailMfaType?: string;
+  withinForcedPasswordResetJourney?: boolean;
 }
 
 export interface UserSessionClient {
