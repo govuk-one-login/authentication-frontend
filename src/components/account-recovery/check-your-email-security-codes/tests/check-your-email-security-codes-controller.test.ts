@@ -3,14 +3,11 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-
-import { VerifyCodeInterface } from "../../../common/verify-code/types";
 import {
   checkYourEmailSecurityCodesGet,
   checkYourEmailSecurityCodesPost,
 } from "../check-your-email-security-codes-controller";
 import { PATH_NAMES } from "../../../../app.constants";
-import { ERROR_CODES } from "../../../common/constants";
 import {
   mockRequest,
   mockResponse,
@@ -18,16 +15,8 @@ import {
   ResponseOutput,
 } from "mock-req-res";
 import { accountInterventionsFakeHelper } from "../../../../../test/helpers/account-interventions-helpers";
-
-function fakeVerifyCodeServiceHelper(success: boolean) {
-  const fakeService: VerifyCodeInterface = {
-    verifyCode: sinon.fake.returns({
-      success: success,
-      data: { code: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE },
-    }),
-  } as unknown as VerifyCodeInterface;
-  return fakeService;
-}
+import { fakeVerifyCodeServiceHelper } from "../../../../../test/helpers/verify-code-helpers";
+import { ERROR_CODES } from "../../../common/constants";
 
 describe("check your email change security codes controller", () => {
   let req: RequestOutput;
@@ -130,7 +119,10 @@ describe("check your email change security codes controller", () => {
     });
 
     it("should return error when invalid code", async () => {
-      const fakeService = fakeVerifyCodeServiceHelper(false);
+      const fakeService = fakeVerifyCodeServiceHelper(
+        false,
+        ERROR_CODES.INVALID_VERIFY_EMAIL_CODE
+      );
 
       const fakeAccountInterventionsService = accountInterventionsFakeHelper(
         "test@test.co.uk",

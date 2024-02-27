@@ -60,6 +60,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
   after(() => {
     sinon.restore();
     app = undefined;
+    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
   });
 
   it("should return reset password page when there are no interventions on a user", (done) => {

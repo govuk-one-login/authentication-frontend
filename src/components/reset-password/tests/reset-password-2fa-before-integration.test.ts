@@ -20,6 +20,7 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
 
   before(async () => {
     process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
@@ -40,6 +41,7 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
       });
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
+    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     setupAccountInterventionsResponse(baseApi, noInterventions);
 
     request(app)
@@ -52,12 +54,14 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
   });
 
   beforeEach(() => {
+    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     nock.cleanAll();
   });
 
   after(() => {
     sinon.restore();
     app = undefined;
+    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
   });
 
   it("should return reset password page", (done) => {

@@ -15,10 +15,10 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
-import { VerifyCodeInterface } from "../../common/verify-code/types";
 import { PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
+import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers";
 
 describe("reset password check email controller", () => {
   let req: RequestOutput;
@@ -35,10 +35,15 @@ describe("reset password check email controller", () => {
     res = mockResponse();
     res.locals.sessionId = "s-123456-djjad";
     process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
+    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
+    req.session.user = {
+      email: "joe.bloggs@test.com",
+    };
   });
 
   afterEach(() => {
     sinon.restore();
+    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
   });
 
   describe("resetPasswordCheckEmailGet", () => {
@@ -48,10 +53,6 @@ describe("reset password check email controller", () => {
           success: true,
         }),
       } as unknown as ResetPasswordCheckEmailServiceInterface;
-
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
 
       await resetPasswordCheckEmailGet(fakeService)(
         req as Request,
@@ -65,18 +66,19 @@ describe("reset password check email controller", () => {
   });
 
   describe("resetPasswordCheckEmailPost", () => {
-    it("should redirect to reset password if code entered is correct", async () => {
-      const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as VerifyCodeInterface;
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
+    beforeEach(() => {
       req.body.code = "123456";
       req.session.id = "123456-djjad";
-      await resetPasswordCheckEmailPost(fakeService)(
+    });
+    it("should redirect to reset password if code entered is correct", async () => {
+      const fakeService = fakeVerifyCodeServiceHelper(true);
+      const fakeInterventionsService = accountInterventionsFakeHelper(
+        "test@test.com",
+        false,
+        false,
+        false
+      );
+      await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
         req as Request,
         res as Response
       );
@@ -86,18 +88,15 @@ describe("reset password check email controller", () => {
 
     it("should redirect to check_phone if code entered is correct and feature flag is turned on", async () => {
       process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
-      const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as VerifyCodeInterface;
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
+      const fakeService = fakeVerifyCodeServiceHelper(true);
+      const fakeInterventionsService = accountInterventionsFakeHelper(
+        "test@test.com",
+        false,
+        false,
+        false
+      );
       req.session.user.enterEmailMfaType = "SMS";
-      req.body.code = "123456";
-      req.session.id = "123456-djjad";
-      await resetPasswordCheckEmailPost(fakeService)(
+      await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
         req as Request,
         res as Response
       );
@@ -109,18 +108,15 @@ describe("reset password check email controller", () => {
 
     it("should redirect to check_auth_app if code entered is correct and feature flag is turned on", async () => {
       process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
-      const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as VerifyCodeInterface;
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
+      const fakeService = fakeVerifyCodeServiceHelper(true);
+      const fakeInterventionsService = accountInterventionsFakeHelper(
+        "test@test.com",
+        false,
+        false,
+        false
+      );
       req.session.user.enterEmailMfaType = "AUTH_APP";
-      req.body.code = "123456";
-      req.session.id = "123456-djjad";
-      await resetPasswordCheckEmailPost(fakeService)(
+      await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
         req as Request,
         res as Response
       );
@@ -131,20 +127,10 @@ describe("reset password check email controller", () => {
     });
 
     it("should render check email page with errors if incorrect code entered", async () => {
-      const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: false,
-          data: {
-            code: ERROR_CODES.RESET_PASSWORD_INVALID_CODE,
-          },
-        }),
-      } as unknown as VerifyCodeInterface;
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
-      req.body.code = "123456";
-      req.session.id = "123456-djjad";
-
+      const fakeService = fakeVerifyCodeServiceHelper(
+        false,
+        ERROR_CODES.RESET_PASSWORD_INVALID_CODE
+      );
       await resetPasswordCheckEmailPost(fakeService)(
         req as Request,
         res as Response
@@ -156,24 +142,13 @@ describe("reset password check email controller", () => {
     });
 
     it("should redirect to /password-reset-required when temporarilySuspended and passwordResetRequired statuses applied to users account and they try to reset their password", async () => {
-      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
-
-      const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as VerifyCodeInterface;
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
+      const fakeService = fakeVerifyCodeServiceHelper(true);
       const fakeInterventionsService = accountInterventionsFakeHelper(
         "test@test.com",
         true,
         false,
         true
       );
-      req.body.code = "123456";
-      req.session.id = "123456-djjad";
 
       await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
         req as Request,

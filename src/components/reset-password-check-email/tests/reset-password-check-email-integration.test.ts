@@ -10,10 +10,6 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import nock = require("nock");
-import {
-  noInterventions,
-  setupAccountInterventionsResponse,
-} from "../../../../test/helpers/account-interventions-helpers";
 
 describe("Integration::reset password check email ", () => {
   let app: any;
@@ -27,7 +23,7 @@ describe("Integration::reset password check email ", () => {
     const sessionMiddleware = require("../../../middleware/session-middleware");
 
     process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
-    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
+    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "0";
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -136,8 +132,6 @@ describe("Integration::reset password check email ", () => {
       .persist()
       .post(API_ENDPOINTS.VERIFY_CODE)
       .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
-
-    setupAccountInterventionsResponse(baseApi, noInterventions);
 
     request(app)
       .post("/reset-password-check-email")
