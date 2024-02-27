@@ -17,7 +17,17 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
-import { AccountInterventionsInterface } from "../../../account-intervention/types";
+import { accountInterventionsFakeHelper } from "../../../../../test/helpers/account-interventions-helpers";
+
+function fakeVerifyCodeServiceHelper(success: boolean) {
+  const fakeService: VerifyCodeInterface = {
+    verifyCode: sinon.fake.returns({
+      success: success,
+      data: { code: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE },
+    }),
+  } as unknown as VerifyCodeInterface;
+  return fakeService;
+}
 
 describe("check your email change security codes controller", () => {
   let req: RequestOutput;
@@ -49,27 +59,20 @@ describe("check your email change security codes controller", () => {
   });
 
   describe("checkYourEmailChangeSecurityCodesPost", () => {
-    it("should redirect to /get-security-codes and not call AIS when valid code entered and account interventions is turned on", async () => {
-      const fakeVerifyCodeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as VerifyCodeInterface;
-
-      const fakeAccountInterventionsService: AccountInterventionsInterface = {
-        accountInterventionStatus: sinon.fake.returns({
-          data: {
-            email: "test@test.com",
-            passwordResetRequired: false,
-            blocked: false,
-            temporarilySuspended: false,
-          },
-        }),
-      } as unknown as AccountInterventionsInterface;
-
+    beforeEach(() => {
       req.body.code = "123456";
       req.session.id = "123456-djjad";
       req.session.user.email = "test@test.com";
+    });
+
+    it("should redirect to /get-security-codes and not call AIS when valid code entered and account interventions is turned on", async () => {
+      const fakeVerifyCodeService = fakeVerifyCodeServiceHelper(true);
+      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
+        "test@test.co.uk",
+        false,
+        false,
+        false
+      );
 
       await checkYourEmailSecurityCodesPost(
         fakeVerifyCodeService,
@@ -84,26 +87,13 @@ describe("check your email change security codes controller", () => {
 
     it("should redirect to /get-security-codes when valid code entered and there are no interventions in place and account interventions is turned on", async () => {
       process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
-      const fakeVerifyCodeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as VerifyCodeInterface;
-
-      const fakeAccountInterventionsService: AccountInterventionsInterface = {
-        accountInterventionStatus: sinon.fake.returns({
-          data: {
-            email: "test@test.com",
-            passwordResetRequired: false,
-            blocked: false,
-            temporarilySuspended: false,
-          },
-        }),
-      } as unknown as AccountInterventionsInterface;
-
-      req.body.code = "123456";
-      req.session.id = "123456-djjad";
-      req.session.user.email = "test@test.com";
+      const fakeVerifyCodeService = fakeVerifyCodeServiceHelper(true);
+      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
+        "test@test.co.uk",
+        false,
+        false,
+        false
+      );
 
       await checkYourEmailSecurityCodesPost(
         fakeVerifyCodeService,
@@ -118,26 +108,13 @@ describe("check your email change security codes controller", () => {
 
     it("should redirect to /password-reset-required when temporarilySuspended and resetPasswordRequired statuses applied to account.", async () => {
       process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
-      const fakeVerifyCodeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as VerifyCodeInterface;
-
-      const fakeAccountInterventionsService: AccountInterventionsInterface = {
-        accountInterventionStatus: sinon.fake.returns({
-          data: {
-            email: "test@test.com",
-            passwordResetRequired: true,
-            blocked: false,
-            temporarilySuspended: true,
-          },
-        }),
-      } as unknown as AccountInterventionsInterface;
-
-      req.body.code = "123456";
-      req.session.id = "123456-djjad";
-      req.session.user.email = "test@test.com";
+      const fakeVerifyCodeService = fakeVerifyCodeServiceHelper(true);
+      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
+        "test@test.co.uk",
+        true,
+        false,
+        true
+      );
 
       await checkYourEmailSecurityCodesPost(
         fakeVerifyCodeService,
@@ -153,25 +130,14 @@ describe("check your email change security codes controller", () => {
     });
 
     it("should return error when invalid code", async () => {
-      const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: false,
-          data: { code: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE },
-        }),
-      } as unknown as VerifyCodeInterface;
+      const fakeService = fakeVerifyCodeServiceHelper(false);
 
-      req.body.code = "678988";
-      req.session.id = "123456-djjad";
-      req.session.user.email = "test@test.com";
-
-      const fakeAccountInterventionsService: AccountInterventionsInterface = {
-        accountInterventionStatus: sinon.fake.returns({
-          email: "test@test.com",
-          passwordResetRequired: false,
-          blocked: false,
-          temporarilySuspended: false,
-        }),
-      } as unknown as AccountInterventionsInterface;
+      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
+        "test@test.co.uk",
+        false,
+        false,
+        false
+      );
 
       await checkYourEmailSecurityCodesPost(
         fakeService,
