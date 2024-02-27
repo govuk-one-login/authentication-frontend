@@ -18,6 +18,7 @@ import {
 import { VerifyCodeInterface } from "../../common/verify-code/types";
 import { PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
+import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
 
 describe("reset password check email controller", () => {
   let req: RequestOutput;
@@ -151,6 +152,36 @@ describe("reset password check email controller", () => {
 
       expect(res.render).to.have.calledWith(
         "reset-password-check-email/index.njk"
+      );
+    });
+
+    it("should redirect to /password-reset-required when temporarilySuspended and passwordResetRequired statuses applied to users account and they try to reset their password", async () => {
+      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
+
+      const fakeService: VerifyCodeInterface = {
+        verifyCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as VerifyCodeInterface;
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      const fakeInterventionsService = accountInterventionsFakeHelper(
+        "test@test.com",
+        true,
+        false,
+        true
+      );
+      req.body.code = "123456";
+      req.session.id = "123456-djjad";
+
+      await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.PASSWORD_RESET_REQUIRED
       );
     });
   });
