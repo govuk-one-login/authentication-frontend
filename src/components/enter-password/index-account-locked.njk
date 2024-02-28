@@ -11,17 +11,26 @@
 
 {% include "common/errors/errorSummary.njk" %}
 
+{% if support2hrLockout %}
+
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.accountLocked.header' | translate}}</h1>
-
 <p class="govuk-body">{{'pages.accountLocked.paragraph' | translate}}</p>
-
 <h2 class="govuk-heading-m">{{'pages.accountLocked.subHeader' | translate}}</h2>
-
 <p class="govuk-body">{{'pages.accountLocked.bulletPointSection.title' | translate}}</p>
-
 <ul class="govuk-list govuk-list--bullet">
-    <li>{{'pages.accountLocked.bulletPointSection.first' | translate}}<a href={{ newLink }} class="govuk-link">{{'pages.accountLocked.bulletPointSection.firstLink' | translate}}</a></li>
-    <li><a href="/reset-password-request" class="govuk-link">{{'pages.accountLocked.bulletPointSection.second' | translate}}</a></li>
+    <li><a href="/reset-password-request" class="govuk-link">{{'pages.accountLocked.bulletPointSection.first' | translate}}</a></li>
+    <li>{{'pages.accountLocked.bulletPointSection.second' | translate}}</li>
 </ul>
+{% else %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.accountLocked.header' | translate}}</h1>
+<p class="govuk-body">{{'pages.accountLocked.paragraph_old' | translate}}</p>
+<h2 class="govuk-heading-m">{{'pages.accountLocked.subHeader_old' | translate}}</h2>
+<p class="govuk-body">{{'pages.accountLocked.bulletPointSection.title' | translate}}</p>
+<ul class="govuk-list govuk-list--bullet">
+    <li>{{'pages.accountLocked.bulletPointSection.first_old' | translate}}<a href={{ newLink }} class="govuk-link">{{'pages.accountLocked.bulletPointSection.firstLink_old' | translate}}</a></li>
+    <li><a href="/reset-password-request" class="govuk-link">{{'pages.accountLocked.bulletPointSection.second_old' | translate}}</a></li>
+</ul>
+{% endif %}
 
 {% endblock %}
