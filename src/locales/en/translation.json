@@ -265,7 +265,9 @@
         "label": "Password",
         "validationError": {
           "required": "Enter your password",
-          "incorrectPassword": "Enter the correct password"
+          "incorrectPassword_old": "Enter the correct password",
+          "incorrectPassword": "The password you entered is not correct. If you have forgotten your password, you can reset it"
+
         }
       },
       "forgottenPassword": {
@@ -281,7 +283,8 @@
         "label": "Password",
         "validationError": {
           "required": "Enter your password",
-          "incorrectPassword": "Enter the correct password"
+          "incorrectPassword_old": "Enter the correct password",
+          "incorrectPassword": "The password you entered is not correct. If you have forgotten your password, you can reset it"
         }
       },
       "forgottenPassword": {
