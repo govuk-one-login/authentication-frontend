@@ -10,6 +10,7 @@ import { proveIdentityCallbackService } from "./prove-identity-callback-service"
 import { IPV_ERROR_CODES, OIDC_ERRORS } from "../../app.constants";
 import { createServiceRedirectErrorUrl } from "../../utils/error";
 import { supportAuthOrchSplit } from "../../config";
+import { sanitize } from "../../utils/strings";
 
 export function proveIdentityCallbackGet(
   service: ProveIdentityCallbackServiceInterface = proveIdentityCallbackService()
@@ -50,13 +51,19 @@ export function proveIdentityCallbackGet(
         sessionId
       );
     } else {
+      const redirectUri = supportAuthOrchSplit()
+        ? req.session.client.rpRedirectUri
+        : req.session.client.redirectUri;
       redirectPath = createServiceRedirectErrorUrl(
-        supportAuthOrchSplit()
-          ? req.session.client.rpRedirectUri
-          : req.session.client.redirectUri,
+        redirectUri,
         OIDC_ERRORS.ACCESS_DENIED,
         IPV_ERROR_CODES.IDENTITY_PROCESSING_TIMEOUT,
         req.session.client.state
+      );
+      req.log.info(
+        `Redirecting to error URl for session ${sessionId}. URL: ${sanitize(
+          redirectUri
+        )}. Status: ${response.data.status}. Redirect path: ${redirectPath}`
       );
     }
 
