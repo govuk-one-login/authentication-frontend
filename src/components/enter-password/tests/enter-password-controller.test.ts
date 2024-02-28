@@ -21,6 +21,8 @@ import {
 import { EnterEmailServiceInterface } from "../../enter-email/types";
 import { ERROR_CODES } from "../../common/constants";
 import * as journey from "../../common/journey/journey";
+import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
+import { supportAccountInterventions } from "../../../config";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
@@ -33,6 +35,7 @@ describe("enter password controller", () => {
       log: { info: sinon.fake() },
     });
     res = mockResponse();
+    supportAccountInterventions();
   });
 
   afterEach(() => {
@@ -342,6 +345,13 @@ describe("enter password controller", () => {
     });
 
     it("should redirect to reset-password-required when the existing password is common and supportPasswordResetRequired() is enabled", async () => {
+      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
+        "test@test.co.uk",
+        false,
+        false,
+        false
+      );
+
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sinon.fake.returns({
           data: {
@@ -374,7 +384,8 @@ describe("enter password controller", () => {
       await enterPasswordPost(
         false,
         fakeService,
-        fakeMfaService
+        fakeMfaService,
+        fakeAccountInterventionsService
       )(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
