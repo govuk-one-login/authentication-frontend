@@ -62,6 +62,7 @@ describe("Integration::prove identity", () => {
   after(() => {
     sinon.restore();
     app = undefined;
+    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
   });
 
   it("should redirect to orchestration when the account interventions response shows no issues", async () => {

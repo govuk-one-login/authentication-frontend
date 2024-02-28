@@ -41,11 +41,13 @@ describe("check your email change security codes controller", () => {
       t: sinon.fake(),
       i18n: { language: "en" },
     });
+    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "0";
     res = mockResponse();
   });
 
   afterEach(() => {
     sinon.restore();
+    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
   });
 
   describe("checkYourEmailChangeSecurityCodesGet", () => {

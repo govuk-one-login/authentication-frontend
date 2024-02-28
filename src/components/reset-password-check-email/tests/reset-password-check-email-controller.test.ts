@@ -39,6 +39,7 @@ describe("reset password check email controller", () => {
 
   afterEach(() => {
     sinon.restore();
+    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
   });
 
   describe("resetPasswordCheckEmailGet", () => {

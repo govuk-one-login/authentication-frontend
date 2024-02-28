@@ -86,6 +86,7 @@ export function verifyCodePost(
       default:
         throw new Error("Unknown notification type");
     }
+
     if (supportAccountInterventions()) {
       if (
         nextEvent === USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED ||
