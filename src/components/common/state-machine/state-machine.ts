@@ -37,7 +37,7 @@ const USER_JOURNEY_EVENTS = {
   SIGN_IN: "SIGN_IN",
   CREATE_NEW_ACCOUNT: "CREATE_NEW_ACCOUNT",
   SEND_EMAIL_CODE: "SEND_EMAIL_CODE",
-  LANDING: "LANDING",
+  ROOT: "ROOT",
   PASSWORD_CREATED: "PASSWORD_CREATED",
   REQUEST_PASSWORD_RESET: "REQUEST_PASSWORD_RESET",
   PASSWORD_RESET_REQUESTED: "PASSWORD_RESET_REQUESTED",
@@ -60,7 +60,7 @@ const USER_JOURNEY_EVENTS = {
 const authStateMachine = createMachine(
   {
     id: "AUTH",
-    initial: PATH_NAMES.START,
+    initial: PATH_NAMES.AUTHORIZE,
     context: {
       isLatestTermsAndConditionsAccepted: true,
       isConsentRequired: false,
@@ -80,34 +80,9 @@ const authStateMachine = createMachine(
       requiresResetPasswordMFAAuthAppCode: false,
     },
     states: {
-      [PATH_NAMES.START]: {
+      [PATH_NAMES.ROOT]: {
         on: {
-          [USER_JOURNEY_EVENTS.EXISTING_SESSION]: [
-            {
-              target: [PATH_NAMES.PROVE_IDENTITY_WELCOME],
-              cond: "isIdentityRequired",
-            },
-            { target: [PATH_NAMES.ENTER_PASSWORD], cond: "requiresLogin" },
-            {
-              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
-              cond: "requiresAuthAppUplift",
-            },
-            { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
-            {
-              target: [PATH_NAMES.SHARE_INFO],
-              cond: "isConsentRequired",
-            },
-            { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
-          ],
-          [USER_JOURNEY_EVENTS.LANDING]: [
-            {
-              target: [PATH_NAMES.DOC_CHECKING_APP],
-              cond: "skipAuthentication",
-            },
-            {
-              target: [PATH_NAMES.PROVE_IDENTITY_WELCOME],
-              cond: "isIdentityRequired",
-            },
+          [USER_JOURNEY_EVENTS.ROOT]: [
             { target: [PATH_NAMES.SIGN_IN_OR_CREATE] },
           ],
         },

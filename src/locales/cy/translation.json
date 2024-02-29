@@ -265,7 +265,8 @@
         "label": "Cyfrinair",
         "validationError": {
           "required": "Rhowch eich cyfrinair",
-          "incorrectPassword": "Rhowch y cyfrinair cywir"
+          "incorrectPassword_old": "Rhowch y cyfrinair cywir",
+          "incorrectPassword": "Nid yw’r cyfrinair rydych wedi’i roi yn gywir. Os ydych wedi anghofio eich cyfrinair, gallwch ei ailosod"
         }
       },
       "forgottenPassword": {
@@ -281,7 +282,8 @@
         "label": "Cyfrinair",
         "validationError": {
           "required": "Rhowch eich cyfrinair",
-          "incorrectPassword": "Rhowch y cyfrinair cywir"
+          "incorrectPassword_old": "Rhowch y cyfrinair cywir",
+          "incorrectPassword": "Nid yw’r cyfrinair rydych wedii roi yn gywir. Os ydych wedi anghofio eich cyfrinair, gallwch ei ailosod"
         }
       },
       "forgottenPassword": {
@@ -1589,15 +1591,19 @@
     "accountLocked": {
       "title": "Rydych wedi rhoi’r cyfrinair anghywir i mewn ormod o weithiau",
       "header": "Rydych wedi rhoi’r cyfrinair anghywir i mewn ormod o weithiau",
-      "paragraph": "Rydych chi wedi cael eich cloi allan o’ch GOV.UK One Login oherwydd eich bod wedi rhoi’r cyfrinair anghywir i mewn fwy na 5 gwaith. Mae hyn er mwyn cadw eich cyfrif yn ddiogel.",
-      "subHeader": "Beth nesaf",
+      "paragraph_old": "Rydych chi wedi cael eich cloi allan o’ch GOV.UK One Login oherwydd eich bod wedi rhoi’r cyfrinair anghywir i mewn fwy na 5 gwaith. Mae hyn er mwyn cadw eich cyfrif yn ddiogel.",
+      "paragraph":"Ni fyddwch yn gallu mewngofnodi am 2 awr, oherwydd eich bod wedi rhoi’r cyfrinair anghywir fwy na 5 gwaith.",
+      "subHeader_old": "Beth nesaf",
+      "subHeader":"Beth allwch chi ei wneud",
       "bulletPointSection": {
         "title": "Gallwch:",
-        "first": "aros am 15 munud a ",
-        "firstLink": "cheisio mewngofnodi eto",
-        "second": "ailosod eich cyfrinair"
+        "first_old": "aros am 15 munud a ",
+        "first":"ailosod eich cyfrinair",
+        "firstLink_old": "cheisio mewngofnodi eto",
+        "second_old": "ailosod eich cyfrinair",
+        "second":"arhoswch 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o hafan GOV.UK"
       }
-    },
+    }, 
     "browserBackButtonError": {
       "title": "Mae’n ddrwg gennym, ni allwch fynd yn ôl o’r dudalen honno",
       "header": "Mae’n ddrwg gennym, ni allwch fynd yn ôl o’r dudalen honno",
@@ -2249,13 +2255,22 @@
       "title": "Ni allwch fewngofnodi ar hyn o bryd",
       "header": "Ni allwch fewngofnodi ar hyn o bryd",
       "paragraph": "Mae hyn oherwydd eich bod wedi rhoi’r cyfrinair anghywir i mewn fwy na 5 gwaith y tro diwethaf i chi geisio mewngofnodi. Mae hyn er mwyn cadw eich GOV.UK One Login yn ddiogel.",
-      "info": {
+      "info_old": {
         "paragraph1Start": "Gallwch ",
         "firstLink": "geisio mewngofnodi eto",
         "paragraph1End": " ar ôl i 15 munud fynd heibio.",
         "paragraph2Start": "Gallwch hefyd ",
         "secondLink": "ailosod eich cyfrinair",
         "paragraph2End": "."
+      },
+      "subHeader":"Beth allwch chi ei wneud",
+      "bulletPointSection": {
+        "title": "Gallwch:",
+        "first_old": "aros am 15 munud a ",
+        "first":"ailosod eich cyfrinair",
+        "firstLink_old": "cheisio mewngofnodi eto",
+        "second_old": "ailosod eich cyfrinair",
+        "second":"arhoswch 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o hafan GOV.UK"
       }
     },
     "needToResetPassword": {
