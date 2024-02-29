@@ -14,6 +14,10 @@ import { AxiosResponse } from "axios";
 import { createApiResponse } from "../../../utils/http";
 import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
 import { DefaultApiResponse } from "../../../types";
+import {
+  noInterventions,
+  setupAccountInterventionsResponse,
+} from "../../../../test/helpers/account-interventions-helpers";
 
 describe("Integration::enter password", () => {
   let token: string | string[];
@@ -84,7 +88,7 @@ describe("Integration::enter password", () => {
     sinon.restore();
     app = undefined;
     delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+    delete process.env.SUPPORT_2FA_B4_PASSWORD_RESET;
   });
 
   it("should return enter password page", (done) => {
@@ -149,6 +153,8 @@ describe("Integration::enter password", () => {
       passwordChangeRequired: true,
     });
 
+    setupAccountInterventionsResponse(baseApi, noInterventions);
+
     request(app)
       .post(ENDPOINT)
       .type("form")
@@ -167,6 +173,8 @@ describe("Integration::enter password", () => {
       mfaMethodType: "SMS",
       passwordChangeRequired: true,
     });
+
+    setupAccountInterventionsResponse(baseApi, noInterventions);
 
     request(app)
       .post(ENDPOINT)
