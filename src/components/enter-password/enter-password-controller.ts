@@ -22,7 +22,7 @@ import { enterEmailService } from "../enter-email/enter-email-service";
 import {
   support2FABeforePasswordReset,
   supportAccountInterventions,
-  support2hrLockout
+  support2hrLockout,
 } from "../../config";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
