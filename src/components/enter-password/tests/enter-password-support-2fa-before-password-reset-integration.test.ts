@@ -14,6 +14,10 @@ import { AxiosResponse } from "axios";
 import { createApiResponse } from "../../../utils/http";
 import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
 import { DefaultApiResponse } from "../../../types";
+import {
+  noInterventions,
+  setupAccountInterventionsResponse,
+} from "../../../../test/helpers/account-interventions-helpers";
 
 describe("Integration::enter password", () => {
   let token: string | string[];
@@ -62,7 +66,6 @@ describe("Integration::enter password", () => {
         return { checkReauthUsers };
       });
 
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
@@ -76,12 +79,16 @@ describe("Integration::enter password", () => {
   });
 
   beforeEach(() => {
+    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     nock.cleanAll();
   });
 
   after(() => {
     sinon.restore();
     app = undefined;
+    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
+    delete process.env.SUPPORT_2FA_B4_PASSWORD_RESET;
   });
 
   it("should return enter password page", (done) => {
@@ -146,6 +153,8 @@ describe("Integration::enter password", () => {
       passwordChangeRequired: true,
     });
 
+    setupAccountInterventionsResponse(baseApi, noInterventions);
+
     request(app)
       .post(ENDPOINT)
       .type("form")
@@ -164,6 +173,8 @@ describe("Integration::enter password", () => {
       mfaMethodType: "SMS",
       passwordChangeRequired: true,
     });
+
+    setupAccountInterventionsResponse(baseApi, noInterventions);
 
     request(app)
       .post(ENDPOINT)

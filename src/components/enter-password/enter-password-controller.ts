@@ -19,8 +19,14 @@ import { MFA_METHOD_TYPE } from "../../app.constants";
 import xss from "xss";
 import { EnterEmailServiceInterface } from "../enter-email/types";
 import { enterEmailService } from "../enter-email/enter-email-service";
-import { support2FABeforePasswordReset, support2hrLockout } from "../../config";
+import {
+  support2FABeforePasswordReset,
+  supportAccountInterventions,
+  support2hrLockout,
+} from "../../config";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
+import { accountInterventionService } from "../account-intervention/account-intervention-service";
+import { AccountInterventionsInterface } from "../account-intervention/types";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY_OLD =
@@ -91,7 +97,8 @@ export function enterPasswordAccountExistsGet(
 export function enterPasswordPost(
   fromAccountExists = false,
   service: EnterPasswordServiceInterface = enterPasswordService(),
-  mfaCodeService: MfaServiceInterface = mfaService()
+  mfaCodeService: MfaServiceInterface = mfaService(),
+  accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
@@ -153,6 +160,34 @@ export function enterPasswordPost(
     req.session.user.isLatestTermsAndConditionsAccepted =
       userLogin.data.latestTermsAndConditionsAccepted;
     req.session.user.isPasswordChangeRequired = isPasswordChangeRequired;
+
+    if (
+      req.session.user.isPasswordChangeRequired &&
+      supportAccountInterventions()
+    ) {
+      const accountInterventionsResponse =
+        await accountInterventionsService.accountInterventionStatus(
+          sessionId,
+          email,
+          req.ip,
+          clientSessionId,
+          persistentSessionId
+        );
+      if (
+        accountInterventionsResponse.data.passwordResetRequired ||
+        accountInterventionsResponse.data.temporarilySuspended
+      ) {
+        return res.redirect(
+          getNextPathAndUpdateJourney(
+            req,
+            req.path,
+            USER_JOURNEY_EVENTS.COMMON_PASSWORD_AND_AIS_STATUS,
+            null,
+            sessionId
+          )
+        );
+      }
+    }
 
     if (
       userLogin.data.mfaRequired &&
