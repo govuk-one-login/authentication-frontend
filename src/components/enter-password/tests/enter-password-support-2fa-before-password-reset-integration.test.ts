@@ -62,7 +62,6 @@ describe("Integration::enter password", () => {
         return { checkReauthUsers };
       });
 
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
@@ -76,12 +75,16 @@ describe("Integration::enter password", () => {
   });
 
   beforeEach(() => {
+    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     nock.cleanAll();
   });
 
   after(() => {
     sinon.restore();
     app = undefined;
+    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
+    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
   });
 
   it("should return enter password page", (done) => {
