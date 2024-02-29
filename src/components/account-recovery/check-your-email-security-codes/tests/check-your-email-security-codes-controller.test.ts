@@ -129,6 +129,48 @@ describe("check your email change security codes controller", () => {
       );
     });
 
+    it("should redirect to /unavailable-temporary when only temporarilySuspended AIS status applied to account", async () => {
+      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
+      const fakeVerifyCodeService = fakeVerifyCodeServiceHelper(true);
+      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
+        "test@test.co.uk",
+        false,
+        false,
+        true
+      );
+
+      await checkYourEmailSecurityCodesPost(
+        fakeVerifyCodeService,
+        fakeAccountInterventionsService
+      )(req as Request, res as Response);
+
+      expect(fakeAccountInterventionsService.accountInterventionStatus).to.have
+        .been.calledOnce;
+      expect(fakeVerifyCodeService.verifyCode).to.have.been.calledOnce;
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.UNAVAILABLE_TEMPORARY);
+    });
+
+    it("should redirect to /unavailable-permanent when only blocked AIS status applied to account", async () => {
+      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
+      const fakeVerifyCodeService = fakeVerifyCodeServiceHelper(true);
+      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
+        "test@test.co.uk",
+        false,
+        true,
+        false
+      );
+
+      await checkYourEmailSecurityCodesPost(
+        fakeVerifyCodeService,
+        fakeAccountInterventionsService
+      )(req as Request, res as Response);
+
+      expect(fakeAccountInterventionsService.accountInterventionStatus).to.have
+        .been.calledOnce;
+      expect(fakeVerifyCodeService.verifyCode).to.have.been.calledOnce;
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.UNAVAILABLE_PERMANENT);
+    });
+
     it("should return error when invalid code", async () => {
       const fakeService = fakeVerifyCodeServiceHelper(false);
 
