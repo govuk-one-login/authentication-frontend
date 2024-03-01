@@ -44,11 +44,11 @@ const loggerMiddleware = PinoHttp({
   wrapSerializers: false,
   autoLogging: {
     ignorePaths: [
-      "/public/scripts/cookies.js",
       "/public/scripts/all.js",
       "/public/style.css",
       "/public/scripts",
       "/public/scripts/application.js",
+      "/public/scripts/analytics.js",
       "/assets/images/govuk-crest-2x.png",
       "/assets/fonts/bold-b542beb274-v2.woff2",
       "/assets/fonts/bold-b542beb274-v2.woff2",

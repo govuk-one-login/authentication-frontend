@@ -107,6 +107,16 @@ You can also add an additional service with a different VTR by duplicating the `
 giving it a new name and amending the `PORT` and `VTR` environment variables. The `ports` entry, must reflect the port
 number in the `PORT` environment variable. Each service must have a unique port number.
 
+### Set the analytics environment variables
+
+Add environment variables to your .env file:
+
+UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID="GTM-XXXXXXX"
+GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID="GTM-XXXXXXX"
+GA4_DISABLED="false"
+UA_DISABLED="true"
+ANALYTICS_COOKIE_DOMAIN="localhost"
+
 ### Running the tests
 
 The unit tests have been written with Mocha and Supertest.

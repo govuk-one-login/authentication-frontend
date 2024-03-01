@@ -117,9 +117,19 @@
 
 {% block bodyEnd %}
     {% block scripts %}{% endblock %}
-    <script type="text/javascript" src="/public/scripts/cookies.js"></script>
     <script type="text/javascript" src="/public/scripts/application.js"></script>
     <script type="text/javascript" src="/public/scripts/all.js"></script>
-    <script type="text/javascript"
-            nonce='{{ scriptNonce }}'>window.GOVSignIn.appInit("{{ gtmId }}", "{{ analyticsCookieDomain }}");</script>
+    <script type="text/javascript" src="/public/scripts/analytics.js"></script>
+    <script type="text/javascript" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
+    window
+      .DI
+      .appInit({
+        ga4ContainerId: "{{ga4ContainerId}}",
+        uaContainerId: "{{uaContainerId}}"
+      }, {
+        disableGa4Tracking: {{isGa4Disabled}},
+        disableUaTracking: {{isUaDisabled}},
+        cookieDomain: "{{analyticsCookieDomain}}"
+      });
+  </script>
 {% endblock %}

@@ -1,84 +1,58 @@
 function initFeedbackRadioButtons() {
-  var feedbackRadioButtons = Array.prototype.slice.call(
-    document.querySelectorAll('input[name="feedbackContact"]')
-  );
-  var container = document.querySelector("#contact-details-container");
-  feedbackRadioButtons.forEach(function (element) {
-    element.addEventListener(
+  var e = Array.prototype.slice.call(
+      document.querySelectorAll('input[name="feedbackContact"]')
+    ),
+    o = document.querySelector("#contact-details-container");
+  e.forEach(function (e) {
+    e.addEventListener(
       "click",
-      function (event) {
-        if (event.target.value === "true") {
-          container.classList.remove("govuk-!-display-none");
-        } else {
-          container.classList.add("govuk-!-display-none");
-          var elements = container.getElementsByTagName("input");
-          for (var i = 0; i < elements.length; i++) {
-            if (elements[i].type == "text") {
-              elements[i].value = "";
-            }
-          }
+      function (e) {
+        if ("true" === e.target.value)
+          o.classList.remove("govuk-!-display-none");
+        else {
+          o.classList.add("govuk-!-display-none");
+          for (
+            var n = o.getElementsByTagName("input"), t = 0;
+            t < n.length;
+            t++
+          )
+            "text" == n[t].type && (n[t].value = "");
         }
       }.bind(this)
     );
   });
 }
-
-var onIntNumberSelected = function (intPhoneNumberCheckbox, phoneNumberInput) {
-  if (intPhoneNumberCheckbox.checked) {
-    phoneNumberInput.value = "";
-    phoneNumberInput.disabled = true;
-    phoneNumberInput.classList.add("govuk-input--disabled");
-  } else {
-    phoneNumberInput.disabled = false;
-    phoneNumberInput.classList.remove("govuk-input--disabled");
-  }
+var onIntNumberSelected = function (e, n) {
+  e.checked
+    ? ((n.value = ""),
+      (n.disabled = !0),
+      n.classList.add("govuk-input--disabled"))
+    : ((n.disabled = !1), n.classList.remove("govuk-input--disabled"));
 };
-
 function initEnterPhoneNumber() {
-  var phoneNumberInput = document.querySelector("#phoneNumber");
-  var intPhoneNumberCheckbox = document.querySelector(
-    "#hasInternationalPhoneNumber"
-  );
-  if (phoneNumberInput && intPhoneNumberCheckbox) {
-    intPhoneNumberCheckbox.addEventListener("click", function (event) {
-      onIntNumberSelected(event.currentTarget, phoneNumberInput);
-    });
-    window.addEventListener(
-      "load",
-      onIntNumberSelected(intPhoneNumberCheckbox, phoneNumberInput)
-    );
-  }
+  var n = document.querySelector("#phoneNumber"),
+    e = document.querySelector("#hasInternationalPhoneNumber");
+  n &&
+    e &&
+    (e.addEventListener("click", function (e) {
+      onIntNumberSelected(e.currentTarget, n);
+    }),
+    window.addEventListener("load", onIntNumberSelected(e, n)));
 }
-
-(function (w) {
+!(function (e) {
   "use strict";
-  function appInit(trackingId, analyticsCookieDomain) {
-    window.GOVUKFrontend.initAll();
-    var cookies = window.GOVSignIn.Cookies(trackingId, analyticsCookieDomain);
-
-    if (cookies.hasConsentForAnalytics()) {
-      cookies.initAnalytics();
-    }
-
-    if (cookies.isOnCookiesPage()) {
-      cookies.cookiesPageInit();
-    } else {
-      cookies.cookieBannerInit();
-    }
-  }
-
-  initFeedbackRadioButtons();
-  initEnterPhoneNumber();
-
-  if (w.GOVUK && w.GOVUK.Modules && w.GOVUK.Modules.ShowPassword) {
-    var modules = document.querySelectorAll('[data-module="show-password"]');
-
-    for (var i = 0, l = modules.length; i < l; i++) {
-      if (GOVUK.Modules.ShowPassword.prototype.init) {
-        new GOVUK.Modules.ShowPassword(modules[i]).init();
-      }
-    }
-  }
-
-  w.GOVSignIn.appInit = appInit;
+  if (
+    (initFeedbackRadioButtons(),
+    initEnterPhoneNumber(),
+    e.GOVUK && e.GOVUK.Modules && e.GOVUK.Modules.ShowPassword)
+  )
+    for (
+      var n = document.querySelectorAll('[data-module="show-password"]'),
+        t = 0,
+        o = n.length;
+      t < o;
+      t++
+    )
+      GOVUK.Modules.ShowPassword.prototype.init &&
+        new GOVUK.Modules.ShowPassword(n[t]).init()
 })(window);
