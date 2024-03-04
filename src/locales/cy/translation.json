@@ -849,6 +849,16 @@
         "bulletPoint1": "nid yw’n bosib stopio na newid hyd yr amseru allan pan fyddwch yn defnyddio, mewngofnodi i neu greu GOV.UK One Login",
         "bulletPoint2": "nid yw’n bosib i ddarllenydd sgrin wybod pryd mae’r e-byst rydym yn eu hanfon mewn iaith ar wahân i’r Saesneg",
         "bulletPoint3": "mae un dudalen yn ail-lwytho yn awtomatig ar ôl terfyn amser penodol, ac nid yw’n bosibl i stopio neu oedi hyn",
+        "bulletPoint4": "mae’r ddolen allgofnodi pennawd yn achosi bar sgrolio llorweddol ar chwyddiadau mawr iawn ar ddyfeisiau symudol",
+        "bulletPoint5": "nid yw bob amser yn bosibl defnyddio opsiynau awtomatig eich porwr i roi gwybodaeth",
+        "bulletPoint6": "nid yw’r dolenni yn y troedyn yr un peth ar bob tudalen",
+        "bulletPoint7": "mae dolen wag yn y pennawd am ran fer o’r daith",
+        "bulletPoint8": "nid yw rhai tudalennau’n nodi’n gywir yr iaith y maent yn cael eu cyhoeddi ynddi",
+        "bulletPoint9": "nid yw teitlau rhai tudalennau yn dechrau gyda ’gwall’ os nad ydych wedi rhoi’r wybodaeth sydd ei hangen yn y ffurf cywir",
+        "bulletPoint10": "mae rhai dolenni yn y pennawd a’r troedyn y gallech ddisgwyl eu hagor mewn tab newydd yn agor yn yr un tab",
+        "bulletPoint11": "mae rhai meysydd ffurflen yn cyfyngu ar faint o nodau y gellir eu rhoi ynddynt, a all ei gwneud hi’n anodd rhoi gwybodaeth wrth ddefnyddio technolegau cynorthwyol",
+        "bulletPoint12": "nid yw botymau sy’n dangos animeiddiadau ’spinner’ yn cadw at eich gosodiadau cynnig llai",
+        "bulletPoint13": "nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni",
         "paragraph2": "Byddwn yn diweddaru’r dudalen hon pan fydd y materion wedi cael eu datrys neu gyda gwybodaeth ynghylch pryd rydym yn bwriadu eu datrys."
       },
       "section3": {
@@ -881,7 +891,18 @@
         "header": "Cynnwys anhygyrch",
         "paragraph1": "Nid yw’r cynnwys a restrir isod yn hygyrch am y rhesymau canlynol.",
         "subHeader": "Diffyg cydymffurfio â’r rheoliadau hygyrchedd",
-        "paragraph2": "Pan fyddwch yn creu GOV.UK One Login neu fewngofnodi, os nad ydych yn gwneud unrhyw beth am 1 awr, bydd y broses yn stopio (amseru allan) neu byddwch yn cael eich allgofnodi. Nid yw’n bosibl addasu, ymestyn na diffodd yr amseru allan. Mae hyn yn methu maen prawf llwyddiant WCAG 2.1  2.2.1 (Addasu Amseru)."
+        "listItem1": "Pan fyddwch yn creu GOV.UK One Login neu’n mewngofnodi, os nad ydych yn gwneud unrhyw beth am 60 munud, bydd y broses yn dod i ben (amseru allan) neu byddwch yn cael eich allgofnodi. Nid yw’n bosibl addasu, ymestyn neu ddiffodd yr amseru allan. Mae hyn yn methu maen prawf llwyddiant 2.2.1 (Amseru Addasadwy) WCAG 2.1.",
+        "listItem2": "Mae’r ddolen allgofnodi pennawd yn achosi bar sgrolio llorweddol ar chwyddiadau mawr iawn ar ddyfeisiau symudol. Os ydych chi’n defnyddio technolegau cynorthwyol efallai y byddwch yn cael hi’n anoddach i lywio tudalennau os ydych chi’n cynyddu’r lefel chwyddo. Mae hyn yn methu maen prawf llwyddiant 1.4.10 (Reflow) WCAG 2.2.",
+        "listItem3": "Nid yw bob amser yn bosibl defnyddio opsiynau awtomatig eich porwr i roi gwybodaeth.",
+        "listItem4": "Os ydych chi’n defnyddio technolegau cynorthwyol, efallai y bydd yn cymryd mwy o amser i chi rhoi gwybodaeth. Mae hyn yn methu maen prawf llwyddiant 1.3.5 (Pwrpas Mewnbwn Hunaniaeth) WCAG 2.2.",
+        "listItem5": "Nid yw’r dolenni yn y troedyn yr un peth ar bob tudalen. Mae hyn yn methu maen prawf llwyddiant 3.2.6 (Cymorth Cyson) WCAG 2.2.",
+        "listItem6": "Mae dolen wag yn y pennawd ar gyfer rhan fer o’r daith. Os ydych chi’n defnyddio technolegau cynorthwyol efallai eich bod chi’n ymwybodol o’r ddolen ond ni fyddwch yn gallu ei dewis. Mae hyn yn methu maen prawf llwyddiant 3.2.3 (Llywio Cyson) WCAG 2.2.",
+        "listItem7": "Nid yw rhai tudalennau’n nodi’n gywir yr iaith y maent yn cael eu cyhoeddi ynddi. Mae hyn yn golygu na fydd darllenwyr sgrin yn darllen cynnwys yn gywir. Mae hyn yn methu maen prawf llwyddiant 3.1.1 (Iaith y Dudalen) WCAG 2.2.",
+        "listItem8": "Nid yw teitlau rhai tudalennau yn dechrau gyda ’gwall’ os nad yw’r defnyddiwr wedi rhoi’r wybodaeth sydd ei hangen yn y ffurf cywir. Mae hyn yn golygu nad yw defnyddwyr darllenwyr sgrin yn gwybod ar unwaith bod problem. Mae hyn yn methu maen prawf llwyddiant 2.4.2 (Teitl y dudalen) WCAG 2.2.",
+        "listItem9": "Mae dolenni yn y pennawd a’r troedyn y gallech ddisgwyl eu hagor mewn tab newydd weithiau’n agor mewn tab newydd. Mae hyn yn methu Canllaw 3.2 (Rhagweladwy) WCAG 2.2.",
+        "listItem10": "Mae rhai meysydd ffurflen yn cyfyngu ar faint o nodau y gellir eu rhoi, a all ei gwneud hi’n anodd rhoi gwybodaeth os ydych chi’n defnyddio technolegau cynorthwyol. Mae hyn yn methu maen prawf llwyddiant 3.3.1 (Adnabod Gwallau) WCAG 2.2.",
+        "listItem11": "Nid yw botymau sy’n dangos animeiddiadau ’spinner’ yn cadw at eich gosodiadau cynnig llai. Mae hyn yn methu maen prawf llwyddiant 2.2.2 (Saib, Stop, Cuddio) WCAG 2.2.",
+        "listItem12": "Nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni. Mae hyn yn methu maen prawf llwyddiant 3.2.6 (Cymorth Cyson) WCAG 2.2."
       },
       "section8": {
         "header": "Beth rydym yn ei wneud i wella hygyrchedd",
@@ -889,8 +910,8 @@
       },
       "section9": {
         "header": "Paratoi’r datganiad hygyrchedd hwn",
-        "paragraph1": "Paratowyd y datganiad hwn ar 4 Tachwedd 2020. Cafodd ei adolygu ddiwethaf ar 29 Mehefin 2022.",
-        "paragraph2": "Cafodd GOV.UK One Login ei brofi ddiwethaf ar 13 Mehefin 2022. Cynhaliwyd y prawf gan y Ganolfan Hygyrchedd Digidol (DAC), a gynhyrchodd adroddiad archwilio hygyrchedd ar 17 Mehefin 2022. Asesodd DAC GOV.UK One Login yn erbyn y Canllawiau Hygyrchedd Cynnwys Gwe WCAG 2.1."
+        "paragraph1": "Paratowyd y datganiad hwn ar 4 Tachwedd 2020. Cafodd ei adolygu ddiwethaf ar 28 Chwefror 2024.",
+        "paragraph2": "Cafodd GOV.UK One Login ei brofi ddiwethaf ym mis Hydref a Tachwedd 2023. Cynhaliwyd y prawf gan dîm hygyrchedd GOV.UK One Login, a gynhyrchodd archwiliad o’r daith yn Rhagfyr 2023. Asesodd dîm hygyrchedd GOV.UK One Login y gwasanaeth GOV.UK One Login yn erbyn y Canllawiau Hygyrchedd Cynnwys Gwe WCAG 2.2 wrth baratoi ar gyfer y canllawiau sy’n cael eu gorfodi yn Hydref 2024."
       }
     },
     "termsAndConditions": {

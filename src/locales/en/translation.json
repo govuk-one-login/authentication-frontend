@@ -850,6 +850,16 @@
         "bulletPoint1": "it’s not possible to stop or change the length of the time-out when you use, sign in to or create a GOV.UK One Login",
         "bulletPoint2": "it’s not possible for a screen reader to know when the emails we send are in a language other than English",
         "bulletPoint3": "one page reloads automatically after a set time limit, and it’s not possible to stop or delay this",
+        "bulletPoint4": "the header sign-out link causes a horizontal scrollbar at very large magnifications on mobile devices",
+        "bulletPoint5": "it’s not always possible to use your browser’s autocomplete options to enter information",
+        "bulletPoint6": "the links in the footer are not the same on every page",
+        "bulletPoint7": "there is an empty link in the header for a short section of the journey",
+        "bulletPoint8": "some pages do not correctly identify the language they are published in",
+        "bulletPoint9": "some page titles do not start with ‘error’ if you have not entered the information that’s needed in the correct format",
+        "bulletPoint10": "some links in the header and footer that you may expect to open in a new tab open in the same tab",
+        "bulletPoint11": "some form fields limit how many characters can be entered in them, which can make it difficult to enter information when using assistive technologies",
+        "bulletPoint12": "buttons that show ‘spinner’ animations do not adhere to your reduced motion settings",
+        "bulletPoint13": "the information in the cookie banner content is not the same on all pages it appears on",
         "paragraph2": "We’ll update this page when issues are fixed or with information about when we plan to fix them."
       },
       "section3": {
@@ -882,7 +892,18 @@
         "header": "Non-accessible content",
         "paragraph1": "The content listed below is non-accessible for the following reasons.",
         "subHeader": "Non compliance with the accessibility regulations",
-        "paragraph2": "When you create a GOV.UK One Login or sign in, if you do not do anything for 1 hour, the process will stop (time out) or you’ll be signed out. It’s not possible to adjust, extend or turn off the time out. This fails WCAG 2.1 success criterion 2.2.1 (Timing Adjustable)."
+        "listItem1": "When you create a GOV.UK One Login or sign in, if you do not do anything for 1 hour, the process will stop (time out) or you’ll be signed out. It’s not possible to adjust, extend or turn off the time out. This fails WCAG 2.1 success criterion 2.2.1 (Timing Adjustable).",
+        "listItem2": "The header sign-out link causes a horizontal scrollbar at very large magnifications on mobile devices. If you use assistive technologies you may find it harder to navigate pages if you increase the zoom level. This fails WCAG 2.2 success criterion 1.4.10 (Reflow).",
+        "listItem3": "It’s not always possible to use your browser’s autocomplete options to enter information.",
+        "listItem4": "If you use assistive technologies, it may take you longer to enter information. This fails WCAG 2.2 success criterion 1.3.5 (Identity Input Purpose).",
+        "listItem5": "The links in the footer are not the same on every page. This fails WCAG 2.2 success criterion 3.2.6 (Consistent Help).",
+        "listItem6": "There is an empty link in the header for a short section of the journey. If you use assistive technologies you may be aware of the link but will not be able to select it. This fails WCAG 2.2 success criterion 3.2.3 (Consistent Navigation).",
+        "listItem7": "Some pages do not correctly identify the language they are published in. This means screen readers will not read content correctly. This fails WCAG 2.2 success criterion 3.1.1 (Language of Page).",
+        "listItem8": "Some page titles do not start with ‘error’ if the user hasn’t entered the information that’s needed in the correct format. This means screen reader users do not immediately know there is a problem. This fails WCAG 2.2 success criterion 2.4.2 (Page Titled).",
+        "listItem9": "Links in the header and footer that you may expect to open in a new tab sometimes open in a new tab. This fails WCAG 2.2 Guideline 3.2 (Predictable).",
+        "listItem10": "Some form fields limit how many characters can be entered, which can make it difficult to enter information if you are using assistive technologies. This fails WCAG 2.2 success criterion 3.3.1 (Error Identification).",
+        "listItem11": "Buttons that show ‘spinner’ animations do not adhere to your reduced motion settings. This fails WCAG 2.2 success criterion 2.2.2 (Pause, Stop, Hide).",
+        "listItem12": "The information in the cookie banner content is not the same on all pages it appears on. This fails WCAG 2.2 success criterion 3.2.6 (Consistent Help)."
       },
       "section8": {
         "header": "What we’re doing to improve accessibility",
@@ -890,8 +911,8 @@
       },
       "section9": {
         "header": "Preparation of this accessibility statement",
-        "paragraph1": "This statement was prepared on 4 November 2020. It was last reviewed on 29 June 2022.",
-        "paragraph2": "GOV.UK One Login was last tested on 13 June 2022. The test was carried out by the Digital Accessibility Centre (DAC), who produced an accessibility audit report on 17 June 2022. DAC assessed GOV.UK One Login against the Web Content Accessibility Guidelines WCAG 2.1."
+        "paragraph1": "This statement was prepared on 4 November 2020. It was last reviewed on 28 February 2024.",
+        "paragraph2": "GOV.UK One Login was last tested in October and November 2023. The test was carried out by the GOV.UK One Login accessibility team who produced an audit of the journey in December 2023. The GOV.UK One Login accessibility team assessed GOV.UK One Login against the Web Content Accessibility Guidelines WCAG 2.2 in preparation for the guidelines being enforced in October 2024."
       }
     },
     "termsAndConditions": {
