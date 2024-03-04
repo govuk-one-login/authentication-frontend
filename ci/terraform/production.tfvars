@@ -2,7 +2,7 @@ environment         = "production"
 common_state_bucket = "digital-identity-prod-tfstate"
 redis_node_size     = "cache.m4.xlarge"
 
-frontend_auto_scaling_enabled    = true
+frontend_auto_scaling_enabled    = false
 frontend_auto_scaling_v2_enabled = false
 frontend_task_definition_cpu     = 1024
 frontend_task_definition_memory  = 2048
