@@ -104,12 +104,10 @@ export function verifyCodePost(
           );
         if (accountInterventionsResponse.data.blocked) {
           nextEvent = USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION;
-        }
-        if (accountInterventionsResponse.data.temporarilySuspended) {
-          nextEvent = USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION;
-        }
-        if (accountInterventionsResponse.data.passwordResetRequired) {
+        } else if (accountInterventionsResponse.data.passwordResetRequired) {
           nextEvent = USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION;
+        } else if (accountInterventionsResponse.data.temporarilySuspended) {
+          nextEvent = USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION;
         }
       }
     }
