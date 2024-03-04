@@ -1,9 +1,24 @@
 #!/usr/bin/env bash
 set -eu
 
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+
 CLEAN=0
 LOCAL=0
-while getopts "cl" opt; do
+
+function usage() {
+  local error_message="${1}"
+  echo
+  if [ -n "${error_message}" ]; then
+    echo "Error: ${error_message}" >&2
+  fi
+  echo "Usage: startup.sh [-c] [-l]" >&2
+  echo "  -c: Clean dist and node_modules" >&2
+  echo "  -l: Start frontend natively (not in docker)" >&2
+  exit 1
+}
+
+while getopts ":cl" opt; do
   case ${opt} in
   l)
     LOCAL=1
@@ -12,8 +27,7 @@ while getopts "cl" opt; do
     CLEAN=1
     ;;
   *)
-    usage
-    exit 1
+    usage "Invalid option: -${OPTARG}"
     ;;
   esac
 done
@@ -26,19 +40,18 @@ if [ $CLEAN == "1" ]; then
 fi
 
 echo "Stopping frontend services..."
-docker-compose down
+docker-compose --log-level ERROR down
 
-if [[ -z "${AWS_ACCESS_KEY_ID:-}" || -z "${AWS_SECRET_ACCESS_KEY:-}" ]]; then
-  echo "!! AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY must be set in the environment." >&2
-  echo "!! Configure AWS access for either gds-di-development (sandpit) or di-auth-development (authdevs)." >&2
-  echo "!! For gds-cli: gds aws digital-identity-dev -- ${0}" >&2
-  exit 1
-fi
+test -f .env || usage "Missing .env file"
+
+export "$(grep -v '^#' .env | xargs)"
+
+# shellcheck source=./scripts/export_aws_creds.sh
+source "${DIR}/scripts/export_aws_creds.sh"
 
 if [ $LOCAL == "1" ]; then
   echo "Starting frontend local service..."
   docker compose -f "docker-compose.yml" up -d --wait --no-deps redis di-auth-stub-default di-auth-stub-no-mfa
-  export "$(grep -v '^#' .env | xargs)"
   export REDIS_PORT=6389
   export REDIS_HOST=localhost
   yarn install && yarn copy-assets && yarn dev
