@@ -23,6 +23,7 @@ describe("Integration::reset password check email ", () => {
     const sessionMiddleware = require("../../../middleware/session-middleware");
 
     process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
+    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "0";
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
