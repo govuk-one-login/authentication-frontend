@@ -4,6 +4,7 @@ export interface CheckReauthServiceInterface {
   checkReauthUsers: (
     sessionId: string,
     email: string,
+    sub: string,
     sourceIp: string,
     clientSessionId: string,
     persistentSessionId: string
