@@ -69,7 +69,7 @@ describe("Verify code controller tests", () => {
         session: { client: {}, user: { email: "test@test.com" } },
         log: { info: sinon.fake() },
       });
-    })
+    });
 
     it("if account is blocked, redirects to /unavailable-permanent", async () => {
       const accountInterventionService = accountInterventionsFakeHelper(
@@ -160,7 +160,7 @@ describe("Verify code controller tests", () => {
         session: { client: {}, user: { email: "test@test.com" } },
         log: { info: sinon.fake() },
       });
-    })
+    });
 
     it("if account has no AIS status, redirects to reset password", async () => {
       const accountInterventionService = accountInterventionsFakeHelper(
@@ -220,6 +220,26 @@ describe("Verify code controller tests", () => {
       expect(accountInterventionService.accountInterventionStatus).to.have.been
         .called;
       expect(res.redirect).to.have.calledWith("/unavailable-permanent");
+    });
+
+    it("if account has reset password and suspended status, redirects to reset password", async () => {
+      const accountInterventionService = accountInterventionsFakeHelper(
+        "test@test.com",
+        true,
+        false,
+        true
+      );
+      await verifyCodePost(verifyCodeService, accountInterventionService, {
+        notificationType: NOTIFICATION_TYPE.MFA_SMS,
+        template: "check-your-email/index.njk",
+        validationKey: "pages.checkYourEmail.code.validationError.invalidCode",
+        validationErrorCode: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE,
+        journeyType: JOURNEY_TYPE.PASSWORD_RESET_MFA,
+      })(req as Request, res as Response);
+
+      expect(accountInterventionService.accountInterventionStatus).to.have.been
+        .called;
+      expect(res.redirect).to.have.calledWith("/reset-password");
     });
   });
 });
