@@ -33,7 +33,11 @@ router.post(
   asyncHandler(resetPasswordPost())
 );
 
-router.get(PATH_NAMES.RESET_PASSWORD_REQUIRED, resetPasswordRequiredGet);
+router.get(
+  PATH_NAMES.RESET_PASSWORD_REQUIRED,
+  asyncHandler(accountInterventionsMiddleware(true, false)),
+  resetPasswordRequiredGet
+);
 
 router.post(
   PATH_NAMES.RESET_PASSWORD_REQUIRED,
