@@ -57,12 +57,13 @@ export function enterEmailPost(
     const email = req.body.email;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     req.session.user.email = email.toLowerCase();
-    const isReAuthenticationRequired = req.session.user.reauthenticate;
+    const sub = req.session.user.reauthenticate;
 
-    if (supportReauthentication() && isReAuthenticationRequired) {
+    if (supportReauthentication() && sub) {
       const checkReauth = await checkReauthService.checkReauthUsers(
         sessionId,
         email,
+        sub,
         req.ip,
         clientSessionId,
         persistentSessionId

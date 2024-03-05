@@ -14,6 +14,7 @@ export function checkReauthUsersService(
   const checkReauthUsers = async function (
     sessionId: string,
     emailAddress: string,
+    sub: string,
     sourceIp: string,
     clientSessionId: string,
     persistentSessionId: string
@@ -33,7 +34,7 @@ export function checkReauthUsersService(
 
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.CHECK_REAUTH_USER,
-      { email: lowerCaseEmail },
+      { email: lowerCaseEmail, rpPairwiseId: sub },
       config
     );
 
