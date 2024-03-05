@@ -535,6 +535,12 @@ const authStateMachine = createMachine(
       },
       [PATH_NAMES.RESET_PASSWORD_2FA_SMS]: {
         on: {
+          [USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_PERMANENT,
+          ],
+          [USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_TEMPORARY,
+          ],
           [USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED]: [
             {
               target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],

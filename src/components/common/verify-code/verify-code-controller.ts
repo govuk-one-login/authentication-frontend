@@ -92,7 +92,8 @@ export function verifyCodePost(
     ) {
       if (
         nextEvent === USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED ||
-        nextEvent === USER_JOURNEY_EVENTS.RESET_PASSWORD_CODE_VERIFIED
+        (nextEvent === USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED &&
+          JOURNEY_TYPE.PASSWORD_RESET_MFA)
       ) {
         accountInterventionsResponse =
           await accountInterventionsService.accountInterventionStatus(

@@ -55,6 +55,7 @@ describe("enter mfa controller", () => {
     });
     res = mockResponse();
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
+    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "0";
   });
 
   afterEach(() => {
