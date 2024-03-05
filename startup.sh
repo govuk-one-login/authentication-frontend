@@ -44,7 +44,8 @@ docker-compose --log-level ERROR down
 
 test -f .env || usage "Missing .env file"
 
-export "$(grep -v '^#' .env | xargs)"
+# shellcheck source=/dev/null
+set -o allexport && source .env && set +o allexport
 
 # shellcheck source=./scripts/export_aws_creds.sh
 source "${DIR}/scripts/export_aws_creds.sh"
