@@ -16,6 +16,8 @@ import {
 } from "../reset-password-2fa-sms-controller";
 import { VerifyCodeInterface } from "../../common/verify-code/types";
 import { MfaServiceInterface } from "../../common/mfa/types";
+import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers";
+import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
 
 describe("reset password 2fa auth app controller", () => {
   let req: RequestOutput;
@@ -35,6 +37,7 @@ describe("reset password 2fa auth app controller", () => {
   });
 
   afterEach(() => {
+    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
     sinon.restore();
   });
 
@@ -103,6 +106,46 @@ describe("reset password 2fa auth app controller", () => {
       );
 
       expect(res.render).to.have.calledWith("reset-password-2fa-sms/index.njk");
+    });
+
+    it("should redirect to /unavailable-temporary when temporarilySuspended status applied to account and they try to reset their password", async () => {
+      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
+      const fakeService = fakeVerifyCodeServiceHelper(true);
+      const fakeInterventionsService = accountInterventionsFakeHelper(
+        "test@test.com",
+        false,
+        false,
+        true
+      );
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      await resetPassword2FASmsPost(fakeService, fakeInterventionsService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.UNAVAILABLE_TEMPORARY);
+    });
+
+    it("should redirect to /unavailable-temporary when temporarilySuspended status applied to account and they try to reset their password", async () => {
+      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
+      const fakeService = fakeVerifyCodeServiceHelper(true);
+      const fakeInterventionsService = accountInterventionsFakeHelper(
+        "test@test.com",
+        false,
+        true,
+        false
+      );
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      await resetPassword2FASmsPost(fakeService, fakeInterventionsService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.UNAVAILABLE_PERMANENT);
     });
 
     it("should render security code entered too many times page view when user is account is locked from entering security codes", async () => {
