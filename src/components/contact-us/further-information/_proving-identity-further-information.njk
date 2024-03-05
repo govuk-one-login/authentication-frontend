@@ -1,0 +1,57 @@
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+  {{ 'pages.contactUsFurtherInformation.provingIdentity.header' | translate }}
+</h1>
+
+<form action="/contact-us-further-information" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="theme" value="{{theme}}"/>
+<input type="hidden" name="referer" value="{{referer}}"/>
+<input type="hidden" name="fromURL" value="{{fromURL}}"/>
+
+    {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
+
+    {{ govukRadios({
+        name: "subtheme",
+        fieldset: {
+            legend: {
+                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.header' | translate,
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
+            }
+        },
+        items: [
+            {
+                value: "proving_identity_problem_answering_security_questions",
+                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.radio1' | translate
+            },
+            {
+                value: "proving_identity_problem_with_identity_document",
+                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.radio2' | translate
+            },
+            {
+                value: "proving_identity_need_to_update_personal_information",
+                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.radio3' | translate
+            },
+            {
+            value: "proving_identity_technical_problem",
+            text: 'pages.contactUsFurtherInformation.provingIdentity.section1.radio4' | translate
+            },
+            {
+                value: "proving_identity_something_else",
+                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.radio5' | translate
+            }
+        ],
+          errorMessage: {
+          text: errors['subtheme'].text
+          } if (errors['subtheme'])
+    }) }}
+
+
+{{ govukButton({
+    "text": "general.continue.label" | translate,
+    "type": "Submit",
+    "preventDoubleClick": true
+}) }}
+
+</form>

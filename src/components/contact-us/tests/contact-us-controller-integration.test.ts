@@ -217,6 +217,20 @@ describe("Integration:: contact us - public user", () => {
     );
   });
 
+  it("should return validation error when no radio boxes are selected on the proving_identity contact-us-further-information page", (done) => {
+    const data = {
+      _csrf: token,
+      theme: "proving_identity",
+    };
+    expectValidationErrorOnPost(
+      "/contact-us-further-information",
+      data,
+      "#subtheme-error",
+      "Select the problem you had proving your identity",
+      done
+    );
+  });
+
   it("should return validation error when issue description are not entered on the contact-us-questions page", (done) => {
     const data = {
       _csrf: token,
@@ -309,6 +323,24 @@ describe("Integration:: contact us - public user", () => {
       "Select whether you expected to get the code by email, text message or authenticator app",
       done
     );
+  });
+
+  describe("when a user had a problem with their identity document", () => {
+    it("should return validation error when user has not selected which identity document they were using", (done) => {
+      const data = {
+        _csrf: token,
+        theme: "proving_identity",
+        subtheme: "proving_identity_problem_with_identity_document",
+        contact: "false",
+      };
+      expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#identityDocumentUsed-error",
+        "Select which identity document you were using",
+        done
+      );
+    });
   });
 
   describe("when a user had a problem taking a photo of your identity document using the GOV.UK ID Check app", () => {

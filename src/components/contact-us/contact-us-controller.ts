@@ -63,6 +63,14 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM]:
     "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.title",
+  [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_ANSWERING_SECURITY_QUESTIONS]:
+    "pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.title",
+  [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_IDENTITY_DOCUMENT]:
+    "pages.contactUsQuestions.provingIdentityProblemWithIdentityDocument.title",
+  [CONTACT_US_THEMES.PROVING_IDENTITY_NEED_TO_UPDATE_PERSONAL_INFORMATION]:
+    "pages.contactUsQuestions.provingIdentityNeedToUpdatePersonalInformation.title",
+  [CONTACT_US_THEMES.PROVING_IDENTITY_SOMETHING_ELSE]:
+    "pages.contactUsQuestions.provingIdentitySomethingElse.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
@@ -285,8 +293,25 @@ export function getPreferredLanguage(languageCode: string): string {
   return "Language code not set";
 }
 
+export function getNextUrlBasedOnTheme(theme: string): string {
+  let url: string = PATH_NAMES.CONTACT_US_QUESTIONS;
+
+  if (
+    [
+      CONTACT_US_THEMES.ACCOUNT_CREATION,
+      CONTACT_US_THEMES.SIGNING_IN,
+      CONTACT_US_THEMES.ID_CHECK_APP,
+      CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE,
+      CONTACT_US_THEMES.PROVING_IDENTITY,
+    ].includes(theme)
+  ) {
+    url = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
+  }
+
+  return url;
+}
+
 export function contactUsFormPost(req: Request, res: Response): void {
-  let url = PATH_NAMES.CONTACT_US_QUESTIONS;
   const queryParams = new URLSearchParams({
     theme: req.body.theme,
     referer: validateReferer(req.body.referer, serviceDomain),
@@ -302,17 +327,9 @@ export function contactUsFormPost(req: Request, res: Response): void {
     );
   }
 
-  if (
-    [
-      CONTACT_US_THEMES.ACCOUNT_CREATION,
-      CONTACT_US_THEMES.SIGNING_IN,
-      CONTACT_US_THEMES.ID_CHECK_APP,
-      CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE,
-    ].includes(req.body.theme)
-  ) {
-    url = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
-  }
-  res.redirect(url + "?" + queryParams.toString());
+  res.redirect(
+    getNextUrlBasedOnTheme(req.body.theme) + "?" + queryParams.toString()
+  );
 }
 
 export function furtherInformationGet(req: Request, res: Response): void {
@@ -776,6 +793,38 @@ export function getQuestionsFromFormTypeForMessageBody(
         { lng: "en" }
       ),
     },
+    provingIdentityProblemAnsweringSecurityQuestions: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.section1.label",
+        { lng: "en" }
+      ),
+    },
+    provingIdentityProblemWithIdentityDocument: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.provingIdentityProblemWithIdentityDocument.section2.label",
+        { lng: "en" }
+      ),
+    },
+    provingIdentityNeedToUpdatePersonalInformation: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.provingIdentityNeedToUpdatePersonalInformation.section1.label",
+        { lng: "en" }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.provingIdentityNeedToUpdatePersonalInformation.section2.label",
+        { lng: "en" }
+      ),
+    },
+    provingIdentitySomethingElse: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.provingIdentitySomethingElse.section1.label",
+        { lng: "en" }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.provingIdentitySomethingElse.section2.label",
+        { lng: "en" }
+      ),
+    },
   };
 
   return formTypeToQuestions[formType];
@@ -928,6 +977,25 @@ export function getQuestionFromThemes(
     ),
   };
 
+  const provingIdentitySubthemeToQuestion: { [key: string]: any } = {
+    proving_identity_problem_answering_security_questions: req.t(
+      "pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.title",
+      { lng: "en" }
+    ),
+    proving_identity_problem_with_identity_document: req.t(
+      "pages.contactUsQuestions.provingIdentityProblemWithIdentityDocument.title",
+      { lng: "en" }
+    ),
+    proving_identity_need_to_update_personal_information: req.t(
+      "pages.contactUsQuestions.provingIdentityNeedToUpdatePersonalInformation.title",
+      { lng: "en" }
+    ),
+    proving_identity_something_else: req.t(
+      "pages.contactUsQuestions.provingIdentitySomethingElse.title",
+      { lng: "en" }
+    ),
+  };
+
   const themeQuestion = themesToQuestions[theme];
   let subthemeQuestion;
   if (subtheme) {
@@ -942,6 +1010,9 @@ export function getQuestionFromThemes(
     }
     if (theme == CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
       subthemeQuestion = provingIdentityFaceToFaceSubthemeToQuestion[subtheme];
+    }
+    if (theme == CONTACT_US_THEMES.PROVING_IDENTITY) {
+      subthemeQuestion = provingIdentitySubthemeToQuestion[subtheme];
     }
   }
   return {

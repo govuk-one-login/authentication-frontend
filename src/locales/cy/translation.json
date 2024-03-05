@@ -1516,7 +1516,7 @@
             "address_four": "Wilmslow",
             "address_five": "Cheshire SK9 5AF",
             "email": {
-              "part_one":"E-bost:",
+              "part_one": "E-bost:",
               "link_text": "icocasework@ico.org.uk",
               "link_href": "mailto:icocasework@ico.org.uk"
             },
@@ -1687,7 +1687,7 @@
         "somethingElse": "Problem arall wrth ddefnyddio eich GOV.UK One Login",
         "emailSubscriptions": "Tanysgrifiadau e-bost GOV.UK",
         "suggestionsFeedback": "Awgrym neu adborth am ddefnyddio’ch GOV.UK One Login",
-        "idCheckApp":"Problem profi eich hunaniaeth wrth ddefnyddio ap GOV.UK ID Check",
+        "idCheckApp": "Problem profi eich hunaniaeth wrth ddefnyddio ap GOV.UK ID Check",
         "provingIdentityFaceToFace": "Problem profi eich hunaniaeth gyda’r Swyddfa Bost",
         "errorMessage": "Dewiswch reswm dros gysylltu â ni"
       },
@@ -1750,6 +1750,19 @@
           "anotherProblem": "Rhywbeth arall",
           "errorMessage": "Dewiswch y broblem a gawsoch pan yn profi eich hunaniaeth gyda’r Swyddfa Bost"
         }
+      },
+      "provingIdentity": {
+        "title": "Problem profi eich hunaniaeth",
+        "header": "Problem profi eich hunaniaeth",
+        "section1": {
+          "header": "Dywedwch wrthym beth ddigwyddodd",
+          "radio1": "Cawsoch broblem ateb cwestiynau diogelwch",
+          "radio2": "Cawsoch broblem gyda’ch dogfen hunaniaeth",
+          "radio3": "Mae angen i chi ddiweddaru eich gwybodaeth bersonol",
+          "radio4": "Roedd problem dechnegol (er enghraifft fe welsoch neges gwall)",
+          "radio5": "Rhywbeth arall",
+          "errorMessage": "Dewiswch y broblem oedd gennych wrth brofi eich hunaniaeth"
+        }
       }
     },
     "contactUsQuestions": {
@@ -1792,9 +1805,9 @@
         "privacyNote": "Darllenwch ein <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">hysbysiad preifatrwydd</a> am fwy o wybodaeth am sut rydym yn defnyddio eich gwybodaeth bersonol."
       },
       "textMessageInternationNumberConditionalSection": {
-          "heading": "Pa wlad?",
-          "hintText": "Peidiwch â rhoi eich rhif ffôn",
-          "errorIfBlank": "Rhowch o ba wlad y mae eich rhif ffôn yn dod"
+        "heading": "Pa wlad?",
+        "hintText": "Peidiwch â rhoi eich rhif ffôn",
+        "errorIfBlank": "Rhowch o ba wlad y mae eich rhif ffôn yn dod"
       },
       "anotherProblem": {
         "title": "Problem wrth ddefnyddio eich GOV.UK One Login",
@@ -1856,19 +1869,6 @@
         },
         "section3": {
           "header": "Os yn bosib, dywedwch wrthym URL y dudalen y digwyddodd y gwall arno?"
-        }
-      },
-      "provingIdentity": {
-        "title": "Problem profi eich hunaniaeth",
-        "header": "Problem profi eich hunaniaeth",
-        "section1": {
-          "header": "Beth oeddech chi’n ceisio ei wneud?",
-          "errorMessage": "Rhowch beth oeddech chi’n ceisio ei wneud"
-        },
-        "section2": {
-          "header": "Beth ddigwyddodd?",
-          "paragraph1": "Er enghraifft, a wnaethoch chi weld unrhyw rybudd neu negeseuon gwall?",
-          "errorMessage": "Rhowch beth ddigwyddodd"
         }
       },
       "securityCodeSentMethod": {
@@ -2108,6 +2108,58 @@
           "header": "Beth ddigwyddodd?",
           "paragraph1": "Er enghraifft, wnaethoch chi weld neges gwall?",
           "errorMessage": "Dywedwch wrthym beth ddigwyddodd"
+        }
+      },
+      "provingIdentityProblemAnsweringSecurityQuestions": {
+        "title": "Problem yn ateb cwestiynau diogelwch",
+        "header": "Problem yn ateb cwestiynau diogelwch",
+        "section1": {
+          "label": "Unrhyw beth arall rydych angen dweud wrthym?",
+          "hint": "Er enghraifft, os ydych am ychwanegu mwy o fanylion"
+        }
+      },
+      "provingIdentityProblemWithIdentityDocument": {
+        "title": "Problem gyda’ch dogfen hunaniaeth",
+        "header": "Problem gyda’ch dogfen hunaniaeth",
+        "identityDocument": {
+          "header": "Dewiswch pa ddogfen hunaniaeth oeddech chi’n ei defnyddio",
+          "types": {
+            "passport": "Pasbort",
+            "drivingLicence": "Trwydded yrru"
+          },
+          "errorMessage": "Dewiswch pa ddogfen hunaniaeth oeddech chi’n ei defnyddio"
+        },
+        "section2": {
+          "label": "Unrhyw beth arall rydych angen dweud wrthym?",
+          "hint": "Er enghraifft, os ydych am ychwanegu mwy o fanylion"
+        }
+      },
+      "provingIdentityNeedToUpdatePersonalInformation": {
+        "title": "Mae angen i chi ddiweddaru eich gwybodaeth bersonol",
+        "header": "Mae angen i chi ddiweddaru eich gwybodaeth bersonol",
+        "section1": {
+          "label": "Beth oeddech chi’n ceisio ei wneud?"
+        },
+        "section2": {
+          "label": "Unrhyw beth arall rydych angen dweud wrthym?"
+        }
+      },
+      "provingIdentitySomethingElse": {
+        "title": "Problem arall yn profi eich hunaniaeth",
+        "header": "Problem arall yn profi eich hunaniaeth",
+        "section1": {
+          "label": "Beth oeddech chi’n ceisio ei wneud?"
+        },
+        "section2": {
+          "label": "Beth ddigwyddodd?"
+        }
+      },
+      "provingIdentity": {
+        "section1": {
+          "errorMessage": "Rhowch fwy o fanylion"
+        },
+        "section2": {
+          "errorMessage": "Rhowch beth ddigwyddodd"
         }
       }
     },
