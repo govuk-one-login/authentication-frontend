@@ -1,5 +1,5 @@
 
- # stepscaling frontend_auto_scaling_*_v2 after performance testing
+# stepscaling frontend_auto_scaling_*_v2 after performance testing
 
 
 resource "aws_cloudwatch_metric_alarm" "ecs_service_scale_out_alarm" {
