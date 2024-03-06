@@ -45,6 +45,7 @@ export function accountInterventionsMiddleware(
         );
       } else if (
         accountInterventionsResponse.data.temporarilySuspended &&
+        !accountInterventionsResponse.data.passwordResetRequired &&
         handleSuspendedStatus
       ) {
         return res.redirect(
