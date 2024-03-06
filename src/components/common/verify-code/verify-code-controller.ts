@@ -8,7 +8,11 @@ import { BadRequestError } from "../../../utils/error";
 import { VerifyCodeInterface } from "./types";
 import { ExpressRouteFunc } from "../../../types";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine";
-import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../../app.constants";
+import {
+  JOURNEY_TYPE,
+  NOTIFICATION_TYPE,
+  PATH_NAMES,
+} from "../../../app.constants";
 import {
   support2FABeforePasswordReset,
   supportAccountInterventions,
@@ -20,6 +24,7 @@ interface Config {
   template: string;
   validationKey: string;
   validationErrorCode: number;
+  isOnForcedPasswordResetJourney?: boolean;
   callback?: (req: Request, res: Response) => void;
   journeyType?: JOURNEY_TYPE;
 }
@@ -128,6 +133,9 @@ export function verifyCodePost(
           support2FABeforePasswordReset: support2FABeforePasswordReset(),
           mfaMethodType: req.session.user.enterEmailMfaType,
           isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
+          isOnForcedPasswordResetJourney:
+            req.path === PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL &&
+            req.session.user.withinForcedPasswordResetJourney,
         },
         res.locals.sessionId
       )

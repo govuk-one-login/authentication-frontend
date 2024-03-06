@@ -141,10 +141,41 @@ describe("reset password check email controller", () => {
       );
     });
 
-    it("should redirect to /reset-password without calling the account interventions service when session.user.withinForcedPasswordResetJourney === true", async () => {
+    it("should redirect to /reset-password without calling the account interventions service when session.user.withinForcedPasswordResetJourney === true and enterEmailMfaType == SMS", async () => {
       req.session.user.withinForcedPasswordResetJourney = true;
+      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+      req.session.user.enterEmailMfaType = "SMS";
+
+      const fakeInterventionsService = accountInterventionsFakeHelper(
+        "test@test.com",
+        false,
+        false,
+        false
+      );
+
       const fakeService = fakeVerifyCodeServiceHelper(true);
-      await resetPasswordCheckEmailPost(fakeService)(
+      await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD);
+    });
+
+    it("should redirect to /reset-password without calling the account interventions service when session.user.withinForcedPasswordResetJourney === true and enterEmailMfaType == AUTH_APP", async () => {
+      req.session.user.withinForcedPasswordResetJourney = true;
+      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+      req.session.user.enterEmailMfaType = "AUTH_APP";
+
+      const fakeInterventionsService = accountInterventionsFakeHelper(
+        "test@test.com",
+        false,
+        false,
+        false
+      );
+
+      const fakeService = fakeVerifyCodeServiceHelper(true);
+      await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
         req as Request,
         res as Response
       );
