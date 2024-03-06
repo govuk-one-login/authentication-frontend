@@ -71,10 +71,6 @@ variable "frontend_task_definition_memory" {
   default = 2048
 }
 
-variable "frontend_auto_scaling_enabled" {
-  default = false
-}
-
 variable "frontend_auto_scaling_v2_enabled" {
   default = false
 }
