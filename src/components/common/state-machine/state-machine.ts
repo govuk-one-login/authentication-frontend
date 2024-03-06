@@ -78,6 +78,7 @@ const authStateMachine = createMachine(
       isReauthenticationRequired: false,
       requiresResetPasswordMFASmsCode: false,
       requiresResetPasswordMFAAuthAppCode: false,
+      isOnForcedPasswordResetJourney: false,
     },
     states: {
       [PATH_NAMES.ROOT]: {
@@ -789,9 +790,11 @@ const authStateMachine = createMachine(
         context.requiresTwoFactorAuth === true,
       requiresResetPasswordMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
+        context.isOnForcedPasswordResetJourney !== true &&
         context.support2FABeforePasswordReset === true,
       requiresResetPasswordMFASmsCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
+        context.isOnForcedPasswordResetJourney !== true &&
         context.support2FABeforePasswordReset === true,
       isPasswordChangeRequired: (context) => context.isPasswordChangeRequired,
       is2FASMSPasswordChangeRequired: (context) =>
