@@ -1,5 +1,4 @@
-
-version: '3.8'
+version: "3.8"
 
 services:
   di-auth-frontend:
@@ -8,25 +7,32 @@ services:
       context: .
       dockerfile: local.Dockerfile
     ports:
-      - "3000:3000"
-      - "9230:9230"
+      - "${DOCKER_FRONTEND_PORT:-3000}:${DOCKER_FRONTEND_PORT:-3000}"
+      - "${DOCKER_FRONTEND_NODEMON_PORT:-9230}:${DOCKER_FRONTEND_NODEMON_PORT:-9230}"
     volumes:
       - ./:/app
     environment:
-      - ENVIRONMENT=${ENVIRONMENT}
-      - API_BASE_URL=${API_BASE_URL}
-      - SESSION_EXPIRY=${SESSION_EXPIRY}
-      - SESSION_SECRET=${SESSION_SECRET}
-      - API_KEY=${API_KEY}
-      - FRONTEND_API_BASE_URL=${FRONTEND_API_BASE_URL}
-      - ANALYTICS_COOKIE_DOMAIN=localhost
-      - SUPPORT_INTERNATIONAL_NUMBERS=${SUPPORT_INTERNATIONAL_NUMBERS}
-      - SUPPORT_LANGUAGE_CY=${SUPPORT_LANGUAGE_CY}
-      - SUPPORT_ACCOUNT_RECOVERY=${SUPPORT_ACCOUNT_RECOVERY}
-      - SUPPORT_AUTH_ORCH_SPLIT=${SUPPORT_AUTH_ORCH_SPLIT}
-      - REDIS_PORT=6379
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      ENVIRONMENT: ${ENVIRONMENT:?this should be set in your .env file.}
+
+      SESSION_EXPIRY: ${SESSION_EXPIRY:?this should be set in your .env file.}
+      SESSION_SECRET: ${SESSION_SECRET:?this should be set in your .env file.}
+
+      API_BASE_URL: ${API_BASE_URL:?this should be set in your .env file.}
+      API_KEY: ${API_KEY:?this should be set in your .env file.}
+      FRONTEND_API_BASE_URL: ${FRONTEND_API_BASE_URL:?this should be set in your .env file.}
+
+      ANALYTICS_COOKIE_DOMAIN: localhost
+
+      SUPPORT_INTERNATIONAL_NUMBERS: ${SUPPORT_INTERNATIONAL_NUMBERS:?this should be set in your .env file.}
+      SUPPORT_LANGUAGE_CY: ${SUPPORT_LANGUAGE_CY:?this should be set in your .env file.}
+      SUPPORT_ACCOUNT_RECOVERY: ${SUPPORT_ACCOUNT_RECOVERY:?this should be set in your .env file.}
+      SUPPORT_AUTH_ORCH_SPLIT: ${SUPPORT_AUTH_ORCH_SPLIT:?this should be set in your .env file.}
+
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:?AWS_ACCESS_KEY_ID is required. This should be set by `startup.sh` so there may be an issue with the startup script.}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:?AWS_SECRET_ACCESS_KEY is required. This should be set by `startup.sh` so there may be an issue with the startup script.}
+
+      REDIS_PORT: ${DOCKER_REDIS_PORT:-6379}
+      PORT: ${DOCKER_FRONTEND_PORT:-3000}
     restart: on-failure
     networks:
       - di-net
@@ -34,7 +40,7 @@ services:
   redis:
     image: redis:6.0.5-alpine
     ports:
-      - "6389:6379"
+      - "${DOCKER_REDIS_PORT:-6379}:6389"
     networks:
       - di-net
 
@@ -45,15 +51,19 @@ services:
     links:
       - di-auth-frontend
     ports:
-      - "2000:2000"
+      - "${DOCKER_STUB_DEFAULT_PORT:-2000}:${DOCKER_STUB_DEFAULT_PORT:-2000}"
     environment:
-      - ENVIRONMENT=${ENVIRONMENT}
-      - API_BASE_URL=${API_BASE_URL}
-      - FRONTEND_API_BASE_URL=${FRONTEND_API_BASE_URL}
-      - TEST_CLIENT_ID=${TEST_CLIENT_ID}
-      - STUB_HOSTNAME=${STUB_HOSTNAME}
-      - UI_LOCALES=${UI_LOCALES}
-      - PORT=2000
+      ENVIRONMENT: ${ENVIRONMENT:?this should be set in your .env file.}
+
+      API_BASE_URL: ${API_BASE_URL:?this should be set in your .env file.}
+      FRONTEND_API_BASE_URL: ${FRONTEND_API_BASE_URL:?this should be set in your .env file.}
+
+      TEST_CLIENT_ID: ${TEST_CLIENT_ID:?this should be set in your .env file.}
+      STUB_HOSTNAME: ${STUB_HOSTNAME:?this should be set in your .env file.}
+      UI_LOCALES: ${UI_LOCALES:-}
+
+      PORT: ${DOCKER_STUB_DEFAULT_PORT:-2000}
+      FRONTEND_PORT: ${DOCKER_FRONTEND_PORT:-3000}
     restart: on-failure
     networks:
       - di-net
@@ -65,16 +75,21 @@ services:
     links:
       - di-auth-frontend
     ports:
-      - "5000:5000"
+      - "${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}:${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}"
     environment:
-      - ENVIRONMENT=${ENVIRONMENT}
-      - API_BASE_URL=${API_BASE_URL}
-      - FRONTEND_API_BASE_URL=${FRONTEND_API_BASE_URL}
-      - TEST_CLIENT_ID=${TEST_CLIENT_ID}
-      - STUB_HOSTNAME=${STUB_HOSTNAME}
-      - UI_LOCALES=${UI_LOCALES}
-      - VTR=["Cl"]
-      - PORT=5000
+      ENVIRONMENT: ${ENVIRONMENT:?this should be set in your .env file.}
+
+      API_BASE_URL: ${API_BASE_URL:?this should be set in your .env file.}
+      FRONTEND_API_BASE_URL: ${FRONTEND_API_BASE_URL:?this should be set in your .env file.}
+
+      TEST_CLIENT_ID: ${TEST_CLIENT_ID:?this should be set in your .env file.}
+      STUB_HOSTNAME: ${STUB_HOSTNAME:?this should be set in your .env file.}
+
+      UI_LOCALES: ${UI_LOCALES:-}
+      VTR: ${VTR:-["Cl"]}
+
+      PORT: ${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}
+      FRONTEND_PORT: ${DOCKER_FRONTEND_PORT:-3000}
     restart: on-failure
     networks:
       - di-net

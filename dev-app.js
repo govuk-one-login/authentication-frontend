@@ -5,8 +5,11 @@ const axios = require("axios").default;
 const url = require("url");
 const querystring = require("querystring");
 const { randomBytes } = require("crypto");
+require("dotenv").config();
+
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3001;
+const frontend_port = process.env.FRONTEND_PORT || 3000;
 
 function createAuthorizeRequest() {
   const vtr = process.env.VTR ? "vtr=" + encodeURI(process.env.VTR) : "";
@@ -63,7 +66,7 @@ app.get("/", (req, res) => {
       console.log(`orch response location query is: ${redirect}`);
 
       res.redirect(
-          redirect
+        redirect
       );
     })
     .catch(function (error) {
@@ -74,6 +77,7 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log("TEST APP TO REDIRECT FOR NEW SESSION : DEV ONLY");
   console.log(`RUNNING ON http://localhost:${port}`);
+  console.log(`FRONTEND PORT: ${frontend_port}`);
 });
 
 function getCookieValue(cookie, cookieName) {

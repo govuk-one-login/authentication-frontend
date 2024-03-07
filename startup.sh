@@ -15,7 +15,6 @@ function usage() {
   echo "Usage: startup.sh [-c] [-l]" >&2
   echo "  -c: Clean dist and node_modules" >&2
   echo "  -l: Start frontend natively (not in docker)" >&2
-  echo "  AWS_PROFILE: Optional name of aws profile to connect to the backend [di-auth-development-admin|di-auth-development-readonly] or as you have configured" >&2
   exit 1
 }
 
@@ -33,13 +32,6 @@ while getopts ":cl" opt; do
   esac
 done
 
-if [ -n "$2" ]; then
-  echo "Using AWS_PROFILE from the command line: '$2'"
-  AWS_PROFILE=${2}
-else
-  echo "Using default AWS_PROFILE: ${AWS_PROFILE}"
-fi
-
 if [ $CLEAN == "1" ]; then
   echo "Cleaning dist and node_modules..."
   rm -rf dist
@@ -47,8 +39,7 @@ if [ $CLEAN == "1" ]; then
   rm -rf logs
 fi
 
-echo "Stopping frontend services..."
-docker-compose --log-level ERROR down
+"${DIR}"/shutdown.sh
 
 test -f .env || usage "Missing .env file"
 
@@ -61,10 +52,16 @@ AWS_PROFILE=${AWS_PROFILE} source "${DIR}/scripts/export_aws_creds.sh"
 if [ $LOCAL == "1" ]; then
   echo "Starting frontend local service..."
   docker compose -f "docker-compose.yml" up -d --wait --no-deps redis di-auth-stub-default di-auth-stub-no-mfa
-  export REDIS_PORT=6389
+  export REDIS_PORT=${DOCKER_STUB_DEFAULT_PORT:-6379}
   export REDIS_HOST=localhost
-  yarn install && yarn copy-assets && yarn dev
+  export PORT="${DOCKER_FRONTEND_PORT}"
+  yarn install && yarn test:dev-evironment-variables && yarn copy-assets && yarn dev
 else
   echo "Starting frontend service..."
   docker compose up -d --wait --build
+  echo "Frontend listening on http://localhost:${DOCKER_FRONTEND_PORT}"
+  echo "Frontend nodemon listening on localhost:${DOCKER_FRONTEND_NODEMON_PORT}"
 fi
+echo "No-MFA stub listening on http://localhost:${DOCKER_STUB_NO_MFA_PORT}"
+echo "Default stub listening on http://localhost:${DOCKER_STUB_DEFAULT_PORT}"
+echo "Redis listening on redis://localhost:${DOCKER_REDIS_PORT}"
