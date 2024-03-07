@@ -161,6 +161,9 @@ export function enterPasswordPost(
       userLogin.data.latestTermsAndConditionsAccepted;
     req.session.user.isPasswordChangeRequired = isPasswordChangeRequired;
 
+    console.log("HEEEERE");
+    console.log(isPasswordChangeRequired);
+
     if (
       req.session.user.isPasswordChangeRequired &&
       supportAccountInterventions()
@@ -175,8 +178,10 @@ export function enterPasswordPost(
         );
       if (
         accountInterventionsResponse.data.passwordResetRequired ||
-        accountInterventionsResponse.data.temporarilySuspended
+        accountInterventionsResponse.data.temporarilySuspended ||
+        accountInterventionsResponse.data.blocked
       ) {
+        console.log("Going through journey")
         return res.redirect(
           getNextPathAndUpdateJourney(
             req,
