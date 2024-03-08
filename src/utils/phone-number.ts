@@ -55,3 +55,10 @@ export function convertInternationalPhoneNumberToE164Format(
 
   return "+".concat(value);
 }
+
+export function returnLastCharactersOnly(
+  value: string,
+  options: { limit: number } = { limit: 4 }
+): string {
+  return value.slice(-options.limit);
+}

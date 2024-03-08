@@ -5,6 +5,7 @@ import {
   containsUKMobileNumber,
   lengthInRangeWithoutSpaces,
   convertInternationalPhoneNumberToE164Format,
+  returnLastCharactersOnly,
 } from "../../../src/utils/phone-number";
 
 describe("phone-number", () => {
@@ -237,6 +238,19 @@ describe("phone-number", () => {
       expect(
         convertInternationalPhoneNumberToE164Format("0034608453322")
       ).to.equal("+34608453322");
+    });
+  });
+
+  describe("returnLastCharacters", () => {
+    it("should return the last four characters where no limit is set in the options", () => {
+      expect(returnLastCharactersOnly("1234567890")).to.equal("7890");
+    });
+    it("should return a string of length equal to the limit set", () => {
+      [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach((i) => {
+        expect(
+          returnLastCharactersOnly("1234567890", { limit: i }).length
+        ).to.equal(i);
+      });
     });
   });
 });

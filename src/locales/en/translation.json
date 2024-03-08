@@ -267,7 +267,6 @@
           "required": "Enter your password",
           "incorrectPassword_old": "Enter the correct password",
           "incorrectPassword": "The password you entered is not correct. If you have forgotten your password, you can reset it"
-
         }
       },
       "forgottenPassword": {
@@ -537,12 +536,11 @@
         "changeGetSecurityCodesLinkText": "change how you get security codes"
       },
       "upliftRequired": {
-        "title": "You need to enter a security code",
-        "header": "You need to enter a security code",
-        "paragraph1": "This helps keep your GOV.UK One Login secure.",
+        "title": "Enter a security code to continue",
+        "header": "Enter a security code to continue",
+        "paragraph1": "This is for extra security.",
         "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes.",
-        "paragraph3": "We sent a code to the phone number linked to your GOV.UK One Login.",
-        "sendTheCodeAgain": "Send the code again"
+        "paragraph3": "We have sent a code to your phone number ending with "
       }
     },
     "passwordResetMfaSms": {
@@ -576,12 +574,11 @@
         "changeGetSecurityCodesLinkText": "change how you get security codes"
       },
       "upliftRequired": {
-        "title": "You need to enter a security code",
-        "header": "You need to enter a security code",
-        "paragraph1": "This helps keep your GOV.UK One Login secure.",
+        "title": "Enter a security code to continue",
+        "header": "Enter a security code to continue",
+        "paragraph1": "This is for extra security.",
         "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes.",
-        "paragraph3": "We sent a code to the phone number linked to your GOV.UK One Login.",
-        "sendTheCodeAgain": "Send the code again"
+        "paragraph3": "We have sent a code to your phone number ending with "
       }
     },
     "resendMfaCode": {
@@ -2294,10 +2291,10 @@
         "text3": "."
       },
       "upliftRequired": {
-        "title": "You need to enter a security code",
-        "header": "You need to enter a security code",
+        "title": "Enter a security code to continue",
+        "header": "Enter a security code to continue",
         "info": {
-          "paragraph1": "This helps keep your GOV.UK One Login secure.",
+          "paragraph1": "This is for extra security.",
           "paragraph2": "To get a security code, open the ",
           "authenticatorApp": "authenticator app ",
           "paragraph2End": "you used to create your GOV.UK One Login"

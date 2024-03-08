@@ -10,11 +10,12 @@
 
     {% include "common/errors/errorSummary.njk" %}
 
-    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterMfa.upliftRequired.header' | translate }}</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.enterMfa.upliftRequired.header' | translate }}</h1>
     <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph1' | translate }} </p>
 
     {% set insetTextHtml %}
-        <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph3' | translate }}</p>
+        <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph3' | translate }} <span
+                    class='govuk-!-font-weight-bold'>{{ phoneNumber | returnLastCharacters({limit: 3}) }}</span></p>
     {% endset %}
     {{ govukInsetText({
         html: insetTextHtml
@@ -25,8 +26,8 @@
     <form id="form-tracking" action="/enter-code" method="post" novalidate="novalidate">
         <input type="hidden" name="phoneNumber" value="{{ phoneNumber }}" />
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-        <input type="hidden" name="supportAccountRecovery" value="{{supportAccountRecovery}}"/>
-        <input type="hidden" name="checkEmailLink" value="{{checkEmailLink}}"/>
+        <input type="hidden" name="supportAccountRecovery" value="{{ supportAccountRecovery }}" />
+        <input type="hidden" name="checkEmailLink" value="{{ checkEmailLink }}" />
 
         {{ govukInput({
             label: {
@@ -44,12 +45,10 @@
 
         {% set detailsHTML %}
             <p class="govuk-body">
-                <a href="{{ 'pages.enterMfa.details.sendCodeLinkHref' | translate }}"
-                   class="govuk-link"
-                   rel="noreferrer noopener">
-                    {{'pages.enterMfa.upliftRequired.sendTheCodeAgain'| translate}}
-                </a>
-                {{'pages.enterMfa.details.text 2' | translate}}
+                {{ 'pages.enterMfa.details.text1' | translate }}
+                <a href="{{ 'pages.enterMfa.details.sendCodeLinkHref' | translate }}" class="govuk-link"
+                   rel="noreferrer noopener">{{ 'pages.enterMfa.details.sendCodeLinkText'| translate }}</a>
+                {{ 'pages.enterMfa.details.text 2' | translate }}
             </p>
             {% if supportAccountRecovery === true %}
                 <p class="govuk-body">

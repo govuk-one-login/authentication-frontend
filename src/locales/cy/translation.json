@@ -536,12 +536,11 @@
         "changeGetSecurityCodesLinkText": "newid yn ddiogel sut rydych yn cael codau diogelwch"
       },
       "upliftRequired": {
-        "title": "Mae angen i chi roi cod diogelwch",
-        "header": "Mae angen i chi roi cod diogelwch",
-        "paragraph1": "Mae hwn yn helpu i gadw eich GOV.UK One Login yn ddiogel.",
+        "title": "Rhowch god diogelwch i barhau",
+        "header": "Rhowch god diogelwch i barhau",
+        "paragraph1": "Mae hyn ar gyfer diogelwch ychwanegol.",
         "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud.",
-        "paragraph3": "Rydym wedi anfon cod at y rhif ffôn sy’n gysylltiedig â’ch GOV.UK One Login.",
-        "sendTheCodeAgain": "Anfon y cod eto"
+        "paragraph3": "Rydym wedi anfon cod i’ch rhif ffôn sy’n gorffen gyda "
       }
     },
     "passwordResetMfaSms": {
@@ -575,12 +574,11 @@
         "changeGetSecurityCodesLinkText": "newid yn ddiogel sut rydych yn cael codau diogelwch"
       },
       "upliftRequired": {
-        "title": "Mae angen i chi roi cod diogelwch",
-        "header": "Mae angen i chi roi cod diogelwch",
-        "paragraph1": "Mae hwn yn helpu i gadw eich GOV.UK One Login yn ddiogel.",
+        "title": "Rhowch god diogelwch i barhau",
+        "header": "Rhowch god diogelwch i barhau",
+        "paragraph1": "Mae hyn ar gyfer diogelwch ychwanegol.",
         "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud.",
-        "paragraph3": "Rydym wedi anfon cod at y rhif ffôn sy’n gysylltiedig â’ch GOV.UK One Login.",
-        "sendTheCodeAgain": "Anfon y cod eto"
+        "paragraph3": "Rydym wedi anfon cod i’ch rhif ffôn sy’n gorffen gyda "
       }
     },
     "resendMfaCode": {
@@ -2293,10 +2291,10 @@
         "text3": "."
       },
       "upliftRequired": {
-        "title": "Mae angen i chi roi cod diogelwch",
-        "header": "Mae angen i chi roi cod diogelwch",
+        "title": "Rhowch god diogelwch i barhau",
+        "header": "Rhowch god diogelwch i barhau",
         "info": {
-          "paragraph1": "Mae hwn yn helpu i gadw eich GOV.UK One Login yn ddiogel.",
+          "paragraph1": "Mae hyn ar gyfer diogelwch ychwanegol.",
           "paragraph2": "I gael cod diogelwch, agorwch yr ",
           "authenticatorApp": "ap dilysydd ",
           "paragraph2End": "rydych wedi’i ddefnyddio i greu eich GOV.UK One Login"
