@@ -10,6 +10,7 @@ import {
   getCodeEnteredWrongBlockDurationInMinutes,
   getCodeRequestBlockDurationInMinutes,
   getPasswordResetCodeEnteredWrongBlockDurationInMinutes,
+  support2hrLockout,
 } from "../../config";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
@@ -67,6 +68,8 @@ export function securityCodeTriesExceededGet(
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isResendCodeRequest: req.query.isResendCodeRequest,
+    isAccountCreationJourney: req.session.user?.isAccountCreationJourney,
+    support2hrLockout: support2hrLockout(),
   });
 }
 
@@ -76,6 +79,7 @@ export function securityCodeCannotRequestCodeGet(
 ): void {
   res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
+    support2hrLockout: support2hrLockout(),
   });
 }
 

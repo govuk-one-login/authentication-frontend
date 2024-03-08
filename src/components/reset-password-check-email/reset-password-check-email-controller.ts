@@ -8,7 +8,7 @@ import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
 import { NOTIFICATION_TYPE } from "../../app.constants";
-import { support2FABeforePasswordReset } from "../../config";
+import { support2FABeforePasswordReset, support2hrLockout } from "../../config";
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 
@@ -82,7 +82,9 @@ export function resetPasswordCheckEmailGet(
         errorTemplate = "security-code-error/index-wait.njk";
       }
 
-      return res.render(errorTemplate);
+      return res.render(errorTemplate, {
+        support2hrLockout: support2hrLockout(),
+      });
     } else {
       throw new BadRequestError(result.data.message, result.data.code);
     }

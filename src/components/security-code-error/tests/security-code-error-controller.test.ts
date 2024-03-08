@@ -123,6 +123,8 @@ describe("security code  controller", () => {
         {
           newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
           isResendCodeRequest: undefined,
+          isAccountCreationJourney: undefined,
+          support2hrLockout: false,
         }
       );
     });
@@ -141,6 +143,8 @@ describe("security code  controller", () => {
             SecurityCodeErrorType.MfaMaxRetries
           ),
           isResendCodeRequest: undefined,
+          isAccountCreationJourney: undefined,
+          support2hrLockout: false,
         }
       );
     });
@@ -155,6 +159,8 @@ describe("security code  controller", () => {
         {
           newCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
           isResendCodeRequest: undefined,
+          isAccountCreationJourney: undefined,
+          support2hrLockout: false,
         }
       );
     });
@@ -170,6 +176,7 @@ describe("security code  controller", () => {
         "security-code-error/index-too-many-requests.njk",
         {
           newCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
+          support2hrLockout: false,
         }
       );
     });
@@ -183,6 +190,7 @@ describe("security code  controller", () => {
         "security-code-error/index-too-many-requests.njk",
         {
           newCodeLink: PATH_NAMES.RESEND_MFA_CODE,
+          support2hrLockout: false,
         }
       );
     });
@@ -196,6 +204,7 @@ describe("security code  controller", () => {
         "security-code-error/index-too-many-requests.njk",
         {
           newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
+          support2hrLockout: false,
         }
       );
     });

@@ -11,6 +11,7 @@ import { getErrorPathByCode, pathWithQueryParam } from "../../common/constants";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 import { sendNotificationService } from "../../common/send-notification/send-notification-service";
 import { BadRequestError } from "../../../utils/error";
+import { support2hrLockout } from "../../../config";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
   const newCodeLink = req.query?.isResendCodeRequest
@@ -41,6 +42,7 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     res.render("account-creation/resend-mfa-code/index.njk", {
       phoneNumber: req.session.user.redactedPhoneNumber,
       isResendCodeRequest: req.query?.isResendCodeRequest,
+      support2hrLockout: support2hrLockout(),
     });
   }
 }

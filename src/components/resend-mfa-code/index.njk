@@ -25,6 +25,10 @@
             text: phoneNumberMessage | safe
         }) }}
 
+        {% if support2hrLockout %}
+        <p class="govuk-body">{{'pages.resendMfaCode.paragraph1' | translate}}</p>
+        {% endif %}
+
         <p class="govuk-body">{{'pages.resendMfaCode.message' | translate}}</p>
         {{ govukButton({
         "text": "pages.resendMfaCode.continue" | translate,
