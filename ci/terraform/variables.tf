@@ -61,6 +61,14 @@ variable "ecs_desired_count" {
   default = 2
 }
 
+variable "cloudfront_distribution_id" {
+  type = string
+}
+
+variable "frontend_origin_fqdn" {
+  type = string
+}
+
 variable "frontend_task_definition_cpu" {
   type    = number
   default = 1024
