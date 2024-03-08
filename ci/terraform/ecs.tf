@@ -6,8 +6,14 @@ locals {
   application_port = var.basic_auth_password == "" ? var.app_port : local.nginx_port
 
   frontend_container_definition = {
-    name      = local.container_name
-    image     = "${var.image_uri}:${var.image_tag}@${var.image_digest}"
+    name  = local.container_name
+    image = "${var.image_uri}:${var.image_tag}@${var.image_digest}"
+
+    cpu            = 0
+    mountpoints    = []
+    systemControls = []
+    volumesFrom    = []
+
     essential = true
     logConfiguration = {
       logDriver = "awslogs"
@@ -191,8 +197,14 @@ locals {
   }
 
   sidecar_container_definition = {
-    name      = "nginx-sidecar"
-    image     = "${var.sidecar_image_uri}:${var.sidecar_image_tag}@${var.sidecar_image_digest}"
+    name  = "nginx-sidecar"
+    image = "${var.sidecar_image_uri}:${var.sidecar_image_tag}@${var.sidecar_image_digest}"
+
+    cpu            = 0
+    mountpoints    = []
+    systemControls = []
+    volumesFrom    = []
+
     essential = true
     logConfiguration = {
       logDriver = "awslogs"
