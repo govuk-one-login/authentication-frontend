@@ -81,6 +81,8 @@ export function resetPasswordPost(
       }
     }
 
+    req.session.user.passwordResetTime = Date.now();
+
     const loginResponse = await loginService.loginUser(
       sessionId,
       email,
