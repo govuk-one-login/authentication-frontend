@@ -13,13 +13,37 @@ resource "aws_route53_record" "frontend" {
 
   alias {
     evaluate_target_health = false
-    name                   = aws_lb.frontend_alb.dns_name
-    zone_id                = aws_lb.frontend_alb.zone_id
+    name                   = data.aws_cloudfront_distribution.frontend.domain_name
+    zone_id                = data.aws_cloudfront_distribution.frontend.hosted_zone_id
   }
 }
 
 resource "aws_route53_record" "frontend_record" {
   name    = local.frontend_fqdn
+  type    = "A"
+  zone_id = aws_route53_zone.zone.zone_id
+
+  alias {
+    evaluate_target_health = false
+    name                   = data.aws_cloudfront_distribution.frontend.domain_name
+    zone_id                = data.aws_cloudfront_distribution.frontend.hosted_zone_id
+  }
+}
+
+resource "aws_route53_record" "frontend_origin" {
+  name    = local.frontend_origin_fqdn
+  type    = "A"
+  zone_id = data.aws_route53_zone.service_domain.zone_id
+
+  alias {
+    evaluate_target_health = false
+    name                   = aws_lb.frontend_alb.dns_name
+    zone_id                = aws_lb.frontend_alb.zone_id
+  }
+}
+
+resource "aws_route53_record" "frontend_origin_record" {
+  name    = local.frontend_origin_fqdn
   type    = "A"
   zone_id = aws_route53_zone.zone.zone_id
 
@@ -32,6 +56,9 @@ resource "aws_route53_record" "frontend_record" {
 
 resource "aws_acm_certificate" "frontend_alb_certificate" {
   domain_name       = aws_route53_record.frontend.name
+  
+  subject_alternative_names = [local.frontend_origin_fqdn]
+
   validation_method = "DNS"
 
   tags = local.default_tags
