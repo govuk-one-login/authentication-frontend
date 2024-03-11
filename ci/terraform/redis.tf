@@ -33,7 +33,8 @@ resource "aws_elasticache_replication_group" "frontend_sessions_store" {
   port                        = local.redis_port_number
   maintenance_window          = "sun:22:00-sun:23:00"
   notification_topic_arn      = data.aws_sns_topic.slack_events.arn
-
+  snapshot_retention_limit    = 5
+  snapshot_window             = "00:00-04:00"
   multi_az_enabled = true
 
   at_rest_encryption_enabled = true
