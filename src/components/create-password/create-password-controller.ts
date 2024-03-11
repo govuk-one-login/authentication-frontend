@@ -38,8 +38,6 @@ export function createPasswordPost(
       throw new BadRequestError(result.data.message, result.data.code);
     }
 
-    req.session.user.isConsentRequired = result.data.consentRequired;
-
     return res.redirect(
       getNextPathAndUpdateJourney(
         req,

@@ -21,7 +21,6 @@ export type Claims = {
   jti: string;
   client_name: string;
   cookie_consent_shared: boolean;
-  consent_required: boolean;
   is_one_login_service: boolean;
   service_type: string;
   govuk_signin_journey_id: string;
@@ -44,7 +43,6 @@ export const requiredClaimsKeys = [
   "jti",
   "client_name",
   "cookie_consent_shared",
-  "consent_required",
   "is_one_login_service",
   "service_type",
   "govuk_signin_journey_id",

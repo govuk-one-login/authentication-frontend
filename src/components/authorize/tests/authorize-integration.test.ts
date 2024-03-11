@@ -47,13 +47,11 @@ describe("Integration:: authorize", () => {
                 serviceType: "MANDATORY",
                 clientName: "test-client",
                 cookieConsentEnabled: true,
-                consentEnabled: true,
                 redirectUri: "http://test-redirect.gov.uk/callback",
                 state: "jasldasl12312",
                 isOneLoginService: false,
               },
               user: {
-                consentRequired: true,
                 upliftRequired: false,
                 identityRequired: false,
                 authenticated: false,

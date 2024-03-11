@@ -127,7 +127,6 @@ export function verifyCodePost(
         nextEvent,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
-          isConsentRequired: req.session.user.isConsentRequired,
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
           support2FABeforePasswordReset: support2FABeforePasswordReset(),

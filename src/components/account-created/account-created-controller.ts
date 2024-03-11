@@ -16,9 +16,6 @@ export function accountCreatedPost(req: Request, res: Response): void {
     req,
     req.path,
     USER_JOURNEY_EVENTS.ACCOUNT_CREATED,
-    {
-      isConsentRequired: req.session.user.isConsentRequired,
-    },
     res.locals.sessionId
   );
 

@@ -55,7 +55,6 @@ export interface UserSession {
   redactedPhoneNumber?: string;
   phoneNumber?: string;
   journey?: { nextPath: string; optionalPaths: string[] };
-  isConsentRequired?: boolean;
   isLatestTermsAndConditionsAccepted?: boolean;
   isIdentityRequired?: boolean;
   isUpliftRequired?: boolean;
@@ -86,7 +85,6 @@ export interface UserSessionClient {
   name?: string;
   serviceType?: string;
   cookieConsentEnabled?: boolean;
-  consentEnabled?: boolean;
   crossDomainGaTrackingId?: string;
   scopes?: string[];
   prompt?: string;

@@ -74,31 +74,6 @@ describe("updated terms conditions controller", () => {
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
     });
 
-    it("should redirect to /share-info when consent required", async () => {
-      const fakeService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as UpdateProfileServiceInterface;
-
-      req.path = PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS;
-      req.session.client.consentEnabled = true;
-      req.session.user.isConsentRequired = true;
-      req.body.termsAndConditionsResult = "accept";
-      res.locals.sessionId = "s-123456-djjad";
-      res.locals.clientSessionId = "c-123456-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.user.email = "test@test.com";
-
-      await updatedTermsConditionsPost(fakeService)(
-        req as Request,
-        res as Response
-      );
-
-      expect(fakeService.updateProfile).to.have.been.calledOnce;
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.SHARE_INFO);
-    });
-
     it("should redirect to govUK website when termsAndConditionsResult has value govUk", async () => {
       const fakeService: UpdateProfileServiceInterface = {
         updateProfile: sinon.fake(),

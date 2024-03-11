@@ -9,7 +9,6 @@ export interface StartAuthResponse extends DefaultApiResponse {
 export interface UserSessionInfo {
   upliftRequired: boolean;
   identityRequired: boolean;
-  consentRequired: boolean;
   authenticated: boolean;
   cookieConsent?: string;
   gaCrossDomainTrackingId?: string;

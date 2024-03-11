@@ -109,10 +109,6 @@ export function authorizeGet(
     req.session.client.isOneLoginService = claims.is_one_login_service;
     req.session.client.rpSectorHost = claims.rp_sector_host;
     req.session.client.rpRedirectUri = claims.rp_redirect_uri;
-
-    req.session.client.consentEnabled =
-      startAuthResponse.data.user.consentRequired;
-
     req.session.user.isIdentityRequired =
       startAuthResponse.data.user.identityRequired;
     req.session.user.isAuthenticated =
@@ -146,7 +142,6 @@ export function authorizeGet(
       PATH_NAMES.AUTHORIZE,
       nextStateEvent,
       {
-        isConsentRequired: req.session.client.consentEnabled,
         requiresUplift: req.session.user.isUpliftRequired,
         isIdentityRequired: req.session.user.isIdentityRequired,
         isAuthenticated: req.session.user.isAuthenticated,

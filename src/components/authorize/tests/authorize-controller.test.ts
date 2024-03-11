@@ -56,7 +56,6 @@ describe("authorize controller", () => {
     fakeAuthorizeService = mockAuthService({
       data: {
         user: {
-          consentRequired: false,
           identityRequired: false,
           upliftRequired: false,
           authenticated: true,
@@ -173,28 +172,8 @@ describe("authorize controller", () => {
       expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
     });
 
-    it("should redirect to /share-info when consent required", async () => {
-      authServiceResponseData.data.user = {
-        consentRequired: true,
-        identityRequired: false,
-        upliftRequired: false,
-        authenticated: true,
-      };
-      fakeAuthorizeService = mockAuthService(authServiceResponseData);
-
-      await authorizeGet(
-        fakeAuthorizeService,
-        fakeCookieConsentService,
-        fakeKmsDecryptionService,
-        fakeJwtService
-      )(req as Request, res as Response);
-
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.SHARE_INFO);
-    });
-
     it("should redirect to /identity page when identity check required", async () => {
       authServiceResponseData.data.user = {
-        consentRequired: false,
         identityRequired: true,
         upliftRequired: false,
         authenticated: true,
@@ -217,7 +196,6 @@ describe("authorize controller", () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
       mockClaims.reauthenticate = "123456";
       authServiceResponseData.data.user = {
-        consentRequired: false,
         identityRequired: false,
         upliftRequired: false,
         authenticated: false,
@@ -239,7 +217,6 @@ describe("authorize controller", () => {
       process.env.SUPPORT_REAUTHENTICATION = "0";
       mockClaims.reauthenticate = "123456";
       authServiceResponseData.data.user = {
-        consentRequired: false,
         identityRequired: false,
         upliftRequired: false,
         authenticated: false,
@@ -272,7 +249,6 @@ describe("authorize controller", () => {
     it("should redirect to /sign-in-or-create page with _ga query param when present", async () => {
       const gaTrackingId = "2.172053219.3232.1636392870-444224.1635165988";
       authServiceResponseData.data.user = {
-        consentRequired: false,
         identityRequired: false,
         upliftRequired: false,
         cookieConsent: COOKIE_CONSENT.ACCEPT,
@@ -304,7 +280,6 @@ describe("authorize controller", () => {
     it("should redirect to /doc-checking-app when doc check app user", async () => {
       authServiceResponseData.data.user = {
         authenticated: false,
-        consentRequired: false,
         docCheckingAppUser: true,
       };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
