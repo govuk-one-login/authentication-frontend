@@ -6,7 +6,10 @@ import { sinon } from "../../utils/test-utils";
 import { expect } from "chai";
 import { accountInterventionsMiddleware } from "../../../src/middleware/account-interventions-middleware";
 import { AccountInterventionsInterface } from "../../../src/components/account-intervention/types";
-import { AccountInterventionsFlags } from "../../helpers/account-interventions-helpers";
+import {
+  accountInterventionsFakeHelper,
+  AccountInterventionsFlags,
+} from "../../helpers/account-interventions-helpers";
 
 describe("accountInterventionsMiddleware", () => {
   let req: Partial<Request>;
@@ -44,7 +47,7 @@ describe("accountInterventionsMiddleware", () => {
     });
 
     it("should call next()", async () => {
-      const fakeAccountInterventionService = fakeAccountInterventionsService({
+      const fakeAccountInterventionService = accountInterventionsFakeHelper({
         passwordResetRequired: false,
         blocked: false,
         temporarilySuspended: false,
@@ -64,7 +67,7 @@ describe("accountInterventionsMiddleware", () => {
       let noAccountInterventionsService: AccountInterventionsInterface;
 
       before(() => {
-        noAccountInterventionsService = fakeAccountInterventionsService({
+        noAccountInterventionsService = accountInterventionsFakeHelper({
           passwordResetRequired: false,
           blocked: false,
           temporarilySuspended: false,
@@ -81,7 +84,7 @@ describe("accountInterventionsMiddleware", () => {
       let accountInterventionsWithBlockedTrue: AccountInterventionsInterface;
 
       before(() => {
-        accountInterventionsWithBlockedTrue = fakeAccountInterventionsService({
+        accountInterventionsWithBlockedTrue = accountInterventionsFakeHelper({
           passwordResetRequired: true,
           blocked: true,
           temporarilySuspended: true,
@@ -101,7 +104,7 @@ describe("accountInterventionsMiddleware", () => {
 
       before(() => {
         accountInterventionsWithPasswordResetTrue =
-          fakeAccountInterventionsService({
+          accountInterventionsFakeHelper({
             passwordResetRequired: true,
             blocked: false,
             temporarilySuspended: true,
@@ -148,7 +151,7 @@ describe("accountInterventionsMiddleware", () => {
 
       before(() => {
         accountInterventionsWithTemporarilySuspendedTrue =
-          fakeAccountInterventionsService({
+          accountInterventionsFakeHelper({
             passwordResetRequired: false,
             blocked: false,
             temporarilySuspended: true,
@@ -192,20 +195,5 @@ describe("accountInterventionsMiddleware", () => {
       handlePasswordResetStatus,
       accountInterventionService
     )(req as Request, res as Response, next as NextFunction);
-  };
-
-  const fakeAccountInterventionsService = (
-    flags: AccountInterventionsFlags
-  ) => {
-    return {
-      accountInterventionStatus: sinon.fake.returns({
-        data: {
-          email: "test@test.com",
-          passwordResetRequired: flags.passwordResetRequired,
-          blocked: flags.blocked,
-          temporarilySuspended: flags.temporarilySuspended,
-        },
-      }),
-    } as unknown as AccountInterventionsInterface;
   };
 });

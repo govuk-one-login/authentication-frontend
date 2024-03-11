@@ -421,12 +421,11 @@ describe("enter password controller", () => {
       ];
 
       for (const testCase of testCases) {
-        const fakeInterventionsService = accountInterventionsFakeHelper(
-          "joe.bloggs@test.com",
-          testCase.interventions.passwordResetRequired,
-          testCase.interventions.blocked,
-          testCase.interventions.temporarilySuspended
-        );
+        const fakeInterventionsService = accountInterventionsFakeHelper({
+          passwordResetRequired: testCase.interventions.passwordResetRequired,
+          blocked: testCase.interventions.blocked,
+          temporarilySuspended: testCase.interventions.temporarilySuspended,
+        });
         res.locals.sessionId = "123456-djjad";
         res.locals.clientSessionId = "00000-djjad";
         res.locals.persistentSessionId = "dips-123456-abc";

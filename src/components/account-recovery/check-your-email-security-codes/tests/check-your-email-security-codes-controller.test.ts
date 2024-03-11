@@ -14,7 +14,10 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
-import { accountInterventionsFakeHelper } from "../../../../../test/helpers/account-interventions-helpers";
+import {
+  accountInterventionsFakeHelper,
+  noInterventions,
+} from "../../../../../test/helpers/account-interventions-helpers";
 import { fakeVerifyCodeServiceHelper } from "../../../../../test/helpers/verify-code-helpers";
 import { ERROR_CODES } from "../../../common/constants";
 
@@ -56,12 +59,8 @@ describe("check your email change security codes controller", () => {
 
     it("should redirect to /get-security-codes and not call AIS when valid code entered and account interventions is turned on", async () => {
       const fakeVerifyCodeService = fakeVerifyCodeServiceHelper(true);
-      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
-        "test@test.co.uk",
-        false,
-        false,
-        false
-      );
+      const fakeAccountInterventionsService =
+        accountInterventionsFakeHelper(noInterventions);
 
       await checkYourEmailSecurityCodesPost(
         fakeVerifyCodeService,
@@ -77,12 +76,8 @@ describe("check your email change security codes controller", () => {
     it("should redirect to /get-security-codes when valid code entered and there are no interventions in place and account interventions is turned on", async () => {
       process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
       const fakeVerifyCodeService = fakeVerifyCodeServiceHelper(true);
-      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
-        "test@test.co.uk",
-        false,
-        false,
-        false
-      );
+      const fakeAccountInterventionsService =
+        accountInterventionsFakeHelper(noInterventions);
 
       await checkYourEmailSecurityCodesPost(
         fakeVerifyCodeService,
@@ -98,12 +93,11 @@ describe("check your email change security codes controller", () => {
     it("should redirect to /password-reset-required when temporarilySuspended and resetPasswordRequired statuses applied to account.", async () => {
       process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
       const fakeVerifyCodeService = fakeVerifyCodeServiceHelper(true);
-      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
-        "test@test.co.uk",
-        true,
-        false,
-        true
-      );
+      const fakeAccountInterventionsService = accountInterventionsFakeHelper({
+        passwordResetRequired: true,
+        blocked: false,
+        temporarilySuspended: true,
+      });
 
       await checkYourEmailSecurityCodesPost(
         fakeVerifyCodeService,
@@ -121,12 +115,11 @@ describe("check your email change security codes controller", () => {
     it("should redirect to /unavailable-temporary when only temporarilySuspended AIS status applied to account", async () => {
       process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
       const fakeVerifyCodeService = fakeVerifyCodeServiceHelper(true);
-      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
-        "test@test.co.uk",
-        false,
-        false,
-        true
-      );
+      const fakeAccountInterventionsService = accountInterventionsFakeHelper({
+        temporarilySuspended: true,
+        blocked: false,
+        passwordResetRequired: false,
+      });
 
       await checkYourEmailSecurityCodesPost(
         fakeVerifyCodeService,
@@ -142,12 +135,11 @@ describe("check your email change security codes controller", () => {
     it("should redirect to /unavailable-permanent when only blocked AIS status applied to account", async () => {
       process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
       const fakeVerifyCodeService = fakeVerifyCodeServiceHelper(true);
-      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
-        "test@test.co.uk",
-        false,
-        true,
-        false
-      );
+      const fakeAccountInterventionsService = accountInterventionsFakeHelper({
+        blocked: true,
+        passwordResetRequired: false,
+        temporarilySuspended: false,
+      });
 
       await checkYourEmailSecurityCodesPost(
         fakeVerifyCodeService,
@@ -166,12 +158,8 @@ describe("check your email change security codes controller", () => {
         ERROR_CODES.INVALID_VERIFY_EMAIL_CODE
       );
 
-      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
-        "test@test.co.uk",
-        false,
-        false,
-        false
-      );
+      const fakeAccountInterventionsService =
+        accountInterventionsFakeHelper(noInterventions);
 
       await checkYourEmailSecurityCodesPost(
         fakeService,
