@@ -6,10 +6,7 @@ import { sinon } from "../../utils/test-utils";
 import { expect } from "chai";
 import { accountInterventionsMiddleware } from "../../../src/middleware/account-interventions-middleware";
 import { AccountInterventionsInterface } from "../../../src/components/account-intervention/types";
-import {
-  accountInterventionsFakeHelper,
-  AccountInterventionsFlags,
-} from "../../helpers/account-interventions-helpers";
+import { accountInterventionsFakeHelper } from "../../helpers/account-interventions-helpers";
 
 describe("accountInterventionsMiddleware", () => {
   let req: Partial<Request>;
@@ -143,6 +140,59 @@ describe("accountInterventionsMiddleware", () => {
         expect(res.redirect).to.have.been.calledWith(
           PATH_NAMES.PASSWORD_RESET_REQUIRED
         );
+      });
+
+      it("should redirect to PASSWORD_RESET_REQUIRED when handlePasswordResetStatus is true and the passwordResetTime is before the intervention appliedAt time", async () => {
+        const nowUnixTime = Date.now().valueOf();
+        const beforeNow = nowUnixTime - 1000;
+
+        req.session.user.passwordResetTime = beforeNow;
+
+        const accountInterventionsWithPasswordResetTrueAndAppliedAtNow =
+          accountInterventionsFakeHelper(
+            {
+              passwordResetRequired: true,
+              blocked: false,
+              temporarilySuspended: true,
+            },
+            nowUnixTime.toString()
+          );
+
+        await callMiddleware(
+          true,
+          true,
+          accountInterventionsWithPasswordResetTrueAndAppliedAtNow
+        );
+        expect(res.redirect).to.have.been.calledWith(
+          PATH_NAMES.PASSWORD_RESET_REQUIRED
+        );
+      });
+
+      it("should not redirect to PASSWORD_RESET_REQUIRED when handlePasswordResetStatus is true and the passwordResetTime is after the intervention appliedAt time", async () => {
+        const nowUnixTime = Date.now().valueOf();
+        const beforeNow = nowUnixTime - 1000;
+
+        req.session.user.passwordResetTime = nowUnixTime;
+
+        const accountInterventionsWithPasswordResetTrueAndAppliedAtNow =
+          accountInterventionsFakeHelper(
+            {
+              passwordResetRequired: true,
+              blocked: false,
+              temporarilySuspended: true,
+            },
+            beforeNow.toString()
+          );
+
+        await callMiddleware(
+          true,
+          true,
+          accountInterventionsWithPasswordResetTrueAndAppliedAtNow
+        );
+        expect(res.redirect).not.to.have.been.calledWith(
+          PATH_NAMES.PASSWORD_RESET_REQUIRED
+        );
+        expect(next).to.have.been.calledOnce;
       });
     });
 
