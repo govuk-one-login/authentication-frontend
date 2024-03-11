@@ -450,11 +450,6 @@ const authStateMachine = createMachine(
           ],
         },
       },
-      [PATH_NAMES.SHARE_INFO]: {
-        on: {
-          [USER_JOURNEY_EVENTS.CONSENT_ACCEPTED]: [PATH_NAMES.AUTH_CODE],
-        },
-      },
       [PATH_NAMES.RESET_PASSWORD_REQUEST]: {
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED]: [

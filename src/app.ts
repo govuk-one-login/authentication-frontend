@@ -52,7 +52,6 @@ import {
   getSessionIdMiddleware,
   initialiseSessionMiddleware,
 } from "./middleware/session-middleware";
-import { shareInfoRouter } from "./components/share-info/share-info-routes";
 import { updatedTermsConditionsRouter } from "./components/updated-terms-conditions/updated-terms-conditions-routes";
 import { signInOrCreateRouter } from "./components/sign-in-or-create/sign-in-or-create-routes";
 import { accountNotFoundRouter } from "./components/account-not-found/account-not-found-routes";
@@ -123,7 +122,6 @@ function registerRoutes(app: express.Application) {
   app.use(resendMfaCodeAccountCreationRouter);
   app.use(resendEmailCodeRouter);
   app.use(signedOutRouter);
-  app.use(shareInfoRouter);
   app.use(updatedTermsConditionsRouter);
   app.use(resetPasswordRouter);
   if (support2FABeforePasswordReset()) {
