@@ -161,10 +161,7 @@ export function enterPasswordPost(
       userLogin.data.latestTermsAndConditionsAccepted;
     req.session.user.isPasswordChangeRequired = isPasswordChangeRequired;
 
-    if (
-      req.session.user.isPasswordChangeRequired &&
-      supportAccountInterventions()
-    ) {
+    if (isPasswordChangeRequired && supportAccountInterventions()) {
       const accountInterventionsResponse =
         await accountInterventionsService.accountInterventionStatus(
           sessionId,
@@ -175,7 +172,8 @@ export function enterPasswordPost(
         );
       if (
         accountInterventionsResponse.data.passwordResetRequired ||
-        accountInterventionsResponse.data.temporarilySuspended
+        accountInterventionsResponse.data.temporarilySuspended ||
+        accountInterventionsResponse.data.blocked
       ) {
         return res.redirect(
           getNextPathAndUpdateJourney(
