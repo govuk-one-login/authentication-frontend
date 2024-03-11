@@ -11,8 +11,11 @@ export type AccountInterventionsFlags = {
 
 export const setupAccountInterventionsResponse = (
   baseApi: string,
-  flags: AccountInterventionsFlags
+  flags: AccountInterventionsFlags,
+  maybeDateTimeStamp?: string
 ) => {
+  const dateTimeStamp =
+    maybeDateTimeStamp === undefined ? nowDateTime() : maybeDateTimeStamp;
   nock(baseApi)
     .post(API_ENDPOINTS.ACCOUNT_INTERVENTIONS)
     .once()
@@ -21,7 +24,13 @@ export const setupAccountInterventionsResponse = (
       passwordResetRequired: flags.passwordResetRequired,
       blocked: flags.blocked,
       temporarilySuspended: flags.temporarilySuspended,
+      appliedAt: dateTimeStamp,
     });
+};
+
+const nowDateTime = () => {
+  const d = new Date();
+  return d.valueOf().toString();
 };
 
 export const noInterventions: AccountInterventionsFlags = {
@@ -36,7 +45,7 @@ export function accountInterventionsFakeHelper(
   blocked: boolean,
   temporarilySuspended: boolean
 ) {
-  const fakeAccountInterventionsService: AccountInterventionsInterface = {
+  return {
     accountInterventionStatus: sinon.fake.returns({
       data: {
         email: email,
@@ -46,5 +55,4 @@ export function accountInterventionsFakeHelper(
       },
     }),
   } as unknown as AccountInterventionsInterface;
-  return fakeAccountInterventionsService;
 }
