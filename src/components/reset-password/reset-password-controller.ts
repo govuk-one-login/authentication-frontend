@@ -39,7 +39,7 @@ export function resetPasswordPost(
   mfaCodeService: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session.user;
+    const { email, withinForcedPasswordResetJourney } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const newPassword = req.body.password;
 
@@ -48,7 +48,8 @@ export function resetPasswordPost(
       req.ip,
       sessionId,
       clientSessionId,
-      persistentSessionId
+      persistentSessionId,
+      withinForcedPasswordResetJourney
     );
 
     if (!updatePasswordResponse.success) {
