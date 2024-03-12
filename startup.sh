@@ -3,8 +3,9 @@ set -eu
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-CLEAN=0
-LOCAL=0
+ACTION_CLEAN=0
+ACTION_LOCAL=0
+ACTION_DEPS_ONLY=0
 
 function usage() {
   local error_message="${1}"
@@ -15,16 +16,20 @@ function usage() {
   echo "Usage: startup.sh [-c] [-l]" >&2
   echo "  -c: Clean dist and node_modules" >&2
   echo "  -l: Start frontend natively (not in docker)" >&2
+  echo "  -x: Only start dependencies (redis, stubs)" >&2
   exit 1
 }
 
-while getopts ":cl" opt; do
+while getopts ":clx" opt; do
   case ${opt} in
   l)
-    LOCAL=1
+    ACTION_LOCAL=1
     ;;
   c)
-    CLEAN=1
+    ACTION_CLEAN=1
+    ;;
+  x)
+    ACTION_DEPS_ONLY=1
     ;;
   *)
     usage "Invalid option: -${OPTARG}"
@@ -32,7 +37,7 @@ while getopts ":cl" opt; do
   esac
 done
 
-if [ $CLEAN == "1" ]; then
+if [ "${ACTION_CLEAN}" == "1" ]; then
   echo "Cleaning dist and node_modules..."
   rm -rf dist
   rm -rf node_modules
@@ -49,7 +54,7 @@ set -o allexport && source .env && set +o allexport
 # shellcheck source=./scripts/export_aws_creds.sh
 source "${DIR}/scripts/export_aws_creds.sh"
 
-if [ $LOCAL == "1" ]; then
+if [ "${ACTION_LOCAL}" == "1" ]; then
   echo "Starting frontend local service..."
   docker compose -f docker-compose.yml up --build -d --wait
   echo "No-MFA stub listening on http://localhost:${DOCKER_STUB_NO_MFA_PORT}"
@@ -57,8 +62,12 @@ if [ $LOCAL == "1" ]; then
   echo "Redis listening on redis://localhost:${DOCKER_REDIS_PORT:-6379}"
   export REDIS_PORT=${DOCKER_REDIS_PORT:-6379}
   export REDIS_HOST=localhost
-  export PORT="${DOCKER_FRONTEND_PORT}"
-  yarn install && yarn test:dev-evironment-variables && yarn copy-assets && yarn dev
+  if [ "${ACTION_DEPS_ONLY}" == "0" ]; then
+    export PORT="${DOCKER_FRONTEND_PORT}"
+    yarn install && yarn test:dev-evironment-variables && yarn copy-assets && yarn dev
+  else
+    docker compose -f docker-compose.yml logs -f
+  fi
 else
   echo "Starting frontend service..."
   docker compose -f docker-compose.yml -f docker-compose.frontend.yml up -d --wait --build
