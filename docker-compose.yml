@@ -1,5 +1,7 @@
 version: "3.8"
 
+x-stub-image-name: &stub-image-name di-authentication-frontend/di-auth-stub:latest
+
 services:
   redis:
     image: redis:6.0.5-alpine
@@ -9,6 +11,8 @@ services:
       - di-net
 
   di-auth-stub-default:
+    image: *stub-image-name
+    pull_policy: never
     build:
       context: .
       dockerfile: Dockerfile-stub
@@ -31,9 +35,8 @@ services:
       - di-net
 
   di-auth-stub-no-mfa:
-    build:
-      context: .
-      dockerfile: Dockerfile-stub
+    image: *stub-image-name
+    pull_policy: never
     ports:
       - "${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}:${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}"
     environment:

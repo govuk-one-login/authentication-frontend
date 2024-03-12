@@ -51,7 +51,7 @@ source "${DIR}/scripts/export_aws_creds.sh"
 
 if [ $LOCAL == "1" ]; then
   echo "Starting frontend local service..."
-  docker compose -f docker-compose.yml up -d --wait
+  docker compose -f docker-compose.yml up --build -d --wait
   echo "No-MFA stub listening on http://localhost:${DOCKER_STUB_NO_MFA_PORT}"
   echo "Default stub listening on http://localhost:${DOCKER_STUB_DEFAULT_PORT}"
   echo "Redis listening on redis://localhost:${DOCKER_REDIS_PORT:-6379}"
