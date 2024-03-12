@@ -1,36 +1,41 @@
 // THIS IS FOR DEV TESTING ONLY
 
 const express = require("express");
+const pino = require("pino");
 const axios = require("axios").default;
 const url = require("url");
 const querystring = require("querystring");
 const { randomBytes } = require("crypto");
+
 require("dotenv").config();
+const logger = pino({ level: process.env.LOG_LEVEL || "info" });
 
 const app = express();
 const port = process.env.PORT || 3001;
 const frontend_port = process.env.FRONTEND_PORT || 3000;
 
 function createAuthorizeRequest() {
-  const vtr = process.env.VTR ? "vtr=" + encodeURI(process.env.VTR) : "";
+  const vtr = process.env.VTR ? `vtr=${encodeURI(process.env.VTR)}&` : "";
+  const ui_locales = process.env.UI_LOCALES && process.env.UI_LOCALES.length > 0 ? `&ui_locales=${process.env.UI_LOCALES}` : "";
+  const redirect_uri = `https://${process.env.STUB_HOSTNAME}/oidc/authorization-code/callback`
 
   return process.env.API_BASE_URL +
     "/authorize?" +
     vtr +
-    "&scope=openid+phone+email" +
+    "scope=openid+phone+email" +
     "&response_type=code" +
-    "&redirect_uri=https%3A%2F%2F" + process.env.STUB_HOSTNAME + "%2Foidc%2Fauthorization-code%2Fcallback" +
-    "&state=" + randomBytes(32).toString("base64url") +
-    "&nonce=" + randomBytes(32).toString("base64url") +
-    "&client_id=" + process.env.TEST_CLIENT_ID +
+    `&redirect_uri=${encodeURIComponent(redirect_uri)}` +
+    `&state=${randomBytes(32).toString("base64url")}` +
+    `&nonce=${randomBytes(32).toString("base64url")}` +
+    `&client_id=${process.env.TEST_CLIENT_ID}` +
     "&cookie_consent=accept" +
     "&_ga=test" +
-    getUILocales();
+    ui_locales;
 }
 
 app.get("/", (req, res) => {
   const authRequest = createAuthorizeRequest();
-  console.log(authRequest);
+  logger.info(`Built OIDC URL: ${authRequest}`);
   axios
     .get(authRequest, {
       validateStatus: (status) => {
@@ -57,27 +62,32 @@ app.get("/", (req, res) => {
         });
       }
 
-      console.log(`Session is: ${sessionCookieValue}`);
-      console.log(`lng is: ${lngCookieValue}`);
+      logger.info(`Session is: ${sessionCookieValue}`);
+      logger.info(`lng is: ${lngCookieValue}`);
 
       const location = url.parse(response.headers.location, true);
-      const redirect = "http://localhost:3000/authorize?" + querystring.stringify(location.query)
+      logger.info(`orch response location is: ${location}`);
 
-      console.log(`orch response location query is: ${redirect}`);
+      const params = new URLSearchParams(location.query);
+      // logger.info(`params: ${params}`);
+      const redirectUri = new URL(`http://localhost:${frontend_port}/authorize`)
+      redirectUri.search = params.toString();
 
+      logger.info(`orch response location query is: ${redirectUri.toString()}`);
+      logger
       res.redirect(
-        redirect
+        redirectUri
       );
     })
     .catch(function (error) {
-      console.error(error);
+      logger.error(error, "Error in OIDC request");
     });
 });
 
 app.listen(port, () => {
-  console.log("TEST APP TO REDIRECT FOR NEW SESSION : DEV ONLY");
-  console.log(`RUNNING ON http://localhost:${port}`);
-  console.log(`FRONTEND PORT: ${frontend_port}`);
+  logger.info("TEST APP TO REDIRECT FOR NEW SESSION : DEV ONLY");
+  logger.info(`RUNNING ON http://localhost:${port}`);
+  logger.info(`FRONTEND PORT: ${frontend_port}`);
 });
 
 function getCookieValue(cookie, cookieName) {
@@ -89,13 +99,4 @@ function getCookieValue(cookie, cookieName) {
     }
   });
   return value;
-}
-
-function getUILocales() {
-  const uiLocales = process.env.UI_LOCALES;
-  if (uiLocales && uiLocales.length > 0) {
-    return "&ui_locales=" + uiLocales;
-  } else {
-    return "";
-  }
 }
