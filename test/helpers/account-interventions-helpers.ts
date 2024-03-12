@@ -40,18 +40,19 @@ export const noInterventions: AccountInterventionsFlags = {
 };
 
 export function accountInterventionsFakeHelper(
-  email: string,
-  passwordResetRequired: boolean,
-  blocked: boolean,
-  temporarilySuspended: boolean
+  flags: AccountInterventionsFlags,
+  maybeDateTimeStamp?: string
 ) {
+  const dateTimeStamp =
+    maybeDateTimeStamp === undefined ? nowDateTime() : maybeDateTimeStamp;
   return {
     accountInterventionStatus: sinon.fake.returns({
       data: {
-        email: email,
-        passwordResetRequired: passwordResetRequired,
-        blocked: blocked,
-        temporarilySuspended: temporarilySuspended,
+        email: "joe.bloggs@test.com",
+        passwordResetRequired: flags.passwordResetRequired,
+        blocked: flags.blocked,
+        temporarilySuspended: flags.temporarilySuspended,
+        appliedAt: dateTimeStamp,
       },
     }),
   } as unknown as AccountInterventionsInterface;

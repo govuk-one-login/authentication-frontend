@@ -11,7 +11,10 @@ import {
 } from "mock-req-res";
 import { fakeVerifyCodeServiceHelper } from "../../../../../test/helpers/verify-code-helpers";
 import { verifyCodePost } from "../verify-code-controller";
-import { accountInterventionsFakeHelper } from "../../../../../test/helpers/account-interventions-helpers";
+import {
+  accountInterventionsFakeHelper,
+  noInterventions,
+} from "../../../../../test/helpers/account-interventions-helpers";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
@@ -35,12 +38,8 @@ describe("Verify code controller tests", () => {
 
   it("if code is valid and NOTIFICATION_TYPE.EMAIL_CODE redirects to /enter-password without calling account interventions", async () => {
     const verifyCodeService = fakeVerifyCodeServiceHelper(true);
-    const accountInterventionService = accountInterventionsFakeHelper(
-      "test@test.com",
-      false,
-      false,
-      false
-    );
+    const accountInterventionService =
+      accountInterventionsFakeHelper(noInterventions);
 
     req = mockRequest({
       path: PATH_NAMES.ENTER_PASSWORD,
@@ -72,12 +71,11 @@ describe("Verify code controller tests", () => {
     });
 
     it("if account is blocked, redirects to /unavailable-permanent", async () => {
-      const accountInterventionService = accountInterventionsFakeHelper(
-        "test@test.com",
-        false,
-        true,
-        false
-      );
+      const accountInterventionService = accountInterventionsFakeHelper({
+        blocked: true,
+        passwordResetRequired: false,
+        temporarilySuspended: false,
+      });
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType:
           NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES,
@@ -92,12 +90,11 @@ describe("Verify code controller tests", () => {
     });
 
     it("if account is temporarily suspended only, redirects to /unavailable-temporary", async () => {
-      const accountInterventionService = accountInterventionsFakeHelper(
-        "test@test.com",
-        false,
-        false,
-        true
-      );
+      const accountInterventionService = accountInterventionsFakeHelper({
+        temporarilySuspended: true,
+        blocked: false,
+        passwordResetRequired: false,
+      });
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType:
           NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES,
@@ -112,12 +109,11 @@ describe("Verify code controller tests", () => {
     });
 
     it("if account has has password reset required status, redirects to /password-reset-required", async () => {
-      const accountInterventionService = accountInterventionsFakeHelper(
-        "test@test.com",
-        true,
-        false,
-        true
-      );
+      const accountInterventionService = accountInterventionsFakeHelper({
+        passwordResetRequired: true,
+        temporarilySuspended: true,
+        blocked: false,
+      });
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType:
           NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES,
@@ -132,12 +128,8 @@ describe("Verify code controller tests", () => {
     });
 
     it("if account has no AIS status, redirects to /get-security-codes", async () => {
-      const accountInterventionService = accountInterventionsFakeHelper(
-        "test@test.com",
-        false,
-        false,
-        false
-      );
+      const accountInterventionService =
+        accountInterventionsFakeHelper(noInterventions);
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType:
           NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES,
@@ -163,12 +155,8 @@ describe("Verify code controller tests", () => {
     });
 
     it("if account has no AIS status, redirects to reset password", async () => {
-      const accountInterventionService = accountInterventionsFakeHelper(
-        "test@test.com",
-        false,
-        false,
-        false
-      );
+      const accountInterventionService =
+        accountInterventionsFakeHelper(noInterventions);
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType: NOTIFICATION_TYPE.MFA_SMS,
         template: "check-your-email/index.njk",
@@ -183,12 +171,11 @@ describe("Verify code controller tests", () => {
     });
 
     it("if account has only temporary suspension status, redirects to /unavailable-temporary", async () => {
-      const accountInterventionService = accountInterventionsFakeHelper(
-        "test@test.com",
-        false,
-        false,
-        true
-      );
+      const accountInterventionService = accountInterventionsFakeHelper({
+        temporarilySuspended: true,
+        blocked: false,
+        passwordResetRequired: false,
+      });
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType: NOTIFICATION_TYPE.MFA_SMS,
         template: "check-your-email/index.njk",
@@ -203,12 +190,11 @@ describe("Verify code controller tests", () => {
     });
 
     it("if account has only permanent suspension status, redirects to /unavailable-permanent", async () => {
-      const accountInterventionService = accountInterventionsFakeHelper(
-        "test@test.com",
-        false,
-        true,
-        false
-      );
+      const accountInterventionService = accountInterventionsFakeHelper({
+        blocked: true,
+        passwordResetRequired: false,
+        temporarilySuspended: false,
+      });
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType: NOTIFICATION_TYPE.MFA_SMS,
         template: "check-your-email/index.njk",
@@ -223,12 +209,11 @@ describe("Verify code controller tests", () => {
     });
 
     it("if account has reset password and suspended status, redirects to reset password", async () => {
-      const accountInterventionService = accountInterventionsFakeHelper(
-        "test@test.com",
-        true,
-        false,
-        true
-      );
+      const accountInterventionService = accountInterventionsFakeHelper({
+        passwordResetRequired: true,
+        temporarilySuspended: true,
+        blocked: false,
+      });
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType: NOTIFICATION_TYPE.MFA_SMS,
         template: "check-your-email/index.njk",

@@ -20,6 +20,7 @@ import {
 } from "mock-req-res";
 import { EnterPasswordServiceInterface } from "../../enter-password/types";
 import { MfaServiceInterface } from "../../common/mfa/types";
+import { ERROR_CODES } from "../../common/constants";
 
 const TEST_SCENARIO_PARAMETERS = [
   {
@@ -145,6 +146,8 @@ describe("reset password controller (in 6 digit code flow)", () => {
             expect(req.session.user.isPasswordChangeRequired).to.be.eq(false);
           }
 
+          expect(req.session.user.passwordResetTime).not.to.be.undefined;
+
           expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
         });
 
@@ -269,6 +272,49 @@ describe("reset password controller (in 6 digit code flow)", () => {
       expect(fakeMfAService.sendMfaCode).to.have.been.calledOnce;
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
+    });
+
+    it("should not set the passwordResetTime flag on the session if update password is not a success", async () => {
+      const fakeResetService: ResetPasswordServiceInterface = {
+        updatePassword: sinon.fake.returns({
+          success: false,
+          data: { code: ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING },
+        }),
+      } as unknown as ResetPasswordServiceInterface;
+      const fakeLoginService: EnterPasswordServiceInterface = {
+        loginUser: sinon.fake.returns({
+          success: true,
+          data: {
+            redactedPhoneNumber: "1234",
+            consentRequired: false,
+            latestTermsAndConditionsAccepted: true,
+            mfaMethodVerified: true,
+            mfaRequired: false,
+            mfaMethodType: MFA_METHOD_TYPE.SMS,
+            passwordChangeRequired: params.passwordChangeRequired,
+          },
+        }),
+      } as unknown as EnterPasswordServiceInterface;
+      fakeLoginService.loginUser;
+      const fakeMfAService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({ success: true }),
+      } as unknown as MfaServiceInterface;
+
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      req.body.password = "Password1";
+
+      await resetPasswordPost(
+        fakeResetService,
+        fakeLoginService,
+        fakeMfAService
+      )(req as Request, res as Response);
+
+      expect(fakeResetService.updatePassword).to.have.been.calledOnce;
+      expect(fakeLoginService.loginUser).not.to.have.been.called;
+
+      expect(req.session.user.passwordResetTime).to.be.undefined;
     });
   });
 });

@@ -111,12 +111,11 @@ describe("reset password 2fa auth app controller", () => {
     it("should redirect to /unavailable-temporary when temporarilySuspended status applied to account and they try to reset their password", async () => {
       process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
       const fakeService = fakeVerifyCodeServiceHelper(true);
-      const fakeInterventionsService = accountInterventionsFakeHelper(
-        "test@test.com",
-        false,
-        false,
-        true
-      );
+      const fakeInterventionsService = accountInterventionsFakeHelper({
+        temporarilySuspended: true,
+        blocked: false,
+        passwordResetRequired: false,
+      });
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
@@ -128,15 +127,14 @@ describe("reset password 2fa auth app controller", () => {
       expect(res.redirect).to.have.calledWith(PATH_NAMES.UNAVAILABLE_TEMPORARY);
     });
 
-    it("should redirect to /unavailable-temporary when temporarilySuspended status applied to account and they try to reset their password", async () => {
+    it("should redirect to /unavailable-permanent when bloced status applied to account and they try to reset their password", async () => {
       process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
       const fakeService = fakeVerifyCodeServiceHelper(true);
-      const fakeInterventionsService = accountInterventionsFakeHelper(
-        "test@test.com",
-        false,
-        true,
-        false
-      );
+      const fakeInterventionsService = accountInterventionsFakeHelper({
+        blocked: true,
+        temporarilySuspended: false,
+        passwordResetRequired: false,
+      });
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
