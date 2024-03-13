@@ -43,6 +43,7 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
         "redirect-uri": clientSession.redirectUri,
         "rp-sector-uri": clientSession.rpSectorHost,
         "is-new-account": userSession?.isAccountCreationJourney ?? false,
+        "password-reset-time": userSession?.passwordResetTime,
       };
       response = await axios.client.post(
         API_ENDPOINTS.ORCH_AUTH_CODE,

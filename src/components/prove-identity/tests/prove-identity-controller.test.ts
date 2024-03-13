@@ -81,6 +81,7 @@ describe("prove identity controller", () => {
     const redirectUriSentToAuth = "/redirect-uri";
     const rpSectorHostSentToAuth = "https://rp.redirect.uri";
     const isAccountCreationJourneyUserSession = true;
+    const passwordResetTimeTestVar = 1710335967;
     const redirectUriReturnedFromResponse =
       "/redirect-here?with-some-params=added-by-the-endpoint";
     const frontendBaseUrl = "/frontend-base-url";
@@ -129,6 +130,7 @@ describe("prove identity controller", () => {
 
       req.session.user = {
         isAccountCreationJourney: isAccountCreationJourneyUserSession,
+        passwordResetTime: passwordResetTimeTestVar,
       };
 
       await controller(req as Request, res as Response);
@@ -139,6 +141,7 @@ describe("prove identity controller", () => {
         "redirect-uri": redirectUriSentToAuth,
         "rp-sector-uri": rpSectorHostSentToAuth,
         "is-new-account": isAccountCreationJourneyUserSession,
+        "password-reset-time": passwordResetTimeTestVar,
       };
 
       expect(
