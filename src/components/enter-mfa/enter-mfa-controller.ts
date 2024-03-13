@@ -9,7 +9,7 @@ import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
 import { ExpressRouteFunc } from "../../types";
 import { ERROR_CODES, pathWithQueryParam } from "../common/constants";
-import { supportAccountRecovery } from "../../config";
+import { support2hrLockout, supportAccountRecovery } from "../../config";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
 import { BadRequestError } from "../../utils/error";
@@ -27,6 +27,20 @@ export function enterMfaGet(
   return async function (req: Request, res: Response) {
     const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
 
+    if (
+      support2hrLockout() &&
+      req.session.user.wrongCodeEnteredLock &&
+      new Date().getTime() <
+        new Date(req.session.user.wrongCodeEnteredLock).getTime()
+    ) {
+      return res.render(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        {
+          newCodeLink: PATH_NAMES.ENTER_MFA,
+          show2HrScreen: support2hrLockout(),
+        }
+      );
+    }
     const templateName = req.session.user.isUpliftRequired
       ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME
       : ENTER_MFA_DEFAULT_TEMPLATE_NAME;

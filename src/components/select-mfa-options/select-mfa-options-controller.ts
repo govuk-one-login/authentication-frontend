@@ -6,7 +6,8 @@ import { MFA_METHOD_TYPE } from "../../app.constants";
 
 export function getSecurityCodesGet(req: Request, res: Response): void {
   req.session.user.isAccountCreationJourney =
-    !req.session.user.isAccountRecoveryJourney;
+    !req.session.user.isAccountRecoveryJourney ||
+    req.session.user.isAccountPartCreated;
 
   res.render("select-mfa-options/index.njk", {
     isAccountPartCreated: req.session.user.isAccountPartCreated,

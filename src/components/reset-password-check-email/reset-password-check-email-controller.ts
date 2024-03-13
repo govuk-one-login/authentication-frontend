@@ -23,6 +23,7 @@ export function resetPasswordCheckEmailGet(
     const requestCode = !(
       req.query.requestCode && req.query.requestCode === "false"
     );
+    req.session.user.isPasswordResetJourney = true;
     let result;
 
     if (requestCode) {
@@ -47,6 +48,7 @@ export function resetPasswordCheckEmailGet(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
           newCodeLink,
+          show2HrScreen: support2hrLockout(),
         }
       );
     }

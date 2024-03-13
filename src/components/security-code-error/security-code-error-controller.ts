@@ -51,10 +51,25 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
     ).toUTCString();
   }
 
+  let show2HrScreen = false;
+  if (support2hrLockout()) {
+    if (
+      (req.session.user.isSignInJourney &&
+        !req.session.user.isAccountPartCreated &&
+        !req.session.user.isAccountRecoveryJourney) ||
+      req.session.user.isPasswordResetJourney ||
+      (!isNotEmailCode && !req.session.user.isAccountCreationJourney) ||
+      (!isNotEmailCode && req.session.user.isAccountRecoveryJourney)
+    ) {
+      show2HrScreen = true;
+    }
+  }
+
   return res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
     isBlocked: isNotEmailCode || showFifteenMinutesParagraph,
+    show2HrScreen: show2HrScreen,
   });
 }
 
@@ -65,9 +80,28 @@ export function securityCodeTriesExceededGet(
   req.session.user.codeRequestLock = new Date(
     Date.now() + getCodeRequestBlockDurationInMinutes() * 60000
   ).toUTCString();
+  const isNotEmailCode =
+    req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries &&
+    req.query.actionType !==
+      SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries &&
+    req.query.actionType !==
+      SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries;
+
+  let show2HrScreen = false;
+  if (support2hrLockout()) {
+    show2HrScreen =
+      (req.session.user.isSignInJourney &&
+        !req.session.user.isAccountPartCreated &&
+        !req.session.user.isAccountRecoveryJourney) ||
+      req.session.user.isPasswordResetJourney ||
+      (!isNotEmailCode && !req.session.user.isAccountCreationJourney) ||
+      (!isNotEmailCode && req.session.user.isAccountRecoveryJourney);
+  }
+
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isResendCodeRequest: req.query.isResendCodeRequest,
+    show2HrScreen: show2HrScreen,
     isAccountCreationJourney: req.session.user?.isAccountCreationJourney,
     support2hrLockout: support2hrLockout(),
   });
