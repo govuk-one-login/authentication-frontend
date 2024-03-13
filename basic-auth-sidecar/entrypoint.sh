@@ -1,31 +1,37 @@
 #!/bin/sh
 set -euo
 
-if [ -z "$BASIC_AUTH_USERNAME" ]; then
+if [ -z "${BASIC_AUTH_USERNAME}" ]; then
   echo >&2 "BASIC_AUTH_USERNAME must be set"
   exit 1
 fi
 
-if [ -z "$BASIC_AUTH_PASSWORD" ]; then
+if [ -z "${BASIC_AUTH_PASSWORD}" ]; then
   echo >&2 "BASIC_AUTH_PASSWORD must be set"
   exit 1
 fi
 
-if [ -z "$PROXY_PASS" ]; then
+if [ -z "${PROXY_PASS}" ]; then
   echo >&2 "PROXY_PASS must be set"
   exit 1
 fi
 
-touch /etc/nginx/allow-list.conf
-if [ -n "$IP_ALLOW_LIST" ]; then
-  echo "${IP_ALLOW_LIST}" | jq -r '"allow " + .[] + ";"' >>/etc/nginx/allow-list.conf
+IP_BLOCK_MATCHER="private_ranges"
+if [ -n "${IP_ALLOW_LIST:-}" ]; then
+  IP_BLOCK_MATCHER="$(echo "${IP_ALLOW_LIST}" | jq -r '. | join(" ")')"
 fi
+unset IP_ALLOW_LIST
+export IP_BLOCK_MATCHER
 
-touch /etc/nginx/trusted-proxies.conf
-if [ -n "$TRUSTED_PROXIES" ]; then
-  echo "${TRUSTED_PROXIES}" | jq -r '"set_real_ip_from " + .[] + ";"' >>/etc/nginx/trusted-proxies.conf
+TRUSTED_PROXIES_IPS=""
+if [ -n "${TRUSTED_PROXIES:-}" ]; then
+  TRUSTED_PROXIES_IPS="$(echo "${TRUSTED_PROXIES}" | jq -r '. | join(" ")')"
 fi
+unset TRUSTED_PROXIES
+export TRUSTED_PROXIES_IPS
 
-htpasswd -bBc /etc/nginx/.htpasswd "${BASIC_AUTH_USERNAME}" "${BASIC_AUTH_PASSWORD}"
+HASHED_PASSWORD="$(caddy hash-password --plaintext "${BASIC_AUTH_PASSWORD}")"
+unset BASIC_AUTH_PASSWORD
+export HASHED_PASSWORD
 
-exec /docker-entrypoint.sh "$@"
+exec "$@"
