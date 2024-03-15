@@ -7,10 +7,20 @@ import { ExpressRouteFunc } from "../../types";
 import { ERROR_CODES } from "../common/constants";
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
+import { support2hrLockout } from "../../config";
 
 const TEMPLATE_NAME = "check-your-email/index.njk";
 
 export function checkYourEmailGet(req: Request, res: Response): void {
+  if (
+    req.session.user.codeRequestLock &&
+    new Date().getTime() < new Date(req.session.user.codeRequestLock).getTime()
+  ) {
+    return res.render("security-code-error/index-wait.njk", {
+      support2hrLockout: support2hrLockout(),
+      isAccountCreationJourney: true,
+    });
+  }
   res.render(TEMPLATE_NAME, {
     email: req.session.user.email,
   });

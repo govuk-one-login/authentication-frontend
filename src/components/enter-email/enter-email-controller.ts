@@ -168,6 +168,17 @@ export function enterEmailCreatePost(
     );
 
     if (!sendNotificationResponse.success) {
+      if (
+        sendNotificationResponse.data.code ==
+        ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT
+      ) {
+        return res.render("security-code-error/index-wait.njk", {
+          support2hrLockout: support2hrLockout(),
+          isAccountCreationJourney:
+            req.session.user.isAccountRecoveryJourney &&
+            !req.session.user.isAccountPartCreated,
+        });
+      }
       const path = getErrorPathByCode(sendNotificationResponse.data.code);
 
       if (path) {

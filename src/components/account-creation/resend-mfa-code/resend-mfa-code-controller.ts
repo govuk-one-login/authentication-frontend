@@ -7,11 +7,18 @@ import {
   NOTIFICATION_TYPE,
   PATH_NAMES,
 } from "../../../app.constants";
-import { getErrorPathByCode, pathWithQueryParam } from "../../common/constants";
+import {
+  ERROR_CODES,
+  getErrorPathByCode,
+  pathWithQueryParam,
+} from "../../common/constants";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 import { sendNotificationService } from "../../common/send-notification/send-notification-service";
 import { BadRequestError } from "../../../utils/error";
-import { support2hrLockout } from "../../../config";
+import {
+  getCodeRequestBlockDurationInMinutes,
+  support2hrLockout,
+} from "../../../config";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
   const newCodeLink = req.query?.isResendCodeRequest
@@ -70,7 +77,14 @@ export const resendMfaCodePost = (
 
     if (!sendNotificationResponse.success) {
       const path = getErrorPathByCode(sendNotificationResponse.data.code);
-
+      if (
+        sendNotificationResponse.data.code ==
+        ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED
+      ) {
+        req.session.user.codeRequestLock = new Date(
+          Date.now() + getCodeRequestBlockDurationInMinutes() * 60000
+        ).toUTCString();
+      }
       if (path) {
         return res.redirect(path);
       }
