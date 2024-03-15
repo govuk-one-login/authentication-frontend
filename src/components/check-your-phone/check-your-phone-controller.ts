@@ -40,7 +40,7 @@ export function checkYourPhoneGet(req: Request, res: Response): void {
   ) {
     return res.render("security-code-error/index-wait.njk", {
       support2hrLockout: support2hrLockout(),
-      isAccountCreationJourney: true,
+      isAccountCreationJourney: req.session.user.isAccountCreationJourney && !req.session.user.isAccountPartCreated,
     });
   }
   return res.render(TEMPLATE_NAME, {
