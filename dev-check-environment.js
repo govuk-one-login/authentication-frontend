@@ -11,10 +11,10 @@ describe("environment", function () {
   const requiredEnvVars = [
     "TEST_CLIENT_ID",
     "API_KEY",
-    "ZENDESK_USERNAME",
-    "ZENDESK_API_TOKEN",
-    "ZENDESK_GROUP_ID_PUBLIC",
-    "ZENDESK_API_URL",
+    "SMARTAGENT_API_KEY",
+    "SMARTAGENT_API_URL",
+    "SMARTAGENT_WEBFORM_ID",
+    "URL_FOR_SUPPORT_LINKS",
   ];
 
   requiredEnvVars.forEach((envVar) => {
