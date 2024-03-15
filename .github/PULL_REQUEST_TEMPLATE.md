@@ -16,10 +16,20 @@ For example:
 -->
 
 ## Change have been demonstrated
-
-Changes to the user interface or content should be demonstrated to Content Design and Interaction Design before being merged. This is to ensure they can make any necessary changes to Figma.
+Changes to the user interface or content should be demonstrated to Content Design and Interaction Design before being merged. This is to ensure they are aware of changes and behaviours (for example, how error screens appear and whether invalid entries can be amended), and can make any necessary changes to Figma.
 
 - [ ] Changes to the user interface have been demonstrated
+
+<!-- 
+
+Include screenshots where possible, including those representing error states. Here are some examples:
+
+- a PR that uses tables to display the screenshots https://github.com/govuk-one-login/authentication-frontend/pull/1187
+- a PR that uses a dropdown to display the screenshots https://github.com/alphagov/di-infrastructure/pull/578
+
+You can find example PRs from this repository that include screenshots through this search: https://github.com/govuk-one-login/authentication-frontend/pulls?q=is%3Apr+screenshots+is%3Aclosed+is%3Amerged  
+
+-->
 
 <!-- Delete this section if the PR does not change the UI. -->
 
