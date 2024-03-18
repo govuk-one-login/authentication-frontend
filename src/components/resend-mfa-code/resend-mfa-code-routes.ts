@@ -8,12 +8,19 @@ import {
 } from "./resend-mfa-code-controller";
 import { asyncHandler } from "../../utils/async";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
+import {
+  accountLockingAccountRecoveryMiddleware,
+  accountLockingMiddleware, accountLockingResetPasswordMiddleware,
+} from "../../middleware/account-locking-middleware";
 
 const router = express.Router();
 
 router.get(
   PATH_NAMES.RESEND_MFA_CODE,
   validateSessionMiddleware,
+  accountLockingAccountRecoveryMiddleware,
+  accountLockingMiddleware,
+  accountLockingResetPasswordMiddleware,
   allowUserJourneyMiddleware,
   resendMfaCodeGet
 );
