@@ -1,9 +1,5 @@
 import { Request, Response } from "express";
-import {
-  pathWithQueryParam,
-  SECURITY_CODE_ERROR,
-  SecurityCodeErrorType,
-} from "../common/constants";
+import { pathWithQueryParam, SECURITY_CODE_ERROR, SecurityCodeErrorType } from "../common/constants";
 import { PATH_NAMES } from "../../app.constants";
 import {
   getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes,
@@ -12,6 +8,7 @@ import {
   getPasswordResetCodeEnteredWrongBlockDurationInMinutes,
   support2hrLockout,
 } from "../../config";
+import { show2HrScreenTooManyCodes } from "../../middleware/account-locking-middleware";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
   const isNotEmailCode =
@@ -23,7 +20,7 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
 
   let showFifteenMinutesParagraph = false;
 
-  if (isNotEmailCode) {
+  if (isNotEmailCode && req.session.user.isPasswordResetJourney == false) {
     req.session.user.wrongCodeEnteredLock = new Date(
       Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
     ).toUTCString();
@@ -41,8 +38,13 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
   }
 
   if (
+    req.session.user.isPasswordResetJourney &&(
     req.query.actionType ===
-    SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries
+    SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries ||
+    req.query.actionType ===
+    SecurityCodeErrorType.AuthAppMfaMaxRetries ||
+    req.query.actionType ===
+    SecurityCodeErrorType.MfaMaxRetries)
   ) {
     showFifteenMinutesParagraph = true;
     req.session.user.wrongCodeEnteredPasswordResetLock = new Date(
@@ -51,25 +53,11 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
     ).toUTCString();
   }
 
-  let show2HrScreen = false;
-  if (support2hrLockout()) {
-    if (
-      (req.session.user.isSignInJourney &&
-        !req.session.user.isAccountPartCreated &&
-        !req.session.user.isAccountRecoveryJourney) ||
-      req.session.user.isPasswordResetJourney ||
-      (!isNotEmailCode && !req.session.user.isAccountCreationJourney) ||
-      (!isNotEmailCode && req.session.user.isAccountRecoveryJourney)
-    ) {
-      show2HrScreen = true;
-    }
-  }
-
   return res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
     isBlocked: isNotEmailCode || showFifteenMinutesParagraph,
-    show2HrScreen: show2HrScreen,
+    show2HrScreen: show2HrScreenTooManyCodes(req),
   });
 }
 
@@ -97,6 +85,7 @@ export function securityCodeTriesExceededGet(
       (!isNotEmailCode && !req.session.user.isAccountCreationJourney) ||
       (!isNotEmailCode && req.session.user.isAccountRecoveryJourney);
   }
+
 
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
@@ -129,7 +118,7 @@ export function securityCodeEnteredExceededGet(
   });
 }
 
-function getNewCodePath(actionType: SecurityCodeErrorType) {
+export function getNewCodePath(actionType: SecurityCodeErrorType) {
   switch (actionType) {
     case SecurityCodeErrorType.MfaMaxCodesSent:
     case SecurityCodeErrorType.MfaBlocked:
@@ -163,9 +152,10 @@ function getNewCodePath(actionType: SecurityCodeErrorType) {
       return PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
     case SecurityCodeErrorType.EmailMaxRetries:
     case SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries:
+    case SecurityCodeErrorType.ResetPasswordMaxEmailCodesSent:
     case SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries:
       return pathWithQueryParam(
-        PATH_NAMES.RESEND_EMAIL_CODE,
+        PATH_NAMES.RESET_PASSWORD_RESEND_CODE,
         "requestNewCode",
         "true"
       );

@@ -8,6 +8,7 @@ import {
 import { asyncHandler } from "../../utils/async";
 import { validateSmsCodeRequest } from "./check-your-phone-validation";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
+import { accountLockingMiddleware } from "../../middleware/account-locking-middleware";
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.get(
   PATH_NAMES.CHECK_YOUR_PHONE,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  accountLockingMiddleware,
   checkYourPhoneGet
 );
 

@@ -8,12 +8,14 @@ import {
 } from "./check-your-email-controller";
 import { validateCheckYourEmailRequest } from "./check-your-email-validation";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
+import { accountLockingMiddleware } from "../../middleware/account-locking-middleware";
 
 const router = express.Router();
 
 router.get(
   PATH_NAMES.CHECK_YOUR_EMAIL,
   validateSessionMiddleware,
+  accountLockingMiddleware,
   allowUserJourneyMiddleware,
   checkYourEmailGet
 );

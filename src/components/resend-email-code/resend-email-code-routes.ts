@@ -9,6 +9,7 @@ import {
 import { asyncHandler } from "../../utils/async";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 import express from "express";
+import { accountLockingMiddleware } from "../../middleware/account-locking-middleware";
 
 const router = express.Router();
 
@@ -16,6 +17,7 @@ router.get(
   PATH_NAMES.RESEND_EMAIL_CODE,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  accountLockingMiddleware,
   resendEmailCodeGet
 );
 

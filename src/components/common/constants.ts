@@ -19,6 +19,7 @@ export enum SecurityCodeErrorType {
   ChangeSecurityCodesEmailBlocked = "changeSecurityCodesEmailBlocked",
   ChangeSecurityCodesEmailMaxRetries = "changeSecurityCodesEmailMaxRetries",
   InvalidPasswordResetCodeMaxRetries = "invalidPasswordResetCodeMaxRetries",
+  ResetPasswordMaxEmailCodesSent = "resetPasswordMaxEmailCodesSent",
 }
 
 export const ERROR_CODES = {
@@ -134,6 +135,11 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
       SECURITY_CODE_ERROR,
       SecurityCodeErrorType.ChangeSecurityCodesEmailBlocked
     ),
+  [ERROR_CODES.RESET_PASSWORD_LINK_MAX_RETRIES_REACHED]:pathWithQueryParam(
+    PATH_NAMES["SECURITY_CODE_REQUEST_EXCEEDED"],
+    SECURITY_CODE_ERROR,
+    SecurityCodeErrorType.ResetPasswordMaxEmailCodesSent
+  ),
 };
 
 export function getErrorPathByCode(errorCode: number): string | undefined {

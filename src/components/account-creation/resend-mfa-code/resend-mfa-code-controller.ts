@@ -21,39 +21,11 @@ import {
 } from "../../../config";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
-  const newCodeLink = req.query?.isResendCodeRequest
-    ? pathWithQueryParam(
-        PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
-        "isResendCodeRequest",
-        "true"
-      )
-    : PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
-
-  if (
-    req.session.user.wrongCodeEnteredLock &&
-    new Date().getTime() <
-      new Date(req.session.user.wrongCodeEnteredLock).getTime()
-  ) {
-    res.render("security-code-error/index-security-code-entered-exceeded.njk", {
-      newCodeLink: newCodeLink,
-      isAuthApp: false,
-    });
-  } else if (
-    req.session.user.codeRequestLock &&
-    new Date().getTime() < new Date(req.session.user.codeRequestLock).getTime()
-  ) {
-    res.render("security-code-error/index-wait.njk", {
-      newCodeLink,
-      support2hrLockout: support2hrLockout(),
-      isAccountCreationJourney: true,
-    });
-  } else {
-    res.render("account-creation/resend-mfa-code/index.njk", {
-      phoneNumber: req.session.user.redactedPhoneNumber,
-      isResendCodeRequest: req.query?.isResendCodeRequest,
-      support2hrLockout: support2hrLockout(),
-    });
-  }
+  res.render("account-creation/resend-mfa-code/index.njk", {
+    phoneNumber: req.session.user.redactedPhoneNumber,
+    isResendCodeRequest: req.query?.isResendCodeRequest,
+    support2hrLockout: support2hrLockout(),
+  });
 }
 
 export const resendMfaCodePost = (
@@ -77,14 +49,6 @@ export const resendMfaCodePost = (
 
     if (!sendNotificationResponse.success) {
       const path = getErrorPathByCode(sendNotificationResponse.data.code);
-      if (
-        sendNotificationResponse.data.code ==
-        ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED
-      ) {
-        req.session.user.codeRequestLock = new Date(
-          Date.now() + getCodeRequestBlockDurationInMinutes() * 60000
-        ).toUTCString();
-      }
       if (path) {
         return res.redirect(path);
       }

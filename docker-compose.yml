@@ -38,7 +38,7 @@ services:
     image: *stub-image-name
     pull_policy: never
     ports:
-      - "${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}:${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}"
+      - "${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5002}:${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}"
     environment:
       ENVIRONMENT: ${ENVIRONMENT:?this should be set in your .env file.}
 

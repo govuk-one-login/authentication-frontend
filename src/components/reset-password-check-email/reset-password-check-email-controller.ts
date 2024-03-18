@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
 import { ResetPasswordCheckEmailServiceInterface } from "./types";
 import { resetPasswordCheckEmailService } from "./reset-password-check-email-service";
-import { BadRequestError } from "../../utils/error";
-import { ERROR_CODES } from "../common/constants";
+import { ERROR_CODES, getErrorPathByCode } from "../common/constants";
 import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
@@ -36,23 +35,6 @@ export function resetPasswordCheckEmailGet(
       );
     }
 
-    if (
-      req.session.user.wrongCodeEnteredPasswordResetLock &&
-      new Date().getTime() <
-        new Date(req.session.user.wrongCodeEnteredPasswordResetLock).getTime()
-    ) {
-      const newCodeLink = req.query?.isResendCodeRequest
-        ? "/security-code-check-time-limit?isResendCodeRequest=true"
-        : "/security-code-check-time-limit";
-      return res.render(
-        "security-code-error/index-security-code-entered-exceeded.njk",
-        {
-          newCodeLink,
-          show2HrScreen: support2hrLockout(),
-        }
-      );
-    }
-
     if (!requestCode || result.success) {
       const support2FABeforePasswordResetFlag = support2FABeforePasswordReset();
       return res.render(TEMPLATE_NAME, {
@@ -61,35 +43,7 @@ export function resetPasswordCheckEmailGet(
       });
     }
 
-    if (
-      [
-        ERROR_CODES.RESET_PASSWORD_LINK_MAX_RETRIES_REACHED,
-        ERROR_CODES.RESET_PASSWORD_LINK_BLOCKED,
-        ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES,
-      ].includes(result.data.code)
-    ) {
-      let errorTemplate: string;
-
-      if (
-        result.data.code === ERROR_CODES.RESET_PASSWORD_LINK_MAX_RETRIES_REACHED
-      ) {
-        errorTemplate = "security-code-error/index-too-many-requests.njk";
-      } else if (
-        result.data.code ===
-        ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES
-      ) {
-        errorTemplate =
-          "security-code-error/index-security-code-entered-exceeded.njk";
-      } else {
-        errorTemplate = "security-code-error/index-wait.njk";
-      }
-
-      return res.render(errorTemplate, {
-        support2hrLockout: support2hrLockout(),
-      });
-    } else {
-      throw new BadRequestError(result.data.message, result.data.code);
-    }
+    return res.redirect(getErrorPathByCode(result.data.code));
   };
 }
 

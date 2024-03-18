@@ -1,26 +1,14 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-  getNextPathAndUpdateJourney,
-  pathWithQueryParam,
-} from "../common/constants";
-import {
-  getCodeEnteredWrongBlockDurationInMinutes,
-  support2hrLockout,
-  supportAccountRecovery,
-} from "../../config";
+import { ERROR_CODES, getErrorPathByCode, getNextPathAndUpdateJourney, pathWithQueryParam } from "../common/constants";
+import { supportAccountRecovery } from "../../config";
 import { VerifyMfaCodeInterface } from "./types";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
 import { BadRequestError } from "../../utils/error";
 import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
-import {
-  formatValidationError,
-  renderBadRequest,
-} from "../../utils/validation";
+import { formatValidationError, renderBadRequest } from "../../utils/validation";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 
@@ -38,21 +26,6 @@ export function enterAuthenticatorAppCodeGet(
     const templateName = isUpliftRequired
       ? UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
       : ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME;
-
-    if (
-      req.session.user.wrongCodeEnteredLock &&
-      new Date().getTime() <
-        new Date(req.session.user.wrongCodeEnteredLock).getTime()
-    ) {
-      return res.render(
-        "security-code-error/index-security-code-entered-exceeded.njk",
-        {
-          newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
-          isAuthApp: true,
-          show2HrScreen: support2hrLockout(),
-        }
-      );
-    }
 
     const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
 
@@ -130,15 +103,6 @@ export const enterAuthenticatorAppCodePost = (
           )
         );
         return renderBadRequest(res, req, template, error);
-      }
-
-      if (
-        result.data.code ===
-        ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED
-      ) {
-        req.session.user.wrongCodeEnteredLock = new Date(
-          Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
-        ).toUTCString();
       }
 
       const path = getErrorPathByCode(result.data.code);

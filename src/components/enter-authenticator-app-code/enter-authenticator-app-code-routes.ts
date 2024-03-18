@@ -8,6 +8,7 @@ import {
 import { asyncHandler } from "../../utils/async";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 import { validateEnterAuthenticatorAppCodeRequest } from "./enter-authenticator-app-code-validation";
+import { accountLockingMiddleware } from "../../middleware/account-locking-middleware";
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.get(
   PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  accountLockingMiddleware,
   asyncHandler(enterAuthenticatorAppCodeGet())
 );
 

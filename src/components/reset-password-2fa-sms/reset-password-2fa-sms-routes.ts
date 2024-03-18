@@ -7,6 +7,7 @@ import * as express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 import { asyncHandler } from "../../utils/async";
+import { accountLockingResetPasswordMiddleware } from "../../middleware/account-locking-middleware";
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ router.get(
   PATH_NAMES.RESET_PASSWORD_2FA_SMS,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  accountLockingResetPasswordMiddleware,
   asyncHandler(resetPassword2FASmsGet())
 );
 

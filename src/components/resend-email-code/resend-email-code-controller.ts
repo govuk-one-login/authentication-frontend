@@ -13,38 +13,6 @@ import xss from "xss";
 import { support2hrLockout } from "../../config";
 
 export function resendEmailCodeGet(req: Request, res: Response): void {
-  if (
-    (req.session.user.wrongCodeEnteredAccountRecoveryLock &&
-      new Date().getTime() <
-        new Date(
-          req.session.user.wrongCodeEnteredAccountRecoveryLock
-        ).getTime()) ||
-    (req.session.user.wrongCodeEnteredPasswordResetLock &&
-      new Date().getTime() <
-        new Date(req.session.user.wrongCodeEnteredPasswordResetLock).getTime())
-  ) {
-    const newCodeLink = req.query?.isResendCodeRequest
-      ? "/security-code-check-time-limit?isResendCodeRequest=true"
-      : "/security-code-check-time-limit";
-
-    let show2HrScreen = false;
-    if (
-      support2hrLockout() &&
-      (req.session.user.isPasswordResetJourney ||
-        req.session.user.isAccountRecoveryJourney)
-    ) {
-      show2HrScreen = true;
-    }
-
-    return res.render(
-      "security-code-error/index-security-code-entered-exceeded.njk",
-      {
-        newCodeLink,
-        show2HrScreen: show2HrScreen,
-      }
-    );
-  }
-
   res.render("resend-email-code/index.njk", {
     emailAddress: req.session.user.email,
     requestNewCode:
@@ -113,19 +81,6 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { sessionId } = res.locals;
     const isAccountRecoveryJourney = req.session.user?.isAccountRecoveryJourney;
-    if (
-      req.session.user.codeRequestLock &&
-      new Date().getTime() <
-        new Date(req.session.user.codeRequestLock).getTime()
-    ) {
-      const newCodeLink = req.query?.isResendCodeRequest
-        ? "/security-code-check-time-limit?isResendCodeRequest=true"
-        : "/security-code-check-time-limit";
-      return res.render("security-code-error/index-wait.njk", {
-        newCodeLink,
-        support2hrLockout: support2hrLockout(),
-      });
-    }
 
     if (isAccountRecoveryJourney) {
       req.session.user.isAccountRecoveryCodeResent = true;

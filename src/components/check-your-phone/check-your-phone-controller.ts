@@ -1,30 +1,16 @@
 import { Request, Response } from "express";
-import {
-  JOURNEY_TYPE,
-  MFA_METHOD_TYPE,
-  NOTIFICATION_TYPE,
-  PATH_NAMES,
-} from "../../app.constants";
+import { JOURNEY_TYPE, MFA_METHOD_TYPE, NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-  getNextPathAndUpdateJourney,
-  pathWithQueryParam,
-} from "../common/constants";
+import { ERROR_CODES, getErrorPathByCode, getNextPathAndUpdateJourney, pathWithQueryParam } from "../common/constants";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import xss from "xss";
 import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types";
-import {
-  formatValidationError,
-  renderBadRequest,
-} from "../../utils/validation";
+import { formatValidationError, renderBadRequest } from "../../utils/validation";
 import { BadRequestError } from "../../utils/error";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
-import { support2hrLockout } from "../../config";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";
 const RESEND_CODE_LINK = pathWithQueryParam(
@@ -34,15 +20,6 @@ const RESEND_CODE_LINK = pathWithQueryParam(
 );
 
 export function checkYourPhoneGet(req: Request, res: Response): void {
-  if (
-    req.session.user.codeRequestLock &&
-    new Date().getTime() < new Date(req.session.user.codeRequestLock).getTime()
-  ) {
-    return res.render("security-code-error/index-wait.njk", {
-      support2hrLockout: support2hrLockout(),
-      isAccountCreationJourney: req.session.user.isAccountCreationJourney && !req.session.user.isAccountPartCreated,
-    });
-  }
   return res.render(TEMPLATE_NAME, {
     phoneNumber: req.session.user.redactedPhoneNumber,
     resendCodeLink: RESEND_CODE_LINK,

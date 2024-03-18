@@ -27,20 +27,6 @@ export function enterMfaGet(
   return async function (req: Request, res: Response) {
     const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
 
-    if (
-      support2hrLockout() &&
-      req.session.user.wrongCodeEnteredLock &&
-      new Date().getTime() <
-        new Date(req.session.user.wrongCodeEnteredLock).getTime()
-    ) {
-      return res.render(
-        "security-code-error/index-security-code-entered-exceeded.njk",
-        {
-          newCodeLink: PATH_NAMES.ENTER_MFA,
-          show2HrScreen: support2hrLockout(),
-        }
-      );
-    }
     const templateName = req.session.user.isUpliftRequired
       ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME
       : ENTER_MFA_DEFAULT_TEMPLATE_NAME;
