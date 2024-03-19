@@ -115,6 +115,7 @@ describe("reset password 2fa auth app controller", () => {
         temporarilySuspended: true,
         blocked: false,
         passwordResetRequired: false,
+        reproveIdentity: false,
       });
       req.session.user = {
         email: "joe.bloggs@test.com",
@@ -134,6 +135,7 @@ describe("reset password 2fa auth app controller", () => {
         blocked: true,
         temporarilySuspended: false,
         passwordResetRequired: false,
+        reproveIdentity: false,
       });
       req.session.user = {
         email: "joe.bloggs@test.com",

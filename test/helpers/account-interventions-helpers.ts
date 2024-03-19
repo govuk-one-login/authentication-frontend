@@ -7,6 +7,7 @@ export type AccountInterventionsFlags = {
   blocked: boolean;
   passwordResetRequired: boolean;
   temporarilySuspended: boolean;
+  reproveIdentity: boolean;
 };
 
 export const setupAccountInterventionsResponse = (
@@ -25,6 +26,7 @@ export const setupAccountInterventionsResponse = (
       blocked: flags.blocked,
       temporarilySuspended: flags.temporarilySuspended,
       appliedAt: dateTimeStamp,
+      reproveIdentity: flags.reproveIdentity
     });
 };
 
@@ -37,6 +39,7 @@ export const noInterventions: AccountInterventionsFlags = {
   blocked: false,
   passwordResetRequired: false,
   temporarilySuspended: false,
+  reproveIdentity: false
 };
 
 export function accountInterventionsFakeHelper(
@@ -53,6 +56,7 @@ export function accountInterventionsFakeHelper(
         blocked: flags.blocked,
         temporarilySuspended: flags.temporarilySuspended,
         appliedAt: dateTimeStamp,
+        reproveIdentity: flags.reproveIdentity
       },
     }),
   } as unknown as AccountInterventionsInterface;
