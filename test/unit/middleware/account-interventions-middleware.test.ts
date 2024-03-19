@@ -200,6 +200,18 @@ describe("accountInterventionsMiddleware", () => {
         );
         expect(next).to.have.been.calledOnce;
       });
+
+      it("should not redirect to UNAVAILABLE_TEMPORARY when handleSuspended status is true and handlePasswordResetStatus is false", async () => {
+        await callMiddleware(
+          true,
+          false,
+          accountInterventionsWithPasswordResetTrue
+        );
+        expect(res.redirect).to.not.have.been.calledWith(
+          PATH_NAMES.UNAVAILABLE_TEMPORARY
+        );
+        expect(next).to.be.calledOnce;
+      } )
     });
 
     describe("when temporarilySuspended is true", function () {
