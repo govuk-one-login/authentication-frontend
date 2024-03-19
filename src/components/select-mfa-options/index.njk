@@ -3,6 +3,8 @@
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% set contentId = contentId%}
+{% set taxonomyLevel2 = taxonomyLevel2 %}
 
 {% if isAccountPartCreated %}
   {% set pageTitleName = 'pages.getSecurityCodes.titleAccountPartCreated' | translate %}
@@ -75,5 +77,5 @@
 }) }}
 
 </form>
-
+{{ga4OnPageLoad({ nonce: scriptNonce,statusCode:"200",englishPageTitle:pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2:taxonomyLevel2, contentId:contentId,loggedInStatus:true,dynamic:true})}}
 {% endblock %}

@@ -3,6 +3,14 @@ import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { supportInternationalNumbers, supportLanguageCY } from "../../config";
 
+
+const oplValues = {
+  signInOrCreate: {
+    contentId: "xxxx",
+    taxonomyLevel2: "signInOrCreate",
+  }
+};
+
 export function signInOrCreateGet(req: Request, res: Response): void {
   if (req.query.redirectPost) {
     return signInOrCreatePost(req, res);
@@ -12,6 +20,8 @@ export function signInOrCreateGet(req: Request, res: Response): void {
     serviceType: req.session.client.serviceType,
     supportInternationalNumbers: supportInternationalNumbers() ? true : null,
     supportLanguageCY: supportLanguageCY() ? true : null,
+    contentId: oplValues.signInOrCreate.contentId,
+    taxonomyLevel2: oplValues.signInOrCreate.taxonomyLevel2,
   });
 }
 
@@ -25,6 +35,7 @@ export function signInOrCreatePost(req: Request, res: Response): void {
         : USER_JOURNEY_EVENTS.SIGN_IN,
       null,
       res.locals.sessionId
+
     )
   );
 }

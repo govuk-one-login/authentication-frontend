@@ -7,6 +7,8 @@
 {% set pageTitleVariableName = 'pages.signInOrCreate.mandatory.title' %}
 
 {% set pageTitleName = pageTitleVariableName | translate %}
+{% set contentId = contentId%}
+{% set taxonomyLevel2 = taxonomyLevel2 %}
 
 {% set moreAboutTextHtml %}
     <p class="govuk-body">{{ 'pages.signInOrCreate.moreAbout.paragraph1' | translate }}</p>
@@ -71,4 +73,5 @@
         html: moreAboutTextHtml
     }) }}
 
+{{ga4OnPageLoad({ nonce: scriptNonce,statusCode:"200",englishPageTitle:pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2:taxonomyLevel2, contentId:contentId,loggedInStatus:true,dynamic:true})}}
 {% endblock %}

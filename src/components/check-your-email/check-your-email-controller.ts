@@ -10,9 +10,30 @@ import { accountInterventionService } from "../account-intervention/account-inte
 
 const TEMPLATE_NAME = "check-your-email/index.njk";
 
+const oplValues = {
+  createAccount: {
+    contentId: "054e1ea8-97a8-461a-a964-07345c80098e",
+    taxonomyLevel2: "create account",
+  },
+  accountRecoveryPassword: {
+    contentId: "653c3488-2436-489a-83df-eef29cbf2f7b",
+    taxonomyLevel2: "account recovery",
+  },
+  accountRecovery2fa: {
+    contentId: "8c9cfa1a-fde2-42e0-b785-16f0a06896e2",
+    taxonomyLevel2: "account recovery",
+  },
+  accountIntervention: {
+    contentId: "7b663466-8001-436f-b10b-e6ac581d39aa",
+    taxonomyLevel2: "account intervention",
+  },
+};
+
 export function checkYourEmailGet(req: Request, res: Response): void {
   res.render(TEMPLATE_NAME, {
     email: req.session.user.email,
+    contentId: oplValues.createAccount.contentId,
+    taxonomyLevel2: oplValues.createAccount.taxonomyLevel2,
   });
 }
 
@@ -20,7 +41,7 @@ export const checkYourEmailPost = (
   service: VerifyCodeInterface = codeService(),
   accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
 ): ExpressRouteFunc => {
-  return verifyCodePost(service, accountInterventionsService, {
+return verifyCodePost(service, accountInterventionsService, {
     notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
     template: TEMPLATE_NAME,
     validationKey: "pages.checkYourEmail.code.validationError.invalidCode",

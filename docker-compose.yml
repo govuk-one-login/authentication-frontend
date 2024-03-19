@@ -65,7 +65,7 @@ services:
     links:
       - di-auth-frontend
     ports:
-      - "5000:5000"
+      - "8124:8124"
     environment:
       - ENVIRONMENT=${ENVIRONMENT}
       - API_BASE_URL=${API_BASE_URL}
@@ -74,7 +74,7 @@ services:
       - STUB_HOSTNAME=${STUB_HOSTNAME}
       - UI_LOCALES=${UI_LOCALES}
       - VTR=["Cl"]
-      - PORT=5000
+      - PORT=8124
     restart: on-failure
     networks:
       - di-net
