@@ -58,7 +58,6 @@ describe("enter password controller", () => {
             data: {
               redactedPhoneNumber: "3456",
               mfaRequired: true,
-              consentRequired: false,
               latestTermsAndConditionsAccepted: true,
               mfaMethodVerified: true,
               mfaMethodType: "SMS",
@@ -97,7 +96,6 @@ describe("enter password controller", () => {
             data: {
               redactedPhoneNumber: "3456",
               mfaRequired: true,
-              consentRequired: false,
               latestTermsAndConditionsAccepted: true,
               mfaMethodVerified: true,
               mfaMethodType: "SMS",
@@ -160,7 +158,6 @@ describe("enter password controller", () => {
           data: {
             redactedPhoneNumber: "3456",
             mfaRequired: true,
-            consentRequired: false,
             latestTermsAndConditionsAccepted: true,
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
@@ -220,7 +217,6 @@ describe("enter password controller", () => {
           data: {
             redactedPhoneNumber: "3456",
             mfaRequired: true,
-            consentRequired: false,
             latestTermsAndConditionsAccepted: true,
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
@@ -377,7 +373,6 @@ describe("enter password controller", () => {
           data: {
             redactedPhoneNumber: "3456",
             mfaRequired: true,
-            consentRequired: false,
             latestTermsAndConditionsAccepted: true,
             mfaMethodVerified: true,
             mfaMethodType: "SMS",

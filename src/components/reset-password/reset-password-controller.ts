@@ -101,7 +101,6 @@ export function resetPasswordPost(
 
     req.session.user.redactedPhoneNumber =
       loginResponse.data.redactedPhoneNumber;
-    req.session.user.isConsentRequired = loginResponse.data.consentRequired;
     req.session.user.isLatestTermsAndConditionsAccepted =
       loginResponse.data.latestTermsAndConditionsAccepted;
     req.session.user.isAccountPartCreated =
@@ -143,7 +142,6 @@ export function resetPasswordPost(
         req.path,
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
         {
-          isConsentRequired: req.session.user.isConsentRequired,
           requiresTwoFactorAuth: !support2FABeforePasswordReset(),
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
