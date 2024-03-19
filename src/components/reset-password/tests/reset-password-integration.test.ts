@@ -74,6 +74,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       blocked: true,
       passwordResetRequired: false,
       temporarilySuspended: false,
+      reproveIdentity: false,
     });
 
     request(app)
@@ -89,6 +90,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       blocked: false,
       passwordResetRequired: false,
       temporarilySuspended: true,
+      reproveIdentity: false,
     });
 
     request(app)
@@ -104,6 +106,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       blocked: false,
       passwordResetRequired: true,
       temporarilySuspended: false,
+      reproveIdentity: false,
     });
 
     request(app).get(ENDPOINT).expect(200, done);
