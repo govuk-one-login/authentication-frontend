@@ -589,10 +589,6 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.SHARE_INFO],
               cond: "isConsentRequired",
             },
-            {
-              target: [PATH_NAMES.PROVE_IDENTITY],
-              cond: "isIdentityRequired",
-            },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
