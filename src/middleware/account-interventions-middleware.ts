@@ -57,8 +57,7 @@ export function accountInterventionsMiddleware(
           );
         }
       } else if (
-        accountInterventionsResponse.data.temporarilySuspended &&
-        !accountInterventionsResponse.data.passwordResetRequired &&
+        isSuspendedWithoutUserActions(accountInterventionsResponse.data) &&
         handleSuspendedStatus
       ) {
         return res.redirect(
@@ -73,6 +72,16 @@ export function accountInterventionsMiddleware(
 
     return next();
   };
+}
+
+function isSuspendedWithoutUserActions(
+  status: AccountInterventionStatus
+): boolean {
+  return (
+    status.temporarilySuspended &&
+    !status.reproveIdentity &&
+    !status.passwordResetRequired
+  );
 }
 
 function passwordHasBeenResetMoreRecentlyThanInterventionApplied(

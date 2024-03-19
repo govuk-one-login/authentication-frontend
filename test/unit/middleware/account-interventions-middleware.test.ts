@@ -211,7 +211,34 @@ describe("accountInterventionsMiddleware", () => {
           PATH_NAMES.UNAVAILABLE_TEMPORARY
         );
         expect(next).to.be.calledOnce;
-      } )
+      });
+    });
+
+    describe("when reproveIdentity and temporarilySuspended is true", () => {
+      let accountIntervetionsWithReproveIdentity: AccountInterventionsInterface;
+
+      before(() => {
+        accountIntervetionsWithReproveIdentity = accountInterventionsFakeHelper(
+          {
+            passwordResetRequired: false,
+            blocked: false,
+            temporarilySuspended: true,
+            reproveIdentity: true,
+          }
+        );
+      });
+
+      it("should not redirect to UNAVAILABLE_TEMPORARY when handleSuspended status is true and handlePasswordResetStatus is false", async () => {
+        await callMiddleware(
+          true,
+          false,
+          accountIntervetionsWithReproveIdentity
+        );
+        expect(res.redirect).to.not.have.been.calledWith(
+          PATH_NAMES.UNAVAILABLE_TEMPORARY
+        );
+        expect(next).to.be.calledOnce;
+      });
     });
 
     describe("when temporarilySuspended is true", function () {
