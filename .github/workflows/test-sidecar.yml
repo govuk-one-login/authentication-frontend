@@ -1,4 +1,4 @@
-name: Pre-merge checks
+name: Test Sidecar Container
 on:
   pull_request:
     types:
