@@ -17,7 +17,7 @@ import {
 import { Environment } from "testcontainers/build/types";
 import path from "path";
 
-describe("BasicAuthSidecar", () => {
+describe("BasicAuthSidecar", function () {
   let network: StartedNetwork;
 
   let sourceIp: string;
@@ -34,7 +34,8 @@ describe("BasicAuthSidecar", () => {
     ALIAS: "backend",
   };
 
-  before(async () => {
+  before(async function () {
+    this.timeout(60000);
     network = await new Network().start();
 
     // get network gateway IP
@@ -48,8 +49,6 @@ describe("BasicAuthSidecar", () => {
       .catch((err) => {
         throw err;
       });
-
-    console.log("sourceIp: ", sourceIp);
 
     await new GenericContainer("mendhak/http-https-echo:31")
       .withNetwork(network)
@@ -65,8 +64,6 @@ describe("BasicAuthSidecar", () => {
         ])
       )
       .start();
-
-    console.log("backend started");
 
     // await getContainerRuntimeClient().then(async (client) => {
     //   await client.container
