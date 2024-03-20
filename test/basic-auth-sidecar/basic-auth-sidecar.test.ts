@@ -49,6 +49,8 @@ describe("BasicAuthSidecar", () => {
         throw err;
       });
 
+    console.log("sourceIp: ", sourceIp);
+
     await new GenericContainer("mendhak/http-https-echo:31")
       .withNetwork(network)
       .withNetworkAliases("backend")
@@ -63,6 +65,8 @@ describe("BasicAuthSidecar", () => {
         ])
       )
       .start();
+
+    console.log("backend started");
 
     // await getContainerRuntimeClient().then(async (client) => {
     //   await client.container
