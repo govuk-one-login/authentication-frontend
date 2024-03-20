@@ -42,6 +42,16 @@ describe("resend mfa controller", () => {
 
       expect(res.render).to.have.calledWith("resend-mfa-code/index.njk");
     });
+
+    it("should render security-code-error/index-wait.njk if user has been locked out in current session", () => {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      req.session.user.codeRequestLock = tomorrow.toUTCString();
+      resendMfaCodeGet(req as Request, res as Response);
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-wait.njk"
+      );
+    });
   });
 
   describe("resendMfaCodePost", () => {

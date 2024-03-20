@@ -166,7 +166,6 @@ describe("reset password check email controller", () => {
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD);
     });
-
     describe("resendMfaCodeGet", () => {
       it("should render index-reset-password-resend-code.njk mfa code view", () => {
         resetPasswordResendCodeGet(req as Request, res as Response);
