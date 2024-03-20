@@ -99,4 +99,5 @@ export interface UserSessionClient {
   claim?: string[];
   rpSectorHost?: string;
   rpRedirectUri?: string;
+  rpState?: string;
 }

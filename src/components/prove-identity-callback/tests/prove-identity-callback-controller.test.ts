@@ -32,10 +32,9 @@ describe("prove identity callback controller", () => {
       path: PATH_NAMES.PROVE_IDENTITY_CALLBACK,
       session: {
         client: {
-          redirectUri: "http://someservice.com/auth",
           rpRedirectUri: "http://rpservice.com/auth",
           clientName: "test service",
-          state: STATE,
+          rpState: STATE,
         },
         user: { email: "test@test.com" },
       },
@@ -66,7 +65,7 @@ describe("prove identity callback controller", () => {
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
     });
 
-    it("should render index when identity is being processed ", async () => {
+    it("should render index when identity is being processed", async () => {
       const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
         processIdentity: sinon.fake.returns({
           success: true,
@@ -87,30 +86,6 @@ describe("prove identity callback controller", () => {
     });
 
     it("should redirect back to service when identity processing has errored", async () => {
-      const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
-        processIdentity: sinon.fake.returns({
-          success: true,
-          data: {
-            status: IdentityProcessingStatus.ERROR,
-          },
-        }),
-      } as unknown as ProveIdentityCallbackServiceInterface;
-
-      await proveIdentityCallbackGet(fakeProveIdentityService)(
-        req as Request,
-        res as Response
-      );
-
-      expect(res.redirect).to.have.been.calledWith(
-        `http://someservice.com/auth?error=${
-          OIDC_ERRORS.ACCESS_DENIED
-        }&error_description=${encodeURIComponent(
-          IPV_ERROR_CODES.IDENTITY_PROCESSING_TIMEOUT
-        )}&state=${encodeURIComponent(STATE)}`
-      );
-    });
-
-    it("should redirect back to service when identity processing has errored and split is enabled", async () => {
       process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
       const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
         processIdentity: sinon.fake.returns({

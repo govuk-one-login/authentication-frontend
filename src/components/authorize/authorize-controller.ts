@@ -29,6 +29,7 @@ import {
   supportReauthentication,
 } from "../../config";
 import { logger } from "../../utils/logger";
+import { Claims } from "./claims-config";
 
 function createConsentCookie(
   res: Response,
@@ -54,7 +55,7 @@ export function authorizeGet(
 
     const clientId = req.query.client_id as string;
     const responseType = req.query.response_type as string;
-    let claims;
+    let claims: Claims;
     try {
       validateQueryParams(clientId, responseType);
 
@@ -109,6 +110,7 @@ export function authorizeGet(
     req.session.client.isOneLoginService = claims.is_one_login_service;
     req.session.client.rpSectorHost = claims.rp_sector_host;
     req.session.client.rpRedirectUri = claims.rp_redirect_uri;
+    req.session.client.rpState = claims.rp_state;
 
     req.session.client.consentEnabled =
       startAuthResponse.data.user.consentRequired;
