@@ -77,7 +77,6 @@ export interface UserSession {
   isAccountRecoveryCodeResent?: boolean;
   accountRecoveryVerifiedMfaType?: string;
   reauthenticate?: string;
-  authCodeReturnToRP?: boolean;
   enterEmailMfaType?: string;
   withinForcedPasswordResetJourney?: boolean;
   passwordResetTime?: number;

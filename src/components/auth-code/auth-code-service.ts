@@ -7,12 +7,7 @@ import {
   Http,
 } from "../../utils/http";
 import { AuthCodeResponse, AuthCodeServiceInterface } from "./types";
-import {
-  getApiBaseUrl,
-  getFrontendApiBaseUrl,
-  supportAuthOrchSplit,
-} from "../../config";
-import { AxiosResponse } from "axios";
+import { getFrontendApiBaseUrl } from "../../config";
 
 export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
   const getAuthCode = async function (
@@ -23,9 +18,7 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
     clientSession: UserSessionClient,
     userSession: UserSession
   ): Promise<ApiResponseResult<AuthCodeResponse>> {
-    const baseUrl = shouldCallOrchAuthCode(userSession)
-      ? getFrontendApiBaseUrl()
-      : getApiBaseUrl();
+    const baseUrl = getFrontendApiBaseUrl();
     const config = getRequestConfig({
       baseURL: baseUrl,
       sessionId: sessionId,
@@ -34,32 +27,22 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
       persistentSessionId: persistentSessionId,
     });
 
-    let response: AxiosResponse;
-
-    if (shouldCallOrchAuthCode(userSession)) {
-      const body = {
-        claims: clientSession.claim,
-        state: clientSession.state,
-        "redirect-uri": clientSession.redirectUri,
-        "rp-sector-uri": clientSession.rpSectorHost,
-        "is-new-account": userSession?.isAccountCreationJourney ?? false,
-        "password-reset-time": userSession?.passwordResetTime,
-      };
-      response = await axios.client.post(
-        API_ENDPOINTS.ORCH_AUTH_CODE,
-        body,
-        config
-      );
-    } else {
-      response = await axios.client.get(API_ENDPOINTS.AUTH_CODE, config);
-    }
+    const body = {
+      claims: clientSession.claim,
+      state: clientSession.state,
+      "redirect-uri": clientSession.redirectUri,
+      "rp-sector-uri": clientSession.rpSectorHost,
+      "is-new-account": userSession?.isAccountCreationJourney ?? false,
+      "password-reset-time": userSession?.passwordResetTime,
+    };
+    const response = await axios.client.post(
+      API_ENDPOINTS.ORCH_AUTH_CODE,
+      body,
+      config
+    );
 
     return createApiResponse<AuthCodeResponse>(response);
   };
-
-  function shouldCallOrchAuthCode(userSession: UserSession) {
-    return supportAuthOrchSplit() && !userSession.authCodeReturnToRP;
-  }
 
   return {
     getAuthCode,

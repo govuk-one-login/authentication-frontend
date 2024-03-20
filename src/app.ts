@@ -87,6 +87,7 @@ import { accountInterventionRouter } from "./components/account-intervention/pas
 import { permanentlyBlockedRouter } from "./components/account-intervention/permanently-blocked/permanently-blocked-router";
 import { temporarilyBlockedRouter } from "./components/account-intervention/temporarily-blocked/temporarily-blocked-router";
 import { resetPassword2FAAuthAppRouter } from "./components/reset-password-2fa-auth-app/reset-password-2fa-auth-app-routes";
+import { rpAuthCodeRouter } from "./components/rp-auth-code/rp-auth-code-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -136,6 +137,7 @@ function registerRoutes(app: express.Application) {
   app.use(proveIdentityRouter);
   app.use(proveIdentityWelcomeRouter);
   app.use(proveIdentityCallbackRouter);
+  app.use(rpAuthCodeRouter);
   app.use(cookiesRouter);
   app.use(docCheckingAppRouter);
   app.use(docCheckingAppCallbackRouter);
