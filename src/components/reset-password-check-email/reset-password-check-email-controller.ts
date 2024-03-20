@@ -14,8 +14,24 @@ import { accountInterventionService } from "../account-intervention/account-inte
 
 const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
+
+const oplValues = {
+  createAccount: {
+    contentId: "3a7d883e-d234-47ff-a85c-12877739f8a4",
+    taxonomyLevel2: "create account",
+  },
+  accountRecoveryPassword: {
+    contentId: "7b663466-8001-436f-b10b-e6ac581d39aa",
+    taxonomyLevel2: "account recovery",
+  },
+  accountRecovery2fa: {
+    contentId: "c7e33b4f-3401-431d-9e15-ca8caa45b4f8",
+    taxonomyLevel2: "account recovery",
+  }
+};
+
 export function resetPasswordCheckEmailGet(
-  service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailService()
+service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
@@ -56,6 +72,8 @@ export function resetPasswordCheckEmailGet(
       return res.render(TEMPLATE_NAME, {
         support2FABeforePasswordResetFlag,
         email,
+        contentId: oplValues.createAccount.contentId,
+        taxonomyLevel2: oplValues.createAccount.taxonomyLevel2,
       });
     }
 

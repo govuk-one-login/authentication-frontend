@@ -84,7 +84,7 @@ const authStateMachine = createMachine(
       [PATH_NAMES.ROOT]: {
         on: {
           [USER_JOURNEY_EVENTS.ROOT]: [
-            { target: [PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS] },
+            { target: [PATH_NAMES.SIGN_IN_OR_CREATE] },
           ],
         },
       },

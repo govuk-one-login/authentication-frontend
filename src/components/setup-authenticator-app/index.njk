@@ -8,6 +8,8 @@
 {% set pageTitleName = 'pages.setupAuthenticatorApp.title' | translate %}
 {% set showBack = true %}
 {% set hrefBack = 'get-security-codes' %}
+{% set contentId = contentId%}
+{% set taxonomyLevel2 = taxonomyLevel2 %}
 
 {% block content %}
 
@@ -83,5 +85,5 @@
     </p>
 
   </form>
-
+{{ga4OnPageLoad({ nonce: scriptNonce,statusCode:"200",englishPageTitle:pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2:taxonomyLevel2, contentId:contentId,loggedInStatus:true,dynamic:true})}}
 {% endblock %}

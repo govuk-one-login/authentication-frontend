@@ -7,6 +7,8 @@
 {% set showBack = true %}
 {% set hrefBack = backUrl %}
 {% set pageTitleName = 'pages.checkYourEmailSecurityCodes.title' | translate %}
+{% set contentId = contentId%}
+{% set taxonomyLevel2 = taxonomyLevel2 %}
 
 {% block content %}
   {% include "common/errors/errorSummary.njk" %}
@@ -62,5 +64,5 @@
     }) }}
 
   </form>
-
+{{ga4OnPageLoad({ nonce: scriptNonce,statusCode:"200",englishPageTitle:pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2:taxonomyLevel2, contentId:contentId,loggedInStatus:true,dynamic:true})}}
 {% endblock %}

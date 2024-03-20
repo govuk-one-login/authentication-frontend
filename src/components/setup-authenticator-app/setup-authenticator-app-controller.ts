@@ -24,6 +24,17 @@ import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 
 const TEMPLATE = "setup-authenticator-app/index.njk";
 
+const oplValues = {
+  createAccount: {
+    contentId: "5bc82db9-2012-44bf-9a7d-34d1d22fb035",
+    taxonomyLevel2: "create account",
+  },
+  accountRecovery: {
+    contentId: "124051ef-673a-4eda-b585-96d9d711f545",
+    taxonomyLevel2: "account recovery",
+  }
+};
+
 export async function setupAuthenticatorAppGet(
   req: Request,
   res: Response
@@ -35,12 +46,18 @@ export async function setupAuthenticatorAppGet(
   );
 
   req.session.user.authAppQrCodeUrl = await QRCode.toDataURL(qrCodeText);
+  req.session.user.isAccountCreationJourney =
+  !req.session.user.isAccountRecoveryJourney;
+
+const isAccountRecoveryJourney = req.session.user.isAccountRecoveryJourney
 
   res.render(TEMPLATE, {
     qrCode: req.session.user.authAppQrCodeUrl,
     secretKeyFragmentArray: splitSecretKeyIntoFragments(
       req.session.user.authAppSecret
     ),
+    contentId: isAccountRecoveryJourney ? oplValues.accountRecovery.contentId : oplValues.createAccount.contentId,
+    taxonomyLevel2: isAccountRecoveryJourney ? oplValues.accountRecovery.taxonomyLevel2 : oplValues.createAccount.taxonomyLevel2,
   });
 }
 

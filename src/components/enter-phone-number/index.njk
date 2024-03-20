@@ -6,7 +6,8 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
  {% set pageTitleName = 'pages.enterPhoneNumber.title' | translate %}
-
+{% set contentId = contentId%}
+{% set taxonomyLevel2 = taxonomyLevel2 %}
 
 {% set showBack = true %}
 {% set hrefBack = 'get-security-codes' %}
@@ -88,5 +89,5 @@
   }) }}
 
   </form>
-
+{{ga4OnPageLoad({ nonce: scriptNonce,statusCode:"200",englishPageTitle:pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2:taxonomyLevel2, contentId:contentId,loggedInStatus:true,dynamic:true})}}
 {% endblock %}

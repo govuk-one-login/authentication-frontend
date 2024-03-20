@@ -19,12 +19,15 @@ export function getSecurityCodesGet(req: Request, res: Response): void {
   req.session.user.isAccountCreationJourney =
     !req.session.user.isAccountRecoveryJourney;
 
+  const isAccountRecoveryJourney = req.session.user.isAccountRecoveryJourney
+
   res.render("select-mfa-options/index.njk", {
     isAccountPartCreated: req.session.user.isAccountPartCreated,
     isAccountRecoveryJourney: req.session.user.isAccountRecoveryJourney,
     selectedMfaOption: req.session.user.selectedMfaOption,
-    contentId: oplValues.createAccount.contentId,
-    taxonomyLevel2: oplValues.createAccount.taxonomyLevel2,
+
+    contentId: isAccountRecoveryJourney ? oplValues.accountRecovery.contentId : oplValues.createAccount.contentId,
+    taxonomyLevel2: isAccountRecoveryJourney ? oplValues.accountRecovery.taxonomyLevel2 : oplValues.createAccount.taxonomyLevel2,
   });
 }
 
