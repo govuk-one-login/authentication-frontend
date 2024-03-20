@@ -21,7 +21,6 @@ describe("BasicAuthSidecar", function () {
   let network: StartedNetwork;
 
   let sourceIp: string;
-  // let hostIp: string;
 
   // let backendContainer: StartedTestContainer;
   let sidecarContainer: StartedTestContainer;
@@ -38,19 +37,9 @@ describe("BasicAuthSidecar", function () {
     this.timeout(60000);
     network = await new Network().start();
 
-    // get network gateway IP
-    await getContainerRuntimeClient()
-      .then(async (client) => {
-        const net = client.network.getById(network.getId());
-        await net.inspect().then((res) => {
-          sourceIp = res.IPAM.Config[0].Gateway;
-        });
-      })
-      .catch((err) => {
-        throw err;
-      });
-
-    await new GenericContainer("mendhak/http-https-echo:31")
+    const backendContainer = await new GenericContainer(
+      "mendhak/http-https-echo:31"
+    )
       .withNetwork(network)
       .withNetworkAliases("backend")
       .withEnvironment({ HTTP_PORT: backendConfig.PORT.toString() })
@@ -65,14 +54,35 @@ describe("BasicAuthSidecar", function () {
       )
       .start();
 
-    // await getContainerRuntimeClient().then(async (client) => {
-    //   await client.container
-    //     .getById(backendContainer.getId())
-    //     .inspect()
-    //     .then((res) => {
-    //       gatewayIp = res.NetworkSettings.Gateway;
-    //     });
-    // });
+    if (process.platform === "darwin") {
+      // on mac the source IP is probably different. Lets pull it from host.docker.internal
+      // in the backend container
+
+      // eslint-disable-next-line no-console
+      console.error(
+        "Detected MacOS, source IP detection may not work. Ensure you are using the latest Docker Desktop if you get errors."
+      );
+
+      await backendContainer
+        .exec(["getent", "hosts", "gateway.docker.internal"])
+        .then((res) => {
+          const ip = res.output.toString().split(" ")[0].replace("\n", "");
+          // replace last octet with 1
+          sourceIp = ip.substring(0, ip.lastIndexOf(".")) + ".1";
+        });
+    } else {
+      // get network gateway IP
+      await getContainerRuntimeClient()
+        .then(async (client) => {
+          const net = client.network.getById(network.getId());
+          await net.inspect().then((res) => {
+            sourceIp = res.IPAM.Config[0].Gateway;
+          });
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
 
     sidecarImage = await GenericContainer.fromDockerfile(
       path.join(path.dirname(__filename), "../../basic-auth-sidecar")
@@ -100,11 +110,6 @@ describe("BasicAuthSidecar", function () {
             .forResponsePredicate((response) => response === "OK"),
         ])
       )
-      // .withLogConsumer((stream) => {
-      //   stream.on("data", (line) => console.log(line));
-      //   stream.on("err", (line) => console.error(line));
-      //   stream.on("end", () => console.log("Stream closed"));
-      // })
       .start();
 
     sidecarRequester = chai
@@ -250,8 +255,10 @@ describe("BasicAuthSidecar", function () {
     });
 
     describe("and request is coming from a upstream proxy", () => {
-      it("sidecar shouldn't trust X-Forwarded-For if the proxy is untrusted", async () => {
-        const caddyContainer = await new GenericContainer("caddy:2.7.6-alpine")
+      let caddyContainer: StartedTestContainer;
+
+      before(async function () {
+        caddyContainer = await new GenericContainer("caddy:2.7.6-alpine")
           .withNetwork(network)
           .withExposedPorts(8080)
           .withCommand([
@@ -263,7 +270,8 @@ describe("BasicAuthSidecar", function () {
             "sidecar:8080",
           ])
           .start();
-
+      });
+      it("sidecar shouldn't trust X-Forwarded-For if the proxy is untrusted", async () => {
         await startSidecarContainer({
           BASIC_AUTH_USERNAME: "test",
           BASIC_AUTH_PASSWORD: "test",
@@ -283,20 +291,8 @@ describe("BasicAuthSidecar", function () {
             expect(res).to.have.status(401);
           });
       });
-      it("sidecar should trust X-Forwarded-For if the proxy is trusted", async () => {
-        const caddyContainer = await new GenericContainer("caddy:2.7.6-alpine")
-          .withNetwork(network)
-          .withExposedPorts(8080)
-          .withCommand([
-            "caddy",
-            "reverse-proxy",
-            "--from",
-            ":8080",
-            "--to",
-            "sidecar:8080",
-          ])
-          .start();
 
+      it("sidecar should trust X-Forwarded-For if the proxy is trusted", async () => {
         await startSidecarContainer({
           BASIC_AUTH_USERNAME: "test",
           BASIC_AUTH_PASSWORD: "test",
