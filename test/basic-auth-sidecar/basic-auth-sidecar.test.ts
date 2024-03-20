@@ -2,8 +2,6 @@ import chai from "chai";
 import chaiHttp from "chai-http";
 import { describe } from "mocha";
 
-import { networkInterfaces } from "os";
-
 const expect = chai.expect;
 
 chai.use(chaiHttp);
@@ -23,7 +21,7 @@ describe("BasicAuthSidecar", () => {
   let network: StartedNetwork;
 
   let sourceIp: string;
-  let hostIp: string;
+  // let hostIp: string;
 
   // let backendContainer: StartedTestContainer;
   let sidecarContainer: StartedTestContainer;
