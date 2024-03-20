@@ -19,7 +19,6 @@ describe("authentication auth code service", () => {
   const passwordResetTime = 1710335967;
   const redirectUriReturnedFromResponse =
     "/redirect-here?with-some-params=added-by-the-endpoint";
-  const apiBaseUrl = "/base-url";
   const frontendBaseUrl = "/frontend-base-url";
 
   const axiosResponse = Promise.resolve({
@@ -31,125 +30,70 @@ describe("authentication auth code service", () => {
     headers: {},
     config: {},
   });
-  let getStub: SinonStub;
   let postStub: SinonStub;
   let service: AuthCodeServiceInterface;
 
   beforeEach(() => {
     process.env.API_KEY = "api-key";
     process.env.FRONTEND_API_BASE_URL = frontendBaseUrl;
-    process.env.API_BASE_URL = apiBaseUrl;
     const httpInstance = new Http();
     service = authCodeService(httpInstance);
-    getStub = sinon.stub(httpInstance.client, "get");
     postStub = sinon.stub(httpInstance.client, "post");
-    getStub.resolves(axiosResponse);
     postStub.resolves(axiosResponse);
   });
 
   afterEach(() => {
-    getStub.reset();
     postStub.reset();
   });
 
-  describe("with auth orch split feature flag on", () => {
-    it("it should make a post request to the orch auth endpoint with claim, state and redirect uri in the body", async () => {
-      process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
+  it("it should make a post request to the orch auth endpoint with claim, state and redirect uri in the body", async () => {
+    process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
 
-      const claim = ["phone_number", "phone_number_verified"];
-      const state = "state";
-      const sessionClient = {
-        claim: claim,
-        state: state,
-        redirectUri: redirectUriSentToAuth,
-        rpSectorHost: rpSectorHostSentToAuth,
-      };
+    const claim = ["phone_number", "phone_number_verified"];
+    const state = "state";
+    const sessionClient = {
+      claim: claim,
+      state: state,
+      redirectUri: redirectUriSentToAuth,
+      rpSectorHost: rpSectorHostSentToAuth,
+    };
 
-      const userSessionClient = {
-        isAccountCreationJourney: isAccountCreationJourneyUserSession,
-        passwordResetTime: passwordResetTime,
-      };
+    const userSessionClient = {
+      isAccountCreationJourney: isAccountCreationJourneyUserSession,
+      passwordResetTime: passwordResetTime,
+    };
 
-      const result = await service.getAuthCode(
-        "sessionId",
-        "clientSessionId",
-        "sourceIp",
-        "persistentSessionId",
-        sessionClient,
-        userSessionClient
-      );
+    const result = await service.getAuthCode(
+      "sessionId",
+      "clientSessionId",
+      "sourceIp",
+      "persistentSessionId",
+      sessionClient,
+      userSessionClient
+    );
 
-      const expectedBody = {
-        claims: claim,
-        state: state,
-        "redirect-uri": redirectUriSentToAuth,
-        "rp-sector-uri": rpSectorHostSentToAuth,
-        "is-new-account": isAccountCreationJourneyUserSession,
-        "password-reset-time": passwordResetTime,
-      };
+    const expectedBody = {
+      claims: claim,
+      state: state,
+      "redirect-uri": redirectUriSentToAuth,
+      "rp-sector-uri": rpSectorHostSentToAuth,
+      "is-new-account": isAccountCreationJourneyUserSession,
+      "password-reset-time": passwordResetTime,
+    };
 
-      expect(
-        postStub.calledOnceWithExactly(
-          API_ENDPOINTS.ORCH_AUTH_CODE,
-          expectedBody,
-          {
-            headers: sinon.match.object,
-            proxy: sinon.match.bool,
-            baseURL: frontendBaseUrl,
-          }
-        )
-      ).to.be.true;
-      expect(getStub.notCalled).to.be.true;
-      expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);
-    });
-
-    it("should make a request for an RP auth code following the prove identity callback page", async () => {
-      process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
-
-      const result = await service.getAuthCode(
-        "sessionId",
-        "clientSessionId",
-        "sourceIp",
-        "persistentSessionId",
-        {},
-        { authCodeReturnToRP: true }
-      );
-
-      expect(
-        getStub.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
+    expect(
+      postStub.calledOnceWithExactly(
+        API_ENDPOINTS.ORCH_AUTH_CODE,
+        expectedBody,
+        {
           headers: sinon.match.object,
-          baseURL: apiBaseUrl,
           proxy: sinon.match.bool,
-        })
-      ).to.be.true;
-      expect(postStub.notCalled).to.be.true;
-      expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);
-    });
-  });
-
-  describe("with auth orch split feature flag off", () => {
-    it("it should make a get request to the existing endpoint with no body", async () => {
-      process.env.SUPPORT_AUTH_ORCH_SPLIT = "0";
-
-      const result = await service.getAuthCode(
-        "sessionId",
-        "clientSessionId",
-        "sourceIp",
-        "persistentSessionId",
-        {},
-        {}
-      );
-
-      expect(
-        getStub.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
-          headers: sinon.match.object,
-          baseURL: apiBaseUrl,
-          proxy: sinon.match.bool,
-        })
-      ).to.be.true;
-      expect(postStub.notCalled).to.be.true;
-      expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);
-    });
+          baseURL: frontendBaseUrl,
+        }
+      )
+    ).to.be.true;
+    expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);
+    process.env.SUPPORT_AUTH_ORCH_SPLIT = "0";
   });
 
   describe("support2FABeforePasswordReset() with the support 2FA before password reset feature flag on", () => {
