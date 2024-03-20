@@ -99,11 +99,11 @@ describe("BasicAuthSidecar", () => {
             .forResponsePredicate((response) => response === "OK"),
         ])
       )
-      .withLogConsumer((stream) => {
-        stream.on("data", (line) => console.log(line));
-        stream.on("err", (line) => console.error(line));
-        stream.on("end", () => console.log("Stream closed"));
-      })
+      // .withLogConsumer((stream) => {
+      //   stream.on("data", (line) => console.log(line));
+      //   stream.on("err", (line) => console.error(line));
+      //   stream.on("end", () => console.log("Stream closed"));
+      // })
       .start();
 
     sidecarRequester = chai

@@ -20,6 +20,8 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: poke docker
-        run: docker ps
+        run: |
+          docker --version
+          docker ps
       - name: Run sidecar tests
         run: yarn test:sidecar
