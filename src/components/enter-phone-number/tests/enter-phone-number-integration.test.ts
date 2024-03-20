@@ -4,7 +4,7 @@ import { expect, sinon } from "../../../../test/utils/test-utils";
 import cheerio from "cheerio";
 import decache from "decache";
 import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
-import { ERROR_CODES } from "../../common/constants";
+import { ERROR_CODES, pathWithQueryParam } from "../../common/constants";
 import nock = require("nock");
 
 describe("Integration::enter phone number", () => {
@@ -351,7 +351,14 @@ describe("Integration::enter phone number", () => {
       .expect((res) => {
         res.text.includes("Wait 2 hours");
       })
-      .expect("Location", PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED)
+      .expect(
+        "Location",
+        pathWithQueryParam(
+          PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+          "actionType",
+          "otpBlocked"
+        )
+      )
       .expect(302, done);
   });
 });

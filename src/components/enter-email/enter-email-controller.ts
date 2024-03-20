@@ -7,6 +7,7 @@ import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
+  SecurityCodeErrorType,
 } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
@@ -24,6 +25,7 @@ import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation";
+import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -168,6 +170,18 @@ export function enterEmailCreatePost(
     );
 
     if (!sendNotificationResponse.success) {
+      if (
+        sendNotificationResponse.data.code ==
+        ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT
+      ) {
+        return res.render("security-code-error/index-wait.njk", {
+          newCodeLink: getNewCodePath(
+            req.query.actionType as SecurityCodeErrorType
+          ),
+          support2hrLockout: support2hrLockout(),
+          isAccountCreationJourney: true,
+        });
+      }
       const path = getErrorPathByCode(sendNotificationResponse.data.code);
 
       if (path) {

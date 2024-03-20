@@ -436,5 +436,36 @@ describe("enter email controller", () => {
       expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_EMAIL);
       expect(fakeService.userExists).to.have.been.calledOnce;
     });
+
+    it("should redirect to security-code-error/index-wait.njk when user requested too many email codes in previous account creation journey", async () => {
+      const fakeService: EnterEmailServiceInterface = {
+        userExists: sinon.fake.returns({
+          success: true,
+          data: { userExists: false },
+        }),
+      } as unknown as EnterEmailServiceInterface;
+
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: false,
+          data: {
+            code: ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT,
+          },
+        }),
+      } as unknown as SendNotificationServiceInterface;
+
+      req.body.email = "test.test.com";
+      res.locals.sessionId = "sadl990asdald";
+      req.path = PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT;
+
+      await enterEmailCreatePost(fakeService, fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-wait.njk"
+      );
+    });
   });
 });

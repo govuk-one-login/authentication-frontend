@@ -16,6 +16,7 @@ import {
   RequestOutput,
   ResponseOutput,
 } from "mock-req-res";
+import { ERROR_CODES } from "../../common/constants";
 
 const OLD_ENV = process.env;
 
@@ -125,6 +126,31 @@ describe("enter phone number controller", () => {
       ).to.be.rejectedWith(Error, "Internal server error");
 
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+    });
+
+    it("should render security-code-error/index-wait.njk when user is locked and tries to complete the journey again ", async () => {
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: false,
+          data: {
+            code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT,
+          },
+        }),
+      } as unknown as SendNotificationServiceInterface;
+
+      res.locals.sessionId = "123456-djjad";
+      req.body.phoneNumber = "+33645453322";
+      req.session.user.email = "test@test.com";
+
+      await enterPhoneNumberPost(fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-wait.njk"
+      );
     });
   });
 });
