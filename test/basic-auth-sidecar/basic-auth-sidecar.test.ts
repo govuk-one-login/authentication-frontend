@@ -41,7 +41,7 @@ describe("BasicAuthSidecar", function () {
       "mendhak/http-https-echo:31"
     )
       .withNetwork(network)
-      .withNetworkAliases("backend")
+      .withNetworkAliases(backendConfig.ALIAS)
       .withEnvironment({ HTTP_PORT: backendConfig.PORT.toString() })
       .withExposedPorts(8080)
       .withWaitStrategy(

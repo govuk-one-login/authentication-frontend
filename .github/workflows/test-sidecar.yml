@@ -19,9 +19,5 @@ jobs:
           node-version: 18.12.1
       - name: Install dependencies
         run: yarn install
-      - name: poke docker
-        run: |
-          docker --version
-          docker ps
       - name: Run sidecar tests
         run: yarn test:sidecar
