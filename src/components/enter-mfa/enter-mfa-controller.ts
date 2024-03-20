@@ -8,7 +8,11 @@ import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
 import { ExpressRouteFunc } from "../../types";
-import { ERROR_CODES, pathWithQueryParam } from "../common/constants";
+import {
+  ERROR_CODES,
+  pathWithQueryParam,
+  SecurityCodeErrorType,
+} from "../common/constants";
 import { support2hrLockout, supportAccountRecovery } from "../../config";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
@@ -16,6 +20,7 @@ import { BadRequestError } from "../../utils/error";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
+import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 
 export const ENTER_MFA_DEFAULT_TEMPLATE_NAME = "enter-mfa/index.njk";
 export const UPLIFT_REQUIRED_SMS_TEMPLATE_NAME =
@@ -40,6 +45,19 @@ export function enterMfaGet(
           show2HrScreen: support2hrLockout(),
         }
       );
+    }
+    if (
+      req.session.user.codeRequestLock &&
+      new Date().getTime() <
+        new Date(req.session.user.codeRequestLock).getTime()
+    ) {
+      return res.render("security-code-error/index-wait.njk", {
+        newCodeLink: getNewCodePath(
+          req.query.actionType as SecurityCodeErrorType
+        ),
+        support2hrLockout: support2hrLockout(),
+        isAccountCreationJourney: false,
+      });
     }
     const templateName = req.session.user.isUpliftRequired
       ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME

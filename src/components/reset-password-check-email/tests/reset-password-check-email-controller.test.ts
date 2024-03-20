@@ -7,6 +7,7 @@ import { Request, Response } from "express";
 import {
   resetPasswordCheckEmailGet,
   resetPasswordCheckEmailPost,
+  resetPasswordResendCodeGet,
 } from "../reset-password-check-email-controller";
 import { ResetPasswordCheckEmailServiceInterface } from "../types";
 import {
@@ -164,6 +165,20 @@ describe("reset password check email controller", () => {
       );
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD);
+    });
+
+    describe("resendMfaCodeGet", () => {
+      it("should render index-reset-password-resend-code.njk mfa code view", () => {
+        resetPasswordResendCodeGet(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWith(
+          "reset-password-check-email/index-reset-password-resend-code.njk",
+          {
+            email: req.session.user.email,
+            support2hrLockout: false,
+          }
+        );
+      });
     });
   });
 });

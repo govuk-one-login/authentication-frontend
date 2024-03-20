@@ -7,6 +7,7 @@ import {
   ERROR_CODES,
   getErrorPathByCode,
   pathWithQueryParam,
+  SecurityCodeErrorType,
 } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
 import {
@@ -20,6 +21,7 @@ import { codeService } from "../common/verify-code/verify-code-service";
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { support2hrLockout } from "../../config";
+import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 
 const TEMPLATE_NAME = "reset-password-2fa-sms/index.njk";
 const RESEND_CODE_LINK = pathWithQueryParam(
@@ -48,7 +50,19 @@ export function resetPassword2FASmsGet(
         }
       );
     }
-
+    if (
+      req.session.user.codeRequestLock &&
+      new Date().getTime() <
+        new Date(req.session.user.codeRequestLock).getTime()
+    ) {
+      return res.render("security-code-error/index-wait.njk", {
+        newCodeLink: getNewCodePath(
+          req.query.actionType as SecurityCodeErrorType
+        ),
+        support2hrLockout: support2hrLockout(),
+        isAccountCreationJourney: false,
+      });
+    }
     const mfaResponse = await mfaCodeService.sendMfaCode(
       sessionId,
       clientSessionId,
@@ -61,6 +75,15 @@ export function resetPassword2FASmsGet(
     );
 
     if (!mfaResponse.success) {
+      if (mfaResponse.data.code == ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
+        return res.render("security-code-error/index-wait.njk", {
+          newCodeLink: getNewCodePath(
+            req.query.actionType as SecurityCodeErrorType
+          ),
+          support2hrLockout: support2hrLockout(),
+          isAccountCreationJourney: false,
+        });
+      }
       const path = getErrorPathByCode(mfaResponse.data.code);
       if (path) {
         return res.redirect(path);

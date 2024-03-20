@@ -49,6 +49,16 @@ describe("check your phone controller", () => {
 
       expect(res.render).to.have.calledWith("check-your-phone/index.njk");
     });
+
+    it("should render security-code-error/index-wait.njk if user has been locked out in current session", () => {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      req.session.user.codeRequestLock = tomorrow.toUTCString();
+      checkYourPhoneGet(req as Request, res as Response);
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-wait.njk"
+      );
+    });
   });
 
   describe("checkYourPhonePost", () => {
