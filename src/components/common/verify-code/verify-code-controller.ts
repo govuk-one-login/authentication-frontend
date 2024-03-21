@@ -17,7 +17,10 @@ import {
   support2FABeforePasswordReset,
   supportAccountInterventions,
 } from "../../../config";
-import { AccountInterventionsInterface } from "../../account-intervention/types";
+import {
+  AccountInterventionsInterface,
+  AccountInterventionStatus,
+} from "../../account-intervention/types";
 
 interface Config {
   notificationType: NOTIFICATION_TYPE;
@@ -114,7 +117,9 @@ export function verifyCodePost(
           if (options.journeyType !== JOURNEY_TYPE.PASSWORD_RESET_MFA) {
             nextEvent = USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION;
           }
-        } else if (accountInterventionsResponse.data.temporarilySuspended) {
+        } else if (
+          isSuspendedWithoutUserActions(accountInterventionsResponse.data)
+        ) {
           nextEvent = USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION;
         }
       }
@@ -141,4 +146,14 @@ export function verifyCodePost(
       )
     );
   };
+}
+
+function isSuspendedWithoutUserActions(
+  status: AccountInterventionStatus
+): boolean {
+  return (
+    status.temporarilySuspended &&
+    !status.reproveIdentity &&
+    !status.passwordResetRequired
+  );
 }
