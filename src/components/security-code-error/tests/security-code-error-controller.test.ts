@@ -9,6 +9,7 @@ import {
   securityCodeInvalidGet,
   securityCodeTriesExceededGet,
   securityCodeEnteredExceededGet,
+  getNewCodePath,
 } from "../security-code-error-controller";
 import {
   pathWithQueryParam,
@@ -374,23 +375,20 @@ describe("security code  controller", () => {
     );
 
     it(
-      "should not render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent" +
-        "and user is in the 2FA account recovery journey",
+      "should render index-too-many-requests.njk for OtpBlocked when max number of codes have been requested " +
+        "and user is in the 2FA SMS account recovery journey",
       () => {
-        req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
+        process.env.SUPPORT_2HR_LOCKOUT = "1";
+        req.query.actionType = SecurityCodeErrorType.OtpBlocked;
         req.session.user.isAccountRecoveryJourney = true;
         securityCodeTriesExceededGet(req as Request, res as Response);
 
         expect(res.render).to.have.calledWith(
           "security-code-error/index-too-many-requests.njk",
           {
-            newCodeLink: pathWithQueryParam(
-              PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-              SECURITY_CODE_ERROR,
-              SecurityCodeErrorType.MfaMaxRetries
-            ),
+            newCodeLink: getNewCodePath(SecurityCodeErrorType.OtpBlocked),
             isResendCodeRequest: undefined,
-            show2HrScreen: false,
+            show2HrScreen: true,
             isAccountCreationJourney: undefined,
             support2hrLockout: true,
           }
@@ -404,6 +402,7 @@ describe("security code  controller", () => {
       () => {
         req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
         req.session.user.isAccountCreationJourney = true;
+        process.env.SUPPORT_2HR_LOCKOUT = "1";
         securityCodeTriesExceededGet(req as Request, res as Response);
 
         expect(res.render).to.have.calledWith(

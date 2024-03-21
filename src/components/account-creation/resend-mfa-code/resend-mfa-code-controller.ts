@@ -37,6 +37,8 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
   ) {
     res.render("security-code-error/index-wait.njk", {
       newCodeLink,
+      support2hrLockout: support2hrLockout(),
+      isAccountCreationJourney: req.session.user.isAccountCreationJourney,
     });
   } else {
     res.render("account-creation/resend-mfa-code/index.njk", {

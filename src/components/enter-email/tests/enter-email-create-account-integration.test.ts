@@ -247,10 +247,11 @@ describe("Integration::enter email (create account)", () => {
         _csrf: token,
         email: "test@test.com",
       })
-      .expect(
-        "Location",
-        `${PATH_NAMES.SECURITY_CODE_WAIT}?actionType=${SecurityCodeErrorType.EmailMaxCodesSent}`
-      )
-      .expect(302, done);
+      .expect((res) => {
+        res.text.includes(
+          "you asked to resend the security code too many codes"
+        );
+      })
+      .expect(200, done);
   });
 });

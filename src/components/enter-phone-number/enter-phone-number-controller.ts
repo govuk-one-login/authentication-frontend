@@ -3,8 +3,10 @@ import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { redactPhoneNumber } from "../../utils/strings";
 import {
+  ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
+  SecurityCodeErrorType,
 } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
@@ -12,10 +14,12 @@ import { sendNotificationService } from "../common/send-notification/send-notifi
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number";
 import {
+  support2hrLockout,
   supportAccountRecovery,
   supportInternationalNumbers,
 } from "../../config";
 import xss from "xss";
+import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
   res.render("enter-phone-number/index.njk", {
@@ -71,8 +75,19 @@ export function enterPhoneNumberPost(
     );
 
     if (!sendNotificationResponse.success) {
+      if (
+        sendNotificationResponse.data.code ==
+        ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT
+      ) {
+        return res.render("security-code-error/index-wait.njk", {
+          newCodeLink: getNewCodePath(
+            req.query.actionType as SecurityCodeErrorType
+          ),
+          support2hrLockout: support2hrLockout(),
+          isAccountCreationJourney: true,
+        });
+      }
       const path = getErrorPathByCode(sendNotificationResponse.data.code);
-
       if (path) {
         return res.redirect(path);
       }

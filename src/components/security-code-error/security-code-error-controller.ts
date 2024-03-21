@@ -94,8 +94,8 @@ export function securityCodeTriesExceededGet(
         !req.session.user.isAccountPartCreated &&
         !req.session.user.isAccountRecoveryJourney) ||
       req.session.user.isPasswordResetJourney ||
-      (!isNotEmailCode && !req.session.user.isAccountCreationJourney) ||
-      (!isNotEmailCode && req.session.user.isAccountRecoveryJourney);
+      req.session.user.isAccountRecoveryJourney ||
+      (!isNotEmailCode && !req.session.user.isAccountCreationJourney);
   }
 
   return res.render("security-code-error/index-too-many-requests.njk", {
@@ -129,7 +129,7 @@ export function securityCodeEnteredExceededGet(
   });
 }
 
-function getNewCodePath(actionType: SecurityCodeErrorType) {
+export function getNewCodePath(actionType: SecurityCodeErrorType): string {
   switch (actionType) {
     case SecurityCodeErrorType.MfaMaxCodesSent:
     case SecurityCodeErrorType.MfaBlocked:

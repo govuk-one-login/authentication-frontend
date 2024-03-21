@@ -59,6 +59,57 @@ describe("reset password 2fa auth app controller", () => {
 
       expect(res.render).to.have.calledWith("reset-password-2fa-sms/index.njk");
     });
+
+    it("should render index-security-code-entered-exceeded.njk view when user is account is locked from entering security codes", async () => {
+      const fakeService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: false,
+        }),
+      } as unknown as MfaServiceInterface;
+
+      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+      const date = new Date();
+      const futureDate = new Date(
+        date.setDate(date.getDate() + 6)
+      ).toUTCString();
+
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        reauthenticate: "1234",
+        wrongCodeEnteredLock: futureDate,
+      };
+
+      await resetPassword2FASmsGet(fakeService)(
+        req as Request,
+        res as Response
+      );
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-security-code-entered-exceeded.njk"
+      );
+    });
+
+    it("should render security-code-error/index-wait.njk when user was locked out in the current session for requesting too many security codes", async () => {
+      const fakeService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as MfaServiceInterface;
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      req.session.user.codeRequestLock = tomorrow.toUTCString();
+
+      await resetPassword2FASmsGet(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-wait.njk"
+      );
+    });
   });
 
   describe("resetPassword2FASmsPost", () => {
@@ -144,31 +195,6 @@ describe("reset password 2fa auth app controller", () => {
       );
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.UNAVAILABLE_PERMANENT);
-    });
-
-    it("should render security code entered too many times page view when user is account is locked from entering security codes", async () => {
-      const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: false,
-        }),
-      } as unknown as MfaServiceInterface;
-
-      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
-      const date = new Date();
-      const futureDate = new Date(
-        date.setDate(date.getDate() + 6)
-      ).toUTCString();
-
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-        reauthenticate: "1234",
-        wrongCodeEnteredLock: futureDate,
-      };
-
-      await resetPassword2FASmsGet(fakeService)(
-        req as Request,
-        res as Response
-      );
     });
   });
 });

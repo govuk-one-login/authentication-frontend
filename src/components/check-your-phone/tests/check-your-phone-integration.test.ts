@@ -22,6 +22,8 @@ describe("Integration:: check your phone", () => {
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
 
+    process.env.SUPPORT_2HR_LOCKOUT = "1";
+
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
@@ -54,6 +56,7 @@ describe("Integration:: check your phone", () => {
   });
 
   after(() => {
+    process.env.SUPPORT_2HR_LOCKOUT = "0";
     sinon.restore();
     app = undefined;
   });
@@ -205,5 +208,33 @@ describe("Integration:: check your phone", () => {
         `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.OtpMaxRetries}`
       )
       .expect(302, done);
+  });
+
+  it('should render the "you requested too many codes" pages when incorrect code has requested more than 5 times', (done) => {
+    nock(baseApi).post(API_ENDPOINTS.VERIFY_MFA_CODE).reply(400, {
+      code: ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED,
+      success: false,
+    });
+
+    request(app)
+      .post(PATH_NAMES.CHECK_YOUR_PHONE)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123455",
+      })
+      .expect(
+        "Location",
+        `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.OtpBlocked}`
+      )
+      .expect(302);
+
+    request(app)
+      .get(PATH_NAMES.CHECK_YOUR_PHONE)
+      .expect((res) => {
+        res.text.includes("Wait 2 hours");
+      })
+      .expect(200, done);
   });
 });

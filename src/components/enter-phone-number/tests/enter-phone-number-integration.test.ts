@@ -1,11 +1,11 @@
 import request from "supertest";
 import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
 import cheerio from "cheerio";
 import decache from "decache";
 import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
-import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
+import { ERROR_CODES, pathWithQueryParam } from "../../common/constants";
+import nock = require("nock");
 
 describe("Integration::enter phone number", () => {
   let token: string | string[];
@@ -18,6 +18,8 @@ describe("Integration::enter phone number", () => {
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
 
+    process.env.SUPPORT_2HR_LOCKOUT = "1";
+
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
@@ -28,6 +30,7 @@ describe("Integration::enter phone number", () => {
           journey: {
             nextPath: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
           },
+          isAccountCreationJourney: true,
         };
 
         next();
@@ -50,6 +53,7 @@ describe("Integration::enter phone number", () => {
   });
 
   after(() => {
+    process.env.SUPPORT_2HR_LOCKOUT = "0";
     sinon.restore();
   });
 
@@ -302,8 +306,8 @@ describe("Integration::enter phone number", () => {
       .expect(302, done);
   });
 
-  it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", (done) => {
-    nock(baseApi).post("/send-notification").times(6).reply(400, {
+  it('should render 2hr lockout "You asked for too many codes" error page when request OTP more than 5 times', (done) => {
+    nock(baseApi).persist().post("/send-notification").times(6).reply(400, {
       code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT,
       success: false,
     });
@@ -316,14 +320,18 @@ describe("Integration::enter phone number", () => {
         _csrf: token,
         phoneNumber: "07738394991",
       })
-      .expect(
-        "Location",
-        `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.OtpMaxCodesSent}`
-      )
-      .expect(302, done);
+      .expect((res) => {
+        res.text.includes(
+          "You asked to resend the security code too many times"
+        );
+      })
+      .expect((res) => {
+        res.text.includes("You will not be able to continue for 2 hours.");
+      })
+      .expect(200, done);
   });
 
-  it("should redirect to /security-code-invalid-request when exceeded OTP request limit", (done) => {
+  it('should redirect to SECURITY_CODE_REQUEST_EXCEEDED and render the 2hr lockout "you cannot create" error page when user has exceeded the OTP request limit', (done) => {
     nock(baseApi).post("/send-notification").once().reply(400, {
       code: ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED,
       success: false,
@@ -337,9 +345,19 @@ describe("Integration::enter phone number", () => {
         _csrf: token,
         phoneNumber: "07738394991",
       })
+      .expect((res) => {
+        res.text.includes("You cannot create a GOV.UK One Login");
+      })
+      .expect((res) => {
+        res.text.includes("Wait 2 hours");
+      })
       .expect(
         "Location",
-        `${PATH_NAMES.SECURITY_CODE_WAIT}?actionType=${SecurityCodeErrorType.OtpBlocked}`
+        pathWithQueryParam(
+          PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+          "actionType",
+          "otpBlocked"
+        )
       )
       .expect(302, done);
   });

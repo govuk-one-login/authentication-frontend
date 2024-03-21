@@ -6,6 +6,7 @@ import { mockRequest, mockResponse } from "mock-req-res";
 import { sendEmailOtp } from "../send-email-otp-middleware";
 import { SendNotificationServiceInterface } from "../../../common/send-notification/types";
 import { BadRequestError } from "../../../../utils/error";
+import { ERROR_CODES } from "../../../common/constants";
 
 describe("sendEmailOTPMiddleware", () => {
   let req: Partial<Request>;
@@ -46,6 +47,23 @@ describe("sendEmailOTPMiddleware", () => {
       next as NextFunction
     );
     expect(next).to.be.calledOnce;
+  });
+
+  it("should render security-code-error/index-wait.njk if user is locked out due to too many codes requested", async () => {
+    const fakeNotificationService: SendNotificationServiceInterface = {
+      sendNotification: sinon.fake.returns({
+        success: false,
+        data: {
+          code: ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_CODE_REQUEST_BLOCKED,
+        },
+      }),
+    } as unknown as SendNotificationServiceInterface;
+    await sendEmailOtp(fakeNotificationService)(
+      req as Request,
+      res as Response,
+      next as NextFunction
+    );
+    expect(res.render).to.be.calledWith("security-code-error/index-wait.njk");
   });
 
   it("should throw a BadRequestError when send OTP API call is unsuccessful", async () => {
