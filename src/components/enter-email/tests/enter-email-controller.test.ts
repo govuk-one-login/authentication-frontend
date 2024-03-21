@@ -261,6 +261,49 @@ describe("enter email controller", () => {
       );
     });
 
+    it("should redirect to /enter-password blocked screen when the user has been blocked for entering max incorrect password during reauth journey", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+
+      req.body.email = "test.test.com";
+      res.locals.sessionId = "dsad.dds";
+      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "00000-djjad";
+      res.locals.persistentSessionId = "dips-123456-abc";
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        reauthenticate: "12345",
+      };
+
+      req.t = sinon.fake.returns("translated string");
+
+      const fakeUserExistsService: EnterEmailServiceInterface = {
+        userExists: sinon.fake.returns({
+          success: false,
+          data: { doesUserExist: false },
+        }),
+      } as unknown as EnterEmailServiceInterface;
+
+      const fakeCheckReauthService: CheckReauthServiceInterface = {
+        checkReauthUsers: sinon.fake.returns({
+          success: false,
+          data: {
+            code: ERROR_CODES.ACCOUNT_LOCKED,
+          },
+        }),
+      } as unknown as CheckReauthServiceInterface;
+
+      await enterEmailPost(fakeUserExistsService, fakeCheckReauthService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeCheckReauthService.checkReauthUsers).to.have.been.calledOnce;
+      expect(res.render).to.have.calledWith(
+        "enter-password/index-sign-in-retry-blocked.njk"
+      );
+    });
+
     it("should redirect to /enter-email when re-authentication is required and re-auth check is unsuccessful", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 

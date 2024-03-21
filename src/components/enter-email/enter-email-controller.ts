@@ -75,6 +75,12 @@ export function enterEmailPost(
           return res.render(BLOCKED_TEMPLATE);
         }
 
+        if (checkReauth.data.code === ERROR_CODES.ACCOUNT_LOCKED) {
+          return res.render("enter-password/index-sign-in-retry-blocked.njk", {
+            support2hrLockout: support2hrLockout(),
+          });
+        }
+
         if (
           checkReauth.data.code ===
           ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
