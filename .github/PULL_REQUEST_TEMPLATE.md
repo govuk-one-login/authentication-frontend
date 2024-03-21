@@ -37,6 +37,32 @@ You can find example PRs from this repository that include screenshots through t
 
 - [ ] Performance Analysis have been informed of the change
 
+## Acceptance tests have been updated
+
+- [ ] Any necessary changes to the [acceptance tests](https://github.com/govuk-one-login/authentication-acceptance-tests) have been made.
+
+<!-- 
+
+This is to avoid failures occurring after a merge. The types of changes that may impact acceptance tests might be:
+
+- changes to user journeys
+- changes to the text of page titles
+- changes to the text of interactive elements (such as links).
+
+The Test Engineers on the Authentication Team will be happy to discuss any changes if you're unsure. 
+
+-->
+
+## Associated documentation has been updated
+
+- [ ] Documentation has been updated to reflect these changes
+
+<!-- 
+
+This might include updates to the README.md, Confluence pages etc.
+
+-->
+
 ## Related PRs
 
 <!-- Links to PRs in other repositories that are relevant to this PR.
