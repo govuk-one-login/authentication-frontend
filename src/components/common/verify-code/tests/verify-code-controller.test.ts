@@ -130,6 +130,26 @@ describe("Verify code controller tests", () => {
       expect(res.redirect).to.have.calledWith("/password-reset-required");
     });
 
+    it("if account has reprove identity and suspended status, redirects to /get-security-codes", async () => {
+      const accountInterventionService = accountInterventionsFakeHelper({
+        passwordResetRequired: false,
+        temporarilySuspended: true,
+        blocked: false,
+        reproveIdentity: true,
+      });
+      await verifyCodePost(verifyCodeService, accountInterventionService, {
+        notificationType:
+          NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES,
+        template: "check-your-email/index.njk",
+        validationKey: "pages.checkYourEmail.code.validationError.invalidCode",
+        validationErrorCode: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE,
+      })(req as Request, res as Response);
+
+      expect(accountInterventionService.accountInterventionStatus).to.have.been
+        .called;
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
+    });
+
     it("if account has no AIS status, redirects to /get-security-codes", async () => {
       const accountInterventionService =
         accountInterventionsFakeHelper(noInterventions);

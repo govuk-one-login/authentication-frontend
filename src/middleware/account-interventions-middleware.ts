@@ -4,8 +4,11 @@ import { USER_JOURNEY_EVENTS } from "../components/common/state-machine/state-ma
 import { accountInterventionService } from "../components/account-intervention/account-intervention-service";
 import { ExpressRouteFunc } from "../types";
 import { supportAccountInterventions } from "../config";
-import { AccountInterventionStatus } from "../components/account-intervention/types";
 import { logger } from "../utils/logger";
+import {
+  isSuspendedWithoutUserActions,
+  passwordHasBeenResetMoreRecentlyThanInterventionApplied,
+} from "../utils/interventions";
 
 export function accountInterventionsMiddleware(
   handleSuspendedStatus: boolean,
@@ -57,8 +60,7 @@ export function accountInterventionsMiddleware(
           );
         }
       } else if (
-        accountInterventionsResponse.data.temporarilySuspended &&
-        !accountInterventionsResponse.data.passwordResetRequired &&
+        isSuspendedWithoutUserActions(accountInterventionsResponse.data) &&
         handleSuspendedStatus
       ) {
         return res.redirect(
@@ -73,14 +75,4 @@ export function accountInterventionsMiddleware(
 
     return next();
   };
-}
-
-function passwordHasBeenResetMoreRecentlyThanInterventionApplied(
-  req: Request,
-  status: AccountInterventionStatus
-) {
-  return (
-    req.session.user.passwordResetTime !== undefined &&
-    req.session.user.passwordResetTime > parseInt(status.appliedAt)
-  );
 }
