@@ -152,5 +152,77 @@ describe("enter phone number controller", () => {
         "security-code-error/index-wait.njk"
       );
     });
+
+    it(
+      "should render security-code-error/index-wait.njk and isAccountCreationJourney as true pass page " +
+        "when user is locked and tries to complete the journey again for account part created journey",
+      async () => {
+        const fakeNotificationService: SendNotificationServiceInterface = {
+          sendNotification: sinon.fake.returns({
+            success: false,
+            data: {
+              code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT,
+            },
+          }),
+        } as unknown as SendNotificationServiceInterface;
+        process.env.SUPPORT_2HR_LOCKOUT = "1";
+        res.locals.sessionId = "123456-djjad";
+        req.body.phoneNumber = "+33645453322";
+        req.session.user.email = "test@test.com";
+        req.session.user.isAccountPartCreated = true;
+
+        await enterPhoneNumberPost(fakeNotificationService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(fakeNotificationService.sendNotification).to.have.been
+          .calledOnce;
+        expect(res.render).to.have.calledWith(
+          "security-code-error/index-wait.njk",
+          {
+            newCodeLink: undefined,
+            support2hrLockout: true,
+            isAccountCreationJourney: true,
+          }
+        );
+      }
+    );
+
+    it(
+      "should render security-code-error/index-wait.njk and isAccountCreationJourney as true pass page " +
+        "when user is locked and tries to complete the journey again for account creation journey",
+      async () => {
+        const fakeNotificationService: SendNotificationServiceInterface = {
+          sendNotification: sinon.fake.returns({
+            success: false,
+            data: {
+              code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT,
+            },
+          }),
+        } as unknown as SendNotificationServiceInterface;
+        process.env.SUPPORT_2HR_LOCKOUT = "1";
+        res.locals.sessionId = "123456-djjad";
+        req.body.phoneNumber = "+33645453322";
+        req.session.user.email = "test@test.com";
+        req.session.user.isAccountCreationJourney = true;
+
+        await enterPhoneNumberPost(fakeNotificationService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(fakeNotificationService.sendNotification).to.have.been
+          .calledOnce;
+        expect(res.render).to.have.calledWith(
+          "security-code-error/index-wait.njk",
+          {
+            newCodeLink: undefined,
+            support2hrLockout: true,
+            isAccountCreationJourney: true,
+          }
+        );
+      }
+    );
   });
 });

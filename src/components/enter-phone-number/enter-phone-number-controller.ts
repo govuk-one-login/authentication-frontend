@@ -84,7 +84,9 @@ export function enterPhoneNumberPost(
             req.query.actionType as SecurityCodeErrorType
           ),
           support2hrLockout: support2hrLockout(),
-          isAccountCreationJourney: true,
+          isAccountCreationJourney:
+            req.session.user.isAccountCreationJourney ||
+            req.session.user.isAccountPartCreated,
         });
       }
       const path = getErrorPathByCode(sendNotificationResponse.data.code);
