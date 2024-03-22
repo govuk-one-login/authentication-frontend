@@ -56,7 +56,7 @@ describe("Middleware", () => {
 
       validateSessionMiddleware(req, res, next);
 
-      expect(req.session.destroy).to.have.been.calledOnce;
+      expect(req.session).to.be(null);
       expect(res.status).to.have.been.calledOnceWith(401);
       expect(next).to.have.been.calledOnce;
       expect(next.args[0][0]).to.be.an("error");
@@ -67,7 +67,7 @@ describe("Middleware", () => {
 
       validateSessionMiddleware(req, res, next);
 
-      expect(req.session.destroy).to.have.been.calledOnce;
+      expect(req.session).to.be(null);
       expect(res.status).to.have.been.calledOnceWith(401);
       expect(next).to.have.been.calledOnce;
       expect(next.args[0][0]).to.be.an("error");
@@ -100,7 +100,7 @@ describe("Middleware", () => {
 
       validateSessionMiddleware(req, res, next);
 
-      expect(req.session.destroy).to.have.been.calledOnce;
+      expect(req.session).to.be(null);
       expect(res.status).to.have.been.calledOnceWith(401);
       expect(next).to.have.been.calledOnce;
       expect(next.args[0][0]).to.be.an("error");
