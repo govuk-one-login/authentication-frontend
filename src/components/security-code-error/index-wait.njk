@@ -1,7 +1,11 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% if support2hrLockout %}
-    {% set pageTitleName = 'pages.securityCodeWaitToRequest.title' | translate %}
+    {% if isAccountCreationJourney %}
+        {% set pageTitleName = 'pages.securityCodeWaitToRequest.title_create' | translate %}
+    {% else %}
+        {% set pageTitleName = 'pages.securityCodeWaitToRequest.title' | translate %}
+    {% endif %}
 {% else %}
     {% set pageTitleName = 'pages.securityCodeWaitToRequest.title_old' | translate %}
 {% endif %}
