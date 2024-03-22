@@ -75,6 +75,7 @@ describe("Verify code controller tests", () => {
         blocked: true,
         passwordResetRequired: false,
         temporarilySuspended: false,
+        reproveIdentity: false,
       });
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType:
@@ -94,6 +95,7 @@ describe("Verify code controller tests", () => {
         temporarilySuspended: true,
         blocked: false,
         passwordResetRequired: false,
+        reproveIdentity: false,
       });
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType:
@@ -113,6 +115,7 @@ describe("Verify code controller tests", () => {
         passwordResetRequired: true,
         temporarilySuspended: true,
         blocked: false,
+        reproveIdentity: false,
       });
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType:
@@ -175,6 +178,7 @@ describe("Verify code controller tests", () => {
         temporarilySuspended: true,
         blocked: false,
         passwordResetRequired: false,
+        reproveIdentity: false,
       });
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType: NOTIFICATION_TYPE.MFA_SMS,
@@ -194,6 +198,7 @@ describe("Verify code controller tests", () => {
         blocked: true,
         passwordResetRequired: false,
         temporarilySuspended: false,
+        reproveIdentity: false,
       });
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType: NOTIFICATION_TYPE.MFA_SMS,
@@ -213,6 +218,7 @@ describe("Verify code controller tests", () => {
         passwordResetRequired: true,
         temporarilySuspended: true,
         blocked: false,
+        reproveIdentity: false,
       });
       await verifyCodePost(verifyCodeService, accountInterventionService, {
         notificationType: NOTIFICATION_TYPE.MFA_SMS,

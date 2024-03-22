@@ -425,6 +425,7 @@ describe("enter password controller", () => {
           passwordResetRequired: testCase.interventions.passwordResetRequired,
           blocked: testCase.interventions.blocked,
           temporarilySuspended: testCase.interventions.temporarilySuspended,
+          reproveIdentity: false,
         });
         res.locals.sessionId = "123456-djjad";
         res.locals.clientSessionId = "00000-djjad";

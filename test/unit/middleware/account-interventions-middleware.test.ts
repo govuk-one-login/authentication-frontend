@@ -48,6 +48,7 @@ describe("accountInterventionsMiddleware", () => {
         passwordResetRequired: false,
         blocked: false,
         temporarilySuspended: false,
+        reproveIdentity: false,
       });
 
       await callMiddleware(false, false, fakeAccountInterventionService);
@@ -68,6 +69,7 @@ describe("accountInterventionsMiddleware", () => {
           passwordResetRequired: false,
           blocked: false,
           temporarilySuspended: false,
+          reproveIdentity: false,
         });
 
         it("should call next() when no account intervention API response options are true", async () => {
@@ -85,6 +87,7 @@ describe("accountInterventionsMiddleware", () => {
           passwordResetRequired: true,
           blocked: true,
           temporarilySuspended: true,
+          reproveIdentity: false,
         });
       });
 
@@ -105,6 +108,7 @@ describe("accountInterventionsMiddleware", () => {
             passwordResetRequired: true,
             blocked: false,
             temporarilySuspended: true,
+            reproveIdentity: false,
           });
       });
 
@@ -154,6 +158,7 @@ describe("accountInterventionsMiddleware", () => {
               passwordResetRequired: true,
               blocked: false,
               temporarilySuspended: true,
+              reproveIdentity: false,
             },
             nowUnixTime.toString()
           );
@@ -180,6 +185,7 @@ describe("accountInterventionsMiddleware", () => {
               passwordResetRequired: true,
               blocked: false,
               temporarilySuspended: true,
+              reproveIdentity: false,
             },
             beforeNow.toString()
           );
@@ -205,6 +211,7 @@ describe("accountInterventionsMiddleware", () => {
             passwordResetRequired: false,
             blocked: false,
             temporarilySuspended: true,
+            reproveIdentity: false,
           });
       });
 

@@ -97,6 +97,7 @@ describe("check your email change security codes controller", () => {
         passwordResetRequired: true,
         blocked: false,
         temporarilySuspended: true,
+        reproveIdentity: false,
       });
 
       await checkYourEmailSecurityCodesPost(
@@ -119,6 +120,7 @@ describe("check your email change security codes controller", () => {
         temporarilySuspended: true,
         blocked: false,
         passwordResetRequired: false,
+        reproveIdentity: false,
       });
 
       await checkYourEmailSecurityCodesPost(
@@ -139,6 +141,7 @@ describe("check your email change security codes controller", () => {
         blocked: true,
         passwordResetRequired: false,
         temporarilySuspended: false,
+        reproveIdentity: false,
       });
 
       await checkYourEmailSecurityCodesPost(
