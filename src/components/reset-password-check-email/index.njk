@@ -8,7 +8,9 @@
 {% set showBack = true %}
 {% set hrefBack = 'enter-password' %}
 {% block content %}
+{% set currentPath = currentPath %}
     {% include "common/errors/errorSummary.njk" %}
+
 
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resetPasswordCheckEmail.header' | translate}}</h1>
 
@@ -72,5 +74,7 @@
     }) }}
 
     </form>
-{{ga4OnPageLoad({ nonce: scriptNonce,statusCode:"200",englishPageTitle:pageTitleName, taxonomyLevel1:"authentication", taxonomyLevel2:"account recovery", contentId:"e48886d5-7be8-424d-8471-d9a9bf49d1b7",loggedInStatus:true,dynamic:true})}}
+
+    testt
+{{ga4OnPageLoad({ nonce: scriptNonce,statusCode:"200",englishPageTitle:pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2:taxonomyLevel2, contentId:contentId,loggedInStatus:true,dynamic:true})}}
 {% endblock %}

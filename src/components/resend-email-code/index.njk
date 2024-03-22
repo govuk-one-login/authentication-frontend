@@ -6,7 +6,6 @@
 {% set showBack = true %}
 {% set hrefBack = 'enter-code' %}
 
-
 {% set emailMessage = 'pages.resendMfaCode.email.recipientMessage' | translate %}
 
 {% block content %}
@@ -35,5 +34,5 @@
     }) }}
 
     </form>
-
+{{ga4OnPageLoad({ nonce: scriptNonce,statusCode:"200",englishPageTitle:pageTitleName, taxonomyLevel1:"authentication", taxonomyLevel2:"create account", contentId:"3104ec55-1a4e-4811-b927-0531fb315480",loggedInStatus:true,dynamic:true})}}
 {% endblock %}

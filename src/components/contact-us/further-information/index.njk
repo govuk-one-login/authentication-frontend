@@ -50,4 +50,5 @@
         {% include 'contact-us/further-information/_proving-identity-further-information.njk' %}
     {% endif %}
 
+{{ga4OnPageLoad({ nonce: scriptNonce,statusCode:"200",englishPageTitle:pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2:taxonomyLevel2, contentId:contentId,loggedInStatus:true,dynamic:true})}}
 {% endblock %}

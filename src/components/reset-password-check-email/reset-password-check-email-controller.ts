@@ -14,20 +14,23 @@ import { accountInterventionService } from "../account-intervention/account-inte
 
 const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
-
 const oplValues = {
-  createAccount: {
-    contentId: "3a7d883e-d234-47ff-a85c-12877739f8a4",
-    taxonomyLevel2: "create account",
+  default: {
+    contentId: "b78d016b-0f2c-4599-9c2f-76b3a6397997",
+    taxonomyLevel2: "account recovery",
   },
-  accountRecoveryPassword: {
+  csrf: {
+    contentId: "e48886d5-7be8-424d-8471-d9a9bf49d1b7",
+    taxonomyLevel2: "account recovery",
+  },
+  requestCode: {
+    contentId: "8cbc57f9-28df-4279-a001-cc62a9dd3415",
+    taxonomyLevel2: "account recovery",
+  },
+  accountRecovery: {
     contentId: "7b663466-8001-436f-b10b-e6ac581d39aa",
     taxonomyLevel2: "account recovery",
   },
-  accountRecovery2fa: {
-    contentId: "c7e33b4f-3401-431d-9e15-ca8caa45b4f8",
-    taxonomyLevel2: "account recovery",
-  }
 };
 
 export function resetPasswordCheckEmailGet(
@@ -67,13 +70,14 @@ service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailServic
       );
     }
 
+
     if (!requestCode || result.success) {
       const support2FABeforePasswordResetFlag = support2FABeforePasswordReset();
       return res.render(TEMPLATE_NAME, {
         support2FABeforePasswordResetFlag,
         email,
-        contentId: oplValues.createAccount.contentId,
-        taxonomyLevel2: oplValues.createAccount.taxonomyLevel2,
+        contentId: oplValues.csrf.contentId,
+        taxonomyLevel2: oplValues.csrf.taxonomyLevel2
       });
     }
 
@@ -127,6 +131,8 @@ export function resetPasswordResendCodeGet(req: Request, res: Response): void {
     "reset-password-check-email/index-reset-password-resend-code.njk",
     {
       email: req.session.user.email,
+      contentId: oplValues.accountRecovery.contentId,
+      taxonomyLevel2: oplValues.accountRecovery.taxonomyLevel2
     }
   );
 }

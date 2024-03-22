@@ -46,7 +46,7 @@ export function checkYourEmailSecurityCodesGet(
     email: req.session.user.email,
     backUrl: backUrl,
     contentId: isAccountRecoveryJourney  ? oplValues.accountRecovery.contentId : oplValues.createAccount.contentId,
-    taxonomyLevel2: isAccountRecoveryJourney  ? oplValues.accountRecovery.contentId : oplValues.createAccount.taxonomyLevel2
+    taxonomyLevel2: isAccountRecoveryJourney  ? oplValues.accountRecovery.taxonomyLevel2 : oplValues.createAccount.taxonomyLevel2
   });
 }
 

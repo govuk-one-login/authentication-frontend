@@ -42,7 +42,7 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     res.render("account-creation/resend-mfa-code/index.njk", {
       phoneNumber: req.session.user.redactedPhoneNumber,
       isResendCodeRequest: req.query?.isResendCodeRequest,
-      support2hrLockout: support2hrLockout(),
+      support2hrLockout: support2hrLockout()
     });
   }
 }

@@ -14,6 +14,22 @@ import { logger } from "../../utils/logger";
 import { getServiceDomain, getSupportLinkUrl } from "../../config";
 import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
 
+const oplValues = {
+  contactUs: {
+    contentId: "e08d04e6-b24f-4bad-9955-1eb860771747",
+    taxonomyLevel2: "feedback",
+  },
+  contactUsFurtherInformation: {
+    contentId: "a06d6387-d411-47db-8f7d-88871286330b",
+    taxonomyLevel2: "feedback",
+  },
+  contactUsSuccess: {
+    contentId: "0e020971-d828-4679-97fe-23af6e96ab14",
+    taxonomyLevel2: "feedback",
+  }
+};
+
+
 const themeToPageTitle = {
   [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:
     "pages.contactUsQuestions.accountNotFound.title",
@@ -127,6 +143,8 @@ export function contactUsGet(req: Request, res: Response): void {
     ...(getAppSessionId(req.query.appSessionId as string) && {
       appSessionId: getAppSessionId(req.query.appSessionId as string),
     }),
+    contentId: oplValues.contactUs.contentId,
+    taxonomyLevel2: oplValues.contactUs.taxonomyLevel2,
   };
 
   return res.render("contact-us/index-public-contact-us.njk", options);
@@ -370,6 +388,8 @@ export function furtherInformationGet(req: Request, res: Response): void {
     referer: encodeValue(
       validateReferer(req.query.referer as string, serviceDomain)
     ),
+    contentId: oplValues.contactUsFurtherInformation.contentId,
+    taxonomyLevel2: oplValues.contactUsFurtherInformation.taxonomyLevel2,
   });
 }
 
@@ -501,7 +521,10 @@ export function contactUsQuestionsFormPostToSmartAgent(
 }
 
 export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
-  res.render("contact-us/index-submit-success.njk");
+  res.render("contact-us/index-submit-success.njk", {
+    contentId: oplValues.contactUsSuccess.contentId,
+    taxonomyLevel2: oplValues.contactUsSuccess.taxonomyLevel2
+  });
 }
 
 export function getQuestionsFromFormTypeForMessageBody(
