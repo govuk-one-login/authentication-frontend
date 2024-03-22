@@ -17,10 +17,8 @@ import {
   support2FABeforePasswordReset,
   supportAccountInterventions,
 } from "../../../config";
-import {
-  AccountInterventionsInterface,
-  AccountInterventionStatus,
-} from "../../account-intervention/types";
+import { AccountInterventionsInterface } from "../../account-intervention/types";
+import { isSuspendedWithoutUserActions } from "../../../utils/interventions";
 
 interface Config {
   notificationType: NOTIFICATION_TYPE;
@@ -146,14 +144,4 @@ export function verifyCodePost(
       )
     );
   };
-}
-
-function isSuspendedWithoutUserActions(
-  status: AccountInterventionStatus
-): boolean {
-  return (
-    status.temporarilySuspended &&
-    !status.reproveIdentity &&
-    !status.passwordResetRequired
-  );
 }
