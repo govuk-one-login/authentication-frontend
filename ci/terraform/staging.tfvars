@@ -21,6 +21,7 @@ account_recovery_code_entered_wrong_blocked_minutes = "1"
 code_entered_wrong_blocked_minutes                  = "1"
 email_entered_wrong_blocked_minutes                 = "1"
 password_reset_code_entered_wrong_blocked_minutes   = "1"
+support_reauthentication                            = "1"
 
 url_for_support_links = "https://home.staging.account.gov.uk/contact-gov-uk-one-login"
 
