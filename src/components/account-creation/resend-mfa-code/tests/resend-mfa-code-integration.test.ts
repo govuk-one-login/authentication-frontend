@@ -9,6 +9,7 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../../app.constants";
+import { getFrontendApiBaseUrl } from "../../../../config";
 
 describe("Integration:: resend SMS mfa code (account creation variant)", () => {
   let token: string | string[];
@@ -38,7 +39,7 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
       });
 
     app = await require("../../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL as string;
+    baseApi = getFrontendApiBaseUrl();
 
     await request(app)
       .get(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)

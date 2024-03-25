@@ -9,6 +9,7 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants";
+import { getFrontendApiBaseUrl } from "../../../config";
 
 describe("Integration::share info", () => {
   let token: string | string[];
@@ -44,7 +45,7 @@ describe("Integration::share info", () => {
       });
 
     app = await require("../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = getFrontendApiBaseUrl();
 
     request(app)
       .get(PATH_NAMES.SHARE_INFO)

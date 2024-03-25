@@ -9,6 +9,7 @@ import {
   noInterventions,
   setupAccountInterventionsResponse,
 } from "../../../../test/helpers/account-interventions-helpers";
+import { getFrontendApiBaseUrl } from "../../../config";
 
 describe("Integration::reset password (in 6 digit code flow)", () => {
   let token: string | string[];
@@ -41,7 +42,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
         next();
       });
     app = await require("../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = getFrontendApiBaseUrl();
     setupAccountInterventionsResponse(baseApi, noInterventions);
 
     request(app)

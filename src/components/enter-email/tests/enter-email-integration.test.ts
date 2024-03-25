@@ -13,6 +13,7 @@ import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
 import { AxiosResponse } from "axios";
 import { createApiResponse } from "../../../utils/http";
 import { DefaultApiResponse } from "../../../types";
+import { getFrontendApiBaseUrl } from "../../../config";
 
 describe("Integration::enter email", () => {
   let token: string | string[];
@@ -57,7 +58,7 @@ describe("Integration::enter email", () => {
       });
 
     app = await require("../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = getFrontendApiBaseUrl();
 
     request(app)
       .get(PATH_NAMES.ENTER_EMAIL_SIGN_IN)

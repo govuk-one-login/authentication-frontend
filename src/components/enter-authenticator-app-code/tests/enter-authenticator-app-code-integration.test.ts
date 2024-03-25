@@ -16,6 +16,7 @@ import {
   AccountRecoveryResponse,
 } from "../../common/account-recovery/types";
 import { createApiResponse } from "../../../utils/http";
+import { getFrontendApiBaseUrl } from "../../../config";
 
 describe("Integration:: enter authenticator app code", () => {
   let token: string | string[];
@@ -68,7 +69,7 @@ describe("Integration:: enter authenticator app code", () => {
       });
 
     app = await require("../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL || "";
+    baseApi = getFrontendApiBaseUrl();
 
     request(app)
       .get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)

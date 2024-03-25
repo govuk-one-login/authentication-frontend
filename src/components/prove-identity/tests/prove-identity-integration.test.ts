@@ -11,6 +11,7 @@ import {
 import { expect } from "chai";
 import { Application } from "express";
 import { setupAccountInterventionsResponse } from "../../../../test/helpers/account-interventions-helpers";
+import { getFrontendApiBaseUrl } from "../../../config";
 
 describe("Integration::prove identity", () => {
   let cookies: string;
@@ -22,7 +23,7 @@ describe("Integration::prove identity", () => {
     decache("../../../app");
     const sessionMiddleware = require("../../../middleware/session-middleware");
 
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = getFrontendApiBaseUrl();
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
 

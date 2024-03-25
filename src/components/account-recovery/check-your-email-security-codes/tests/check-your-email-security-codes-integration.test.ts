@@ -18,6 +18,7 @@ import {
   AccountInterventionsInterface,
   AccountInterventionStatus,
 } from "../../../account-intervention/types";
+import { getFrontendApiBaseUrl } from "../../../../config";
 
 describe("Integration:: check your email security codes", () => {
   let token: string | string[];
@@ -92,7 +93,7 @@ describe("Integration:: check your email security codes", () => {
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
 
     app = await require("../../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL || "";
+    baseApi = getFrontendApiBaseUrl();
 
     request(app)
       .get(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES)

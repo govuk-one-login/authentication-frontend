@@ -9,6 +9,7 @@ import {
   noInterventions,
   setupAccountInterventionsResponse,
 } from "../../../../test/helpers/account-interventions-helpers";
+import { getFrontendApiBaseUrl } from "../../../config";
 
 describe("Integration::reset password (in 2FA Before Reset Password flow)", () => {
   let token: string | string[];
@@ -40,7 +41,7 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
         next();
       });
     app = await require("../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = getFrontendApiBaseUrl();
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     setupAccountInterventionsResponse(baseApi, noInterventions);
 

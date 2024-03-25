@@ -5,6 +5,7 @@ import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
 import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants";
+import { getSmartAgentApiUrl } from "../../../config";
 
 describe("Integration:: contact us - public user", () => {
   let token: string | string[];
@@ -28,7 +29,7 @@ describe("Integration:: contact us - public user", () => {
       });
 
     app = await require("../../../app").createApp();
-    smartAgentApiUrl = process.env.SMARTAGENT_API_URL;
+    smartAgentApiUrl = getSmartAgentApiUrl();
 
     request(app)
       .get(PATH_NAMES.CONTACT_US)
