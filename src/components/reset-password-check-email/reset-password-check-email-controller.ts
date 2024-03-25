@@ -15,21 +15,19 @@ import { accountInterventionService } from "../account-intervention/account-inte
 const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
 const oplValues = {
-  default: {
-    contentId: "b78d016b-0f2c-4599-9c2f-76b3a6397997",
-    taxonomyLevel2: "account recovery",
+  resetPasswordResendEmail: {
+    default: {
+      contentId: "b78d016b-0f2c-4599-9c2f-76b3a6397997"
+    },
+    csrf: {
+      contentId: "e48886d5-7be8-424d-8471-d9a9bf49d1b7"
+    },
+    requestCode: {
+      contentId: "8cbc57f9-28df-4279-a001-cc62a9dd3415"
+    },
   },
-  csrf: {
-    contentId: "e48886d5-7be8-424d-8471-d9a9bf49d1b7",
-    taxonomyLevel2: "account recovery",
-  },
-  requestCode: {
-    contentId: "8cbc57f9-28df-4279-a001-cc62a9dd3415",
-    taxonomyLevel2: "account recovery",
-  },
-  accountRecovery: {
-    contentId: "7b663466-8001-436f-b10b-e6ac581d39aa",
-    taxonomyLevel2: "account recovery",
+  resetPasswordResendCode: {
+    contentId: "7b663466-8001-436f-b10b-e6ac581d39aa"
   },
 };
 
@@ -70,14 +68,23 @@ service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailServic
       );
     }
 
+    const getContentId = (url: Request) => {
+      if (url.originalUrl.includes("csrf")) {
+        return oplValues.resetPasswordResendEmail.csrf.contentId
+      } else if (url.originalUrl.includes("requestcode"))  {
+        return oplValues.resetPasswordResendEmail.requestCode.contentId
+      } 
+       return oplValues.resetPasswordResendEmail.default.contentId
+    }
 
     if (!requestCode || result.success) {
       const support2FABeforePasswordResetFlag = support2FABeforePasswordReset();
       return res.render(TEMPLATE_NAME, {
         support2FABeforePasswordResetFlag,
         email,
-        contentId: oplValues.csrf.contentId,
-        taxonomyLevel2: oplValues.csrf.taxonomyLevel2
+        currentPath: req.originalUrl,
+        contentId: getContentId(req),
+        taxonomyLevel2: "account recovery"
       });
     }
 
@@ -131,8 +138,8 @@ export function resetPasswordResendCodeGet(req: Request, res: Response): void {
     "reset-password-check-email/index-reset-password-resend-code.njk",
     {
       email: req.session.user.email,
-      contentId: oplValues.accountRecovery.contentId,
-      taxonomyLevel2: oplValues.accountRecovery.taxonomyLevel2
+      contentId: oplValues.resetPasswordResendCode.contentId,
+      taxonomyLevel2: "account recovery"
     }
   );
 }
