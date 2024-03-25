@@ -43,6 +43,8 @@ export function resetPassword2FASmsGet(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
           newCodeLink: PATH_NAMES.RESET_PASSWORD_2FA_SMS,
+          contentId: "2",
+          taxonomyLevel2: "2"
         }
       );
     }

@@ -23,6 +23,8 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     res.render("security-code-error/index-security-code-entered-exceeded.njk", {
       newCodeLink: newCodeLink,
       isAuthApp: false,
+      contentId: "4",
+      taxonomyLevel2: "4"
     });
   } else if (
     req.session.user.codeRequestLock &&

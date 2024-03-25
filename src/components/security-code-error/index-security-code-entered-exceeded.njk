@@ -1,6 +1,9 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
+{% set contentId = contentId%}
+{% set taxonomyLevel2 = taxonomyLevel2 %}
+
 {% if isAuthApp %}
     {% set pageTitleName = 'pages.securityCodeAuthAppEnteredExceeded.title' | translate %}
 {% else %}
@@ -25,5 +28,5 @@
             {{'pages.securityCodeEnteredExceeded.info.paragraph2End' | translate}}
         </p>
     {% endif %}
-
+{{ga4OnPageLoad({ nonce: scriptNonce,statusCode:"200",englishPageTitle:pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2:taxonomyLevel2, contentId:contentId,loggedInStatus:true,dynamic:true})}}
 {% endblock %}

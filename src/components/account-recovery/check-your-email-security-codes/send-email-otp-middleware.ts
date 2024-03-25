@@ -37,7 +37,10 @@ export function sendEmailOtp(
       sendNotificationResponse.data?.code ===
       ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_CODE_REQUEST_BLOCKED
     ) {
-      return res.render("security-code-error/index-wait.njk");
+      return res.render("security-code-error/index-wait.njk", {
+        contentId: "oplValues.indexWait.contentId",
+        taxonomyLevel2: "oplValues.indexWait.taxonomyLevel2"
+      });
     }
 
     const path = sendNotificationResponse.data?.code

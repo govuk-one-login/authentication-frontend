@@ -40,8 +40,6 @@ export function checkYourEmailSecurityCodesGet(
   const { isAccountRecoveryJourney } =
   req.session.user;
   
-  console.log(isAccountRecoveryJourney)
-
   res.render(TEMPLATE_NAME, {
     email: req.session.user.email,
     backUrl: backUrl,

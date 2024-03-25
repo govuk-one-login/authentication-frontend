@@ -2,6 +2,8 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set pageTitleName = 'pages.securityRequestsExceededExpired.title' | translate %}
+{% set contentId = contentId%}
+{% set taxonomyLevel2 = taxonomyLevel2 %}
 
 {% if isResendCodeRequest %}
     {% set newCodeLink = newCodeLink + "?isResendCodeRequest=true" %}
@@ -25,4 +27,6 @@
     </p>
 
     {% endif %}
+
+{{ga4OnPageLoad({ nonce: scriptNonce,statusCode:"200",englishPageTitle:pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2:taxonomyLevel2, contentId:contentId,loggedInStatus:true,dynamic:true})}}
 {% endblock %}

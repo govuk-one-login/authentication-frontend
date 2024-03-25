@@ -13,6 +13,21 @@ import { sendNotificationService } from "../../common/send-notification/send-not
 import { BadRequestError } from "../../../utils/error";
 import { support2hrLockout } from "../../../config";
 
+const oplValues = {
+  default: {
+    contentId: "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
+    taxonomyLevel2: "sign in",
+  },
+  enterExceeded: {
+    contentId: "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
+    taxonomyLevel2: "sign in",
+  },
+  indexWait: {
+    contentId: "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
+    taxonomyLevel2: "sign in"
+  }
+};
+
 export function resendMfaCodeGet(req: Request, res: Response): void {
   const newCodeLink = req.query?.isResendCodeRequest
     ? pathWithQueryParam(
@@ -30,6 +45,8 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     res.render("security-code-error/index-security-code-entered-exceeded.njk", {
       newCodeLink: newCodeLink,
       isAuthApp: false,
+      contentId: oplValues.enterExceeded.contentId,
+      taxonomyLevel2: oplValues.enterExceeded.taxonomyLevel2
     });
   } else if (
     req.session.user.codeRequestLock &&
@@ -37,12 +54,16 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
   ) {
     res.render("security-code-error/index-wait.njk", {
       newCodeLink,
+      contentId: oplValues.indexWait.contentId,
+      taxonomyLevel2: oplValues.indexWait.taxonomyLevel2
     });
   } else {
     res.render("account-creation/resend-mfa-code/index.njk", {
       phoneNumber: req.session.user.redactedPhoneNumber,
       isResendCodeRequest: req.query?.isResendCodeRequest,
-      support2hrLockout: support2hrLockout()
+      support2hrLockout: support2hrLockout(),
+      contentId: oplValues.default.contentId,
+      taxonomyLevel2: oplValues.default.taxonomyLevel2
     });
   }
 }

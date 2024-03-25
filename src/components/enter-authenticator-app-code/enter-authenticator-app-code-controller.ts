@@ -48,6 +48,8 @@ export function enterAuthenticatorAppCodeGet(
         {
           newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           isAuthApp: true,
+          contentId: "8",
+          taxonomyLevel2: "8"
         }
       );
     }

@@ -101,6 +101,7 @@ export function enterPasswordPost(
   accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
+    const { isAccountCreationJourney } = req.session.user;  
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
@@ -213,7 +214,10 @@ export function enterPasswordPost(
 
         if (result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
           return res.render(
-            "security-code-error/index-security-code-entered-exceeded.njk"
+            "security-code-error/index-security-code-entered-exceeded.njk", {
+              contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
+              taxonomyLevel2: isAccountCreationJourney  ? "create account" : "sign in"
+            }
           );
         }
 

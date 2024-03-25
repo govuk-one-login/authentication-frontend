@@ -30,6 +30,9 @@ export function resendEmailCodeGet(req: Request, res: Response): void {
       "security-code-error/index-security-code-entered-exceeded.njk",
       {
         newCodeLink,
+        contentId: "5",
+        taxonomyLevel2: "5"
+        
       }
     );
   }

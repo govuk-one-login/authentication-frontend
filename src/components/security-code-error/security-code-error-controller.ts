@@ -13,7 +13,25 @@ import {
   support2hrLockout,
 } from "../../config";
 
+const oplValues = {
+  mfaMaxRetries: {
+    contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+  },
+  mfaBlocked: {
+    contentId: "1277915f-ce6e-4a06-89a0-e3458f95631a",
+  },
+  enteredExceeded: {
+    contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
+  },
+  requestedTooManyTimes: {
+    contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+  }
+};
+
 export function securityCodeInvalidGet(req: Request, res: Response): void {
+  const { isAccountCreationJourney } =
+  req.session.user;
+    
   const isNotEmailCode =
     req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries &&
     req.query.actionType !==
@@ -55,6 +73,9 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
     isBlocked: isNotEmailCode || showFifteenMinutesParagraph,
+    contentId: oplValues.mfaMaxRetries.contentId,
+    taxonomyLevel2: isAccountCreationJourney  ? "create account" : "sign in"
+
   });
 }
 
@@ -65,21 +86,33 @@ export function securityCodeTriesExceededGet(
   req.session.user.codeRequestLock = new Date(
     Date.now() + getCodeRequestBlockDurationInMinutes() * 60000
   ).toUTCString();
+
+  const { isAccountCreationJourney } =
+  req.session.user;
+    
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     isResendCodeRequest: req.query.isResendCodeRequest,
     isAccountCreationJourney: req.session.user?.isAccountCreationJourney,
     support2hrLockout: support2hrLockout(),
+    contentId: oplValues.requestedTooManyTimes.contentId,
+    taxonomyLevel2: isAccountCreationJourney  ? "create account" : "sign in"
   });
 }
+
 
 export function securityCodeCannotRequestCodeGet(
   req: Request,
   res: Response
 ): void {
+  const { isAccountCreationJourney } =
+  req.session.user;
+  
   res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
     support2hrLockout: support2hrLockout(),
+    contentId: oplValues.mfaBlocked.contentId,
+    taxonomyLevel2: isAccountCreationJourney  ? "create account" : "sign in"
   });
 }
 
@@ -87,11 +120,16 @@ export function securityCodeEnteredExceededGet(
   req: Request,
   res: Response
 ): void {
+  const { isAccountCreationJourney } =
+  req.session.user;
+  
   res.render("security-code-error/index-security-code-entered-exceeded.njk", {
     newCodeLink: isAuthApp(req.query.actionType as SecurityCodeErrorType)
       ? PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
       : PATH_NAMES.RESEND_MFA_CODE,
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
+    contentId: oplValues.mfaMaxRetries.contentId,
+    taxonomyLevel2: isAccountCreationJourney  ? "create account" : "sign in"
   });
 }
 

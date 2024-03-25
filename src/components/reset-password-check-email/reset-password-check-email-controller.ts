@@ -64,6 +64,8 @@ service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailServic
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
           newCodeLink,
+          contentId: "1",
+          taxonomyLevel2: "1"
         }
       );
     }
