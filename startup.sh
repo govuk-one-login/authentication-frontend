@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+ #!/usr/bin/env bash
 set -eu
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
@@ -44,6 +44,13 @@ fi
 
 test -f .env || usage "Missing .env file"
 
+# ensure REDIS_PORT is populated, due to a name change in the template .env files
+if [ -z "${REDIS_PORT:-}" ]; then
+  export REDIS_PORT="${DOCKER_REDIS_PORT:-6379}"
+fi
+export REDIS_HOST="${REDIS_HOST:-localhost}" # this is now in the .env files.
+# ensure we set it explicitely in case people havent updated their versions
+
 # set shellcheck source to .env.build, as this is a 'complete' example
 # shellcheck source=.env.build
 set -o allexport && source .env && set +o allexport
@@ -57,8 +64,6 @@ if [ "${ACTION_LOCAL:-0}" == "1" ]; then
   echo "No-MFA stub listening on http://localhost:${DOCKER_STUB_NO_MFA_PORT:-5000}"
   echo "Default stub listening on http://localhost:${DOCKER_STUB_DEFAULT_PORT:-2000}"
   echo "Redis listening on redis://localhost:${DOCKER_REDIS_PORT:-6379}"
-  export REDIS_PORT=${DOCKER_REDIS_PORT:-6379}
-  export REDIS_HOST=localhost
   if [ "${ACTION_DEPS_ONLY:-0}" == "0" ]; then
     export PORT="${DOCKER_FRONTEND_PORT:-3000}"
     yarn install && yarn test:dev-evironment-variables && yarn copy-assets && yarn dev
@@ -70,7 +75,7 @@ else
   docker compose -f docker-compose.yml -f docker-compose.frontend.yml up -d --wait --build
   echo "No-MFA stub listening on http://localhost:${DOCKER_STUB_NO_MFA_PORT:-5000}"
   echo "Default stub listening on http://localhost:${DOCKER_STUB_DEFAULT_PORT:-2000}"
-  echo "Redis listening on redis://localhost:${DOCKER_REDIS_PORT:-6379}"
+  echo "Redis listening on redis://localhost:${REDIS_PORT:-6379}"
   echo "Frontend listening on http://localhost:${DOCKER_FRONTEND_PORT:-3000}"
   echo "Frontend nodemon listening on localhost:${DOCKER_FRONTEND_NODEMON_PORT:-9230}"
 fi
