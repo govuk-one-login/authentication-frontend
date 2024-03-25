@@ -10,6 +10,7 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import nock = require("nock");
+import { ERROR_CODES } from "../../common/constants";
 
 describe("Integration::reset password check email ", () => {
   let app: any;
@@ -56,6 +57,7 @@ describe("Integration::reset password check email ", () => {
 
   beforeEach(() => {
     nock.cleanAll();
+    process.env.SUPPORT_2HR_LOCKOUT = "0";
   });
 
   after(() => {
@@ -81,6 +83,24 @@ describe("Integration::reset password check email ", () => {
         expect($(".govuk-heading-l").text()).to.contains(
           "You asked to resend the security code too many times"
         );
+      })
+      .expect(200, done);
+  });
+
+  it("should return 2hr error page when 6 incorrect codes entered and flag is turned on", (done) => {
+    process.env.SUPPORT_2HR_LOCKOUT = "1";
+    nock(baseApi).post(API_ENDPOINTS.RESET_PASSWORD_REQUEST).reply(400, {
+      code: ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES,
+    });
+
+    request(app)
+      .get("/reset-password-check-email")
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($(".govuk-heading-l").text()).to.contains(
+          "You cannot sign in at the moment"
+        );
+        expect($(".govuk-body").text()).to.contains("Wait for 2 hours");
       })
       .expect(200, done);
   });
