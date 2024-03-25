@@ -86,6 +86,7 @@ export function resetPasswordCheckEmailGet(
 
       return res.render(errorTemplate, {
         support2hrLockout: support2hrLockout(),
+        show2HrScreen: support2hrLockout(),
       });
     } else {
       throw new BadRequestError(result.data.message, result.data.code);
