@@ -4,12 +4,7 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
-import {
-  IPV_ERROR_CODES,
-  OIDC_ERRORS,
-  OIDC_PROMPT,
-  PATH_NAMES,
-} from "../../../app.constants";
+import { OIDC_PROMPT, PATH_NAMES } from "../../../app.constants";
 import {
   mockRequest,
   mockResponse,
@@ -73,19 +68,6 @@ describe("prove your identity welcome controller", () => {
 
       expect(res.redirect).to.have.been.calledWith(
         PATH_NAMES.SIGN_IN_OR_CREATE
-      );
-    });
-
-    it("should redirect to RP redirect URI when using alternative way to prove your identity", async () => {
-      req.body.chooseWayPyi = "redirect";
-      proveIdentityWelcomePost(req as Request, res as Response);
-
-      expect(res.redirect).to.have.been.calledWith(
-        `http://someservice.com/auth?error=${
-          OIDC_ERRORS.ACCESS_DENIED
-        }&error_description=${encodeURIComponent(
-          IPV_ERROR_CODES.ACCOUNT_NOT_CREATED
-        )}&state=${encodeURIComponent(STATE)}`
       );
     });
 
