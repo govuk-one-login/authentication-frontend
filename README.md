@@ -139,6 +139,29 @@ You may need to install pre-commit for the script to work.
 brew install pre-commit
 ```
 
+## Troubleshooting the local run
+
+### General steps to try first
+
+If you're having problems running locally, try these steps first:
+
+* Connect to the VPN
+* Run `./shutdown.sh`
+* Delete your Docker **Images** (you can do this via Docker Desktop or with `docker system prune --all`)
+* Run `./startup.sh -lc` to do a cleanup before a local run
+* Because things sometimes don't work first time round, a `touch src/server.ts` _while the server is running_ might help
+
+### Getting past specific errors
+
+<details>
+
+<summary>`Error: secret option required for sessions`</summary>
+
+1. stop the server with `./shutdown.sh`
+2. run `./startup.sh -l` (there's no need for the -c flag)
+
+</details>
+
 ## Other useful yarn commands
 
 Remember to run these commands in the docker container itself.
