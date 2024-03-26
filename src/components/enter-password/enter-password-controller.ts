@@ -215,7 +215,10 @@ export function enterPasswordPost(
 
         if (result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
           return res.render(
-            "security-code-error/index-security-code-entered-exceeded.njk"
+            "security-code-error/index-security-code-entered-exceeded.njk",
+            {
+              show2HrScreen: support2hrLockout(),
+            }
           );
         }
 
