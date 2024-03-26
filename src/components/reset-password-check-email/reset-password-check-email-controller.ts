@@ -53,6 +53,11 @@ export function resetPasswordCheckEmailGet(
       );
     }
 
+    if (result.success && req.session.user.enterEmailMfaType === undefined) {
+      req.session.user.enterEmailMfaType = result.data.mfaMethodType;
+      req.session.user.redactedPhoneNumber = result.data.phoneNumberLastThree;
+    }
+
     if (!requestCode || result.success) {
       const support2FABeforePasswordResetFlag = support2FABeforePasswordReset();
       return res.render(TEMPLATE_NAME, {
