@@ -84,6 +84,18 @@ export function resetPassword2FASmsGet(
           isAccountCreationJourney: false,
         });
       }
+      if (mfaResponse.data.code == ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
+        return res.render(
+          "security-code-error/index-security-code-entered-exceeded.njk",
+          {
+            newCodeLink: getNewCodePath(
+              req.query.actionType as SecurityCodeErrorType
+            ),
+            show2HrScreen: support2hrLockout(),
+            isAccountCreationJourney: false,
+          }
+        );
+      }
       const path = getErrorPathByCode(mfaResponse.data.code);
       if (path) {
         return res.redirect(path);
