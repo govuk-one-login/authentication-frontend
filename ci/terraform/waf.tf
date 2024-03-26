@@ -20,12 +20,15 @@ resource "aws_wafv2_ip_set" "gds_ip_set" {
     "213.86.153.237/32",
     "213.86.153.211/32",
     "213.86.153.231/32",
-
     # The following are Pentesters, requested on AUT-2360
     "51.142.180.30/32",
     "185.120.72.241/32",
     "185.120.72.242/32",
-    "185.120.72.243/32"
+    "185.120.72.243/32",
+    # The following are Pentesters, requested on AUT-2596
+    "3.9.227.33/32",
+    "18.132.149.145/32"
+
   ]
 
   tags = local.default_tags
@@ -77,7 +80,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
     name     = "${var.environment}-frontend-alb-waf-rate-based-rule"
     statement {
       rate_based_statement {
-        limit              = var.environment == "staging" ? 600000 : 25000
+        limit              = var.environment == "staging" ? 20000000 : 25000
         aggregate_key_type = "IP"
       }
     }
