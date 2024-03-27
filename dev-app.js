@@ -49,19 +49,21 @@ app.get("/", (req, res) => {
       res.cookie("analytics", sessionCookieValue, {
         maxAge: new Date(new Date().getTime() + 60 * 60000),
       });
-sec
+
       let lngCookieValue;
       const lngCookie = response.headers["set-cookie"][2];
       if (lngCookie) {
         lngCookieValue = getCookieValue(lngCookie.split(";"), "lng");
-        res.cookie("HELLOO", lngCookieValue, "TESTING");
+        res.cookie("lng", lngCookieValue, {
+          maxAge: new Date(new Date().getTime() + 60 * 60000),
+        });
       }
 
       console.log(`Session is: ${sessionCookieValue}`);
       console.log(`lng is: ${lngCookieValue}`);
 
       const location = url.parse(response.headers.location, true);
-      const redirect = "http://localhost:3000"
+      const redirect = "http://localhost:3000/authorize?" + querystring.stringify(location.query)
 
       console.log(`orch response location query is: ${redirect}`);
 
