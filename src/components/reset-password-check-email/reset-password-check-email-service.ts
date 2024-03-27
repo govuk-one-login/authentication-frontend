@@ -32,6 +32,7 @@ export function resetPasswordCheckEmailService(
       })
     );
     return createApiResponse<DefaultApiResponse>(response, [
+      HTTP_STATUS_CODES.OK,
       HTTP_STATUS_CODES.NO_CONTENT,
     ]);
   };
