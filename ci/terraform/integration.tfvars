@@ -6,7 +6,6 @@ frontend_task_definition_cpu     = 512
 frontend_task_definition_memory  = 1024
 
 support_international_numbers = "1"
-support_language_cy           = "1"
 support_account_recovery      = "1"
 support_account_interventions = "0"
 support_auth_orch_split       = "1"
