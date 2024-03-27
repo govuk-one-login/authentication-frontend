@@ -7,6 +7,7 @@ import { Request, Response } from "express";
 import {
   resetPasswordCheckEmailGet,
   resetPasswordCheckEmailPost,
+  resetPasswordResendCodeGet,
 } from "../reset-password-check-email-controller";
 import { ResetPasswordCheckEmailServiceInterface } from "../types";
 import {
@@ -17,7 +18,10 @@ import {
 } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
-import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
+import {
+  accountInterventionsFakeHelper,
+  noInterventions,
+} from "../../../../test/helpers/account-interventions-helpers";
 import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers";
 
 describe("reset password check email controller", () => {
@@ -72,12 +76,8 @@ describe("reset password check email controller", () => {
     });
     it("should redirect to reset password if code entered is correct", async () => {
       const fakeService = fakeVerifyCodeServiceHelper(true);
-      const fakeInterventionsService = accountInterventionsFakeHelper(
-        "test@test.com",
-        false,
-        false,
-        false
-      );
+      const fakeInterventionsService =
+        accountInterventionsFakeHelper(noInterventions);
       await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
         req as Request,
         res as Response
@@ -89,12 +89,8 @@ describe("reset password check email controller", () => {
     it("should redirect to check_phone if code entered is correct and feature flag is turned on", async () => {
       process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
       const fakeService = fakeVerifyCodeServiceHelper(true);
-      const fakeInterventionsService = accountInterventionsFakeHelper(
-        "test@test.com",
-        false,
-        false,
-        false
-      );
+      const fakeInterventionsService =
+        accountInterventionsFakeHelper(noInterventions);
       req.session.user.enterEmailMfaType = "SMS";
       await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
         req as Request,
@@ -109,12 +105,8 @@ describe("reset password check email controller", () => {
     it("should redirect to check_auth_app if code entered is correct and feature flag is turned on", async () => {
       process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
       const fakeService = fakeVerifyCodeServiceHelper(true);
-      const fakeInterventionsService = accountInterventionsFakeHelper(
-        "test@test.com",
-        false,
-        false,
-        false
-      );
+      const fakeInterventionsService =
+        accountInterventionsFakeHelper(noInterventions);
       req.session.user.enterEmailMfaType = "AUTH_APP";
       await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
         req as Request,
@@ -146,12 +138,8 @@ describe("reset password check email controller", () => {
       process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
       req.session.user.enterEmailMfaType = "SMS";
 
-      const fakeInterventionsService = accountInterventionsFakeHelper(
-        "test@test.com",
-        false,
-        false,
-        false
-      );
+      const fakeInterventionsService =
+        accountInterventionsFakeHelper(noInterventions);
 
       const fakeService = fakeVerifyCodeServiceHelper(true);
       await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
@@ -167,12 +155,8 @@ describe("reset password check email controller", () => {
       process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
       req.session.user.enterEmailMfaType = "AUTH_APP";
 
-      const fakeInterventionsService = accountInterventionsFakeHelper(
-        "test@test.com",
-        false,
-        false,
-        false
-      );
+      const fakeInterventionsService =
+        accountInterventionsFakeHelper(noInterventions);
 
       const fakeService = fakeVerifyCodeServiceHelper(true);
       await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
@@ -181,6 +165,19 @@ describe("reset password check email controller", () => {
       );
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD);
+    });
+    describe("resendMfaCodeGet", () => {
+      it("should render index-reset-password-resend-code.njk mfa code view", () => {
+        resetPasswordResendCodeGet(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWith(
+          "reset-password-check-email/index-reset-password-resend-code.njk",
+          {
+            email: req.session.user.email,
+            support2hrLockout: false,
+          }
+        );
+      });
     });
   });
 });

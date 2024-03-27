@@ -21,20 +21,10 @@ Before you can run the frontend app against the backend you will need to configu
 
 ### Set the Environment variables
 
-Create a copy of the .env.sample file and rename it .env and fill in below values:
+Create a copy of one `.env.XXX`, where `XXX` is the environment you wish to use for OIDC,
+rename it .env and fill in the missing values.
 
-```
-ENVIRONMENT=development
-API_BASE_URL=
-FRONTEND_API_BASE_URL=
-SESSION_EXPIRY=30000
-SESSION_SECRET=123456
-API_KEY=
-ANALYTICS_COOKIE_DOMAIN=localhost
-SERVICE_DOMAIN=localhost
-```
-
-`UI_LOCALES` can be used be the stub to request specific locales when authorising.  Only 'en' and 'cy' are supported.
+`UI_LOCALES` can be used be the stub to request specific locales when authorising. Only 'en' and 'cy' are supported.
 
 ### Starting all services in Docker
 
@@ -48,7 +38,7 @@ docker compose up
 
 ### Starting the frontend in node locally outside of Docker
 
-In this case supporting services (redis and stubs) run in Docker but the frontend itself runs outside.  Development can be quicker and more responsive if done in this way.
+In this case supporting services (redis and stubs) run in Docker but the frontend itself runs outside. Development can be quicker and more responsive if done in this way.
 
 The startup script will do this for you so just run this command:
 
@@ -60,7 +50,7 @@ The startup script will do this for you so just run this command:
 
 When starting for the first time, or after a clean, the frontend will take a few minutes to start as node needs to install all the dependencies.
 
-To find out if the application has started, open a console window on the frontend docker container and view the logs. If the server has started successfully you will see this message `Server listening on port 3000`.  If this does not appear try forcing node to restart by updating one of the `.njk` files.
+To find out if the application has started, open a console window on the frontend docker container and view the logs. If the server has started successfully you will see this message `Server listening on port 3000`. If this does not appear try forcing node to restart by updating one of the `.njk` files.
 
 If things do not appear to be working it can be a good idea to start with a clean deployment:
 
@@ -72,7 +62,10 @@ Additionaly delete the Docker images for all the frontend services in docker-com
 
 There are two stub apps you can use to start a journey.
 
-To start an auth only journey with MFA required ("Cm"), navigate to the stub app on port 2000 [http://localhost:2000](http://localhost:2000).  This acts like a local client to create a backend session and redirect to the start page.
+> NB: ports 2000 and 5000 can be set in `.env` with `STUB_DEFAULT_PORT=2000` and `STUB_NO_MFA_PORT=5000`. If you have changed these
+> values in your `.env` file, use your value rather than the one stated below.
+
+To start an auth only journey with MFA required ("Cm"), navigate to the stub app on port 2000 [http://localhost:2000](http://localhost:2000). This acts like a local client to create a backend session and redirect to the start page.
 
 To start an auth only journey with no MFA ("Cl"), navigate to the stub app on port 5000 [http://localhost:5000](http://localhost:5000).
 
@@ -80,7 +73,7 @@ Changes made locally will automatically be deployed after a few seconds. You sho
 
 ### Switching between different Vectors of Trust
 
-You can further tweak the vector of trust (VTR) requested by the stub client on port 5000 by editing `docker-compose.yml`
+You can further tweak the vector of trust (VTR) requested by the stub client on port 5000 (or `$STUB_DEFAULT_PORT` if modified in `.env`) by editing `docker-compose.yml`
 and changing the `VTR` environment variable for the `di-auth-stub-no-mfa` service:
 
 ```
@@ -91,7 +84,7 @@ and changing the `VTR` environment variable for the `di-auth-stub-no-mfa` servic
     links:
       - di-auth-frontend
     ports:
-      - "5000:5000"
+      - "${STUB_NO_MFA_PORT:-5000}:${STUB_NO_MFA_PORT:-5000}"
     environment:
       - ENVIRONMENT=${ENVIRONMENT}
       - API_BASE_URL=${API_BASE_URL}
@@ -100,7 +93,7 @@ and changing the `VTR` environment variable for the `di-auth-stub-no-mfa` servic
       - STUB_HOSTNAME=${STUB_HOSTNAME}
       - UI_LOCALES=${UI_LOCALES}
       - VTR=["Cl"] <== Edit this line
-      - PORT=5000
+      - PORT=${STUB_NO_MFA_PORT:-5000}
 ```
 
 You can also add an additional service with a different VTR by duplicating the `di-auth-stub-no-mfa` service,
@@ -137,14 +130,14 @@ For a clean start run `./startup.sh -c`
 
 ### Pre-flight checks
 
-Before committing or creating a PR it is a good idea to run all checks and tests.  The `pre-commit` script can be used to do this.  It runs:
+Before committing or creating a PR it is a good idea to run all checks and tests. The `pre-commit` script can be used to do this. It runs:
 
 - All pre-commit checks defined in `.pre-commit-config.yaml`
 - The app in Docker
 - Unit tests
 - Integration tests
 
-Pre-commit checks include applying formatting, so after the script has run you may see files updated with formatting changes.  Running pre-commit before every PR ensures that all files in the repo are formatted correctly.
+Pre-commit checks include applying formatting, so after the script has run you may see files updated with formatting changes. Running pre-commit before every PR ensures that all files in the repo are formatted correctly.
 
 ```shell script
 ./pre-commit.sh
@@ -155,6 +148,29 @@ You may need to install pre-commit for the script to work.
 ```shell script
 brew install pre-commit
 ```
+
+## Troubleshooting the local run
+
+### General steps to try first
+
+If you're having problems running locally, try these steps first:
+
+* Connect to the VPN
+* Run `./shutdown.sh`
+* Delete your Docker **Images** (you can do this via Docker Desktop or with `docker system prune --all`)
+* Run `./startup.sh -lc` to do a cleanup before a local run
+* Because things sometimes don't work first time round, a `touch src/server.ts` _while the server is running_ might help
+
+### Getting past specific errors
+
+<details>
+
+<summary>`Error: secret option required for sessions`</summary>
+
+1. stop the server with `./shutdown.sh`
+2. run `./startup.sh -l` (there's no need for the -c flag)
+
+</details>
 
 ## Other useful yarn commands
 
@@ -208,7 +224,6 @@ using mocha.
 ```shell script
 yarn test:integration
 ```
-
 
 ### Install dependencies
 

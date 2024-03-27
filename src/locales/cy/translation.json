@@ -469,6 +469,17 @@
         "paragraph2Start": "Yna gallwch ",
         "link": "roi cynnig arall",
         "paragraph2End": " gyda chod newydd."
+      },
+      "2hLockout":{
+        "signInJourney":{
+          "info":{
+            "paragraph1": "Ni fyddwch yn gallu mewngofnodi am 2 awr.",
+            "paragraph2": "Beth allwch chi ei wneud",
+            "paragraph3": "Arhoswch am 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto.",
+            "paragraph4": "Os ydych angen ei ddefnyddio yn gynt, gallwch fynd yn ôl i’r gwasanaeth a chwilio am ffyrdd eraill i barhau.",
+            "paragraph5": "This is because you entered the wrong security code too many times the last time you tried to sign in."
+          }
+        }
       }
     },
     "securityRequestsExceededExpired": {
@@ -488,9 +499,12 @@
       }
     },
     "securityCodeWaitToRequest": {
+      "title_old": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
       "title": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
-      "header": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
+      "header_old": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
+      "header": "Ni allwch fewngofnodi ar hyn o bryd ",
       "header_create": "Ni allwch greu GOV.UK One Login ar hyn o bryd ",
+      "title_create": "Ni allwch greu GOV.UK One Login ar hyn o bryd ",
       "info_old": {
         "paragraph1": "Mae hyn oherwydd eich bod wedi gofyn i ailanfon cod diogelwch ormod o weithiau.",
         "paragraph2Start": "Gallwch ",
@@ -896,7 +910,7 @@
         "subHeader": "Statws cydymffurfio",
         "paragraph2": {
           "text1": "Mae GOV.UK One Login yn cydymffurfio’n rhannol â safon AA",
-          "linkText": "Canllawiau Hygyrchedd Cynnwys Gwe fersiwn 2.1",
+          "linkText": "Canllawiau Hygyrchedd Cynnwys Gwe fersiwn 2.2",
           "text2": " oherwydd y diffyg cydymffurfiaeth a restrir isod."
         }
       },
@@ -904,9 +918,9 @@
         "header": "Cynnwys anhygyrch",
         "paragraph1": "Nid yw’r cynnwys a restrir isod yn hygyrch am y rhesymau canlynol.",
         "subHeader": "Diffyg cydymffurfio â’r rheoliadau hygyrchedd",
-        "listItem1": "Pan fyddwch yn creu GOV.UK One Login neu’n mewngofnodi, os nad ydych yn gwneud unrhyw beth am 60 munud, bydd y broses yn dod i ben (amseru allan) neu byddwch yn cael eich allgofnodi. Nid yw’n bosibl addasu, ymestyn neu ddiffodd yr amseru allan. Mae hyn yn methu maen prawf llwyddiant 2.2.1 (Amseru Addasadwy) WCAG 2.1.",
+        "listItem1": "Pan fyddwch yn creu GOV.UK One Login neu’n mewngofnodi, os nad ydych yn gwneud unrhyw beth am 60 munud, bydd y broses yn dod i ben (amseru allan) neu byddwch yn cael eich allgofnodi. Nid yw’n bosibl addasu, ymestyn neu ddiffodd yr amseru allan. Mae hyn yn methu maen prawf llwyddiant 2.2.1 (Amseru Addasadwy) WCAG 2.2.",
         "listItem2": "Mae’r ddolen allgofnodi pennawd yn achosi bar sgrolio llorweddol ar chwyddiadau mawr iawn ar ddyfeisiau symudol. Os ydych chi’n defnyddio technolegau cynorthwyol efallai y byddwch yn cael hi’n anoddach i lywio tudalennau os ydych chi’n cynyddu’r lefel chwyddo. Mae hyn yn methu maen prawf llwyddiant 1.4.10 (Reflow) WCAG 2.2.",
-        "listItem3": "Nid yw bob amser yn bosibl defnyddio opsiynau awtomatig eich porwr i roi gwybodaeth.",
+        "listItem3": "Nid yw bob amser yn bosibl defnyddio opsiynau awtomatig eich porwr i roi gwybodaeth. Mae hyn yn methu maen prawf llwyddiant 1.3.5 (Diben Mewnbwn Hunaniaeth) WCAG 2.2.",
         "listItem4": "Os ydych chi’n defnyddio technolegau cynorthwyol, efallai y bydd yn cymryd mwy o amser i chi rhoi gwybodaeth. Mae hyn yn methu maen prawf llwyddiant 1.3.5 (Pwrpas Mewnbwn Hunaniaeth) WCAG 2.2.",
         "listItem5": "Nid yw’r dolenni yn y troedyn yr un peth ar bob tudalen. Mae hyn yn methu maen prawf llwyddiant 3.2.6 (Cymorth Cyson) WCAG 2.2.",
         "listItem6": "Mae dolen wag yn y pennawd ar gyfer rhan fer o’r daith. Os ydych chi’n defnyddio technolegau cynorthwyol efallai eich bod chi’n ymwybodol o’r ddolen ond ni fyddwch yn gallu ei dewis. Mae hyn yn methu maen prawf llwyddiant 3.2.3 (Llywio Cyson) WCAG 2.2.",

@@ -16,6 +16,7 @@ describe("authentication auth code service", () => {
   const redirectUriSentToAuth = "/redirect-uri";
   const rpSectorHostSentToAuth = "https://rp.redirect.uri";
   const isAccountCreationJourneyUserSession = true;
+  const passwordResetTime = 1710335967;
   const redirectUriReturnedFromResponse =
     "/redirect-here?with-some-params=added-by-the-endpoint";
   const apiBaseUrl = "/base-url";
@@ -66,6 +67,7 @@ describe("authentication auth code service", () => {
 
       const userSessionClient = {
         isAccountCreationJourney: isAccountCreationJourneyUserSession,
+        passwordResetTime: passwordResetTime,
       };
 
       const result = await service.getAuthCode(
@@ -83,6 +85,7 @@ describe("authentication auth code service", () => {
         "redirect-uri": redirectUriSentToAuth,
         "rp-sector-uri": rpSectorHostSentToAuth,
         "is-new-account": isAccountCreationJourneyUserSession,
+        "password-reset-time": passwordResetTime,
       };
 
       expect(

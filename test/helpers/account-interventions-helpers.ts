@@ -7,12 +7,16 @@ export type AccountInterventionsFlags = {
   blocked: boolean;
   passwordResetRequired: boolean;
   temporarilySuspended: boolean;
+  reproveIdentity: boolean;
 };
 
 export const setupAccountInterventionsResponse = (
   baseApi: string,
-  flags: AccountInterventionsFlags
+  flags: AccountInterventionsFlags,
+  maybeDateTimeStamp?: string
 ) => {
+  const dateTimeStamp =
+    maybeDateTimeStamp === undefined ? nowDateTime() : maybeDateTimeStamp;
   nock(baseApi)
     .post(API_ENDPOINTS.ACCOUNT_INTERVENTIONS)
     .once()
@@ -21,30 +25,39 @@ export const setupAccountInterventionsResponse = (
       passwordResetRequired: flags.passwordResetRequired,
       blocked: flags.blocked,
       temporarilySuspended: flags.temporarilySuspended,
+      appliedAt: dateTimeStamp,
+      reproveIdentity: flags.reproveIdentity,
     });
+};
+
+const nowDateTime = () => {
+  const d = new Date();
+  return d.valueOf().toString();
 };
 
 export const noInterventions: AccountInterventionsFlags = {
   blocked: false,
   passwordResetRequired: false,
   temporarilySuspended: false,
+  reproveIdentity: false,
 };
 
 export function accountInterventionsFakeHelper(
-  email: string,
-  passwordResetRequired: boolean,
-  blocked: boolean,
-  temporarilySuspended: boolean
+  flags: AccountInterventionsFlags,
+  maybeDateTimeStamp?: string
 ) {
-  const fakeAccountInterventionsService: AccountInterventionsInterface = {
+  const dateTimeStamp =
+    maybeDateTimeStamp === undefined ? nowDateTime() : maybeDateTimeStamp;
+  return {
     accountInterventionStatus: sinon.fake.returns({
       data: {
-        email: email,
-        passwordResetRequired: passwordResetRequired,
-        blocked: blocked,
-        temporarilySuspended: temporarilySuspended,
+        email: "joe.bloggs@test.com",
+        passwordResetRequired: flags.passwordResetRequired,
+        blocked: flags.blocked,
+        temporarilySuspended: flags.temporarilySuspended,
+        appliedAt: dateTimeStamp,
+        reproveIdentity: flags.reproveIdentity,
       },
     }),
   } as unknown as AccountInterventionsInterface;
-  return fakeAccountInterventionsService;
 }

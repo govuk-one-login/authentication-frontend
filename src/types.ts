@@ -80,6 +80,9 @@ export interface UserSession {
   authCodeReturnToRP?: boolean;
   enterEmailMfaType?: string;
   withinForcedPasswordResetJourney?: boolean;
+  passwordResetTime?: number;
+  isPasswordResetJourney?: boolean;
+  isSignInJourney?: boolean;
 }
 
 export interface UserSessionClient {

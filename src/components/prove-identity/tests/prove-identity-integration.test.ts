@@ -70,6 +70,7 @@ describe("Integration::prove identity", () => {
       blocked: false,
       passwordResetRequired: false,
       temporarilySuspended: false,
+      reproveIdentity: false,
     });
 
     const redirectUri = "https://some-redirect.com";
@@ -92,6 +93,7 @@ describe("Integration::prove identity", () => {
       blocked: false,
       passwordResetRequired: true,
       temporarilySuspended: false,
+      reproveIdentity: false,
     });
 
     const response = await makeRequestToProveIdentityEndpoint();
@@ -105,6 +107,7 @@ describe("Integration::prove identity", () => {
       blocked: true,
       passwordResetRequired: false,
       temporarilySuspended: false,
+      reproveIdentity: false,
     });
 
     const response = await makeRequestToProveIdentityEndpoint();

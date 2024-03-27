@@ -133,6 +133,22 @@ describe("enter mfa controller", () => {
         supportAccountRecovery: false,
       });
     });
+
+    it("should render index-wait when user is locked out in the current session for too many requested codes", async () => {
+      req.session.user.isUpliftRequired = false;
+      process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      req.session.user.codeRequestLock = tomorrow.toUTCString();
+      await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-wait.njk"
+      );
+    });
   });
 
   describe("enterMfaPost", () => {

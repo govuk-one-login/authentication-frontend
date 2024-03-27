@@ -1,29 +1,42 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% set pageTitleName = 'pages.securityCodeInvalid.title' | translate %}
 {% set contentId = contentId%}
 {% set taxonomyLevel2 = taxonomyLevel2 %}
 
 {% block content %}
-
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeInvalid.header' | translate }}</h1>
-{% if isBlocked %}
-    <p class="govuk-body">{{'pages.securityCodeInvalid.info.paragraph1' | translate}}</p>
-{% endif %}
-<p class="govuk-body">
-    {% if isAuthApp == true %}
-        {{'pages.securityCodeInvalid.authAppInfo.paragraph2Start' | translate}}
-        <a class="govuk-link" rel="noreferrer" href="{{ newCodeLink }}">{{'pages.securityCodeInvalid.authAppInfo.link' | translate}}</a>
-        {{'pages.securityCodeInvalid.authAppInfo.paragraph2End' | translate}}
-    {% else %}
-        {% if isBlocked %}
-            {{'pages.securityCodeInvalid.info.paragraph2Start' | translate}}
-        {% else %}
-            {{'pages.securityCodeInvalid.info.paragraph2Unblocked' | translate}}
-        {% endif %}
-        <a class="govuk-link" rel="noreferrer" href="{{ newCodeLink }}">{{'pages.securityCodeInvalid.info.link' | translate}}</a>
-        {{'pages.securityCodeInvalid.info.paragraph2End' | translate}}
+{% if show2HrScreen %}
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeInvalid.header' | translate }}</h1>
+    <p class="govuk-body">{{'pages.securityCodeInvalid.2hLockout.signInJourney.info.paragraph1' | translate}}</p>
+    <p class="govuk-body">
+        <h1 class="govuk-heading-m govuk-!-margin-bottom-3">
+            {{'pages.securityCodeInvalid.2hLockout.signInJourney.info.paragraph2' | translate}}
+        </h1>
+        <p class="govuk-body">{{'pages.securityCodeInvalid.2hLockout.signInJourney.info.paragraph3' | translate}}</p>
+        <p class="govuk-body">{{'pages.securityCodeInvalid.2hLockout.signInJourney.info.paragraph4' | translate}}</p>
+    </p>
+{% else %}
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeInvalid.header' | translate }}</h1>
+    {% if isBlocked %}
+            <p class="govuk-body">{{'pages.securityCodeInvalid.info.paragraph1' | translate}}</p>
     {% endif %}
-</p>
+    <p class="govuk-body">
+       {% if isAuthApp == true %}
+            {{'pages.securityCodeInvalid.authAppInfo.paragraph2Start' | translate}}
+            <a class="govuk-link" rel="noreferrer" href="{{ newCodeLink }}">{{'pages.securityCodeInvalid.authAppInfo.link' | translate}}</a>
+            {{'pages.securityCodeInvalid.authAppInfo.paragraph2End' | translate}}
+       {% else %}
+            {% if isBlocked %}
+                {{'pages.securityCodeInvalid.info.paragraph2Start' | translate}}
+            {% else %}
+                {{'pages.securityCodeInvalid.info.paragraph2Unblocked' | translate}}
+            {% endif %}
+            <a class="govuk-link" rel="noreferrer" href="{{ newCodeLink }}">{{'pages.securityCodeInvalid.info.link' | translate}}</a>
+            {{'pages.securityCodeInvalid.info.paragraph2End' | translate}}
+       {% endif %}
+    </p>
+{% endif %}
+
 {{ga4OnPageLoad({ nonce: scriptNonce,statusCode:"200",englishPageTitle:pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2:taxonomyLevel2, contentId:contentId,loggedInStatus:true,dynamic:true})}}
 {% endblock %}

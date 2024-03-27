@@ -16,16 +16,52 @@ For example:
 -->
 
 ## Change have been demonstrated
-
-Changes to the user interface or content should be demonstrated to Content Design and Interaction Design before being merged. This is to ensure they can make any necessary changes to Figma.
+Changes to the user interface or content should be demonstrated to Content Design and Interaction Design before being merged. This is to ensure they are aware of changes and behaviours (for example, how error screens appear and whether invalid entries can be amended), and can make any necessary changes to Figma.
 
 - [ ] Changes to the user interface have been demonstrated
+
+<!-- 
+
+Include screenshots where possible, including those representing error states. Here are some examples:
+
+- a PR that uses tables to display the screenshots https://github.com/govuk-one-login/authentication-frontend/pull/1187
+- a PR that uses a dropdown to display the screenshots https://github.com/alphagov/di-infrastructure/pull/578
+
+You can find example PRs from this repository that include screenshots through this search: https://github.com/govuk-one-login/authentication-frontend/pulls?q=is%3Apr+screenshots+is%3Aclosed+is%3Amerged  
+
+-->
 
 <!-- Delete this section if the PR does not change the UI. -->
 
 ## Performance Analysis have been informed of the change
 
 - [ ] Performance Analysis have been informed of the change
+
+## Acceptance tests have been updated
+
+- [ ] Any necessary changes to the [acceptance tests](https://github.com/govuk-one-login/authentication-acceptance-tests) have been made.
+
+<!-- 
+
+This is to avoid failures occurring after a merge. The types of changes that may impact acceptance tests might be:
+
+- changes to user journeys
+- changes to the text of page titles
+- changes to the text of interactive elements (such as links).
+
+The Test Engineers on the Authentication Team will be happy to discuss any changes if you're unsure. 
+
+-->
+
+## Associated documentation has been updated
+
+- [ ] Documentation has been updated to reflect these changes
+
+<!-- 
+
+This might include updates to the README.md, Confluence pages etc.
+
+-->
 
 ## Related PRs
 

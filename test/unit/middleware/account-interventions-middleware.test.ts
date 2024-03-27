@@ -6,7 +6,7 @@ import { sinon } from "../../utils/test-utils";
 import { expect } from "chai";
 import { accountInterventionsMiddleware } from "../../../src/middleware/account-interventions-middleware";
 import { AccountInterventionsInterface } from "../../../src/components/account-intervention/types";
-import { AccountInterventionsFlags } from "../../helpers/account-interventions-helpers";
+import { accountInterventionsFakeHelper } from "../../helpers/account-interventions-helpers";
 
 describe("accountInterventionsMiddleware", () => {
   let req: Partial<Request>;
@@ -14,7 +14,6 @@ describe("accountInterventionsMiddleware", () => {
   let next: NextFunction;
 
   beforeEach(() => {
-    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     req = mockRequest({
       session: {
         user: {
@@ -39,131 +38,247 @@ describe("accountInterventionsMiddleware", () => {
     delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
   });
 
-  it("should call next() when no account intervention API response options are true and supportAccountInterventions() returns true", async () => {
-    const fakeAccountInterventionService = fakeAccountInterventionsService({
-      passwordResetRequired: false,
-      blocked: false,
-      temporarilySuspended: false,
+  describe("when supportAccountInterventions() returns false", function () {
+    beforeEach(() => {
+      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "0";
     });
 
-    await callMiddleware(false, false, fakeAccountInterventionService);
-    expect(next).to.be.calledOnce;
+    it("should call next()", async () => {
+      const fakeAccountInterventionService = accountInterventionsFakeHelper({
+        passwordResetRequired: false,
+        blocked: false,
+        temporarilySuspended: false,
+        reproveIdentity: false,
+      });
+
+      await callMiddleware(false, false, fakeAccountInterventionService);
+      expect(next).to.be.calledOnce;
+    });
   });
 
-  it("should call next() when supportAccountInterventions() returns false", async () => {
-    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "0";
-    const fakeAccountInterventionService = fakeAccountInterventionsService({
-      passwordResetRequired: false,
-      blocked: false,
-      temporarilySuspended: false,
+  describe("when supportAccountInterventions() returns true", function () {
+    beforeEach(() => {
+      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     });
 
-    await callMiddleware(false, false, fakeAccountInterventionService);
-    expect(next).to.be.calledOnce;
-  });
+    describe("when there are no account interventions", function () {
+      let noAccountInterventionsService: AccountInterventionsInterface;
 
-  it("should redirect to getNextPathAndUpdateJourney with the journey being PASSWORD_RESET_INTERVENTION when passwordResetRequired === true in the response and supportAccountInterventions() returns true and handleResetPasswordStatus === true", async () => {
-    const fakeAccountInterventionService = fakeAccountInterventionsService({
-      passwordResetRequired: true,
-      blocked: false,
-      temporarilySuspended: false,
-    });
-
-    await callMiddleware(false, true, fakeAccountInterventionService);
-    expect(res.redirect).to.have.been.calledWith(
-      PATH_NAMES.PASSWORD_RESET_REQUIRED
-    );
-  });
-
-  it("should redirect to getNextPathAndUpdateJourney with the journey being PERMANENTLY_BLOCKED_INTERVENTION when blocked === true in the response and supportAccountInterventions() returns true", async () => {
-    const fakeAccountInterventionService = fakeAccountInterventionsService({
-      passwordResetRequired: false,
-      blocked: true,
-      temporarilySuspended: false,
-    });
-
-    await callMiddleware(false, false, fakeAccountInterventionService);
-    expect(res.redirect).to.have.been.calledWith(
-      PATH_NAMES.UNAVAILABLE_PERMANENT
-    );
-  });
-
-  it("should redirect to getNextPathAndUpdateJourney with the journey being TEMPORARILY_BLOCKED_INTERVENTIONS when temporarilySuspended === true and handleSuspendedStatus === true", async () => {
-    const fakeAccountInterventionService = fakeAccountInterventionsService({
-      passwordResetRequired: false,
-      blocked: false,
-      temporarilySuspended: true,
-    });
-
-    await callMiddleware(true, false, fakeAccountInterventionService);
-    expect(res.redirect).to.have.been.calledWith(
-      PATH_NAMES.UNAVAILABLE_TEMPORARY
-    );
-  });
-
-  it("should not redirect to getNextPathAndUpdateJourney with the journey being RESET_PASSWORD_REQUIRED when resetPassword === true and handleResetPasswordStatus === false", async () => {
-    const fakeAccountInterventionService: AccountInterventionsInterface = {
-      accountInterventionStatus: sinon.fake.returns({
-        data: {
-          email: "test@test.com",
-          passwordResetRequired: true,
+      before(() => {
+        noAccountInterventionsService = accountInterventionsFakeHelper({
+          passwordResetRequired: false,
           blocked: false,
           temporarilySuspended: false,
-        },
-      }),
-    } as unknown as AccountInterventionsInterface;
-    await callMiddleware(true, false, fakeAccountInterventionService);
+          reproveIdentity: false,
+        });
 
-    expect(res.redirect).to.not.have.been.calledWith(
-      PATH_NAMES.PASSWORD_RESET_REQUIRED
-    );
-  });
-
-  it("should redirect to getNextPathAndUpdateJourney with the journey being RESET_PASSWORD_REQUIRED when passwordResetRequired === true, temporarilySuspended === true", async () => {
-    const fakeAccountInterventionService: AccountInterventionsInterface = {
-      accountInterventionStatus: sinon.fake.returns({
-        data: {
-          email: "test@test.com",
-          passwordResetRequired: true,
-          blocked: false,
-          temporarilySuspended: true,
-        },
-      }),
-    } as unknown as AccountInterventionsInterface;
-    await callMiddleware(true, true, fakeAccountInterventionService);
-    expect(res.redirect).to.have.been.calledWith(
-      PATH_NAMES.PASSWORD_RESET_REQUIRED
-    );
-  });
-
-  it("should not redirect to getNextPathAndUpdateJourney with the journey being UNAVAILABLE_TEMPORARY when passwordResetRequired === true and both password reset and suspension interventions are on", async () => {
-    const fakeAccountInterventionService: AccountInterventionsInterface = {
-      accountInterventionStatus: sinon.fake.returns({
-        data: {
-          email: "test@test.com",
-          passwordResetRequired: true,
-          blocked: false,
-          temporarilySuspended: true,
-        },
-      }),
-    } as unknown as AccountInterventionsInterface;
-    await callMiddleware(true, false, fakeAccountInterventionService);
-    expect(res.redirect).to.not.have.been.calledWith(
-      PATH_NAMES.UNAVAILABLE_TEMPORARY
-    );
-  });
-
-  it("should not redirect to UNAVAILABLE_TEMPORARY when temporarilySuspended === true in the response and supportAccountInterventions() returns true", async () => {
-    const fakeAccountInterventionService = fakeAccountInterventionsService({
-      passwordResetRequired: false,
-      blocked: false,
-      temporarilySuspended: true,
+        it("should call next() when no account intervention API response options are true", async () => {
+          await callMiddleware(false, false, noAccountInterventionsService);
+          expect(next).to.be.calledOnce;
+        });
+      });
     });
-    await callMiddleware(false, false, fakeAccountInterventionService);
 
-    expect(res.redirect).to.not.have.been.calledWith(
-      PATH_NAMES.UNAVAILABLE_TEMPORARY
-    );
+    describe("when blocked is true", function () {
+      let accountInterventionsWithBlockedTrue: AccountInterventionsInterface;
+
+      before(() => {
+        accountInterventionsWithBlockedTrue = accountInterventionsFakeHelper({
+          passwordResetRequired: true,
+          blocked: true,
+          temporarilySuspended: true,
+          reproveIdentity: false,
+        });
+      });
+
+      it("should redirect to UNAVAILABLE PERMANENT", async () => {
+        await callMiddleware(false, false, accountInterventionsWithBlockedTrue);
+        expect(res.redirect).to.have.been.calledWith(
+          PATH_NAMES.UNAVAILABLE_PERMANENT
+        );
+      });
+    });
+
+    describe("when passwordResetRequired and temporarilySuspended is true", function () {
+      let accountInterventionsWithPasswordResetTrue: AccountInterventionsInterface;
+
+      before(() => {
+        accountInterventionsWithPasswordResetTrue =
+          accountInterventionsFakeHelper({
+            passwordResetRequired: true,
+            blocked: false,
+            temporarilySuspended: true,
+            reproveIdentity: false,
+          });
+      });
+
+      it("should redirect to PASSWORD_RESET_REQUIRED when handlePasswordResetStatus is true", async () => {
+        await callMiddleware(
+          false,
+          true,
+          accountInterventionsWithPasswordResetTrue
+        );
+        expect(res.redirect).to.have.been.calledWith(
+          PATH_NAMES.PASSWORD_RESET_REQUIRED
+        );
+      });
+
+      it("should call next when handlePasswordResetStatus is false", async () => {
+        await callMiddleware(
+          false,
+          false,
+          accountInterventionsWithPasswordResetTrue
+        );
+        expect(res.redirect).to.not.have.been.calledWith(
+          PATH_NAMES.PASSWORD_RESET_REQUIRED
+        );
+        expect(next).to.be.calledOnce;
+      });
+
+      it("should redirect to PASSWORD_RESET_REQUIRED when handlePasswordResetStatus AND handleSuspendedStatus are both true", async () => {
+        await callMiddleware(
+          true,
+          true,
+          accountInterventionsWithPasswordResetTrue
+        );
+        expect(res.redirect).to.have.been.calledWith(
+          PATH_NAMES.PASSWORD_RESET_REQUIRED
+        );
+      });
+
+      it("should redirect to PASSWORD_RESET_REQUIRED when handlePasswordResetStatus is true and the passwordResetTime is before the intervention appliedAt time", async () => {
+        const nowUnixTime = Date.now().valueOf();
+        const beforeNow = nowUnixTime - 1000;
+
+        req.session.user.passwordResetTime = beforeNow;
+
+        const accountInterventionsWithPasswordResetTrueAndAppliedAtNow =
+          accountInterventionsFakeHelper(
+            {
+              passwordResetRequired: true,
+              blocked: false,
+              temporarilySuspended: true,
+              reproveIdentity: false,
+            },
+            nowUnixTime.toString()
+          );
+
+        await callMiddleware(
+          true,
+          true,
+          accountInterventionsWithPasswordResetTrueAndAppliedAtNow
+        );
+        expect(res.redirect).to.have.been.calledWith(
+          PATH_NAMES.PASSWORD_RESET_REQUIRED
+        );
+      });
+
+      it("should not redirect to PASSWORD_RESET_REQUIRED when handlePasswordResetStatus is true and the passwordResetTime is after the intervention appliedAt time", async () => {
+        const nowUnixTime = Date.now().valueOf();
+        const beforeNow = nowUnixTime - 1000;
+
+        req.session.user.passwordResetTime = nowUnixTime;
+
+        const accountInterventionsWithPasswordResetTrueAndAppliedAtNow =
+          accountInterventionsFakeHelper(
+            {
+              passwordResetRequired: true,
+              blocked: false,
+              temporarilySuspended: true,
+              reproveIdentity: false,
+            },
+            beforeNow.toString()
+          );
+
+        await callMiddleware(
+          true,
+          true,
+          accountInterventionsWithPasswordResetTrueAndAppliedAtNow
+        );
+        expect(res.redirect).not.to.have.been.calledWith(
+          PATH_NAMES.PASSWORD_RESET_REQUIRED
+        );
+        expect(next).to.have.been.calledOnce;
+      });
+
+      it("should not redirect to UNAVAILABLE_TEMPORARY when handleSuspended status is true and handlePasswordResetStatus is false", async () => {
+        await callMiddleware(
+          true,
+          false,
+          accountInterventionsWithPasswordResetTrue
+        );
+        expect(res.redirect).to.not.have.been.calledWith(
+          PATH_NAMES.UNAVAILABLE_TEMPORARY
+        );
+        expect(next).to.be.calledOnce;
+      });
+    });
+
+    describe("when reproveIdentity and temporarilySuspended is true", () => {
+      let accountIntervetionsWithReproveIdentity: AccountInterventionsInterface;
+
+      before(() => {
+        accountIntervetionsWithReproveIdentity = accountInterventionsFakeHelper(
+          {
+            passwordResetRequired: false,
+            blocked: false,
+            temporarilySuspended: true,
+            reproveIdentity: true,
+          }
+        );
+      });
+
+      it("should not redirect to UNAVAILABLE_TEMPORARY when handleSuspended status is true and handlePasswordResetStatus is false", async () => {
+        await callMiddleware(
+          true,
+          false,
+          accountIntervetionsWithReproveIdentity
+        );
+        expect(res.redirect).to.not.have.been.calledWith(
+          PATH_NAMES.UNAVAILABLE_TEMPORARY
+        );
+        expect(next).to.be.calledOnce;
+      });
+    });
+
+    describe("when temporarilySuspended is true", function () {
+      let accountInterventionsWithTemporarilySuspendedTrue: AccountInterventionsInterface;
+
+      before(() => {
+        accountInterventionsWithTemporarilySuspendedTrue =
+          accountInterventionsFakeHelper({
+            passwordResetRequired: false,
+            blocked: false,
+            temporarilySuspended: true,
+            reproveIdentity: false,
+          });
+      });
+
+      it("should redirect to UNAVAILABLE_TEMPORARY when handleSuspendedStatus is true", async () => {
+        await callMiddleware(
+          true,
+          false,
+          accountInterventionsWithTemporarilySuspendedTrue
+        );
+        expect(res.redirect).to.have.been.calledWith(
+          PATH_NAMES.UNAVAILABLE_TEMPORARY
+        );
+      });
+
+      it("should not redirect to UNAVAILABLE_TEMPORARY when handleSuspendedStatus is false", async () => {
+        await callMiddleware(
+          false,
+          false,
+          accountInterventionsWithTemporarilySuspendedTrue
+        );
+
+        expect(res.redirect).to.not.have.been.calledWith(
+          PATH_NAMES.UNAVAILABLE_TEMPORARY
+        );
+
+        expect(next).to.have.been.calledOnce;
+      });
+    });
   });
 
   const callMiddleware = (
@@ -176,20 +291,5 @@ describe("accountInterventionsMiddleware", () => {
       handlePasswordResetStatus,
       accountInterventionService
     )(req as Request, res as Response, next as NextFunction);
-  };
-
-  const fakeAccountInterventionsService = (
-    flags: AccountInterventionsFlags
-  ) => {
-    return {
-      accountInterventionStatus: sinon.fake.returns({
-        data: {
-          email: "test@test.com",
-          passwordResetRequired: flags.passwordResetRequired,
-          blocked: flags.blocked,
-          temporarilySuspended: flags.temporarilySuspended,
-        },
-      }),
-    } as unknown as AccountInterventionsInterface;
   };
 });

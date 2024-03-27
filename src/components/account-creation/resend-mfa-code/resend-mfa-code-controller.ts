@@ -55,7 +55,9 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     res.render("security-code-error/index-wait.njk", {
       newCodeLink,
       contentId: oplValues.indexWait.contentId,
-      taxonomyLevel2: oplValues.indexWait.taxonomyLevel2
+      taxonomyLevel2: oplValues.indexWait.taxonomyLevel2,
+      support2hrLockout: support2hrLockout(),
+      isAccountCreationJourney: req.session.user.isAccountCreationJourney,
     });
   } else {
     res.render("account-creation/resend-mfa-code/index.njk", {
@@ -73,7 +75,11 @@ export const resendMfaCodePost = (
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const { email, phoneNumber } = req.session.user;
+    const { email, isAccountRecoveryJourney, phoneNumber } = req.session.user;
+
+    const journeyType = isAccountRecoveryJourney
+      ? JOURNEY_TYPE.ACCOUNT_RECOVERY
+      : JOURNEY_TYPE.REGISTRATION;
 
     const sendNotificationResponse = await service.sendNotification(
       sessionId,
@@ -83,7 +89,7 @@ export const resendMfaCodePost = (
       req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
-      JOURNEY_TYPE.REGISTRATION,
+      journeyType,
       phoneNumber
     );
 

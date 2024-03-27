@@ -14,7 +14,10 @@ import {
   renderBadRequest,
 } from "../../utils/validation";
 import { BadRequestError } from "../../utils/error";
-import { getCodeEnteredWrongBlockDurationInMinutes } from "../../config";
+import {
+  getCodeEnteredWrongBlockDurationInMinutes,
+  support2hrLockout,
+} from "../../config";
 
 const TEMPLATE_NAME = "reset-password-2fa-auth-app/index.njk";
 export function resetPassword2FAAuthAppGet(): ExpressRouteFunc {
@@ -29,8 +32,7 @@ export function resetPassword2FAAuthAppGet(): ExpressRouteFunc {
         {
           newCodeLink: PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP,
           isAuthApp: true,
-          contentId: "3",
-          taxonomyLevel2: "3"
+          show2HrScreen: support2hrLockout(),
         }
       );
     }

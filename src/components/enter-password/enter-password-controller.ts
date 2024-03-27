@@ -162,10 +162,7 @@ export function enterPasswordPost(
       userLogin.data.latestTermsAndConditionsAccepted;
     req.session.user.isPasswordChangeRequired = isPasswordChangeRequired;
 
-    if (
-      req.session.user.isPasswordChangeRequired &&
-      supportAccountInterventions()
-    ) {
+    if (isPasswordChangeRequired && supportAccountInterventions()) {
       const accountInterventionsResponse =
         await accountInterventionsService.accountInterventionStatus(
           sessionId,
@@ -176,7 +173,8 @@ export function enterPasswordPost(
         );
       if (
         accountInterventionsResponse.data.passwordResetRequired ||
-        accountInterventionsResponse.data.temporarilySuspended
+        accountInterventionsResponse.data.temporarilySuspended ||
+        accountInterventionsResponse.data.blocked
       ) {
         return res.redirect(
           getNextPathAndUpdateJourney(
@@ -189,6 +187,8 @@ export function enterPasswordPost(
         );
       }
     }
+
+    req.session.user.isSignInJourney = true;
 
     if (
       userLogin.data.mfaRequired &&
@@ -209,12 +209,16 @@ export function enterPasswordPost(
 
       if (!result.success) {
         if (result.data.code === ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
-          return res.render("security-code-error/index-wait.njk");
+          return res.render("security-code-error/index-wait.njk", {
+            support2hrLockout: support2hrLockout(),
+          });
         }
 
         if (result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
           return res.render(
-            "security-code-error/index-security-code-entered-exceeded.njk", {
+            "security-code-error/index-security-code-entered-exceeded.njk",
+            {
+              show2HrScreen: support2hrLockout(),
               contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
               taxonomyLevel2: isAccountCreationJourney  ? "create account" : "sign in"
             }

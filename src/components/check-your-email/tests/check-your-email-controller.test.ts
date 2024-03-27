@@ -43,6 +43,16 @@ describe("check your email controller", () => {
 
       expect(res.render).to.have.been.calledWith("check-your-email/index.njk");
     });
+
+    it("should render security-code-error/index-wait.njk if user has been locked out in current session", () => {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      req.session.user.codeRequestLock = tomorrow.toUTCString();
+      checkYourEmailGet(req as Request, res as Response);
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-wait.njk"
+      );
+    });
   });
 
   describe("checkYourEmailPost", () => {

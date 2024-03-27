@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { IPV_ERROR_CODES, OIDC_ERRORS, PATH_NAMES } from "../../app.constants";
-import { createServiceRedirectErrorUrl } from "../../utils/error";
+import { PATH_NAMES } from "../../app.constants";
 import { supportLanguageCY } from "../../config";
 
 export function proveIdentityWelcomeGet(req: Request, res: Response): void {
@@ -11,31 +10,12 @@ export function proveIdentityWelcomeGet(req: Request, res: Response): void {
       ? "prove-identity-welcome/index-existing-session.njk"
       : "prove-identity-welcome/index.njk",
     {
-      redirectUri: createServiceRedirectErrorUrl(
-        req.session.client.redirectUri,
-        OIDC_ERRORS.ACCESS_DENIED,
-        IPV_ERROR_CODES.ACCOUNT_NOT_CREATED,
-        req.session.client.state
-      ),
       supportLanguageCY: supportLanguageCY() ? true : null,
     }
   );
 }
 
 export function proveIdentityWelcomePost(req: Request, res: Response): void {
-  const redirect = req.body.chooseWayPyi === "redirect";
-
-  if (redirect) {
-    return res.redirect(
-      createServiceRedirectErrorUrl(
-        req.session.client.redirectUri,
-        OIDC_ERRORS.ACCESS_DENIED,
-        IPV_ERROR_CODES.ACCOUNT_NOT_CREATED,
-        req.session.client.state
-      )
-    );
-  }
-
   const event = req.session.user.isAuthenticated
     ? USER_JOURNEY_EVENTS.EXISTING_SESSION
     : USER_JOURNEY_EVENTS.CREATE_OR_SIGN_IN;

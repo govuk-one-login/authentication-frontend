@@ -12,10 +12,12 @@ const oplValues = {
 };
 
 export function signInOrCreateGet(req: Request, res: Response): void {
+  req.session.user.isAccountCreationJourney = false;
+  req.session.user.isPasswordResetJourney = false;
+  req.session.user.isSignInJourney = false;
   if (req.query.redirectPost) {
     return signInOrCreatePost(req, res);
   }
-
   res.render("sign-in-or-create/index.njk", {
     serviceType: req.session.client.serviceType,
     supportInternationalNumbers: supportInternationalNumbers() ? true : null,

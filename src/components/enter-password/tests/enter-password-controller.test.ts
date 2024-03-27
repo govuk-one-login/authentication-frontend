@@ -22,7 +22,6 @@ import { EnterEmailServiceInterface } from "../../enter-email/types";
 import { ERROR_CODES } from "../../common/constants";
 import * as journey from "../../common/journey/journey";
 import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
-import { supportAccountInterventions } from "../../../config";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
@@ -35,10 +34,11 @@ describe("enter password controller", () => {
       log: { info: sinon.fake() },
     });
     res = mockResponse();
-    supportAccountInterventions();
+    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
   });
 
   afterEach(() => {
+    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
     sinon.restore();
   });
 
@@ -344,57 +344,6 @@ describe("enter password controller", () => {
       expect(req.session.user.isAccountPartCreated).to.be.eq(false);
     });
 
-    it("should redirect to reset-password-required when the existing password is common and supportPasswordResetRequired() is enabled", async () => {
-      const fakeAccountInterventionsService = accountInterventionsFakeHelper(
-        "test@test.co.uk",
-        false,
-        false,
-        false
-      );
-
-      const fakeService: EnterPasswordServiceInterface = {
-        loginUser: sinon.fake.returns({
-          data: {
-            redactedPhoneNumber: "3456",
-            mfaRequired: true,
-            consentRequired: false,
-            latestTermsAndConditionsAccepted: true,
-            mfaMethodVerified: true,
-            mfaMethodType: "SMS",
-            passwordChangeRequired: true,
-          },
-          success: true,
-        }),
-      } as unknown as EnterPasswordServiceInterface;
-
-      const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as MfaServiceInterface;
-
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
-      req.body["password"] = "password";
-
-      await enterPasswordPost(
-        false,
-        fakeService,
-        fakeMfaService,
-        fakeAccountInterventionsService
-      )(req as Request, res as Response);
-
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.RESET_PASSWORD_REQUIRED
-      );
-      expect(req.session.user.isAccountPartCreated).to.be.eq(false);
-      expect(fakeMfaService.sendMfaCode).not.to.have.been.called;
-    });
-
     it("should throw error when API call throws error", async () => {
       const error = new Error("Internal server error");
       const fakeService: EnterPasswordServiceInterface = {
@@ -420,6 +369,83 @@ describe("enter password controller", () => {
         )(req as Request, res as Response)
       ).to.be.rejectedWith(Error, "Internal server error");
       expect(fakeService.loginUser).to.have.been.calledOnce;
+    });
+
+    it("should redirect to /reset-password-check-email when an account has any AIS status and an existing common password", async () => {
+      const fakeService: EnterPasswordServiceInterface = {
+        loginUser: sinon.fake.returns({
+          data: {
+            redactedPhoneNumber: "3456",
+            mfaRequired: true,
+            consentRequired: false,
+            latestTermsAndConditionsAccepted: true,
+            mfaMethodVerified: true,
+            mfaMethodType: "SMS",
+            passwordChangeRequired: true,
+          },
+          success: true,
+        }),
+      } as unknown as EnterPasswordServiceInterface;
+
+      const fakeMfaService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as MfaServiceInterface;
+
+      const testCases = [
+        {
+          name: "account had blocked AIS status",
+          interventions: {
+            blocked: true,
+            temporarilySuspended: false,
+            passwordResetRequired: false,
+          },
+        },
+        {
+          name: "account has temporarilySuspended AIS status",
+          interventions: {
+            blocked: false,
+            temporarilySuspended: true,
+            passwordResetRequired: false,
+          },
+        },
+        {
+          name: "account has password reset required AIS status",
+          interventions: {
+            blocked: false,
+            temporarilySuspended: true,
+            passwordResetRequired: true,
+          },
+        },
+      ];
+
+      for (const testCase of testCases) {
+        const fakeInterventionsService = accountInterventionsFakeHelper({
+          passwordResetRequired: testCase.interventions.passwordResetRequired,
+          blocked: testCase.interventions.blocked,
+          temporarilySuspended: testCase.interventions.temporarilySuspended,
+          reproveIdentity: false,
+        });
+        res.locals.sessionId = "123456-djjad";
+        res.locals.clientSessionId = "00000-djjad";
+        res.locals.persistentSessionId = "dips-123456-abc";
+        req.session.user = {
+          email: "joe.bloggs@test.com",
+        };
+        req.body["password"] = "password";
+
+        await enterPasswordPost(
+          false,
+          fakeService,
+          fakeMfaService,
+          fakeInterventionsService
+        )(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(
+          PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
+        );
+      }
     });
   });
 

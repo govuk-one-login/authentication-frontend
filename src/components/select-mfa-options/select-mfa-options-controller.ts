@@ -17,7 +17,8 @@ const oplValues = {
 
 export function getSecurityCodesGet(req: Request, res: Response): void {
   req.session.user.isAccountCreationJourney =
-    !req.session.user.isAccountRecoveryJourney;
+    !req.session.user.isAccountRecoveryJourney ||
+    req.session.user.isAccountPartCreated;
 
   const isAccountRecoveryJourney = req.session.user.isAccountRecoveryJourney
 

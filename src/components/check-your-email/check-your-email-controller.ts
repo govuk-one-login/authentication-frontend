@@ -4,9 +4,11 @@ import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
 import { ExpressRouteFunc } from "../../types";
-import { ERROR_CODES } from "../common/constants";
+import { ERROR_CODES, SecurityCodeErrorType } from "../common/constants";
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
+import { getNewCodePath } from "../security-code-error/security-code-error-controller";
+import { support2hrLockout } from "../../config";
 
 const TEMPLATE_NAME = "check-your-email/index.njk";
 
@@ -30,6 +32,18 @@ const oplValues = {
 };
 
 export function checkYourEmailGet(req: Request, res: Response): void {
+  if (
+    req.session.user.codeRequestLock &&
+    new Date().getTime() < new Date(req.session.user.codeRequestLock).getTime()
+  ) {
+    return res.render("security-code-error/index-wait.njk", {
+      newCodeLink: getNewCodePath(
+        req.query.actionType as SecurityCodeErrorType
+      ),
+      support2hrLockout: support2hrLockout(),
+      isAccountCreationJourney: true,
+    });
+  }
   res.render(TEMPLATE_NAME, {
     email: req.session.user.email,
     contentId: oplValues.createAccount.contentId,

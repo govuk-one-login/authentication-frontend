@@ -7,6 +7,7 @@ import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
+  SecurityCodeErrorType,
 } from "../common/constants";
 import { BadRequestError } from "../../utils/error";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
@@ -24,6 +25,7 @@ import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation";
+import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -46,6 +48,7 @@ export function enterEmailGet(req: Request, res: Response): void {
 }
 
 export function enterEmailCreateGet(req: Request, res: Response): void {
+  req.session.user.isAccountCreationJourney = true;
   return res.render("enter-email/index-create-account.njk");
 }
 
@@ -72,6 +75,12 @@ export function enterEmailPost(
       if (!checkReauth.success) {
         if (isUserLockedOut(req.session.user)) {
           return res.render(BLOCKED_TEMPLATE);
+        }
+
+        if (checkReauth.data.code === ERROR_CODES.ACCOUNT_LOCKED) {
+          return res.render("enter-password/index-sign-in-retry-blocked.njk", {
+            support2hrLockout: support2hrLockout(),
+          });
         }
 
         if (
@@ -167,6 +176,18 @@ export function enterEmailCreatePost(
     );
 
     if (!sendNotificationResponse.success) {
+      if (
+        sendNotificationResponse.data.code ==
+        ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT
+      ) {
+        return res.render("security-code-error/index-wait.njk", {
+          newCodeLink: getNewCodePath(
+            req.query.actionType as SecurityCodeErrorType
+          ),
+          support2hrLockout: support2hrLockout(),
+          isAccountCreationJourney: true,
+        });
+      }
       const path = getErrorPathByCode(sendNotificationResponse.data.code);
 
       if (path) {

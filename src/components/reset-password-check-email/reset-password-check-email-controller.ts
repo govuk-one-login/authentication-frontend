@@ -40,6 +40,7 @@ service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailServic
     const requestCode = !(
       req.query.requestCode && req.query.requestCode === "false"
     );
+    req.session.user.isPasswordResetJourney = true;
     let result;
 
     if (requestCode) {
@@ -64,8 +65,7 @@ service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailServic
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
           newCodeLink,
-          contentId: "1",
-          taxonomyLevel2: "1"
+          show2HrScreen: support2hrLockout(),
         }
       );
     }
@@ -115,6 +115,7 @@ service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailServic
 
       return res.render(errorTemplate, {
         support2hrLockout: support2hrLockout(),
+        show2HrScreen: support2hrLockout(),
       });
     } else {
       throw new BadRequestError(result.data.message, result.data.code);
@@ -140,6 +141,7 @@ export function resetPasswordResendCodeGet(req: Request, res: Response): void {
     "reset-password-check-email/index-reset-password-resend-code.njk",
     {
       email: req.session.user.email,
+      support2hrLockout: support2hrLockout(),
       contentId: oplValues.resetPasswordResendCode.contentId,
       taxonomyLevel2: "account recovery"
     }

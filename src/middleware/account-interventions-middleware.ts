@@ -4,6 +4,11 @@ import { USER_JOURNEY_EVENTS } from "../components/common/state-machine/state-ma
 import { accountInterventionService } from "../components/account-intervention/account-intervention-service";
 import { ExpressRouteFunc } from "../types";
 import { supportAccountInterventions } from "../config";
+import { logger } from "../utils/logger";
+import {
+  isSuspendedWithoutUserActions,
+  passwordHasBeenResetMoreRecentlyThanInterventionApplied,
+} from "../utils/interventions";
 
 export function accountInterventionsMiddleware(
   handleSuspendedStatus: boolean,
@@ -36,16 +41,26 @@ export function accountInterventionsMiddleware(
         accountInterventionsResponse.data.passwordResetRequired &&
         handlePasswordResetStatus
       ) {
-        return res.redirect(
-          getNextPathAndUpdateJourney(
+        if (
+          !passwordHasBeenResetMoreRecentlyThanInterventionApplied(
             req,
-            req.path,
-            USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION
+            accountInterventionsResponse.data
           )
-        );
+        ) {
+          return res.redirect(
+            getNextPathAndUpdateJourney(
+              req,
+              req.path,
+              USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION
+            )
+          );
+        } else {
+          logger.info(
+            `User reset password since intervention applied. Skipping intervention. User reset password timestamp: ${req.session.user.passwordResetTime} intervention applied at timestamp: ${accountInterventionsResponse.data.appliedAt}`
+          );
+        }
       } else if (
-        accountInterventionsResponse.data.temporarilySuspended &&
-        !accountInterventionsResponse.data.passwordResetRequired &&
+        isSuspendedWithoutUserActions(accountInterventionsResponse.data) &&
         handleSuspendedStatus
       ) {
         return res.redirect(

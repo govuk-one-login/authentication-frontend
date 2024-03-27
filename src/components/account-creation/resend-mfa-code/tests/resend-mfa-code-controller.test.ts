@@ -65,5 +65,63 @@ describe("resend mfa controller", () => {
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
       expect(fakeService.sendNotification).to.have.been.calledOnce;
     });
+
+    it("should request new phone verification code from send notification service and if successful redirect to /enter-code view", async () => {
+      const fakeService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as SendNotificationServiceInterface;
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "654321-djjad";
+      res.locals.persistentSessionId = "123123-djjad";
+
+      req.session.user = {
+        email: "test@test.com",
+        isAccountRecoveryJourney: true,
+      };
+      req.path = PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
+      req.ip = "127.0.0.1";
+      await resendMfaCodePost(fakeService)(req as Request, res as Response);
+      expect(fakeService.sendNotification).to.have.been.calledWith(
+        "123456-djjad",
+        "654321-djjad",
+        "test@test.com",
+        "VERIFY_PHONE_NUMBER",
+        "127.0.0.1",
+        "123123-djjad",
+        "",
+        "ACCOUNT_RECOVERY"
+      );
+    });
+
+    it("should request new phone verification code from send notification service and if successful redirect to /enter-code view", async () => {
+      const fakeService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as SendNotificationServiceInterface;
+      res.locals.sessionId = "123456-djjad";
+      res.locals.clientSessionId = "654321-djjad";
+      res.locals.persistentSessionId = "123123-djjad";
+
+      req.session.user = {
+        email: "test@test.com",
+        isAccountCreationJourney: true,
+      };
+      req.path = PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
+      req.ip = "127.0.0.1";
+      await resendMfaCodePost(fakeService)(req as Request, res as Response);
+      expect(fakeService.sendNotification).to.have.been.calledWith(
+        "123456-djjad",
+        "654321-djjad",
+        "test@test.com",
+        "VERIFY_PHONE_NUMBER",
+        "127.0.0.1",
+        "123123-djjad",
+        "",
+        "REGISTRATION"
+      );
+    });
   });
 });
