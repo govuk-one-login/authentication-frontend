@@ -17,24 +17,18 @@
         <li>{{ 'pages.proveIdentityWelcome.section2.listItem1_3' | translate }}</li>
     </ul>
 
-    {% if supportLanguageCY %}
-        {% set insetTextInnerHtml %}
-            {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.start' | translate }}
-            <a href="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkHref' | translate }}"
-               class="govuk-link"
-               rel="noreferrer">{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inPageLanguage' | translate }}
-                <span lang="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.destinationLanguageCode' | translate }}">{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inDestinationLanguage' | translate }}</span></a>.
-            {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.end' | translate }}
-        {% endset %}
+    {% set insetTextInnerHtml %}
+        {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.start' | translate }}
+        <a href="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkHref' | translate }}"
+           class="govuk-link"
+           rel="noreferrer">{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inPageLanguage' | translate }}
+            <span lang="{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.destinationLanguageCode' | translate }}">{{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.linkText.inDestinationLanguage' | translate }}</span></a>.
+        {{ 'pages.proveIdentityWelcome.section1.insetAlternativeLanguage.end' | translate }}
+    {% endset %}
 
-        {{ govukInsetText({
-            html: insetTextInnerHtml
-        }) }}
-    {% else %}
-        {{ govukInsetText({
-            text: 'pages.proveIdentityWelcome.section1.insetTextEnglishOnly' | translate
-        }) }}
-    {% endif %}
+    {{ govukInsetText({
+        html: insetTextInnerHtml
+    }) }}
 
     <form id="form-tracking" action="/prove-identity-welcome" method="post" novalidate="novalidate">
 

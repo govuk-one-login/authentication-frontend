@@ -2,16 +2,12 @@ import { Request, Response } from "express";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { PATH_NAMES } from "../../app.constants";
-import { supportLanguageCY } from "../../config";
 
 export function proveIdentityWelcomeGet(req: Request, res: Response): void {
   res.render(
     req.session.user.isAuthenticated
       ? "prove-identity-welcome/index-existing-session.njk"
-      : "prove-identity-welcome/index.njk",
-    {
-      supportLanguageCY: supportLanguageCY() ? true : null,
-    }
+      : "prove-identity-welcome/index.njk"
   );
 }
 
