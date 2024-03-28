@@ -34,7 +34,8 @@
     "test:dev-evironment-variables": "mocha dev-check-environment.js",
     "watch-node": "nodemon -r dotenv/config --inspect=0.0.0.0:9230 dist/server.js | pino-pretty",
     "watch-ts": "tsc -w",
-    "watch-sass": "sass --load-path=node_modules/govuk-frontend/govuk --watch --quiet-deps src/assets/scss/application.scss dist/public/style.css"
+    "watch-sass": "sass --load-path=node_modules/govuk-frontend/govuk --watch --quiet-deps src/assets/scss/application.scss dist/public/style.css",
+    "dev:render-user-journey-documentation": "ts-node scripts/render-user-journey-documentation.ts"
   },
   "mocha": {
     "diff": true,

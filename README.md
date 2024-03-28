@@ -166,6 +166,14 @@ If you're having problems running locally, try these steps first:
 
 Remember to run these commands in the docker container itself.
 
+### Documentation
+
+> Generate and view documentation of the user journey state machine 
+
+```shell script
+yarn dev:render-user-journey-documentation
+```
+
 ### Development
 
 > To run the app in development mode with nodemon watching the files
