@@ -415,7 +415,7 @@ describe("security code  controller", () => {
     );
 
     it(
-      "should not render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent" +
+      "should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent" +
         "and user is in the account creation journey",
       () => {
         req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
