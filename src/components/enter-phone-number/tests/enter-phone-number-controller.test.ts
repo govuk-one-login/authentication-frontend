@@ -41,26 +41,20 @@ describe("enter phone number controller", () => {
 
   describe("enterPhoneNumberGet", () => {
     it("should render enter phone number view", () => {
-      process.env.SUPPORT_INTERNATIONAL_NUMBERS = "1";
-
       enterPhoneNumberGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("enter-phone-number/index.njk", {
-        supportInternationalNumbers: true,
         isAccountPartCreated: undefined,
       });
     });
 
     it("should render enter phone number returning user view when user has a partly created account", () => {
-      process.env.SUPPORT_INTERNATIONAL_NUMBERS = "1";
-
       req.session.user = {
         isAccountPartCreated: true,
       };
       enterPhoneNumberGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("enter-phone-number/index.njk", {
-        supportInternationalNumbers: true,
         isAccountPartCreated: true,
       });
     });
