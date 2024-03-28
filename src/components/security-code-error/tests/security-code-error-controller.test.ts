@@ -251,11 +251,18 @@ describe("security code  controller", () => {
   });
 
   describe("support2Hr Lockout: entered too many security codes", () => {
+    before(() => {
+      process.env.SUPPORT_2HR_LOCKOUT = "1";
+    });
+
+    after(() => {
+      delete process.env.SUPPORT_2HR_LOCKOUT;
+    });
+
     it(
       "should render 2hr lockout page when email OTP code has been invalid max number of times" +
         "in the reset password journey",
       () => {
-        process.env.SUPPORT_2HR_LOCKOUT = "1";
         req.session.user.isPasswordResetJourney = true;
         req.query.actionType = SecurityCodeErrorType.EmailMaxRetries;
 
@@ -278,7 +285,6 @@ describe("security code  controller", () => {
       "should render 2hr lockout page when email OTP code has been invalid max number of times" +
         "in 2FA account recovery journey",
       () => {
-        process.env.SUPPORT_2HR_LOCKOUT = "1";
         req.session.user.isAccountRecoveryJourney = true;
         req.query.actionType = SecurityCodeErrorType.EmailMaxRetries;
 
@@ -301,7 +307,6 @@ describe("security code  controller", () => {
       "should not render 2hr lockout page when email OTP code has been invalid max number of times" +
         "in the account creation journey",
       () => {
-        process.env.SUPPORT_2HR_LOCKOUT = "1";
         req.session.user.isAccountCreationJourney = true;
         req.query.actionType = SecurityCodeErrorType.EmailMaxRetries;
 
@@ -324,7 +329,6 @@ describe("security code  controller", () => {
       "should render 15 min with RESEND_MFA_CODE_ACCOUNT_CREATION newCodeLink lockout page when SMS OTP code has been invalid max number of times" +
         "in the account creation journey",
       () => {
-        process.env.SUPPORT_2HR_LOCKOUT = "1";
         req.session.user.isAccountCreationJourney = true;
         req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
 
@@ -347,7 +351,6 @@ describe("security code  controller", () => {
       "should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent" +
         "and user is in the sign-in journey",
       () => {
-        process.env.SUPPORT_2HR_LOCKOUT = "1";
         req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
         req.session.user.isSignInJourney = true;
         securityCodeTriesExceededGet(req as Request, res as Response);
@@ -396,7 +399,6 @@ describe("security code  controller", () => {
       "should render index-too-many-requests.njk for OtpBlocked when max number of codes have been requested " +
         "and user is in the 2FA SMS account recovery journey",
       () => {
-        process.env.SUPPORT_2HR_LOCKOUT = "1";
         req.query.actionType = SecurityCodeErrorType.OtpBlocked;
         req.session.user.isAccountRecoveryJourney = true;
         securityCodeTriesExceededGet(req as Request, res as Response);
@@ -419,7 +421,6 @@ describe("security code  controller", () => {
       () => {
         req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
         req.session.user.isAccountCreationJourney = true;
-        process.env.SUPPORT_2HR_LOCKOUT = "1";
         securityCodeTriesExceededGet(req as Request, res as Response);
 
         expect(res.render).to.have.calledWith(
