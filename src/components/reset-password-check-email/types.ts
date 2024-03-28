@@ -7,5 +7,10 @@ export interface ResetPasswordCheckEmailServiceInterface {
     sourceIp: string,
     clientSessionId: string,
     persistentSessionId: string
-  ) => Promise<ApiResponseResult<DefaultApiResponse>>;
+  ) => Promise<ApiResponseResult<ResetPasswordRequestResponse>>;
+}
+
+export interface ResetPasswordRequestResponse extends DefaultApiResponse {
+  mfaMethodType: string;
+  phoneNumberLastThree: string;
 }
