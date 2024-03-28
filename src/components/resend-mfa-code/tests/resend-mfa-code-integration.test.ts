@@ -10,6 +10,7 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
+import { getFrontendApiBaseUrl } from "../../../config";
 
 describe("Integration:: resend mfa code", () => {
   let token: string | string[];
@@ -39,7 +40,7 @@ describe("Integration:: resend mfa code", () => {
       });
 
     app = await require("../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = getFrontendApiBaseUrl();
 
     await request(app)
       .get(PATH_NAMES.RESEND_MFA_CODE)

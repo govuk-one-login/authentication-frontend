@@ -10,6 +10,7 @@ import {
 import decache from "decache";
 import nock = require("nock");
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
+import { getFrontendApiBaseUrl } from "../../../config";
 
 describe("Integration::2fa sms (in reset password flow)", () => {
   let app: any;
@@ -40,7 +41,7 @@ describe("Integration::2fa sms (in reset password flow)", () => {
 
     app = await require("../../../app").createApp();
 
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = getFrontendApiBaseUrl();
 
     nock(baseApi).persist().post("/mfa").reply(204);
 

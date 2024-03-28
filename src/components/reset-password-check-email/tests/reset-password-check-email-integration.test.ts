@@ -11,6 +11,7 @@ import {
 } from "../../../app.constants";
 import nock = require("nock");
 import { ERROR_CODES } from "../../common/constants";
+import { getFrontendApiBaseUrl } from "../../../config";
 
 describe("Integration::reset password check email ", () => {
   let app: any;
@@ -42,7 +43,7 @@ describe("Integration::reset password check email ", () => {
       });
 
     app = await require("../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = getFrontendApiBaseUrl();
 
     nock(baseApi).post("/reset-password-request").once().reply(204);
 

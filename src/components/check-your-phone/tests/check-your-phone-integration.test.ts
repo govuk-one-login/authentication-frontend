@@ -10,6 +10,7 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
+import { getFrontendApiBaseUrl } from "../../../config";
 
 describe("Integration:: check your phone", () => {
   let token: string | string[];
@@ -40,7 +41,7 @@ describe("Integration:: check your phone", () => {
       });
 
     app = await require("../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = getFrontendApiBaseUrl();
 
     request(app)
       .get(PATH_NAMES.CHECK_YOUR_PHONE)

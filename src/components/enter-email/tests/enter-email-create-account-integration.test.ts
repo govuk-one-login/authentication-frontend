@@ -10,6 +10,7 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
+import { getFrontendApiBaseUrl } from "../../../config";
 
 describe("Integration::enter email (create account)", () => {
   let token: string | string[];
@@ -37,7 +38,7 @@ describe("Integration::enter email (create account)", () => {
       });
 
     app = await require("../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = getFrontendApiBaseUrl();
 
     request(app)
       .get(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)

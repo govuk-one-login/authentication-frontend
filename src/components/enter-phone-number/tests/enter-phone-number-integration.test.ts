@@ -6,6 +6,7 @@ import decache from "decache";
 import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES, pathWithQueryParam } from "../../common/constants";
 import nock = require("nock");
+import { getFrontendApiBaseUrl } from "../../../config";
 
 describe("Integration::enter phone number", () => {
   let token: string | string[];
@@ -37,7 +38,7 @@ describe("Integration::enter phone number", () => {
       });
 
     app = await require("../../../app").createApp();
-    baseApi = process.env.FRONTEND_API_BASE_URL;
+    baseApi = getFrontendApiBaseUrl();
 
     request(app)
       .get(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
