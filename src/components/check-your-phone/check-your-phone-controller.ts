@@ -11,7 +11,6 @@ import {
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
   pathWithQueryParam,
-  SecurityCodeErrorType,
 } from "../common/constants";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
@@ -25,7 +24,6 @@ import {
 import { BadRequestError } from "../../utils/error";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
-import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 import { support2hrLockout } from "../../config";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";
@@ -41,9 +39,7 @@ export function checkYourPhoneGet(req: Request, res: Response): void {
     new Date().getTime() < new Date(req.session.user.codeRequestLock).getTime()
   ) {
     return res.render("security-code-error/index-wait.njk", {
-      newCodeLink: getNewCodePath(
-        req.query.actionType as SecurityCodeErrorType
-      ),
+      newCodeLink: RESEND_CODE_LINK,
       support2hrLockout: support2hrLockout(),
       isAccountCreationJourney: req.session.user.isAccountCreationJourney,
     });
