@@ -130,7 +130,6 @@ describe("security code  controller", () => {
           isResendCodeRequest: undefined,
           isAccountCreationJourney: undefined,
           support2hrLockout: false,
-          show2HrScreen: false,
         }
       );
     });
@@ -151,7 +150,6 @@ describe("security code  controller", () => {
           isResendCodeRequest: undefined,
           isAccountCreationJourney: undefined,
           support2hrLockout: false,
-          show2HrScreen: false,
         }
       );
     });
@@ -168,7 +166,6 @@ describe("security code  controller", () => {
           isResendCodeRequest: undefined,
           isAccountCreationJourney: undefined,
           support2hrLockout: false,
-          show2HrScreen: false,
         }
       );
     });
@@ -372,7 +369,6 @@ describe("security code  controller", () => {
               "true"
             ),
             isResendCodeRequest: undefined,
-            show2HrScreen: false,
             isAccountCreationJourney: true,
             support2hrLockout: false,
           }
@@ -398,7 +394,6 @@ describe("security code  controller", () => {
               SecurityCodeErrorType.MfaMaxRetries
             ),
             isResendCodeRequest: undefined,
-            show2HrScreen: true,
             isAccountCreationJourney: undefined,
             support2hrLockout: true,
           }
@@ -423,7 +418,6 @@ describe("security code  controller", () => {
               SecurityCodeErrorType.MfaMaxRetries
             ),
             isResendCodeRequest: undefined,
-            show2HrScreen: true,
             isAccountCreationJourney: undefined,
             support2hrLockout: true,
           }
@@ -445,7 +439,6 @@ describe("security code  controller", () => {
           {
             newCodeLink: getNewCodePath(SecurityCodeErrorType.OtpBlocked),
             isResendCodeRequest: undefined,
-            show2HrScreen: true,
             isAccountCreationJourney: undefined,
             support2hrLockout: true,
           }
@@ -471,7 +464,6 @@ describe("security code  controller", () => {
               SecurityCodeErrorType.MfaMaxRetries
             ),
             isResendCodeRequest: undefined,
-            show2HrScreen: false,
             isAccountCreationJourney: true,
             support2hrLockout: true,
           }
