@@ -43,9 +43,6 @@ describe("security code  controller", () => {
 
   describe("securityCodeExpiredGet", () => {
     it("should render invalid OTP code for EmailMaxRetries error when email OTP code has been invalid max number of times", () => {
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
       req.query.actionType = SecurityCodeErrorType.EmailMaxRetries;
 
       securityCodeInvalidGet(req as Request, res as Response);
@@ -63,9 +60,6 @@ describe("security code  controller", () => {
     });
 
     it("should render invalid OTP code for MfaMaxRetries error when email OTP code has been invalid max number of times", () => {
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
       req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
 
       securityCodeInvalidGet(req as Request, res as Response);
@@ -248,9 +242,6 @@ describe("security code  controller", () => {
         "in the reset password journey",
       () => {
         process.env.SUPPORT_2HR_LOCKOUT = "1";
-        req.session.user = {
-          email: "joe.bloggs@test.com",
-        };
         req.session.user.isPasswordResetJourney = true;
         req.query.actionType = SecurityCodeErrorType.EmailMaxRetries;
 
@@ -274,9 +265,6 @@ describe("security code  controller", () => {
         "in 2FA account recovery journey",
       () => {
         process.env.SUPPORT_2HR_LOCKOUT = "1";
-        req.session.user = {
-          email: "joe.bloggs@test.com",
-        };
         req.session.user.isAccountRecoveryJourney = true;
         req.query.actionType = SecurityCodeErrorType.EmailMaxRetries;
 
@@ -300,9 +288,6 @@ describe("security code  controller", () => {
         "in the account creation journey",
       () => {
         process.env.SUPPORT_2HR_LOCKOUT = "1";
-        req.session.user = {
-          email: "joe.bloggs@test.com",
-        };
         req.session.user.isAccountCreationJourney = true;
         req.query.actionType = SecurityCodeErrorType.EmailMaxRetries;
 
@@ -326,9 +311,6 @@ describe("security code  controller", () => {
         "in the account creation journey",
       () => {
         process.env.SUPPORT_2HR_LOCKOUT = "1";
-        req.session.user = {
-          email: "joe.bloggs@test.com",
-        };
         req.session.user.isAccountCreationJourney = true;
         req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
 
@@ -352,9 +334,6 @@ describe("security code  controller", () => {
         "in the account creation journey",
       () => {
         process.env.SUPPORT_2HR_LOCKOUT = "0";
-        req.session.user = {
-          email: "joe.bloggs@test.com",
-        };
         req.session.user.isAccountCreationJourney = true;
         req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
 
