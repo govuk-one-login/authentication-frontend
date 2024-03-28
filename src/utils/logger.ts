@@ -50,6 +50,8 @@ const loggerMiddleware = PinoHttp({
         "/public/style.css",
         "/public/scripts",
         "/public/scripts/application.js",
+        "/public/scripts/showPassword.js",
+        "/assets/images/govuk-crest.png",
         "/assets/images/govuk-crest-2x.png",
         "/assets/fonts/bold-b542beb274-v2.woff2",
         "/assets/fonts/bold-b542beb274-v2.woff2",
@@ -58,13 +60,13 @@ const loggerMiddleware = PinoHttp({
       ].includes(req.url),
   },
   customErrorMessage: function (_req, res) {
-    return "request errored with status code: " + res.statusCode;
+    return `request errored with status code: ${res.statusCode}`;
   },
   customSuccessMessage: function (_req, res) {
     if (res.statusCode === 404) {
       return "resource not found";
     }
-    return `request completed with status code of:${res.statusCode}`;
+    return `request completed with status code of: ${res.statusCode}`;
   },
   customAttributeKeys: {
     responseTime: "timeTaken",
