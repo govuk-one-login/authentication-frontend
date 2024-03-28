@@ -13,7 +13,7 @@ resource "aws_lb" "frontend_alb" {
   drop_invalid_header_fields = true
 
   dynamic "access_logs" {
-    for_each = var.environment == "production" ? [1] : []
+    for_each = var.environment == "production" || var.environment == "staging" ? [1] : []
     content {
       bucket  = aws_s3_bucket.alb-accesslog[0].bucket
       enabled = true
@@ -108,19 +108,19 @@ resource "aws_alb_listener" "frontend_alb_listener_http" {
 data "aws_elb_service_account" "main" {}
 
 resource "aws_s3_bucket" "alb-accesslog" {
-  count         = var.environment == "production" ? 1 : 0
+  count         = var.environment == "production" || var.environment == "staging" ? 1 : 0
   bucket        = "${var.environment}-frontend-alb-access-logs"
   force_destroy = true
 }
 
 resource "aws_s3_bucket_policy" "allow_access_alb" {
-  count  = var.environment == "production" ? 1 : 0
+  count  = var.environment == "production" || var.environment == "staging" ? 1 : 0
   bucket = aws_s3_bucket.alb-accesslog[0].id
   policy = data.aws_iam_policy_document.s3_bucket_lb_write[0].json
 }
 
 data "aws_iam_policy_document" "s3_bucket_lb_write" {
-  count     = var.environment == "production" ? 1 : 0
+  count     = var.environment == "production" || var.environment == "staging" ? 1 : 0
   policy_id = "s3_bucket_lb_logs"
 
   statement {
