@@ -85,10 +85,6 @@ locals {
         value = var.support_international_numbers
       },
       {
-        name  = "SUPPORT_LANGUAGE_CY"
-        value = var.support_language_cy
-      },
-      {
         name  = "SUPPORT_AUTH_ORCH_SPLIT"
         value = var.support_auth_orch_split
       },

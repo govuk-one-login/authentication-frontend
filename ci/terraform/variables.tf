@@ -29,10 +29,6 @@ variable "support_international_numbers" {
   type = string
 }
 
-variable "support_language_cy" {
-  type = string
-}
-
 variable "support_auth_orch_split" {
   type    = string
   default = "0"
