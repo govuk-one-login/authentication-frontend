@@ -367,8 +367,7 @@
       "title": "Enter your mobile phone number",
       "header": "Enter your mobile phone number",
       "info": {
-        "paragraph1": "We will send a 6 digit security code to the number you give us.",
-        "paragraph2": "You must use a UK mobile phone number."
+        "paragraph1": "We will send a 6 digit security code to the number you give us."
       },
       "ukPhoneNumber": {
         "label": "UK mobile phone number",
