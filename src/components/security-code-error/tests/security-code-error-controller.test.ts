@@ -166,46 +166,35 @@ describe("security code  controller", () => {
   });
 
   describe("securityCodeCannotRequestGet", () => {
-    it("should render index-too-many-requests.njk for OtpBlocked when user is blocked from requesting anymore OTPs", () => {
-      req.query.actionType = SecurityCodeErrorType.OtpBlocked;
+    const TEST_SCENARIO_PARAMETERS = [
+      {
+        actionType: SecurityCodeErrorType.OtpBlocked,
+        expectedCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
+      },
+      {
+        actionType: SecurityCodeErrorType.MfaBlocked,
+        expectedCodeLink: PATH_NAMES.RESEND_MFA_CODE,
+      },
+      {
+        actionType: SecurityCodeErrorType.EmailBlocked,
+        expectedCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
+      },
+    ];
 
-      securityCodeCannotRequestCodeGet(req as Request, res as Response);
+    TEST_SCENARIO_PARAMETERS.forEach(function (params) {
+      it(`should render the too many requests page for ${params.actionType} when user is blocked from requesting more OTPs`, () => {
+        req.query.actionType = params.actionType;
 
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-too-many-requests.njk",
-        {
-          newCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
-          support2hrLockout: false,
-        }
-      );
-    });
+        securityCodeCannotRequestCodeGet(req, res);
 
-    it("should render index-too-many-requests.njk for MfaBlocked when user is blocked from requesting anymore OTPs", () => {
-      req.query.actionType = SecurityCodeErrorType.MfaBlocked;
-
-      securityCodeCannotRequestCodeGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-too-many-requests.njk",
-        {
-          newCodeLink: PATH_NAMES.RESEND_MFA_CODE,
-          support2hrLockout: false,
-        }
-      );
-    });
-
-    it("should render index-too-many-requests.njk for MfaBlocked when user is blocked from requesting anymore OTPs", () => {
-      req.query.actionType = SecurityCodeErrorType.EmailBlocked;
-
-      securityCodeCannotRequestCodeGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-too-many-requests.njk",
-        {
-          newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
-          support2hrLockout: false,
-        }
-      );
+        expect(res.render).to.have.calledWith(
+          "security-code-error/index-too-many-requests.njk",
+          {
+            newCodeLink: params.expectedCodeLink,
+            support2hrLockout: false,
+          }
+        );
+      });
     });
   });
 
