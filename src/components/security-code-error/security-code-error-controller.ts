@@ -83,23 +83,6 @@ export function securityCodeTriesExceededGet(
   req.session.user.codeRequestLock = new Date(
     Date.now() + getCodeRequestBlockDurationInMinutes() * 60000
   ).toUTCString();
-  const isNotEmailCode =
-    req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries &&
-    req.query.actionType !==
-      SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries &&
-    req.query.actionType !==
-      SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries;
-
-  let show2HrScreen = false;
-  if (support2hrLockout()) {
-    show2HrScreen =
-      (req.session.user.isSignInJourney &&
-        !req.session.user.isAccountPartCreated &&
-        !req.session.user.isAccountRecoveryJourney) ||
-      req.session.user.isPasswordResetJourney ||
-      req.session.user.isAccountRecoveryJourney ||
-      (!isNotEmailCode && !req.session.user.isAccountCreationJourney);
-  }
 
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(
@@ -107,7 +90,6 @@ export function securityCodeTriesExceededGet(
       req.session.user.isAccountCreationJourney
     ),
     isResendCodeRequest: req.query.isResendCodeRequest,
-    show2HrScreen: show2HrScreen,
     isAccountCreationJourney: req.session.user?.isAccountCreationJourney,
     support2hrLockout: support2hrLockout(),
   });
