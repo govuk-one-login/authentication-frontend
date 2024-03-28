@@ -311,55 +311,43 @@ describe("security code  controller", () => {
         }
       );
 
-      it(
-        "should not render 2hr lockout page when email OTP code has been invalid max number of times" +
-          "in the account creation journey",
-        () => {
-          req.session.user.isAccountCreationJourney = true;
-          req.query.actionType = SecurityCodeErrorType.EmailMaxRetries;
+      it("should not render the 2 hour lockout page if the user is in the account creation journey", () => {
+        const TEST_SCENARIO_PARAMETERS = [
+          {
+            action: SecurityCodeErrorType.EmailMaxRetries,
+            isBlocked: false,
+            nextPath: PATH_NAMES.RESEND_EMAIL_CODE,
+            queryParam: "requestNewCode",
+          },
+          {
+            action: SecurityCodeErrorType.OtpMaxRetries,
+            isBlocked: true,
+            nextPath: PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+            queryParam: "isResendCodeRequest",
+          },
+        ];
 
-          securityCodeInvalidGet(req as Request, res as Response);
+        TEST_SCENARIO_PARAMETERS.forEach((params) => {
+          req.session.user.isAccountCreationJourney = true;
+          req.query.actionType = params.action;
+
+          securityCodeInvalidGet(req, res);
 
           expect(res.render).to.have.calledWith(
             "security-code-error/index.njk",
             {
               newCodeLink: pathWithQueryParam(
-                PATH_NAMES.RESEND_EMAIL_CODE,
-                "requestNewCode",
+                params.nextPath,
+                params.queryParam,
                 "true"
               ),
               isAuthApp: false,
-              isBlocked: false,
+              isBlocked: params.isBlocked,
               show2HrScreen: false,
             }
           );
-        }
-      );
-
-      it(
-        "should render 15 min with RESEND_MFA_CODE_ACCOUNT_CREATION newCodeLink lockout page when SMS OTP code has been invalid max number of times" +
-          "in the account creation journey",
-        () => {
-          req.session.user.isAccountCreationJourney = true;
-          req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
-
-          securityCodeInvalidGet(req as Request, res as Response);
-
-          expect(res.render).to.have.calledWith(
-            "security-code-error/index.njk",
-            {
-              newCodeLink: pathWithQueryParam(
-                PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
-                "isResendCodeRequest",
-                "true"
-              ),
-              isAuthApp: false,
-              isBlocked: true,
-              show2HrScreen: false,
-            }
-          );
-        }
-      );
+        });
+      });
     });
 
     describe("securityCodeTriesExceededGet", () => {
