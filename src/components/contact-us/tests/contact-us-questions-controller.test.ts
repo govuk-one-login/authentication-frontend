@@ -60,7 +60,6 @@ describe("contact us questions controller", () => {
         referer: encodeURIComponent(REFERER),
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -81,7 +80,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.emailSubscriptions.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -102,7 +100,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.suggestionOrFeedback.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -124,7 +121,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.provingIdentity.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -156,7 +152,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -178,7 +173,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -200,7 +194,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.noPhoneNumberAccess.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -222,7 +215,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.forgottenPassword.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -244,7 +236,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.accountNotFound.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -266,7 +257,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -288,7 +278,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.anotherProblem.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -313,7 +302,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -335,7 +323,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -358,7 +345,6 @@ describe("contact us questions controller", () => {
           "pages.contactUsQuestions.signInPhoneNumberIssue.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -380,7 +366,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -402,7 +387,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.accountCreation.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });
@@ -424,7 +408,6 @@ describe("contact us questions controller", () => {
         pageTitleHeading: "pages.contactUsQuestions.authenticatorApp.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        ipnSupport: undefined,
         appErrorCode: "",
         appSessionId: "",
       });

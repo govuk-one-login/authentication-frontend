@@ -17,115 +17,55 @@
   }) }}
 {% endset -%}
 
-{% if ipnSupport %}
-    {% if theme == 'account_creation' %}
-        {% set items = [
-            {
-                value: "email",
-                checked: securityCodeSentMethod === 'email',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.email' | translate
-            },
-            {
-                value: "text_message_uk_number",
-                checked: securityCodeSentMethod === 'text_message_uk_number',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.textMessageUkNumber' | translate
-            },
-            {
-                value: "text_message_international_number",
-                checked: securityCodeSentMethod === 'text_message_international_number',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.textMessageInternationalNumber' | translate,
-                conditional:{
-                    html:countryHtml
-                }
-            },
-            {
-                value: "authenticator_app",
-                checked: securityCodeSentMethod === 'authenticator_app',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.authApp' | translate
+{% if theme == 'account_creation' %}
+    {% set items = [
+        {
+            value: "email",
+            checked: securityCodeSentMethod === 'email',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.email' | translate
+        },
+        {
+            value: "text_message_uk_number",
+            checked: securityCodeSentMethod === 'text_message_uk_number',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.textMessageUkNumber' | translate
+        },
+        {
+            value: "text_message_international_number",
+            checked: securityCodeSentMethod === 'text_message_international_number',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.textMessageInternationalNumber' | translate,
+            conditional:{
+                html:countryHtml
             }
-        ] %}
-    {% endif %}
-
-    {% if theme == 'signing_in' %}
-        {% set items = [
-            {
-                value: "text_message_uk_number",
-                checked: securityCodeSentMethod === 'text_message_uk_number',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.textMessageUkNumber' | translate
-            },
-            {
-                value: "text_message_international_number",
-                checked: securityCodeSentMethod === 'text_message_international_number',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.textMessageInternationalNumber' | translate,
-                conditional:{
-                    html:countryHtml
-                }
-            },
-            {
-                value: "authenticator_app",
-                checked: securityCodeSentMethod === 'authenticator_app',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.authApp' | translate
-            }
-        ] %}
-    {% endif %}
+        },
+        {
+            value: "authenticator_app",
+            checked: securityCodeSentMethod === 'authenticator_app',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.authApp' | translate
+        }
+    ] %}
 {% endif %}
 
-{% if not ipnSupport %}
-    {% if theme == 'account_creation' %}
-        {% set items = [
-            {
-                value: "email",
-                checked: securityCodeSentMethod === 'email',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.email' | translate
-            },
-            {
-                value: "text_message_uk_number",
-                checked: securityCodeSentMethod === 'text_message_uk_number',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.textMessageUkNumber' | translate
-            },
-            {
-                value: "text_message_international_number",
-                checked: securityCodeSentMethod === 'text_message_international_number',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.textMessageInternationalNumber' | translate,
-                conditional:{
-                    html:countryHtml
-                }
-            },
-            {
-                value: "authenticator_app",
-                checked: securityCodeSentMethod === 'authenticator_app',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.authApp' | translate
-            }
-        ] %}
-    {% endif %}
-
-    {% if theme == 'signing_in' %}
-        {% set items = [
-            {
-                value: "email",
-                checked: securityCodeSentMethod === 'email',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.email' | translate
-            },
-            {
-                value: "text_message_uk_number",
-                checked: securityCodeSentMethod === 'text_message_uk_number',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.textMessageUkNumber' | translate
-            },
-            {
-                value: "text_message_international_number",
-                checked: securityCodeSentMethod === 'text_message_international_number',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.textMessageInternationalNumber' | translate,
-                conditional:{
-                    html:countryHtml
-                }
-            },
-            {
-                value: "authenticator_app",
-                checked: securityCodeSentMethod === 'authenticator_app',
-                text: 'pages.contactUsQuestions.securityCodeSentMethod.authApp' | translate
-            }
-        ] %}
-    {% endif %}
+{% if theme == 'signing_in' %}
+    {% set items = [
+        {
+            value: "text_message_uk_number",
+            checked: securityCodeSentMethod === 'text_message_uk_number',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.textMessageUkNumber' | translate
+        },
+        {
+            value: "text_message_international_number",
+            checked: securityCodeSentMethod === 'text_message_international_number',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.textMessageInternationalNumber' | translate,
+            conditional:{
+            html:countryHtml
+        }
+        },
+        {
+            value: "authenticator_app",
+            checked: securityCodeSentMethod === 'authenticator_app',
+            text: 'pages.contactUsQuestions.securityCodeSentMethod.authApp' | translate
+        }
+    ] %}
 {% endif %}
 
 
