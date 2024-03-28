@@ -20,6 +20,8 @@ frontend_task_definition_cpu     = 256
 frontend_task_definition_memory  = 512
 frontend_auto_scaling_v2_enabled = true
 
+alb_idle_timeout = 30
+
 url_for_support_links = "https://home.build.account.gov.uk/contact-gov-uk-one-login"
 
 orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAESyWJU5s5F4jSovHsh9y133/Ogf5P\nx78OrfDJqiMMI2p8Warbq0ppcbWvbihK6rAXTH7bPIeOHOeU9cKAEl5NdQ==\n-----END PUBLIC KEY-----"

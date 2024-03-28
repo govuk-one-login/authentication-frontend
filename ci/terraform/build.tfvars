@@ -6,6 +6,8 @@ frontend_auto_scaling_v2_enabled = true
 frontend_task_definition_cpu    = 512
 frontend_task_definition_memory = 1024
 
+alb_idle_timeout = 30
+
 support_international_numbers                       = "1"
 support_account_recovery                            = "1"
 support_auth_orch_split                             = "1"

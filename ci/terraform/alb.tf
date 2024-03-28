@@ -4,6 +4,7 @@ resource "aws_lb" "frontend_alb" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.frontend_alb_sg.id]
   subnets            = local.public_subnet_ids
+  idle_timeout       = var.alb_idle_timeout
 
   depends_on = [
     aws_s3_bucket_policy.allow_access_alb
