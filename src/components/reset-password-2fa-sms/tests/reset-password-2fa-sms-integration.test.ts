@@ -68,7 +68,7 @@ describe("Integration::2fa sms (in reset password flow)", () => {
     request(app).get("/reset-password-2fa-sms").expect(200, done);
   });
 
-  it.only("should render index-security-code-entered-exceeded.njk when user is locked out due to too many incorrect codes", (done) => {
+  it("should render index-security-code-entered-exceeded.njk when user is locked out due to too many incorrect codes", (done) => {
     process.env.SUPPORT_2HR_LOCKOUT = "1";
     nock(baseApi).persist().post("/mfa").reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
