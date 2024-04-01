@@ -217,10 +217,14 @@ using mocha.
 
 ### Integration tests
 
+The application stack must be started before the integration tests can be run, either with frontend running in a docker container or on the local machine (./startup -l).
+In either case the command to run the integration tests is the same, but the tests usually run faster when frontend is started outside of docker.
+
+In both cases frontend must have started successfully with the message 'Server listening on port 3000' before the tests can be run.  If running frontend in a container check the actual container logs in docker desktop to make sure that frontend has started correctly, otherwise the test run will be invalid.
 > To run the integration tests
 
 ```shell script
-yarn test:integration
+REDIS_PORT=6379 REDIS_HOST=localhost yarn test:integration
 ```
 
 ### Install dependencies
