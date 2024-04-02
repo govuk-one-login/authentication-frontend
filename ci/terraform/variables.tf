@@ -25,10 +25,6 @@ variable "support_account_recovery" {
   type = string
 }
 
-variable "support_international_numbers" {
-  type = string
-}
-
 variable "support_auth_orch_split" {
   type    = string
   default = "0"
