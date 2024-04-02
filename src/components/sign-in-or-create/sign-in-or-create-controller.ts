@@ -6,8 +6,8 @@ import { supportInternationalNumbers, supportLanguageCY } from "../../config";
 
 const oplValues = {
   signInOrCreate: {
-    contentId: "xxxx",
-    taxonomyLevel2: "signInOrCreate",
+    contentId: "",
+    taxonomyLevel2: "",
   }
 };
 

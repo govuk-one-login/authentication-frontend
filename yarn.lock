@@ -751,7 +751,7 @@
 
 "@govuk-one-login/one-login-analytics@^0.0.9":
   version "0.0.9"
-  resolved "https://registry.npmjs.org/@govuk-one-login/one-login-analytics/-/one-login-analytics-0.0.9.tgz"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/one-login-analytics/-/one-login-analytics-0.0.9.tgz#e5746f75943e26e6c52d43f1292af139589688ed"
   integrity sha512-zsvmvDgkvMZyO5OGHAyjj3aYlIToOLEbORwjCXOB9+1kqBTe0HfXqhzy6TMxHg00UctbX8yy8Gw1muFHoe2C9A==
 
 "@humanwhocodes/config-array@^0.11.14":
