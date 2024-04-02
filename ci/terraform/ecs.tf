@@ -81,10 +81,6 @@ locals {
         value = local.redis_key
       },
       {
-        name  = "SUPPORT_INTERNATIONAL_NUMBERS"
-        value = var.support_international_numbers
-      },
-      {
         name  = "SUPPORT_AUTH_ORCH_SPLIT"
         value = var.support_auth_orch_split
       },
