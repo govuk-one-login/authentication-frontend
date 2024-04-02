@@ -23,8 +23,6 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
     .map((e) => e.valueOf())
     .includes(actionType.toString());
 
-  let showFifteenMinutesParagraph = false;
-
   if (!isEmailCode) {
     req.session.user.wrongCodeEnteredLock = timestampNMinutesFromNow(
       getCodeEnteredWrongBlockDurationInMinutes()
@@ -32,7 +30,6 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
   }
 
   if (actionType === SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries) {
-    showFifteenMinutesParagraph = true;
     req.session.user.wrongCodeEnteredAccountRecoveryLock =
       timestampNMinutesFromNow(
         getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes()
@@ -40,7 +37,6 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
   }
 
   if (actionType === SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries) {
-    showFifteenMinutesParagraph = true;
     req.session.user.wrongCodeEnteredPasswordResetLock =
       timestampNMinutesFromNow(
         getPasswordResetCodeEnteredWrongBlockDurationInMinutes()
@@ -67,7 +63,7 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
       req.session.user.isAccountCreationJourney
     ),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
-    isBlocked: !isEmailCode || showFifteenMinutesParagraph,
+    isBlocked: actionType !== SecurityCodeErrorType.EmailMaxRetries,
     show2HrScreen: show2HrScreen,
   });
 }
