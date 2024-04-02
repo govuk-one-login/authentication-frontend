@@ -14,42 +14,37 @@ import {
 } from "../../config";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
+  const actionType = req.query.actionType;
   const isEmailCode = [
     SecurityCodeErrorType.EmailMaxRetries,
     SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries,
     SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries,
   ]
     .map((e) => e.valueOf())
-    .includes(req.query.actionType.toString());
+    .includes(actionType.toString());
 
   let showFifteenMinutesParagraph = false;
 
   if (!isEmailCode) {
-    req.session.user.wrongCodeEnteredLock = new Date(
-      Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
-    ).toUTCString();
+    req.session.user.wrongCodeEnteredLock = timestampNMinutesFromNow(
+      getCodeEnteredWrongBlockDurationInMinutes()
+    );
   }
 
-  if (
-    req.query.actionType ===
-    SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries
-  ) {
+  if (actionType === SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries) {
     showFifteenMinutesParagraph = true;
-    req.session.user.wrongCodeEnteredAccountRecoveryLock = new Date(
-      Date.now() +
-        getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes() * 60000
-    ).toUTCString();
+    req.session.user.wrongCodeEnteredAccountRecoveryLock =
+      timestampNMinutesFromNow(
+        getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes()
+      );
   }
 
-  if (
-    req.query.actionType ===
-    SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries
-  ) {
+  if (actionType === SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries) {
     showFifteenMinutesParagraph = true;
-    req.session.user.wrongCodeEnteredPasswordResetLock = new Date(
-      Date.now() +
-        getPasswordResetCodeEnteredWrongBlockDurationInMinutes() * 60000
-    ).toUTCString();
+    req.session.user.wrongCodeEnteredPasswordResetLock =
+      timestampNMinutesFromNow(
+        getPasswordResetCodeEnteredWrongBlockDurationInMinutes()
+      );
   }
 
   let show2HrScreen = false;
@@ -81,9 +76,9 @@ export function securityCodeTriesExceededGet(
   req: Request,
   res: Response
 ): void {
-  req.session.user.codeRequestLock = new Date(
-    Date.now() + getCodeRequestBlockDurationInMinutes() * 60000
-  ).toUTCString();
+  req.session.user.codeRequestLock = timestampNMinutesFromNow(
+    getCodeRequestBlockDurationInMinutes()
+  );
 
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(
@@ -177,4 +172,8 @@ function isAuthApp(actionType: SecurityCodeErrorType) {
     default:
       return false;
   }
+}
+
+function timestampNMinutesFromNow(durationInMinutes: number): string {
+  return new Date(Date.now() + durationInMinutes * 60000).toUTCString();
 }
