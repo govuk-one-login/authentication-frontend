@@ -14,16 +14,17 @@ import {
 } from "../../config";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
-  const isNotEmailCode =
-    req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries &&
-    req.query.actionType !==
-      SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries &&
-    req.query.actionType !==
-      SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries;
+  const isEmailCode = [
+    SecurityCodeErrorType.EmailMaxRetries,
+    SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries,
+    SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries,
+  ]
+    .map((e) => e.valueOf())
+    .includes(req.query.actionType.toString());
 
   let showFifteenMinutesParagraph = false;
 
-  if (isNotEmailCode) {
+  if (!isEmailCode) {
     req.session.user.wrongCodeEnteredLock = new Date(
       Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
     ).toUTCString();
@@ -58,8 +59,8 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
         !req.session.user.isAccountPartCreated &&
         !req.session.user.isAccountRecoveryJourney) ||
       req.session.user.isPasswordResetJourney ||
-      (!isNotEmailCode && !req.session.user.isAccountCreationJourney) ||
-      (!isNotEmailCode && req.session.user.isAccountRecoveryJourney)
+      (isEmailCode && !req.session.user.isAccountCreationJourney) ||
+      (isEmailCode && req.session.user.isAccountRecoveryJourney)
     ) {
       show2HrScreen = true;
     }
@@ -71,7 +72,7 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
       req.session.user.isAccountCreationJourney
     ),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
-    isBlocked: isNotEmailCode || showFifteenMinutesParagraph,
+    isBlocked: !isEmailCode || showFifteenMinutesParagraph,
     show2HrScreen: show2HrScreen,
   });
 }
