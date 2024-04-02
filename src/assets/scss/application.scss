@@ -24,6 +24,8 @@
 @import "components/table/table";
 @import "components/warning-text/warning-text";
 
+@import "../../../node_modules/@govuk-one-login/one-login-language-toggle/stylesheet/styles";
+
 .interrupt-screen {
   background-color: #1d70b8;
   padding: 30px;

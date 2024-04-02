@@ -179,6 +179,10 @@ export function supportReauthentication(): boolean {
   return process.env.SUPPORT_REAUTHENTICATION === "1";
 }
 
+export function getLanguageToggleEnabled(): boolean {
+  return process.env.LANGUAGE_TOGGLE_ENABLED === "1";
+}
+
 export function getEmailEnteredWrongBlockDurationInMinutes(): number {
   return Number(process.env.EMAIL_ENTERED_WRONG_BLOCKED_MINUTES) || 15;
 }

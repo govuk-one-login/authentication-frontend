@@ -2,6 +2,7 @@
 {% from "govuk/components/cookie-banner/macro.njk" import govukCookieBanner %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "one-login-language-toggle/macro.njk" import oneloginLanguageSelect %}
 
 {% block head %}
 
@@ -62,6 +63,25 @@
             html: phaseBannerText
         }) }}
         {% block beforeContent %}{% endblock %}
+        {% if showLanguageToggle %}
+          {{ oneloginLanguageSelect({
+            ariaLabel: 'general.languageToggle.ariaLabel' | translate,
+            activeLanguage: htmlLang,
+            class: "",
+            languages: [
+            { 
+              code: 'en',
+              text: 'English',
+              visuallyHidden: 'Change to English'
+            },
+            {
+              code:'cy',
+              text: 'Cymraeg',
+              visuallyHidden: 'Newid yr iaith ir Gymraeg'
+            }]
+          })
+          }}
+        {% endif %}
         {% if showBack %}
             {{ govukBackLink({
                 text: "general.back" | translate,

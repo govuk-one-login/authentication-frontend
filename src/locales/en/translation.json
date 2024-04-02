@@ -16,6 +16,9 @@
         "end": " will help us to improve it."
       }
     },
+    "languageToggle": {
+      "ariaLabel": "Choose Language"
+    },
     "authenticatorAppIssuer": "GOV.UK One Login",
     "yes": "Yes",
     "no": "No",
