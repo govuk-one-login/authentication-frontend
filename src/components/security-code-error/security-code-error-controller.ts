@@ -12,6 +12,7 @@ import {
   getPasswordResetCodeEnteredWrongBlockDurationInMinutes,
   support2hrLockout,
 } from "../../config";
+import { UserSession } from "../../types";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
   const actionType = req.query.actionType;
@@ -43,19 +44,9 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
       );
   }
 
-  let show2HrScreen = false;
-  if (support2hrLockout()) {
-    if (
-      (req.session.user.isSignInJourney &&
-        !req.session.user.isAccountPartCreated &&
-        !req.session.user.isAccountRecoveryJourney) ||
-      req.session.user.isPasswordResetJourney ||
-      (isEmailCode && !req.session.user.isAccountCreationJourney) ||
-      (isEmailCode && req.session.user.isAccountRecoveryJourney)
-    ) {
-      show2HrScreen = true;
-    }
-  }
+  const show2HrScreen =
+    support2hrLockout() &&
+    isJourneyWhere2HourLockoutScreenShown(req.session.user, isEmailCode);
 
   return res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(
@@ -172,4 +163,19 @@ function isAuthApp(actionType: SecurityCodeErrorType) {
 
 function timestampNMinutesFromNow(durationInMinutes: number): string {
   return new Date(Date.now() + durationInMinutes * 60000).toUTCString();
+}
+
+function isJourneyWhere2HourLockoutScreenShown(
+  user: UserSession,
+  isEmailCode: boolean
+): boolean {
+  return (
+    (user.isSignInJourney &&
+      !user.isAccountPartCreated &&
+      !user.isAccountRecoveryJourney) ||
+    user.isPasswordResetJourney ||
+    (isEmailCode && !user.isAccountCreationJourney) ||
+    (isEmailCode && user.isAccountRecoveryJourney) ||
+    false
+  );
 }
