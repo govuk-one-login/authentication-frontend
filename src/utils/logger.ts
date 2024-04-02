@@ -43,27 +43,30 @@ const loggerMiddleware = PinoHttp({
   logger,
   wrapSerializers: false,
   autoLogging: {
-    ignorePaths: [
-      "/public/scripts/all.js",
-      "/public/style.css",
-      "/public/scripts",
-      "/public/scripts/application.js",
-      "/public/scripts/analytics.js",
-      "/assets/images/govuk-crest-2x.png",
-      "/assets/fonts/bold-b542beb274-v2.woff2",
-      "/assets/fonts/bold-b542beb274-v2.woff2",
-      "/assets/images/favicon.ico",
-      "/assets/fonts/light-94a07e06a1-v2.woff2",
-    ],
+    ignore: (req) =>
+      [
+        "/public/scripts/cookies.js",
+        "/public/scripts/all.js",
+        "/public/style.css",
+        "/public/scripts",
+        "/public/scripts/application.js",
+        "/public/scripts/showPassword.js",
+        "/assets/images/govuk-crest.png",
+        "/assets/images/govuk-crest-2x.png",
+        "/assets/fonts/bold-b542beb274-v2.woff2",
+        "/assets/fonts/bold-b542beb274-v2.woff2",
+        "/assets/images/favicon.ico",
+        "/assets/fonts/light-94a07e06a1-v2.woff2",
+      ].includes(req.url),
   },
-  customErrorMessage: function (error, res) {
-    return "request errored with status code: " + res.statusCode;
+  customErrorMessage: function (_req, res) {
+    return `request errored with status code: ${res.statusCode}`;
   },
-  customSuccessMessage: function (res) {
+  customSuccessMessage: function (_req, res) {
     if (res.statusCode === 404) {
       return "resource not found";
     }
-    return `request completed with status code of:${res.statusCode}`;
+    return `request completed with status code of: ${res.statusCode}`;
   },
   customAttributeKeys: {
     responseTime: "timeTaken",

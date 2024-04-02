@@ -9,7 +9,6 @@ service_domain                = "sandpit.account.gov.uk"
 zone_id                       = "Z1031735QZMC84WYW1TP"
 session_expiry                = 300000
 gtm_id                        = ""
-support_language_cy           = "1"
 support_account_recovery      = "1"
 support_auth_orch_split       = "1"
 support_authorize_controller  = "1"

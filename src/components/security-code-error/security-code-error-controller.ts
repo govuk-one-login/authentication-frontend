@@ -84,7 +84,10 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
   }
 
   return res.render("security-code-error/index.njk", {
-    newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
+    newCodeLink: getNewCodePath(
+      req.query.actionType as SecurityCodeErrorType,
+      req.session.user.isAccountCreationJourney
+    ),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
     isBlocked: isNotEmailCode || showFifteenMinutesParagraph,
     show2HrScreen: show2HrScreen,
@@ -122,7 +125,10 @@ export function securityCodeTriesExceededGet(
   req.session.user;
 
   return res.render("security-code-error/index-too-many-requests.njk", {
-    newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
+    newCodeLink: getNewCodePath(
+      req.query.actionType as SecurityCodeErrorType,
+      req.session.user.isAccountCreationJourney
+    ),
     isResendCodeRequest: req.query.isResendCodeRequest,
     show2HrScreen: show2HrScreen,
     isAccountCreationJourney: req.session.user?.isAccountCreationJourney,
@@ -165,7 +171,10 @@ export function securityCodeEnteredExceededGet(
   });
 }
 
-export function getNewCodePath(actionType: SecurityCodeErrorType): string {
+export function getNewCodePath(
+  actionType: SecurityCodeErrorType,
+  isAccountCreationJourney?: boolean
+): string {
   switch (actionType) {
     case SecurityCodeErrorType.MfaMaxCodesSent:
     case SecurityCodeErrorType.MfaBlocked:
@@ -186,11 +195,17 @@ export function getNewCodePath(actionType: SecurityCodeErrorType): string {
     case SecurityCodeErrorType.OtpBlocked:
       return PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER;
     case SecurityCodeErrorType.OtpMaxRetries:
-      return pathWithQueryParam(
-        PATH_NAMES.RESEND_MFA_CODE,
-        "isResendCodeRequest",
-        "true"
-      );
+      return isAccountCreationJourney
+        ? pathWithQueryParam(
+            PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+            "isResendCodeRequest",
+            "true"
+          )
+        : pathWithQueryParam(
+            PATH_NAMES.RESEND_MFA_CODE,
+            "isResendCodeRequest",
+            "true"
+          );
     case SecurityCodeErrorType.EmailMaxCodesSent:
     case SecurityCodeErrorType.EmailBlocked:
       return PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;

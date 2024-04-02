@@ -55,6 +55,10 @@ describe("reset password check email controller", () => {
       const fakeService: ResetPasswordCheckEmailServiceInterface = {
         resetPasswordRequest: sinon.fake.returns({
           success: true,
+          data: {
+            mfaMethodType: "SMS",
+            phoneNumberLastThree: "123",
+          },
         }),
       } as unknown as ResetPasswordCheckEmailServiceInterface;
 
@@ -62,6 +66,9 @@ describe("reset password check email controller", () => {
         req as Request,
         res as Response
       );
+
+      expect(req.session.user.enterEmailMfaType).to.eq("SMS");
+      expect(req.session.user.redactedPhoneNumber).to.eq("123");
 
       expect(res.render).to.have.calledWith(
         "reset-password-check-email/index.njk"

@@ -32,6 +32,8 @@ jobs:
         run: yarn install
       - name: Check formatting
         run: yarn check-pretty
+      - name: Run lint
+        run: yarn lint
       - name: Build app
         run: yarn build
       - name: Run unit tests
@@ -40,8 +42,6 @@ jobs:
         run: yarn test:integration-no-clear-cov
       - name: Run test coverage
         run: yarn test:coverage
-      - name: Run lint
-        run: yarn lint
       - name: SonarCloud Scan
         if: ${{ github.actor != 'dependabot[bot]' }}
         uses: sonarsource/sonarcloud-github-action@master

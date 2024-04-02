@@ -22,7 +22,6 @@ services:
       ANALYTICS_COOKIE_DOMAIN: localhost
 
       SUPPORT_INTERNATIONAL_NUMBERS: ${SUPPORT_INTERNATIONAL_NUMBERS:?this should be set in your .env file.}
-      SUPPORT_LANGUAGE_CY: ${SUPPORT_LANGUAGE_CY:?this should be set in your .env file.}
       SUPPORT_ACCOUNT_RECOVERY: ${SUPPORT_ACCOUNT_RECOVERY:?this should be set in your .env file.}
       SUPPORT_AUTH_ORCH_SPLIT: ${SUPPORT_AUTH_ORCH_SPLIT:?this should be set in your .env file.}
 

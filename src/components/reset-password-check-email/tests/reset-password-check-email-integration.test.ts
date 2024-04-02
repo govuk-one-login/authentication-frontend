@@ -66,7 +66,7 @@ describe("Integration::reset password check email ", () => {
   });
 
   it("should return reset password check email page", (done) => {
-    nock(baseApi).post("/reset-password-request").once().reply(204);
+    nock(baseApi).post("/reset-password-request").once().reply(200);
     request(app).get("/reset-password-check-email").expect(200, done);
   });
 

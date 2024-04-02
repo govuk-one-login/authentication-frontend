@@ -70,6 +70,11 @@ service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailServic
       );
     }
 
+    if (result.success && req.session.user.enterEmailMfaType === undefined) {
+      req.session.user.enterEmailMfaType = result.data.mfaMethodType;
+      req.session.user.redactedPhoneNumber = result.data.phoneNumberLastThree;
+    }
+
     const getContentId = (url: Request) => {
       if (url.originalUrl.includes("csrf")) {
         return oplValues.resetPasswordResendEmail.csrf.contentId

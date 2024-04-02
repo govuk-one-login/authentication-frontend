@@ -831,4 +831,4 @@ function getNextState(
   };
 }
 
-export { getNextState, USER_JOURNEY_EVENTS };
+export { getNextState, USER_JOURNEY_EVENTS, authStateMachine };
