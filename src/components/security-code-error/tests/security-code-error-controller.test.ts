@@ -163,6 +163,32 @@ describe("security code  controller", () => {
         }
       );
     });
+
+    it(
+      "should render error page with RESEND_MFA_CODE_ACCOUNT_CREATION newCodeLink lockout page when user requested too many SMS OTPs" +
+        "in the account creation journey",
+      () => {
+        process.env.SUPPORT_2HR_LOCKOUT = "0";
+        req.session.user.isAccountCreationJourney = true;
+        req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
+
+        securityCodeTriesExceededGet(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWith(
+          "security-code-error/index-too-many-requests.njk",
+          {
+            newCodeLink: pathWithQueryParam(
+              PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+              "isResendCodeRequest",
+              "true"
+            ),
+            isResendCodeRequest: undefined,
+            isAccountCreationJourney: true,
+            support2hrLockout: false,
+          }
+        );
+      }
+    );
   });
 
   describe("securityCodeCannotRequestGet", () => {
@@ -315,32 +341,6 @@ describe("security code  controller", () => {
           isBlocked: true,
           show2HrScreen: false,
         });
-      }
-    );
-
-    it(
-      "should render error page with RESEND_MFA_CODE_ACCOUNT_CREATION newCodeLink lockout page when user requested too many SMS OTPs" +
-        "in the account creation journey",
-      () => {
-        process.env.SUPPORT_2HR_LOCKOUT = "0";
-        req.session.user.isAccountCreationJourney = true;
-        req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
-
-        securityCodeTriesExceededGet(req as Request, res as Response);
-
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk",
-          {
-            newCodeLink: pathWithQueryParam(
-              PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
-              "isResendCodeRequest",
-              "true"
-            ),
-            isResendCodeRequest: undefined,
-            isAccountCreationJourney: true,
-            support2hrLockout: false,
-          }
-        );
       }
     );
 
