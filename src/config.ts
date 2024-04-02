@@ -47,10 +47,6 @@ export function getRedisPort(): number {
   return Number(process.env.REDIS_PORT) ?? 6379;
 }
 
-export function supportInternationalNumbers(): boolean {
-  return process.env.SUPPORT_INTERNATIONAL_NUMBERS === "1";
-}
-
 export function supportAccountRecovery(): boolean {
   return process.env.SUPPORT_ACCOUNT_RECOVERY === "1";
 }
