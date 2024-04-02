@@ -232,7 +232,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
     statement {
       size_constraint_statement {
         comparison_operator = "GT"
-        size                = 4096
+        size                = 8192
         field_to_match {
           query_string {}
         }
