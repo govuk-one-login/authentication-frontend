@@ -24,7 +24,7 @@ import {
 } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants";
 
-describe("security code  controller", () => {
+describe("security code controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
@@ -42,153 +42,127 @@ describe("security code  controller", () => {
   });
 
   describe("securityCodeExpiredGet", () => {
-    it("should render invalid OTP code for EmailMaxRetries error when email OTP code has been invalid max number of times", () => {
-      req.query.actionType = SecurityCodeErrorType.EmailMaxRetries;
-
-      securityCodeInvalidGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("security-code-error/index.njk", {
-        newCodeLink: pathWithQueryParam(
-          PATH_NAMES.RESEND_EMAIL_CODE,
-          "requestNewCode",
-          "true"
-        ),
-        isAuthApp: false,
-        isBlocked: false,
-        show2HrScreen: false,
-      });
-    });
-
-    it("should render invalid OTP code for MfaMaxRetries error when email OTP code has been invalid max number of times", () => {
-      req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
-
-      securityCodeInvalidGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("security-code-error/index.njk", {
-        newCodeLink: pathWithQueryParam(
-          PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-          SECURITY_CODE_ERROR,
-          SecurityCodeErrorType.MfaMaxRetries
-        ),
-        isAuthApp: false,
-        isBlocked: true,
-        show2HrScreen: false,
-      });
-    });
-
-    it("should render invalid OTP code for AuthAppMfaMaxRetries error when email OTP code has been invalid max number of times", () => {
-      req.query.actionType = SecurityCodeErrorType.AuthAppMfaMaxRetries;
-
-      securityCodeInvalidGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("security-code-error/index.njk", {
-        newCodeLink: pathWithQueryParam(
-          PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-          SECURITY_CODE_ERROR,
-          SecurityCodeErrorType.AuthAppMfaMaxRetries
-        ),
-        isAuthApp: true,
-        isBlocked: true,
-        show2HrScreen: false,
-      });
-    });
-
-    it("should render invalid OTP code for OtpMaxRetries error when email OTP code has been invalid max number of times", () => {
-      req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
-
-      securityCodeInvalidGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("security-code-error/index.njk", {
-        newCodeLink: pathWithQueryParam(
-          PATH_NAMES.RESEND_MFA_CODE,
-          "isResendCodeRequest",
-          "true"
-        ),
-        isAuthApp: false,
-        isBlocked: true,
-        show2HrScreen: false,
-      });
-    });
-  });
-
-  describe("securityCodeTriesExceededGet", () => {
-    it("should render index-too-many-requests.njk for EmailMaxCodesSent when max number of codes have been sent", () => {
-      req.query.actionType = SecurityCodeErrorType.EmailMaxCodesSent;
-
-      securityCodeTriesExceededGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-too-many-requests.njk",
-        {
-          newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
-          isResendCodeRequest: undefined,
-          isAccountCreationJourney: undefined,
-          support2hrLockout: false,
-        }
-      );
-    });
-
-    it("should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent", () => {
-      req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
-
-      securityCodeTriesExceededGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-too-many-requests.njk",
-        {
+    [
+      {
+        actionType: SecurityCodeErrorType.EmailMaxRetries,
+        expectedRenderOptions: {
+          newCodeLink: pathWithQueryParam(
+            PATH_NAMES.RESEND_EMAIL_CODE,
+            "requestNewCode",
+            "true"
+          ),
+          isAuthApp: false,
+          isBlocked: false,
+          show2HrScreen: false,
+        },
+      },
+      {
+        actionType: SecurityCodeErrorType.MfaMaxRetries,
+        expectedRenderOptions: {
           newCodeLink: pathWithQueryParam(
             PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
             SECURITY_CODE_ERROR,
             SecurityCodeErrorType.MfaMaxRetries
           ),
-          isResendCodeRequest: undefined,
-          isAccountCreationJourney: undefined,
-          support2hrLockout: false,
-        }
-      );
+          isAuthApp: false,
+          isBlocked: true,
+          show2HrScreen: false,
+        },
+      },
+      {
+        actionType: SecurityCodeErrorType.AuthAppMfaMaxRetries,
+        expectedRenderOptions: {
+          newCodeLink: pathWithQueryParam(
+            PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
+            SECURITY_CODE_ERROR,
+            SecurityCodeErrorType.AuthAppMfaMaxRetries
+          ),
+          isAuthApp: true,
+          isBlocked: true,
+          show2HrScreen: false,
+        },
+      },
+      {
+        actionType: SecurityCodeErrorType.OtpMaxRetries,
+        expectedRenderOptions: {
+          newCodeLink: pathWithQueryParam(
+            PATH_NAMES.RESEND_MFA_CODE,
+            "isResendCodeRequest",
+            "true"
+          ),
+          isAuthApp: false,
+          isBlocked: true,
+          show2HrScreen: false,
+        },
+      },
+    ].forEach(({ actionType, expectedRenderOptions }) => {
+      it(`should render invalid OTP code for ${actionType} error when email OTP code has been invalid max number of times`, () => {
+        req.session.user = {
+          email: "joe.bloggs@test.com",
+        };
+        req.query.actionType = actionType;
+
+        securityCodeInvalidGet(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWith(
+          "security-code-error/index.njk",
+          expectedRenderOptions
+        );
+      });
     });
+  });
 
-    it("should render index-too-many-requests.njk for OtpMaxCodesSent when max number of codes have been sent", () => {
-      req.query.actionType = SecurityCodeErrorType.OtpMaxCodesSent;
+  describe("securityCodeTriesExceededGet", () => {
+    const TEST_SCENARIO_PARAMETERS = [
+      {
+        actionType: SecurityCodeErrorType.EmailMaxCodesSent,
+        newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
+        isAccountCreationJourney: undefined,
+      },
+      {
+        actionType: SecurityCodeErrorType.MfaMaxRetries,
+        newCodeLink: pathWithQueryParam(
+          PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
+          SECURITY_CODE_ERROR,
+          SecurityCodeErrorType.MfaMaxRetries
+        ),
+        isAccountCreationJourney: undefined,
+      },
+      {
+        actionType: SecurityCodeErrorType.OtpMaxCodesSent,
+        newCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
+        isAccountCreationJourney: undefined,
+      },
+      {
+        actionType: SecurityCodeErrorType.OtpMaxRetries,
+        newCodeLink: pathWithQueryParam(
+          PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+          "isResendCodeRequest",
+          "true"
+        ),
+        isAccountCreationJourney: true,
+      },
+    ];
 
-      securityCodeTriesExceededGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-too-many-requests.njk",
-        {
-          newCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
-          isResendCodeRequest: undefined,
-          isAccountCreationJourney: undefined,
-          support2hrLockout: false,
-        }
-      );
-    });
-
-    it(
-      "should render error page with RESEND_MFA_CODE_ACCOUNT_CREATION newCodeLink lockout page when user requested too many SMS OTPs" +
-        "in the account creation journey",
-      () => {
-        process.env.SUPPORT_2HR_LOCKOUT = "0";
-        req.session.user.isAccountCreationJourney = true;
-        req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
+    TEST_SCENARIO_PARAMETERS.forEach(function (params) {
+      it(`should render index-too-many-requests.njk for ${params.actionType} when max number of codes have been sent`, () => {
+        req.query.actionType = params.actionType;
+        req.session.user.isAccountCreationJourney =
+          params.isAccountCreationJourney;
 
         securityCodeTriesExceededGet(req as Request, res as Response);
 
         expect(res.render).to.have.calledWith(
           "security-code-error/index-too-many-requests.njk",
           {
-            newCodeLink: pathWithQueryParam(
-              PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
-              "isResendCodeRequest",
-              "true"
-            ),
+            newCodeLink: params.newCodeLink,
             isResendCodeRequest: undefined,
-            isAccountCreationJourney: true,
+            isAccountCreationJourney: params.isAccountCreationJourney,
             support2hrLockout: false,
           }
         );
-      }
-    );
+      });
+    });
   });
 
   describe("securityCodeCannotRequestGet", () => {
