@@ -13,6 +13,7 @@ import {
   support2hrLockout,
 } from "../../config";
 import { UserSession } from "../../types";
+import { timestampNMinutesFromNow } from "../../utils/lock-helper";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
   const actionType = req.query.actionType;
@@ -159,10 +160,6 @@ function isAuthApp(actionType: SecurityCodeErrorType) {
     default:
       return false;
   }
-}
-
-function timestampNMinutesFromNow(durationInMinutes: number): string {
-  return new Date(Date.now() + durationInMinutes * 60000).toUTCString();
 }
 
 function isJourneyWhere2HourLockoutScreenShown(

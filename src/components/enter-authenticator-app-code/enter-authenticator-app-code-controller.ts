@@ -23,6 +23,7 @@ import {
 } from "../../utils/validation";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
+import { isLocked } from "../../utils/lock-helper";
 
 export const ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME =
   "enter-authenticator-app-code/index.njk";
@@ -39,11 +40,7 @@ export function enterAuthenticatorAppCodeGet(
       ? UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
       : ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME;
 
-    if (
-      req.session.user.wrongCodeEnteredLock &&
-      new Date().getTime() <
-        new Date(req.session.user.wrongCodeEnteredLock).getTime()
-    ) {
+    if (isLocked(req.session.user.wrongCodeEnteredLock)) {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {

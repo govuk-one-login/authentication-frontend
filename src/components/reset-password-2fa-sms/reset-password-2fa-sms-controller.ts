@@ -22,6 +22,7 @@ import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { support2hrLockout } from "../../config";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
+import { isLocked } from "../../utils/lock-helper";
 
 const TEMPLATE_NAME = "reset-password-2fa-sms/index.njk";
 const RESEND_CODE_LINK = pathWithQueryParam(
@@ -37,11 +38,7 @@ export function resetPassword2FASmsGet(
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
-    if (
-      req.session.user.wrongCodeEnteredLock &&
-      new Date().getTime() <
-        new Date(req.session.user.wrongCodeEnteredLock).getTime()
-    ) {
+    if (isLocked(req.session.user.wrongCodeEnteredLock)) {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
@@ -50,11 +47,7 @@ export function resetPassword2FASmsGet(
         }
       );
     }
-    if (
-      req.session.user.codeRequestLock &&
-      new Date().getTime() <
-        new Date(req.session.user.codeRequestLock).getTime()
-    ) {
+    if (isLocked(req.session.user.codeRequestLock)) {
       return res.render("security-code-error/index-wait.njk", {
         newCodeLink: getNewCodePath(
           req.query.actionType as SecurityCodeErrorType

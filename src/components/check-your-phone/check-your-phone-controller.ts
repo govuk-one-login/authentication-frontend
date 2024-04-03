@@ -25,6 +25,7 @@ import { BadRequestError } from "../../utils/error";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 import { support2hrLockout } from "../../config";
+import { isLocked } from "../../utils/lock-helper";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";
 const RESEND_CODE_LINK = pathWithQueryParam(
@@ -34,10 +35,7 @@ const RESEND_CODE_LINK = pathWithQueryParam(
 );
 
 export function checkYourPhoneGet(req: Request, res: Response): void {
-  if (
-    req.session.user.codeRequestLock &&
-    new Date().getTime() < new Date(req.session.user.codeRequestLock).getTime()
-  ) {
+  if (isLocked(req.session.user.codeRequestLock)) {
     return res.render("security-code-error/index-wait.njk", {
       newCodeLink: RESEND_CODE_LINK,
       support2hrLockout: support2hrLockout(),

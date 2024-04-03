@@ -11,6 +11,7 @@ import { NOTIFICATION_TYPE } from "../../app.constants";
 import { support2FABeforePasswordReset, support2hrLockout } from "../../config";
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
+import { isLocked } from "../../utils/lock-helper";
 
 const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
@@ -36,11 +37,7 @@ export function resetPasswordCheckEmailGet(
       );
     }
 
-    if (
-      req.session.user.wrongCodeEnteredPasswordResetLock &&
-      new Date().getTime() <
-        new Date(req.session.user.wrongCodeEnteredPasswordResetLock).getTime()
-    ) {
+    if (isLocked(req.session.user.wrongCodeEnteredPasswordResetLock)) {
       const newCodeLink = req.query?.isResendCodeRequest
         ? "/security-code-check-time-limit?isResendCodeRequest=true"
         : "/security-code-check-time-limit";

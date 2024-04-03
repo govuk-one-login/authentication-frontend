@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
-import { ExpressRouteFunc, UserSession } from "../../types";
+import { ExpressRouteFunc } from "../../types";
 import { enterEmailService } from "./enter-email-service";
 import { EnterEmailServiceInterface } from "./types";
 import {
@@ -26,6 +26,7 @@ import {
   renderBadRequest,
 } from "../../utils/validation";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
+import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -38,7 +39,7 @@ export function enterEmailGet(req: Request, res: Response): void {
   const isReAuthenticationRequired = req.session.user.reauthenticate;
 
   if (supportReauthentication() && isReAuthenticationRequired) {
-    if (isUserLockedOut(req.session.user)) {
+    if (isLocked(req.session.user.wrongEmailEnteredLock)) {
       return res.render(BLOCKED_TEMPLATE);
     }
     return res.render(RE_ENTER_EMAIL_TEMPLATE);
@@ -73,7 +74,7 @@ export function enterEmailPost(
       );
 
       if (!checkReauth.success) {
-        if (isUserLockedOut(req.session.user)) {
+        if (isLocked(req.session.user.wrongEmailEnteredLock)) {
           return res.render(BLOCKED_TEMPLATE);
         }
 
@@ -212,20 +213,10 @@ export function enterEmailCreatePost(
   };
 }
 
-function isUserLockedOut(userSession: UserSession) {
-  const lockTimestamp = userSession.wrongEmailEnteredLock;
-  return lockTimestamp && new Date() < new Date(lockTimestamp);
-}
-
-function lockUser(userSession: UserSession) {
-  const lockDurationInMinutes = getEmailEnteredWrongBlockDurationInMinutes();
-  userSession.wrongEmailEnteredLock = new Date(
-    Date.now() + lockDurationInMinutes * 60000
-  ).toUTCString();
-}
-
 function handleSessionBlocked(req: Request, res: Response) {
-  lockUser(req.session.user);
+  req.session.user.wrongEmailEnteredLock = timestampNMinutesFromNow(
+    getEmailEnteredWrongBlockDurationInMinutes()
+  );
   return res.render(BLOCKED_TEMPLATE);
 }
 

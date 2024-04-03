@@ -12,6 +12,7 @@ import { SendNotificationServiceInterface } from "../../common/send-notification
 import { sendNotificationService } from "../../common/send-notification/send-notification-service";
 import { BadRequestError } from "../../../utils/error";
 import { support2hrLockout } from "../../../config";
+import { isLocked } from "../../../utils/lock-helper";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
   const newCodeLink = req.query?.isResendCodeRequest
@@ -22,19 +23,12 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
       )
     : PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
 
-  if (
-    req.session.user.wrongCodeEnteredLock &&
-    new Date().getTime() <
-      new Date(req.session.user.wrongCodeEnteredLock).getTime()
-  ) {
+  if (isLocked(req.session.user.wrongCodeEnteredLock)) {
     res.render("security-code-error/index-security-code-entered-exceeded.njk", {
       newCodeLink: newCodeLink,
       isAuthApp: false,
     });
-  } else if (
-    req.session.user.codeRequestLock &&
-    new Date().getTime() < new Date(req.session.user.codeRequestLock).getTime()
-  ) {
+  } else if (isLocked(req.session.user.codeRequestLock)) {
     res.render("security-code-error/index-wait.njk", {
       newCodeLink,
       support2hrLockout: support2hrLockout(),
