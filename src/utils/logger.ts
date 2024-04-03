@@ -45,7 +45,7 @@ const loggerMiddleware = PinoHttp({
   autoLogging: {
     ignore: (req) =>
       [
-        "/public/scripts/cookies.js",
+        "/public/scripts/analytics.js",
         "/public/scripts/all.js",
         "/public/style.css",
         "/public/scripts",
