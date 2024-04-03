@@ -18,6 +18,7 @@ import {
   getCodeEnteredWrongBlockDurationInMinutes,
   support2hrLockout,
 } from "../../config";
+import { timestampNMinutesFromNow } from "../../utils/lock-helper";
 
 const TEMPLATE_NAME = "reset-password-2fa-auth-app/index.njk";
 export function resetPassword2FAAuthAppGet(): ExpressRouteFunc {
@@ -70,9 +71,9 @@ export function resetPassword2FAAuthAppPost(
         result.data.code ===
         ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED
       ) {
-        req.session.user.wrongCodeEnteredLock = new Date(
-          Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
-        ).toUTCString();
+        req.session.user.wrongCodeEnteredLock = timestampNMinutesFromNow(
+          getCodeEnteredWrongBlockDurationInMinutes()
+        );
       }
 
       const path = getErrorPathByCode(result.data.code);
