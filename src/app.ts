@@ -79,7 +79,6 @@ import { setupAuthenticatorAppRouter } from "./components/setup-authenticator-ap
 import { enterAuthenticatorAppCodeRouter } from "./components/enter-authenticator-app-code/enter-authenticator-app-code-routes";
 import { cookiesRouter } from "./components/common/cookies/cookies-routes";
 import { errorPageRouter } from "./components/common/errors/error-routes";
-import { setInternationalPhoneNumberSupportMiddleware } from "./middleware/set-international-phone-number-support-middleware";
 import { checkYourEmailSecurityCodesRouter } from "./components/account-recovery/check-your-email-security-codes/check-your-email-security-codes-routes";
 import { changeSecurityCodesConfirmationRouter } from "./components/account-recovery/change-security-codes-confirmation/change-security-codes-confirmation-routes";
 import { outboundContactUsLinksMiddleware } from "./middleware/outbound-contact-us-links-middleware";
@@ -207,7 +206,6 @@ async function createApp(): Promise<express.Application> {
   app.use(setHtmlLangMiddleware);
   app.use(initialiseSessionMiddleware);
   app.use(crossDomainTrackingMiddleware);
-  app.use(setInternationalPhoneNumberSupportMiddleware);
   app.use(outboundContactUsLinksMiddleware);
 
   registerRoutes(app);

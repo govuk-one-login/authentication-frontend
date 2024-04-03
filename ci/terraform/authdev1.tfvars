@@ -12,12 +12,13 @@ gtm_id                        = ""
 support_account_recovery      = "1"
 support_auth_orch_split       = "1"
 support_authorize_controller  = "1"
-support_international_numbers = "1"
 support_2fa_b4_password_reset = "1"
 
 frontend_task_definition_cpu     = 256
 frontend_task_definition_memory  = 512
 frontend_auto_scaling_v2_enabled = true
+
+alb_idle_timeout = 30
 
 url_for_support_links = "https://home.build.account.gov.uk/contact-gov-uk-one-login"
 

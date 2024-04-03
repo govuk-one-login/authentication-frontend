@@ -25,10 +25,6 @@ variable "support_account_recovery" {
   type = string
 }
 
-variable "support_international_numbers" {
-  type = string
-}
-
 variable "support_auth_orch_split" {
   type    = string
   default = "0"
@@ -260,4 +256,9 @@ variable "support_reauthentication" {
 variable "email_entered_wrong_blocked_minutes" {
   description = "The duration, in minutes, for which a user is blocked after entering the wrong email multiple times during reauthentication"
   default     = "15"
+}
+
+variable "alb_idle_timeout" {
+  description = "Frontend Application Load Balancer idle timeout"
+  default     = 60
 }

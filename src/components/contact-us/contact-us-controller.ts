@@ -449,7 +449,6 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     pageTitleHeading: pageTitle,
     contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
     contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-    ipnSupport: res.locals.ipnSupport,
     appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
     appSessionId: getAppSessionId(req.query.appSessionId as string),
   });

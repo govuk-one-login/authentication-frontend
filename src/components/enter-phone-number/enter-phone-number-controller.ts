@@ -13,11 +13,7 @@ import { SendNotificationServiceInterface } from "../common/send-notification/ty
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number";
-import {
-  support2hrLockout,
-  supportAccountRecovery,
-  supportInternationalNumbers,
-} from "../../config";
+import { support2hrLockout, supportAccountRecovery } from "../../config";
 import xss from "xss";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 
@@ -42,7 +38,6 @@ export function enterPhoneNumberGet(req: Request, res: Response): void {
   isAccountRecoveryEnabledForEnvironment;
 
   res.render("enter-phone-number/index.njk", {
-    supportInternationalNumbers: supportInternationalNumbers() ? true : null,
     isAccountPartCreated: req.session.user.isAccountPartCreated,
     contentId: accountRecovery ? oplValues.accountRecovery.contentId : oplValues.createAccount.contentId,
     taxonomyLevel2: accountRecovery ? oplValues.accountRecovery.taxonomyLevel2 : oplValues.createAccount.taxonomyLevel2
@@ -60,10 +55,7 @@ export function enterPhoneNumberPost(
     const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
     let phoneNumber;
 
-    if (
-      hasInternationalPhoneNumber === "true" &&
-      supportInternationalNumbers()
-    ) {
+    if (hasInternationalPhoneNumber === "true") {
       phoneNumber = convertInternationalPhoneNumberToE164Format(
         req.body.internationalPhoneNumber
       );
