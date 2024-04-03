@@ -1,20 +1,26 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { timestampNMinutesFromNow } from "../../../src/utils/lock-helper";
+import {
+  isLocked,
+  timestampNMinutesFromNow,
+} from "../../../src/utils/lock-helper";
 import sinon from "sinon";
 describe("lockout-helper", () => {
-  describe("timestampNMinutesFromNow", () => {
-    let clock: sinon.SinonFakeTimers;
-    afterEach(() => {
-      clock.restore();
+  let clock: sinon.SinonFakeTimers;
+  const date = new Date(2024, 1, 1);
+  before(() => {
+    clock = sinon.useFakeTimers({
+      now: date.valueOf(),
+      shouldAdvanceTime: true,
     });
-    it("should return the correct timestamp from the current datetime", () => {
-      const date = new Date(2024, 1, 1);
-      clock = sinon.useFakeTimers({
-        now: date.valueOf(),
-        shouldAdvanceTime: true,
-      });
+  });
 
+  after(() => {
+    clock.restore();
+  });
+
+  describe("timestampNMinutesFromNow", () => {
+    it("should return the correct timestamp from the current datetime", () => {
       const TEST_SCENARIO_PARAMS = [
         {
           numberOfMinutes: 1,
@@ -30,6 +36,33 @@ describe("lockout-helper", () => {
         expect(timestampNMinutesFromNow(params.numberOfMinutes)).to.eq(
           params.expectedTimestamp
         );
+      });
+    });
+  });
+
+  describe("checkIfLocked", () => {
+    it("should correctly determine if a user is locked", () => {
+      const TEST_SCENARIO_PARAMS = [
+        {
+          lockoutExpiry: new Date(date.getTime() + 1 * 60000).toUTCString(),
+          expectedLockedOut: true,
+        },
+        {
+          lockoutExpiry: new Date(date.getTime() - 1 * 60000).toUTCString(),
+          expectedLockedOut: false,
+        },
+        {
+          lockoutExpiry: undefined,
+          expectedLockedOut: undefined,
+        },
+        {
+          lockoutExpiry: date.toUTCString(),
+          expectedLockedOut: false,
+        },
+      ];
+
+      TEST_SCENARIO_PARAMS.forEach((params) => {
+        expect(isLocked(params.lockoutExpiry)).to.eq(params.expectedLockedOut);
       });
     });
   });

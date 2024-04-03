@@ -11,17 +11,12 @@ import { SendNotificationServiceInterface } from "../common/send-notification/ty
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import xss from "xss";
 import { support2hrLockout } from "../../config";
+import { isLocked } from "../../utils/lock-helper";
 
 export function resendEmailCodeGet(req: Request, res: Response): void {
   if (
-    (req.session.user.wrongCodeEnteredAccountRecoveryLock &&
-      new Date().getTime() <
-        new Date(
-          req.session.user.wrongCodeEnteredAccountRecoveryLock
-        ).getTime()) ||
-    (req.session.user.wrongCodeEnteredPasswordResetLock &&
-      new Date().getTime() <
-        new Date(req.session.user.wrongCodeEnteredPasswordResetLock).getTime())
+    isLocked(req.session.user.wrongCodeEnteredAccountRecoveryLock) ||
+    isLocked(req.session.user.wrongCodeEnteredPasswordResetLock)
   ) {
     const newCodeLink = req.query?.isResendCodeRequest
       ? "/security-code-check-time-limit?isResendCodeRequest=true"
@@ -113,11 +108,7 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { sessionId } = res.locals;
     const isAccountRecoveryJourney = req.session.user?.isAccountRecoveryJourney;
-    if (
-      req.session.user.codeRequestLock &&
-      new Date().getTime() <
-        new Date(req.session.user.codeRequestLock).getTime()
-    ) {
+    if (isLocked(req.session.user.codeRequestLock)) {
       const newCodeLink = req.query?.isResendCodeRequest
         ? "/security-code-check-time-limit?isResendCodeRequest=true"
         : "/security-code-check-time-limit";
