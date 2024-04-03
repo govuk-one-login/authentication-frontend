@@ -12,58 +12,41 @@ import {
   getPasswordResetCodeEnteredWrongBlockDurationInMinutes,
   support2hrLockout,
 } from "../../config";
+import { UserSession } from "../../types";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
-  const isNotEmailCode =
-    req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries &&
-    req.query.actionType !==
-      SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries &&
-    req.query.actionType !==
-      SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries;
+  const actionType = req.query.actionType;
+  const isEmailCode = [
+    SecurityCodeErrorType.EmailMaxRetries,
+    SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries,
+    SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries,
+  ]
+    .map((e) => e.valueOf())
+    .includes(actionType.toString());
 
-  let showFifteenMinutesParagraph = false;
-
-  if (isNotEmailCode) {
-    req.session.user.wrongCodeEnteredLock = new Date(
-      Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
-    ).toUTCString();
+  if (!isEmailCode) {
+    req.session.user.wrongCodeEnteredLock = timestampNMinutesFromNow(
+      getCodeEnteredWrongBlockDurationInMinutes()
+    );
   }
 
-  if (
-    req.query.actionType ===
-    SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries
-  ) {
-    showFifteenMinutesParagraph = true;
-    req.session.user.wrongCodeEnteredAccountRecoveryLock = new Date(
-      Date.now() +
-        getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes() * 60000
-    ).toUTCString();
+  if (actionType === SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries) {
+    req.session.user.wrongCodeEnteredAccountRecoveryLock =
+      timestampNMinutesFromNow(
+        getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes()
+      );
   }
 
-  if (
-    req.query.actionType ===
-    SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries
-  ) {
-    showFifteenMinutesParagraph = true;
-    req.session.user.wrongCodeEnteredPasswordResetLock = new Date(
-      Date.now() +
-        getPasswordResetCodeEnteredWrongBlockDurationInMinutes() * 60000
-    ).toUTCString();
+  if (actionType === SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries) {
+    req.session.user.wrongCodeEnteredPasswordResetLock =
+      timestampNMinutesFromNow(
+        getPasswordResetCodeEnteredWrongBlockDurationInMinutes()
+      );
   }
 
-  let show2HrScreen = false;
-  if (support2hrLockout()) {
-    if (
-      (req.session.user.isSignInJourney &&
-        !req.session.user.isAccountPartCreated &&
-        !req.session.user.isAccountRecoveryJourney) ||
-      req.session.user.isPasswordResetJourney ||
-      (!isNotEmailCode && !req.session.user.isAccountCreationJourney) ||
-      (!isNotEmailCode && req.session.user.isAccountRecoveryJourney)
-    ) {
-      show2HrScreen = true;
-    }
-  }
+  const show2HrScreen =
+    support2hrLockout() &&
+    isJourneyWhere2HourLockoutScreenShown(req.session.user, isEmailCode);
 
   return res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(
@@ -71,7 +54,7 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
       req.session.user.isAccountCreationJourney
     ),
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
-    isBlocked: isNotEmailCode || showFifteenMinutesParagraph,
+    isBlocked: actionType !== SecurityCodeErrorType.EmailMaxRetries,
     show2HrScreen: show2HrScreen,
   });
 }
@@ -80,26 +63,9 @@ export function securityCodeTriesExceededGet(
   req: Request,
   res: Response
 ): void {
-  req.session.user.codeRequestLock = new Date(
-    Date.now() + getCodeRequestBlockDurationInMinutes() * 60000
-  ).toUTCString();
-  const isNotEmailCode =
-    req.query.actionType !== SecurityCodeErrorType.EmailMaxRetries &&
-    req.query.actionType !==
-      SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries &&
-    req.query.actionType !==
-      SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries;
-
-  let show2HrScreen = false;
-  if (support2hrLockout()) {
-    show2HrScreen =
-      (req.session.user.isSignInJourney &&
-        !req.session.user.isAccountPartCreated &&
-        !req.session.user.isAccountRecoveryJourney) ||
-      req.session.user.isPasswordResetJourney ||
-      req.session.user.isAccountRecoveryJourney ||
-      (!isNotEmailCode && !req.session.user.isAccountCreationJourney);
-  }
+  req.session.user.codeRequestLock = timestampNMinutesFromNow(
+    getCodeRequestBlockDurationInMinutes()
+  );
 
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(
@@ -107,7 +73,6 @@ export function securityCodeTriesExceededGet(
       req.session.user.isAccountCreationJourney
     ),
     isResendCodeRequest: req.query.isResendCodeRequest,
-    show2HrScreen: show2HrScreen,
     isAccountCreationJourney: req.session.user?.isAccountCreationJourney,
     support2hrLockout: support2hrLockout(),
   });
@@ -194,4 +159,23 @@ function isAuthApp(actionType: SecurityCodeErrorType) {
     default:
       return false;
   }
+}
+
+function timestampNMinutesFromNow(durationInMinutes: number): string {
+  return new Date(Date.now() + durationInMinutes * 60000).toUTCString();
+}
+
+function isJourneyWhere2HourLockoutScreenShown(
+  user: UserSession,
+  isEmailCode: boolean
+): boolean {
+  return (
+    (user.isSignInJourney &&
+      !user.isAccountPartCreated &&
+      !user.isAccountRecoveryJourney) ||
+    user.isPasswordResetJourney ||
+    (isEmailCode && !user.isAccountCreationJourney) ||
+    (isEmailCode && user.isAccountRecoveryJourney) ||
+    false
+  );
 }
