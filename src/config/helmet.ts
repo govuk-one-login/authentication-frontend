@@ -1,6 +1,5 @@
 import helmet from "helmet";
 import e, { Request, Response } from "express";
-import { supportFrameAncestorsFormActionsCspHeaders } from "../config";
 // Helmet does not export the config type - This is the way the recommend getting it on GitHub.
 export function helmetConfiguration(): Parameters<typeof helmet>[0] {
   const helmetConfig: {
@@ -62,11 +61,9 @@ export function helmetConfiguration(): Parameters<typeof helmet>[0] {
     permittedCrossDomainPolicies: false,
     expectCt: false,
   };
-  if (supportFrameAncestorsFormActionsCspHeaders()) {
-    helmetConfig.contentSecurityPolicy.directives["frame-ancestors"] = [
-      "'self'",
-      "https://*.account.gov.uk",
-    ];
-  }
+  helmetConfig.contentSecurityPolicy.directives["frame-ancestors"] = [
+    "'self'",
+    "https://*.account.gov.uk",
+  ];
   return helmetConfig;
 }
