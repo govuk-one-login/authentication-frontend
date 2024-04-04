@@ -57,8 +57,11 @@ export function resetPasswordCheckEmailGet(
 
     if (!requestCode || result.success) {
       const support2FABeforePasswordResetFlag = support2FABeforePasswordReset();
+      const isForcedPasswordResetJourney =
+        req.session.user.withinForcedPasswordResetJourney || false;
       return res.render(TEMPLATE_NAME, {
         support2FABeforePasswordResetFlag,
+        isForcedPasswordResetJourney,
         email,
       });
     }
