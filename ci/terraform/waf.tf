@@ -250,6 +250,39 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
     }
   }
 
+  rule {
+    name     = "contact_us_logging_count"
+    priority = 90
+
+    action {
+      count {}
+    }
+
+    rule_label {
+      name = "contact-us"
+    }
+
+    statement {
+      byte_match_statement {
+        positional_constraint = "STARTS_WITH"
+        search_string         = "/contact-us"
+        field_to_match {
+          uri_path {}
+        }
+        text_transformation {
+          priority = 0
+          type     = "LOWERCASE"
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafContactUsCount"
+      sampled_requests_enabled   = true
+    }
+  }
+
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafRules"
@@ -272,15 +305,14 @@ resource "aws_wafv2_web_acl_logging_configuration" "frontend_alb_waf_logging_con
     default_behavior = "DROP"
 
     filter {
-      behavior = "DROP"
+      behavior    = "KEEP"
+      requirement = "MEETS_ALL"
 
       condition {
-        action_condition {
-          action = "BLOCK"
+        label_name_condition {
+          label_name = "awswaf:${data.aws_caller_identity.current.account_id}:webacl:${aws_wafv2_web_acl.frontend_alb_waf_regional_web_acl.name}:contact-us"
         }
       }
-
-      requirement = "MEETS_ANY"
     }
   }
 }

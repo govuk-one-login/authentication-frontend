@@ -121,3 +121,31 @@ resource "aws_cloudwatch_log_subscription_filter" "alb_waf_log_subscription" {
     create_before_destroy = false
   }
 }
+
+resource "aws_cloudwatch_log_resource_policy" "alb_waf_log_policy" {
+  policy_document = data.aws_iam_policy_document.alb_waf_log_policy_doc.json
+  policy_name     = "${var.environment}-frontend-waf-log-policy"
+}
+
+data "aws_iam_policy_document" "alb_waf_log_policy_doc" {
+  version = "2012-10-17"
+  statement {
+    effect = "Allow"
+    principals {
+      identifiers = ["delivery.logs.amazonaws.com"]
+      type        = "Service"
+    }
+    actions   = ["logs:CreateLogStream", "logs:PutLogEvents"]
+    resources = ["${aws_cloudwatch_log_group.alb_waf_log.arn}:*"]
+    condition {
+      test     = "ArnLike"
+      values   = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"]
+      variable = "aws:SourceArn"
+    }
+    condition {
+      test     = "StringEquals"
+      values   = [tostring(data.aws_caller_identity.current.account_id)]
+      variable = "aws:SourceAccount"
+    }
+  }
+}
