@@ -22,11 +22,7 @@
     <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph' | translate }}</p>
     <ul class="govuk-list govuk-list--bullet">
         <li>{{ 'pages.signInOrCreate.bullet1' | translate }}</li>
-        {% if supportInternationalNumbers %}
-            <li>{{ 'pages.signInOrCreate.bullet2IntNumbers' | translate }}</li>
-        {% else %}
-            <li>{{ 'pages.signInOrCreate.bullet2' | translate }}</li>
-        {% endif %}
+          <li>{{ 'pages.signInOrCreate.bullet2IntNumbers' | translate }}</li>
     </ul>
     {% set altLangInsetHtml %}
         {{ 'pages.signInOrCreate.insetAlternativeLanguage.paragraph1' | translate }}
