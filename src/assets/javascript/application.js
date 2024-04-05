@@ -52,14 +52,9 @@ window.DI.analyticsUa = window.DI.analyticsUa || {};
 
   function appInit() {
 
-    console.log("in the app init")
-    console.log(window.DI.analyticsGa4.cookie.hasConsentForAnalytics())
-
     window.GOVUKFrontend.initAll();
-    console.log("app init all done")
 
-    var cookies = window.GOVSignIn.Cookies(); // code errors here
-
+    var cookies = window.GOVSignIn.Cookies();
 
     if (window.DI.analyticsGa4.cookie.hasConsentForAnalytics()) {
       console.log("has consent for cookies!")
@@ -72,7 +67,7 @@ window.DI.analyticsUa = window.DI.analyticsUa || {};
   if (
     (initFeedbackRadioButtons(),
     initEnterPhoneNumber(),
-    e.GOVUK && e.GOVUK.Modules && e.GOVUK.Modules.ShowPassword)
+    e.GOVSignIn && e.GOVSignIn.Modules && e.GOVSignIn.Modules.ShowPassword)
   )
     for (
       var t = document.querySelectorAll('[data-module="show-password"]'),
@@ -81,8 +76,8 @@ window.DI.analyticsUa = window.DI.analyticsUa || {};
       n < o;
       n++
     )
-      GOVUK.Modules.ShowPassword.prototype.init &&
-        new GOVUK.Modules.ShowPassword(t[n]).init();
+      GOVSignIn.Modules.ShowPassword.prototype.init &&
+        new GOVSignIn.Modules.ShowPassword(t[n]).init();
 
     e.DI.analyticsUa.init = appInit;
 })(window);
