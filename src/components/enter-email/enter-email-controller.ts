@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { enterEmailService } from "./enter-email-service";
-import { EnterEmailServiceInterface } from "./types";
+import { EnterEmailServiceInterface, LockoutInformation } from "./types";
 import {
   ERROR_CODES,
   getErrorPathByCode,
@@ -116,6 +116,9 @@ export function enterEmailPost(
       }
       throw new BadRequestError(result.data.message, result.data.code);
     }
+
+    if (result.data.authAppLockoutInformation != null)
+      setUpLocks(req, result.data.authAppLockoutInformation);
     req.session.user.enterEmailMfaType = result.data.mfaMethodType;
     req.session.user.redactedPhoneNumber = result.data.phoneNumberLastThree;
     const nextState = result.data.doesUserExist
@@ -227,4 +230,24 @@ function handleBadRequest(
 ) {
   const error = formatValidationError("email", req.t(errorMessageKey));
   return renderBadRequest(res, req, RE_ENTER_EMAIL_TEMPLATE, error);
+}
+
+function setUpLocks(req: any, lockoutArray: LockoutInformation[]) {
+  lockoutArray.forEach(function (lockoutInformation) {
+    if (lockoutInformation.lockType == "codeBlock") {
+      const lockTime = timestampNMinutesFromNow(
+        parseInt(lockoutInformation.lockTTL)
+      );
+      switch (lockoutInformation.journeyType) {
+        case JOURNEY_TYPE.SIGN_IN:
+          req.session.user.wrongCodeEnteredLock = lockTime;
+          break;
+        case JOURNEY_TYPE.PASSWORD_RESET_MFA:
+          req.session.user.wrongCodeEnteredPasswordResetMfaLock = lockTime;
+          break;
+        default:
+          break;
+      }
+    }
+  });
 }
