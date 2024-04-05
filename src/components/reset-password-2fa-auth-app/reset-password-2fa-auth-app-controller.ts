@@ -23,7 +23,7 @@ import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper";
 const TEMPLATE_NAME = "reset-password-2fa-auth-app/index.njk";
 export function resetPassword2FAAuthAppGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    if (isLocked(req.session.user.wrongCodeEnteredLock)) {
+    if (isLocked(req.session.user.wrongCodeEnteredPasswordResetMfaLock)) {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
