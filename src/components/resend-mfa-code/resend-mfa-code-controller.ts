@@ -19,9 +19,7 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
       : PATH_NAMES.RESEND_MFA_CODE;
     res.render("security-code-error/index-security-code-entered-exceeded.njk", {
       newCodeLink: newCodeLink,
-      isAuthApp: false,
-      contentId: "4",
-      taxonomyLevel2: "4"
+      isAuthApp: false
     });
   } else if (isLocked(req.session.user.codeRequestLock)) {
     const newCodeLink = req.query?.isResendCodeRequest

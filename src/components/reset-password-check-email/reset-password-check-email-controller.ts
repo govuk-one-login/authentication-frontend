@@ -33,7 +33,7 @@ const oplValues = {
 };
 
 export function resetPasswordCheckEmailGet(
-service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailService()
+  service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;

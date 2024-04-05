@@ -30,7 +30,6 @@ const oplValues = {
   }
 };
 
-
 export function resetPasswordGet(req: Request, res: Response): void {
   res.render(resetPasswordTemplate, {
     contentId: oplValues.accountRecovery.contentId,

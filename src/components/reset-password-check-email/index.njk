@@ -11,7 +11,6 @@
 {% set currentPath = currentPath %}
     {% include "common/errors/errorSummary.njk" %}
 
-
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resetPasswordCheckEmail.header' | translate}}</h1>
 
     {% if support2FABeforePasswordResetFlag and not isForcedPasswordResetJourney %}

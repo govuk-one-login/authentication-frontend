@@ -104,7 +104,6 @@ export function securityCodeTriesExceededGet(
   });
 }
 
-
 export function securityCodeCannotRequestCodeGet(
   req: Request,
   res: Response

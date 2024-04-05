@@ -24,7 +24,6 @@ export function signInOrCreatePost(req: Request, res: Response): void {
         : USER_JOURNEY_EVENTS.SIGN_IN,
       null,
       res.locals.sessionId
-
     )
   );
 }
