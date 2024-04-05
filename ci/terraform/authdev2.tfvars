@@ -27,6 +27,4 @@ orch_to_auth_client_id          = "orchestrationAuth"
 orch_to_auth_audience           = "https://signin.authdev2.sandpit.account.gov.uk/"
 
 
-frame_ancestors_form_actions_csp_headers = "1"
-
 dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
