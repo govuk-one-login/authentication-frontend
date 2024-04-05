@@ -5,6 +5,13 @@ export interface UserExists extends DefaultApiResponse {
   doesUserExist: boolean;
   mfaMethodType: string;
   phoneNumberLastThree?: string;
+  authAppLockoutInformation?: LockoutInformation[];
+}
+export interface LockoutInformation {
+  lockType: string;
+  mfaMethodType: string;
+  lockTTL: string;
+  journeyType: string;
 }
 
 export interface EnterEmailServiceInterface {

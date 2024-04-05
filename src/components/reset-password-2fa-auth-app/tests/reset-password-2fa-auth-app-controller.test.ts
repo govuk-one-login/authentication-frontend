@@ -101,20 +101,21 @@ describe("reset password 2fa auth app controller", () => {
       );
     });
 
-    it("should render security code entered too many times page view when user is account is locked from entering security codes", async () => {
-      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
-      const date = new Date();
-      const futureDate = new Date(
-        date.setDate(date.getDate() + 6)
-      ).toUTCString();
-
+    it("should render security-code-error/index-security-code-entered-exceeded.njk when user was locked out in the current session for requesting too many security codes", async () => {
       req.session.user = {
         email: "joe.bloggs@test.com",
-        reauthenticate: "1234",
-        wrongCodeEnteredLock: futureDate,
       };
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      req.session.user.wrongCodeEnteredPasswordResetMfaLock =
+        tomorrow.toUTCString();
 
       await resetPassword2FAAuthAppGet()(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-security-code-entered-exceeded.njk"
+      );
     });
   });
 });
