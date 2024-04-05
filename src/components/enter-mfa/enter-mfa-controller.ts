@@ -21,6 +21,7 @@ import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
+import { isLocked } from "../../utils/lock-helper";
 
 export const ENTER_MFA_DEFAULT_TEMPLATE_NAME = "enter-mfa/index.njk";
 export const UPLIFT_REQUIRED_SMS_TEMPLATE_NAME =
@@ -34,9 +35,7 @@ export function enterMfaGet(
 
     if (
       support2hrLockout() &&
-      req.session.user.wrongCodeEnteredLock &&
-      new Date().getTime() <
-        new Date(req.session.user.wrongCodeEnteredLock).getTime()
+      isLocked(req.session.user.wrongCodeEnteredLock)
     ) {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
@@ -46,11 +45,7 @@ export function enterMfaGet(
         }
       );
     }
-    if (
-      req.session.user.codeRequestLock &&
-      new Date().getTime() <
-        new Date(req.session.user.codeRequestLock).getTime()
-    ) {
+    if (isLocked(req.session.user.codeRequestLock)) {
       return res.render("security-code-error/index-wait.njk", {
         newCodeLink: getNewCodePath(
           req.query.actionType as SecurityCodeErrorType

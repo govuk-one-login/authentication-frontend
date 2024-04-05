@@ -9,6 +9,7 @@ import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 import { support2hrLockout } from "../../config";
+import { isLocked } from "../../utils/lock-helper";
 
 const TEMPLATE_NAME = "check-your-email/index.njk";
 
@@ -32,10 +33,7 @@ const oplValues = {
 };
 
 export function checkYourEmailGet(req: Request, res: Response): void {
-  if (
-    req.session.user.codeRequestLock &&
-    new Date().getTime() < new Date(req.session.user.codeRequestLock).getTime()
-  ) {
+  if (isLocked(req.session.user.codeRequestLock)) {
     return res.render("security-code-error/index-wait.njk", {
       newCodeLink: getNewCodePath(
         req.query.actionType as SecurityCodeErrorType

@@ -11,6 +11,7 @@ import { NOTIFICATION_TYPE } from "../../app.constants";
 import { support2FABeforePasswordReset, support2hrLockout } from "../../config";
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
+import { isLocked } from "../../utils/lock-helper";
 
 const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
@@ -53,11 +54,7 @@ service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailServic
       );
     }
 
-    if (
-      req.session.user.wrongCodeEnteredPasswordResetLock &&
-      new Date().getTime() <
-        new Date(req.session.user.wrongCodeEnteredPasswordResetLock).getTime()
-    ) {
+    if (isLocked(req.session.user.wrongCodeEnteredPasswordResetLock)) {
       const newCodeLink = req.query?.isResendCodeRequest
         ? "/security-code-check-time-limit?isResendCodeRequest=true"
         : "/security-code-check-time-limit";
@@ -86,8 +83,11 @@ service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailServic
 
     if (!requestCode || result.success) {
       const support2FABeforePasswordResetFlag = support2FABeforePasswordReset();
+      const isForcedPasswordResetJourney =
+        req.session.user.withinForcedPasswordResetJourney || false;
       return res.render(TEMPLATE_NAME, {
         support2FABeforePasswordResetFlag,
+        isForcedPasswordResetJourney,
         email,
         currentPath: req.originalUrl,
         contentId: getContentId(req),

@@ -13,6 +13,7 @@ import {
   support2hrLockout,
 } from "../../config";
 import { UserSession } from "../../types";
+import { timestampNMinutesFromNow } from "../../utils/lock-helper";
 
 const oplValues = {
   mfaMaxRetries: {
@@ -195,10 +196,6 @@ function isAuthApp(actionType: SecurityCodeErrorType) {
     default:
       return false;
   }
-}
-
-function timestampNMinutesFromNow(durationInMinutes: number): string {
-  return new Date(Date.now() + durationInMinutes * 60000).toUTCString();
 }
 
 function isJourneyWhere2HourLockoutScreenShown(

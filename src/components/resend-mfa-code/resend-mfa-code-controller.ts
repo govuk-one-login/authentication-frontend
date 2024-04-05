@@ -6,13 +6,10 @@ import { sendMfaGeneric } from "../common/mfa/send-mfa-controller";
 import { PATH_NAMES } from "../../app.constants";
 import { pathWithQueryParam } from "../common/constants";
 import { support2hrLockout } from "../../config";
+import { isLocked } from "../../utils/lock-helper";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
-  if (
-    req.session.user.wrongCodeEnteredLock &&
-    new Date().getTime() <
-      new Date(req.session.user.wrongCodeEnteredLock).getTime()
-  ) {
+  if (isLocked(req.session.user.wrongCodeEnteredLock)) {
     const newCodeLink = req.query?.isResendCodeRequest
       ? pathWithQueryParam(
           PATH_NAMES.RESEND_MFA_CODE,
@@ -26,10 +23,7 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
       contentId: "4",
       taxonomyLevel2: "4"
     });
-  } else if (
-    req.session.user.codeRequestLock &&
-    new Date().getTime() < new Date(req.session.user.codeRequestLock).getTime()
-  ) {
+  } else if (isLocked(req.session.user.codeRequestLock)) {
     const newCodeLink = req.query?.isResendCodeRequest
       ? "/resend-code?isResendCodeRequest=true"
       : "/resend-code";
