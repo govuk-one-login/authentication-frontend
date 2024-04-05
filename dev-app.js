@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
     .then(function (response) {
       let sessionCookieValue;
       const sessionCookie = response.headers["set-cookie"][0];
-  
+      console.log("session cookie is", sessionCookie )
       if (sessionCookie) {
         sessionCookieValue = getCookieValue(sessionCookie.split(";"), "gs");
         res.cookie("gs", sessionCookieValue, {
