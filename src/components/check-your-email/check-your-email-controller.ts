@@ -53,7 +53,7 @@ export const checkYourEmailPost = (
   service: VerifyCodeInterface = codeService(),
   accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
 ): ExpressRouteFunc => {
-return verifyCodePost(service, accountInterventionsService, {
+  return verifyCodePost(service, accountInterventionsService, {
     notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
     template: TEMPLATE_NAME,
     validationKey: "pages.checkYourEmail.code.validationError.invalidCode",

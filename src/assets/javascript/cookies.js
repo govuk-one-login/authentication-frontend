@@ -109,7 +109,6 @@ var cookies = function () {
 
   return {
     initAnalytics,
-    test
   };
 };
 
