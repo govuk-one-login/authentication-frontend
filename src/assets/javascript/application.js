@@ -1,5 +1,3 @@
-console.log("in the file")
-
 function initFeedbackRadioButtons() {
   var e = Array.prototype.slice.call(
       document.querySelectorAll('input[name="feedbackContact"]')
@@ -48,8 +46,6 @@ window.DI.analyticsUa = window.DI.analyticsUa || {};
 (function (e) {
   "use strict";
 
-  console.log("in the function")
-
   function appInit() {
 
     window.GOVUKFrontend.initAll();
@@ -57,10 +53,7 @@ window.DI.analyticsUa = window.DI.analyticsUa || {};
     var cookies = window.GOVSignIn.Cookies();
 
     if (window.DI.analyticsGa4.cookie.hasConsentForAnalytics()) {
-      console.log("has consent for cookies!")
       cookies.initAnalytics();
-      console.log("has init analytics!")
-      cookies.test()
     }
   }
 
