@@ -88,7 +88,6 @@ import { temporarilyBlockedRouter } from "./components/account-intervention/temp
 import { resetPassword2FAAuthAppRouter } from "./components/reset-password-2fa-auth-app/reset-password-2fa-auth-app-routes";
 import { setGTM } from "./middleware/analytics-middleware";
 
-
 const APP_VIEWS = [
   path.join(__dirname, "components"),
   path.resolve("node_modules/govuk-frontend/"),
@@ -166,8 +165,8 @@ async function createApp(): Promise<express.Application> {
   app.use("/public", express.static(path.join(__dirname, "public")));
   app.set("view engine", configureNunjucks(app, APP_VIEWS));
   app.use(setLocalVarsMiddleware);
-  app.use(setGTM)
-  
+  app.use(setGTM);
+
   i18next
     .use(Backend)
     .use(i18nextMiddleware.LanguageDetector)

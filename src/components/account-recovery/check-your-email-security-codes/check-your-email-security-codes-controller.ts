@@ -18,9 +18,9 @@ const oplValues = {
     taxonomyLevel2: "create account",
   },
   accountRecovery: {
-    contentId:"account recovery",
-    taxonomyLevel2: "e768e27b-1c4d-48ba-8bcf-4c40274a6441"
-  }
+    contentId: "account recovery",
+    taxonomyLevel2: "e768e27b-1c4d-48ba-8bcf-4c40274a6441",
+  },
 };
 
 const TEMPLATE_NAME =
@@ -37,14 +37,17 @@ export function checkYourEmailSecurityCodesGet(
     backUrl = HREF_BACK.ENTER_MFA;
   }
 
-  const { isAccountRecoveryJourney } =
-  req.session.user;
-  
+  const { isAccountRecoveryJourney } = req.session.user;
+
   res.render(TEMPLATE_NAME, {
     email: req.session.user.email,
     backUrl: backUrl,
-    contentId: isAccountRecoveryJourney  ? oplValues.accountRecovery.contentId : oplValues.createAccount.contentId,
-    taxonomyLevel2: isAccountRecoveryJourney  ? oplValues.accountRecovery.taxonomyLevel2 : oplValues.createAccount.taxonomyLevel2
+    contentId: isAccountRecoveryJourney
+      ? oplValues.accountRecovery.contentId
+      : oplValues.createAccount.contentId,
+    taxonomyLevel2: isAccountRecoveryJourney
+      ? oplValues.accountRecovery.taxonomyLevel2
+      : oplValues.createAccount.taxonomyLevel2,
   });
 }
 

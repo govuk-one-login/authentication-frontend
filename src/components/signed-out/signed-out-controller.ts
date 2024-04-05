@@ -5,13 +5,12 @@ import xss from "xss";
 const oplValues = {
   signOut: {
     contentId: "83a49745-773f-49f6-aa15-58399e9a856c",
-  }
+  },
 };
 
 export function signedOutGet(req: Request, res: Response): void {
-  const { isAccountCreationJourney } =
-  req.session.user;
-  
+  const { isAccountCreationJourney } = req.session.user;
+
   const errorCode = xss(req.query.error_code as string);
   const errorDescription = xss(req.query.error_description as string);
   if (errorCode || errorDescription) {
@@ -39,6 +38,6 @@ export function signedOutGet(req: Request, res: Response): void {
   res.render("signed-out/index.njk", {
     signinLink: res.locals.accountManagementUrl,
     contentId: oplValues.signOut.contentId,
-    taxonomyLevel2: isAccountCreationJourney  ? "create account" : "sign in"
+    taxonomyLevel2: isAccountCreationJourney ? "create account" : "sign in",
   });
 }

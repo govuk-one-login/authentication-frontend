@@ -25,8 +25,8 @@ const oplValues = {
   },
   indexWait: {
     contentId: "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
-    taxonomyLevel2: "sign in"
-  }
+    taxonomyLevel2: "sign in",
+  },
 };
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
@@ -43,7 +43,7 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
       newCodeLink: newCodeLink,
       isAuthApp: false,
       contentId: oplValues.enterExceeded.contentId,
-      taxonomyLevel2: oplValues.enterExceeded.taxonomyLevel2
+      taxonomyLevel2: oplValues.enterExceeded.taxonomyLevel2,
     });
   } else if (isLocked(req.session.user.codeRequestLock)) {
     res.render("security-code-error/index-wait.njk", {
@@ -59,7 +59,7 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
       isResendCodeRequest: req.query?.isResendCodeRequest,
       support2hrLockout: support2hrLockout(),
       contentId: oplValues.default.contentId,
-      taxonomyLevel2: oplValues.default.taxonomyLevel2
+      taxonomyLevel2: oplValues.default.taxonomyLevel2,
     });
   }
 }

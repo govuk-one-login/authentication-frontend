@@ -32,7 +32,7 @@ const oplValues = {
   accountRecovery: {
     contentId: "124051ef-673a-4eda-b585-96d9d711f545",
     taxonomyLevel2: "account recovery",
-  }
+  },
 };
 
 export async function setupAuthenticatorAppGet(
@@ -47,17 +47,21 @@ export async function setupAuthenticatorAppGet(
 
   req.session.user.authAppQrCodeUrl = await QRCode.toDataURL(qrCodeText);
   req.session.user.isAccountCreationJourney =
-  !req.session.user.isAccountRecoveryJourney;
+    !req.session.user.isAccountRecoveryJourney;
 
-const isAccountRecoveryJourney = req.session.user.isAccountRecoveryJourney
+  const isAccountRecoveryJourney = req.session.user.isAccountRecoveryJourney;
 
   res.render(TEMPLATE, {
     qrCode: req.session.user.authAppQrCodeUrl,
     secretKeyFragmentArray: splitSecretKeyIntoFragments(
       req.session.user.authAppSecret
     ),
-    contentId: isAccountRecoveryJourney ? oplValues.accountRecovery.contentId : oplValues.createAccount.contentId,
-    taxonomyLevel2: isAccountRecoveryJourney ? oplValues.accountRecovery.taxonomyLevel2 : oplValues.createAccount.taxonomyLevel2,
+    contentId: isAccountRecoveryJourney
+      ? oplValues.accountRecovery.contentId
+      : oplValues.createAccount.contentId,
+    taxonomyLevel2: isAccountRecoveryJourney
+      ? oplValues.accountRecovery.taxonomyLevel2
+      : oplValues.createAccount.taxonomyLevel2,
   });
 }
 

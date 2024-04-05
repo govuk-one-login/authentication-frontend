@@ -12,7 +12,7 @@ const oplValues = {
   accountRecovery: {
     contentId: "e768e27b-1c4d-48ba-8bcf-4c40274a6441",
     taxonomyLevel2: "account recovery",
-  }
+  },
 };
 
 export function getSecurityCodesGet(req: Request, res: Response): void {
@@ -20,15 +20,19 @@ export function getSecurityCodesGet(req: Request, res: Response): void {
     !req.session.user.isAccountRecoveryJourney ||
     req.session.user.isAccountPartCreated;
 
-  const isAccountRecoveryJourney = req.session.user.isAccountRecoveryJourney
+  const isAccountRecoveryJourney = req.session.user.isAccountRecoveryJourney;
 
   res.render("select-mfa-options/index.njk", {
     isAccountPartCreated: req.session.user.isAccountPartCreated,
     isAccountRecoveryJourney: req.session.user.isAccountRecoveryJourney,
     selectedMfaOption: req.session.user.selectedMfaOption,
 
-    contentId: isAccountRecoveryJourney ? oplValues.accountRecovery.contentId : oplValues.createAccount.contentId,
-    taxonomyLevel2: isAccountRecoveryJourney ? oplValues.accountRecovery.taxonomyLevel2 : oplValues.createAccount.taxonomyLevel2,
+    contentId: isAccountRecoveryJourney
+      ? oplValues.accountRecovery.contentId
+      : oplValues.createAccount.contentId,
+    taxonomyLevel2: isAccountRecoveryJourney
+      ? oplValues.accountRecovery.taxonomyLevel2
+      : oplValues.createAccount.taxonomyLevel2,
   });
 }
 

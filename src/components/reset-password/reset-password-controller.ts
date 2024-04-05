@@ -27,13 +27,13 @@ const oplValues = {
   accountRecovery: {
     contentId: "a95d02f6-6445-4112-b0c2-7a6d4f804b99",
     taxonomyLevel2: "account recovery",
-  }
+  },
 };
 
 export function resetPasswordGet(req: Request, res: Response): void {
   res.render(resetPasswordTemplate, {
     contentId: oplValues.accountRecovery.contentId,
-    taxonomyLevel2: oplValues.accountRecovery.taxonomyLevel2
+    taxonomyLevel2: oplValues.accountRecovery.taxonomyLevel2,
   });
 }
 
@@ -41,7 +41,7 @@ export function resetPasswordRequiredGet(req: Request, res: Response): void {
   res.render(resetPasswordTemplate, {
     isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
     contentId: oplValues.accountRecovery.contentId,
-    taxonomyLevel2: oplValues.accountRecovery.taxonomyLevel2
+    taxonomyLevel2: oplValues.accountRecovery.taxonomyLevel2,
   });
 }
 

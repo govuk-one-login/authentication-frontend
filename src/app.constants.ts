@@ -281,4 +281,4 @@ export const GTM = {
   ANALYTICS_COOKIE_DOMAIN: process.env.ANALYTICS_COOKIE_DOMAIN,
   GA4_DISABLED: process.env.GA4_DISABLED,
   UA_DISABLED: process.env.UA_DISABLED,
-}
+};

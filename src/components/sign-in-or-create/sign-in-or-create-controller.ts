@@ -10,7 +10,7 @@ export function signInOrCreateGet(req: Request, res: Response): void {
     return signInOrCreatePost(req, res);
   }
   res.render("sign-in-or-create/index.njk", {
-    serviceType: req.session.client.serviceType
+    serviceType: req.session.client.serviceType,
   });
 }
 

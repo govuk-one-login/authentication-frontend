@@ -26,9 +26,8 @@ const oplValues = {
   contactUsSuccess: {
     contentId: "0e020971-d828-4679-97fe-23af6e96ab14",
     taxonomyLevel2: "feedback",
-  }
+  },
 };
-
 
 const themeToPageTitle = {
   [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:
@@ -522,7 +521,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
 export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
   res.render("contact-us/index-submit-success.njk", {
     contentId: oplValues.contactUsSuccess.contentId,
-    taxonomyLevel2: oplValues.contactUsSuccess.taxonomyLevel2
+    taxonomyLevel2: oplValues.contactUsSuccess.taxonomyLevel2,
   });
 }
 
