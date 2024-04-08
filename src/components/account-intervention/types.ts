@@ -11,7 +11,6 @@ export interface AccountInterventionsInterface {
 }
 
 export interface AccountInterventionStatus extends DefaultApiResponse {
-  email: string;
   passwordResetRequired: boolean;
   blocked: boolean;
   temporarilySuspended: boolean;
