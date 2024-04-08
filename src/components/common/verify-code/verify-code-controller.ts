@@ -74,7 +74,6 @@ export function verifyCodePost(
     }
 
     let nextEvent;
-    let accountInterventionsResponse;
 
     switch (options.notificationType) {
       case NOTIFICATION_TYPE.VERIFY_EMAIL:
@@ -101,7 +100,7 @@ export function verifyCodePost(
         (nextEvent === USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED &&
           options.journeyType === JOURNEY_TYPE.PASSWORD_RESET_MFA)
       ) {
-        accountInterventionsResponse =
+        const accountInterventionsResponse =
           await accountInterventionsService.accountInterventionStatus(
             sessionId,
             email,
