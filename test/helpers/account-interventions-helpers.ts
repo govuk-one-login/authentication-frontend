@@ -21,7 +21,6 @@ export const setupAccountInterventionsResponse = (
     .post(API_ENDPOINTS.ACCOUNT_INTERVENTIONS)
     .once()
     .reply(HTTP_STATUS_CODES.OK, {
-      email: "joe.bloggs@test.com",
       passwordResetRequired: flags.passwordResetRequired,
       blocked: flags.blocked,
       temporarilySuspended: flags.temporarilySuspended,
@@ -51,7 +50,6 @@ export function accountInterventionsFakeHelper(
   return {
     accountInterventionStatus: sinon.fake.returns({
       data: {
-        email: "joe.bloggs@test.com",
         passwordResetRequired: flags.passwordResetRequired,
         blocked: flags.blocked,
         temporarilySuspended: flags.temporarilySuspended,
