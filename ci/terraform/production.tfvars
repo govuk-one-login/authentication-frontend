@@ -20,8 +20,7 @@ logging_endpoint_arns = [
   "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
 ]
 
-dynatrace_secret_arn                     = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables"
-frame_ancestors_form_actions_csp_headers = "1"
+dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables"
 
 orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5iJXSuxgbfM6ADQVtNNDi7ED5ly5\n+3VZPbjHv+v0AjQ5Ps+avkXWKwOeScG9sS0cDf0utEXi3fN3cEraa9WuKQ==\n-----END PUBLIC KEY-----"
 orch_to_auth_client_id          = "orchestrationAuth"
