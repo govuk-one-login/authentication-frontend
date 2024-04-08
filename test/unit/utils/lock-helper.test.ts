@@ -3,6 +3,7 @@ import { describe } from "mocha";
 import {
   isLocked,
   timestampNMinutesFromNow,
+  timestampNSecondsFromNow,
 } from "../../../src/utils/lock-helper";
 import sinon from "sinon";
 describe("lockout-helper", () => {
@@ -34,6 +35,27 @@ describe("lockout-helper", () => {
 
       TEST_SCENARIO_PARAMS.forEach((params) => {
         expect(timestampNMinutesFromNow(params.numberOfMinutes)).to.eq(
+          params.expectedTimestamp
+        );
+      });
+    });
+  });
+
+  describe("timestampNSecondsFromNow", () => {
+    it("should return the correct timestamp from the current datetime", () => {
+      const TEST_SCENARIO_PARAMS = [
+        {
+          numberOfSeconds: 60,
+          expectedTimestamp: "Thu, 01 Feb 2024 00:01:00 GMT",
+        },
+        {
+          numberOfSeconds: 1,
+          expectedTimestamp: "Thu, 01 Feb 2024 00:00:01 GMT",
+        },
+      ];
+
+      TEST_SCENARIO_PARAMS.forEach((params) => {
+        expect(timestampNSecondsFromNow(params.numberOfSeconds)).to.eq(
           params.expectedTimestamp
         );
       });
