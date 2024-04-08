@@ -2,6 +2,10 @@ export function timestampNMinutesFromNow(numberOfMinutes: number) {
   return new Date(Date.now() + numberOfMinutes * 60000).toUTCString();
 }
 
+export function timestampNSecondsFromNow(numberOfSeconds: number) {
+  return new Date(Date.now() + numberOfSeconds * 1000).toUTCString();
+}
+
 export function isLocked(maybeLockTimestamp?: string) {
   return (
     maybeLockTimestamp &&
