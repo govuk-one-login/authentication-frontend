@@ -8,7 +8,7 @@ import {
 import sinon from "sinon";
 describe("lockout-helper", () => {
   let clock: sinon.SinonFakeTimers;
-  const date = new Date(2024, 1, 1);
+  const date = new Date(Date.UTC(2024, 1, 1));
   before(() => {
     clock = sinon.useFakeTimers({
       now: date.valueOf(),
