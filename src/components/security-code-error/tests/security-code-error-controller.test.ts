@@ -418,10 +418,24 @@ describe("security code controller", () => {
     });
 
     describe("securityCodeTriesExceededGet", () => {
+      let clock: sinon.SinonFakeTimers;
+      const date = new Date(Date.UTC(2024, 0, 1, 0));
+      before(() => {
+        clock = sinon.useFakeTimers({
+          now: date.valueOf(),
+        });
+      });
+
+      after(() => {
+        delete process.env.CODE_REQUEST_BLOCKED_MINUTES;
+        clock.restore();
+      });
+
       it(
-        "should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent" +
-          "and user is in the sign-in journey",
+        "should render index-too-many-requests.njk and set block on session for MfaMaxRetries when max number of " +
+          "codes have been sent and user is in the sign-in journey",
         () => {
+          process.env.CODE_REQUEST_BLOCKED_MINUTES = "15";
           req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
           req.session.user.isSignInJourney = true;
           securityCodeTriesExceededGet(req as Request, res as Response);
@@ -438,6 +452,9 @@ describe("security code controller", () => {
               isAccountCreationJourney: undefined,
               support2hrLockout: true,
             }
+          );
+          expect(req.session.user.codeRequestLock).to.eq(
+            "Mon, 01 Jan 2024 00:15:00 GMT"
           );
         }
       );
