@@ -225,20 +225,21 @@
       "paragraph2": "Arhoswch 2 awr a mynd yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o hafan GOV.UK."
     },
     "accountNotFoundOneLogin": {
-      "title": "Ni ddarganfyddwyd GOV.UK One Login",
-      "header": "Ni ddarganfyddwyd GOV.UK One Login",
+      "title": "Nid oes gennych GOV.UK One Login",
+      "header": "Nid oes gennych GOV.UK One Login",
       "paragraph1": "Nid oes GOV.UK One Login ar gyfer ",
       "insetText1": "Mae GOV.UK One Login yn newydd. Nid yw yn gweithio gyda phob cyfrif neu wasanaeth y llywodraeth hyd yma.",
-      "paragraph2": "Os ydych chi’n ceisio cael mynediad i’ch cyfrif ar gyfer gwasanaeth y llywodraeth, fel Credyd Cynhwysol neu’ch cyfrif treth personol, mewngofnodwch i’ch cyfrif ar gyfer y gwasanaeth hwnnw.",
+      "paragraph2": "Os ydych yn ceisio cael mynediad at wasanaeth y llywodraeth, fel Credyd Cynhwysol, bydd angen i chi fynd i’r gwasanaeth hwnnw i fewngofnodi.",
       "signInToServiceButtonText": "Mewngofnodi i wasanaeth",
       "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
       "tryAnotherLinkHref": "/enter-email-existing-account"
     },
     "accountNotFoundMandatory": {
-      "title": "Ni ddarganfyddwyd GOV.UK One Login",
-      "header": "Ni ddarganfyddwyd GOV.UK One Login",
+      "title": "Nid oes gennych GOV.UK One Login",
+      "header": "Nid oes gennych GOV.UK One Login",
       "paragraph1": "Nid oes GOV.UK One Login ar gyfer ",
-      "insetText1": "Mae GOV.UK One Login yn newydd. Nid yw yn gweithio gyda phob cyfrif neu wasanaeth y llywodraeth hyd yma, er enghraifft Porth y Llywodraeth neu Gredyd Cynhwysol.",
+      "paragraph2": "Bydd angen i chi greu GOV.UK One Login i ddefnyddio’r gwasanaeth hwn.",
+      "insetText1": "Ar hyn o bryd, mae cyfrifon ar wahân ar gyfer mewngofnodi i wahanol wasanaethau’r llywodraeth.",
       "createAccountButtonText": "Creu GOV.UK One Login",
       "createAccountButtonHref": "/enter-email",
       "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
