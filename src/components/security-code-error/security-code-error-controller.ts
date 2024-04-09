@@ -70,9 +70,11 @@ export function securityCodeTriesExceededGet(
   req: Request,
   res: Response
 ): void {
-  req.session.user.codeRequestLock = timestampNMinutesFromNow(
-    getCodeRequestBlockDurationInMinutes()
-  );
+  if (!isLocked(req.session.user.codeRequestLock)) {
+    req.session.user.codeRequestLock = timestampNMinutesFromNow(
+      getCodeRequestBlockDurationInMinutes()
+    );
+  }
 
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(

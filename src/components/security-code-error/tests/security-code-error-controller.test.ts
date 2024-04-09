@@ -448,7 +448,7 @@ describe("security code controller", () => {
     describe("securityCodeTriesExceededGet", () => {
       let clock: sinon.SinonFakeTimers;
       const date = new Date(Date.UTC(2024, 0, 1, 0));
-      before(() => {
+      beforeEach(() => {
         clock = sinon.useFakeTimers({
           now: date.valueOf(),
         });
@@ -554,6 +554,20 @@ describe("security code controller", () => {
           );
         }
       );
+
+      it("should not extend a lock that already exists", () => {
+        req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
+
+        const dateInTheFuture = new Date(
+          date.getTime() + 1 * 1000
+        ).toUTCString();
+
+        req.session.user.codeRequestLock = dateInTheFuture;
+
+        securityCodeTriesExceededGet(req as Request, res as Response);
+
+        expect(req.session.user.codeRequestLock).to.eq(dateInTheFuture);
+      });
     });
   });
 });
