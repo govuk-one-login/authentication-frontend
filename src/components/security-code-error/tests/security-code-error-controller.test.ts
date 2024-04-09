@@ -228,7 +228,7 @@ describe("security code controller", () => {
   describe("support2Hr Lockout", () => {
     let clock: sinon.SinonFakeTimers;
     const date = new Date(Date.UTC(2024, 0, 1, 0));
-    before(() => {
+    beforeEach(() => {
       process.env.SUPPORT_2HR_LOCKOUT = "1";
       clock = sinon.useFakeTimers({
         now: date.valueOf(),
@@ -415,6 +415,34 @@ describe("security code controller", () => {
           );
         }
       );
+
+      it("should not reset unexpired locks", () => {
+        [
+          SecurityCodeErrorType.MfaMaxRetries,
+          SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries,
+          SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries,
+        ].forEach((errorType) => {
+          req.query.actionType = errorType;
+          const dateInTheFuture = new Date(
+            date.getTime() + 1 * 1000
+          ).toUTCString();
+          req.session.user.wrongCodeEnteredPasswordResetLock = dateInTheFuture;
+          req.session.user.wrongCodeEnteredAccountRecoveryLock =
+            dateInTheFuture;
+          req.session.user.wrongCodeEnteredLock = dateInTheFuture;
+
+          securityCodeInvalidGet(req as Request, res as Response);
+          const locks = [
+            req.session.user.wrongCodeEnteredPasswordResetLock,
+            req.session.user.wrongCodeEnteredAccountRecoveryLock,
+            req.session.user.wrongCodeEnteredLock,
+          ];
+
+          locks.forEach((lock) => {
+            expect(lock).to.eq(dateInTheFuture);
+          });
+        });
+      });
     });
 
     describe("securityCodeTriesExceededGet", () => {
