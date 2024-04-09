@@ -226,12 +226,21 @@ describe("security code controller", () => {
   });
 
   describe("support2Hr Lockout", () => {
+    let clock: sinon.SinonFakeTimers;
+    const date = new Date(Date.UTC(2024, 0, 1, 0));
     before(() => {
       process.env.SUPPORT_2HR_LOCKOUT = "1";
+      clock = sinon.useFakeTimers({
+        now: date.valueOf(),
+      });
     });
 
     after(() => {
       delete process.env.SUPPORT_2HR_LOCKOUT;
+      delete process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES;
+      delete process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES;
+
+      clock.restore();
     });
 
     describe("securityCodeInvalidGet", () => {
@@ -322,6 +331,90 @@ describe("security code controller", () => {
           );
         });
       });
+
+      it(
+        "should render security-code-error/index.njk and set lock when user entered too many SMS OTPs " +
+          "in the sign-in journey",
+        () => {
+          process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES = "120";
+          req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
+          req.session.user.isSignInJourney = true;
+          securityCodeInvalidGet(req as Request, res as Response);
+          expect(res.render).to.have.calledWith(
+            "security-code-error/index.njk",
+            {
+              newCodeLink: pathWithQueryParam(
+                PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
+                "actionType",
+                "mfaMaxRetries"
+              ),
+              isAuthApp: false,
+              isBlocked: true,
+              show2HrScreen: true,
+            }
+          );
+          expect(req.session.user.wrongCodeEnteredLock).to.eq(
+            "Mon, 01 Jan 2024 02:00:00 GMT"
+          );
+        }
+      );
+
+      it(
+        "should render security-code-error/index.njk and set lock when user entered too many EMAIL OTPs " +
+          "in the account recovery journey",
+        () => {
+          process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES =
+            "15";
+          req.query.actionType =
+            SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries;
+          req.session.user.isAccountRecoveryJourney = true;
+          securityCodeInvalidGet(req as Request, res as Response);
+          expect(res.render).to.have.calledWith(
+            "security-code-error/index.njk",
+            {
+              newCodeLink: pathWithQueryParam(
+                PATH_NAMES.RESEND_EMAIL_CODE,
+                "requestNewCode",
+                "true"
+              ),
+              isAuthApp: false,
+              isBlocked: true,
+              show2HrScreen: true,
+            }
+          );
+          expect(req.session.user.wrongCodeEnteredAccountRecoveryLock).to.eq(
+            "Mon, 01 Jan 2024 00:15:00 GMT"
+          );
+        }
+      );
+
+      it(
+        "should render security-code-error/index.njk and set lock when user entered too many EMAIL OTPs " +
+          "in the reset password journey",
+        () => {
+          process.env.PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES = "120";
+          req.query.actionType =
+            SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries;
+          req.session.user.isPasswordResetJourney = true;
+          securityCodeInvalidGet(req as Request, res as Response);
+          expect(res.render).to.have.calledWith(
+            "security-code-error/index.njk",
+            {
+              newCodeLink: pathWithQueryParam(
+                PATH_NAMES.RESEND_EMAIL_CODE,
+                "requestNewCode",
+                "true"
+              ),
+              isAuthApp: false,
+              isBlocked: true,
+              show2HrScreen: true,
+            }
+          );
+          expect(req.session.user.wrongCodeEnteredPasswordResetLock).to.eq(
+            "Mon, 01 Jan 2024 02:00:00 GMT"
+          );
+        }
+      );
     });
 
     describe("securityCodeTriesExceededGet", () => {
