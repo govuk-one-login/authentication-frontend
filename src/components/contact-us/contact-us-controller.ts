@@ -500,8 +500,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
 }
 
 export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
-  res.render("contact-us/index-submit-success.njk", {
-  });
+  res.render("contact-us/index-submit-success.njk");
 }
 
 export function getQuestionsFromFormTypeForMessageBody(
