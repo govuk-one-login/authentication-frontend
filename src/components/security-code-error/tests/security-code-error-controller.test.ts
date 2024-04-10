@@ -239,6 +239,7 @@ describe("security code controller", () => {
       delete process.env.SUPPORT_2HR_LOCKOUT;
       delete process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES;
       delete process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES;
+      delete process.env.REDUCED_CODE_BLOCK_DURATION_MINUTES;
 
       clock.restore();
     });
@@ -360,6 +361,62 @@ describe("security code controller", () => {
       );
 
       it(
+        "should render security-code-error/index.njk and set lock when user entered too many SMS OTPs " +
+          "in the account creation journey",
+        () => {
+          process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES = "30";
+          process.env.REDUCED_CODE_BLOCK_DURATION_MINUTES = "15";
+          req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
+          req.session.user.isAccountCreationJourney = true;
+          securityCodeInvalidGet(req as Request, res as Response);
+          expect(res.render).to.have.calledWith(
+            "security-code-error/index.njk",
+            {
+              newCodeLink: pathWithQueryParam(
+                PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+                "isResendCodeRequest",
+                "true"
+              ),
+              isAuthApp: false,
+              isBlocked: true,
+              show2HrScreen: false,
+            }
+          );
+          expect(req.session.user.wrongCodeEnteredLock).to.eq(
+            "Mon, 01 Jan 2024 00:15:00 GMT"
+          );
+        }
+      );
+
+      it(
+        "should render security-code-error/index.njk and set lock when user entered too many SMS OTPs " +
+          "in the account recovery journey",
+        () => {
+          process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES = "30";
+          process.env.REDUCED_CODE_BLOCK_DURATION_MINUTES = "15";
+          req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
+          req.session.user.isAccountRecoveryJourney = true;
+          securityCodeInvalidGet(req as Request, res as Response);
+          expect(res.render).to.have.calledWith(
+            "security-code-error/index.njk",
+            {
+              newCodeLink: pathWithQueryParam(
+                PATH_NAMES.RESEND_MFA_CODE,
+                "isResendCodeRequest",
+                "true"
+              ),
+              isAuthApp: false,
+              isBlocked: true,
+              show2HrScreen: false,
+            }
+          );
+          expect(req.session.user.wrongCodeEnteredLock).to.eq(
+            "Mon, 01 Jan 2024 00:15:00 GMT"
+          );
+        }
+      );
+
+      it(
         "should render security-code-error/index.njk and set lock when user entered too many EMAIL OTPs " +
           "in the account recovery journey",
         () => {
@@ -421,6 +478,7 @@ describe("security code controller", () => {
           SecurityCodeErrorType.MfaMaxRetries,
           SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries,
           SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries,
+          SecurityCodeErrorType.OtpMaxRetries,
         ].forEach((errorType) => {
           req.query.actionType = errorType;
           const dateInTheFuture = new Date(

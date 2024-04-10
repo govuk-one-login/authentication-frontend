@@ -19,6 +19,7 @@ account_recovery_code_entered_wrong_blocked_minutes = "0.5"
 code_request_blocked_minutes                        = "2"
 email_entered_wrong_blocked_minutes                 = "2"
 code_entered_wrong_blocked_minutes                  = "2"
+reduced_code_block_duration_minutes                 = "1"
 url_for_support_links                               = "https://home.build.account.gov.uk/contact-gov-uk-one-login"
 
 
