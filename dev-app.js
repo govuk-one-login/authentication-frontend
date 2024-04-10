@@ -53,10 +53,6 @@ app.get("/", (req, res) => {
         });
       }
 
-      res.cookie("analytics", sessionCookieValue, {
-        maxAge: new Date(new Date().getTime() + 60 * 60000),
-      });
-
       let lngCookieValue;
       const lngCookie = response.headers["set-cookie"][2];
       if (lngCookie) {

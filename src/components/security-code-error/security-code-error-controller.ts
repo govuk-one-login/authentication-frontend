@@ -32,7 +32,6 @@ const oplValues = {
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
   const { isAccountCreationJourney } = req.session.user;
-
   const actionType = req.query.actionType;
   const isEmailCode = [
     SecurityCodeErrorType.EmailMaxRetries,

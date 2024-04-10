@@ -126,7 +126,7 @@ export function contactUsGet(req: Request, res: Response): void {
     hrefBack: backLinkHref,
     ...(getAppSessionId(req.query.appSessionId as string) && {
       appSessionId: getAppSessionId(req.query.appSessionId as string),
-    })
+    }),
   };
 
   return res.render("contact-us/index-public-contact-us.njk", options);
@@ -369,7 +369,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
     hrefBack: backLinkHref,
     referer: encodeValue(
       validateReferer(req.query.referer as string, serviceDomain)
-    )
+    ),
   });
 }
 

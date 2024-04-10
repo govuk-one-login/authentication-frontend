@@ -36,9 +36,7 @@ export function checkYourEmailSecurityCodesGet(
   } else if (req.query.type === MFA_METHOD_TYPE.SMS) {
     backUrl = HREF_BACK.ENTER_MFA;
   }
-
   const { isAccountRecoveryJourney } = req.session.user;
-
   res.render(TEMPLATE_NAME, {
     email: req.session.user.email,
     backUrl: backUrl,

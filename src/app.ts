@@ -150,6 +150,7 @@ function registerRoutes(app: express.Application) {
 async function createApp(): Promise<express.Application> {
   const app: express.Application = express();
   const isProduction = getNodeEnv() === ENVIRONMENT_NAME.PROD;
+
   app.enable("trust proxy");
 
   app.use(express.json());
