@@ -9,7 +9,6 @@ frontend_task_definition_memory = 1024
 alb_idle_timeout = 30
 
 support_account_recovery                            = "1"
-support_auth_orch_split                             = "1"
 support_authorize_controller                        = "1"
 support_account_interventions                       = "1"
 support_reauthentication                            = "1"

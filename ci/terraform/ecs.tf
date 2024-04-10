@@ -81,10 +81,6 @@ locals {
         value = local.redis_key
       },
       {
-        name  = "SUPPORT_AUTH_ORCH_SPLIT"
-        value = var.support_auth_orch_split
-      },
-      {
         name  = "SUPPORT_AUTHORIZE_CONTROLLER"
         value = var.support_authorize_controller
       },

@@ -24,7 +24,6 @@ describe("Integration::prove identity", () => {
 
     baseApi = process.env.FRONTEND_API_BASE_URL;
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
-    process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")

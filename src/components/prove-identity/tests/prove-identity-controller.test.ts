@@ -4,7 +4,6 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
-import { ProveIdentityServiceInterface } from "../types";
 import { proveIdentityGet } from "../prove-identity-controller";
 import {
   mockRequest,
@@ -18,7 +17,6 @@ import { AuthCodeServiceInterface } from "../../auth-code/types";
 import { Http } from "../../../utils/http";
 import { authCodeService } from "../../auth-code/auth-code-service";
 import { ExpressRouteFunc } from "../../../types";
-import { proveIdentityService } from "../prove-identity-service";
 
 describe("prove identity controller", () => {
   let req: RequestOutput;
@@ -38,46 +36,6 @@ describe("prove identity controller", () => {
   });
 
   describe("proveIdentityGet", () => {
-    it("should redirect to IPV authorisation", async () => {
-      const fakeService: ProveIdentityServiceInterface = {
-        ipvAuthorize: sinon.fake.returns({
-          success: true,
-          data: { redirectUri: "https://test-ipv-authorisation-uri" },
-        }),
-      } as unknown as ProveIdentityServiceInterface;
-
-      res.locals.sessionId = "s-123456-djjad";
-      res.locals.clientSessionId = "c-123456-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-
-      await proveIdentityGet(fakeService)(req as Request, res as Response);
-
-      expect(req.session.user.journey.nextPath).to.equal(
-        PATH_NAMES.PROVE_IDENTITY_CALLBACK
-      );
-      expect(res.redirect).to.have.calledWith(
-        "https://test-ipv-authorisation-uri"
-      );
-    });
-    it("should throw error when bad API request", async () => {
-      const fakeService: ProveIdentityServiceInterface = {
-        ipvAuthorize: sinon.fake.returns({
-          success: false,
-          data: { code: "1222", message: "Error occurred" },
-        }),
-      } as unknown as ProveIdentityServiceInterface;
-
-      res.locals.sessionId = "s-123456-djjad";
-      res.locals.clientSessionId = "c-123456-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-
-      await expect(
-        proveIdentityGet(fakeService)(req as Request, res as Response)
-      ).to.be.rejectedWith("1222:Error occurred");
-    });
-  });
-
-  describe("with auth orch split feature flag on", () => {
     const redirectUriSentToAuth = "/redirect-uri";
     const rpSectorHostSentToAuth = "https://rp.redirect.uri";
     const isAccountCreationJourneyUserSession = true;
@@ -104,7 +62,7 @@ describe("prove identity controller", () => {
       process.env.FRONTEND_API_BASE_URL = frontendBaseUrl;
       const httpInstance = new Http();
       service = authCodeService(httpInstance);
-      controller = proveIdentityGet(proveIdentityService(), service);
+      controller = proveIdentityGet(service);
       postStub = sinon.stub(httpInstance.client, "post");
       postStub.resolves(axiosResponse);
       res.locals.sessionId = "s-123456-djjad";
@@ -117,8 +75,6 @@ describe("prove identity controller", () => {
     });
 
     it("it should make a post request to the orch auth endpoint with claim, state and redirect uri in the body", async () => {
-      process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
-
       const claim = ["phone_number", "phone_number_verified"];
       const state = "state";
       req.session.client = {
