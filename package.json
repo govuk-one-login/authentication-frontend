@@ -26,7 +26,6 @@
     "test:integration": "rm -rf test/coverage && NODE_ENV=development nyc mocha -r dotenv/config  \"src/**/*-integration.test.ts\"",
     "test:integration-no-clear-cov": "NODE_ENV=development nyc --no-clean mocha -r dotenv/config  \"src/**/*-integration.test.ts\"",
     "test:integration-nocov": "NODE_ENV=development mocha -r dotenv/config  \"src/**/*-integration.test.ts\"",
-    "test:sidecar": "mocha --exclude \"src/**/*-integration.test.ts\"  \"test/basic-auth-sidecar/*.test.ts\"",
     "test:unit": "rm -rf test/coverage && NODE_ENV=development nyc mocha --exclude \"src/**/*-integration.test.ts\"  \"test/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
     "test:unit-nocov": "NODE_ENV=development mocha --exclude \"src/**/*-integration.test.ts\"  \"test/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
     "test:u1": "rm -rf test/coverage && NODE_ENV=development nyc mocha --exclude \"src/**/*-integration.test.ts\" --recursive \"src/**/your-test*.test.ts\"",
@@ -118,7 +117,6 @@
     "@typescript-eslint/parser": "^7.1.0",
     "chai": "^4.3.6",
     "chai-as-promised": "^7.1.1",
-    "chai-http": "^4.4.0",
     "cheerio": "^1.0.0-rc.10",
     "concurrently": "^8.2.2",
     "copyfiles": "^2.4.1",
@@ -139,7 +137,6 @@
     "sinon": "^13.0.1",
     "sinon-chai": "^3.7.0",
     "supertest": "^6.3.4",
-    "testcontainers": "^10.7.2",
     "ts-node": "^10.5.0",
     "typescript": "^4.5.4",
     "uglify-js": "^3.14.5"
