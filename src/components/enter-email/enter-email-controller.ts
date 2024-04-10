@@ -26,7 +26,11 @@ import {
   renderBadRequest,
 } from "../../utils/validation";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
-import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper";
+import {
+  isLocked,
+  timestampNMinutesFromNow,
+  timestampNSecondsFromNow,
+} from "../../utils/lock-helper";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -117,8 +121,11 @@ export function enterEmailPost(
       throw new BadRequestError(result.data.message, result.data.code);
     }
 
-    if (result.data.authAppLockoutInformation != null)
-      setUpLocks(req, result.data.authAppLockoutInformation);
+    if (
+      result.data.lockoutInformation != null &&
+      result.data.lockoutInformation.length > 0
+    )
+      setUpAuthAppLocks(req, result.data.lockoutInformation);
     req.session.user.enterEmailMfaType = result.data.mfaMethodType;
     req.session.user.redactedPhoneNumber = result.data.phoneNumberLastThree;
     const nextState = result.data.doesUserExist
@@ -232,10 +239,10 @@ function handleBadRequest(
   return renderBadRequest(res, req, RE_ENTER_EMAIL_TEMPLATE, error);
 }
 
-function setUpLocks(req: any, lockoutArray: LockoutInformation[]) {
+function setUpAuthAppLocks(req: any, lockoutArray: LockoutInformation[]) {
   lockoutArray.forEach(function (lockoutInformation) {
     if (lockoutInformation.lockType == "codeBlock") {
-      const lockTime = timestampNMinutesFromNow(
+      const lockTime = timestampNSecondsFromNow(
         parseInt(lockoutInformation.lockTTL)
       );
       switch (lockoutInformation.journeyType) {

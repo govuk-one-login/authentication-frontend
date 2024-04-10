@@ -19,7 +19,11 @@
 
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.signInOrCreate.mandatory.header' | translate }}</h1>
 
-    <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph' | translate }}</p>
+    <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph1' | translate }}</p>
+
+    <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph2' | translate }}</p>
+
+    <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph3' | translate }}</p>
     <ul class="govuk-list govuk-list--bullet">
         <li>{{ 'pages.signInOrCreate.bullet1' | translate }}</li>
           <li>{{ 'pages.signInOrCreate.bullet2' | translate }}</li>
@@ -60,10 +64,12 @@
 
     </form>
 
-    {{ govukDetails({
-        summaryText: 'pages.signInOrCreate.moreAbout.header' | translate,
-        html: moreAboutTextHtml
-    }) }}
+    <p>
+        
+        <a href="{{ 'pages.signInOrCreate.aboutLink' | translate }}" class="govuk-link" rel="noreferrer" target="_blank">
+            {{ 'pages.signInOrCreate.aboutLinkText' | translate }}
+        </a>
+    </p>
 
 {{ga4OnPageLoad({ nonce: scriptNonce,statusCode:"200",englishPageTitle:pageTitleName, taxonomyLevel1:"authentication", taxonomyLevel2:"Home", contentId:"9cd55996-3f12-4e79-adf3-0ec3c4faf7ce",loggedInStatus:false, dynamic:true})}}
 {% endblock %}

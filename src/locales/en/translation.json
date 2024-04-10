@@ -159,14 +159,16 @@
   "pages": {
     "signInOrCreate": {
       "mandatory": {
-        "title": "Create a GOV.UK One Login or sign in",
-        "header": "Create a GOV.UK One Login or sign in"
+        "title": "Create your GOV.UK One Login or sign in",
+        "header": "Create your GOV.UK One Login or sign in"
       },
       "optional": {
         "title": "Create a GOV.UK One Login or sign in to save your progress",
         "header": "Create a GOV.UK One Login or sign in to save your progress"
       },
-      "paragraph": "You’ll need:",
+      "paragraph1": "You can use your GOV.UK One Login to access some government services.",
+      "paragraph2": "In the future, you’ll be able to use it to access all services on GOV.UK.",
+      "paragraph3": "You’ll need:",
       "bullet1": "an email address",
       "bullet2": "a way to get security codes - this can be a mobile phone number or an authenticator app",
       "insetAlternativeLanguage": {
@@ -179,13 +181,9 @@
         "linkHref": "?lng=cy"
       },
       "signInText": "Sign in",
-      "moreAbout": {
-        "header": "About GOV.UK One Login",
-        "paragraph1": "GOV.UK One Login is new. At the moment you can only use it to access some government services.",
-        "paragraph2": "It does not work with all government accounts or services yet (for example Government Gateway or Universal Credit).",
-        "paragraph3": "In the future, you’ll be able to use GOV.UK One Login to access all services on GOV.UK."
-      },
-      "createButtonText": "Create a GOV.UK One Login"
+      "aboutLinkText": "Services you can use with GOV.UK One Login (opens in new tab)",
+      "aboutLink": "https://www.gov.uk/using-your-gov-uk-one-login/services",
+      "createButtonText": "Create your GOV.UK One Login"
     },
     "enterEmailCreateAccount": {
       "title": "Enter your email address",

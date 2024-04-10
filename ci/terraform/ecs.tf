@@ -141,6 +141,10 @@ locals {
         value = var.code_entered_wrong_blocked_minutes
       },
       {
+        name  = "REDUCED_CODE_BLOCK_DURATION_MINUTES"
+        value = var.reduced_code_block_duration_minutes
+      },
+      {
         name  = "SUPPORT_2FA_B4_PASSWORD_RESET"
         value = var.support_2fa_b4_password_reset
       },

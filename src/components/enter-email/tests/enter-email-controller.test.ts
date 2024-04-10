@@ -9,7 +9,7 @@ import {
   enterEmailGet,
   enterEmailPost,
 } from "../enter-email-controller";
-import { EnterEmailServiceInterface } from "../types";
+import { EnterEmailServiceInterface, LockoutInformation } from "../types";
 import { JOURNEY_TYPE, ERROR_CODES } from "../../common/constants";
 import { PATH_NAMES } from "../../../app.constants";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
@@ -24,6 +24,8 @@ import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
 describe("enter email controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
+  let clock: sinon.SinonFakeTimers;
+  const date = new Date(Date.UTC(2024, 1, 1));
 
   beforeEach(() => {
     req = mockRequest({
@@ -32,9 +34,13 @@ describe("enter email controller", () => {
       i18n: { language: "en" },
     });
     res = mockResponse();
+    clock = sinon.useFakeTimers({
+      now: date.valueOf(),
+    });
   });
 
   afterEach(() => {
+    clock.restore();
     sinon.restore();
   });
 
@@ -160,6 +166,41 @@ describe("enter email controller", () => {
       await enterEmailPost(fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ACCOUNT_NOT_FOUND);
+      expect(fakeService.userExists).to.have.been.calledOnce;
+    });
+
+    it("should set a lock with the correct timestamp when the response contains lockout information", async () => {
+      const lockTTlInSeconds = 60;
+
+      const lockoutInformation: LockoutInformation = {
+        lockType: "codeBlock",
+        lockTTL: lockTTlInSeconds.toString(),
+        journeyType: "SIGN_IN",
+        mfaMethodType: "SMS",
+      };
+      const fakeService: EnterEmailServiceInterface = {
+        userExists: sinon.fake.returns({
+          success: true,
+          data: {
+            doesUserExist: true,
+            lockoutInformation: [lockoutInformation],
+          },
+        }),
+      } as unknown as EnterEmailServiceInterface;
+
+      req.body.email = "test@test.com";
+      res.locals.sessionId = "sadl990asdald";
+      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
+
+      await enterEmailPost(fakeService)(req as Request, res as Response);
+
+      const expectedLockTime = new Date(
+        date.getTime() + lockTTlInSeconds * 1000
+      ).toUTCString();
+
+      expect(req.session.user.wrongCodeEnteredLock).to.eq(expectedLockTime);
+
+      expect(res.redirect).to.have.calledWith("/enter-password");
       expect(fakeService.userExists).to.have.been.calledOnce;
     });
 
