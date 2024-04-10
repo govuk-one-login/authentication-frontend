@@ -10,13 +10,14 @@ import {
   getCodeEnteredWrongBlockDurationInMinutes,
   getCodeRequestBlockDurationInMinutes,
   getPasswordResetCodeEnteredWrongBlockDurationInMinutes,
+  getReducedBlockDurationInMinutes,
   support2hrLockout,
 } from "../../config";
 import { UserSession } from "../../types";
 import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
-  const actionType = req.query.actionType;
+  const actionType = req.query.actionType as SecurityCodeErrorType;
   const isEmailCode = [
     SecurityCodeErrorType.EmailMaxRetries,
     SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries,
@@ -25,31 +26,7 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
     .map((e) => e.valueOf())
     .includes(actionType.toString());
 
-  if (!isEmailCode && !isLocked(req.session.user.wrongCodeEnteredLock)) {
-    req.session.user.wrongCodeEnteredLock = timestampNMinutesFromNow(
-      getCodeEnteredWrongBlockDurationInMinutes()
-    );
-  }
-
-  if (
-    actionType === SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries &&
-    !isLocked(req.session.user.wrongCodeEnteredAccountRecoveryLock)
-  ) {
-    req.session.user.wrongCodeEnteredAccountRecoveryLock =
-      timestampNMinutesFromNow(
-        getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes()
-      );
-  }
-
-  if (
-    actionType === SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries &&
-    !isLocked(req.session.user.wrongCodeEnteredPasswordResetLock)
-  ) {
-    req.session.user.wrongCodeEnteredPasswordResetLock =
-      timestampNMinutesFromNow(
-        getPasswordResetCodeEnteredWrongBlockDurationInMinutes()
-      );
-  }
+  setBlockDurationIfRequired(req, actionType, isEmailCode);
 
   const show2HrScreen =
     support2hrLockout() &&
@@ -161,6 +138,41 @@ export function getNewCodePath(
   }
 }
 
+function setBlockDurationIfRequired(
+  req: Request,
+  actionType: SecurityCodeErrorType,
+  isEmailCode: boolean
+) {
+  if (
+    isReducedDurationJourney(actionType, req.session.user) &&
+    !isLocked(req.session.user.wrongCodeEnteredLock)
+  ) {
+    req.session.user.wrongCodeEnteredLock = timestampNMinutesFromNow(
+      getReducedBlockDurationInMinutes()
+    );
+  } else if (!isEmailCode && !isLocked(req.session.user.wrongCodeEnteredLock)) {
+    req.session.user.wrongCodeEnteredLock = timestampNMinutesFromNow(
+      getCodeEnteredWrongBlockDurationInMinutes()
+    );
+  } else if (
+    actionType === SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries &&
+    !isLocked(req.session.user.wrongCodeEnteredAccountRecoveryLock)
+  ) {
+    req.session.user.wrongCodeEnteredAccountRecoveryLock =
+      timestampNMinutesFromNow(
+        getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes()
+      );
+  } else if (
+    actionType === SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries &&
+    !isLocked(req.session.user.wrongCodeEnteredPasswordResetLock)
+  ) {
+    req.session.user.wrongCodeEnteredPasswordResetLock =
+      timestampNMinutesFromNow(
+        getPasswordResetCodeEnteredWrongBlockDurationInMinutes()
+      );
+  }
+}
+
 function isAuthApp(actionType: SecurityCodeErrorType) {
   switch (actionType) {
     case SecurityCodeErrorType.AuthAppMfaMaxRetries:
@@ -168,6 +180,16 @@ function isAuthApp(actionType: SecurityCodeErrorType) {
     default:
       return false;
   }
+}
+
+function isReducedDurationJourney(
+  actionType: SecurityCodeErrorType,
+  user: UserSession
+) {
+  return (
+    SecurityCodeErrorType.OtpMaxRetries === actionType &&
+    (user.isAccountCreationJourney || user.isAccountRecoveryJourney)
+  );
 }
 
 function isJourneyWhere2HourLockoutScreenShown(

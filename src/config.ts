@@ -150,6 +150,10 @@ export function getCodeEnteredWrongBlockDurationInMinutes(): number {
   return Number(process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES) || 15;
 }
 
+export function getReducedBlockDurationInMinutes(): number {
+  return Number(process.env.REDUCED_CODE_BLOCK_DURATION_MINUTES) || 15;
+}
+
 export function getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes(): number {
   return (
     Number(process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES) ||
