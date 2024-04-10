@@ -22,6 +22,8 @@ describe("BasicAuthSidecar", function () {
 
   let sourceIp: string;
 
+  const isDebug: boolean = process.env.RUNNER_DEBUG === "1";
+
   // let backendContainer: StartedTestContainer;
   let sidecarContainer: StartedTestContainer;
 
@@ -111,6 +113,18 @@ describe("BasicAuthSidecar", function () {
         ])
       )
       .start();
+
+    if (isDebug) {
+      // if RUNNER_DEBUG is set, stream logs to console
+      // this is set if the gha job is rerun with 'Enable debug logging' checked.
+
+      /* eslint-disable no-console */
+      (await sidecarContainer.logs())
+        .on("data", (line) => console.log(line))
+        .on("err", (line) => console.error(line))
+        .on("end", () => console.log("Stream closed"));
+      /* eslint-enable no-console */
+    }
 
     sidecarRequester = chai
       .request(
@@ -232,6 +246,10 @@ describe("BasicAuthSidecar", function () {
       });
 
       it("should not be required if the request is made from an allowed IP", async () => {
+        if (isDebug) {
+          // eslint-disable-next-line no-console
+          console.log("sourceIp", sourceIp);
+        }
         await startSidecarContainer({
           BASIC_AUTH_USERNAME: "test",
           BASIC_AUTH_PASSWORD: "test",
