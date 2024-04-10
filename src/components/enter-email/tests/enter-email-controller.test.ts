@@ -25,7 +25,7 @@ describe("enter email controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
   let clock: sinon.SinonFakeTimers;
-  const date = new Date(2024, 1, 1);
+  const date = new Date(Date.UTC(2024, 1, 1));
 
   beforeEach(() => {
     req = mockRequest({

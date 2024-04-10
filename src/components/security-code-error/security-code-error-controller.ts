@@ -13,7 +13,7 @@ import {
   support2hrLockout,
 } from "../../config";
 import { UserSession } from "../../types";
-import { timestampNMinutesFromNow } from "../../utils/lock-helper";
+import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper";
 
 export function securityCodeInvalidGet(req: Request, res: Response): void {
   const actionType = req.query.actionType;
@@ -25,20 +25,26 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
     .map((e) => e.valueOf())
     .includes(actionType.toString());
 
-  if (!isEmailCode) {
+  if (!isEmailCode && !isLocked(req.session.user.wrongCodeEnteredLock)) {
     req.session.user.wrongCodeEnteredLock = timestampNMinutesFromNow(
       getCodeEnteredWrongBlockDurationInMinutes()
     );
   }
 
-  if (actionType === SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries) {
+  if (
+    actionType === SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries &&
+    !isLocked(req.session.user.wrongCodeEnteredAccountRecoveryLock)
+  ) {
     req.session.user.wrongCodeEnteredAccountRecoveryLock =
       timestampNMinutesFromNow(
         getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes()
       );
   }
 
-  if (actionType === SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries) {
+  if (
+    actionType === SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries &&
+    !isLocked(req.session.user.wrongCodeEnteredPasswordResetLock)
+  ) {
     req.session.user.wrongCodeEnteredPasswordResetLock =
       timestampNMinutesFromNow(
         getPasswordResetCodeEnteredWrongBlockDurationInMinutes()
@@ -64,9 +70,11 @@ export function securityCodeTriesExceededGet(
   req: Request,
   res: Response
 ): void {
-  req.session.user.codeRequestLock = timestampNMinutesFromNow(
-    getCodeRequestBlockDurationInMinutes()
-  );
+  if (!isLocked(req.session.user.codeRequestLock)) {
+    req.session.user.codeRequestLock = timestampNMinutesFromNow(
+      getCodeRequestBlockDurationInMinutes()
+    );
+  }
 
   return res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(
