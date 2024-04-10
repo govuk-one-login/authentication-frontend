@@ -59,7 +59,3 @@ services:
 
 networks:
   di-net:
-  ingress:
-    ipam:
-      config:
-        - subnet: 172.100.0.0/16
