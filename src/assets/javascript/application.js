@@ -3,41 +3,50 @@ function initFeedbackRadioButtons() {
       document.querySelectorAll('input[name="feedbackContact"]')
     ),
     o = document.querySelector("#contact-details-container");
-  e.forEach(function (e) {
-    e.addEventListener(
-      "click",
-      function (e) {
-        if ("true" === e.target.value)
-          o.classList.remove("govuk-!-display-none");
-        else {
-          o.classList.add("govuk-!-display-none");
-          for (
-            var t = o.getElementsByTagName("input"), n = 0;
-            n < t.length;
-            n++
-          )
-            "text" == t[n].type && (t[n].value = "");
-        }
+    e.forEach(function (e) {
+      e.addEventListener(
+        "click",
+        function (e) {
+          if ("true" === e.target.value)
+            o.classList.remove("govuk-!-display-none");
+          else {
+            o.classList.add("govuk-!-display-none");
+            for (
+              var t = o.getElementsByTagName("input"), n = 0;
+              n < t.length;
+              n++
+            )
+              "text" == t[n].type && (t[n].value = "");
+          }
       }.bind(this)
     );
   });
 }
-var onIntNumberSelected = function (e, t) {
-  e.checked
-    ? ((t.value = ""),
-      (t.disabled = !0),
-      t.classList.add("govuk-input--disabled"))
-    : ((t.disabled = !1), t.classList.remove("govuk-input--disabled"));
+var onIntNumberSelected = function (intPhoneNumberCheckbox, phoneNumberInput) {
+  if (intPhoneNumberCheckbox.checked) {
+    phoneNumberInput.value = "";
+    phoneNumberInput.disabled = true;
+    phoneNumberInput.classList.add("govuk-input--disabled");
+  } else {
+    phoneNumberInput.disabled = false;
+    phoneNumberInput.classList.remove("govuk-input--disabled");
+  }
 };
+
 function initEnterPhoneNumber() {
-  var t = document.querySelector("#phoneNumber"),
-    e = document.querySelector("#hasInternationalPhoneNumber");
-  t &&
-    e &&
-    (e.addEventListener("click", function (e) {
-      onIntNumberSelected(e.currentTarget, t);
-    }),
-    window.addEventListener("load", onIntNumberSelected(e, t)));
+  var phoneNumberInput = document.querySelector("#phoneNumber");
+  var intPhoneNumberCheckbox = document.querySelector(
+    "#hasInternationalPhoneNumber"
+  );
+  if (phoneNumberInput && intPhoneNumberCheckbox) {
+    intPhoneNumberCheckbox.addEventListener("click", function (event) {
+      onIntNumberSelected(event.currentTarget, phoneNumberInput);
+    });
+    window.addEventListener(
+      "load",
+      onIntNumberSelected(intPhoneNumberCheckbox, phoneNumberInput)
+    );
+  }
 }
 
 window.DI = window.DI || {};
