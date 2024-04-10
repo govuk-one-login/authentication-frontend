@@ -159,14 +159,16 @@
   "pages": {
     "signInOrCreate": {
       "mandatory": {
-        "title": "Creu GOV.UK One Login neu fewngofnodi",
-        "header": "Creu GOV.UK One Login neu fewngofnodi"
+        "title": "Creu eich GOV.UK One Login neu fewngofnodi",
+        "header": "Creu eich GOV.UK One Login neu fewngofnodi"
       },
       "optional": {
         "title": "Creu GOV.UK One Login neu fewngofnodi i arbed eich cynnydd",
         "header": "Creu GOV.UK One Login neu fewngofnodi i arbed eich cynnydd"
       },
-      "paragraph": "Byddwch angen:",
+      "paragraph1": "Gallwch ddefnyddio eich GOV.UK One Login i gael mynediad at rai gwasanaethau’r llywodraeth.",
+      "paragraph2": "Yn y dyfodol, gallwch ei ddefnyddio i gael mynediad i bob gwasanaeth ar GOV.UK.",
+      "paragraph3": "Byddwch angen:",
       "bullet1": "cyfeiriad e-bost",
       "bullet2": "ffordd o gael codau diogelwch - gall hwn fod yn rhif ffôn symudol neu’n ap dilysydd",
       "insetAlternativeLanguage": {
@@ -179,13 +181,9 @@
         "linkHref": "?lng=en"
       },
       "signInText": "Fewngofnodi",
-      "moreAbout": {
-        "header": "Am GOV.UK One Login",
-        "paragraph1": "Mae GOV.UK One Login yn newydd. Ar hyn o bryd gallwch ond ei ddefnyddio i gael mynediad i rai gwasanaethau’r llywodraeth.",
-        "paragraph2": "Nid yw’n gweithio gyda phob cyfrif neu wasanaeth y llywodraeth hyd yma (er enghraifft Porth y Llywodraeth neu Gredyd Cynhwysol).",
-        "paragraph3": "Yn y dyfodol, byddwch yn gallu defnyddio GOV.UK One Login i gael mynediad i’r holl wasanaethau ar GOV.UK."
-      },
-      "createButtonText": "Creu GOV.UK One Login"
+      "aboutLinkText": "Gwasanaethau y gallwch eu defnyddio gyda GOV.UK One Login (agor mewn tab newydd)",
+      "aboutLink": "https://www.gov.uk/using-your-gov-uk-one-login/services",
+      "createButtonText": "Creu eich GOV.UK One Login"
     },
     "enterEmailCreateAccount": {
       "title": "Rhowch eich cyfeiriad e-bost",
