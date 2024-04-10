@@ -17,28 +17,34 @@ For example:
 
 ## Checklist
 
-<!-- Change have been demonstrated
-Changes to the user interface or content should be demonstrated to Content Design and Interaction Design before being merged. This is to ensure they are aware of changes and behaviours (for example, how error screens appear and whether invalid entries can be amended), and can make any necessary changes to Figma.
-
-Include screenshots where possible, including those representing error states. Here are some examples:
-
-- a PR that uses tables to display the screenshots https://github.com/govuk-one-login/authentication-frontend/pull/1187
-- a PR that uses a dropdown to display the screenshots https://github.com/alphagov/di-infrastructure/pull/578
-
-You can find example PRs from this repository that include screenshots through this search: https://github.com/govuk-one-login/authentication-frontend/pulls?q=is%3Apr+screenshots+is%3Aclosed+is%3Amerged  
-
-Delete this item if the PR does not change the UI.
--->
-- [ ] Changes to the user interface have been demonstrated
-
-<!-- Performance analysis
+<!-- Performance analysis notice
 Make sure that a performance analyst colleague in your team has been informed of any changes to the user interfaces or user journeys.
 
 Delete this item if the PR does not change any UI or user journeys.
 -->
-- [ ] Performance analyst has been informed of the change.
+- [ ] Performance analyst has been notified of the change.
 
+<!-- UCD review
+Changes to the user journeys, the UI or content should be reviewed by Content Design and Interaction Design before being merged.
 
+This is to ensure:
+- They have an opportunity to confirm the implementation meets expectations.
+  - For example, how error screens appear and whether invalid entries can be amended.
+- They can make any necessary changes to Figma designs.
+
+It is also important that new features have a full end-to-end journey review before going live. Ensure this is done before enabling a feature flag that changes the frontend.
+
+Contact UCD colleagues in the Authentication team to identify the best way to approach the review.
+
+If including screenshots in the PR description, include those representing error states. Here are some examples:
+- a PR that uses tables to display the screenshots https://github.com/govuk-one-login/authentication-frontend/pull/1187
+- a PR that uses a dropdown to display the screenshots https://github.com/alphagov/di-infrastructure/pull/578
+
+You can find example PRs from this repository that include screenshots through this search: https://github.com/govuk-one-login/authentication-frontend/pulls?q=is%3Apr+screenshots+is%3Aclosed+is%3Amerged 
+
+Delete this item if the PR does not change the UI. 
+-->
+- [ ] A UCD review has been performed.
 
 <!-- Acceptance tests have been updated
 This is to avoid failures occurring after a merge. The types of changes that may impact acceptance tests might be:
