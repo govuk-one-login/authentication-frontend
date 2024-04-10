@@ -22,6 +22,7 @@ function initFeedbackRadioButtons() {
     );
   });
 }
+
 var onIntNumberSelected = function (intPhoneNumberCheckbox, phoneNumberInput) {
   if (intPhoneNumberCheckbox.checked) {
     phoneNumberInput.value = "";
@@ -51,10 +52,8 @@ function initEnterPhoneNumber() {
 
 window.DI = window.DI || {};
 window.DI.analyticsUa = window.DI.analyticsUa || {};
-
 (function (w) {
   "use strict";
-
   function appInit() {
     window.GOVUKFrontend.initAll();
     var cookies = window.GOVSignIn.Cookies();
@@ -78,5 +77,4 @@ window.DI.analyticsUa = window.DI.analyticsUa || {};
   }
 
   w.DI.analyticsUa.init = appInit;
-    
 })(window); 
