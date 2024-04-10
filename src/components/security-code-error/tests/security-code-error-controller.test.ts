@@ -391,6 +391,8 @@ describe("security code controller", () => {
               isAuthApp: false,
               isBlocked: true,
               show2HrScreen: true,
+              contentId: 'fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5',
+              taxonomyLevel2: 'sign in'
             }
           );
           expect(req.session.user.wrongCodeEnteredLock).to.eq(
@@ -419,6 +421,8 @@ describe("security code controller", () => {
               isAuthApp: false,
               isBlocked: true,
               show2HrScreen: false,
+              contentId: 'fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5',
+              taxonomyLevel2: 'create account'
             }
           );
           expect(req.session.user.wrongCodeEnteredLock).to.eq(
@@ -447,6 +451,8 @@ describe("security code controller", () => {
               isAuthApp: false,
               isBlocked: true,
               show2HrScreen: false,
+              contentId: 'fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5',
+              taxonomyLevel2: 'sign in'
             }
           );
           expect(req.session.user.wrongCodeEnteredLock).to.eq(
@@ -476,6 +482,8 @@ describe("security code controller", () => {
               isAuthApp: false,
               isBlocked: true,
               show2HrScreen: true,
+              contentId: 'fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5',
+              taxonomyLevel2: 'sign in'
             }
           );
           expect(req.session.user.wrongCodeEnteredAccountRecoveryLock).to.eq(
@@ -504,6 +512,8 @@ describe("security code controller", () => {
               isAuthApp: false,
               isBlocked: true,
               show2HrScreen: true,
+              contentId: 'fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5',
+              taxonomyLevel2: 'sign in'
             }
           );
           expect(req.session.user.wrongCodeEnteredPasswordResetLock).to.eq(
