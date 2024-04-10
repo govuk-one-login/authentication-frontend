@@ -1,22 +1,22 @@
 function initFeedbackRadioButtons() {
-  var e = Array.prototype.slice.call(
+  var feedbackRadioButtons = Array.prototype.slice.call(
       document.querySelectorAll('input[name="feedbackContact"]')
-    ),
-    o = document.querySelector("#contact-details-container");
-    e.forEach(function (e) {
-      e.addEventListener(
+    );
+    var container = document.querySelector("#contact-details-container");
+    feedbackRadioButtons.forEach(function (element) {
+      element.addEventListener(
         "click",
-        function (e) {
-          if ("true" === e.target.value)
-            o.classList.remove("govuk-!-display-none");
+        function (event) {
+          if (e.target.value === "true")
+            container.classList.remove("govuk-!-display-none");
           else {
-            o.classList.add("govuk-!-display-none");
-            for (
-              var t = o.getElementsByTagName("input"), n = 0;
-              n < t.length;
-              n++
-            )
-              "text" == t[n].type && (t[n].value = "");
+            container.classList.add("govuk-!-display-none");
+            var elements = container.getElementsByTagName("input");
+            for (var i = 0; i < elements.length; i++) {
+              if (elements[i].type == "text") {
+                elements[i].value = "";
+              }
+            }
           }
       }.bind(this)
     );
