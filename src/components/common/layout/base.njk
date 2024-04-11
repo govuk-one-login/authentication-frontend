@@ -123,9 +123,8 @@
     <script type="text/javascript" src="/public/scripts/all.js"></script>
     <script type="text/javascript" src="/public/scripts/analytics.js"></script>
     <script type="text/javascript" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
-    window
-      .DI
-      .appInit({
+    if (window.DI) {
+      window.DI.appInit({
         ga4ContainerId: "{{ga4ContainerId}}",
         uaContainerId: "{{uaContainerId}}"
       }, {
@@ -133,5 +132,6 @@
         disableUaTracking: {{isUaDisabled}},
         cookieDomain: "{{analyticsCookieDomain}}"
       });
+    }
   </script>
 {% endblock %}

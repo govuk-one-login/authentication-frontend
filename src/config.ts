@@ -186,3 +186,10 @@ export function supportReauthentication(): boolean {
 export function getEmailEnteredWrongBlockDurationInMinutes(): number {
   return Number(process.env.EMAIL_ENTERED_WRONG_BLOCKED_MINUTES) || 15;
 }
+
+export function googleAnalytics4Disabled(): string {
+  return process.env.GA4_DISABLED || "true";
+}
+export function universalAnalyticsDisabled(): string {
+  return process.env.UA_DISABLED || "false";
+}
