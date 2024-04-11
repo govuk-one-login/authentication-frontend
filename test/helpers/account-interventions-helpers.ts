@@ -14,7 +14,7 @@ export const setupAccountInterventionsResponse = (
   baseApi: string,
   flags: AccountInterventionsFlags,
   maybeDateTimeStamp?: string
-) => {
+): void => {
   const dateTimeStamp =
     maybeDateTimeStamp === undefined ? nowDateTime() : maybeDateTimeStamp;
   nock(baseApi)
@@ -44,7 +44,7 @@ export const noInterventions: AccountInterventionsFlags = {
 export function accountInterventionsFakeHelper(
   flags: AccountInterventionsFlags,
   maybeDateTimeStamp?: string
-) {
+): AccountInterventionsInterface {
   const dateTimeStamp =
     maybeDateTimeStamp === undefined ? nowDateTime() : maybeDateTimeStamp;
   return {
