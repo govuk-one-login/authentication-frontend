@@ -261,3 +261,21 @@ variable "alb_idle_timeout" {
   description = "Frontend Application Load Balancer idle timeout"
   default     = 60
 }
+
+variable "rate_limited_endpoints" {
+  description = "List of endpoints that should be rate limited by session and IP"
+  type        = list(string)
+  default     = []
+}
+
+variable "rate_limited_endpoints_rate_limit_period" {
+  description = "Period in seconds for rate limiting for rate limited endpoints"
+  type        = number
+  default     = 120
+}
+
+variable "rate_limited_endpoints_requests_per_period" {
+  description = "Number of requests per period allowed for rate limited endpoints"
+  type        = number
+  default     = 100000
+}
