@@ -15,6 +15,7 @@ describe("environment", function () {
     "SMARTAGENT_API_URL",
     "SMARTAGENT_WEBFORM_ID",
     "URL_FOR_SUPPORT_LINKS",
+    "STUB_HOSTNAME",
   ];
 
   requiredEnvVars.forEach((envVar) => {
