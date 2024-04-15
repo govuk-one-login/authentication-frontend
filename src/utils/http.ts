@@ -10,7 +10,9 @@ import { ApiResponseResult } from "../types";
 import { HTTP_STATUS_CODES } from "../app.constants";
 import { ApiError } from "./error";
 
-const headers: AxiosRequestHeaders = {
+interface CustomAxiosRequestHeaders extends Partial<AxiosRequestHeaders> {}
+
+const headers: CustomAxiosRequestHeaders = {
   Accept: "application/json",
   "Content-Type": "application/json; charset=utf-8",
   "Access-Control-Allow-Credentials": "true",

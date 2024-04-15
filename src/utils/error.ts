@@ -9,8 +9,8 @@ export class BadRequestError extends Error {
 
 export class ApiError extends Error {
   private status?: number;
-  private data?: string;
-  constructor(message: string, status?: number, data?: string) {
+  private data?: unknown;
+  constructor(message: string, status?: number, data?: unknown) {
     super(message);
     this.data = data;
     this.status = status;
