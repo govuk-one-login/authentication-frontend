@@ -267,7 +267,7 @@ variable "rate_limited_endpoints" {
   type        = list(string)
   default     = ["/dummy-77349847-9ce0-499c-b378-6d9b49a24d6a", "/dummy-168a5a48-62f9-44b1-b9ea-d4c8a74b8498"] # default to two uuids, which are not real endpoints. This prevents us from having an empty or statement
   validation {
-    condition     = length(var.rate_limited_endpoints) < 2
+    condition     = length(var.rate_limited_endpoints) >= 2
     error_message = "rate_limited_endpoints must contain at least two endpoints. If you only have one endpoint, add a non-existent dummy, eg. `/dummy-77349847-9ce0-499c-b378-6d9b49a24d6a`"
   }
 }
