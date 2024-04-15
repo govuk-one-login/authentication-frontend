@@ -1,6 +1,5 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import csurf from "csurf";
 import { loggerMiddleware } from "./utils/logger";
 
 import { sanitizeRequestMiddleware } from "./middleware/sanitize-request-middleware";
@@ -36,7 +35,6 @@ import { enterPhoneNumberRouter } from "./components/enter-phone-number/enter-ph
 
 import { pageNotFoundHandler } from "./handlers/page-not-found-handler";
 import { serverErrorHandler } from "./handlers/internal-server-error-handler";
-import { csrfMiddleware } from "./middleware/csrf-middleware";
 import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-routes";
 import { landingRouter } from "./components/landing/landing-route";
 import { getCSRFCookieOptions } from "./config/cookie";
@@ -86,6 +84,7 @@ import { accountInterventionRouter } from "./components/account-intervention/pas
 import { permanentlyBlockedRouter } from "./components/account-intervention/permanently-blocked/permanently-blocked-router";
 import { temporarilyBlockedRouter } from "./components/account-intervention/temporarily-blocked/temporarily-blocked-router";
 import { resetPassword2FAAuthAppRouter } from "./components/reset-password-2fa-auth-app/reset-password-2fa-auth-app-routes";
+import configureCSRF from "./middleware/csrf-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -195,11 +194,12 @@ async function createApp(): Promise<express.Application> {
   );
 
   app.use(cookieParser());
-  app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
+  // app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
 
   app.use(getSessionIdMiddleware);
+  configureCSRF(app);
   app.post("*", sanitizeRequestMiddleware);
-  app.use(csrfMiddleware);
+  // app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
   app.use(initialiseSessionMiddleware);
   app.use(crossDomainTrackingMiddleware);

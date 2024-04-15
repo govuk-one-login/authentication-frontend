@@ -1,20 +1,19 @@
 import { doubleCsrf } from "csrf-csrf";
 import express from "express";
 
-export const {
+const crypto = require('crypto');
+
+
+const {
   generateToken, // Use this in your routes to provide a CSRF hash + token cookie and token.
   doubleCsrfProtection, // This is the default CSRF protection middleware.
 } = doubleCsrf({
-  cookieName: '__Host-di.x-csrf-token',
+  cookieName: '_csrf',
   cookieOptions: {
     secure: true,
   },
-
-  // TODO: set secure cookieOptions above to true only when in production
-  // TODO: Set secret in AWS to be rotated on a regular basis
-  // Do the same for the cookie parser secret
-  getSecret: () => "secret",
-  getTokenFromRequest: req => req.headers['x-csrf-token'],
+  getSecret: () => crypto.randomBytes(32).toString('hex'),
+  getTokenFromRequest: req => req.body.csrfToken,
   ignoredMethods: ["GET", "HEAD", "OPTIONS"]
 });
 
@@ -27,4 +26,4 @@ const configureCSRF = (app: express.Application) => {
   });
 };
 
-export default configureCSRF;
+// export default configureCSRF;

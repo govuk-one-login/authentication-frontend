@@ -6,3 +6,5 @@ export function getCSRFCookieOptions(isProdEnv: boolean): CookieOptions {
     secure: isProdEnv,
   };
 }
+
+// TODO: decide what to do with this
