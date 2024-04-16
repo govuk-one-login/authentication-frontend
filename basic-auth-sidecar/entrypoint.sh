@@ -1,5 +1,7 @@
-#!/bin/sh
-set -euo
+#!/bin/ash
+# shellcheck shell=dash
+
+set -euo pipefail
 
 if [ -z "$BASIC_AUTH_USERNAME" ]; then
   echo >&2 "BASIC_AUTH_USERNAME must be set"
