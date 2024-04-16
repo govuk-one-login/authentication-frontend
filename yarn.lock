@@ -749,10 +749,10 @@
   resolved "https://registry.npmjs.org/@eslint/js/-/js-8.57.0.tgz"
   integrity sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==
 
-"@govuk-one-login/one-login-analytics@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@govuk-one-login/one-login-analytics/-/one-login-analytics-1.0.2.tgz#35c535ca542396ea8d05374039513f1ff766d5ab"
-  integrity sha512-1NvuD1hzG8Fka5PYjzJ8SHxArbYUWkiHCdMtey4gS7SaFc6zmwh2MvT+3HQvbNgvIxDzB9W8YpL2+9zXOZM3VQ==
+"@govuk-one-login/frontend-analytics@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-analytics/-/frontend-analytics-1.0.3.tgz#32da13a67f8804b96a648d53f21adf1b00ca3691"
+  integrity sha512-V0vH3OS5rz2Oj8IkOmKkl34FYA3liV8FaJzYVhVBn/hVjZD0cOaGhinunkdcgei2R9JJXiiU0JlEKDxPoYNdRQ==
 
 "@humanwhocodes/config-array@^0.11.14":
   version "0.11.14"

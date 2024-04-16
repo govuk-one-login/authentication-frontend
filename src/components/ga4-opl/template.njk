@@ -1,8 +1,7 @@
 <script {% if params.nonce%} nonce='{{ params.nonce }}'{%  endif %}>
     window.addEventListener('load', function () {
         window
-            .DI
-            .analyticsGa4
+            .DI?.analyticsGa4
             .pageViewTracker
             .trackOnPageLoad({
                 statusCode: '{{params.statusCode}}', // Access status code
