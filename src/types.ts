@@ -84,6 +84,7 @@ export interface UserSession {
   passwordResetTime?: number;
   isPasswordResetJourney?: boolean;
   isSignInJourney?: boolean;
+  isVerifyEmailCodeResendRequired?: boolean;
 }
 
 export interface UserSessionClient {

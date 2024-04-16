@@ -68,6 +68,30 @@ describe("resend email controller", () => {
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.CHECK_YOUR_EMAIL);
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
     });
+
+    it("should remove session flag for email registration soft block due to incorrect retries", async () => {
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as SendNotificationServiceInterface;
+
+      res.locals.sessionId = "123456-djjad";
+      req.session.user = {
+        email: "test@test.com",
+        isVerifyEmailCodeResendRequired: true,
+        isAccountCreationJourney: true,
+      };
+      req.path = PATH_NAMES.RESEND_EMAIL_CODE;
+
+      await resendEmailCodePost(fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
+      expect(req.session.user.isVerifyEmailCodeResendRequired).to.be.undefined;
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.CHECK_YOUR_EMAIL);
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+    });
   });
 
   describe("securityCodeCheckTimeLimit", () => {
