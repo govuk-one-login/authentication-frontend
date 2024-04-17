@@ -1,5 +1,4 @@
-ARG NGINX_FROM_IMAGE=nginx:mainline-alpine
-FROM ${NGINX_FROM_IMAGE} as builder
+FROM nginx:mainline-alpine as builder
 
 ARG ENABLED_MODULES=headers-more
 
@@ -61,7 +60,7 @@ RUN set -ex \
       done \
       && echo "BUILT_MODULES=\"$BUILT_MODULES\"" > /tmp/packages/modules.env
 
-FROM ${NGINX_FROM_IMAGE}
+FROM nginx:mainline-alpine
 COPY --from=builder /tmp/packages /tmp/packages
 RUN set -ex \
       && . /tmp/packages/modules.env \

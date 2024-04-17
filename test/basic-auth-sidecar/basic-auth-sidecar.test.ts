@@ -15,17 +15,21 @@ import {
 } from "testcontainers";
 import { Environment } from "testcontainers/build/types";
 import path from "path";
+import debug from "debug";
 
 describe("BasicAuthSidecar", function () {
-  let network: StartedNetwork;
+  if (process.env.RUNNER_DEBUG === "1") {
+    debug.enable("testcontainers*");
+  }
 
-  const isDebug: boolean = process.env.RUNNER_DEBUG === "1";
+  const isGitHubActions = process.env.GITHUB_ACTIONS === "true";
+
+  let network: StartedNetwork;
+  let sidecarImage: GenericContainer;
+  let requesterImage: GenericContainer;
 
   let sidecarContainer: StartedTestContainer;
   let requesterContainer: StartedTestContainer;
-
-  let sidecarImage: GenericContainer;
-  let requesterImage: GenericContainer;
 
   let requesterContainerIp: string;
 
@@ -53,10 +57,16 @@ describe("BasicAuthSidecar", function () {
       )
       .start();
 
-    requesterImage = await GenericContainer.fromDockerfile(
-      path.join(path.dirname(__filename), "../../basic-auth-sidecar"),
-      "Dockerfile.httpie"
-    ).build("basic-auth-sidecar-test-httpie", { deleteOnExit: false });
+    if (isGitHubActions) {
+      requesterImage = new GenericContainer(
+        "basic-auth-sidecar-test-httpie:latest"
+      );
+    } else {
+      requesterImage = await GenericContainer.fromDockerfile(
+        path.join(path.dirname(__filename), "../../basic-auth-sidecar"),
+        "Dockerfile.httpie"
+      ).build("basic-auth-sidecar-test-httpie", { deleteOnExit: false });
+    }
     requesterContainer = await requesterImage
       .withNetwork(network)
       .withNetworkAliases("requester")
@@ -65,9 +75,13 @@ describe("BasicAuthSidecar", function () {
 
     requesterContainerIp = requesterContainer.getIpAddress(network.getName());
 
-    sidecarImage = await GenericContainer.fromDockerfile(
-      path.join(path.dirname(__filename), "../../basic-auth-sidecar")
-    ).build("basic-auth-sidecar-test", { deleteOnExit: false });
+    if (isGitHubActions) {
+      sidecarImage = new GenericContainer("basic-auth-sidecar-test:latest");
+    } else {
+      sidecarImage = await GenericContainer.fromDockerfile(
+        path.join(path.dirname(__filename), "../../basic-auth-sidecar")
+      ).build("basic-auth-sidecar-test", { deleteOnExit: false });
+    }
   });
 
   async function doRequestInDockerNetwork(
@@ -162,18 +176,6 @@ describe("BasicAuthSidecar", function () {
         ])
       )
       .start();
-
-    if (isDebug) {
-      // if RUNNER_DEBUG is set, stream logs to console
-      // this is set if the gha job is rerun with 'Enable debug logging' checked.
-
-      /* eslint-disable no-console */
-      (await sidecarContainer.logs())
-        .on("data", (line) => console.log(line))
-        .on("err", (line) => console.error(line))
-        .on("end", () => console.log("Stream closed"));
-      /* eslint-enable no-console */
-    }
   }
 
   afterEach(async () => {
