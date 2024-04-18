@@ -19,5 +19,9 @@ export function allowUserJourneyMiddleware(
     return res.redirect(nextPath);
   }
 
+  req.log.info(
+    `User journey allowed: user is on ${req.path} and state machine computes path should be ${nextPath} for session ${res.locals.sessionId}`
+  );
+
   next();
 }

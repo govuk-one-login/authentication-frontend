@@ -178,7 +178,9 @@ export function getNextPathAndUpdateJourney(
 ): string {
   const nextState = getNextState(path, event, ctx);
 
-  req.log.info(`Next state for ${path} with event ${event} is ${nextState}`);
+  req.log.info(
+    `Next state for ${path} with event ${event} is ${nextState} with session id ${sessionId}`
+  );
 
   req.session.user.journey = {
     nextPath: nextState.value,
@@ -194,7 +196,7 @@ export function getNextPathAndUpdateJourney(
 
   if (!nextState) {
     throw Error(
-      `Invalid user journey. No transition found from ${path} with event ${event}`
+      `Invalid user journey. No transition found from ${path} with event ${event} with sessionId ${sessionId}`
     );
   }
 
