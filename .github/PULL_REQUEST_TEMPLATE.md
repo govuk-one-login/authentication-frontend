@@ -15,34 +15,38 @@ For example:
 1. Ensure `x` message appears in a modal
 -->
 
-## Change have been demonstrated
-Changes to the user interface or content should be demonstrated to Content Design and Interaction Design before being merged. This is to ensure they are aware of changes and behaviours (for example, how error screens appear and whether invalid entries can be amended), and can make any necessary changes to Figma.
+## Checklist
 
-- [ ] Changes to the user interface have been demonstrated
+<!-- Performance analysis notice
+Make sure that a performance analyst colleague in your team has been informed of any changes to the user interfaces or user journeys.
 
-<!-- 
+Delete this item if the PR does not change any UI or user journeys.
+-->
+- [ ] Performance analyst has been notified of the change.
 
-Include screenshots where possible, including those representing error states. Here are some examples:
+<!-- UCD review
+Changes to the user journeys, the UI or content should be reviewed by Content Design and Interaction Design before being merged.
 
+This is to ensure:
+- They have an opportunity to confirm the implementation meets expectations.
+  - For example, how error screens appear and whether invalid entries can be amended.
+- They can make any necessary changes to Figma designs.
+
+It is also important that new features have a full end-to-end journey review before going live. Ensure this is done before enabling a feature flag that changes the frontend.
+
+Contact UCD colleagues in the Authentication team to identify the best way to approach the review.
+
+If including screenshots in the PR description, include those representing error states. Here are some examples:
 - a PR that uses tables to display the screenshots https://github.com/govuk-one-login/authentication-frontend/pull/1187
 - a PR that uses a dropdown to display the screenshots https://github.com/alphagov/di-infrastructure/pull/578
 
-You can find example PRs from this repository that include screenshots through this search: https://github.com/govuk-one-login/authentication-frontend/pulls?q=is%3Apr+screenshots+is%3Aclosed+is%3Amerged  
+You can find example PRs from this repository that include screenshots through this search: https://github.com/govuk-one-login/authentication-frontend/pulls?q=is%3Apr+screenshots+is%3Aclosed+is%3Amerged 
 
+Delete this item if the PR does not change the UI. 
 -->
+- [ ] A UCD review has been performed.
 
-<!-- Delete this section if the PR does not change the UI. -->
-
-## Performance Analysis have been informed of the change
-
-- [ ] Performance Analysis have been informed of the change
-
-## Acceptance tests have been updated
-
-- [ ] Any necessary changes to the [acceptance tests](https://github.com/govuk-one-login/authentication-acceptance-tests) have been made.
-
-<!-- 
-
+<!-- Acceptance tests have been updated
 This is to avoid failures occurring after a merge. The types of changes that may impact acceptance tests might be:
 
 - changes to user journeys
@@ -50,18 +54,13 @@ This is to avoid failures occurring after a merge. The types of changes that may
 - changes to the text of interactive elements (such as links).
 
 The Test Engineers on the Authentication Team will be happy to discuss any changes if you're unsure. 
-
 -->
+- [ ] Any necessary changes to the [acceptance tests](https://github.com/govuk-one-login/authentication-acceptance-tests) have been made.
 
-## Associated documentation has been updated
-
-- [ ] Documentation has been updated to reflect these changes
-
-<!-- 
-
+<!-- Associated documentation has been updated
 This might include updates to the README.md, Confluence pages etc.
-
 -->
+- [ ] Documentation has been updated to reflect these changes.
 
 ## Related PRs
 

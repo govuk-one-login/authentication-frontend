@@ -223,20 +223,21 @@
       "paragraph2": "Wait 2 hours and go back to the service you were trying to use. You can look for the service using your search engine or find it from the GOV.UK homepage."
     },
     "accountNotFoundOneLogin": {
-      "title": "No GOV.UK One Login found",
-      "header": "No GOV.UK One Login found",
+      "title": "You do not have a GOV.UK One Login",
+      "header": "You do not have a GOV.UK One Login",
       "paragraph1": "There is no GOV.UK One Login for ",
-      "insetText1": "GOV.UK One Login is new. It does not work with all government accounts or services yet.",
-      "paragraph2": "If you’re trying to access your account for a government service, such as Universal Credit or your personal tax account, sign in to your account for that service.",
+      "insetText1": "GOV.UK One Login is new. You cannot use it to access all government accounts or services yet.",
+      "paragraph2": "If you’re trying to access a government service, such as Universal Credit, you’ll need to go to that service to sign in.",
       "signInToServiceButtonText": "Sign in to a service",
       "tryAnotherLinkText": "Try another email address",
       "tryAnotherLinkHref": "/enter-email-existing-account"
     },
     "accountNotFoundMandatory": {
-      "title": "No GOV.UK One Login found",
-      "header": "No GOV.UK One Login found",
+      "title": "You do not have a GOV.UK One Login",
+      "header": "You do not have a GOV.UK One Login",
       "paragraph1": "There is no GOV.UK One Login for ",
-      "insetText1": "GOV.UK One Login is new. It does not work with all government accounts or services yet, for example Government Gateway or Universal Credit.",
+      "paragraph2": "You’ll need to create a GOV.UK One Login to use this service.",
+      "insetText1": "At the moment, there are separate accounts for signing in to different government services.",
       "createAccountButtonText": "Create a GOV.UK One Login",
       "createAccountButtonHref": "/enter-email",
       "tryAnotherLinkText": "Try another email address",

@@ -92,6 +92,109 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
   }
 
   rule {
+    name     = "BlockMoreThan100CheckYourEmailRequestsFromIPPer5Minutes"
+    priority = 21
+    rule_label {
+      name = "MoreThan100CheckYourEmailRequestsFromIPPer5Minutes"
+    }
+
+    action {
+      block {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit                 = var.environment == "staging" ? 20000000 : var.rate_limited_endpoints_requests_per_period
+        evaluation_window_sec = var.rate_limited_endpoints_rate_limit_period
+        aggregate_key_type    = "IP"
+
+
+        scope_down_statement {
+          or_statement {
+            dynamic "statement" {
+              for_each = var.rate_limited_endpoints
+              content {
+                byte_match_statement {
+                  positional_constraint = "STARTS_WITH"
+                  search_string         = statement.value
+                  field_to_match {
+                    uri_path {}
+                  }
+                  text_transformation {
+                    priority = 0
+                    type     = "LOWERCASE"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafMoreThan100CheckYourEmailRequestsFromIPPer5Minutes"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "BlockMoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes"
+    priority = 22
+
+    rule_label {
+      name = "MoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes"
+    }
+
+    action {
+      block {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit                 = var.environment == "staging" ? 20000000 : var.rate_limited_endpoints_requests_per_period
+        evaluation_window_sec = var.rate_limited_endpoints_rate_limit_period
+        aggregate_key_type    = "CUSTOM_KEYS"
+        custom_key {
+          cookie {
+            name = "aps"
+            text_transformation {
+              priority = 0
+              type     = "URL_DECODE"
+            }
+          }
+        }
+        scope_down_statement {
+          or_statement {
+            dynamic "statement" {
+              for_each = var.rate_limited_endpoints
+              content {
+                byte_match_statement {
+                  positional_constraint = "STARTS_WITH"
+                  search_string         = statement.value
+                  field_to_match {
+                    uri_path {}
+                  }
+                  text_transformation {
+                    priority = 0
+                    type     = "LOWERCASE"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafMoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
     override_action {
       none {}
     }
@@ -275,7 +378,6 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
         }
       }
     }
-
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafContactUsCount"
