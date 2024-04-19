@@ -179,7 +179,7 @@ export function getNextPathAndUpdateJourney(
   const nextState = getNextState(path, event, ctx);
 
   req.log.info(
-    `Next state for ${path} with event ${event} is ${nextState} with session id ${sessionId}`
+    `Next state for ${path} with event ${event} is ${nextState.value} with session id ${sessionId}`
   );
 
   req.session.user.journey = {
