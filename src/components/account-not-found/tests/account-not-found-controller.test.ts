@@ -78,6 +78,7 @@ describe("account not found controller", () => {
 
       await accountNotFoundPost(fakeService)(req, res);
 
+      expect(req.session.user.isAccountCreationJourney).to.be.true;
       expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_EMAIL);
       expect(fakeService.sendNotification).to.have.been.calledOnce;
     });
