@@ -89,6 +89,12 @@ export function resendEmailCodePost(
     if (isAccountRecoveryJourney) {
       req.session.user.isAccountRecoveryCodeResent = true;
     }
+    if (
+      req.session.user.isAccountCreationJourney &&
+      req.session.user?.isVerifyEmailCodeResendRequired
+    ) {
+      delete req.session.user.isVerifyEmailCodeResendRequired;
+    }
 
     return res.redirect(
       getNextPathAndUpdateJourney(
