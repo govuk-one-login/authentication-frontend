@@ -4,6 +4,7 @@ aws_region                    = "eu-west-2"
 account_management_fqdn       = "acc-mgmt-fg.sandpit.auth.ida.digital.cabinet-office.gov.uk"
 oidc_api_fqdn                 = "oidc.sandpit.account.gov.uk"
 frontend_fqdn                 = "signin.sandpit.account.gov.uk"
+frontend_fqdn_origin          = "origin.signin.sandpit.account.gov.uk"
 frontend_api_fqdn             = "auth.sandpit.account.gov.uk"
 service_domain                = "sandpit.account.gov.uk"
 zone_id                       = "Z1031735QZMC84WYW1TP"
@@ -15,9 +16,15 @@ support_authorize_controller  = "1"
 support_account_interventions = "1"
 support_2fa_b4_password_reset = "1"
 
+
 frontend_task_definition_cpu     = 256
 frontend_task_definition_memory  = 512
 frontend_auto_scaling_v2_enabled = true
+
+#cloudfront varaibles
+cloudfront_auth_frontend_enabled    = true
+auth_origin_cloakingheader          = "dsxUBpHUdcOYUBICSm3LuxA4V6yKGkz0"
+previous_auth_origin_cloakingheader = "dsxUBpHUdcOYUBICSm3LuxA4V6yKGkz0"
 
 alb_idle_timeout = 30
 
