@@ -91,6 +91,7 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     loadGtmScript();
     initGtm();
     initLinkerHandlers();
+    initDynatrace();
   }
 
   function pushLanguageToDataLayer() {
@@ -234,6 +235,12 @@ var cookies = function (trackingId, analyticsCookieDomain) {
     };
 
     return JOURNEY_DATA_LAYER_PATHS[url];
+  }
+
+  function initDynatrace() {
+    if(dtrum !== undefined) {
+      dtrum.enable();
+    }
   }
 
   function getCookie(name) {
