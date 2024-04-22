@@ -51,10 +51,6 @@ export function supportAccountRecovery(): boolean {
   return process.env.SUPPORT_ACCOUNT_RECOVERY === "1";
 }
 
-export function supportAuthOrchSplit(): boolean {
-  return process.env.SUPPORT_AUTH_ORCH_SPLIT === "1";
-}
-
 export function supportAuthorizeController(): boolean {
   return process.env.SUPPORT_AUTHORIZE_CONTROLLER === "1";
 }

@@ -7,11 +7,7 @@ import {
   Http,
 } from "../../utils/http";
 import { AuthCodeResponse, AuthCodeServiceInterface } from "./types";
-import {
-  getApiBaseUrl,
-  getFrontendApiBaseUrl,
-  supportAuthOrchSplit,
-} from "../../config";
+import { getApiBaseUrl, getFrontendApiBaseUrl } from "../../config";
 import { AxiosResponse } from "axios";
 
 export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
@@ -58,7 +54,7 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
   };
 
   function shouldCallOrchAuthCode(userSession: UserSession) {
-    return supportAuthOrchSplit() && !userSession.authCodeReturnToRP;
+    return !userSession.authCodeReturnToRP;
   }
 
   return {

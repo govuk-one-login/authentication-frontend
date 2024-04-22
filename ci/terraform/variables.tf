@@ -25,11 +25,6 @@ variable "support_account_recovery" {
   type = string
 }
 
-variable "support_auth_orch_split" {
-  type    = string
-  default = "0"
-}
-
 variable "support_authorize_controller" {
   type    = string
   default = "0"

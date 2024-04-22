@@ -86,7 +86,6 @@ describe("prove identity callback controller", () => {
     });
 
     it("should redirect back to service when identity processing has errored", async () => {
-      process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
       const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
         processIdentity: sinon.fake.returns({
           success: true,
@@ -108,7 +107,6 @@ describe("prove identity callback controller", () => {
           IPV_ERROR_CODES.IDENTITY_PROCESSING_TIMEOUT
         )}&state=${encodeURIComponent(STATE)}`
       );
-      process.env.SUPPORT_AUTH_ORCH_SPLIT = "0";
     });
 
     it("should redirect to the provided url when the response is an intervention", async () => {

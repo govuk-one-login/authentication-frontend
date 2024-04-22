@@ -10,7 +10,6 @@ zone_id                       = "Z062000928I8D7S9X1OVA"
 session_expiry                = 300000
 gtm_id                        = ""
 support_account_recovery      = "1"
-support_auth_orch_split       = "1"
 support_authorize_controller  = "1"
 support_2fa_b4_password_reset = "1"
 
