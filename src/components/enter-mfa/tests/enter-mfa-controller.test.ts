@@ -49,8 +49,9 @@ describe("enter mfa controller", () => {
         user: {
           redactedPhoneNumber: TEST_PHONE_NUMBER,
         },
+        save: (callback: () => void) => callback(),
       },
-      log: { info: sinon.fake() },
+      log: { info: sinon.fake(), debug: sinon.fake() },
       i18n: { language: "en" },
     });
     res = mockResponse();

@@ -31,8 +31,12 @@ describe("reset password check email controller", () => {
   beforeEach(() => {
     req = mockRequest({
       path: PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: {},
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
       t: sinon.fake(),
       i18n: { language: "en" },
     });

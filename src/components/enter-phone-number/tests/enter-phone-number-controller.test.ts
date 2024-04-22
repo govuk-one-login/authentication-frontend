@@ -27,8 +27,12 @@ describe("enter phone number controller", () => {
   beforeEach(() => {
     req = mockRequest({
       path: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: {},
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
     });
     res = mockResponse();
     process.env = { ...OLD_ENV };

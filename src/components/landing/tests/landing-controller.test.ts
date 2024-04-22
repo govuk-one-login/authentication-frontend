@@ -20,8 +20,12 @@ describe("landing controller", () => {
   beforeEach(() => {
     req = mockRequest({
       path: PATH_NAMES.ROOT,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: {},
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
       t: sinon.fake(),
       i18n: { language: "en" },
     });
@@ -34,7 +38,7 @@ describe("landing controller", () => {
 
   describe("landingGet", () => {
     it("should redirect to /sign-in-or-create page when no existing session for user", async () => {
-      landingGet(req as Request, res as Response);
+      await landingGet(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
     });

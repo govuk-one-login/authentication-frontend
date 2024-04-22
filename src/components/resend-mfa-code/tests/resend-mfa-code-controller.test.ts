@@ -24,8 +24,12 @@ describe("resend mfa controller", () => {
   beforeEach(() => {
     req = mockRequest({
       path: PATH_NAMES.CHECK_YOUR_PHONE,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: {},
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
       t: sinon.fake(),
       i18n: { language: "en" },
     });

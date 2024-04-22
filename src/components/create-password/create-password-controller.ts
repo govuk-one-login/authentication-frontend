@@ -41,7 +41,7 @@ export function createPasswordPost(
     req.session.user.isConsentRequired = result.data.consentRequired;
 
     return res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,

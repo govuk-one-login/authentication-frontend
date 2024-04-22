@@ -43,8 +43,12 @@ describe("Verify code controller tests", () => {
 
     req = mockRequest({
       path: PATH_NAMES.ENTER_PASSWORD,
-      session: { client: {}, user: { email: "test@test.com" } },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: { email: "test@test.com" },
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
     });
 
     await verifyCodePost(verifyCodeService, accountInterventionService, {
@@ -99,8 +103,12 @@ describe("Verify code controller tests", () => {
     beforeEach(() => {
       req = mockRequest({
         path: PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
-        session: { client: {}, user: { email: "test@test.com" } },
-        log: { info: sinon.fake() },
+        session: {
+          client: {},
+          user: { email: "test@test.com" },
+          save: (callback: () => void) => callback(),
+        },
+        log: { info: sinon.fake(), debug: sinon.fake() },
       });
     });
 
@@ -206,8 +214,12 @@ describe("Verify code controller tests", () => {
     beforeEach(() => {
       req = mockRequest({
         path: PATH_NAMES.RESET_PASSWORD_2FA_SMS,
-        session: { client: {}, user: { email: "test@test.com" } },
-        log: { info: sinon.fake() },
+        session: {
+          client: {},
+          user: { email: "test@test.com" },
+          save: (callback: () => void) => callback(),
+        },
+        log: { info: sinon.fake(), debug: sinon.fake() },
       });
     });
 

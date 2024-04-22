@@ -30,8 +30,12 @@ describe("enter password controller", () => {
   beforeEach(() => {
     req = mockRequest({
       path: PATH_NAMES.ENTER_PASSWORD,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: {},
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
     });
     res = mockResponse();
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";

@@ -23,8 +23,12 @@ describe("account not found controller", () => {
   beforeEach(() => {
     req = mockRequest({
       path: PATH_NAMES.ACCOUNT_NOT_FOUND,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: {},
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
     });
     res = mockResponse();
   });

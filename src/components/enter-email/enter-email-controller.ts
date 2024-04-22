@@ -133,7 +133,13 @@ export function enterEmailPost(
       : USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND;
 
     return res.redirect(
-      getNextPathAndUpdateJourney(req, req.path, nextState, null, sessionId)
+      await getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        nextState,
+        null,
+        sessionId
+      )
     );
   };
 }
@@ -165,7 +171,7 @@ export function enterEmailCreatePost(
 
     if (userExistsResponse.data.doesUserExist) {
       return res.redirect(
-        getNextPathAndUpdateJourney(
+        await getNextPathAndUpdateJourney(
           req,
           req.path,
           USER_JOURNEY_EVENTS.ACCOUNT_FOUND_CREATE,
@@ -212,7 +218,7 @@ export function enterEmailCreatePost(
     }
 
     return res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,

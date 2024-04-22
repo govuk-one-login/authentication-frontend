@@ -134,7 +134,7 @@ export function verifyCodePost(
     }
 
     res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         nextEvent,

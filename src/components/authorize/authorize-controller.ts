@@ -143,7 +143,7 @@ export function authorizeGet(
       ? USER_JOURNEY_EVENTS.EXISTING_SESSION
       : USER_JOURNEY_EVENTS.NO_EXISTING_SESSION;
 
-    let redirectPath = getNextPathAndUpdateJourney(
+    let redirectPath = await getNextPathAndUpdateJourney(
       req,
       PATH_NAMES.AUTHORIZE,
       nextStateEvent,

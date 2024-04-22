@@ -20,8 +20,12 @@ describe("doc checking app callback controller", () => {
   beforeEach(() => {
     req = mockRequest({
       path: PATH_NAMES.DOC_CHECKING_APP_CALLBACK,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: {},
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
     });
     res = mockResponse();
   });
@@ -31,8 +35,8 @@ describe("doc checking app callback controller", () => {
   });
 
   describe("docCheckingAppCallbackGet", () => {
-    it("should redirect to auth code", () => {
-      docCheckingAppCallbackGet(req as Request, res as Response);
+    it("should redirect to auth code", async () => {
+      await docCheckingAppCallbackGet(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
     });

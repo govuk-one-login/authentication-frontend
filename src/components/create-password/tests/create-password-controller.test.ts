@@ -23,8 +23,12 @@ describe("create-password controller", () => {
   beforeEach(() => {
     req = mockRequest({
       path: PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
-      session: { client: {}, user: { featureFlags: {} } },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: { featureFlags: {} },
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
     });
     res = mockResponse();
   });

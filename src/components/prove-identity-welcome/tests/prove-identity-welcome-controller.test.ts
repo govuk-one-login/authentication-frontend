@@ -31,8 +31,9 @@ describe("prove your identity welcome controller", () => {
           state: STATE,
         },
         user: {},
+        save: (callback: () => void) => callback(),
       },
-      log: { info: sinon.fake() },
+      log: { info: sinon.fake(), debug: sinon.fake() },
       t: sinon.fake(),
       i18n: { language: "en" },
     });
@@ -64,7 +65,7 @@ describe("prove your identity welcome controller", () => {
 
   describe("proveIdentityWelcomePost", () => {
     it("should redirect to sign in or create when user not authenticated", async () => {
-      proveIdentityWelcomePost(req as Request, res as Response);
+      await proveIdentityWelcomePost(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(
         PATH_NAMES.SIGN_IN_OR_CREATE
@@ -73,7 +74,7 @@ describe("prove your identity welcome controller", () => {
 
     it("should redirect to prove your identity when user is authenticated", async () => {
       req.session.user.isAuthenticated = true;
-      proveIdentityWelcomePost(req as Request, res as Response);
+      await proveIdentityWelcomePost(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.PROVE_IDENTITY);
     });
@@ -81,7 +82,7 @@ describe("prove your identity welcome controller", () => {
     it("should redirect to uplift journey when user is required to step up auth", async () => {
       req.session.user.isAuthenticated = true;
       req.session.user.isUpliftRequired = true;
-      proveIdentityWelcomePost(req as Request, res as Response);
+      await proveIdentityWelcomePost(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.UPLIFT_JOURNEY);
     });
@@ -89,7 +90,7 @@ describe("prove your identity welcome controller", () => {
     it("should redirect to enter password when user is required to login (prompt=LOGIN)", async () => {
       req.session.user.isAuthenticated = true;
       req.session.client.prompt = OIDC_PROMPT.LOGIN;
-      proveIdentityWelcomePost(req as Request, res as Response);
+      await proveIdentityWelcomePost(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ENTER_PASSWORD);
     });

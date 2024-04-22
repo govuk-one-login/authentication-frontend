@@ -138,7 +138,7 @@ export function resetPasswordPost(
     }
 
     return res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
@@ -158,9 +158,12 @@ export function resetPasswordPost(
   };
 }
 
-export function resetPasswordRequestGet(req: Request, res: Response): void {
+export async function resetPasswordRequestGet(
+  req: Request,
+  res: Response
+): Promise<void> {
   return res.redirect(
-    getNextPathAndUpdateJourney(
+    await getNextPathAndUpdateJourney(
       req,
       req.path,
       USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED,

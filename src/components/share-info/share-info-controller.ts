@@ -44,7 +44,7 @@ export function shareInfoPost(
     }
 
     res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.CONSENT_ACCEPTED,

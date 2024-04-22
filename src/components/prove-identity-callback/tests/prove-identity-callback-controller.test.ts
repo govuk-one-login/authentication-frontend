@@ -37,8 +37,9 @@ describe("prove identity callback controller", () => {
           rpState: STATE,
         },
         user: { email: "test@test.com" },
+        save: (callback: () => void) => callback(),
       },
-      log: { info: sinon.fake() },
+      log: { info: sinon.fake(), debug: sinon.fake() },
     });
     res = mockResponse();
   });

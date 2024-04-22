@@ -24,8 +24,9 @@ describe("share-info controller", () => {
       session: {
         client: { name: "clientname", scopes: ["openid", "email", "phone"] },
         user: {},
+        save: (callback: () => void) => callback(),
       },
-      log: { info: sinon.fake() },
+      log: { info: sinon.fake(), debug: sinon.fake() },
       t: sinon.fake(),
       i18n: { language: "en" },
     });
