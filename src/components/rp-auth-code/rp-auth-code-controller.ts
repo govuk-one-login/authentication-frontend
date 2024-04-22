@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { authCodeService } from "./auth-code-service";
-import { AuthCodeServiceInterface } from "./types";
+import { rpAuthCodeService } from "./rp-auth-code-service";
+import { RpAuthCodeServiceInterface } from "./types";
 import { BadRequestError } from "../../utils/error";
 import { CookieConsentServiceInterface } from "../common/cookie-consent/types";
 import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service";
 import { sanitize } from "../../utils/strings";
 import { COOKIE_CONSENT } from "../../app.constants";
 
-export function authCodeGet(
-  service: AuthCodeServiceInterface = authCodeService(),
+export function rpAuthCodeGet(
+  service: RpAuthCodeServiceInterface = rpAuthCodeService(),
   cookieService: CookieConsentServiceInterface = cookieConsentService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
@@ -20,11 +20,8 @@ export function authCodeGet(
       sessionId,
       clientSessionId,
       req.ip,
-      persistentSessionId,
-      req.session.client,
-      req.session.user
+      persistentSessionId
     );
-    delete req.session.user.reauthenticate;
 
     if (!result.success) {
       throw new BadRequestError(result.data.message, result.data.code);

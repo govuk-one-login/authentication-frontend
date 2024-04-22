@@ -39,8 +39,6 @@ export function proveIdentityCallbackGet(
     let redirectPath;
 
     if (response.data.status === IdentityProcessingStatus.COMPLETED) {
-      req.session.user.authCodeReturnToRP = true;
-
       redirectPath = getNextPathAndUpdateJourney(
         req,
         req.path,

@@ -48,7 +48,7 @@ describe("prove identity callback controller", () => {
   });
 
   describe("proveIdentityCallbackGet", () => {
-    it("should redirect to auth code when identity processing complete", async () => {
+    it("should redirect to rp auth code when identity processing complete", async () => {
       const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
         processIdentity: sinon.fake.returns({
           success: true,
@@ -62,7 +62,7 @@ describe("prove identity callback controller", () => {
         res as Response
       );
 
-      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.RP_AUTH_CODE);
     });
 
     it("should render index when identity is being processed", async () => {
