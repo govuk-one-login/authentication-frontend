@@ -5,29 +5,21 @@ import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
 import { proveIdentityGet } from "../prove-identity-controller";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { SinonStub } from "sinon";
 import { AuthCodeServiceInterface } from "../../auth-code/types";
 import { Http } from "../../../utils/http";
 import { authCodeService } from "../../auth-code/auth-code-service";
 import { ExpressRouteFunc } from "../../../types";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("prove identity controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.PROVE_IDENTITY,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.PROVE_IDENTITY);
     res = mockResponse();
   });
 

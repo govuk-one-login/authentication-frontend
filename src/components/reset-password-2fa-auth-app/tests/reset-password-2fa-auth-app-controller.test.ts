@@ -2,12 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants";
 import {
   resetPassword2FAAuthAppGet,
@@ -15,23 +10,14 @@ import {
 } from "../reset-password-2fa-auth-app-controller";
 import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
 import { ERROR_CODES } from "../../common/constants";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("reset password 2fa auth app controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP,
-      session: {
-        client: {},
-        user: {},
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP);
     res = mockResponse();
     res.locals.sessionId = "s-123456-djjad";
     process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";

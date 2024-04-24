@@ -10,12 +10,7 @@ import {
   resetPasswordResendCodeGet,
 } from "../reset-password-check-email-controller";
 import { ResetPasswordCheckEmailServiceInterface } from "../types";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import {
@@ -23,23 +18,14 @@ import {
   noInterventions,
 } from "../../../../test/helpers/account-interventions-helpers";
 import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("reset password check email controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
-      session: {
-        client: {},
-        user: {},
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
     res = mockResponse();
     res.locals.sessionId = "s-123456-djjad";
     process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";

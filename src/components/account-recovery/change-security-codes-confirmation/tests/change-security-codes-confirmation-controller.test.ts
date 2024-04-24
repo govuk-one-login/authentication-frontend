@@ -5,27 +5,19 @@ import { sinon } from "../../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import {
   changeSecurityCodesConfirmationGet,
   changeSecurityCodesConfirmationPost,
 } from "../change-security-codes-confirmation-controller";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 
 describe("change security codes confirmation controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION);
     res = mockResponse();
   });
 
@@ -57,15 +49,7 @@ describe("change security codes confirmation controller", () => {
 
   describe("changeSecurityCodesConfirmationPost", () => {
     it("should redirect to auth code after security codes confirmation ", async () => {
-      req = mockRequest({
-        path: PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION,
-        session: {
-          client: {},
-          user: {},
-          save: (callback: () => void) => callback(),
-        },
-        log: { info: sinon.fake(), debug: sinon.fake() },
-      });
+      req = createMockRequest(PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION);
       await changeSecurityCodesConfirmationPost(
         req as Request,
         res as Response

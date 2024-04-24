@@ -3,25 +3,17 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../../test/utils/test-utils";
 
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { passwordResetRequiredGet } from "../password-reset-required-controller";
 import { PATH_NAMES } from "../../../../app.constants";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 
 describe("account intervention controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.PASSWORD_RESET_REQUIRED,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.PASSWORD_RESET_REQUIRED);
     res = mockResponse();
   });
 
