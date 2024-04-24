@@ -19,8 +19,7 @@ resource "aws_cloudformation_stack" "cloudfront" {
     PreviousOriginCloakingHeader   = var.previous_auth_origin_cloakingheader
     StandardLoggingEnabled         = true
   }
-  depends_on = [aws_acm_certificate.cloudfront_frontend_certificate, aws_wafv2_web_acl.frontend_cloudfront_waf_web_acl, aws_lb.frontend_alb]
-
+  
   tags = local.default_tags
 }
 
@@ -34,7 +33,7 @@ resource "aws_cloudformation_stack" "cloudfront-monitoring" {
 
   parameters = {
     CacheHitAlarmSNSTopicARN            = aws_sns_topic.slack_events[0].arn
-    CloudFrontAdditionaldMetricsEnabled = false
+    CloudFrontAdditionaldMetricsEnabled = true
     CloudfrontDistribution              = aws_cloudformation_stack.cloudfront[0].outputs["DistributionId"]
   }
   depends_on = [aws_cloudformation_stack.cloudfront]

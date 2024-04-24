@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "sns_topic_policy" {
 
     effect = "Allow"
 
- principals {
+    principals {
       type        = "Service"
       identifiers = ["cloudwatch.amazonaws.com"]
     }
