@@ -81,7 +81,7 @@ export function resetPassword2FAAuthAppPost(
       throw new BadRequestError(result.data.message, result.data.code);
     }
     return res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED,

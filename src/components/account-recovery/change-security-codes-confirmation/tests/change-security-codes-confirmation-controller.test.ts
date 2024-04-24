@@ -56,13 +56,20 @@ describe("change security codes confirmation controller", () => {
   });
 
   describe("changeSecurityCodesConfirmationPost", () => {
-    it("should redirect to auth code after security codes confirmation ", () => {
+    it("should redirect to auth code after security codes confirmation ", async () => {
       req = mockRequest({
         path: PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION,
-        session: { client: {}, user: {} },
-        log: { info: sinon.fake() },
+        session: {
+          client: {},
+          user: {},
+          save: (callback: () => void) => callback(),
+        },
+        log: { info: sinon.fake(), debug: sinon.fake() },
       });
-      changeSecurityCodesConfirmationPost(req as Request, res as Response);
+      await changeSecurityCodesConfirmationPost(
+        req as Request,
+        res as Response
+      );
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
     });

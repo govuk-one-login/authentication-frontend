@@ -23,8 +23,12 @@ describe("sign in or create controller", () => {
   beforeEach(() => {
     req = mockRequest({
       path: PATH_NAMES.SIGN_IN_OR_CREATE,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: {},
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
       t: sinon.fake(),
       i18n: { language: "en" },
     });
@@ -43,18 +47,18 @@ describe("sign in or create controller", () => {
     });
   });
   describe("signInOrCreatePost", () => {
-    it("should redirect to enter email new create account", () => {
+    it("should redirect to enter email new create account", async () => {
       req.body.optionSelected = "create";
 
-      signInOrCreatePost(req as Request, res as Response);
+      await signInOrCreatePost(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(
         PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT
       );
     });
 
-    it("should redirect to enter email existing account", () => {
-      signInOrCreatePost(req as Request, res as Response);
+    it("should redirect to enter email existing account", async () => {
+      await signInOrCreatePost(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(
         PATH_NAMES.ENTER_EMAIL_SIGN_IN

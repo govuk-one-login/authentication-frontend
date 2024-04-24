@@ -27,8 +27,12 @@ describe("reset password 2fa auth app controller", () => {
     process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
     req = mockRequest({
       path: PATH_NAMES.RESET_PASSWORD_2FA_SMS,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: {},
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
       t: sinon.fake(),
       i18n: { language: "en" },
     });

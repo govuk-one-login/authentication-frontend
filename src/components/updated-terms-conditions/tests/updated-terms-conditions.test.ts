@@ -23,8 +23,13 @@ describe("updated terms conditions controller", () => {
 
   beforeEach(() => {
     req = mockRequest({
-      session: { client: {}, user: {}, destroy: sinon.fake() },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: {},
+        destroy: sinon.fake(),
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
       t: sinon.fake(),
       i18n: { language: "en" },
     });

@@ -23,12 +23,12 @@ export function changeSecurityCodesConfirmationGet(): ExpressRouteFunc {
   };
 }
 
-export function changeSecurityCodesConfirmationPost(
+export async function changeSecurityCodesConfirmationPost(
   req: Request,
   res: Response
-): void {
+): Promise<void> {
   req.session.user.accountRecoveryVerifiedMfaType = null;
-  const nextPath = getNextPathAndUpdateJourney(
+  const nextPath = await getNextPathAndUpdateJourney(
     req,
     req.path,
     USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_COMPLETED,

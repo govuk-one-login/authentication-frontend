@@ -3,8 +3,12 @@ import { PATH_NAMES } from "../../app.constants";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 
-export function landingGet(req: Request, res: Response): void {
+export async function landingGet(req: Request, res: Response): Promise<void> {
   return res.redirect(
-    getNextPathAndUpdateJourney(req, PATH_NAMES.ROOT, USER_JOURNEY_EVENTS.ROOT)
+    await getNextPathAndUpdateJourney(
+      req,
+      PATH_NAMES.ROOT,
+      USER_JOURNEY_EVENTS.ROOT
+    )
   );
 }

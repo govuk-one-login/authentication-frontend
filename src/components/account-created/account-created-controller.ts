@@ -11,8 +11,11 @@ export function accountCreatedGet(req: Request, res: Response): void {
   });
 }
 
-export function accountCreatedPost(req: Request, res: Response): void {
-  const nextPath = getNextPathAndUpdateJourney(
+export async function accountCreatedPost(
+  req: Request,
+  res: Response
+): Promise<void> {
+  const nextPath = await getNextPathAndUpdateJourney(
     req,
     req.path,
     USER_JOURNEY_EVENTS.ACCOUNT_CREATED,

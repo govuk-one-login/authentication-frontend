@@ -64,7 +64,7 @@ export function accountNotFoundPost(
     req.session.user.isAccountCreationJourney = true;
 
     res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,

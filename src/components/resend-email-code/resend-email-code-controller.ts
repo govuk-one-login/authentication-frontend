@@ -97,7 +97,7 @@ export function resendEmailCodePost(
     }
 
     return res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
@@ -129,7 +129,7 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
     }
 
     return res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,

@@ -1,6 +1,7 @@
 import { PATH_NAMES } from "../../app.constants";
 import { getNextState } from "./state-machine/state-machine";
 import { support2hrLockout } from "../../config";
+import { Request } from "express";
 
 export const SECURITY_CODE_ERROR = "actionType";
 
@@ -169,13 +170,13 @@ export function pathWithQueryParam(
   return path;
 }
 
-export function getNextPathAndUpdateJourney(
-  req: any,
+export async function getNextPathAndUpdateJourney(
+  req: Request,
   path: string,
   event: string,
   ctx?: any,
   sessionId?: string
-): string {
+): Promise<string> {
   const nextState = getNextState(path, event, ctx);
 
   req.log.info(
@@ -189,6 +190,22 @@ export function getNextPathAndUpdateJourney(
         ? nextState.meta["AUTH." + nextState.value].optionalPaths
         : [],
   };
+
+  await new Promise<void>((resolve, reject) => {
+    req.session.save((error) => {
+      if (error) {
+        reject(error);
+        req.log.error(
+          "Session could not be saved after setting the user journey."
+        );
+      } else {
+        req.log.debug(
+          "Session was successfully saved after setting the user journey."
+        );
+        resolve();
+      }
+    });
+  });
 
   req.log.info(
     `User journey transitioned from ${req.path} to ${nextState.value} with session id ${sessionId}`

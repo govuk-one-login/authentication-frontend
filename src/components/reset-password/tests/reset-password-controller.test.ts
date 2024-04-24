@@ -48,8 +48,12 @@ describe("reset password controller (in 6 digit code flow)", () => {
   beforeEach(() => {
     req = mockRequest({
       path: PATH_NAMES.RESET_PASSWORD,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: {},
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
       t: sinon.fake(),
       i18n: { language: "en" },
     });
@@ -62,11 +66,11 @@ describe("reset password controller (in 6 digit code flow)", () => {
     sinon.restore();
   });
 
-  describe("resetPasswordRequestGet", () => {
-    it("should redirect to /reset-password-check-mail when reset password requested", () => {
+  describe("resetPasswordRequestGet", async () => {
+    it("should redirect to /reset-password-check-mail when reset password requested", async () => {
       req.path = PATH_NAMES.RESET_PASSWORD_REQUEST;
 
-      resetPasswordRequestGet(req as Request, res as Response);
+      await resetPasswordRequestGet(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL

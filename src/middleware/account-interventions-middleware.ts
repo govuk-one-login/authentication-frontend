@@ -31,7 +31,7 @@ export function accountInterventionsMiddleware(
 
       if (accountInterventionsResponse.data.blocked) {
         return res.redirect(
-          getNextPathAndUpdateJourney(
+          await getNextPathAndUpdateJourney(
             req,
             req.path,
             USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION
@@ -48,7 +48,7 @@ export function accountInterventionsMiddleware(
           )
         ) {
           return res.redirect(
-            getNextPathAndUpdateJourney(
+            await getNextPathAndUpdateJourney(
               req,
               req.path,
               USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION
@@ -64,7 +64,7 @@ export function accountInterventionsMiddleware(
         handleSuspendedStatus
       ) {
         return res.redirect(
-          getNextPathAndUpdateJourney(
+          await getNextPathAndUpdateJourney(
             req,
             req.path,
             USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION

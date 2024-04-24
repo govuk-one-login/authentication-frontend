@@ -28,8 +28,12 @@ describe("enter authenticator app code controller", () => {
   beforeEach(() => {
     req = mockRequest({
       path: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
+      session: {
+        client: {},
+        user: {},
+        save: (callback: () => void) => callback(),
+      },
+      log: { info: sinon.fake(), debug: sinon.fake() },
       i18n: { language: "en" },
     });
     res = mockResponse();
