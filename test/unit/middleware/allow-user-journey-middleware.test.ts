@@ -23,9 +23,15 @@ describe("Allow user journey middleware", () => {
   });
 
   it("Should call next when allowed optional path", () => {
+    const pathUserIsOn = PATH_NAMES.ENTER_MFA;
+    const nextPath = PATH_NAMES.ENTER_PASSWORD;
     const req = mockRequest({
-      path: PATH_NAMES.ENTER_MFA,
-      session: { user: { journey: { nextPath: PATH_NAMES.ENTER_MFA } } },
+      path: pathUserIsOn,
+      session: {
+        user: {
+          journey: { nextPath: nextPath, optionalPaths: [pathUserIsOn] },
+        },
+      },
       log: { info: sinon.fake() },
     });
     const res = mockResponse();
