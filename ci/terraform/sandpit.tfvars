@@ -21,10 +21,8 @@ frontend_task_definition_cpu     = 256
 frontend_task_definition_memory  = 512
 frontend_auto_scaling_v2_enabled = true
 
-#cloudfront variables 
+#cloudfront enabled flag 
 cloudfront_auth_frontend_enabled    = true
-auth_origin_cloakingheader          = "dsxUBpHUdcOYUBICSm3LuxA4V6yKGkz0"
-previous_auth_origin_cloakingheader = "dsxUBpHUdcOYUBICSm3LuxA4V6yKGkz0"
 
 alb_idle_timeout = 30
 
