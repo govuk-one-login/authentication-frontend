@@ -44,8 +44,7 @@ fi
 
 test -f .env || usage "Missing .env file"
 
-# set shellcheck source to .env.build, as this is a 'complete' example
-# shellcheck source=.env.build
+# shellcheck source=/dev/null
 set -o allexport && source .env && set +o allexport
 
 # shellcheck source=./scripts/export_aws_creds.sh
