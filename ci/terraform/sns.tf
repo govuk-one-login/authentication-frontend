@@ -29,9 +29,15 @@ data "aws_iam_policy_document" "sns_topic_policy" {
 
     effect = "Allow"
 
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
+ principals {
+      type        = "Service"
+      identifiers = ["cloudwatch.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      values   = [data.aws_caller_identity.current.account_id]
+      variable = "aws:SourceAccount"
     }
 
     resources = [
