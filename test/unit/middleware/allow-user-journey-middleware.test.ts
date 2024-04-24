@@ -4,8 +4,8 @@ import { NextFunction } from "express";
 import { sinon } from "../../utils/test-utils";
 import { allowUserJourneyMiddleware } from "../../../src/middleware/allow-user-journey-middleware";
 import { PATH_NAMES } from "../../../src/app.constants";
-import { mockRequest, mockResponse } from "mock-req-res";
 import { createMockRequest } from "../../helpers/mock-request-helper";
+import { mockResponse } from "mock-req-res";
 
 describe("Allow user journey middleware", () => {
   it("Should call next when use journey is valid", () => {
@@ -26,15 +26,10 @@ describe("Allow user journey middleware", () => {
   it("Should call next when allowed optional path", () => {
     const pathUserIsOn = PATH_NAMES.ENTER_MFA;
     const nextPath = PATH_NAMES.ENTER_PASSWORD;
-    const req = mockRequest({
-      path: pathUserIsOn,
-      session: {
-        user: {
-          journey: { nextPath: nextPath, optionalPaths: [pathUserIsOn] },
-        },
-      },
-      log: { info: sinon.fake() },
-    });
+    const req = createMockRequest(pathUserIsOn);
+    req.session.user = {
+      journey: { nextPath: nextPath, optionalPaths: [pathUserIsOn] },
+    };
     const res = mockResponse();
     const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;
 

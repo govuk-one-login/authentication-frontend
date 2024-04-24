@@ -7,28 +7,18 @@ import { Request, Response } from "express";
 import { MfaServiceInterface } from "../../common/mfa/types";
 import { PATH_NAMES } from "../../../app.constants";
 import { upliftJourneyGet } from "../uplift-journey-controller";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("uplift journey controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      session: {
-        client: {},
-        user: {},
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.UPLIFT_JOURNEY);
+    req.session.user = {
+      email: "test@test.com",
+    };
     res = mockResponse();
   });
 
@@ -45,10 +35,6 @@ describe("uplift journey controller", () => {
       } as unknown as MfaServiceInterface;
 
       res.locals.sessionId = "123456-djjad";
-      req.session.user = {
-        email: "test@test.com",
-      };
-      req.path = PATH_NAMES.UPLIFT_JOURNEY;
 
       await upliftJourneyGet(fakeService)(req as Request, res as Response);
 
@@ -65,10 +51,6 @@ describe("uplift journey controller", () => {
 
       req.query._ga = "123123.21321313.2388839";
       res.locals.sessionId = "123456-djjad";
-      req.session.user = {
-        email: "test@test.com",
-      };
-      req.path = PATH_NAMES.UPLIFT_JOURNEY;
 
       await upliftJourneyGet(fakeService)(req as Request, res as Response);
 

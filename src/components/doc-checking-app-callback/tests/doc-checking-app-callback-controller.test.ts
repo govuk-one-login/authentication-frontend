@@ -5,28 +5,16 @@ import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
 import { PATH_NAMES } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { docCheckingAppCallbackGet } from "../doc-checking-app-callback-controller";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("doc checking app callback controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.DOC_CHECKING_APP_CALLBACK,
-      session: {
-        client: {},
-        user: {},
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.DOC_CHECKING_APP_CALLBACK);
     res = mockResponse();
   });
 
