@@ -22,7 +22,7 @@ frontend_task_definition_memory  = 512
 frontend_auto_scaling_v2_enabled = true
 
 #cloudfront enabled flag 
-cloudfront_auth_frontend_enabled    = true
+cloudfront_auth_frontend_enabled = true
 
 alb_idle_timeout = 30
 
