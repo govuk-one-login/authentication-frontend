@@ -19,7 +19,6 @@ resource "aws_cloudformation_stack" "cloudfront" {
     PreviousOriginCloakingHeader   = var.previous_auth_origin_cloakingheader
     StandardLoggingEnabled         = true
   }
-  
   tags = local.default_tags
 }
 
