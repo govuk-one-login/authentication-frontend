@@ -52,6 +52,31 @@ describe("Verify code controller tests", () => {
     expect(res.redirect).to.have.calledWith("/enter-password");
   });
 
+  it("does not overwrite an existing account part created stored in the session", async () => {
+    const verifyCodeService = fakeVerifyCodeServiceHelper(true);
+    const accountInterventionService =
+      accountInterventionsFakeHelper(noInterventions);
+
+    req = createMockRequest(PATH_NAMES.CHECK_YOUR_EMAIL);
+    req.session.user = {
+      email: "test@test.com",
+      isAccountPartCreated: true,
+    };
+
+    await verifyCodePost(verifyCodeService, accountInterventionService, {
+      notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
+      template: "check-your-email/index.njk",
+      validationKey: "pages.checkYourEmail.code.validationError.invalidCode",
+      validationErrorCode: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE,
+    })(req as Request, res as Response);
+
+    expect(req.session.user.isAccountPartCreated).to.eq(true);
+
+    expect(res.redirect).to.have.calledWith(
+      PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD
+    );
+  });
+
   it("if code is invalid and too many email opt codes entered during registration redirect to /security-code-invalid without calling account interventions", async () => {
     const verifyCodeService = fakeVerifyCodeServiceHelper(
       false,

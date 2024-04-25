@@ -78,7 +78,9 @@ export function verifyCodePost(
 
       throw new BadRequestError(result.data.message, result.data.code);
     }
-    req.session.user.isAccountPartCreated = false;
+    if (req.session.user.isAccountPartCreated === undefined) {
+      req.session.user.isAccountPartCreated = false;
+    }
 
     if (options.callback) {
       return options.callback(req, res);
