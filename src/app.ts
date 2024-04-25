@@ -90,6 +90,7 @@ import { resetPassword2FAAuthAppRouter } from "./components/reset-password-2fa-a
 const APP_VIEWS = [
   path.join(__dirname, "components"),
   path.resolve("node_modules/govuk-frontend/"),
+  path.resolve("node_modules/@govuk-one-login/"),
 ];
 
 function registerRoutes(app: express.Application) {
