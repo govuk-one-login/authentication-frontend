@@ -99,6 +99,21 @@ describe("reset password check email controller", () => {
       );
     });
 
+    it("should redirect to reset password if code entered is correct, feature flag is turned on but mfa method is not verified", async () => {
+      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+      const fakeService = fakeVerifyCodeServiceHelper(true);
+      const fakeInterventionsService =
+        accountInterventionsFakeHelper(noInterventions);
+      req.session.user.enterEmailMfaType = "SMS";
+      req.session.user.isAccountPartCreated = true;
+      await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD);
+    });
+
     it("should redirect to check_auth_app if code entered is correct and feature flag is turned on", async () => {
       process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
       const fakeService = fakeVerifyCodeServiceHelper(true);

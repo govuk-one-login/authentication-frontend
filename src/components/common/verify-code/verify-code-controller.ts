@@ -148,6 +148,7 @@ export function verifyCodePost(
           support2FABeforePasswordReset: support2FABeforePasswordReset(),
           mfaMethodType: req.session.user.enterEmailMfaType,
           isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
+          isMfaMethodVerified: !req.session.user.isAccountPartCreated,
           isOnForcedPasswordResetJourney:
             req.path === PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL &&
             req.session.user.withinForcedPasswordResetJourney,

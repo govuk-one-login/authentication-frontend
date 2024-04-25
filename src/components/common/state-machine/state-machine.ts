@@ -799,7 +799,8 @@ const authStateMachine = createMachine(
       requiresResetPasswordMFASmsCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
         context.isOnForcedPasswordResetJourney !== true &&
-        context.support2FABeforePasswordReset === true,
+        context.support2FABeforePasswordReset === true &&
+        context.isMfaMethodVerified === true,
       isPasswordChangeRequired: (context) => context.isPasswordChangeRequired,
       is2FASMSPasswordChangeRequired: (context) =>
         context.isPasswordChangeRequired === true &&
