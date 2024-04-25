@@ -151,6 +151,25 @@ describe("enter email controller", () => {
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_PASSWORD);
     });
 
+    const MFA_METHOD_VERIFIED_PARAMS = [true, false];
+    MFA_METHOD_VERIFIED_PARAMS.forEach((mfaMethodVerified) => {
+      it(`should set the relevant account part created property on the session when account exists and mfa verified is ${mfaMethodVerified}`, async () => {
+        const fakeService: EnterEmailServiceInterface = {
+          userExists: sinon.fake.returns({
+            success: true,
+            data: { doesUserExist: true, mfaMethodVerified: mfaMethodVerified },
+          }),
+        } as unknown as EnterEmailServiceInterface;
+
+        req.body.email = "test.test.com";
+        res.locals.sessionId = "dsad.dds";
+
+        await enterEmailPost(fakeService)(req as Request, res as Response);
+
+        expect(req.session.user.isAccountPartCreated).to.eq(!mfaMethodVerified);
+      });
+    });
+
     it("should redirect to /account-not-found when no account exists", async () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({

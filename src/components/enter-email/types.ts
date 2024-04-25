@@ -5,6 +5,7 @@ export interface UserExists extends DefaultApiResponse {
   doesUserExist: boolean;
   mfaMethodType: string;
   phoneNumberLastThree?: string;
+  mfaMethodVerified: boolean;
   lockoutInformation?: LockoutInformation[];
 }
 export interface LockoutInformation {

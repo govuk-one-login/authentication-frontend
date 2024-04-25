@@ -128,6 +128,8 @@ export function enterEmailPost(
       setUpAuthAppLocks(req, result.data.lockoutInformation);
     req.session.user.enterEmailMfaType = result.data.mfaMethodType;
     req.session.user.redactedPhoneNumber = result.data.phoneNumberLastThree;
+    req.session.user.isAccountPartCreated = !result.data.mfaMethodVerified;
+
     const nextState = result.data.doesUserExist
       ? USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS
       : USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND;
