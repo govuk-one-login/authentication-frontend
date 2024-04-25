@@ -10,13 +10,9 @@ import {
 } from "../enter-phone-number-controller";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 import { PATH_NAMES } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { ERROR_CODES } from "../../common/constants";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 const OLD_ENV = process.env;
 
@@ -25,15 +21,7 @@ describe("enter phone number controller", () => {
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
-      session: {
-        client: {},
-        user: {},
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER);
     res = mockResponse();
     process.env = { ...OLD_ENV };
   });

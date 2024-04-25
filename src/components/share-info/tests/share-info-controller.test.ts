@@ -7,29 +7,19 @@ import { shareInfoGet, shareInfoPost } from "../share-info-controller";
 import { BadRequestError } from "../../../utils/error";
 import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
 import { PATH_NAMES } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("share-info controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.SHARE_INFO,
-      session: {
-        client: { name: "clientname", scopes: ["openid", "email", "phone"] },
-        user: {},
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.SHARE_INFO);
+    req.session.client = {
+      name: "clientname",
+      scopes: ["openid", "email", "phone"],
+    };
     res = mockResponse();
   });
 

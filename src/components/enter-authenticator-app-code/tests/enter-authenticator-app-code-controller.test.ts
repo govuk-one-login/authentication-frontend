@@ -12,30 +12,17 @@ import {
 import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import { AccountRecoveryInterface } from "../../common/account-recovery/types";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { VerifyMfaCodeInterface } from "../types";
 import * as journey from "../../common/journey/journey";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("enter authenticator app code controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
-      session: {
-        client: {},
-        user: {},
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE);
     res = mockResponse();
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
   });

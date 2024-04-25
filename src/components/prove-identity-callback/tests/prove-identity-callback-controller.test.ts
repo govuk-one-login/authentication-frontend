@@ -9,17 +9,13 @@ import {
   OIDC_ERRORS,
   PATH_NAMES,
 } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { proveIdentityCallbackGet } from "../prove-identity-callback-controller";
 import {
   IdentityProcessingStatus,
   ProveIdentityCallbackServiceInterface,
 } from "../types";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("prove identity callback controller", () => {
   let req: RequestOutput;
@@ -28,19 +24,13 @@ describe("prove identity callback controller", () => {
   const STATE = "ndhd7d7d";
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.PROVE_IDENTITY_CALLBACK,
-      session: {
-        client: {
-          rpRedirectUri: "http://rpservice.com/auth",
-          clientName: "test service",
-          rpState: STATE,
-        },
-        user: { email: "test@test.com" },
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.PROVE_IDENTITY_CALLBACK);
+    req.session.user = { email: "test@test.com" };
+    req.session.client = {
+      rpRedirectUri: "http://rpservice.com/auth",
+      name: "test service",
+      rpState: STATE,
+    };
     res = mockResponse();
   });
 

@@ -12,31 +12,19 @@ import {
 import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants";
 import { EnterPasswordServiceInterface } from "../types";
 import { MfaServiceInterface } from "../../common/mfa/types";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { EnterEmailServiceInterface } from "../../enter-email/types";
 import { ERROR_CODES } from "../../common/constants";
 import * as journey from "../../common/journey/journey";
 import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.ENTER_PASSWORD,
-      session: {
-        client: {},
-        user: {},
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.ENTER_PASSWORD);
     res = mockResponse();
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
   });

@@ -5,16 +5,12 @@ import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
 import { OIDC_PROMPT, PATH_NAMES } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import {
   proveIdentityWelcomeGet,
   proveIdentityWelcomePost,
 } from "../prove-identity-welcome-controller";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("prove your identity welcome controller", () => {
   let req: RequestOutput;
@@ -23,20 +19,11 @@ describe("prove your identity welcome controller", () => {
   const STATE = "ndhd7d7d";
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.PROVE_IDENTITY_WELCOME,
-      session: {
-        client: {
-          redirectUri: "http://someservice.com/auth",
-          state: STATE,
-        },
-        user: {},
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.PROVE_IDENTITY_WELCOME);
+    req.session.client = {
+      redirectUri: "http://someservice.com/auth",
+      state: STATE,
+    };
     res = mockResponse();
   });
 

@@ -6,23 +6,15 @@ import { Request, Response } from "express";
 import { errorPageGet } from "../error-controller";
 
 import { PATH_NAMES } from "../../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 
 describe("error page controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.ERROR_PAGE,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.ERROR_PAGE);
     res = mockResponse();
   });
 

@@ -7,29 +7,15 @@ import {
   getSecurityCodesGet,
   getSecurityCodesPost,
 } from "../select-mfa-options-controller";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("select-mfa-options controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.GET_SECURITY_CODES,
-      session: {
-        client: {},
-        user: {},
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.GET_SECURITY_CODES);
     res = mockResponse();
   });
 

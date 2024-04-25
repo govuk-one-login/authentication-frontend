@@ -9,26 +9,16 @@ import {
   resendMfaCodePost,
 } from "../resend-mfa-code-controller";
 import { PATH_NAMES } from "../../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { SendNotificationServiceInterface } from "../../../common/send-notification/types";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 
 describe("resend mfa controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.CHECK_YOUR_PHONE,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.CHECK_YOUR_PHONE);
     res = mockResponse();
   });
 

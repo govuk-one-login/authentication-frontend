@@ -3,25 +3,17 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../../test/utils/test-utils";
 
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { temporarilyBlockedGet } from "../temporarily-blocked-controller";
 import { PATH_NAMES } from "../../../../app.constants";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 
 describe("temporarily blocked controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.UNAVAILABLE_TEMPORARY,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.UNAVAILABLE_TEMPORARY);
     res = mockResponse();
   });
 

@@ -15,31 +15,17 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
 import * as journey from "../../common/journey/journey";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("check your phone controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.CHECK_YOUR_PHONE,
-      session: {
-        client: {},
-        user: {},
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.CHECK_YOUR_PHONE);
     res = mockResponse();
   });
 

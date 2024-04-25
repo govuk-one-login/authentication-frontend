@@ -9,27 +9,15 @@ import {
 } from "../account-not-found-controller";
 import { PATH_NAMES, SERVICE_TYPE } from "../../../app.constants";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("account not found controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.ACCOUNT_NOT_FOUND,
-      session: {
-        client: {},
-        user: {},
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.ACCOUNT_NOT_FOUND);
     res = mockResponse();
   });
 

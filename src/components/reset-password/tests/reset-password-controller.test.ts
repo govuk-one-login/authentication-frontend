@@ -12,15 +12,11 @@ import {
 } from "../reset-password-controller";
 import { ResetPasswordServiceInterface } from "../types";
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { EnterPasswordServiceInterface } from "../../enter-password/types";
 import { MfaServiceInterface } from "../../common/mfa/types";
 import { ERROR_CODES } from "../../common/constants";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 const TEST_SCENARIO_PARAMETERS = [
   {
@@ -46,17 +42,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.RESET_PASSWORD,
-      session: {
-        client: {},
-        user: {},
-        save: (callback: () => void) => callback(),
-      },
-      log: { info: sinon.fake(), debug: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.RESET_PASSWORD);
     res = mockResponse();
     res.locals.sessionId = "s-123456-djjad";
     process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
