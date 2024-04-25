@@ -2,7 +2,7 @@ resource "aws_cloudformation_stack" "cloudfront" {
   count = var.cloudfront_auth_frontend_enabled ? 1 : 0
   name  = "${var.environment}-auth-fe-cloudfront"
   #using fixed version of template for now 
-  template_url = "https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/cloudfront-distribution/template.yaml?versionId=7ocAAm29iU.S.por3ZU8zQMDNCHr1lYf"
+  template_url = "https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/cloudfront-distribution/template.yaml?versionId=EKk9m9vMv10qF5vHzWZogFLnQQw6_Yjc"
 
   capabilities = ["CAPABILITY_NAMED_IAM"]
 
