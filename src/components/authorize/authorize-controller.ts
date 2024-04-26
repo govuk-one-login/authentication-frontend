@@ -8,10 +8,7 @@ import {
 import { getNextPathAndUpdateJourney, ERROR_CODES } from "../common/constants";
 import { BadRequestError, QueryParamsError } from "../../utils/error";
 import { ExpressRouteFunc } from "../../types";
-import {
-  CookieConsentModel,
-  CookieConsentServiceInterface,
-} from "../common/cookie-consent/types";
+import { CookieConsentServiceInterface } from "../common/cookie-consent/types";
 import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service";
 import { sanitize } from "../../utils/strings";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
@@ -30,18 +27,6 @@ import {
 } from "../../config";
 import { logger } from "../../utils/logger";
 import { Claims } from "./claims-config";
-
-function createConsentCookie(
-  res: Response,
-  consentCookieValue: CookieConsentModel
-) {
-  res.cookie(COOKIES_PREFERENCES_SET, consentCookieValue.value, {
-    expires: consentCookieValue.expiry,
-    secure: true,
-    httpOnly: false,
-    domain: res.locals.analyticsCookieDomain,
-  });
-}
 
 export function authorizeGet(
   authService: AuthorizeServiceInterface = authorizeService(),
@@ -166,7 +151,12 @@ export function authorizeGet(
       const consentCookieValue =
         cookieService.createConsentCookieValue(cookieConsent);
 
-      createConsentCookie(res, consentCookieValue);
+      res.cookie(COOKIES_PREFERENCES_SET, consentCookieValue.value, {
+        expires: consentCookieValue.expiry,
+        secure: true,
+        httpOnly: false,
+        domain: res.locals.analyticsCookieDomain,
+      });
 
       if (
         startAuthResponse.data.user.gaCrossDomainTrackingId &&

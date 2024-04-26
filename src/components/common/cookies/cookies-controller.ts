@@ -5,7 +5,6 @@ import {
   COOKIES_PREFERENCES_SET,
   COOKIE_CONSENT,
 } from "../../../app.constants";
-import { CookieConsentModel } from "../cookie-consent/types";
 
 const cookieService = cookieConsentService();
 
@@ -27,22 +26,15 @@ export function cookiesPost(req: Request, res: Response): void {
     consentValue === "true" ? COOKIE_CONSENT.ACCEPT : COOKIE_CONSENT.REJECT
   );
 
-  createConsentCookie(res, consentCookieValue);
-
-  res.locals.backUrl = req.body.originalReferer;
-  res.locals.analyticsConsent = consentValue === "true";
-  res.locals.updated = true;
-  res.render("common/cookies/index.njk");
-}
-
-function createConsentCookie(
-  res: Response,
-  consentCookieValue: CookieConsentModel
-) {
   res.cookie(COOKIES_PREFERENCES_SET, consentCookieValue.value, {
     expires: consentCookieValue.expiry,
     secure: true,
     httpOnly: false,
     domain: res.locals.analyticsCookieDomain,
   });
+
+  res.locals.backUrl = req.body.originalReferer;
+  res.locals.analyticsConsent = consentValue === "true";
+  res.locals.updated = true;
+  res.render("common/cookies/index.njk");
 }
