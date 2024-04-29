@@ -31,6 +31,7 @@ export function cookiesPost(req: Request, res: Response): void {
     secure: true,
     httpOnly: false,
     domain: res.locals.analyticsCookieDomain,
+    encode: String,
   });
 
   res.locals.backUrl = req.body.originalReferer;
