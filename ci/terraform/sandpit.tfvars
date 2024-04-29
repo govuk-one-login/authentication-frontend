@@ -19,6 +19,12 @@ frontend_task_definition_cpu     = 256
 frontend_task_definition_memory  = 512
 frontend_auto_scaling_v2_enabled = true
 
+GA4_DISABLED=false
+UA_DISABLED=true
+UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID="GTM-TK92W68"
+GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID="GTM-KD86CMZ"
+ANALYTICS_COOKIE_DOMAIN="localhost"
+
 alb_idle_timeout = 30
 
 url_for_support_links = "https://home.build.account.gov.uk/contact-gov-uk-one-login"
