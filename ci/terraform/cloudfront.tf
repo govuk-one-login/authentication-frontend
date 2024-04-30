@@ -1,3 +1,9 @@
+
+locals {
+  Apply_CloakingHeader_waf  = (var.cloudfront_auth_dns_enabled ? true :false )
+}
+
+
 resource "aws_cloudformation_stack" "cloudfront" {
   count = var.cloudfront_auth_frontend_enabled ? 1 : 0
   name  = "${var.environment}-auth-fe-cloudfront"
@@ -8,7 +14,7 @@ resource "aws_cloudformation_stack" "cloudfront" {
 
   parameters = {
     AddWWWPrefix                   = var.Add_WWWPrefix
-    ApplyCloakingHeaderWAFToOrigin = var.Apply_CloakingHeader_WAFToOrigin
+    ApplyCloakingHeaderWAFToOrigin = local.Apply_CloakingHeader_waf
     CloudFrontCertArn              = aws_acm_certificate.cloudfront_frontend_certificate[0].arn
     CloudfrontWafAcl               = aws_wafv2_web_acl.frontend_cloudfront_waf_web_acl[0].arn
     DistributionAlias              = local.frontend_fqdn
