@@ -30,7 +30,7 @@ import { Claims } from "./claims-config";
 
 export function authorizeGet(
   authService: AuthorizeServiceInterface = authorizeService(),
-  cookieService: CookieConsentServiceInterface = cookieConsentService(),
+  cookiesConsentService: CookieConsentServiceInterface = cookieConsentService(),
   kmsService: KmsDecryptionServiceInterface = new KmsDecryptionService(),
   jwtService: JwtServiceInterface = new JwtService()
 ): ExpressRouteFunc {
@@ -149,7 +149,7 @@ export function authorizeGet(
 
     if (req.session.client.cookieConsentEnabled && cookieConsent) {
       const consentCookieValue =
-        cookieService.createConsentCookieValue(cookieConsent);
+        cookiesConsentService.createConsentCookieValue(cookieConsent);
 
       res.cookie(COOKIES_PREFERENCES_SET, consentCookieValue.value, {
         expires: consentCookieValue.expiry,
