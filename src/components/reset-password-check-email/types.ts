@@ -6,7 +6,8 @@ export interface ResetPasswordCheckEmailServiceInterface {
     sessionId: string,
     sourceIp: string,
     clientSessionId: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    withinForcedPasswordResetJourney: boolean
   ) => Promise<ApiResponseResult<ResetPasswordRequestResponse>>;
 }
 

@@ -33,7 +33,8 @@ export function resetPasswordCheckEmailGet(
         sessionId,
         req.ip,
         res.locals.clientSessionId,
-        res.locals.persistentSessionId
+        res.locals.persistentSessionId,
+        req.session.user.withinForcedPasswordResetJourney
       );
     }
 
