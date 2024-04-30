@@ -2,8 +2,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set pageTitleName = 'pages.securityRequestsExceededExpired.title' | translate %}
-{% set contentId = contentId%}
-{% set taxonomyLevel2 = taxonomyLevel2 %}
 
 {% if isResendCodeRequest %}
     {% set newCodeLink = newCodeLink + "?isResendCodeRequest=true" %}
