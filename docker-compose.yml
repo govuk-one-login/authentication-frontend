@@ -38,7 +38,7 @@ services:
     image: *stub-image-name
     pull_policy: never
     ports:
-      - "${DOCKER_DOCKER_STUB_NO_MFA_PORT:-8154}:${DOCKER_DOCKER_STUB_NO_MFA_PORT:-8154}"
+      - "${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}:${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}"
     environment:
       ENVIRONMENT: ${ENVIRONMENT:?this should be set in your .env file.}
 
@@ -51,7 +51,7 @@ services:
       UI_LOCALES: ${UI_LOCALES:-}
       VTR: ${VTR:-["Cl"]}
 
-      PORT: ${DOCKER_DOCKER_STUB_NO_MFA_PORT:-8154}
+      PORT: ${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}
       FRONTEND_PORT: ${DOCKER_FRONTEND_PORT:-3000}
     restart: on-failure
     networks:
