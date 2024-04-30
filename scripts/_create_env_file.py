@@ -13,6 +13,7 @@ from typing import Iterable, TypedDict
 
 import boto3
 from botocore.exceptions import BotoCoreError
+from botocore.exceptions import SSOTokenLoadError as BotoSSOTokenLoadError
 from botocore.exceptions import TokenRetrievalError as BotoTokenRetrievalError
 from dotenv import dotenv_values
 
@@ -151,7 +152,7 @@ class StateGetter:
             self._validate_aws_credentials()
             self.s3_client = self.boto_client.client("s3")
             self.dynamodb_client = self.boto_client.client("dynamodb")
-        except BotoTokenRetrievalError:
+        except (BotoTokenRetrievalError, BotoSSOTokenLoadError):
             logger.fatal(
                 "AWS auth error: Your SSO session has expired. Please run `aws sso "
                 "login --profile di-auth-development-admin` to refresh your session."
@@ -160,6 +161,22 @@ class StateGetter:
         except BotoCoreError as e:
             logger.fatal("AWS error: %s. Are you connected to the VPN?", e)
             sys.exit(1)
+
+        if not self._check_environment_exists():
+            logger.fatal(
+                "Environment %s does not exist. Please check you have the correct name",
+                deployment_name,
+            )
+            sys.exit(1)
+
+    def _check_environment_exists(self):
+        try:
+            self._api_remote_state
+        except boto3.exceptions.botocore.exceptions.ClientError as e:
+            if e.response["Error"]["Code"] == "404":
+                return False
+            raise LookupError("Error checking if environment exists") from e
+        return True
 
     def _validate_aws_credentials(self):
         self.boto_client.client("sts").get_caller_identity()
