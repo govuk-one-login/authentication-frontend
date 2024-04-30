@@ -754,6 +754,11 @@
   resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-analytics/-/frontend-analytics-1.0.3.tgz#32da13a67f8804b96a648d53f21adf1b00ca3691"
   integrity sha512-V0vH3OS5rz2Oj8IkOmKkl34FYA3liV8FaJzYVhVBn/hVjZD0cOaGhinunkdcgei2R9JJXiiU0JlEKDxPoYNdRQ==
 
+"@govuk-one-login/one-login-language-toggle@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/one-login-language-toggle/-/one-login-language-toggle-2.0.0.tgz#75f7b7831afd0b13fc40305b3c6a4b24e48f73e4"
+  integrity sha512-2+XO0qFOLJFFnRLCBFQF6lSb/XsPMR8uw74Jtj27kTVfaoNUXMTSHu3t/Ojm6aQmKXmTp79+73dGPp5xWpBrUQ==
+
 "@humanwhocodes/config-array@^0.11.14":
   version "0.11.14"
   resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.11.14.tgz"
