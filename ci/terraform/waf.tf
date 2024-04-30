@@ -395,7 +395,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
 }
 
 resource "aws_wafv2_web_acl_association" "alb_waf_association" {
-  count        = var.cloudfront_auth_dns_enabled ? 0 : 1
+  count        = var.cloudfront_auth_dns_enabled ? 0 : 1    # When DNS flag is enabled this WAF attached to ALB will be removed
   resource_arn = aws_lb.frontend_alb.arn
   web_acl_arn  = aws_wafv2_web_acl.frontend_alb_waf_regional_web_acl.arn
 }
