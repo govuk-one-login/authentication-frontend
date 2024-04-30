@@ -23,7 +23,7 @@ export function checkReauthUsersService(
     const config = getRequestConfig({
       sessionId,
       sourceIp,
-      validationStatues: [
+      validationStatuses: [
         HTTP_STATUS_CODES.OK,
         HTTP_STATUS_CODES.BAD_REQUEST,
         HTTP_STATUS_CODES.NOT_FOUND,

@@ -22,7 +22,7 @@ const headers: CustomAxiosRequestHeaders = {
 export interface ConfigOptions {
   sessionId?: string;
   clientSessionId?: string;
-  validationStatues?: number[];
+  validationStatuses?: number[];
   sourceIp?: string;
   persistentSessionId?: string;
   baseURL?: string;
@@ -60,9 +60,9 @@ export function getRequestConfig(options: ConfigOptions): AxiosRequestConfig {
     config.headers["X-Forwarded-For"] = options.sourceIp;
   }
 
-  if (options.validationStatues) {
+  if (options.validationStatuses) {
     config.validateStatus = function (status: number) {
-      return options.validationStatues.includes(status);
+      return options.validationStatuses.includes(status);
     };
   }
 
