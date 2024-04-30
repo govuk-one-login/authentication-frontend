@@ -1,6 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
-
 export enum MFA_METHOD_TYPE {
   SMS = "SMS",
   AUTH_APP = "AUTH_APP",
@@ -275,10 +272,3 @@ export const CONTACT_US_REFERER_ALLOWLIST = [
   "changeCodesConfirmEmail",
 ];
 
-export const GTM = {
-  GA4_CONTAINER_ID: process.env.GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID,
-  UA_CONTAINER_ID: process.env.UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID,
-  ANALYTICS_COOKIE_DOMAIN: process.env.ANALYTICS_COOKIE_DOMAIN,
-  GA4_DISABLED: process.env.GA4_DISABLED,
-  UA_DISABLED: process.env.UA_DISABLED,
-};
