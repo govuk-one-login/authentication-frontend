@@ -25,11 +25,6 @@ variable "support_account_recovery" {
   type = string
 }
 
-variable "support_auth_orch_split" {
-  type    = string
-  default = "0"
-}
-
 variable "support_authorize_controller" {
   type    = string
   default = "0"
@@ -282,4 +277,47 @@ variable "rate_limited_endpoints_requests_per_period" {
   description = "Number of requests per period allowed for rate limited endpoints"
   type        = number
   default     = 100000
+}
+
+#cloudfront varaible 
+variable "cloudfront_auth_frontend_enabled" {
+  type        = bool
+  default     = false
+  description = "Feature flag to control the creation cloudfront DNS record origin & Cloudfront Certificate"
+}
+
+variable "auth_origin_cloakingheader" {
+  type        = string
+  sensitive   = true
+  description = "This is header value for Cloufront to to verify requests are coming from the correct CloudFront distribution to ALB "
+}
+
+variable "previous_auth_origin_cloakingheader" {
+  type        = string
+  sensitive   = true
+  description = "This is previous header value when the value is rotated to ensure WAF will allow requests during rotation "
+}
+
+variable "Add_WWWPrefix" {
+  type        = bool
+  default     = false
+  description = "flag to to add subdomain (www) to the frontend url eg www.signin.sandpit.account.gov.uk"
+}
+
+variable "Apply_CloakingHeader_WAFToOrigin" {
+  type        = bool
+  default     = false
+  description = "flag to add a cloacking header WAf to ALB so only requiest comming from cloudfront are allowed "
+}
+
+variable "Fraud_Header_Enabled" {
+  type        = bool
+  default     = false
+  description = "flag to switch on Fraud header on cloudfront disturbution"
+}
+
+variable "Standard_Logging_Enabled" {
+  type        = bool
+  default     = false
+  description = "Enables Standard logging to push logs to S3 bucket"
 }

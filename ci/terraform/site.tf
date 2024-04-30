@@ -24,6 +24,16 @@ provider "aws" {
   }
 }
 
+provider "aws" {
+  alias = "cloudfront"
+
+  region = "us-east-1"
+
+  assume_role {
+    role_arn = var.deployer_role_arn
+  }
+}
+
 data "aws_availability_zones" "available" {}
 
 data "aws_caller_identity" "current" {}

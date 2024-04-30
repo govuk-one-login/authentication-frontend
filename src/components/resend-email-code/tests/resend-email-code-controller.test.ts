@@ -10,27 +10,17 @@ import {
   securityCodeCheckTimeLimit,
 } from "../resend-email-code-controller";
 import { PATH_NAMES } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 import { support2hrLockout } from "../../../config";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("resend email controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.CHECK_YOUR_EMAIL,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.CHECK_YOUR_EMAIL);
     res = mockResponse();
   });
 
@@ -65,6 +55,30 @@ describe("resend email controller", () => {
         res as Response
       );
 
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.CHECK_YOUR_EMAIL);
+      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+    });
+
+    it("should remove session flag for email registration soft block due to incorrect retries", async () => {
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as SendNotificationServiceInterface;
+
+      res.locals.sessionId = "123456-djjad";
+      req.session.user = {
+        email: "test@test.com",
+        isVerifyEmailCodeResendRequired: true,
+        isAccountCreationJourney: true,
+      };
+      req.path = PATH_NAMES.RESEND_EMAIL_CODE;
+
+      await resendEmailCodePost(fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
+      expect(req.session.user.isVerifyEmailCodeResendRequired).to.be.undefined;
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.CHECK_YOUR_EMAIL);
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
     });

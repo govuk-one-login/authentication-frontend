@@ -9,17 +9,13 @@ import {
   OIDC_ERRORS,
   PATH_NAMES,
 } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { proveIdentityCallbackGet } from "../prove-identity-callback-controller";
 import {
   IdentityProcessingStatus,
   ProveIdentityCallbackServiceInterface,
 } from "../types";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("prove identity callback controller", () => {
   let req: RequestOutput;
@@ -28,18 +24,13 @@ describe("prove identity callback controller", () => {
   const STATE = "ndhd7d7d";
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.PROVE_IDENTITY_CALLBACK,
-      session: {
-        client: {
-          rpRedirectUri: "http://rpservice.com/auth",
-          clientName: "test service",
-          rpState: STATE,
-        },
-        user: { email: "test@test.com" },
-      },
-      log: { info: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.PROVE_IDENTITY_CALLBACK);
+    req.session.user = { email: "test@test.com" };
+    req.session.client = {
+      rpRedirectUri: "http://rpservice.com/auth",
+      name: "test service",
+      rpState: STATE,
+    };
     res = mockResponse();
   });
 
@@ -86,7 +77,6 @@ describe("prove identity callback controller", () => {
     });
 
     it("should redirect back to service when identity processing has errored", async () => {
-      process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
       const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
         processIdentity: sinon.fake.returns({
           success: true,
@@ -108,7 +98,6 @@ describe("prove identity callback controller", () => {
           IPV_ERROR_CODES.IDENTITY_PROCESSING_TIMEOUT
         )}&state=${encodeURIComponent(STATE)}`
       );
-      process.env.SUPPORT_AUTH_ORCH_SPLIT = "0";
     });
 
     it("should redirect to the provided url when the response is an intervention", async () => {

@@ -116,7 +116,7 @@ export const checkYourPhonePost = (
     );
 
     return res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED,

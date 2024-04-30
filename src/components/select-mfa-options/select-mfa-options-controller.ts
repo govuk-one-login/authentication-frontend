@@ -36,7 +36,10 @@ export function getSecurityCodesGet(req: Request, res: Response): void {
   });
 }
 
-export function getSecurityCodesPost(req: Request, res: Response): void {
+export async function getSecurityCodesPost(
+  req: Request,
+  res: Response
+): Promise<void> {
   if (Object.values(MFA_METHOD_TYPE).includes(req.body.mfaOptions)) {
     req.session.user.selectedMfaOption = req.body.mfaOptions;
   }
@@ -48,7 +51,7 @@ export function getSecurityCodesPost(req: Request, res: Response): void {
   }
 
   res.redirect(
-    getNextPathAndUpdateJourney(
+    await getNextPathAndUpdateJourney(
       req,
       req.path,
       isAuthApp

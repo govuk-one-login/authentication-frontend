@@ -3,6 +3,7 @@ import {
   getAccountManagementUrl,
   getAnalyticsCookieDomain,
   getGtmId,
+  getLanguageToggleEnabled,
 } from "../config";
 import { generateNonce } from "../utils/strings";
 
@@ -15,5 +16,6 @@ export function setLocalVarsMiddleware(
   res.locals.scriptNonce = generateNonce();
   res.locals.accountManagementUrl = getAccountManagementUrl();
   res.locals.analyticsCookieDomain = getAnalyticsCookieDomain();
+  res.locals.showLanguageToggle = getLanguageToggleEnabled();
   next();
 }

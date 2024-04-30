@@ -6,25 +6,15 @@ import { Request, Response } from "express";
 
 import { landingGet } from "../landing-controller";
 import { PATH_NAMES } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("landing controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.ROOT,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.ROOT);
     res = mockResponse();
   });
 
@@ -34,7 +24,7 @@ describe("landing controller", () => {
 
   describe("landingGet", () => {
     it("should redirect to /sign-in-or-create page when no existing session for user", async () => {
-      landingGet(req as Request, res as Response);
+      await landingGet(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
     });

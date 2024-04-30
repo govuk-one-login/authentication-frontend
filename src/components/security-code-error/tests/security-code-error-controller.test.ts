@@ -16,24 +16,16 @@ import {
   SECURITY_CODE_ERROR,
   SecurityCodeErrorType,
 } from "../../common/constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("security code controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
-      session: { client: {}, user: { featureFlags: {} } },
-      log: { info: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
     res = mockResponse();
   });
 

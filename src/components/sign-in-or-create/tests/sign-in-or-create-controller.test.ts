@@ -9,25 +9,15 @@ import {
   signInOrCreatePost,
 } from "../sign-in-or-create-controller";
 import { PATH_NAMES } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("sign in or create controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.SIGN_IN_OR_CREATE,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.SIGN_IN_OR_CREATE);
     res = mockResponse();
   });
 
@@ -43,18 +33,18 @@ describe("sign in or create controller", () => {
     });
   });
   describe("signInOrCreatePost", () => {
-    it("should redirect to enter email new create account", () => {
+    it("should redirect to enter email new create account", async () => {
       req.body.optionSelected = "create";
 
-      signInOrCreatePost(req as Request, res as Response);
+      await signInOrCreatePost(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(
         PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT
       );
     });
 
-    it("should redirect to enter email existing account", () => {
-      signInOrCreatePost(req as Request, res as Response);
+    it("should redirect to enter email existing account", async () => {
+      await signInOrCreatePost(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(
         PATH_NAMES.ENTER_EMAIL_SIGN_IN

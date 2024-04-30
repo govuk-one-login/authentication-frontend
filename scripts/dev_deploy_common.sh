@@ -93,6 +93,10 @@ if [[ $TERRAFORM == "1" ]]; then
     # shellcheck source=./scripts/export_aws_creds.sh
     source "${DIR}/scripts/export_aws_creds.sh"
 
+    echo -n "Getting Terraform variables from Secrets Manager ... "
+
+    source "${DIR}/scripts/read_secrets__main.sh" "${DEPLOY_ENV}"
+
     echo "Running Terraform..."
     pushd "${DIR}/ci/terraform" >/dev/null
     rm -rf .terraform/

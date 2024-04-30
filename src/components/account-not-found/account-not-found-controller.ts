@@ -61,8 +61,10 @@ export function accountNotFoundPost(
       throw new BadRequestError(result.data.message, result.data.code);
     }
 
+    req.session.user.isAccountCreationJourney = true;
+
     res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,

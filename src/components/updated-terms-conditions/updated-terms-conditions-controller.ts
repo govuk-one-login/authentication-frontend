@@ -55,7 +55,7 @@ export function updatedTermsConditionsPost(
       }
 
       res.redirect(
-        getNextPathAndUpdateJourney(
+        await getNextPathAndUpdateJourney(
           req,
           req.path,
           USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED,

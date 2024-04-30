@@ -177,7 +177,7 @@ export function enterPasswordPost(
         accountInterventionsResponse.data.blocked
       ) {
         return res.redirect(
-          getNextPathAndUpdateJourney(
+          await getNextPathAndUpdateJourney(
             req,
             req.path,
             USER_JOURNEY_EVENTS.COMMON_PASSWORD_AND_AIS_STATUS,
@@ -237,7 +237,7 @@ export function enterPasswordPost(
       }
     }
     return res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,

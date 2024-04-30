@@ -9,23 +9,15 @@ import {
 } from "../create-password-controller";
 import { CreatePasswordServiceInterface } from "../types";
 import { PATH_NAMES } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("create-password controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
-      session: { client: {}, user: { featureFlags: {} } },
-      log: { info: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
     res = mockResponse();
   });
 

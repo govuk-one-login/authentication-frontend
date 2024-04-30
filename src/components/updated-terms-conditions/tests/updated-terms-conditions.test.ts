@@ -10,24 +10,16 @@ import {
 
 import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
 import { EXTERNAL_LINKS, PATH_NAMES } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("updated terms conditions controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      session: { client: {}, user: {}, destroy: sinon.fake() },
-      log: { info: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS);
+    req.session.destroy = sinon.fake();
     res = mockResponse();
   });
 

@@ -5,30 +5,23 @@ import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
 import { signedOutGet } from "../signed-out-controller";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { PATH_NAMES } from "../../../app.constants";
 
 describe("signed out controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      session: { client: {}, user: {}, destroy: sinon.fake() },
-      log: { info: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-      cookies: {
-        aps: "123",
-        cookies_preferences_set: "abc",
-        lng: "en",
-        gs: "xyz",
-      },
-    });
+    req = createMockRequest(PATH_NAMES.SIGNED_OUT);
+    req.session.destroy = sinon.fake();
+    req.cookies = {
+      aps: "123",
+      cookies_preferences_set: "abc",
+      lng: "en",
+      gs: "xyz",
+    };
     res = mockResponse();
   });
 

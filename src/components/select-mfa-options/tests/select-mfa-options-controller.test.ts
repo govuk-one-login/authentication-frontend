@@ -7,25 +7,15 @@ import {
   getSecurityCodesGet,
   getSecurityCodesPost,
 } from "../select-mfa-options-controller";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("select-mfa-options controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.GET_SECURITY_CODES,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.GET_SECURITY_CODES);
     res = mockResponse();
   });
 
@@ -41,11 +31,11 @@ describe("select-mfa-options controller", () => {
     });
   });
 
-  describe("getSecurityCodesPost", () => {
+  describe("getSecurityCodesPost", async () => {
     it("should redirect to /enter-phone-number when text message selected", async () => {
       req.body.mfaOptions = "SMS";
 
-      getSecurityCodesPost(req as Request, res as Response);
+      await getSecurityCodesPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
@@ -55,7 +45,7 @@ describe("select-mfa-options controller", () => {
     it("should redirect to /setup-authenticator-app even when auth app selected", async () => {
       req.body.mfaOptions = "AUTH_APP";
 
-      getSecurityCodesPost(req as Request, res as Response);
+      await getSecurityCodesPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP
@@ -67,7 +57,7 @@ describe("select-mfa-options controller", () => {
         it(`req.session.user.selectedMfaOption should be set when req.body.mfaOptions is ${i}`, async () => {
           req.body.mfaOptions = i;
 
-          getSecurityCodesPost(req as Request, res as Response);
+          await getSecurityCodesPost(req as Request, res as Response);
 
           expect(req.session.user).to.have.property("selectedMfaOption", i);
         });
@@ -75,7 +65,7 @@ describe("select-mfa-options controller", () => {
       it(`req.session.user.selectedMfaOption should not be set when req.body.mfaOptions is not a vaild value`, async () => {
         req.body.mfaOptions = "NOT_OK";
 
-        getSecurityCodesPost(req as Request, res as Response);
+        await getSecurityCodesPost(req as Request, res as Response);
 
         expect(req.session.user).not.to.have.property("selectedMfaOption");
       });

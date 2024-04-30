@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { getErrorPathByCode, getNextPathAndUpdateJourney } from "../constants";
+import {
+  ERROR_CODES,
+  getErrorPathByCode,
+  getNextPathAndUpdateJourney,
+} from "../constants";
 import {
   formatValidationError,
   renderBadRequest,
@@ -59,6 +63,13 @@ export function verifyCodePost(
         return renderBadRequest(res, req, options.template, error);
       }
 
+      if (
+        ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES ===
+          result.data.code &&
+        req.session.user.isAccountCreationJourney
+      ) {
+        req.session.user.isVerifyEmailCodeResendRequired = true;
+      }
       const path = getErrorPathByCode(result.data.code);
 
       if (path) {
@@ -123,7 +134,7 @@ export function verifyCodePost(
     }
 
     res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         nextEvent,

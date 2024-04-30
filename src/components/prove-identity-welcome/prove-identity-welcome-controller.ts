@@ -11,12 +11,15 @@ export function proveIdentityWelcomeGet(req: Request, res: Response): void {
   );
 }
 
-export function proveIdentityWelcomePost(req: Request, res: Response): void {
+export async function proveIdentityWelcomePost(
+  req: Request,
+  res: Response
+): Promise<void> {
   const event = req.session.user.isAuthenticated
     ? USER_JOURNEY_EVENTS.EXISTING_SESSION
     : USER_JOURNEY_EVENTS.CREATE_OR_SIGN_IN;
 
-  const nextPath = getNextPathAndUpdateJourney(
+  const nextPath = await getNextPathAndUpdateJourney(
     req,
     PATH_NAMES.PROVE_IDENTITY_WELCOME,
     event,

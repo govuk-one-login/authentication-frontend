@@ -2,12 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import {
@@ -18,6 +13,7 @@ import { VerifyCodeInterface } from "../../common/verify-code/types";
 import { MfaServiceInterface } from "../../common/mfa/types";
 import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers";
 import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("reset password 2fa auth app controller", () => {
   let req: RequestOutput;
@@ -25,13 +21,7 @@ describe("reset password 2fa auth app controller", () => {
 
   beforeEach(() => {
     process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
-    req = mockRequest({
-      path: PATH_NAMES.RESET_PASSWORD_2FA_SMS,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.RESET_PASSWORD_2FA_SMS);
     res = mockResponse();
     res.locals.sessionId = "s-123456-djjad";
   });

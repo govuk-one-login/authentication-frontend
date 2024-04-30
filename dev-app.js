@@ -19,7 +19,7 @@ function createAuthorizeRequest() {
   const ui_locales = process.env.UI_LOCALES && process.env.UI_LOCALES.length > 0 ? `&ui_locales=${process.env.UI_LOCALES}` : "";
   const redirect_uri = `https://${process.env.STUB_HOSTNAME}/oidc/authorization-code/callback`
 
-  return process.env.API_BASE_URL +
+  return new URL(
     "/authorize?" +
     vtr +
     "scope=openid+phone+email" +
@@ -30,7 +30,8 @@ function createAuthorizeRequest() {
     `&client_id=${process.env.TEST_CLIENT_ID}` +
     "&cookie_consent=accept" +
     "&_ga=test" +
-    ui_locales;
+    ui_locales, process.env.API_BASE_URL
+  ).toString();
 }
 
 app.get("/", (req, res) => {

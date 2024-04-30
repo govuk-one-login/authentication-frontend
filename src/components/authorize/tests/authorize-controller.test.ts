@@ -11,12 +11,7 @@ import {
   OIDC_PROMPT,
   PATH_NAMES,
 } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import {
   AuthorizeServiceInterface,
   JwtServiceInterface,
@@ -26,6 +21,7 @@ import { BadRequestError } from "../../../utils/error";
 import { createmockclaims } from "./test-data";
 import { Claims } from "../claims-config";
 import { getOrchToAuthExpectedClientId } from "../../../config";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("authorize controller", () => {
   let req: RequestOutput;
@@ -39,17 +35,11 @@ describe("authorize controller", () => {
 
   beforeEach(() => {
     mockClaims = createmockclaims();
-    req = mockRequest({
-      path: PATH_NAMES.AUTHORIZE,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-      query: {
-        client_id: getOrchToAuthExpectedClientId(),
-        response_type: "code",
-      },
-    });
+    req = createMockRequest(PATH_NAMES.AUTHORIZE);
+    req.query = {
+      client_id: getOrchToAuthExpectedClientId(),
+      response_type: "code",
+    };
     res = mockResponse();
     authServiceResponseData = createAuthServiceReponseData();
 

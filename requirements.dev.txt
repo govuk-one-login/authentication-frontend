@@ -1,0 +1,7 @@
+pylint
+pylint-actions
+black
+isort
+flake8
+Flake8-pyproject
+flake8-github-actions

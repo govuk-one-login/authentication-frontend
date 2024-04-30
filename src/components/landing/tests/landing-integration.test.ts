@@ -12,7 +12,6 @@ describe("Integration:: landing", () => {
   let app: any;
 
   before(async () => {
-    process.env.SUPPORT_AUTH_ORCH_SPLIT = "0";
     decache("../../../app");
     decache("../landing-service");
     decache("../../../middleware/session-middleware");

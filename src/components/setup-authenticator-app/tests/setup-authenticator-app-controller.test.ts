@@ -11,30 +11,20 @@ import {
   setupAuthenticatorAppGet,
   setupAuthenticatorAppPost,
 } from "../setup-authenticator-app-controller";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { ERROR_CODES } from "../../common/constants";
 import { BadRequestError } from "../../../utils/error";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
 import * as journey from "../../common/journey/journey";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("setup-authenticator-app controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP);
     res = mockResponse();
   });
 

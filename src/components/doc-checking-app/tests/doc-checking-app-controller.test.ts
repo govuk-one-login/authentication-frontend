@@ -5,25 +5,17 @@ import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
 import { DocCheckingAppInterface } from "../types";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants";
 import { docCheckingAppGet } from "../doc-checking-app-controller";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("doc checking app controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.DOC_CHECKING_APP,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.DOC_CHECKING_APP);
     res = mockResponse();
   });
 

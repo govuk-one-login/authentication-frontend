@@ -14,13 +14,9 @@ import { VerifyCodeInterface } from "../../common/verify-code/types";
 import { AccountRecoveryInterface } from "../../common/account-recovery/types";
 import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import * as journey from "../../common/journey/journey";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 const fakeAccountRecoveryPermissionCheckService = (
   desiredAccountRecoveryPermittedResponse: boolean
@@ -42,17 +38,8 @@ describe("enter mfa controller", () => {
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.ENTER_MFA,
-      session: {
-        client: {},
-        user: {
-          redactedPhoneNumber: TEST_PHONE_NUMBER,
-        },
-      },
-      log: { info: sinon.fake() },
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.ENTER_MFA);
+    req.session.user = { redactedPhoneNumber: TEST_PHONE_NUMBER };
     res = mockResponse();
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "0";

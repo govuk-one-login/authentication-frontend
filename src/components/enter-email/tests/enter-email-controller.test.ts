@@ -13,13 +13,9 @@ import { EnterEmailServiceInterface, LockoutInformation } from "../types";
 import { JOURNEY_TYPE, ERROR_CODES } from "../../common/constants";
 import { PATH_NAMES } from "../../../app.constants";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("enter email controller", () => {
   let req: RequestOutput;
@@ -28,11 +24,6 @@ describe("enter email controller", () => {
   const date = new Date(Date.UTC(2024, 1, 1));
 
   beforeEach(() => {
-    req = mockRequest({
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-      i18n: { language: "en" },
-    });
     res = mockResponse();
     clock = sinon.useFakeTimers({
       now: date.valueOf(),
@@ -45,6 +36,10 @@ describe("enter email controller", () => {
   });
 
   describe("enterEmailGet", () => {
+    beforeEach(() => {
+      req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
+    });
+
     it("should render enter email create account view when user selected create account", () => {
       req.query.type = JOURNEY_TYPE.CREATE_ACCOUNT;
 
@@ -123,6 +118,9 @@ describe("enter email controller", () => {
   });
 
   describe("enterEmailGet", () => {
+    beforeEach(() => {
+      req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
+    });
     it("should render enter email create account view when user selected sign in", () => {
       enterEmailGet(req as Request, res as Response);
 
@@ -133,6 +131,9 @@ describe("enter email controller", () => {
   });
 
   describe("enterEmailPost", () => {
+    beforeEach(() => {
+      req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
+    });
     it("should redirect to /enter-password when account exists", async () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
@@ -143,7 +144,6 @@ describe("enter email controller", () => {
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "dsad.dds";
-      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
 
       await enterEmailPost(fakeService)(req as Request, res as Response);
 
@@ -161,7 +161,6 @@ describe("enter email controller", () => {
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "sadl990asdald";
-      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
 
       await enterEmailPost(fakeService)(req as Request, res as Response);
 
@@ -190,7 +189,6 @@ describe("enter email controller", () => {
 
       req.body.email = "test@test.com";
       res.locals.sessionId = "sadl990asdald";
-      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
 
       await enterEmailPost(fakeService)(req as Request, res as Response);
 
@@ -249,7 +247,6 @@ describe("enter email controller", () => {
 
       req.body.email = "test@test.com";
       res.locals.sessionId = "sadl990asdald";
-      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
 
       await enterEmailPost(fakeService)(req as Request, res as Response);
 
@@ -264,7 +261,6 @@ describe("enter email controller", () => {
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "dsad.dds";
-      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
@@ -307,7 +303,6 @@ describe("enter email controller", () => {
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "dsad.dds";
-      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
@@ -350,7 +345,6 @@ describe("enter email controller", () => {
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "dsad.dds";
-      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
@@ -393,7 +387,6 @@ describe("enter email controller", () => {
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "dsad.dds";
-      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
@@ -442,7 +435,6 @@ describe("enter email controller", () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
       req.body.email = "test.test.com";
       res.locals.sessionId = "dsad.dds";
-      req.path = PATH_NAMES.ENTER_EMAIL_SIGN_IN;
       res.locals.sessionId = "123456-djjad";
       res.locals.clientSessionId = "00000-djjad";
       res.locals.persistentSessionId = "dips-123456-abc";
@@ -474,6 +466,10 @@ describe("enter email controller", () => {
   });
 
   describe("enterEmailCreatePost", () => {
+    beforeEach(() => {
+      req = createMockRequest(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT);
+    });
+
     it("should redirect to /enter-password when account exists", async () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
@@ -484,7 +480,6 @@ describe("enter email controller", () => {
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "dsad.dds";
-      req.path = PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT;
 
       await enterEmailCreatePost(fakeService)(req as Request, res as Response);
 
@@ -510,7 +505,6 @@ describe("enter email controller", () => {
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "sadl990asdald";
-      req.path = PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT;
 
       await enterEmailCreatePost(fakeService, fakeNotificationService)(
         req as Request,
@@ -540,7 +534,6 @@ describe("enter email controller", () => {
 
       req.body.email = "test.test.com";
       res.locals.sessionId = "sadl990asdald";
-      req.path = PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT;
 
       await enterEmailCreatePost(fakeService, fakeNotificationService)(
         req as Request,

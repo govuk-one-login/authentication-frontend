@@ -16,6 +16,9 @@
         "end": " yn ein helpu i’w wella."
       }
     },
+    "languageToggle": {
+      "ariaLabel": "Dewis iaith"
+    },
     "authenticatorAppIssuer": "GOV.UK One Login",
     "yes": "Gallwch",
     "no": "Na",

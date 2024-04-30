@@ -19,8 +19,9 @@ describe("accountInterventionsMiddleware", () => {
         user: {
           email: "test@test.com",
         },
+        save: (callback: () => void) => callback(),
       },
-      log: { error: sinon.fake(), info: sinon.fake() },
+      log: { error: sinon.fake(), info: sinon.fake(), debug: sinon.fake() },
       path: PATH_NAMES.AUTH_CODE,
     });
     res = mockResponse({
@@ -281,12 +282,12 @@ describe("accountInterventionsMiddleware", () => {
     });
   });
 
-  const callMiddleware = (
+  const callMiddleware = async (
     handleSuspendedStatus: boolean,
     handlePasswordResetStatus: boolean,
     accountInterventionService: AccountInterventionsInterface
   ) => {
-    accountInterventionsMiddleware(
+    await accountInterventionsMiddleware(
       handleSuspendedStatus,
       handlePasswordResetStatus,
       accountInterventionService

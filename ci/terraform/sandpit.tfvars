@@ -4,20 +4,29 @@ aws_region                    = "eu-west-2"
 account_management_fqdn       = "acc-mgmt-fg.sandpit.auth.ida.digital.cabinet-office.gov.uk"
 oidc_api_fqdn                 = "oidc.sandpit.account.gov.uk"
 frontend_fqdn                 = "signin.sandpit.account.gov.uk"
+frontend_fqdn_origin          = "origin.signin.sandpit.account.gov.uk"
 frontend_api_fqdn             = "auth.sandpit.account.gov.uk"
 service_domain                = "sandpit.account.gov.uk"
 zone_id                       = "Z1031735QZMC84WYW1TP"
 session_expiry                = 300000
 gtm_id                        = ""
 support_account_recovery      = "1"
-support_auth_orch_split       = "1"
 support_authorize_controller  = "1"
 support_account_interventions = "1"
 support_2fa_b4_password_reset = "1"
 
-frontend_task_definition_cpu     = 256
-frontend_task_definition_memory  = 512
+
+frontend_task_definition_cpu     = 512
+frontend_task_definition_memory  = 1024
 frontend_auto_scaling_v2_enabled = true
+deployment_min_healthy_percent   = 100
+deployment_max_percent           = 200
+frontend_auto_scaling_min_count  = 1
+frontend_auto_scaling_max_count  = 2
+ecs_desired_count                = 1
+
+#cloudfront enabled flag 
+cloudfront_auth_frontend_enabled = true
 
 GA4_DISABLED=false
 UA_DISABLED=true

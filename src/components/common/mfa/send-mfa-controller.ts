@@ -49,7 +49,7 @@ export function sendMfaGeneric(
     let redirectPath;
 
     if (!isResendCodeRequest) {
-      redirectPath = getNextPathAndUpdateJourney(
+      redirectPath = await getNextPathAndUpdateJourney(
         req,
         PATH_NAMES.ENTER_MFA,
         USER_JOURNEY_EVENTS.VERIFY_MFA,

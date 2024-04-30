@@ -54,8 +54,6 @@ describe("authentication auth code service", () => {
 
   describe("with auth orch split feature flag on", () => {
     it("it should make a post request to the orch auth endpoint with claim, state and redirect uri in the body", async () => {
-      process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
-
       const claim = ["phone_number", "phone_number_verified"];
       const state = "state";
       const sessionClient = {
@@ -104,8 +102,6 @@ describe("authentication auth code service", () => {
     });
 
     it("should make a request for an RP auth code following the prove identity callback page", async () => {
-      process.env.SUPPORT_AUTH_ORCH_SPLIT = "1";
-
       const result = await service.getAuthCode(
         "sessionId",
         "clientSessionId",
@@ -113,31 +109,6 @@ describe("authentication auth code service", () => {
         "persistentSessionId",
         {},
         { authCodeReturnToRP: true }
-      );
-
-      expect(
-        getStub.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
-          headers: sinon.match.object,
-          baseURL: apiBaseUrl,
-          proxy: sinon.match.bool,
-        })
-      ).to.be.true;
-      expect(postStub.notCalled).to.be.true;
-      expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);
-    });
-  });
-
-  describe("with auth orch split feature flag off", () => {
-    it("it should make a get request to the existing endpoint with no body", async () => {
-      process.env.SUPPORT_AUTH_ORCH_SPLIT = "0";
-
-      const result = await service.getAuthCode(
-        "sessionId",
-        "clientSessionId",
-        "sourceIp",
-        "persistentSessionId",
-        {},
-        {}
       );
 
       expect(

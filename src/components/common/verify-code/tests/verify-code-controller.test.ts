@@ -1,14 +1,8 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { sinon } from "../../../../../test/utils/test-utils";
 
 import { Request, Response } from "express";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { fakeVerifyCodeServiceHelper } from "../../../../../test/helpers/verify-code-helpers";
 import { verifyCodePost } from "../verify-code-controller";
 import {
@@ -20,7 +14,8 @@ import {
   NOTIFICATION_TYPE,
   PATH_NAMES,
 } from "../../../../app.constants";
-import { ERROR_CODES } from "../../constants";
+import { ERROR_CODES, getErrorPathByCode } from "../../constants";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 
 describe("Verify code controller tests", () => {
   let req: RequestOutput;
@@ -41,11 +36,8 @@ describe("Verify code controller tests", () => {
     const accountInterventionService =
       accountInterventionsFakeHelper(noInterventions);
 
-    req = mockRequest({
-      path: PATH_NAMES.ENTER_PASSWORD,
-      session: { client: {}, user: { email: "test@test.com" } },
-      log: { info: sinon.fake() },
-    });
+    req = createMockRequest(PATH_NAMES.ENTER_PASSWORD);
+    req.session.user = { email: "test@test.com" };
 
     await verifyCodePost(verifyCodeService, accountInterventionService, {
       notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
@@ -60,14 +52,44 @@ describe("Verify code controller tests", () => {
     expect(res.redirect).to.have.calledWith("/enter-password");
   });
 
+  it("if code is invalid and too many email opt codes entered during registration redirect to /security-code-invalid without calling account interventions", async () => {
+    const verifyCodeService = fakeVerifyCodeServiceHelper(
+      false,
+      ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES
+    );
+    const accountInterventionService =
+      accountInterventionsFakeHelper(noInterventions);
+
+    req = createMockRequest(PATH_NAMES.CHECK_YOUR_EMAIL);
+    req.session.user = {
+      email: "test@test.com",
+      isAccountCreationJourney: true,
+    };
+
+    await verifyCodePost(verifyCodeService, accountInterventionService, {
+      notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
+      template: "check-your-email/index.njk",
+      validationKey: "pages.checkYourEmail.code.validationError.invalidCode",
+      validationErrorCode: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE,
+    })(req as Request, res as Response);
+
+    expect(accountInterventionService.accountInterventionStatus).to.not.be
+      .called;
+
+    expect(res.redirect).to.have.calledWith(
+      getErrorPathByCode(
+        ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES
+      )
+    );
+  });
+
   describe("When code is valid and NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES and code is valid", () => {
     const verifyCodeService = fakeVerifyCodeServiceHelper(true);
     beforeEach(() => {
-      req = mockRequest({
-        path: PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
-        session: { client: {}, user: { email: "test@test.com" } },
-        log: { info: sinon.fake() },
-      });
+      req = createMockRequest(
+        PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES
+      );
+      req.session.user = { email: "test@test.com" };
     });
 
     it("if account is blocked, redirects to /unavailable-permanent", async () => {
@@ -170,11 +192,8 @@ describe("Verify code controller tests", () => {
   describe("When code is valid and NOTIFICATION_TYPE.MFA_SMS", () => {
     const verifyCodeService = fakeVerifyCodeServiceHelper(true);
     beforeEach(() => {
-      req = mockRequest({
-        path: PATH_NAMES.RESET_PASSWORD_2FA_SMS,
-        session: { client: {}, user: { email: "test@test.com" } },
-        log: { info: sinon.fake() },
-      });
+      req = createMockRequest(PATH_NAMES.RESET_PASSWORD_2FA_SMS);
+      req.session.user = { email: "test@test.com" };
     });
 
     it("if account has no AIS status, redirects to reset password", async () => {

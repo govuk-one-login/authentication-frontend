@@ -2,6 +2,9 @@ environment         = "staging"
 common_state_bucket = "di-auth-staging-tfstate"
 redis_node_size     = "cache.m4.xlarge"
 
+
+cloudfront_auth_frontend_enabled = true
+
 frontend_auto_scaling_v2_enabled                    = true
 frontend_task_definition_cpu                        = 1024
 frontend_task_definition_memory                     = 2048
@@ -10,16 +13,15 @@ frontend_auto_scaling_max_count                     = 240
 ecs_desired_count                                   = 4
 support_account_recovery                            = "1"
 support_account_interventions                       = "1"
-support_auth_orch_split                             = "1"
 support_authorize_controller                        = "1"
 support_2fa_b4_password_reset                       = "1"
 support_2hr_lockout                                 = "1"
-code_request_blocked_minutes                        = "1"
-account_recovery_code_entered_wrong_blocked_minutes = "1"
-code_entered_wrong_blocked_minutes                  = "1"
-email_entered_wrong_blocked_minutes                 = "1"
-password_reset_code_entered_wrong_blocked_minutes   = "1"
-reduced_code_block_duration_minutes                 = "0.5"
+code_request_blocked_minutes                        = "120"
+account_recovery_code_entered_wrong_blocked_minutes = "120"
+code_entered_wrong_blocked_minutes                  = "120"
+email_entered_wrong_blocked_minutes                 = "120"
+password_reset_code_entered_wrong_blocked_minutes   = "120"
+reduced_code_block_duration_minutes                 = "15"
 support_reauthentication                            = "1"
 
 url_for_support_links = "https://home.staging.account.gov.uk/contact-gov-uk-one-login"

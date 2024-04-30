@@ -148,7 +148,7 @@ export const enterAuthenticatorAppCodePost = (
     }
 
     res.redirect(
-      getNextPathAndUpdateJourney(
+      await getNextPathAndUpdateJourney(
         req,
         req.path,
         USER_JOURNEY_EVENTS.AUTH_APP_CODE_VERIFIED,

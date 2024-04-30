@@ -10,26 +10,16 @@ import {
   checkYourEmailPost,
 } from "../check-your-email-controller";
 import { PATH_NAMES } from "../../../app.constants";
-import { ERROR_CODES } from "../../common/constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { ERROR_CODES, getErrorPathByCode } from "../../common/constants";
+import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("check your email controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
   beforeEach(() => {
-    req = mockRequest({
-      path: PATH_NAMES.CHECK_YOUR_EMAIL,
-      session: { client: {}, user: {} },
-      log: { info: sinon.fake() },
-      t: sinon.fake(),
-      i18n: { language: "en" },
-    });
+    req = createMockRequest(PATH_NAMES.CHECK_YOUR_EMAIL);
     res = mockResponse();
   });
 
@@ -72,6 +62,25 @@ describe("check your email controller", () => {
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD
+      );
+    });
+
+    it("should redirect to /create-password when valid code entered", async () => {
+      const fakeService: VerifyCodeInterface = {
+        verifyCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as VerifyCodeInterface;
+
+      req.session.user.isVerifyEmailCodeResendRequired = true;
+
+      await checkYourEmailPost(fakeService)(req as Request, res as Response);
+
+      expect(fakeService.verifyCode).to.have.not.been.called;
+      expect(res.redirect).to.have.calledWith(
+        getErrorPathByCode(
+          ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES
+        )
       );
     });
 
