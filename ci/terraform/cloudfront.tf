@@ -1,6 +1,6 @@
 
 locals {
-  Apply_CloakingHeader_waf  = (var.cloudfront_auth_dns_enabled ? true :false )
+  Apply_CloakingHeader_waf = (var.cloudfront_auth_dns_enabled ? true : false)
 }
 
 
