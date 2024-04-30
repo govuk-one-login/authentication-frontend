@@ -9,24 +9,18 @@ services:
       - "${DOCKER_FRONTEND_NODEMON_PORT:-9230}:${DOCKER_FRONTEND_NODEMON_PORT:-9230}"
     volumes:
       - ./:/app
+    env_file:
+      - .env
     environment:
-      ENVIRONMENT: ${ENVIRONMENT:?this should be set in your .env file.}
-
-      SESSION_EXPIRY: ${SESSION_EXPIRY:?this should be set in your .env file.}
-      SESSION_SECRET: ${SESSION_SECRET:?this should be set in your .env file.}
-
-      API_BASE_URL: ${API_BASE_URL:?this should be set in your .env file.}
-      API_KEY: ${API_KEY:?this should be set in your .env file.}
-      FRONTEND_API_BASE_URL: ${FRONTEND_API_BASE_URL:?this should be set in your .env file.}
-
       ANALYTICS_COOKIE_DOMAIN: localhost
-
-      SUPPORT_ACCOUNT_RECOVERY: ${SUPPORT_ACCOUNT_RECOVERY:?this should be set in your .env file.}
 
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:?AWS_ACCESS_KEY_ID is required. This should be set by `startup.sh` so there may be an issue with the startup script.}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:?AWS_SECRET_ACCESS_KEY is required. This should be set by `startup.sh` so there may be an issue with the startup script.}
 
-      REDIS_PORT: ${DOCKER_REDIS_PORT:-6379}
+      # We ignore `.env` values here, as we're using the docker network for redis.
+      REDIS_PORT: 6379 # This is the default port for Redis
+      REDIS_HOST: redis # This is the name of the service in `docker-compose.yml`
+
       PORT: ${DOCKER_FRONTEND_PORT:-3000}
     restart: on-failure
     networks:
