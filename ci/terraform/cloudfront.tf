@@ -1,6 +1,6 @@
 
 locals {
-  Apply_CloakingHeader_waf = (var.cloudfront_auth_dns_enabled ? true : false)
+  Apply_CloakingHeader_waf = (var.cloudfront_auth_dns_enabled ? true : false)  # When DNS flag is enabled this CloakingHeader_waf gets  attached to ALB 
 }
 
 
