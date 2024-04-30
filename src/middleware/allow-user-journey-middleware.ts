@@ -12,16 +12,14 @@ export function allowUserJourneyMiddleware(
     !req.session.user.journey.optionalPaths.includes(req.path)
   ) {
     req.log.warn(
-      `User tried invalid journey to ${req.path} from ${nextPath} for session ${
+      `User tried invalid journey to ${
+        req.path
+      }, but session indicates they should be on ${nextPath} for session ${
         res.locals.sessionId
       } and optionalPaths ${req.session.user.journey.optionalPaths.join()}`
     );
     return res.redirect(nextPath);
   }
-
-  req.log.info(
-    `User journey allowed: user is on ${req.path} and state machine computes path should be ${nextPath} for session ${res.locals.sessionId}`
-  );
 
   next();
 }
