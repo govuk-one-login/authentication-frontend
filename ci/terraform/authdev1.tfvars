@@ -22,12 +22,6 @@ frontend_auto_scaling_min_count  = 1
 frontend_auto_scaling_max_count  = 2
 ecs_desired_count                = 1
 
-GA4_DISABLED=false
-UA_DISABLED=true
-UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID="GTM-TK92W68"
-GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID="GTM-KD86CMZ"
-ANALYTICS_COOKIE_DOMAIN="localhost"
-
 alb_idle_timeout = 30
 
 url_for_support_links = "https://home.build.account.gov.uk/contact-gov-uk-one-login"
