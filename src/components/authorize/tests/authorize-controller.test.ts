@@ -8,6 +8,7 @@ import { authorizeGet } from "../authorize-controller";
 import { CookieConsentServiceInterface } from "../../common/cookie-consent/types";
 import {
   COOKIE_CONSENT,
+  COOKIES_PREFERENCES_SET,
   OIDC_PROMPT,
   PATH_NAMES,
 } from "../../../app.constants";
@@ -22,6 +23,7 @@ import { createmockclaims } from "./test-data";
 import { Claims } from "../claims-config";
 import { getOrchToAuthExpectedClientId } from "../../../config";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { createMockCookieConsentService } from "../../../../test/helpers/mock-cookie-consent-service-helper";
 
 describe("authorize controller", () => {
   let req: RequestOutput;
@@ -55,11 +57,6 @@ describe("authorize controller", () => {
       success: true,
     });
 
-    fakeCookieConsentService = {
-      getCookieConsent: sinon.fake(),
-      createConsentCookieValue: sinon.fake(),
-    };
-
     fakeKmsDecryptionService = {
       decrypt: sinon.fake.returns(Promise.resolve("jwt")),
     };
@@ -88,18 +85,24 @@ describe("authorize controller", () => {
     });
 
     it("should redirect to /sign-in-or-create page with cookie preferences set", async () => {
+      req.body.cookie_preferences = "true";
+
       authServiceResponseData.data.user = {
         cookieConsent: COOKIE_CONSENT.ACCEPT,
       };
+
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake.returns({
-          value: JSON.stringify("cookieValue"),
-          expiry: "cookieExpires",
-        }),
-      } as unknown as CookieConsentServiceInterface;
+      const fakeCookieConsentService = createMockCookieConsentService(
+        req.body.cookie_preferences
+      );
+
+      const consentCookieValue =
+        fakeCookieConsentService.createConsentCookieValue(
+          req.body.cookie_preferences === "true"
+            ? COOKIE_CONSENT.ACCEPT
+            : COOKIE_CONSENT.REJECT
+        );
 
       await authorizeGet(
         fakeAuthorizeService,
@@ -108,7 +111,20 @@ describe("authorize controller", () => {
         fakeJwtService
       )(req as Request, res as Response);
 
-      expect(res.cookie).to.have.been.called;
+      expect(res.cookie).to.have.been.calledWith(
+        COOKIES_PREFERENCES_SET,
+        consentCookieValue.value,
+        sinon.match({
+          expires: sinon.match((date: Date) => {
+            const expectedExpires = new Date(Date.now());
+            expectedExpires.setFullYear(expectedExpires.getFullYear() + 1);
+            return Math.abs(date.getTime() - expectedExpires.getTime()) < 1000;
+          }),
+          secure: true,
+          httpOnly: false,
+          encode: String,
+        })
+      );
       expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
     });
 
@@ -270,13 +286,16 @@ describe("authorize controller", () => {
       };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
-      const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake(),
-        createConsentCookieValue: sinon.fake.returns({
-          value: JSON.stringify("cookieValue"),
-          expiry: "cookieExpires",
-        }),
-      } as unknown as CookieConsentServiceInterface;
+      const fakeCookieConsentService = createMockCookieConsentService(
+        req.body.cookie_preferences
+      );
+
+      const consentCookieValue =
+        fakeCookieConsentService.createConsentCookieValue(
+          req.body.cookie_preferences === "true"
+            ? COOKIE_CONSENT.ACCEPT
+            : COOKIE_CONSENT.REJECT
+        );
 
       await authorizeGet(
         fakeAuthorizeService,
@@ -285,7 +304,15 @@ describe("authorize controller", () => {
         fakeJwtService
       )(req as Request, res as Response);
 
-      expect(res.cookie).to.have.been.called;
+      expect(res.cookie).to.have.been.calledWith(
+        COOKIES_PREFERENCES_SET,
+        consentCookieValue.value,
+        sinon.match({
+          secure: true,
+          httpOnly: false,
+          encode: String,
+        })
+      );
       expect(res.redirect).to.have.calledWith(
         `${PATH_NAMES.SIGN_IN_OR_CREATE}?_ga=${gaTrackingId}`
       );

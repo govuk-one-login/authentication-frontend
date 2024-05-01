@@ -5,8 +5,13 @@ import { sinon } from "../../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
 import { cookiesGet, cookiesPost } from "../cookies-controller";
-import { COOKIES_PREFERENCES_SET, PATH_NAMES } from "../../../../app.constants";
+import {
+  COOKIE_CONSENT,
+  COOKIES_PREFERENCES_SET,
+  PATH_NAMES,
+} from "../../../../app.constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { createMockCookieConsentService } from "../../../../../test/helpers/mock-cookie-consent-service-helper";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 
 describe("cookies controller", () => {
@@ -33,30 +38,88 @@ describe("cookies controller", () => {
       expect(res.locals.backUrl).to.equal("/last-page");
     });
   });
+
   describe("cookiesPost", () => {
-    it("should save analytics preferences as yes and render cookies page", () => {
-      req.body.cookie_preferences = "true";
-      req.body.originalReferer = "/page-before-1";
+    describe("where the user has consented to cookies", () => {
+      it("should call res.cookie with the expected arguments and flags", () => {
+        req.body.cookie_preferences = "true";
 
-      cookiesPost(req as Request, res as Response);
+        const fakeCookieConsentService = createMockCookieConsentService(
+          req.body.cookie_preferences
+        );
 
-      expect(res.render).to.have.been.calledWith("common/cookies/index.njk");
-      expect(res.locals.analyticsConsent).to.equal(true);
-      expect(res.locals.updated).to.equal(true);
-      expect(res.locals.backUrl).to.equal("/page-before-1");
-      expect(res.cookie).to.have.been.calledWith(COOKIES_PREFERENCES_SET);
+        const consentCookieValue =
+          fakeCookieConsentService.createConsentCookieValue(
+            req.body.cookie_preferences === "true"
+              ? COOKIE_CONSENT.ACCEPT
+              : COOKIE_CONSENT.REJECT
+          );
+
+        cookiesPost(req as Request, res as Response);
+
+        expect(res.cookie).to.have.been.calledWith(
+          COOKIES_PREFERENCES_SET,
+          consentCookieValue.value,
+          sinon.match({
+            secure: true,
+            httpOnly: false,
+            encode: String,
+          })
+        );
+      });
+
+      it("should render the page", () => {
+        req.body.cookie_preferences = "true";
+        req.body.originalReferer = "/page-before-1";
+
+        cookiesPost(req as Request, res as Response);
+
+        expect(res.render).to.have.been.calledWith("common/cookies/index.njk");
+        expect(res.locals.analyticsConsent).to.equal(true);
+        expect(res.locals.updated).to.equal(true);
+        expect(res.locals.backUrl).to.equal("/page-before-1");
+      });
     });
-    it("should save analytics preferences as no and render cookies page", () => {
-      req.body.cookie_preferences = "false";
-      req.body.originalReferer = "/page-before-2";
 
-      cookiesPost(req as Request, res as Response);
+    describe("where the user has not consented to cookies", () => {
+      it("should call res.cookie with the expected arguments and flags", () => {
+        req.body.cookie_preferences = "false";
 
-      expect(res.render).to.have.been.calledWith("common/cookies/index.njk");
-      expect(res.locals.analyticsConsent).to.equal(false);
-      expect(res.locals.updated).to.equal(true);
-      expect(res.locals.backUrl).to.equal("/page-before-2");
-      expect(res.cookie).to.have.been.calledWith(COOKIES_PREFERENCES_SET);
+        const fakeCookieConsentService = createMockCookieConsentService(
+          req.body.cookie_preferences
+        );
+
+        const consentCookieValue =
+          fakeCookieConsentService.createConsentCookieValue(
+            req.body.cookie_preferences === "true"
+              ? COOKIE_CONSENT.ACCEPT
+              : COOKIE_CONSENT.REJECT
+          );
+
+        cookiesPost(req as Request, res as Response);
+
+        expect(res.cookie).to.have.been.calledWith(
+          COOKIES_PREFERENCES_SET,
+          consentCookieValue.value,
+          sinon.match({
+            secure: true,
+            httpOnly: false,
+            encode: String,
+          })
+        );
+      });
+
+      it("should render the page", () => {
+        req.body.cookie_preferences = "false";
+        req.body.originalReferer = "/page-before-2";
+
+        cookiesPost(req as Request, res as Response);
+
+        expect(res.render).to.have.been.calledWith("common/cookies/index.njk");
+        expect(res.locals.analyticsConsent).to.equal(false);
+        expect(res.locals.updated).to.equal(true);
+        expect(res.locals.backUrl).to.equal("/page-before-2");
+      });
     });
   });
 });
