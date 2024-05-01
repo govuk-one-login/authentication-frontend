@@ -1,7 +1,7 @@
 resource "aws_cloudformation_stack" "cloudfront" {
   count = var.cloudfront_auth_frontend_enabled ? 1 : 0
   name  = "${var.environment}-auth-fe-cloudfront"
-  #using fixed version of template for now 
+  #using fixed version of cloudfron disturbution template for now 
   template_url = "https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/cloudfront-distribution/template.yaml?versionId=EKk9m9vMv10qF5vHzWZogFLnQQw6_Yjc"
 
   capabilities = ["CAPABILITY_NAMED_IAM"]
@@ -20,13 +20,21 @@ resource "aws_cloudformation_stack" "cloudfront" {
     StandardLoggingEnabled         = true
   }
   tags = local.default_tags
+  
+  #ignoring below parameter as these parameter are been read via secret manager and terraform continually detects changes
+  # Note : we need to remove the below lifecycle if the Header are changed in Secret manager to appy new cloainking header value 
+  lifecycle {
+    ignore_changes = [parameters["OriginCloakingHeader"],parameters["PreviousOriginCloakingHeader"]]
+  }
+
 }
 
 resource "aws_cloudformation_stack" "cloudfront-monitoring" {
   count        = var.cloudfront_auth_frontend_enabled ? 1 : 0
   provider     = aws.cloudfront
   name         = "${var.environment}-auth-fe-cloudfront-monitoring"
-  template_url = "https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/cloudfront-monitoring-alarm/template.yaml?z=${timestamp()}"
+  #using fixed version of cloudfront monitoring  disturbution template for now 
+  template_url = "https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/cloudfront-monitoring-alarm/template.yaml?versionId=td2KHIlG7KGXl0mkMrRDkgBWxdXPEMZ."
 
   capabilities = ["CAPABILITY_NAMED_IAM"]
 
