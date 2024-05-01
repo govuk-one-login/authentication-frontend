@@ -22,6 +22,10 @@ frontend_auto_scaling_min_count  = 1
 frontend_auto_scaling_max_count  = 2
 ecs_desired_count                = 1
 
+#cloudfront  flag 
+cloudfront_auth_frontend_enabled = true
+cloudfront_auth_dns_enabled      = true
+
 alb_idle_timeout = 30
 
 url_for_support_links = "https://home.build.account.gov.uk/contact-gov-uk-one-login"

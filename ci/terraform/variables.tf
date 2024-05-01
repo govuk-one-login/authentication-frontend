@@ -286,15 +286,25 @@ variable "cloudfront_auth_frontend_enabled" {
   description = "Feature flag to control the creation cloudfront DNS record origin & Cloudfront Certificate"
 }
 
+variable "cloudfront_auth_dns_enabled" {
+  type        = bool
+  default     = false
+  description = "Feature flag to control the switch of DNS record to  cloudfront"
+}
+
+variable "cloudfront_zoneid" {
+  type        = string
+  default     = "Z2FDTNDATAQYW2"
+  description = "This global zone id of  CloudFront distribution "
+}
+
 variable "auth_origin_cloakingheader" {
   type        = string
-  sensitive   = true
   description = "This is header value for Cloufront to to verify requests are coming from the correct CloudFront distribution to ALB "
 }
 
 variable "previous_auth_origin_cloakingheader" {
   type        = string
-  sensitive   = true
   description = "This is previous header value when the value is rotated to ensure WAF will allow requests during rotation "
 }
 

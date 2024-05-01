@@ -497,7 +497,7 @@ resource "aws_wafv2_web_acl_logging_configuration" "frontend_cloudfront_waf_logg
 resource "aws_cloudwatch_log_subscription_filter" "frontend_cloudfront_waf_subscription" {
   provider = aws.cloudfront
 
-  count           = var.cloudfront_auth_frontend_enabled ? 1 : 0
+  count           = var.cloudfront_auth_frontend_enabled && var.environment == "production" || var.environment == "staging" ? 1 : 0
   name            = "${aws_cloudwatch_log_group.frontend_cloudfront_waf_log_group[0].name}-splunk-subscription-${count.index}"
   log_group_name  = aws_cloudwatch_log_group.frontend_cloudfront_waf_log_group[0].name
   filter_pattern  = ""
