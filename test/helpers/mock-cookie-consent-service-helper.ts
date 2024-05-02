@@ -13,7 +13,7 @@ export function createMockCookieConsentService(
       value: JSON.stringify({
         analytics: userCookieConsentPreference === "true",
       }),
-      expiry: expiryDate,
+      expires: expiryDate,
     }),
   };
 }

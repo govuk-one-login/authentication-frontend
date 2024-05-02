@@ -27,7 +27,7 @@ export function cookiesPost(req: Request, res: Response): void {
   );
 
   res.cookie(COOKIES_PREFERENCES_SET, consentCookieValue.value, {
-    expires: consentCookieValue.expiry,
+    expires: consentCookieValue.expires,
     secure: true,
     httpOnly: false,
     domain: res.locals.analyticsCookieDomain,

@@ -5,5 +5,5 @@ export interface CookieConsentServiceInterface {
 
 export interface CookieConsentModel {
   value: string;
-  expiry: Date;
+  expires: Date;
 }
