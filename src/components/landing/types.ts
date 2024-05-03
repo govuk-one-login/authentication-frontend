@@ -1,4 +1,4 @@
-import { ApiResponseResult, DefaultApiResponse } from "../../types";
+import { DefaultApiResponse } from "../../types";
 
 export interface StartAuthResponse extends DefaultApiResponse {
   client: ClientInfo;
@@ -25,13 +25,4 @@ export interface UserSessionInfo {
   gaCrossDomainTrackingId?: string;
   docCheckingAppUser: boolean;
   mfaMethodType?: string;
-}
-
-export interface LandingServiceInterface {
-  start: (
-    sessionId: string,
-    clientSessionId: string,
-    sourceIp: string,
-    persistentSessionId: string
-  ) => Promise<ApiResponseResult<StartAuthResponse>>;
 }

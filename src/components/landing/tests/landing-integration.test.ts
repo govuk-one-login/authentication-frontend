@@ -3,19 +3,14 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import decache from "decache";
-import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
-import { LandingServiceInterface, StartAuthResponse } from "../types";
-import { createApiResponse } from "../../../utils/http";
-import { AxiosResponse } from "axios";
+import { PATH_NAMES } from "../../../app.constants";
 
 describe("Integration:: landing", () => {
   let app: any;
 
   before(async () => {
     decache("../../../app");
-    decache("../landing-service");
     decache("../../../middleware/session-middleware");
-    const landingService = require("../landing-service");
     const sessionMiddleware = require("../../../middleware/session-middleware");
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -30,37 +25,6 @@ describe("Integration:: landing", () => {
         next();
       });
 
-    sinon
-      .stub(landingService, "landingService")
-      .callsFake((): LandingServiceInterface => {
-        async function start() {
-          const fakeAxiosResponse: AxiosResponse = {
-            data: {
-              client: {
-                serviceType: "MANDATORY",
-                clientName: "test-client",
-                scopes: ["openid"],
-                cookieConsentEnabled: true,
-                consentEnabled: true,
-                redirectUri: "http://test-redirect.gov.uk/callback",
-                state: "jasldasl12312",
-                isOneLoginService: false,
-              },
-              user: {
-                consentRequired: true,
-                upliftRequired: false,
-                identityRequired: false,
-                authenticated: false,
-              },
-            },
-            status: HTTP_STATUS_CODES.OK,
-          } as AxiosResponse;
-
-          return createApiResponse<StartAuthResponse>(fakeAxiosResponse);
-        }
-
-        return { start };
-      });
     app = await require("../../../app").createApp();
   });
 
