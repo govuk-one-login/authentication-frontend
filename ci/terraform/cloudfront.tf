@@ -2,20 +2,17 @@ resource "aws_cloudformation_stack" "cloudfront" {
   count = var.cloudfront_auth_frontend_enabled ? 1 : 0
   name  = "${var.environment}-auth-fe-cloudfront"
   #using fixed version of cloudfron disturbution template for now 
-  template_url = "https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/cloudfront-distribution/template.yaml?versionId=EKk9m9vMv10qF5vHzWZogFLnQQw6_Yjc"
+  template_url = "https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/cloudfront-distribution/template.yaml?versionId=r_TJE_Uw3BHA0FFMX7WE84B39D9ucuG8"
 
   capabilities = ["CAPABILITY_NAMED_IAM"]
 
   parameters = {
     AddWWWPrefix                   = var.Add_WWWPrefix
-    ApplyCloakingHeaderWAFToOrigin = var.Apply_CloakingHeader_WAFToOrigin
     CloudFrontCertArn              = aws_acm_certificate.cloudfront_frontend_certificate[0].arn
     CloudfrontWafAcl               = aws_wafv2_web_acl.frontend_cloudfront_waf_web_acl[0].arn
     DistributionAlias              = local.frontend_fqdn
     FraudHeaderEnabled             = var.Fraud_Header_Enabled
     OriginCloakingHeader           = var.auth_origin_cloakingheader
-    OriginResourceArn              = aws_lb.frontend_alb.id
-    OriginWafAcl                   = "none"
     PreviousOriginCloakingHeader   = var.previous_auth_origin_cloakingheader
     StandardLoggingEnabled         = true
   }

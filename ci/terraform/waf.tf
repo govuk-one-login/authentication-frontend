@@ -34,6 +34,10 @@ resource "aws_wafv2_ip_set" "gds_ip_set" {
   tags = local.default_tags
 }
 
+locals {
+  cloudfront_origin_cloaking_header_name = "origin-cloaking-secret"
+}
+
 resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
   name  = "${var.environment}-frontend-alb-waf-web-acl"
   scope = "REGIONAL"
@@ -82,6 +86,49 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
       rate_based_statement {
         limit              = var.environment == "staging" ? 20000000 : 25000
         aggregate_key_type = "IP"
+        scope_down_statement {
+          and_statement {
+            statement {
+              not_statement {
+                statement {
+                  byte_match_statement {
+                    field_to_match {
+                      single_header {
+                        name = local.cloudfront_origin_cloaking_header_name
+                      }
+                    }
+                    positional_constraint = "EXACTLY"
+                    search_string         = var.auth_origin_cloakingheader
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+                  }
+                }
+              }
+            }
+
+            statement {
+              not_statement {
+                statement {
+                  byte_match_statement {
+                    field_to_match {
+                      single_header {
+                        name = local.cloudfront_origin_cloaking_header_name
+                      }
+                    }
+                    positional_constraint = "EXACTLY"
+                    search_string         = var.previous_auth_origin_cloakingheader
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
     visibility_config {
