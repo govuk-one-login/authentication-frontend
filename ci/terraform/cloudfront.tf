@@ -7,14 +7,14 @@ resource "aws_cloudformation_stack" "cloudfront" {
   capabilities = ["CAPABILITY_NAMED_IAM"]
 
   parameters = {
-    AddWWWPrefix                   = var.Add_WWWPrefix
-    CloudFrontCertArn              = aws_acm_certificate.cloudfront_frontend_certificate[0].arn
-    CloudfrontWafAcl               = aws_wafv2_web_acl.frontend_cloudfront_waf_web_acl[0].arn
-    DistributionAlias              = local.frontend_fqdn
-    FraudHeaderEnabled             = var.Fraud_Header_Enabled
-    OriginCloakingHeader           = var.auth_origin_cloakingheader
-    PreviousOriginCloakingHeader   = var.previous_auth_origin_cloakingheader
-    StandardLoggingEnabled         = true
+    AddWWWPrefix                 = var.Add_WWWPrefix
+    CloudFrontCertArn            = aws_acm_certificate.cloudfront_frontend_certificate[0].arn
+    CloudfrontWafAcl             = aws_wafv2_web_acl.frontend_cloudfront_waf_web_acl[0].arn
+    DistributionAlias            = local.frontend_fqdn
+    FraudHeaderEnabled           = var.Fraud_Header_Enabled
+    OriginCloakingHeader         = var.auth_origin_cloakingheader
+    PreviousOriginCloakingHeader = var.previous_auth_origin_cloakingheader
+    StandardLoggingEnabled       = true
   }
   tags = local.default_tags
 
