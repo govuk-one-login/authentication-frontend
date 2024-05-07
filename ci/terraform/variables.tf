@@ -316,12 +316,6 @@ variable "Add_WWWPrefix" {
   description = "flag to to add subdomain (www) to the frontend url eg www.signin.sandpit.account.gov.uk"
 }
 
-variable "Apply_CloakingHeader_WAFToOrigin" {
-  type        = bool
-  default     = false
-  description = "flag to add a cloacking header WAf to ALB so only requiest comming from cloudfront are allowed "
-}
-
 variable "Fraud_Header_Enabled" {
   type        = bool
   default     = false
