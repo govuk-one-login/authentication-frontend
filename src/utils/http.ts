@@ -11,6 +11,7 @@ import { HTTP_STATUS_CODES } from "../app.constants";
 import { ApiError } from "./error";
 import { Request } from "express";
 import { createPersonalDataHeaders } from "@govuk-one-login/frontend-passthrough-headers";
+import { logger } from "./logger";
 
 interface CustomAxiosRequestHeaders extends Partial<AxiosRequestHeaders> {}
 
@@ -89,7 +90,15 @@ export function getRequestConfig(options: ConfigOptions): AxiosRequestConfig {
 
 function getSecurityHeaders(path: string, req: Request) {
   const url = getFrontendApiBaseUrl() + path;
-  return createPersonalDataHeaders(url, req);
+  let personalDataHeaders = {};
+  try {
+    personalDataHeaders = createPersonalDataHeaders(url, req);
+  } catch (err) {
+    logger.warn(
+      `Called with ${url}. Failed to set security headers due to: ${err.message}`
+    );
+  }
+  return personalDataHeaders;
 }
 
 export function getInternalRequestConfigWithSecurityHeaders(

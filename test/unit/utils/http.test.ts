@@ -78,93 +78,101 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
 
   beforeEach(() => {
     process.env.API_KEY = apiKey;
+    process.env.FRONTEND_API_BASE_URL = "https://example.com";
   });
 
   afterEach(() => {
     delete process.env.API_KEY;
+    delete process.env.FRONTEND_API_BASE_URL;
   });
 
-  it("should set the relevant headers on a request", () => {
-    const sessionId = "someSessionId";
-    const sourceIp = "123.123.123.123";
-    const clientSessionId = "someClientSessionId";
-    const persistentSessionId = "somePersistentSessionId";
-    const reauthenticate = true;
-    const userLanguage = "cy";
-    const actualConfig = getInternalRequestConfigWithSecurityHeaders(
-      {
-        sessionId: sessionId,
-        sourceIp: sourceIp,
-        clientSessionId: clientSessionId,
-        persistentSessionId: persistentSessionId,
-        reauthenticate: reauthenticate,
-        userLanguage: userLanguage,
-      },
-      req,
-      path
-    );
+  describe("headers", () => {
+    it("should set the route specific headers on a request", () => {
+      const sessionId = "someSessionId";
+      const sourceIp = "123.123.123.123";
+      const clientSessionId = "someClientSessionId";
+      const persistentSessionId = "somePersistentSessionId";
+      const reauthenticate = true;
+      const userLanguage = "cy";
+      const actualConfig = getInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId: sessionId,
+          sourceIp: sourceIp,
+          clientSessionId: clientSessionId,
+          persistentSessionId: persistentSessionId,
+          reauthenticate: reauthenticate,
+          userLanguage: userLanguage,
+        },
+        req,
+        path
+      );
 
-    const expectedHeaders = {
-      "X-API-Key": apiKey,
-      "Session-Id": sessionId,
-      "Client-Session-Id": clientSessionId,
-      "X-Forwarded-For": sourceIp,
-      "di-persistent-session-id": persistentSessionId,
-      Reauthenticate: reauthenticate,
-      "User-Language": userLanguage,
-    };
+      const expectedHeaders = {
+        "X-API-Key": apiKey,
+        "Session-Id": sessionId,
+        "Client-Session-Id": clientSessionId,
+        "X-Forwarded-For": sourceIp,
+        "di-persistent-session-id": persistentSessionId,
+        Reauthenticate: reauthenticate,
+        "User-Language": userLanguage,
+      };
 
-    expect(actualConfig.headers).to.deep.eq(expectedHeaders);
-  });
+      expect(actualConfig.headers).to.deep.eq(expectedHeaders);
+    });
 
-  it("should set the relevant headers on a request when request contains common headers", () => {
-    const ipAddressFromCloudfrontHeader = "111.111.111.111";
-    req.headers = {
-      "txma-audit-encoded": "foo",
-      "cloudfront-viewer-address": ipAddressFromCloudfrontHeader,
-    };
+    it("should set the security headers on all requests when added to the request in CloudFront", () => {
+      const ipAddressFromCloudfrontHeader = "111.111.111.111";
+      req.headers = {
+        "txma-audit-encoded": "foo",
+        "cloudfront-viewer-address": ipAddressFromCloudfrontHeader,
+      };
 
-    process.env.FRONTEND_API_BASE_URL = "https://example.com";
+      const sessionId = "someSessionId";
+      const sourceIp = "123.123.123.123";
+      const clientSessionId = "someClientSessionId";
+      const persistentSessionId = "somePersistentSessionId";
+      const actualConfig = getInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId: sessionId,
+          sourceIp: sourceIp,
+          clientSessionId: clientSessionId,
+          persistentSessionId: persistentSessionId,
+        },
+        req,
+        path
+      );
 
-    const sessionId = "someSessionId";
-    const sourceIp = "123.123.123.123";
-    const clientSessionId = "someClientSessionId";
-    const persistentSessionId = "somePersistentSessionId";
-    const actualConfig = getInternalRequestConfigWithSecurityHeaders(
-      {
-        sessionId: sessionId,
-        sourceIp: sourceIp,
-        clientSessionId: clientSessionId,
-        persistentSessionId: persistentSessionId,
-      },
-      req,
-      path
-    );
+      const expectedHeaders = {
+        "X-API-Key": apiKey,
+        "Session-Id": sessionId,
+        "Client-Session-Id": clientSessionId,
+        "x-forwarded-for": ipAddressFromCloudfrontHeader,
+        "di-persistent-session-id": persistentSessionId,
+        "txma-audit-encoded": "foo",
+      };
 
-    const expectedHeaders = {
-      "X-API-Key": apiKey,
-      "Session-Id": sessionId,
-      "Client-Session-Id": clientSessionId,
-      "x-forwarded-for": ipAddressFromCloudfrontHeader,
-      "di-persistent-session-id": persistentSessionId,
-      "txma-audit-encoded": "foo",
-    };
+      expect(actualConfig.headers).to.deep.eq(expectedHeaders);
+    });
 
-    expect(actualConfig.headers).to.deep.eq(expectedHeaders);
+    it("should handle errors from the frontend-passthrough-headers library", () => {
+      const actualConfig = getInternalRequestConfigWithSecurityHeaders({}, req, "bad path");
+
+      expect(actualConfig).to.not.be.undefined;
+    });
   });
 
   it("should set the correct baseURL", () => {
-    const baseURL = "https://www.example.com";
+    const overridingBaseURL = "https://www.example.com";
 
     const actualConfig = getInternalRequestConfigWithSecurityHeaders(
       {
-        baseURL: baseURL,
+        baseURL: overridingBaseURL,
       },
       req,
       path
     );
 
-    expect(actualConfig.baseURL).to.eq(baseURL);
+    expect(actualConfig.baseURL).to.eq(overridingBaseURL);
   });
 
   it("should set the relevant validation status function", () => {
