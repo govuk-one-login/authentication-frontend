@@ -43,7 +43,7 @@ export function enterPasswordService(
       getRequestConfig({
         sessionId: sessionId,
         clientSessionId: clientSessionId,
-        validationStatues: [
+        validationStatuses: [
           HTTP_STATUS_CODES.OK,
           HTTP_STATUS_CODES.UNAUTHORIZED,
           HTTP_STATUS_CODES.BAD_REQUEST,

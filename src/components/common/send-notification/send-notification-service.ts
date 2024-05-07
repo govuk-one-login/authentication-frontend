@@ -48,7 +48,7 @@ export function sendNotificationService(
         clientSessionId: clientSessionId,
         sourceIp: sourceIp,
         persistentSessionId: persistentSessionId,
-        validationStatues: [
+        validationStatuses: [
           HTTP_STATUS_CODES.NO_CONTENT,
           HTTP_STATUS_CODES.BAD_REQUEST,
         ],
