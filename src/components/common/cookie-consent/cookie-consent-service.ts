@@ -39,7 +39,7 @@ export function cookieConsentService(): CookieConsentServiceInterface {
       cookieExpires.setFullYear(cookieExpires.getFullYear() - 1);
     }
 
-    return { value: JSON.stringify(cookieValue), expiry: cookieExpires };
+    return { value: JSON.stringify(cookieValue), expires: cookieExpires };
   };
 
   return {
