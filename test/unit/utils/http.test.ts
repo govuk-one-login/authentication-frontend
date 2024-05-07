@@ -74,7 +74,7 @@ describe("getRequestConfig", () => {
 describe("getInternalRequestConfigWithSecurityHeaders", () => {
   const apiKey = "123";
   const req = createMockRequest(API_ENDPOINTS.START);
-  const url = "https://example.com/some-uri";
+  const path = API_ENDPOINTS.START;
 
   beforeEach(() => {
     process.env.API_KEY = apiKey;
@@ -101,7 +101,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
         userLanguage: userLanguage,
       },
       req,
-      url
+      path
     );
 
     const expectedHeaders = {
@@ -124,6 +124,8 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
       "cloudfront-viewer-address": ipAddressFromCloudfrontHeader,
     };
 
+    process.env.FRONTEND_API_BASE_URL = "https://example.com";
+
     const sessionId = "someSessionId";
     const sourceIp = "123.123.123.123";
     const clientSessionId = "someClientSessionId";
@@ -136,7 +138,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
         persistentSessionId: persistentSessionId,
       },
       req,
-      url
+      path
     );
 
     const expectedHeaders = {
@@ -159,7 +161,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
         baseURL: baseURL,
       },
       req,
-      url
+      path
     );
 
     expect(actualConfig.baseURL).to.eq(baseURL);
@@ -173,7 +175,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
         validationStatuses: [validStatus],
       },
       req,
-      url
+      path
     );
 
     expect(actualConfig.validateStatus(validStatus)).to.eq(true);

@@ -87,15 +87,20 @@ export function getRequestConfig(options: ConfigOptions): AxiosRequestConfig {
   return config;
 }
 
+function getSecurityHeaders(path: string, req: Request) {
+  const url = getFrontendApiBaseUrl() + path;
+  return createPersonalDataHeaders(url, req);
+}
+
 export function getInternalRequestConfigWithSecurityHeaders(
   options: ConfigOptions,
   req: Request,
-  url: string
+  path: string
 ): AxiosRequestConfig {
   const config: AxiosRequestConfig = {
     headers: {
       "X-API-Key": getApiKey(),
-      ...createPersonalDataHeaders(url, req),
+      ...getSecurityHeaders(path, req),
     },
     proxy: false,
   };
