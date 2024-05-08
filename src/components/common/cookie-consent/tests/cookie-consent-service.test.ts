@@ -36,7 +36,7 @@ describe("cookie consent service", () => {
         COOKIE_CONSENT.NOT_ENGAGED
       );
       expect(result.value).to.have.be.equal("{}");
-      expect(result.expiry.getFullYear()).to.have.be.equal(
+      expect(result.expires.getFullYear()).to.have.be.equal(
         new Date().getFullYear() - 1
       );
     });
@@ -46,7 +46,7 @@ describe("cookie consent service", () => {
         COOKIE_CONSENT.ACCEPT
       );
       expect(result.value).to.have.be.equal('{"analytics":true}');
-      expect(result.expiry.getFullYear()).to.have.be.equal(
+      expect(result.expires.getFullYear()).to.have.be.equal(
         new Date().getFullYear() + 1
       );
     });
@@ -56,7 +56,7 @@ describe("cookie consent service", () => {
         COOKIE_CONSENT.REJECT
       );
       expect(result.value).to.have.be.equal('{"analytics":false}');
-      expect(result.expiry.getFullYear()).to.have.be.equal(
+      expect(result.expires.getFullYear()).to.have.be.equal(
         new Date().getFullYear() + 1
       );
     });

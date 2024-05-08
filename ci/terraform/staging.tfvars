@@ -2,8 +2,9 @@ environment         = "staging"
 common_state_bucket = "di-auth-staging-tfstate"
 redis_node_size     = "cache.m4.xlarge"
 
-
+#cloudfront enabled flag 
 cloudfront_auth_frontend_enabled = true
+cloudfront_auth_dns_enabled      = true
 
 frontend_auto_scaling_v2_enabled                    = true
 frontend_task_definition_cpu                        = 1024

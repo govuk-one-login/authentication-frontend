@@ -20,11 +20,13 @@ export function resetPasswordCheckEmailService(
     sessionId: string,
     sourceIp: string,
     clientSessionId: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    withinForcedPasswordResetJourney: boolean
   ): Promise<ApiResponseResult<ResetPasswordRequestResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.RESET_PASSWORD_REQUEST,
       {
+        withinForcedPasswordResetJourney: withinForcedPasswordResetJourney,
         email: email,
       },
       getRequestConfig({

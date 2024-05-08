@@ -8,10 +8,7 @@ import {
 import { getNextPathAndUpdateJourney, ERROR_CODES } from "../common/constants";
 import { BadRequestError, QueryParamsError } from "../../utils/error";
 import { ExpressRouteFunc } from "../../types";
-import {
-  CookieConsentModel,
-  CookieConsentServiceInterface,
-} from "../common/cookie-consent/types";
+import { CookieConsentServiceInterface } from "../common/cookie-consent/types";
 import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service";
 import { sanitize } from "../../utils/strings";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
@@ -31,21 +28,9 @@ import {
 import { logger } from "../../utils/logger";
 import { Claims } from "./claims-config";
 
-function createConsentCookie(
-  res: Response,
-  consentCookieValue: CookieConsentModel
-) {
-  res.cookie(COOKIES_PREFERENCES_SET, consentCookieValue.value, {
-    expires: consentCookieValue.expiry,
-    secure: true,
-    httpOnly: true,
-    domain: res.locals.analyticsCookieDomain,
-  });
-}
-
 export function authorizeGet(
   authService: AuthorizeServiceInterface = authorizeService(),
-  cookieService: CookieConsentServiceInterface = cookieConsentService(),
+  cookiesConsentService: CookieConsentServiceInterface = cookieConsentService(),
   kmsService: KmsDecryptionServiceInterface = new KmsDecryptionService(),
   jwtService: JwtServiceInterface = new JwtService()
 ): ExpressRouteFunc {
@@ -164,9 +149,15 @@ export function authorizeGet(
 
     if (req.session.client.cookieConsentEnabled && cookieConsent) {
       const consentCookieValue =
-        cookieService.createConsentCookieValue(cookieConsent);
+        cookiesConsentService.createConsentCookieValue(cookieConsent);
 
-      createConsentCookie(res, consentCookieValue);
+      res.cookie(COOKIES_PREFERENCES_SET, consentCookieValue.value, {
+        expires: consentCookieValue.expires,
+        secure: true,
+        httpOnly: false,
+        domain: res.locals.analyticsCookieDomain,
+        encode: String,
+      });
 
       if (
         startAuthResponse.data.user.gaCrossDomainTrackingId &&

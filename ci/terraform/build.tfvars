@@ -5,6 +5,9 @@ frontend_auto_scaling_v2_enabled = true
 
 frontend_task_definition_cpu    = 512
 frontend_task_definition_memory = 1024
+frontend_auto_scaling_min_count = 4
+frontend_auto_scaling_max_count = 6
+ecs_desired_count               = 4
 
 alb_idle_timeout = 30
 
@@ -32,3 +35,7 @@ orch_to_auth_client_id          = "orchestrationAuth"
 orch_to_auth_audience           = "https://signin.build.account.gov.uk/"
 
 dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
+
+#cloudfront enabled flag 
+cloudfront_auth_frontend_enabled = true
+cloudfront_auth_dns_enabled      = true
