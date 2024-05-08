@@ -155,7 +155,11 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
     });
 
     it("should handle errors from the frontend-passthrough-headers library", () => {
-      const actualConfig = getInternalRequestConfigWithSecurityHeaders({}, req, "bad path");
+      const actualConfig = getInternalRequestConfigWithSecurityHeaders(
+        {},
+        req,
+        "bad path"
+      );
 
       expect(actualConfig).to.not.be.undefined;
     });

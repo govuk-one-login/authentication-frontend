@@ -115,6 +115,7 @@ export function enterPasswordPost(
       clientSessionId,
       req.ip,
       persistentSessionId,
+      req,
       journeyType
     );
 

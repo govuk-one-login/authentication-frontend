@@ -7,12 +7,15 @@ import { Request } from "express";
 import { Http } from "../../../utils/http";
 import { sinon } from "../../../../test/utils/test-utils";
 import { API_ENDPOINTS } from "../../../app.constants";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { SinonStub } from "sinon";
 
 describe("enter-password-service", () => {
+  let req: Partial<Request>;
   const httpInstance = new Http();
   const service: EnterPasswordServiceInterface =
     enterPasswordService(httpInstance);
+  const IP_ADDRESS = "123.123.123.123";
   const API_KEY = "api-key";
 
   let postStub: SinonStub;
@@ -30,12 +33,20 @@ describe("enter-password-service", () => {
   });
 
   it("successfully calls the API to log the user in or reauthenticate", async () => {
+    const auditEncodedString =
+      "R21vLmd3QilNKHJsaGkvTFxhZDZrKF44SStoLFsieG0oSUY3aEhWRVtOMFRNMVw1dyInKzB8OVV5N09hOi8kLmlLcWJjJGQiK1NPUEJPPHBrYWJHP358NDg2ZDVc";
     const axiosResponse = Promise.resolve({
       data: {},
       status: 200,
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
+    req = createMockRequest(API_ENDPOINTS.LOG_IN_USER);
+    req.ip = IP_ADDRESS;
+    req.headers = {
+      "txma-audit-encoded": auditEncodedString,
+      "x-forwarded-for": IP_ADDRESS,
+    };
     const expectedBody = {
       email: "email",
       password: "password",
@@ -47,8 +58,9 @@ describe("enter-password-service", () => {
         "email",
         "password",
         "",
-        "111.111.111.111",
+        "not used",
         "",
+        req as Request,
         undefined
       );
 
@@ -57,7 +69,8 @@ describe("enter-password-service", () => {
     expect(
       postStub.calledOnceWithExactly(API_ENDPOINTS.LOG_IN_USER, expectedBody, {
         headers: {
-          "X-Forwarded-For": "111.111.111.111",
+          "txma-audit-encoded": auditEncodedString,
+          "x-forwarded-for": IP_ADDRESS,
           "X-API-Key": API_KEY,
         },
         proxy: sinon.match.bool,
