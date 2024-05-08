@@ -21,7 +21,6 @@ export function enterPasswordService(
     emailAddress: string,
     password: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request,
     journeyType?: JOURNEY_TYPE
@@ -51,7 +50,6 @@ export function enterPasswordService(
             HTTP_STATUS_CODES.UNAUTHORIZED,
             HTTP_STATUS_CODES.BAD_REQUEST,
           ],
-          sourceIp: sourceIp,
           persistentSessionId: persistentSessionId,
         },
         req,

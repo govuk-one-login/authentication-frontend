@@ -58,7 +58,6 @@ describe("enter-password-service", () => {
         "email",
         "password",
         "",
-        "not used",
         "",
         req as Request,
         undefined

@@ -122,15 +122,6 @@ export function getInternalRequestConfigWithSecurityHeaders(
     config.headers["Client-Session-Id"] = options.clientSessionId;
   }
 
-  const forwardedForHeaderNotSet =
-    Object.keys(config.headers).find(
-      (key) => key.toLowerCase() === "X-Forwarded-For".toLowerCase()
-    ) === undefined;
-
-  if (forwardedForHeaderNotSet && options.sourceIp) {
-    config.headers["X-Forwarded-For"] = options.sourceIp;
-  }
-
   if (options.validationStatuses) {
     config.validateStatus = function (status: number) {
       return options.validationStatuses.includes(status);

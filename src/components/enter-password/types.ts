@@ -18,7 +18,6 @@ export interface EnterPasswordServiceInterface {
     email: string,
     password: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request,
     journeyType?: JOURNEY_TYPE

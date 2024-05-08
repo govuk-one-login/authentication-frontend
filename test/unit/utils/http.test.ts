@@ -94,6 +94,8 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
       const persistentSessionId = "somePersistentSessionId";
       const reauthenticate = true;
       const userLanguage = "cy";
+      req.ip = sourceIp;
+      req.headers["x-forwarded-for"] = sourceIp;
       const actualConfig = getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
@@ -111,7 +113,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
         "X-API-Key": apiKey,
         "Session-Id": sessionId,
         "Client-Session-Id": clientSessionId,
-        "X-Forwarded-For": sourceIp,
+        "x-forwarded-for": sourceIp,
         "di-persistent-session-id": persistentSessionId,
         Reauthenticate: reauthenticate,
         "User-Language": userLanguage,
