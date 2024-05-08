@@ -260,4 +260,4 @@ yarn test:coverage
 yarn lint
 ```
 
-Checks if the code conforms the linting standards.
+Checks if the code conforms the linting standards
