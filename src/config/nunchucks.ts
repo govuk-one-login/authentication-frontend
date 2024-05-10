@@ -5,6 +5,7 @@ import i18next from "i18next";
 import { returnLastCharactersOnly } from "../utils/phone-number";
 import { getNodeEnv } from "../config";
 import { ENVIRONMENT_NAME } from "../app.constants";
+const addLanguageParam = require("@govuk-one-login/frontend-language-toggle/build/cjs/language-param-setter.cjs");
 
 export function configureNunjucks(
   app: express.Application,
@@ -27,6 +28,8 @@ export function configureNunjucks(
       return returnLastCharactersOnly(key, options);
     }
   );
+
+  nunjucksEnv.addGlobal("addLanguageParam", addLanguageParam);
 
   return nunjucksEnv;
 }
