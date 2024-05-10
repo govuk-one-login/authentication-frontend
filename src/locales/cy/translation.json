@@ -17,7 +17,8 @@
       }
     },
     "languageToggle": {
-      "ariaLabel": "Dewis iaith"
+      "ariaLabel": "Dewis iaith",
+      "visuallyHiddenChangeLanguage": "Change to English"
     },
     "authenticatorAppIssuer": "GOV.UK One Login",
     "yes": "Gallwch",
