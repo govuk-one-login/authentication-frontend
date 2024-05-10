@@ -62,7 +62,6 @@
   },
   "dependencies": {
     "@aws-sdk/client-kms": "^3.366.0",
-    "@govuk-one-login/one-login-language-toggle": "^2.0.0",
     "@otplib/core": "^12.0.1",
     "@otplib/plugin-base32-enc-dec": "^12.0.1",
     "aws-sdk": "^2.1356.0",
