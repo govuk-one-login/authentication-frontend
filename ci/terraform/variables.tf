@@ -171,6 +171,12 @@ variable "incoming_traffic_cidr_blocks" {
   description = "The list of CIDR blocks allowed to send requests to the ALB"
 }
 
+variable "incoming_cloudfront_traffic_prefix" {
+  default     = ["pl-93a247fa"]
+  type        = list(string)
+  description = "The prefix list of cloudfront in eu-west-2  is allowed to send requests to the ALB"
+}
+
 variable "basic_auth_bypass_cidr_blocks" {
   default     = []
   type        = list(string)

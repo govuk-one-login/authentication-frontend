@@ -61,7 +61,13 @@ resource "aws_security_group_rule" "allow_alb_http_ingress_from_anywhere" {
   protocol    = "tcp"
   from_port   = 80
   to_port     = 80
-  cidr_blocks = var.incoming_traffic_cidr_blocks
+  cidr_blocks = var.cloudfront_auth_dns_enabled ?  null : var.incoming_traffic_cidr_blocks
+  prefix_list_ids = var.cloudfront_auth_dns_enabled ? var.incoming_cloudfront_traffic_prefix : null
+  
+  lifecycle {
+      create_before_destroy = true
+    }
+
 }
 
 resource "aws_security_group_rule" "allow_alb_https_ingress_from_anywhere" {
@@ -72,7 +78,13 @@ resource "aws_security_group_rule" "allow_alb_https_ingress_from_anywhere" {
   protocol    = "tcp"
   from_port   = 443
   to_port     = 443
-  cidr_blocks = var.incoming_traffic_cidr_blocks
+  cidr_blocks = var.cloudfront_auth_dns_enabled ?  null : var.incoming_traffic_cidr_blocks
+  prefix_list_ids = var.cloudfront_auth_dns_enabled ? var.incoming_cloudfront_traffic_prefix : null
+  
+lifecycle {
+      create_before_destroy = true
+    }
+
 }
 
 resource "aws_security_group_rule" "allow_alb_application_egress_to_task_group" {
