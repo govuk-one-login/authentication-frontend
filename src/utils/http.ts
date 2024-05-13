@@ -89,9 +89,10 @@ export function getRequestConfig(options: ConfigOptions): AxiosRequestConfig {
 }
 
 function getSecurityHeaders(path: string, req: Request) {
-  const url = getFrontendApiBaseUrl() + path;
   let personalDataHeaders = {};
+  let url = "";
   try {
+    url = new URL(path, getFrontendApiBaseUrl()).toString();
     personalDataHeaders = createPersonalDataHeaders(url, req);
   } catch (err) {
     logger.warn(
