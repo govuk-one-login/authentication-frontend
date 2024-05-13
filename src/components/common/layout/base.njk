@@ -50,9 +50,11 @@
 {% endblock %}
 
 {% set phaseBannerText %}
-    {{ 'general.phaseBanner.message.start' | translate }} <a href="{{ contactUsLinkUrl }}" class="govuk-link"
+{{ 'general.phaseBanner.message.start' | translate }}
+<a href="{{ contactUsLinkUrl }}" class="govuk-link"
                                                              rel="noopener"
-                                                             target="_blank">{{ 'general.phaseBanner.message.linkText' | translate }}</a> {{ 'general.phaseBanner.message.end' | translate }}
+                                                             target="_blank">{{ 'general.phaseBanner.message.linkText' | translate }}</a>
+{{ 'general.phaseBanner.message.end' | translate }}
 {% endset %}
 
 {% block main %}
@@ -143,15 +145,19 @@
     <script type="text/javascript" src="/public/scripts/all.js"></script>
     <script type="text/javascript" src="/public/scripts/analytics.js"></script>
     <script type="text/javascript" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
-    if (window.DI) {
-      window.DI.appInit({
-        ga4ContainerId: "{{ga4ContainerId}}",
-        uaContainerId: "{{uaContainerId}}"
-      }, {
-        disableGa4Tracking: {{isGa4Disabled}},
-        disableUaTracking: {{isUaDisabled}},
-        cookieDomain: "{{analyticsCookieDomain}}"
-      });
-    }
-  </script>
+        if (window.DI) {
+            if (window.DI.appInit) {
+                window
+                    .DI
+                    .appInit({
+                        ga4ContainerId: "{{ga4ContainerId}}",
+                        uaContainerId: "{{uaContainerId}}"
+                    }, {
+                        disableGa4Tracking: {{isGa4Disabled}},
+                        disableUaTracking: {{isUaDisabled}},
+                        cookieDomain: "{{analyticsCookieDomain}}"
+                    });
+            }
+        }
+    </script>
 {% endblock %}

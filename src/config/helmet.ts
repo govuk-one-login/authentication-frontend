@@ -25,7 +25,7 @@ export function helmetConfiguration(): Parameters<typeof helmet>[0] {
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'"],
         scriptSrc: [
           "'self'",
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
