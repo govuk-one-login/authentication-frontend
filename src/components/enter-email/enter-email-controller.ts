@@ -31,6 +31,9 @@ import {
   timestampNMinutesFromNow,
   timestampNSecondsFromNow,
 } from "../../utils/lock-helper";
+import { checkEmailFraudBlockService } from "../check-email-fraud-block/checkEmailFraudBlockService";
+import { CheckEmailFraudBlockInterface } from "../check-email-fraud-block/types";
+import { logger } from "../../utils/logger";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -59,7 +62,8 @@ export function enterEmailCreateGet(req: Request, res: Response): void {
 
 export function enterEmailPost(
   service: EnterEmailServiceInterface = enterEmailService(),
-  checkReauthService: CheckReauthServiceInterface = checkReauthUsersService()
+  checkReauthService: CheckReauthServiceInterface = checkReauthUsersService(),
+  checkEmailFraudService: CheckEmailFraudBlockInterface = checkEmailFraudBlockService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const email = req.body.email;
@@ -126,6 +130,17 @@ export function enterEmailPost(
       result.data.lockoutInformation.length > 0
     )
       setUpAuthAppLocks(req, result.data.lockoutInformation);
+
+    const checkEmailFraudResponse =
+      await checkEmailFraudService.checkEmailFraudBlock(
+        email,
+        sessionId,
+        req.ip,
+        clientSessionId,
+        persistentSessionId
+      );
+    logger.info(`checkEmailFraudResponse: ${checkEmailFraudResponse.data}`);
+
     req.session.user.enterEmailMfaType = result.data.mfaMethodType;
     req.session.user.redactedPhoneNumber = result.data.phoneNumberLastThree;
     const nextState = result.data.doesUserExist

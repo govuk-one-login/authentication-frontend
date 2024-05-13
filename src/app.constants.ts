@@ -115,6 +115,7 @@ export const API_ENDPOINTS = {
   VERIFY_MFA_CODE: "/verify-mfa-code",
   ACCOUNT_RECOVERY: "/account-recovery",
   CHECK_REAUTH_USER: "/check-reauth-user",
+  CHECK_EMAIL_FRAUD_BLOCK: "/check-email-fraud-block",
 };
 
 export const ERROR_MESSAGES = {
