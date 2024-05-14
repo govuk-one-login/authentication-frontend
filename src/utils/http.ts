@@ -88,11 +88,12 @@ export function getRequestConfig(options: ConfigOptions): AxiosRequestConfig {
   return config;
 }
 
-function getSecurityHeaders(path: string, req: Request) {
+function getSecurityHeaders(path: string, req: Request, baseUrl?: string) {
   let personalDataHeaders = {};
   let url = "";
   try {
-    url = new URL(path, getFrontendApiBaseUrl()).toString();
+    const basePath = baseUrl || getFrontendApiBaseUrl();
+    url = new URL(path, basePath).toString();
     personalDataHeaders = createPersonalDataHeaders(url, req);
   } catch (err) {
     logger.warn(
@@ -110,7 +111,7 @@ export function getInternalRequestConfigWithSecurityHeaders(
   const config: AxiosRequestConfig = {
     headers: {
       "X-API-Key": getApiKey(),
-      ...getSecurityHeaders(path, req),
+      ...getSecurityHeaders(path, req, options.baseURL),
     },
     proxy: false,
   };

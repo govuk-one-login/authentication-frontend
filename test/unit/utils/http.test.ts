@@ -6,6 +6,8 @@ import {
 } from "../../../src/utils/http";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../src/app.constants";
 import { createMockRequest } from "../../helpers/mock-request-helper";
+const headersLibrary = require("@govuk-one-login/frontend-passthrough-headers");
+import sinon, { SinonSpy } from "sinon";
 
 describe("getRequestConfig", () => {
   const apiKey = "123";
@@ -87,6 +89,19 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
   });
 
   describe("headers", () => {
+    let createPersonalDataHeadersSpy: SinonSpy;
+
+    beforeEach(() => {
+      createPersonalDataHeadersSpy = sinon.spy(
+        headersLibrary,
+        "createPersonalDataHeaders"
+      );
+    });
+
+    afterEach(() => {
+      createPersonalDataHeadersSpy.restore();
+    });
+
     it("should set the route specific headers on a request", () => {
       const sessionId = "someSessionId";
       const sourceIp = "123.123.123.123";
@@ -151,6 +166,43 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
         "x-forwarded-for": ipAddressFromCloudfrontHeader,
         "di-persistent-session-id": persistentSessionId,
         "txma-audit-encoded": "foo",
+      };
+
+      expect(actualConfig.headers).to.deep.eq(expectedHeaders);
+      expect(
+        createPersonalDataHeadersSpy.calledWith(
+          "https://example.com/start",
+          req
+        )
+      ).to.be.true;
+    });
+
+    it("should use the correct base path when calling create personal headers and the options contain a base path", () => {
+      const ipAddressFromCloudfrontHeader = "111.111.111.111";
+      req.headers = {
+        "txma-audit-encoded": "foo",
+        "cloudfront-viewer-address": ipAddressFromCloudfrontHeader,
+      };
+
+      const actualConfig = getInternalRequestConfigWithSecurityHeaders(
+        {
+          baseURL: "https://some-other-base",
+        },
+        req,
+        path
+      );
+
+      expect(
+        createPersonalDataHeadersSpy.calledWith(
+          "https://some-other-base/start",
+          req
+        )
+      ).to.be.true;
+
+      const expectedHeaders = {
+        "X-API-Key": apiKey,
+        "txma-audit-encoded": "foo",
+        "x-forwarded-for": ipAddressFromCloudfrontHeader,
       };
 
       expect(actualConfig.headers).to.deep.eq(expectedHeaders);
