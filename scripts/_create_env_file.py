@@ -13,6 +13,7 @@ from typing import Iterable, TypedDict
 
 import boto3
 from botocore.exceptions import BotoCoreError
+from botocore.exceptions import ProfileNotFound as BotoProfileNotFound
 from botocore.exceptions import SSOTokenLoadError as BotoSSOTokenLoadError
 from botocore.exceptions import TokenRetrievalError as BotoTokenRetrievalError
 from dotenv import dotenv_values
@@ -155,11 +156,29 @@ class StateGetter:
         except (BotoTokenRetrievalError, BotoSSOTokenLoadError):
             logger.fatal(
                 "AWS auth error: Your SSO session has expired. Please run `aws sso "
-                "login --profile di-auth-development-admin` to refresh your session."
+                "login --profile %s` to refresh your session.",
+                aws_profile_name,
             )
             sys.exit(1)
-        except BotoCoreError as e:
-            logger.fatal("AWS error: %s. Are you connected to the VPN?", e)
+        except BotoProfileNotFound:
+            logger.fatal(
+                "AWS auth error: SSO Profile %s could not be found. Ensure you've set "
+                "up your AWS profiles correctly, as-per "
+                "https://govukverify.atlassian.net/l/cp/fcp74bCB (How to deploy to "
+                "sandpit / authdev# environments). If you have done this and are "
+                "still seeing this error, you probably don't have access to this AWS "
+                "account. Please contact the team for help.",
+                aws_profile_name,
+            )
+            sys.exit(1)
+        except BotoCoreError:
+            logger.exception(
+                "Unexpected AWS error. This could be a VPN problem. maybe. Are you "
+                "connected to the VPN?",
+            )
+            sys.exit(1)
+        except Exception:  # pylint: disable=broad-except
+            logger.exception("Unexpected error")
             sys.exit(1)
 
         if not self._check_environment_exists():
@@ -421,8 +440,8 @@ if __name__ == "__main__":
         assert os.getenv("FROM_WRAPPER", "false") == "true"
     except AssertionError:
         logger.fatal(
-            "This script is intended to be run from the wrapper `scripts/build-env-file.sh`. "
-            "Please use that instead."
+            "This script is intended to be run from the wrapper "
+            "`scripts/build-env-file.sh`. Please use that instead."
         )
         sys.exit(1)
 
