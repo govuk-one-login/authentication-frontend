@@ -24,6 +24,7 @@ email_entered_wrong_blocked_minutes                 = "1"
 code_entered_wrong_blocked_minutes                  = "1"
 reduced_code_block_duration_minutes                 = "0.5"
 url_for_support_links                               = "https://home.build.account.gov.uk/contact-gov-uk-one-login"
+language_toggle_enabled                             = "1"
 
 
 logging_endpoint_arns = [

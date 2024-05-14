@@ -327,3 +327,11 @@ variable "Standard_Logging_Enabled" {
   default     = false
   description = "Enables Standard logging to push logs to S3 bucket"
 }
+
+variable "language_toggle_enabled" {
+  type        = string
+  default     = "0"
+  description = "Enables English / Welsh language toggle in the user interface"
+}
+
+

@@ -160,6 +160,10 @@ locals {
         name  = "SUPPORT_2HR_LOCKOUT"
         value = var.support_2hr_lockout
       },
+      {
+        name  = "LANGUAGE_TOGGLE_ENABLED"
+        value = var.language_toggle_enabled
+      },
     ]
 
     secrets = [
