@@ -21,6 +21,19 @@ describe("authentication auth code service", () => {
     "/redirect-here?with-some-params=added-by-the-endpoint";
   const apiBaseUrl = "/base-url";
   const frontendBaseUrl = "/frontend-base-url";
+  const sessionId = "sessionId";
+  const apiKey = "apiKey";
+  const clientSessionId = "clientSessionId";
+  const sourceIp = "sourceIp";
+  const persistentSessionId = "persistentSessionId";
+
+  const expectedHeaders = {
+    "X-API-Key": apiKey,
+    "Session-Id": sessionId,
+    "Client-Session-Id": clientSessionId,
+    "X-Forwarded-For": sourceIp,
+    "di-persistent-session-id": persistentSessionId,
+  };
 
   const axiosResponse = Promise.resolve({
     data: {
@@ -36,7 +49,7 @@ describe("authentication auth code service", () => {
   let service: AuthCodeServiceInterface;
 
   beforeEach(() => {
-    process.env.API_KEY = "api-key";
+    process.env.API_KEY = apiKey;
     process.env.FRONTEND_API_BASE_URL = frontendBaseUrl;
     process.env.API_BASE_URL = apiBaseUrl;
     const httpInstance = new Http();
@@ -69,10 +82,10 @@ describe("authentication auth code service", () => {
       };
 
       const result = await service.getAuthCode(
-        "sessionId",
-        "clientSessionId",
-        "sourceIp",
-        "persistentSessionId",
+        sessionId,
+        clientSessionId,
+        sourceIp,
+        persistentSessionId,
         sessionClient,
         userSessionClient
       );
@@ -91,7 +104,7 @@ describe("authentication auth code service", () => {
           API_ENDPOINTS.ORCH_AUTH_CODE,
           expectedBody,
           {
-            headers: sinon.match.object,
+            headers: expectedHeaders,
             proxy: sinon.match.bool,
             baseURL: frontendBaseUrl,
           }
@@ -103,17 +116,17 @@ describe("authentication auth code service", () => {
 
     it("should make a request for an RP auth code following the prove identity callback page", async () => {
       const result = await service.getAuthCode(
-        "sessionId",
-        "clientSessionId",
-        "sourceIp",
-        "persistentSessionId",
+        sessionId,
+        clientSessionId,
+        sourceIp,
+        persistentSessionId,
         {},
         { authCodeReturnToRP: true }
       );
 
       expect(
         getStub.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
-          headers: sinon.match.object,
+          headers: expectedHeaders,
           baseURL: apiBaseUrl,
           proxy: sinon.match.bool,
         })
