@@ -22,7 +22,8 @@ export function authCodeGet(
       req.ip,
       persistentSessionId,
       req.session.client,
-      req.session.user
+      req.session.user,
+      req
     );
 
     req.session.user.authCodeReturnToRP = false;

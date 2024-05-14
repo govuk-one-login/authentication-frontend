@@ -2,14 +2,14 @@ import { ApiResponseResult, UserSession, UserSessionClient } from "../../types";
 import { API_ENDPOINTS } from "../../app.constants";
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
 } from "../../utils/http";
 import { AuthCodeResponse, AuthCodeServiceInterface } from "./types";
 import { getApiBaseUrl, getFrontendApiBaseUrl } from "../../config";
 import { AxiosResponse } from "axios";
-
+import { Request } from "express";
 export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
   const getAuthCode = async function (
     sessionId: string,
@@ -17,7 +17,8 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
     sourceIp: string,
     persistentSessionId: string,
     clientSession: UserSessionClient,
-    userSession: UserSession
+    userSession: UserSession,
+    req: Request
   ): Promise<ApiResponseResult<AuthCodeResponse>> {
     const useOrchAuthCode = shouldCallOrchAuthCode(userSession);
     const baseUrl = useOrchAuthCode ? getFrontendApiBaseUrl() : getApiBaseUrl();
@@ -25,13 +26,17 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
       ? API_ENDPOINTS.ORCH_AUTH_CODE
       : API_ENDPOINTS.AUTH_CODE;
 
-    const config = getRequestConfig({
-      baseURL: baseUrl,
-      sessionId: sessionId,
-      clientSessionId: clientSessionId,
-      sourceIp: sourceIp,
-      persistentSessionId: persistentSessionId,
-    });
+    const config = getInternalRequestConfigWithSecurityHeaders(
+      {
+        baseURL: baseUrl,
+        sessionId: sessionId,
+        clientSessionId: clientSessionId,
+        sourceIp: sourceIp,
+        persistentSessionId: persistentSessionId,
+      },
+      req,
+      path
+    );
 
     let response: AxiosResponse;
 
