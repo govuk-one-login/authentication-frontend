@@ -1,6 +1,6 @@
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
 } from "../../utils/http";
@@ -11,6 +11,7 @@ import {
 } from "../../app.constants";
 import { EnterPasswordServiceInterface, UserLoginResponse } from "./types";
 import { ApiResponseResult } from "../../types";
+import { Request } from "express";
 
 export function enterPasswordService(
   axios: Http = http
@@ -20,8 +21,8 @@ export function enterPasswordService(
     emailAddress: string,
     password: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
+    req: Request,
     journeyType?: JOURNEY_TYPE
   ): Promise<ApiResponseResult<UserLoginResponse>> {
     const payload: {
@@ -40,17 +41,20 @@ export function enterPasswordService(
     const response = await axios.client.post<UserLoginResponse>(
       API_ENDPOINTS.LOG_IN_USER,
       payload,
-      getRequestConfig({
-        sessionId: sessionId,
-        clientSessionId: clientSessionId,
-        validationStatuses: [
-          HTTP_STATUS_CODES.OK,
-          HTTP_STATUS_CODES.UNAUTHORIZED,
-          HTTP_STATUS_CODES.BAD_REQUEST,
-        ],
-        sourceIp: sourceIp,
-        persistentSessionId: persistentSessionId,
-      })
+      getInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId: sessionId,
+          clientSessionId: clientSessionId,
+          validationStatuses: [
+            HTTP_STATUS_CODES.OK,
+            HTTP_STATUS_CODES.UNAUTHORIZED,
+            HTTP_STATUS_CODES.BAD_REQUEST,
+          ],
+          persistentSessionId: persistentSessionId,
+        },
+        req,
+        API_ENDPOINTS.LOG_IN_USER
+      )
     );
 
     return createApiResponse<UserLoginResponse>(response);

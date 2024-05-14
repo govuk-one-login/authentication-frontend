@@ -88,8 +88,8 @@ export function resetPasswordPost(
       email,
       newPassword,
       clientSessionId,
-      req.ip,
-      persistentSessionId
+      persistentSessionId,
+      req
     );
 
     if (!loginResponse.success) {

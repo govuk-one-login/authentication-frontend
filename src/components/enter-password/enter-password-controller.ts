@@ -113,8 +113,8 @@ export function enterPasswordPost(
       email,
       req.body["password"],
       clientSessionId,
-      req.ip,
       persistentSessionId,
+      req,
       journeyType
     );
 

@@ -9,6 +9,9 @@ import { getApiKey, getFrontendApiBaseUrl } from "../config";
 import { ApiResponseResult } from "../types";
 import { HTTP_STATUS_CODES } from "../app.constants";
 import { ApiError } from "./error";
+import { Request } from "express";
+import { createPersonalDataHeaders } from "@govuk-one-login/frontend-passthrough-headers";
+import { logger } from "./logger";
 
 interface CustomAxiosRequestHeaders extends Partial<AxiosRequestHeaders> {}
 
@@ -85,6 +88,66 @@ export function getRequestConfig(options: ConfigOptions): AxiosRequestConfig {
   return config;
 }
 
+function getSecurityHeaders(path: string, req: Request) {
+  let personalDataHeaders = {};
+  let url = "";
+  try {
+    url = new URL(path, getFrontendApiBaseUrl()).toString();
+    personalDataHeaders = createPersonalDataHeaders(url, req);
+  } catch (err) {
+    logger.warn(
+      `Called with ${url}. Failed to set security headers due to: ${err.message}`
+    );
+  }
+  return personalDataHeaders;
+}
+
+export function getInternalRequestConfigWithSecurityHeaders(
+  options: ConfigOptions,
+  req: Request,
+  path: string
+): AxiosRequestConfig {
+  const config: AxiosRequestConfig = {
+    headers: {
+      "X-API-Key": getApiKey(),
+      ...getSecurityHeaders(path, req),
+    },
+    proxy: false,
+  };
+
+  if (options.sessionId) {
+    config.headers["Session-Id"] = options.sessionId;
+  }
+
+  if (options.clientSessionId) {
+    config.headers["Client-Session-Id"] = options.clientSessionId;
+  }
+
+  if (options.validationStatuses) {
+    config.validateStatus = function (status: number) {
+      return options.validationStatuses.includes(status);
+    };
+  }
+
+  if (options.persistentSessionId) {
+    config.headers["di-persistent-session-id"] = options.persistentSessionId;
+  }
+
+  if (options.baseURL) {
+    config.baseURL = options.baseURL;
+  }
+
+  if (options.reauthenticate) {
+    config.headers["Reauthenticate"] = options.reauthenticate;
+  }
+
+  if (options.userLanguage) {
+    config.headers["User-Language"] = options.userLanguage;
+  }
+
+  return config;
+}
+
 export class Http {
   private instance: AxiosInstance;
 
@@ -129,4 +192,5 @@ export class Http {
     return http;
   }
 }
+
 export const http = new Http();
