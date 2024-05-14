@@ -16,6 +16,7 @@ import i18next from "i18next";
 import Backend from "i18next-fs-backend";
 
 import {
+  getLanguageToggleEnabled,
   getNodeEnv,
   getRedisConfig,
   getSessionExpiry,
@@ -87,6 +88,7 @@ import { permanentlyBlockedRouter } from "./components/account-intervention/perm
 import { temporarilyBlockedRouter } from "./components/account-intervention/temporarily-blocked/temporarily-blocked-router";
 import { resetPassword2FAAuthAppRouter } from "./components/reset-password-2fa-auth-app/reset-password-2fa-auth-app-routes";
 import { setGTM } from "./middleware/analytics-middleware";
+import { setCurrentUrlMiddleware } from "./middleware/current-url-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -207,6 +209,9 @@ async function createApp(): Promise<express.Application> {
   app.use(initialiseSessionMiddleware);
   app.use(crossDomainTrackingMiddleware);
   app.use(outboundContactUsLinksMiddleware);
+  if (getLanguageToggleEnabled()) {
+    app.use(setCurrentUrlMiddleware);
+  }
 
   registerRoutes(app);
 

@@ -16,6 +16,6 @@ export function setLocalVarsMiddleware(
   res.locals.scriptNonce = generateNonce();
   res.locals.accountManagementUrl = getAccountManagementUrl();
   res.locals.analyticsCookieDomain = getAnalyticsCookieDomain();
-  res.locals.showLanguageToggle = getLanguageToggleEnabled();
+  res.locals.languageToggleEnabled = getLanguageToggleEnabled();
   next();
 }

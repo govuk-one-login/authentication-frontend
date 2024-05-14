@@ -17,7 +17,8 @@
       }
     },
     "languageToggle": {
-      "ariaLabel": "Choose Language"
+      "ariaLabel": "Choose Language",
+      "visuallyHiddenChangeLanguage": "Newid yr iaith ir Gymraeg"
     },
     "authenticatorAppIssuer": "GOV.UK One Login",
     "yes": "Yes",
