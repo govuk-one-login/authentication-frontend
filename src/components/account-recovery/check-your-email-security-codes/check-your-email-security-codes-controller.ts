@@ -12,6 +12,17 @@ import { ERROR_CODES } from "../../common/constants";
 import { AccountInterventionsInterface } from "../../account-intervention/types";
 import { accountInterventionService } from "../../account-intervention/account-intervention-service";
 
+const oplValues = {
+  createAccount: {
+    contentId: "95e26313-bc2f-49bc-bc62-fd715476c1d9",
+    taxonomyLevel2: "create account",
+  },
+  accountRecovery: {
+    contentId: "account recovery",
+    taxonomyLevel2: "e768e27b-1c4d-48ba-8bcf-4c40274a6441",
+  },
+};
+
 const TEMPLATE_NAME =
   "account-recovery/check-your-email-security-codes/index.njk";
 
@@ -25,9 +36,16 @@ export function checkYourEmailSecurityCodesGet(
   } else if (req.query.type === MFA_METHOD_TYPE.SMS) {
     backUrl = HREF_BACK.ENTER_MFA;
   }
+  const { isAccountRecoveryJourney } = req.session.user;
   res.render(TEMPLATE_NAME, {
     email: req.session.user.email,
     backUrl: backUrl,
+    contentId: isAccountRecoveryJourney
+      ? oplValues.accountRecovery.contentId
+      : oplValues.createAccount.contentId,
+    taxonomyLevel2: isAccountRecoveryJourney
+      ? oplValues.accountRecovery.taxonomyLevel2
+      : oplValues.createAccount.taxonomyLevel2,
   });
 }
 

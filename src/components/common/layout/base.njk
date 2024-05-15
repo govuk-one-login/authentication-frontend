@@ -1,4 +1,5 @@
 {% extends "govuk/template.njk" %}
+{% from "ga4-opl/macro.njk" import ga4OnPageLoad %}
 {% from "govuk/components/cookie-banner/macro.njk" import govukCookieBanner %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
@@ -49,9 +50,11 @@
 {% endblock %}
 
 {% set phaseBannerText %}
-    {{ 'general.phaseBanner.message.start' | translate }} <a href="{{ contactUsLinkUrl }}" class="govuk-link"
+{{ 'general.phaseBanner.message.start' | translate }}
+<a href="{{ contactUsLinkUrl }}" class="govuk-link"
                                                              rel="noopener"
-                                                             target="_blank">{{ 'general.phaseBanner.message.linkText' | translate }}</a> {{ 'general.phaseBanner.message.end' | translate }}
+                                                             target="_blank">{{ 'general.phaseBanner.message.linkText' | translate }}</a>
+{{ 'general.phaseBanner.message.end' | translate }}
 {% endset %}
 
 {% block main %}
@@ -142,6 +145,21 @@
     <script type="text/javascript" src="/public/scripts/cookies.js"></script>
     <script type="text/javascript" src="/public/scripts/application.js"></script>
     <script type="text/javascript" src="/public/scripts/all.js"></script>
-    <script type="text/javascript"
-            nonce='{{ scriptNonce }}'>window.GOVSignIn.appInit("{{ gtmId }}", "{{ analyticsCookieDomain }}");</script>
+    <script type="text/javascript" src="/public/scripts/analytics.js"></script>
+    <script type="text/javascript" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
+        if (window.DI) {
+            if (window.DI.appInit) {
+                window
+                    .DI
+                    .appInit({
+                        ga4ContainerId: "{{ga4ContainerId}}",
+                        uaContainerId: "{{uaContainerId}}"
+                    }, {
+                        disableGa4Tracking: {{isGa4Disabled}},
+                        disableUaTracking: {{isUaDisabled}},
+                        cookieDomain: "{{analyticsCookieDomain}}"
+                    });
+            }
+        }
+    </script>
 {% endblock %}

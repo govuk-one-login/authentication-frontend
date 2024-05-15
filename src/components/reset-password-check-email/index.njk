@@ -8,6 +8,7 @@
 {% set showBack = true %}
 {% set hrefBack = 'enter-password' %}
 {% block content %}
+
     {% include "common/errors/errorSummary.njk" %}
 
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resetPasswordCheckEmail.header' | translate}}</h1>
@@ -73,4 +74,5 @@
 
     </form>
 
+{{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: taxonomyLevel2, contentId: contentId, loggedInStatus: false, dynamic: true })}}
 {% endblock %}

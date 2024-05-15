@@ -87,6 +87,7 @@ import { accountInterventionRouter } from "./components/account-intervention/pas
 import { permanentlyBlockedRouter } from "./components/account-intervention/permanently-blocked/permanently-blocked-router";
 import { temporarilyBlockedRouter } from "./components/account-intervention/temporarily-blocked/temporarily-blocked-router";
 import { resetPassword2FAAuthAppRouter } from "./components/reset-password-2fa-auth-app/reset-password-2fa-auth-app-routes";
+import { setGTM } from "./middleware/analytics-middleware";
 import { setCurrentUrlMiddleware } from "./middleware/current-url-middleware";
 
 const APP_VIEWS = [
@@ -168,6 +169,7 @@ async function createApp(): Promise<express.Application> {
   app.use("/public", express.static(path.join(__dirname, "public")));
   app.set("view engine", configureNunjucks(app, APP_VIEWS));
   app.use(setLocalVarsMiddleware);
+  app.use(setGTM);
 
   i18next
     .use(Backend)

@@ -37,6 +37,8 @@ describe("enter phone number controller", () => {
 
       expect(res.render).to.have.calledWith("enter-phone-number/index.njk", {
         isAccountPartCreated: undefined,
+        contentId: "0f519eb6-5cd4-476f-968f-d847b3c4c034",
+        taxonomyLevel2: "create account",
       });
     });
 
@@ -48,6 +50,8 @@ describe("enter phone number controller", () => {
 
       expect(res.render).to.have.calledWith("enter-phone-number/index.njk", {
         isAccountPartCreated: true,
+        contentId: "0f519eb6-5cd4-476f-968f-d847b3c4c034",
+        taxonomyLevel2: "create account",
       });
     });
   });

@@ -15,6 +15,23 @@ import { isLocked } from "../../utils/lock-helper";
 
 const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
+const oplValues = {
+  resetPasswordResendEmail: {
+    default: {
+      contentId: "b78d016b-0f2c-4599-9c2f-76b3a6397997",
+    },
+    csrf: {
+      contentId: "e48886d5-7be8-424d-8471-d9a9bf49d1b7",
+    },
+    requestCode: {
+      contentId: "8cbc57f9-28df-4279-a001-cc62a9dd3415",
+    },
+  },
+  resetPasswordResendCode: {
+    contentId: "7b663466-8001-436f-b10b-e6ac581d39aa",
+  },
+};
+
 export function resetPasswordCheckEmailGet(
   service: ResetPasswordCheckEmailServiceInterface = resetPasswordCheckEmailService()
 ): ExpressRouteFunc {
@@ -56,6 +73,15 @@ export function resetPasswordCheckEmailGet(
       req.session.user.redactedPhoneNumber = result.data.phoneNumberLastThree;
     }
 
+    const getContentId = (url: Request) => {
+      if (url.originalUrl.includes("csrf")) {
+        return oplValues.resetPasswordResendEmail.csrf.contentId;
+      } else if (url.originalUrl.includes("requestcode")) {
+        return oplValues.resetPasswordResendEmail.requestCode.contentId;
+      }
+      return oplValues.resetPasswordResendEmail.default.contentId;
+    };
+
     if (!requestCode || result.success) {
       const support2FABeforePasswordResetFlag = support2FABeforePasswordReset();
       const isForcedPasswordResetJourney =
@@ -64,6 +90,9 @@ export function resetPasswordCheckEmailGet(
         support2FABeforePasswordResetFlag,
         isForcedPasswordResetJourney,
         email,
+        currentPath: req.originalUrl,
+        contentId: getContentId(req),
+        taxonomyLevel2: "account recovery",
       });
     }
 
@@ -119,6 +148,8 @@ export function resetPasswordResendCodeGet(req: Request, res: Response): void {
     {
       email: req.session.user.email,
       support2hrLockout: support2hrLockout(),
+      contentId: oplValues.resetPasswordResendCode.contentId,
+      taxonomyLevel2: "account recovery",
     }
   );
 }

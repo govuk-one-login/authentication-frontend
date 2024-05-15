@@ -1,23 +1,23 @@
 function initFeedbackRadioButtons() {
   var feedbackRadioButtons = Array.prototype.slice.call(
-    document.querySelectorAll('input[name="feedbackContact"]')
-  );
-  var container = document.querySelector("#contact-details-container");
-  feedbackRadioButtons.forEach(function (element) {
-    element.addEventListener(
-      "click",
-      function (event) {
-        if (event.target.value === "true") {
-          container.classList.remove("govuk-!-display-none");
-        } else {
-          container.classList.add("govuk-!-display-none");
-          var elements = container.getElementsByTagName("input");
-          for (var i = 0; i < elements.length; i++) {
-            if (elements[i].type == "text") {
-              elements[i].value = "";
+      document.querySelectorAll('input[name="feedbackContact"]')
+    );
+    var container = document.querySelector("#contact-details-container");
+    feedbackRadioButtons.forEach(function (element) {
+      element.addEventListener(
+        "click",
+        function (event) {
+          if (event.target.value === "true") {
+            container.classList.remove("govuk-!-display-none");
+          } else {
+            container.classList.add("govuk-!-display-none");
+            var elements = container.getElementsByTagName("input");
+            for (var i = 0; i < elements.length; i++) {
+              if (elements[i].type == "text") {
+                elements[i].value = "";
+              }
             }
           }
-        }
       }.bind(this)
     );
   });
@@ -50,20 +50,16 @@ function initEnterPhoneNumber() {
   }
 }
 
+window.DI = window.DI || {};
+window.DI.analyticsUa = window.DI.analyticsUa || {};
 (function (w) {
   "use strict";
-  function appInit(trackingId, analyticsCookieDomain) {
+  function appInit() {
     window.GOVUKFrontend.initAll();
-    var cookies = window.GOVSignIn.Cookies(trackingId, analyticsCookieDomain);
+    var cookies = window.GOVSignIn.Cookies();
 
-    if (cookies.hasConsentForAnalytics()) {
+    if (window.DI.analyticsGa4.cookie.hasConsentForAnalytics()) {
       cookies.initAnalytics();
-    }
-
-    if (cookies.isOnCookiesPage()) {
-      cookies.cookiesPageInit();
-    } else {
-      cookies.cookieBannerInit();
     }
   }
 
@@ -80,5 +76,5 @@ function initEnterPhoneNumber() {
     }
   }
 
-  w.GOVSignIn.appInit = appInit;
-})(window);
+  w.DI.analyticsUa.init = appInit;
+})(window); 

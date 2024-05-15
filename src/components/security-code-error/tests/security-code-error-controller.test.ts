@@ -46,6 +46,8 @@ describe("security code controller", () => {
           isAuthApp: false,
           isBlocked: false,
           show2HrScreen: false,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "sign in",
         },
       },
       {
@@ -59,6 +61,8 @@ describe("security code controller", () => {
           isAuthApp: false,
           isBlocked: true,
           show2HrScreen: false,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "sign in",
         },
       },
       {
@@ -72,6 +76,8 @@ describe("security code controller", () => {
           isAuthApp: true,
           isBlocked: true,
           show2HrScreen: false,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "sign in",
         },
       },
       {
@@ -85,6 +91,8 @@ describe("security code controller", () => {
           isAuthApp: false,
           isBlocked: true,
           show2HrScreen: false,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "sign in",
         },
       },
     ].forEach(({ actionType, expectedRenderOptions }) => {
@@ -110,6 +118,8 @@ describe("security code controller", () => {
         actionType: SecurityCodeErrorType.EmailMaxCodesSent,
         newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
         isAccountCreationJourney: undefined,
+        contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+        taxonomyLevel2: "sign in",
       },
       {
         actionType: SecurityCodeErrorType.MfaMaxRetries,
@@ -119,11 +129,15 @@ describe("security code controller", () => {
           SecurityCodeErrorType.MfaMaxRetries
         ),
         isAccountCreationJourney: undefined,
+        contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+        taxonomyLevel2: "sign in",
       },
       {
         actionType: SecurityCodeErrorType.OtpMaxCodesSent,
         newCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
         isAccountCreationJourney: undefined,
+        contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+        taxonomyLevel2: "sign in",
       },
       {
         actionType: SecurityCodeErrorType.OtpMaxRetries,
@@ -133,6 +147,8 @@ describe("security code controller", () => {
           "true"
         ),
         isAccountCreationJourney: true,
+        contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+        taxonomyLevel2: "create account",
       },
     ];
 
@@ -151,6 +167,8 @@ describe("security code controller", () => {
             isResendCodeRequest: undefined,
             isAccountCreationJourney: params.isAccountCreationJourney,
             support2hrLockout: false,
+            contentId: params.contentId,
+            taxonomyLevel2: params.taxonomyLevel2,
           }
         );
       });
@@ -162,14 +180,20 @@ describe("security code controller", () => {
       {
         actionType: SecurityCodeErrorType.OtpBlocked,
         expectedCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
+        contentId: "1277915f-ce6e-4a06-89a0-e3458f95631a",
+        taxonomyLevel2: "sign in",
       },
       {
         actionType: SecurityCodeErrorType.MfaBlocked,
         expectedCodeLink: PATH_NAMES.RESEND_MFA_CODE,
+        contentId: "1277915f-ce6e-4a06-89a0-e3458f95631a",
+        taxonomyLevel2: "sign in",
       },
       {
         actionType: SecurityCodeErrorType.EmailBlocked,
         expectedCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
+        contentId: "1277915f-ce6e-4a06-89a0-e3458f95631a",
+        taxonomyLevel2: "sign in",
       },
     ];
 
@@ -184,6 +208,8 @@ describe("security code controller", () => {
           {
             newCodeLink: params.expectedCodeLink,
             support2hrLockout: false,
+            contentId: params.contentId,
+            taxonomyLevel2: params.taxonomyLevel2,
           }
         );
       });
@@ -198,7 +224,12 @@ describe("security code controller", () => {
 
       expect(res.render).to.have.calledWith(
         "security-code-error/index-security-code-entered-exceeded.njk",
-        { newCodeLink: PATH_NAMES.RESEND_MFA_CODE, isAuthApp: false }
+        {
+          newCodeLink: PATH_NAMES.RESEND_MFA_CODE,
+          isAuthApp: false,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "sign in",
+        }
       );
     });
 
@@ -212,6 +243,8 @@ describe("security code controller", () => {
         {
           newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           isAuthApp: true,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "sign in",
         }
       );
     });
@@ -257,6 +290,8 @@ describe("security code controller", () => {
               isAuthApp: false,
               isBlocked: false,
               show2HrScreen: true,
+              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+              taxonomyLevel2: "sign in",
             }
           );
         }
@@ -282,6 +317,8 @@ describe("security code controller", () => {
               isAuthApp: false,
               isBlocked: false,
               show2HrScreen: true,
+              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+              taxonomyLevel2: "sign in",
             }
           );
         }
@@ -320,6 +357,8 @@ describe("security code controller", () => {
               isAuthApp: false,
               isBlocked: params.isBlocked,
               show2HrScreen: false,
+              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+              taxonomyLevel2: "create account",
             }
           );
         });
@@ -344,6 +383,8 @@ describe("security code controller", () => {
               isAuthApp: false,
               isBlocked: true,
               show2HrScreen: true,
+              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+              taxonomyLevel2: "sign in",
             }
           );
           expect(req.session.user.wrongCodeEnteredLock).to.eq(
@@ -372,6 +413,8 @@ describe("security code controller", () => {
               isAuthApp: false,
               isBlocked: true,
               show2HrScreen: false,
+              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+              taxonomyLevel2: "create account",
             }
           );
           expect(req.session.user.wrongCodeEnteredLock).to.eq(
@@ -400,6 +443,8 @@ describe("security code controller", () => {
               isAuthApp: false,
               isBlocked: true,
               show2HrScreen: false,
+              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+              taxonomyLevel2: "sign in",
             }
           );
           expect(req.session.user.wrongCodeEnteredLock).to.eq(
@@ -429,6 +474,8 @@ describe("security code controller", () => {
               isAuthApp: false,
               isBlocked: true,
               show2HrScreen: true,
+              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+              taxonomyLevel2: "sign in",
             }
           );
           expect(req.session.user.wrongCodeEnteredAccountRecoveryLock).to.eq(
@@ -457,6 +504,8 @@ describe("security code controller", () => {
               isAuthApp: false,
               isBlocked: true,
               show2HrScreen: true,
+              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+              taxonomyLevel2: "sign in",
             }
           );
           expect(req.session.user.wrongCodeEnteredPasswordResetLock).to.eq(
@@ -529,6 +578,8 @@ describe("security code controller", () => {
               isResendCodeRequest: undefined,
               isAccountCreationJourney: undefined,
               support2hrLockout: true,
+              contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+              taxonomyLevel2: "sign in",
             }
           );
           expect(req.session.user.codeRequestLock).to.eq(
@@ -556,6 +607,8 @@ describe("security code controller", () => {
               isResendCodeRequest: undefined,
               isAccountCreationJourney: undefined,
               support2hrLockout: true,
+              contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+              taxonomyLevel2: "sign in",
             }
           );
         }
@@ -576,6 +629,8 @@ describe("security code controller", () => {
               isResendCodeRequest: undefined,
               isAccountCreationJourney: undefined,
               support2hrLockout: true,
+              contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+              taxonomyLevel2: "sign in",
             }
           );
         }
@@ -600,6 +655,8 @@ describe("security code controller", () => {
               isResendCodeRequest: undefined,
               isAccountCreationJourney: true,
               support2hrLockout: true,
+              contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+              taxonomyLevel2: "create account",
             }
           );
         }

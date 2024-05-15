@@ -2,6 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% set pageTitleName = 'pages.securityCodeInvalid.title' | translate %}
+
 {% block content %}
 {% if show2HrScreen %}
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeInvalid.header' | translate }}</h1>
@@ -34,4 +35,6 @@
        {% endif %}
     </p>
 {% endif %}
+
+{{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: taxonomyLevel2, contentId: contentId, loggedInStatus: false, dynamic: true })}}
 {% endblock %}

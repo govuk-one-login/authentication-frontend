@@ -1,5 +1,6 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+
 {% if support2hrLockout %}
     {% if isAccountCreationJourney %}
         {% set pageTitleName = 'pages.securityCodeWaitToRequest.title_create' | translate %}
@@ -31,4 +32,6 @@
             {{'pages.securityCodeWaitToRequest.info_old.paragraph2End' | translate}}
         </p>
     {% endif %}
+    
+{{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: taxonomyLevel2, contentId: contentId, loggedInStatus: false, dynamic: true })}}
 {% endblock %}
