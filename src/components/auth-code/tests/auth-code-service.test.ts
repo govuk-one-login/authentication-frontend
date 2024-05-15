@@ -94,7 +94,6 @@ describe("authentication auth code service", () => {
       const result = await service.getAuthCode(
         sessionId,
         clientSessionId,
-        sourceIp,
         persistentSessionId,
         sessionClient,
         userSessionClient,
@@ -135,7 +134,6 @@ describe("authentication auth code service", () => {
       const result = await service.getAuthCode(
         sessionId,
         clientSessionId,
-        sourceIp,
         persistentSessionId,
         {},
         { authCodeReturnToRP: true },

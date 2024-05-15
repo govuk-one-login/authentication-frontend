@@ -14,7 +14,6 @@ export interface AuthCodeServiceInterface {
   getAuthCode: (
     sessionId: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
     clientSession: UserSessionClient,
     userSession: UserSession,

@@ -14,7 +14,6 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
   const getAuthCode = async function (
     sessionId: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
     clientSession: UserSessionClient,
     userSession: UserSession,
@@ -31,7 +30,6 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
         baseURL: baseUrl,
         sessionId: sessionId,
         clientSessionId: clientSessionId,
-        sourceIp: sourceIp,
         persistentSessionId: persistentSessionId,
       },
       req,

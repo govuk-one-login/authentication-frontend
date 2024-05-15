@@ -19,7 +19,6 @@ export function authCodeGet(
     const result = await service.getAuthCode(
       sessionId,
       clientSessionId,
-      req.ip,
       persistentSessionId,
       req.session.client,
       req.session.user,
