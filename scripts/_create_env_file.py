@@ -12,10 +12,7 @@ from pathlib import Path
 from typing import Iterable, TypedDict
 
 import boto3
-from botocore.exceptions import BotoCoreError
-from botocore.exceptions import ProfileNotFound as BotoProfileNotFound
-from botocore.exceptions import SSOTokenLoadError as BotoSSOTokenLoadError
-from botocore.exceptions import TokenRetrievalError as BotoTokenRetrievalError
+from botocore import exceptions as boto3_exceptions
 from dotenv import dotenv_values
 
 logging.basicConfig(level=logging.INFO)
@@ -140,6 +137,10 @@ def cached_get_json_from_s3(s3_client, bucket, path) -> dict:
     return json.loads(f.getvalue())
 
 
+class FatalError(Exception):
+    pass
+
+
 class StateGetter:
     boto_client: boto3.Session
     s3_client: boto3.client
@@ -153,14 +154,17 @@ class StateGetter:
             self._validate_aws_credentials()
             self.s3_client = self.boto_client.client("s3")
             self.dynamodb_client = self.boto_client.client("dynamodb")
-        except (BotoTokenRetrievalError, BotoSSOTokenLoadError):
+        except (
+            boto3_exceptions.TokenRetrievalError,
+            boto3_exceptions.SSOTokenLoadError,
+        ) as e:
             logger.fatal(
                 "AWS auth error: Your SSO session has expired. Please run `aws sso "
                 "login --profile %s` to refresh your session.",
                 aws_profile_name,
             )
-            sys.exit(1)
-        except BotoProfileNotFound:
+            raise FatalError from e
+        except boto3_exceptions.ProfileNotFound as e:
             logger.fatal(
                 "AWS auth error: SSO Profile %s could not be found. Ensure you've set "
                 "up your AWS profiles correctly, as-per "
@@ -170,30 +174,45 @@ class StateGetter:
                 "account. Please contact the team for help.",
                 aws_profile_name,
             )
-            sys.exit(1)
-        except BotoCoreError:
+            raise FatalError from e
+        except boto3_exceptions.BotoCoreError as e:
             logger.exception(
                 "Unexpected AWS error. This could be a VPN problem. maybe. Are you "
                 "connected to the VPN?",
             )
-            sys.exit(1)
-        except Exception:  # pylint: disable=broad-except
+            raise FatalError from e
+        except Exception as e:  # pylint: disable=broad-except
             logger.exception("Unexpected error")
-            sys.exit(1)
-
-        if not self._check_environment_exists():
+            raise FatalError from e
+        try:
+            if not self._check_environment_exists():
+                logger.fatal(
+                    "Environment %s does not exist. Please check you have the correct "
+                    "name",
+                    deployment_name,
+                )
+                raise FatalError("Environment does not exist")
+        except PermissionError as e:
             logger.fatal(
-                "Environment %s does not exist. Please check you have the correct name",
-                deployment_name,
+                "You do not have permission to access S3 on this environment. This "
+                "is most likely because you are not connected to the VPN."
             )
-            sys.exit(1)
+            raise FatalError from e
+        except LookupError as e:
+            logger.exception(
+                "Unexpected Error while checking if environment exists. This could "
+                "be a VPN problem. Use the stack trace to diagnose."
+            )
+            raise FatalError from e
 
     def _check_environment_exists(self):
         try:
             self._api_remote_state
-        except boto3.exceptions.botocore.exceptions.ClientError as e:
+        except boto3_exceptions.ClientError as e:
             if e.response["Error"]["Code"] == "404":
                 return False
+            if e.response["Error"]["Code"] == "403":
+                raise PermissionError from e
             raise LookupError("Error checking if environment exists") from e
         return True
 
@@ -283,7 +302,7 @@ def get_static_variables_from_remote(
         )
     except ValueError as e:
         logger.error("Error getting stub hostname from DynamoDB: %s", e)
-        sys.exit(1)
+        raise FatalError from e
     return [
         {
             "variables": {
@@ -419,13 +438,13 @@ def main(deployment_name: str, aws_profile_name: str, dotenv_file: Path):
     # pylint: disable=broad-except
     except Exception as e:
         logger.error("Error backing up %s: %s", dotenv_file, e)
-        sys.exit(1)
+        raise FatalError from e
 
     try:
         dotenv_file.write_text("\n".join(env_file_lines))
     except OSError as e:
         logger.error("Error writing to %s: %s", dotenv_file, e)
-        sys.exit(1)
+        raise FatalError from e
 
     logger.info(
         "Successfully updated %s with values from %s environment in %f seconds.",
@@ -462,6 +481,8 @@ if __name__ == "__main__":
         _aws_profile_name = "di-auth-development-admin"
         _state_bucket_name = "di-auth-development-tfstate"
 
-    STATE_GETTER = StateGetter(deploy_env, _state_bucket_name, _aws_profile_name)
-
-    main(deploy_env, _aws_profile_name, Path(".env"))
+    try:
+        STATE_GETTER = StateGetter(deploy_env, _state_bucket_name, _aws_profile_name)
+        main(deploy_env, _aws_profile_name, Path(".env"))
+    except FatalError:
+        sys.exit(1)
