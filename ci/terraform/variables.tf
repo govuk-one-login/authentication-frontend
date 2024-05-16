@@ -279,7 +279,7 @@ variable "rate_limited_endpoints_requests_per_period" {
   default     = 100000
 }
 
-#cloudfront varaible 
+#cloudfront variable 
 variable "cloudfront_auth_frontend_enabled" {
   type        = bool
   default     = false
@@ -304,6 +304,7 @@ variable "auth_origin_cloakingheader" {
   description = "This is header value for Cloufront to to verify requests are coming from the correct CloudFront distribution to ALB "
 }
 
+
 variable "previous_auth_origin_cloakingheader" {
   type        = string
   sensitive   = true
@@ -327,6 +328,13 @@ variable "Standard_Logging_Enabled" {
   default     = false
   description = "Enables Standard logging to push logs to S3 bucket"
 }
+
+variable "cloudfront_WafAcl_Logdestination" {
+  type        = string
+  default     = "none"
+  description = "CSLS logging destinatiin for logging Cloufront CloakingOriginWebACL WAf logs "
+}
+#end of cloudfront variable 
 
 variable "language_toggle_enabled" {
   type        = string
