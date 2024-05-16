@@ -1,10 +1,8 @@
 import { describe } from "mocha";
+import sinon, { SinonStub } from "sinon";
+import { ResetPasswordServiceInterface } from "../types";
+import { resetPasswordService } from "../reset-password-service";
 import { Http } from "../../../utils/http";
-import { sinon } from "../../../../test/utils/test-utils";
-import { API_ENDPOINTS } from "../../../app.constants";
-import { SinonStub } from "sinon";
-import { checkReauthUsersService } from "../check-reauth-users-service";
-import { CheckReauthServiceInterface } from "../types";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
@@ -12,12 +10,12 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
 
-describe("re-authentication service", () => {
+describe("reset password service", () => {
   const httpInstance = new Http();
-  const service: CheckReauthServiceInterface =
-    checkReauthUsersService(httpInstance);
-  const SUBJECT = "123";
+  const service: ResetPasswordServiceInterface =
+    resetPasswordService(httpInstance);
   let postStub: SinonStub;
 
   beforeEach(() => {
@@ -30,30 +28,31 @@ describe("re-authentication service", () => {
     resetApiKeyAndBaseUrlEnvVars();
   });
 
-  it("successfully calls the API to check a reauth user", async () => {
+  it("successfully calls the API to update a password", async () => {
     const axiosResponse = Promise.resolve({
       data: {},
-      status: 200,
+      status: HTTP_STATUS_CODES.NO_CONTENT,
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, email, ip, clientSessionId, diPersistentSessionId } =
+    const { sessionId, clientSessionId, ip, diPersistentSessionId } =
       commonVariables;
+    const newPassword = "abcdef";
+    const isForcedPasswordReset = false;
 
-    const result = await service.checkReauthUsers(
-      sessionId,
-      email,
-      SUBJECT,
+    const result = await service.updatePassword(
+      newPassword,
       ip,
+      sessionId,
       clientSessionId,
-      diPersistentSessionId
+      diPersistentSessionId,
+      isForcedPasswordReset
     );
 
     const expectedApiCallDetails = {
-      expectedPath: API_ENDPOINTS.CHECK_REAUTH_USER,
+      expectedPath: API_ENDPOINTS.RESET_PASSWORD,
       expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
-      expectedBody: { email: commonVariables.email, rpPairwiseId: SUBJECT },
-      validateStatus: true,
+      expectedBody: { password: newPassword },
     };
 
     checkApiCallMadeWithExpectedBodyAndHeaders(
