@@ -2,37 +2,43 @@ import { ApiResponseResult, UserSession, UserSessionClient } from "../../types";
 import { API_ENDPOINTS } from "../../app.constants";
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
 } from "../../utils/http";
 import { AuthCodeResponse, AuthCodeServiceInterface } from "./types";
 import { getApiBaseUrl, getFrontendApiBaseUrl } from "../../config";
 import { AxiosResponse } from "axios";
-
+import { Request } from "express";
 export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
   const getAuthCode = async function (
     sessionId: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
     clientSession: UserSessionClient,
-    userSession: UserSession
+    userSession: UserSession,
+    req: Request
   ): Promise<ApiResponseResult<AuthCodeResponse>> {
-    const baseUrl = shouldCallOrchAuthCode(userSession)
-      ? getFrontendApiBaseUrl()
-      : getApiBaseUrl();
-    const config = getRequestConfig({
-      baseURL: baseUrl,
-      sessionId: sessionId,
-      clientSessionId: clientSessionId,
-      sourceIp: sourceIp,
-      persistentSessionId: persistentSessionId,
-    });
+    const useOrchAuthCode = shouldCallOrchAuthCode(userSession);
+    const baseUrl = useOrchAuthCode ? getFrontendApiBaseUrl() : getApiBaseUrl();
+    const path = useOrchAuthCode
+      ? API_ENDPOINTS.ORCH_AUTH_CODE
+      : API_ENDPOINTS.AUTH_CODE;
+
+    const config = getInternalRequestConfigWithSecurityHeaders(
+      {
+        baseURL: baseUrl,
+        sessionId: sessionId,
+        clientSessionId: clientSessionId,
+        persistentSessionId: persistentSessionId,
+      },
+      req,
+      path
+    );
 
     let response: AxiosResponse;
 
-    if (shouldCallOrchAuthCode(userSession)) {
+    if (useOrchAuthCode) {
       const body = {
         claims: clientSession.claim,
         state: clientSession.state,
@@ -41,13 +47,9 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
         "is-new-account": userSession?.isAccountCreationJourney ?? false,
         "password-reset-time": userSession?.passwordResetTime,
       };
-      response = await axios.client.post(
-        API_ENDPOINTS.ORCH_AUTH_CODE,
-        body,
-        config
-      );
+      response = await axios.client.post(path, body, config);
     } else {
-      response = await axios.client.get(API_ENDPOINTS.AUTH_CODE, config);
+      response = await axios.client.get(path, config);
     }
 
     return createApiResponse<AuthCodeResponse>(response);

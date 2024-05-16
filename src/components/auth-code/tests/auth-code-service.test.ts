@@ -4,13 +4,14 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { authCodeService } from "../auth-code-service";
 import { SinonStub } from "sinon";
-import { API_ENDPOINTS } from "../../../app.constants";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { AuthCodeServiceInterface } from "../types";
 import { Http } from "../../../utils/http";
 import {
   support2FABeforePasswordReset,
   support2hrLockout,
 } from "../../../config";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("authentication auth code service", () => {
   const redirectUriSentToAuth = "/redirect-uri";
@@ -19,8 +20,24 @@ describe("authentication auth code service", () => {
   const passwordResetTime = 1710335967;
   const redirectUriReturnedFromResponse =
     "/redirect-here?with-some-params=added-by-the-endpoint";
-  const apiBaseUrl = "/base-url";
-  const frontendBaseUrl = "/frontend-base-url";
+  const apiBaseUrl = "https://base-url";
+  const frontendBaseUrl = "https://frontend-base-url";
+  const sessionId = "sessionId";
+  const apiKey = "apiKey";
+  const clientSessionId = "clientSessionId";
+  const sourceIp = "sourceIp";
+  const persistentSessionId = "persistentSessionId";
+  const auditEncodedString =
+    "R21vLmd3QilNKHJsaGkvTFxhZDZrKF44SStoLFsieG0oSUY3aEhWRVtOMFRNMVw1dyInKzB8OVV5N09hOi8kLmlLcWJjJGQiK1NPUEJPPHBrYWJHP358NDg2ZDVc";
+
+  const expectedHeaders = {
+    "X-API-Key": apiKey,
+    "Session-Id": sessionId,
+    "Client-Session-Id": clientSessionId,
+    "x-forwarded-for": sourceIp,
+    "txma-audit-encoded": auditEncodedString,
+    "di-persistent-session-id": persistentSessionId,
+  };
 
   const axiosResponse = Promise.resolve({
     data: {
@@ -36,7 +53,7 @@ describe("authentication auth code service", () => {
   let service: AuthCodeServiceInterface;
 
   beforeEach(() => {
-    process.env.API_KEY = "api-key";
+    process.env.API_KEY = apiKey;
     process.env.FRONTEND_API_BASE_URL = frontendBaseUrl;
     process.env.API_BASE_URL = apiBaseUrl;
     const httpInstance = new Http();
@@ -54,6 +71,12 @@ describe("authentication auth code service", () => {
 
   describe("with auth orch split feature flag on", () => {
     it("it should make a post request to the orch auth endpoint with claim, state and redirect uri in the body", async () => {
+      const req = createMockRequest(PATH_NAMES.AUTH_CODE);
+      req.ip = sourceIp;
+      req.headers = {
+        "txma-audit-encoded": auditEncodedString,
+        "x-forwarded-for": sourceIp,
+      };
       const claim = ["phone_number", "phone_number_verified"];
       const state = "state";
       const sessionClient = {
@@ -69,12 +92,12 @@ describe("authentication auth code service", () => {
       };
 
       const result = await service.getAuthCode(
-        "sessionId",
-        "clientSessionId",
-        "sourceIp",
-        "persistentSessionId",
+        sessionId,
+        clientSessionId,
+        persistentSessionId,
         sessionClient,
-        userSessionClient
+        userSessionClient,
+        req
       );
 
       const expectedBody = {
@@ -91,7 +114,7 @@ describe("authentication auth code service", () => {
           API_ENDPOINTS.ORCH_AUTH_CODE,
           expectedBody,
           {
-            headers: sinon.match.object,
+            headers: expectedHeaders,
             proxy: sinon.match.bool,
             baseURL: frontendBaseUrl,
           }
@@ -102,18 +125,24 @@ describe("authentication auth code service", () => {
     });
 
     it("should make a request for an RP auth code following the prove identity callback page", async () => {
+      const req = createMockRequest(PATH_NAMES.AUTH_CODE);
+      req.ip = sourceIp;
+      req.headers = {
+        "txma-audit-encoded": auditEncodedString,
+        "x-forwarded-for": sourceIp,
+      };
       const result = await service.getAuthCode(
-        "sessionId",
-        "clientSessionId",
-        "sourceIp",
-        "persistentSessionId",
+        sessionId,
+        clientSessionId,
+        persistentSessionId,
         {},
-        { authCodeReturnToRP: true }
+        { authCodeReturnToRP: true },
+        req
       );
 
       expect(
         getStub.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
-          headers: sinon.match.object,
+          headers: expectedHeaders,
           baseURL: apiBaseUrl,
           proxy: sinon.match.bool,
         })
