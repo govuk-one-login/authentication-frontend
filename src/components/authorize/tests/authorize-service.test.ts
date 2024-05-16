@@ -50,7 +50,6 @@ describe("authorize service", () => {
     service.start(
       sessionId,
       clientSessionId,
-      ip,
       persistentSessionId,
       req,
       "123456"
@@ -69,7 +68,6 @@ describe("authorize service", () => {
     service.start(
       sessionId,
       clientSessionId,
-      ip,
       persistentSessionId,
       req,
       "123456"
@@ -85,7 +83,7 @@ describe("authorize service", () => {
 
   it("sends a request without a reauth header when reauth is not requested", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
-    service.start(sessionId, clientSessionId, ip, persistentSessionId, req);
+    service.start(sessionId, clientSessionId, persistentSessionId, req);
 
     expect(
       getStub.calledWithMatch(API_ENDPOINTS.START, {
