@@ -28,7 +28,7 @@ language_toggle_enabled                             = "1"
 
 logging_endpoint_arns = []
 
-orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENRdvNXHwk1TvrgFUsWXAE5oDTcPr\nCBp6HxbvYDLsqwNHiDFEzCwvbXKY2QQR/Rtel0o156CtU9k1lCZJGAsSIA==\n-----END PUBLIC KEY-----"
+orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHzG8IFx1jE1+Ul44jQk96efPknCX\VxWS4PqLrKfR/31UQovFQLfyxA46uiMOvr7+0hRwFX1fQhagsIK+dfB5PA==\n-----END PUBLIC KEY-----"
 orch_to_auth_client_id          = "orchestrationAuth"
 orch_to_auth_audience           = "https://signin.dev.account.gov.uk/"
 
