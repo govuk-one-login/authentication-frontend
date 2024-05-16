@@ -12,11 +12,19 @@ describe("authorize service", () => {
   const clientSessionId = "client-session-id";
   const ip = "123.123.123.123";
   const persistentSessionId = "persistent-session-id";
+  const apiKey = "api-key";
+  const expectedHeaders = {
+    "X-API-Key": apiKey,
+    "Session-Id": sessionId,
+    "Client-Session-Id": clientSessionId,
+    "X-Forwarded-For": ip,
+    "di-persistent-session-id": persistentSessionId,
+  };
   let getStub: SinonStub;
   let service: AuthorizeServiceInterface;
 
   beforeEach(() => {
-    process.env.API_KEY = "api-key";
+    process.env.API_KEY = apiKey;
     process.env.FRONTEND_API_BASE_URL = "some-base-url";
     process.env.API_BASE_URL = "another-base-url";
     const httpInstance = new Http();
@@ -40,7 +48,7 @@ describe("authorize service", () => {
 
     expect(
       getStub.calledWithMatch(API_ENDPOINTS.START, {
-        headers: { Reauthenticate: true },
+        headers: { ...expectedHeaders, Reauthenticate: true },
         proxy: false,
       })
     ).to.be.true;
@@ -58,7 +66,7 @@ describe("authorize service", () => {
 
     expect(
       getStub.calledWithMatch(API_ENDPOINTS.START, {
-        headers: { Reauthenticate: undefined },
+        headers: { ...expectedHeaders, Reauthenticate: undefined },
         proxy: false,
       })
     ).to.be.true;
@@ -70,7 +78,7 @@ describe("authorize service", () => {
 
     expect(
       getStub.calledWithMatch(API_ENDPOINTS.START, {
-        headers: { Reauthenticate: undefined },
+        headers: { ...expectedHeaders, Reauthenticate: undefined },
         proxy: false,
       })
     ).to.be.true;
