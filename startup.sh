@@ -32,9 +32,14 @@ while getopts ":clx" opt; do
     ;;
   esac
 done
+shift $((OPTIND - 1))
 
 if [ "${ACTION_LOCAL:-0}" == "1" ] && [ "${ACTION_DEPS_ONLY:-0}" == "1" ]; then
   usage "Cannot use -l and -x together"
+fi
+
+if [ ${#} -gt 0 ]; then
+  usage "No extra arguments allowed. Got: ${*}"
 fi
 
 if [ "${ACTION_LOCAL:-0}" == "0" ]; then
