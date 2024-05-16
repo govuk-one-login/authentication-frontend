@@ -1,0 +1,82 @@
+name: Build and deploy frontend Dev
+env:
+  AWS_REGION: eu-west-2
+  DEPLOYER_ROLE: arn:aws:iam::706615647326:role/deployers/dev-github-actions-publish-to-s3-for-code-signing
+  DEV_GHA_DEPLOYER_ROLE: arn:aws:iam::653994557586:role/dev-auth-deploy-pipeline-GitHubActionsRole-QrtGginNnjDD
+  DEV_TOOLING_ECR_FRONTEND_REPO: frontend-image-repository
+  DEV_BASIC_SIDECAR_ECR_REPO: basic-auth-sidecar-image-repository
+  DEV_ARTIFACT_BUCKET: dev-auth-deploy-pipeline-githubartifactsourcebuck-ssdefc91xjh6
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Assume AWS DEPLOYER role in tooling acct
+      uses: aws-actions/configure-aws-credentials@v1-node16
+      with:
+        role-to-assume: ${{ env.DEPLOYER_ROLE }}
+        aws-region: ${{ env.AWS_REGION }}
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: Login to GDS Dev Dynatrace Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: khw46367.live.dynatrace.com
+        username: khw46367
+        password: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
+    - name: Build, tag, and push frontend
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ env.DEV_TOOLING_ECR_FRONTEND_REPO }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Build, tag, and push basic-auth-sidecar
+      working-directory: basic-auth-sidecar
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ env.DEV_BASIC_SIDECAR_ECR_REPO }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ env.DEV_GHA_DEPLOYER_ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload frontend Terraform files
+        working-directory: ci/terraform
+        run: |
+          zip -r frontend.zip .
+          S3_RESPONSE=`aws s3api put-object \
+            --bucket ${{ env.DEV_ARTIFACT_BUCKET }} \
+            --key frontend.zip \
+            --body frontend.zip \
+            --metadata "repository=$GITHUB_REPOSITORY,commitsha=$GITHUB_SHA,committag=$GIT_TAG,commitmessage=$COMMIT_MSG"`
+          VERSION=`echo $S3_RESPONSE | jq .VersionId -r`
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
