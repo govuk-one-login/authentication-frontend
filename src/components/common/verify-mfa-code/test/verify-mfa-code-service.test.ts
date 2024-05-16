@@ -1,0 +1,73 @@
+import { describe } from "mocha";
+import sinon, { SinonStub } from "sinon";
+import { Http } from "../../../../utils/http";
+import {
+  checkApiCallMadeWithExpectedBodyAndHeaders,
+  commonVariables,
+  expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+  resetApiKeyAndBaseUrlEnvVars,
+  setupApiKeyAndBaseUrlEnvVars,
+} from "../../../../../test/helpers/service-test-helper";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  JOURNEY_TYPE,
+  MFA_METHOD_TYPE,
+} from "../../../../app.constants";
+import { VerifyMfaCodeInterface } from "../../../enter-authenticator-app-code/types";
+import { verifyMfaCodeService } from "../verify-mfa-code-service";
+
+describe("verify mfa code service", () => {
+  const httpInstance = new Http();
+  const service: VerifyMfaCodeInterface = verifyMfaCodeService(httpInstance);
+  let postStub: SinonStub;
+
+  beforeEach(() => {
+    setupApiKeyAndBaseUrlEnvVars();
+    postStub = sinon.stub(httpInstance.client, "post");
+  });
+
+  afterEach(() => {
+    postStub.reset();
+    resetApiKeyAndBaseUrlEnvVars();
+  });
+
+  it("successfully calls the API to verify an mfa code", async () => {
+    const axiosResponse = Promise.resolve({
+      data: {},
+      status: HTTP_STATUS_CODES.NO_CONTENT,
+      statusText: "OK",
+    });
+    postStub.resolves(axiosResponse);
+    const { sessionId, clientSessionId, ip, diPersistentSessionId } =
+      commonVariables;
+    const code = "1234";
+    const journeyType = JOURNEY_TYPE.SIGN_IN;
+    const mfaMethodType = MFA_METHOD_TYPE.SMS;
+    const profileInformation = "some profile information"; //TODO check for realistic value
+
+    const expectedApiCallDetails = {
+      expectedPath: API_ENDPOINTS.VERIFY_MFA_CODE,
+      expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+      expectedBody: { mfaMethodType, code, journeyType, profileInformation },
+    };
+
+    const result = await service.verifyMfaCode(
+      mfaMethodType,
+      code,
+      sessionId,
+      clientSessionId,
+      ip,
+      diPersistentSessionId,
+      journeyType,
+      profileInformation
+    );
+
+    checkApiCallMadeWithExpectedBodyAndHeaders(
+      result,
+      postStub,
+      true,
+      expectedApiCallDetails
+    );
+  });
+});

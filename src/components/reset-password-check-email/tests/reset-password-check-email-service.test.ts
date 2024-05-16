@@ -1,10 +1,6 @@
 import { describe } from "mocha";
+import sinon, { SinonStub } from "sinon";
 import { Http } from "../../../utils/http";
-import { sinon } from "../../../../test/utils/test-utils";
-import { API_ENDPOINTS } from "../../../app.constants";
-import { SinonStub } from "sinon";
-import { checkReauthUsersService } from "../check-reauth-users-service";
-import { CheckReauthServiceInterface } from "../types";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
@@ -12,12 +8,14 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import { ResetPasswordCheckEmailServiceInterface } from "../types";
+import { resetPasswordCheckEmailService } from "../reset-password-check-email-service";
 
-describe("re-authentication service", () => {
+describe("reset password check email service", () => {
   const httpInstance = new Http();
-  const service: CheckReauthServiceInterface =
-    checkReauthUsersService(httpInstance);
-  const SUBJECT = "123";
+  const service: ResetPasswordCheckEmailServiceInterface =
+    resetPasswordCheckEmailService(httpInstance);
   let postStub: SinonStub;
 
   beforeEach(() => {
@@ -30,30 +28,30 @@ describe("re-authentication service", () => {
     resetApiKeyAndBaseUrlEnvVars();
   });
 
-  it("successfully calls the API to check a reauth user", async () => {
+  it("successfully calls the API to make a request to reset a password ", async () => {
     const axiosResponse = Promise.resolve({
       data: {},
-      status: 200,
+      status: HTTP_STATUS_CODES.NO_CONTENT,
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, email, ip, clientSessionId, diPersistentSessionId } =
+    const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
       commonVariables;
+    const withinForcedPasswordResetJourney = false;
 
-    const result = await service.checkReauthUsers(
-      sessionId,
+    const result = await service.resetPasswordRequest(
       email,
-      SUBJECT,
+      sessionId,
       ip,
       clientSessionId,
-      diPersistentSessionId
+      diPersistentSessionId,
+      withinForcedPasswordResetJourney
     );
 
     const expectedApiCallDetails = {
-      expectedPath: API_ENDPOINTS.CHECK_REAUTH_USER,
+      expectedPath: API_ENDPOINTS.RESET_PASSWORD_REQUEST,
       expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
-      expectedBody: { email: commonVariables.email, rpPairwiseId: SUBJECT },
-      validateStatus: true,
+      expectedBody: { withinForcedPasswordResetJourney, email },
     };
 
     checkApiCallMadeWithExpectedBodyAndHeaders(
