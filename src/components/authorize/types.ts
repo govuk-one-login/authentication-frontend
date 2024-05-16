@@ -1,5 +1,6 @@
 import { ApiResponseResult, DefaultApiResponse } from "../../types";
 import { Claims } from "./claims-config";
+import { Request } from "express";
 
 export interface StartAuthResponse extends DefaultApiResponse {
   user: UserSessionInfo;
@@ -23,6 +24,7 @@ export interface AuthorizeServiceInterface {
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string,
+    req: Request,
     reauthenticate?: string
   ) => Promise<ApiResponseResult<StartAuthResponse>>;
 }

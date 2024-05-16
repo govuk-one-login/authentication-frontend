@@ -3,9 +3,10 @@ import { expect } from "chai";
 import { Http } from "../../../utils/http";
 import { authorizeService } from "../authorize-service";
 import { sinon } from "../../../../test/utils/test-utils";
-import { API_ENDPOINTS } from "../../../app.constants";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { SinonStub } from "sinon";
 import { AuthorizeServiceInterface } from "../types";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("authorize service", () => {
   const sessionId = "some-session-id";
@@ -13,11 +14,20 @@ describe("authorize service", () => {
   const ip = "123.123.123.123";
   const persistentSessionId = "persistent-session-id";
   const apiKey = "api-key";
+  const auditEncodedString =
+    "R21vLmd3QilNKHJsaGkvTFxhZDZrKF44SStoLFsieG0oSUY3aEhWRVtOMFRNMVw1dyInKzB8OVV5N09hOi8kLmlLcWJjJGQiK1NPUEJPPHBrYWJHP358NDg2ZDVc";
+  const req = createMockRequest(PATH_NAMES.AUTHORIZE);
+  req.ip = ip;
+  req.headers = {
+    "txma-audit-encoded": auditEncodedString,
+    "x-forwarded-for": ip,
+  };
   const expectedHeaders = {
     "X-API-Key": apiKey,
     "Session-Id": sessionId,
     "Client-Session-Id": clientSessionId,
-    "X-Forwarded-For": ip,
+    "x-forwarded-for": ip,
+    "txma-audit-encoded": auditEncodedString,
     "di-persistent-session-id": persistentSessionId,
   };
   let getStub: SinonStub;
@@ -25,8 +35,7 @@ describe("authorize service", () => {
 
   beforeEach(() => {
     process.env.API_KEY = apiKey;
-    process.env.FRONTEND_API_BASE_URL = "some-base-url";
-    process.env.API_BASE_URL = "another-base-url";
+    process.env.FRONTEND_API_BASE_URL = "https://some-base-url";
     const httpInstance = new Http();
     service = authorizeService(httpInstance);
     getStub = sinon.stub(httpInstance.client, "get");
@@ -43,6 +52,7 @@ describe("authorize service", () => {
       clientSessionId,
       ip,
       persistentSessionId,
+      req,
       "123456"
     );
 
@@ -61,6 +71,7 @@ describe("authorize service", () => {
       clientSessionId,
       ip,
       persistentSessionId,
+      req,
       "123456"
     );
 
@@ -74,7 +85,7 @@ describe("authorize service", () => {
 
   it("sends a request without a reauth header when reauth is not requested", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
-    service.start(sessionId, clientSessionId, ip, persistentSessionId);
+    service.start(sessionId, clientSessionId, ip, persistentSessionId, req);
 
     expect(
       getStub.calledWithMatch(API_ENDPOINTS.START, {
