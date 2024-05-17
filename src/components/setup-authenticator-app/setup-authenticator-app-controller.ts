@@ -102,7 +102,9 @@ export function setupAuthenticatorAppPost(
         );
         return renderBadRequest(res, req, TEMPLATE, error, {
           qrCode: req.session.user.authAppQrCodeUrl,
-          secretKey: req.session.user.authAppSecret,
+          secretKeyFragmentArray: splitSecretKeyIntoFragments(
+            req.session.user.authAppSecret
+          ),
         });
       }
 
