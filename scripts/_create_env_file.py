@@ -91,6 +91,7 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             "SUPPORT_2FA_B4_PASSWORD_RESET": 1,
             "SUPPORT_REAUTHENTICATION": 1,
             "SUPPORT_2HR_LOCKOUT": 1,
+            "SUPPORT_CHECK_EMAIL_FRAUD": 1,
         },
     },
     {

@@ -179,6 +179,10 @@ export function supportReauthentication(): boolean {
   return process.env.SUPPORT_REAUTHENTICATION === "1";
 }
 
+export function supportCheckEmailFraud(): boolean {
+  return process.env.SUPPORT_CHECK_EMAIL_FRAUD === "1";
+}
+
 export function getLanguageToggleEnabled(): boolean {
   return process.env.LANGUAGE_TOGGLE_ENABLED === "1";
 }
