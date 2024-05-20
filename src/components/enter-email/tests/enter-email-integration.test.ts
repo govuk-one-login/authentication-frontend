@@ -1,7 +1,6 @@
 import request from "supertest";
 import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
 import {
@@ -13,6 +12,7 @@ import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
 import { AxiosResponse } from "axios";
 import { createApiResponse } from "../../../utils/http";
 import { DefaultApiResponse } from "../../../types";
+import nock = require("nock");
 
 describe("Integration::enter email", () => {
   let token: string | string[];
@@ -167,6 +167,13 @@ describe("Integration::enter email", () => {
         email: "test@test.com",
         doesUserExist: true,
       });
+    nock(baseApi)
+      .post(API_ENDPOINTS.CHECK_EMAIL_FRAUD_BLOCK)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email: "test@test.com",
+        isBlockedStatus: "Pending",
+      });
 
     request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
@@ -185,6 +192,13 @@ describe("Integration::enter email", () => {
       email: "test@test.com",
       doesUserExist: false,
     });
+    nock(baseApi)
+      .post(API_ENDPOINTS.CHECK_EMAIL_FRAUD_BLOCK)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email: "test@test.com",
+        isBlockedStatus: "Pending",
+      });
 
     request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
@@ -234,6 +248,14 @@ describe("Integration::enter email", () => {
       .reply(HTTP_STATUS_CODES.OK, {
         email: "test@test.com",
         doesUserExist: true,
+      });
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.CHECK_EMAIL_FRAUD_BLOCK)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email: "test@test.com",
+        isBlockedStatus: "Pending",
       });
 
     request(app)
