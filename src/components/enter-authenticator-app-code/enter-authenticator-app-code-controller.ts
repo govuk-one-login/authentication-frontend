@@ -66,7 +66,8 @@ export function enterAuthenticatorAppCodeGet(
       clientSessionId,
       email,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      req
     );
 
     if (!accountRecoveryResponse.success) {
