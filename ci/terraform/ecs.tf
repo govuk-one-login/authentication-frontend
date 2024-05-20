@@ -164,6 +164,26 @@ locals {
         name  = "LANGUAGE_TOGGLE_ENABLED"
         value = var.language_toggle_enabled
       },
+      {
+        name  = "GA4_DISABLED"
+        value = var.ga4_disabled
+      },
+      {
+        name  = "UA_DISABLED"
+        value = var.ua_disabled
+      },
+      {
+        name  = "UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID"
+        value = var.universal_analytics_gtm_container_id
+      },
+      {
+        name  = "GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID"
+        value = var.google_analytics_4_gtm_container_id
+      },
+      {
+        name  = "ANALYTICS_COOKIE_DOMAIN"
+        value = var.analytics_cookie_domain
+      }
     ]
 
     secrets = [
