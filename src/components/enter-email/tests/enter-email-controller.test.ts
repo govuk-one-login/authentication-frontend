@@ -16,26 +16,12 @@ import { SendNotificationServiceInterface } from "../../common/send-notification
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { CheckEmailFraudBlockInterface } from "../../check-email-fraud-block/types";
 
 describe("enter email controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
   let clock: sinon.SinonFakeTimers;
   const date = new Date(Date.UTC(2024, 1, 1));
-
-  const checkReauthSuccessfulFakeService: CheckReauthServiceInterface = {
-    checkReauthUsers: sinon.fake.returns({
-      success: true,
-    }),
-  } as unknown as CheckReauthServiceInterface;
-
-  const checkEmailFraudFakeSuccessfulService: CheckEmailFraudBlockInterface = {
-    checkEmailFraudBlock: sinon.fake.returns({
-      success: true,
-      data: { email: "test@test.com", isBlockedStatus: "Pending" },
-    }),
-  } as unknown as CheckEmailFraudBlockInterface;
 
   beforeEach(() => {
     res = mockResponse();
@@ -159,11 +145,7 @@ describe("enter email controller", () => {
       req.body.email = "test.test.com";
       res.locals.sessionId = "dsad.dds";
 
-      await enterEmailPost(
-        fakeService,
-        checkReauthSuccessfulFakeService,
-        checkEmailFraudFakeSuccessfulService
-      )(req as Request, res as Response);
+      await enterEmailPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.userExists).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_PASSWORD);
@@ -180,11 +162,7 @@ describe("enter email controller", () => {
       req.body.email = "test.test.com";
       res.locals.sessionId = "sadl990asdald";
 
-      await enterEmailPost(
-        fakeService,
-        checkReauthSuccessfulFakeService,
-        checkEmailFraudFakeSuccessfulService
-      )(req as Request, res as Response);
+      await enterEmailPost(fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ACCOUNT_NOT_FOUND);
       expect(fakeService.userExists).to.have.been.calledOnce;
@@ -212,11 +190,7 @@ describe("enter email controller", () => {
       req.body.email = "test@test.com";
       res.locals.sessionId = "sadl990asdald";
 
-      await enterEmailPost(
-        fakeService,
-        checkReauthSuccessfulFakeService,
-        checkEmailFraudFakeSuccessfulService
-      )(req as Request, res as Response);
+      await enterEmailPost(fakeService)(req as Request, res as Response);
 
       const expectedLockTime = new Date(
         date.getTime() + lockTTlInSeconds * 1000
@@ -476,11 +450,16 @@ describe("enter email controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      await enterEmailPost(
-        fakeService,
-        checkReauthSuccessfulFakeService,
-        checkEmailFraudFakeSuccessfulService
-      )(req as Request, res as Response);
+      const successfulFakeService: CheckReauthServiceInterface = {
+        checkReauthUsers: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as CheckReauthServiceInterface;
+
+      await enterEmailPost(fakeService, successfulFakeService)(
+        req as Request,
+        res as Response
+      );
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_PASSWORD);
     });
