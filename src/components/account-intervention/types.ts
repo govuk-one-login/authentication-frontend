@@ -1,4 +1,5 @@
 import { ApiResponseResult, DefaultApiResponse } from "../../types";
+import { Request } from "express";
 
 export interface AccountInterventionsInterface {
   accountInterventionStatus: (
@@ -6,7 +7,8 @@ export interface AccountInterventionsInterface {
     emailAddress: string,
     sourceIp: string,
     clientSessionId: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    req: Request
   ) => Promise<ApiResponseResult<AccountInterventionStatus>>;
 }
 

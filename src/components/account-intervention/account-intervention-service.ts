@@ -1,6 +1,6 @@
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
 } from "../../utils/http";
@@ -10,6 +10,7 @@ import {
   AccountInterventionsInterface,
 } from "./types";
 import { ApiResponseResult } from "../../types";
+import { Request } from "express";
 
 export function accountInterventionService(
   axios: Http = http
@@ -19,19 +20,24 @@ export function accountInterventionService(
     emailAddress: string,
     sourceIp: string,
     clientSessionId: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    req: Request
   ): Promise<ApiResponseResult<AccountInterventionStatus>> {
     const response = await axios.client.post<AccountInterventionStatus>(
       API_ENDPOINTS.ACCOUNT_INTERVENTIONS,
       {
         email: emailAddress.toLowerCase(),
       },
-      getRequestConfig({
-        sessionId: sessionId,
-        sourceIp: sourceIp,
-        clientSessionId: clientSessionId,
-        persistentSessionId: persistentSessionId,
-      })
+      getInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId: sessionId,
+          sourceIp: sourceIp,
+          clientSessionId: clientSessionId,
+          persistentSessionId: persistentSessionId,
+        },
+        req,
+        API_ENDPOINTS.ACCOUNT_INTERVENTIONS
+      )
     );
 
     return createApiResponse<AccountInterventionStatus>(response);

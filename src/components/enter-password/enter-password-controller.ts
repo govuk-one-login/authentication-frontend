@@ -169,7 +169,8 @@ export function enterPasswordPost(
           email,
           req.ip,
           clientSessionId,
-          persistentSessionId
+          persistentSessionId,
+          req
         );
       if (
         accountInterventionsResponse.data.passwordResetRequired ||

@@ -26,7 +26,8 @@ export function accountInterventionsMiddleware(
           email,
           req.ip,
           clientSessionId,
-          persistentSessionId
+          persistentSessionId,
+          req
         );
 
       if (accountInterventionsResponse.data.blocked) {
