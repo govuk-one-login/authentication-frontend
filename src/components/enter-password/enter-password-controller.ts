@@ -205,6 +205,7 @@ export function enterPasswordPost(
         persistentSessionId,
         false,
         xss(req.cookies.lng as string),
+        req,
         journeyType
       );
 

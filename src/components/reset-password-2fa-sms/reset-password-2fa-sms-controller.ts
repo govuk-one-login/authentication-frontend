@@ -64,6 +64,7 @@ export function resetPassword2FASmsGet(
       persistentSessionId,
       false,
       xss(req.cookies.lng as string),
+      req,
       JOURNEY_TYPE.PASSWORD_RESET_MFA
     );
 

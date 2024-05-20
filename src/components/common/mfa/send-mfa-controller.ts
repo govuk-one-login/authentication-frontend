@@ -25,6 +25,7 @@ export function sendMfaGeneric(
       persistentSessionId,
       isResendCodeRequest,
       xss(req.cookies.lng as string),
+      req,
       getJourneyTypeFromUserSession(req.session.user, {
         includeReauthentication: true,
       })

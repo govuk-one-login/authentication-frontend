@@ -141,6 +141,7 @@ describe("enter password controller", () => {
           sinon.match.any,
           sinon.match.any,
           sinon.match.any,
+          sinon.match.any,
           JOURNEY_TYPE.REAUTHENTICATION
         );
       });
