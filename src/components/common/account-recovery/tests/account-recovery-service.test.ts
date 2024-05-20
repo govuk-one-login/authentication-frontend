@@ -1,23 +1,21 @@
 import { describe } from "mocha";
-import { Http } from "../../../utils/http";
-import { sinon } from "../../../../test/utils/test-utils";
-import { API_ENDPOINTS } from "../../../app.constants";
-import { SinonStub } from "sinon";
-import { checkReauthUsersService } from "../check-reauth-users-service";
-import { CheckReauthServiceInterface } from "../types";
+import sinon, { SinonStub } from "sinon";
+import { Http } from "../../../../utils/http";
+import { AccountRecoveryInterface } from "../types";
+import { accountRecoveryService } from "../account-recovery-service";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
   expectedHeadersFromCommonVarsWithoutSecurityHeaders,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
-} from "../../../../test/helpers/service-test-helper";
+} from "../../../../../test/helpers/service-test-helper";
+import { API_ENDPOINTS } from "../../../../app.constants";
 
-describe("re-authentication service", () => {
+describe("account recovery service", () => {
   const httpInstance = new Http();
-  const service: CheckReauthServiceInterface =
-    checkReauthUsersService(httpInstance);
-  const SUBJECT = "123";
+  const service: AccountRecoveryInterface =
+    accountRecoveryService(httpInstance);
   let postStub: SinonStub;
 
   beforeEach(() => {
@@ -30,30 +28,28 @@ describe("re-authentication service", () => {
     resetApiKeyAndBaseUrlEnvVars();
   });
 
-  it("successfully calls the API to check a reauth user", async () => {
+  it("successfully calls the API to perform an account recovery request", async () => {
     const axiosResponse = Promise.resolve({
       data: {},
       status: 200,
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, email, ip, clientSessionId, diPersistentSessionId } =
+    const { sessionId, clientSessionId, email, ip, diPersistentSessionId } =
       commonVariables;
 
-    const result = await service.checkReauthUsers(
+    const result = await service.accountRecovery(
       sessionId,
-      email,
-      SUBJECT,
-      ip,
       clientSessionId,
+      email,
+      ip,
       diPersistentSessionId
     );
 
     const expectedApiCallDetails = {
-      expectedPath: API_ENDPOINTS.CHECK_REAUTH_USER,
+      expectedPath: API_ENDPOINTS.ACCOUNT_RECOVERY,
       expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
-      expectedBody: { email: commonVariables.email, rpPairwiseId: SUBJECT },
-      validateStatus: true,
+      expectedBody: { email: commonVariables.email },
     };
 
     checkApiCallMadeWithExpectedBodyAndHeaders(
