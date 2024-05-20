@@ -247,6 +247,12 @@ variable "support_reauthentication" {
   default     = "0"
 }
 
+variable "support_check_email_fraud" {
+  description = "When true enables Fraudulent email checking via Experian lockout"
+  type        = string
+  default     = "0"
+}
+
 variable "email_entered_wrong_blocked_minutes" {
   description = "The duration, in minutes, for which a user is blocked after entering the wrong email multiple times during reauthentication"
   default     = "15"
@@ -341,5 +347,4 @@ variable "language_toggle_enabled" {
   default     = "0"
   description = "Enables English / Welsh language toggle in the user interface"
 }
-
 

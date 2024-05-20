@@ -19,6 +19,7 @@ import { checkReauthUsersService } from "../check-reauth-users/check-reauth-user
 import {
   getEmailEnteredWrongBlockDurationInMinutes,
   support2hrLockout,
+  supportCheckEmailFraud,
   supportReauthentication,
 } from "../../config";
 import {
@@ -126,6 +127,17 @@ export function enterEmailPost(
       result.data.lockoutInformation.length > 0
     )
       setUpAuthAppLocks(req, result.data.lockoutInformation);
+    if (supportCheckEmailFraud()) {
+      const checkEmailFraudResponse =
+        await checkEmailFraudService.checkEmailFraudBlock(
+          email,
+          sessionId,
+          req.ip,
+          clientSessionId,
+          persistentSessionId
+        );
+      logger.info(`checkEmailFraudResponse: ${checkEmailFraudResponse.data}`);
+    }
     req.session.user.enterEmailMfaType = result.data.mfaMethodType;
     req.session.user.redactedPhoneNumber = result.data.phoneNumberLastThree;
     const nextState = result.data.doesUserExist
