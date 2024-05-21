@@ -17,12 +17,14 @@ import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { CheckEmailFraudBlockInterface } from "../../check-email-fraud-block/types";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("enter email controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
   let clock: sinon.SinonFakeTimers;
   const date = new Date(Date.UTC(2024, 1, 1));
+  const { email } = commonVariables;
 
   const checkReauthSuccessfulFakeService: CheckReauthServiceInterface = {
     checkReauthUsers: sinon.fake.returns({
@@ -33,12 +35,15 @@ describe("enter email controller", () => {
   const checkEmailFraudFakeSuccessfulService: CheckEmailFraudBlockInterface = {
     checkEmailFraudBlock: sinon.fake.returns({
       success: true,
-      data: { email: "test@test.com", isBlockedStatus: "Pending" },
+      data: { email, isBlockedStatus: "Pending" },
     }),
   } as unknown as CheckEmailFraudBlockInterface;
 
   beforeEach(() => {
     res = mockResponse();
+    res.locals.sessionId = commonVariables.sessionId;
+    res.locals.clientSessionId = commonVariables.clientSessionId;
+    res.locals.persistentSessionId = commonVariables.diPersistentSessionId;
     clock = sinon.useFakeTimers({
       now: date.valueOf(),
     });
@@ -52,6 +57,7 @@ describe("enter email controller", () => {
   describe("enterEmailGet", () => {
     beforeEach(() => {
       req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
+      req.session.user = { email };
     });
 
     it("should render enter email create account view when user selected create account", () => {
@@ -76,12 +82,6 @@ describe("enter email controller", () => {
 
     it("should render enter email view when isReautheticationRequired is false", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
 
       await enterEmailGet(req as Request, res as Response);
 
@@ -92,16 +92,13 @@ describe("enter email controller", () => {
 
     it("should render sign-in details entered too many times page view when reauthentication is required and user has been blocked from entering email", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
       const date = new Date();
       const futureDate = new Date(
         date.setDate(date.getDate() + 6)
       ).toUTCString();
 
       req.session.user = {
-        email: "joe.bloggs@test.com",
+        email,
         reauthenticate: "1234",
         wrongEmailEnteredLock: futureDate,
       };
@@ -115,11 +112,8 @@ describe("enter email controller", () => {
 
     it("should render enter password view when isReautheticationRequired is true and check service returns successfully", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
       req.session.user = {
-        email: "joe.bloggs@test.com",
+        email,
         reauthenticate: "12345",
       };
 
@@ -156,8 +150,7 @@ describe("enter email controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      req.body.email = "test.test.com";
-      res.locals.sessionId = "dsad.dds";
+      req.body.email = email;
 
       await enterEmailPost(
         fakeService,
@@ -177,8 +170,7 @@ describe("enter email controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      req.body.email = "test.test.com";
-      res.locals.sessionId = "sadl990asdald";
+      req.body.email = email;
 
       await enterEmailPost(
         fakeService,
@@ -209,8 +201,7 @@ describe("enter email controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      req.body.email = "test@test.com";
-      res.locals.sessionId = "sadl990asdald";
+      req.body.email = email;
 
       await enterEmailPost(
         fakeService,
@@ -234,8 +225,7 @@ describe("enter email controller", () => {
         userExists: sinon.fake.throws(error),
       };
 
-      req.body.email = "test.test.com";
-      res.locals.sessionId = "231dccsd";
+      req.body.email = email;
 
       await expect(
         enterEmailPost(fakeService)(req as Request, res as Response)
@@ -248,7 +238,7 @@ describe("enter email controller", () => {
         userExists: sinon.fake(),
       };
 
-      req.body.email = "test.test.com";
+      req.body.email = email;
       req.session.user = undefined;
 
       await expect(
@@ -271,8 +261,7 @@ describe("enter email controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      req.body.email = "test@test.com";
-      res.locals.sessionId = "sadl990asdald";
+      req.body.email = email;
 
       await enterEmailPost(fakeService)(req as Request, res as Response);
 
@@ -285,13 +274,9 @@ describe("enter email controller", () => {
     it("should redirect to /enter-email when re-authentication is required and re-auth check is unsuccessful", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 
-      req.body.email = "test.test.com";
-      res.locals.sessionId = "dsad.dds";
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
+      req.body.email = email;
       req.session.user = {
-        email: "joe.bloggs@test.com",
+        email,
         reauthenticate: "12345",
       };
 
@@ -327,13 +312,9 @@ describe("enter email controller", () => {
     it("should redirect to /enter-password blocked screen when the user has been blocked for entering max incorrect password during reauth journey", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 
-      req.body.email = "test.test.com";
-      res.locals.sessionId = "dsad.dds";
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
+      req.body.email = email;
       req.session.user = {
-        email: "joe.bloggs@test.com",
+        email,
         reauthenticate: "12345",
       };
 
@@ -369,13 +350,9 @@ describe("enter email controller", () => {
     it("should redirect to /enter-email when re-authentication is required and re-auth check is unsuccessful", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 
-      req.body.email = "test.test.com";
-      res.locals.sessionId = "dsad.dds";
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
+      req.body.email = email;
       req.session.user = {
-        email: "joe.bloggs@test.com",
+        email,
         reauthenticate: "12345",
       };
 
@@ -411,11 +388,7 @@ describe("enter email controller", () => {
     it("should redirect to sign in details entered too many times when re-authentication is required and user is blocked from entering email", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 
-      req.body.email = "test.test.com";
-      res.locals.sessionId = "dsad.dds";
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
+      req.body.email = email;
 
       const date = new Date();
       const futureDate = new Date(
@@ -423,7 +396,7 @@ describe("enter email controller", () => {
       ).toUTCString();
 
       req.session.user = {
-        email: "joe.bloggs@test.com",
+        email,
         reauthenticate: "758e657867",
         wrongEmailEnteredLock: futureDate,
       };
@@ -459,13 +432,9 @@ describe("enter email controller", () => {
 
     it("should redirect to /enter-password re-auth page when re-authentication is required and service call is successful", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
-      req.body.email = "test.test.com";
-      res.locals.sessionId = "dsad.dds";
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
+      req.body.email = email;
       req.session.user = {
-        email: "joe.bloggs@test.com",
+        email,
         reauthenticate: "12345",
       };
 
@@ -499,8 +468,7 @@ describe("enter email controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      req.body.email = "test.test.com";
-      res.locals.sessionId = "dsad.dds";
+      req.body.email = email;
 
       await enterEmailCreatePost(fakeService)(req as Request, res as Response);
 
@@ -524,8 +492,7 @@ describe("enter email controller", () => {
         }),
       } as unknown as SendNotificationServiceInterface;
 
-      req.body.email = "test.test.com";
-      res.locals.sessionId = "sadl990asdald";
+      req.body.email = email;
 
       await enterEmailCreatePost(fakeService, fakeNotificationService)(
         req as Request,
@@ -553,8 +520,7 @@ describe("enter email controller", () => {
         }),
       } as unknown as SendNotificationServiceInterface;
 
-      req.body.email = "test.test.com";
-      res.locals.sessionId = "sadl990asdald";
+      req.body.email = email;
 
       await enterEmailCreatePost(fakeService, fakeNotificationService)(
         req as Request,
