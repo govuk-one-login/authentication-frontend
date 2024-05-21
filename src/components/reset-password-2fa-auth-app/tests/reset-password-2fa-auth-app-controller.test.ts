@@ -11,6 +11,7 @@ import {
 import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
 import { ERROR_CODES } from "../../common/constants";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("reset password 2fa auth app controller", () => {
   let req: RequestOutput;
@@ -18,6 +19,9 @@ describe("reset password 2fa auth app controller", () => {
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP);
+    req.session.user = {
+      email: commonVariables.email,
+    };
     res = mockResponse();
     process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
   });
@@ -28,10 +32,6 @@ describe("reset password 2fa auth app controller", () => {
 
   describe("resetPassword2FAAuthAppGet", () => {
     it("should render reset password auth app view", async () => {
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
-
       await resetPassword2FAAuthAppGet()(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
@@ -48,9 +48,6 @@ describe("reset password 2fa auth app controller", () => {
           success: true,
         }),
       } as unknown as VerifyMfaCodeInterface;
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
       req.session.user.enterEmailMfaType = "AUTH-APP";
       req.body.code = "123456";
 
@@ -72,9 +69,6 @@ describe("reset password 2fa auth app controller", () => {
           },
         }),
       } as unknown as VerifyMfaCodeInterface;
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
       req.session.user.enterEmailMfaType = "AUTH-APP";
       req.body.code = "123456";
 
@@ -89,9 +83,6 @@ describe("reset password 2fa auth app controller", () => {
     });
 
     it("should render security-code-error/index-security-code-entered-exceeded.njk when user was locked out in the current session for requesting too many security codes", async () => {
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
 
