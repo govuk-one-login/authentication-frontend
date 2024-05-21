@@ -9,6 +9,7 @@ import { UpdateProfileServiceInterface } from "../../common/update-profile/types
 import { PATH_NAMES } from "../../../app.constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("share-info controller", () => {
   let req: RequestOutput;
@@ -20,6 +21,7 @@ describe("share-info controller", () => {
       name: "clientname",
       scopes: ["openid", "email", "phone"],
     };
+    req.session.user.email = commonVariables.email;
     res = mockResponse();
   });
 
@@ -44,7 +46,6 @@ describe("share-info controller", () => {
       } as unknown as UpdateProfileServiceInterface;
 
       req.body.consentValue = true;
-      req.session.user.email = "test@test.com";
 
       await shareInfoPost(fakeService)(req as Request, res as Response);
 
@@ -63,7 +64,6 @@ describe("share-info controller", () => {
       } as unknown as UpdateProfileServiceInterface;
 
       req.body.consentValue = true;
-      req.session.user.email = "test@test.com";
 
       await expect(
         shareInfoPost(fakeService)(req as Request, res as Response)
