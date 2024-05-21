@@ -4,13 +4,19 @@ import { Http } from "../../../utils/http";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
-  expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+  expectedHeadersFromCommonVarsWithSecurityHeaders,
+  requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../../app.constants";
 import { ResetPasswordCheckEmailServiceInterface } from "../types";
 import { resetPasswordCheckEmailService } from "../reset-password-check-email-service";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("reset password check email service", () => {
   const httpInstance = new Http();
@@ -37,6 +43,9 @@ describe("reset password check email service", () => {
     postStub.resolves(axiosResponse);
     const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
       commonVariables;
+    const req = createMockRequest(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL, {
+      headers: requestHeadersWithIpAndAuditEncoded,
+    });
     const withinForcedPasswordResetJourney = false;
 
     const result = await service.resetPasswordRequest(
@@ -45,12 +54,13 @@ describe("reset password check email service", () => {
       ip,
       clientSessionId,
       diPersistentSessionId,
-      withinForcedPasswordResetJourney
+      withinForcedPasswordResetJourney,
+      req
     );
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.RESET_PASSWORD_REQUEST,
-      expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+      expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
       expectedBody: { withinForcedPasswordResetJourney, email },
     };
 
