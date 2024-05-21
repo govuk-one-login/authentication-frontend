@@ -61,7 +61,8 @@ export function resetPasswordPost(
       sessionId,
       clientSessionId,
       persistentSessionId,
-      withinForcedPasswordResetJourney
+      withinForcedPasswordResetJourney,
+      req
     );
 
     if (!updatePasswordResponse.success) {

@@ -1,12 +1,13 @@
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
 } from "../../utils/http";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants";
 import { ResetPasswordServiceInterface } from "./types";
 import { ApiResponseResult, DefaultApiResponse } from "../../types";
+import { Request } from "express";
 
 export function resetPasswordService(
   axios: Http = http
@@ -16,19 +17,25 @@ export function resetPasswordService(
     sourceIp: string,
     sessionId: string,
     clientSessionId: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    isForcedPasswordReset: boolean,
+    req: Request
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.RESET_PASSWORD,
       {
         password: newPassword,
       },
-      getRequestConfig({
-        sourceIp: sourceIp,
-        sessionId: sessionId,
-        clientSessionId: clientSessionId,
-        persistentSessionId: persistentSessionId,
-      })
+      getInternalRequestConfigWithSecurityHeaders(
+        {
+          sourceIp: sourceIp,
+          sessionId: sessionId,
+          clientSessionId: clientSessionId,
+          persistentSessionId: persistentSessionId,
+        },
+        req,
+        API_ENDPOINTS.RESET_PASSWORD
+      )
     );
 
     return createApiResponse<DefaultApiResponse>(response, [
