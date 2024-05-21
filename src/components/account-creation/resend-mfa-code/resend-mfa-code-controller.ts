@@ -83,6 +83,7 @@ export const resendMfaCodePost = (
       req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
+      req,
       journeyType,
       phoneNumber
     );

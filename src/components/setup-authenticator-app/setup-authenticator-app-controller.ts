@@ -137,6 +137,7 @@ export function setupAuthenticatorAppPost(
       req.ip,
       res.locals.persistentSessionId,
       xss(req.cookies.lng as string),
+      req,
       journeyType
     );
 

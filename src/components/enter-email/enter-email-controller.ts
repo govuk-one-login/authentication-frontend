@@ -208,6 +208,7 @@ export function enterEmailCreatePost(
       req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
+      req,
       JOURNEY_TYPE.REGISTRATION
     );
 

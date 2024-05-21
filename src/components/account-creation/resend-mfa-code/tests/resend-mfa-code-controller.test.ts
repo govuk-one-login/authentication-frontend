@@ -81,6 +81,7 @@ describe("resend mfa controller", () => {
         "127.0.0.1",
         "123123-djjad",
         "",
+        req,
         "ACCOUNT_RECOVERY"
       );
     });
@@ -110,6 +111,7 @@ describe("resend mfa controller", () => {
         "127.0.0.1",
         "123123-djjad",
         "",
+        req,
         "REGISTRATION"
       );
     });
