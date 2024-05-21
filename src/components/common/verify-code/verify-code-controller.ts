@@ -51,6 +51,7 @@ export function verifyCodePost(
       clientSessionId,
       req.ip,
       persistentSessionId,
+      req,
       options.journeyType
     );
 
