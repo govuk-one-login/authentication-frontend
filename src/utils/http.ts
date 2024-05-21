@@ -43,51 +43,6 @@ export function createApiResponse<T>(
   };
 }
 
-export function getRequestConfig(options: ConfigOptions): AxiosRequestConfig {
-  const config: AxiosRequestConfig = {
-    headers: {
-      "X-API-Key": getApiKey(),
-    },
-    proxy: false,
-  };
-
-  if (options.sessionId) {
-    config.headers["Session-Id"] = options.sessionId;
-  }
-
-  if (options.clientSessionId) {
-    config.headers["Client-Session-Id"] = options.clientSessionId;
-  }
-
-  if (options.sourceIp) {
-    config.headers["X-Forwarded-For"] = options.sourceIp;
-  }
-
-  if (options.validationStatuses) {
-    config.validateStatus = function (status: number) {
-      return options.validationStatuses.includes(status);
-    };
-  }
-
-  if (options.persistentSessionId) {
-    config.headers["di-persistent-session-id"] = options.persistentSessionId;
-  }
-
-  if (options.baseURL) {
-    config.baseURL = options.baseURL;
-  }
-
-  if (options.reauthenticate) {
-    config.headers["Reauthenticate"] = options.reauthenticate;
-  }
-
-  if (options.userLanguage) {
-    config.headers["User-Language"] = options.userLanguage;
-  }
-
-  return config;
-}
-
 function getSecurityHeaders(path: string, req: Request, baseUrl?: string) {
   let personalDataHeaders = {};
   let url = "";
