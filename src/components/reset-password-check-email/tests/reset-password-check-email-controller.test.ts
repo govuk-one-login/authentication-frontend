@@ -27,7 +27,6 @@ describe("reset password check email controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
     res = mockResponse();
-    res.locals.sessionId = "s-123456-djjad";
     process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     req.session.user = {

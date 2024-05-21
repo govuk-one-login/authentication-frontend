@@ -44,7 +44,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.RESET_PASSWORD);
     res = mockResponse();
-    res.locals.sessionId = "s-123456-djjad";
     process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
   });
 

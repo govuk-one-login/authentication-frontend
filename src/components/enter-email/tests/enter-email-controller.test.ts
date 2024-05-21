@@ -41,9 +41,6 @@ describe("enter email controller", () => {
 
   beforeEach(() => {
     res = mockResponse();
-    res.locals.sessionId = commonVariables.sessionId;
-    res.locals.clientSessionId = commonVariables.clientSessionId;
-    res.locals.persistentSessionId = commonVariables.diPersistentSessionId;
     clock = sinon.useFakeTimers({
       now: date.valueOf(),
     });
@@ -141,6 +138,7 @@ describe("enter email controller", () => {
   describe("enterEmailPost", () => {
     beforeEach(() => {
       req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
+      req.body.email = email;
     });
     it("should redirect to /enter-password when account exists", async () => {
       const fakeService: EnterEmailServiceInterface = {
@@ -149,8 +147,6 @@ describe("enter email controller", () => {
           data: { doesUserExist: true },
         }),
       } as unknown as EnterEmailServiceInterface;
-
-      req.body.email = email;
 
       await enterEmailPost(
         fakeService,
@@ -169,8 +165,6 @@ describe("enter email controller", () => {
           data: { doesUserExist: false },
         }),
       } as unknown as EnterEmailServiceInterface;
-
-      req.body.email = email;
 
       await enterEmailPost(
         fakeService,
@@ -201,8 +195,6 @@ describe("enter email controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      req.body.email = email;
-
       await enterEmailPost(
         fakeService,
         checkReauthSuccessfulFakeService,
@@ -225,8 +217,6 @@ describe("enter email controller", () => {
         userExists: sinon.fake.throws(error),
       };
 
-      req.body.email = email;
-
       await expect(
         enterEmailPost(fakeService)(req as Request, res as Response)
       ).to.be.rejectedWith(Error, "Internal server error");
@@ -238,7 +228,6 @@ describe("enter email controller", () => {
         userExists: sinon.fake(),
       };
 
-      req.body.email = email;
       req.session.user = undefined;
 
       await expect(
@@ -261,8 +250,6 @@ describe("enter email controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      req.body.email = email;
-
       await enterEmailPost(fakeService)(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
@@ -274,7 +261,6 @@ describe("enter email controller", () => {
     it("should redirect to /enter-email when re-authentication is required and re-auth check is unsuccessful", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 
-      req.body.email = email;
       req.session.user = {
         email,
         reauthenticate: "12345",
@@ -312,7 +298,6 @@ describe("enter email controller", () => {
     it("should redirect to /enter-password blocked screen when the user has been blocked for entering max incorrect password during reauth journey", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 
-      req.body.email = email;
       req.session.user = {
         email,
         reauthenticate: "12345",
@@ -350,7 +335,6 @@ describe("enter email controller", () => {
     it("should redirect to /enter-email when re-authentication is required and re-auth check is unsuccessful", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 
-      req.body.email = email;
       req.session.user = {
         email,
         reauthenticate: "12345",
@@ -387,8 +371,6 @@ describe("enter email controller", () => {
 
     it("should redirect to sign in details entered too many times when re-authentication is required and user is blocked from entering email", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
-
-      req.body.email = email;
 
       const date = new Date();
       const futureDate = new Date(
@@ -432,7 +414,6 @@ describe("enter email controller", () => {
 
     it("should redirect to /enter-password re-auth page when re-authentication is required and service call is successful", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
-      req.body.email = email;
       req.session.user = {
         email,
         reauthenticate: "12345",
@@ -458,6 +439,7 @@ describe("enter email controller", () => {
   describe("enterEmailCreatePost", () => {
     beforeEach(() => {
       req = createMockRequest(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT);
+      req.body.email = email;
     });
 
     it("should redirect to /enter-password when account exists", async () => {
@@ -467,8 +449,6 @@ describe("enter email controller", () => {
           data: { doesUserExist: true },
         }),
       } as unknown as EnterEmailServiceInterface;
-
-      req.body.email = email;
 
       await enterEmailCreatePost(fakeService)(req as Request, res as Response);
 
@@ -491,8 +471,6 @@ describe("enter email controller", () => {
           success: true,
         }),
       } as unknown as SendNotificationServiceInterface;
-
-      req.body.email = email;
 
       await enterEmailCreatePost(fakeService, fakeNotificationService)(
         req as Request,
@@ -519,8 +497,6 @@ describe("enter email controller", () => {
           },
         }),
       } as unknown as SendNotificationServiceInterface;
-
-      req.body.email = email;
 
       await enterEmailCreatePost(fakeService, fakeNotificationService)(
         req as Request,

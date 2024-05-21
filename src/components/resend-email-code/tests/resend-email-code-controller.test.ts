@@ -44,7 +44,6 @@ describe("resend email controller", () => {
         }),
       } as unknown as SendNotificationServiceInterface;
 
-      res.locals.sessionId = "123456-djjad";
       req.session.user = {
         email: "test@test.com",
       };
@@ -66,7 +65,6 @@ describe("resend email controller", () => {
         }),
       } as unknown as SendNotificationServiceInterface;
 
-      res.locals.sessionId = "123456-djjad";
       req.session.user = {
         email: "test@test.com",
         isVerifyEmailCodeResendRequired: true,
@@ -86,7 +84,6 @@ describe("resend email controller", () => {
 
   describe("securityCodeCheckTimeLimit", () => {
     it("should render security-code-error/index-wait.njk if codeRequestLock is set in the future", async () => {
-      res.locals.sessionId = "123456-djjad";
       req.session.user = {
         email: "test@test.com",
         codeRequestLock: new Date(Date.now() + 15 * 60000).toUTCString(),
@@ -105,7 +102,6 @@ describe("resend email controller", () => {
     });
 
     it("should redirect to /resend-email-code if codeRequestLock is set in the past", async () => {
-      res.locals.sessionId = "123456-djjad";
       req.session.user = {
         email: "test@test.com",
         codeRequestLock: new Date(Date.now() - 15 * 60000).toUTCString(),
@@ -118,7 +114,6 @@ describe("resend email controller", () => {
     });
 
     it("should redirect to /resend-email-code if codeRequestLock is not set", async () => {
-      res.locals.sessionId = "123456-djjad";
       req.session.user = {
         email: "test@test.com",
       };

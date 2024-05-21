@@ -52,7 +52,6 @@ describe("resend mfa controller", () => {
         }),
       } as unknown as MfaServiceInterface;
 
-      res.locals.sessionId = "123456-djjad";
       req.session.user = {
         email: "test@test.com",
       };

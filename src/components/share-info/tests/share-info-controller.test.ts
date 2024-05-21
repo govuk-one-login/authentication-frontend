@@ -44,9 +44,6 @@ describe("share-info controller", () => {
       } as unknown as UpdateProfileServiceInterface;
 
       req.body.consentValue = true;
-      res.locals.sessionId = "s-123456-djjad";
-      res.locals.clientSessionId = "c-123456-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
       req.session.user.email = "test@test.com";
 
       await shareInfoPost(fakeService)(req as Request, res as Response);
@@ -66,8 +63,6 @@ describe("share-info controller", () => {
       } as unknown as UpdateProfileServiceInterface;
 
       req.body.consentValue = true;
-      res.locals.sessionId = "s-123456-djjad";
-      res.locals.clientSessionId = "c-123456-djjad";
       req.session.user.email = "test@test.com";
 
       await expect(

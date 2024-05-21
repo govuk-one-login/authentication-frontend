@@ -29,10 +29,6 @@ describe("updated terms conditions controller", () => {
 
   describe("updatedTermsCondsGet", () => {
     it("should render updated-terms-conditions page", async () => {
-      res.locals.sessionId = "s-123456-djjad";
-      res.locals.clientSessionId = "c-123456-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-
       await updatedTermsConditionsGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
@@ -52,9 +48,6 @@ describe("updated terms conditions controller", () => {
 
       req.path = PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS;
       req.body.termsAndConditionsResult = "accept";
-      res.locals.sessionId = "s-123456-djjad";
-      res.locals.clientSessionId = "c-123456-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
       req.session.user.email = "test@test.com";
 
       await updatedTermsConditionsPost(fakeService)(
@@ -77,9 +70,6 @@ describe("updated terms conditions controller", () => {
       req.session.client.consentEnabled = true;
       req.session.user.isConsentRequired = true;
       req.body.termsAndConditionsResult = "accept";
-      res.locals.sessionId = "s-123456-djjad";
-      res.locals.clientSessionId = "c-123456-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
       req.session.user.email = "test@test.com";
 
       await updatedTermsConditionsPost(fakeService)(
@@ -97,9 +87,6 @@ describe("updated terms conditions controller", () => {
       };
 
       req.body.termsAndConditionsResult = "govUk";
-      res.locals.sessionId = "s-123456-djjad";
-      res.locals.clientSessionId = "c-123456-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
       req.session.user.email = "test@test.com";
 
       await updatedTermsConditionsPost(fakeService)(
@@ -117,8 +104,6 @@ describe("updated terms conditions controller", () => {
       };
 
       req.body.termsAndConditionsResult = "contactUs";
-      res.locals.sessionId = "s-123456-djjad";
-      res.locals.clientSessionId = "c-123456-djjad";
       req.session.user.email = "test@test.com";
 
       await updatedTermsConditionsPost(fakeService)(
