@@ -342,4 +342,32 @@ variable "language_toggle_enabled" {
   description = "Enables English / Welsh language toggle in the user interface"
 }
 
+variable "ga4_disabled" {
+  type        = string
+  default     = "true"
+  description = "Enables Google Analytics 4"
+}
 
+variable "ua_disabled" {
+  type        = string
+  default     = "true"
+  description = "Enables Universal Analytics"
+}
+
+variable "universal_analytics_gtm_container_id" {
+  type        = string
+  default     = "GTM-TK92W68"
+  description = "Universal Analytics Container ID"
+}
+
+variable "google_analytics_4_gtm_container_id" {
+  type        = string
+  default     = "GTM-KD86CMZ"
+  description = "Google Analytics 4 Container ID"
+}
+
+variable "analytics_cookie_domain" {
+  type        = string
+  default     = ""
+  description = "Analytics cookie domain where cookie is set"
+}
