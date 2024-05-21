@@ -1,12 +1,13 @@
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
 } from "../../utils/http";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants";
 import { CheckReauthServiceInterface } from "./types";
 import { ApiResponseResult, DefaultApiResponse } from "../../types";
+import { Request } from "express";
 
 export function checkReauthUsersService(
   axios: Http = http
@@ -17,20 +18,25 @@ export function checkReauthUsersService(
     sub: string,
     sourceIp: string,
     clientSessionId: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    req: Request
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const lowerCaseEmail = emailAddress.toLowerCase();
-    const config = getRequestConfig({
-      sessionId,
-      sourceIp,
-      validationStatuses: [
-        HTTP_STATUS_CODES.OK,
-        HTTP_STATUS_CODES.BAD_REQUEST,
-        HTTP_STATUS_CODES.NOT_FOUND,
-      ],
-      clientSessionId,
-      persistentSessionId,
-    });
+    const config = getInternalRequestConfigWithSecurityHeaders(
+      {
+        sessionId,
+        sourceIp,
+        validationStatuses: [
+          HTTP_STATUS_CODES.OK,
+          HTTP_STATUS_CODES.BAD_REQUEST,
+          HTTP_STATUS_CODES.NOT_FOUND,
+        ],
+        clientSessionId,
+        persistentSessionId,
+      },
+      req,
+      API_ENDPOINTS.CHECK_REAUTH_USER
+    );
 
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.CHECK_REAUTH_USER,

@@ -79,7 +79,8 @@ export function enterEmailPost(
         sub,
         req.ip,
         clientSessionId,
-        persistentSessionId
+        persistentSessionId,
+        req
       );
 
       if (!checkReauth.success) {
