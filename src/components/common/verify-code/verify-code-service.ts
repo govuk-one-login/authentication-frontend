@@ -15,7 +15,6 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
     code: string,
     notificationType: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request,
     journeyType?: string
@@ -31,7 +30,6 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
         {
           sessionId,
           clientSessionId,
-          sourceIp: sourceIp,
           persistentSessionId: persistentSessionId,
         },
         req,

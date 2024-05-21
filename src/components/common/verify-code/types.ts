@@ -8,7 +8,6 @@ export interface VerifyCodeInterface {
     code: string,
     notificationType: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request,
     journeyType: JOURNEY_TYPE

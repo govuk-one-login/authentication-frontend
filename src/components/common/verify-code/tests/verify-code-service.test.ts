@@ -42,7 +42,7 @@ describe("verify code service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, clientSessionId, ip, diPersistentSessionId } =
+    const { sessionId, clientSessionId, diPersistentSessionId } =
       commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_MFA, {
       headers: requestHeadersWithIpAndAuditEncoded,
@@ -56,7 +56,6 @@ describe("verify code service", () => {
       code,
       notificationType,
       clientSessionId,
-      ip,
       diPersistentSessionId,
       req,
       journeyType

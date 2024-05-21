@@ -49,7 +49,6 @@ export function verifyCodePost(
       code,
       options.notificationType,
       clientSessionId,
-      req.ip,
       persistentSessionId,
       req,
       options.journeyType
