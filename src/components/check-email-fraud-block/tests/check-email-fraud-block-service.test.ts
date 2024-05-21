@@ -5,7 +5,6 @@ import { CheckEmailFraudBlockInterface } from "../types";
 import { checkEmailFraudBlockService } from "../check-email-fraud-block-service";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
-  commonVariables,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
@@ -17,6 +16,7 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("check email fraud block service", () => {
   const httpInstance = new Http();

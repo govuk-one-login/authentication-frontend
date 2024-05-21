@@ -4,7 +4,6 @@ import { AccountInterventionsInterface } from "../types";
 import { accountInterventionService } from "../account-intervention-service";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
-  commonVariables,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
@@ -13,6 +12,7 @@ import {
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { Http } from "../../../utils/http";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("account interventions service", () => {
   const httpInstance = new Http();

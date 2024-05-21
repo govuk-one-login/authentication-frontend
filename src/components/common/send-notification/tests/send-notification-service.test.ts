@@ -3,7 +3,6 @@ import sinon, { SinonStub } from "sinon";
 import { Http } from "../../../../utils/http";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
-  commonVariables,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
@@ -18,6 +17,7 @@ import { SendNotificationServiceInterface } from "../types";
 import { sendNotificationService } from "../send-notification-service";
 import { JOURNEY_TYPE } from "../../constants";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../../test/helpers/common-test-variables";
 
 describe("send notification service", () => {
   let postStub: SinonStub;

@@ -3,7 +3,6 @@ import sinon, { SinonStub } from "sinon";
 import { Http } from "../../../../utils/http";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
-  commonVariables,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
@@ -19,6 +18,7 @@ import {
 import { VerifyMfaCodeInterface } from "../../../enter-authenticator-app-code/types";
 import { verifyMfaCodeService } from "../verify-mfa-code-service";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../../test/helpers/common-test-variables";
 
 describe("verify mfa code service", () => {
   const httpInstance = new Http();
