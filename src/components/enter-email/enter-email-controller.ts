@@ -33,7 +33,7 @@ import {
   timestampNSecondsFromNow,
 } from "../../utils/lock-helper";
 import { CheckEmailFraudBlockInterface } from "../check-email-fraud-block/types";
-import { checkEmailFraudBlockService } from "../check-email-fraud-block/checkEmailFraudBlockService";
+import { checkEmailFraudBlockService } from "../check-email-fraud-block/check-email-fraud-block-service";
 import { logger } from "../../utils/logger";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
