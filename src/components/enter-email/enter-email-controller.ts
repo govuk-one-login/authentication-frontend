@@ -140,7 +140,8 @@ export function enterEmailPost(
           sessionId,
           req.ip,
           clientSessionId,
-          persistentSessionId
+          persistentSessionId,
+          req
         );
       logger.info(`checkEmailFraudResponse: ${checkEmailFraudResponse.data}`);
     }

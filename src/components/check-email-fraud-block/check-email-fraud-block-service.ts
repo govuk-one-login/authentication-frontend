@@ -1,6 +1,6 @@
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
 } from "../../utils/http";
@@ -10,6 +10,7 @@ import {
   CheckEmailFraudBlockInterface,
   CheckEmailFraudBlockResponse,
 } from "./types";
+import { Request } from "express";
 
 export function checkEmailFraudBlockService(
   axios: Http = http
@@ -19,19 +20,24 @@ export function checkEmailFraudBlockService(
     sessionId: string,
     sourceIp: string,
     clientSessionId: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    req: Request
   ): Promise<ApiResponseResult<CheckEmailFraudBlockResponse>> {
     const response = await axios.client.post<CheckEmailFraudBlockResponse>(
       API_ENDPOINTS.CHECK_EMAIL_FRAUD_BLOCK,
       {
         email: email.toLowerCase(),
       },
-      getRequestConfig({
-        sessionId: sessionId,
-        sourceIp: sourceIp,
-        clientSessionId: clientSessionId,
-        persistentSessionId: persistentSessionId,
-      })
+      getInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId: sessionId,
+          sourceIp: sourceIp,
+          clientSessionId: clientSessionId,
+          persistentSessionId: persistentSessionId,
+        },
+        req,
+        API_ENDPOINTS.CHECK_EMAIL_FRAUD_BLOCK
+      )
     );
     return createApiResponse<CheckEmailFraudBlockResponse>(response);
   };
