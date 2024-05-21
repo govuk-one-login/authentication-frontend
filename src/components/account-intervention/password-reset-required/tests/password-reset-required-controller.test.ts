@@ -8,7 +8,7 @@ import { passwordResetRequiredGet } from "../password-reset-required-controller"
 import { PATH_NAMES } from "../../../../app.constants";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 
-describe("account intervention controller", () => {
+describe("password reset required controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
