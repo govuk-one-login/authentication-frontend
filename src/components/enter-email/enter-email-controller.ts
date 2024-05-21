@@ -115,7 +115,8 @@ export function enterEmailPost(
       email,
       req.ip,
       res.locals.clientSessionId,
-      res.locals.persistentSessionId
+      res.locals.persistentSessionId,
+      req
     );
 
     if (!result.success) {
@@ -176,7 +177,8 @@ export function enterEmailCreatePost(
       email,
       req.ip,
       clientSessionId,
-      persistentSessionId
+      persistentSessionId,
+      req
     );
 
     if (!userExistsResponse.success) {

@@ -3,14 +3,20 @@ import sinon, { SinonStub } from "sinon";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
-  expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+  expectedHeadersFromCommonVarsWithSecurityHeaders,
+  requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
 import { EnterEmailServiceInterface } from "../types";
 import { enterEmailService } from "../enter-email-service";
 import { Http } from "../../../utils/http";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../../app.constants";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("enter email service", () => {
   const httpInstance = new Http();
@@ -36,10 +42,13 @@ describe("enter email service", () => {
     postStub.resolves(axiosResponse);
     const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
       commonVariables;
+    const req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN, {
+      headers: requestHeadersWithIpAndAuditEncoded,
+    });
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.USER_EXISTS,
-      expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+      expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
       expectedBody: { email },
     };
 
@@ -48,7 +57,8 @@ describe("enter email service", () => {
       email,
       ip,
       clientSessionId,
-      diPersistentSessionId
+      diPersistentSessionId,
+      req
     );
 
     checkApiCallMadeWithExpectedBodyAndHeaders(
