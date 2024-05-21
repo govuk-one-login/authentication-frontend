@@ -1,6 +1,6 @@
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
 } from "../../utils/http";
@@ -10,6 +10,7 @@ import {
   DocCheckingAppInterface,
 } from "./types";
 import { ApiResponseResult } from "../../types";
+import { Request } from "express";
 
 export function docCheckingAppService(
   axios: Http = http
@@ -18,17 +19,22 @@ export function docCheckingAppService(
     sessionId: string,
     clientSessionId: string,
     sourceIp: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    req: Request
   ): Promise<ApiResponseResult<DocCheckingAuthorisationResponse>> {
     const response = await axios.client.post<DocCheckingAuthorisationResponse>(
       API_ENDPOINTS.DOC_CHECKING_APP_AUTHORIZE,
       {},
-      getRequestConfig({
-        sessionId: sessionId,
-        clientSessionId: clientSessionId,
-        sourceIp: sourceIp,
-        persistentSessionId: persistentSessionId,
-      })
+      getInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId: sessionId,
+          clientSessionId: clientSessionId,
+          sourceIp: sourceIp,
+          persistentSessionId: persistentSessionId,
+        },
+        req,
+        API_ENDPOINTS.DOC_CHECKING_APP_AUTHORIZE
+      )
     );
     return createApiResponse<DocCheckingAuthorisationResponse>(response);
   };
