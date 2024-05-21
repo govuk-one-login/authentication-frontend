@@ -10,6 +10,7 @@ export interface VerifyMfaCodeInterface {
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string,
+    req: Request,
     journeyType: JOURNEY_TYPE,
     profileInformation?: string
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;

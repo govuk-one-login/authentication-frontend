@@ -49,6 +49,7 @@ export function resetPassword2FAAuthAppPost(
       clientSessionId,
       req.ip,
       persistentSessionId,
+      req,
       JOURNEY_TYPE.PASSWORD_RESET_MFA
     );
 

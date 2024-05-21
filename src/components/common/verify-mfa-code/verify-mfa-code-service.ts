@@ -6,12 +6,13 @@ import {
 } from "../../../app.constants";
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
 } from "../../../utils/http";
 import { ApiResponseResult, DefaultApiResponse } from "../../../types";
 import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
+import { Request } from "express";
 
 export function verifyMfaCodeService(
   axios: Http = http
@@ -23,6 +24,7 @@ export function verifyMfaCodeService(
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string,
+    req: Request,
     journeyType?: JOURNEY_TYPE,
     profileInformation?: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
@@ -34,12 +36,16 @@ export function verifyMfaCodeService(
         journeyType,
         ...(profileInformation && { profileInformation }),
       },
-      getRequestConfig({
-        sessionId,
-        clientSessionId,
-        sourceIp: sourceIp,
-        persistentSessionId: persistentSessionId,
-      })
+      getInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId,
+          clientSessionId,
+          sourceIp: sourceIp,
+          persistentSessionId: persistentSessionId,
+        },
+        req,
+        API_ENDPOINTS.VERIFY_MFA_CODE
+      )
     );
     return createApiResponse(response, [HTTP_STATUS_CODES.NO_CONTENT]);
   };

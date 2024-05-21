@@ -112,6 +112,7 @@ export const enterAuthenticatorAppCodePost = (
       clientSessionId,
       req.ip,
       persistentSessionId,
+      req,
       getJourneyTypeFromUserSession(req.session.user, {
         includeAccountRecovery: true,
         includeReauthentication: true,
