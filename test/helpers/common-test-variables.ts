@@ -1,8 +1,8 @@
 export const commonVariables = {
   email: "joe.bloggs@example.com",
-  sessionId: "some-session-id",
-  diPersistentSessionId: "some-persistent-session-id",
-  clientSessionId: "some-client-session-id",
+  sessionId: "123456-djjad",
+  diPersistentSessionId: "dips-123456-abc",
+  clientSessionId: "00000-djjad",
   ip: "123.123.123.123",
   apiKey: "apiKey",
   auditEncodedString:
