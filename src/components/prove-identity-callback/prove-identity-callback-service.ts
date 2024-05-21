@@ -1,6 +1,6 @@
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
 } from "../../utils/http";
@@ -10,6 +10,7 @@ import {
   ProcessIdentityResponse,
   ProveIdentityCallbackServiceInterface,
 } from "./types";
+import { Request } from "express";
 
 export function proveIdentityCallbackService(
   axios: Http = http
@@ -19,17 +20,22 @@ export function proveIdentityCallbackService(
     sourceIp: string,
     sessionId: string,
     clientSessionId: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    req: Request
   ): Promise<ApiResponseResult<ProcessIdentityResponse>> {
     const response = await axios.client.post<ProcessIdentityResponse>(
       API_ENDPOINTS.IPV_PROCESSING_IDENTITY,
       { email: email },
-      getRequestConfig({
-        sourceIp: sourceIp,
-        sessionId: sessionId,
-        clientSessionId: clientSessionId,
-        persistentSessionId: persistentSessionId,
-      })
+      getInternalRequestConfigWithSecurityHeaders(
+        {
+          sourceIp: sourceIp,
+          sessionId: sessionId,
+          clientSessionId: clientSessionId,
+          persistentSessionId: persistentSessionId,
+        },
+        req,
+        API_ENDPOINTS.IPV_PROCESSING_IDENTITY
+      )
     );
 
     return createApiResponse<ProcessIdentityResponse>(response);
