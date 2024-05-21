@@ -36,7 +36,8 @@ export function shareInfoPost(
         updateProfileType: UpdateType.CAPTURE_CONSENT,
       },
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      req
     );
 
     if (!result.success) {

@@ -1,4 +1,5 @@
 import { ApiResponseResult, DefaultApiResponse } from "../../../types";
+import { Request } from "express";
 
 export interface UpdateProfileServiceInterface {
   updateProfile: (
@@ -7,7 +8,8 @@ export interface UpdateProfileServiceInterface {
     email: string,
     requestType: RequestType,
     sourceIp: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    req: Request
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }
 

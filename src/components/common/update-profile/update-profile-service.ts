@@ -3,11 +3,12 @@ import { RequestType, UpdateProfileServiceInterface } from "./types";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
 } from "../../../utils/http";
 import { ApiResponseResult, DefaultApiResponse } from "../../../types";
+import { Request } from "express";
 
 export function updateProfileService(
   axios: Http = http
@@ -18,7 +19,8 @@ export function updateProfileService(
     email: string,
     requestType: RequestType,
     sourceIp: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    req: Request
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.UPDATE_PROFILE,
@@ -27,12 +29,16 @@ export function updateProfileService(
         profileInformation: requestType.profileInformation,
         updateProfileType: requestType.updateProfileType,
       },
-      getRequestConfig({
-        sessionId,
-        clientSessionId,
-        sourceIp,
-        persistentSessionId,
-      })
+      getInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId,
+          clientSessionId,
+          sourceIp,
+          persistentSessionId,
+        },
+        req,
+        API_ENDPOINTS.UPDATE_PROFILE
+      )
     );
 
     return createApiResponse<DefaultApiResponse>(response, [
