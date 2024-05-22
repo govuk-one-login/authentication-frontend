@@ -18,7 +18,6 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
     sessionId: string,
     clientSessionId: string,
     emailAddress: string,
-    sourceIp: string,
     persistentSessionId: string,
     isResendCodeRequest: boolean,
     userLanguage: string,
@@ -36,7 +35,6 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
         {
           sessionId: sessionId,
           clientSessionId: clientSessionId,
-          sourceIp: sourceIp,
           persistentSessionId: persistentSessionId,
           userLanguage: userLanguage,
         },

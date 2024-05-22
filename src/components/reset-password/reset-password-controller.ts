@@ -131,7 +131,6 @@ export function resetPasswordPost(
         sessionId,
         clientSessionId,
         email,
-        req.ip,
         persistentSessionId,
         false,
         xss(req.cookies.lng as string),

@@ -7,7 +7,6 @@ export interface MfaServiceInterface {
     sessionId: string,
     clientSessionId: string,
     emailAddress: string,
-    sourceIp: string,
     persistentSessionId: string,
     isResendCodeRequest: boolean,
     userLanguage: string,

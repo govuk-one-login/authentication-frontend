@@ -35,7 +35,7 @@ describe("mfa service", () => {
   });
 
   it("successfully calls the API to make a request to send an mfa code", async () => {
-    const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
+    const { email, sessionId, clientSessionId, diPersistentSessionId } =
       commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_MFA, {
       headers: requestHeadersWithIpAndAuditEncoded,
@@ -63,7 +63,6 @@ describe("mfa service", () => {
       sessionId,
       clientSessionId,
       email,
-      ip,
       diPersistentSessionId,
       isResendCodeRequest,
       userLanguage,
