@@ -5,7 +5,6 @@ export interface ResetPasswordCheckEmailServiceInterface {
   resetPasswordRequest: (
     email: string,
     sessionId: string,
-    sourceIp: string,
     clientSessionId: string,
     persistentSessionId: string,
     withinForcedPasswordResetJourney: boolean,

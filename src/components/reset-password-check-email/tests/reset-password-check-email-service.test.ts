@@ -41,7 +41,7 @@ describe("reset password check email service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
+    const { email, sessionId, clientSessionId, diPersistentSessionId } =
       commonVariables;
     const req = createMockRequest(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL, {
       headers: requestHeadersWithIpAndAuditEncoded,
@@ -51,7 +51,6 @@ describe("reset password check email service", () => {
     const result = await service.resetPasswordRequest(
       email,
       sessionId,
-      ip,
       clientSessionId,
       diPersistentSessionId,
       withinForcedPasswordResetJourney,

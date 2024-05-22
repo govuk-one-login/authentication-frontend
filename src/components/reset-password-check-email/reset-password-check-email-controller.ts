@@ -48,7 +48,6 @@ export function resetPasswordCheckEmailGet(
       result = await service.resetPasswordRequest(
         email,
         sessionId,
-        req.ip,
         res.locals.clientSessionId,
         res.locals.persistentSessionId,
         req.session.user.withinForcedPasswordResetJourney,
