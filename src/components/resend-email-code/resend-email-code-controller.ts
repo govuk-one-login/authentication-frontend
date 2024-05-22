@@ -65,7 +65,6 @@ export function resendEmailCodePost(
       clientSessionId,
       email,
       getNotificationTemplateType(isAccountRecoveryJourney),
-      req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
       req,

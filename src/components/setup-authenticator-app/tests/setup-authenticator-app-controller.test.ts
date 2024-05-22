@@ -46,6 +46,12 @@ describe("setup-authenticator-app controller", () => {
   });
 
   describe("setupAuthenticatorAppPost", () => {
+    let fakeNotificationService: SendNotificationServiceInterface;
+
+    beforeEach(() => {
+      fakeNotificationService = { sendNotification: sinon.fake() };
+    });
+
     it("can send the journeyType when sending the MFA code", async () => {
       req.session.user.authAppSecret = "testsecret";
       req.session.user.email = "t@t.com";
@@ -56,10 +62,6 @@ describe("setup-authenticator-app controller", () => {
       const fakeMfAService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as VerifyMfaCodeInterface;
-
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake(),
-      };
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
         journey,
@@ -101,25 +103,20 @@ describe("setup-authenticator-app controller", () => {
         verifyMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as VerifyMfaCodeInterface;
 
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake(),
-      };
-
       await setupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
         req as Request,
         res as Response
       );
 
       expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
-      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
-      expect(fakeNotificationService.sendNotification).to.have.calledWith(
+      expect(fakeNotificationService.sendNotification).to.have.calledOnceWith(
         undefined,
         undefined,
         "t@t.com",
         NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
-        "127.0.0.1",
         undefined,
-        ""
+        "",
+        req
       );
 
       expect(res.redirect).to.have.calledWith(
@@ -140,25 +137,20 @@ describe("setup-authenticator-app controller", () => {
         verifyMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as VerifyMfaCodeInterface;
 
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake(),
-      };
-
       await setupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
         req as Request,
         res as Response
       );
 
       expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
-      expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
-      expect(fakeNotificationService.sendNotification).to.have.calledWith(
+      expect(fakeNotificationService.sendNotification).to.have.calledOnceWith(
         undefined,
         undefined,
         "t@t.com",
         NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION,
-        "127.0.0.1",
         undefined,
-        ""
+        "",
+        req
       );
 
       expect(res.redirect).to.have.calledWith(
@@ -177,10 +169,6 @@ describe("setup-authenticator-app controller", () => {
           data: { code: ERROR_CODES.AUTH_APP_INVALID_CODE },
         }),
       } as unknown as VerifyMfaCodeInterface;
-
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake(),
-      };
 
       await setupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
         req as Request,
@@ -204,10 +192,6 @@ describe("setup-authenticator-app controller", () => {
       const fakeMfAService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as VerifyMfaCodeInterface;
-
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake(),
-      };
 
       await setupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
         req as Request,

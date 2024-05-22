@@ -52,6 +52,11 @@ describe("check your phone controller", () => {
   });
 
   describe("checkYourPhonePost", () => {
+    let fakeNotificationService: SendNotificationServiceInterface;
+
+    beforeEach(() => {
+      fakeNotificationService = { sendNotification: sinon.fake() };
+    });
     it("can send the journeyType when requesting the MFA code", async () => {
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
@@ -59,10 +64,6 @@ describe("check your phone controller", () => {
           success: true,
         }),
       } as unknown as VerifyMfaCodeInterface;
-
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake(),
-      };
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
         journey,
@@ -108,10 +109,6 @@ describe("check your phone controller", () => {
         }),
       } as unknown as VerifyMfaCodeInterface;
 
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake(),
-      };
-
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
 
@@ -126,9 +123,9 @@ describe("check your phone controller", () => {
         undefined,
         undefined,
         NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
-        "127.0.0.1",
         undefined,
-        ""
+        "",
+        req
       );
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL
@@ -142,10 +139,6 @@ describe("check your phone controller", () => {
           success: true,
         }),
       } as unknown as VerifyMfaCodeInterface;
-
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake(),
-      };
 
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
@@ -165,9 +158,9 @@ describe("check your phone controller", () => {
         undefined,
         undefined,
         NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION,
-        "127.0.0.1",
         undefined,
-        ""
+        "",
+        req
       );
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION
@@ -184,9 +177,6 @@ describe("check your phone controller", () => {
           },
         }),
       } as unknown as VerifyMfaCodeInterface;
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake(),
-      };
 
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
@@ -211,10 +201,6 @@ describe("check your phone controller", () => {
           },
         }),
       } as unknown as VerifyMfaCodeInterface;
-
-      const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake(),
-      };
 
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";

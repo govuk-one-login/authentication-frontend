@@ -109,7 +109,6 @@ export const checkYourPhonePost = (
       res.locals.clientSessionId,
       req.session.user.email,
       notificationType,
-      req.ip,
       res.locals.persistentSessionId,
       xss(req.cookies.lng as string),
       req,

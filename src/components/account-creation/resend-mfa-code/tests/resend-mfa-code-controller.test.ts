@@ -44,13 +44,13 @@ describe("resend mfa controller", () => {
   });
 
   describe("resendMfaCodePost", () => {
-    it("should request new phone verification code from send notification service and if successful redirect to /enter-code view", async () => {
-      const fakeService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as SendNotificationServiceInterface;
+    let fakeService: SendNotificationServiceInterface;
 
+    beforeEach(() => {
+      fakeService = { sendNotification: sinon.fake.returns({ success: true }) };
+    });
+
+    it("should request new phone verification code from send notification service and if successful redirect to /enter-code view", async () => {
       req.path = PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
 
       await resendMfaCodePost(fakeService)(req as Request, res as Response);
@@ -60,24 +60,19 @@ describe("resend mfa controller", () => {
     });
 
     it("should request new phone verification code from send notification service and if successful redirect to /enter-code view", async () => {
-      const fakeService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as SendNotificationServiceInterface;
-
       req.session.user = {
         email,
         isAccountRecoveryJourney: true,
       };
       req.path = PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
+
       await resendMfaCodePost(fakeService)(req as Request, res as Response);
+
       expect(fakeService.sendNotification).to.have.been.calledWith(
         sessionId,
         clientSessionId,
         email,
         "VERIFY_PHONE_NUMBER",
-        ip,
         diPersistentSessionId,
         "",
         req,
@@ -86,24 +81,19 @@ describe("resend mfa controller", () => {
     });
 
     it("should request new phone verification code from send notification service and if successful redirect to /enter-code view", async () => {
-      const fakeService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as SendNotificationServiceInterface;
-
       req.session.user = {
         email,
         isAccountCreationJourney: true,
       };
       req.path = PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
+
       await resendMfaCodePost(fakeService)(req as Request, res as Response);
+
       expect(fakeService.sendNotification).to.have.been.calledWith(
         sessionId,
         clientSessionId,
         email,
         "VERIFY_PHONE_NUMBER",
-        ip,
         diPersistentSessionId,
         "",
         req,

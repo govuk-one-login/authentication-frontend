@@ -206,7 +206,6 @@ export function enterEmailCreatePost(
       clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_EMAIL,
-      req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
       req,
