@@ -41,7 +41,7 @@ describe("reset password service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, clientSessionId, ip, diPersistentSessionId } =
+    const { sessionId, clientSessionId, diPersistentSessionId } =
       commonVariables;
     const newPassword = "abcdef";
     const isForcedPasswordReset = false;
@@ -51,7 +51,6 @@ describe("reset password service", () => {
 
     const result = await service.updatePassword(
       newPassword,
-      ip,
       sessionId,
       clientSessionId,
       diPersistentSessionId,

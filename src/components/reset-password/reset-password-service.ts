@@ -14,7 +14,6 @@ export function resetPasswordService(
 ): ResetPasswordServiceInterface {
   const updatePassword = async function (
     newPassword: string,
-    sourceIp: string,
     sessionId: string,
     clientSessionId: string,
     persistentSessionId: string,
@@ -29,7 +28,6 @@ export function resetPasswordService(
       },
       getInternalRequestConfigWithSecurityHeaders(
         {
-          sourceIp: sourceIp,
           sessionId: sessionId,
           clientSessionId: clientSessionId,
           persistentSessionId: persistentSessionId,
