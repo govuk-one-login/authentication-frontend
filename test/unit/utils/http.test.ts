@@ -5,11 +5,19 @@ import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../src/app.constants";
 import { createMockRequest } from "../../helpers/mock-request-helper";
 const headersLibrary = require("@govuk-one-login/frontend-passthrough-headers");
 import sinon, { SinonSpy } from "sinon";
+import { commonVariables } from "../../helpers/common-test-variables";
 
 describe("getInternalRequestConfigWithSecurityHeaders", () => {
-  const apiKey = "123";
   const req = createMockRequest(API_ENDPOINTS.START);
   const path = API_ENDPOINTS.START;
+  const {
+    apiKey,
+    sessionId,
+    clientSessionId,
+    diPersistentSessionId,
+    ip,
+    auditEncodedString,
+  } = commonVariables;
 
   beforeEach(() => {
     process.env.API_KEY = apiKey;
@@ -36,19 +44,15 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
     });
 
     it("should set the route specific headers on a request", () => {
-      const sessionId = "someSessionId";
-      const sourceIp = "123.123.123.123";
-      const clientSessionId = "someClientSessionId";
-      const persistentSessionId = "somePersistentSessionId";
       const reauthenticate = true;
       const userLanguage = "cy";
-      req.ip = sourceIp;
-      req.headers["x-forwarded-for"] = sourceIp;
+      req.ip = ip;
+      req.headers["x-forwarded-for"] = ip;
       const actualConfig = getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
           clientSessionId: clientSessionId,
-          persistentSessionId: persistentSessionId,
+          persistentSessionId: diPersistentSessionId,
           reauthenticate: reauthenticate,
           userLanguage: userLanguage,
         },
@@ -60,8 +64,8 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
         "X-API-Key": apiKey,
         "Session-Id": sessionId,
         "Client-Session-Id": clientSessionId,
-        "x-forwarded-for": sourceIp,
-        "di-persistent-session-id": persistentSessionId,
+        "x-forwarded-for": ip,
+        "di-persistent-session-id": diPersistentSessionId,
         Reauthenticate: reauthenticate,
         "User-Language": userLanguage,
       };
@@ -72,18 +76,15 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
     it("should set the security headers on all requests when added to the request in CloudFront", () => {
       const ipAddressFromCloudfrontHeader = "111.111.111.111";
       req.headers = {
-        "txma-audit-encoded": "foo",
+        "txma-audit-encoded": auditEncodedString,
         "cloudfront-viewer-address": ipAddressFromCloudfrontHeader,
       };
 
-      const sessionId = "someSessionId";
-      const clientSessionId = "someClientSessionId";
-      const persistentSessionId = "somePersistentSessionId";
       const actualConfig = getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
           clientSessionId: clientSessionId,
-          persistentSessionId: persistentSessionId,
+          persistentSessionId: diPersistentSessionId,
         },
         req,
         path
@@ -94,8 +95,8 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
         "Session-Id": sessionId,
         "Client-Session-Id": clientSessionId,
         "x-forwarded-for": ipAddressFromCloudfrontHeader,
-        "di-persistent-session-id": persistentSessionId,
-        "txma-audit-encoded": "foo",
+        "di-persistent-session-id": diPersistentSessionId,
+        "txma-audit-encoded": auditEncodedString,
       };
 
       expect(actualConfig.headers).to.deep.eq(expectedHeaders);
@@ -110,7 +111,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
     it("should use the correct base path when calling create personal headers and the options contain a base path", () => {
       const ipAddressFromCloudfrontHeader = "111.111.111.111";
       req.headers = {
-        "txma-audit-encoded": "foo",
+        "txma-audit-encoded": auditEncodedString,
         "cloudfront-viewer-address": ipAddressFromCloudfrontHeader,
       };
 
@@ -131,7 +132,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
 
       const expectedHeaders = {
         "X-API-Key": apiKey,
-        "txma-audit-encoded": "foo",
+        "txma-audit-encoded": auditEncodedString,
         "x-forwarded-for": ipAddressFromCloudfrontHeader,
       };
 
