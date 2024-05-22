@@ -2,11 +2,12 @@ import { ApiResponseResult, DefaultApiResponse } from "../../../types";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
 } from "../../../utils/http";
 import { SendNotificationServiceInterface } from "./types";
+import { Request } from "express";
 
 export function sendNotificationService(
   axios: Http = http
@@ -19,6 +20,7 @@ export function sendNotificationService(
     sourceIp: string,
     persistentSessionId: string,
     userLanguage: string,
+    req: Request,
     journeyType?: string,
     phoneNumber?: string,
     requestNewCode?: boolean
@@ -43,17 +45,21 @@ export function sendNotificationService(
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.SEND_NOTIFICATION,
       payload,
-      getRequestConfig({
-        sessionId: sessionId,
-        clientSessionId: clientSessionId,
-        sourceIp: sourceIp,
-        persistentSessionId: persistentSessionId,
-        validationStatuses: [
-          HTTP_STATUS_CODES.NO_CONTENT,
-          HTTP_STATUS_CODES.BAD_REQUEST,
-        ],
-        userLanguage: userLanguage,
-      })
+      getInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId: sessionId,
+          clientSessionId: clientSessionId,
+          sourceIp: sourceIp,
+          persistentSessionId: persistentSessionId,
+          validationStatuses: [
+            HTTP_STATUS_CODES.NO_CONTENT,
+            HTTP_STATUS_CODES.BAD_REQUEST,
+          ],
+          userLanguage: userLanguage,
+        },
+        req,
+        API_ENDPOINTS.SEND_NOTIFICATION
+      )
     );
 
     return createApiResponse<DefaultApiResponse>(response, [

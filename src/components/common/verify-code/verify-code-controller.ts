@@ -49,8 +49,8 @@ export function verifyCodePost(
       code,
       options.notificationType,
       clientSessionId,
-      req.ip,
       persistentSessionId,
+      req,
       options.journeyType
     );
 
@@ -117,7 +117,8 @@ export function verifyCodePost(
             email,
             req.ip,
             clientSessionId,
-            persistentSessionId
+            persistentSessionId,
+            req
           );
         if (accountInterventionsResponse.data.blocked) {
           nextEvent = USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION;

@@ -23,7 +23,8 @@ export function proveIdentityCallbackGet(
       req.ip,
       sessionId,
       clientSessionId,
-      persistentSessionId
+      persistentSessionId,
+      req
     );
 
     if (response.data.status === IdentityProcessingStatus.INTERVENTION) {

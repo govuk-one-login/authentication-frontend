@@ -3,14 +3,20 @@ import sinon, { SinonStub } from "sinon";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
-  expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+  expectedHeadersFromCommonVarsWithSecurityHeaders,
+  requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
 import { Http } from "../../../utils/http";
 import { CreatePasswordServiceInterface } from "../types";
 import { createPasswordService } from "../create-password-service";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../../app.constants";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("create password service", () => {
   const httpInstance = new Http();
@@ -35,13 +41,16 @@ describe("create password service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
+    const req = createMockRequest(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD, {
+      headers: requestHeadersWithIpAndAuditEncoded,
+    });
     const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
       commonVariables;
     const password = "abcdef";
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.SIGNUP_USER,
-      expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+      expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
       expectedBody: { email, password },
     };
 
@@ -51,7 +60,8 @@ describe("create password service", () => {
       email,
       password,
       ip,
-      diPersistentSessionId
+      diPersistentSessionId,
+      req
     );
 
     checkApiCallMadeWithExpectedBodyAndHeaders(

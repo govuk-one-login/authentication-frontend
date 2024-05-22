@@ -3,14 +3,20 @@ import sinon, { SinonStub } from "sinon";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
-  expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+  expectedHeadersFromCommonVarsWithSecurityHeaders,
+  requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
 import { Http } from "../../../utils/http";
 import { DocCheckingAppInterface } from "../types";
 import { docCheckingAppService } from "../doc-checking-app-service";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../../app.constants";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("mfa service", () => {
   const httpInstance = new Http();
@@ -36,10 +42,13 @@ describe("mfa service", () => {
     postStub.resolves(axiosResponse);
     const { sessionId, clientSessionId, ip, diPersistentSessionId } =
       commonVariables;
+    const req = createMockRequest(PATH_NAMES.DOC_CHECKING_APP, {
+      headers: requestHeadersWithIpAndAuditEncoded,
+    });
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.DOC_CHECKING_APP_AUTHORIZE,
-      expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+      expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
       expectedBody: {},
     };
 
@@ -47,7 +56,8 @@ describe("mfa service", () => {
       sessionId,
       clientSessionId,
       ip,
-      diPersistentSessionId
+      diPersistentSessionId,
+      req
     );
 
     checkApiCallMadeWithExpectedBodyAndHeaders(

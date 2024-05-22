@@ -69,6 +69,7 @@ export const checkYourPhonePost = (
       clientSessionId,
       req.ip,
       persistentSessionId,
+      req,
       journeyType,
       req.session.user.phoneNumber
     );
@@ -112,6 +113,7 @@ export const checkYourPhonePost = (
       req.ip,
       res.locals.persistentSessionId,
       xss(req.cookies.lng as string),
+      req,
       journeyType
     );
 

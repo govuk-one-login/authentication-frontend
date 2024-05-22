@@ -3,14 +3,20 @@ import sinon, { SinonStub } from "sinon";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
-  expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+  expectedHeadersFromCommonVarsWithSecurityHeaders,
+  requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
 import { Http } from "../../../utils/http";
 import { ProveIdentityCallbackServiceInterface } from "../types";
 import { proveIdentityCallbackService } from "../prove-identity-callback-service";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../../app.constants";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("prove identity callback service", () => {
   const httpInstance = new Http();
@@ -37,10 +43,13 @@ describe("prove identity callback service", () => {
     postStub.resolves(axiosResponse);
     const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
       commonVariables;
+    const req = createMockRequest(PATH_NAMES.PROVE_IDENTITY, {
+      headers: requestHeadersWithIpAndAuditEncoded,
+    });
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.IPV_PROCESSING_IDENTITY,
-      expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+      expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
       expectedBody: { email },
     };
 
@@ -49,7 +58,8 @@ describe("prove identity callback service", () => {
       ip,
       sessionId,
       clientSessionId,
-      diPersistentSessionId
+      diPersistentSessionId,
+      req
     );
 
     checkApiCallMadeWithExpectedBodyAndHeaders(

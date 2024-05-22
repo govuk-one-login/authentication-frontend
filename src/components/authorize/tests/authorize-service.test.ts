@@ -3,21 +3,29 @@ import { expect } from "chai";
 import { Http } from "../../../utils/http";
 import { authorizeService } from "../authorize-service";
 import { sinon } from "../../../../test/utils/test-utils";
-import { API_ENDPOINTS } from "../../../app.constants";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { SinonStub } from "sinon";
 import { AuthorizeServiceInterface } from "../types";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import {
+  commonVariables,
+  expectedHeadersFromCommonVarsWithSecurityHeaders,
+  requestHeadersWithIpAndAuditEncoded,
+  resetApiKeyAndBaseUrlEnvVars,
+  setupApiKeyAndBaseUrlEnvVars,
+} from "../../../../test/helpers/service-test-helper";
 
 describe("authorize service", () => {
-  const sessionId = "some-session-id";
-  const clientSessionId = "client-session-id";
-  const ip = "123.123.123.123";
-  const persistentSessionId = "persistent-session-id";
   let getStub: SinonStub;
   let service: AuthorizeServiceInterface;
+  const { sessionId, clientSessionId, ip, diPersistentSessionId } =
+    commonVariables;
+  const req = createMockRequest(PATH_NAMES.AUTHORIZE, {
+    headers: requestHeadersWithIpAndAuditEncoded,
+  });
 
   beforeEach(() => {
-    process.env.API_KEY = "api-key";
-    process.env.FRONTEND_API_BASE_URL = "some-base-url";
+    setupApiKeyAndBaseUrlEnvVars();
     process.env.API_BASE_URL = "another-base-url";
     const httpInstance = new Http();
     service = authorizeService(httpInstance);
@@ -25,22 +33,28 @@ describe("authorize service", () => {
   });
 
   afterEach(() => {
+    resetApiKeyAndBaseUrlEnvVars();
+    delete process.env.SUPPORT_REAUTHENTICATION;
     getStub.reset();
   });
 
-  it("sends a request with the reauth header set to true when reauth is requested and the feature flag is set", () => {
+  it("sends a request with the correct headers set to true when reauth is requested and the feature flag is set", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     service.start(
       sessionId,
       clientSessionId,
       ip,
-      persistentSessionId,
+      diPersistentSessionId,
+      req,
       "123456"
     );
 
     expect(
-      getStub.calledWithMatch(API_ENDPOINTS.START, {
-        headers: { Reauthenticate: true },
+      getStub.calledOnceWithExactly(API_ENDPOINTS.START, {
+        headers: {
+          ...expectedHeadersFromCommonVarsWithSecurityHeaders,
+          Reauthenticate: true,
+        },
         proxy: false,
       })
     ).to.be.true;
@@ -52,13 +66,14 @@ describe("authorize service", () => {
       sessionId,
       clientSessionId,
       ip,
-      persistentSessionId,
+      diPersistentSessionId,
+      req,
       "123456"
     );
 
     expect(
-      getStub.calledWithMatch(API_ENDPOINTS.START, {
-        headers: { Reauthenticate: undefined },
+      getStub.calledOnceWithExactly(API_ENDPOINTS.START, {
+        headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
         proxy: false,
       })
     ).to.be.true;
@@ -66,11 +81,11 @@ describe("authorize service", () => {
 
   it("sends a request without a reauth header when reauth is not requested", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
-    service.start(sessionId, clientSessionId, ip, persistentSessionId);
+    service.start(sessionId, clientSessionId, ip, diPersistentSessionId, req);
 
     expect(
-      getStub.calledWithMatch(API_ENDPOINTS.START, {
-        headers: { Reauthenticate: undefined },
+      getStub.calledOnceWithExactly(API_ENDPOINTS.START, {
+        headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
         proxy: false,
       })
     ).to.be.true;

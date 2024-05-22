@@ -88,6 +88,7 @@ export function enterPhoneNumberPost(
       req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
+      req,
       journeyType,
       phoneNumber
     );

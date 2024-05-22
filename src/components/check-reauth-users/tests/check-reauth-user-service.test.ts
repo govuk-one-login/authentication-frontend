@@ -1,17 +1,19 @@
 import { describe } from "mocha";
 import { Http } from "../../../utils/http";
 import { sinon } from "../../../../test/utils/test-utils";
-import { API_ENDPOINTS } from "../../../app.constants";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { SinonStub } from "sinon";
 import { checkReauthUsersService } from "../check-reauth-users-service";
 import { CheckReauthServiceInterface } from "../types";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
-  expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+  expectedHeadersFromCommonVarsWithSecurityHeaders,
+  requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("re-authentication service", () => {
   const httpInstance = new Http();
@@ -39,6 +41,9 @@ describe("re-authentication service", () => {
     postStub.resolves(axiosResponse);
     const { sessionId, email, ip, clientSessionId, diPersistentSessionId } =
       commonVariables;
+    const req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN, {
+      headers: requestHeadersWithIpAndAuditEncoded,
+    });
 
     const result = await service.checkReauthUsers(
       sessionId,
@@ -46,12 +51,13 @@ describe("re-authentication service", () => {
       SUBJECT,
       ip,
       clientSessionId,
-      diPersistentSessionId
+      diPersistentSessionId,
+      req
     );
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.CHECK_REAUTH_USER,
-      expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+      expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
       expectedBody: { email: commonVariables.email, rpPairwiseId: SUBJECT },
       validateStatus: true,
     };

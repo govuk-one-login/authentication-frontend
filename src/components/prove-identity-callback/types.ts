@@ -1,4 +1,5 @@
 import { ApiResponseResult, DefaultApiResponse } from "../../types";
+import { Request } from "express";
 
 export interface ProveIdentityCallbackServiceInterface {
   processIdentity: (
@@ -6,7 +7,8 @@ export interface ProveIdentityCallbackServiceInterface {
     sourceIp: string,
     sessionId: string,
     clientSessionId: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    req: Request
   ) => Promise<ApiResponseResult<ProcessIdentityResponse>>;
 }
 

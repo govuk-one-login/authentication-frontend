@@ -57,7 +57,8 @@ export function enterSignInRetryBlockedGet(
       email,
       req.ip,
       clientSessionId,
-      persistentSessionId
+      persistentSessionId,
+      req
     );
 
     if (
@@ -169,7 +170,8 @@ export function enterPasswordPost(
           email,
           req.ip,
           clientSessionId,
-          persistentSessionId
+          persistentSessionId,
+          req
         );
       if (
         accountInterventionsResponse.data.passwordResetRequired ||
@@ -204,6 +206,7 @@ export function enterPasswordPost(
         persistentSessionId,
         false,
         xss(req.cookies.lng as string),
+        req,
         journeyType
       );
 

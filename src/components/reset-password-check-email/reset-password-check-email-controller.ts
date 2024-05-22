@@ -51,7 +51,8 @@ export function resetPasswordCheckEmailGet(
         req.ip,
         res.locals.clientSessionId,
         res.locals.persistentSessionId,
-        req.session.user.withinForcedPasswordResetJourney
+        req.session.user.withinForcedPasswordResetJourney,
+        req
       );
     }
 

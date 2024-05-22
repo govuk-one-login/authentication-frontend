@@ -10,14 +10,22 @@ export const commonVariables = {
   clientSessionId: "some-client-session-id",
   ip: "123.123.123.123",
   apiKey: "apiKey",
+  auditEncodedString:
+    "R21vLmd3QilNKHJsaGkvTFxhZDZrKF44SStoLFsieG0oSUY3aEhWRVtOMFRNMVw1dyInKzB8OVV5N09hOi8kLmlLcWJjJGQiK1NPUEJPPHBrYWJHP358NDg2ZDVc",
 };
 
-export const expectedHeadersFromCommonVarsWithoutSecurityHeaders = {
+export const expectedHeadersFromCommonVarsWithSecurityHeaders = {
   "X-API-Key": commonVariables.apiKey,
   "Session-Id": commonVariables.sessionId,
   "Client-Session-Id": commonVariables.clientSessionId,
-  "X-Forwarded-For": commonVariables.ip,
+  "x-forwarded-for": commonVariables.ip,
   "di-persistent-session-id": commonVariables.diPersistentSessionId,
+  "txma-audit-encoded": commonVariables.auditEncodedString,
+};
+
+export const requestHeadersWithIpAndAuditEncoded = {
+  "txma-audit-encoded": commonVariables.auditEncodedString,
+  "x-forwarded-for": commonVariables.ip,
 };
 
 export interface StubCallExpectations {

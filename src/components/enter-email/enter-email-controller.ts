@@ -33,7 +33,7 @@ import {
   timestampNSecondsFromNow,
 } from "../../utils/lock-helper";
 import { CheckEmailFraudBlockInterface } from "../check-email-fraud-block/types";
-import { checkEmailFraudBlockService } from "../check-email-fraud-block/checkEmailFraudBlockService";
+import { checkEmailFraudBlockService } from "../check-email-fraud-block/check-email-fraud-block-service";
 import { logger } from "../../utils/logger";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
@@ -79,7 +79,8 @@ export function enterEmailPost(
         sub,
         req.ip,
         clientSessionId,
-        persistentSessionId
+        persistentSessionId,
+        req
       );
 
       if (!checkReauth.success) {
@@ -114,7 +115,8 @@ export function enterEmailPost(
       email,
       req.ip,
       res.locals.clientSessionId,
-      res.locals.persistentSessionId
+      res.locals.persistentSessionId,
+      req
     );
 
     if (!result.success) {
@@ -138,7 +140,8 @@ export function enterEmailPost(
           sessionId,
           req.ip,
           clientSessionId,
-          persistentSessionId
+          persistentSessionId,
+          req
         );
       logger.info(`checkEmailFraudResponse: ${checkEmailFraudResponse.data}`);
     }
@@ -175,7 +178,8 @@ export function enterEmailCreatePost(
       email,
       req.ip,
       clientSessionId,
-      persistentSessionId
+      persistentSessionId,
+      req
     );
 
     if (!userExistsResponse.success) {
@@ -205,6 +209,7 @@ export function enterEmailCreatePost(
       req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
+      req,
       JOURNEY_TYPE.REGISTRATION
     );
 

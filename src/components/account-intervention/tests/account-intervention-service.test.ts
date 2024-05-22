@@ -5,12 +5,14 @@ import { accountInterventionService } from "../account-intervention-service";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
-  expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+  expectedHeadersFromCommonVarsWithSecurityHeaders,
+  requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
-import { API_ENDPOINTS } from "../../../app.constants";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { Http } from "../../../utils/http";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("account interventions service", () => {
   const httpInstance = new Http();
@@ -29,26 +31,30 @@ describe("account interventions service", () => {
   });
 
   it("successfully calls the API to check a user's account interventions status", async () => {
+    const { sessionId, clientSessionId, email, ip, diPersistentSessionId } =
+      commonVariables;
+    const req = createMockRequest(PATH_NAMES.AUTH_CODE, {
+      headers: requestHeadersWithIpAndAuditEncoded,
+    });
     const axiosResponse = Promise.resolve({
       data: {},
       status: 200,
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, clientSessionId, email, ip, diPersistentSessionId } =
-      commonVariables;
 
     const result = await service.accountInterventionStatus(
       sessionId,
       email,
       ip,
       clientSessionId,
-      diPersistentSessionId
+      diPersistentSessionId,
+      req
     );
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.ACCOUNT_INTERVENTIONS,
-      expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+      expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
       expectedBody: { email: commonVariables.email },
     };
 

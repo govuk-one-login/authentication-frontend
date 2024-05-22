@@ -1,4 +1,5 @@
 import { ApiResponseResult, DefaultApiResponse } from "../../types";
+import { Request } from "express";
 
 export interface ResetPasswordCheckEmailServiceInterface {
   resetPasswordRequest: (
@@ -7,7 +8,8 @@ export interface ResetPasswordCheckEmailServiceInterface {
     sourceIp: string,
     clientSessionId: string,
     persistentSessionId: string,
-    withinForcedPasswordResetJourney: boolean
+    withinForcedPasswordResetJourney: boolean,
+    req: Request
   ) => Promise<ApiResponseResult<ResetPasswordRequestResponse>>;
 }
 

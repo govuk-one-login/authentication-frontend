@@ -1,4 +1,5 @@
 import { ApiResponseResult, DefaultApiResponse } from "../../types";
+import { Request } from "express";
 
 export interface UserExists extends DefaultApiResponse {
   email: string;
@@ -20,6 +21,7 @@ export interface EnterEmailServiceInterface {
     emailAddress: string,
     sourceIp: string,
     clientSessionId: string,
-    persistentSessionId: string
+    persistentSessionId: string,
+    req: Request
   ) => Promise<ApiResponseResult<UserExists>>;
 }

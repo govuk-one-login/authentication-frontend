@@ -1,12 +1,13 @@
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
 } from "../../../utils/http";
 import { ApiResponseResult, DefaultApiResponse } from "../../../types";
 import { VerifyCodeInterface } from "./types";
+import { Request } from "express";
 
 export function codeService(axios: Http = http): VerifyCodeInterface {
   const verifyCode = async function (
@@ -14,8 +15,8 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
     code: string,
     notificationType: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
+    req: Request,
     journeyType?: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
@@ -25,12 +26,15 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
         notificationType,
         journeyType,
       },
-      getRequestConfig({
-        sessionId,
-        clientSessionId,
-        sourceIp: sourceIp,
-        persistentSessionId: persistentSessionId,
-      })
+      getInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId,
+          clientSessionId,
+          persistentSessionId: persistentSessionId,
+        },
+        req,
+        API_ENDPOINTS.VERIFY_CODE
+      )
     );
 
     return createApiResponse(response, [HTTP_STATUS_CODES.NO_CONTENT]);

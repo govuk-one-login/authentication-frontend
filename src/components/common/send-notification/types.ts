@@ -1,4 +1,5 @@
 import { ApiResponseResult, DefaultApiResponse } from "../../../types";
+import { Request } from "express";
 
 export interface SendNotificationServiceInterface {
   sendNotification: (
@@ -9,6 +10,7 @@ export interface SendNotificationServiceInterface {
     sourceIp: string,
     persistentSessionId: string,
     userLanguage: string,
+    req: Request,
     journeyType?: string,
     phoneNumber?: string,
     requestNewCode?: boolean

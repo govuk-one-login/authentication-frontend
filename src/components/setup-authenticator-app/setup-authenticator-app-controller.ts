@@ -90,6 +90,7 @@ export function setupAuthenticatorAppPost(
       clientSessionId,
       req.ip,
       persistentSessionId,
+      req,
       journeyType,
       authAppSecret
     );
@@ -136,6 +137,7 @@ export function setupAuthenticatorAppPost(
       req.ip,
       res.locals.persistentSessionId,
       xss(req.cookies.lng as string),
+      req,
       journeyType
     );
 

@@ -5,12 +5,18 @@ import { UpdateProfileServiceInterface, UpdateType } from "../types";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
-  expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+  expectedHeadersFromCommonVarsWithSecurityHeaders,
+  requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../../test/helpers/service-test-helper";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../../app.constants";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../../../app.constants";
 import { updateProfileService } from "../update-profile-service";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 
 describe("update profile service", () => {
   const httpInstance = new Http();
@@ -37,6 +43,9 @@ describe("update profile service", () => {
     postStub.resolves(axiosResponse);
     const { sessionId, clientSessionId, email, ip, diPersistentSessionId } =
       commonVariables;
+    const req = createMockRequest(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS, {
+      headers: requestHeadersWithIpAndAuditEncoded,
+    });
     const profileInformation = true;
     const updateProfileType = UpdateType.CAPTURE_CONSENT;
 
@@ -46,12 +55,13 @@ describe("update profile service", () => {
       email,
       { profileInformation, updateProfileType },
       ip,
-      diPersistentSessionId
+      diPersistentSessionId,
+      req
     );
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.UPDATE_PROFILE,
-      expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+      expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
       expectedBody: { email, profileInformation, updateProfileType },
     };
 

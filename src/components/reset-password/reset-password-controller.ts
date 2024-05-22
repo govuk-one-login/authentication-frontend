@@ -61,7 +61,8 @@ export function resetPasswordPost(
       sessionId,
       clientSessionId,
       persistentSessionId,
-      withinForcedPasswordResetJourney
+      withinForcedPasswordResetJourney,
+      req
     );
 
     if (!updatePasswordResponse.success) {
@@ -134,7 +135,8 @@ export function resetPasswordPost(
         req.ip,
         persistentSessionId,
         false,
-        xss(req.cookies.lng as string)
+        xss(req.cookies.lng as string),
+        req
       );
 
       if (!mfaResponse.success) {

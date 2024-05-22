@@ -60,6 +60,7 @@ export function authorizeGet(
       clientSessionId,
       req.ip,
       persistentSessionId,
+      req,
       claims.reauthenticate
     );
 

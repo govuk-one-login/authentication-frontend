@@ -6,7 +6,8 @@ import { mfaService } from "../mfa-service";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
-  expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+  expectedHeadersFromCommonVarsWithSecurityHeaders,
+  requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../../test/helpers/service-test-helper";
@@ -14,7 +15,9 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   JOURNEY_TYPE,
+  PATH_NAMES,
 } from "../../../../app.constants";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 
 describe("mfa service", () => {
   const httpInstance = new Http();
@@ -32,14 +35,17 @@ describe("mfa service", () => {
   });
 
   it("successfully calls the API to make a request to send an mfa code", async () => {
+    const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
+      commonVariables;
+    const req = createMockRequest(PATH_NAMES.ENTER_MFA, {
+      headers: requestHeadersWithIpAndAuditEncoded,
+    });
     const axiosResponse = Promise.resolve({
       data: {},
       status: HTTP_STATUS_CODES.NO_CONTENT,
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
-      commonVariables;
     const userLanguage = "cy";
     const journeyType = JOURNEY_TYPE.SIGN_IN;
     const isResendCodeRequest = true;
@@ -47,7 +53,7 @@ describe("mfa service", () => {
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.MFA,
       expectedHeaders: {
-        ...expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+        ...expectedHeadersFromCommonVarsWithSecurityHeaders,
         "User-Language": userLanguage,
       },
       expectedBody: { email, isResendCodeRequest, journeyType },
@@ -61,6 +67,7 @@ describe("mfa service", () => {
       diPersistentSessionId,
       isResendCodeRequest,
       userLanguage,
+      req,
       journeyType
     );
 

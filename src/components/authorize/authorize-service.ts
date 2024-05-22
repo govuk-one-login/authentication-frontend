@@ -3,11 +3,12 @@ import { ApiResponseResult } from "../../types";
 import { API_ENDPOINTS } from "../../app.constants";
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
 } from "../../utils/http";
 import { supportReauthentication } from "../../config";
+import { Request } from "express";
 
 export function authorizeService(
   axios: Http = http
@@ -17,6 +18,7 @@ export function authorizeService(
     clientSessionId: string,
     sourceIp: string,
     persistentSessionId: string,
+    req: Request,
     reauthenticate?: string
   ): Promise<ApiResponseResult<StartAuthResponse>> {
     let reauthenticateOption = undefined;
@@ -25,13 +27,17 @@ export function authorizeService(
     }
     const response = await axios.client.get<StartAuthResponse>(
       API_ENDPOINTS.START,
-      getRequestConfig({
-        sessionId: sessionId,
-        clientSessionId: clientSessionId,
-        sourceIp: sourceIp,
-        persistentSessionId: persistentSessionId,
-        reauthenticate: reauthenticateOption,
-      })
+      getInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId: sessionId,
+          clientSessionId: clientSessionId,
+          sourceIp: sourceIp,
+          persistentSessionId: persistentSessionId,
+          reauthenticate: reauthenticateOption,
+        },
+        req,
+        API_ENDPOINTS.START
+      )
     );
 
     return createApiResponse<StartAuthResponse>(response);

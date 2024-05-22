@@ -47,7 +47,8 @@ export function updatedTermsConditionsPost(
           profileInformation: true,
         },
         req.ip,
-        persistentSessionId
+        persistentSessionId,
+        req
       );
 
       if (!result.success) {

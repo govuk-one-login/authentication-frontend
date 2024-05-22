@@ -6,11 +6,17 @@ import { Http } from "../../../utils/http";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
-  expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+  expectedHeadersFromCommonVarsWithSecurityHeaders,
+  requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../../app.constants";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("reset password service", () => {
   const httpInstance = new Http();
@@ -39,6 +45,9 @@ describe("reset password service", () => {
       commonVariables;
     const newPassword = "abcdef";
     const isForcedPasswordReset = false;
+    const req = createMockRequest(PATH_NAMES.RESET_PASSWORD, {
+      headers: requestHeadersWithIpAndAuditEncoded,
+    });
 
     const result = await service.updatePassword(
       newPassword,
@@ -46,12 +55,13 @@ describe("reset password service", () => {
       sessionId,
       clientSessionId,
       diPersistentSessionId,
-      isForcedPasswordReset
+      isForcedPasswordReset,
+      req
     );
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.RESET_PASSWORD,
-      expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+      expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
       expectedBody: { password: newPassword },
     };
 

@@ -4,14 +4,20 @@ import { Http } from "../../../../utils/http";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
-  expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+  expectedHeadersFromCommonVarsWithSecurityHeaders,
+  requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../../test/helpers/service-test-helper";
-import { API_ENDPOINTS, NOTIFICATION_TYPE } from "../../../../app.constants";
+import {
+  API_ENDPOINTS,
+  NOTIFICATION_TYPE,
+  PATH_NAMES,
+} from "../../../../app.constants";
 import { SendNotificationServiceInterface } from "../types";
 import { sendNotificationService } from "../send-notification-service";
 import { JOURNEY_TYPE } from "../../constants";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 
 describe("send notification service", () => {
   let postStub: SinonStub;
@@ -23,10 +29,13 @@ describe("send notification service", () => {
   });
   const { sessionId, clientSessionId, email, ip, diPersistentSessionId } =
     commonVariables;
+  const req = createMockRequest(PATH_NAMES.RESEND_MFA_CODE, {
+    headers: requestHeadersWithIpAndAuditEncoded,
+  });
   const notificationType = NOTIFICATION_TYPE.VERIFY_EMAIL;
   const userLanguage = "cy";
   const expectedHeaders = {
-    ...expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+    ...expectedHeadersFromCommonVarsWithSecurityHeaders,
     "User-Language": userLanguage,
   };
 
@@ -51,7 +60,8 @@ describe("send notification service", () => {
       notificationType,
       ip,
       diPersistentSessionId,
-      userLanguage
+      userLanguage,
+      req
     );
 
     const expectedApiCallDetails = {
@@ -81,6 +91,7 @@ describe("send notification service", () => {
       ip,
       diPersistentSessionId,
       userLanguage,
+      req,
       journeyType,
       phoneNumber,
       requestNewCode

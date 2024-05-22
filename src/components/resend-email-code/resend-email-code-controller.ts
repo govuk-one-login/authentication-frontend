@@ -68,6 +68,7 @@ export function resendEmailCodePost(
       req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
+      req,
       journeyType,
       undefined,
       xss(req.body.requestNewCode as string) === "true"

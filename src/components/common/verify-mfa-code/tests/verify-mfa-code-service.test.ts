@@ -4,7 +4,8 @@ import { Http } from "../../../../utils/http";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
-  expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+  expectedHeadersFromCommonVarsWithSecurityHeaders,
+  requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../../test/helpers/service-test-helper";
@@ -13,9 +14,11 @@ import {
   HTTP_STATUS_CODES,
   JOURNEY_TYPE,
   MFA_METHOD_TYPE,
+  PATH_NAMES,
 } from "../../../../app.constants";
 import { VerifyMfaCodeInterface } from "../../../enter-authenticator-app-code/types";
 import { verifyMfaCodeService } from "../verify-mfa-code-service";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 
 describe("verify mfa code service", () => {
   const httpInstance = new Http();
@@ -33,14 +36,17 @@ describe("verify mfa code service", () => {
   });
 
   it("successfully calls the API to verify an mfa code", async () => {
+    const { sessionId, clientSessionId, ip, diPersistentSessionId } =
+      commonVariables;
+    const req = createMockRequest(PATH_NAMES.ENTER_MFA, {
+      headers: requestHeadersWithIpAndAuditEncoded,
+    });
     const axiosResponse = Promise.resolve({
       data: {},
       status: HTTP_STATUS_CODES.NO_CONTENT,
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, clientSessionId, ip, diPersistentSessionId } =
-      commonVariables;
     const code = "1234";
     const journeyType = JOURNEY_TYPE.SIGN_IN;
     const mfaMethodType = MFA_METHOD_TYPE.SMS;
@@ -48,7 +54,7 @@ describe("verify mfa code service", () => {
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.VERIFY_MFA_CODE,
-      expectedHeaders: expectedHeadersFromCommonVarsWithoutSecurityHeaders,
+      expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
       expectedBody: { mfaMethodType, code, journeyType, profileInformation },
     };
 
@@ -59,6 +65,7 @@ describe("verify mfa code service", () => {
       clientSessionId,
       ip,
       diPersistentSessionId,
+      req,
       journeyType,
       profileInformation
     );

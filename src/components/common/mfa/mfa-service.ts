@@ -6,11 +6,12 @@ import {
 } from "../../../app.constants";
 import {
   createApiResponse,
-  getRequestConfig,
+  getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
 } from "../../../utils/http";
 import { ApiResponseResult, DefaultApiResponse } from "../../../types";
+import { Request } from "express";
 
 export function mfaService(axios: Http = http): MfaServiceInterface {
   const sendMfaCode = async function (
@@ -21,6 +22,7 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
     persistentSessionId: string,
     isResendCodeRequest: boolean,
     userLanguage: string,
+    req: Request,
     journeyType?: JOURNEY_TYPE
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
@@ -30,13 +32,17 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
         isResendCodeRequest,
         journeyType,
       },
-      getRequestConfig({
-        sessionId: sessionId,
-        clientSessionId: clientSessionId,
-        sourceIp: sourceIp,
-        persistentSessionId: persistentSessionId,
-        userLanguage: userLanguage,
-      })
+      getInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId: sessionId,
+          clientSessionId: clientSessionId,
+          sourceIp: sourceIp,
+          persistentSessionId: persistentSessionId,
+          userLanguage: userLanguage,
+        },
+        req,
+        API_ENDPOINTS.MFA
+      )
     );
 
     return createApiResponse<DefaultApiResponse>(response, [

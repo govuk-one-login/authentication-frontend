@@ -1,5 +1,8 @@
 import { describe } from "mocha";
 import sinon, { SinonStub } from "sinon";
+import { Http } from "../../../utils/http";
+import { CheckEmailFraudBlockInterface } from "../types";
+import { checkEmailFraudBlockService } from "../check-email-fraud-block-service";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   commonVariables,
@@ -8,9 +11,6 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
-import { EnterEmailServiceInterface } from "../types";
-import { enterEmailService } from "../enter-email-service";
-import { Http } from "../../../utils/http";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
@@ -18,9 +18,10 @@ import {
 } from "../../../app.constants";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
-describe("enter email service", () => {
+describe("check email fraud block service", () => {
   const httpInstance = new Http();
-  const service: EnterEmailServiceInterface = enterEmailService(httpInstance);
+  const service: CheckEmailFraudBlockInterface =
+    checkEmailFraudBlockService(httpInstance);
   let postStub: SinonStub;
 
   beforeEach(() => {
@@ -33,28 +34,28 @@ describe("enter email service", () => {
     resetApiKeyAndBaseUrlEnvVars();
   });
 
-  it("successfully calls the API to check if a user exists", async () => {
+  it("successfully calls the API to check for an email fraud block", async () => {
+    const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
+      commonVariables;
+    const req = createMockRequest(PATH_NAMES.ROOT, {
+      headers: requestHeadersWithIpAndAuditEncoded,
+    });
     const axiosResponse = Promise.resolve({
       data: {},
       status: HTTP_STATUS_CODES.OK,
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
-      commonVariables;
-    const req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN, {
-      headers: requestHeadersWithIpAndAuditEncoded,
-    });
 
     const expectedApiCallDetails = {
-      expectedPath: API_ENDPOINTS.USER_EXISTS,
+      expectedPath: API_ENDPOINTS.CHECK_EMAIL_FRAUD_BLOCK,
       expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
       expectedBody: { email },
     };
 
-    const result = await service.userExists(
-      sessionId,
+    const result = await service.checkEmailFraudBlock(
       email,
+      sessionId,
       ip,
       clientSessionId,
       diPersistentSessionId,

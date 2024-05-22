@@ -15,7 +15,8 @@ export function docCheckingAppGet(
       sessionId,
       clientSessionId,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      req
     );
     if (!result.success) {
       throw new BadRequestError(result.data.message, result.data.code);

@@ -66,7 +66,8 @@ export function enterAuthenticatorAppCodeGet(
       clientSessionId,
       email,
       req.ip,
-      persistentSessionId
+      persistentSessionId,
+      req
     );
 
     if (!accountRecoveryResponse.success) {
@@ -111,6 +112,7 @@ export const enterAuthenticatorAppCodePost = (
       clientSessionId,
       req.ip,
       persistentSessionId,
+      req,
       getJourneyTypeFromUserSession(req.session.user, {
         includeAccountRecovery: true,
         includeReauthentication: true,
