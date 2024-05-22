@@ -47,7 +47,6 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
       const actualConfig = getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
-          sourceIp: sourceIp,
           clientSessionId: clientSessionId,
           persistentSessionId: persistentSessionId,
           reauthenticate: reauthenticate,
@@ -78,13 +77,11 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
       };
 
       const sessionId = "someSessionId";
-      const sourceIp = "123.123.123.123";
       const clientSessionId = "someClientSessionId";
       const persistentSessionId = "somePersistentSessionId";
       const actualConfig = getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
-          sourceIp: sourceIp,
           clientSessionId: clientSessionId,
           persistentSessionId: persistentSessionId,
         },
