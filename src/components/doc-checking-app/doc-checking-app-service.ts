@@ -18,7 +18,6 @@ export function docCheckingAppService(
   const docCheckingAuthorize = async function (
     sessionId: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request
   ): Promise<ApiResponseResult<DocCheckingAuthorisationResponse>> {
@@ -29,7 +28,6 @@ export function docCheckingAppService(
         {
           sessionId: sessionId,
           clientSessionId: clientSessionId,
-          sourceIp: sourceIp,
           persistentSessionId: persistentSessionId,
         },
         req,

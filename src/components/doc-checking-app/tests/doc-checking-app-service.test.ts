@@ -40,7 +40,7 @@ describe("mfa service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, clientSessionId, ip, diPersistentSessionId } =
+    const { sessionId, clientSessionId, diPersistentSessionId } =
       commonVariables;
     const req = createMockRequest(PATH_NAMES.DOC_CHECKING_APP, {
       headers: requestHeadersWithIpAndAuditEncoded,
@@ -55,7 +55,6 @@ describe("mfa service", () => {
     const result = await service.docCheckingAppAuthorize(
       sessionId,
       clientSessionId,
-      ip,
       diPersistentSessionId,
       req
     );
