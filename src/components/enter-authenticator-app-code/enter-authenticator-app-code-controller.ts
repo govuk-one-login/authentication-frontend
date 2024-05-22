@@ -65,7 +65,6 @@ export function enterAuthenticatorAppCodeGet(
       sessionId,
       clientSessionId,
       email,
-      req.ip,
       persistentSessionId,
       req
     );

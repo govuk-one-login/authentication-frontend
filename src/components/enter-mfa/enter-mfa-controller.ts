@@ -72,7 +72,6 @@ export function enterMfaGet(
       sessionId,
       clientSessionId,
       email,
-      req.ip,
       persistentSessionId,
       req
     );

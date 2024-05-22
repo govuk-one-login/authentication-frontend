@@ -16,7 +16,6 @@ export function accountRecoveryService(
     sessionId: string,
     clientSessionId: string,
     email: string,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request
   ): Promise<ApiResponseResult<AccountRecoveryResponse>> {
@@ -29,7 +28,6 @@ export function accountRecoveryService(
         {
           sessionId,
           clientSessionId,
-          sourceIp,
           persistentSessionId,
         },
         req,

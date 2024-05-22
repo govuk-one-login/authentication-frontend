@@ -31,7 +31,7 @@ describe("account recovery service", () => {
   });
 
   it("successfully calls the API to perform an account recovery request", async () => {
-    const { sessionId, clientSessionId, email, ip, diPersistentSessionId } =
+    const { sessionId, clientSessionId, email, diPersistentSessionId } =
       commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE, {
       headers: requestHeadersWithIpAndAuditEncoded,
@@ -47,7 +47,6 @@ describe("account recovery service", () => {
       sessionId,
       clientSessionId,
       email,
-      ip,
       diPersistentSessionId,
       req
     );
