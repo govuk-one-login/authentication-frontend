@@ -95,7 +95,6 @@ describe("check your phone controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        sinon.match.any,
         JOURNEY_TYPE.ACCOUNT_RECOVERY,
         sinon.match.any
       );

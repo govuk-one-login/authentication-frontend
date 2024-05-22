@@ -22,7 +22,6 @@ export function verifyMfaCodeService(
     code: string,
     sessionId: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request,
     journeyType?: JOURNEY_TYPE,
@@ -40,7 +39,6 @@ export function verifyMfaCodeService(
         {
           sessionId,
           clientSessionId,
-          sourceIp: sourceIp,
           persistentSessionId: persistentSessionId,
         },
         req,

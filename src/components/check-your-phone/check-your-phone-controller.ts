@@ -67,7 +67,6 @@ export const checkYourPhonePost = (
       req.body["code"],
       sessionId,
       clientSessionId,
-      req.ip,
       persistentSessionId,
       req,
       journeyType,

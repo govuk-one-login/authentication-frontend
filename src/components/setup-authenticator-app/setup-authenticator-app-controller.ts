@@ -88,7 +88,6 @@ export function setupAuthenticatorAppPost(
       code,
       sessionId,
       clientSessionId,
-      req.ip,
       persistentSessionId,
       req,
       journeyType,
