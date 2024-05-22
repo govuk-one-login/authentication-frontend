@@ -167,7 +167,6 @@ export function enterPasswordPost(
         await accountInterventionsService.accountInterventionStatus(
           sessionId,
           email,
-          req.ip,
           clientSessionId,
           persistentSessionId,
           req
