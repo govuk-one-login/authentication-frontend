@@ -46,7 +46,6 @@ export function updatedTermsConditionsPost(
           updateProfileType: UpdateType.UPDATE_TERMS_CONDS,
           profileInformation: true,
         },
-        req.ip,
         persistentSessionId,
         req
       );

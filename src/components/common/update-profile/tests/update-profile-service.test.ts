@@ -41,7 +41,7 @@ describe("update profile service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, clientSessionId, email, ip, diPersistentSessionId } =
+    const { sessionId, clientSessionId, email, diPersistentSessionId } =
       commonVariables;
     const req = createMockRequest(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS, {
       headers: requestHeadersWithIpAndAuditEncoded,
@@ -53,8 +53,10 @@ describe("update profile service", () => {
       sessionId,
       clientSessionId,
       email,
-      { profileInformation, updateProfileType },
-      ip,
+      {
+        profileInformation,
+        updateProfileType,
+      },
       diPersistentSessionId,
       req
     );
