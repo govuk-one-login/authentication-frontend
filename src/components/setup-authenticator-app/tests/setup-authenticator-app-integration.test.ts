@@ -15,6 +15,7 @@ describe("Integration::setup-authenticator-app", () => {
   let cookies: string;
   let app: any;
   let baseApi: string;
+  const AUTH_APP_SECRET: string = "MJRGA2KMETI7BEVNT33MOITMEQQUJMAQ";
 
   before(async () => {
     decache("../../../app");
@@ -33,7 +34,7 @@ describe("Integration::setup-authenticator-app", () => {
           journey: {
             nextPath: PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP,
           },
-          authAppSecret: "secret",
+          authAppSecret: AUTH_APP_SECRET,
         };
 
         next();
@@ -89,7 +90,7 @@ describe("Integration::setup-authenticator-app", () => {
         expect($("#code-error").text()).to.contains(
           "Enter the security code shown in your authenticator app"
         );
-        expect($("#secret-key").text()).to.not.be.empty;
+        expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
       })
       .expect(400, done);
   });
@@ -108,7 +109,7 @@ describe("Integration::setup-authenticator-app", () => {
         expect($("#code-error").text()).to.contains(
           "Enter the security code using only 6 digits"
         );
-        expect($("#secret-key").text()).to.not.be.empty;
+        expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
       })
       .expect(400, done);
   });
@@ -127,7 +128,7 @@ describe("Integration::setup-authenticator-app", () => {
         expect($("#code-error").text()).to.contains(
           "Enter the security code using only 6 digits"
         );
-        expect($("#secret-key").text()).to.not.be.empty;
+        expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
       })
       .expect(400, done);
   });
