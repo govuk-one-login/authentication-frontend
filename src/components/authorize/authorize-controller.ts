@@ -59,7 +59,6 @@ export function authorizeGet(
     const startAuthResponse = await authService.start(
       sessionId,
       clientSessionId,
-      req.ip,
       persistentSessionId,
       req,
       claims.reauthenticate

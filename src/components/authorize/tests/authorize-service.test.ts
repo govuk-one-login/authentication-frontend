@@ -18,8 +18,7 @@ import { commonVariables } from "../../../../test/helpers/common-test-variables"
 describe("authorize service", () => {
   let getStub: SinonStub;
   let service: AuthorizeServiceInterface;
-  const { sessionId, clientSessionId, ip, diPersistentSessionId } =
-    commonVariables;
+  const { sessionId, clientSessionId, diPersistentSessionId } = commonVariables;
   const req = createMockRequest(PATH_NAMES.AUTHORIZE, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
@@ -43,7 +42,6 @@ describe("authorize service", () => {
     service.start(
       sessionId,
       clientSessionId,
-      ip,
       diPersistentSessionId,
       req,
       "123456"
@@ -65,7 +63,6 @@ describe("authorize service", () => {
     service.start(
       sessionId,
       clientSessionId,
-      ip,
       diPersistentSessionId,
       req,
       "123456"
@@ -81,7 +78,7 @@ describe("authorize service", () => {
 
   it("sends a request without a reauth header when reauth is not requested", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
-    service.start(sessionId, clientSessionId, ip, diPersistentSessionId, req);
+    service.start(sessionId, clientSessionId, diPersistentSessionId, req);
 
     expect(
       getStub.calledOnceWithExactly(API_ENDPOINTS.START, {

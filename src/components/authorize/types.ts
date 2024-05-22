@@ -21,7 +21,6 @@ export interface AuthorizeServiceInterface {
   start: (
     sessionId: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request,
     reauthenticate?: string
