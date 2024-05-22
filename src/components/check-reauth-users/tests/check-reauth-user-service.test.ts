@@ -39,7 +39,7 @@ describe("re-authentication service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, email, ip, clientSessionId, diPersistentSessionId } =
+    const { sessionId, email, clientSessionId, diPersistentSessionId } =
       commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN, {
       headers: requestHeadersWithIpAndAuditEncoded,
@@ -49,7 +49,6 @@ describe("re-authentication service", () => {
       sessionId,
       email,
       SUBJECT,
-      ip,
       clientSessionId,
       diPersistentSessionId,
       req

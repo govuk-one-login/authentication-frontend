@@ -77,7 +77,6 @@ export function enterEmailPost(
         sessionId,
         email,
         sub,
-        req.ip,
         clientSessionId,
         persistentSessionId,
         req
