@@ -62,7 +62,10 @@ describe("reset password service", () => {
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.RESET_PASSWORD,
       expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
-      expectedBody: { password: newPassword },
+      expectedBody: {
+        password: newPassword,
+        isForcedPasswordReset: isForcedPasswordReset,
+      },
     };
 
     checkApiCallMadeWithExpectedBodyAndHeaders(
