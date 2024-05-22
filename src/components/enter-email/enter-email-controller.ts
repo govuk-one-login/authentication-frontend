@@ -136,7 +136,6 @@ export function enterEmailPost(
         await checkEmailFraudService.checkEmailFraudBlock(
           email,
           sessionId,
-          req.ip,
           clientSessionId,
           persistentSessionId,
           req

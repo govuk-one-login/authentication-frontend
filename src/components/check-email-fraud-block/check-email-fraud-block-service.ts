@@ -18,7 +18,6 @@ export function checkEmailFraudBlockService(
   const checkEmailFraudBlock = async function (
     email: string,
     sessionId: string,
-    sourceIp: string,
     clientSessionId: string,
     persistentSessionId: string,
     req: Request
@@ -31,7 +30,6 @@ export function checkEmailFraudBlockService(
       getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
-          sourceIp: sourceIp,
           clientSessionId: clientSessionId,
           persistentSessionId: persistentSessionId,
         },
