@@ -4,7 +4,6 @@ import { Request } from "express";
 export interface ProveIdentityCallbackServiceInterface {
   processIdentity: (
     email: string,
-    sourceIp: string,
     sessionId: string,
     clientSessionId: string,
     persistentSessionId: string,

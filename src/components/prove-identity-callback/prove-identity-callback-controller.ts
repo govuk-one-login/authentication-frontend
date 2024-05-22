@@ -20,7 +20,6 @@ export function proveIdentityCallbackGet(
 
     const response = await service.processIdentity(
       email,
-      req.ip,
       sessionId,
       clientSessionId,
       persistentSessionId,

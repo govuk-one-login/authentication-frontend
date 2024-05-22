@@ -41,7 +41,7 @@ describe("prove identity callback service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
+    const { email, sessionId, clientSessionId, diPersistentSessionId } =
       commonVariables;
     const req = createMockRequest(PATH_NAMES.PROVE_IDENTITY, {
       headers: requestHeadersWithIpAndAuditEncoded,
@@ -55,7 +55,6 @@ describe("prove identity callback service", () => {
 
     const result = await service.processIdentity(
       email,
-      ip,
       sessionId,
       clientSessionId,
       diPersistentSessionId,
