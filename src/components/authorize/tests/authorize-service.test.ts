@@ -8,12 +8,12 @@ import { SinonStub } from "sinon";
 import { AuthorizeServiceInterface } from "../types";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import {
-  commonVariables,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("authorize service", () => {
   let getStub: SinonStub;

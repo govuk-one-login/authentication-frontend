@@ -34,10 +34,6 @@ describe("doc checking app controller", () => {
         }),
       } as unknown as DocCheckingAppInterface;
 
-      res.locals.sessionId = "s-123456-djjad";
-      res.locals.clientSessionId = "c-123456-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-
       await docCheckingAppGet(fakeService)(req as Request, res as Response);
 
       expect(req.session.user.journey.nextPath).to.equal(
@@ -54,10 +50,6 @@ describe("doc checking app controller", () => {
           data: { code: "1222", message: "Error occurred" },
         }),
       } as unknown as DocCheckingAppInterface;
-
-      res.locals.sessionId = "s-123456-djjad";
-      res.locals.clientSessionId = "c-123456-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
 
       await expect(
         docCheckingAppGet(fakeService)(req as Request, res as Response)

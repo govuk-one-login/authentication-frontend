@@ -5,7 +5,6 @@ import { MfaServiceInterface } from "../types";
 import { mfaService } from "../mfa-service";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
-  commonVariables,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
@@ -18,6 +17,7 @@ import {
   PATH_NAMES,
 } from "../../../../app.constants";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../../test/helpers/common-test-variables";
 
 describe("mfa service", () => {
   const httpInstance = new Http();

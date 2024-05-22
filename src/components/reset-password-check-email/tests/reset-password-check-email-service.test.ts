@@ -3,7 +3,6 @@ import sinon, { SinonStub } from "sinon";
 import { Http } from "../../../utils/http";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
-  commonVariables,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
@@ -17,6 +16,7 @@ import {
 import { ResetPasswordCheckEmailServiceInterface } from "../types";
 import { resetPasswordCheckEmailService } from "../reset-password-check-email-service";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("reset password check email service", () => {
   const httpInstance = new Http();

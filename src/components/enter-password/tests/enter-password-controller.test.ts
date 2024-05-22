@@ -18,14 +18,17 @@ import { ERROR_CODES } from "../../common/constants";
 import * as journey from "../../common/journey/journey";
 import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
+  const { email } = commonVariables;
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ENTER_PASSWORD);
     res = mockResponse();
+    req.session.user = { email };
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
   });
 
@@ -44,6 +47,10 @@ describe("enter password controller", () => {
 
   describe("enterPasswordPost", () => {
     describe("sending MFA code", () => {
+      beforeEach(() => {
+        req.body["password"] = "password";
+      });
+
       it("should call the MFA service to send an code when required and able to", async () => {
         const fakeService: EnterPasswordServiceInterface = {
           loginUser: sinon.fake.returns({
@@ -65,14 +72,6 @@ describe("enter password controller", () => {
             success: true,
           }),
         } as unknown as MfaServiceInterface;
-
-        res.locals.sessionId = "123456-djjad";
-        res.locals.clientSessionId = "00000-djjad";
-        res.locals.persistentSessionId = "dips-123456-abc";
-        req.session.user = {
-          email: "joe.bloggs@test.com",
-        };
-        req.body["password"] = "password";
 
         await enterPasswordPost(
           false,
@@ -110,14 +109,7 @@ describe("enter password controller", () => {
           "getJourneyTypeFromUserSession"
         );
 
-        res.locals.sessionId = "123456-djjad";
-        res.locals.clientSessionId = "00000-djjad";
-        res.locals.persistentSessionId = "dips-123456-abc";
-        req.session.user = {
-          email: "joe.bloggs@test.com",
-          reauthenticate: "test_data",
-        };
-        req.body["password"] = "password";
+        req.session.user = { email, reauthenticate: "test_data" };
 
         await enterPasswordPost(
           false,
@@ -173,14 +165,7 @@ describe("enter password controller", () => {
         "getJourneyTypeFromUserSession"
       );
 
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-        reauthenticate: "test_data",
-      };
-      req.body["password"] = "password";
+      req.session.user = { email, reauthenticate: "test_data" };
 
       await enterPasswordPost(
         false,
@@ -228,14 +213,6 @@ describe("enter password controller", () => {
         }),
       } as unknown as MfaServiceInterface;
 
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
-      req.body["password"] = "password";
-
       await enterPasswordPost(
         false,
         fakeService,
@@ -259,14 +236,6 @@ describe("enter password controller", () => {
         }),
       } as unknown as EnterPasswordServiceInterface;
 
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
-      req.body["password"] = "password";
-
       await enterPasswordPost(false, fakeService)(
         req as Request,
         res as Response
@@ -287,14 +256,6 @@ describe("enter password controller", () => {
           },
         }),
       } as unknown as EnterPasswordServiceInterface;
-
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
-      req.body["password"] = "password";
 
       await enterPasswordPost(false, fakeService)(
         req as Request,
@@ -318,14 +279,6 @@ describe("enter password controller", () => {
         }),
       } as unknown as EnterPasswordServiceInterface;
 
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      res.locals.persistentSessionId = "dips-123456-abc";
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
-      req.body["password"] = "password";
-
       await enterPasswordPost(false, fakeService)(
         req as Request,
         res as Response
@@ -346,13 +299,6 @@ describe("enter password controller", () => {
       const fakeMfaService: MfaServiceInterface = {
         sendMfaCode: sinon.fake(),
       };
-
-      res.locals.sessionId = "123456-djjad";
-      res.locals.clientSessionId = "00000-djjad";
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
-      req.body["password"] = "password";
 
       await expect(
         enterPasswordPost(
@@ -420,13 +366,6 @@ describe("enter password controller", () => {
           temporarilySuspended: testCase.interventions.temporarilySuspended,
           reproveIdentity: false,
         });
-        res.locals.sessionId = "123456-djjad";
-        res.locals.clientSessionId = "00000-djjad";
-        res.locals.persistentSessionId = "dips-123456-abc";
-        req.session.user = {
-          email: "joe.bloggs@test.com",
-        };
-        req.body["password"] = "password";
 
         await enterPasswordPost(
           false,
@@ -443,24 +382,12 @@ describe("enter password controller", () => {
   });
 
   describe("enterSignInRetryBlockedGet", () => {
-    const SESSION_ID = "123456-djjad";
-    const CLIENT_SESSION_ID = "00000-djjad";
-    const PERSISTENT_SESSION_ID = "dips-123456-abc";
-    const EMAIL = "joe.bloggs@test.com";
-
     it("should render /enter-password view when account is unblocked", async () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
           success: true,
         }),
       } as unknown as EnterEmailServiceInterface;
-
-      res.locals.sessionId = SESSION_ID;
-      res.locals.clientSessionId = CLIENT_SESSION_ID;
-      res.locals.persistentSessionId = PERSISTENT_SESSION_ID;
-      req.session.user = {
-        email: EMAIL,
-      };
 
       await enterSignInRetryBlockedGet(fakeService)(
         req as Request,
@@ -479,13 +406,6 @@ describe("enter password controller", () => {
           },
         }),
       } as unknown as EnterEmailServiceInterface;
-
-      res.locals.sessionId = SESSION_ID;
-      res.locals.clientSessionId = CLIENT_SESSION_ID;
-      res.locals.persistentSessionId = PERSISTENT_SESSION_ID;
-      req.session.user = {
-        email: EMAIL,
-      };
 
       await enterSignInRetryBlockedGet(fakeService)(
         req as Request,

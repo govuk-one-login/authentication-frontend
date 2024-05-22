@@ -5,7 +5,6 @@ import { AccountRecoveryInterface } from "../types";
 import { accountRecoveryService } from "../account-recovery-service";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
-  commonVariables,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
@@ -13,6 +12,7 @@ import {
 } from "../../../../../test/helpers/service-test-helper";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../../app.constants";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../../test/helpers/common-test-variables";
 
 describe("account recovery service", () => {
   const httpInstance = new Http();

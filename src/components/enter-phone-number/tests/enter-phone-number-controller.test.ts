@@ -64,7 +64,6 @@ describe("enter phone number controller", () => {
         }),
       } as unknown as SendNotificationServiceInterface;
 
-      res.locals.sessionId = "123456-djjad";
       req.body.phoneNumber = "07738393990";
       req.session.user.email = "test@test.com";
 
@@ -85,7 +84,6 @@ describe("enter phone number controller", () => {
         }),
       } as unknown as SendNotificationServiceInterface;
 
-      res.locals.sessionId = "123456-djjad";
       req.body.phoneNumber = "+33645453322";
       req.session.user.email = "test@test.com";
 
@@ -106,7 +104,6 @@ describe("enter phone number controller", () => {
       };
 
       req.body.email = "test.test.com";
-      res.locals.sessionId = "123456-djjad";
 
       await expect(
         enterPhoneNumberPost(fakeNotificationService)(
@@ -128,7 +125,6 @@ describe("enter phone number controller", () => {
         }),
       } as unknown as SendNotificationServiceInterface;
 
-      res.locals.sessionId = "123456-djjad";
       req.body.phoneNumber = "+33645453322";
       req.session.user.email = "test@test.com";
 
@@ -156,7 +152,6 @@ describe("enter phone number controller", () => {
           }),
         } as unknown as SendNotificationServiceInterface;
         process.env.SUPPORT_2HR_LOCKOUT = "1";
-        res.locals.sessionId = "123456-djjad";
         req.body.phoneNumber = "+33645453322";
         req.session.user.email = "test@test.com";
         req.session.user.isAccountPartCreated = true;
@@ -192,7 +187,6 @@ describe("enter phone number controller", () => {
           }),
         } as unknown as SendNotificationServiceInterface;
         process.env.SUPPORT_2HR_LOCKOUT = "1";
-        res.locals.sessionId = "123456-djjad";
         req.body.phoneNumber = "+33645453322";
         req.session.user.email = "test@test.com";
         req.session.user.isAccountCreationJourney = true;

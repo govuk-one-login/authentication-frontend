@@ -7,13 +7,13 @@ import { checkReauthUsersService } from "../check-reauth-users-service";
 import { CheckReauthServiceInterface } from "../types";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
-  commonVariables,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("re-authentication service", () => {
   const httpInstance = new Http();

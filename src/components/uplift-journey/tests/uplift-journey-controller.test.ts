@@ -34,8 +34,6 @@ describe("uplift journey controller", () => {
         }),
       } as unknown as MfaServiceInterface;
 
-      res.locals.sessionId = "123456-djjad";
-
       await upliftJourneyGet(fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ENTER_MFA);
@@ -50,7 +48,6 @@ describe("uplift journey controller", () => {
       } as unknown as MfaServiceInterface;
 
       req.query._ga = "123123.21321313.2388839";
-      res.locals.sessionId = "123456-djjad";
 
       await upliftJourneyGet(fakeService)(req as Request, res as Response);
 

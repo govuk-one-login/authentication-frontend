@@ -2,7 +2,6 @@ import { describe } from "mocha";
 import sinon, { SinonStub } from "sinon";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
-  commonVariables,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
@@ -17,6 +16,7 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("mfa service", () => {
   const httpInstance = new Http();

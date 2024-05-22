@@ -23,7 +23,6 @@ describe("reset password 2fa auth app controller", () => {
     process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
     req = createMockRequest(PATH_NAMES.RESET_PASSWORD_2FA_SMS);
     res = mockResponse();
-    res.locals.sessionId = "s-123456-djjad";
   });
 
   afterEach(() => {
@@ -114,7 +113,6 @@ describe("reset password 2fa auth app controller", () => {
       };
       req.session.user.enterEmailMfaType = "SMS";
       req.body.code = "123456";
-      req.session.id = "123456-djjad";
 
       await resetPassword2FASmsPost(fakeService)(
         req as Request,
@@ -139,7 +137,6 @@ describe("reset password 2fa auth app controller", () => {
       };
       req.session.user.enterEmailMfaType = "SMS";
       req.body.code = "123456";
-      req.session.id = "123456-djjad";
 
       await resetPassword2FASmsPost(fakeService)(
         req as Request,

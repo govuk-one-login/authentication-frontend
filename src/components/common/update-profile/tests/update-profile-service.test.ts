@@ -4,7 +4,6 @@ import { Http } from "../../../../utils/http";
 import { UpdateProfileServiceInterface, UpdateType } from "../types";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
-  commonVariables,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
@@ -17,6 +16,7 @@ import {
 } from "../../../../app.constants";
 import { updateProfileService } from "../update-profile-service";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../../test/helpers/common-test-variables";
 
 describe("update profile service", () => {
   const httpInstance = new Http();
