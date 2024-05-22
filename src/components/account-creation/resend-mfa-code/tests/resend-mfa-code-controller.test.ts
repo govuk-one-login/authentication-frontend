@@ -48,23 +48,22 @@ describe("resend mfa controller", () => {
 
     beforeEach(() => {
       fakeService = { sendNotification: sinon.fake.returns({ success: true }) };
+      req.path = PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
     });
 
     it("should request new phone verification code from send notification service and if successful redirect to /enter-code view", async () => {
-      req.path = PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
-
       await resendMfaCodePost(fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
       expect(fakeService.sendNotification).to.have.been.calledOnce;
     });
 
-    it("should request new phone verification code from send notification service and if successful redirect to /enter-code view", async () => {
+    it("should request new phone verification code with relevant registration journey type for account recovery journey", async () => {
       req.session.user = {
         email,
         isAccountRecoveryJourney: true,
       };
-      req.path = PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
+      const expectedJourneyType = "ACCOUNT_RECOVERY";
 
       await resendMfaCodePost(fakeService)(req as Request, res as Response);
 
@@ -76,16 +75,16 @@ describe("resend mfa controller", () => {
         diPersistentSessionId,
         "",
         req,
-        "ACCOUNT_RECOVERY"
+        expectedJourneyType
       );
     });
 
-    it("should request new phone verification code from send notification service and if successful redirect to /enter-code view", async () => {
+    it("should request new phone verification code with relevant registration journey type for account creation journey", async () => {
       req.session.user = {
         email,
         isAccountCreationJourney: true,
       };
-      req.path = PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
+      const expectedJourneyType = "REGISTRATION";
 
       await resendMfaCodePost(fakeService)(req as Request, res as Response);
 
@@ -97,7 +96,7 @@ describe("resend mfa controller", () => {
         diPersistentSessionId,
         "",
         req,
-        "REGISTRATION"
+        expectedJourneyType
       );
     });
   });

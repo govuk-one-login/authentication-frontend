@@ -19,6 +19,7 @@ import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
 import * as journey from "../../common/journey/journey";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("check your phone controller", () => {
   let req: RequestOutput;
@@ -56,7 +57,10 @@ describe("check your phone controller", () => {
 
     beforeEach(() => {
       fakeNotificationService = { sendNotification: sinon.fake() };
+      res.locals.sessionId = commonVariables.sessionId;
+      req.body.code = "123456";
     });
+
     it("can send the journeyType when requesting the MFA code", async () => {
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
@@ -70,10 +74,8 @@ describe("check your phone controller", () => {
         "getJourneyTypeFromUserSession"
       );
 
-      req.body.code = "123456";
       req.session.user.isAccountRecoveryPermitted = true;
       req.session.user.isAccountRecoveryJourney = true;
-      res.locals.sessionId = "123456-djjad";
 
       await checkYourPhonePost(fakeService, fakeNotificationService)(
         req as Request,
@@ -92,7 +94,7 @@ describe("check your phone controller", () => {
       expect(fakeService.verifyMfaCode).to.have.been.calledOnceWithExactly(
         sinon.match.any,
         sinon.match.any,
-        sinon.match.any,
+        commonVariables.sessionId,
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
@@ -109,9 +111,6 @@ describe("check your phone controller", () => {
         }),
       } as unknown as VerifyMfaCodeInterface;
 
-      req.body.code = "123456";
-      res.locals.sessionId = "123456-djjad";
-
       await checkYourPhonePost(fakeService, fakeNotificationService)(
         req as Request,
         res as Response
@@ -119,7 +118,7 @@ describe("check your phone controller", () => {
 
       expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.calledWith(
-        "123456-djjad",
+        commonVariables.sessionId,
         undefined,
         undefined,
         NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
@@ -140,8 +139,6 @@ describe("check your phone controller", () => {
         }),
       } as unknown as VerifyMfaCodeInterface;
 
-      req.body.code = "123456";
-      res.locals.sessionId = "123456-djjad";
       req.session.user = {
         isAccountRecoveryPermitted: true,
         isAccountRecoveryJourney: true,
@@ -154,7 +151,7 @@ describe("check your phone controller", () => {
 
       expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.calledWith(
-        "123456-djjad",
+        commonVariables.sessionId,
         undefined,
         undefined,
         NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION,
@@ -178,10 +175,6 @@ describe("check your phone controller", () => {
         }),
       } as unknown as VerifyMfaCodeInterface;
 
-      req.t = sinon.fake.returns("translated string");
-      req.body.code = "678988";
-      res.locals.sessionId = "123456-djjad";
-
       await checkYourPhonePost(fakeService, fakeNotificationService)(
         req as Request,
         res as Response
@@ -201,10 +194,6 @@ describe("check your phone controller", () => {
           },
         }),
       } as unknown as VerifyMfaCodeInterface;
-
-      req.t = sinon.fake.returns("translated string");
-      req.body.code = "678988";
-      res.locals.sessionId = "123456-djjad";
 
       await checkYourPhonePost(fakeService, fakeNotificationService)(
         req as Request,
