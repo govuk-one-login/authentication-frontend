@@ -113,7 +113,6 @@ export function enterEmailPost(
     const result = await service.userExists(
       sessionId,
       email,
-      req.ip,
       res.locals.clientSessionId,
       res.locals.persistentSessionId,
       req
@@ -176,7 +175,6 @@ export function enterEmailCreatePost(
     const userExistsResponse = await service.userExists(
       sessionId,
       email,
-      req.ip,
       clientSessionId,
       persistentSessionId,
       req

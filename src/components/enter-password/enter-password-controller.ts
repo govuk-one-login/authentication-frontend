@@ -55,7 +55,6 @@ export function enterSignInRetryBlockedGet(
     const checkUserIsBlockedResponse = await service.userExists(
       sessionId,
       email,
-      req.ip,
       clientSessionId,
       persistentSessionId,
       req
