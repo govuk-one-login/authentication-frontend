@@ -23,7 +23,6 @@ export function createPasswordPost(
       res.locals.clientSessionId,
       req.session.user.email,
       req.body.password,
-      req.ip,
       res.locals.persistentSessionId,
       req
     );

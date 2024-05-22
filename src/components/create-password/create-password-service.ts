@@ -17,7 +17,6 @@ export function createPasswordService(
     clientSessionId: string,
     emailAddress: string,
     password: string,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
@@ -31,7 +30,6 @@ export function createPasswordService(
         {
           sessionId: sessionId,
           clientSessionId: clientSessionId,
-          sourceIp: sourceIp,
           persistentSessionId: persistentSessionId,
         },
         req,
