@@ -325,7 +325,7 @@ variable "Add_WWWPrefix" {
 
 variable "Fraud_Header_Enabled" {
   type        = bool
-  default     = false
+  default     = true
   description = "flag to switch on Fraud header on cloudfront disturbution"
 }
 
