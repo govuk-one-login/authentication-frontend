@@ -206,3 +206,7 @@ export function googleAnalytics4Disabled(): string {
 export function universalAnalyticsDisabled(): string {
   return process.env.UA_DISABLED || "false";
 }
+
+export function proveIdentityWelcomeScreenDisabledForEnvironment(): boolean {
+  return process.env.PROVE_IDENTITY_WELCOME_SCREEN_DISABLED_FOR_ENVIRONMENT === "1";
+}

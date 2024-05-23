@@ -22,7 +22,7 @@ import { KmsDecryptionService } from "./kms-decryption-service";
 import { JwtService } from "./jwt-service";
 import { appendQueryParamIfHasValue } from "../../utils/url";
 import {
-  getOrchToAuthExpectedClientId,
+  getOrchToAuthExpectedClientId, proveIdentityWelcomeScreenDisabledForEnvironment,
   supportReauthentication,
 } from "../../config";
 import { logger } from "../../utils/logger";
@@ -129,6 +129,8 @@ export function authorizeGet(
       ? USER_JOURNEY_EVENTS.EXISTING_SESSION
       : USER_JOURNEY_EVENTS.NO_EXISTING_SESSION;
 
+    const proveIdentityWelcomeScreenDisabled: boolean = proveIdentityWelcomeScreenDisabledForEnvironment()
+
     let redirectPath = await getNextPathAndUpdateJourney(
       req,
       PATH_NAMES.AUTHORIZE,
@@ -142,6 +144,7 @@ export function authorizeGet(
         skipAuthentication: req.session.user.docCheckingAppUser,
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
         isReauthenticationRequired: req.session.user.reauthenticate,
+        proveIdentityWelcomeDisabled: proveIdentityWelcomeScreenDisabled,
       },
       sessionId
     );

@@ -4,6 +4,70 @@ import { getNextState, USER_JOURNEY_EVENTS } from "../state-machine";
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../../app.constants";
 
 describe("state-machine", () => {
+  describe(`getNextState - ${PATH_NAMES.AUTHORIZE} on ${USER_JOURNEY_EVENTS.EXISTING_SESSION}`, () => {
+
+    describe("where isIdentityRequired", () => {
+
+      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.PROVE_IDENTITY_WELCOME}`, () => {
+        const nextState = getNextState(PATH_NAMES.AUTHORIZE, USER_JOURNEY_EVENTS.EXISTING_SESSION, {
+          isIdentityRequired: true,
+        });
+
+        expect(nextState.value).to.equal(PATH_NAMES.PROVE_IDENTITY_WELCOME);
+      });
+
+      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.PROVE_IDENTITY_WELCOME} where proveIdentityWelcomeDisabled is false`, () => {
+        const nextState = getNextState(PATH_NAMES.AUTHORIZE, USER_JOURNEY_EVENTS.EXISTING_SESSION, {
+          isIdentityRequired: true,
+          proveIdentityWelcomeDisabled: false,
+        });
+
+        expect(nextState.value).to.equal(PATH_NAMES.PROVE_IDENTITY_WELCOME);
+      })
+
+      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.SIGN_IN_OR_CREATE} where proveIdentityWelcomeDisabled is true`, () => {
+        const nextState = getNextState(PATH_NAMES.AUTHORIZE, USER_JOURNEY_EVENTS.EXISTING_SESSION, {
+          isIdentityRequired: true,
+          proveIdentityWelcomeDisabled: true,
+        });
+
+        expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
+      })
+    });
+  });
+
+  describe(`getNextState - ${PATH_NAMES.AUTHORIZE} on ${USER_JOURNEY_EVENTS.NO_EXISTING_SESSION}`, () => {
+
+    describe("where isIdentityRequired", () => {
+
+      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.PROVE_IDENTITY_WELCOME}`, () => {
+        const nextState = getNextState(PATH_NAMES.AUTHORIZE, USER_JOURNEY_EVENTS.NO_EXISTING_SESSION, {
+          isIdentityRequired: true,
+        });
+
+        expect(nextState.value).to.equal(PATH_NAMES.PROVE_IDENTITY_WELCOME);
+      });
+
+      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.PROVE_IDENTITY_WELCOME} proveIdentityWelcomeDisabled is false`, () => {
+        const nextState = getNextState(PATH_NAMES.AUTHORIZE, USER_JOURNEY_EVENTS.NO_EXISTING_SESSION, {
+          isIdentityRequired: true,
+          proveIdentityWelcomeDisabled: false,
+        });
+
+        expect(nextState.value).to.equal(PATH_NAMES.PROVE_IDENTITY_WELCOME);
+      })
+
+      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.SIGN_IN_OR_CREATE} proveIdentityWelcomeDisabled is true`, () => {
+        const nextState = getNextState(PATH_NAMES.AUTHORIZE, USER_JOURNEY_EVENTS.NO_EXISTING_SESSION, {
+          isIdentityRequired: true,
+          proveIdentityWelcomeDisabled: true,
+        });
+
+        expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
+      })
+    });
+  })
+
   describe("getNextState - login journey (2fa)", () => {
     it("should move from initial state to sign or create when user event is landing", () => {
       const nextState = getNextState(PATH_NAMES.ROOT, USER_JOURNEY_EVENTS.ROOT);
@@ -218,4 +282,6 @@ describe("state-machine", () => {
       });
     });
   });
+
+
 });

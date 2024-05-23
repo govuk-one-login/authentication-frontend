@@ -1,9 +1,5 @@
 import { createMachine, EventType, StateValue } from "xstate";
-import {
-  MFA_METHOD_TYPE,
-  OIDC_PROMPT,
-  PATH_NAMES,
-} from "../../../app.constants";
+import { MFA_METHOD_TYPE, OIDC_PROMPT, PATH_NAMES } from "../../../app.constants";
 
 const USER_JOURNEY_EVENTS = {
   AUTHENTICATED: "AUTHENTICATED",
@@ -79,6 +75,8 @@ const authStateMachine = createMachine(
       requiresResetPasswordMFASmsCode: false,
       requiresResetPasswordMFAAuthAppCode: false,
       isOnForcedPasswordResetJourney: false,
+      isIdentityRequiredButProveIdentityWelcomeDisabledForEnvironment: false,
+      proveIdentityWelcomeDisabled: false,
     },
     states: {
       [PATH_NAMES.ROOT]: {
@@ -91,6 +89,10 @@ const authStateMachine = createMachine(
       [PATH_NAMES.AUTHORIZE]: {
         on: {
           [USER_JOURNEY_EVENTS.EXISTING_SESSION]: [
+            {
+              target: [PATH_NAMES.SIGN_IN_OR_CREATE],
+              cond: "isIdentityRequiredButProveIdentityWelcomeDisabledForEnvironment"
+            },
             {
               target: [PATH_NAMES.PROVE_IDENTITY_WELCOME],
               cond: "isIdentityRequired",
@@ -119,6 +121,10 @@ const authStateMachine = createMachine(
             {
               target: [PATH_NAMES.DOC_CHECKING_APP],
               cond: "skipAuthentication",
+            },
+            {
+              target: [PATH_NAMES.SIGN_IN_OR_CREATE],
+              cond: "isIdentityRequiredButProveIdentityWelcomeDisabledForEnvironment"
             },
             {
               target: [PATH_NAMES.PROVE_IDENTITY_WELCOME],
@@ -782,6 +788,9 @@ const authStateMachine = createMachine(
         context.requiresTwoFactorAuth === true,
       isAccountPartCreated: (context) => context.isMfaMethodVerified === false,
       isIdentityRequired: (context) => context.isIdentityRequired === true,
+      isIdentityRequiredButProveIdentityWelcomeDisabledForEnvironment: (context) => {
+        return (context.isIdentityRequired === true && context.proveIdentityWelcomeDisabled === true);
+      },
       isAuthenticated: (context) => context.isAuthenticated === true,
       requiresLogin: (context) =>
         context.isAuthenticated === true &&
