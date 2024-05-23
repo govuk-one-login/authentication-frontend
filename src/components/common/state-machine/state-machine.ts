@@ -4,6 +4,7 @@ import {
   OIDC_PROMPT,
   PATH_NAMES,
 } from "../../../app.constants";
+import { proveIdentityWelcomeEnabled } from "../../../config";
 
 const USER_JOURNEY_EVENTS = {
   AUTHENTICATED: "AUTHENTICATED",
@@ -78,6 +79,7 @@ const authStateMachine = createMachine(
       requiresResetPasswordMFASmsCode: false,
       requiresResetPasswordMFAAuthAppCode: false,
       isOnForcedPasswordResetJourney: false,
+      proveIdentityWelcomeEnabled: proveIdentityWelcomeEnabled(),
     },
     states: {
       [PATH_NAMES.ROOT]: {
@@ -92,7 +94,7 @@ const authStateMachine = createMachine(
           [USER_JOURNEY_EVENTS.EXISTING_SESSION]: [
             {
               target: [PATH_NAMES.PROVE_IDENTITY_WELCOME],
-              cond: "isIdentityRequired",
+              cond: "isIdentityRequiredAndProveIdentityWelcomeEnabled",
             },
             { target: [PATH_NAMES.ENTER_PASSWORD], cond: "requiresLogin" },
             {
@@ -103,6 +105,10 @@ const authStateMachine = createMachine(
             {
               target: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
               cond: "isReauthenticationRequired",
+            },
+            {
+              target: [PATH_NAMES.PROVE_IDENTITY],
+              cond: "isIdentityRequired",
             },
             { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
           ],
@@ -117,7 +123,7 @@ const authStateMachine = createMachine(
             },
             {
               target: [PATH_NAMES.PROVE_IDENTITY_WELCOME],
-              cond: "isIdentityRequired",
+              cond: "isIdentityRequiredAndProveIdentityWelcomeEnabled",
             },
             { target: [PATH_NAMES.SIGN_IN_OR_CREATE] },
           ],
@@ -742,6 +748,9 @@ const authStateMachine = createMachine(
       skipAuthentication: (context) =>
         context.skipAuthentication === true &&
         context.isAuthenticated === false,
+      isIdentityRequiredAndProveIdentityWelcomeEnabled: (context) =>
+        context.isIdentityRequired === true &&
+        context.proveIdentityWelcomeEnabled === true,
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.requiresTwoFactorAuth === true,
