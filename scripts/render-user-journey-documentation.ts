@@ -95,8 +95,8 @@ const htmlContent = `
               return `
                   <tr>
                     <td id="current-state-${currentState}" colspan="5">${renderRouterPageLink(
-                currentState
-              )} 🏁</td>
+                      currentState
+                    )} 🏁</td>
                   </tr>
               `;
             }
