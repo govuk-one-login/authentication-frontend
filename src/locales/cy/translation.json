@@ -669,24 +669,6 @@
       "signInLinkText": "mewngofnodwch",
       "paragraph2": "i’ch GOV.UK One Login."
     },
-    "shareInfo": {
-      "title": "Rhannu gwybodaeth o’ch GOV.UK One Login",
-      "header": "Rhannu gwybodaeth o’ch GOV.UK One Login",
-      "continue": "Parhau",
-      "bulletPointSectionHeader": "Mae’r gwasanaeth hwn angen defnyddio eich:",
-      "paragraph1": "Rydych wedi ychwanegu’r wybodaeth hon i’ch GOV.UK One Login pan wnaethoch ei greu. Gallwch ddewis ei rannu gyda’r gwasanaeth yn lle ei roi i mewn eto pan fyddwch yn defnyddio’r gwasanaeth.",
-      "paragraph2": "Bydd y gwasanaeth ond yn defnyddio’r wybodaeth yma i gysylltu â chi am y gwasanaeth. Ni fydd yn rhannu eich gwybodaeth ag unrhyw un arall. Bydd yn cadw eich gwybodaeth cyhyd ag y mae ei angen neu mae’r gyfraith yn ei gwneud yn ofynnol iddo.",
-      "paragraph3": "Os ydych yn dewis peidio â rhannu gwybodaeth o’ch GOV.UK One Login,efallai y gofynnir i chi am y wybodaeth honno o hyd wrth i chi ddefnyddio’r gwasanaeth. Er enghraifft os ydych yn dewis peidio â rhannu eich cyfeiriad e-bost a’ch rhif ffôn ac mae’r gwasanaeth angen ffordd i gysylltu â chi.",
-      "essentialHeader": "Ydych chi eisiau rhannu gwybodaeth o’ch GOV.UK One Login? ",
-      "radios": {
-        "shareMy": "Ydych chi eisiau rhannu gwybodaeth o’ch GOV.UK One Login?",
-        "radioText": {
-          "agree": "Rhannwch fy nghyfeiriad e-bost a’m rhif ffôn",
-          "doNotAgree": "Peidiwch rhannu fy nghyfeiriad e-bost â’m rhif ffôn",
-          "errorMessage": "Dewiswch os ydych am rannu eich cyfeiriad e-bost a’ch rhif ffôn neu beidio"
-        }
-      }
-    },
     "updatedTermsAndConds": {
       "title": "Diweddariad telerau defnyddio GOV.UK One Login",
       "header": "Diweddariad telerau defnyddio GOV.UK One Login",

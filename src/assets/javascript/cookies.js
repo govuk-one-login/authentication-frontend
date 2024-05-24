@@ -90,7 +90,6 @@ var cookies = function () {
         "sign in",
         "middle"
       ),
-      "/share-info": generateSessionJourney("sign in", "middle"),
       "/reset-password-check-email": generateSessionJourney(
         "password reset",
         "start"
