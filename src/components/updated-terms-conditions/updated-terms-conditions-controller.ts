@@ -61,7 +61,6 @@ export function updatedTermsConditionsPost(
           req.path,
           USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED,
           {
-            isConsentRequired: req.session.user.isConsentRequired,
             isIdentityRequired: req.session.user.isIdentityRequired,
           },
           sessionId

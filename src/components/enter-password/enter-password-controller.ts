@@ -157,7 +157,6 @@ export function enterPasswordPost(
     const isPasswordChangeRequired = userLogin.data.passwordChangeRequired;
 
     req.session.user.redactedPhoneNumber = userLogin.data.redactedPhoneNumber;
-    req.session.user.isConsentRequired = userLogin.data.consentRequired;
     req.session.user.isAccountPartCreated = !userLogin.data.mfaMethodVerified;
     req.session.user.isLatestTermsAndConditionsAccepted =
       userLogin.data.latestTermsAndConditionsAccepted;
@@ -248,7 +247,6 @@ export function enterPasswordPost(
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
           requiresTwoFactorAuth: userLogin.data.mfaRequired,
-          isConsentRequired: req.session.user.isConsentRequired,
           mfaMethodType: userLogin.data.mfaMethodType,
           isMfaMethodVerified: userLogin.data.mfaMethodVerified,
           isPasswordChangeRequired: isPasswordChangeRequired,

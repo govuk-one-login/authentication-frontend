@@ -10,9 +10,5 @@ export interface CreatePasswordServiceInterface {
     sourceIp: string,
     persistentSessionId: string,
     req: Request
-  ) => Promise<ApiResponseResult<SignUpResponse>>;
-}
-
-export interface SignUpResponse extends DefaultApiResponse {
-  consentRequired: boolean;
+  ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

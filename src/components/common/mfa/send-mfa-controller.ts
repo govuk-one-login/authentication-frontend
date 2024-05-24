@@ -57,7 +57,6 @@ export function sendMfaGeneric(
         {
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
-          isConsentRequired: req.session.user.isConsentRequired,
           isIdentityRequired: req.session.user.isIdentityRequired,
         },
         sessionId

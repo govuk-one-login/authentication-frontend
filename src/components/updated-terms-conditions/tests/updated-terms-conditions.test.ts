@@ -70,7 +70,6 @@ describe("updated terms conditions controller", () => {
 
       req.path = PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS;
       req.session.client.consentEnabled = true;
-      req.session.user.isConsentRequired = true;
       req.body.termsAndConditionsResult = "accept";
 
       await updatedTermsConditionsPost(fakeService)(

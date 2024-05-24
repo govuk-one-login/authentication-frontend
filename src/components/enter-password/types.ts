@@ -6,7 +6,6 @@ export interface UserLoginResponse extends DefaultApiResponse {
   redactedPhoneNumber?: string;
   mfaRequired?: boolean;
   latestTermsAndConditionsAccepted?: boolean;
-  consentRequired?: boolean;
   mfaMethodType?: string;
   mfaMethodVerified?: boolean;
   passwordChangeRequired?: boolean;

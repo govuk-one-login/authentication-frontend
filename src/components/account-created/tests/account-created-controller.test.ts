@@ -41,11 +41,5 @@ describe("account created controller", () => {
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
     });
-    it("should redirect to share-info when consent is required", async () => {
-      req.session.user.isConsentRequired = true;
-      await accountCreatedPost(req as Request, res as Response);
-
-      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.SHARE_INFO);
-    });
   });
 });

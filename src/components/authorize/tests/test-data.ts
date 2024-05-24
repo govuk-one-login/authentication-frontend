@@ -9,7 +9,6 @@ export function createmockclaims(): any {
   return {
     confidence: "Cl.Cm",
     iss: "UNKNOWN",
-    consent_required: false,
     client_id: getOrchToAuthExpectedClientId(),
     govuk_signin_journey_id: "QOFzoB3o-9gGplMgdT1dJfH4vaI",
     aud: getOrchToAuthExpectedAudience(),
