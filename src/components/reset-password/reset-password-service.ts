@@ -25,6 +25,7 @@ export function resetPasswordService(
       API_ENDPOINTS.RESET_PASSWORD,
       {
         password: newPassword,
+        isForcedPasswordReset: isForcedPasswordReset,
       },
       getInternalRequestConfigWithSecurityHeaders(
         {
