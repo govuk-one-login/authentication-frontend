@@ -1,0 +1,6 @@
+FROM alpine:3.19
+
+RUN apk add --no-cache --update \
+    httpie
+
+CMD ["sleep", "infinity"]
