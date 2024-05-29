@@ -55,16 +55,15 @@ export function prepareIdentityDocumentTitle(
   return documentUsedDescription;
 }
 
-export function prepareProblemWithTitle(
-  problemWith: string
-): string {
+export function prepareProblemWithTitle(problemWith: string): string {
   let problemWithDescription = "";
   switch (problemWith) {
     case "name":
       problemWithDescription = "Entering your name";
       break;
     case "bankOrBuildingSocietyDetails":
-      problemWithDescription = "Entering your bank or building society account details";
+      problemWithDescription =
+        "Entering your bank or building society account details";
       break;
   }
 
@@ -170,7 +169,9 @@ export function contactUsServiceSmartAgent(
       contactForm.identityDocumentUsed
     );
 
-    customAttributes["sa-tag-building-society"] = prepareProblemWithTitle(contactForm.problemWith);
+    customAttributes["sa-tag-building-society"] = prepareProblemWithTitle(
+      contactForm.problemWith
+    );
 
     customAttributes["sa-webformrefer"] = getRefererTag(contactForm);
 

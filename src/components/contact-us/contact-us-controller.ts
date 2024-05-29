@@ -819,7 +819,7 @@ export function getQuestionsFromFormTypeForMessageBody(
       serviceTryingToUse: req.t(
         "pages.contactUsQuestions.serviceTryingToUse.header",
         { lng: "en" }
-      )
+      ),
     },
     provingIdentityNeedToUpdatePersonalInformation: {
       issueDescription: req.t(
