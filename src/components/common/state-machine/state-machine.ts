@@ -63,7 +63,6 @@ const authStateMachine = createMachine(
     initial: PATH_NAMES.AUTHORIZE,
     context: {
       isLatestTermsAndConditionsAccepted: true,
-      isConsentRequired: false,
       requiresUplift: false,
       requiresTwoFactorAuth: false,
       isAuthenticated: false,
@@ -101,10 +100,6 @@ const authStateMachine = createMachine(
               cond: "requiresAuthAppUplift",
             },
             { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
-            {
-              target: [PATH_NAMES.SHARE_INFO],
-              cond: "isConsentRequired",
-            },
             {
               target: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
               cond: "isReauthenticationRequired",
@@ -232,10 +227,6 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
               cond: "isLatestTermsAndConditionsAccepted",
             },
-            {
-              target: [PATH_NAMES.SHARE_INFO],
-              cond: "isConsentRequired",
-            },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -328,10 +319,6 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.PROVE_IDENTITY],
               cond: "isIdentityRequired",
             },
-            {
-              target: [PATH_NAMES.SHARE_INFO],
-              cond: "isConsentRequired",
-            },
             { target: [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL] },
           ],
         },
@@ -350,10 +337,6 @@ const authStateMachine = createMachine(
       [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL]: {
         on: {
           [USER_JOURNEY_EVENTS.ACCOUNT_CREATED]: [
-            {
-              target: [PATH_NAMES.SHARE_INFO],
-              cond: "isConsentRequired",
-            },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -389,10 +372,6 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
               cond: "isLatestTermsAndConditionsAccepted",
             },
-            {
-              target: [PATH_NAMES.SHARE_INFO],
-              cond: "isConsentRequired",
-            },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -416,10 +395,6 @@ const authStateMachine = createMachine(
             {
               target: [PATH_NAMES.PROVE_IDENTITY],
               cond: "isIdentityRequired",
-            },
-            {
-              target: [PATH_NAMES.SHARE_INFO],
-              cond: "isConsentRequired",
             },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
@@ -448,10 +423,6 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.PROVE_IDENTITY],
               cond: "isIdentityRequired",
             },
-            {
-              target: [PATH_NAMES.SHARE_INFO],
-              cond: "isConsentRequired",
-            },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -475,17 +446,8 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.PROVE_IDENTITY],
               cond: "isIdentityRequired",
             },
-            {
-              target: [PATH_NAMES.SHARE_INFO],
-              cond: "isConsentRequired",
-            },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
-        },
-      },
-      [PATH_NAMES.SHARE_INFO]: {
-        on: {
-          [USER_JOURNEY_EVENTS.CONSENT_ACCEPTED]: [PATH_NAMES.AUTH_CODE],
         },
       },
       [PATH_NAMES.RESET_PASSWORD_REQUEST]: {
@@ -586,10 +548,6 @@ const authStateMachine = createMachine(
               cond: "isLatestTermsAndConditionsAccepted",
             },
             {
-              target: [PATH_NAMES.SHARE_INFO],
-              cond: "isConsentRequired",
-            },
-            {
               target: [PATH_NAMES.PROVE_IDENTITY],
               cond: "isIdentityRequired",
             },
@@ -633,10 +591,6 @@ const authStateMachine = createMachine(
             {
               target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
               cond: "isLatestTermsAndConditionsAccepted",
-            },
-            {
-              target: [PATH_NAMES.SHARE_INFO],
-              cond: "isConsentRequired",
             },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
@@ -767,7 +721,6 @@ const authStateMachine = createMachine(
   },
   {
     guards: {
-      isConsentRequired: (context) => context.isConsentRequired === true,
       isLatestTermsAndConditionsAccepted: (context) =>
         context.isLatestTermsAndConditionsAccepted === false,
       requiresUplift: (context) =>

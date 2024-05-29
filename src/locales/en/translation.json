@@ -669,24 +669,6 @@
       "signInLinkText": "sign in",
       "paragraph2": "to your GOV.UK One Login."
     },
-    "shareInfo": {
-      "title": "Share information from your GOV.UK One Login",
-      "header": "Share information from your GOV.UK One Login",
-      "continue": "Continue",
-      "bulletPointSectionHeader": "This service needs to use your:",
-      "paragraph1": "You added this information to your GOV.UK One Login when you created it. You can choose to share the information with the service instead of entering it again when you use the service.",
-      "paragraph2": "The service will only use this information to contact you about the service. It won’t share your information with anyone else. It will keep your information for as long as it needs to or the law requires it to.",
-      "paragraph3": "If you choose not to share information from your GOV.UK One Login, you may still be asked for that information as you use the service. For example if you choose not to share your email address and phone number and the service needs a way to contact you.",
-      "essentialHeader": "Do you want to share information from your GOV.UK One Login? ",
-      "radios": {
-        "shareMy": "Do you want to share information from your GOV.UK One Login?",
-        "radioText": {
-          "agree": "Share my email address and phone number",
-          "doNotAgree": "Do not share my email address and phone number",
-          "errorMessage": "Select if you want to share your email address and phone number or not"
-        }
-      }
-    },
     "updatedTermsAndConds": {
       "title": "GOV.UK One Login terms of use update",
       "header": "GOV.UK One Login terms of use update",

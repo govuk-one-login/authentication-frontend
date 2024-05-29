@@ -30,7 +30,6 @@ export const PATH_NAMES = {
   CREATE_ACCOUNT_ENTER_PHONE_NUMBER: "/enter-phone-number",
   CREATE_ACCOUNT_SUCCESSFUL: "/account-created",
   CHECK_YOUR_PHONE: "/check-your-phone",
-  SHARE_INFO: "/share-info",
   UPDATED_TERMS_AND_CONDITIONS: "/updated-terms-and-conditions",
   ENTER_MFA: "/enter-code",
   SECURITY_CODE_INVALID: "/security-code-invalid",

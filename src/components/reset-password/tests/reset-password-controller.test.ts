@@ -100,7 +100,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
               success: true,
               data: {
                 redactedPhoneNumber: "1234",
-                consentRequired: false,
                 latestTermsAndConditionsAccepted: true,
                 mfaMethodVerified: true,
                 mfaMethodType: MFA_METHOD_TYPE.SMS,
@@ -154,7 +153,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
                 success: true,
                 data: {
                   redactedPhoneNumber: "1234",
-                  consentRequired: false,
                   latestTermsAndConditionsAccepted: true,
                   mfaMethodVerified: true,
                   mfaMethodType: MFA_METHOD_TYPE.SMS,
@@ -189,7 +187,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
               success: true,
               data: {
                 redactedPhoneNumber: "1234",
-                consentRequired: false,
                 latestTermsAndConditionsAccepted: true,
                 mfaMethodVerified: false,
                 mfaRequired: true,
@@ -233,7 +230,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
           success: true,
           data: {
             redactedPhoneNumber: "1234",
-            consentRequired: false,
             latestTermsAndConditionsAccepted: true,
             mfaMethodVerified: true,
             mfaRequired: false,
@@ -277,7 +273,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
           success: true,
           data: {
             redactedPhoneNumber: "1234",
-            consentRequired: false,
             latestTermsAndConditionsAccepted: true,
             mfaMethodVerified: true,
             mfaRequired: false,

@@ -5,8 +5,8 @@ import {
   http,
 } from "../../utils/http";
 import { API_ENDPOINTS } from "../../app.constants";
-import { CreatePasswordServiceInterface, SignUpResponse } from "./types";
-import { ApiResponseResult } from "../../types";
+import { CreatePasswordServiceInterface } from "./types";
+import { ApiResponseResult, DefaultApiResponse } from "../../types";
 import { Request } from "express";
 
 export function createPasswordService(
@@ -20,8 +20,8 @@ export function createPasswordService(
     sourceIp: string,
     persistentSessionId: string,
     req: Request
-  ): Promise<ApiResponseResult<SignUpResponse>> {
-    const response = await axios.client.post<SignUpResponse>(
+  ): Promise<ApiResponseResult<DefaultApiResponse>> {
+    const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.SIGNUP_USER,
       {
         email: emailAddress,
@@ -39,7 +39,7 @@ export function createPasswordService(
       )
     );
 
-    return createApiResponse<SignUpResponse>(response);
+    return createApiResponse<DefaultApiResponse>(response);
   };
 
   return {
