@@ -67,6 +67,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_IDENTITY_DOCUMENT]:
     "pages.contactUsQuestions.provingIdentityProblemWithIdentityDocument.title",
+  [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_BANK_BUILDING_SOCIETY_DETAILS]:
+    "pages.contactUsQuestions.provingIdentityProblemWithBankBuildingSocietyDetails.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_NEED_TO_UPDATE_PERSONAL_INFORMATION]:
     "pages.contactUsQuestions.provingIdentityNeedToUpdatePersonalInformation.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_SOMETHING_ELSE]:
@@ -494,6 +496,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
       preferredLanguage: getPreferredLanguage(res.locals.language),
       securityCodeSentMethod: req.body.securityCodeSentMethod,
       identityDocumentUsed: req.body.identityDocumentUsed,
+      problemWith: req.body.problemWith,
     });
 
     logger.info(
@@ -808,6 +811,16 @@ export function getQuestionsFromFormTypeForMessageBody(
         { lng: "en" }
       ),
     },
+    provingIdentityProblemWithBankBuildingSocietyDetails: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.provingIdentityProblemWithBankBuildingSocietyDetails.section2.label",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      )
+    },
     provingIdentityNeedToUpdatePersonalInformation: {
       issueDescription: req.t(
         "pages.contactUsQuestions.provingIdentityNeedToUpdatePersonalInformation.section1.label",
@@ -993,6 +1006,10 @@ export function getQuestionFromThemes(
     ),
     proving_identity_problem_with_identity_document: req.t(
       "pages.contactUsQuestions.provingIdentityProblemWithIdentityDocument.title",
+      { lng: "en" }
+    ),
+    provingIdentityProblemWithBankBuildingSocietyDetails: req.t(
+      "pages.contactUsQuestions.provingIdentityProblemWithBankBuildingSocietyDetails.title",
       { lng: "en" }
     ),
     proving_identity_need_to_update_personal_information: req.t(

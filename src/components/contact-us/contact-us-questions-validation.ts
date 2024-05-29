@@ -50,6 +50,20 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value, lng: req.i18n.lng }
         );
       }),
+    body("problemWith")
+      .if(body("theme").equals("proving_identity"))
+      .if(
+        body("subtheme").equals(
+          "proving_identity_problem_with_bank_building_society_details"
+        )
+      )
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.provingIdentityProblemWithBankBuildingSocietyDetails.section1.errorMessage",
+          { value, lng: req.i18n.lng }
+        );
+      }),
     body("issueDescription")
       .optional()
       .notEmpty()

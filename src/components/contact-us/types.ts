@@ -12,6 +12,7 @@ export interface ContactForm {
   preferredLanguage?: string;
   securityCodeSentMethod?: string;
   identityDocumentUsed?: string;
+  problemWith?: string;
   fromURL?: string;
 }
 
@@ -78,6 +79,7 @@ export interface SmartAgentCustomAttributes {
   "sa-tag-subtheme"?: string;
   "sa-app-error-code"?: string;
   "sa-security-mobile-country"?: string;
+  "sa-tag-building-society"?: string;
   "sa-tag-national-insurance-number"?: string;
 }
 

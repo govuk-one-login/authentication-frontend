@@ -1,0 +1,85 @@
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+    {{ 'pages.contactUsQuestions.provingIdentityProblemWithBankBuildingSocietyDetails.header' | translate }}
+</h1>
+
+<form action="{{formSubmissionUrl}}" method="post" novalidate>
+
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <input type="hidden" name="theme" value="{{theme}}"/>
+    <input type="hidden" name="subtheme" value="{{subtheme}}"/>
+    <input type="hidden" name="backurl" value="{{backurl}}"/>
+    <input type="hidden" name="fromURL" value="{{fromURL}}"/>
+    <input type="hidden" name="formType" value="provingIdentityProblemWithBankBuildingSocietyDetails"/>
+    <input type="hidden" name="referer" value="{{referer}}"/>
+    {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
+
+    {% set items = [
+        {
+            value: 'name',
+            checked: problemWith === 'name',
+            text: 'pages.contactUsQuestions.provingIdentityProblemWithBankBuildingSocietyDetails.section1.radio1' | translate
+        },
+        {
+            value: 'bankOrBuildingSocietyDetails',
+            checked: problemWith === 'bankOrBuildingSocietyDetails',
+            text: 'pages.contactUsQuestions.provingIdentityProblemWithBankBuildingSocietyDetails.section1.radio2' | translate
+        }
+    ] %}
+
+    {{ govukRadios({
+        name: "problemWith",
+        fieldset: {
+            legend: {
+                text: 'pages.contactUsQuestions.provingIdentityProblemWithBankBuildingSocietyDetails.section1.header' | translate,
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--s"
+            }
+        },
+        items: items,
+        errorMessage: {
+            text: errors['problemWith'].text
+        } if (errors['problemWith'])
+    }) }}
+
+    {{ govukCharacterCount({
+        label: {
+            text: 'pages.contactUsQuestions.provingIdentityProblemWithBankBuildingSocietyDetails.section2.label' | translate,
+            classes: "govuk-label--s"
+        },
+        hint: {
+            text: 'pages.contactUsQuestions.provingIdentityProblemWithBankBuildingSocietyDetails.section2.hint' | translate
+        },
+        id: "issueDescription",
+        name: "issueDescription",
+        maxlength: contactUsFieldMaxLength,
+        value: issueDescription,
+        charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translate,
+        charactersUnderLimitText: {
+            other: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.other' | translate,
+            one: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.one' | translate
+        },
+        charactersOverLimitText: {
+            other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translate,
+            one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translate
+        },
+        errorMessage: {
+            text: errors['issueDescription'].text | translate | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
+        } if (errors['issueDescription'])
+    }) }}
+
+    {% include 'contact-us/questions/_service-trying-to-use.njk' %}
+
+    {{ govukWarningText({
+        text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
+        iconFallbackText: "Warning"
+    }) }}
+
+    {% include 'contact-us/questions/_reply_by_email.njk' %}
+
+    {{ govukButton({
+        "text": "general.sendMessage" | translate,
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+
+</form>
