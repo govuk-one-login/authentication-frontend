@@ -92,6 +92,8 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             "SUPPORT_REAUTHENTICATION": 1,
             "SUPPORT_2HR_LOCKOUT": 1,
             "SUPPORT_CHECK_EMAIL_FRAUD": 1,
+            "NO_PHOTO_ID_CONTACT_FORMS": 1,
+            "LANGUAGE_TOGGLE_ENABLED": 1,
         },
     },
     {

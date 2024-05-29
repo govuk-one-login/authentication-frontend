@@ -1771,6 +1771,11 @@
           "radio3": "Mae angen i chi ddiweddaru eich gwybodaeth bersonol",
           "radio4": "Roedd problem dechnegol (er enghraifft fe welsoch neges gwall)",
           "radio5": "Rhywbeth arall",
+          "radio6": "Cawsoch broblem gyda’ch manylion banc neu gymdeithas adeiladu",
+          "radio7": {
+            "label": "Cawsoch broblem gyda’ch rhif Yswiriant Gwladol",
+            "hint": "Gallwch ddarllen mwy am gael neu ddod o hyd i’ch rhif Yswiriant Gwladol yn <a href=\"https://www.gov.uk/rhif-yswiriant-gwladol-coll\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">www.gov.uk/rhif-yswiriant-gwladol-coll</a>"
+          },
           "errorMessage": "Dewiswch y broblem oedd gennych wrth brofi eich hunaniaeth"
         }
       }

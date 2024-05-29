@@ -10,6 +10,8 @@ import {
 import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants";
 import { RequestGet, ResponseRedirect } from "../../../types";
 
+import { supportNoPhotoIdContactForms } from "../../../config";
+
 describe("contact us further information controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
@@ -44,6 +46,7 @@ describe("contact us further information controller", () => {
           theme: "signing_in",
           referer: encodeURIComponent(REFERER),
           hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
+          supportNoPhotoIdContactForms: false,
         }
       );
     });
@@ -60,6 +63,7 @@ describe("contact us further information controller", () => {
           theme: "account_creation",
           referer: encodeURIComponent(REFERER),
           hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
+          supportNoPhotoIdContactForms: false,
         }
       );
     });
@@ -195,6 +199,23 @@ describe("contact us further information controller", () => {
       expect(res.redirect).to.have.calledWith(
         "/contact-us-questions?theme=account_creation&subtheme=something_else&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
+    });
+  });
+
+  describe("supportNoPhotoIdContactForms() with the support No photo id contact forms", () => {
+    it("should return true when NO_PHOTO_ID_CONTACT_FORMS is set to '1'", async () => {
+      process.env.NO_PHOTO_ID_CONTACT_FORMS = "1";
+      expect(supportNoPhotoIdContactForms()).to.be.true;
+    });
+
+    it("should return false  when NO_PHOTO_ID_CONTACT_FORMS is set to '0'", async () => {
+      process.env.NO_PHOTO_ID_CONTACT_FORMS = "0";
+      expect(supportNoPhotoIdContactForms()).to.be.false;
+    });
+
+    it("should return false when NO_PHOTO_ID_CONTACT_FORMS is undefined", async () => {
+      process.env.NO_PHOTO_ID_CONTACT_FORMS = undefined;
+      expect(supportNoPhotoIdContactForms()).to.be.false;
     });
   });
 });

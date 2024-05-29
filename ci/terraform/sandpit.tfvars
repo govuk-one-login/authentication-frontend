@@ -16,6 +16,7 @@ support_account_interventions = "1"
 support_2fa_b4_password_reset = "1"
 support_check_email_fraud     = "1"
 language_toggle_enabled       = "1"
+no_photo_id_contact_forms     = "0"
 
 
 frontend_task_definition_cpu     = 512

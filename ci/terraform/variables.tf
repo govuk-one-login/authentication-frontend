@@ -235,6 +235,12 @@ variable "support_2hr_lockout" {
   default     = "0"
 }
 
+variable "no_photo_id_contact_forms" {
+  description = "When true enables no photo id contact forms"
+  type        = string
+  default     = "0"
+}
+
 variable "support_account_interventions" {
   description = "When true, turns on account interventions in environment"
   type        = string
