@@ -380,7 +380,6 @@ describe("Integration:: contact us - public user", () => {
     });
   });
 
-
   describe("when a user had a problem with their phone number when creating an account", () => {
     const phoneNumberIssueData = (
       issueDescription: string,
