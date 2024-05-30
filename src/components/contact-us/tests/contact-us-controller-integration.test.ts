@@ -362,6 +362,25 @@ describe("Integration:: contact us - public user", () => {
     });
   });
 
+  describe("when a user had a problem with their national insurance number", () => {
+    it("should return validation error when user has not described which problem they had", (done) => {
+      const data = {
+        _csrf: token,
+        theme: "proving_identity",
+        subtheme: "proving_identity_problem_with_national_insurance_number",
+        contact: "false",
+      };
+      expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#problemWithNationalInsuranceNumber-error",
+        "What problem were you having with your National Insurance number?",
+        done
+      );
+    });
+  });
+
+
   describe("when a user had a problem with their phone number when creating an account", () => {
     const phoneNumberIssueData = (
       issueDescription: string,

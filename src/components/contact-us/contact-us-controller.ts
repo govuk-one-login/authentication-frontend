@@ -71,6 +71,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.provingIdentityNeedToUpdatePersonalInformation.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_SOMETHING_ELSE]:
     "pages.contactUsQuestions.provingIdentitySomethingElse.title",
+  [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_NATIONAL_INSURANCE_NUMBER]:
+    "pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
@@ -469,6 +471,8 @@ export function contactUsQuestionsFormPostToSmartAgent(
         moreDetailDescription: req.body.moreDetailDescription,
         serviceTryingToUse: req.body.serviceTryingToUse,
         countryPhoneNumberFrom: req.body.countryPhoneNumberFrom,
+        problemWithNationalInsuranceNumber:
+          req.body.problemWithNationalInsuranceNumber,
       },
       themes: { theme: req.body.theme, subtheme: req.body.subtheme },
       subject: "GOV.UK One Login",
@@ -824,6 +828,12 @@ export function getQuestionsFromFormTypeForMessageBody(
         { lng: "en" }
       ),
     },
+    provingIdentityProblemWithNationalInsuranceNumber: {
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
   };
 
   return formTypeToQuestions[formType];
@@ -991,6 +1001,10 @@ export function getQuestionFromThemes(
     ),
     proving_identity_something_else: req.t(
       "pages.contactUsQuestions.provingIdentitySomethingElse.title",
+      { lng: "en" }
+    ),
+    proving_identity_problem_with_national_insurance_number: req.t(
+      "pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.title",
       { lng: "en" }
     ),
   };

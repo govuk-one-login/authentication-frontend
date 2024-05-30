@@ -197,6 +197,11 @@ export function contactUsServiceSmartAgent(
         contactForm.descriptions.issueDescription;
     }
 
+    if (contactForm.descriptions.problemWithNationalInsuranceNumber) {
+      customAttributes["sa-tag-national-insurance-number"] =
+        contactForm.descriptions.problemWithNationalInsuranceNumber;
+    }
+
     customAttributes["sa-tag-what-gov-service"] =
       contactForm.descriptions.serviceTryingToUse;
 
