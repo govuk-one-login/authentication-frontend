@@ -1,13 +1,14 @@
 environment         = "dev"
 common_state_bucket = "di-auth-development-tfstate"
 
+frontend_task_definition_cpu     = 512
+frontend_task_definition_memory  = 1024
 frontend_auto_scaling_v2_enabled = true
-
-frontend_task_definition_cpu    = 512
-frontend_task_definition_memory = 1024
-frontend_auto_scaling_min_count = 1
-frontend_auto_scaling_max_count = 2
-ecs_desired_count               = 1
+deployment_min_healthy_percent   = 100
+deployment_max_percent           = 200
+frontend_auto_scaling_min_count  = 1
+frontend_auto_scaling_max_count  = 2
+ecs_desired_count                = 1
 
 alb_idle_timeout = 30
 
