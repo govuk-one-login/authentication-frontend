@@ -1008,7 +1008,7 @@ export function getQuestionFromThemes(
       "pages.contactUsQuestions.provingIdentityProblemWithIdentityDocument.title",
       { lng: "en" }
     ),
-    provingIdentityProblemWithBankBuildingSocietyDetails: req.t(
+    proving_identity_problem_with_bank_building_society_details: req.t(
       "pages.contactUsQuestions.provingIdentityProblemWithBankBuildingSocietyDetails.title",
       { lng: "en" }
     ),
