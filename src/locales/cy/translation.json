@@ -2171,8 +2171,21 @@
         "section2": {
           "errorMessage": "Rhowch beth ddigwyddodd"
         }
+      },
+      "provingIdentityProblemWithNationalInsuranceNumber": {
+        "title": "Problem gyda’ch rhif Yswiriant Gwladol",
+        "header": "Problem gyda’ch rhif Yswiriant Gwladol",
+        "paragraph1": "Mae eich rhif Yswiriant Gwladol yn cael ei wneud i fyny o  2 lythyren, 6 rhif a llythyren terfynol.",
+        "paragraph2": "Er enghraifft, QQ123456B.",
+        "paragraph3": "Gallwch ddod o hyd i’ch rhif Yswiriant Gwladol ar eich slip cyflog, P60 neu lythyr budd-dal.",
+        "paragraph4": "Gallwch ddarllen mwy am gael neu ddod o hyd i’ch rhif Yswiriant Gwladol yn <a href=\"https://www.gov.uk/rhif-yswiriant-gwladol-coll\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">www.gov.uk/rhif-yswiriant-gwladol-coll</a>",
+        "section1": {
+          "header": "Pa broblem oeddech chi’n ei chael gyda’ch rhif Yswiriant Gwladol?",
+          "errorMessage": "Pa broblem oeddech chi’n ei chael gyda’ch rhif Yswiriant Gwladol?"
+        }
       }
     },
+    
     "contactUsSubmitSuccess": {
       "title": "Mae eich neges wedi ei anfon",
       "header": "Mae eich neges wedi ei anfon",

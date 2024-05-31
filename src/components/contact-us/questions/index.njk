@@ -135,4 +135,8 @@
         {% include 'contact-us/questions/_proving-identity-something-else.njk' %}
     {% endif %}
 
+    {% if (theme == 'proving_identity') and (subtheme == 'proving_identity_problem_with_national_insurance_number') %}
+        {% include 'contact-us/questions/_proving-identity-problem-with-national-insurance-number.njk' %}
+    {% endif %}
+
 {% endblock %}

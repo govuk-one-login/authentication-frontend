@@ -2171,8 +2171,21 @@
         "section2": {
           "errorMessage": "Enter what happened"
         }
+      },
+      "provingIdentityProblemWithNationalInsuranceNumber": {
+        "title": "A problem with your National Insurance number",
+        "header": "A problem with your National Insurance number",
+        "paragraph1": "Your National Insurance number is made up of 2 letters, 6 numbers and a final letter.",
+        "paragraph2": "For example, QQ123456B.",
+        "paragraph3": "You can find your National Insurance number on your payslip, P60 or benefit letter.",
+        "paragraph4": "You can read more about getting or finding your National Insurance number at <a href=\"https://www.gov.uk/find-national-insurance-number\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">www.gov.uk/find-national-insurance-number</a>",
+        "section1": {
+          "header": "What problem were you having with your National Insurance number?",
+          "errorMessage": "What problem were you having with your National Insurance number?"
+        }
       }
     },
+    
     "contactUsSubmitSuccess": {
       "title": "Your message has been submitted",
       "header": "Your message has been submitted",

@@ -181,6 +181,8 @@ export const CONTACT_US_THEMES = {
   PROVING_IDENTITY_NEED_TO_UPDATE_PERSONAL_INFORMATION:
     "proving_identity_need_to_update_personal_information",
   PROVING_IDENTITY_SOMETHING_ELSE: "proving_identity_something_else",
+  PROVING_IDENTITY_PROBLEM_WITH_NATIONAL_INSURANCE_NUMBER:
+    "proving_identity_problem_with_national_insurance_number",
 };
 
 export const CONTACT_US_FIELD_MAX_LENGTH = 1200;

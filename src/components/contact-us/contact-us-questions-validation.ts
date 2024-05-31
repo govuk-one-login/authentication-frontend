@@ -137,6 +137,34 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value, lng: req.i18n.lng }
         );
       }),
+    body("problemWithNationalInsuranceNumber")
+      .if(body("theme").equals("proving_identity"))
+      .if(
+        body("subtheme").equals(
+          "proving_identity_problem_with_national_insurance_number"
+        )
+      )
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.section1.errorMessage",
+          { value, lng: req.i18n.lng }
+        );
+      }),
+    body("problemWithNationalInsuranceNumber")
+      .if(body("theme").equals("proving_identity"))
+      .if(
+        body("subtheme").equals(
+          "proving_identity_problem_with_national_insurance_number"
+        )
+      )
+      .isLength({ max: CONTACT_US_FIELD_MAX_LENGTH })
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.optionalDescriptionErrorMessage.entryTooLongMessage",
+          { value, lng: req.i18n.lng }
+        );
+      }),
     body("contact")
       .notEmpty()
       .withMessage((value, { req }) => {

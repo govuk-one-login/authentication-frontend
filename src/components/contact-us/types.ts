@@ -45,6 +45,7 @@ export interface Descriptions {
   moreDetailDescription?: string;
   serviceTryingToUse?: string;
   countryPhoneNumberFrom?: string;
+  problemWithNationalInsuranceNumber?: string;
 }
 
 export interface Themes {
@@ -77,6 +78,7 @@ export interface SmartAgentCustomAttributes {
   "sa-tag-subtheme"?: string;
   "sa-app-error-code"?: string;
   "sa-security-mobile-country"?: string;
+  "sa-tag-national-insurance-number"?: string;
 }
 
 export interface SmartAgentTicket {

@@ -1,0 +1,59 @@
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+    {{ 'pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.header' | translate }}
+</h1>
+
+<form action="{{formSubmissionUrl}}" method="post" novalidate>
+
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <input type="hidden" name="theme" value="{{theme}}"/>
+    <input type="hidden" name="subtheme" value="{{subtheme}}"/>
+    <input type="hidden" name="backurl" value="{{backurl}}"/>
+    <input type="hidden" name="fromURL" value="{{fromURL}}"/>
+    <input type="hidden" name="formType" value="provingIdentityProblemWithNationalInsuranceNumber"/>
+    <input type="hidden" name="referer" value="{{referer}}"/>
+    {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
+
+    <p class="govuk-body">{{ 'pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.paragraph1' | translate }}</p>
+    <p class="govuk-body">{{ 'pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.paragraph2' | translate }}</p>
+    <p class="govuk-body">{{ 'pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.paragraph3' | translate }}</p>
+    <p class="govuk-body">{{ 'pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.paragraph4' | translate | safe}}</p>
+
+    {{ govukCharacterCount({
+        label: {
+            text: 'pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.section1.header' | translate,
+            classes: "govuk-label--s"
+        },
+        id: "problemWithNationalInsuranceNumber",
+        name: "problemWithNationalInsuranceNumber",
+        maxlength: contactUsFieldMaxLength,
+        value: problemWithNationalInsuranceNumber,
+        charactersAtLimitText: 'pages.contactUsQuestions.characterCountComponent.charactersAtLimitText' | translate,
+        charactersUnderLimitText: {
+            other: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.other' | translate,
+            one: 'pages.contactUsQuestions.characterCountComponent.charactersUnderLimitText.one' | translate
+        },
+        charactersOverLimitText: {
+            other: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.other' | translate,
+            one: 'pages.contactUsQuestions.characterCountComponent.charactersOverLimitText.one' | translate
+        },
+        errorMessage: {
+            text: errors['problemWithNationalInsuranceNumber'].text | translate | replace('[maximumCharacters]', contactUsFieldMaxLength.toLocaleString())
+        } if (errors['problemWithNationalInsuranceNumber'])
+    }) }}
+
+    {% include 'contact-us/questions/_service-trying-to-use.njk' %}
+
+    {{ govukWarningText({
+        text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
+        iconFallbackText: "Warning"
+    }) }}
+
+    {% include 'contact-us/questions/_reply_by_email.njk' %}
+
+    {{ govukButton({
+        "text": "general.sendMessage" | translate,
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+
+</form>
