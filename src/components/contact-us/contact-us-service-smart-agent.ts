@@ -55,6 +55,21 @@ export function prepareIdentityDocumentTitle(
   return documentUsedDescription;
 }
 
+export function prepareProblemWithTitle(problemWith: string): string {
+  let problemWithDescription = "";
+  switch (problemWith) {
+    case "name":
+      problemWithDescription = "Entering your name";
+      break;
+    case "bankOrBuildingSocietyDetails":
+      problemWithDescription =
+        "Entering your bank or building society account details";
+      break;
+  }
+
+  return problemWithDescription;
+}
+
 export function getIdentifierTag(theme: string): string {
   if (theme === CONTACT_US_THEMES.ID_CHECK_APP) {
     return "sign_in_app";
@@ -152,6 +167,10 @@ export function contactUsServiceSmartAgent(
 
     customAttributes["sa-identity-document"] = prepareIdentityDocumentTitle(
       contactForm.identityDocumentUsed
+    );
+
+    customAttributes["sa-tag-building-society"] = prepareProblemWithTitle(
+      contactForm.problemWith
     );
 
     customAttributes["sa-webformrefer"] = getRefererTag(contactForm);

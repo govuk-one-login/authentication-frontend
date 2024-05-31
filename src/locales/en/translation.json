@@ -2144,6 +2144,20 @@
           "hint": "For example, if you want to add more detail"
         }
       },
+      "provingIdentityProblemWithBankBuildingSocietyDetails": {
+        "title": "A problem with your bank or building society details",
+        "header": "A problem with your bank or building society details",
+        "section1": {
+          "header": "What problem were you having with your bank or building society details?",
+          "radio1": "Entering your name",
+          "radio2": "Entering your bank or building society account details",
+          "errorMessage": "Select which problem you were having with your bank or building society details"
+        },
+        "section2": {
+          "label": "Anything else you need to tell us?",
+          "hint": "For example, if you want to add more detail"
+        }
+      },
       "provingIdentityNeedToUpdatePersonalInformation": {
         "title": "You need to update your personal information",
         "header": "You need to update your personal information",

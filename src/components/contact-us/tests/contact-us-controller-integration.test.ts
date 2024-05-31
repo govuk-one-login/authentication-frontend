@@ -343,6 +343,24 @@ describe("Integration:: contact us - public user", () => {
     });
   });
 
+  describe("when a user had a problem with their bank or building society details", () => {
+    it("should return validation error when user has not selected which problem they had", (done) => {
+      const data = {
+        _csrf: token,
+        theme: "proving_identity",
+        subtheme: "proving_identity_problem_with_bank_building_society_details",
+        contact: "false",
+      };
+      expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#problemWith-error",
+        "Select which problem you were having with your bank or building society details",
+        done
+      );
+    });
+  });
+
   describe("when a user had a problem taking a photo of your identity document using the GOV.UK ID Check app", () => {
     it("should return validation error when user has not selected which identity document they were using", (done) => {
       const data = {

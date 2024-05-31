@@ -2144,6 +2144,20 @@
           "hint": "Er enghraifft, os ydych am ychwanegu mwy o fanylion"
         }
       },
+      "provingIdentityProblemWithBankBuildingSocietyDetails": {
+        "title": "Problem gyda’ch manylion banc neu gymdeithas adeiladu",
+        "header": "Problem gyda’ch manylion banc neu gymdeithas adeiladu",
+        "section1": {
+          "header": "Pa broblem oeddech chi’n ei chael gyda’ch manylion banc neu gymdeithas adeiladu?",
+          "radio1": "Rhoi eich enw",
+          "radio2": "Rhoi eich manylion banc neu gymdeithas adeiladu",
+          "errorMessage": "Dewiswch pa broblem oeddech chi’n ei chael gyda’ch manylion banc neu gymdeithas adeiladu"
+        },
+        "section2": {
+          "label": "Unrhyw beth arall rydych angen dweud wrthym?",
+          "hint": "Er enghraifft, os ydych am ychwanegu mwy o fanylion"
+        }
+      },
       "provingIdentityNeedToUpdatePersonalInformation": {
         "title": "Mae angen i chi ddiweddaru eich gwybodaeth bersonol",
         "header": "Mae angen i chi ddiweddaru eich gwybodaeth bersonol",
