@@ -253,12 +253,6 @@ variable "support_check_email_fraud" {
   default     = "0"
 }
 
-variable "prove_identity_welcome_enabled" {
-  description = "Do not show the prove identity welcome screen when disabled"
-  type        = string
-  default     = "1"
-}
-
 variable "email_entered_wrong_blocked_minutes" {
   description = "The duration, in minutes, for which a user is blocked after entering the wrong email multiple times during reauthentication"
   default     = "15"
@@ -291,7 +285,7 @@ variable "rate_limited_endpoints_requests_per_period" {
   default     = 100000
 }
 
-#cloudfront variable
+#cloudfront variable 
 variable "cloudfront_auth_frontend_enabled" {
   type        = bool
   default     = false
@@ -346,7 +340,7 @@ variable "cloudfront_WafAcl_Logdestination" {
   default     = "none"
   description = "CSLS logging destinatiin for logging Cloufront CloakingOriginWebACL WAf logs "
 }
-#end of cloudfront variable
+#end of cloudfront variable 
 
 variable "language_toggle_enabled" {
   type        = string

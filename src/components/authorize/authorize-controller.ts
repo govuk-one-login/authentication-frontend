@@ -24,7 +24,6 @@ import { appendQueryParamIfHasValue } from "../../utils/url";
 import {
   getOrchToAuthExpectedClientId,
   supportReauthentication,
-  proveIdentityWelcomeEnabled,
 } from "../../config";
 import { logger } from "../../utils/logger";
 import { Claims } from "./claims-config";
@@ -138,7 +137,6 @@ export function authorizeGet(
         skipAuthentication: req.session.user.docCheckingAppUser,
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
         isReauthenticationRequired: req.session.user.reauthenticate,
-        proveIdentityWelcomeEnabled: proveIdentityWelcomeEnabled(),
       },
       sessionId
     );
