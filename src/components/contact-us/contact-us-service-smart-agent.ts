@@ -165,7 +165,7 @@ export function contactUsServiceSmartAgent(
 
     customAttributes["sa-useragent"] = contactForm.optionalData.userAgent;
 
-    customAttributes["sa-identity-document"] = prepareIdentityDocumentTitle(
+    customAttributes["sa-tag-identity-document"] = prepareIdentityDocumentTitle(
       contactForm.identityDocumentUsed
     );
 
