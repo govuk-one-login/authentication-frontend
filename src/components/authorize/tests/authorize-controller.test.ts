@@ -177,25 +177,46 @@ describe("authorize controller", () => {
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
     });
+    it("should redirect to /identity page when identity check required and prove identity welcome is enabled", async () => {
+      process.env.PROVE_IDENTITY_WELCOME_ENABLED = "1";
+      it("should redirect to /identity page when identity check required", async () => {
+        authServiceResponseData.data.user = {
+          identityRequired: true,
+          upliftRequired: false,
+          authenticated: true,
+        };
+        fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
-    it("should redirect to /identity page when identity check required", async () => {
-      authServiceResponseData.data.user = {
-        identityRequired: true,
-        upliftRequired: false,
-        authenticated: true,
-      };
-      fakeAuthorizeService = mockAuthService(authServiceResponseData);
+        await authorizeGet(
+          fakeAuthorizeService,
+          fakeCookieConsentService,
+          fakeKmsDecryptionService,
+          fakeJwtService
+        )(req as Request, res as Response);
 
-      await authorizeGet(
-        fakeAuthorizeService,
-        fakeCookieConsentService,
-        fakeKmsDecryptionService,
-        fakeJwtService
-      )(req as Request, res as Response);
+        expect(res.redirect).to.have.calledWith(
+          PATH_NAMES.PROVE_IDENTITY_WELCOME
+        );
+      });
 
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.PROVE_IDENTITY_WELCOME
-      );
+      it("should redirect to /sign-in-or-create page when identity check required and prove identity welcome is not enabled", async () => {
+        process.env.PROVE_IDENTITY_WELCOME_ENABLED = "0";
+        authServiceResponseData.data.user = {
+          identityRequired: true,
+          upliftRequired: false,
+          authenticated: false,
+        };
+        fakeAuthorizeService = mockAuthService(authServiceResponseData);
+
+        await authorizeGet(
+          fakeAuthorizeService,
+          fakeCookieConsentService,
+          fakeKmsDecryptionService,
+          fakeJwtService
+        )(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
+      });
     });
 
     it("should redirect to sign in when reauthentication is requested and user is not authenticated and support reauthenticate feature flag is on", async () => {
