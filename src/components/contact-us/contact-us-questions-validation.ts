@@ -1,11 +1,17 @@
-import { body, check } from "express-validator";
+import { CustomSanitizer, body, check } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
+import xss from "xss";
 import {
   CONTACT_US_FIELD_MAX_LENGTH,
   CONTACT_US_THEMES,
   CONTACT_US_COUNTRY_MAX_LENGTH,
 } from "../../app.constants";
+const sanitizeFreeTextValue: CustomSanitizer = function sanitizeFreeTextValue(
+  value: string
+) {
+  return xss(value);
+};
 
 export function validateContactUsQuestionsRequest(): ValidationChainFunc {
   return [
@@ -242,6 +248,19 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value, lng: req.i18n.lng }
         );
       }),
+    //Free text Sanitizers
+    body("serviceTryingToUse").customSanitizer(sanitizeFreeTextValue),
+    body("problemWithNationalInsuranceNumber").customSanitizer(
+      sanitizeFreeTextValue
+    ),
+    body("moreDetailDescription").customSanitizer(sanitizeFreeTextValue),
+    body("optionalDescription").customSanitizer(sanitizeFreeTextValue),
+    body("additionalDescription").customSanitizer(sanitizeFreeTextValue),
+    body("problemWith").customSanitizer(sanitizeFreeTextValue),
+    body("issueDescription").customSanitizer(sanitizeFreeTextValue),
+    body("name").customSanitizer(sanitizeFreeTextValue),
+    body("country").customSanitizer(sanitizeFreeTextValue),
+    body("countryPhoneNumberFrom").customSanitizer(sanitizeFreeTextValue),
     validateBodyMiddleware("contact-us/questions/index.njk"),
   ];
 }
