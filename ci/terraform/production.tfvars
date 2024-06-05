@@ -24,6 +24,7 @@ code_entered_wrong_blocked_minutes                  = "120"
 email_entered_wrong_blocked_minutes                 = "120"
 password_reset_code_entered_wrong_blocked_minutes   = "120"
 reduced_code_block_duration_minutes                 = "15"
+no_photo_id_contact_forms                           = "0"
 
 url_for_support_links = "https://home.account.gov.uk/contact-gov-uk-one-login"
 

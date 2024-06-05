@@ -16,6 +16,7 @@ support_authorize_controller  = "1"
 support_2fa_b4_password_reset = "1"
 support_2hr_lockout           = "1"
 support_reauthentication      = "1"
+no_photo_id_contact_forms     = "0"
 
 code_request_blocked_minutes                        = "120"
 account_recovery_code_entered_wrong_blocked_minutes = "120"

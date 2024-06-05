@@ -11,7 +11,11 @@ import { Questions, ThemeQuestions } from "./types";
 import { ExpressRouteFunc } from "../../types";
 import crypto from "crypto";
 import { logger } from "../../utils/logger";
-import { getServiceDomain, getSupportLinkUrl } from "../../config";
+import {
+  getServiceDomain,
+  getSupportLinkUrl,
+  supportNoPhotoIdContactForms,
+} from "../../config";
 import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
 
 const themeToPageTitle = {
@@ -360,6 +364,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
       ...(getAppErrorCode(req.query.appErrorCode as string) && {
         appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
       }),
+      supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
     });
   }
 
@@ -374,6 +379,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
     referer: encodeValue(
       validateReferer(req.query.referer as string, serviceDomain)
     ),
+    supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
   });
 }
 
