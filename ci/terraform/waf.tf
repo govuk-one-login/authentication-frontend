@@ -432,6 +432,62 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
     }
   }
 
+  rule {
+    name     = "count_not_cloudfront"
+    priority = 99
+
+    action {
+      count {}
+    }
+
+    statement {
+      not_statement {
+        statement {
+          or_statement {
+            statement {
+              byte_match_statement {
+                field_to_match {
+                  single_header {
+                    name = local.cloudfront_origin_cloaking_header_name
+                  }
+                }
+                positional_constraint = "EXACTLY"
+                search_string         = var.auth_origin_cloakingheader
+                text_transformation {
+                  priority = 0
+                  type     = "NONE"
+                }
+              }
+            }
+
+            statement {
+              byte_match_statement {
+                field_to_match {
+                  single_header {
+                    name = local.cloudfront_origin_cloaking_header_name
+                  }
+                }
+                positional_constraint = "EXACTLY"
+                search_string         = var.previous_auth_origin_cloakingheader
+                text_transformation {
+                  priority = 0
+                  type     = "NONE"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${replace(var.environment, "-", "")}AuthWafNotCloudFrontCount"
+      sampled_requests_enabled   = true
+    }
+  }
+
+
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafRules"
