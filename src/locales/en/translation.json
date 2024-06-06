@@ -1771,6 +1771,11 @@
           "radio3": "You need to update your personal information",
           "radio4": "There was a technical problem (for example, you saw an error message)",
           "radio5": "Something else",
+          "radio6": "You had a problem with your bank or building society details",
+          "radio7": {
+            "label": "You had a problem with your National insurance number",
+            "hint": "You can read more about getting or finding your National Insurance number at <a href=\"https://www.gov.uk/find-national-insurance-number\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">www.gov.uk/find-national-insurance-number</a>"
+          },
           "errorMessage": "Select the problem you had proving your identity"
         }
       }

@@ -161,6 +161,10 @@ locals {
         value = var.support_2hr_lockout
       },
       {
+        name  = "NO_PHOTO_ID_CONTACT_FORMS"
+        value = var.no_photo_id_contact_forms
+      },
+      {
         name  = "SUPPORT_CHECK_EMAIL_FRAUD"
         value = var.support_check_email_fraud
       },

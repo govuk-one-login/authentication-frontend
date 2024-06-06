@@ -14,6 +14,7 @@ support_authorize_controller  = "1"
 support_2fa_b4_password_reset = "1"
 support_check_email_fraud     = "1"
 language_toggle_enabled       = "1"
+no_photo_id_contact_forms     = "1"
 
 frontend_task_definition_cpu     = 512
 frontend_task_definition_memory  = 1024

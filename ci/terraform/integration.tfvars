@@ -1,6 +1,11 @@
 environment         = "integration"
 common_state_bucket = "digital-identity-dev-tfstate"
 
+#cloudfront enabled flag 
+cloudfront_auth_frontend_enabled = true
+cloudfront_auth_dns_enabled      = true
+cloudfront_WafAcl_Logdestination = "csls_cw_logs_destination_prodpython"
+
 frontend_auto_scaling_v2_enabled = true
 frontend_task_definition_cpu     = 512
 frontend_task_definition_memory  = 1024
@@ -12,6 +17,7 @@ support_2fa_b4_password_reset = "1"
 support_2hr_lockout           = "1"
 support_reauthentication      = "1"
 language_toggle_enabled       = "1"
+no_photo_id_contact_forms     = "0"
 
 code_request_blocked_minutes                        = "120"
 account_recovery_code_entered_wrong_blocked_minutes = "120"

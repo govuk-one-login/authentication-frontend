@@ -2,6 +2,11 @@ environment         = "production"
 common_state_bucket = "digital-identity-prod-tfstate"
 redis_node_size     = "cache.m4.xlarge"
 
+#cloudfront enabled flag 
+cloudfront_auth_frontend_enabled = true
+cloudfront_auth_dns_enabled      = true
+cloudfront_WafAcl_Logdestination = "csls_cw_logs_destination_prodpython"
+
 frontend_auto_scaling_v2_enabled                    = true
 frontend_task_definition_cpu                        = 512
 frontend_task_definition_memory                     = 1024
@@ -20,6 +25,7 @@ email_entered_wrong_blocked_minutes                 = "120"
 password_reset_code_entered_wrong_blocked_minutes   = "120"
 reduced_code_block_duration_minutes                 = "15"
 language_toggle_enabled                             = "1"
+no_photo_id_contact_forms                           = "0"
 
 url_for_support_links = "https://home.account.gov.uk/contact-gov-uk-one-login"
 
