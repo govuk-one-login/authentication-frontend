@@ -1671,9 +1671,9 @@
           "errorMessage": "Rhaid i chi ddewis opsiwn i ddweud wrthym beth rydych angen help gyda"
         }
       },
-      "section2": {
+      "section2": { 
         "header": "Oriau Swyddfa",
-        "paragraph1": "Dim ond yn ystod oriau swyddfa y gallwn ymateb i’ch ymholiadau cymorth. Ein horiau swyddfa yw 9:30am i 5:30pm, o ddydd Llun i ddydd Gwener.",
+        "paragraph1": "Dim ond yn ystod oriau swyddfa y gallwn ymateb i’ch ymholiadau cymorth. Ein horiau swyddfa yw 8:00am i 8:00pm, o ddydd Llun i ddydd Gwener.",
         "paragraph2": "Pan fyddwch yn cysylltu yn ystod oriau swyddfa, byddwn yn ceisio ateb o fewn 2 ddiwrnod gwaith."
       }
     },
@@ -1704,7 +1704,7 @@
         "paragraph1": "Defnyddiwch y ffurflen hon i:",
         "bulletPoint1": "ddweud wrthym am broblem rydych yn ei chael gyda’ch cyfrif GOV.UK",
         "bulletPoint2": "awgrymu gwelliannau neu roi adborth am eich profiad o ddefnyddio eich  GOV.UK One Login",
-        "paragraph2": "Ein horiau swyddfa yw 9:30am tan 5:30pm, o ddydd Llun i ddydd Gwener. Byddwn yn ymateb i chi drwy e-bost mewn 2 ddiwrnod gwaith."
+        "paragraph2": "Ein horiau swyddfa yw 8:00am tan 8:00pm, o ddydd Llun i ddydd Gwener. Byddwn yn ymateb i chi drwy e-bost mewn 2 ddiwrnod gwaith."
       },
       "section3": {
         "header": "Am beth rydych yn cysylltu â ni?",
