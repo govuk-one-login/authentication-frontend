@@ -88,7 +88,7 @@ describe("Integration::setup-authenticator-app", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains(
-          "Enter the security code shown in your authenticator app"
+          "Enter the code shown in your authenticator app"
         );
         expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
       })
@@ -107,7 +107,7 @@ describe("Integration::setup-authenticator-app", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains(
-          "Enter the security code using only 6 digits"
+          "Enter the code using only 6 digits"
         );
         expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
       })
@@ -126,7 +126,7 @@ describe("Integration::setup-authenticator-app", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains(
-          "Enter the security code using only 6 digits"
+          "Enter the code using only 6 digits"
         );
         expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
       })

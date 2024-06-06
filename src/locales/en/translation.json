@@ -301,13 +301,13 @@
       "paragraph4": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
       "paragraph5": "The code will expire after 15 minutes.",
       "code": {
-        "label": "Enter the 6 digit security code",
+        "label": "Enter the 6 digit code",
         "validationError": {
-          "required": "Enter the security code",
-          "maxLength": "Enter the security code using only 6 digits",
-          "minLength": "Enter the security code using only 6 digits",
-          "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+          "required": "Enter the code",
+          "maxLength": "Enter the code using only 6 digits",
+          "minLength": "Enter the code using only 6 digits",
+          "invalidFormat": "Enter the code using only 6 digits",
+          "invalidCode": "The code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
       },
       "details": {
@@ -409,13 +409,13 @@
         "paragraph3": "The code will expire after one hour."
       },
       "code": {
-        "label": "Enter the 6 digit security code",
+        "label": "Enter the 6 digit code",
         "validationError": {
-          "required": "Enter the security code",
-          "maxLength": "Enter the security code using only 6 digits",
-          "minLength": "Enter the security code using only 6 digits",
-          "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+          "required": "Enter the code",
+          "maxLength": "Enter the code using only 6 digits",
+          "minLength": "Enter the code using only 6 digits",
+          "invalidFormat": "Enter the code using only 6 digits",
+          "invalidCode": "The code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
       },
       "details": {
@@ -436,13 +436,13 @@
         "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes."
       },
       "code": {
-        "label": "Enter the 6 digit security code",
+        "label": "Enter the 6 digit code",
         "validationError": {
-          "required": "Enter the security code",
-          "maxLength": "Enter the security code using only 6 digits",
-          "minLength": "Enter the security code using only 6 digits",
-          "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+          "required": "Enter the code",
+          "maxLength": "Enter the code using only 6 digits",
+          "minLength": "Enter the code using only 6 digits",
+          "invalidFormat": "Enter the code using only 6 digits",
+          "invalidCode": "The code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
       },
       "details": {
@@ -532,13 +532,13 @@
         "paragraph1": "if the code does not work or has expired, or you did not receive one."
       },
       "code": {
-        "label": "Enter the 6 digit security code",
+        "label": "Enter the 6 digit code",
         "validationError": {
-          "required": "Enter the security code",
-          "maxLength": "Enter the security code using only 6 digits",
-          "minLength": "Enter the security code using only 6 digits",
-          "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+          "required": "Enter the code",
+          "maxLength": "Enter the code using only 6 digits",
+          "minLength": "Enter the code using only 6 digits",
+          "invalidFormat": "Enter the code using only 6 digits",
+          "invalidCode": "The code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
       },
       "details": {
@@ -570,13 +570,13 @@
         "paragraph1": "if the code does not work or has expired, or you did not receive one."
       },
       "code": {
-        "label": "Enter the 6 digit security code",
+        "label": "Enter the 6 digit code",
         "validationError": {
-          "required": "Enter the security code",
-          "maxLength": "Enter the security code using only 6 digits",
-          "minLength": "Enter the security code using only 6 digits",
-          "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+          "required": "Enter the code",
+          "maxLength": "Enter the code using only 6 digits",
+          "minLength": "Enter the code using only 6 digits",
+          "invalidFormat": "Enter the code using only 6 digits",
+          "invalidCode": "The code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
       },
       "details": {
@@ -643,13 +643,13 @@
         "paragraph1": "The email contains a 6 digit security code. After you enter the code, you’ll be able to change how you get security codes when you sign in.",
         "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
         "paragraph3": "The code will expire after 15 minutes.",
-        "label": "Enter the 6 digit security code",
+        "label": "Enter the 6 digit code",
         "validationError": {
-          "required": "Enter the security code",
-          "maxLength": "Enter the security code using only 6 digits",
-          "minLength": "Enter the security code using only 6 digits",
-          "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you entered is not correct, or may have expired, try entering it again or request a new code"
+          "required": "Enter the code",
+          "maxLength": "Enter the code using only 6 digits",
+          "minLength": "Enter the code using only 6 digits",
+          "invalidFormat": "Enter the code using only 6 digits",
+          "invalidCode": "The code you entered is not correct, or may have expired, try entering it again or request a new code"
         }
       },
       "details": {
@@ -2289,14 +2289,14 @@
         "paragraph3": "Some authenticator apps call the secret key a ‘code’."
       },
       "step3": "3. The authenticator app will show a security code.",
-      "step4": "4. Enter the security code.",
+      "step4": "4. Enter the code.",
       "code": {
-        "label": "Security code",
+        "label": "Code",
         "hintText": "This is the 6-digit number shown in your authenticator app",
         "validationError": {
-          "required": "Enter the security code shown in your authenticator app",
-          "invalidCode": "The security code you entered is not correct, check your authenticator app and try again",
-          "invalidFormat": "Enter the security code using only 6 digits"
+          "required": "Enter the code shown in your authenticator app",
+          "invalidCode": "The code you entered is not correct, check your authenticator app and try again",
+          "invalidFormat": "Enter the code using only 6 digits"
         }
       },
       "continueButtonText": "Continue",
@@ -2307,9 +2307,9 @@
       "header": "Enter the 6 digit security code shown in your authenticator app",
       "code": {
         "validationError": {
-          "required": "Enter the security code",
-          "invalidFormat": "Enter the security code using only 6 digits",
-          "invalidCode": "The security code you entered is not correct, check your authenticator app and try again"
+          "required": "Enter the code",
+          "invalidFormat": "Enter the code using only 6 digits",
+          "invalidCode": "The code you entered is not correct, check your authenticator app and try again"
         }
       },
       "details": {
@@ -2328,7 +2328,7 @@
           "paragraph2End": "you used to create your GOV.UK One Login"
         },
         "code": {
-          "label": "Enter the security code",
+          "label": "Enter the code",
           "labelSummary": "This is the 6-digit number shown in your authenticator app"
         }
       },
@@ -2341,7 +2341,7 @@
           "paragraph1End": "you used to create your GOV.UK One Login"
         },
         "code":{
-          "label": "Enter the 6 digit security code"
+          "label": "Enter the 6 digit code"
         }
       }
     },

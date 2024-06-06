@@ -113,7 +113,7 @@ describe("Integration:: enter authenticator app code", () => {
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
-        expect($("#code-error").text()).to.contains("Enter the security code");
+        expect($("#code-error").text()).to.contains("Enter the code");
       })
       .expect(400, done);
   });
@@ -130,7 +130,7 @@ describe("Integration:: enter authenticator app code", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains(
-          "Enter the security code using only 6 digits"
+          "Enter the code using only 6 digits"
         );
       })
       .expect(400, done);
@@ -148,7 +148,7 @@ describe("Integration:: enter authenticator app code", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains(
-          "Enter the security code using only 6 digits"
+          "Enter the code using only 6 digits"
         );
       })
       .expect(400, done);
@@ -166,7 +166,7 @@ describe("Integration:: enter authenticator app code", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains(
-          "Enter the security code using only 6 digits"
+          "Enter the code using only 6 digits"
         );
       })
       .expect(400, done);
@@ -226,7 +226,7 @@ describe("Integration:: enter authenticator app code", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains(
-          "The security code you entered is not correct, check your authenticator app and try again"
+          "The code you entered is not correct, check your authenticator app and try again"
         );
       })
       .expect(400, done);

@@ -16,6 +16,24 @@ export function traverseObjectProperties(
   });
 }
 
+export function testForSecurityCodeInLabel(key: string, value: string): void {
+  if (key.search(/label/) !== -1) {
+    expect(value.toLowerCase()).to.not.contain(
+      "security code",
+      `Label '${value}' contains 'security code'`
+    );
+  }
+}
+
+export function testForCodDiogelwchInLabel(key: string, value: string): void {
+  if (key.search(/label/) !== -1) {
+    expect(value.toLowerCase()).to.not.contain(
+      "cod diogelwch",
+      `Label '${value}' contains 'cod diogelwch'`
+    );
+  }
+}
+
 export function testExpectation(key: string, value: string): void {
   expect(value).to.not.contain(
     "'",
@@ -58,5 +76,15 @@ describe("locale file structure", () => {
 
   it("should be that locale files have the same keys in the same position", () => {
     expect(englishTranslationFileKeys).to.eql(welshTranslationFileKeys);
+  });
+});
+
+describe("form labels", () => {
+  it("should not contain the phrase 'security code' in English translations", () => {
+    traverseObjectProperties(englishTranslations, testForSecurityCodeInLabel);
+  });
+
+  it("should not contain the phrase 'cod diogelwch' in Welsh translations", () => {
+    traverseObjectProperties(welshTranslations, testForCodDiogelwchInLabel);
   });
 });

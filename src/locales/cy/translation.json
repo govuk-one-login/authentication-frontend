@@ -301,13 +301,13 @@
       "paragraph4": "Efallai y bydd eich e-bost yn cymryd ychydig funudau i gyrraedd. Os na chewch e-bost, edrychwch ar eich ffolder spam.",
       "paragraph5": "Bydd y cod yn dod i ben ar ôl 15 munud.",
       "code": {
-        "label": "Rhowch y cod diogelwch 6 digid",
+        "label": "Rhowch y cod 6 digid",
         "validationError": {
-          "required": "Rhowch y cod diogelwch",
-          "maxLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "minLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "invalidCode": "Nid yw’r cod diogelwch rydych wedi’i roi yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi i mewn eto neu ofyn am god newydd"
+          "required": "Rhowch y cod",
+          "maxLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "minLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "invalidFormat": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "invalidCode": "Nid yw’r cod a roddwyd gennych yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi eto neu ofyn am god newydd"
         }
       },
       "details": {
@@ -409,13 +409,13 @@
         "paragraph3": "Bydd y cod yn dod i ben ar ôl awr."
       },
       "code": {
-        "label": "Rhowch y cod diogelwch 6 digid",
+        "label": "Rhowch y cod 6 digid",
         "validationError": {
-          "required": "Rhowch y cod diogelwch",
-          "maxLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "minLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "invalidCode": "Nid yw’r cod diogelwch rydych wedi’i roi yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi i mewn eto neu ofyn am god newydd"
+          "required": "Rhowch y cod",
+          "maxLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "minLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "invalidFormat": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "invalidCode": "Nid yw’r cod a roddwyd gennych yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi eto neu ofyn am god newydd"
         }
       },
       "details": {
@@ -436,13 +436,13 @@
         "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud."
       },
       "code": {
-        "label": "Rhowch y cod diogelwch 6 digid",
+        "label": "Rhowch y cod 6 digid",
         "validationError": {
-          "required": "Rhowch y cod diogelwch",
-          "maxLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "minLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "invalidCode": "Nid yw’r cod diogelwch rydych wedi’i roi yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi i mewn eto neu ofyn am god newydd"
+          "required": "Rhowch y cod",
+          "maxLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "minLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "invalidFormat": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "invalidCode": "Nid yw’r cod a roddwyd gennych yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi eto neu ofyn am god newydd"
         }
       },
       "details": {
@@ -532,13 +532,13 @@
         "paragraph1": "os nad yw’r cod yn gweithio neu mae wedi dod i ben, neu ni dderbynioch un."
       },
       "code": {
-        "label": "Rhowch y cod diogelwch 6 digid",
+        "label": "Rhowch y cod 6 digid",
         "validationError": {
-          "required": "Rhowch y cod diogelwch",
-          "maxLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "minLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "invalidCode": "Nid yw’r cod diogelwch rydych wedi’i roi yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi i mewn eto neu ofyn am god newydd"
+          "required": "Rhowch y cod",
+          "maxLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "minLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "invalidFormat": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "invalidCode": "Nid yw’r cod a roddwyd gennych yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi eto neu ofyn am god newydd"
         }
       },
       "details": {
@@ -570,13 +570,13 @@
         "paragraph1": "os nad yw’r cod yn gweithio neu mae wedi dod i ben, neu ni dderbynioch un."
       },
       "code": {
-        "label": "Rhowch y cod diogelwch 6 digid",
+        "label": "Rhowch y cod 6 digid",
         "validationError": {
-          "required": "Rhowch y cod diogelwch",
-          "maxLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "minLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "invalidCode": "Nid yw’r cod diogelwch rydych wedi’i roi yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi i mewn eto neu ofyn am god newydd"
+          "required": "Rhowch y cod",
+          "maxLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "minLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "invalidFormat": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "invalidCode": "Nid yw’r cod a roddwyd gennych yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi eto neu ofyn am god newydd"
         }
       },
       "details": {
@@ -643,13 +643,13 @@
         "paragraph1": "Mae’r e-bost yn cynnwys cod diogelwch 6 digid. Ar ôl i chi roi eich cod, byddwch yn gallu newid sut i gael codau diogelwch pan fyddwch yn mewngofnodi.",
         "paragraph2": "Efallai y bydd eich e-bost yn cymryd ychydig funudau i gyrraedd. Os na chewch e-bost, edrychwch ar eich ffolder spam.",
         "paragraph3": "Bydd y cod yn dod i ben ar ôl 15 munud.",
-        "label": "Rhowch y cod diogelwch 6 digid",
+        "label": "Rhowch y cod 6 digid",
         "validationError": {
-          "required": "Rhowch y cod diogelwch",
-          "maxLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "minLength": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "invalidCode": "Nid yw’r cod diogelwch rydych wedi’i roi yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi i mewn eto neu ofyn am god newydd"
+          "required": "Rhowch y cod",
+          "maxLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "minLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "invalidFormat": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "invalidCode": "Nid yw’r cod a roddwyd gennych yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi eto neu ofyn am god newydd"
         }
       },
       "details": {
@@ -2289,14 +2289,14 @@
         "paragraph3": "Mae rhai apiau dilysydd yn galw’r allwedd gyfrinachol yn ‘cod’."
       },
       "step3": "3. Bydd yr ap dilysydd yn dangos cod diogelwch.",
-      "step4": "4. Rhowch y cod diogelwch.",
+      "step4": "4. Rhowch y cod.",
       "code": {
-        "label": "Cod diogelwch",
+        "label": "Cod",
         "hintText": "Dyma’r rhif 6-digid a ddangosir yn eich ap dilysydd",
         "validationError": {
-          "required": "Rhowch y cod diogelwch a ddangosir yn eich ap dilysydd",
-          "invalidCode": "Nid yw’r cod diogelwch a roddwyd gennych yn gywir, gwiriwch eich ap dilyswr a cheisiwch eto",
-          "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig"
+          "required": "Rhowch y cod a dangosir yn eich ap dilysydd",
+          "invalidCode": "Nid yw’r cod a roddwyd gennych yn gywir, gwiriwch eich ap dilysydd a rhowch gynnig arall",
+          "invalidFormat": "Rhowch y cod gan ddefnyddio dim ond 6 digid"
         }
       },
       "continueButtonText": "Parhau",
@@ -2307,9 +2307,9 @@
       "header": "Rhowch y cod diogelwch 6 digid a ddangosir yn eich ap dilysydd",
       "code": {
         "validationError": {
-          "required": "Rhowch y cod diogelwch",
-          "invalidFormat": "Rhowch y cod diogelwch gan ddefnyddio 6 digid yn unig",
-          "invalidCode": "Nid yw’r cod diogelwch a roddwyd gennych yn gywir, gwiriwch eich ap dilyswr a cheisiwch eto"
+          "required": "Rhowch y cod",
+          "invalidFormat": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
+          "invalidCode": "Nid yw’r cod a roddwyd gennych yn gywir, gwiriwch eich ap dilysydd a rhowch gynnig arall"
         }
       },
       "details": {
@@ -2328,7 +2328,7 @@
           "paragraph2End": "rydych wedi’i ddefnyddio i greu eich GOV.UK One Login"
         },
         "code": {
-          "label": "Rhowch y cod diogelwch",
+          "label": "Rhowch y cod",
           "labelSummary": "Dyma’r rhif 6-digid a ddangosir yn eich ap dilysydd"
         }
       },
@@ -2341,7 +2341,7 @@
           "paragraph1End": "a ddefnyddiwyd gennych i greu eich GOV.UK One Login"
         },
         "code":{
-          "label": "Rhowch y cod diogelwch 6 digid"
+          "label": "Rhowch y cod 6 digid"
         }
       }
     },
