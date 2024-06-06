@@ -2289,9 +2289,8 @@
         "paragraph3": "Mae rhai apiau dilysydd yn galw’r allwedd gyfrinachol yn ‘cod’."
       },
       "step3": "3. Bydd yr ap dilysydd yn dangos cod diogelwch.",
-      "step4": "4. Rhowch y cod.",
       "code": {
-        "label": "Cod",
+        "label": "4. Rhowch y cod.",
         "hintText": "Dyma’r rhif 6-digid a ddangosir yn eich ap dilysydd",
         "validationError": {
           "required": "Rhowch y cod a dangosir yn eich ap dilysydd",

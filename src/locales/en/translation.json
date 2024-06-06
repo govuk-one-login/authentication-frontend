@@ -2289,9 +2289,8 @@
         "paragraph3": "Some authenticator apps call the secret key a ‘code’."
       },
       "step3": "3. The authenticator app will show a security code.",
-      "step4": "4. Enter the code.",
       "code": {
-        "label": "Code",
+        "label": "4. Enter the code.",
         "hintText": "This is the 6-digit number shown in your authenticator app",
         "validationError": {
           "required": "Enter the code shown in your authenticator app",

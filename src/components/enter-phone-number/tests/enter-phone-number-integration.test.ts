@@ -315,7 +315,9 @@ describe("Integration::enter phone number", () => {
         phoneNumber: "07738394991",
       })
       .expect((res) => {
-        res.text.includes("You asked to resend the code too many times");
+        res.text.includes(
+          "You asked to resend the security code too many times"
+        );
       })
       .expect((res) => {
         res.text.includes("You will not be able to continue for 2 hours.");
