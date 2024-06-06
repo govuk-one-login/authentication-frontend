@@ -11,78 +11,78 @@
 
 {% block content %}
 
-  {% include "common/errors/errorSummary.njk" %}
+    {% include "common/errors/errorSummary.njk" %}
 
-  {% set noAuthAppInsetTextHtml %}
-  <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph1' | translate}}</p>
-  <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph2' | translate}}</p>
-  <p class="govuk-body">{{'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph3' | translate}}</p>
-  {% endset %}
+    {% set noAuthAppInsetTextHtml %}
+        <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph1' | translate }}</p>
+        <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph2' | translate }}</p>
+        <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.noAuthAppDetails.paragraph3' | translate }}</p>
+    {% endset %}
 
-  {% set cannotScanInsetTextHtml %}
-  <p class="govuk-body">{{'pages.setupAuthenticatorApp.cannotScanDetails.paragraph1' | translate}}</p>
-  <p class="govuk-body" id="secret-key">
-    <span class="govuk-!-display-block">{{'pages.setupAuthenticatorApp.cannotScanDetails.paragraph2' | translate}}</span>
-    {{ displaySecretKey(secretKeyFragmentArray) }}
-  </p>
-  <p class="govuk-body">{{'pages.setupAuthenticatorApp.cannotScanDetails.paragraph3' | translate}}</p>
-  {% endset %}
+    {% set cannotScanInsetTextHtml %}
+        <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.cannotScanDetails.paragraph1' | translate }}</p>
+        <p class="govuk-body" id="secret-key">
+            <span class="govuk-!-display-block">{{ 'pages.setupAuthenticatorApp.cannotScanDetails.paragraph2' | translate }}</span>
+            {{ displaySecretKey(secretKeyFragmentArray) }}
+        </p>
+        <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.cannotScanDetails.paragraph3' | translate }}</p>
+    {% endset %}
 
-  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.setupAuthenticatorApp.header' | translate }}</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.setupAuthenticatorApp.header' | translate }}</h1>
 
-  <p class="govuk-body">{{'pages.setupAuthenticatorApp.step1' | translate }}</p>
-  {{ govukDetails({
+    <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step1' | translate }}</p>
+    {{ govukDetails({
         summaryText: 'pages.setupAuthenticatorApp.noAuthAppDetails.summaryText' | translate,
         html: noAuthAppInsetTextHtml
-  }) }}
-  <p class="govuk-body">{{'pages.setupAuthenticatorApp.step2' | translate }}</p>
-
-  <p class="govuk-body">
-    <img id="qr-code" src="{{qrCode}}" alt="QR Code Image">
-  </p>
-
-  {{ govukDetails({
-    summaryText: 'pages.setupAuthenticatorApp.cannotScanDetails.summaryText' | translate,
-    html: cannotScanInsetTextHtml
-  }) }}
-
-  <p class="govuk-body">{{'pages.setupAuthenticatorApp.step3' | translate }}</p>
-  <p class="govuk-body">{{'pages.setupAuthenticatorApp.step4' | translate }}</p>
-
-  <form id="form-tracking" method="post" novalidate="novalidate">
-
-    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-    <input type="hidden" name="_secretKey" value="{{secretKey}}"/>
-
-    {{ govukInput({
-  label: {
-  text: 'pages.setupAuthenticatorApp.code.label' | translate
-  },
-  hint: {
-      text: 'pages.setupAuthenticatorApp.code.hintText' | translate
-  },
-  classes: "govuk-input--width-10 govuk-!-font-weight-bold",
-  id: "code",
-  name: "code",
-  inputmode: "numeric",
-  spellcheck: false,
-  autocomplete: "one-time-code",
-  errorMessage: {
-  text: errors['code'].text
-  } if (errors['code'])})
-  }}
-
-    {{ govukButton({
-  "text": "general.continue.label" | translate,
-  "type": "Submit",
-  "preventDoubleClick": true
-  }) }}
+    }) }}
+    <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step2' | translate }}</p>
 
     <p class="govuk-body">
-      <a href="/get-security-codes" class="govuk-link" rel="noreferrer">{{'pages.setupAuthenticatorApp.changeMfaChoiceLinkText' | translate }}</a>
+        <img id="qr-code" src="{{ qrCode }}" alt="QR Code Image">
     </p>
 
-  </form>
+    {{ govukDetails({
+        summaryText: 'pages.setupAuthenticatorApp.cannotScanDetails.summaryText' | translate,
+        html: cannotScanInsetTextHtml
+    }) }}
 
-{{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: taxonomyLevel2, contentId: contentId, loggedInStatus: false, dynamic: true })}}
+    <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step3' | translate }}</p>
+    <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step4' | translate }}</p>
+
+    <form id="form-tracking" method="post" novalidate="novalidate">
+
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        <input type="hidden" name="_secretKey" value="{{ secretKey }}" />
+
+        {{ govukInput({
+            label: {
+                text: 'pages.setupAuthenticatorApp.code.label' | translate
+            },
+            hint: {
+                text: 'pages.setupAuthenticatorApp.code.hintText' | translate
+            },
+            classes: "govuk-input--width-10 govuk-!-font-weight-bold",
+            id: "code",
+            name: "code",
+            inputmode: "numeric",
+            spellcheck: false,
+            autocomplete: "one-time-code",
+            errorMessage: {
+                text: errors['code'].text
+            } if (errors['code'])}) }}
+
+        {{ govukButton({
+            "text": "general.continue.label" | translate,
+            "type": "Submit",
+            "preventDoubleClick": true
+        }) }}
+
+        <p class="govuk-body">
+            <a href="/get-security-codes" class="govuk-link"
+               rel="noreferrer">{{ 'pages.setupAuthenticatorApp.changeMfaChoiceLinkText' | translate }}</a>
+        </p>
+
+    </form>
+
+    {{ ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: taxonomyLevel2, contentId: contentId, loggedInStatus: false, dynamic: true }) }}
 {% endblock %}
