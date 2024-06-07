@@ -252,5 +252,8 @@ describe("phone-number", () => {
         ).to.equal(i);
       });
     });
+    it("should return an empty string if passed empty string", () => {
+      expect(returnLastCharactersOnly("", { limit: 3 })).to.equal("");
+    });
   });
 });
