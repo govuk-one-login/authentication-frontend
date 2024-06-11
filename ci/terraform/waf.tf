@@ -86,6 +86,11 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
       rate_based_statement {
         limit              = var.environment == "staging" ? 20000000 : 25000
         aggregate_key_type = "IP"
+
+        forwarded_ip_config {
+          header_name       = "X-Forwarded-For"
+          fallback_behavior = "MATCH"
+        }
         scope_down_statement {
           and_statement {
             statement {
@@ -154,6 +159,11 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
         limit                 = var.environment == "staging" ? 20000000 : var.rate_limited_endpoints_requests_per_period
         evaluation_window_sec = var.rate_limited_endpoints_rate_limit_period
         aggregate_key_type    = "IP"
+
+        forwarded_ip_config {
+          header_name       = "X-Forwarded-For"
+          fallback_behavior = "MATCH"
+        }
 
 
         scope_down_statement {
