@@ -471,9 +471,9 @@
         "link": "roi cynnig arall",
         "paragraph2End": " gyda chod newydd."
       },
-      "2hLockout":{
-        "signInJourney":{
-          "info":{
+      "2hLockout": {
+        "signInJourney": {
+          "info": {
             "paragraph1": "Ni fyddwch yn gallu mewngofnodi am 2 awr.",
             "paragraph2": "Beth allwch chi ei wneud",
             "paragraph3": "Arhoswch am 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto.",
@@ -512,13 +512,13 @@
         "link": "gael cod newydd",
         "paragraph2End": " ar ôl 15 munud."
       },
-      "info":{
-        "paragraph1":"Mae hyn oherwydd eich bod wedi gofyn i ail-anfon y cod diogelwch gormod o weithiau y tro diwethaf i chi geisio mewngofnodi.",
+      "info": {
+        "paragraph1": "Mae hyn oherwydd eich bod wedi gofyn i ail-anfon y cod diogelwch gormod o weithiau y tro diwethaf i chi geisio mewngofnodi.",
         "paragraph1_create": "Mae hyn oherwydd eich bod wedi gofyn i ail-anfon y cod diogelwch gormod o weithiau.",
-        "subHeading":"Beth allwch chi ei wneud",
-        "paragraph2":"Arhoswch am 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto.",
-        "paragraph3":"Os ydych angen ei ddefnyddio yn gynt, gallwch fynd yn ôl i’r gwasanaeth a chwilio am ffyrdd eraill i barhau"
-     }
+        "subHeading": "Beth allwch chi ei wneud",
+        "paragraph2": "Arhoswch am 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto.",
+        "paragraph3": "Os ydych angen ei ddefnyddio yn gynt, gallwch fynd yn ôl i’r gwasanaeth a chwilio am ffyrdd eraill i barhau"
+      }
     },
     "enterMfa": {
       "title": "Gwiriwch eich ffôn",
@@ -601,7 +601,7 @@
       "header": "Cael cod diogelwch",
       "continue": "Cael cod diogelwch",
       "message": "Gall negeseuon testun weithiau gymryd ychydig funudau i gyrraedd.",
-      "paragraph1":"Gallwch ofyn am 5 cod diogelwch. Os byddwch yn gofyn am fwy na 5, byddwch yn cael eich cloi allan am 2 awr.",
+      "paragraph1": "Gallwch ofyn am 5 cod diogelwch. Os byddwch yn gofyn am fwy na 5, byddwch yn cael eich cloi allan am 2 awr.",
       "phoneNumber": {
         "default": "Byddwn yn anfon cod at y rhif ffôn sy’n gysylltiedig â’ch GOV.UK One Login",
         "isResendCodeRequest": "Byddwn yn anfon cod i’ch rhif ffôn sy’n gorffen gyda "
@@ -834,7 +834,18 @@
       "content": {
         "paragraph1": "Mae GOV.UK One Login yn rhan o wefan ehangach GOV.UK. Mae ",
         "linkText": "datganiad hygyrchedd ar wahân ar gyfer prif wefan GOV.UK",
-        "paragraph2": "Mae’r dudalen hon ond yn cynnwys gwybodaeth am GOV.UK One Login, sydd ar gael yn www.signin.account.gov.uk."
+        "paragraph2": {
+          "text1": "Mae’r dudalen hon yn cynnwys gwybodaeth am y gwasanaeth GOV.UK One Login, sydd ar gael yn ",
+          "signInLink": {
+            "href": "https://www.signin.account.gov.uk",
+            "text": "www.signin.account.gov.uk"
+          },
+          "text2": " a’r gwesgwrs cymorth i ddefnyddwyr sydd ar gael yn ",
+          "accountLink": {
+            "href": "https://home.account.gov.uk/contact-gov-uk-one-login",
+            "text": "home.account.gov.uk/contact-gov-uk-one-login"
+          }
+        }
       },
       "usingOneLogin": {
         "header": "Defnyddio GOV.UK One Login",
@@ -855,25 +866,58 @@
       },
       "accessibilityOfOneLogin": {
         "header": "Pa mor hygyrch yw GOV.UK One Login ",
-        "paragraph1": "Nid yw’r rhannau canlynol o GOV.UK One Login yn gwbl hygyrch:",
-        "bulletPoint1": "nid yw’n bosib stopio na newid hyd yr amseru allan pan fyddwch yn defnyddio, mewngofnodi i neu greu GOV.UK One Login",
-        "bulletPoint2": "nid yw’n bosib i ddarllenydd sgrin wybod pryd mae’r e-byst rydym yn eu hanfon mewn iaith ar wahân i’r Saesneg",
-        "bulletPoint3": "mae un dudalen yn ail-lwytho yn awtomatig ar ôl terfyn amser penodol, ac nid yw’n bosibl i stopio neu oedi hyn",
-        "bulletPoint4": "mae’r ddolen allgofnodi pennawd yn achosi bar sgrolio llorweddol ar chwyddiadau mawr iawn ar ddyfeisiau symudol",
-        "bulletPoint5": "nid yw bob amser yn bosibl defnyddio opsiynau awtomatig eich porwr i roi gwybodaeth",
-        "bulletPoint6": "nid yw’r dolenni yn y troedyn yr un peth ar bob tudalen",
-        "bulletPoint7": "mae dolen wag yn y pennawd am ran fer o’r daith",
-        "bulletPoint8": "nid yw rhai tudalennau’n nodi’n gywir yr iaith y maent yn cael eu cyhoeddi ynddi",
-        "bulletPoint9": "nid yw teitlau rhai tudalennau yn dechrau gyda ’gwall’ os nad ydych wedi rhoi’r wybodaeth sydd ei hangen yn y ffurf cywir",
-        "bulletPoint10": "mae rhai dolenni yn y pennawd a’r troedyn y gallech ddisgwyl eu hagor mewn tab newydd yn agor yn yr un tab",
-        "bulletPoint11": "mae rhai meysydd ffurflen yn cyfyngu ar faint o nodau y gellir eu rhoi ynddynt, a all ei gwneud hi’n anodd rhoi gwybodaeth wrth ddefnyddio technolegau cynorthwyol",
-        "bulletPoint12": "nid yw botymau sy’n dangos animeiddiadau ’spinner’ yn cadw at eich gosodiadau cynnig llai",
-        "bulletPoint13": "nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni",
-        "paragraph2": "Byddwn yn diweddaru’r dudalen hon pan fydd y materion wedi cael eu datrys neu gyda gwybodaeth ynghylch pryd rydym yn bwriadu eu datrys."
+        "service": {
+          "header": "Materion hygyrchedd ar y gwasanaeth GOV.UK One Login",
+          "paragraph1": "Nid yw’r rhannau canlynol o wefan GOV.UK One Login yn gwbl hygyrch:",
+          "bulletPoint1": "nid yw’n bosib stopio na newid hyd yr amseru allan pan fyddwch yn defnyddio, mewngofnodi i neu greu GOV.UK One Login",
+          "bulletPoint2": "nid yw’n bosib i ddarllenydd sgrin wybod pryd mae’r e-byst rydym yn eu hanfon mewn iaith ar wahân i’r Saesneg",
+          "bulletPoint3": "mae un dudalen yn ail-lwytho yn awtomatig ar ôl terfyn amser penodol, ac nid yw’n bosibl i stopio neu oedi hyn",
+          "bulletPoint4": "mae’r ddolen allgofnodi pennawd yn achosi bar sgrolio llorweddol ar chwyddiadau mawr iawn ar ddyfeisiau symudol",
+          "bulletPoint5": "nid yw bob amser yn bosibl defnyddio opsiynau awtomatig eich porwr i roi gwybodaeth",
+          "bulletPoint6": "nid yw’r dolenni yn y troedyn yr un peth ar bob tudalen",
+          "bulletPoint7": "mae dolen wag yn y pennawd am ran fer o’r daith",
+          "bulletPoint8": "nid yw rhai tudalennau’n nodi’n gywir yr iaith y maent yn cael eu cyhoeddi ynddi",
+          "bulletPoint9": "nid yw teitlau rhai tudalennau yn dechrau gyda ‘gwall’ os nad ydych wedi rhoi’r wybodaeth sydd ei hangen yn y ffurf cywir",
+          "bulletPoint10": "mae rhai dolenni yn y pennawd a’r troedyn y gallech ddisgwyl eu hagor mewn tab newydd yn agor yn yr un tab",
+          "bulletPoint11": "mae rhai meysydd ffurflen yn cyfyngu ar faint o nodau y gellir eu rhoi ynddynt, a all ei gwneud hi’n anodd rhoi gwybodaeth wrth ddefnyddio technolegau cynorthwyol",
+          "bulletPoint12": "nid yw botymau sy’n dangos animeiddiadau ‘spinner’ yn cadw at eich gosodiadau cynnig llai",
+          "bulletPoint13": "nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni",
+          "paragraph2": {
+            "text1": "Ewch i’r ",
+            "link": {
+              "text": "manylion technegol materion hygyrchedd gwasanaeth GOV.UK One Login",
+              "href": "#non-compliance-service"
+            }
+          }
+        },
+        "webchat": {
+          "header": "Materion hygyrchedd ar gwesgwrs GOV.UK One Login",
+          "paragraph1": "Nid yw’r rhannau canlynol o’r gwe-sgwrs GOV.UK One Login yn gwbl hygyrch:",
+          "bulletPoint1": "efallai na fydd meddalwedd rheoli llais yn gallu labelu cynnwys gwesgwrs yn gywir:",
+          "subBulletPoint1": "os ydych yn defnyddio Safari, bydd angen i chi ddefnyddio’r swyddogaeth ‘show grid’ i ddefnyddio’r gwesgwrs",
+          "subBulletPoint2": "os ydych yn defnyddio Chrome efallai y bydd angen i chi ofyn i’r cyfrifiadur ‘guddio rhifau’ a ‘dangos rhifau’ eto i adnewyddu labelu’r cynnwys",
+          "bulletPoint2": "nid yw’n bosib newid iaith yng nghanol sesiwn sgwrsio – os gwnewch, byddwch yn colli eich hanes sgwrs",
+          "bulletPoint3": "nid yw’n bosib arbed eich sesiwn sgwrsio i gyfeirio ato yn ddiweddarach os byddwch yn gadael y dudalen gyswllt",
+          "bulletPoint4": "os ydych yn defnyddio bysellfwrdd allanol, efallai na fydd y ffocws yn cyrraedd adran cwestiwn ac ateb y gwesgwrs a gallai ddiflannu’n llwyr",
+          "bulletPoint5": "mae rhai porwyr yn symud ffocws y bysellfwrdd i ddechrau’r gwesgwrs pan ychwanegir cynnwys newydd",
+          "bulletPoint6": "os ydych yn defnyddio darllenydd sgrin, efallai y bydd yn anodd gwahaniaethu rhwng opsiynau ateb pan maent yn cael eu hychwanegu gyntaf at y gwesgwrs",
+          "bulletPoint7": "weithiau nid yw’r testun ateb yn ddigon disgrifiadol wrth ddarllen allan o gyd-destun yn y gwesgwrs",
+          "bulletPoint8": "mae’r label maes ffurflen yn cael ei ddileu dros dro pan fyddwch yn teipio ymateb - mae’r label maes yn cael ei ddisodli pan fyddwch yn anfon eich ymateb",
+          "bulletPoint9": "mae ffocws yn dychwelyd i’r eicon gwesgwrs ar ôl i’r gwesgwrs gael ei gau, hyd yn oed os byddwch yn cychwyn y gwesgwrs o’r ddolen yng nghynnwys y dudalen",
+          "bulletPoint10": "os ydych yn defnyddio darllenydd sgrin, ni fydd y gwesgwrs yn cadarnhau ei fod wedi’i gau",
+          "paragraph2": {
+            "text1": "Ewch i’r ",
+            "link": {
+              "text": "manylion technegol materion hygyrchedd gwesgwrs GOV.UK One Login",
+              "href": "#non-compliance-webchat"
+            }
+          }
+        },
+        "updatesParagraph": "Byddwn yn diweddaru’r dudalen hon pan fydd y materion wedi cael eu datrys neu gyda gwybodaeth ynghylch pryd rydym yn bwriadu eu datrys."
       },
       "whatToDo": {
-        "header": "Beth i’w wneud os ydych yn cael trafferth defnyddio GOV.UK One Login",
-        "paragraph1": "Os ydych yn cael trafferth defnyddio GOV.UK One Login, ",
+        "header": "Beth i’w wneud os ydych yn cael trafferth defnyddio GOV.UK One Login neu’r gwesgwrs",
+        "paragraph1": "Os ydych yn cael trafferth defnyddio unrhyw ran o GOV.UK One Login, ",
         "linkText": "cysylltwch â ni"
       },
       "howToReport": {
@@ -900,19 +944,35 @@
       "nonAccessibleContent": {
         "header": "Cynnwys anhygyrch",
         "paragraph1": "Nid yw’r cynnwys a restrir isod yn hygyrch am y rhesymau canlynol.",
-        "subHeader": "Diffyg cydymffurfio â’r rheoliadau hygyrchedd",
-        "listItem1": "Pan fyddwch yn creu GOV.UK One Login neu’n mewngofnodi, os nad ydych yn gwneud unrhyw beth am 60 munud, bydd y broses yn dod i ben (amseru allan) neu byddwch yn cael eich allgofnodi. Nid yw’n bosibl addasu, ymestyn neu ddiffodd yr amseru allan. Mae hyn yn methu maen prawf llwyddiant 2.2.1 (Amseru Addasadwy) WCAG 2.2.",
-        "listItem2": "Mae’r ddolen allgofnodi pennawd yn achosi bar sgrolio llorweddol ar chwyddiadau mawr iawn ar ddyfeisiau symudol. Os ydych chi’n defnyddio technolegau cynorthwyol efallai y byddwch yn cael hi’n anoddach i lywio tudalennau os ydych chi’n cynyddu’r lefel chwyddo. Mae hyn yn methu maen prawf llwyddiant 1.4.10 (Reflow) WCAG 2.2.",
-        "listItem3": "Nid yw bob amser yn bosibl defnyddio opsiynau awtomatig eich porwr i roi gwybodaeth. Mae hyn yn methu maen prawf llwyddiant 1.3.5 (Diben Mewnbwn Hunaniaeth) WCAG 2.2.",
-        "listItem4": "Os ydych chi’n defnyddio technolegau cynorthwyol, efallai y bydd yn cymryd mwy o amser i chi rhoi gwybodaeth. Mae hyn yn methu maen prawf llwyddiant 1.3.5 (Pwrpas Mewnbwn Hunaniaeth) WCAG 2.2.",
-        "listItem5": "Nid yw’r dolenni yn y troedyn yr un peth ar bob tudalen. Mae hyn yn methu maen prawf llwyddiant 3.2.6 (Cymorth Cyson) WCAG 2.2.",
-        "listItem6": "Mae dolen wag yn y pennawd ar gyfer rhan fer o’r daith. Os ydych chi’n defnyddio technolegau cynorthwyol efallai eich bod chi’n ymwybodol o’r ddolen ond ni fyddwch yn gallu ei dewis. Mae hyn yn methu maen prawf llwyddiant 3.2.3 (Llywio Cyson) WCAG 2.2.",
-        "listItem7": "Nid yw rhai tudalennau’n nodi’n gywir yr iaith y maent yn cael eu cyhoeddi ynddi. Mae hyn yn golygu na fydd darllenwyr sgrin yn darllen cynnwys yn gywir. Mae hyn yn methu maen prawf llwyddiant 3.1.1 (Iaith y Dudalen) WCAG 2.2.",
-        "listItem8": "Nid yw teitlau rhai tudalennau yn dechrau gyda ’gwall’ os nad yw’r defnyddiwr wedi rhoi’r wybodaeth sydd ei hangen yn y ffurf cywir. Mae hyn yn golygu nad yw defnyddwyr darllenwyr sgrin yn gwybod ar unwaith bod problem. Mae hyn yn methu maen prawf llwyddiant 2.4.2 (Teitl y dudalen) WCAG 2.2.",
-        "listItem9": "Mae dolenni yn y pennawd a’r troedyn y gallech ddisgwyl eu hagor mewn tab newydd weithiau’n agor mewn tab newydd. Mae hyn yn methu Canllaw 3.2 (Rhagweladwy) WCAG 2.2.",
-        "listItem10": "Mae rhai meysydd ffurflen yn cyfyngu ar faint o nodau y gellir eu rhoi, a all ei gwneud hi’n anodd rhoi gwybodaeth os ydych chi’n defnyddio technolegau cynorthwyol. Mae hyn yn methu maen prawf llwyddiant 3.3.1 (Adnabod Gwallau) WCAG 2.2.",
-        "listItem11": "Nid yw botymau sy’n dangos animeiddiadau ’spinner’ yn cadw at eich gosodiadau cynnig llai. Mae hyn yn methu maen prawf llwyddiant 2.2.2 (Saib, Stop, Cuddio) WCAG 2.2.",
-        "listItem12": "Nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni. Mae hyn yn methu maen prawf llwyddiant 3.2.6 (Cymorth Cyson) WCAG 2.2."
+        "service": {
+          "header": "Diffyg cydymffurfiaeth â’r rheoliadau hygyrchedd ar gyfer y gwasanaeth GOV.UK One Login",
+          "listItem1": "Pan fyddwch yn creu GOV.UK One Login neu’n mewngofnodi, os nad ydych yn gwneud unrhyw beth am 60 munud, bydd y broses yn dod i ben (amseru allan) neu byddwch yn cael eich allgofnodi. Nid yw’n bosibl addasu, ymestyn neu ddiffodd yr amseru allan. Mae hyn yn methu maen prawf llwyddiant 2.2.1 (Amseru Addasadwy) WCAG 2.2.",
+          "listItem2": "Mae’r ddolen allgofnodi pennawd yn achosi bar sgrolio llorweddol ar chwyddiadau mawr iawn ar ddyfeisiau symudol. Os ydych chi’n defnyddio technolegau cynorthwyol efallai y byddwch yn cael hi’n anoddach i lywio tudalennau os ydych chi’n cynyddu’r lefel chwyddo. Mae hyn yn methu maen prawf llwyddiant 1.4.10 (Reflow) WCAG 2.2.",
+          "listItem3": "Nid yw bob amser yn bosibl defnyddio opsiynau awtomatig eich porwr i roi gwybodaeth. Mae hyn yn methu maen prawf llwyddiant 1.3.5 (Diben Mewnbwn Hunaniaeth) WCAG 2.2.",
+          "listItem4": "Os ydych chi’n defnyddio technolegau cynorthwyol, efallai y bydd yn cymryd mwy o amser i chi rhoi gwybodaeth. Mae hyn yn methu maen prawf llwyddiant 1.3.5 (Pwrpas Mewnbwn Hunaniaeth) WCAG 2.2.",
+          "listItem5": "Nid yw’r dolenni yn y troedyn yr un peth ar bob tudalen. Mae hyn yn methu maen prawf llwyddiant 3.2.6 (Cymorth Cyson) WCAG 2.2.",
+          "listItem6": "Mae dolen wag yn y pennawd ar gyfer rhan fer o’r daith. Os ydych chi’n defnyddio technolegau cynorthwyol efallai eich bod chi’n ymwybodol o’r ddolen ond ni fyddwch yn gallu ei dewis. Mae hyn yn methu maen prawf llwyddiant 3.2.3 (Llywio Cyson) WCAG 2.2.",
+          "listItem7": "Nid yw rhai tudalennau’n nodi’n gywir yr iaith y maent yn cael eu cyhoeddi ynddi. Mae hyn yn golygu na fydd darllenwyr sgrin yn darllen cynnwys yn gywir. Mae hyn yn methu maen prawf llwyddiant 3.1.1 (Iaith y Dudalen) WCAG 2.2.",
+          "listItem8": "Nid yw teitlau rhai tudalennau yn dechrau gyda ‘gwall’ os nad yw’r defnyddiwr wedi rhoi’r wybodaeth sydd ei hangen yn y ffurf cywir. Mae hyn yn golygu nad yw defnyddwyr darllenwyr sgrin yn gwybod ar unwaith bod problem. Mae hyn yn methu maen prawf llwyddiant 2.4.2 (Teitl y dudalen) WCAG 2.2.",
+          "listItem9": "Mae dolenni yn y pennawd a’r troedyn y gallech ddisgwyl eu hagor mewn tab newydd weithiau’n agor yn yr un tab. Mae hyn yn methu WCAG 2.2 Guideline 3.2 (Predictable).",
+          "listItem10": "Mae rhai meysydd ffurflen yn cyfyngu ar faint o nodau y gellir eu rhoi, a all ei gwneud hi’n anodd rhoi gwybodaeth os ydych chi’n defnyddio technolegau cynorthwyol. Mae hyn yn methu maen prawf llwyddiant 3.3.1 (Adnabod Gwallau) WCAG 2.2.",
+          "listItem11": "Nid yw botymau sy’n dangos animeiddiadau ‘spinner’ yn cadw at eich gosodiadau cynnig llai. Mae hyn yn methu maen prawf llwyddiant 2.2.2 (Saib, Stop, Cuddio) WCAG 2.2.",
+          "listItem12": "Nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni. Mae hyn yn methu maen prawf llwyddiant 3.2.6 (Cymorth Cyson) WCAG 2.2."
+        },
+        "webchat": {
+          "header": "Diffyg cydymffurfiaeth â’r rheoliadau hygyrchedd ar gyfer gwesgwrs GOV.UK One Login",
+          "listItem1": "Efallai na fydd meddalwedd rheoli llais yn gallu labelu’r cynnwys gwesgwrs yn gywir. Mae hyn yn methu WCAG 2.2 success criterion 4.1.2 (Name, role, value).",
+          "listItem2": "Os ydych yn defnyddio bysellfwrdd allanol ar ddyfeisiau symudol, efallai na fydd ffocws y bysellfwrdd yn cyrraedd yr adran cwestiwn ac ateb a gallai ddiflannu’n llwyr. Mae hyn yn methu WCAG 2.2 success criterion 2.1.1 (Keyboard) a WCAG 2.2 success criterion 2.1.2 (No keyboard trap).",
+          "listItem3": "Mae rhai porwyr yn symud y ffocws allweddell sgwrsio i ddechrau’r sgwrs pan ychwanegir cynnwys sgwrsio newydd. Mae hyn yn methu WCAG 2.2 success criterion 2.4.3 (Focus order).",
+          "listItem4": "Os ydych yn defnyddio darllenydd sgrin, gall fod yn anodd gwahaniaethu rhwng y gwahanol opsiynau ateb cyflym a ddarperir gan y gwesgwrs. Mae hyn yn methu WCAG 2.2 success criterion 1.3.1 (Info and relationships).",
+          "listItem5": "Weithiau nid yw’r testun ateb mewn botymau yn ddigon disgrifiadol allan o gyd-destun. Mae hyn yn methu WCAG 2.2 success criterion 2.4.6 (Headings and labels).",
+          "listItem6": "Mae’r label maes yn cael ei dynnu o’r ffurflen pan fyddwch yn teipio eich ymateb eich hun i neges, ond mae’n cael ei ddisodli pan fyddwch pwyso dychwelyd. Mae hyn yn methu WCAG 2.2 success criterion 3.3.2 (Labels and instructions).",
+          "listItem7": "Mae ffocws yn dychwelyd i’r eicon gwesgwrs ar ôl i’r gwesgwrs gael ei gau, hyd yn oed os byddwch yn cychwyn y sgwrs we o’r ddolen yng nghynnwys y dudalen. Mae hyn yn methu WCAG 2.2 success criterion 2.4.3 (Focus order).",
+          "paragraph1": "Mae tri mater nad ydym yn credu sy’n cydymffurfio â rheoliadau hygyrchedd ond a allai fod yn rhwystredig i ddefnyddwyr:",
+          "bulletPoint1": "nid yw’n bosibl newid iaith yng nghanol sesiwn sgwrsio",
+          "bulletPoint2": "nid yw’n bosibl arbed eich sesiwn sgwrsio",
+          "bulletPoint3": "nid yw’r gwesgwrs yn cadarnhau ei fod wedi ei gau i ddefnyddwyr darllenydd sgrin"
+        }
       },
       "whatWereDoing": {
         "header": "Beth rydym yn ei wneud i wella hygyrchedd",
@@ -920,8 +980,9 @@
       },
       "preparation": {
         "header": "Paratoi’r datganiad hygyrchedd hwn",
-        "paragraph1": "Paratowyd y datganiad hwn ar 4 Tachwedd 2020. Cafodd ei adolygu ddiwethaf ar 28 Chwefror 2024.",
-        "paragraph2": "Cafodd GOV.UK One Login ei brofi ddiwethaf ym mis Hydref a Tachwedd 2023. Cynhaliwyd y prawf gan dîm hygyrchedd GOV.UK One Login, a gynhyrchodd archwiliad o’r daith yn Rhagfyr 2023. Asesodd dîm hygyrchedd GOV.UK One Login y gwasanaeth GOV.UK One Login yn erbyn y Canllawiau Hygyrchedd Cynnwys Gwe WCAG 2.2 wrth baratoi ar gyfer y canllawiau sy’n cael eu gorfodi yn Hydref 2024."
+        "paragraph1": "Paratowyd y datganiad hwn ar 4 Tachwedd 2020. Cafodd ei adolygu ddiwethaf ar 5 Mehefin 2024.",
+        "paragraph2": "Cafodd GOV.UK One Login ei brofi ddiwethaf ym mis Hydref a Tachwedd 2023. Cynhaliwyd y prawf gan dîm hygyrchedd GOV.UK One Login, a gynhyrchodd archwiliad o’r daith yn Rhagfyr 2023. Asesodd dîm hygyrchedd GOV.UK One Login y gwasanaeth GOV.UK One Login yn erbyn y Canllawiau Hygyrchedd Cynnwys Gwe (WCAG) 2.2 wrth baratoi ar gyfer y canllawiau sy’n cael eu gorfodi yn Hydref 2024.",
+        "paragraph3": "Profwyd y gwasanaeth gwesgwrs GOV.UK One Login ddiwethaf ym mis Ebrill 2024. Cynhaliwyd archwiliad cychwynnol gan dîm hygyrchedd GOV.UK One Login ym mis Hydref 2023. Cafodd y gwasanaeth ei archwilio gan y Ganolfan Hygyrchedd Digidol (DAC) ym mis Ionawr 2024. Asesodd archwiliad DAC y gwasanaeth gwe-sgwrs yn erbyn WCAG 2.1, ond mae pob methiant meini prawf llwyddiant hefyd yn berthnasol i WCAG 2.2."
       }
     },
     "termsAndConditions": {
@@ -1623,16 +1684,16 @@
       "title": "Rydych wedi rhoi’r cyfrinair anghywir i mewn ormod o weithiau",
       "header": "Rydych wedi rhoi’r cyfrinair anghywir i mewn ormod o weithiau",
       "paragraph_old": "Rydych chi wedi cael eich cloi allan o’ch GOV.UK One Login oherwydd eich bod wedi rhoi’r cyfrinair anghywir i mewn fwy na 5 gwaith. Mae hyn er mwyn cadw eich cyfrif yn ddiogel.",
-      "paragraph":"Ni fyddwch yn gallu mewngofnodi am 2 awr, oherwydd eich bod wedi rhoi’r cyfrinair anghywir fwy na 5 gwaith.",
+      "paragraph": "Ni fyddwch yn gallu mewngofnodi am 2 awr, oherwydd eich bod wedi rhoi’r cyfrinair anghywir fwy na 5 gwaith.",
       "subHeader_old": "Beth nesaf",
-      "subHeader":"Beth allwch chi ei wneud",
+      "subHeader": "Beth allwch chi ei wneud",
       "bulletPointSection": {
         "title": "Gallwch:",
         "first_old": "aros am 15 munud a ",
-        "first":"ailosod eich cyfrinair",
+        "first": "ailosod eich cyfrinair",
         "firstLink_old": "cheisio mewngofnodi eto",
         "second_old": "ailosod eich cyfrinair",
-        "second":"arhoswch 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o hafan GOV.UK"
+        "second": "arhoswch 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o hafan GOV.UK"
       }
     },
     "browserBackButtonError": {
@@ -1654,7 +1715,7 @@
           "errorMessage": "Rhaid i chi ddewis opsiwn i ddweud wrthym beth rydych angen help gyda"
         }
       },
-      "section2": { 
+      "section2": {
         "header": "Oriau Swyddfa",
         "paragraph1": "Dim ond yn ystod oriau swyddfa y gallwn ymateb i’ch ymholiadau cymorth. Ein horiau swyddfa yw 8:00am i 8:00pm, o ddydd Llun i ddydd Gwener.",
         "paragraph2": "Pan fyddwch yn cysylltu yn ystod oriau swyddfa, byddwn yn ceisio ateb o fewn 2 ddiwrnod gwaith."
@@ -2204,7 +2265,6 @@
         }
       }
     },
-    
     "contactUsSubmitSuccess": {
       "title": "Mae eich neges wedi ei anfon",
       "header": "Mae eich neges wedi ei anfon",
@@ -2339,7 +2399,7 @@
           "authenticatorApp": "ap dilysydd ",
           "paragraph1End": "a ddefnyddiwyd gennych i greu eich GOV.UK One Login"
         },
-        "code":{
+        "code": {
           "label": "Rhowch y cod 6 digid"
         }
       }
@@ -2376,14 +2436,14 @@
         "secondLink": "ailosod eich cyfrinair",
         "paragraph2End": "."
       },
-      "subHeader":"Beth allwch chi ei wneud",
+      "subHeader": "Beth allwch chi ei wneud",
       "bulletPointSection": {
         "title": "Gallwch:",
         "first_old": "aros am 15 munud a ",
-        "first":"ailosod eich cyfrinair",
+        "first": "ailosod eich cyfrinair",
         "firstLink_old": "cheisio mewngofnodi eto",
         "second_old": "ailosod eich cyfrinair",
-        "second":"arhoswch 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o hafan GOV.UK"
+        "second": "arhoswch 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o hafan GOV.UK"
       }
     },
     "needToResetPassword": {
