@@ -164,7 +164,7 @@
     "signInOrCreate": {
       "mandatory": {
         "title": "Creu eich GOV.UK One Login neu fewngofnodi",
-        "header": "Creu eich GOV.UK One Login neu fewngofnodi"
+        "header": "Creu eich GOV.UK One&nbsp;Login neu fewngofnodi"
       },
       "optional": {
         "title": "Creu GOV.UK One Login neu fewngofnodi i arbed eich cynnydd",
