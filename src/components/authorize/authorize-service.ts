@@ -16,7 +16,6 @@ export function authorizeService(
   const start = async function (
     sessionId: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request,
     reauthenticate?: string
@@ -31,7 +30,6 @@ export function authorizeService(
         {
           sessionId: sessionId,
           clientSessionId: clientSessionId,
-          sourceIp: sourceIp,
           persistentSessionId: persistentSessionId,
           reauthenticate: reauthenticateOption,
         },

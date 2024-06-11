@@ -65,7 +65,6 @@ export function enterAuthenticatorAppCodeGet(
       sessionId,
       clientSessionId,
       email,
-      req.ip,
       persistentSessionId,
       req
     );
@@ -110,7 +109,6 @@ export const enterAuthenticatorAppCodePost = (
       req.body["code"],
       sessionId,
       clientSessionId,
-      req.ip,
       persistentSessionId,
       req,
       getJourneyTypeFromUserSession(req.session.user, {

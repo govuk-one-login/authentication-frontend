@@ -55,7 +55,6 @@ export function enterSignInRetryBlockedGet(
     const checkUserIsBlockedResponse = await service.userExists(
       sessionId,
       email,
-      req.ip,
       clientSessionId,
       persistentSessionId,
       req
@@ -167,7 +166,6 @@ export function enterPasswordPost(
         await accountInterventionsService.accountInterventionStatus(
           sessionId,
           email,
-          req.ip,
           clientSessionId,
           persistentSessionId,
           req
@@ -201,7 +199,6 @@ export function enterPasswordPost(
         sessionId,
         clientSessionId,
         email,
-        req.ip,
         persistentSessionId,
         false,
         xss(req.cookies.lng as string),

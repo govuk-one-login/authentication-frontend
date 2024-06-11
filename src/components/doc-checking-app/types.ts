@@ -9,7 +9,6 @@ export interface DocCheckingAppInterface {
   docCheckingAppAuthorize: (
     sessionId: string,
     clientSessionId: string,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request
   ) => Promise<ApiResponseResult<DocCheckingAuthorisationResponse>>;

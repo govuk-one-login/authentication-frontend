@@ -24,7 +24,6 @@ export function accountInterventionsMiddleware(
         await service.accountInterventionStatus(
           sessionId,
           email,
-          req.ip,
           clientSessionId,
           persistentSessionId,
           req

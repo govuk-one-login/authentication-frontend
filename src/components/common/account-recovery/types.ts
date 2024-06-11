@@ -10,7 +10,6 @@ export interface AccountRecoveryInterface {
     sessionId: string,
     clientSessionId: string,
     email: string,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request
   ) => Promise<ApiResponseResult<AccountRecoveryResponse>>;

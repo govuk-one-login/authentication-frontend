@@ -7,7 +7,6 @@ export interface SendNotificationServiceInterface {
     clientSessionId: string,
     email: string,
     notificationType: string,
-    sourceIp: string,
     persistentSessionId: string,
     userLanguage: string,
     req: Request,

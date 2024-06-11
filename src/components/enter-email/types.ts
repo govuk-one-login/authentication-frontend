@@ -19,7 +19,6 @@ export interface EnterEmailServiceInterface {
   userExists: (
     sessionId: string,
     emailAddress: string,
-    sourceIp: string,
     clientSessionId: string,
     persistentSessionId: string,
     req: Request

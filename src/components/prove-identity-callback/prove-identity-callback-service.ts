@@ -17,7 +17,6 @@ export function proveIdentityCallbackService(
 ): ProveIdentityCallbackServiceInterface {
   const identityProcessed = async function (
     email: string,
-    sourceIp: string,
     sessionId: string,
     clientSessionId: string,
     persistentSessionId: string,
@@ -28,7 +27,6 @@ export function proveIdentityCallbackService(
       { email: email },
       getInternalRequestConfigWithSecurityHeaders(
         {
-          sourceIp: sourceIp,
           sessionId: sessionId,
           clientSessionId: clientSessionId,
           persistentSessionId: persistentSessionId,

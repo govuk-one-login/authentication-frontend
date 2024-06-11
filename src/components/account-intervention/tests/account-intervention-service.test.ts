@@ -31,7 +31,7 @@ describe("account interventions service", () => {
   });
 
   it("successfully calls the API to check a user's account interventions status", async () => {
-    const { sessionId, clientSessionId, email, ip, diPersistentSessionId } =
+    const { sessionId, clientSessionId, email, diPersistentSessionId } =
       commonVariables;
     const req = createMockRequest(PATH_NAMES.AUTH_CODE, {
       headers: requestHeadersWithIpAndAuditEncoded,
@@ -46,7 +46,6 @@ describe("account interventions service", () => {
     const result = await service.accountInterventionStatus(
       sessionId,
       email,
-      ip,
       clientSessionId,
       diPersistentSessionId,
       req

@@ -28,7 +28,6 @@ export function sendEmailOtp(
       clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES,
-      req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
       req,

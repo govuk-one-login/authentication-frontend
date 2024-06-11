@@ -7,7 +7,6 @@ export interface CreatePasswordServiceInterface {
     clientSessionId: string,
     emailAddress: string,
     password: string,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;

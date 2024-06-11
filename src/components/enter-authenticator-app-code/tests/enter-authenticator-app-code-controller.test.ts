@@ -203,7 +203,6 @@ describe("enter authenticator app code controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        sinon.match.any,
         JOURNEY_TYPE.SIGN_IN
       );
     });

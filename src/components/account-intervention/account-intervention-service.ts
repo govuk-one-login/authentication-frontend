@@ -18,7 +18,6 @@ export function accountInterventionService(
   const accountInterventionStatus = async function (
     sessionId: string,
     emailAddress: string,
-    sourceIp: string,
     clientSessionId: string,
     persistentSessionId: string,
     req: Request
@@ -31,7 +30,6 @@ export function accountInterventionService(
       getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
-          sourceIp: sourceIp,
           clientSessionId: clientSessionId,
           persistentSessionId: persistentSessionId,
         },

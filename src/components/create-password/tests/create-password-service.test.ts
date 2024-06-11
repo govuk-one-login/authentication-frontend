@@ -44,7 +44,7 @@ describe("create password service", () => {
     const req = createMockRequest(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
-    const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
+    const { email, sessionId, clientSessionId, diPersistentSessionId } =
       commonVariables;
     const password = "abcdef";
 
@@ -59,7 +59,6 @@ describe("create password service", () => {
       clientSessionId,
       email,
       password,
-      ip,
       diPersistentSessionId,
       req
     );

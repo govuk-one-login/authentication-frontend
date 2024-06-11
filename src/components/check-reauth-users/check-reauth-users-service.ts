@@ -16,7 +16,6 @@ export function checkReauthUsersService(
     sessionId: string,
     emailAddress: string,
     sub: string,
-    sourceIp: string,
     clientSessionId: string,
     persistentSessionId: string,
     req: Request
@@ -25,7 +24,6 @@ export function checkReauthUsersService(
     const config = getInternalRequestConfigWithSecurityHeaders(
       {
         sessionId,
-        sourceIp,
         validationStatuses: [
           HTTP_STATUS_CODES.OK,
           HTTP_STATUS_CODES.BAD_REQUEST,

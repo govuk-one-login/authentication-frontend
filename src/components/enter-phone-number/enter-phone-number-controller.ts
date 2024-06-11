@@ -85,7 +85,6 @@ export function enterPhoneNumberPost(
       clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER,
-      req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
       req,

@@ -35,7 +35,7 @@ describe("check email fraud block service", () => {
   });
 
   it("successfully calls the API to check for an email fraud block", async () => {
-    const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
+    const { email, sessionId, clientSessionId, diPersistentSessionId } =
       commonVariables;
     const req = createMockRequest(PATH_NAMES.ROOT, {
       headers: requestHeadersWithIpAndAuditEncoded,
@@ -56,7 +56,6 @@ describe("check email fraud block service", () => {
     const result = await service.checkEmailFraudBlock(
       email,
       sessionId,
-      ip,
       clientSessionId,
       diPersistentSessionId,
       req

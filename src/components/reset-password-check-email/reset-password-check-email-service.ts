@@ -19,7 +19,6 @@ export function resetPasswordCheckEmailService(
   const resetPasswordRequest = async function (
     email: string,
     sessionId: string,
-    sourceIp: string,
     clientSessionId: string,
     persistentSessionId: string,
     withinForcedPasswordResetJourney: boolean,
@@ -34,7 +33,6 @@ export function resetPasswordCheckEmailService(
       getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
-          sourceIp: sourceIp,
           clientSessionId: clientSessionId,
           persistentSessionId: persistentSessionId,
         },

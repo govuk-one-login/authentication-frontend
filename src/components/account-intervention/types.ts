@@ -5,7 +5,6 @@ export interface AccountInterventionsInterface {
   accountInterventionStatus: (
     sessionId: string,
     emailAddress: string,
-    sourceIp: string,
     clientSessionId: string,
     persistentSessionId: string,
     req: Request

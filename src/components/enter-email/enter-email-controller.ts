@@ -77,7 +77,6 @@ export function enterEmailPost(
         sessionId,
         email,
         sub,
-        req.ip,
         clientSessionId,
         persistentSessionId,
         req
@@ -113,7 +112,6 @@ export function enterEmailPost(
     const result = await service.userExists(
       sessionId,
       email,
-      req.ip,
       res.locals.clientSessionId,
       res.locals.persistentSessionId,
       req
@@ -138,7 +136,6 @@ export function enterEmailPost(
         await checkEmailFraudService.checkEmailFraudBlock(
           email,
           sessionId,
-          req.ip,
           clientSessionId,
           persistentSessionId,
           req
@@ -176,7 +173,6 @@ export function enterEmailCreatePost(
     const userExistsResponse = await service.userExists(
       sessionId,
       email,
-      req.ip,
       clientSessionId,
       persistentSessionId,
       req
@@ -206,7 +202,6 @@ export function enterEmailCreatePost(
       clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_EMAIL,
-      req.ip,
       persistentSessionId,
       xss(req.cookies.lng as string),
       req,

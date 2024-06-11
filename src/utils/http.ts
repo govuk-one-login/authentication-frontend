@@ -26,7 +26,6 @@ export interface ConfigOptions {
   sessionId?: string;
   clientSessionId?: string;
   validationStatuses?: number[];
-  sourceIp?: string;
   persistentSessionId?: string;
   baseURL?: string;
   userLanguage?: string;

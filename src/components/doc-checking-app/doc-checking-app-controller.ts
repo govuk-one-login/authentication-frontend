@@ -14,7 +14,6 @@ export function docCheckingAppGet(
     const result = await service.docCheckingAppAuthorize(
       sessionId,
       clientSessionId,
-      req.ip,
       persistentSessionId,
       req
     );

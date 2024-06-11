@@ -18,7 +18,6 @@ export function updateProfileService(
     clientSessionId: string,
     email: string,
     requestType: RequestType,
-    sourceIp: string,
     persistentSessionId: string,
     req: Request
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
@@ -33,7 +32,6 @@ export function updateProfileService(
         {
           sessionId,
           clientSessionId,
-          sourceIp,
           persistentSessionId,
         },
         req,

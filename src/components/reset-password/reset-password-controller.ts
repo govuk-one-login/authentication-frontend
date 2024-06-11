@@ -57,7 +57,6 @@ export function resetPasswordPost(
 
     const updatePasswordResponse = await resetService.updatePassword(
       newPassword,
-      req.ip,
       sessionId,
       clientSessionId,
       persistentSessionId,
@@ -131,7 +130,6 @@ export function resetPasswordPost(
         sessionId,
         clientSessionId,
         email,
-        req.ip,
         persistentSessionId,
         false,
         xss(req.cookies.lng as string),

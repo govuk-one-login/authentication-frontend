@@ -17,7 +17,6 @@ export function sendNotificationService(
     clientSessionId: string,
     email: string,
     notificationType: string,
-    sourceIp: string,
     persistentSessionId: string,
     userLanguage: string,
     req: Request,
@@ -49,7 +48,6 @@ export function sendNotificationService(
         {
           sessionId: sessionId,
           clientSessionId: clientSessionId,
-          sourceIp: sourceIp,
           persistentSessionId: persistentSessionId,
           validationStatuses: [
             HTTP_STATUS_CODES.NO_CONTENT,

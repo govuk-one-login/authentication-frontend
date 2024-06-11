@@ -21,7 +21,6 @@ export function sendMfaGeneric(
       sessionId,
       clientSessionId,
       email,
-      req.ip,
       persistentSessionId,
       isResendCodeRequest,
       xss(req.cookies.lng as string),

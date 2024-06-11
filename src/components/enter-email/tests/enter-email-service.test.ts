@@ -40,7 +40,7 @@ describe("enter email service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { email, sessionId, clientSessionId, ip, diPersistentSessionId } =
+    const { email, sessionId, clientSessionId, diPersistentSessionId } =
       commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN, {
       headers: requestHeadersWithIpAndAuditEncoded,
@@ -55,7 +55,6 @@ describe("enter email service", () => {
     const result = await service.userExists(
       sessionId,
       email,
-      ip,
       clientSessionId,
       diPersistentSessionId,
       req
