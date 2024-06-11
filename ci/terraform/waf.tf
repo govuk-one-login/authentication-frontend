@@ -146,7 +146,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
     }
 
     action {
-      block {}
+      count {}
     }
 
     statement {
@@ -499,7 +499,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
 
 resource "aws_wafv2_web_acl_association" "alb_waf_association" {
   resource_arn = aws_lb.frontend_alb.arn
-  web_acl_arn  = aws_wafv2_web_acl.frontend_alb_waf_regional_web_acl.arn
+  web_acl_arn  = var.cloudfront_auth_dns_enabled ? aws_cloudformation_stack.cloudfront[0].outputs["CloakingOriginWebACLArn"] : aws_wafv2_web_acl.frontend_alb_waf_regional_web_acl.arn
 }
 
 resource "aws_wafv2_web_acl_logging_configuration" "frontend_alb_waf_logging_config" {
