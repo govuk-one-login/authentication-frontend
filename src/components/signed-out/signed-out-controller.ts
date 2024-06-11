@@ -9,8 +9,6 @@ const oplValues = {
 };
 
 export function signedOutGet(req: Request, res: Response): void {
-  const { isAccountCreationJourney } = req.session.user;
-
   const errorCode = xss(req.query.error_code as string);
   const errorDescription = xss(req.query.error_description as string);
   if (errorCode || errorDescription) {
@@ -38,6 +36,6 @@ export function signedOutGet(req: Request, res: Response): void {
   res.render("signed-out/index.njk", {
     signinLink: res.locals.accountManagementUrl,
     contentId: oplValues.signOut.contentId,
-    taxonomyLevel2: isAccountCreationJourney ? "create account" : "sign in",
+    taxonomyLevel2: "sign out",
   });
 }
