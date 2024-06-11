@@ -836,7 +836,7 @@
         "linkText": "accessibility statement for the main GOV.UK website",
         "paragraph2": "This page only contains information about GOV.UK One Login, available at www.signin.account.gov.uk."
       },
-      "section1": {
+      "usingOneLogin": {
         "header": "Using GOV.UK One Login",
         "paragraph1": {
           "text1": "GOV.UK One Login is run by the ",
@@ -853,7 +853,7 @@
         "linkHref": "https://mcmw.abilitynet.org.uk/",
         "paragraph3": "has advice on making your device easier to use if you have a disability."
       },
-      "section2": {
+      "accessibilityOfOneLogin": {
         "header": "How accessible GOV.UK One Login is",
         "paragraph1": "The following parts of GOV.UK One Login are not fully accessible:",
         "bulletPoint1": "it’s not possible to stop or change the length of the time-out when you use, sign in to or create a GOV.UK One Login",
@@ -871,23 +871,23 @@
         "bulletPoint13": "the information in the cookie banner content is not the same on all pages it appears on",
         "paragraph2": "We’ll update this page when issues are fixed or with information about when we plan to fix them."
       },
-      "section3": {
+      "whatToDo": {
         "header": "What to do if you have difficulty using GOV.UK One Login",
         "paragraph1": "If you have difficulty using GOV.UK One Login, ",
         "linkText": "contact us"
       },
-      "section4": {
+      "howToReport": {
         "header": "Report accessibility problems with GOV.UK One Login",
         "paragraph1": "We’re always looking to improve the accessibility of GOV.UK One Login. If you find any problems not listed on this page or think we’re not meeting accessibility requirements, ",
         "linkText": "contact us"
       },
-      "section5": {
+      "enforcement": {
         "header": "Enforcement procedure",
         "paragraph1": "The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’).",
         "paragraph2": "If you’re not happy with how we respond to your complaint, ",
         "linkText": "contact the Equality Advisory and Support Service (EASS)"
       },
-      "section6": {
+      "technicalInformation": {
         "header": "Technical information about GOV.UK One Login’s accessibility",
         "paragraph1": "The Government Digital Service is committed to making GOV.UK One Login accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.",
         "subHeader": "Compliance status",
@@ -897,7 +897,7 @@
           "text2": " AA standard, due to the non-compliances listed below."
         }
       },
-      "section7": {
+      "nonAccessibleContent": {
         "header": "Non-accessible content",
         "paragraph1": "The content listed below is non-accessible for the following reasons.",
         "subHeader": "Non compliance with the accessibility regulations",
@@ -914,11 +914,11 @@
         "listItem11": "Buttons that show ‘spinner’ animations do not adhere to your reduced motion settings. This fails WCAG 2.2 success criterion 2.2.2 (Pause, Stop, Hide).",
         "listItem12": "The information in the cookie banner content is not the same on all pages it appears on. This fails WCAG 2.2 success criterion 3.2.6 (Consistent Help)."
       },
-      "section8": {
+      "whatWereDoing": {
         "header": "What we’re doing to improve accessibility",
         "paragraph1": "We’ll update this page when issues are fixed, when we expect them to be fixed or when new problems are identified."
       },
-      "section9": {
+      "preparation": {
         "header": "Preparation of this accessibility statement",
         "paragraph1": "This statement was prepared on 4 November 2020. It was last reviewed on 28 February 2024.",
         "paragraph2": "GOV.UK One Login was last tested in October and November 2023. The test was carried out by the GOV.UK One Login accessibility team who produced an audit of the journey in December 2023. The GOV.UK One Login accessibility team assessed GOV.UK One Login against the Web Content Accessibility Guidelines WCAG 2.2 in preparation for the guidelines being enforced in October 2024."

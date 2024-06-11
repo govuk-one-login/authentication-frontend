@@ -836,7 +836,7 @@
         "linkText": "datganiad hygyrchedd ar wahân ar gyfer prif wefan GOV.UK",
         "paragraph2": "Mae’r dudalen hon ond yn cynnwys gwybodaeth am GOV.UK One Login, sydd ar gael yn www.signin.account.gov.uk."
       },
-      "section1": {
+      "usingOneLogin": {
         "header": "Defnyddio GOV.UK One Login",
         "paragraph1": {
           "text1": "Mae GOV.UK One Login yn cael eu rhedeg gan y ",
@@ -853,7 +853,7 @@
         "linkHref": "https://mcmw.abilitynet.org.uk/",
         "paragraph3": "gyngor ar sut i wneud eich dyfais yn haws i’w defnyddio os oes gennych anabledd."
       },
-      "section2": {
+      "accessibilityOfOneLogin": {
         "header": "Pa mor hygyrch yw GOV.UK One Login ",
         "paragraph1": "Nid yw’r rhannau canlynol o GOV.UK One Login yn gwbl hygyrch:",
         "bulletPoint1": "nid yw’n bosib stopio na newid hyd yr amseru allan pan fyddwch yn defnyddio, mewngofnodi i neu greu GOV.UK One Login",
@@ -871,23 +871,23 @@
         "bulletPoint13": "nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni",
         "paragraph2": "Byddwn yn diweddaru’r dudalen hon pan fydd y materion wedi cael eu datrys neu gyda gwybodaeth ynghylch pryd rydym yn bwriadu eu datrys."
       },
-      "section3": {
+      "whatToDo": {
         "header": "Beth i’w wneud os ydych yn cael trafferth defnyddio GOV.UK One Login",
         "paragraph1": "Os ydych yn cael trafferth defnyddio GOV.UK One Login, ",
         "linkText": "cysylltwch â ni"
       },
-      "section4": {
+      "howToReport": {
         "header": "Rhoi gwybod am broblemau hygyrchedd gyda GOV.UK One Login",
         "paragraph1": "Rydym bob amser yn ceisio gwella hygyrchedd GOV.UK One Login. Os byddwch yn dod o hyd i unrhyw broblemau nad ydynt wedi’u rhestru ar y dudalen hon neu’n credu nad ydym yn cwrdd â gofynion hygyrchedd, ",
         "linkText": "cysylltwch â ni"
       },
-      "section5": {
+      "enforcement": {
         "header": "Gweithdrefn orfodi",
         "paragraph1": "Mae’r Comisiwn Cydraddoldeb a Hawliau Dynol (EHRC) yn gyfrifol am orfodi Rheoliadau Hygyrchedd Cyrff Sector Cyhoeddus (Gwefannau a Chymwysiadau Symudol) (Rhif 2) 2018 (y ‘rheoliadau hygyrchedd’).",
         "paragraph2": "Os nad ydych yn hapus â sut rydym yn ymateb i’ch cwyn, ",
         "linkText": "cysylltwch â’r Gwasanaeth Cynghori a Chymorth Cydraddoldeb (EASS)"
       },
-      "section6": {
+      "technicalInformation": {
         "header": "Gwybodaeth dechnegol am hygyrchedd GOV.UK One Login",
         "paragraph1": "Mae Gwasanaeth Digidol y Llywodraeth wedi ymrwymo i wneud GOV.UK One Login yn hygyrch, yn unol â Rheoliadau Cyrff y Sector Cyhoeddus (Gwefannau a Cheisiadau Symudol) (Rhif 2) Hygyrchedd 2018.",
         "subHeader": "Statws cydymffurfio",
@@ -897,7 +897,7 @@
           "text2": " oherwydd y diffyg cydymffurfiaeth a restrir isod."
         }
       },
-      "section7": {
+      "nonAccessibleContent": {
         "header": "Cynnwys anhygyrch",
         "paragraph1": "Nid yw’r cynnwys a restrir isod yn hygyrch am y rhesymau canlynol.",
         "subHeader": "Diffyg cydymffurfio â’r rheoliadau hygyrchedd",
@@ -914,11 +914,11 @@
         "listItem11": "Nid yw botymau sy’n dangos animeiddiadau ’spinner’ yn cadw at eich gosodiadau cynnig llai. Mae hyn yn methu maen prawf llwyddiant 2.2.2 (Saib, Stop, Cuddio) WCAG 2.2.",
         "listItem12": "Nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni. Mae hyn yn methu maen prawf llwyddiant 3.2.6 (Cymorth Cyson) WCAG 2.2."
       },
-      "section8": {
+      "whatWereDoing": {
         "header": "Beth rydym yn ei wneud i wella hygyrchedd",
         "paragraph1": "Byddwn yn diweddaru’r dudalen hon pan fydd materion wedi cael eu datrys, pryd byddwn yn disgwyl iddynt gael eu datrys neu pan fydd problemau newydd yn cael eu nodi."
       },
-      "section9": {
+      "preparation": {
         "header": "Paratoi’r datganiad hygyrchedd hwn",
         "paragraph1": "Paratowyd y datganiad hwn ar 4 Tachwedd 2020. Cafodd ei adolygu ddiwethaf ar 28 Chwefror 2024.",
         "paragraph2": "Cafodd GOV.UK One Login ei brofi ddiwethaf ym mis Hydref a Tachwedd 2023. Cynhaliwyd y prawf gan dîm hygyrchedd GOV.UK One Login, a gynhyrchodd archwiliad o’r daith yn Rhagfyr 2023. Asesodd dîm hygyrchedd GOV.UK One Login y gwasanaeth GOV.UK One Login yn erbyn y Canllawiau Hygyrchedd Cynnwys Gwe WCAG 2.2 wrth baratoi ar gyfer y canllawiau sy’n cael eu gorfodi yn Hydref 2024."
