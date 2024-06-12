@@ -46,3 +46,9 @@ universal_analytics_gtm_container_id = "GTM-TK92W68"
 ga4_disabled                         = "false"
 google_analytics_4_gtm_container_id  = "GTM-KD86CMZ"
 analytics_cookie_domain              = "https://signin.staging.account.gov.uk/"
+
+incoming_traffic_cidr_blocks = [
+  "217.196.229.77/32",
+  "217.196.229.79/32",
+  "217.196.229.80/32"
+]

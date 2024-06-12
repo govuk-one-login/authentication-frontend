@@ -40,3 +40,9 @@ orch_to_auth_audience           = "https://signin.integration.account.gov.uk/"
 
 ua_disabled             = "false"
 analytics_cookie_domain = "https://signin.integration.account.gov.uk/"
+
+basic_auth_bypass_cidr_blocks = [
+  "217.196.229.77/32",
+  "217.196.229.79/32",
+  "217.196.229.80/32"
+]
