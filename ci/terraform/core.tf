@@ -9,6 +9,7 @@ data "terraform_remote_state" "core" {
 }
 
 locals {
+  vpc_arn                                    = data.terraform_remote_state.core.outputs.vpc_arn
   vpc_id                                     = data.terraform_remote_state.core.outputs.vpc_id
   allow_aws_service_access_security_group_id = data.terraform_remote_state.core.outputs.allow_aws_service_access_security_group_id
   allow_egress_security_group_id             = data.terraform_remote_state.core.outputs.allow_egress_security_group_id

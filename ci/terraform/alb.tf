@@ -139,3 +139,43 @@ data "aws_iam_policy_document" "s3_bucket_lb_write" {
     }
   }
 }
+
+#### Service Down Target Group and listner ######
+
+resource "aws_alb_target_group" "frontend_service_down_alb_target_group" {
+  count       = var.service_down_page ? 1 : 0
+  name        = "${var.environment}-fe-service-down"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = local.vpc_id
+  target_type = "ip"
+
+  health_check {
+    healthy_threshold   = "3"
+    interval            = "30"
+    protocol            = "HTTP"
+    matcher             = "200"
+    timeout             = "3"
+    path                = "/healthcheck/"
+    unhealthy_threshold = "2"
+  }
+
+  tags = local.default_tags
+}
+
+resource "aws_alb_listener_rule" "service_down_rule" {
+  count        = var.service_down_page ? 1 : 0
+  listener_arn = aws_alb_listener.frontend_alb_listener_https.arn
+  priority     = 1000
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.frontend_service_down_alb_target_group[0].arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/service-page-disabled/*"]
+    }
+  }
+}

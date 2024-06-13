@@ -1,0 +1,7 @@
+---
+applications:
+  - name: production-service-down-page
+    instances: 1
+    memory: 256M
+    buildpacks:
+      - nginx_buildpack

@@ -322,3 +322,85 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
 
   tags = local.default_tags
 }
+
+
+
+###### ECS Service Down ######
+
+locals {
+  service_down_page_service_name   = "${var.environment}-service-down-page-service"
+  service_down_page_app_port       = 8080
+  service_down_page_container_name = "service-down-page"
+}
+
+resource "aws_ecs_service" "service_down_ecs_service" {
+  count           = var.service_down_page ? 1 : 0
+  name            = local.service_down_page_service_name
+  cluster         = local.cluster_id
+  task_definition = aws_ecs_task_definition.service_down_page_task_definition[0].arn
+  desired_count   = 2
+  launch_type     = "FARGATE"
+
+  deployment_minimum_healthy_percent = 50
+  deployment_maximum_percent         = 100
+
+  network_configuration {
+    security_groups = [
+      aws_security_group.service_down_page[0].id,
+      local.allow_aws_service_access_security_group_id,
+    ]
+    subnets          = local.private_subnet_ids
+    assign_public_ip = false
+  }
+
+  load_balancer {
+    target_group_arn = aws_alb_target_group.frontend_service_down_alb_target_group[0].arn
+    container_name   = local.service_down_page_container_name
+    container_port   = local.service_down_page_app_port
+  }
+
+  tags = local.default_tags
+
+  depends_on = [
+    aws_alb_listener_rule.service_down_rule[0],
+  ]
+}
+
+resource "aws_ecs_task_definition" "service_down_page_task_definition" {
+  count                    = var.service_down_page ? 1 : 0
+  family                   = "${var.environment}-frontend-service-down-page-ecs-task-definition"
+  execution_role_arn       = aws_iam_role.service_down_ecs_task_execution_role[0].arn
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = 512
+  memory                   = 1024
+  container_definitions = jsonencode([
+    {
+      name      = local.service_down_page_container_name
+      image     = "${var.service_down_image_uri}:${var.service_down_image_tag}@${var.service_down_image_digest}"
+      essential = true
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group         = aws_cloudwatch_log_group.service_down_page[0].name
+          awslogs-region        = var.aws_region
+          awslogs-stream-prefix = local.service_down_page_container_name
+        }
+      }
+      portMappings = [
+        {
+          protocol      = "tcp"
+          containerPort = local.service_down_page_app_port
+          hostPort      = local.service_down_page_app_port
+      }]
+  }])
+
+  tags = local.default_tags
+}
+
+resource "aws_cloudwatch_log_group" "service_down_page" {
+  count = var.service_down_page ? 1 : 0
+  name  = "/ecs/${var.environment}-service-down-page"
+
+  retention_in_days = 1
+}

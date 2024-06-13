@@ -165,6 +165,19 @@ variable "basic_auth_password" {
   default = ""
 }
 
+variable "service_down_image_uri" {
+  type = string
+}
+
+variable "service_down_image_tag" {
+  type    = string
+  default = "latest"
+}
+
+variable "service_down_image_digest" {
+  type = string
+}
+
 variable "incoming_traffic_cidr_blocks" {
   default     = ["0.0.0.0/0"]
   type        = list(string)
@@ -295,6 +308,13 @@ variable "rate_limited_endpoints_requests_per_period" {
   description = "Number of requests per period allowed for rate limited endpoints"
   type        = number
   default     = 100000
+}
+
+
+variable "service_down_page" {
+  type        = bool
+  default     = false
+  description = "Feature flag to control deployment of service down page "
 }
 
 #cloudfront variable

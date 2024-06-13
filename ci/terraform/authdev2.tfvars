@@ -10,6 +10,10 @@ zone_id                 = "Z062000928I8D7S9X1OVA"
 session_expiry          = 300000
 gtm_id                  = ""
 
+service_down_page         = false
+service_down_image_uri    = "706615647326.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository"
+service_down_image_digest = "sha256:2376c76ae4ae05320319752df0bc6d69ef4836e9d66e5c78f941edf42c087f10"
+
 support_account_recovery                            = "1"
 support_authorize_controller                        = "1"
 support_account_interventions                       = "1"
@@ -39,6 +43,7 @@ ecs_desired_count                = 1
 #cloudfront  flag 
 cloudfront_auth_frontend_enabled = true
 cloudfront_auth_dns_enabled      = true
+
 
 alb_idle_timeout = 30
 

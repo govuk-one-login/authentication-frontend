@@ -6,6 +6,7 @@ env:
   DEV_TOOLING_ECR_FRONTEND_REPO: frontend-image-repository
   DEV_BASIC_SIDECAR_ECR_REPO: basic-auth-sidecar-image-repository
   DEV_ARTIFACT_BUCKET: dev-auth-deploy-pipeline-githubartifactsourcebuck-ssdefc91xjh6
+  DEV_SERVICE_DOWN_ECR_REPO: service-down-page-image-repository
 
 on:
   workflow_dispatch:
@@ -51,7 +52,16 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
+    - name: Build, tag, and push service down page
+      working-directory: service-down-page-config
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ env.DEV_SERVICE_DOWN_ECR_REPO }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        
   deploy:
     needs: build
     runs-on: ubuntu-latest
