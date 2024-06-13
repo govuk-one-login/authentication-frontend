@@ -262,7 +262,7 @@ variable "support_check_email_fraud" {
 variable "prove_identity_welcome_enabled" {
   description = "Do not show the prove identity welcome screen when disabled"
   type        = string
-  default     = "0"
+  default     = "1"
 }
 
 variable "email_entered_wrong_blocked_minutes" {

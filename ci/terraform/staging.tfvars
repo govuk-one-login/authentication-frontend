@@ -27,6 +27,7 @@ password_reset_code_entered_wrong_blocked_minutes   = "120"
 reduced_code_block_duration_minutes                 = "15"
 support_reauthentication                            = "1"
 language_toggle_enabled                             = "1"
+prove_identity_welcome_enabled                      = "0"
 no_photo_id_contact_forms                           = "1"
 
 url_for_support_links = "https://home.staging.account.gov.uk/contact-gov-uk-one-login"
