@@ -61,7 +61,7 @@ export interface SmartAgentCustomAttributes {
   "sa-tag-telephone-number"?: string;
   "sa-tag-primary-intent-user-selection"?: string;
   "sa-useragent"?: string;
-  "sa-tag-identity-document"?: string;
+  "sa-identity-document"?: string;
   "sa-webformrefer"?: string;
   "sa-security-code-sent-method"?: string;
   "sa-tag-secondary-reason-user-selection"?: string;
