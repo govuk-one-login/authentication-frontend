@@ -26,25 +26,26 @@ describe("change security codes confirmation controller", () => {
   });
 
   describe("changeSecurityCodesConfirmationGet", () => {
-    [MFA_METHOD_TYPE.SMS, MFA_METHOD_TYPE.AUTH_APP].forEach(function (
-      mfaMethodType
-    ) {
-      it(`should render the change security codes codes confirmation page for mfaMethodType ${mfaMethodType}`, async () => {
-        req.session.user.accountRecoveryVerifiedMfaType = mfaMethodType;
-        req.session.user.email = "security.codes.changed@testtwofactorauth.org";
-        req.session.user.redactedPhoneNumber = "*******1234";
+    [MFA_METHOD_TYPE.SMS, MFA_METHOD_TYPE.AUTH_APP].forEach(
+      function (mfaMethodType) {
+        it(`should render the change security codes codes confirmation page for mfaMethodType ${mfaMethodType}`, async () => {
+          req.session.user.accountRecoveryVerifiedMfaType = mfaMethodType;
+          req.session.user.email =
+            "security.codes.changed@testtwofactorauth.org";
+          req.session.user.redactedPhoneNumber = "*******1234";
 
-        await changeSecurityCodesConfirmationGet()(
-          req as Request,
-          res as Response
-        );
+          await changeSecurityCodesConfirmationGet()(
+            req as Request,
+            res as Response
+          );
 
-        expect(res.render).to.have.been.calledWith(
-          "account-recovery/change-security-codes-confirmation/index.njk",
-          { mfaMethodType: mfaMethodType, phoneNumber: "*******1234" }
-        );
-      });
-    });
+          expect(res.render).to.have.been.calledWith(
+            "account-recovery/change-security-codes-confirmation/index.njk",
+            { mfaMethodType: mfaMethodType, phoneNumber: "*******1234" }
+          );
+        });
+      }
+    );
   });
 
   describe("changeSecurityCodesConfirmationPost", () => {

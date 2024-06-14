@@ -71,9 +71,8 @@ export class KmsDecryptionService implements KmsDecryptionServiceInterface {
       KeyId: this.kmsKeyId,
     };
 
-    const decryptResponse: DecryptCommandOutput = await this.kmsClient.decrypt(
-      inputs
-    );
+    const decryptResponse: DecryptCommandOutput =
+      await this.kmsClient.decrypt(inputs);
     return decryptResponse.Plaintext;
   }
 
