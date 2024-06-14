@@ -2,17 +2,70 @@ import chai, { expect } from "chai";
 import { Request, Response } from "express";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
-import { validateSessionMiddleware } from "../session-middleware";
+import {
+  getSessionIdMiddleware,
+  initialiseSessionMiddleware,
+  validateSessionMiddleware,
+} from "../session-middleware";
 import { ERROR_MESSAGES } from "../../app.constants";
+import { describe } from "mocha";
+import { mockRequest, mockResponse } from "mock-req-res";
 
 chai.use(sinonChai);
 
-describe("Middleware", () => {
-  describe("validateSessionMiddleware", () => {
-    let req: Request;
-    let res: Response;
-    let next: sinon.SinonSpy;
+describe("session-middleware", () => {
+  let next: sinon.SinonSpy;
+  let req: Request;
+  let res: Response;
 
+  describe("createSessionMiddleware", () => {
+    beforeEach(() => {
+      req = mockRequest({ session: { client: {}, user: {} } });
+      res = mockResponse();
+      next = sinon.fake();
+    });
+
+    it("should create an empty session", () => {
+      initialiseSessionMiddleware(req as Request, res as Response, next);
+
+      expect(req.session).to.have.property("user");
+      expect(next).to.be.calledOnce;
+    });
+  });
+
+  describe("getSessionIdMiddleware", () => {
+    beforeEach(() => {
+      req = mockRequest({ session: { client: {}, user: {} } });
+      res = mockResponse();
+      next = sinon.fake();
+    });
+    it("should add session id to response when cookie present", () => {
+      req.cookies = { gs: "tsIAHDy103zhcxbQq0" };
+      getSessionIdMiddleware(req as Request, res as Response, next);
+
+      expect(res.locals).to.have.property("sessionId");
+      expect(res.locals).to.not.have.property("persistentSessionId");
+      expect(next).to.be.calledOnce;
+    });
+    it("should add persistent session id to locals when cookie present", () => {
+      req.cookies = { "di-persistent-session-id": "psid123456xyz" };
+      getSessionIdMiddleware(req as Request, res as Response, next);
+
+      expect(res.locals).to.have.property("persistentSessionId");
+      expect(res.locals.persistentSessionId).to.equal("psid123456xyz");
+      expect(next).to.be.calledOnce;
+    });
+    it("should not have session id on response when no session cookie present", () => {
+      req.cookies = undefined;
+
+      getSessionIdMiddleware(req as Request, res as Response, next);
+
+      expect(res.locals).is.empty;
+      expect(next).to.be.calledOnce;
+    });
+  });
+
+  describe("validateSessionMiddleware", () => {
     beforeEach(() => {
       req = {
         cookies: {},
@@ -37,7 +90,7 @@ describe("Middleware", () => {
           json: sinon.stub(),
         }),
       } as any;
-      next = sinon.spy();
+      next = sinon.fake();
     });
 
     it("should call next if all required session properties are present", () => {
