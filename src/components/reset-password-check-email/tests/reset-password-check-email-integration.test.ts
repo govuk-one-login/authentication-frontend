@@ -136,7 +136,7 @@ describe("Integration::reset password check email ", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains(
-          "The security code you entered is not correct"
+          "The code you entered is not correct"
         );
       })
       .expect(400, done);
