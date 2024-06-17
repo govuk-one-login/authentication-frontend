@@ -1,6 +1,6 @@
 import request from "supertest";
 import { describe } from "mocha";
-import { expect, sinon } from "../../../../test/utils/test-utils";
+import { sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
@@ -61,18 +61,6 @@ describe("Integration:: resend mfa code", () => {
 
   it("should return resend mfa code page", (done) => {
     request(app).get(PATH_NAMES.RESEND_MFA_CODE).expect(200, done);
-
-    it("should include the last three digits of the user's telephone number", (done) => {
-      request(app)
-        .get(PATH_NAMES.RESEND_MFA_CODE)
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($(".govuk-inset-text").text()).to.eq(
-            "We will send a code to your phone number ending with 867"
-          );
-        })
-        .expect(200, done);
-    });
   });
 
   it("should return error when csrf not present", (done) => {
