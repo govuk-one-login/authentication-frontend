@@ -6,9 +6,13 @@
 {% set showBack = true %}
 {% set hrefBack = 'enter-code' %}
 
-{% set phoneNumberMessage %}
-   {{ 'pages.resendMfaCode.phoneNumber.isResendCodeRequest' | translate }} <span class='govuk-!-font-weight-bold'>{{ phoneNumber | returnLastCharacters({limit: 3}) }}</span>
-{% endset %}
+{% if isResendCodeRequest %}
+    {% set phoneNumberMessage %}
+       {{ 'pages.resendMfaCode.phoneNumber.isResendCodeRequest' | translate }} <span class='govuk-!-font-weight-bold'>{{ phoneNumber }}</span>
+    {% endset %}
+{% else %}
+    {% set phoneNumberMessage = 'pages.resendMfaCode.phoneNumber.default' | translate | replace("[mobile]", phoneNumber) %}
+{% endif %}
 
 {% block content %}
     <form action="/resend-code" method="post" novalidate="novalidate">

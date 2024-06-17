@@ -60,5 +60,5 @@ export function returnLastCharactersOnly(
   value: string,
   options: { limit: number } = { limit: 4 }
 ): string {
-  return value?.length ? value.slice(-options.limit) : "";
+  return value.slice(-options.limit);
 }
