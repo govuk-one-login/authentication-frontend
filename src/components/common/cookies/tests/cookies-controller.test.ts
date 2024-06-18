@@ -6,6 +6,7 @@ import { Request, Response } from "express";
 
 import { cookiesGet, cookiesPost } from "../cookies-controller";
 import {
+  ANALYTICS_COOKIES,
   COOKIE_CONSENT,
   COOKIES_PREFERENCES_SET,
   PATH_NAMES,
@@ -106,6 +107,66 @@ describe("cookies controller", () => {
             httpOnly: false,
             encode: String,
           })
+        );
+      });
+
+      it("should call res.clearCookie with all analytics cookies", () => {
+        const dynamicAnalyticsCookie = "_ga_UA-199064834-2";
+
+        req.body.cookie_preferences = "false";
+        req.cookies[dynamicAnalyticsCookie] = 1;
+
+        const fakeCookieConsentService = createMockCookieConsentService(
+          req.body.cookie_preferences
+        );
+
+        const consentCookieValue =
+          fakeCookieConsentService.createConsentCookieValue(
+            req.body.cookie_preferences === "true"
+              ? COOKIE_CONSENT.ACCEPT
+              : COOKIE_CONSENT.REJECT
+          );
+
+        cookiesPost(req as Request, res as Response);
+
+        expect(res.cookie).to.have.been.calledWith(
+          COOKIES_PREFERENCES_SET,
+          consentCookieValue.value,
+          sinon.match({
+            secure: true,
+            httpOnly: false,
+            encode: String,
+          })
+        );
+
+        ANALYTICS_COOKIES.forEach((cookieKey) => {
+          expect(res.clearCookie).to.have.been.calledWith(cookieKey);
+        });
+
+        expect(res.clearCookie).to.have.been.calledWith(dynamicAnalyticsCookie);
+      });
+
+      it("should set cookie preferences when a user has opted out", () => {
+        req.body.cookie_preferences = "false";
+        req.cookies[COOKIES_PREFERENCES_SET] = `{"analytics":true}`;
+
+        cookiesPost(req as Request, res as Response);
+
+        expect(res.cookie).to.have.been.calledWith(
+          COOKIES_PREFERENCES_SET,
+          `{"analytics":false}`
+        );
+      });
+
+      it("should set cookie preferences when a user has opted in", () => {
+        req.body.cookie_preferences = "true";
+        req.cookies[COOKIES_PREFERENCES_SET] = `{"analytics":false}`;
+
+        cookiesPost(req as Request, res as Response);
+
+        expect(res.cookie).to.have.been.calledWith(
+          COOKIES_PREFERENCES_SET,
+          `{"analytics":true}`
         );
       });
 
