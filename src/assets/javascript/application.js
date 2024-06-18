@@ -61,6 +61,14 @@ window.DI.analyticsUa = window.DI.analyticsUa || {};
     if (window.DI.analyticsGa4.cookie.hasConsentForAnalytics()) {
       cookies.initAnalytics();
     }
+
+    if(window.dtrum !== undefined) {
+      if(window.DI.analyticsGa4.cookie.hasConsentForAnalytics()) {
+        window.dtrum.enable()
+      } else {
+        window.dtrum.disable()
+      }
+    }
   }
 
   initFeedbackRadioButtons();
