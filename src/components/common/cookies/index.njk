@@ -342,7 +342,8 @@
   ]
 }) }}
 
-<form method="post" id="cookie-preferences-form" novalidate hidden="true">
+<form method="post" id="cookie-preferences-form" novalidate>
+ 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 {{ govukRadios({
   name: "cookie_preferences",
@@ -375,5 +376,4 @@
 }) }}
 
 </form>
-
 {% endblock %}
