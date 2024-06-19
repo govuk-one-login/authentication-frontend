@@ -275,3 +275,5 @@ export const CONTACT_US_REFERER_ALLOWLIST = [
   "passwordUpdatedEmail",
   "changeCodesConfirmEmail",
 ];
+
+export const ANALYTICS_COOKIES = ["_ga", "_gid"];
