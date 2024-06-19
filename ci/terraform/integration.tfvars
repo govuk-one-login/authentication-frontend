@@ -39,4 +39,4 @@ orch_to_auth_client_id          = "orchestrationAuth"
 orch_to_auth_audience           = "https://signin.integration.account.gov.uk/"
 
 ua_disabled             = "false"
-analytics_cookie_domain = "https://signin.integration.account.gov.uk/"
+analytics_cookie_domain = ".integration.account.gov.uk"

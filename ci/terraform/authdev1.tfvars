@@ -50,4 +50,4 @@ orch_to_auth_audience           = "https://signin.authdev1.sandpit.account.gov.u
 dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
 
 ua_disabled             = "false"
-analytics_cookie_domain = "https://signin.authdev1.sandpit.account.gov.uk/"
+analytics_cookie_domain = ".sandpit.account.gov.uk"
