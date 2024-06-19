@@ -45,4 +45,4 @@ cloudfront_auth_dns_enabled      = true
 cloudfront_WafAcl_Logdestination = "csls_cw_logs_destination_prodpython"
 
 ua_disabled             = "false"
-analytics_cookie_domain = "https://signin.build.account.gov.uk/"
+analytics_cookie_domain = ".build.account.gov.uk"
