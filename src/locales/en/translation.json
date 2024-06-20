@@ -471,9 +471,9 @@
         "link": "try again",
         "paragraph2End": " with a new code."
       },
-      "2hLockout":{
-        "signInJourney":{
-          "info":{
+      "2hLockout": {
+        "signInJourney": {
+          "info": {
             "paragraph1": "You will not be able to sign in for 2 hours.",
             "paragraph2": "What can you do",
             "paragraph3": "Wait for 2 hours, then go back to the service you were trying to use and start again.",
@@ -512,13 +512,13 @@
         "link": "get a new code",
         "paragraph2End": " after 15 minutes."
       },
-      "info":{
-        "paragraph1":"This is because you asked to resend the security code too many times the last time you tried to sign in.",
+      "info": {
+        "paragraph1": "This is because you asked to resend the security code too many times the last time you tried to sign in.",
         "paragraph1_create": "This is because you asked to resend the security code too many times.",
-        "subHeading":"What you can do",
-        "paragraph2":"Wait 2 hours, then go back to the service you were trying to use and start again.",
-        "paragraph3":"If you need to use it sooner, you can go back to the service and look for other ways to continue."
-     }
+        "subHeading": "What you can do",
+        "paragraph2": "Wait 2 hours, then go back to the service you were trying to use and start again.",
+        "paragraph3": "If you need to use it sooner, you can go back to the service and look for other ways to continue."
+      }
     },
     "enterMfa": {
       "title": "Check your phone",
@@ -834,9 +834,20 @@
       "content": {
         "paragraph1": "GOV.UK One Login is part of the wider GOV.UK website. There’s a separate ",
         "linkText": "accessibility statement for the main GOV.UK website",
-        "paragraph2": "This page only contains information about GOV.UK One Login, available at www.signin.account.gov.uk."
+        "paragraph2": {
+          "text1": "This page contains information about the GOV.UK One Login service, available at ",
+          "signInLink": {
+            "href": "https://www.signin.account.gov.uk",
+            "text": "www.signin.account.gov.uk"
+          },
+          "text2": " and the user support webchat available at ",
+          "accountLink": {
+            "href": "https://home.account.gov.uk/contact-gov-uk-one-login",
+            "text": "home.account.gov.uk/contact-gov-uk-one-login"
+          }
+        }
       },
-      "section1": {
+      "usingOneLogin": {
         "header": "Using GOV.UK One Login",
         "paragraph1": {
           "text1": "GOV.UK One Login is run by the ",
@@ -853,41 +864,74 @@
         "linkHref": "https://mcmw.abilitynet.org.uk/",
         "paragraph3": "has advice on making your device easier to use if you have a disability."
       },
-      "section2": {
+      "accessibilityOfOneLogin": {
         "header": "How accessible GOV.UK One Login is",
-        "paragraph1": "The following parts of GOV.UK One Login are not fully accessible:",
-        "bulletPoint1": "it’s not possible to stop or change the length of the time-out when you use, sign in to or create a GOV.UK One Login",
-        "bulletPoint2": "it’s not possible for a screen reader to know when the emails we send are in a language other than English",
-        "bulletPoint3": "one page reloads automatically after a set time limit, and it’s not possible to stop or delay this",
-        "bulletPoint4": "the header sign-out link causes a horizontal scrollbar at very large magnifications on mobile devices",
-        "bulletPoint5": "it’s not always possible to use your browser’s autocomplete options to enter information",
-        "bulletPoint6": "the links in the footer are not the same on every page",
-        "bulletPoint7": "there is an empty link in the header for a short section of the journey",
-        "bulletPoint8": "some pages do not correctly identify the language they are published in",
-        "bulletPoint9": "some page titles do not start with ‘error’ if you have not entered the information that’s needed in the correct format",
-        "bulletPoint10": "some links in the header and footer that you may expect to open in a new tab open in the same tab",
-        "bulletPoint11": "some form fields limit how many characters can be entered in them, which can make it difficult to enter information when using assistive technologies",
-        "bulletPoint12": "buttons that show ‘spinner’ animations do not adhere to your reduced motion settings",
-        "bulletPoint13": "the information in the cookie banner content is not the same on all pages it appears on",
-        "paragraph2": "We’ll update this page when issues are fixed or with information about when we plan to fix them."
+        "service": {
+          "header": "Accessibility issues on the GOV.UK One Login service",
+          "paragraph1": "The following parts of GOV.UK One Login website are not fully accessible:",
+          "bulletPoint1": "it’s not possible to stop or change the length of the time-out when you use, sign in to or create a GOV.UK One Login",
+          "bulletPoint2": "it’s not possible for a screen reader to know when the emails we send are in a language other than English",
+          "bulletPoint3": "one page reloads automatically after a set time limit, and it’s not possible to stop or delay this",
+          "bulletPoint4": "the header sign-out link causes a horizontal scrollbar at very large magnifications on mobile devices",
+          "bulletPoint5": "it’s not always possible to use your browser’s autocomplete options to enter information",
+          "bulletPoint6": "the links in the footer are not the same on every page",
+          "bulletPoint7": "there is an empty link in the header for a short section of the journey",
+          "bulletPoint8": "some pages do not correctly identify the language they are published in",
+          "bulletPoint9": "some page titles do not start with ‘error’ if you have not entered the information that’s needed in the correct format",
+          "bulletPoint10": "some links in the header and footer that you may expect to open in a new tab open in the same tab",
+          "bulletPoint11": "some form fields limit how many characters can be entered in them, which can make it difficult to enter information when using assistive technologies",
+          "bulletPoint12": "buttons that show ‘spinner’ animations do not adhere to your reduced motion settings",
+          "bulletPoint13": "the information in the cookie banner content is not the same on all pages it appears on",
+          "paragraph2": {
+            "text1": "Go to the ",
+            "link": {
+              "text": "technical details of the GOV.UK One Login service accessibility issues",
+              "href": "#non-compliance-service"
+            }
+          }
+        },
+        "webchat": {
+          "header": "Accessibility issues on the GOV.UK One Login webchat",
+          "paragraph1": "The following parts of the GOV.UK One Login webchat are not fully accessible:",
+          "bulletPoint1": "voice control software may not be able to accurately label webchat content:",
+          "subBulletPoint1": "if you are using Safari you will need to use the ‘show grid’ functionality to use the webchat",
+          "subBulletPoint2": "if you are using Chrome you may need to ask the computer to ‘hide numbers’ and ‘show numbers’ again to refresh the labelling of the content",
+          "bulletPoint2": "it’s not possible to change language in the middle of a chat session – if you do, you will lose your chat history",
+          "bulletPoint3": "it’s not possible to save your chat session to refer to later if you leave the contact page",
+          "bulletPoint4": "if you are using an external keyboard, the focus may not reach the question and answer section of the webchat and could disappear completely",
+          "bulletPoint5": "some browsers move the keyboard focus to the start of the webchat when new content is added",
+          "bulletPoint6": "if you are using a screen reader, it may be difficult to distinguish between answer options when they are first added to the webchat",
+          "bulletPoint7": "sometimes the answer text is not descriptive enough when read out of context in the webchat",
+          "bulletPoint8": "the form field label is temporarily removed when you are typing a response – the field label is replaced when you send your response",
+          "bulletPoint9": "focus returns to the webchat icon after the webchat is closed, even if you start the webchat from the link in page content",
+          "bulletPoint10": "if you are using a screen reader, the webchat will not confirm it has been closed",
+          "paragraph2": {
+            "text1": "Go to the ",
+            "link": {
+              "text": "technical details of the GOV.UK One Login webchat accessibility issues",
+              "href": "#non-compliance-webchat"
+            }
+          }
+        },
+        "updatesParagraph": "We’ll update this page when issues are fixed or with information about when we plan to fix them."
       },
-      "section3": {
-        "header": "What to do if you have difficulty using GOV.UK One Login",
-        "paragraph1": "If you have difficulty using GOV.UK One Login, ",
+      "whatToDo": {
+        "header": "What to do if you have difficulty using GOV.UK One Login or the webchat",
+        "paragraph1": "If you have difficulty using any part of GOV.UK One Login, ",
         "linkText": "contact us"
       },
-      "section4": {
+      "howToReport": {
         "header": "Report accessibility problems with GOV.UK One Login",
         "paragraph1": "We’re always looking to improve the accessibility of GOV.UK One Login. If you find any problems not listed on this page or think we’re not meeting accessibility requirements, ",
         "linkText": "contact us"
       },
-      "section5": {
+      "enforcement": {
         "header": "Enforcement procedure",
         "paragraph1": "The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’).",
         "paragraph2": "If you’re not happy with how we respond to your complaint, ",
         "linkText": "contact the Equality Advisory and Support Service (EASS)"
       },
-      "section6": {
+      "technicalInformation": {
         "header": "Technical information about GOV.UK One Login’s accessibility",
         "paragraph1": "The Government Digital Service is committed to making GOV.UK One Login accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.",
         "subHeader": "Compliance status",
@@ -897,31 +941,48 @@
           "text2": " AA standard, due to the non-compliances listed below."
         }
       },
-      "section7": {
+      "nonAccessibleContent": {
         "header": "Non-accessible content",
         "paragraph1": "The content listed below is non-accessible for the following reasons.",
-        "subHeader": "Non compliance with the accessibility regulations",
-        "listItem1": "When you create a GOV.UK One Login or sign in, if you do not do anything for 60 minutes, the process will stop (time out) or you’ll be signed out. It’s not possible to adjust, extend or turn off the time out. This fails WCAG 2.2 success criterion 2.2.1 (Timing Adjustable).",
-        "listItem2": "The header sign-out link causes a horizontal scrollbar at very large magnifications on mobile devices. If you use assistive technologies you may find it harder to navigate pages if you increase the zoom level. This fails WCAG 2.2 success criterion 1.4.10 (Reflow).",
-        "listItem3": "It’s not always possible to use your browser’s autocomplete options to enter information. This fails WCAG 2.2 success criterion 1.3.5 (Identity Input Purpose).",
-        "listItem4": "If you use assistive technologies, it may take you longer to enter information. This fails WCAG 2.2 success criterion 1.3.5 (Identity Input Purpose).",
-        "listItem5": "The links in the footer are not the same on every page. This fails WCAG 2.2 success criterion 3.2.6 (Consistent Help).",
-        "listItem6": "There is an empty link in the header for a short section of the journey. If you use assistive technologies you may be aware of the link but will not be able to select it. This fails WCAG 2.2 success criterion 3.2.3 (Consistent Navigation).",
-        "listItem7": "Some pages do not correctly identify the language they are published in. This means screen readers will not read content correctly. This fails WCAG 2.2 success criterion 3.1.1 (Language of Page).",
-        "listItem8": "Some page titles do not start with ‘error’ if the user hasn’t entered the information that’s needed in the correct format. This means screen reader users do not immediately know there is a problem. This fails WCAG 2.2 success criterion 2.4.2 (Page Titled).",
-        "listItem9": "Links in the header and footer that you may expect to open in a new tab sometimes open in a new tab. This fails WCAG 2.2 Guideline 3.2 (Predictable).",
-        "listItem10": "Some form fields limit how many characters can be entered, which can make it difficult to enter information if you are using assistive technologies. This fails WCAG 2.2 success criterion 3.3.1 (Error Identification).",
-        "listItem11": "Buttons that show ‘spinner’ animations do not adhere to your reduced motion settings. This fails WCAG 2.2 success criterion 2.2.2 (Pause, Stop, Hide).",
-        "listItem12": "The information in the cookie banner content is not the same on all pages it appears on. This fails WCAG 2.2 success criterion 3.2.6 (Consistent Help)."
+        "service": {
+          "header": "Non compliance with the accessibility regulations for the GOV.UK One Login service",
+          "listItem1": "When you create a GOV.UK One Login or sign in, if you do not do anything for 60 minutes, the process will stop (time out) or you’ll be signed out. It’s not possible to adjust, extend or turn off the time out. This fails WCAG 2.2 success criterion 2.2.1 (Timing Adjustable).",
+          "listItem2": "The header sign-out link causes a horizontal scrollbar at very large magnifications on mobile devices. If you use assistive technologies you may find it harder to navigate pages if you increase the zoom level. This fails WCAG 2.2 success criterion 1.4.10 (Reflow).",
+          "listItem3": "It’s not always possible to use your browser’s autocomplete options to enter information. This fails WCAG 2.2 success criterion 1.3.5 (Identity Input Purpose).",
+          "listItem4": "If you use assistive technologies, it may take you longer to enter information. This fails WCAG 2.2 success criterion 1.3.5 (Identity Input Purpose).",
+          "listItem5": "The links in the footer are not the same on every page. This fails WCAG 2.2 success criterion 3.2.6 (Consistent Help).",
+          "listItem6": "There is an empty link in the header for a short section of the journey. If you use assistive technologies you may be aware of the link but will not be able to select it. This fails WCAG 2.2 success criterion 3.2.3 (Consistent Navigation).",
+          "listItem7": "Some pages do not correctly identify the language they are published in. This means screen readers will not read content correctly. This fails WCAG 2.2 success criterion 3.1.1 (Language of Page).",
+          "listItem8": "Some page titles do not start with ‘error’ if the user hasn’t entered the information that’s needed in the correct format. This means screen reader users do not immediately know there is a problem. This fails WCAG 2.2 success criterion 2.4.2 (Page Titled).",
+          "listItem9": "Links in the header and footer that you may expect to open in a new tab sometimes open in the same tab. This fails WCAG 2.2 Guideline 3.2 (Predictable).",
+          "listItem10": "Some form fields limit how many characters can be entered, which can make it difficult to enter information if you are using assistive technologies. This fails WCAG 2.2 success criterion 3.3.1 (Error Identification).",
+          "listItem11": "Buttons that show ‘spinner’ animations do not adhere to your reduced motion settings. This fails WCAG 2.2 success criterion 2.2.2 (Pause, Stop, Hide).",
+          "listItem12": "The information in the cookie banner content is not the same on all pages it appears on. This fails WCAG 2.2 success criterion 3.2.6 (Consistent Help)."
+        },
+        "webchat": {
+          "header": "Non compliance with the accessibility regulations for the GOV.UK One Login webchat",
+          "listItem1": "Voice control software may not be able to accurately label the webchat content. This fails WCAG 2.2 success criterion 4.1.2 (Name, role, value).",
+          "listItem2": "If you are using an external keyboard on mobile devices, the keyboard focus may not reach the question and answer section and could disappear completely. This fails WCAG 2.2 success criterion 2.1.1 (Keyboard) and WCAG 2.2 success criterion 2.1.2 (No keyboard trap).",
+          "listItem3": "Some browsers move the chat keyboard focus to the start of the chat when new chat content is added. This fails WCAG 2.2 success criterion 2.4.3 (Focus order).",
+          "listItem4": "If you are using a screen reader, it may be difficult to distinguish between the different quick answer options provided by the webchat. This fails WCAG 2.2 success criterion 1.3.1 (Info and relationships).",
+          "listItem5": "Sometimes the answer text in buttons is not descriptive enough out of context. This fails WCAG 2.2 success criterion 2.4.6 (Headings and labels).",
+          "listItem6": "The field label is removed from the form when you type your own response to a message, but is replaced when you press return. This fails WCAG 2.2 success criterion 3.3.2 (Labels and instructions).",
+          "listItem7": "Focus returns to the webchat icon after the webchat is closed, even if you start the webchat from the link in page content. This fails WCAG 2.2 success criterion 2.4.3 (Focus order).",
+          "paragraph1": "There are three issues that we do not believe are non-compliant with accessibility regulations but may be frustrating for users:",
+          "bulletPoint1": "it’s not possible to change language in the middle of a chat session",
+          "bulletPoint2": "it’s not possible to save your chat session",
+          "bulletPoint3": "the webchat does not confirm it has been closed to screen reader users"
+        }
       },
-      "section8": {
+      "whatWereDoing": {
         "header": "What we’re doing to improve accessibility",
         "paragraph1": "We’ll update this page when issues are fixed, when we expect them to be fixed or when new problems are identified."
       },
-      "section9": {
+      "preparation": {
         "header": "Preparation of this accessibility statement",
-        "paragraph1": "This statement was prepared on 4 November 2020. It was last reviewed on 28 February 2024.",
-        "paragraph2": "GOV.UK One Login was last tested in October and November 2023. The test was carried out by the GOV.UK One Login accessibility team who produced an audit of the journey in December 2023. The GOV.UK One Login accessibility team assessed GOV.UK One Login against the Web Content Accessibility Guidelines WCAG 2.2 in preparation for the guidelines being enforced in October 2024."
+        "paragraph1": "This statement was prepared on 4 November 2020. It was last reviewed on 5 June 2024.",
+        "paragraph2": "GOV.UK One Login was last tested in October and November 2023. The test was carried out by the GOV.UK One Login accessibility team who produced an audit of the journey in December 2023. The GOV.UK One Login accessibility team assessed GOV.UK One Login against the Web Content Accessibility Guidelines (WCAG) 2.2 in preparation for the guidelines being enforced in October 2024.",
+        "paragraph3": "The GOV.UK One Login webchat service was last tested in April 2024. An initial audit was carried out by the GOV.UK One Login accessibility team in October 2023. The service was audited by the Digital Accessibility Centre (DAC) in January 2024. The DAC audit assessed the webchat service against WCAG 2.1, but all success criteria failures also apply to WCAG 2.2."
       }
     },
     "termsAndConditions": {
@@ -2204,7 +2265,6 @@
         }
       }
     },
-    
     "contactUsSubmitSuccess": {
       "title": "Your message has been submitted",
       "header": "Your message has been submitted",
@@ -2339,7 +2399,7 @@
           "authenticatorApp": "authenticator app ",
           "paragraph1End": "you used to create your GOV.UK One Login"
         },
-        "code":{
+        "code": {
           "label": "Enter the 6 digit code"
         }
       }

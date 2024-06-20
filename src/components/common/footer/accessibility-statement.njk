@@ -4,127 +4,197 @@
 
 {% block content %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{'pages.accessibilityStatement.header' | translate}}
-</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+        {{ 'pages.accessibilityStatement.header' | translate }}
+    </h1>
 
-<p class="govuk-body">{{'pages.accessibilityStatement.content.paragraph1' | translate}}
-  <a href="https://www.gov.uk/help/accessibility" class="govuk-link">{{'pages.accessibilityStatement.content.linkText' | translate}}</a>.
-</p>
-<p class="govuk-body">{{'pages.accessibilityStatement.content.paragraph2' | translate}}</p>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.content.paragraph1' | translate }}
+        <a href="https://www.gov.uk/help/accessibility"
+           class="govuk-link">{{ 'pages.accessibilityStatement.content.linkText' | translate }}</a>.
+    </p>
+    <p class="govuk-body">
+        {{ 'pages.accessibilityStatement.content.paragraph2.text1' | translate }}
+        <a href="{{ 'pages.accessibilityStatement.content.paragraph2.signInLink.href' | translate }}" class="govuk-link">{{ 'pages.accessibilityStatement.content.paragraph2.signInLink.text' | translate }}</a>
+        {{ 'pages.accessibilityStatement.content.paragraph2.text2' | translate }}
+        <a href="{{ 'pages.accessibilityStatement.content.paragraph2.accountLink.href' | translate }}" class="govuk-link">{{ 'pages.accessibilityStatement.content.paragraph2.accountLink.text' | translate }}</a>.
+    </p>
 
-<h2 class="govuk-heading-m">
-  {{'pages.accessibilityStatement.section1.header' | translate}}
-</h2>
+    <h2 class="govuk-heading-m">
+        {{ 'pages.accessibilityStatement.usingOneLogin.header' | translate }}
+    </h2>
 
-<p class="govuk-body">{{'pages.accessibilityStatement.section1.paragraph1.text1' | translate}}
-  <a href="https://www.gov.uk/government/organisations/government-digital-service" class="govuk-link">{{'pages.accessibilityStatement.section1.paragraph1.linkText' | translate}}</a>{{'pages.accessibilityStatement.section1.paragraph1.text2' | translate}}
-</p>
-<ul class="govuk-list govuk-list--bullet">
-  <li>{{'pages.accessibilityStatement.section1.bulletPoint1' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section1.bulletPoint2' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section1.bulletPoint3' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section1.bulletPoint4' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section1.bulletPoint5' | translate}}</li>
-</ul>
-<p class="govuk-body">{{'pages.accessibilityStatement.section1.paragraph2' | translate}}</p>
-<p class="govuk-body">
-  <a href="https://mcmw.abilitynet.org.uk/" class="govuk-link">{{'pages.accessibilityStatement.section1.linkText' | translate}}</a>
-  {{'pages.accessibilityStatement.section1.paragraph3' | translate}}
-</p>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.usingOneLogin.paragraph1.text1' | translate }}
+        <a href="https://www.gov.uk/government/organisations/government-digital-service"
+           class="govuk-link">{{ 'pages.accessibilityStatement.usingOneLogin.paragraph1.linkText' | translate }}</a>{{ 'pages.accessibilityStatement.usingOneLogin.paragraph1.text2' | translate }}
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>{{ 'pages.accessibilityStatement.usingOneLogin.bulletPoint1' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.usingOneLogin.bulletPoint2' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.usingOneLogin.bulletPoint3' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.usingOneLogin.bulletPoint4' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.usingOneLogin.bulletPoint5' | translate }}</li>
+    </ul>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.usingOneLogin.paragraph2' | translate }}</p>
+    <p class="govuk-body">
+        <a href="https://mcmw.abilitynet.org.uk/"
+           class="govuk-link">{{ 'pages.accessibilityStatement.usingOneLogin.linkText' | translate }}</a>
+        {{ 'pages.accessibilityStatement.usingOneLogin.paragraph3' | translate }}
+    </p>
 
+    <h2 class="govuk-heading-m">
+        {{ 'pages.accessibilityStatement.accessibilityOfOneLogin.header' | translate }}
+    </h2>
 
-<h2 class="govuk-heading-m">
-  {{'pages.accessibilityStatement.section2.header' | translate}}
-</h2>
-<p class="govuk-body">{{'pages.accessibilityStatement.section2.paragraph1' | translate}}</p>
-<ul class="govuk-list govuk-list--bullet">
-  <li>{{'pages.accessibilityStatement.section2.bulletPoint1' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section2.bulletPoint2' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section2.bulletPoint3' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section2.bulletPoint4' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section2.bulletPoint5' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section2.bulletPoint6' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section2.bulletPoint7' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section2.bulletPoint8' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section2.bulletPoint9' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section2.bulletPoint10' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section2.bulletPoint11' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section2.bulletPoint12' | translate}}</li>
-  <li>{{'pages.accessibilityStatement.section2.bulletPoint13' | translate}}</li>
-</ul>
-<p class="govuk-body">{{'pages.accessibilityStatement.section2.paragraph2' | translate}}</p>
+    <h3 class="govuk-heading-s">
+        {{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.header' | translate }}
+    </h3>
 
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.paragraph1' | translate }}</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.bulletPoint1' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.bulletPoint2' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.bulletPoint3' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.bulletPoint4' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.bulletPoint5' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.bulletPoint6' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.bulletPoint7' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.bulletPoint8' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.bulletPoint9' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.bulletPoint10' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.bulletPoint11' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.bulletPoint12' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.bulletPoint13' | translate }}</li>
+    </ul>
 
-<h2 class="govuk-heading-m">
-  {{'pages.accessibilityStatement.section3.header' | translate}}
-</h2>
-<p class="govuk-body">{{'pages.accessibilityStatement.section3.paragraph1' | translate}}
-  <a href="/support" class="govuk-link">{{'pages.accessibilityStatement.section3.linkText' | translate}}</a>.
-</p>
+    <p class="govuk-body">
+        {{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.paragraph2.text1' | translate }}
+        <a href="{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.paragraph2.link.href' | translate }}" class="govuk-link">{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.service.paragraph2.link.text' | translate }}</a>.
+    </p>
 
-<h2 class="govuk-heading-m">
-  {{'pages.accessibilityStatement.section4.header' | translate}}
-</h2>
-<p class="govuk-body">{{'pages.accessibilityStatement.section4.paragraph1' | translate}}
-  <a href="/support" class="govuk-link">{{'pages.accessibilityStatement.section4.linkText' | translate}}</a>.
-</p>
+    <h3 class="govuk-heading-s" id="webchat-accessibility">
+        {{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.header' | translate }}
+    </h3>
 
-<h2 class="govuk-heading-m">
-  {{'pages.accessibilityStatement.section5.header' | translate}}
-</h2>
-<p class="govuk-body">{{'pages.accessibilityStatement.section5.paragraph1' | translate}}</p>
-<p class="govuk-body">{{'pages.accessibilityStatement.section5.paragraph2' | translate}}
-  <a href="https://www.equalityadvisoryservice.com/" class="govuk-link">{{'pages.accessibilityStatement.section5.linkText' | translate}}</a>.
-</p>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.paragraph1' | translate }}</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.bulletPoint1' | translate }}
+            <ul class="govuk-list govuk-list--bullet">
+                <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.subBulletPoint1' | translate }}</li>
+                <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.subBulletPoint2' | translate }}</li>
+            </ul>
+        </li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.bulletPoint2' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.bulletPoint3' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.bulletPoint4' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.bulletPoint5' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.bulletPoint6' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.bulletPoint7' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.bulletPoint8' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.bulletPoint9' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.bulletPoint10' | translate }}</li>
+    </ul>
 
-<h2 class="govuk-heading-m">
-  {{'pages.accessibilityStatement.section6.header' | translate}}
-</h2>
-<p class="govuk-body">{{'pages.accessibilityStatement.section6.paragraph1' | translate}}</p>
+    <p class="govuk-body">
+        {{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.paragraph2.text1' | translate }}
+        <a href="{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.paragraph2.link.href' | translate }}" class="govuk-link">{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.webchat.paragraph2.link.text' | translate }}</a>.
+    </p>
 
-<h3 class="govuk-heading-s">
-  {{'pages.accessibilityStatement.section6.subHeader' | translate}}
-</h3>
-<p class="govuk-body">{{'pages.accessibilityStatement.section6.paragraph2.text1' | translate}}
-  <a href="https://www.w3.org/TR/WCAG21/" class="govuk-link">{{'pages.accessibilityStatement.section6.paragraph2.linkText' | translate}}</a>
-  {{'pages.accessibilityStatement.section6.paragraph2.text2' | translate}}
-</p>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.accessibilityOfOneLogin.updatesParagraph' | translate }}</p>
 
-<h2 class="govuk-heading-m">
-  {{'pages.accessibilityStatement.section7.header' | translate}}
-</h2>
-<p class="govuk-body">{{'pages.accessibilityStatement.section7.paragraph1' | translate}}</p>
+    <h2 class="govuk-heading-m">
+        {{ 'pages.accessibilityStatement.whatToDo.header' | translate }}
+    </h2>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.whatToDo.paragraph1' | translate }}
+        <a href="/support" class="govuk-link">{{ 'pages.accessibilityStatement.whatToDo.linkText' | translate }}</a>.
+    </p>
 
-<h3 class="govuk-heading-s">
-  {{'pages.accessibilityStatement.section7.subHeader' | translate}}
-</h3>
-<ol class="govuk-list govuk-list--number">
-    <li>{{'pages.accessibilityStatement.section7.listItem1' | translate}}</li>
-    <li>{{'pages.accessibilityStatement.section7.listItem2' | translate}}</li>
-    <li>{{'pages.accessibilityStatement.section7.listItem3' | translate}}</li>
-    <li>{{'pages.accessibilityStatement.section7.listItem4' | translate}}</li>
-    <li>{{'pages.accessibilityStatement.section7.listItem5' | translate}}</li>
-    <li>{{'pages.accessibilityStatement.section7.listItem6' | translate}}</li>
-    <li>{{'pages.accessibilityStatement.section7.listItem7' | translate}}</li>
-    <li>{{'pages.accessibilityStatement.section7.listItem8' | translate}}</li>
-    <li>{{'pages.accessibilityStatement.section7.listItem9' | translate}}</li>
-    <li>{{'pages.accessibilityStatement.section7.listItem10' | translate}}</li>
-    <li>{{'pages.accessibilityStatement.section7.listItem11' | translate}}</li>
-    <li>{{'pages.accessibilityStatement.section7.listItem12' | translate}}</li>
-</ol>
+    <h2 class="govuk-heading-m">
+        {{ 'pages.accessibilityStatement.howToReport.header' | translate }}
+    </h2>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.howToReport.paragraph1' | translate }}
+        <a href="/support" class="govuk-link">{{ 'pages.accessibilityStatement.howToReport.linkText' | translate }}</a>.
+    </p>
 
-<h2 class="govuk-heading-m">
-  {{'pages.accessibilityStatement.section8.header' | translate}}
-</h2>
-<p class="govuk-body">{{'pages.accessibilityStatement.section8.paragraph1' | translate}}</p>
+    <h2 class="govuk-heading-m">
+        {{ 'pages.accessibilityStatement.enforcement.header' | translate }}
+    </h2>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.enforcement.paragraph1' | translate }}</p>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.enforcement.paragraph2' | translate }}
+        <a href="https://www.equalityadvisoryservice.com/"
+           class="govuk-link">{{ 'pages.accessibilityStatement.enforcement.linkText' | translate }}</a>.
+    </p>
 
-<h2 class="govuk-heading-m">
-  {{'pages.accessibilityStatement.section9.header' | translate}}
-</h2>
-<p class="govuk-body">{{'pages.accessibilityStatement.section9.paragraph1' | translate}}</p>
-<p class="govuk-body">{{'pages.accessibilityStatement.section9.paragraph2' | translate}}</p>
+    <h2 class="govuk-heading-m">
+        {{ 'pages.accessibilityStatement.technicalInformation.header' | translate }}
+    </h2>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.technicalInformation.paragraph1' | translate }}</p>
 
-{{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "", contentId: "", loggedInStatus: false, dynamic: false })}}
+    <h3 class="govuk-heading-s">
+        {{ 'pages.accessibilityStatement.technicalInformation.subHeader' | translate }}
+    </h3>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.technicalInformation.paragraph2.text1' | translate }}
+        <a href="https://www.w3.org/TR/WCAG21/"
+           class="govuk-link">{{ 'pages.accessibilityStatement.technicalInformation.paragraph2.linkText' | translate }}</a>
+        {{ 'pages.accessibilityStatement.technicalInformation.paragraph2.text2' | translate }}
+    </p>
+
+    <h2 class="govuk-heading-m">
+        {{ 'pages.accessibilityStatement.nonAccessibleContent.header' | translate }}
+    </h2>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.nonAccessibleContent.paragraph1' | translate }}</p>
+
+    <h3 class="govuk-heading-s" id="non-compliance-service">
+        {{ 'pages.accessibilityStatement.nonAccessibleContent.service.header' | translate }}
+    </h3>
+    <ol class="govuk-list govuk-list--number">
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.service.listItem1' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.service.listItem2' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.service.listItem3' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.service.listItem4' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.service.listItem5' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.service.listItem6' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.service.listItem7' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.service.listItem8' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.service.listItem9' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.service.listItem10' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.service.listItem11' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.service.listItem12' | translate }}</li>
+    </ol>
+
+    <h3 class="govuk-heading-s" id="non-compliance-webchat">
+        {{ 'pages.accessibilityStatement.nonAccessibleContent.webchat.header' | translate }}
+    </h3>
+
+    <ol class="govuk-list govuk-list--number">
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.webchat.listItem1' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.webchat.listItem2' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.webchat.listItem3' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.webchat.listItem4' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.webchat.listItem5' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.webchat.listItem6' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.webchat.listItem7' | translate }}</li>
+    </ol>
+
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.nonAccessibleContent.webchat.paragraph1' | translate }}</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.webchat.bulletPoint1' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.webchat.bulletPoint2' | translate }}</li>
+        <li>{{ 'pages.accessibilityStatement.nonAccessibleContent.webchat.bulletPoint3' | translate }}</li>
+    </ul>
+
+    <h2 class="govuk-heading-m">
+        {{ 'pages.accessibilityStatement.whatWereDoing.header' | translate }}
+    </h2>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.whatWereDoing.paragraph1' | translate }}</p>
+
+    <h2 class="govuk-heading-m">
+        {{ 'pages.accessibilityStatement.preparation.header' | translate }}
+    </h2>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.preparation.paragraph1' | translate }}</p>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.preparation.paragraph2' | translate }}</p>
+    <p class="govuk-body">{{ 'pages.accessibilityStatement.preparation.paragraph3' | translate }}</p>
+
+    {{ ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "", contentId: "", loggedInStatus: false, dynamic: false }) }}
 
 {% endblock %}
