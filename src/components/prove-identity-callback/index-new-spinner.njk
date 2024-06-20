@@ -1,0 +1,23 @@
+{% extends "common/layout/base.njk" %}
+{% set pageTitleName = 'pages.proveIdentityCheckNew.htmlOnlyVersion.title' | translate %}
+
+{% block content %}
+
+    <form action="/ipv-callback" method="post" novalidate="novalidate">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        <div class="govuk-form-group">
+            <h1 class="govuk-label-wrapper">
+                <label class="govuk-label govuk-label--l" for="more-detail">
+                    {{ 'pages.proveIdentityCheckNew.htmlOnlyVersion.header' | translate }}
+                </label>
+            </h1>
+            <p class="govuk-body">{{ 'pages.proveIdentityCheckNew.htmlOnlyVersion.paragraph' | translate }}</p>
+            <button type="submit" class="govuk-button">
+                {{ 'pages.proveIdentityCheckNew.htmlOnlyVersion.button' | translate }}
+            </button>
+        </div>
+    </form>
+
+    {{ ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "", contentId: "", loggedInStatus: false, dynamic: false }) }}
+
+{% endblock %}
