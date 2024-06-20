@@ -217,3 +217,7 @@ export function universalAnalyticsDisabled(): string {
 export function proveIdentityWelcomeEnabled(): boolean {
   return process.env.PROVE_IDENTITY_WELCOME_ENABLED === "1";
 }
+
+export function supportNewIpvSpinner(): boolean {
+  return process.env.SUPPORT_NEW_IPV_SPINNER === "1";
+}
