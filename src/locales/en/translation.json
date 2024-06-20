@@ -2351,6 +2351,14 @@
       "paragraph1": "Please wait",
       "paragraph2": "We’re still trying"
     },
+    "proveIdentityCheckNew": {
+      "htmlOnlyVersion": {
+        "title": "There is a delay returning you to the service",
+        "header": "There is a delay returning you to the service",
+        "paragraph": "Try to continue to the service again.",
+        "button": "Continue to the service"
+      }
+    },
     "getSecurityCodes": {
       "title": "Choose how to get security codes",
       "header": "Choose how to get security codes",
