@@ -1,6 +1,6 @@
 import { RedisConfig } from "./utils/types";
 import ssm from "./utils/ssm";
-import { Parameter } from "aws-sdk/clients/ssm";
+import { Parameter } from "@aws-sdk/client-ssm";
 import { ENVIRONMENT_NAME } from "./app.constants";
 
 export function getLogLevel(): string {
@@ -74,7 +74,7 @@ export async function getRedisConfig(): Promise<RedisConfig> {
     WithDecryption: true,
   };
 
-  const result = await ssm.getParameters(params).promise();
+  const result = await ssm.getParameters(params);
 
   if (result.InvalidParameters && result.InvalidParameters.length > 0) {
     throw Error("Invalid SSM config values for redis");

@@ -1,3 +1,3 @@
-const AWS = require("aws-sdk");
+const { SSM } = require("@aws-sdk/client-ssm");
 
-export default new AWS.SSM();
+export default new SSM();
