@@ -12,8 +12,11 @@ import {
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
-import { support2hrLockout } from "../../config";
+import { support2hrLockout, supportCheckEmailFraud } from "../../config";
 import { isLocked } from "../../utils/lock-helper";
+import { logger } from "../../utils/logger";
+import { CheckEmailFraudBlockInterface } from "../check-email-fraud-block/types";
+import { checkEmailFraudBlockService } from "../check-email-fraud-block/check-email-fraud-block-service";
 
 const TEMPLATE_NAME = "check-your-email/index.njk";
 
@@ -55,7 +58,8 @@ export function checkYourEmailGet(req: Request, res: Response): void {
 
 export const checkYourEmailPost = (
   service: VerifyCodeInterface = codeService(),
-  accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
+  accountInterventionsService: AccountInterventionsInterface = accountInterventionService(),
+  checkEmailFraudService: CheckEmailFraudBlockInterface = checkEmailFraudBlockService()
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
     if (req.session.user?.isVerifyEmailCodeResendRequired) {
@@ -63,6 +67,20 @@ export const checkYourEmailPost = (
         ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES
       );
       return res.redirect(path);
+    }
+    if (supportCheckEmailFraud()) {
+      const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+      const checkEmailFraudResponse =
+        await checkEmailFraudService.checkEmailFraudBlock(
+          req.session.user.email,
+          sessionId,
+          clientSessionId,
+          persistentSessionId,
+          req
+        );
+      logger.info(
+        `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
+      );
     }
     const verifyCodeRequest = verifyCodePost(
       service,

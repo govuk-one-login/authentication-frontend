@@ -13,10 +13,26 @@ import { PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES, getErrorPathByCode } from "../../common/constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { CheckEmailFraudBlockInterface } from "../../check-email-fraud-block/types";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
+import { AccountInterventionsInterface } from "../../account-intervention/types";
 
 describe("check your email controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
+  const { email } = commonVariables;
+
+  const accountInterventionsFakeSuccessfulService: AccountInterventionsInterface =
+    {
+      accountInterventions: sinon.fake.returns({ success: true }),
+    } as unknown as AccountInterventionsInterface;
+
+  const checkEmailFraudFakeSuccessfulService: CheckEmailFraudBlockInterface = {
+    checkEmailFraudBlock: sinon.fake.returns({
+      success: true,
+      data: { email, isBlockedStatus: "Pending" },
+    }),
+  } as unknown as CheckEmailFraudBlockInterface;
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.CHECK_YOUR_EMAIL);
@@ -57,7 +73,11 @@ describe("check your email controller", () => {
       req.session.id = "123456-djjad";
       req.session.user.email = "test@test.com";
 
-      await checkYourEmailPost(fakeService)(req as Request, res as Response);
+      await checkYourEmailPost(
+        fakeService,
+        accountInterventionsFakeSuccessfulService,
+        checkEmailFraudFakeSuccessfulService
+      )(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(
@@ -74,7 +94,11 @@ describe("check your email controller", () => {
 
       req.session.user.isVerifyEmailCodeResendRequired = true;
 
-      await checkYourEmailPost(fakeService)(req as Request, res as Response);
+      await checkYourEmailPost(
+        fakeService,
+        accountInterventionsFakeSuccessfulService,
+        checkEmailFraudFakeSuccessfulService
+      )(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.not.been.called;
       expect(res.redirect).to.have.calledWith(
@@ -96,7 +120,11 @@ describe("check your email controller", () => {
       req.session.id = "123456-djjad";
       req.session.user.email = "test@test.com";
 
-      await checkYourEmailPost(fakeService)(req as Request, res as Response);
+      await checkYourEmailPost(
+        fakeService,
+        accountInterventionsFakeSuccessfulService,
+        checkEmailFraudFakeSuccessfulService
+      )(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
       expect(res.render).to.have.been.calledWith("check-your-email/index.njk");

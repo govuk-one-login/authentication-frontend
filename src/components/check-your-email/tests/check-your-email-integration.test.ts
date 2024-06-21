@@ -18,6 +18,7 @@ describe("Integration:: check your email", () => {
   let baseApi: string;
 
   before(async () => {
+    process.env.SUPPORT_CHECK_EMAIL_FRAUD = "1";
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
@@ -56,6 +57,7 @@ describe("Integration:: check your email", () => {
   after(() => {
     sinon.restore();
     app = undefined;
+    delete process.env.SUPPORT_CHECK_EMAIL_FRAUD;
   });
 
   it("should return verify email page", (done) => {
@@ -148,6 +150,14 @@ describe("Integration:: check your email", () => {
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
 
+    nock(baseApi)
+      .post(API_ENDPOINTS.CHECK_EMAIL_FRAUD_BLOCK)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email: "test@test.com",
+        isBlockedStatus: "Pending",
+      });
+
     request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL)
       .type("form")
@@ -165,6 +175,14 @@ describe("Integration:: check your email", () => {
       code: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE,
       success: false,
     });
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.CHECK_EMAIL_FRAUD_BLOCK)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email: "test@test.com",
+        isBlockedStatus: "Pending",
+      });
 
     request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL)
@@ -188,6 +206,14 @@ describe("Integration:: check your email", () => {
       code: ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES,
       success: false,
     });
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.CHECK_EMAIL_FRAUD_BLOCK)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email: "test@test.com",
+        isBlockedStatus: "Pending",
+      });
 
     request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL)
