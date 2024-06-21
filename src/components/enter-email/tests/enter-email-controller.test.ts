@@ -16,7 +16,6 @@ import { SendNotificationServiceInterface } from "../../common/send-notification
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { CheckEmailFraudBlockInterface } from "../../check-email-fraud-block/types";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("enter email controller", () => {
@@ -31,13 +30,6 @@ describe("enter email controller", () => {
       success: true,
     }),
   } as unknown as CheckReauthServiceInterface;
-
-  const checkEmailFraudFakeSuccessfulService: CheckEmailFraudBlockInterface = {
-    checkEmailFraudBlock: sinon.fake.returns({
-      success: true,
-      data: { email, isBlockedStatus: "Pending" },
-    }),
-  } as unknown as CheckEmailFraudBlockInterface;
 
   beforeEach(() => {
     res = mockResponse();
@@ -148,11 +140,10 @@ describe("enter email controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      await enterEmailPost(
-        fakeService,
-        checkReauthSuccessfulFakeService,
-        checkEmailFraudFakeSuccessfulService
-      )(req as Request, res as Response);
+      await enterEmailPost(fakeService, checkReauthSuccessfulFakeService)(
+        req as Request,
+        res as Response
+      );
 
       expect(fakeService.userExists).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_PASSWORD);
@@ -166,11 +157,10 @@ describe("enter email controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      await enterEmailPost(
-        fakeService,
-        checkReauthSuccessfulFakeService,
-        checkEmailFraudFakeSuccessfulService
-      )(req as Request, res as Response);
+      await enterEmailPost(fakeService, checkReauthSuccessfulFakeService)(
+        req as Request,
+        res as Response
+      );
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ACCOUNT_NOT_FOUND);
       expect(fakeService.userExists).to.have.been.calledOnce;
@@ -195,11 +185,10 @@ describe("enter email controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      await enterEmailPost(
-        fakeService,
-        checkReauthSuccessfulFakeService,
-        checkEmailFraudFakeSuccessfulService
-      )(req as Request, res as Response);
+      await enterEmailPost(fakeService, checkReauthSuccessfulFakeService)(
+        req as Request,
+        res as Response
+      );
 
       const expectedLockTime = new Date(
         date.getTime() + lockTTlInSeconds * 1000
@@ -426,11 +415,10 @@ describe("enter email controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      await enterEmailPost(
-        fakeService,
-        checkReauthSuccessfulFakeService,
-        checkEmailFraudFakeSuccessfulService
-      )(req as Request, res as Response);
+      await enterEmailPost(fakeService, checkReauthSuccessfulFakeService)(
+        req as Request,
+        res as Response
+      );
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_PASSWORD);
     });
