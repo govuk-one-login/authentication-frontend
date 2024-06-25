@@ -41,6 +41,6 @@ orch_to_auth_audience           = "https://signin.account.gov.uk/"
 
 ua_disabled                          = "false"
 universal_analytics_gtm_container_id = "GTM-TT5HDKV"
-ga4_disabled                         = "true"
+ga4_disabled                         = "false"
 google_analytics_4_gtm_container_id  = "GTM-K4PBJH3"
 analytics_cookie_domain              = ".account.gov.uk"
