@@ -2310,7 +2310,7 @@
     "getSecurityCodes": {
       "title": "Dewis sut i gael codau diogelwch",
       "header": "Dewis sut i gael codau diogelwch",
-      "summary": "I orffen creu eich GOV.UK One Login, mae angen i chi ddewis ffordd o brofi mai chi yw chi pan fyddwch yn mewngofnodi.",
+      "summary": "Bydd angen i chi roi cod diogelwch pan fyddwch yn mewngofnodi i GOV.UK One Login.",
       "titleAccountPartCreated": "Gorffen creu eich GOV.UK One Login",
       "headerAccountPartCreated": "Gorffen creu eich GOV.UK One Login",
       "summaryAccountPartCreated": "Dewiswch ffordd o gael codau diogelwch pan fyddwch yn mewngofnodi. Mae hyn yn helpu i gadw eich GOV.UK One Login yn ddiogel.",
@@ -2321,7 +2321,7 @@
       },
       "authAppDetails": {
         "summaryText": "Beth yw ap dilysydd?",
-        "paragraph1": "Mae ap dilysydd yn creu cod diogelwch sy’n helpu i gadarnhau mai chi yw chi pan fyddwch yn mewngofnodi.",
+        "paragraph1": "Mae ap dilysu yn creu codau diogelwch y gallwch eu defnyddio i fewngofnodi i wefannau neu wasanaethau ar-lein.",
         "paragraph2": "Gallwch ddefnyddio ap dilysydd ar eich ffôn clyfar, llechen neu gyfrifiadur bwrdd gwaith.  Lawrlwythwch ap dilysydd ar gyfer eich ffôn clyfar neu lechen o’ch siop apiau neu chwiliwch ar-lein am ap dilysydd ar gyfer eich cyfrifiadur."
       },
       "continueButtonText": "Parhau",
