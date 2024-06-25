@@ -7,7 +7,8 @@ export interface AccountInterventionsInterface {
     emailAddress: string,
     clientSessionId: string,
     persistentSessionId: string,
-    req: Request
+    req: Request,
+    authenticated?: boolean
   ) => Promise<ApiResponseResult<AccountInterventionStatus>>;
 }
 

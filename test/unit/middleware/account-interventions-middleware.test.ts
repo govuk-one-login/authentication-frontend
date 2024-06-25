@@ -290,6 +290,7 @@ describe("accountInterventionsMiddleware", () => {
     await accountInterventionsMiddleware(
       handleSuspendedStatus,
       handlePasswordResetStatus,
+      undefined,
       accountInterventionService
     )(req as Request, res as Response, next as NextFunction);
   };

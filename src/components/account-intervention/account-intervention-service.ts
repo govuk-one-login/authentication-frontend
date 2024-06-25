@@ -20,13 +20,17 @@ export function accountInterventionService(
     emailAddress: string,
     clientSessionId: string,
     persistentSessionId: string,
-    req: Request
+    req: Request,
+    authenticated?: boolean
   ): Promise<ApiResponseResult<AccountInterventionStatus>> {
+    const bodyWithEmail = { email: emailAddress.toLowerCase() };
+    const body =
+      authenticated !== undefined
+        ? { ...bodyWithEmail, authenticated: authenticated }
+        : bodyWithEmail;
     const response = await axios.client.post<AccountInterventionStatus>(
       API_ENDPOINTS.ACCOUNT_INTERVENTIONS,
-      {
-        email: emailAddress.toLowerCase(),
-      },
+      body,
       getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
