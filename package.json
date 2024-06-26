@@ -84,7 +84,7 @@
     "i18next": "^21.6.5",
     "i18next-fs-backend": "^2.3.1",
     "i18next-http-middleware": "^3.2.0",
-    "jose": "^4.14.4",
+    "jose": "^5.5.0",
     "jsdom": "^22.1.0",
     "libphonenumber-js": "^1.9.44",
     "nunjucks": "^3.2.3",
