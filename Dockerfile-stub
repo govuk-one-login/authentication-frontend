@@ -1,4 +1,4 @@
-FROM node:18.12.1-alpine3.16@sha256:a56bbaddffb19e03fa78d0b2c88cf70ec2f8d40e30048c757fb7c17fd1e12d8d
+FROM node:20.2.0-alpine3.16@sha256:f9b54b46639a9017b39eba677cf44c8cb96760ca69dadcc1d4cbd1daea753225
 
 ENV NODE_ENV "development"
 ENV PORT 2000
