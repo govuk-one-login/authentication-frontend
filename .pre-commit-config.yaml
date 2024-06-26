@@ -24,10 +24,10 @@ repos:
       - id: eslint
         name: Run ESLint
         language: docker_image
-        entry: node:18.12.1-alpine3.16 sh -c "yarn install && yarn lint"
+        entry: node:18.20.3-alpine3.20 sh -c "yarn install && yarn lint"
         pass_filenames: false
       - id: prettier
         name: Run Prettier
         language: docker_image
-        entry: node:18.12.1-alpine3.16 sh -c "yarn install && yarn pretty"
+        entry: node:18.20.3-alpine3.20 sh -c "yarn install && yarn pretty"
         pass_filenames: false
