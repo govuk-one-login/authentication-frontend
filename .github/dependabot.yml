@@ -11,6 +11,7 @@ updates:
     ignore:
       - dependency-name: "node"
         versions: ["17.x","19.x","20.x"]
+    open-pull-requests-limit: 100
     commit-message:
       prefix: BAU
   - package-ecosystem: docker
@@ -21,5 +22,6 @@ updates:
     target-branch: main
     labels:
     - dependabot
+    open-pull-requests-limit: 100
     commit-message:
       prefix: BAU
