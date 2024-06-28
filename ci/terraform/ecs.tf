@@ -73,10 +73,6 @@ locals {
         value = var.gtm_id
       },
       {
-        name  = "ANALYTICS_COOKIE_DOMAIN"
-        value = local.service_domain
-      },
-      {
         name  = "REDIS_KEY"
         value = local.redis_key
       },
