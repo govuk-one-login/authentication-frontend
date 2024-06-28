@@ -2307,6 +2307,14 @@
       "paragraph1": "Arhoswch",
       "paragraph2": "Rydym yn dal i geisio"
     },
+    "proveIdentityCheckNew": {
+      "htmlOnlyVersion": {
+        "title": "",
+        "header": "",
+        "paragraph": "",
+        "button": ""
+      }
+    },
     "getSecurityCodes": {
       "title": "Dewis sut i gael codau diogelwch",
       "header": "Dewis sut i gael codau diogelwch",
