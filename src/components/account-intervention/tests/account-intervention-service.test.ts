@@ -19,10 +19,21 @@ describe("account interventions service", () => {
   const service: AccountInterventionsInterface =
     accountInterventionService(httpInstance);
   let postStub: SinonStub;
+  const { sessionId, clientSessionId, email, diPersistentSessionId } =
+    commonVariables;
+  const req = createMockRequest(PATH_NAMES.AUTH_CODE, {
+    headers: requestHeadersWithIpAndAuditEncoded,
+  });
+  const axiosResponse = Promise.resolve({
+    data: {},
+    status: 200,
+    statusText: "OK",
+  });
 
   beforeEach(() => {
     setupApiKeyAndBaseUrlEnvVars();
     postStub = sinon.stub(httpInstance.client, "post");
+    postStub.resolves(axiosResponse);
   });
 
   afterEach(() => {
@@ -31,18 +42,6 @@ describe("account interventions service", () => {
   });
 
   it("successfully calls the API to check a user's account interventions status", async () => {
-    const { sessionId, clientSessionId, email, diPersistentSessionId } =
-      commonVariables;
-    const req = createMockRequest(PATH_NAMES.AUTH_CODE, {
-      headers: requestHeadersWithIpAndAuditEncoded,
-    });
-    const axiosResponse = Promise.resolve({
-      data: {},
-      status: 200,
-      statusText: "OK",
-    });
-    postStub.resolves(axiosResponse);
-
     const result = await service.accountInterventionStatus(
       sessionId,
       email,
@@ -63,5 +62,35 @@ describe("account interventions service", () => {
       true,
       expectedApiCallDetails
     );
+  });
+
+  const BOOLEANS = [true, false];
+  BOOLEANS.forEach((isAuthenticated) => {
+    it(`calls the api with the authenticated flag when this is passed through as ${isAuthenticated}`, async () => {
+      const result = await service.accountInterventionStatus(
+        sessionId,
+        email,
+        clientSessionId,
+        diPersistentSessionId,
+        req,
+        isAuthenticated
+      );
+
+      const expectedApiCallDetails = {
+        expectedPath: API_ENDPOINTS.ACCOUNT_INTERVENTIONS,
+        expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
+        expectedBody: {
+          email: commonVariables.email,
+          authenticated: isAuthenticated,
+        },
+      };
+
+      checkApiCallMadeWithExpectedBodyAndHeaders(
+        result,
+        postStub,
+        true,
+        expectedApiCallDetails
+      );
+    });
   });
 });

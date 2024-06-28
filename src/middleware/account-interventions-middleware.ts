@@ -13,6 +13,7 @@ import {
 export function accountInterventionsMiddleware(
   handleSuspendedStatus: boolean,
   handlePasswordResetStatus: boolean,
+  authenticated?: boolean,
   service = accountInterventionService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response, next: NextFunction) {
@@ -26,7 +27,8 @@ export function accountInterventionsMiddleware(
           email,
           clientSessionId,
           persistentSessionId,
-          req
+          req,
+          authenticated
         );
 
       if (accountInterventionsResponse.data.blocked) {
