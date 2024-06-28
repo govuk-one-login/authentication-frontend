@@ -2219,9 +2219,9 @@
     "@types/serve-static" "*"
 
 "@types/i18next-fs-backend@^1.1.1":
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/@types/i18next-fs-backend/-/i18next-fs-backend-1.1.2.tgz"
-  integrity sha512-ZzTRXA5B0x0oGhzKNp08IsYjZpli4LjRZpg3q4j0XFxN5lKG2MVLnR4yHX8PPExBk4sj9Yfk1z9O6CjPrAlmIQ==
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@types/i18next-fs-backend/-/i18next-fs-backend-1.1.5.tgz#39dae6057f4386f6eaacc36e69346d3783834ada"
+  integrity sha512-QKKYWkfQ13spBwa+5/lBThkPkMv8svU6a5Z0Bz96IuN+HupJZXVAbP93p5bK7iOcY7Y/g/W9Y6qy5z0i0NpTog==
   dependencies:
     i18next "^21.0.1"
 
