@@ -36,7 +36,7 @@ describe("cookies controller", () => {
 
       expect(res.render).to.have.been.calledWith("common/cookies/index.njk");
       expect(res.locals.updated).to.equal(false);
-      expect(res.locals.backUrl).to.equal("/last-page");
+      expect(res.locals.originalReferer).to.equal("/last-page");
     });
   });
 
@@ -78,7 +78,7 @@ describe("cookies controller", () => {
         expect(res.render).to.have.been.calledWith("common/cookies/index.njk");
         expect(res.locals.analyticsConsent).to.equal(true);
         expect(res.locals.updated).to.equal(true);
-        expect(res.locals.backUrl).to.equal("/page-before-1");
+        expect(res.locals.originalReferer).to.equal("/page-before-1");
       });
     });
 
@@ -179,7 +179,7 @@ describe("cookies controller", () => {
         expect(res.render).to.have.been.calledWith("common/cookies/index.njk");
         expect(res.locals.analyticsConsent).to.equal(false);
         expect(res.locals.updated).to.equal(true);
-        expect(res.locals.backUrl).to.equal("/page-before-2");
+        expect(res.locals.originalReferer).to.equal("/page-before-2");
       });
     });
   });
