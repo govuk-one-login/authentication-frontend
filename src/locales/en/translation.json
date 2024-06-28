@@ -1347,7 +1347,17 @@
           },
           "paragraph_two": "The information collected is classed as personal data because Google Analytics assigns a unique identifier to each visitor. This does not however enable us or Google to determine your real world identity. We will also not combine analytics information with the data you provide when authenticating your GOV.UK One Login or proving your identity or any other data that we may hold in order to determine your real world identity.",
           "paragraph_three": "We also use Firebase Crashlytics to collect information about problems you may experience when you use the GOV.UK ID Check app, such as the app crashing.",
-          "paragraph_four": "In both cases, Google acts as our data processor and we do not permit Google to use or share this data for their own purposes."
+          "paragraph_four": "In both cases, Google acts as our data processor and we do not permit Google to use or share this data for their own purposes.",
+          "dynatrace": {
+            "paragraph_one": "We use Dynatrace to collect information about problems you may experience when using GOV.UK One Login. For example:",
+            "list": {
+              "item_one": "how quickly pages load",
+              "item_two": "if you see any error messages",
+              "item_three": "technical information including your IP address and a unique identifier"
+            },
+            "paragraph_two": "The information we collect does not enable us or Dynatrace to determine your real world identity. We will not combine analytics information with any other data to determine your real world identity.",
+            "paragraph_three": "Dynatrace acts as our data processor and we do not permit them to use or share this data for their own purposes."
+          }
         },
         "why_we_need_your_information": {
           "header": "Why we need your information",
@@ -1364,7 +1374,7 @@
             "item_four": "provide the government service(s) that you access through GOV.UK One Login with information about the outcome of your identity check",
             "item_five": "provide you with a record of how your GOV.UK One Login has been used, for example, when it was last signed in to and what services it has been used with",
             "item_six": "contact you about any planned interruptions, problems or changes that may affect your GOV.UK One Login (using your email address)",
-            "item_seven": "improve the service by understanding how you use it and any problems you experience, for example using Google Analytics, Firebase Crashlytics and the contact centre feedback survey",
+            "item_seven": "improve the service by understanding how you use it and any problems you experience, for example using Google Analytics, Firebase Crashlytics, Dynatrace, and the contact centre feedback survey",
             "item_eight": "monitor the rates of successful and unsuccessful identity checking submissions and produce anonymised reports about GOV.UK One Login to help us understand where we can make improvements",
             "item_nine": "help diagnose and fix technical or debugging issues",
             "item_ten": "assist in billing and reconciliation for the third party identity checking services we use",
@@ -1378,7 +1388,7 @@
           "sub_header_two": "Consent (UK GDPR Article (6)(1)(a))",
           "paragraph_two": "We obtain your consent to process your personal data for the following purposes:",
           "list_one": {
-            "item_one": "collecting and analysing information about how you use your GOV.UK One Login using Google Analytics cookies",
+            "item_one": "collecting and analysing information about how you use your GOV.UK One Login using Google Analytics and Dynatrace cookies",
             "item_two": "collecting and processing your responses to our survey about the help you received"
           },
           "paragraph_three": "Where we rely on consent we will explain as clearly and concisely as possible how your data will be processed so you understand what you are consenting to. If you later change your mind, you can withdraw your consent at any time. How you can do this will depend on what we are processing your data for. For example, you can:",
@@ -1503,7 +1513,8 @@
           "list_one": {
             "item_one": "KBV questions we source from credit reference agencies or your answers to those questions",
             "item_two": "selfie video you take as part of proving your identity using the GOV.UK Identity Check app"
-          }
+          },
+          "paragraph_eleven": "If you consented to analytics, Dynatrace will store information about how you used GOV.UK One Login for 35 days."
         },
         "childrens_privacy_protection": {
           "header": "Children’s privacy protection",
@@ -1512,7 +1523,7 @@
         "where_information_processed_stored": {
           "header": "Where your information is processed and stored",
           "paragraph_one": "All personal data processed directly for the administration of your GOV.UK One Login and for identity checking is stored in the UK or in the European Economic Area (EEA). The EEA has been assessed by the UK Government as having adequate legal protections for data privacy in line with those in the UK.",
-          "paragraph_two": "Data collected by Google Analytics may be transferred outside the European Economic Area (EEA) for processing and some of our suppliers may provide technical support from outside of the EEA. In both cases, we ensure your information is just as well protected, for example by including extra clauses in our contracts with suppliers."
+          "paragraph_two": "Data collected by Google Analytics or Dynatrace may be transferred outside the European Economic Area (EEA) for processing and some of our suppliers may provide technical support from outside of the EEA. In both cases, we ensure your information is just as well protected, for example by including extra clauses in our contracts with suppliers."
         },
         "how_we_protect_your_information": {
           "header": "How we protect your personal information and keep it secure",
@@ -1605,7 +1616,7 @@
           "header": "Changes to this notice",
           "paragraph_one": "We may change this privacy notice. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy notice will apply to you and your information immediately.",
           "paragraph_two": "If these changes affect how your personal information is processed, GDS will let you know.",
-          "paragraph_three": "Last updated: 30 October 2023"
+          "paragraph_three": "Last updated: 28 June 2024"
         }
       }
     },
