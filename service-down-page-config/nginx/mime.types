@@ -1,0 +1,10 @@
+  types {
+    text/html     html;
+    text/css      css;
+    image/x-icon  ico;
+    image/svg+xml svg;
+    image/png     png;
+    font/woff woff;
+    font/woff2 woff2;
+    application/octet-stream eot;
+  }
