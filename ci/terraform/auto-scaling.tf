@@ -6,13 +6,13 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_scale_out_alarm" {
   count               = var.frontend_auto_scaling_v2_enabled ? 1 : 0
   alarm_name          = "${var.environment}-app-cluster/${aws_ecs_service.frontend_ecs_service.name}-AlarmScaleUp"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = 2
+  evaluation_periods  = 1
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
-  period              = 30
+  period              = 60
   statistic           = "Average"
   threshold           = 50
-  datapoints_to_alarm = 2
+  datapoints_to_alarm = 1
 
   dimensions = {
     ClusterName = "${var.environment}-app-cluster"
@@ -30,9 +30,9 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_scale_in_alarm" {
   evaluation_periods  = 5
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
-  period              = 30
+  period              = 60
   statistic           = "Average"
-  threshold           = 50
+  threshold           = 40
   datapoints_to_alarm = 5
 
   dimensions = {
