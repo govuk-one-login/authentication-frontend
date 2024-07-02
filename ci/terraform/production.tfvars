@@ -1,6 +1,7 @@
 environment         = "production"
 common_state_bucket = "digital-identity-prod-tfstate"
 redis_node_size     = "cache.m4.xlarge"
+service_down_page   = true
 
 #cloudfront enabled flag 
 cloudfront_auth_frontend_enabled = true
