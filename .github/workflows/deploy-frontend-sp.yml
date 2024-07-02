@@ -3,7 +3,7 @@ name: Deploy frontend (with SAM Deploy Pipeline)
 on:
   push:
     branches:
-      - secure-pipeline-action
+      - AUT-2930
   workflow_dispatch:
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build and push basic-auth-sidecar image
-        uses: govuk-one-login/devplatform-upload-action-ecr@PSREDEV-1167
+        uses: govuk-one-login/devplatform-upload-action-ecr@v1.3.0
         with:
           role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
           container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY_ARN }}
@@ -29,7 +29,7 @@ jobs:
           checkout-repo: false
 
       - name: Build, push and deploy frontend
-        uses: govuk-one-login/devplatform-upload-action-ecr@PSREDEV-1167
+        uses: govuk-one-login/devplatform-upload-action-ecr@v1.3.0
         with:
           role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
           container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY_ARN }}
