@@ -30,6 +30,7 @@ USAGE
 
 BUILD=0
 TERRAFORM=0
+TF_SHELL="${TF_SHELL:-0}"
 TERRAFORM_OPTS="-auto-approve"
 if [[ $# == 0 ]]; then
     BUILD=1
@@ -49,6 +50,9 @@ while [[ $# -gt 0 ]]; do
         ;;
     -p | --prompt)
         TERRAFORM_OPTS=""
+        ;;
+    --shell)
+        TF_SHELL=1
         ;;
     *)
         usage
@@ -101,7 +105,12 @@ if [[ $TERRAFORM == "1" ]]; then
     pushd "${DIR}/ci/terraform" >/dev/null
     rm -rf .terraform/
     terraform init -backend-config="${DEPLOY_ENV}.hcl"
-    terraform apply ${TERRAFORM_OPTS} -var-file "${DEPLOY_ENV}.tfvars" -var "image_uri=${REPO_URL}" -var "image_digest=${IMAGE_DIGEST}"
+    if [[ $TF_SHELL == "1" ]]; then
+        echo "terraform options: ${TERRAFORM_OPTS} -var-file \"nonprod-common.tfvars\" -var-file \"${DEPLOY_ENV}.tfvars\" -var \"image_uri=${REPO_URL}\" -var \"image_digest=${IMAGE_DIGEST}\""
+        "${SHELL}" -i
+        exit 0
+    fi
+    terraform apply ${TERRAFORM_OPTS} -var-file "nonprod-common.tfvars" -var-file "${DEPLOY_ENV}.tfvars" -var "image_uri=${REPO_URL}" -var "image_digest=${IMAGE_DIGEST}"
 
     if [[ $TERRAFORM_OPTS != "-destroy" ]]; then
         echo -n "Waiting for ECS deployment to complete ... "

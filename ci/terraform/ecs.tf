@@ -5,6 +5,11 @@ locals {
   nginx_port       = 8080
   application_port = var.basic_auth_password == "" ? var.app_port : local.nginx_port
 
+  sidecar_trusted_proxies = concat(
+    local.private_subnet_cidr_blocks,
+    data.aws_ip_ranges.cloudfront_ips.cidr_blocks,
+  )
+
   frontend_container_definition = {
     name      = local.container_name
     image     = "${var.image_uri}:${var.image_tag}@${var.image_digest}"
@@ -255,7 +260,7 @@ locals {
       },
       {
         name  = "TRUSTED_PROXIES"
-        value = jsonencode(local.public_subnet_cidr_blocks)
+        value = jsonencode(local.sidecar_trusted_proxies)
       },
     ]
   }
