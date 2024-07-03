@@ -2,6 +2,8 @@ import chai from "chai";
 import chaiHttp from "chai-http";
 import { describe } from "mocha";
 
+const tar = require("tar-stream");
+
 const expect = chai.expect;
 
 chai.use(chaiHttp);
@@ -178,13 +180,41 @@ describe("BasicAuthSidecar", function () {
       .start();
   }
 
+  async function getTextFileFromContainer(
+    container: StartedTestContainer,
+    path: string
+  ): Promise<string> {
+    const tarStream = tar.extract();
+    const tarArchiveStream = await container.copyArchiveFromContainer(path);
+    tarArchiveStream.pipe(tarStream);
+    let fileContent = "";
+    tarStream.on("entry", (header: any, stream: any, next: any) => {
+      stream.on("data", (chunk: any) => {
+        fileContent += chunk.toString();
+      });
+      stream.on("end", () => {
+        next();
+      });
+      stream.resume();
+    });
+    tarStream.on("finish", () => {
+      tarStream.end();
+    });
+
+    return new Promise((resolve) => {
+      tarStream.on("finish", () => {
+        resolve(fileContent);
+      });
+    });
+  }
+
   afterEach(async () => {
     if (sidecarContainer) {
       await sidecarContainer.stop();
     }
   });
 
-  describe("when IP_ALLOW_LIST is configured", () => {
+  context("when IP_ALLOW_LIST is configured", () => {
     describe("SERVER header", () => {
       it("should not be present", async () => {
         await startSidecarContainer({
@@ -245,61 +275,170 @@ describe("BasicAuthSidecar", function () {
             requesterContainerIp + "/32",
           ]),
         });
+
         await doSidecarRequest("/get").then(({ statusCode }) => {
           expect(statusCode).to.equal(200);
         });
       });
     });
 
-    describe("and request is coming from a upstream proxy", () => {
-      let caddyContainer: StartedTestContainer;
+    context("and request is coming from a upstream proxy", () => {
+      context("and there is just one proxy in the chain", () => {
+        let caddyContainer: StartedTestContainer;
 
-      before(async function () {
-        caddyContainer = await new GenericContainer("caddy:2.7.6-alpine")
-          .withNetwork(network)
-          .withExposedPorts(8080)
-          .withCommand([
-            "caddy",
-            "reverse-proxy",
-            "--from",
-            ":8080",
-            "--to",
-            "sidecar:8080",
-          ])
-          .start();
-      });
-      it("sidecar shouldn't trust X-Forwarded-For if the proxy is untrusted", async () => {
-        await startSidecarContainer({
-          BASIC_AUTH_USERNAME: "test",
-          BASIC_AUTH_PASSWORD: "test",
-          NGINX_PORT: "8080",
-          IP_ALLOW_LIST: JSON.stringify([requesterContainerIp + "/32"]),
-          TRUSTED_PROXIES: JSON.stringify(["203.0.113.0/24"]),
+        before(async function () {
+          caddyContainer = await new GenericContainer("caddy:2.7.6-alpine")
+            .withNetwork(network)
+            .withExposedPorts(8080)
+            .withCommand([
+              "caddy",
+              "reverse-proxy",
+              "--from",
+              ":8080",
+              "--to",
+              "sidecar:8080",
+            ])
+            .start();
+        });
+        it("shouldn't trust X-Forwarded-For if the proxy is untrusted", async () => {
+          await startSidecarContainer({
+            BASIC_AUTH_USERNAME: "test",
+            BASIC_AUTH_PASSWORD: "test",
+            NGINX_PORT: "8080",
+            IP_ALLOW_LIST: JSON.stringify([requesterContainerIp + "/32"]),
+            TRUSTED_PROXIES: JSON.stringify(["203.0.113.0/24"]),
+          });
+
+          await doRequestInDockerNetwork(caddyContainer, "8080", "/get").then(
+            ({ statusCode }) => {
+              expect(statusCode).to.equal(401);
+            }
+          );
         });
 
-        await doRequestInDockerNetwork(caddyContainer, "8080", "/get").then(
-          ({ statusCode }) => {
-            expect(statusCode).to.equal(401);
-          }
-        );
-      });
-
-      it("sidecar should trust X-Forwarded-For if the proxy is trusted", async () => {
-        await startSidecarContainer({
-          BASIC_AUTH_USERNAME: "test",
-          BASIC_AUTH_PASSWORD: "test",
-          NGINX_PORT: "8080",
-          IP_ALLOW_LIST: JSON.stringify([requesterContainerIp + "/32"]),
-          TRUSTED_PROXIES: JSON.stringify([
+        it("should trust X-Forwarded-For if the proxy is trusted", async () => {
+          const trustedProxiesList = [
             caddyContainer.getIpAddress(network.getName()) + "/32",
-          ]),
+          ];
+          await startSidecarContainer({
+            BASIC_AUTH_USERNAME: "test",
+            BASIC_AUTH_PASSWORD: "test",
+            NGINX_PORT: "8080",
+            IP_ALLOW_LIST: JSON.stringify([requesterContainerIp + "/32"]),
+            TRUSTED_PROXIES: JSON.stringify(trustedProxiesList),
+          });
+
+          const trustedProxiesConf = await getTextFileFromContainer(
+            sidecarContainer,
+            "/etc/nginx/trusted-proxies.conf"
+          );
+
+          for (const proxy of trustedProxiesList) {
+            expect(trustedProxiesConf).to.contain(`set_real_ip_from ${proxy};`);
+          }
+
+          await doRequestInDockerNetwork(caddyContainer, "8080", "/get").then(
+            ({ statusCode }) => {
+              expect(statusCode).to.equal(200);
+            }
+          );
+        });
+      });
+      context("and there are multiple proxies in the chain", () => {
+        let outerCaddyContainer: StartedTestContainer;
+        let innerCaddyContainer: StartedTestContainer;
+
+        before(async () => {
+          outerCaddyContainer = await new GenericContainer("caddy:2.7.6-alpine")
+            .withNetwork(network)
+            .withExposedPorts(8080)
+            .withCommand([
+              "caddy",
+              "reverse-proxy",
+              "--from",
+              ":8080",
+              "--to",
+              "inner-caddy:8080",
+            ])
+            .start();
+
+          const innerCaddyfileContent = `:8080
+          reverse_proxy {
+            to "sidecar:8080"
+            trusted_proxies ${outerCaddyContainer.getIpAddress(network.getName()) + "/32"}
+          }
+          `;
+          innerCaddyContainer = await new GenericContainer("caddy:2.7.6-alpine")
+            .withNetwork(network)
+            .withNetworkAliases("inner-caddy")
+            .withExposedPorts(8080)
+            .withCopyContentToContainer([
+              {
+                content: innerCaddyfileContent,
+                target: "/etc/caddy/Caddyfile",
+              },
+            ])
+            .withCommand(["caddy", "run", "--config", "/etc/caddy/Caddyfile"])
+            .start();
         });
 
-        await doRequestInDockerNetwork(caddyContainer, "8080", "/get").then(
-          ({ statusCode }) => {
-            expect(statusCode).to.equal(200);
+        it("should trust X-Forwarded-For if all proxies are trusted", async () => {
+          const trustedProxiesList = [
+            outerCaddyContainer.getIpAddress(network.getName()) + "/32",
+            innerCaddyContainer.getIpAddress(network.getName()) + "/32",
+          ];
+          await startSidecarContainer({
+            BASIC_AUTH_USERNAME: "test",
+            BASIC_AUTH_PASSWORD: "test",
+            NGINX_PORT: "8080",
+            IP_ALLOW_LIST: JSON.stringify([requesterContainerIp + "/32"]),
+            TRUSTED_PROXIES: JSON.stringify(trustedProxiesList),
+          });
+
+          const trustedProxiesConf = await getTextFileFromContainer(
+            sidecarContainer,
+            "/etc/nginx/trusted-proxies.conf"
+          );
+
+          for (const proxy of trustedProxiesList) {
+            expect(trustedProxiesConf).to.contain(`set_real_ip_from ${proxy};`);
           }
-        );
+
+          await doRequestInDockerNetwork(
+            outerCaddyContainer,
+            "8080",
+            "/get"
+          ).then(({ statusCode }) => {
+            expect(statusCode).to.equal(200);
+          });
+        });
+
+        it("shouldn't trust X-Forwarded-For if any proxy is untrusted", async () => {
+          const trustedProxiesList = [
+            outerCaddyContainer.getIpAddress(network.getName()) + "/32",
+            innerCaddyContainer.getIpAddress(network.getName()) + "/32",
+          ];
+
+          for (const proxy of trustedProxiesList) {
+            await startSidecarContainer({
+              BASIC_AUTH_USERNAME: "test",
+              BASIC_AUTH_PASSWORD: "test",
+              NGINX_PORT: "8080",
+              IP_ALLOW_LIST: JSON.stringify([requesterContainerIp + "/32"]),
+              TRUSTED_PROXIES: JSON.stringify([proxy]),
+            });
+
+            await doRequestInDockerNetwork(
+              outerCaddyContainer,
+              "8080",
+              "/get"
+            ).then(({ statusCode }) => {
+              expect(statusCode).to.equal(401);
+            });
+
+            await sidecarContainer.stop();
+          }
+        });
       });
     });
   });
