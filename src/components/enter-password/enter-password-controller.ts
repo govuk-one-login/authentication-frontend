@@ -128,17 +128,13 @@ export function enterPasswordPost(
       }
       let validationKey;
       if (support2hrLockout()) {
-        if (fromAccountExists) {
-          validationKey = ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY;
-        } else {
-          validationKey = ENTER_PASSWORD_VALIDATION_KEY;
-        }
+        validationKey = fromAccountExists
+          ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY
+          : ENTER_PASSWORD_VALIDATION_KEY;
       } else {
-        if (fromAccountExists) {
-          validationKey = ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY_OLD;
-        } else {
-          validationKey = ENTER_PASSWORD_VALIDATION_KEY_OLD;
-        }
+        validationKey = fromAccountExists
+          ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY_OLD
+          : ENTER_PASSWORD_VALIDATION_KEY_OLD;
       }
       const error = formatValidationError("password", req.t(validationKey));
 
