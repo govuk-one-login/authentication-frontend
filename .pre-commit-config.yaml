@@ -41,5 +41,6 @@ repos:
         name: Run prettier
         language: node
         types: [text]
+        stages: [commit]
         entry: yarn run prettier --write --ignore-unknown
         pass_filenames: true
