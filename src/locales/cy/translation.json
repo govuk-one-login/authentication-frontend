@@ -792,7 +792,7 @@
       "analytics": {
         "header": "Cwcis sy’n mesur sut rydych yn defnyddio eich GOV.UK One Login",
         "info": {
-          "paragraph1": "Rydym yn defnyddio cwcis Google Analytics i gasglu gwybodaeth dienw am sut rydych yn defnyddio GOV.UK One Login, er enghraifft pa dudalennau rydych yn ymweld â hwy a beth rydych yn clicio arno.",
+          "paragraph1": "Rydym yn defnyddio cwcis Google Analytics a Dynatrace i gasglu gwybodaeth dienw am sut rydych yn defnyddio GOV.UK One Login, er enghraifft pa dudalennau rydych yn ymweld â hwy a beth rydych yn clicio arno.",
           "paragraph2": "Mae hyn yn ein helpu ni i ddeall sut allwn ni wella GOV.UK One Login."
         },
         "table": {
@@ -802,16 +802,48 @@
             "col3": "Dod i ben"
           },
           "rows": {
-            "row1": {
+            "_ga": {
               "col2": "Ein helpu i gyfrif faint o bobl sy’n ymweld â GOV.UK trwy wirio a ydych wedi ymweld o’r blaen",
               "col3": "2 flynedd"
             },
-            "row2": {
+            "_gid": {
               "col2": "Ein helpu i gyfrif faint o bobl sy’n ymweld â GOV.UK trwy wirio a ydych wedi ymweld o’r blaen",
               "col3": "24 awr"
             },
-            "row3": {
+            "_gat_UA": {
               "col2": "Ein helpu i gyfrif faint o bobl sy’n ymweld â GOV.UK trwy wirio a ydych wedi ymweld o’r blaen",
+              "col3": "Pan fyddwch yn cau eich porwr gwe"
+            },
+            "dtCookie": {
+              "col2": "Ein helpu i ddeall unrhyw broblemau y gallech eu profi wrth ddefnyddio GOV.UK One Login",
+              "col3": "Pan fyddwch yn cau eich porwr gwe"
+            },
+            "dtLatC": {
+              "col2": "Ein helpu i ddeall unrhyw broblemau y gallech eu profi wrth ddefnyddio GOV.UK One Login",
+              "col3": "Pan fyddwch yn cau eich porwr gwe"
+            },
+            "dtPC": {
+              "col2": "Ein helpu i ddeall unrhyw broblemau y gallech eu profi wrth ddefnyddio GOV.UK One Login",
+              "col3": "Pan fyddwch yn cau eich porwr gwe"
+            },
+            "dtSa": {
+              "col2": "Ein helpu i ddeall unrhyw broblemau y gallech eu profi wrth ddefnyddio GOV.UK One Login",
+              "col3": "Pan fyddwch yn cau eich porwr gwe"
+            },
+            "dtValidationCookie": {
+              "col2": "Ein helpu i ddeall unrhyw broblemau y gallech eu profi wrth ddefnyddio GOV.UK One Login",
+              "col3": "Yn syth"
+            },
+            "dtDisabled": {
+              "col2": "Ein helpu i ddeall unrhyw broblemau y gallech eu profi wrth ddefnyddio GOV.UK One Login",
+              "col3": "Pan fyddwch yn cau eich porwr gwe"
+            },
+            "rxVisitor": {
+              "col2": "Ein helpu i ddeall unrhyw broblemau y gallech eu profi wrth ddefnyddio GOV.UK One Login",
+              "col3": "2 flynedd"
+            },
+            "rxvt": {
+              "col2": "Ein helpu i ddeall unrhyw broblemau y gallech eu profi wrth ddefnyddio GOV.UK One Login",
               "col3": "Pan fyddwch yn cau eich porwr gwe"
             }
           }
