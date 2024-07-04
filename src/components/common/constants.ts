@@ -190,7 +190,7 @@ export async function getNextPathAndUpdateJourney(
   await new Promise<void>((resolve, reject) => {
     req.session.save((error) => {
       if (error) {
-        reject(error);
+        reject(new Error(error));
         req.log.error(
           "Session could not be saved after setting the user journey."
         );
