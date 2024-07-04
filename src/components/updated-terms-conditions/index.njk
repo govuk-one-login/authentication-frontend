@@ -1,6 +1,5 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
- {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% set pageTitleName = 'pages.updatedTermsAndConds.title' | translate %}
 {% set rowClasses = 'interrupt-screen' %}
 {% block content %}
@@ -25,7 +24,7 @@
         "text": 'pages.updatedTermsAndConds.agreeAndContinue' | translate,
         "type": "Submit",
         "preventDoubleClick": true,
-        classes: 'govuk-blue-text govuk-white-button inverted-button',
+        "classes": 'govuk-button--inverse',
         "name": "termsAndConditionsResult",
         "value": "accept"
     }) }}
