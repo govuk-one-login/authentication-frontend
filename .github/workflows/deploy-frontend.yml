@@ -6,9 +6,6 @@ env:
 # Deploy role & Artificate buckets are Logical id  GitHubActionsRole & GitHubArtifactSourceBucket Value from Build Pipeline
 
 on:
-  push:
-    branches:
-      - main
   workflow_run:
     workflows: ["Build frontend"]
     types:
