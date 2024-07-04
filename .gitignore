@@ -127,3 +127,4 @@ keys/
 ci/terraform/.terraform
 src/assets/javascript/all.js
 ci/terraform/*.plan
+.infracost
