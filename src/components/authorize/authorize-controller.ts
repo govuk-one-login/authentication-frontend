@@ -7,7 +7,7 @@ import {
 } from "../../app.constants";
 import { getNextPathAndUpdateJourney, ERROR_CODES } from "../common/constants";
 import { BadRequestError, QueryParamsError } from "../../utils/error";
-import { ExpressRouteFunc } from "../../types";
+import { ApiResponseResult, ExpressRouteFunc } from "../../types";
 import { CookieConsentServiceInterface } from "../common/cookie-consent/types";
 import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service";
 import { sanitize } from "../../utils/strings";
@@ -17,6 +17,7 @@ import {
   AuthorizeServiceInterface,
   KmsDecryptionServiceInterface,
   JwtServiceInterface,
+  StartAuthResponse,
 } from "./types";
 import { KmsDecryptionService } from "./kms-decryption-service";
 import { JwtService } from "./jwt-service";
@@ -80,46 +81,13 @@ export function authorizeGet(
     }
 
     req.session.client.prompt = loginPrompt;
-
-    if (claims.claim !== undefined) {
-      const claim = JSON.parse(claims.claim);
-      if (claim.userinfo !== undefined) {
-        req.session.client.claim = Object.keys(claim.userinfo);
-      }
-    }
-
-    req.session.client.serviceType = claims.service_type;
-    req.session.client.name = claims.client_name;
-    req.session.client.cookieConsentEnabled = claims.cookie_consent_shared;
-    req.session.client.redirectUri = claims.redirect_uri;
-    req.session.client.state = claims.state;
-    req.session.client.isOneLoginService = claims.is_one_login_service;
-    req.session.client.rpSectorHost = claims.rp_sector_host;
-    req.session.client.rpRedirectUri = claims.rp_redirect_uri;
-    req.session.client.rpState = claims.rp_state;
-    req.session.user.isIdentityRequired =
-      startAuthResponse.data.user.identityRequired;
-    req.session.user.isAuthenticated =
-      startAuthResponse.data.user.authenticated;
-    req.session.user.isUpliftRequired =
-      startAuthResponse.data.user.upliftRequired;
-    req.session.user.docCheckingAppUser =
-      startAuthResponse.data.user.docCheckingAppUser;
+    setSessionDataFromClaims(req, claims);
+    setSessionDataFromAuthResponse(req, startAuthResponse);
 
     req.session.user.isAccountCreationJourney = undefined;
-    let reauthenticate = null;
 
     logger.info(`Reauth claim length ${claims.reauthenticate?.length}`);
     logger.info(`Support for reauth is enabled ${supportReauthentication()}`);
-
-    if (supportReauthentication()) {
-      reauthenticate = claims.reauthenticate;
-    }
-    req.session.user.reauthenticate = reauthenticate;
-
-    if (startAuthResponse.data.featureFlags) {
-      req.session.user.featureFlags = startAuthResponse.data.featureFlags;
-    }
 
     const nextStateEvent = req.session.user.isAuthenticated
       ? USER_JOURNEY_EVENTS.EXISTING_SESSION
@@ -181,6 +149,44 @@ export function authorizeGet(
       )
     );
   };
+}
+
+function setSessionDataFromClaims(req: Request, claims: Claims) {
+  if (claims.claim !== undefined) {
+    const claim = JSON.parse(claims.claim);
+    if (claim.userinfo !== undefined) {
+      req.session.client.claim = Object.keys(claim.userinfo);
+    }
+  }
+
+  req.session.client.serviceType = claims.service_type;
+  req.session.client.name = claims.client_name;
+  req.session.client.cookieConsentEnabled = claims.cookie_consent_shared;
+  req.session.client.redirectUri = claims.redirect_uri;
+  req.session.client.state = claims.state;
+  req.session.client.isOneLoginService = claims.is_one_login_service;
+  req.session.client.rpSectorHost = claims.rp_sector_host;
+  req.session.client.rpRedirectUri = claims.rp_redirect_uri;
+  req.session.client.rpState = claims.rp_state;
+  req.session.user.reauthenticate = supportReauthentication()
+    ? claims.reauthenticate
+    : null;
+}
+
+function setSessionDataFromAuthResponse(
+  req: Request,
+  startAuthResponse: ApiResponseResult<StartAuthResponse>
+) {
+  req.session.user.isIdentityRequired =
+    startAuthResponse.data.user.identityRequired;
+  req.session.user.isAuthenticated = startAuthResponse.data.user.authenticated;
+  req.session.user.isUpliftRequired =
+    startAuthResponse.data.user.upliftRequired;
+  req.session.user.docCheckingAppUser =
+    startAuthResponse.data.user.docCheckingAppUser;
+  if (startAuthResponse.data.featureFlags) {
+    req.session.user.featureFlags = startAuthResponse.data.featureFlags;
+  }
 }
 
 function validateQueryParams(clientId: string, responseType: string) {
