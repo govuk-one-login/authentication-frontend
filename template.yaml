@@ -183,6 +183,70 @@ Resources:
         - Key: Source
           Value: govuk-one-login/authentication-frontend/template.yaml
 
+  FrontendAutoScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MaxCapacity: 4
+      MinCapacity: 2
+      ResourceId: !Join
+        - '/'
+        - - "service"
+          - !Ref FrontendECSCluster
+          - !GetAtt FrontendECSService.Name
+      RoleARN: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService"
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+
+  FrontendAutoScalingPolicyScaleOut:
+    DependsOn: FrontendAutoScalingTarget
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: !Sub "${AWS::StackName}-FrontendAutoScalingPolicyScaleOut"
+      PolicyType: StepScaling
+      ResourceId: !Join
+        - '/'
+        - - "service"
+          - !Ref FrontendECSCluster
+          - !GetAtt FrontendECSService.Name
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+      StepScalingPolicyConfiguration:
+        AdjustmentType: PercentChangeInCapacity
+        Cooldown: 60
+        MetricAggregationType: Average
+        MinAdjustmentMagnitude: 10
+        StepAdjustments:
+          - ScalingAdjustment: 300
+            MetricIntervalLowerBound: 0
+            MetricIntervalUpperBound: 10
+          - ScalingAdjustment: 600
+            MetricIntervalLowerBound: 10
+            MetricIntervalUpperBound: 30
+          - ScalingAdjustment: 1000
+            MetricIntervalLowerBound: 30
+
+  FrontendAutoScalingPolicyScaleIn:
+    DependsOn: FrontendAutoScalingTarget
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: !Sub "${AWS::StackName}-FrontendAutoScalingPolicyScaleIn"
+      PolicyType: StepScaling
+      ResourceId: !Join
+        - '/'
+        - - "service"
+          - !Ref FrontendECSCluster
+          - !GetAtt FrontendECSService.Name
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+      StepScalingPolicyConfiguration:
+        AdjustmentType: PercentChangeInCapacity
+        Cooldown: 240
+        MetricAggregationType: Average
+        MinAdjustmentMagnitude: 5
+        StepAdjustments:
+          - ScalingAdjustment: -50
+            MetricIntervalUpperBound: -40
+
   ContainerServiceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
