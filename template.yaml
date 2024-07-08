@@ -216,6 +216,7 @@ Resources:
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
+    DependsOn: ApplicationReplicationGroup
     Properties:
       Family: !Sub "${Environment}-frontend-ecs-task-definition"
       ContainerDefinitions:
@@ -527,10 +528,10 @@ Resources:
   ApplicationLoadBalancerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      HealthCheckPort: "80"
+      HealthCheckPort: "3000"
       HealthCheckProtocol: HTTP
       HealthCheckPath: /healthcheck/
-      Port: 80
+      Port: 3000
       Protocol: HTTP
       Matcher:
         HttpCode: "200"
@@ -703,3 +704,164 @@ Resources:
             Condition:
               Bool:
                 "aws:SecureTransport": "false"
+  #
+  #  ElastiCache
+  #
+  ApplicationCacheSubnetGroup:
+    Type: AWS::ElastiCache::SubnetGroup
+    Properties:
+      CacheSubnetGroupName: !Sub "${AWS::StackName}-application-cache-subnet-group"
+      Description: Cache Subnet Group
+      SubnetIds:
+        - Fn::ImportValue:
+            !Sub "${VpcStackName}-PrivateSubnetIdA"
+        - Fn::ImportValue:
+            !Sub "${VpcStackName}-PrivateSubnetIdB"
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-ApplicationCacheSubnetGroup"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/template.yaml
+
+  ApplicationParameterGroup:
+    Type: AWS::ElastiCache::ParameterGroup
+    Properties:
+      CacheParameterGroupFamily: redis7
+      Description: !Sub "${AWS::StackName} Elasticache redis parameter group"
+      Properties:
+        cluster-enabled: "yes"
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-ApplicationElastiCacheCluster"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/template.yaml
+
+  ApplicationElastiCacheLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId: !GetAtt KmsKey.Arn
+      LogGroupName: !Sub "/aws/vendedlogs/${AWS::StackName}-elasticache-replication-group-logs"
+      RetentionInDays: 30
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-ApplicationElastiCacheCluster"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/template.yaml
+
+  ApplicationElastiCacheSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Frontend Redis Security Group
+      SecurityGroupIngress:
+        - Description: Allow inbound on port 6379
+          SourceSecurityGroupId: !GetAtt ContainerServiceSecurityGroup.GroupId
+          FromPort: 6379
+          IpProtocol: tcp
+          ToPort: 6379
+      VpcId:
+        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
+
+  ApplicationAuthPass:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub "${AWS::StackName}-elasticache-application"
+      Description: Random password for elastiCache
+      GenerateSecretString:
+        ExcludeLowercase: false
+        ExcludeNumbers: false
+        ExcludePunctuation: true
+        ExcludeUppercase: false
+        IncludeSpace: false
+        PasswordLength: 17
+      KmsKeyId: !GetAtt KmsKey.Arn
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-ApplicationAuthPass"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/template.yaml
+
+  ApplicationReplicationGroup:
+    Type: AWS::ElastiCache::ReplicationGroup
+    Properties:
+      TransitEncryptionEnabled: true
+      AtRestEncryptionEnabled: true
+      AuthToken: !Sub '{{resolve:secretsmanager:${ApplicationAuthPass}}}'
+      AutomaticFailoverEnabled: true
+      CacheNodeType: cache.t2.micro
+      CacheSubnetGroupName: !Ref ApplicationCacheSubnetGroup
+      CacheParameterGroupName: !Ref ApplicationParameterGroup
+      Engine: redis
+      LogDeliveryConfigurations:
+        - DestinationDetails:
+            CloudWatchLogsDetails:
+              LogGroup: !Ref ApplicationElastiCacheLogGroup
+          DestinationType: cloudwatch-logs
+          LogFormat: json
+          LogType: engine-log
+      MultiAZEnabled: true
+      NumNodeGroups: 1
+      ReplicasPerNodeGroup: 1
+      ReplicationGroupDescription: Replication group for elasticache
+      SecurityGroupIds:
+        - !Ref ApplicationElastiCacheSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-ApplicationElastiCacheCluster"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/template.yaml
+
+  KmsKey:
+    Type: AWS::KMS::Key
+    Properties:
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+            Action:
+              - kms:*
+            Resource: "*"
+          - Effect: Allow
+            Principal:
+              Service: !Sub "logs.${AWS::Region}.amazonaws.com"
+            Action:
+              - "kms:Encrypt*"
+              - "kms:Decrypt*"
+              - "kms:ReEncrypt*"
+              - "kms:GenerateDataKey*"
+              - "kms:Describe*"
+            Resource: "*"
+            Condition:
+              ArnLike:
+                "kms:EncryptionContext:aws:logs:arn": !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*"
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-KmsKey"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/template.yaml
