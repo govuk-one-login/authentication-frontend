@@ -123,7 +123,7 @@ Globals:
         - SecretArn: !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
 
 Resources:
-  FargateECSCluster:
+  FrontendECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterSettings:
@@ -131,7 +131,7 @@ Resources:
           Value: enabled
       Tags:
         - Key: Name
-          Value: !Sub "${AWS::StackName}-FargateECSCluster"
+          Value: !Sub "${AWS::StackName}-FrontendECSCluster"
         - Key: Environment
           Value: !Ref Environment
         - Key: Application
@@ -143,8 +143,13 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: ApplicationLoadBalancerListener
     Properties:
-      Cluster: !Ref FargateECSCluster
+      Cluster: !Ref FrontendECSCluster
       LaunchType: FARGATE
+      DesiredCount: 2
+      HealthCheckGracePeriodSeconds: 15
+      DeploymentConfiguration:
+        MaximumPercent: 150
+        MinimumHealthyPercent: 50
       DeploymentController:
         Type: !If
           - UseECSCanaryDeploymentStack
@@ -662,6 +667,7 @@ Resources:
       FromPort: 3000
       ToPort: 3000
 
+
   #
   # Logging
   #
@@ -772,6 +778,7 @@ Resources:
   #
   #  ElastiCache
   #
+
   ApplicationCacheSubnetGroup:
     Type: AWS::ElastiCache::SubnetGroup
     Properties:
@@ -894,6 +901,10 @@ Resources:
           Value: "auth-frontend"
         - Key: Source
           Value: govuk-one-login/authentication-frontend/template.yaml
+
+  #
+  # Encryption
+  #
 
   KmsKey:
     Type: AWS::KMS::Key
