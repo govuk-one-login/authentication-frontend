@@ -35,7 +35,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: build sidecar container
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: basic-auth-sidecar
           push: false
@@ -44,7 +44,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: build sidecar httpie container
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: basic-auth-sidecar
           file: basic-auth-sidecar/Dockerfile.httpie
