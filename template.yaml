@@ -74,14 +74,39 @@ Mappings:
   EnvironmentConfiguration:
     development:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
+      frontendAutoScalingMinCount: 2
+      frontendAutoScalingMaxCount: 4
+      frontendTaskDefinitionCpu: 512
+      frontendTaskDefinitionMemory: 1024
+      redisNodeSize: cache.t2.small
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
+      frontendAutoScalingMinCount: 4
+      frontendAutoScalingMaxCount: 6
+      frontendTaskDefinitionCpu: 512
+      frontendTaskDefinitionMemory: 1024
+      redisNodeSize: cache.t2.small
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
+      frontendAutoScalingMinCount: 4
+      frontendAutoScalingMaxCount: 240
+      frontendTaskDefinitionCpu: 1024
+      frontendTaskDefinitionMemory: 2048
+      redisNodeSize: cache.m4.xlarge
     integration:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
+      frontendAutoScalingMinCount: 2
+      frontendAutoScalingMaxCount: 4
+      frontendTaskDefinitionCpu: 512
+      frontendTaskDefinitionMemory: 1024
+      redisNodeSize: cache.t2.small
     production:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
+      frontendAutoScalingMinCount: 4
+      frontendAutoScalingMaxCount: 240
+      frontendTaskDefinitionCpu: 512
+      frontendTaskDefinitionMemory: 1024
+      redisNodeSize: cache.m4.xlarge
 
 Globals:
   Function:
@@ -126,6 +151,7 @@ Resources:
   FrontendECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
+      ClusterName: !Sub "${AWS::StackName}-cluster"
       ClusterSettings:
         - Name: containerInsights
           Value: enabled
@@ -143,6 +169,7 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: ApplicationLoadBalancerListener
     Properties:
+      ServiceName: !Sub "${AWS::StackName}-FrontendECSService"
       Cluster: !Ref FrontendECSCluster
       LaunchType: FARGATE
       DesiredCount: 2
@@ -168,6 +195,8 @@ Resources:
                 !Sub "${VpcStackName}-PrivateSubnetIdA"
             - Fn::ImportValue:
                 !Sub "${VpcStackName}-PrivateSubnetIdB"
+            - Fn::ImportValue:
+                !Sub "${VpcStackName}-PrivateSubnetIdC"
       PropagateTags: SERVICE
       TaskDefinition: !If
         - UseECSCanaryDeploymentStack
@@ -230,8 +259,8 @@ Resources:
   FrontendAutoScalingTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
-      MaxCapacity: 4
-      MinCapacity: 2
+      MaxCapacity: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendAutoScalingMaxCount ]
+      MinCapacity: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendAutoScalingMinCount ]
       ResourceId: !Join
         - '/'
         - - "service"
@@ -331,7 +360,7 @@ Resources:
     Type: AWS::ECS::TaskDefinition
     DependsOn: ApplicationReplicationGroup
     Properties:
-      Family: !Sub "${Environment}-frontend-ecs-task-definition"
+      Family: !Sub "${AWS::StackName}-ecs-task-definition"
       ContainerDefinitions:
         - Name: !Ref AWS::StackName
           Image: !Sub "${FrontendRegistry}:GIT-SHA-PLACEHOLDER"
@@ -346,7 +375,7 @@ Resources:
               awslogs-group: "/ecs/server"
               awslogs-region: "eu-west-2"
               awslogs-create-group: "true"
-              awslogs-stream-prefix: "ecs"
+              awslogs-stream-prefix: !Ref AWS::StackName
           Environment:
             - Name: ACCOUNT_MANAGEMENT_URL
               Value: !Sub "https://home.${Environment}.account.gov.uk"
@@ -478,8 +507,8 @@ Resources:
         #       ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Environment}-frontend-basic-auth-username"
         #     - Name: BASIC_AUTH_PASSWORD
         #       ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Environment}-frontend-basic-auth-password"
-      Cpu: "1024"
-      Memory: "2048"
+      Cpu: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionCpu ]
+      Memory: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionMemory ]
       ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
       TaskRoleArn: !GetAtt TaskRole.Arn
       NetworkMode: awsvpc
@@ -621,6 +650,8 @@ Resources:
             !Sub "${VpcStackName}-FirewallSubnetIdA"
         - Fn::ImportValue:
             !Sub "${VpcStackName}-FirewallSubnetIdB"
+        - Fn::ImportValue:
+            !Sub "${VpcStackName}-FirewallSubnetIdC"
       LoadBalancerAttributes:
         - Key: access_logs.s3.enabled
           Value: "true"
@@ -847,26 +878,11 @@ Resources:
             !Sub "${VpcStackName}-PrivateSubnetIdA"
         - Fn::ImportValue:
             !Sub "${VpcStackName}-PrivateSubnetIdB"
+        - Fn::ImportValue:
+            !Sub "${VpcStackName}-PrivateSubnetIdC"
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ApplicationCacheSubnetGroup"
-        - Key: Environment
-          Value: !Ref Environment
-        - Key: Application
-          Value: "auth-frontend"
-        - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
-
-  ApplicationParameterGroup:
-    Type: AWS::ElastiCache::ParameterGroup
-    Properties:
-      CacheParameterGroupFamily: redis7
-      Description: !Sub "${AWS::StackName} Elasticache redis parameter group"
-      Properties:
-        cluster-enabled: "yes"
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-ApplicationElastiCacheCluster"
         - Key: Environment
           Value: !Ref Environment
         - Key: Application
@@ -914,7 +930,7 @@ Resources:
         ExcludePunctuation: true
         ExcludeUppercase: false
         IncludeSpace: false
-        PasswordLength: 17
+        PasswordLength: 32
       KmsKeyId: !GetAtt KmsKey.Arn
       Tags:
         - Key: Name
@@ -929,14 +945,17 @@ Resources:
   ApplicationReplicationGroup:
     Type: AWS::ElastiCache::ReplicationGroup
     Properties:
+      ReplicationGroupId: !Sub "${AWS::StackName}-session-cache"
+      ReplicationGroupDescription: A Redis cluster for storing user session data for the frontend
       TransitEncryptionEnabled: true
       AtRestEncryptionEnabled: true
       AuthToken: !Sub '{{resolve:secretsmanager:${ApplicationAuthPass}}}'
       AutomaticFailoverEnabled: true
-      CacheNodeType: cache.t2.micro
+      CacheNodeType: !FindInMap [ EnvironmentConfiguration, !Ref Environment, redisNodeSize ]
       CacheSubnetGroupName: !Ref ApplicationCacheSubnetGroup
-      CacheParameterGroupName: !Ref ApplicationParameterGroup
+      CacheParameterGroupName: default.redis6.x
       Engine: redis
+      EngineVersion: '6.2'
       LogDeliveryConfigurations:
         - DestinationDetails:
             CloudWatchLogsDetails:
@@ -944,10 +963,9 @@ Resources:
           DestinationType: cloudwatch-logs
           LogFormat: json
           LogType: engine-log
+      PreferredMaintenanceWindow: "sun:22:00-sun:23:00"
       MultiAZEnabled: true
-      NumNodeGroups: 1
-      ReplicasPerNodeGroup: 1
-      ReplicationGroupDescription: Replication group for elasticache
+      NumCacheClusters: 3
       SecurityGroupIds:
         - !Ref ApplicationElastiCacheSecurityGroup
       Tags:
