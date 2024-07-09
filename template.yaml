@@ -563,69 +563,20 @@ Resources:
           Value: govuk-one-login/authentication-frontend/template.yaml
 
   #
-  # API Gateway
-  #
-
-  ApiGateway:
-    Type: AWS::ApiGatewayV2::Api
-    Properties:
-      Name: !Sub "${AWS::StackName}-frontend-api-gateway"
-      ProtocolType: HTTP
-      Tags:
-        Name: !Sub "${AWS::StackName}-ApiGateway"
-        Environment: !Ref Environment
-        Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/template.yaml
-
-  ApiGatewayIntegration:
-    Type: AWS::ApiGatewayV2::Integration
-    Properties:
-      ApiId: !Ref ApiGateway
-      IntegrationType: HTTP_PROXY
-      ConnectionId:
-        Fn::ImportValue: !Sub "${VpcStackName}-VpcLinkId"
-      ConnectionType: VPC_LINK
-      IntegrationMethod: ANY
-      IntegrationUri: !Ref ApplicationLoadBalancerListener
-      PayloadFormatVersion: 1.0
-
-  ApiRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref ApiGateway
-      RouteKey: "ANY /{proxy+}"
-      Target: !Sub "integrations/${ApiGatewayIntegration}"
-
-  ApiDefaultStage:
-    Type: AWS::ApiGatewayV2::Stage
-    Properties:
-      ApiId: !Ref ApiGateway
-      StageName: "$default"
-      AutoDeploy: true
-      AccessLogSettings:
-        Format: '{"requestTime":"$context.requestTime", "requestId":"$context.requestId", "httpMethod":"$context.httpMethod", "path":"$context.path", "routeKey":"$context.routeKey", "status": $context.status, "responseLatency": $context.responseLatency, "integrationRequestId":"$context.integration.requestId", "functionResponseStatus":"$context.integration.status", "integrationLatency":"$context.integration.latency", "integrationServiceStatus":"$context.integration.integrationStatus", "ip":"$context.identity.sourceIp", "userAgent":"$context.identity.userAgent"}'
-        DestinationArn: !GetAtt ApiGatewayAccessLogGroup.Arn
-      Tags:
-        Name: !Sub "${AWS::StackName}-ApiDefaultStage"
-        Environment: !Ref Environment
-        Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/template.yaml
-
-  #
   # Load balancing
   #
 
   ApplicationLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
-      Scheme: internal
+      Scheme: internet-facing
       SecurityGroups:
         - !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
       Subnets:
         - Fn::ImportValue:
-            !Sub "${VpcStackName}-PrivateSubnetIdA"
+            !Sub "${VpcStackName}-FirewallSubnetIdA"
         - Fn::ImportValue:
-            !Sub "${VpcStackName}-PrivateSubnetIdB"
+            !Sub "${VpcStackName}-FirewallSubnetIdB"
       LoadBalancerAttributes:
         - Key: access_logs.s3.enabled
           Value: "true"
@@ -669,9 +620,16 @@ Resources:
 
   ApplicationLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
+    # checkov:skip=CKV_AWS_2:Certificate generation must be resolved before the listener can use HTTPS.
+    # checkov:skip=CKV_AWS_103:The load balancer cannot use TLS v1.2 until HTTPS is enabled.
+    Metadata:
+      checkov:
+        skip:
+          - id: "CKV_AWS_2"
+            comment: "Certificate generation must be resolved before the listener can use HTTPS"
+          - id: "CKV_AWS_103"
+            comment: "The load balancer cannot use TLS v1.2 until HTTPS is enabled"
     Properties:
-      # checkov:skip=CKV_AWS_2:Certificate generation must be resolved before the listener can use HTTPS.
-      # checkov:skip=CKV_AWS_103:The load balancer cannot use TLS v1.2 until HTTPS is enabled.
       DefaultActions:
         - TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroup
           Type: forward
@@ -736,26 +694,15 @@ Resources:
   # Logging
   #
 
-  ApiGatewayAccessLogGroup:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      LogGroupName: !Sub "/aws/vendedlogs/${AWS::StackName}"
-      RetentionInDays: 30
-      KmsKeyId: !GetAtt KmsKey.Arn
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-ApiGatewayAccessLogGroup"
-        - Key: Environment
-          Value: !Ref Environment
-        - Key: Application
-          Value: "auth-frontend"
-        - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
-
   AccessLogsBucket:
     Type: AWS::S3::Bucket
+    # checkov:skip=CKV_AWS_18:This is the access logs bucket. It should not log itself.
+    Metadata:
+      checkov:
+        skip:
+          - id: "CKV_AWS_18"
+            comment: "This is the access logs bucket. It should not log itself"
     Properties:
-      # checkov:skip=CKV_AWS_18:This is the access logs bucket. It should not log itself.
       BucketName: !Join
         - "-"
         - - !Ref AWS::StackName
