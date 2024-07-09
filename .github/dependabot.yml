@@ -1,16 +1,16 @@
 version: 2
 updates:
-  - package-ecosystem: 'npm'
-    directory: '/'
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
       interval: daily
       time: "03:00"
     target-branch: main
     labels:
-    - dependabot
+      - dependabot
     ignore:
       - dependency-name: "node"
-        versions: ["17.x","19.x","20.x"]
+        versions: ["17.x", "19.x", "20.x"]
     open-pull-requests-limit: 100
     commit-message:
       prefix: BAU
@@ -21,7 +21,15 @@ updates:
       time: "03:00"
     target-branch: main
     labels:
-    - dependabot
+      - dependabot
     open-pull-requests-limit: 100
+    commit-message:
+      prefix: BAU
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      # Check for updates to GitHub Actions every week
+      interval: "weekly"
+    target-branch: main
     commit-message:
       prefix: BAU

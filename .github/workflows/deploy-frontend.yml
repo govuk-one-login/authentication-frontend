@@ -6,9 +6,6 @@ env:
 # Deploy role & Artificate buckets are Logical id  GitHubActionsRole & GitHubArtifactSourceBucket Value from Build Pipeline
 
 on:
-  push:
-    branches:
-      - main
   workflow_run:
     workflows: ["Build frontend"]
     types:
@@ -123,10 +120,10 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4.0.2
         with:
           role-to-assume: ${{ secrets.DEPLOY_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
