@@ -183,6 +183,50 @@ Resources:
         - Key: Source
           Value: govuk-one-login/authentication-frontend/template.yaml
 
+  FrontendScaleOutAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${FrontendECSCluster}/${FrontendECSService.Name}-AlarmScaleUp"
+      AlarmDescription: >
+        Metric alarm to trigger ECS scale up
+      AlarmActions:
+        - !Ref FrontendAutoScalingPolicyScaleOut
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: 2
+      MetricName: CPUUtilization
+      Namespace: AWS/ECS
+      Period: 30
+      Statistic: Average
+      Threshold: 50
+      DatapointsToAlarm: 2
+      Dimensions:
+        - Name: ClusterName
+          Value: !Ref FrontendECSCluster
+        - Name: ServiceName
+          Value: !GetAtt FrontendECSService.Name
+
+  FrontendScaleInAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${FrontendECSCluster}/${FrontendECSService.Name}-AlarmScaleDown"
+      AlarmDescription: >
+        Metric alarm to trigger ECS scale down
+      AlarmActions:
+        - !Ref FrontendAutoScalingPolicyScaleIn
+      ComparisonOperator: LessThanThreshold
+      EvaluationPeriods: 5
+      MetricName: CPUUtilization
+      Namespace: AWS/ECS
+      Period: 30
+      Statistic: Average
+      Threshold: 50
+      DatapointsToAlarm: 5
+      Dimensions:
+        - Name: ClusterName
+          Value: !Ref FrontendECSCluster
+        - Name: ServiceName
+          Value: !GetAtt FrontendECSService.Name
+
   FrontendAutoScalingTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
@@ -597,11 +641,14 @@ Resources:
   ApplicationLoadBalancerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      HealthCheckPort: "3000"
-      HealthCheckProtocol: HTTP
+      HealthCheckIntervalSeconds: 10
+      HealthCheckTimeoutSeconds: 3
       HealthCheckPath: /healthcheck/
-      Port: 3000
+      HealthCheckProtocol: HTTP
+      HealthyThresholdCount: 2
+      Port: 80
       Protocol: HTTP
+      ProtocolVersion: HTTP1
       Matcher:
         HttpCode: "200"
       TargetType: ip
