@@ -102,16 +102,6 @@ resource "aws_appautoscaling_policy" "frontend_auto_scaling_policy_scale_in" {
 
     step_adjustment {
       metric_interval_upper_bound = 0 
-      scaling_adjustment          = -10
-    }
-    step_adjustment {
-      metric_interval_lower_bound = -20 
-      metric_interval_upper_bound = -10 
-      scaling_adjustment          = -10
-    }
-    step_adjustment {
-      metric_interval_lower_bound = -20  
-      scaling_adjustment          = -10
-    }
+      scaling_adjustment          = -50
   }
 }
