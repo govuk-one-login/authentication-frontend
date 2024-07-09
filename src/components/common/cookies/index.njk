@@ -285,6 +285,9 @@
 
     {{ govukTable({
         firstCellIsHeader: false,
+        attributes: {
+            id: 'analytics-cookies'
+        },
         head: [
             {
                 text: 'pages.cookiePolicy.analytics.table.headers.col1' | translate,

@@ -1,23 +1,23 @@
 function initFeedbackRadioButtons() {
   var feedbackRadioButtons = Array.prototype.slice.call(
-      document.querySelectorAll('input[name="feedbackContact"]')
-    );
-    var container = document.querySelector("#contact-details-container");
-    feedbackRadioButtons.forEach(function (element) {
-      element.addEventListener(
-        "click",
-        function (event) {
-          if (event.target.value === "true") {
-            container.classList.remove("govuk-!-display-none");
-          } else {
-            container.classList.add("govuk-!-display-none");
-            var elements = container.getElementsByTagName("input");
-            for (var i = 0; i < elements.length; i++) {
-              if (elements[i].type == "text") {
-                elements[i].value = "";
-              }
+    document.querySelectorAll('input[name="feedbackContact"]')
+  );
+  var container = document.querySelector("#contact-details-container");
+  feedbackRadioButtons.forEach(function (element) {
+    element.addEventListener(
+      "click",
+      function (event) {
+        if (event.target.value === "true") {
+          container.classList.remove("govuk-!-display-none");
+        } else {
+          container.classList.add("govuk-!-display-none");
+          var elements = container.getElementsByTagName("input");
+          for (var i = 0; i < elements.length; i++) {
+            if (elements[i].type == "text") {
+              elements[i].value = "";
             }
           }
+        }
       }.bind(this)
     );
   });
@@ -62,11 +62,11 @@ window.DI.analyticsUa = window.DI.analyticsUa || {};
       cookies.initAnalytics();
     }
 
-    if(window.dtrum !== undefined) {
-      if(window.DI.analyticsGa4.cookie.hasConsentForAnalytics()) {
-        window.dtrum.enable()
+    if (window.dtrum !== undefined) {
+      if (window.DI.analyticsGa4.cookie.hasConsentForAnalytics()) {
+        window.dtrum.enable();
       } else {
-        window.dtrum.disable()
+        window.dtrum.disable();
       }
     }
   }
@@ -85,4 +85,4 @@ window.DI.analyticsUa = window.DI.analyticsUa || {};
   }
 
   w.DI.analyticsUa.init = appInit;
-})(window); 
+})(window);
