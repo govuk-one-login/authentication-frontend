@@ -1,5 +1,5 @@
 import request from "supertest";
-import { describe } from "mocha";
+import { afterEach, describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils";
 import * as cheerio from "cheerio";
 import decache from "decache";
@@ -8,23 +8,50 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants";
+import nock = require("nock");
+import { ERROR_CODES } from "../../common/constants";
 import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
 import { AxiosResponse } from "axios";
 import { createApiResponse } from "../../../utils/http";
 import { DefaultApiResponse } from "../../../types";
-import nock = require("nock");
+
+const REDIRECT_URI = "https://rp.host/redirect";
 
 describe("Integration::enter email", () => {
   let token: string | string[];
   let cookies: string;
   let app: any;
   let baseApi: string;
+  let checkReauthUsersService: any;
+  let stubConfig: { statusCode: number; shouldStub: boolean };
+
+  function setupCheckReauthUsersStub() {
+    if (stubConfig.shouldStub) {
+      sinon
+        .stub(checkReauthUsersService, "checkReauthUsersService")
+        .callsFake((): CheckReauthServiceInterface => {
+          async function checkReauthUsers() {
+            const fakeAxiosResponse: AxiosResponse = {
+              status: stubConfig.statusCode,
+            } as AxiosResponse;
+
+            return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
+          }
+
+          return { checkReauthUsers };
+        });
+    } else {
+      if (checkReauthUsersService.checkReauthUsersService.restore) {
+        checkReauthUsersService.checkReauthUsersService.restore();
+      }
+    }
+  }
 
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-    const checkReauthUsersService = require("../../check-reauth-users/check-reauth-users-service");
+    checkReauthUsersService = require("../../check-reauth-users/check-reauth-users-service");
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -39,29 +66,19 @@ describe("Integration::enter email", () => {
           reauthenticate: "12345",
         };
 
+        req.session.client = {
+          redirectUri: REDIRECT_URI,
+        };
+
         next();
-      });
-
-    sinon
-      .stub(checkReauthUsersService, "checkReauthUsersService")
-      .callsFake((): CheckReauthServiceInterface => {
-        async function checkReauthUsers() {
-          const fakeAxiosResponse: AxiosResponse = {
-            status: HTTP_STATUS_CODES.OK,
-          } as AxiosResponse;
-
-          return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
-        }
-
-        return { checkReauthUsers };
       });
 
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
@@ -70,10 +87,16 @@ describe("Integration::enter email", () => {
 
   beforeEach(() => {
     nock.cleanAll();
+    sinon.restore(); // Restore all stubs before each test
+    // Default configuration
+    stubConfig = { statusCode: HTTP_STATUS_CODES.OK, shouldStub: true };
+  });
+
+  afterEach(() => {
+    sinon.restore(); // Restore all stubs after each test
   });
 
   after(() => {
-    sinon.restore();
     app = undefined;
   });
 
@@ -167,6 +190,8 @@ describe("Integration::enter email", () => {
         email: "test@test.com",
         doesUserExist: true,
       });
+    stubConfig = { statusCode: HTTP_STATUS_CODES.OK, shouldStub: true };
+    setupCheckReauthUsersStub();
 
     request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
@@ -181,10 +206,19 @@ describe("Integration::enter email", () => {
   });
 
   it("should redirect to /account-not-found when email address not found", (done) => {
-    nock(baseApi).post(API_ENDPOINTS.USER_EXISTS).once().reply(200, {
-      email: "test@test.com",
-      doesUserExist: false,
-    });
+    stubConfig = {
+      statusCode: HTTP_STATUS_CODES.BAD_REQUEST,
+      shouldStub: false,
+    };
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.USER_EXISTS)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email: "test@test.com",
+        doesUserExist: false,
+      });
+    setupCheckReauthUsersStub();
 
     request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
@@ -246,5 +280,39 @@ describe("Integration::enter email", () => {
       })
       .expect("Location", PATH_NAMES.ENTER_PASSWORD)
       .expect(302, done);
+  });
+
+  it("should redirect to /signed-out with login_required error when user fails re-auth", async () => {
+    process.env.SUPPORT_REAUTHENTICATION = "1";
+    stubConfig = {
+      statusCode: HTTP_STATUS_CODES.BAD_REQUEST,
+      shouldStub: true,
+    };
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.CHECK_REAUTH_USER)
+      .once()
+      .reply(HTTP_STATUS_CODES.BAD_REQUEST, {
+        code: ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED,
+      });
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.USER_EXISTS)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email: "test@test.com",
+        doesUserExist: true,
+      });
+
+    await request(app)
+      .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        email: "test@test.com",
+      })
+      .expect("Location", REDIRECT_URI.concat("?error=login_required"))
+      .expect(302);
   });
 });

@@ -321,42 +321,50 @@ describe("enter email controller", () => {
       );
     });
 
-    it("should redirect to /enter-email when re-authentication is required and re-auth check is unsuccessful", async () => {
-      process.env.SUPPORT_REAUTHENTICATION = "1";
+    it(
+      "should redirect to the logout redirectUri in session when re-authentication is required and re-auth check is" +
+        " unsuccessful",
+      async () => {
+        process.env.SUPPORT_REAUTHENTICATION = "1";
 
-      req.session.user = {
-        email,
-        reauthenticate: "12345",
-      };
+        req.session.user = {
+          email,
+          reauthenticate: "12345",
+        };
 
-      req.t = sinon.fake.returns("translated string");
+        req.session.client = {
+          redirectUri: "https://example.com/redirect",
+        };
 
-      const fakeUserExistsService: EnterEmailServiceInterface = {
-        userExists: sinon.fake.returns({
-          success: false,
-          data: { doesUserExist: false },
-        }),
-      } as unknown as EnterEmailServiceInterface;
+        req.t = sinon.fake.returns("translated string");
 
-      const fakeCheckReauthService: CheckReauthServiceInterface = {
-        checkReauthUsers: sinon.fake.returns({
-          success: false,
-          data: {
-            code: ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED,
-          },
-        }),
-      } as unknown as CheckReauthServiceInterface;
+        const fakeUserExistsService: EnterEmailServiceInterface = {
+          userExists: sinon.fake.returns({
+            success: false,
+            data: { doesUserExist: false },
+          }),
+        } as unknown as EnterEmailServiceInterface;
 
-      await enterEmailPost(fakeUserExistsService, fakeCheckReauthService)(
-        req as Request,
-        res as Response
-      );
+        const fakeCheckReauthService: CheckReauthServiceInterface = {
+          checkReauthUsers: sinon.fake.returns({
+            success: false,
+            data: {
+              code: ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED,
+            },
+          }),
+        } as unknown as CheckReauthServiceInterface;
 
-      expect(fakeCheckReauthService.checkReauthUsers).to.have.been.calledOnce;
-      expect(res.render).to.have.calledWith(
-        "enter-email/index-sign-in-details-entered-too-many-times.njk"
-      );
-    });
+        await enterEmailPost(fakeUserExistsService, fakeCheckReauthService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(fakeCheckReauthService.checkReauthUsers).to.have.been.calledOnce;
+        expect(res.redirect).to.have.been.calledWith(
+          req.session.client.redirectUri.concat("?error=login_required")
+        );
+      }
+    );
 
     it("should redirect to sign in details entered too many times when re-authentication is required and user is blocked from entering email", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
