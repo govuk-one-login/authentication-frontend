@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Assume AWS DEPLOYER role in tooling acct
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4.0.2
         with:
           role-to-assume: ${{ secrets.DEPLOYER_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
