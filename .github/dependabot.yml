@@ -6,8 +6,6 @@ updates:
       interval: daily
       time: "03:00"
     target-branch: main
-    labels:
-      - dependabot
     ignore:
       - dependency-name: "node"
         versions: ["17.x", "19.x", "20.x"]
@@ -20,8 +18,6 @@ updates:
       interval: daily
       time: "03:00"
     target-branch: main
-    labels:
-      - dependabot
     open-pull-requests-limit: 100
     commit-message:
       prefix: BAU

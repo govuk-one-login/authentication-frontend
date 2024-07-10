@@ -1,13 +1,16 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+    rev: v4.6.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-added-large-files
+      - id: mixed-line-ending
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
 
   - repo: https://github.com/awslabs/cfn-python-lint
-    rev: v0.72.2
+    rev: v1.5.0
     hooks:
       - id: cfn-python-lint
         exclude: ^(ci|.github)/.*|docker-compose.*|.pre-commit-config.yaml$
@@ -19,15 +22,31 @@ repos:
       - id: terraform-format
       - id: terraform-validate
 
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.1
+    hooks:
+      - id: actionlint
+
   - repo: local
     hooks:
       - id: eslint
         name: Run ESLint
-        language: docker_image
-        entry: node:18.20.3-alpine3.20 sh -c "yarn install && yarn lint"
-        pass_filenames: false
+        language: node
+        types_or:
+          - javascript
+          - ts
+        entry: eslint --fix
+        additional_dependencies:
+          - eslint@^8.57.0
+          - eslint-config-prettier@^9.1.0
+          - eslint-plugin-no-only-tests@^3.1.0
+          - eslint-plugin-prettier@^4.0.0
+        pass_filenames: true
       - id: prettier
-        name: Run Prettier
-        language: docker_image
-        entry: node:18.20.3-alpine3.20 sh -c "yarn install && yarn pretty"
-        pass_filenames: false
+        name: Run prettier
+        language: node
+        types: [text]
+        entry: prettier --write --ignore-unknown
+        additional_dependencies:
+          - prettier@^3.3.2
+        pass_filenames: true

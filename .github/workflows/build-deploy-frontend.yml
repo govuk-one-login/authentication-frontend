@@ -1,4 +1,4 @@
-name: Deploy frontend
+name: Build and Deploy frontend
 
 env:
   AWS_REGION: eu-west-2
@@ -6,10 +6,13 @@ env:
 # Deploy role & Artificate buckets are Logical id  GitHubActionsRole & GitHubArtifactSourceBucket Value from Build Pipeline
 
 on:
-  workflow_run:
-    workflows: ["Build frontend"]
-    types:
-      - completed
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: "deploy-frontend"
+  cancel-in-progress: false
 
 jobs:
   pr-data:
@@ -110,11 +113,65 @@ jobs:
             console.log(result);
             return result;
 
-  deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    needs: pr-data
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Assume AWS DEPLOYER role in tooling acct
+        uses: aws-actions/configure-aws-credentials@v4.0.2
+        with:
+          role-to-assume: ${{ secrets.DEPLOYER_ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Login to GDS Dev Dynatrace Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: khw46367.live.dynatrace.com
+          username: khw46367
+          password: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
+
+      - name: Build, tag, and push frontend
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.TOOLING_ECR_FRONTEND_REPO }}
+        run: |
+          docker build -t "${ECR_REGISTRY}/${ECR_REPOSITORY}:${{ github.sha }}" .
+          docker push "${ECR_REGISTRY}/${ECR_REPOSITORY}:${{ github.sha }}"
+
+      - name: Build, tag, and push basic-auth-sidecar
+        working-directory: basic-auth-sidecar
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.BASIC_SIDECAR_ECR_REPO }}
+        run: |
+          docker build -t "${ECR_REGISTRY}/${ECR_REPOSITORY}:${{ github.sha }}" .
+          docker push "${ECR_REGISTRY}/${ECR_REPOSITORY}:${{ github.sha }}"
+
+      - name: Build, tag, and push service down page
+        working-directory: service-down-page-config
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.SERVICE_DOWN_ECR_REPO }}
+        run: |
+          docker build -t "${ECR_REGISTRY}/${ECR_REPOSITORY}:${{ github.sha }}" .
+          docker push "${ECR_REGISTRY}/${ECR_REPOSITORY}:${{ github.sha }}"
+
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs:
+      - pr-data
+      - build
     permissions:
       id-token: write
       contents: read
@@ -131,11 +188,16 @@ jobs:
       - name: Upload frontend Terraform files
         working-directory: ci/terraform
         run: |
+          echo "::group::Zip up frontend terraform"
           zip -r frontend.zip .
-          S3_RESPONSE=`aws s3api put-object \
+          echo "::endgroup::"
+
+          echo "::group::Upload artifact to S3"
+          OBJECT_VERSION="$(aws s3api put-object \
             --bucket ${{ secrets.ARTIFACT_BUCKET }} \
             --key frontend.zip \
             --body frontend.zip \
-            --metadata '${{ toJson(fromJson(needs.pr-data.outputs.data)) }}'`
-          VERSION=`echo $S3_RESPONSE | jq .VersionId -r`
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+            --metadata '${{ toJson(fromJson(needs.pr-data.outputs.data)) }}' \
+            --query VersionId --output text)"
+          echo "::endgroup::"
+          echo "::notice title=Final artifact uploaded to S3::object: frontend.zip, version: ${OBJECT_VERSION}"
