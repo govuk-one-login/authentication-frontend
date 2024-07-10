@@ -39,9 +39,9 @@ Parameters:
     Type: String
     Default: 058264536367.dkr.ecr.eu-west-2.amazonaws.com/frontend-image-repository-containerrepository-fjphveppf1u4
 
-  # BasicAuthSidecarRegistry:
-  #   Type: String
-  #   Default: 058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd
+  BasicAuthSidecarRegistry:
+    Type: String
+    Default: 058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd
 
 Conditions:
   UseCodeSigning:
@@ -61,16 +61,30 @@ Conditions:
       - Fn::Equals:
         - !Ref DeploymentStrategy
         - None
-  # IsNotDevEnvironment:
-  #   !Not [ !Equals [!Ref Environment, dev] ]
-  # IsNotProduction:
-  #   !Not [ !Equals [!Ref Environment, production] ]
+
+  UseNginxSidecar:
+  # TODO review this condition
+    Fn::And:
+      - !Condition IsNotProduction
+      - !Condition IsNotDevEnvironment
+
+  IsNotDevEnvironment:
+    Fn::Not:
+      - Fn::Equals:
+        - !Ref Environment
+        - dev
+
+  IsNotProduction:
+    Fn::Not:
+      - Fn::Equals:
+        - !Ref Environment
+        - production
 
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   ElasticLoadBalancerAccountIds:
     eu-west-2:
-      AccountId: 652711504416
+      AccountId: "652711504416"
   EnvironmentConfiguration:
     development:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -78,6 +92,7 @@ Mappings:
       frontendAutoScalingMaxCount: 4
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
+      ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
       redisNodeSize: cache.t2.small
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -85,6 +100,7 @@ Mappings:
       frontendAutoScalingMaxCount: 6
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
+      ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
       redisNodeSize: cache.t2.small
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -92,6 +108,7 @@ Mappings:
       frontendAutoScalingMaxCount: 240
       frontendTaskDefinitionCpu: 1024
       frontendTaskDefinitionMemory: 2048
+      ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
       redisNodeSize: cache.m4.xlarge
     integration:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -99,6 +116,7 @@ Mappings:
       frontendAutoScalingMaxCount: 4
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
+      ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
       redisNodeSize: cache.t2.small
     production:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -106,6 +124,7 @@ Mappings:
       frontendAutoScalingMaxCount: 240
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
+      ipAllowList: []
       redisNodeSize: cache.m4.xlarge
 
 Globals:
@@ -183,8 +202,8 @@ Resources:
           - CODE_DEPLOY
           - ECS
       LoadBalancers:
-        - ContainerName: !Ref AWS::StackName
-          ContainerPort: 3000
+        - ContainerName: !If [UseNginxSidecar, "nginx-sidecar", "frontend-application"]
+          ContainerPort: !If [UseNginxSidecar, 8080, 3000]
           TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroup
       NetworkConfiguration:
         AwsvpcConfiguration:
@@ -224,7 +243,7 @@ Resources:
       EvaluationPeriods: 2
       MetricName: CPUUtilization
       Namespace: AWS/ECS
-      Period: 30
+      Period: 60
       Statistic: Average
       Threshold: 50
       DatapointsToAlarm: 2
@@ -246,7 +265,7 @@ Resources:
       EvaluationPeriods: 5
       MetricName: CPUUtilization
       Namespace: AWS/ECS
-      Period: 30
+      Period: 60
       Statistic: Average
       Threshold: 50
       DatapointsToAlarm: 5
@@ -343,6 +362,12 @@ Resources:
           IpProtocol: tcp
           FromPort: 3000
           ToPort: 3000
+        - Description: Allow traffic from the load balancer on port 8080
+          SourceSecurityGroupId: !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
+          IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+
       VpcId:
         Fn::ImportValue:
           !Sub "${VpcStackName}-VpcId"
@@ -362,7 +387,7 @@ Resources:
     Properties:
       Family: !Sub "${AWS::StackName}-ecs-task-definition"
       ContainerDefinitions:
-        - Name: !Ref AWS::StackName
+        - Name: "frontend-application"
           Image: !Sub "${FrontendRegistry}:GIT-SHA-PLACEHOLDER"
           PortMappings:
             - ContainerPort: 3000
@@ -477,36 +502,45 @@ Resources:
               - ''
               - - !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
                 - ':DT_CONNECTION_POINT::'
-        # - Name: "basic-auth-sidecar"
-        #   Image: !Sub "${BasicAuthSidecarRegistry}:GIT-SHA-PLACEHOLDER"
-        #   PortMappings:
-        #     - ContainerPort: 8080
-        #       HostPort: 8080
-        #       Protocol: tcp
-        #   Essential: true
-        #   LogConfiguration:
-        #     LogDriver: awslogs
-        #     Options:
-        #       awslogs-group: "/ecs/server"
-        #       awslogs-region: "eu-west-2"
-        #       awslogs-create-group: "true"
-        #       awslogs-stream-prefix: "ecs"
-        #   Environment:
-        #     - Name: PROXY_PASS
-        #       Value: "http://localhost:3000"
-        #     - Name: NGINX_PORT
-        #       Value: "8080"
-        #     - Name: NGINX_HOST
-        #       Value: "replace-with-frontend_fqdn"
-        #     - Name: IP_ALLOW_LIST
-        #       Value: "replace-with-basic_auth_bypass_cidr_blocks"
-        #     - Name: TRUSTED_PROXIES
-        #       Value: "replace-with-public_subnet_cidr_blocks"
-        #   Secrets:
-        #     - Name: BASIC_AUTH_USERNAME
-        #       ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Environment}-frontend-basic-auth-username"
-        #     - Name: BASIC_AUTH_PASSWORD
-        #       ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Environment}-frontend-basic-auth-password"
+        - Name: "nginx-sidecar"
+          Image: !Sub "${BasicAuthSidecarRegistry}:GIT-SHA-PLACEHOLDER"
+          PortMappings:
+            - ContainerPort: 8080
+              HostPort: 8080
+              Protocol: tcp
+          Essential: true
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: "/ecs/server"
+              awslogs-region: "eu-west-2"
+              awslogs-create-group: "true"
+              awslogs-stream-prefix: "ecs"
+          Environment:
+            - Name: PROXY_PASS
+              Value: "http://localhost:3000"
+            - Name: NGINX_PORT
+              Value: "8080"
+            - Name: NGINX_HOST
+              Value: !Sub "signin.${Environment}.account.gov.uk"
+            - Name: IP_ALLOW_LIST
+              Value:
+                Fn::ToJsonString:
+                  !FindInMap [ EnvironmentConfiguration, !Ref Environment, ipAllowList ]
+            - Name: TRUSTED_PROXIES
+              Value:
+                Fn::ToJsonString:
+                  - Fn::ImportValue:
+                      !Sub "${VpcStackName}-FirewallSubnetACidr"
+                  - Fn::ImportValue:
+                      !Sub "${VpcStackName}-FirewallSubnetBCidr"
+                  - Fn::ImportValue:
+                      !Sub "${VpcStackName}-FirewallSubnetCCidr"
+          Secrets:
+            - Name: BASIC_AUTH_USERNAME
+              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_username"
+            - Name: BASIC_AUTH_PASSWORD
+              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_password"
       Cpu: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionCpu ]
       Memory: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionMemory ]
       ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
@@ -545,6 +579,11 @@ Resources:
                   - ssm:GetParameter
                   - ssm:GetParameters
                 Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/*"
+              - Effect: Allow
+                Action:
+                  - secretsmanager:ListSecrets                                # pragma: allowlist secret
+                  - secretsmanager:GetSecretValue                             # pragma: allowlist secret
+                Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:*" # pragma: allowlist secret
         - PolicyName: AllowDecryptOfParameters
           PolicyDocument:
             Version: 2012-10-17
@@ -745,17 +784,25 @@ Resources:
         - Key: Source
           Value: govuk-one-login/authentication-frontend/template.yaml
 
-  ApplicationLoadBalancerSecurityGroupIngress:
+  ApplicationLoadBalancerSecurityGroupHTTPIngress:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       GroupId: !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
-      CidrIp:
-        Fn::ImportValue:
-          !Sub "${VpcStackName}-VpcCidr"
-      Description: Allow traffic from the VPC on port 80
+      CidrIp: 0.0.0.0/0
+      Description: Allow traffic from anywhere on port 80
       IpProtocol: tcp
       FromPort: 80
       ToPort: 80
+
+  ApplicationLoadBalancerSecurityGroupHTTPSIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
+      CidrIp: 0.0.0.0/0
+      Description: Allow traffic from anywhere on port 443
+      IpProtocol: tcp
+      FromPort: 443
+      ToPort: 443
 
   ApplicationLoadBalancerSecurityGroupEgress:
     Type: AWS::EC2::SecurityGroupEgress
@@ -767,6 +814,15 @@ Resources:
       FromPort: 3000
       ToPort: 3000
 
+  ApplicationLoadBalancerSecurityGroupEgressNginx:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      GroupId: !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
+      DestinationSecurityGroupId: !GetAtt ContainerServiceSecurityGroup.GroupId
+      Description: Allow traffic to Container Service on port 8080
+      IpProtocol: tcp
+      FromPort: 8080
+      ToPort: 8080
 
   #
   # Logging
@@ -1017,3 +1073,8 @@ Resources:
           Value: "auth-frontend"
         - Key: Source
           Value: govuk-one-login/authentication-frontend/template.yaml
+
+Outputs:
+  ApplicationLoadBalancerDNSName:
+    Description: The DNS name for the Application load balancer
+    Value: !GetAtt ApplicationLoadBalancer.DNSName
