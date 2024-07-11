@@ -13,16 +13,16 @@ import {
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
 } from "../common/constants";
-import { BadRequestError } from "../../utils/error";
+import { BadRequestError, ReauthJourneyError } from "../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { MFA_METHOD_TYPE } from "../../app.constants";
+import { JOURNEY_TYPE, MFA_METHOD_TYPE } from "../../app.constants";
 import xss from "xss";
 import { EnterEmailServiceInterface } from "../enter-email/types";
 import { enterEmailService } from "../enter-email/enter-email-service";
 import {
   support2FABeforePasswordReset,
-  supportAccountInterventions,
   support2hrLockout,
+  supportAccountInterventions,
 } from "../../config";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
@@ -124,8 +124,21 @@ export function enterPasswordPost(
         userLogin.data.code ===
         ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED
       ) {
-        return res.redirect(getErrorPathByCode(userLogin.data.code));
+        if (journeyType == JOURNEY_TYPE.REAUTHENTICATION) {
+          if (req.session.client?.redirectUri) {
+            return res.redirect(
+              req.session.client.redirectUri.concat("?error=login_required")
+            );
+          } else {
+            throw new ReauthJourneyError(
+              "Re-auth journey failed due to missing redirect uri in client session."
+            );
+          }
+        } else {
+          return res.redirect(getErrorPathByCode(userLogin.data.code));
+        }
       }
+
       let validationKey;
       if (support2hrLockout()) {
         validationKey = fromAccountExists

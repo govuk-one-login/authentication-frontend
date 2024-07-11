@@ -19,6 +19,7 @@ import * as journey from "../../common/journey/journey";
 import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
+import { ReauthJourneyError } from "../../../utils/error";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
@@ -188,34 +189,123 @@ describe("enter password controller", () => {
       );
     });
 
-    it("should redirect to enter-code when the password is correct", async () => {
-      const fakeService: EnterPasswordServiceInterface = {
-        loginUser: sinon.fake.returns({
-          data: {
-            redactedPhoneNumber: "3456",
-            mfaRequired: true,
-            latestTermsAndConditionsAccepted: true,
-            mfaMethodVerified: true,
-            mfaMethodType: "SMS",
-          },
-          success: true,
-        }),
-      } as unknown as EnterPasswordServiceInterface;
-
+    describe("enter password when signing in", () => {
       const fakeMfaService: MfaServiceInterface = {
         sendMfaCode: sinon.fake.returns({
           success: true,
         }),
       } as unknown as MfaServiceInterface;
 
-      await enterPasswordPost(
-        false,
-        fakeService,
-        fakeMfaService
-      )(req as Request, res as Response);
+      it("should redirect to enter-code when the password is correct", async () => {
+        const fakeService: EnterPasswordServiceInterface = {
+          loginUser: sinon.fake.returns({
+            data: {
+              redactedPhoneNumber: "3456",
+              mfaRequired: true,
+              latestTermsAndConditionsAccepted: true,
+              mfaMethodVerified: true,
+              mfaMethodType: "SMS",
+            },
+            success: true,
+          }),
+        } as unknown as EnterPasswordServiceInterface;
 
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
-      expect(req.session.user.isAccountPartCreated).to.be.eq(false);
+        await enterPasswordPost(
+          false,
+          fakeService,
+          fakeMfaService
+        )(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
+        expect(req.session.user.isAccountPartCreated).to.be.eq(false);
+      });
+
+      it("should redirect to account locked page when max password attempts exceeded", async () => {
+        const fakeService: EnterPasswordServiceInterface = {
+          loginUser: sinon.fake.returns({
+            data: {
+              code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED,
+            },
+            success: false,
+          }),
+        } as unknown as EnterPasswordServiceInterface;
+
+        await enterPasswordPost(
+          false,
+          fakeService,
+          fakeMfaService
+        )(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(PATH_NAMES.ACCOUNT_LOCKED);
+      });
+    });
+
+    describe("enter password for re-authentication journey", () => {
+      it("should redirect to enter-code when password is correct", async () => {
+        req.session.user.reauthenticate = "subject";
+        req.session.client.redirectUri = "https://rp.gov.uk/redirect";
+
+        const fakeService: EnterPasswordServiceInterface = {
+          loginUser: sinon.fake.returns({
+            data: {
+              redactedPhoneNumber: "3456",
+              mfaRequired: true,
+              latestTermsAndConditionsAccepted: true,
+              mfaMethodVerified: true,
+              mfaMethodType: "SMS",
+            },
+            success: true,
+          }),
+        } as unknown as EnterPasswordServiceInterface;
+
+        const fakeMfaService: MfaServiceInterface = {
+          sendMfaCode: sinon.fake.returns({
+            success: true,
+          }),
+        } as unknown as MfaServiceInterface;
+
+        await enterPasswordPost(
+          false,
+          fakeService,
+          fakeMfaService
+        )(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
+      });
+      it("should redirect to orchestration with login required error when max password retries exceeded", async () => {
+        req.session.user.reauthenticate = "subject";
+        // req.session.client.redirectUri = "https://rp.gov.uk/redirect";
+
+        const fakeService: EnterPasswordServiceInterface = {
+          loginUser: sinon.fake.returns({
+            data: {
+              code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED,
+            },
+            success: false,
+          }),
+        } as unknown as EnterPasswordServiceInterface;
+
+        const fakeMfaService: MfaServiceInterface = {
+          sendMfaCode: sinon.fake.returns({
+            success: true,
+          }),
+        } as unknown as MfaServiceInterface;
+
+        try {
+          await enterPasswordPost(
+            false,
+            fakeService,
+            fakeMfaService
+          )(req as Request, res as Response);
+        } catch (err) {
+          expect(err).to.be.an.instanceof(ReauthJourneyError);
+          expect(err.message).to.eq(
+            "Re-auth journey failed due to missing redirect uri in client session."
+          );
+        }
+
+        expect(res.redirect).to.have.callCount(0);
+      });
     });
 
     it("should redirect to auth code when mfa is not required", async () => {

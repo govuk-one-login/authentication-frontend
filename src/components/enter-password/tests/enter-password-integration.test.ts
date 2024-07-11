@@ -32,31 +32,33 @@ describe("Integration::enter password", () => {
           journey: {
             nextPath: PATH_NAMES.ENTER_PASSWORD,
           },
-          reauthenticate: true,
         };
 
         next();
       });
 
+    process.env.SUPPORT_REAUTHENTICATION = "0";
+
     app = await require("../../../app").createApp();
+
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    request(app)
+    await request(app)
       .get(ENDPOINT)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
       });
   });
 
-  beforeEach(() => {
-    nock.cleanAll();
-  });
-
   after(() => {
     sinon.restore();
     app = undefined;
+  });
+
+  beforeEach(() => {
+    nock.cleanAll();
   });
 
   it("should return enter password page", (done) => {
@@ -91,6 +93,7 @@ describe("Integration::enter password", () => {
 
   it("should return validation error when password is incorrect", (done) => {
     nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(401);
+    process.env.SUPPORT_2HR_LOCKOUT = "0";
 
     request(app)
       .post(ENDPOINT)
@@ -124,7 +127,7 @@ describe("Integration::enter password", () => {
       .expect(302, done);
   });
 
-  it("should redirect to /account-locked when incorrect password entered 5 times", (done) => {
+  it("should redirect to /account-locked from sign-in flow when incorrect password entered 5 times", (done) => {
     nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).times(6).reply(400, {
       code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED,
     });
