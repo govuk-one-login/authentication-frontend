@@ -190,3 +190,4 @@ jobs:
             --metadata '${{ toJson(fromJson(needs.pr-data.outputs.data)) }}'`
           VERSION=`echo $S3_RESPONSE | jq .VersionId -r`
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+

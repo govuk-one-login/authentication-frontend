@@ -32,3 +32,4 @@ jobs:
         run: |
           terraform init -input=false -backend=false
           terraform validate
+
