@@ -2,7 +2,11 @@
   "watch": ["src/**/*", "locales/**/*"],
   "ext": "ts,js,json,njk,css,scss,txt",
   "restartable": "rs",
-  "ignore": [".git", "node_modules/**/node_modules", "src/assets/javascript/all.js"],
+  "ignore": [
+    ".git",
+    "node_modules/**/node_modules",
+    "src/assets/javascript/all.js"
+  ],
   "verbose": true,
   "env": {
     "NODE_ENV": "development"

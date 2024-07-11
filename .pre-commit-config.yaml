@@ -43,3 +43,4 @@ repos:
         types: [text]
         entry: yarn run prettier --write --ignore-unknown
         pass_filenames: true
+        exclude: service-down-page-config/service-down/test/.*

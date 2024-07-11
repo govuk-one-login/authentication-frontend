@@ -22,6 +22,7 @@ Make sure that a performance analyst colleague in your team has been informed of
 
 Delete this item if the PR does not change any UI or user journeys.
 -->
+
 - [ ] Performance analyst has been notified of the change.
 
 <!-- UCD review
@@ -40,10 +41,11 @@ If including screenshots in the PR description, include those representing error
 - a PR that uses tables to display the screenshots https://github.com/govuk-one-login/authentication-frontend/pull/1187
 - a PR that uses a dropdown to display the screenshots https://github.com/alphagov/di-infrastructure/pull/578
 
-You can find example PRs from this repository that include screenshots through this search: https://github.com/govuk-one-login/authentication-frontend/pulls?q=is%3Apr+screenshots+is%3Aclosed+is%3Amerged 
+You can find example PRs from this repository that include screenshots through this search: https://github.com/govuk-one-login/authentication-frontend/pulls?q=is%3Apr+screenshots+is%3Aclosed+is%3Amerged
 
-Delete this item if the PR does not change the UI. 
+Delete this item if the PR does not change the UI.
 -->
+
 - [ ] A UCD review has been performed.
 
 <!-- Acceptance tests have been updated
@@ -53,13 +55,15 @@ This is to avoid failures occurring after a merge. The types of changes that may
 - changes to the text of page titles
 - changes to the text of interactive elements (such as links).
 
-The Test Engineers on the Authentication Team will be happy to discuss any changes if you're unsure. 
+The Test Engineers on the Authentication Team will be happy to discuss any changes if you're unsure.
 -->
+
 - [ ] Any necessary changes to the [acceptance tests](https://github.com/govuk-one-login/authentication-acceptance-tests) have been made.
 
 <!-- Associated documentation has been updated
 This might include updates to the README.md, Confluence pages etc.
 -->
+
 - [ ] Documentation has been updated to reflect these changes.
 
 ## Related PRs

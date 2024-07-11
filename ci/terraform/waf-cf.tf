@@ -390,8 +390,8 @@ resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
   tags = local.default_tags
 }
 
-# Cloudwatch Logging for frontend Cloudfront WAF 
-# Adding Local variable for splunk Logging for US east region as 
+# Cloudwatch Logging for frontend Cloudfront WAF
+# Adding Local variable for splunk Logging for US east region as
 
 locals {
   logging_endpoint_arns_us_east = "arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython"
@@ -500,4 +500,3 @@ resource "aws_cloudwatch_log_subscription_filter" "frontend_cloudfront_waf_subsc
     create_before_destroy = false
   }
 }
-

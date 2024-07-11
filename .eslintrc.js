@@ -4,11 +4,11 @@ module.exports = {
   },
   root: true,
   parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint","no-only-tests"],
+  plugins: ["@typescript-eslint", "no-only-tests"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier"
+    "prettier",
   ],
   rules: {
     "@typescript-eslint/no-var-requires": 0,

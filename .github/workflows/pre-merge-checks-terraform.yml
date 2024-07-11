@@ -1,7 +1,7 @@
 name: Pre-merge checks for Terraform
 on:
   pull_request:
-    paths: ['ci/terraform/**']
+    paths: ["ci/terraform/**"]
     types:
       - opened
       - reopened
@@ -17,7 +17,7 @@ jobs:
 
       - name: Get Terraform version
         id: getterraformversion
-        run: echo "::set-output name=version::$(cat ci/terraform/.terraform-version)"
+        run: echo "name=version::$(cat ci/terraform/.terraform-version)" >> "$GITHUB_OUTPUT"
 
       - uses: hashicorp/setup-terraform@v3
         with:
@@ -32,4 +32,3 @@ jobs:
         run: |
           terraform init -input=false -backend=false
           terraform validate
-

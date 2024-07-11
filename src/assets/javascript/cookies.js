@@ -1,33 +1,31 @@
 "use strict";
 
 var cookies = function () {
-
   function initAnalytics() {
     window.DI.analyticsGa4.loadGtmScript(window.DI.analyticsGa4.uaContainerId);
     initGtm();
   }
 
   function pushLanguageToDataLayer() {
-    var languageCode = document.querySelector('html') &&
-        document.querySelector('html').getAttribute('lang');
+    var languageCode =
+      document.querySelector("html") &&
+      document.querySelector("html").getAttribute("lang");
 
     var languageNames = {
-      'en':'english',
-      'cy':'welsh'
-    }
+      en: "english",
+      cy: "welsh",
+    };
 
     if (languageCode && languageNames[languageCode]) {
-
       window.dataLayer = window.dataLayer || [];
 
       window.dataLayer.push({
         event: "langEvent",
         language: languageNames[languageCode],
-        languagecode: languageCode
+        languagecode: languageCode,
       });
     }
   }
-
 
   function initGtm() {
     window.dataLayer = [
@@ -74,8 +72,8 @@ var cookies = function () {
       "/create-password": generateSessionJourney("sign up", "middle"),
       "/enter-phone-number": generateSessionJourney("sign up", "middle"),
       "/check-your-phone": generateSessionJourney("sign up", "middle"),
-      "/setup-authenticator-app": generateSessionJourney('sign up', 'middle'),
-      "/get-security-codes": generateSessionJourney('sign up', 'middle'),
+      "/setup-authenticator-app": generateSessionJourney("sign up", "middle"),
+      "/get-security-codes": generateSessionJourney("sign up", "middle"),
       "/account-created": generateSessionJourney("sign up", "end"),
       "/enter-email": generateSessionJourney("sign in", "start"),
       "/enter-password-account-exists": generateSessionJourney(
@@ -83,7 +81,10 @@ var cookies = function () {
         "start"
       ),
       "/enter-password": generateSessionJourney("sign in", "middle"),
-      "/enter-authenticator-app-code": generateSessionJourney('sign in', 'middle'),
+      "/enter-authenticator-app-code": generateSessionJourney(
+        "sign in",
+        "middle"
+      ),
       "/enter-code": generateSessionJourney("sign in", "middle"),
       "/resend-code": generateSessionJourney("sign in", "middle"),
       "/updated-terms-and-conditions": generateSessionJourney(
@@ -99,8 +100,14 @@ var cookies = function () {
         "password reset",
         "end"
       ),
-      "/check-email-change-security-codes": generateSessionJourney("change security codes", "start"),
-      "/change-codes-confirmed": generateSessionJourney("change security codes", "end"),
+      "/check-email-change-security-codes": generateSessionJourney(
+        "change security codes",
+        "start"
+      ),
+      "/change-codes-confirmed": generateSessionJourney(
+        "change security codes",
+        "end"
+      ),
     };
 
     return JOURNEY_DATA_LAYER_PATHS[url];

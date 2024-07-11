@@ -23,6 +23,3 @@ ENV PORT 3000
 EXPOSE $PORT
 USER node
 CMD ["yarn", "start"]
-
-
-

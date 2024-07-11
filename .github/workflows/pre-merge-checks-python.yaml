@@ -35,17 +35,16 @@ jobs:
 
       - name: Pylint
         run: |
-          pylint -f actions $(git ls-files '*.py')
+          pylint -f actions "$(git ls-files '*.py')"
 
       - name: Flake8
         run: |
-          flake8p --format github $(git ls-files '*.py')
+          flake8p --format github "$(git ls-files '*.py')"
 
       - name: Black
         run: |
-          black --check $(git ls-files '*.py')
+          black --check "$(git ls-files '*.py')"
 
       - name: isort
         run: |
-          isort --check-only $(git ls-files '*.py')
-
+          isort --check-only "$(git ls-files '*.py')"

@@ -3,10 +3,10 @@ name: checkov
 on:
   push:
     branches:
-     - main
+      - main
   pull_request:
     branches:
-     - main
+      - main
 
   workflow_dispatch:
 
@@ -32,4 +32,3 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: results.sarif
-

@@ -46,11 +46,11 @@ const htmlContent = `
       }
       dt {
         font-weight: bold;
-      }        
+      }
       ol.eventConsequences {
         list-style-type: none;
         counter-reset: item;
-      }     
+      }
       ol.eventConsequences li::before {
         content: "️️⬇️ ";
         counter-increment: item;

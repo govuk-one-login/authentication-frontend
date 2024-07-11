@@ -9,8 +9,8 @@ SIDECAR_REPO_NAME=basic-auth-sidecar-image-repository
 SERVICE_DOWN_REPO_NAME=service-down-page-image-repository
 
 echo "Setting the ECR repo registry ID"
-# If Enviorment is DEV  then pull image from tools-dev Dev account to deploy Dev frontend 
-# Else pull image from tools-prod to deploy  ( Build , integration , Staging & prod  ) frontend 
+# If Enviorment is DEV  then pull image from tools-dev Dev account to deploy Dev frontend
+# Else pull image from tools-prod to deploy  ( Build , integration , Staging & prod  ) frontend
 
 if [ "$ENVIRONMENT" = "dev" ]; then
   REGISTRY_ID=$(aws ssm get-parameter --name "AUTH_DEV_TOOLS_ACT_ID"  --with-decryption --query 'Parameter.Value' --output text)

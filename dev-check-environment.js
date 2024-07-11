@@ -40,7 +40,10 @@ describe("environment", function () {
 
     it("should be importable by jose", async function () {
       if (key === undefined) return this.skip();
-      await expect(jose.importSPKI(key, "ES256"), "jose could not import the PEM. Other failing tests may help you identify why").to.not.be.rejected;
+      await expect(
+        jose.importSPKI(key, "ES256"),
+        "jose could not import the PEM. Other failing tests may help you identify why"
+      ).to.not.be.rejected;
     });
 
     it("should not contain '\\n'", function () {
