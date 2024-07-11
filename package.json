@@ -8,6 +8,7 @@
     "node": "18.x"
   },
   "scripts": {
+    "noop": "",
     "build-ts": "tsc",
     "build": "yarn build-sass && yarn build-ts && yarn minfiy-build-js && yarn copy-assets",
     "build-sass": "rm -rf dist/public/style.css && sass --load-path=node_modules/govuk-frontend/govuk --no-source-map --quiet-deps src/assets/scss/application.scss dist/public/style.css --style compressed",
