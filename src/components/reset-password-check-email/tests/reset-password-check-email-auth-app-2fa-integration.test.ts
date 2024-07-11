@@ -49,9 +49,9 @@ describe("Integration::reset password check email ", () => {
 
     nock(baseApi).post("/reset-password-request").once().reply(204);
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];

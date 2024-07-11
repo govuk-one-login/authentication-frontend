@@ -169,7 +169,7 @@ async function createApp(): Promise<express.Application> {
   app.use(setLocalVarsMiddleware);
   app.use(setGTM);
 
-  i18next
+  await i18next
     .use(Backend)
     .use(i18nextMiddleware.LanguageDetector)
     .init(

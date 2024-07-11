@@ -44,9 +44,9 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     setupAccountInterventionsResponse(baseApi, noInterventions);
 
-    request(app)
+    await request(app)
       .get(ENDPOINT)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
