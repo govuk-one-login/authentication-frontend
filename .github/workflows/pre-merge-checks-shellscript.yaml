@@ -20,3 +20,4 @@ jobs:
         with:
           ignore_paths: >-
             ./pre-commit.sh
+

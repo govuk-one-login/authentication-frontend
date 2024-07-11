@@ -48,3 +48,4 @@ jobs:
       - name: isort
         run: |
           isort --check-only $(git ls-files '*.py')
+

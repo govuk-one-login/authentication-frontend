@@ -201,3 +201,4 @@ jobs:
             --query VersionId --output text)"
           echo "::endgroup::"
           echo "::notice title=Final artifact uploaded to S3::object: frontend.zip, version: ${OBJECT_VERSION}"
+

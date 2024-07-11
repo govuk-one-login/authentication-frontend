@@ -51,3 +51,4 @@ jobs:
       REDIS_HOST: localhost
       REDIS_PORT: 6389
       SMARTAGENT_API_URL: https://uat.smartagent.app/ # Dummy URL for SmartAgent UAT environment
+
