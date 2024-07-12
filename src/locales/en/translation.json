@@ -1467,24 +1467,25 @@
           },
           "paragraph_ten": "In all cases we only provide the minimum information needed to perform the checks.",
           "sub_header_three": "Sharing your information to protect against fraud",
-          "paragraph_eleven": "To protect against crime and fraud, we might sometimes need to share information with:",
+          "paragraph_eleven": "To protect against crime and fraud, we sometimes need to share information with:",
           "list_five": {
             "item_one": "government departments that run the services you access though your GOV.UK One Login",
             "item_two": "other public sector organisations, such as the Home Office",
             "item_three": "law enforcement agencies",
-            "item_four": "credit reference agencies",
+            "item_four": "Experian (a credit reference agency)",
             "item_five": "data processors who provide relevant monitoring services"
           },
-          "paragraph_twelve": "The information we might share includes:",
+          "paragraph_twelve": "The information we share includes:",
           "list_six": {
-            "item_one": "phone numbers",
-            "item_two": "email addresses",
-            "item_three": "IP addresses and geolocations",
-            "item_four": "unique account identifiers",
-            "item_five": "information about the devices being used",
-            "item_six": "identity document details, including name and date of birth",
-            "item_seven": "address history"
+            "item_one": "IP addresses and geolocations",
+            "item_two": "unique account identifiers",
+            "item_three": "information about the devices being used",
+            "item_four": "identity document details, including name and date of birth",
+            "item_five": "address history",
+            "item_six": "phone numbers",
+            "item_seven": "email addresses"
           },
+          "paragraph_experian":"We use Experian to check your email address and phone number when you create a GOV.UK One Login and if you change your email address or phone number.",
           "sub_header_four": "Sharing your information with our suppliers",
           "paragraph_thirteen": "We work with technology suppliers, for example we use an external hosting provider and a contact centre provider. We only give our suppliers access to your information if they need it to provide their service. Our suppliers act as data processors and are subject to contracts with us which restrict them to only processing your personal data for the sole purpose of providing their services in accordance with our instructions."
         },
