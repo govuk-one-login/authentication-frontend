@@ -1347,7 +1347,17 @@
           },
           "paragraph_two": "Mae’r wybodaeth a gesglir yn cael ei hystyried yn ddata personol oherwydd bod Google Analytics yn neilltuo dynodwr unigryw i bob ymwelydd. Fodd bynnag, nid yw hyn yn ein galluogi ni na Google i bennu eich hunaniaeth yn y byd go iawn. Ni fyddwn hefyd yn cyfuno gwybodaeth dadansoddi â’r data a ddarperir gennych wrth ddilysu eich GOV.UK One Login neu brofi eich hunaniaeth neu unrhyw ddata arall y gallwn ei ddal er mwyn pennu eich hunaniaeth yn y byd go iawn.",
           "paragraph_three": "Rydym hefyd yn defnyddio Firebase Crashlytics i gasglu gwybodaeth am broblemau y gallech eu profi pan fyddwch yn defnyddio’r ap Gwirio ID GOV.UK, fel yr ap yn chwalu.",
-          "paragraph_four": "Yn y ddau achos, mae Google yn gweithredu fel ein prosesydd data ac nid ydym yn caniatáu i Google ddefnyddio na rhannu’r data hwn at eu dibenion eu hunain."
+          "paragraph_four": "Yn y ddau achos, mae Google yn gweithredu fel ein prosesydd data ac nid ydym yn caniatáu i Google ddefnyddio na rhannu’r data hwn at eu dibenion eu hunain.",
+          "dynatrace": {
+            "paragraph_one": "Rydym yn defnyddio Dynatrace i gasglu gwybodaeth am broblemau y gallech eu profi wrth ddefnyddio GOV.UK One Login. Er enghraifft:",
+            "list": {
+              "item_one": "pa mor gyflym mae tudalennau’n llwytho",
+              "item_two": "os byddwch yn gweld unrhyw negeseuon gwall",
+              "item_three": "gwybodaeth dechnegol gan gynnwys eich cyfeiriad IP a dynodwr unigryw"
+            },
+            "paragraph_two": "Nid yw’r wybodaeth a gasglwn yn ein galluogi ni na Dynatrace i benderfynu ar eich hunaniaeth yn y byd go iawn. Ni fyddwn yn cyfuno gwybodaeth ddadansoddi gydag unrhyw ddata arall i bennu eich hunaniaeth yn y byd go iawn.",
+            "paragraph_three": "Mae Dynatrace yn gweithredu fel ein prosesydd data ac nid ydym yn caniatáu iddynt ddefnyddio neu rannu’r data hwn at eu dibenion eu hunain."
+          }
         },
         "why_we_need_your_information": {
           "header": "Pam rydym angen eich gwybodaeth",
@@ -1364,7 +1374,7 @@
             "item_four": "darparu gwasanaeth(au) y llywodraeth rydych yn cael mynediad iddynt drwy GOV.UK One Login gyda gwybodaeth am ganlyniad eich gwiriad hunaniaeth",
             "item_five": "eich darparu gyda chofnod o sut mae eich GOV.UK One Login wedi cael ei ddefnyddio, er enghraifft, pan gafodd ei fewngofnodi iddo ddiwethaf a pha wasanaethau mae wedi cael ei ddefnyddio gyda",
             "item_six": "cysylltu â chi am unrhyw ymyrraeth arfaethedig, problemau neu newidiadau a allai effeithio ar eich GOV.UK One Login (gan ddefnyddio eich cyfeiriad e-bost)",
-            "item_seven": "gwella`r gwasanaeth trwy ddeall sut rydych yn ei ddefnyddio ac unrhyw broblemau rydych yn eu profi, er enghraifft defnyddio Google Analytics, Firebase Crashlytics ac arolwg adborth y ganolfan gyswllt",
+            "item_seven": "gwella’r gwasanaeth drwy ddeall sut rydych yn ei ddefnyddio ac unrhyw broblemau rydych yn eu profi, er enghraifft defnyddio Google Analytics, Firebase Crashlytics, Dynatrace, ac arolwg adborth y ganolfan gyswllt",
             "item_eight": "monitro cyfraddau cyflwyno gwiriadau hunaniaeth lwyddiannus ac aflwyddiannus a chynhyrchu adroddiadau dienw am GOV.UK One Login i’n helpu i ddeall ble gallwn ni wneud gwelliannau",
             "item_nine": "helpu i ddarganfod a thrwsio materion technegol neu ddadfygio",
             "item_ten": "cynorthwyo mewn filio a chymodi ar gyfer y gwasanaethau gwirio hunaniaeth trydydd parti rydym yn eu defnyddio",
@@ -1378,7 +1388,7 @@
           "sub_header_two": "Consent (UK GDPR Article (6)(1)(a))",
           "paragraph_two": "Rydym yn cael eich caniatâd i brosesu eich data personol ar gyfer y dibenion canlynol:",
           "list_one": {
-            "item_one": "casglu a dadansoddi gwybodaeth am sut rydych yn defnyddio eich GOV.UK One Login gan ddefnyddio cwcis Google Analytics",
+            "item_one": "casglu a dadansoddi gwybodaeth am sut rydych yn defnyddio’ch GOV.UK One Login gan ddefnyddio Google Analytics a Chwcis Dynatrace",
             "item_two": "casglu a phrosesu eich ymatebion i`n harolwg am yr help a gawsoch"
           },
           "paragraph_three": "Lle byddwn yn dibynnu ar ganiatâd byddwn yn esbonio mor glir a chryno â phosibl sut bydd eich data’n cael ei brosesu fel eich bod yn deall beth rydych yn cydsynio iddo. Os byddwch yn newid eich meddwl yn ddiweddarach, gallwch dynnu eich caniatâd yn ôl ar unrhyw adeg. Bydd sut gallwch wneud hyn yn dibynnu ar beth rdym yn prosesu eich data ar ei gyfer. Er enghraifft, gallwch:",
@@ -1504,7 +1514,8 @@
           "list_one": {
             "item_one": "cwestiynau KBV rydym yn yn eu cyrchu gan asiantaethau gwirio credyd neu eich atebion i’r cwestiynau hynny",
             "item_two": "fideo hunlun rydych yn ei gymryd fel rhan o brofi eich hunaniaeth drwy ddefnyddio’r ap Gwirio Hunaniaeth GOV.UK"
-          }
+          },
+          "paragraph_eleven": "Os gwnaethoch roi caniatâd i ddadansoddi, bydd Dynatrace yn storio gwybodaeth am sut y gwnaethoch ddefnyddio GOV.UK One Login am 35 diwrnod."
         },
         "childrens_privacy_protection": {
           "header": "Diogelu preifatrwydd plant",
@@ -1513,7 +1524,7 @@
         "where_information_processed_stored": {
           "header": "Lle mae eich gwybodaeth yn cael ei brosesu a’i storio",
           "paragraph_one": "Mae’r holl ddata personol sy’n cael ei brosesu’n uniongyrchol ar gyfer gweinyddu’ch GOV.UK One Login ac ar gyfer gwirio hunaniaeth yn cael ei storio yn y DU neu yn yr Ardal Economaidd Ewropeaidd (AEE). Mae’r AEE wedi cael ei asesu gan Swyddfa’r Comisiynydd Gwybodaeth fel un sydd ag amddiffyniadau cyfreithiol digonol ar gyfer preifatrwydd data yn unol â’r rhai yn y DU.",
-          "paragraph_two": "Gall data a gesglir gan Google Analytics gael ei drosglwyddo y tu allan i’r Ardal Economaidd Ewropeaidd (AEE) ar gyfer prosesu a gall rhai o’n cyflenwyr ddarparu cymorth technegol o’r tu allan i’r AEE. Yn y ddau achos, rydym yn sicrhau bod eich gwybodaeth wedi’i diogelu’n dda, er enghraifft drwy gynnwys cymalau ychwanegol yn ein contractau gyda chyflenwyr."
+          "paragraph_two": "Gellir trosglwyddo data a gesglir gan Google Analytics neu Dynatrace y tu allan i’r Ardal Economaidd Ewropeaidd (AEE) i’w brosesu a gall rhai o’n cyflenwyr ddarparu cymorth technegol o’r tu allan i’r AEE."
         },
         "how_we_protect_your_information": {
           "header": "Sut rydym yn diogelu eich gwybodaeth bersonol a’i gadw’n ddiogel",
@@ -1606,7 +1617,7 @@
           "header": "Newidiadau i’r hysbysiad hwn",
           "paragraph_one": "Efallai y byddwn yn newid yr hysbysiad preifatrwydd hwn. Yn yr achos hynny, bydd dyddiad ’diweddaru olaf’ y ddogfen hon hefyd yn newid. Bydd unrhyw newidiadau i’r hysbysiad preifatrwydd hwn yn berthnasol i chi a’ch gwybodaeth ar unwaith.",
           "paragraph_two": "Os yw’r newidiadau hyn yn effeithio ar sut mae eich gwybodaeth bersonol yn cael ei phrosesu, bydd GDS yn rhoi gwybod i chi.",
-          "paragraph_three": "Diweddarwyd diwethaf: 30 Hydref 2023"
+          "paragraph_three": "Diweddarwyd diwethaf: 28 Mehefin 2024"
         }
       }
     },
