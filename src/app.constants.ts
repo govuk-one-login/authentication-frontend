@@ -276,4 +276,16 @@ export const CONTACT_US_REFERER_ALLOWLIST = [
   "changeCodesConfirmEmail",
 ];
 
-export const ANALYTICS_COOKIES = ["_ga", "_gid"];
+const GA_COOKIES = ["_ga", "_gid"];
+
+const DYNATRACE_RUM_COOKIES = [
+  "dtCookie",
+  "dtLatC",
+  "dtPC",
+  "dtSa",
+  "dtValidationCookie",
+  "dtDisabled",
+  "rxVisitor",
+  "rxvt",
+];
+export const ANALYTICS_COOKIES = [...GA_COOKIES, ...DYNATRACE_RUM_COOKIES];

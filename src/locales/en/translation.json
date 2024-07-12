@@ -792,7 +792,7 @@
       "analytics": {
         "header": "Cookies that measure how you use GOV.UK One Login",
         "info": {
-          "paragraph1": "We use Google Analytics cookies to collect anonymised information about how you use your GOV.UK One Login, for example what pages you visit and what you click on.",
+          "paragraph1": "We use Google Analytics and Dynatrace cookies to collect anonymised information about how you use your GOV.UK One Login, for example what pages you visit and what you click on.",
           "paragraph2": "This helps us understand how we can improve GOV.UK One Login"
         },
         "table": {
@@ -802,16 +802,48 @@
             "col3": "Expires"
           },
           "rows": {
-            "row1": {
+            "_ga": {
               "col2": "Helps us count how many people visit GOV.UK One Login by checking if you’ve visited before",
               "col3": "2 years"
             },
-            "row2": {
+            "_gid": {
               "col2": "Helps us count how many people visit GOV.UK One Login by checking if you’ve visited before",
               "col3": "24 hours"
             },
-            "row3": {
+            "_gat_UA": {
               "col2": "Helps us count how many people visit GOV.UK One Login by checking if you’ve visited before",
+              "col3": "When you close your web browser"
+            },
+            "dtCookie": {
+              "col2": "Helps us understand any problems you may experience when using GOV.UK One Login",
+              "col3": "When you close your web browser"
+            },
+            "dtLatC": {
+              "col2": "Helps us understand any problems you may experience when using GOV.UK One Login",
+              "col3": "When you close your web browser"
+            },
+            "dtPC": {
+              "col2": "Helps us understand any problems you may experience when using GOV.UK One Login",
+              "col3": "When you close your web browser"
+            },
+            "dtSa": {
+              "col2": "Helps us understand any problems you may experience when using GOV.UK One Login",
+              "col3": "When you close your web browser"
+            },
+            "dtValidationCookie": {
+              "col2": "Helps us understand any problems you may experience when using GOV.UK One Login",
+              "col3": "Instantly"
+            },
+            "dtDisabled": {
+              "col2": "Helps us understand any problems you may experience when using GOV.UK One Login",
+              "col3": "When you close your web browser"
+            },
+            "rxVisitor": {
+              "col2": "Helps us understand any problems you may experience when using GOV.UK One Login",
+              "col3": "2 years"
+            },
+            "rxvt": {
+              "col2": "Helps us understand any problems you may experience when using GOV.UK One Login",
               "col3": "When you close your web browser"
             }
           }
