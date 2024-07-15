@@ -12,7 +12,7 @@ ecs_desired_count                = 1
 
 alb_idle_timeout = 30
 
-#cloudfront  flag 
+# cloudfront flag
 cloudfront_auth_frontend_enabled = true
 cloudfront_auth_dns_enabled      = true
 

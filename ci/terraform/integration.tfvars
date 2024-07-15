@@ -2,7 +2,7 @@ environment         = "integration"
 common_state_bucket = "digital-identity-dev-tfstate"
 service_down_page   = true
 
-#cloudfront enabled flag 
+# cloudfront enabled flag
 cloudfront_auth_frontend_enabled = true
 cloudfront_auth_dns_enabled      = true
 cloudfront_WafAcl_Logdestination = "csls_cw_logs_destination_prodpython"
