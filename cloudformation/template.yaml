@@ -737,6 +737,18 @@ Resources:
         - Key: Source
           Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
+  ApplicationLoadBalancerDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: !Sub "signin-sp.${Environment}.account.gov.uk"
+      Type: A
+      HostedZoneId: !Sub '{{resolve:ssm:/${Environment}/Infra/Route53/HostedZone/SignIn/Id}}'
+      AliasTarget:
+        DNSName: !Sub
+          - "dualstack.${ALBDNSName}"
+          - ALBDNSName: !GetAtt ApplicationLoadBalancer.DNSName
+        HostedZoneId: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
+
   ApplicationLoadBalancerListenerHTTPS:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
@@ -1110,8 +1122,3 @@ Resources:
           Value: "auth-frontend"
         - Key: Source
           Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
-
-Outputs:
-  ApplicationLoadBalancerDNSName:
-    Description: The DNS name for the Application load balancer
-    Value: !GetAtt ApplicationLoadBalancer.DNSName

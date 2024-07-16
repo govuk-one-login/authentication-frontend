@@ -114,6 +114,18 @@ Resources:
     Properties:
       Name: !Sub signin-sp.${Environment}.account.gov.uk
 
+  AccountsSigninHostedZoneSSM:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: The SignIn Public Hosted Zone Id
+      Name: !Sub "/${Environment}/Infra/Route53/HostedZone/SignIn/Id"
+      Type: String
+      Value: !Ref AccountsSigninHostedZone
+      Tags:
+        Environment: !Ref Environment
+        Application: "auth-frontend"
+        Source: govuk-one-login/authentication-frontend/cloudformation/domains.yaml
+
   AccountsSignInCertificate:
     Type: AWS::CertificateManager::Certificate
     Properties:
