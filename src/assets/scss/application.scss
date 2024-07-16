@@ -91,7 +91,7 @@
 .inverted-button {
   background-color: #ffffff;
   color: #0b0c0c;
-  box-shadow: 0 2px 0 #B1B4B6;
+  box-shadow: 0 2px 0 #b1b4b6;
   font-weight: bold;
 }
 
@@ -183,9 +183,9 @@
 }
 
 .ccms-loader {
-  border: 12px solid #DEE0E2;
+  border: 12px solid #dee0e2;
   border-radius: 50%;
-  border-top-color: #005EA5;
+  border-top-color: #005ea5;
   width: 80px;
   height: 80px;
   -webkit-animation: spin 2s linear infinite;
@@ -232,4 +232,71 @@
   padding-left: 15px;
   margin-bottom: 30px;
   margin-top: 30px;
+}
+
+#spinner-container {
+  .spinner {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border-width: 12px;
+    border-style: solid;
+    border-color: #dee0e2;
+    border-top-color: #005ea5;
+    margin-bottom: govuk-spacing(3);
+
+    @media (forced-colors: active) {
+      border-top-color: transparent !important;
+      forced-color-adjust: none;
+    }
+
+    @media not (prefers-reduced-motion) {
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+
+    @media (prefers-reduced-motion) {
+      transform: rotate(0.125turn);
+    }
+
+    &__ready {
+      border-color: #005ea5;
+      -webkit-animation: none;
+      animation: none;
+    }
+  }
+
+  .spinner-container {
+    &__error {
+      .spinner,
+      .spinner-state-text {
+        display: none;
+      }
+    }
+  }
+
+  @-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .centre {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    display: block;
+  }
 }
