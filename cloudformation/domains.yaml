@@ -1,0 +1,136 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: >-
+  Creates the necessary components for Authentication Frontend application secure pipeline migration testing
+
+Parameters:
+  Environment:
+    Description: The name of the environment to deploy to
+    Type: String
+    AllowedValues:
+      - build
+      - staging
+
+Resources:
+  #
+  # auth
+  #
+  AccountsAuthHostedZone:
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Sub auth-sp.${Environment}.account.gov.uk
+
+  AccountsAuthCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub auth-sp.${Environment}.account.gov.uk
+      DomainValidationOptions:
+        - DomainName: !Sub auth-sp.${Environment}.account.gov.uk
+          HostedZoneId: !GetAtt AccountsAuthHostedZone.Id
+      ValidationMethod: DNS
+
+  AccountsAuthCertificateArnSSM:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: The Auth subdomain Certificate ARN
+      Name: !Sub "/${Environment}/Infra/ACM/Certificate/Auth/ARN"
+      Type: String
+      Value: !Ref AccountsAuthCertificate
+      Tags:
+        Environment: !Ref Environment
+        Application: "auth-frontend"
+        Source: govuk-one-login/authentication-frontend/cloudformation/domains.yaml
+
+  #
+  # managed
+  #
+  AccountsManageHostedZone:
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Sub manage-sp.${Environment}.account.gov.uk
+
+  AccountsManageCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub manage-sp.${Environment}.account.gov.uk
+      DomainValidationOptions:
+        - DomainName: !Sub manage-sp.${Environment}.account.gov.uk
+          HostedZoneId: !GetAtt AccountsManageHostedZone.Id
+      ValidationMethod: DNS
+
+  AccountsManageCertificateArnSSM:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: The Manage Subdomain Certificate ARN
+      Name: !Sub "/${Environment}/Infra/ACM/Certificate/Manage/ARN"
+      Type: String
+      Value: !Ref AccountsManageCertificate
+      Tags:
+        Environment: !Ref Environment
+        Application: "auth-frontend"
+        Source: govuk-one-login/authentication-frontend/cloudformation/domains.yaml
+  #
+  # oidc
+  #
+  AccountsOidcHostedZone:
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Sub oidc-sp.${Environment}.account.gov.uk
+
+  AccountsOidcCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub oidc-sp.${Environment}.account.gov.uk
+      DomainValidationOptions:
+        - DomainName: !Sub oidc-sp.${Environment}.account.gov.uk
+          HostedZoneId: !GetAtt AccountsOidcHostedZone.Id
+      ValidationMethod: DNS
+
+  AccountsOidcCertificateArnSSM:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: The Oidc subdomain Certificate ARN
+      Name: !Sub "/${Environment}/Infra/ACM/Certificate/Oidc/ARN"
+      Type: String
+      Value: !Ref AccountsOidcCertificate
+      Tags:
+        Environment: !Ref Environment
+        Application: "auth-frontend"
+        Source: govuk-one-login/authentication-frontend/cloudformation/domains.yaml
+
+  #
+  # signin
+  #
+  AccountsSigninHostedZone:
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Sub signin-sp.${Environment}.account.gov.uk
+
+  AccountsSignInCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub signin-sp.${Environment}.account.gov.uk
+      DomainValidationOptions:
+        - DomainName: !Sub signin-sp.${Environment}.account.gov.uk
+          HostedZoneId: !GetAtt AccountsSigninHostedZone.Id
+      ValidationMethod: DNS
+
+  AccountsSignInCertificateArnSSM:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: The SignIn Domain Certificate ARN
+      Name: !Sub "/${Environment}/Infra/ACM/Certificate/SignIn/ARN"
+      Type: String
+      Value: !Ref AccountsSignInCertificate
+      Tags:
+        Environment: !Ref Environment
+        Application: "auth-frontend"
+        Source: govuk-one-login/authentication-frontend/cloudformation/domains.yaml
