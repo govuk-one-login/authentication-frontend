@@ -10,7 +10,10 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { proveIdentityCallbackGetOrPost } from "../prove-identity-callback-controller";
+import {
+  proveIdentityCallbackGetAsync,
+  proveIdentityCallbackGetOrPost,
+} from "../prove-identity-callback-controller";
 import {
   IdentityProcessingStatus,
   ProveIdentityCallbackServiceInterface,
@@ -143,6 +146,69 @@ describe("prove identity callback controller", () => {
       );
 
       expect(res.redirect).to.have.been.calledWith(redirectUrl);
+    });
+  });
+
+  describe("proveIdentityCallbackGetAsync", () => {
+    it("should call res.json with a status reflecting the prove identity service response", async () => {
+      const statuses = Object.values(IdentityProcessingStatus);
+
+      statuses.forEach(async (status) => {
+        const fakeProveIdentityService: ProveIdentityCallbackServiceInterface =
+          {
+            processIdentity: sinon.fake.returns({
+              success: true,
+              data: {
+                status: status,
+              },
+            }),
+          } as unknown as ProveIdentityCallbackServiceInterface;
+
+        await proveIdentityCallbackGetAsync(fakeProveIdentityService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(res.json).to.have.been.calledWith({ status: status });
+      });
+    });
+
+    it("should provide an error response if response.data.status is not present", async () => {
+      const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
+        processIdentity: sinon.fake.returns({
+          success: true,
+          data: {},
+        }),
+      } as unknown as ProveIdentityCallbackServiceInterface;
+
+      await proveIdentityCallbackGetAsync(fakeProveIdentityService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.json).to.have.been.calledWith({
+        status: IdentityProcessingStatus.ERROR,
+      });
+    });
+
+    it("should provide an error response if response.data.status is not an IdentityProcessingStatus", async () => {
+      const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
+        processIdentity: sinon.fake.returns({
+          success: true,
+          data: {
+            status: "UNKNOWN_RESPONSE",
+          },
+        }),
+      } as unknown as ProveIdentityCallbackServiceInterface;
+
+      await proveIdentityCallbackGetAsync(fakeProveIdentityService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.json).to.have.been.calledWith({
+        status: IdentityProcessingStatus.ERROR,
+      });
     });
   });
 });

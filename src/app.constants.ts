@@ -53,6 +53,7 @@ export const PATH_NAMES = {
   DOC_CHECKING_APP: "/doc-checking-app",
   DOC_CHECKING_APP_CALLBACK: "/doc-app-callback",
   PROVE_IDENTITY_CALLBACK: "/ipv-callback",
+  PROVE_IDENTITY_CALLBACK_ASYNC: "/ipv-callback-async",
   PROVE_IDENTITY_CALLBACK_SESSION_EXPIRY_ERROR:
     "/ipv-callback-session-expiry-error",
   HEALTHCHECK: "/healthcheck",

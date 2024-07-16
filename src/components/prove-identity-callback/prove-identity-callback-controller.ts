@@ -66,6 +66,48 @@ export function proveIdentityCallbackGetOrPost(
   };
 }
 
+export function proveIdentityCallbackGetAsync(
+  service: ProveIdentityCallbackServiceInterface = proveIdentityCallbackService()
+): (req: Request, res: Response) => Promise<void> {
+  return async function (req: Request, res: Response) {
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const email = req.session.user.email;
+
+    const response = await service.processIdentity(
+      email,
+      sessionId,
+      clientSessionId,
+      persistentSessionId,
+      req
+    );
+
+    if (response.data.status) {
+      if (response.data.status === IdentityProcessingStatus.INTERVENTION) {
+        res.json({
+          status: IdentityProcessingStatus.INTERVENTION,
+        });
+      } else if (response.data.status === IdentityProcessingStatus.PROCESSING) {
+        res.json({
+          status: IdentityProcessingStatus.PROCESSING,
+        });
+      } else if (response.data.status === IdentityProcessingStatus.COMPLETED) {
+        req.session.user.authCodeReturnToRP = true;
+        res.json({
+          status: IdentityProcessingStatus.COMPLETED,
+        });
+      } else {
+        res.json({
+          status: IdentityProcessingStatus.ERROR,
+        });
+      }
+    } else {
+      res.json({
+        status: IdentityProcessingStatus.ERROR,
+      });
+    }
+  };
+}
+
 export function proveIdentityCallbackSessionExpiryError(
   req: Request,
   res: Response
