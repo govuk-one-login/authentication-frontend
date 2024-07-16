@@ -75,10 +75,10 @@
   padding: 0;
   color: $govuk-link-colour;
   box-shadow: 0px 1px #ffffff;
-  margin:0;
+  margin: 0;
 }
 
-.govuk-btn-as-link:hover{
+.govuk-btn-as-link:hover {
   background: none;
   color: $govuk-link-visited-colour;
   text-decoration: underline;
@@ -191,21 +191,31 @@
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
+
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
+
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.centre{
-  margin-left:auto;
-  margin-right:auto;
+.centre {
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.text-centre{
+.text-centre {
   text-align: center;
 }
 
