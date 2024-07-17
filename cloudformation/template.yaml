@@ -182,11 +182,11 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   FrontendECSService:
     Type: AWS::ECS::Service
-    DependsOn: ApplicationLoadBalancerListener
+    DependsOn: ApplicationLoadBalancerListenerHTTPS
     Properties:
       ServiceName: !Sub "${AWS::StackName}-FrontendECSService"
       Cluster: !Ref FrontendECSCluster
@@ -229,7 +229,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   FrontendScaleOutAlarm:
     Type: AWS::CloudWatch::Alarm
@@ -379,7 +379,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -409,13 +409,13 @@ Resources:
             - Name: ANALYTICS_COOKIE_DOMAIN
               Value: !Sub ".${Environment}.account.gov.uk"
             - Name: API_BASE_URL
-              Value: !Sub "https://oidc.${Environment}.account.gov.uk"
+              Value: !Sub "https://oidc-sp.${Environment}.account.gov.uk"
             - Name: API_KEY
               Value: ziUyj6o1VC1DaAjEQKZ2L6t7vXW6A1jc99knG739
             - Name: APP_ENV
               Value: !Ref Environment
             - Name: BASE_URL
-              Value: !Sub "signin.${Environment}.account.gov.uk"
+              Value: !Sub "signin-sp.${Environment}.account.gov.uk"
             - Name: CODE_ENTERED_WRONG_BLOCKED_MINUTES
               Value: 1
             - Name: CODE_REQUEST_BLOCKED_MINUTES
@@ -427,7 +427,7 @@ Resources:
             - Name: FARGATE
               Value: 1
             - Name: FRONTEND_API_BASE_URL
-              Value: !Sub "https://auth.${Environment}.account.gov.uk/"
+              Value: !Sub "https://auth-sp.${Environment}.account.gov.uk/"
             - Name: GA4_DISABLED
               Value: true
             - Name: GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID
@@ -441,7 +441,7 @@ Resources:
             - Name: NODE_ENV
               Value: production
             - Name: ORCH_TO_AUTH_AUDIENCE
-              Value: !Sub "https://signin.${Environment}.account.gov.uk/"
+              Value: !Sub "https://signin-sp.${Environment}.account.gov.uk/"
             - Name: ORCH_TO_AUTH_CLIENT_ID
               Value: orchestrationAuth
             - Name: ORCH_TO_AUTH_SIGNING_KEY
@@ -522,7 +522,7 @@ Resources:
             - Name: NGINX_PORT
               Value: "8080"
             - Name: NGINX_HOST
-              Value: !Sub "signin.${Environment}.account.gov.uk"
+              Value: !Sub "signin-sp.${Environment}.account.gov.uk"
             - Name: IP_ALLOW_LIST
               Value:
                 Fn::ToJsonString:
@@ -551,10 +551,12 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-TaskDefinition"
-        - Key: Service
-          Value: ci/cd
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   TaskExecutionRole:
     Type: AWS::IAM::Role
@@ -628,7 +630,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   TaskRole:
     Type: AWS::IAM::Role
@@ -672,7 +674,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   #
   # Load balancing
@@ -706,7 +708,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   ApplicationLoadBalancerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -733,26 +735,73 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+
+  ApplicationLoadBalancerDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: !Sub "signin-sp.${Environment}.account.gov.uk"
+      Type: A
+      HostedZoneId: !Sub '{{resolve:ssm:/${Environment}/Infra/Route53/HostedZone/SignIn/Id}}'
+      AliasTarget:
+        DNSName: !Sub
+          - "dualstack.${ALBDNSName}"
+          - ALBDNSName: !GetAtt ApplicationLoadBalancer.DNSName
+        HostedZoneId: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
+
+  ApplicationLoadBalancerListenerHTTPS:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroup
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: 443
+      Protocol: HTTPS
+      Certificates:
+        - CertificateArn: !Sub '{{resolve:ssm:/${Environment}/Infra/ACM/Certificate/SignIn/ARN}}'
+      SslPolicy: "ELBSecurityPolicy-FS-1-2-Res-2020-10"
 
   ApplicationLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
-    # checkov:skip=CKV_AWS_2:Certificate generation must be resolved before the listener can use HTTPS.
-    # checkov:skip=CKV_AWS_103:The load balancer cannot use TLS v1.2 until HTTPS is enabled.
+    # checkov:skip=CKV_AWS_2:Ignored as this is only redirects HTTP to HTTPS.
+    # checkov:skip=CKV_AWS_103:Ignored as only redirects HTTP to HTTPS.
     Metadata:
       checkov:
         skip:
           - id: "CKV_AWS_2"
-            comment: "Certificate generation must be resolved before the listener can use HTTPS"
+            comment: "Ignored as this is only redirects HTTP to HTTPS."
           - id: "CKV_AWS_103"
-            comment: "The load balancer cannot use TLS v1.2 until HTTPS is enabled"
+            comment: "Ignored as only redirects HTTP to HTTPS."
     Properties:
       DefaultActions:
-        - TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroup
-          Type: forward
+        - Type: redirect
+          RedirectConfig:
+            Port: 443
+            Protocol: HTTPS
+            StatusCode: HTTP_301
       LoadBalancerArn: !Ref ApplicationLoadBalancer
       Port: 80
       Protocol: HTTP
+
+  ApplicationLoadBalancerListenerRuleRobots:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: fixed-response
+          FixedResponseConfig:
+            ContentType: text/plain
+            MessageBody: >
+              "user-agent: *"
+              "disallow: /"
+            StatusCode: 200
+      Conditions:
+        - Field: path-pattern
+          PathPatternConfig:
+            Values:
+              - "/robots.txt"
+      ListenerArn: !Ref ApplicationLoadBalancerListenerHTTPS
+      Priority: 10
 
   ApplicationLoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -782,7 +831,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   ApplicationLoadBalancerSecurityGroupHTTPIngress:
     Type: AWS::EC2::SecurityGroupIngress
@@ -869,7 +918,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
         - Key: CheckovRulesToSkip
           Value: CKV_AWS_18
 
@@ -944,7 +993,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   ApplicationElastiCacheLogGroup:
     Type: AWS::Logs::LogGroup
@@ -960,7 +1009,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   ApplicationElastiCacheSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -996,7 +1045,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   ApplicationReplicationGroup:
     Type: AWS::ElastiCache::ReplicationGroup
@@ -1032,7 +1081,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   #
   # Encryption
@@ -1072,9 +1121,4 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/template.yaml
-
-Outputs:
-  ApplicationLoadBalancerDNSName:
-    Description: The DNS name for the Application load balancer
-    Value: !GetAtt ApplicationLoadBalancer.DNSName
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
