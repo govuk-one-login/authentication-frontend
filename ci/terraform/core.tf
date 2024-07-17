@@ -8,12 +8,6 @@ data "terraform_remote_state" "core" {
   }
 }
 
-
-data "aws_ip_ranges" "cloudfront_ips" {
-  regions  = ["global"]
-  services = ["cloudfront"]
-}
-
 locals {
   vpc_arn                                    = data.terraform_remote_state.core.outputs.vpc_arn
   vpc_id                                     = data.terraform_remote_state.core.outputs.vpc_id
