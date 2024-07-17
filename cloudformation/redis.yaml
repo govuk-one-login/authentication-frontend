@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Resources:
+  ApplicationReplicationGroup:
+    Type: AWS::ElastiCache::ReplicationGroup
+    Properties:
+      ReplicationGroupId: !Sub "${AWS::StackName}-session-cache"
+      ReplicationGroupDescription: A Redis cluster for storing user session data for the frontend
+      TransitEncryptionEnabled: true
+      AtRestEncryptionEnabled: true
+      AuthToken: !Sub '{{resolve:secretsmanager:${ApplicationAuthPass}}}'
+      AutomaticFailoverEnabled: true
+      CacheNodeType: !FindInMap [ EnvironmentConfiguration, !Ref Environment, redisNodeSize ]
+      CacheSubnetGroupName: !Ref ApplicationCacheSubnetGroup
+      CacheParameterGroupName: default.redis6.x
+      Engine: redis
+      EngineVersion: '6.2'
+      LogDeliveryConfigurations:
+        - DestinationDetails:
+            CloudWatchLogsDetails:
+              LogGroup: !Ref ApplicationElastiCacheLogGroup
+          DestinationType: cloudwatch-logs
+          LogFormat: json
+          LogType: engine-log
+      PreferredMaintenanceWindow: "sun:22:00-sun:23:00"
+      MultiAZEnabled: true
+      NumCacheClusters: 3
+      SecurityGroupIds:
+        - !Ref ApplicationElastiCacheSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-ApplicationElastiCacheCluster"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/template.yaml
+
+  #
+  # Encryption
+  #
+
+  KmsKey:
+    Type: AWS::KMS::Key
+    Properties:
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+            Action:
+              - kms:*
+            Resource: "*"
+          - Effect: Allow
+            Principal:
+              Service: !Sub "logs.${AWS::Region}.amazonaws.com"
+            Action:
+              - "kms:Encrypt*"
+              - "kms:Decrypt*"
+              - "kms:ReEncrypt*"
+              - "kms:GenerateDataKey*"
+              - "kms:Describe*"
+            Resource: "*"
+            Condition:
+              ArnLike:
+                "kms:EncryptionContext:aws:logs:arn": !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*"
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-KmsKey"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/template.yaml
+
+Outputs:
+  ApplicationLoadBalancerDNSName:
+    Description: The DNS name for the Application load balancer
+    Value: !GetAtt ApplicationLoadBalancer.DNSName

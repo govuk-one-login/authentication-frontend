@@ -1,0 +1,468 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    DependsOn: ApplicationReplicationGroup
+    Properties:
+      Family: !Sub "${AWS::StackName}-ecs-task-definition"
+      ContainerDefinitions:
+        - Name: "frontend-application"
+          Image: !Sub "${FrontendRegistry}:GIT-SHA-PLACEHOLDER"
+          PortMappings:
+            - ContainerPort: 3000
+              HostPort: 3000
+              Protocol: tcp
+          Essential: true
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: "/ecs/server"
+              awslogs-region: "eu-west-2"
+              awslogs-create-group: "true"
+              awslogs-stream-prefix: !Ref AWS::StackName
+          Environment:
+            - Name: ACCOUNT_MANAGEMENT_URL
+              Value: !Sub "https://home.${Environment}.account.gov.uk"
+            - Name: ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES
+              Value: 1
+            - Name: ANALYTICS_COOKIE_DOMAIN
+              Value: !Sub ".${Environment}.account.gov.uk"
+            - Name: API_BASE_URL
+              Value: !Sub "https://oidc.${Environment}.account.gov.uk"
+            - Name: API_KEY
+              Value: ziUyj6o1VC1DaAjEQKZ2L6t7vXW6A1jc99knG739
+            - Name: APP_ENV
+              Value: !Ref Environment
+            - Name: BASE_URL
+              Value: !Sub "signin.${Environment}.account.gov.uk"
+            - Name: CODE_ENTERED_WRONG_BLOCKED_MINUTES
+              Value: 1
+            - Name: CODE_REQUEST_BLOCKED_MINUTES
+              Value: 1
+            - Name: EMAIL_ENTERED_WRONG_BLOCKED_MINUTES
+              Value: 1
+            - Name: ENCRYPTION_KEY_ID
+              Value: !Sub "alias/${Environment}-authentication-encryption-key-alias"
+            - Name: FARGATE
+              Value: 1
+            - Name: FRONTEND_API_BASE_URL
+              Value: !Sub "https://auth.${Environment}.account.gov.uk/"
+            - Name: GA4_DISABLED
+              Value: true
+            - Name: GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID
+              Value: GTM-KD86CMZ
+            - Name: GTM_ID
+              Value: GTM-TK92W68
+            - Name: LANGUAGE_TOGGLE_ENABLED
+              Value: 1
+            - Name: NO_PHOTO_ID_CONTACT_FORMS
+              Value: 1
+            - Name: NODE_ENV
+              Value: production
+            - Name: ORCH_TO_AUTH_AUDIENCE
+              Value: !Sub "https://signin.${Environment}.account.gov.uk/"
+            - Name: ORCH_TO_AUTH_CLIENT_ID
+              Value: orchestrationAuth
+            - Name: ORCH_TO_AUTH_SIGNING_KEY
+              Value: key
+            - Name: PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES
+              Value: 1
+            - Name: PROVE_IDENTITY_WELCOME_ENABLED
+              Value: 0
+            - Name: REDIS_KEY
+              Value: frontend
+            - Name: REDUCED_CODE_BLOCK_DURATION_MINUTES
+              Value: 0.5
+            - Name: SERVICE_DOMAIN
+              Value: !Sub "${Environment}.account.gov.uk"
+            - Name: SESSION_EXPIRY
+              Value: 3600000
+            - Name: SESSION_SECRET
+              Value: Gtn4tAUtJxZAx72xxvEgJCqlgonwVInC
+            - Name: SMARTAGENT_API_KEY
+              Value: LKU9pd71CC20tSNMN4nO31VjZyfpnMl69rFlnq8L
+            - Name: SMARTAGENT_API_URL
+              Value: https://de2ghtit0q15h.cloudfront.net
+            - Name: SMARTAGENT_WEBFORM_ID
+              Value: a72b49ba-d971-452b-a90d-c03bdc45e2d6
+            - Name: SUPPORT_2FA_B4_PASSWORD_RESET
+              Value: 1
+            - Name: SUPPORT_2HR_LOCKOUT
+              Value: 1
+            - Name: SUPPORT_ACCOUNT_INTERVENTIONS
+              Value: 1
+            - Name: SUPPORT_ACCOUNT_RECOVERY
+              Value: 1
+            - Name: SUPPORT_AUTHORIZE_CONTROLLER
+              Value: 1
+            - Name: SUPPORT_CHECK_EMAIL_FRAUD
+              Value: 1
+            - Name: SUPPORT_REAUTHENTICATION
+              Value: 1
+            - Name: UA_DISABLED
+              Value: false
+            - Name: UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID
+              Value: GTM-TK92W68
+            - Name: URL_FOR_SUPPORT_LINKS
+              Value: !Sub "https://home.${Environment}.account.gov.uk/contact-gov-uk-one-login"
+          Secrets:
+            - Name: DT_TENANT
+              ValueFrom: !Join
+                - ''
+                - - !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
+                  - ':DT_TENANT::'
+            - Name: DT_TENANTTOKEN
+              ValueFrom: !Join
+                - ''
+                - - !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
+                  - ':DT_TENANTTOKEN::'
+            - Name: DT_CONNECTION_POINT
+              ValueFrom: !Join
+              - ''
+              - - !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
+                - ':DT_CONNECTION_POINT::'
+        - Name: "nginx-sidecar"
+          Image: !Sub "${BasicAuthSidecarRegistry}:GIT-SHA-PLACEHOLDER"
+          PortMappings:
+            - ContainerPort: 8080
+              HostPort: 8080
+              Protocol: tcp
+          Essential: true
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: "/ecs/server"
+              awslogs-region: "eu-west-2"
+              awslogs-create-group: "true"
+              awslogs-stream-prefix: "ecs"
+          Environment:
+            - Name: PROXY_PASS
+              Value: "http://localhost:3000"
+            - Name: NGINX_PORT
+              Value: "8080"
+            - Name: NGINX_HOST
+              Value: !Sub "signin.${Environment}.account.gov.uk"
+            - Name: IP_ALLOW_LIST
+              Value:
+                Fn::ToJsonString:
+                  !FindInMap [ EnvironmentConfiguration, !Ref Environment, ipAllowList ]
+            - Name: TRUSTED_PROXIES
+              Value:
+                Fn::ToJsonString:
+                  - Fn::ImportValue:
+                      !Sub "${VpcStackName}-FirewallSubnetACidr"
+                  - Fn::ImportValue:
+                      !Sub "${VpcStackName}-FirewallSubnetBCidr"
+                  - Fn::ImportValue:
+                      !Sub "${VpcStackName}-FirewallSubnetCCidr"
+          Secrets:
+            - Name: BASIC_AUTH_USERNAME
+              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_username"
+            - Name: BASIC_AUTH_PASSWORD
+              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_password"
+      Cpu: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionCpu ]
+      Memory: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionMemory ]
+      ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
+      TaskRoleArn: !GetAtt TaskRole.Arn
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-TaskDefinition"
+        - Key: Service
+          Value: ci/cd
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/template.yaml
+
+  TaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+      Policies:
+        - PolicyName: AllowGetParameters
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ssm:GetParameter
+                  - ssm:GetParameters
+                Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/*"
+              - Effect: Allow
+                Action:
+                  - secretsmanager:ListSecrets                                # pragma: allowlist secret
+                  - secretsmanager:GetSecretValue                             # pragma: allowlist secret
+                Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:*" # pragma: allowlist secret
+        - PolicyName: AllowDecryptOfParameters
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - kms:Decrypt
+                Resource:
+                  - !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/*"
+        - PolicyName: CreateLogGroup
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*"
+        - PolicyName: GetDynatraceSecret
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:ListSecrets                                # pragma: allowlist secret
+                  - secretsmanager:GetSecretValue                             # pragma: allowlist secret
+                Resource:
+                  - arn:aws:secretsmanager:eu-west-2:216552277552:secret:*    # pragma: allowlist secret
+              - Effect: Allow
+                Action:
+                  - kms:Decrypt
+                Resource:
+                  - arn:aws:kms:eu-west-2:216552277552:key/*
+      PermissionsBoundary: !If
+        - UsePermissionsBoundary
+        - !Ref PermissionsBoundary
+        - !Ref AWS::NoValue
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-TaskExecutionRole"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/template.yaml
+
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: AllowGetParameters
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ssm:GetParameter
+                  - ssm:GetParameters
+                Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/*"
+        - PolicyName: AllowDecryptOfParameters
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - kms:Decrypt
+                Resource:
+                  - !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/*"
+      PermissionsBoundary: !If
+        - UsePermissionsBoundary
+        - !Ref PermissionsBoundary
+        - !Ref AWS::NoValue
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-TaskRole"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/template.yaml
+
+  FrontendECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Sub "${AWS::StackName}-cluster"
+      ClusterSettings:
+        - Name: containerInsights
+          Value: enabled
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-FrontendECSCluster"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/template.yaml
+
+  FrontendECSService:
+    Type: AWS::ECS::Service
+    DependsOn: ApplicationLoadBalancerListener
+    Properties:
+      ServiceName: !Sub "${AWS::StackName}-FrontendECSService"
+      Cluster: !Ref FrontendECSCluster
+      LaunchType: FARGATE
+      DesiredCount: 2
+      HealthCheckGracePeriodSeconds: 15
+      DeploymentConfiguration:
+        MaximumPercent: 150
+        MinimumHealthyPercent: 50
+      DeploymentController:
+        Type: !If
+          - UseECSCanaryDeploymentStack
+          - CODE_DEPLOY
+          - ECS
+      LoadBalancers:
+        - ContainerName: !If [UseNginxSidecar, "nginx-sidecar", "frontend-application"]
+          ContainerPort: !If [UseNginxSidecar, 8080, 3000]
+          TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          SecurityGroups:
+            - !GetAtt ContainerServiceSecurityGroup.GroupId
+          Subnets:
+            - Fn::ImportValue:
+                !Sub "${VpcStackName}-PrivateSubnetIdA"
+            - Fn::ImportValue:
+                !Sub "${VpcStackName}-PrivateSubnetIdB"
+            - Fn::ImportValue:
+                !Sub "${VpcStackName}-PrivateSubnetIdC"
+      PropagateTags: SERVICE
+      TaskDefinition: !If
+        - UseECSCanaryDeploymentStack
+        - !Ref AWS::NoValue
+        - !Ref TaskDefinition
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-FrontendECSService"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/template.yaml
+
+  FrontendScaleOutAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${FrontendECSCluster}/${FrontendECSService.Name}-AlarmScaleUp"
+      AlarmDescription: >
+        Metric alarm to trigger ECS scale up
+      AlarmActions:
+        - !Ref FrontendAutoScalingPolicyScaleOut
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: 1
+      MetricName: CPUUtilization
+      Namespace: AWS/ECS
+      Period: 60
+      Statistic: Average
+      Threshold: 50
+      DatapointsToAlarm: 1
+      Dimensions:
+        - Name: ClusterName
+          Value: !Ref FrontendECSCluster
+        - Name: ServiceName
+          Value: !GetAtt FrontendECSService.Name
+
+  FrontendScaleInAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${FrontendECSCluster}/${FrontendECSService.Name}-AlarmScaleDown"
+      AlarmDescription: >
+        Metric alarm to trigger ECS scale down
+      AlarmActions:
+        - !Ref FrontendAutoScalingPolicyScaleIn
+      ComparisonOperator: LessThanThreshold
+      EvaluationPeriods: 5
+      MetricName: CPUUtilization
+      Namespace: AWS/ECS
+      Period: 60
+      Statistic: Average
+      Threshold: 40
+      DatapointsToAlarm: 5
+      Dimensions:
+        - Name: ClusterName
+          Value: !Ref FrontendECSCluster
+        - Name: ServiceName
+          Value: !GetAtt FrontendECSService.Name
+
+  FrontendAutoScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MaxCapacity: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendAutoScalingMaxCount ]
+      MinCapacity: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendAutoScalingMinCount ]
+      ResourceId: !Join
+        - '/'
+        - - "service"
+          - !Ref FrontendECSCluster
+          - !GetAtt FrontendECSService.Name
+      RoleARN: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService"
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+
+  FrontendAutoScalingPolicyScaleOut:
+    DependsOn: FrontendAutoScalingTarget
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: !Sub "${AWS::StackName}-FrontendAutoScalingPolicyScaleOut"
+      PolicyType: StepScaling
+      ResourceId: !Join
+        - '/'
+        - - "service"
+          - !Ref FrontendECSCluster
+          - !GetAtt FrontendECSService.Name
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+      StepScalingPolicyConfiguration:
+        AdjustmentType: PercentChangeInCapacity
+        Cooldown: 60
+        MetricAggregationType: Average
+        MinAdjustmentMagnitude: 10
+        StepAdjustments:
+          - ScalingAdjustment: 300
+            MetricIntervalLowerBound: 0
+            MetricIntervalUpperBound: 10
+          - ScalingAdjustment: 600
+            MetricIntervalLowerBound: 10
+            MetricIntervalUpperBound: 30
+          - ScalingAdjustment: 1000
+            MetricIntervalLowerBound: 30
+
+  FrontendAutoScalingPolicyScaleIn:
+    DependsOn: FrontendAutoScalingTarget
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: !Sub "${AWS::StackName}-FrontendAutoScalingPolicyScaleIn"
+      PolicyType: StepScaling
+      ResourceId: !Join
+        - '/'
+        - - "service"
+          - !Ref FrontendECSCluster
+          - !GetAtt FrontendECSService.Name
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+      StepScalingPolicyConfiguration:
+        AdjustmentType: PercentChangeInCapacity
+        Cooldown: 240
+        MetricAggregationType: Average
+        MinAdjustmentMagnitude: 5
+        StepAdjustments:
+          - ScalingAdjustment: -50
+            MetricIntervalUpperBound: 0
