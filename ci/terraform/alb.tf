@@ -25,6 +25,11 @@ resource "aws_lb" "frontend_alb" {
   tags = local.default_tags
 }
 
+resource "aws_wafv2_web_acl_association" "alb_waf_association" {
+  resource_arn = aws_lb.frontend_alb.arn
+  web_acl_arn  = aws_cloudformation_stack.cloudfront.outputs["CloakingOriginWebACLArn"]
+}
+
 resource "aws_alb_target_group" "frontend_alb_target_group" {
   name                 = "${var.environment}-frontend-target"
   port                 = 80

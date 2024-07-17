@@ -1,8 +1,9 @@
 # The IP address blocks below are referenced from here:
 # https://sites.google.com/a/digital.cabinet-office.gov.uk/gds/working-at-gds/gds-internal-it/gds-internal-it-network-public-ip-addresses
-resource "aws_wafv2_ip_set" "gds_ip_set" {
+resource "aws_wafv2_ip_set" "cf_gds_ip_set" {
+  provider           = aws.cloudfront
   name               = "${var.environment}-gds-ip-set"
-  scope              = "REGIONAL"
+  scope              = "CLOUDFRONT"
   ip_address_version = "IPV4"
 
   addresses = [
@@ -26,13 +27,10 @@ resource "aws_wafv2_ip_set" "gds_ip_set" {
   tags = local.default_tags
 }
 
-locals {
-  cloudfront_origin_cloaking_header_name = "origin-cloaking-secret"
-}
-
-resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
-  name  = "${var.environment}-frontend-alb-waf-web-acl"
-  scope = "REGIONAL"
+resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
+  provider = aws.cloudfront
+  name     = "${var.environment}-frontend-cloudfront-waf-web-acl"
+  scope    = "CLOUDFRONT"
 
   default_action {
     allow {}
@@ -50,7 +48,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
 
       statement {
         ip_set_reference_statement {
-          arn = aws_wafv2_ip_set.gds_ip_set.arn
+          arn = aws_wafv2_ip_set.cf_gds_ip_set[0].arn
 
           ip_set_forwarded_ip_config {
             fallback_behavior = "MATCH"
@@ -62,7 +60,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
 
       visibility_config {
         cloudwatch_metrics_enabled = true
-        metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafGDSIPs"
+        metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafGDSIPs"
         sampled_requests_enabled   = false
       }
     }
@@ -73,59 +71,16 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
       block {}
     }
     priority = 20
-    name     = "${var.environment}-frontend-alb-waf-rate-based-rule"
+    name     = "${var.environment}-frontend-cloudfront-waf-rate-based-rule"
     statement {
       rate_based_statement {
         limit              = var.environment == "staging" ? 20000000 : 25000
         aggregate_key_type = "IP"
-        scope_down_statement {
-          and_statement {
-            statement {
-              not_statement {
-                statement {
-                  byte_match_statement {
-                    field_to_match {
-                      single_header {
-                        name = local.cloudfront_origin_cloaking_header_name
-                      }
-                    }
-                    positional_constraint = "EXACTLY"
-                    search_string         = var.auth_origin_cloakingheader
-                    text_transformation {
-                      priority = 0
-                      type     = "NONE"
-                    }
-                  }
-                }
-              }
-            }
-
-            statement {
-              not_statement {
-                statement {
-                  byte_match_statement {
-                    field_to_match {
-                      single_header {
-                        name = local.cloudfront_origin_cloaking_header_name
-                      }
-                    }
-                    positional_constraint = "EXACTLY"
-                    search_string         = var.previous_auth_origin_cloakingheader
-                    text_transformation {
-                      priority = 0
-                      type     = "NONE"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     }
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafMaxRequestRate"
+      metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafMaxRequestRate"
       sampled_requests_enabled   = true
     }
   }
@@ -138,7 +93,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
     }
 
     action {
-      count {}
+      block {}
     }
 
     statement {
@@ -173,7 +128,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafMoreThan100CheckYourEmailRequestsFromIPPer5Minutes"
+      metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafMoreThan100CheckYourEmailRequestsFromIPPer5Minutes"
       sampled_requests_enabled   = true
     }
   }
@@ -228,7 +183,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
     }
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafMoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes"
+      metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafMoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes"
       sampled_requests_enabled   = true
     }
   }
@@ -238,7 +193,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
       none {}
     }
     priority = 30
-    name     = "${var.environment}-frontend-alb-common-rule-set"
+    name     = "${var.environment}-frontend-cloudfront-common-rule-set"
 
     statement {
       managed_rule_group_statement {
@@ -286,7 +241,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafCommonRuleSet"
+      metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafCommonRuleSet"
       sampled_requests_enabled   = true
     }
   }
@@ -296,7 +251,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
       none {}
     }
     priority = 40
-    name     = "${var.environment}-frontend-alb-bad-rule-set"
+    name     = "${var.environment}-frontend-cloudfront-bad-rule-set"
 
     statement {
       managed_rule_group_statement {
@@ -307,7 +262,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafBaduleSet"
+      metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafBaduleSet"
       sampled_requests_enabled   = true
     }
   }
@@ -358,7 +313,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafQueryParamSet"
+      metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafQueryParamSet"
       sampled_requests_enabled   = true
     }
   }
@@ -387,7 +342,7 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafAuthorizeQueryParamSet"
+      metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafAuthorizeQueryParamSet"
       sampled_requests_enabled   = true
     }
   }
@@ -419,97 +374,123 @@ resource "aws_wafv2_web_acl" "frontend_alb_waf_regional_web_acl" {
     }
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafContactUsCount"
+      metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafContactUsCount"
       sampled_requests_enabled   = true
     }
   }
-
-  rule {
-    name     = "count_not_cloudfront"
-    priority = 99
-
-    action {
-      count {}
-    }
-
-    statement {
-      not_statement {
-        statement {
-          or_statement {
-            statement {
-              byte_match_statement {
-                field_to_match {
-                  single_header {
-                    name = local.cloudfront_origin_cloaking_header_name
-                  }
-                }
-                positional_constraint = "EXACTLY"
-                search_string         = var.auth_origin_cloakingheader
-                text_transformation {
-                  priority = 0
-                  type     = "NONE"
-                }
-              }
-            }
-
-            statement {
-              byte_match_statement {
-                field_to_match {
-                  single_header {
-                    name = local.cloudfront_origin_cloaking_header_name
-                  }
-                }
-                positional_constraint = "EXACTLY"
-                search_string         = var.previous_auth_origin_cloakingheader
-                text_transformation {
-                  priority = 0
-                  type     = "NONE"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "${replace(var.environment, "-", "")}AuthWafNotCloudFrontCount"
-      sampled_requests_enabled   = true
-    }
-  }
-
 
   visibility_config {
     cloudwatch_metrics_enabled = true
-    metric_name                = "${replace(var.environment, "-", "")}FrontendAlbWafRules"
+    metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafRules"
     sampled_requests_enabled   = true
   }
 
   tags = local.default_tags
 }
 
-resource "aws_wafv2_web_acl_association" "alb_waf_association" {
-  resource_arn = aws_lb.frontend_alb.arn
-  web_acl_arn  = var.cloudfront_auth_dns_enabled ? aws_cloudformation_stack.cloudfront[0].outputs["CloakingOriginWebACLArn"] : aws_wafv2_web_acl.frontend_alb_waf_regional_web_acl.arn
+# Cloudwatch Logging for frontend Cloudfront WAF
+# Adding Local variable for splunk Logging for US east region as
+
+locals {
+  logging_endpoint_arns_us_east = "arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython"
 }
 
-resource "aws_wafv2_web_acl_logging_configuration" "frontend_alb_waf_logging_config" {
-  log_destination_configs = [aws_cloudwatch_log_group.alb_waf_log.arn]
-  resource_arn            = aws_wafv2_web_acl.frontend_alb_waf_regional_web_acl.arn
+data "aws_iam_policy_document" "frontend_cloudfront_cloudwatch" {
+  provider = aws.cloudfront
+
+  policy_id = "key-policy-cloudwatch"
+
+  statement {
+    sid = "Enable IAM User Permissions for root user"
+    actions = [
+      "kms:*",
+    ]
+    effect = "Allow"
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root",
+      ]
+    }
+    resources = ["*"]
+  }
+
+  statement {
+    sid = "AllowCloudWatchLogs"
+    actions = [
+      "kms:Encrypt*",
+      "kms:Decrypt*",
+      "kms:Describe*",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+    ]
+    effect = "Allow"
+    principals {
+      type = "Service"
+      identifiers = [
+        "logs.us-east-1.amazonaws.com",
+      ]
+    }
+    resources = ["*"]
+  }
+}
+
+resource "aws_kms_key" "frontent_cloudfront_cw_log_encryption" {
+  provider = aws.cloudfront
+
+  description             = "KMS key for Core Cloudwatch logs"
+  deletion_window_in_days = 30
+  enable_key_rotation     = true
+  policy                  = data.aws_iam_policy_document.frontend_cloudfront_cloudwatch.json
+
+  tags = local.default_tags
+}
+
+resource "aws_cloudwatch_log_group" "frontend_cloudfront_waf_log_group" {
+  provider = aws.cloudfront
+
+  name              = "aws-waf-logs-frontend-cloudfront-${var.environment}"
+  kms_key_id        = aws_kms_key.frontent_cloudfront_cw_log_encryption.arn
+  retention_in_days = var.cloudwatch_log_retention
+
+  tags = local.default_tags
+}
+
+resource "aws_wafv2_web_acl_logging_configuration" "frontend_cloudfront_waf_logging_config" {
+  provider = aws.cloudfront
+
+  log_destination_configs = [aws_cloudwatch_log_group.frontend_cloudfront_waf_log_group.arn]
+  resource_arn            = aws_wafv2_web_acl.frontend_cloudfront_waf_web_acl.arn
 
   logging_filter {
     default_behavior = "KEEP"
 
     filter {
-      behavior    = "KEEP"
-      requirement = "MEETS_ALL"
+      behavior = "KEEP"
 
       condition {
-        label_name_condition {
-          label_name = "awswaf:${data.aws_caller_identity.current.account_id}:webacl:${aws_wafv2_web_acl.frontend_alb_waf_regional_web_acl.name}:contact-us"
+        action_condition {
+          action = "BLOCK"
         }
       }
+
+      requirement = "MEETS_ANY"
     }
+  }
+}
+
+
+resource "aws_cloudwatch_log_subscription_filter" "frontend_cloudfront_waf_subscription" {
+  provider = aws.cloudfront
+
+  count           = var.environment == "production" || var.environment == "staging" ? 1 : 0
+  name            = "${aws_cloudwatch_log_group.frontend_cloudfront_waf_log_group.name}-splunk-subscription-${count.index}"
+  log_group_name  = aws_cloudwatch_log_group.frontend_cloudfront_waf_log_group.name
+  filter_pattern  = ""
+  destination_arn = local.logging_endpoint_arns_us_east
+  depends_on      = [aws_cloudwatch_log_group.frontend_cloudfront_waf_log_group]
+
+  lifecycle {
+    create_before_destroy = false
   }
 }

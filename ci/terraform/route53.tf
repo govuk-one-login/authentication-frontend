@@ -13,8 +13,8 @@ resource "aws_route53_record" "frontend" {
 
   alias {
     evaluate_target_health = false
-    name                   = var.cloudfront_auth_dns_enabled ? aws_cloudformation_stack.cloudfront[0].outputs["DistributionDomain"] : aws_lb.frontend_alb.dns_name
-    zone_id                = var.cloudfront_auth_dns_enabled ? var.cloudfront_zoneid : aws_lb.frontend_alb.zone_id
+    name                   = aws_cloudformation_stack.cloudfront.outputs["DistributionDomain"]
+    zone_id                = var.cloudfront_zoneid
   }
 }
 
@@ -25,8 +25,8 @@ resource "aws_route53_record" "frontend_record" {
 
   alias {
     evaluate_target_health = false
-    name                   = var.cloudfront_auth_dns_enabled ? aws_cloudformation_stack.cloudfront[0].outputs["DistributionDomain"] : aws_lb.frontend_alb.dns_name
-    zone_id                = var.cloudfront_auth_dns_enabled ? var.cloudfront_zoneid : aws_lb.frontend_alb.zone_id
+    name                   = aws_cloudformation_stack.cloudfront.outputs["DistributionDomain"]
+    zone_id                = var.cloudfront_zoneid
   }
 }
 
@@ -87,7 +87,6 @@ output "signin_nameservers" {
 #DNS Record for cloufront origin Domain & TLS certificate
 
 resource "aws_route53_record" "Cloudfront_frontend_record" {
-  count   = var.cloudfront_auth_frontend_enabled ? 1 : 0
   name    = local.frontend_fqdn_origin
   type    = "A"
   zone_id = aws_route53_zone.zone.zone_id
@@ -101,7 +100,6 @@ resource "aws_route53_record" "Cloudfront_frontend_record" {
 
 resource "aws_acm_certificate" "cloudfront_frontend_certificate" {
   provider          = aws.cloudfront
-  count             = var.cloudfront_auth_frontend_enabled ? 1 : 0
   domain_name       = local.frontend_fqdn
   validation_method = "DNS"
 
@@ -114,13 +112,13 @@ resource "aws_acm_certificate" "cloudfront_frontend_certificate" {
 
 resource "aws_route53_record" "cloudfront_frontend_certificate_validation" {
   provider = aws.cloudfront
-  for_each = var.cloudfront_auth_frontend_enabled ? {
-    for dvo in aws_acm_certificate.cloudfront_frontend_certificate[0].domain_validation_options : dvo.domain_name => {
+  for_each = {
+    for dvo in aws_acm_certificate.cloudfront_frontend_certificate.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
       type   = dvo.resource_record_type
     }
-  } : {}
+  }
 
   allow_overwrite = true
   name            = each.value.name
@@ -133,8 +131,7 @@ resource "aws_route53_record" "cloudfront_frontend_certificate_validation" {
 
 resource "aws_acm_certificate_validation" "frontend_acm_cloudfront_certificate_validation" {
   provider                = aws.cloudfront
-  count                   = var.cloudfront_auth_frontend_enabled ? 1 : 0
-  certificate_arn         = aws_acm_certificate.cloudfront_frontend_certificate[0].arn
+  certificate_arn         = aws_acm_certificate.cloudfront_frontend_certificate.arn
   validation_record_fqdns = [for record in aws_route53_record.cloudfront_frontend_certificate_validation : record.fqdn]
   depends_on              = [aws_route53_record.cloudfront_frontend_certificate_validation]
 }
