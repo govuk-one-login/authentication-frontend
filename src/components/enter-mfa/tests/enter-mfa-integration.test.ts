@@ -81,6 +81,7 @@ describe("Integration:: enter mfa", () => {
   });
 
   after(() => {
+    process.env.SUPPORT_REAUTHENTICATION = "0";
     sinon.restore();
     app = undefined;
   });
@@ -237,6 +238,7 @@ describe("Integration:: enter mfa", () => {
   });
 
   it("should redirect to security code expired when incorrect code has been entered 5 times", (done) => {
+    process.env.SUPPORT_REAUTHENTICATION = "0";
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
       success: false,
@@ -295,6 +297,28 @@ describe("Integration:: enter mfa", () => {
       .expect(
         "Location",
         `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.MfaMaxCodesSent}`
+      )
+      .expect(302, done);
+  });
+
+  it("should lock user if he entered 6 incorrect codes in the reauth journey and the logout switch is turned off", (done) => {
+    process.env.SUPPORT_REAUTHENTICATION = "0";
+    nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
+      code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
+      success: false,
+    });
+
+    request(app)
+      .post(PATH_NAMES.ENTER_MFA)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123455",
+      })
+      .expect(
+        "Location",
+        `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.MfaMaxRetries}`
       )
       .expect(302, done);
   });

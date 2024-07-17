@@ -20,7 +20,7 @@ import { createMockRequest } from "../../../../../test/helpers/mock-request-help
 describe("Verify code controller tests", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
-
+  const EXAMPLE_REDIRECT_URI = "https://example.com/redirect";
   beforeEach(() => {
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
 
@@ -270,6 +270,41 @@ describe("Verify code controller tests", () => {
       expect(accountInterventionService.accountInterventionStatus).to.have.been
         .called;
       expect(res.redirect).to.have.calledWith("/reset-password");
+    });
+
+    it("should redirect to logged out if reauth is enabled and user entered too many invalid codes", async () => {
+      const verifyCodeService = fakeVerifyCodeServiceHelper(
+        false,
+        ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
+      );
+      const accountInterventionService =
+        accountInterventionsFakeHelper(noInterventions);
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+
+      req = createMockRequest(PATH_NAMES.ENTER_MFA);
+      req.session.user = {
+        email: "test@test.com",
+        isAccountCreationJourney: false,
+        reauthenticate: "123456",
+      };
+      req.session.client = {
+        redirectUri: EXAMPLE_REDIRECT_URI,
+      };
+
+      await verifyCodePost(verifyCodeService, accountInterventionService, {
+        notificationType: NOTIFICATION_TYPE.MFA_SMS,
+        template: "enter-mfa/index.njk",
+        validationKey: "pages.enterMfa.code.validationError.invalidCode",
+        validationErrorCode: ERROR_CODES.INVALID_MFA_CODE,
+        journeyType: JOURNEY_TYPE.REAUTHENTICATION,
+      })(req as Request, res as Response);
+
+      expect(accountInterventionService.accountInterventionStatus).to.not.be
+        .called;
+
+      expect(res.redirect).to.have.calledWith(
+        EXAMPLE_REDIRECT_URI.concat("?error=login_required")
+      );
     });
   });
 });

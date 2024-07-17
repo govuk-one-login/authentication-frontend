@@ -20,6 +20,7 @@ import {
 import {
   support2FABeforePasswordReset,
   supportAccountInterventions,
+  supportReauthentication,
 } from "../../../config";
 import { AccountInterventionsInterface } from "../../account-intervention/types";
 import { isSuspendedWithoutUserActions } from "../../../utils/interventions";
@@ -61,6 +62,16 @@ export function verifyCodePost(
           req.t(options.validationKey)
         );
         return renderBadRequest(res, req, options.template, error);
+      }
+
+      if (
+        supportReauthentication() &&
+        req.session.user.reauthenticate &&
+        result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
+      ) {
+        return res.redirect(
+          req.session.client.redirectUri.concat("?error=login_required")
+        );
       }
 
       if (
