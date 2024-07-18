@@ -3,7 +3,7 @@ name: Deploy frontend (with SAM Deploy Pipeline)
 on:
   push:
     branches:
-      - AUT-3414
+      - AUT-3365
   workflow_dispatch:
 
 jobs:
