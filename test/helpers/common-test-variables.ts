@@ -1,3 +1,5 @@
+import { redactPhoneNumber } from "../../src/utils/strings";
+
 export const commonVariables = {
   email: "joe.bloggs@example.com",
   sessionId: "123456-djjad",
@@ -7,4 +9,6 @@ export const commonVariables = {
   apiKey: "apiKey",
   auditEncodedString:
     "R21vLmd3QilNKHJsaGkvTFxhZDZrKF44SStoLFsieG0oSUY3aEhWRVtOMFRNMVw1dyInKzB8OVV5N09hOi8kLmlLcWJjJGQiK1NPUEJPPHBrYWJHP358NDg2ZDVc",
+  testPhoneNumber: "0123456789",
+  testRedactedPhoneNumber: redactPhoneNumber("0123456789"),
 };

@@ -10,35 +10,39 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
+const { testPhoneNumber, testRedactedPhoneNumber } = commonVariables;
 
 describe("Integration:: resend mfa code", () => {
   let token: string | string[];
   let cookies: string;
   let app: any;
   let baseApi: string;
+  let validateSessionStub: sinon.SinonStub<any[], any>;
 
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-    sinon
+    validateSessionStub = sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: "7867",
+          phoneNumber: testPhoneNumber,
+          redactedPhoneNumber: testRedactedPhoneNumber,
           journey: {
             nextPath: PATH_NAMES.ENTER_MFA,
             optionalPaths: [PATH_NAMES.RESEND_MFA_CODE],
           },
+          reauthenticate: "reauth",
         };
 
         next();
       });
 
-    process.env.SUPPORT_REAUTHENTICATION = "0";
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
@@ -55,25 +59,56 @@ describe("Integration:: resend mfa code", () => {
     nock.cleanAll();
   });
 
+  afterEach(() => {
+    validateSessionStub.restore();
+  });
+
   after(() => {
-    sinon.restore();
+    validateSessionStub.restore();
     app = undefined;
   });
 
   it("should return resend mfa code page", (done) => {
-    request(app).get(PATH_NAMES.RESEND_MFA_CODE).expect(200, done);
+    request(app)
+      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("title").text()).to.contain("Get security code");
+      })
+      .expect(200, done);
+  });
 
-    it("should include the last three digits of the user's telephone number", (done) => {
-      request(app)
-        .get(PATH_NAMES.RESEND_MFA_CODE)
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($(".govuk-inset-text").text()).to.eq(
-            "We will send a code to your phone number ending with 867"
-          );
-        })
-        .expect(200, done);
-    });
+  it("should include the last three digits of the user's telephone number", (done) => {
+    request(app)
+      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($.text()).to.contain(testRedactedPhoneNumber.slice(-3));
+      })
+      .expect(200, done);
+  });
+
+  it("should state user could be locked out", (done) => {
+    process.env.SUPPORT_REAUTHENTICATION = "0";
+    request(app)
+      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .expect((res) => {
+        const $ = cheerio.load(res.text);
+        expect($.text()).to.contain("you will be locked out for 2 hours.");
+      })
+      .expect(200, done);
+  });
+
+  it("should state reauthenticating user could be logged out", (done) => {
+    process.env.SUPPORT_REAUTHENTICATION = "1";
+    request(app)
+      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .expect((res) => {
+        // console.log(res.text)
+        const $ = cheerio.load(res.text);
+        expect($.text()).to.contain("you will be signed out");
+      })
+      .expect(200, done);
   });
 
   it("should return error when csrf not present", (done) => {
@@ -147,6 +182,7 @@ describe("Integration:: resend mfa code", () => {
   });
 
   it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", (done) => {
+    process.env.SUPPORT_REAUTHENTICATION = "0";
     nock(baseApi)
       .post(API_ENDPOINTS.MFA)
       .times(6)
@@ -167,6 +203,28 @@ describe("Integration:: resend mfa code", () => {
   });
 
   it("should redirect to /security-code-invalid-request when exceeded OTP request limit", (done) => {
+    process.env.SUPPORT_REAUTHENTICATION = "0";
+
+    validateSessionStub.callsFake(function (
+      req: any,
+      res: any,
+      next: any
+    ): void {
+      res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+
+      req.session.user = {
+        email: "test@test.com",
+        phoneNumber: testPhoneNumber,
+        redactedPhoneNumber: testRedactedPhoneNumber,
+        journey: {
+          nextPath: PATH_NAMES.ENTER_MFA,
+          optionalPaths: [PATH_NAMES.RESEND_MFA_CODE],
+        },
+      };
+
+      next();
+    });
+
     nock(baseApi)
       .post(API_ENDPOINTS.MFA)
       .once()
