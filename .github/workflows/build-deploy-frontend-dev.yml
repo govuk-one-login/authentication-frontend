@@ -22,7 +22,7 @@ jobs:
       data: ${{ steps.get_pr_data.outputs.result }}
     steps:
       - name: Get PR data
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         id: get_pr_data
         with:
           script: |
@@ -118,17 +118,17 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Assume AWS DEPLOYER role in tooling acct
-        uses: aws-actions/configure-aws-credentials@v4.0.2
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
           role-to-assume: ${{ env.DEPLOYER_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
+        uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
       - name: Login to GDS Dev Dynatrace Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
         with:
           registry: khw46367.live.dynatrace.com
           username: khw46367
@@ -139,8 +139,8 @@ jobs:
           ECR_REPOSITORY: ${{ env.DEV_TOOLING_ECR_FRONTEND_REPO }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
       - name: Build, tag, and push basic-auth-sidecar
         working-directory: basic-auth-sidecar
         env:
@@ -148,8 +148,8 @@ jobs:
           ECR_REPOSITORY: ${{ env.DEV_BASIC_SIDECAR_ECR_REPO }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
       - name: Build, tag, and push service down page
         working-directory: service-down-page-config
         env:
@@ -157,8 +157,8 @@ jobs:
           ECR_REPOSITORY: ${{ env.DEV_SERVICE_DOWN_ECR_REPO }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
   deploy:
     needs:
@@ -171,10 +171,10 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4.0.2
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
           role-to-assume: ${{ env.DEV_GHA_DEPLOYER_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
@@ -182,11 +182,16 @@ jobs:
       - name: Upload frontend Terraform files
         working-directory: ci/terraform
         run: |
+          echo "::group::Zip up frontend terraform"
           zip -r frontend.zip .
-          S3_RESPONSE=`aws s3api put-object \
+          echo "::endgroup::"
+
+          echo "::group::Upload artifact to S3"
+          OBJECT_VERSION="$(aws s3api put-object \
             --bucket ${{ env.DEV_ARTIFACT_BUCKET }} \
             --key frontend.zip \
             --body frontend.zip \
-            --metadata '${{ toJson(fromJson(needs.pr-data.outputs.data)) }}'`
-          VERSION=`echo $S3_RESPONSE | jq .VersionId -r`
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+            --metadata '${{ toJson(fromJson(needs.pr-data.outputs.data)) }}' \
+            --query VersionId --output text)"
+          echo "::endgroup::"
+          echo "::notice title=Final artifact uploaded to S3::object: frontend.zip, version: ${OBJECT_VERSION}"
