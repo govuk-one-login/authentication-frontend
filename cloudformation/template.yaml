@@ -392,7 +392,7 @@ Resources:
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: !Sub "${AWS::StackName}-ecs-task-definition"
+      Family: !Sub "${Environment}-frontend-ecs-task-definition"
       ContainerDefinitions:
         - Name: "frontend-application"
           Image: !Sub "${FrontendRegistry}:GIT-SHA-PLACEHOLDER"
@@ -993,7 +993,7 @@ Resources:
   ServiceDownTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: !Sub "${AWS::StackName}-frontend-service-down-page-ecs-task-definition"
+      Family: !Sub "${Environment}-frontend-service-down-page-ecs-task-definition"
       ContainerDefinitions:
         - Name: "service-down-page"
           Image: !Sub "${ServiceDownPageRegistry}:GIT-SHA-PLACEHOLDER"
