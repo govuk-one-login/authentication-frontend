@@ -93,6 +93,7 @@ Mappings:
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
+      cloudwatchLogRetentionInDays: 1
       redisNodeSize: cache.t2.small
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -101,6 +102,7 @@ Mappings:
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
+      cloudwatchLogRetentionInDays: 7
       redisNodeSize: cache.t2.small
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -109,6 +111,7 @@ Mappings:
       frontendTaskDefinitionCpu: 1024
       frontendTaskDefinitionMemory: 2048
       ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
+      cloudwatchLogRetentionInDays: 7
       redisNodeSize: cache.m4.xlarge
     integration:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -117,6 +120,7 @@ Mappings:
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
+      cloudwatchLogRetentionInDays: 30
       redisNodeSize: cache.t2.small
     production:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -125,6 +129,7 @@ Mappings:
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       ipAllowList: []
+      cloudwatchLogRetentionInDays: 30
       redisNodeSize: cache.m4.xlarge
 
 Globals:
@@ -367,7 +372,6 @@ Resources:
           IpProtocol: tcp
           FromPort: 8080
           ToPort: 8080
-
       VpcId:
         Fn::ImportValue:
           !Sub "${VpcStackName}-VpcId"
@@ -397,8 +401,8 @@ Resources:
           LogConfiguration:
             LogDriver: awslogs
             Options:
-              awslogs-group: "/ecs/server"
-              awslogs-region: "eu-west-2"
+              awslogs-group: !Ref FrontendTaskLogGroup
+              awslogs-region: !Ref AWS::Region
               awslogs-create-group: "true"
               awslogs-stream-prefix: !Ref AWS::StackName
           Environment:
@@ -512,10 +516,10 @@ Resources:
           LogConfiguration:
             LogDriver: awslogs
             Options:
-              awslogs-group: "/ecs/server"
-              awslogs-region: "eu-west-2"
+              awslogs-group: !Ref FrontendTaskLogGroup
+              awslogs-region: !Ref AWS::Region
               awslogs-create-group: "true"
-              awslogs-stream-prefix: "ecs"
+              awslogs-stream-prefix: !Sub "${AWS::StackName}-nginx-sidecar"
           Environment:
             - Name: PROXY_PASS
               Value: "http://localhost:3000"
@@ -764,13 +768,13 @@ Resources:
 
   ApplicationLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
-    # checkov:skip=CKV_AWS_2:Ignored as this is only redirects HTTP to HTTPS.
+    # checkov:skip=CKV_AWS_2:Ignored as this only redirects HTTP to HTTPS.
     # checkov:skip=CKV_AWS_103:Ignored as only redirects HTTP to HTTPS.
     Metadata:
       checkov:
         skip:
           - id: "CKV_AWS_2"
-            comment: "Ignored as this is only redirects HTTP to HTTPS."
+            comment: "Ignored as this only redirects HTTP to HTTPS."
           - id: "CKV_AWS_103"
             comment: "Ignored as only redirects HTTP to HTTPS."
     Properties:
@@ -835,6 +839,12 @@ Resources:
 
   ApplicationLoadBalancerSecurityGroupHTTPIngress:
     Type: AWS::EC2::SecurityGroupIngress
+    # checkov:skip=CKV_AWS_260:Ignored as this only redirects HTTP to HTTPS.
+    Metadata:
+      checkov:
+        skip:
+          - id: "CKV_AWS_260"
+            comment: "Ignored as this only redirects HTTP to HTTPS."
     Properties:
       GroupId: !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
       CidrIp: 0.0.0.0/0
@@ -969,6 +979,23 @@ Resources:
             Condition:
               Bool:
                 "aws:SecureTransport": "false"
+
+  FrontendTaskLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId: !GetAtt KmsKey.Arn
+      LogGroupName: !Sub "/ecs/${Environment}-frontend"
+      RetentionInDays: !FindInMap [ EnvironmentConfiguration, !Ref Environment, cloudwatchLogRetentionInDays ]
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-FrontendTaskLogGroup"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+
   #
   #  ElastiCache
   #
@@ -1000,7 +1027,7 @@ Resources:
     Properties:
       KmsKeyId: !GetAtt KmsKey.Arn
       LogGroupName: !Sub "/aws/vendedlogs/${AWS::StackName}-elasticache-replication-group-logs"
-      RetentionInDays: 30
+      RetentionInDays: !FindInMap [ EnvironmentConfiguration, !Ref Environment, cloudwatchLogRetentionInDays ]
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ApplicationElastiCacheCluster"
