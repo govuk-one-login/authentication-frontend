@@ -2,7 +2,7 @@ environment         = "staging"
 common_state_bucket = "di-auth-staging-tfstate"
 redis_node_size     = "cache.m4.xlarge"
 
-#cloudfront enabled flag 
+# cloudfront enabled flag
 cloudfront_auth_frontend_enabled = true
 cloudfront_auth_dns_enabled      = true
 cloudfront_WafAcl_Logdestination = "csls_cw_logs_destination_prodpython"
