@@ -139,8 +139,8 @@ jobs:
           ECR_REPOSITORY: ${{ env.DEV_TOOLING_ECR_FRONTEND_REPO }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
       - name: Build, tag, and push basic-auth-sidecar
         working-directory: basic-auth-sidecar
         env:
@@ -148,8 +148,8 @@ jobs:
           ECR_REPOSITORY: ${{ env.DEV_BASIC_SIDECAR_ECR_REPO }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
       - name: Build, tag, and push service down page
         working-directory: service-down-page-config
         env:
@@ -157,8 +157,8 @@ jobs:
           ECR_REPOSITORY: ${{ env.DEV_SERVICE_DOWN_ECR_REPO }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
   deploy:
     needs:
@@ -182,11 +182,16 @@ jobs:
       - name: Upload frontend Terraform files
         working-directory: ci/terraform
         run: |
+          echo "::group::Zip up frontend terraform"
           zip -r frontend.zip .
-          S3_RESPONSE=`aws s3api put-object \
+          echo "::endgroup::"
+
+          echo "::group::Upload artifact to S3"
+          OBJECT_VERSION="$(aws s3api put-object \
             --bucket ${{ env.DEV_ARTIFACT_BUCKET }} \
             --key frontend.zip \
             --body frontend.zip \
-            --metadata '${{ toJson(fromJson(needs.pr-data.outputs.data)) }}'`
-          VERSION=`echo $S3_RESPONSE | jq .VersionId -r`
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+            --metadata '${{ toJson(fromJson(needs.pr-data.outputs.data)) }}' \
+            --query VersionId --output text)"
+          echo "::endgroup::"
+          echo "::notice title=Final artifact uploaded to S3::object: frontend.zip, version: ${OBJECT_VERSION}"
