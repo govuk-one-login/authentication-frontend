@@ -14,7 +14,7 @@ alb_idle_timeout = 30
 support_account_recovery                            = "1"
 support_authorize_controller                        = "1"
 support_account_interventions                       = "1"
-support_reauthentication                            = "1"
+support_reauthentication                            = "0"
 support_2fa_b4_password_reset                       = "1"
 support_2hr_lockout                                 = "1"
 support_check_email_fraud                           = "1"
@@ -39,7 +39,7 @@ orch_to_auth_audience           = "https://signin.build.account.gov.uk/"
 
 dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
 
-#cloudfront enabled flag 
+#cloudfront enabled flag
 cloudfront_auth_frontend_enabled = true
 cloudfront_auth_dns_enabled      = true
 cloudfront_WafAcl_Logdestination = "csls_cw_logs_destination_prodpython"
