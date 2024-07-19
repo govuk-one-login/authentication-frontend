@@ -1,5 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Authentication Frontend application
+
+Description: >
+  Authentication Frontend application
+
 Transform:
   - AWS::LanguageExtensions
   - AWS::Serverless-2016-10-31
@@ -48,6 +51,15 @@ Parameters:
     Default: 058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l
 
 Conditions:
+  DeployServiceDownPage:
+    Fn::Or:
+      - Fn::Equals:
+        - !Ref Environment
+        - "integration"
+      - Fn::Equals:
+        - !Ref Environment
+        - "production"
+
   UseCodeSigning:
     Fn::Not:
       - Fn::Equals:
@@ -813,6 +825,7 @@ Resources:
       Priority: 10
 
   ApplicationLoadBalancerListenerServiceDownRule:
+    Condition: DeployServiceDownPage
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
     Properties:
       Actions:
@@ -903,6 +916,7 @@ Resources:
       ToPort: 8080
 
   ApplicationLoadBalancerSecurityGroupEgressServiceDownPage:
+    Condition: DeployServiceDownPage
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
       GroupId: !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
@@ -917,6 +931,7 @@ Resources:
   #
 
   ServiceDownECSService:
+    Condition: DeployServiceDownPage
     Type: AWS::ECS::Service
     DependsOn: ApplicationLoadBalancerListenerHTTPS
     Properties:
@@ -955,6 +970,7 @@ Resources:
           Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   ServiceDownSecurityGroup:
+    Condition: DeployServiceDownPage
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Security Group to access the Service down page
@@ -991,6 +1007,7 @@ Resources:
           Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   ServiceDownTaskDefinition:
+    Condition: DeployServiceDownPage
     Type: AWS::ECS::TaskDefinition
     Properties:
       Family: !Sub "${Environment}-frontend-service-down-page-ecs-task-definition"
@@ -1026,6 +1043,7 @@ Resources:
           Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   ServiceDownTaskExecutionRole:
+    Condition: DeployServiceDownPage
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -1062,6 +1080,7 @@ Resources:
           Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   ServiceDownLoadBalancerTargetGroup:
+    Condition: DeployServiceDownPage
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       Name: !Sub "${Environment}-fe-service-down"
@@ -1091,6 +1110,7 @@ Resources:
           Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
 
   ServiceDownTaskLogGroup:
+    Condition: DeployServiceDownPage
     Type: AWS::Logs::LogGroup
     Properties:
       KmsKeyId: !GetAtt KmsKey.Arn
