@@ -601,7 +601,9 @@
       "header": "Get security code",
       "continue": "Get security code",
       "message": "Text messages can sometimes take a few minutes to arrive.",
-      "paragraph1": "You can request 5 security codes. If you request more than 5, you will be locked out for 2 hours.",
+      "paragraph1": "You can request 5 security codes. If you request more than 5, ",
+      "reauthAction": "you will be signed out.",
+      "action": "you will be locked out for 2 hours.",
       "phoneNumber": {
         "default": "We will send the code to the phone number linked to your GOV.UK One Login.",
         "isResendCodeRequest": "We will send a code to your phone number ending with "

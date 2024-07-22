@@ -22,7 +22,14 @@
         }) }}
 
         {% if support2hrLockout %}
-        <p class="govuk-body">{{'pages.resendMfaCode.paragraph1' | translate}}</p>
+        <p class="govuk-body">
+            {{'pages.resendMfaCode.paragraph1' | translate}}
+            {% if supportReauthentication and isReauthJourney %}
+                {{'pages.resendMfaCode.reauthAction' | translate}}
+            {% else %}
+                {{'pages.resendMfaCode.action' | translate}}
+            {% endif %}
+        </p>
         {% endif %}
 
         <p class="govuk-body">{{'pages.resendMfaCode.message' | translate}}</p>
