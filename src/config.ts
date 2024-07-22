@@ -1,8 +1,3 @@
-import { RedisConfig } from "./utils/types";
-import ssm from "./utils/ssm";
-import { Parameter } from "@aws-sdk/client-ssm";
-import { ENVIRONMENT_NAME } from "./app.constants";
-
 export function getLogLevel(): string {
   return process.env.LOGS_LEVEL || "debug";
 }
@@ -39,14 +34,6 @@ export function getGtmId(): string {
   return process.env.GTM_ID;
 }
 
-export function getRedisHost(): string {
-  return process.env.REDIS_HOST ?? "redis";
-}
-
-export function getRedisPort(): number {
-  return Number(process.env.REDIS_PORT) ?? 6379;
-}
-
 export function supportAccountRecovery(): boolean {
   return process.env.SUPPORT_ACCOUNT_RECOVERY === "1";
 }
@@ -57,38 +44,6 @@ export function supportAuthorizeController(): boolean {
 
 export function getSupportLinkUrl(): string {
   return process.env.URL_FOR_SUPPORT_LINKS || "/contact-us";
-}
-
-export async function getRedisConfig(): Promise<RedisConfig> {
-  if (getNodeEnv() !== ENVIRONMENT_NAME.PROD) {
-    return { host: getRedisHost(), port: getRedisPort() };
-  }
-
-  const appEnv = getAppEnv();
-  const hostKey = `${appEnv}-${process.env.REDIS_KEY}-redis-master-host`;
-  const portKey = `${appEnv}-${process.env.REDIS_KEY}-redis-port`;
-  const passwordKey = `${appEnv}-${process.env.REDIS_KEY}-redis-password`;
-
-  const params = {
-    Names: [hostKey, portKey, passwordKey],
-    WithDecryption: true,
-  };
-
-  const result = await ssm.getParameters(params);
-
-  if (result.InvalidParameters && result.InvalidParameters.length > 0) {
-    throw Error("Invalid SSM config values for redis");
-  }
-
-  return {
-    host: result.Parameters.find((p: Parameter) => p.Name === hostKey).Value,
-    port: Number(
-      result.Parameters.find((p: Parameter) => p.Name === portKey).Value
-    ),
-    password: result.Parameters.find((p: Parameter) => p.Name === passwordKey)
-      .Value,
-    tls: true,
-  };
 }
 
 export function getAwsRegion(): string {
