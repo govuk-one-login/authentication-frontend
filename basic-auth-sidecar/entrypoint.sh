@@ -23,11 +23,6 @@ if [ -n "$IP_ALLOW_LIST" ]; then
   echo "${IP_ALLOW_LIST}" | jq -r '"allow " + .[] + ";"' >>/etc/nginx/allow-list.conf
 fi
 
-touch /etc/nginx/trusted-proxies.conf
-if [ -n "$TRUSTED_PROXIES" ]; then
-  echo "${TRUSTED_PROXIES}" | jq -r '"set_real_ip_from " + .[] + ";"' >>/etc/nginx/trusted-proxies.conf
-fi
-
 htpasswd -bBc /etc/nginx/.htpasswd "${BASIC_AUTH_USERNAME}" "${BASIC_AUTH_PASSWORD}"
 
 exec /docker-entrypoint.sh "$@"
