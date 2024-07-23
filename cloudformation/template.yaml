@@ -763,7 +763,7 @@ Resources:
     Properties:
       Name: !Sub "signin-sp.${Environment}.account.gov.uk"
       Type: A
-      HostedZoneId: !Sub '{{resolve:ssm:/${Environment}/Infra/Route53/HostedZone/SignIn/Id}}'
+      HostedZoneId: !Sub '{{resolve:ssm:/deploy/${Environment}/signin_route53_hostedzone_id}}'
       AliasTarget:
         DNSName: !Sub
           - "dualstack.${ALBDNSName}"
@@ -780,7 +780,7 @@ Resources:
       Port: 443
       Protocol: HTTPS
       Certificates:
-        - CertificateArn: !Sub '{{resolve:ssm:/${Environment}/Infra/ACM/Certificate/SignIn/ARN}}'
+        - CertificateArn: !Sub '{{resolve:ssm:/deploy/${Environment}/signin_certificate_arn}}'
       SslPolicy: "ELBSecurityPolicy-FS-1-2-Res-2020-10"
 
   ApplicationLoadBalancerListener:
