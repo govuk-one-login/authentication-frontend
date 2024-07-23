@@ -7,7 +7,11 @@ import {
   ProveIdentityCallbackServiceInterface,
 } from "./types";
 import { proveIdentityCallbackService } from "./prove-identity-callback-service";
-import { HTTP_STATUS_CODES, IPV_ERROR_CODES, OIDC_ERRORS } from "../../app.constants";
+import {
+  HTTP_STATUS_CODES,
+  IPV_ERROR_CODES,
+  OIDC_ERRORS,
+} from "../../app.constants";
 import { createServiceRedirectErrorUrl } from "../../utils/error";
 
 export function proveIdentityCallbackGet(
@@ -95,8 +99,7 @@ export function proveIdentityStatusCallbackGet(
           status: IdentityProcessingStatus.ERROR,
         });
       }
-    }
-    catch {
+    } catch {
       res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
         status: IdentityProcessingStatus.ERROR,
       });
@@ -104,7 +107,6 @@ export function proveIdentityStatusCallbackGet(
     return next();
   };
 }
-
 
 export function proveIdentityCallbackSessionExpiryError(
   req: Request,

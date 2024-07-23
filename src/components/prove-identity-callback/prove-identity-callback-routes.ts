@@ -32,6 +32,6 @@ router.get(
   allowUserJourneyMiddleware,
   processIdentityRateLimitMiddleware,
   asyncHandler(proveIdentityStatusCallbackGet())
-)
+);
 
 export { router as proveIdentityCallbackRouter };
