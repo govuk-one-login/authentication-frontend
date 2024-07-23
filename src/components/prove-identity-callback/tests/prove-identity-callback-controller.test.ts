@@ -120,4 +120,26 @@ describe("prove identity callback controller", () => {
       expect(res.redirect).to.have.been.calledWith(redirectUrl);
     });
   });
+
+  describe("proveIdentityStatusCallbackGet", () => {
+    it("should return status completed when identity processing complete", async () => {
+      const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
+        processIdentity: sinon.fake.returns({
+          success: true,
+          data: {
+            status: IdentityProcessingStatus.COMPLETED,
+          },
+        }),
+      } as unknown as ProveIdentityCallbackServiceInterface;
+      await proveIdentityCallbackGet(fakeProveIdentityService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith({
+        status: IdentityProcessingStatus.COMPLETED,
+      });
+    });
+  });
 });

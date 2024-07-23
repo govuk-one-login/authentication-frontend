@@ -55,6 +55,7 @@ export const PATH_NAMES = {
   PROVE_IDENTITY_CALLBACK: "/ipv-callback",
   PROVE_IDENTITY_CALLBACK_SESSION_EXPIRY_ERROR:
     "/ipv-callback-session-expiry-error",
+  PROVE_IDENTITY_CALLBACK_STATUS: "/prove-identity-status",
   HEALTHCHECK: "/healthcheck",
   PROVE_IDENTITY_WELCOME: "/prove-identity-welcome",
   GET_SECURITY_CODES: "/get-security-codes",

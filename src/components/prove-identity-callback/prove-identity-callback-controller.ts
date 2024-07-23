@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { ExpressRouteFunc } from "../../types";
@@ -7,7 +7,7 @@ import {
   ProveIdentityCallbackServiceInterface,
 } from "./types";
 import { proveIdentityCallbackService } from "./prove-identity-callback-service";
-import { IPV_ERROR_CODES, OIDC_ERRORS } from "../../app.constants";
+import { HTTP_STATUS_CODES, IPV_ERROR_CODES, OIDC_ERRORS } from "../../app.constants";
 import { createServiceRedirectErrorUrl } from "../../utils/error";
 
 export function proveIdentityCallbackGet(
@@ -60,6 +60,51 @@ export function proveIdentityCallbackGet(
     return res.redirect(redirectPath);
   };
 }
+
+export function proveIdentityStatusCallbackGet(
+  service: ProveIdentityCallbackServiceInterface = proveIdentityCallbackService()
+): ExpressRouteFunc {
+  return async function (req: Request, res: Response, next: NextFunction) {
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    //const clientName = req.session.client.name;
+    const email = req.session.user.email;
+
+    try {
+      const response = await service.processIdentity(
+        email,
+        sessionId,
+        clientSessionId,
+        persistentSessionId,
+        req
+      );
+
+      if (response.data.status === IdentityProcessingStatus.PROCESSING) {
+        res.status(HTTP_STATUS_CODES.OK).json({
+          status: IdentityProcessingStatus.PROCESSING,
+        });
+      }
+
+      if (response.data.status === IdentityProcessingStatus.COMPLETED) {
+        res.status(HTTP_STATUS_CODES.OK).json({
+          status: IdentityProcessingStatus.COMPLETED,
+        });
+      }
+
+      if (response.data.status === IdentityProcessingStatus.ERROR) {
+        res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+          status: IdentityProcessingStatus.ERROR,
+        });
+      }
+    }
+    catch {
+      res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+        status: IdentityProcessingStatus.ERROR,
+      });
+    }
+    return next();
+  };
+}
+
 
 export function proveIdentityCallbackSessionExpiryError(
   req: Request,
