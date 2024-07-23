@@ -2,7 +2,7 @@ environment         = "integration"
 common_state_bucket = "digital-identity-dev-tfstate"
 service_down_page   = true
 
-#cloudfront enabled flag
+# cloudfront enabled flag
 cloudfront_auth_frontend_enabled = true
 cloudfront_auth_dns_enabled      = true
 cloudfront_WafAcl_Logdestination = "csls_cw_logs_destination_prodpython"
@@ -19,6 +19,7 @@ support_2hr_lockout           = "1"
 support_reauthentication      = "0"
 language_toggle_enabled       = "1"
 no_photo_id_contact_forms     = "0"
+support_new_ipv_spinner       = "1"
 
 code_request_blocked_minutes                        = "120"
 account_recovery_code_entered_wrong_blocked_minutes = "120"

@@ -9,3 +9,9 @@
 
 # Reformatting of cookies/index.njk
 60117fe4bf12bc9362b66cf932788362431a6abb
+
+# Make _create_env_file.py executable
+a751091323cf41b551c88234d0566796ebd9e97e
+
+# Trim trailing whitespaces
+518d7cfef9978d9227ff6b1d9b58a214f7c76372

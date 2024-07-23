@@ -27,6 +27,7 @@ reduced_code_block_duration_minutes                 = "0.5"
 url_for_support_links                               = "https://home.build.account.gov.uk/contact-gov-uk-one-login"
 language_toggle_enabled                             = "1"
 no_photo_id_contact_forms                           = "1"
+support_new_ipv_spinner                             = "1"
 
 frontend_task_definition_cpu     = 512
 frontend_task_definition_memory  = 1024
@@ -37,7 +38,7 @@ frontend_auto_scaling_min_count  = 1
 frontend_auto_scaling_max_count  = 2
 ecs_desired_count                = 1
 
-#cloudfront enabled flag
+# cloudfront enabled flag
 cloudfront_auth_frontend_enabled = true
 cloudfront_auth_dns_enabled      = true
 

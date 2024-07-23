@@ -2,7 +2,7 @@ environment         = "staging"
 common_state_bucket = "di-auth-staging-tfstate"
 redis_node_size     = "cache.m4.xlarge"
 
-#cloudfront enabled flag 
+# cloudfront enabled flag
 cloudfront_auth_frontend_enabled = true
 cloudfront_auth_dns_enabled      = true
 cloudfront_WafAcl_Logdestination = "csls_cw_logs_destination_prodpython"
@@ -28,6 +28,7 @@ reduced_code_block_duration_minutes                 = "15"
 support_reauthentication                            = "1"
 language_toggle_enabled                             = "1"
 no_photo_id_contact_forms                           = "1"
+support_new_ipv_spinner                             = "1"
 
 url_for_support_links = "https://home.staging.account.gov.uk/contact-gov-uk-one-login"
 

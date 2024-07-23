@@ -396,3 +396,9 @@ variable "analytics_cookie_domain" {
   default     = ""
   description = "Analytics cookie domain where cookie is set"
 }
+
+variable "support_new_ipv_spinner" {
+  type        = string
+  default     = "0"
+  description = "Enables the new IPV spinner page"
+}
