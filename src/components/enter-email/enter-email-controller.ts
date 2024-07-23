@@ -16,21 +16,13 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import xss from "xss";
 import { CheckReauthServiceInterface } from "../check-reauth-users/types";
 import { checkReauthUsersService } from "../check-reauth-users/check-reauth-users-service";
-import {
-  getEmailEnteredWrongBlockDurationInMinutes,
-  support2hrLockout,
-  supportReauthentication,
-} from "../../config";
+import { support2hrLockout, supportReauthentication } from "../../config";
 import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
-import {
-  isLocked,
-  timestampNMinutesFromNow,
-  timestampNSecondsFromNow,
-} from "../../utils/lock-helper";
+import { isLocked, timestampNSecondsFromNow } from "../../utils/lock-helper";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -65,13 +57,13 @@ export function enterEmailPost(
     const email = req.body.email;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     req.session.user.email = email.toLowerCase();
-    const sub = req.session.user.reauthenticate;
+    const reauthenticateJourney = req.session.user.reauthenticate;
 
-    if (supportReauthentication() && sub) {
+    if (supportReauthentication() && reauthenticateJourney) {
       const checkReauth = await checkReauthService.checkReauthUsers(
         sessionId,
         email,
-        sub,
+        reauthenticateJourney,
         clientSessionId,
         persistentSessionId,
         req
@@ -82,24 +74,22 @@ export function enterEmailPost(
           return res.render(BLOCKED_TEMPLATE);
         }
 
-        if (checkReauth.data.code === ERROR_CODES.ACCOUNT_LOCKED) {
-          return res.render("enter-password/index-sign-in-retry-blocked.njk", {
-            support2hrLockout: support2hrLockout(),
-          });
-        }
+        switch (checkReauth.data.code) {
+          case ERROR_CODES.ACCOUNT_LOCKED:
+            return res.render(
+              "enter-password/index-sign-in-retry-blocked.njk",
+              {
+                support2hrLockout: support2hrLockout(),
+              }
+            );
 
-        if (
-          checkReauth.data.code ===
-          ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
-        ) {
-          return handleSessionBlocked(req, res);
-        }
+          case ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED:
+            return res.redirect(
+              req.session.client.redirectUri.concat("?error=login_required")
+            );
 
-        if (
-          checkReauth.data.code ===
-          ERROR_CODES.RE_AUTH_CHECK_NO_USER_OR_NO_MATCH
-        ) {
-          return handleBadRequest(req, res, EMAIL_ERROR_KEY);
+          case ERROR_CODES.RE_AUTH_CHECK_NO_USER_OR_NO_MATCH:
+            return handleBadRequest(req, res, EMAIL_ERROR_KEY);
         }
       }
     }
@@ -124,10 +114,13 @@ export function enterEmailPost(
     if (
       result.data.lockoutInformation != null &&
       result.data.lockoutInformation.length > 0
-    )
+    ) {
       setUpAuthAppLocks(req, result.data.lockoutInformation);
+    }
+
     req.session.user.enterEmailMfaType = result.data.mfaMethodType;
     req.session.user.redactedPhoneNumber = result.data.phoneNumberLastThree;
+
     const nextState = result.data.doesUserExist
       ? USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS
       : USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND;
@@ -228,14 +221,6 @@ export function enterEmailCreatePost(
     );
   };
 }
-
-function handleSessionBlocked(req: Request, res: Response) {
-  req.session.user.wrongEmailEnteredLock = timestampNMinutesFromNow(
-    getEmailEnteredWrongBlockDurationInMinutes()
-  );
-  return res.render(BLOCKED_TEMPLATE);
-}
-
 function handleBadRequest(
   req: Request,
   res: Response,
