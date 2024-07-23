@@ -10,10 +10,6 @@ import {
 } from "../../../app.constants";
 import nock = require("nock");
 import { ERROR_CODES } from "../../common/constants";
-import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
-import { AxiosResponse } from "axios";
-import { createApiResponse } from "../../../utils/http";
-import { DefaultApiResponse } from "../../../types";
 
 const REDIRECT_URI = "https://rp.host/redirect";
 
@@ -22,36 +18,11 @@ describe("Integration::enter email", () => {
   let cookies: string;
   let app: any;
   let baseApi: string;
-  let checkReauthUsersService: any;
-  let stubConfig: { statusCode: number; shouldStub: boolean };
-
-  function setupCheckReauthUsersStub() {
-    if (stubConfig.shouldStub) {
-      sinon
-        .stub(checkReauthUsersService, "checkReauthUsersService")
-        .callsFake((): CheckReauthServiceInterface => {
-          async function checkReauthUsers() {
-            const fakeAxiosResponse: AxiosResponse = {
-              status: stubConfig.statusCode,
-            } as AxiosResponse;
-
-            return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
-          }
-
-          return { checkReauthUsers };
-        });
-    } else {
-      if (checkReauthUsersService.checkReauthUsersService.restore) {
-        checkReauthUsersService.checkReauthUsersService.restore();
-      }
-    }
-  }
 
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-    checkReauthUsersService = require("../../check-reauth-users/check-reauth-users-service");
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -88,11 +59,10 @@ describe("Integration::enter email", () => {
   beforeEach(() => {
     nock.cleanAll();
     sinon.restore(); // Restore all stubs before each test
-    // Default configuration
-    stubConfig = { statusCode: HTTP_STATUS_CODES.OK, shouldStub: true };
   });
 
   afterEach(() => {
+    nock.cleanAll();
     sinon.restore(); // Restore all stubs after each test
   });
 
@@ -190,8 +160,6 @@ describe("Integration::enter email", () => {
         email: "test@test.com",
         doesUserExist: true,
       });
-    stubConfig = { statusCode: HTTP_STATUS_CODES.OK, shouldStub: true };
-    setupCheckReauthUsersStub();
 
     request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
@@ -206,11 +174,6 @@ describe("Integration::enter email", () => {
   });
 
   it("should redirect to /account-not-found when email address not found", (done) => {
-    stubConfig = {
-      statusCode: HTTP_STATUS_CODES.BAD_REQUEST,
-      shouldStub: false,
-    };
-
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
@@ -218,7 +181,6 @@ describe("Integration::enter email", () => {
         email: "test@test.com",
         doesUserExist: false,
       });
-    setupCheckReauthUsersStub();
 
     request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
@@ -284,10 +246,6 @@ describe("Integration::enter email", () => {
 
   it("should redirect to /signed-out with login_required error when user fails re-auth", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
-    stubConfig = {
-      statusCode: HTTP_STATUS_CODES.BAD_REQUEST,
-      shouldStub: true,
-    };
 
     nock(baseApi)
       .post(API_ENDPOINTS.CHECK_REAUTH_USER)
