@@ -12,6 +12,11 @@ Parameters:
     Type: String
     Description: The name of the environment to deploy to
 
+  CloudFrontDistributionStackName:
+    Type: String
+    Description: The name of the stack used to create the CloudFront Distribution
+    Default: "auth-fe-cloudfront"
+
   VpcStackName:
     Type: String
     Description: The name of the stack used to create the VPC
@@ -110,6 +115,7 @@ Mappings:
       frontendTaskDefinitionMemory: 1024
       ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
       cloudwatchLogRetentionInDays: 1
+      orchToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHzG8IFx1jE1+Ul44jQk96efPknCX\nVxWS4PqLrKfR/31UQovFQLfyxA46uiMOvr7+0hRwFX1fQhagsIK+dfB5PA==\n-----END PUBLIC KEY-----'
       redisNodeSize: cache.t2.small
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -119,6 +125,7 @@ Mappings:
       frontendTaskDefinitionMemory: 1024
       ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
       cloudwatchLogRetentionInDays: 7
+      orchToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENRdvNXHwk1TvrgFUsWXAE5oDTcPr\nCBp6HxbvYDLsqwNHiDFEzCwvbXKY2QQR/Rtel0o156CtU9k1lCZJGAsSIA==\n-----END PUBLIC KEY-----'
       redisNodeSize: cache.t2.small
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -128,6 +135,7 @@ Mappings:
       frontendTaskDefinitionMemory: 2048
       ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
       cloudwatchLogRetentionInDays: 7
+      orchToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5PP1PZmhiuHR57ZEfZXARt9/uiG+\nKKF+S7us4zEEEmEXZFR1H+kWP5RrLHQy9esxsul9X7V4pygDTY1I6QbMGg==\n-----END PUBLIC KEY-----'
       redisNodeSize: cache.m4.xlarge
     integration:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -137,6 +145,7 @@ Mappings:
       frontendTaskDefinitionMemory: 1024
       ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
       cloudwatchLogRetentionInDays: 30
+      orchToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzzwKLypUL89WVaeTbfBZu0Fws8T7\nppx89XLVfgXIoCs2P//N5qdghvzgNIgVehQ7CkzyorO/lnRlWPfjCG4Oxw==\n-----END PUBLIC KEY-----'
       redisNodeSize: cache.t2.small
     production:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -146,6 +155,7 @@ Mappings:
       frontendTaskDefinitionMemory: 1024
       ipAllowList: []
       cloudwatchLogRetentionInDays: 30
+      orchToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5iJXSuxgbfM6ADQVtNNDi7ED5ly5\n+3VZPbjHv+v0AjQ5Ps+avkXWKwOeScG9sS0cDf0utEXi3fN3cEraa9WuKQ==\n-----END PUBLIC KEY-----'
       redisNodeSize: cache.m4.xlarge
 
 Globals:
@@ -203,7 +213,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   FrontendECSService:
     Type: AWS::ECS::Service
@@ -250,7 +260,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   FrontendScaleOutAlarm:
     Type: AWS::CloudWatch::Alarm
@@ -399,7 +409,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -421,91 +431,98 @@ Resources:
               awslogs-create-group: "true"
               awslogs-stream-prefix: !Ref AWS::StackName
           Environment:
-            - Name: ACCOUNT_MANAGEMENT_URL
-              Value: !Sub "https://home.${Environment}.account.gov.uk"
-            - Name: ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES
-              Value: 1
-            - Name: ANALYTICS_COOKIE_DOMAIN
-              Value: !Sub ".${Environment}.account.gov.uk"
-            - Name: API_BASE_URL
-              Value: !Sub "https://oidc-sp.${Environment}.account.gov.uk"
-            - Name: API_KEY
-              Value: ziUyj6o1VC1DaAjEQKZ2L6t7vXW6A1jc99knG739
+            - Name: NODE_ENV
+              Value: production
             - Name: APP_ENV
               Value: !Ref Environment
+            - Name: FARGATE
+              Value: 1
+            - Name: API_BASE_URL
+              Value: !If [IsNotProduction, !Sub "https://oidc.${Environment}.account.gov.uk", "https://oidc.account.gov.uk"]
+            - Name: FRONTEND_API_BASE_URL
+              Value: !If [IsNotProduction, !Sub "https://auth.${Environment}.account.gov.uk/", "https://auth.account.gov.uk/"]
+            - Name: ACCOUNT_MANAGEMENT_URL
+              Value: !If [IsNotProduction, !Sub "https://home.${Environment}.account.gov.uk", "https://home.account.gov.uk"]
+            - Name: SUPPORT_ACCOUNT_RECOVERY
+              Value: 1
             - Name: BASE_URL
-              Value: !Sub "signin-sp.${Environment}.account.gov.uk"
-            - Name: CODE_ENTERED_WRONG_BLOCKED_MINUTES
-              Value: 1
-            - Name: CODE_REQUEST_BLOCKED_MINUTES
-              Value: 1
-            - Name: EMAIL_ENTERED_WRONG_BLOCKED_MINUTES
+              Value: !If [IsNotProduction, !Sub "signin-sp.${Environment}.account.gov.uk", "signin.account.gov.uk"]
+            - Name: GTM_ID
+              Value: GTM-TK92W68
+            - Name: REDIS_KEY
+              Value: frontend
+            - Name: SUPPORT_AUTHORIZE_CONTROLLER
               Value: 1
             - Name: ENCRYPTION_KEY_ID
               Value: !Sub "alias/${Environment}-authentication-encryption-key-alias"
-            - Name: FARGATE
-              Value: 1
-            - Name: FRONTEND_API_BASE_URL
-              Value: !Sub "https://auth-sp.${Environment}.account.gov.uk/"
-            - Name: GA4_DISABLED
-              Value: true
-            - Name: GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID
-              Value: GTM-KD86CMZ
-            - Name: GTM_ID
-              Value: GTM-TK92W68
-            - Name: LANGUAGE_TOGGLE_ENABLED
-              Value: 1
-            - Name: NO_PHOTO_ID_CONTACT_FORMS
-              Value: 1
-            - Name: NODE_ENV
-              Value: production
-            - Name: ORCH_TO_AUTH_AUDIENCE
-              Value: !Sub "https://signin-sp.${Environment}.account.gov.uk/"
+            - Name: ORCH_TO_AUTH_SIGNING_KEY
+              Value: !FindInMap [ EnvironmentConfiguration, !Ref Environment, orchToAuthSigningPublicKey ]
             - Name: ORCH_TO_AUTH_CLIENT_ID
               Value: orchestrationAuth
-            - Name: ORCH_TO_AUTH_SIGNING_KEY
-              Value: key
+            - Name: ORCH_TO_AUTH_AUDIENCE
+              Value: !If [IsNotProduction, !Sub "https://signin-sp.${Environment}.account.gov.uk/", "https://signin.account.gov.uk/"]
+            - Name: URL_FOR_SUPPORT_LINKS
+              Value: !Sub
+                - "https://${homeFQDN}/contact-gov-uk-one-login"
+                - homeFQDN: !If
+                  - IsNotProduction
+                  - !Sub "home.${Environment}.account.gov.uk"
+                  - "home.account.gov.uk"
+            - Name: SERVICE_DOMAIN
+              Value: !If [IsNotProduction, !Sub "${Environment}.account.gov.uk", "account.gov.uk"]
             - Name: PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES
               Value: 1
-            - Name: PROVE_IDENTITY_WELCOME_ENABLED
-              Value: 0
-            - Name: REDIS_KEY
-              Value: frontend
+            - Name: ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES
+              Value: 1
+            - Name: CODE_REQUEST_BLOCKED_MINUTES
+              Value: 1
+            - Name: CODE_ENTERED_WRONG_BLOCKED_MINUTES
+              Value: 1
             - Name: REDUCED_CODE_BLOCK_DURATION_MINUTES
               Value: 0.5
-            - Name: SERVICE_DOMAIN
-              Value: !Sub "${Environment}.account.gov.uk"
-            - Name: SESSION_EXPIRY
-              Value: 3600000
-            - Name: SESSION_SECRET
-              Value: Gtn4tAUtJxZAx72xxvEgJCqlgonwVInC
-            - Name: SMARTAGENT_API_KEY
-              Value: LKU9pd71CC20tSNMN4nO31VjZyfpnMl69rFlnq8L
-            - Name: SMARTAGENT_API_URL
-              Value: https://de2ghtit0q15h.cloudfront.net
-            - Name: SMARTAGENT_WEBFORM_ID
-              Value: a72b49ba-d971-452b-a90d-c03bdc45e2d6
             - Name: SUPPORT_2FA_B4_PASSWORD_RESET
-              Value: 1
-            - Name: SUPPORT_2HR_LOCKOUT
               Value: 1
             - Name: SUPPORT_ACCOUNT_INTERVENTIONS
               Value: 1
-            - Name: SUPPORT_ACCOUNT_RECOVERY
+            - Name: SUPPORT_REAUTHENTICATION
               Value: 1
-            - Name: SUPPORT_AUTHORIZE_CONTROLLER
+            - Name: EMAIL_ENTERED_WRONG_BLOCKED_MINUTES
+              Value: 1
+            - Name: SUPPORT_2HR_LOCKOUT
+              Value: 1
+            - Name: NO_PHOTO_ID_CONTACT_FORMS
               Value: 1
             - Name: SUPPORT_CHECK_EMAIL_FRAUD
               Value: 1
-            - Name: SUPPORT_REAUTHENTICATION
+            - Name: LANGUAGE_TOGGLE_ENABLED
               Value: 1
+            - Name: PROVE_IDENTITY_WELCOME_ENABLED
+              Value: 0
+            - Name: GA4_DISABLED
+              Value: true
             - Name: UA_DISABLED
               Value: false
             - Name: UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID
               Value: GTM-TK92W68
-            - Name: URL_FOR_SUPPORT_LINKS
-              Value: !Sub "https://home.${Environment}.account.gov.uk/contact-gov-uk-one-login"
+            - Name: GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID
+              Value: GTM-KD86CMZ
+            - Name: ANALYTICS_COOKIE_DOMAIN
+              Value: !If [IsNotProduction, !Sub ".${Environment}.account.gov.uk", ".account.gov.uk"]
+            - Name: SUPPORT_NEW_IPV_SPINNER
+              Value: !If [IsNotProduction, "1", "0"]
           Secrets:
+            - Name: API_KEY
+              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${Environment}/frontend-api-key"
+            - Name: SESSION_EXPIRY
+              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/session_expiry"
+            - Name: SESSION_SECRET
+              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/session_secret"
+            - Name: SMARTAGENT_API_KEY
+              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_api_key"
+            - Name: SMARTAGENT_API_URL
+              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_api_url"
+            - Name: SMARTAGENT_WEBFORM_ID
+              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_webform_id"
             - Name: DT_TENANT
               ValueFrom: !Join
                 - ''
@@ -575,7 +592,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   TaskExecutionRole:
     Type: AWS::IAM::Role
@@ -649,7 +666,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   TaskRole:
     Type: AWS::IAM::Role
@@ -693,7 +710,24 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+
+  #
+  # CloudFront distribution
+  #
+
+  FrontendDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: !Sub "signin-sp.${Environment}.account.gov.uk"
+      Type: A
+      HostedZoneId: !Sub '{{resolve:ssm:/deploy/${Environment}/signin_route53_hostedzone_id}}'
+      AliasTarget:
+        EvaluateTargetHealth: false
+        DNSName:
+          Fn::ImportValue: !Sub "${CloudFrontDistributionStackName}-DistributionDomain"
+        HostedZoneId: Z2FDTNDATAQYW2
+        # This is always the hosted zone ID when you create an alias record that routes traffic to a CloudFront distribution
 
   #
   # Load balancing
@@ -728,7 +762,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   ApplicationLoadBalancerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -756,15 +790,16 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   ApplicationLoadBalancerDnsRecord:
     Type: AWS::Route53::RecordSet
     Properties:
-      Name: !Sub "signin-sp.${Environment}.account.gov.uk"
+      Name: !Sub "origin.signin-sp.${Environment}.account.gov.uk"
       Type: A
       HostedZoneId: !Sub '{{resolve:ssm:/deploy/${Environment}/signin_route53_hostedzone_id}}'
       AliasTarget:
+        EvaluateTargetHealth: false
         DNSName: !Sub
           - "dualstack.${ALBDNSName}"
           - ALBDNSName: !GetAtt ApplicationLoadBalancer.DNSName
@@ -867,7 +902,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   ApplicationLoadBalancerSecurityGroupHTTPIngress:
     Type: AWS::EC2::SecurityGroupIngress
@@ -967,7 +1002,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   ServiceDownSecurityGroup:
     Condition: DeployServiceDownPage
@@ -1004,7 +1039,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   ServiceDownTaskDefinition:
     Condition: DeployServiceDownPage
@@ -1040,7 +1075,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   ServiceDownTaskExecutionRole:
     Condition: DeployServiceDownPage
@@ -1077,7 +1112,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   ServiceDownLoadBalancerTargetGroup:
     Condition: DeployServiceDownPage
@@ -1107,7 +1142,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   ServiceDownTaskLogGroup:
     Condition: DeployServiceDownPage
@@ -1124,7 +1159,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   #
   # Logging
@@ -1171,7 +1206,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
         - Key: CheckovRulesToSkip
           Value: CKV_AWS_18
 
@@ -1237,7 +1272,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   #
   #  ElastiCache
@@ -1263,7 +1298,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   ApplicationElastiCacheLogGroup:
     Type: AWS::Logs::LogGroup
@@ -1279,7 +1314,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   ApplicationElastiCacheSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -1315,7 +1350,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   ApplicationReplicationGroup:
     Type: AWS::ElastiCache::ReplicationGroup
@@ -1351,7 +1386,7 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   #
   # Encryption
@@ -1391,4 +1426,4 @@ Resources:
         - Key: Application
           Value: "auth-frontend"
         - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/template.yaml
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml

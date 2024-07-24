@@ -47,7 +47,7 @@ jobs:
           artifact-bucket-name: ${{ secrets.ARTIFACT_SOURCE_BUCKET_NAME }}
           ecr-repo-name: ${{ secrets.FRONTEND_ECR_REPOSITORY }}
           checkout-repo: false
-          template-file: cloudformation/template.yaml
+          template-file: cloudformation/deploy/template.yaml
           private-docker-registry: khw46367.live.dynatrace.com
           private-docker-login-username: khw46367
           private-docker-login-password: ${{ secrets.DYNATRACE_PAAS_TOKEN }}

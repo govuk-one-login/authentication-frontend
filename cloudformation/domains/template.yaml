@@ -32,7 +32,7 @@ Resources:
       Tags:
         Environment: !Ref Environment
         Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains.yaml
+        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
 
   AccountsAuthCertificate:
     Type: AWS::CertificateManager::Certificate
@@ -53,7 +53,7 @@ Resources:
       Tags:
         Environment: !Ref Environment
         Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains.yaml
+        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
 
   #
   # managed
@@ -75,7 +75,7 @@ Resources:
       Tags:
         Environment: !Ref Environment
         Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains.yaml
+        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
 
   AccountsManageCertificate:
     Type: AWS::CertificateManager::Certificate
@@ -96,7 +96,7 @@ Resources:
       Tags:
         Environment: !Ref Environment
         Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains.yaml
+        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
   #
   # oidc
   #
@@ -117,7 +117,7 @@ Resources:
       Tags:
         Environment: !Ref Environment
         Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains.yaml
+        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
 
   AccountsOidcCertificate:
     Type: AWS::CertificateManager::Certificate
@@ -138,7 +138,7 @@ Resources:
       Tags:
         Environment: !Ref Environment
         Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains.yaml
+        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
 
   #
   # signin
@@ -160,7 +160,7 @@ Resources:
       Tags:
         Environment: !Ref Environment
         Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains.yaml
+        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
 
   AccountsSignInCertificate:
     Type: AWS::CertificateManager::Certificate
@@ -181,4 +181,4 @@ Resources:
       Tags:
         Environment: !Ref Environment
         Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains.yaml
+        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
