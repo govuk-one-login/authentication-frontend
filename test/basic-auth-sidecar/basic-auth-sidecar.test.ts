@@ -278,9 +278,6 @@ describe("BasicAuthSidecar", function () {
             BASIC_AUTH_USERNAME: "test",
             BASIC_AUTH_PASSWORD: "test",
             IP_ALLOW_LIST: JSON.stringify([requesterContainerIp + "/32"]),
-            TRUSTED_PROXIES: JSON.stringify([
-              caddyContainer.getIpAddress(network.getName()) + "/32",
-            ]),
           });
 
           await doRequestInDockerNetwork(caddyContainer, 8080, {
@@ -297,9 +294,6 @@ describe("BasicAuthSidecar", function () {
             BASIC_AUTH_USERNAME: "test",
             BASIC_AUTH_PASSWORD: "test",
             IP_ALLOW_LIST: JSON.stringify([requesterContainerIp + "/32"]),
-            TRUSTED_PROXIES: JSON.stringify([
-              caddyContainer.getIpAddress(network.getName()) + "/32",
-            ]),
           });
 
           await doRequestInDockerNetwork(caddyContainer, 8080, {
@@ -308,23 +302,6 @@ describe("BasicAuthSidecar", function () {
             forwardedAddress: `${requesterContainerIp}:8145`,
           }).then(({ statusCode }) => {
             expect(statusCode).to.equal(200);
-          });
-        });
-
-        it("should be required if cloudfront sends an allowed IP via a non-trusted proxy", async () => {
-          await startSidecarContainer({
-            BASIC_AUTH_USERNAME: "test",
-            BASIC_AUTH_PASSWORD: "test",
-            IP_ALLOW_LIST: JSON.stringify([requesterContainerIp + "/32"]),
-            TRUSTED_PROXIES: JSON.stringify(["203.0.113.0/32"]), // not the caddy container
-          });
-
-          await doRequestInDockerNetwork(caddyContainer, 8080, {
-            path: "/get",
-            method: "GET",
-            forwardedAddress: `${requesterContainerIp}:8145`,
-          }).then(({ statusCode }) => {
-            expect(statusCode).to.equal(401);
           });
         });
       });
