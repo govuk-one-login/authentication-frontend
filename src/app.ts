@@ -18,7 +18,6 @@ import Backend from "i18next-fs-backend";
 import {
   getLanguageToggleEnabled,
   getNodeEnv,
-  getRedisConfig,
   getSessionExpiry,
   getSessionSecret,
   support2FABeforePasswordReset,
@@ -88,6 +87,7 @@ import { temporarilyBlockedRouter } from "./components/account-intervention/temp
 import { resetPassword2FAAuthAppRouter } from "./components/reset-password-2fa-auth-app/reset-password-2fa-auth-app-routes";
 import { setGTM } from "./middleware/analytics-middleware";
 import { setCurrentUrlMiddleware } from "./middleware/current-url-middleware";
+import { getRedisConfig } from "./utils/redis";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
