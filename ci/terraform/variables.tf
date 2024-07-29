@@ -402,3 +402,9 @@ variable "support_new_ipv_spinner" {
   default     = "0"
   description = "Enables the new IPV spinner page"
 }
+
+variable "support_http_keep_alive" {
+  type        = string
+  default     = "0"
+  description = "Switch on http keep alive for axios"
+}

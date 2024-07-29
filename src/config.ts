@@ -176,3 +176,6 @@ export function proveIdentityWelcomeEnabled(): boolean {
 export function supportNewIpvSpinner(): boolean {
   return process.env.SUPPORT_NEW_IPV_SPINNER === "1";
 }
+export function supportHttpKeepAlive(): boolean {
+  return process.env.SUPPORT_HTTP_KEEP_ALIVE === "1";
+}

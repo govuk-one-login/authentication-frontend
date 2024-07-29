@@ -4,14 +4,20 @@ import axios, {
   AxiosError,
   AxiosResponse,
   AxiosRequestHeaders,
+  CreateAxiosDefaults,
 } from "axios";
-import { getApiKey, getFrontendApiBaseUrl } from "../config";
+import {
+  getApiKey,
+  getFrontendApiBaseUrl,
+  supportHttpKeepAlive,
+} from "../config";
 import { ApiResponseResult } from "../types";
 import { HTTP_STATUS_CODES } from "../app.constants";
 import { ApiError } from "./error";
 import { Request } from "express";
 import { createPersonalDataHeaders } from "@govuk-one-login/frontend-passthrough-headers";
 import { logger } from "./logger";
+import { Agent } from "https";
 
 interface CustomAxiosRequestHeaders extends Partial<AxiosRequestHeaders> {}
 
@@ -136,6 +142,7 @@ export class Http {
           status <= HTTP_STATUS_CODES.BAD_REQUEST
         );
       },
+      ...getAdditionalAxiosConfig(),
     });
 
     http.interceptors.response.use(
@@ -146,6 +153,12 @@ export class Http {
     this.instance = http;
     return http;
   }
+}
+
+export function getAdditionalAxiosConfig(): CreateAxiosDefaults {
+  return supportHttpKeepAlive()
+    ? { httpsAgent: new Agent({ keepAlive: true }) }
+    : {};
 }
 
 export const http = new Http();
