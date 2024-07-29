@@ -56,6 +56,8 @@ export function enterAuthenticatorAppCodeGet(
     if (!isAccountRecoveryEnabledForEnvironment) {
       return res.render(templateName, {
         isAccountRecoveryPermitted: false,
+        email: email,
+        useDifferentEmailLink: PATH_NAMES.SIGN_IN_OR_CREATE,
       });
     }
 
@@ -89,6 +91,8 @@ export function enterAuthenticatorAppCodeGet(
     return res.render(templateName, {
       isAccountRecoveryPermitted: isAccountRecoveryPermittedForUser,
       checkEmailLink,
+      email: email,
+      useDifferentEmailLink: PATH_NAMES.SIGN_IN_OR_CREATE,
     });
   };
 }

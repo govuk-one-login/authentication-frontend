@@ -11,6 +11,7 @@
     {% include "common/errors/errorSummary.njk" %}
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterAuthenticatorAppCode.upliftRequired.header' | translate }}</h1>
     <p class="govuk-body">{{ 'pages.enterAuthenticatorAppCode.upliftRequired.info.paragraph1' | translate }} </p>
+    <p class="govuk-body">{{ 'pages.enterAuthenticatorAppCode.upliftRequired.info.paragraph2' | translate }} {{ email | redactEmail }}</p>
 
     {% set insetTextHtml %}
         <p class="govuk-body">
@@ -67,6 +68,10 @@
             html: detailsHTML
         }) }}
     {% endif %}
+
+    <p class="govuk-body">
+        <a href="{{useDifferentEmailLink}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.upliftRequired.useDifferentEmailLink'| translate}}</a>
+    </p>
 
 {{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "", contentId: "", loggedInStatus: false, dynamic: false })}}
 

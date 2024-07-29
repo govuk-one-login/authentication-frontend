@@ -58,15 +58,17 @@ export function enterMfaGet(
       ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME
       : ENTER_MFA_DEFAULT_TEMPLATE_NAME;
 
+    const { email } = req.session.user;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+
     if (!isAccountRecoveryEnabledForEnvironment) {
       return res.render(templateName, {
         phoneNumber: req.session.user.redactedPhoneNumber,
         supportAccountRecovery: false,
+        email: email,
+        useDifferentEmailLink: PATH_NAMES.SIGN_IN_OR_CREATE,
       });
     }
-
-    const { email } = req.session.user;
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const accountRecoveryResponse = await service.accountRecovery(
       sessionId,
@@ -96,6 +98,8 @@ export function enterMfaGet(
       phoneNumber: req.session.user.redactedPhoneNumber,
       supportAccountRecovery: req.session.user.isAccountRecoveryPermitted,
       checkEmailLink,
+      email: email,
+      useDifferentEmailLink: PATH_NAMES.SIGN_IN_OR_CREATE,
     });
   };
 }
