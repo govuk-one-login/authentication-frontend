@@ -176,3 +176,7 @@ export function proveIdentityWelcomeEnabled(): boolean {
 export function supportNewIpvSpinner(): boolean {
   return process.env.SUPPORT_NEW_IPV_SPINNER === "1";
 }
+
+export function showUserEmailOnUpliftScreen(): boolean {
+  return process.env.SHOW_USER_EMAIL_ON_UPLIFT_SCREEN === "1";
+}

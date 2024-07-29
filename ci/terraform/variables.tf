@@ -402,3 +402,9 @@ variable "support_new_ipv_spinner" {
   default     = "0"
   description = "Enables the new IPV spinner page"
 }
+
+variable "show_user_email_on_uplift_screen" {
+  type        = string
+  default     = "0"
+  description = "Enables the user's email to be shown on the uplift screen"
+}
