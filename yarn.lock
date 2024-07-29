@@ -6675,10 +6675,10 @@ xss@^1.0.10:
     commander "^2.20.3"
     cssfilter "0.0.10"
 
-xstate@^4.26.1:
-  version "4.26.1"
-  resolved "https://registry.npmjs.org/xstate/-/xstate-4.26.1.tgz"
-  integrity sha512-JLofAEnN26l/1vbODgsDa+Phqa61PwDlxWu8+2pK+YbXf+y9pQSDLRvcYH2H1kkeUBA5fGp+xFL/zfE8jNMw4g==
+xstate@^5.16.0:
+  version "5.16.0"
+  resolved "https://registry.yarnpkg.com/xstate/-/xstate-5.16.0.tgz#2802cc8b5d356cdb02b3cffd266ea90ead927a41"
+  integrity sha512-qws7r2nsCsQ/Qgpn75+FYM84M88/nopGsxij/qYNSOyKJKO4n7x8B5isQKv6DMruyF4gGg7y4gsFDTzJUlKcWw==
 
 xtend@~4.0.1:
   version "4.0.2"
