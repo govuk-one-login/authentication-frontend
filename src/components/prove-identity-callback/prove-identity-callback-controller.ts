@@ -70,7 +70,6 @@ export function proveIdentityStatusCallbackGet(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response, next: NextFunction) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    //const clientName = req.session.client.name;
     const email = req.session.user.email;
 
     try {
