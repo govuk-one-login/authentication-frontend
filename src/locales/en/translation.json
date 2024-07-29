@@ -554,8 +554,10 @@
         "title": "Enter a security code to continue",
         "header": "Enter a security code to continue",
         "paragraph1": "This is for extra security.",
-        "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes.",
-        "paragraph3": "We have sent a code to your phone number ending with "
+        "paragraph2": "You’re signed in as: ",
+        "paragraph3": "We have sent a code to your phone number ending with ",
+        "paragraph4": "It might take a few minutes to arrive. The code will expire after 15 minutes.",
+        "useDifferentEmailLink": "Sign in with a different email address"
       }
     },
     "passwordResetMfaSms": {
@@ -2426,14 +2428,16 @@
         "header": "Enter a security code to continue",
         "info": {
           "paragraph1": "This is for extra security.",
-          "paragraph2": "To get a security code, open the ",
+          "paragraph2": "You’re signed in as: ",
+          "paragraph3": "To get a security code, open the ",
           "authenticatorApp": "authenticator app ",
-          "paragraph2End": "you used to create your GOV.UK One Login"
+          "paragraph3End": "you used to create your GOV.UK One Login"
         },
         "code": {
           "label": "Enter the code",
           "labelSummary": "This is the 6-digit number shown in your authenticator app"
-        }
+        },
+        "useDifferentEmailLink": "Sign in with a different email address"
       },
       "2FaBeforeResetPassword": {
         "title": "Enter a security code from your authenticator app",

@@ -12,6 +12,7 @@
 
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.enterMfa.upliftRequired.header' | translate }}</h1>
     <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph1' | translate }} </p>
+    <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph2' | translate }} </p>
 
     {% set insetTextHtml %}
         <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph3' | translate }} <span
@@ -21,7 +22,7 @@
         html: insetTextHtml
     }) }}
 
-    <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph2' | translate }} </p>
+    <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph4' | translate }} </p>
 
     <form id="form-tracking" action="/enter-code" method="post" novalidate="novalidate">
         <input type="hidden" name="phoneNumber" value="{{ phoneNumber }}" />
