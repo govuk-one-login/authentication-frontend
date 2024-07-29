@@ -1,0 +1,576 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: >-
+  Create a WAF to attach to the Cloudfront distribution for the Auth Frontend
+
+Parameters:
+  Environment:
+    Description: The name of the environment to deploy to
+    Type: String
+    AllowedValues:
+      - dev
+      - build
+      - staging
+      - integration
+      - production
+
+  RateLimitedEndpoints:
+    Description: >-
+      List of endpoints that should be rate-limited by session and IP (maximum 6)
+    Type: String
+    Default: ""
+
+Conditions:
+  IsRateLimitedEndpoint0Enabled:
+    Fn::Not:
+      - Fn::Equals:
+        - Fn::Select:
+          - 0
+          - Fn::Split:
+            - ","
+            - Fn::Sub:
+              - "${Endpoints},,,,,,,"
+              - Endpoints: !Ref RateLimitedEndpoints
+        - ""
+
+  IsRateLimitedEndpoint1Enabled:
+    Fn::Not:
+      - Fn::Equals:
+        - Fn::Select:
+          - 1
+          - Fn::Split:
+            - ","
+            - Fn::Sub:
+              - "${Endpoints},,,,,,,"
+              - Endpoints: !Ref RateLimitedEndpoints
+        - ""
+
+  IsRateLimitedEndpoint2Enabled:
+    Fn::Not:
+      - Fn::Equals:
+        - Fn::Select:
+          - 2
+          - Fn::Split:
+            - ","
+            - Fn::Sub:
+              - "${Endpoints},,,,,,,"
+              - Endpoints: !Ref RateLimitedEndpoints
+        - ""
+
+  IsRateLimitedEndpoint3Enabled:
+    Fn::Not:
+      - Fn::Equals:
+        - Fn::Select:
+          - 3
+          - Fn::Split:
+            - ","
+            - Fn::Sub:
+              - "${Endpoints},,,,,,,"
+              - Endpoints: !Ref RateLimitedEndpoints
+        - ""
+
+  IsRateLimitedEndpoint4Enabled:
+    Fn::Not:
+      - Fn::Equals:
+        - Fn::Select:
+          - 4
+          - Fn::Split:
+            - ","
+            - Fn::Sub:
+              - "${Endpoints},,,,,,,"
+              - Endpoints: !Ref RateLimitedEndpoints
+        - ""
+
+  IsRateLimitedEndpoint5Enabled:
+    Fn::Not:
+      - Fn::Equals:
+        - Fn::Select:
+          - 5
+          - Fn::Split:
+            - ","
+            - Fn::Sub:
+              - "${Endpoints},,,,,,,"
+              - Endpoints: !Ref RateLimitedEndpoints
+        - ""
+
+  IsStaging:
+    Fn::Equals:
+      - !Ref Environment
+      - "staging"
+
+  IsNotProduction:
+    Fn::Not:
+      - Fn::Equals:
+        - !Ref Environment
+        - production
+
+  IsProdLikeEnvironment: !Or
+    - !Equals [!Ref Environment, staging]
+    - !Equals [!Ref Environment, production]
+
+Mappings:
+  PlatformConfiguration:
+    dev:
+      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython
+    build:
+      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython
+    staging:
+      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython
+    integration:
+      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython
+    production:
+      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython
+
+Resources:
+  WAFv2GDSIPSet:
+    # The IP address blocks below are referenced from here:
+    # https://sites.google.com/a/digital.cabinet-office.gov.uk/gds/working-at-gds/gds-internal-it/gds-internal-it-network-public-ip-addresses
+    Type: AWS::WAFv2::IPSet
+    Properties:
+      Name: !Sub "${Environment}-gds-ip-set"
+      Scope: "CLOUDFRONT"
+      IPAddressVersion: "IPV4"
+      Addresses:
+        - "217.196.229.77/32"
+        - "217.196.229.79/32"
+        - "217.196.229.80/32" # (BYOD VPN Only)
+        - "217.196.229.81/32"
+        - "51.149.8.0/25"     # (GDS and CO VPN)
+        - "51.149.8.128/29"   # (BYOD VPN only)
+        # The following are Pentesters, requested on AUT-2360
+        - "51.142.180.30/32"
+        - "185.120.72.241/32"
+        - "185.120.72.242/32"
+        - "185.120.72.243/32"
+        # The following are Pentesters, requested on AUT-2596
+        - "3.9.227.33/32"
+        - "18.132.149.145/32"
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-WAFv2GDSIPSet"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/cloudformation/cloudfront-waf/template.yaml
+
+  WAFv2WebACL:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: !Sub "${Environment}-frontend-cloudfront-waf-web-acl"
+      Scope: CLOUDFRONT
+      DefaultAction:
+        Allow: {}
+      VisibilityConfig:
+        CloudWatchMetricsEnabled: true
+        MetricName: !Sub "${Environment}FrontendcloudfrontWafRules"
+        SampledRequestsEnabled: true
+      Rules:
+        - !If
+          - IsStaging
+          - Name: GDSIPs
+            Action:
+              Allow: {}
+            Priority: 10
+            Statement:
+              IPSetReferenceStatement:
+                Arn: !GetAtt WAFv2GDSIPSet.Arn
+                IPSetForwardedIPConfig:
+                  FallbackBehavior: MATCH
+                  HeaderName: X-Forwarded-For
+                  Position: FIRST
+            VisibilityConfig:
+              CloudWatchMetricsEnabled: true
+              MetricName: !Sub "${Environment}FrontendcloudfrontWafGDSIPs"
+              SampledRequestsEnabled: false
+          - !Ref AWS::NoValue
+
+        - Name: !Sub "${Environment}-frontend-cloudfront-waf-rate-based-rule"
+          Action:
+            Block: {}
+          Priority: 20
+          Statement:
+            RateBasedStatement:
+              Limit: !If [IsStaging, 20000000, 25000]
+              AggregateKeyType: "IP"
+          VisibilityConfig:
+            CloudWatchMetricsEnabled: true
+            MetricName: !Sub "${Environment}FrontendcloudfrontWafMaxRequestRate"
+            SampledRequestsEnabled: true
+
+        - !If
+          - IsRateLimitedEndpoint0Enabled         # If at least one endpoint is provided, then create this rule
+          - Name: "BlockMoreThan100CheckYourEmailRequestsFromIPPer5Minutes"
+            Action:
+              Block: {}
+            Priority: 21
+            RuleLabels:
+              - Name: MoreThan100CheckYourEmailRequestsFromIPPer5Minutes
+            Statement:
+              RateBasedStatement:
+                AggregateKeyType: IP
+                EvaluationWindowSec: 120
+                Limit: !If [IsStaging, 20000000, 100000]
+                ScopeDownStatement:
+                  OrStatement:
+                    Statements:
+                      - !If
+                        - IsRateLimitedEndpoint0Enabled
+                        - ByteMatchStatement:
+                            PositionalConstraint: "STARTS_WITH"
+                            SearchString: !Select [0, !Split [',', !Ref RateLimitedEndpoints]]
+                            FieldToMatch:
+                              UriPath: {}
+                            TextTransformations:
+                              - Priority: 0
+                                Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - IsRateLimitedEndpoint1Enabled
+                        - ByteMatchStatement:
+                            PositionalConstraint: "STARTS_WITH"
+                            SearchString: !Select [1, !Split [',', !Ref RateLimitedEndpoints]]
+                            FieldToMatch:
+                              UriPath: {}
+                            TextTransformations:
+                              - Priority: 0
+                                Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - IsRateLimitedEndpoint2Enabled
+                        - ByteMatchStatement:
+                            PositionalConstraint: "STARTS_WITH"
+                            SearchString: !Select [2, !Split [',', !Ref RateLimitedEndpoints]]
+                            FieldToMatch:
+                              UriPath: {}
+                            TextTransformations:
+                              - Priority: 0
+                                Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - IsRateLimitedEndpoint3Enabled
+                        - ByteMatchStatement:
+                            PositionalConstraint: "STARTS_WITH"
+                            SearchString: !Select [3, !Split [',', !Ref RateLimitedEndpoints]]
+                            FieldToMatch:
+                              UriPath: {}
+                            TextTransformations:
+                              - Priority: 0
+                                Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - IsRateLimitedEndpoint4Enabled
+                        - ByteMatchStatement:
+                            PositionalConstraint: "STARTS_WITH"
+                            SearchString: !Select [4, !Split [',', !Ref RateLimitedEndpoints]]
+                            FieldToMatch:
+                              UriPath: {}
+                            TextTransformations:
+                              - Priority: 0
+                                Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - IsRateLimitedEndpoint5Enabled
+                        - ByteMatchStatement:
+                            PositionalConstraint: "STARTS_WITH"
+                            SearchString: !Select [5, !Split [',', !Ref RateLimitedEndpoints]]
+                            FieldToMatch:
+                              UriPath: {}
+                            TextTransformations:
+                              - Priority: 0
+                                Type: LOWERCASE
+                        - !Ref AWS::NoValue
+            VisibilityConfig:
+              CloudWatchMetricsEnabled: true
+              MetricName: !Sub "${Environment}FrontendcloudfrontWafMoreThan100CheckYourEmailRequestsFromIPPer5Minutes"
+              SampledRequestsEnabled: true
+          - !Ref AWS::NoValue
+
+        - !If
+          - IsRateLimitedEndpoint0Enabled         # If at least one endpoint is provided, then create this rule
+          - Name: BlockMoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes
+            Action:
+              Block: {}
+            Priority: 22
+            RuleLabels:
+            - Name: MoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes
+            Statement:
+              RateBasedStatement:
+                AggregateKeyType: CUSTOM_KEYS
+                CustomKeys:
+                - Cookie:
+                    Name: aps
+                    TextTransformations:
+                    - Priority: 0
+                      Type: URL_DECODE
+                EvaluationWindowSec: 120
+                Limit: !If [IsStaging, 20000000, 100000]
+                ScopeDownStatement:
+                  OrStatement:
+                    Statements:
+                      - !If
+                        - IsRateLimitedEndpoint0Enabled
+                        - ByteMatchStatement:
+                            FieldToMatch:
+                              UriPath: {}
+                            PositionalConstraint: STARTS_WITH
+                            SearchString: !Select [0, !Split [',', !Ref RateLimitedEndpoints]]
+                            TextTransformations:
+                            - Priority: 0
+                              Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - IsRateLimitedEndpoint1Enabled
+                        - ByteMatchStatement:
+                            FieldToMatch:
+                              UriPath: {}
+                            PositionalConstraint: STARTS_WITH
+                            SearchString: !Select [1, !Split [',', !Ref RateLimitedEndpoints]]
+                            TextTransformations:
+                            - Priority: 0
+                              Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - IsRateLimitedEndpoint2Enabled
+                        - ByteMatchStatement:
+                            FieldToMatch:
+                              UriPath: {}
+                            PositionalConstraint: STARTS_WITH
+                            SearchString: !Select [2, !Split [',', !Ref RateLimitedEndpoints]]
+                            TextTransformations:
+                            - Priority: 0
+                              Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - IsRateLimitedEndpoint3Enabled
+                        - ByteMatchStatement:
+                            FieldToMatch:
+                              UriPath: {}
+                            PositionalConstraint: STARTS_WITH
+                            SearchString: !Select [3, !Split [',', !Ref RateLimitedEndpoints]]
+                            TextTransformations:
+                            - Priority: 0
+                              Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - IsRateLimitedEndpoint4Enabled
+                        - ByteMatchStatement:
+                            FieldToMatch:
+                              UriPath: {}
+                            PositionalConstraint: STARTS_WITH
+                            SearchString: !Select [4, !Split [',', !Ref RateLimitedEndpoints]]
+                            TextTransformations:
+                            - Priority: 0
+                              Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - IsRateLimitedEndpoint5Enabled
+                        - ByteMatchStatement:
+                            FieldToMatch:
+                              UriPath: {}
+                            PositionalConstraint: STARTS_WITH
+                            SearchString: !Select [5, !Split [',', !Ref RateLimitedEndpoints]]
+                            TextTransformations:
+                            - Priority: 0
+                              Type: LOWERCASE
+                        - !Ref AWS::NoValue
+            VisibilityConfig:
+              CloudWatchMetricsEnabled: true
+              MetricName: !Sub "${Environment}FrontendcloudfrontWafMoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes"
+              SampledRequestsEnabled: true
+          - !Ref AWS::NoValue
+
+        - Name: !Sub "${Environment}-frontend-cloudfront-common-rule-set"
+          OverrideAction:
+            None: {}
+          Priority: 30
+          Statement:
+            ManagedRuleGroupStatement:
+              Name: AWSManagedRulesCommonRuleSet
+              VendorName: AWS
+              RuleActionOverrides:
+              - Name: GenericRFI_QUERYARGUMENTS
+                ActionToUse:
+                  Count: {}
+              - Name: GenericRFI_BODY
+                ActionToUse:
+                  Count: {}
+              - Name: SizeRestrictions_QUERYSTRING
+                ActionToUse:
+                  Count: {}
+              - !If
+                - IsNotProduction
+                - Name: EC2MetaDataSSRF_BODY
+                  ActionToUse:
+                    Count: {}
+                - !Ref AWS::NoValue
+              - !If
+                - IsNotProduction
+                - Name: EC2MetaDataSSRF_QUERYARGUMENTS
+                  ActionToUse:
+                    Count: {}
+                - !Ref AWS::NoValue
+          VisibilityConfig:
+            CloudWatchMetricsEnabled: true
+            MetricName: !Sub "${Environment}FrontendcloudfrontWafCommonRuleSet"
+            SampledRequestsEnabled: true
+
+        - Name: !Sub "${Environment}-frontend-cloudfront-bad-rule-set"
+          OverrideAction:
+            None: {}
+          Priority: 40
+          Statement:
+            ManagedRuleGroupStatement:
+              Name: AWSManagedRulesKnownBadInputsRuleSet
+              VendorName: AWS
+          VisibilityConfig:
+            CloudWatchMetricsEnabled: true
+            MetricName: !Sub "${Environment}FrontendcloudfrontWafBaduleSet"
+            SampledRequestsEnabled: true
+
+        - Name: default_query_param_limit
+          Action:
+            Block: {}
+          Priority: 50
+          Statement:
+            AndStatement:
+              Statements:
+              - SizeConstraintStatement:
+                  ComparisonOperator: GT
+                  FieldToMatch:
+                    QueryString: {}
+                  Size: 2048
+                  TextTransformations:
+                  - Priority: 0
+                    Type: NONE
+              - NotStatement:
+                  Statement:
+                    ByteMatchStatement:
+                      FieldToMatch:
+                        UriPath: {}
+                      PositionalConstraint: EXACTLY
+                      SearchString: /authorize
+                      TextTransformations:
+                      - Priority: 0
+                        Type: LOWERCASE
+          VisibilityConfig:
+            CloudWatchMetricsEnabled: true
+            MetricName: !Sub "${Environment}FrontendcloudfrontWafQueryParamSet"
+            SampledRequestsEnabled: true
+
+        - Name: extended_query_param_limit
+          Action:
+            Block: {}
+          Priority: 60
+          Statement:
+            SizeConstraintStatement:
+              ComparisonOperator: GT
+              FieldToMatch:
+                QueryString: {}
+              Size: 8192
+              TextTransformations:
+              - Priority: 0
+                Type: NONE
+          VisibilityConfig:
+            CloudWatchMetricsEnabled: true
+            MetricName: !Sub "${Environment}FrontendcloudfrontWafAuthorizeQueryParamSet"
+            SampledRequestsEnabled: true
+
+        - Name: contact_us_logging_count
+          Action:
+            Count: {}
+          Priority: 90
+          RuleLabels:
+          - Name: contact-us
+          Statement:
+            ByteMatchStatement:
+              FieldToMatch:
+                UriPath: {}
+              PositionalConstraint: STARTS_WITH
+              SearchString: /contact-us
+              TextTransformations:
+              - Priority: 0
+                Type: LOWERCASE
+          VisibilityConfig:
+            CloudWatchMetricsEnabled: true
+            MetricName: !Sub "${Environment}FrontendcloudfrontWafContactUsCount"
+            SampledRequestsEnabled: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-WAFv2WebACL"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/cloudformation/cloudfront-waf/template.yaml
+
+  LogKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: KMS key for Core Cloudwatch logs
+      KeyPolicy:
+        Version: 2012-10-17
+        Id: key-policy-cloudwatch
+        Statement:
+          - Sid: Enable IAM User Permissions for root user
+            Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+            Action:
+              - "kms:*"
+            Resource:
+              - "*"
+          - Sid: AllowCloudWatchLogs
+            Effect: Allow
+            Principal:
+              Service: !Sub "logs.${AWS::Region}.amazonaws.com"
+            Action:
+              - "kms:Encrypt*"
+              - "kms:Decrypt*"
+              - "kms:ReEncrypt*"
+              - "kms:GenerateDataKey*"
+              - "kms:Describe*"
+            Resource:
+              - "*"
+            Condition:
+              ArnEquals:
+                "kms:EncryptionContext:aws:logs:arn": !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:aws-waf-logs-frontend-cloudfront-${Environment}"
+
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "aws-waf-logs-frontend-cloudfront-${Environment}"
+      RetentionInDays: 30
+      KmsKeyId: !GetAtt LogKey.Arn
+
+  LoggingConfiguration:
+    Type: AWS::WAFv2::LoggingConfiguration
+    Properties:
+      LogDestinationConfigs:
+        - !GetAtt LogGroup.Arn
+      ResourceArn: !GetAtt WAFv2WebACL.Arn
+      LoggingFilter:
+        DefaultBehavior: "KEEP"
+        Filters:
+          - Behavior: "KEEP"
+            Conditions:
+              - ActionCondition:
+                  Action: "BLOCK"
+            Requirement: "MEETS_ANY"
+
+  CSLSCloudWatchLogsSubscription:
+    Type: AWS::Logs::SubscriptionFilter
+    Condition: IsProdLikeEnvironment
+    Properties:
+      DestinationArn: !FindInMap [ PlatformConfiguration, !Ref Environment, CSLSEGRESS ]
+      FilterPattern: ""
+      LogGroupName: !Ref LogGroup
+
+Outputs:
+  WAFv2WebACL:
+    Description: ARN of Web ACL
+    Value: !GetAtt WAFv2WebACL.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-WAFv2WebACL"
