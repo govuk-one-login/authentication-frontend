@@ -4,7 +4,7 @@ import * as express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 import {
-  proveIdentityCallbackGet,
+  proveIdentityCallbackGetOrPost,
   proveIdentityCallbackSessionExpiryError,
   proveIdentityStatusCallbackGet,
 } from "./prove-identity-callback-controller";
@@ -18,7 +18,15 @@ router.get(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   processIdentityRateLimitMiddleware,
-  asyncHandler(proveIdentityCallbackGet())
+  asyncHandler(proveIdentityCallbackGetOrPost())
+);
+
+router.post(
+  PATH_NAMES.PROVE_IDENTITY_CALLBACK,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
+  processIdentityRateLimitMiddleware,
+  asyncHandler(proveIdentityCallbackGetOrPost())
 );
 
 router.get(
