@@ -116,9 +116,8 @@ Conditions:
         - !Ref Environment
         - production
 
-  IsProdLikeEnvironment: !Or
-    - !Equals [!Ref Environment, staging]
-    - !Equals [!Ref Environment, production]
+  IsProdLikeEnvironment:
+    !Equals [!Ref Environment, production]
 
 Mappings:
   PlatformConfiguration:
