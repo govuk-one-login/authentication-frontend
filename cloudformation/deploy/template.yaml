@@ -449,8 +449,10 @@ Resources:
               Value: !If [IsNotProduction, !Sub "signin-sp.${Environment}.account.gov.uk", "signin.account.gov.uk"]
             - Name: GTM_ID
               Value: GTM-TK92W68
-            - Name: REDIS_KEY
-              Value: frontend
+            - Name: REDIS_HOST
+              Value: !GetAtt ApplicationReplicationGroup.PrimaryEndPoint.Address
+            - Name: REDIS_PORT
+              Value: !GetAtt ApplicationReplicationGroup.PrimaryEndPoint.Port
             - Name: SUPPORT_AUTHORIZE_CONTROLLER
               Value: 1
             - Name: ENCRYPTION_KEY_ID
@@ -513,6 +515,8 @@ Resources:
           Secrets:
             - Name: API_KEY
               ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${Environment}/frontend-api-key"
+            - Name: REDIS_PASSWORD
+              ValueFrom: !Ref ApplicationAuthPass
             - Name: SESSION_EXPIRY
               ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/session_expiry"
             - Name: SESSION_SECRET
