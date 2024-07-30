@@ -269,7 +269,7 @@ variable "support_reauthentication" {
 variable "support_check_email_fraud" {
   description = "When true enables Fraudulent email checking via Experian lockout"
   type        = string
-  default     = "0"
+  default     = "1"
 }
 
 variable "prove_identity_welcome_enabled" {
