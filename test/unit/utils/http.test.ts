@@ -1,6 +1,9 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { getInternalRequestConfigWithSecurityHeaders } from "../../../src/utils/http";
+import {
+  getAdditionalAxiosConfig,
+  getInternalRequestConfigWithSecurityHeaders,
+} from "../../../src/utils/http";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../src/app.constants";
 import { createMockRequest } from "../../helpers/mock-request-helper";
 const headersLibrary = require("@govuk-one-login/frontend-passthrough-headers");
@@ -179,5 +182,21 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
     expect(actualConfig.validateStatus(HTTP_STATUS_CODES.BAD_REQUEST)).to.eq(
       false
     );
+  });
+});
+
+describe("getAdditionalAxiosConfig", () => {
+  it("should return empty additional config when the http keep alive switch is off", () => {
+    process.env.SUPPORT_HTTP_KEEP_ALIVE = "0";
+    const additionalConfig = getAdditionalAxiosConfig();
+    expect(additionalConfig).to.be.empty;
+    delete process.env.SUPPORT_HTTP_KEEP_ALIVE;
+  });
+
+  it("should return an httpsAgent with keep alive when the http keep alive switch is on", () => {
+    process.env.SUPPORT_HTTP_KEEP_ALIVE = "1";
+    const additionalConfig = getAdditionalAxiosConfig();
+    expect(additionalConfig.httpsAgent.keepAlive).to.eq(true);
+    delete process.env.SUPPORT_HTTP_KEEP_ALIVE;
   });
 });

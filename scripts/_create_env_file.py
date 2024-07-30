@@ -95,6 +95,7 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             "NO_PHOTO_ID_CONTACT_FORMS": 1,
             "LANGUAGE_TOGGLE_ENABLED": 1,
             "SUPPORT_NEW_IPV_SPINNER": 1,
+            "SUPPORT_HTTP_KEEP_ALIVE": 0,
         },
     },
     {
