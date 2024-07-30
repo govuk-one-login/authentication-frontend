@@ -195,6 +195,10 @@ locals {
       {
         name  = "SUPPORT_NEW_IPV_SPINNER"
         value = var.support_new_ipv_spinner
+      },
+      {
+        name  = "SHOW_USER_EMAIL_ON_UPLIFT_SCREEN"
+        value = var.show_user_email_on_uplift_screen
       }
     ]
 

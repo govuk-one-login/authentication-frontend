@@ -5,6 +5,7 @@ import i18next from "i18next";
 import { returnLastCharactersOnly } from "../utils/phone-number";
 import { getNodeEnv } from "../config";
 import { ENVIRONMENT_NAME } from "../app.constants";
+import { redactEmail } from "../utils/email";
 const addLanguageParam = require("@govuk-one-login/frontend-language-toggle/build/cjs/language-param-setter.cjs");
 
 export function configureNunjucks(
@@ -28,6 +29,10 @@ export function configureNunjucks(
       return returnLastCharactersOnly(key, options);
     }
   );
+
+  nunjucksEnv.addFilter("redactEmail", function (key: string) {
+    return redactEmail(key);
+  });
 
   nunjucksEnv.addGlobal("addLanguageParam", addLanguageParam);
 
