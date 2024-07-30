@@ -1,13 +1,69 @@
 import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../../types";
+import {
+  ApiResponseResult,
+  DefaultApiResponse,
+  ExpressRouteFunc,
+} from "../../../types";
 import { MfaServiceInterface } from "./types";
-import { getErrorPathByCode, getNextPathAndUpdateJourney } from "../constants";
+import {
+  ERROR_CODES,
+  getErrorPathByCode,
+  getNextPathAndUpdateJourney,
+} from "../constants";
 import { BadRequestError } from "../../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine";
 import { PATH_NAMES } from "../../../app.constants";
 import { sanitize } from "../../../utils/strings";
 import xss from "xss";
 import { getJourneyTypeFromUserSession } from "../journey/journey";
+import { supportReauthentication } from "../../../config";
+
+function addGA(req: Request, redirectPath: string) {
+  if (req.query._ga) {
+    const queryParams = new URLSearchParams({
+      _ga: sanitize(req.query._ga as string),
+    }).toString();
+
+    redirectPath = redirectPath + "?" + queryParams;
+  }
+  return redirectPath;
+}
+
+function handleErrors(
+  mfaFailResponse: ApiResponseResult<DefaultApiResponse>,
+  isResendCodeRequest: boolean,
+  res: Response<any, Record<string, any>>,
+  req: Request
+) {
+  const path = getErrorPathByCode(mfaFailResponse.data.code);
+
+  if (path && isResendCodeRequest) {
+    return path.includes("?")
+      ? res.redirect(path + "&isResendCodeRequest=true")
+      : res.redirect(path + "?isResendCodeRequest=true");
+  }
+
+  if (supportReauthentication() && req.session.user.reauthenticate) {
+    if (
+      mfaFailResponse.data.code ===
+        ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||
+      mfaFailResponse.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
+    ) {
+      return res.redirect(
+        req.session.client.redirectUri.concat("?error=login_required")
+      );
+    }
+  }
+
+  if (path && !isResendCodeRequest) {
+    res.redirect(path);
+  }
+
+  throw new BadRequestError(
+    mfaFailResponse.data.message,
+    mfaFailResponse.data.code
+  );
+}
 
 export function sendMfaGeneric(
   mfaCodeService: MfaServiceInterface
@@ -31,19 +87,7 @@ export function sendMfaGeneric(
     );
 
     if (!result.success) {
-      const path = getErrorPathByCode(result.data.code);
-
-      if (path && isResendCodeRequest) {
-        return path.includes("?")
-          ? res.redirect(path + "&isResendCodeRequest=true")
-          : res.redirect(path + "?isResendCodeRequest=true");
-      }
-
-      if (path && !isResendCodeRequest) {
-        res.redirect(path);
-      }
-
-      throw new BadRequestError(result.data.message, result.data.code);
+      return handleErrors(result, isResendCodeRequest, res, req);
     }
 
     let redirectPath;
@@ -66,13 +110,7 @@ export function sendMfaGeneric(
       redirectPath = PATH_NAMES.CHECK_YOUR_PHONE;
     }
 
-    if (req.query._ga) {
-      const queryParams = new URLSearchParams({
-        _ga: sanitize(req.query._ga as string),
-      }).toString();
-
-      redirectPath = redirectPath + "?" + queryParams;
-    }
+    redirectPath = addGA(req, redirectPath);
 
     return res.redirect(redirectPath);
   };

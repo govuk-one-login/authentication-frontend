@@ -10,11 +10,12 @@ import {
   getCodeEnteredWrongBlockDurationInMinutes,
   support2hrLockout,
   supportAccountRecovery,
+  supportReauthentication,
 } from "../../config";
 import { VerifyMfaCodeInterface } from "./types";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
-import { BadRequestError } from "../../utils/error";
+import { BadRequestError, ReauthJourneyError } from "../../utils/error";
 import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 import {
@@ -93,6 +94,18 @@ export function enterAuthenticatorAppCodeGet(
   };
 }
 
+function handleReauthFailure(req: Request, res: Response) {
+  if (req.session.client?.redirectUri) {
+    return res.redirect(
+      req.session.client.redirectUri.concat("?error=login_required")
+    );
+  } else {
+    throw new ReauthJourneyError(
+      "Re-auth journey failed due to missing redirect uri in client session."
+    );
+  }
+}
+
 export const enterAuthenticatorAppCodePost = (
   service: VerifyMfaCodeInterface = verifyMfaCodeService()
 ): ExpressRouteFunc => {
@@ -104,6 +117,12 @@ export const enterAuthenticatorAppCodePost = (
       ? UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
       : ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME;
 
+    const journeyType = getJourneyTypeFromUserSession(req.session.user, {
+      includeAccountRecovery: true,
+      includeReauthentication: true,
+      fallbackJourneyType: JOURNEY_TYPE.SIGN_IN,
+    });
+
     const result = await service.verifyMfaCode(
       MFA_METHOD_TYPE.AUTH_APP,
       req.body["code"],
@@ -111,15 +130,13 @@ export const enterAuthenticatorAppCodePost = (
       clientSessionId,
       persistentSessionId,
       req,
-      getJourneyTypeFromUserSession(req.session.user, {
-        includeAccountRecovery: true,
-        includeReauthentication: true,
-        fallbackJourneyType: JOURNEY_TYPE.SIGN_IN,
-      })
+      journeyType
     );
 
     if (!result.success) {
-      if (result.data.code === ERROR_CODES.AUTH_APP_INVALID_CODE) {
+      const error = result.data.code;
+
+      if (error === ERROR_CODES.AUTH_APP_INVALID_CODE) {
         const error = formatValidationError(
           "code",
           req.t(
@@ -129,10 +146,13 @@ export const enterAuthenticatorAppCodePost = (
         return renderBadRequest(res, req, template, error);
       }
 
-      if (
-        result.data.code ===
-        ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED
-      ) {
+      if (error === ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED) {
+        if (
+          supportReauthentication() &&
+          journeyType == JOURNEY_TYPE.REAUTHENTICATION
+        ) {
+          return handleReauthFailure(req, res);
+        }
         req.session.user.wrongCodeEnteredLock = new Date(
           Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
         ).toUTCString();

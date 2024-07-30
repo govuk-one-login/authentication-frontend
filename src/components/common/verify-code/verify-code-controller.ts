@@ -64,14 +64,16 @@ export function verifyCodePost(
         return renderBadRequest(res, req, options.template, error);
       }
 
-      if (
-        supportReauthentication() &&
-        req.session.user.reauthenticate &&
-        result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
-      ) {
-        return res.redirect(
-          req.session.client.redirectUri.concat("?error=login_required")
-        );
+      if (supportReauthentication() && req.session.user.reauthenticate) {
+        if (
+          result.data.code ===
+            ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||
+          result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
+        ) {
+          return res.redirect(
+            req.session.client.redirectUri.concat("?error=login_required")
+          );
+        }
       }
 
       if (
@@ -89,6 +91,7 @@ export function verifyCodePost(
 
       throw new BadRequestError(result.data.message, result.data.code);
     }
+
     req.session.user.isAccountPartCreated = false;
 
     if (options.callback) {
