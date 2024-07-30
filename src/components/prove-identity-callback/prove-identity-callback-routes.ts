@@ -6,6 +6,7 @@ import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-
 import {
   proveIdentityCallbackGet,
   proveIdentityCallbackSessionExpiryError,
+  proveIdentityStatusCallbackGet,
 } from "./prove-identity-callback-controller";
 import { asyncHandler } from "../../utils/async";
 import { processIdentityRateLimitMiddleware } from "../../middleware/process-identity-rate-limit-middleware";
@@ -23,6 +24,14 @@ router.get(
 router.get(
   PATH_NAMES.PROVE_IDENTITY_CALLBACK_SESSION_EXPIRY_ERROR,
   proveIdentityCallbackSessionExpiryError
+);
+
+router.get(
+  PATH_NAMES.PROVE_IDENTITY_CALLBACK_STATUS,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
+  processIdentityRateLimitMiddleware,
+  asyncHandler(proveIdentityStatusCallbackGet())
 );
 
 export { router as proveIdentityCallbackRouter };
