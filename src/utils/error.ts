@@ -44,6 +44,13 @@ export class InvalidBase64Error extends Error {
   }
 }
 
+export class ReauthJourneyError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ReauthJourneyError";
+  }
+}
+
 export class QueryParamsError extends Error {
   constructor(message: string) {
     super(message);

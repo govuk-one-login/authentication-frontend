@@ -94,9 +94,9 @@ describe("Integration:: check your email security codes", () => {
     app = await require("../../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];

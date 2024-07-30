@@ -67,9 +67,9 @@ describe("Integration:: enter mfa", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.ENTER_MFA)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];

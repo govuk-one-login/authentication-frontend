@@ -44,9 +44,9 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
     baseApi = process.env.FRONTEND_API_BASE_URL;
     setupAccountInterventionsResponse(baseApi, noInterventions);
 
-    request(app)
+    await request(app)
       .get(ENDPOINT)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
