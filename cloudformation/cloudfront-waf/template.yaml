@@ -20,6 +20,18 @@ Parameters:
     Type: String
     Default: ""
 
+  RateLimitedEndpointsRateLimitPeriod:
+    Description: >-
+      Period in seconds for rate limiting for rate limited endpoints
+    Type: Number
+    Default: 120
+
+  RateLimitedEndpointsRequestsPerPeriod:
+    Description: >-
+      Number of requests per period allowed for rate limited endpoints
+    Type: Number
+    Default: 100000
+
 Conditions:
   IsRateLimitedEndpoint0Enabled:
     Fn::Not:
@@ -209,9 +221,9 @@ Resources:
               - Name: MoreThan100CheckYourEmailRequestsFromIPPer5Minutes
             Statement:
               RateBasedStatement:
+                EvaluationWindowSec: !Ref RateLimitedEndpointsRateLimitPeriod
+                Limit: !If [IsStaging, 20000000, !Ref RateLimitedEndpointsRequestsPerPeriod]
                 AggregateKeyType: IP
-                EvaluationWindowSec: 120
-                Limit: !If [IsStaging, 20000000, 100000]
                 ScopeDownStatement:
                   OrStatement:
                     Statements:
@@ -297,6 +309,8 @@ Resources:
             - Name: MoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes
             Statement:
               RateBasedStatement:
+                EvaluationWindowSec: !Ref RateLimitedEndpointsRateLimitPeriod
+                Limit: !If [IsStaging, 20000000, !Ref RateLimitedEndpointsRequestsPerPeriod]
                 AggregateKeyType: CUSTOM_KEYS
                 CustomKeys:
                 - Cookie:
@@ -304,8 +318,6 @@ Resources:
                     TextTransformations:
                     - Priority: 0
                       Type: URL_DECODE
-                EvaluationWindowSec: 120
-                Limit: !If [IsStaging, 20000000, 100000]
                 ScopeDownStatement:
                   OrStatement:
                     Statements:
