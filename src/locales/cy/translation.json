@@ -601,7 +601,9 @@
       "header": "Cael cod diogelwch",
       "continue": "Cael cod diogelwch",
       "message": "Gall negeseuon testun weithiau gymryd ychydig funudau i gyrraedd.",
-      "paragraph1": "Gallwch ofyn am 5 cod diogelwch. Os byddwch yn gofyn am fwy na 5, byddwch yn cael eich cloi allan am 2 awr.",
+      "paragraph1": "Gallwch ofyn am 5 cod diogelwch. Os ydych yn gofyn am fwy na 5, ",
+      "reauthAction": "byddwch yn cael eich allgofnodi.",
+      "action": "byddwch yn cael eich cloi allan am 2 awr.",
       "phoneNumber": {
         "default": "Byddwn yn anfon cod at y rhif ffôn sy’n gysylltiedig â’ch GOV.UK One Login",
         "isResendCodeRequest": "Byddwn yn anfon cod i’ch rhif ffôn sy’n gorffen gyda "
