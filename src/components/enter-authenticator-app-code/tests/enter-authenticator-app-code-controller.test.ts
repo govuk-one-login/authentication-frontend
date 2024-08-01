@@ -277,5 +277,34 @@ describe("enter authenticator app code controller", () => {
         `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=authAppMfaMaxRetries`
       );
     });
+
+    it("should redirect to orchestration with error require login reauth journey than max retries", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+      const fakeService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({
+          data: {
+            code: ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED,
+            message: "",
+          },
+          success: false,
+        }),
+      } as unknown as VerifyMfaCodeInterface;
+
+      req.t = sinon.fake.returns("translated string");
+      req.body.code = "678988";
+      res.locals.sessionId = "123456-djjad";
+      req.session.user.reauthenticate = "reauth";
+      req.session.client.redirectUri = "https://rp.gov.uk/redirect";
+
+      await enterAuthenticatorAppCodePost(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
+      expect(res.redirect).to.have.been.calledWith(
+        `https://rp.gov.uk/redirect?error=login_required`
+      );
+    });
   });
 });

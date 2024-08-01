@@ -66,4 +66,54 @@ describe("send mfa controller", () => {
       );
     });
   });
+
+  describe("Invalid MFA provided", () => {
+    it("reauth failed mfa check", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+      const fakeService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: false,
+          data: {
+            code: 1042,
+          },
+        }),
+      } as unknown as MfaServiceInterface;
+
+      const getJourneyTypeFromUserSessionSpy = sinon.spy(
+        journey,
+        "getJourneyTypeFromUserSession"
+      );
+
+      res.locals.sessionId = "123456-djjad";
+      req.session.user = {
+        email: "test@test.com",
+        reauthenticate: "test_data",
+      };
+      req.session.client = {
+        redirectUri: "https://rp/",
+      };
+      req.path = PATH_NAMES.RESEND_MFA_CODE;
+
+      await sendMfaGeneric(fakeService)(req as Request, res as Response);
+
+      expect(
+        getJourneyTypeFromUserSessionSpy
+      ).to.have.been.calledOnceWithExactly(req.session.user, {
+        includeReauthentication: true,
+      });
+      expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
+        JOURNEY_TYPE.REAUTHENTICATION
+      );
+      expect(fakeService.sendMfaCode).to.have.been.calledOnceWithExactly(
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        JOURNEY_TYPE.REAUTHENTICATION
+      );
+    });
+  });
 });

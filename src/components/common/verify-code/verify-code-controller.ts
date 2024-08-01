@@ -20,6 +20,7 @@ import {
 import {
   support2FABeforePasswordReset,
   supportAccountInterventions,
+  supportReauthentication,
 } from "../../../config";
 import { AccountInterventionsInterface } from "../../account-intervention/types";
 import { isSuspendedWithoutUserActions } from "../../../utils/interventions";
@@ -63,6 +64,18 @@ export function verifyCodePost(
         return renderBadRequest(res, req, options.template, error);
       }
 
+      if (supportReauthentication() && req.session.user.reauthenticate) {
+        if (
+          result.data.code ===
+            ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||
+          result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
+        ) {
+          return res.redirect(
+            req.session.client.redirectUri.concat("?error=login_required")
+          );
+        }
+      }
+
       if (
         ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES ===
           result.data.code &&
@@ -78,6 +91,7 @@ export function verifyCodePost(
 
       throw new BadRequestError(result.data.message, result.data.code);
     }
+
     req.session.user.isAccountPartCreated = false;
 
     if (options.callback) {

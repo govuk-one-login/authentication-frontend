@@ -38,6 +38,7 @@ describe("Integration:: resend mfa code", () => {
         next();
       });
 
+    process.env.SUPPORT_REAUTHENTICATION = "0";
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
