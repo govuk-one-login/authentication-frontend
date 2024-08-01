@@ -233,24 +233,31 @@ Resources:
           - UseECSCanaryDeploymentStack
           - CODE_DEPLOY
           - ECS
-      LoadBalancers:
-        - ContainerName: !If [UseNginxSidecar, "nginx-sidecar", "frontend-application"]
-          ContainerPort: !If [UseNginxSidecar, 8080, 3000]
-          TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroupA
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          AssignPublicIp: DISABLED
-          SecurityGroups:
-            - !GetAtt ContainerServiceSecurityGroup.GroupId
-          Subnets:
-            - Fn::ImportValue:
-                !Sub "${VpcStackName}-PrivateSubnetIdA"
-            - Fn::ImportValue:
-                !Sub "${VpcStackName}-PrivateSubnetIdB"
-            - Fn::ImportValue:
-                !Sub "${VpcStackName}-PrivateSubnetIdC"
+      LoadBalancers: !If
+        - UseECSCanaryDeploymentStack
+        - !Ref AWS::NoValue
+        - - ContainerName: !If [UseNginxSidecar, "nginx-sidecar", "frontend-application"]
+            ContainerPort: !If [UseNginxSidecar, 8080, 3000]
+            TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroupA
+      NetworkConfiguration: !If
+        - UseECSCanaryDeploymentStack
+        - !Ref AWS::NoValue
+        - AwsvpcConfiguration:
+            AssignPublicIp: DISABLED
+            SecurityGroups:
+              - !GetAtt ContainerServiceSecurityGroup.GroupId
+            Subnets:
+              - Fn::ImportValue:
+                  !Sub "${VpcStackName}-PrivateSubnetIdA"
+              - Fn::ImportValue:
+                  !Sub "${VpcStackName}-PrivateSubnetIdB"
+              - Fn::ImportValue:
+                  !Sub "${VpcStackName}-PrivateSubnetIdC"
       PropagateTags: SERVICE
-      TaskDefinition: !Ref TaskDefinition
+      TaskDefinition: !If
+        - UseECSCanaryDeploymentStack
+        - !Ref AWS::NoValue
+        - !Ref TaskDefinition
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-FrontendECSService"
@@ -1056,7 +1063,7 @@ Resources:
     DeletionPolicy: Delete
     UpdateReplacePolicy: Delete
     Properties:
-      TemplateURL: https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/ecs-canary-deployment/template.yaml
+      TemplateURL: https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/ecs-canary-deployment/template.yaml?versionId=5RRU1nfKQD_d08FKttr8W7pzrAsqQiUM # v2.1.1
       Parameters:
         VpcId: !Sub ${VpcStackName}-VpcId
         Subnets: !Join
