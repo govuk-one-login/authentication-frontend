@@ -94,7 +94,6 @@ describe("Integration:: resend mfa code", () => {
     await request(app)
       .get(PATH_NAMES.RESEND_MFA_CODE)
       .expect((res) => {
-        console.log(res.text);
         const $ = cheerio.load(res.text);
         expect($.text()).to.contain("you will be locked out for 2 hours.");
       })
@@ -107,7 +106,6 @@ describe("Integration:: resend mfa code", () => {
     await request(app)
       .get(PATH_NAMES.RESEND_MFA_CODE)
       .expect((res) => {
-        console.log(res.text);
         const $ = cheerio.load(res.text);
         expect($.text()).to.contain("you will be signed out");
       })
@@ -184,6 +182,21 @@ describe("Integration:: resend mfa code", () => {
       .expect(500);
   });
 
+  it("should return 400 error screen when API call fails", async () => {
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
+      errorCode: "1015",
+    });
+
+    await request(app)
+      .post(PATH_NAMES.RESEND_MFA_CODE)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+      })
+      .expect(500);
+  });
+
   it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "0";
 
@@ -192,7 +205,7 @@ describe("Integration:: resend mfa code", () => {
       .times(6)
       .reply(400, { code: ERROR_CODES.MFA_SMS_MAX_CODES_SENT });
 
-    await request(app)
+    request(app)
       .post(PATH_NAMES.RESEND_MFA_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -214,7 +227,7 @@ describe("Integration:: resend mfa code", () => {
       .once()
       .reply(400, { code: ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED });
 
-    await request(app)
+    request(app)
       .post(PATH_NAMES.RESEND_MFA_CODE)
       .type("form")
       .set("Cookie", cookies)

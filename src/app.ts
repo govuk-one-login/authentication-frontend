@@ -214,10 +214,11 @@ async function createApp(): Promise<express.Application> {
   registerRoutes(app);
 
   app.use(getCookieLanguageMiddleware);
+  app.use(pageNotFoundHandler);
 
+  // Error Handlers
   app.use(logErrorMiddleware);
   app.use(serverErrorHandler);
-  app.use(pageNotFoundHandler);
 
   return app;
 }

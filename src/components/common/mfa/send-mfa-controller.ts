@@ -47,7 +47,8 @@ function handleErrors(
     if (
       mfaFailResponse.data.code ===
         ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||
-      mfaFailResponse.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
+      mfaFailResponse.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES ||
+      mfaFailResponse.data.code === ERROR_CODES.MFA_SMS_MAX_CODES_SENT
     ) {
       return res.redirect(
         req.session.client.redirectUri.concat("?error=login_required")
@@ -56,7 +57,7 @@ function handleErrors(
   }
 
   if (path && !isResendCodeRequest) {
-    return res.redirect(path);
+    res.redirect(path);
   }
 
   throw new BadRequestError(
