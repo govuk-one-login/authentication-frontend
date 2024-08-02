@@ -112,24 +112,24 @@ describe("Integration:: check your email security codes", () => {
     app = undefined;
   });
 
-  it("should return verify email page", (done) => {
-    request(app)
+  it("should return verify email page", async () => {
+    await request(app)
       .get(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES)
-      .expect(200, done);
+      .expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES)
       .type("form")
       .send({
         code: "123456",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should return validation error when code not entered", (done) => {
-    request(app)
+  it("should return validation error when code not entered", async () => {
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES)
       .type("form")
       .set("Cookie", cookies)
@@ -141,11 +141,11 @@ describe("Integration:: check your email security codes", () => {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains("Enter the code");
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when code is less than 6 characters", (done) => {
-    request(app)
+  it("should return validation error when code is less than 6 characters", async () => {
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES)
       .type("form")
       .set("Cookie", cookies)
@@ -159,11 +159,11 @@ describe("Integration:: check your email security codes", () => {
           "Enter the code using only 6 digits"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when code is greater than 6 characters", (done) => {
-    request(app)
+  it("should return validation error when code is greater than 6 characters", async () => {
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES)
       .type("form")
       .set("Cookie", cookies)
@@ -177,12 +177,12 @@ describe("Integration:: check your email security codes", () => {
           "Enter the code using only 6 digits"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when code entered contains letters", (done) => {
+  it("should return validation error when code entered contains letters", async () => {
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
-    request(app)
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES)
       .type("form")
       .set("Cookie", cookies)
@@ -196,17 +196,17 @@ describe("Integration:: check your email security codes", () => {
           "Enter the code using only 6 digits"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to /get-security-codes when valid code entered", (done) => {
+  it("should redirect to /get-security-codes when valid code entered", async () => {
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
     nock(baseApi)
       .post(API_ENDPOINTS.VERIFY_CODE)
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES)
       .type("form")
       .set("Cookie", cookies)
@@ -215,16 +215,16 @@ describe("Integration:: check your email security codes", () => {
         code: "123456",
       })
       .expect("Location", PATH_NAMES.GET_SECURITY_CODES)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should return validation error when incorrect code entered", (done) => {
+  it("should return validation error when incorrect code entered", async () => {
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).once().reply(400, {
       code: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE,
       success: false,
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES)
       .type("form")
       .set("Cookie", cookies)
@@ -238,16 +238,16 @@ describe("Integration:: check your email security codes", () => {
           "The code you entered is not correct, or may have expired, try entering it again or request a new code"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return error page when when incorrect code entered more than 5 times", (done) => {
+  it("should return error page when when incorrect code entered more than 5 times", async () => {
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES,
       success: false,
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES)
       .type("form")
       .set("Cookie", cookies)
@@ -259,6 +259,6 @@ describe("Integration:: check your email security codes", () => {
         "Location",
         `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.EmailMaxRetries}`
       )
-      .expect(302, done);
+      .expect(302);
   });
 });

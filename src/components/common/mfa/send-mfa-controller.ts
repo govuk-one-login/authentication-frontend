@@ -56,7 +56,7 @@ function handleErrors(
   }
 
   if (path && !isResendCodeRequest) {
-    res.redirect(path);
+    return res.redirect(path);
   }
 
   throw new BadRequestError(

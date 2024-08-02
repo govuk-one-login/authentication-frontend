@@ -91,27 +91,27 @@ describe("Integration::enter password", () => {
     delete process.env.SUPPORT_2FA_B4_PASSWORD_RESET;
   });
 
-  it("should return enter password page", (done) => {
-    request(app).get(ENDPOINT).expect(200, done);
+  it("should return enter password page", async () => {
+    await request(app).get(ENDPOINT).expect(200);
   });
 
-  it("should return enter password page when support reauthentication flag is on and check reauth users api call is successfull", (done) => {
+  it("should return enter password page when support reauthentication flag is on and check reauth users api call is successfull", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
-    request(app).get(ENDPOINT).expect(200, done);
+    await request(app).get(ENDPOINT).expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .send({
         password: "password",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should return validation error when password not entered", (done) => {
-    request(app)
+  it("should return validation error when password not entered", async () => {
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -123,14 +123,14 @@ describe("Integration::enter password", () => {
         const $ = cheerio.load(res.text);
         expect($("#password-error").text()).to.contains("Enter your password");
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when password is incorrect", (done) => {
+  it("should return validation error when password is incorrect", async () => {
     nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(401);
     process.env.SUPPORT_2HR_LOCKOUT = "0";
 
-    request(app)
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -144,10 +144,10 @@ describe("Integration::enter password", () => {
           "Enter the correct password"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to /reset-password-2fa-sms when password is correct and user's MFA is set to SMS when 2FA is not required", (done) => {
+  it("should redirect to /reset-password-2fa-sms when password is correct and user's MFA is set to SMS when 2FA is not required", async () => {
     nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(200, {
       mfaRequired: false,
       mfaMethodType: "SMS",
@@ -156,7 +156,7 @@ describe("Integration::enter password", () => {
 
     setupAccountInterventionsResponse(baseApi, noInterventions);
 
-    request(app)
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -165,10 +165,10 @@ describe("Integration::enter password", () => {
         password: "password",
       })
       .expect("Location", PATH_NAMES.RESET_PASSWORD_REQUIRED)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to /reset-password-2fa-sms when password is correct and user's MFA is set to SMS when 2FA is required", (done) => {
+  it("should redirect to /reset-password-2fa-sms when password is correct and user's MFA is set to SMS when 2FA is required", async () => {
     nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(200, {
       mfaRequired: true,
       mfaMethodType: "SMS",
@@ -177,7 +177,7 @@ describe("Integration::enter password", () => {
 
     setupAccountInterventionsResponse(baseApi, noInterventions);
 
-    request(app)
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -186,15 +186,15 @@ describe("Integration::enter password", () => {
         password: "password",
       })
       .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_SMS)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to /account-locked during sign in flow when incorrect password entered 5 times", (done) => {
+  it("should redirect to /account-locked during sign in flow when incorrect password entered 5 times", async () => {
     nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).times(6).reply(400, {
       code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED,
     });
 
-    request(app)
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -203,6 +203,6 @@ describe("Integration::enter password", () => {
         password: "password",
       })
       .expect("Location", PATH_NAMES.ACCOUNT_LOCKED)
-      .expect(302, done);
+      .expect(302);
   });
 });

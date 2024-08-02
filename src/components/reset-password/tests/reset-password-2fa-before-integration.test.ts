@@ -64,12 +64,12 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
     delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
   });
 
-  it("should return reset password page", (done) => {
+  it("should return reset password page", async () => {
     setupAccountInterventionsResponse(baseApi, noInterventions);
-    request(app).get(ENDPOINT).expect(200, done);
+    await request(app).get(ENDPOINT).expect(200);
   });
 
-  it("should return the blocked screen when someone has a blocked intervention", (done) => {
+  it("should return the blocked screen when someone has a blocked intervention", async () => {
     setupAccountInterventionsResponse(baseApi, {
       blocked: true,
       passwordResetRequired: false,
@@ -77,15 +77,15 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
       reproveIdentity: false,
     });
 
-    request(app)
+    await request(app)
       .get(ENDPOINT)
       .expect(function (res) {
         expect(res.headers.location).to.eq("/unavailable-permanent");
       })
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should return the suspended screen when someone has a suspended intervention", (done) => {
+  it("should return the suspended screen when someone has a suspended intervention", async () => {
     setupAccountInterventionsResponse(baseApi, {
       blocked: false,
       passwordResetRequired: false,
@@ -93,15 +93,15 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
       reproveIdentity: false,
     });
 
-    request(app)
+    await request(app)
       .get(ENDPOINT)
       .expect(function (res) {
         expect(res.headers.location).to.eq("/unavailable-temporary");
       })
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should return reset password page when someone has a reset password intervention", (done) => {
+  it("should return reset password page when someone has a reset password intervention", async () => {
     setupAccountInterventionsResponse(baseApi, {
       blocked: false,
       passwordResetRequired: true,
@@ -109,21 +109,21 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
       reproveIdentity: false,
     });
 
-    request(app).get(ENDPOINT).expect(200, done);
+    await request(app).get(ENDPOINT).expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .send({
         password: "password",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should return validation error when password not entered", (done) => {
-    request(app)
+  it("should return validation error when password not entered", async () => {
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -136,11 +136,11 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
         const $ = cheerio.load(res.text);
         expect($("#password-error").text()).to.contains("Enter your password");
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when passwords don't match", (done) => {
-    request(app)
+  it("should return validation error when passwords don't match", async () => {
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -155,11 +155,11 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
           "Enter the same password in both fields"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when password less than 8 characters", (done) => {
-    request(app)
+  it("should return validation error when password less than 8 characters", async () => {
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -174,13 +174,13 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
           "Your password must be at least 8 characters long and must include letters and numbers"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when password is amongst most common passwords", (done) => {
+  it("should return validation error when password is amongst most common passwords", async () => {
     nock(baseApi).post("/reset-password").once().reply(400, { code: 1040 });
 
-    request(app)
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -195,13 +195,13 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
           "Enter a stronger password. Do not use very common passwords, such as ‘password’ or a sequence of numbers."
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return error when new password is the same as existing password", (done) => {
+  it("should return error when new password is the same as existing password", async () => {
     nock(baseApi).post("/reset-password").once().reply(400, { code: 1024 });
 
-    request(app)
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -216,11 +216,11 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
           "You are already using that password. Enter a different password"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when no numbers present in password", (done) => {
-    request(app)
+  it("should return validation error when no numbers present in password", async () => {
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -235,11 +235,11 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
           "Your password must be at least 8 characters long and must include letters and numbers"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when password all numeric", (done) => {
-    request(app)
+  it("should return validation error when password all numeric", async () => {
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -254,15 +254,15 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
           "Your password must be at least 8 characters long and must include letters and numbers"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to /auth-code when valid password entered", (done) => {
+  it("should redirect to /auth-code when valid password entered", async () => {
     nock(baseApi).post("/reset-password").once().reply(204);
     nock(baseApi).post("/login").once().reply(200);
     nock(baseApi).post("/mfa").once().reply(204);
 
-    request(app)
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -272,6 +272,6 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
         "confirm-password": "Testpassword1",
       })
       .expect("Location", PATH_NAMES.AUTH_CODE)
-      .expect(302, done);
+      .expect(302);
   });
 });

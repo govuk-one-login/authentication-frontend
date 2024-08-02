@@ -70,9 +70,9 @@ describe("Integration:: enter authenticator app code", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
@@ -88,22 +88,22 @@ describe("Integration:: enter authenticator app code", () => {
     app = undefined;
   });
 
-  it("should return enter authenticator app security code", (done) => {
-    request(app).get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE).expect(200, done);
+  it("should return enter authenticator app security code", async () => {
+    await request(app).get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE).expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
       .type("form")
       .send({
         code: "123456",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should return validation error when code not entered", (done) => {
-    request(app)
+  it("should return validation error when code not entered", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -115,11 +115,11 @@ describe("Integration:: enter authenticator app code", () => {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains("Enter the code");
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when code is less than 6 characters", (done) => {
-    request(app)
+  it("should return validation error when code is less than 6 characters", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -133,11 +133,11 @@ describe("Integration:: enter authenticator app code", () => {
           "Enter the code using only 6 digits"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when code is greater than 6 characters", (done) => {
-    request(app)
+  it("should return validation error when code is greater than 6 characters", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -151,11 +151,11 @@ describe("Integration:: enter authenticator app code", () => {
           "Enter the code using only 6 digits"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when code entered contains letters", (done) => {
-    request(app)
+  it("should return validation error when code entered contains letters", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -169,11 +169,11 @@ describe("Integration:: enter authenticator app code", () => {
           "Enter the code using only 6 digits"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("following a validation error it should not include link to change security codes where account recovery is not permitted", (done) => {
-    request(app)
+  it("following a validation error it should not include link to change security codes where account recovery is not permitted", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -188,16 +188,16 @@ describe("Integration:: enter authenticator app code", () => {
           "You can securely change how you get security codes"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to /auth-code when valid code entered", (done) => {
+  it("should redirect to /auth-code when valid code entered", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.VERIFY_MFA_CODE)
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -206,16 +206,16 @@ describe("Integration:: enter authenticator app code", () => {
         code: "123456",
       })
       .expect("Location", PATH_NAMES.AUTH_CODE)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should return validation error when incorrect code entered", (done) => {
+  it("should return validation error when incorrect code entered", async () => {
     nock(baseApi).post(API_ENDPOINTS.VERIFY_MFA_CODE).once().reply(400, {
       code: ERROR_CODES.AUTH_APP_INVALID_CODE,
       success: false,
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -229,16 +229,16 @@ describe("Integration:: enter authenticator app code", () => {
           "The code you entered is not correct, check your authenticator app and try again"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to security code expired when incorrect code has been entered 5 times", (done) => {
+  it("should redirect to security code expired when incorrect code has been entered 5 times", async () => {
     nock(baseApi).post(API_ENDPOINTS.VERIFY_MFA_CODE).times(6).reply(400, {
       code: ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED,
       success: false,
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -250,6 +250,6 @@ describe("Integration:: enter authenticator app code", () => {
         "Location",
         `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.AuthAppMfaMaxRetries}`
       )
-      .expect(302, done);
+      .expect(302);
   });
 });
