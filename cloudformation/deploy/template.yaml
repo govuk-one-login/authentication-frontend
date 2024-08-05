@@ -492,8 +492,6 @@ Resources:
               Value: 1
             - Name: NO_PHOTO_ID_CONTACT_FORMS
               Value: 1
-            - Name: SUPPORT_CHECK_EMAIL_FRAUD
-              Value: 1
             - Name: LANGUAGE_TOGGLE_ENABLED
               Value: 1
             - Name: PROVE_IDENTITY_WELCOME_ENABLED

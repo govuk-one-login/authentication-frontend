@@ -266,12 +266,6 @@ variable "support_reauthentication" {
   default     = "0"
 }
 
-variable "support_check_email_fraud" {
-  description = "When true enables Fraudulent email checking via Experian lockout"
-  type        = string
-  default     = "1"
-}
-
 variable "prove_identity_welcome_enabled" {
   description = "Do not show the prove identity welcome screen when disabled"
   type        = string
