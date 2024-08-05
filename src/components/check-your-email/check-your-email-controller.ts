@@ -70,17 +70,21 @@ export const checkYourEmailPost = (
     }
     if (supportCheckEmailFraud()) {
       const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-      const checkEmailFraudResponse =
-        await checkEmailFraudService.checkEmailFraudBlock(
-          req.session.user.email,
-          sessionId,
-          clientSessionId,
-          persistentSessionId,
-          req
+      try {
+        const checkEmailFraudResponse =
+          await checkEmailFraudService.checkEmailFraudBlock(
+            req.session.user.email,
+            sessionId,
+            clientSessionId,
+            persistentSessionId,
+            req
+          );
+        logger.info(
+          `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
         );
-      logger.info(
-        `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
-      );
+      } catch (e) {
+        logger.error("Error checking email fraud block", e);
+      }
     }
     const verifyCodeRequest = verifyCodePost(
       service,
