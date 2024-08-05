@@ -12,7 +12,7 @@ import {
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
-import { support2hrLockout, supportCheckEmailFraud } from "../../config";
+import { support2hrLockout } from "../../config";
 import { isLocked } from "../../utils/lock-helper";
 import { logger } from "../../utils/logger";
 import { CheckEmailFraudBlockInterface } from "../check-email-fraud-block/types";
@@ -68,8 +68,8 @@ export const checkYourEmailPost = (
       );
       return res.redirect(path);
     }
-    if (supportCheckEmailFraud()) {
-      const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    try {
       const checkEmailFraudResponse =
         await checkEmailFraudService.checkEmailFraudBlock(
           req.session.user.email,
@@ -81,6 +81,8 @@ export const checkYourEmailPost = (
       logger.info(
         `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
       );
+    } catch (e) {
+      logger.error("Error checking email fraud block", e);
     }
     const verifyCodeRequest = verifyCodePost(
       service,

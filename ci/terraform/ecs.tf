@@ -161,10 +161,6 @@ locals {
         value = var.no_photo_id_contact_forms
       },
       {
-        name  = "SUPPORT_CHECK_EMAIL_FRAUD"
-        value = var.support_check_email_fraud
-      },
-      {
         name  = "LANGUAGE_TOGGLE_ENABLED"
         value = var.language_toggle_enabled
       },
