@@ -102,7 +102,7 @@ jobs:
                     result[key] = "";
                 }
                 // strip non-ascii characters from all values
-                result[key] = result[key].replace(/[^\x20-\x7E]/g, '').replace(/'/g, `'\\''`);
+                result[key] = result[key].replace(/[^\x20-\x7E]/g, '').replace(/'/g, `\'`).replace(/"/g, `\"`);
             }
 
             console.log(result);
