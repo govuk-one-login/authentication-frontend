@@ -21,6 +21,7 @@ jobs:
 
   build-frontend:
     name: Build and push Frontend
+    needs: pr-data
     runs-on: ubuntu-latest
     timeout-minutes: 60
     permissions:
@@ -49,12 +50,14 @@ jobs:
         uses: docker/build-push-action@5176d81f87c23d6fc96624dfdbcd9f3830bbe445 # v6.5.0
         with:
           context: .
+          labels: ${{ needs.pr-data.outputs.docker-labels }}
           push: true
           tags: "${{ steps.login-ecr.outputs.registry }}/${{ env.DEV_TOOLING_ECR_FRONTEND_REPO }}:${{ github.sha}}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
   build-sidecar:
     name: Build and push Basic Auth Sidecar
+    needs: pr-data
     runs-on: ubuntu-latest
     timeout-minutes: 60
     permissions:
@@ -77,12 +80,14 @@ jobs:
         uses: docker/build-push-action@5176d81f87c23d6fc96624dfdbcd9f3830bbe445 # v6.5.0
         with:
           context: basic-auth-sidecar
+          labels: ${{ needs.pr-data.outputs.docker-labels }}
           push: true
           tags: "${{ steps.login-ecr.outputs.registry }}/${{ env.DEV_BASIC_SIDECAR_ECR_REPO }}:${{ github.sha }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
   build-service-down:
     name: Build and push Service Down Page
+    needs: pr-data
     runs-on: ubuntu-latest
     timeout-minutes: 60
     permissions:
@@ -105,6 +110,7 @@ jobs:
         uses: docker/build-push-action@5176d81f87c23d6fc96624dfdbcd9f3830bbe445 # v6.5.0
         with:
           context: service-down-page-config
+          labels: ${{ needs.pr-data.outputs.docker-labels }}
           push: true
           tags: "${{ steps.login-ecr.outputs.registry }}/${{ env.DEV_SERVICE_DOWN_ECR_REPO }}:${{ github.sha }}"
           cache-from: type=gha

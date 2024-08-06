@@ -5,6 +5,9 @@ on:
       data:
         description: "Object containing PR data"
         value: ${{ jobs.get-pr-data.outputs.data }}
+      docker-labels:
+        description: "Labels for docker images"
+        value: ${{ jobs.get-pr-data.outputs.docker-labels }}
 
 jobs:
   get-pr-data:
@@ -15,8 +18,8 @@ jobs:
       pull-requests: read
     outputs:
       data: ${{ steps.get_pr_data.outputs.result }}
+      docker-labels: ${{ steps.docker_labels.outputs.labels }}
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Get PR data
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         id: get_pr_data
@@ -107,3 +110,11 @@ jobs:
 
             console.log(result);
             return result;
+      - name: get docker labels
+        id: docker_labels
+        uses: docker/metadata-action@v5
+        with:
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha
