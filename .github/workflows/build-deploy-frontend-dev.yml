@@ -138,6 +138,8 @@ jobs:
 
       - name: Upload frontend Terraform files
         working-directory: ci/terraform
+        env:
+          METADATA: ${{ needs.pr-data.outputs.data }}
         run: |
           echo "::group::Zip up frontend terraform"
           zip -r frontend.zip .
@@ -148,7 +150,7 @@ jobs:
             --bucket ${{ env.DEV_ARTIFACT_BUCKET }} \
             --key frontend.zip \
             --body frontend.zip \
-            --metadata '${{ toJson(fromJson(needs.pr-data.outputs.data)) }}' \
+            --metadata "${METADATA}" \
             --query VersionId --output text)"
           echo "::endgroup::"
           echo "::notice title=Final artifact uploaded to S3::object: frontend.zip, version: ${OBJECT_VERSION}"
