@@ -16,10 +16,12 @@ jobs:
     outputs:
       data: ${{ steps.get_pr_data.outputs.result }}
     steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Get PR data
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         id: get_pr_data
         with:
+          # language=javascript prefix="module.exports = async ({github, context}) => {\n" suffix=}
           script: |
             const query = `query($owner: String!, $name: String!, $oid: GitObjectID!) {
                 repository(owner: $owner, name: $name) {
@@ -100,7 +102,7 @@ jobs:
                     result[key] = "";
                 }
                 // strip non-ascii characters from all values
-                result[key] = result[key].replace(/[^\x20-\x7E]/g, '');
+                result[key] = result[key].replace(/[^\x20-\x7E]/g, '').replace(/'/g, `\\'`);
             }
 
             console.log(result);
