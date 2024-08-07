@@ -98,6 +98,12 @@ export function proveIdentityStatusCallbackGet(
         });
       }
 
+      if (response.data.status === IdentityProcessingStatus.INTERVENTION) {
+        res.status(HTTP_STATUS_CODES.OK).json({
+          status: IdentityProcessingStatus.INTERVENTION,
+        });
+      }
+
       if (response.data.status === IdentityProcessingStatus.ERROR) {
         res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
           status: IdentityProcessingStatus.ERROR,
