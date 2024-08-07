@@ -32,7 +32,7 @@ jobs:
       id-token: write
       contents: read
     env:
-      CACHE_TAG: ${{ inputs.context == '.' && 'frontend' || inputs.context }}
+      CACHE_TAG: ${{ inputs.context == '.' && 'root' || inputs.context }}
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
