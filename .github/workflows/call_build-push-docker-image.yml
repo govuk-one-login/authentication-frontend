@@ -6,13 +6,13 @@ on:
         description: "AWS region to deploy to"
         default: "eu-west-2"
         type: string
-      cache:
-        description: "Enable layer caching"
-        default: false
-        type: boolean
       context:
         description: "The build context. Defaults to repository root"
         default: "."
+        type: string
+      cache-ecr-repo:
+        description: "The name of the ECR repo to use for caching"
+        default: "build-cache"
         type: string
     secrets:
       dynatrace_registry:
@@ -31,6 +31,8 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    env:
+      CACHE_TAG: ${{ inputs.context == '.' && 'frontend' || inputs.context }}
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
@@ -67,6 +69,8 @@ jobs:
             type=sha,prefix=,suffix=,format=long
       - name: Build, tag and push image
         uses: docker/build-push-action@5176d81f87c23d6fc96624dfdbcd9f3830bbe445 # v6.5.0
+        env:
+          CACHE_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ inputs.cache-ecr-repo }}:${{ env.CACHE_TAG }}-cache
         with:
           context: ${{ inputs.context }}
           build-contexts: |
@@ -74,7 +78,5 @@ jobs:
           push: true
           labels: ${{ steps.metadata.outputs.labels }}
           tags: ${{ steps.metadata.outputs.tags }}
-          cache-from: type=registry,ref=${{ steps.login-ecr.outputs.registry }}/${{ secrets.ecr_repo }}:cache
-          cache-to: mode=max,image-manifest=true,oci-mediatypes=true,type=registry,ref=${{ steps.login-ecr.outputs.registry }}/${{ secrets.ecr_repo }}:cache
-          # cache-from: ${{ inputs.cache && 'type=gha' || '' }}
-          # cache-to: ${{ inputs.cache && 'type=gha,mode=max' || '' }}
+          cache-from: type=registry,ref=${{ env.CACHE_IMAGE }}
+          cache-to: mode=max,image-manifest=true,oci-mediatypes=true,type=registry,ref=${{ env.CACHE_IMAGE }}
