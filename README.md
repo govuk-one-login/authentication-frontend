@@ -8,7 +8,7 @@
 git@github.com:alphagov/di-authentication-frontend.git
 ```
 
-Clones the repository to the `<your_folder_name` directory.
+Clones the repository to the `<your_folder_name>` directory.
 
 ## Running the app
 
