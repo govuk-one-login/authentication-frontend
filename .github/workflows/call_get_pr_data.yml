@@ -5,9 +5,6 @@ on:
       data:
         description: "Object containing PR data"
         value: ${{ jobs.get-pr-data.outputs.data }}
-      docker-labels:
-        description: "Labels for docker images"
-        value: ${{ jobs.get-pr-data.outputs.docker-labels }}
 
 jobs:
   get-pr-data:
@@ -18,7 +15,6 @@ jobs:
       pull-requests: read
     outputs:
       data: ${{ steps.get_pr_data.outputs.result }}
-      docker-labels: ${{ steps.docker_labels.outputs.labels }}
     steps:
       - name: Get PR data
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
@@ -106,16 +102,8 @@ jobs:
                     result[key] = "";
                 }
                 // strip non-ascii characters from all values
-                result[key] = result[key].replace(/[^\x20-\x7E]/g, ''); //.replace(/'/g, `\'`).replace(/"/g, `\"`);
+                result[key] = result[key].replace(/[^\x20-\x7E]/g, '');
             }
 
             console.log(result);
             return JSON.stringify(result);
-      - name: get docker labels
-        id: docker_labels
-        uses: docker/metadata-action@v5
-        with:
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=sha
