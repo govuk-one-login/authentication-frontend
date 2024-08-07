@@ -1,4 +1,4 @@
-FROM nginx:mainline-alpine as builder
+FROM nginx:mainline-alpine AS builder
 
 ARG ENABLED_MODULES=headers-more
 

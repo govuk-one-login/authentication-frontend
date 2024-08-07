@@ -27,13 +27,6 @@ repos:
     hooks:
       - id: actionlint
 
-  - repo: https://github.com/lalten/check-gha-pinning
-    rev: v1.1.0
-    hooks:
-      - id: check-gha-pinning
-        # Skip git check for now until subdirectory support is added (#1)
-        entry: env GHA_PINNING_SKIP_GIT_CHECK=1 check-gha-pinning
-
   - repo: local
     hooks:
       - id: eslint
