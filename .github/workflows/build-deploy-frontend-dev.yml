@@ -20,7 +20,6 @@ jobs:
     with:
       aws-region: eu-west-2
       cache: false
-      context: .
     secrets:
       dynatrace_registry: ${{ secrets.DYNATRACE_REGISTRY_NAME }}
       dynatrace_token: ${{ secrets.DYNATRACE_PAAS_TOKEN }}

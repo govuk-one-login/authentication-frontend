@@ -11,8 +11,8 @@ on:
         default: false
         type: boolean
       context:
-        description: "The build context"
-        required: true
+        description: "The build context. Defaults to repository root"
+        default: "."
         type: string
     secrets:
       dynatrace_registry:
@@ -60,7 +60,7 @@ jobs:
         if: github
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
         with:
-          labels: ${{ inputs.context == '.' && '' || format('org.opencontainers.image.title={0}', inputs.context) }}
+          labels: ${{ inputs.context != '.' && format('org.opencontainers.image.title={0}', inputs.context) }}
           images: |
             "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ecr_repo }}"
           tags: |
