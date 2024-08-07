@@ -19,4 +19,5 @@ if ! git merge-base --is-ancestor HEAD "@{u}"; then
     echo "Local branch appears to be diverged from remote. This may be okay, I just thought you should know."
 fi
 
-gh workflow run "build-deploy-frontend-dev.yml" --ref "${current_branch}"
+gh workflow run "build-deploy-frontend-dev.yml" --ref "${current_branch}" &&
+    gh workflow view "build-deploy-frontend-dev.yml" --web
