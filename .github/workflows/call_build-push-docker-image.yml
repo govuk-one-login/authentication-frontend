@@ -1,0 +1,82 @@
+name: Build and push Docker image
+on:
+  workflow_call:
+    inputs:
+      aws-region:
+        description: "AWS region to deploy to"
+        default: "eu-west-2"
+        type: string
+      context:
+        description: "The build context. Defaults to repository root"
+        default: "."
+        type: string
+      cache-ecr-repo:
+        description: "The name of the ECR repo to use for caching"
+        default: "build-cache"
+        type: string
+    secrets:
+      dynatrace_registry:
+        description: "The Dynatrace registry to use (just the username)"
+      dynatrace_token:
+        description: "The Dynatrace token"
+      deployer_role:
+        description: "The role to assume in the tooling account"
+      ecr_repo:
+        description: "The name of the ECR repo to push to"
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      CACHE_TAG: ${{ inputs.context == '.' && 'root' || inputs.context }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+      - name: Set up Docker CLI
+        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.6.1
+
+      - name: Assume AWS DEPLOYER role in tooling acct
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          role-to-assume: ${{ secrets.deployer_role }}
+          aws-region: ${{ inputs.aws-region }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
+
+      - name: Login to GDS Dev Dynatrace Container Registry
+        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
+        with:
+          registry: "${{ secrets.dynatrace_registry }}.live.dynatrace.com"
+          username: ${{ secrets.dynatrace_registry }}
+          password: ${{ secrets.dynatrace_token }}
+
+      - name: Build image metadata
+        id: metadata
+        if: github
+        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
+        with:
+          images: |
+            "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ecr_repo }}"
+          labels: ${{ inputs.context != '.' && format('org.opencontainers.image.title={0}', inputs.context) }}
+          tags: |
+            type=sha,prefix=,suffix=,format=long
+      - name: Build, tag and push image
+        uses: docker/build-push-action@5176d81f87c23d6fc96624dfdbcd9f3830bbe445 # v6.5.0
+        env:
+          CACHE_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ inputs.cache-ecr-repo }}:${{ env.CACHE_TAG }}-cache
+        with:
+          context: ${{ inputs.context }}
+          build-contexts: |
+            oneagent_codemodules=docker-image://${{ secrets.dynatrace_registry}}.live.dynatrace.com/linux/oneagent-codemodules-musl:nodejs
+          push: true
+          labels: ${{ steps.metadata.outputs.labels }}
+          tags: ${{ steps.metadata.outputs.tags }}
+          cache-from: type=registry,ref=${{ env.CACHE_IMAGE }}
+          cache-to: mode=max,image-manifest=true,oci-mediatypes=true,type=registry,ref=${{ env.CACHE_IMAGE }}

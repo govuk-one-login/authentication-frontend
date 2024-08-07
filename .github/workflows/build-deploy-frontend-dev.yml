@@ -1,12 +1,4 @@
 name: Build and deploy frontend Dev
-env:
-  AWS_REGION: eu-west-2
-  DEPLOYER_ROLE: arn:aws:iam::706615647326:role/deployers/dev-github-actions-publish-to-s3-for-code-signing
-  DEV_GHA_DEPLOYER_ROLE: arn:aws:iam::653994557586:role/dev-auth-deploy-pipeline-GitHubActionsRole-QrtGginNnjDD
-  DEV_TOOLING_ECR_FRONTEND_REPO: frontend-image-repository
-  DEV_BASIC_SIDECAR_ECR_REPO: basic-auth-sidecar-image-repository
-  DEV_ARTIFACT_BUCKET: dev-auth-deploy-pipeline-githubartifactsourcebuck-ssdefc91xjh6
-  DEV_SERVICE_DOWN_ECR_REPO: service-down-page-image-repository
 
 on:
   workflow_dispatch:
@@ -14,155 +6,57 @@ on:
 jobs:
   pr-data:
     name: Get data for merged PR
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: read
-    outputs:
-      data: ${{ steps.get_pr_data.outputs.result }}
-    steps:
-      - name: Get PR data
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
-        id: get_pr_data
-        with:
-          script: |
-            const query = `query($owner: String!, $name: String!, $oid: GitObjectID!) {
-                repository(owner: $owner, name: $name) {
-                  object(oid: $oid) {
-                    ... on Commit {
-                      oid
-                      message
-                      associatedPullRequests(first: 1) {
-                        nodes {
-                          number
-                          title
-                          merged
-                          mergedAt
-                          mergeCommit {
-                            oid
-                          }
-                        }
-                      }
-                    }
-                  }
-                  owner {
-                    login
-                  }
-                  name
-                  nameWithOwner
-                }
-              }`
-            const variables = {
-                owner: context.repo.owner,
-                name: context.repo.repo,
-                oid: context.sha,
-                shortSha: context.sha.slice(0, 7),
-            }
+    uses: ./.github/workflows/call_get_pr_data.yml
 
-            const result = await github.graphql(query, variables).then((response) => {
-                const firstLineOfCommitMessage = response.repository.object.message.slice(0, response.repository.object.message.indexOf("\n"));
-                const res = {
-                    pr_number: null,
-                    pr_title: null,
-                    pr_merged_at: null,
-                    pr_merge_commit_sha: null,
-
-                    commit_message: firstLineOfCommitMessage,
-
-                    repo_full_name: response.repository.nameWithOwner,
-                    repo_owner: response.repository.owner.login,
-                    repo_name: response.repository.name,
-
-                    repository: response.repository.nameWithOwner,
-                    commitsha: context.sha,
-                    commitmessage: firstLineOfCommitMessage,
-                }
-                res["codepipeline-artifact-revision-summary"] = `${context.sha}: ${firstLineOfCommitMessage}`;
-
-                if (response.repository.object.associatedPullRequests.nodes.length > 0 && response.repository.object.associatedPullRequests.nodes[0].merged) {
-                    const prData = response.repository.object.associatedPullRequests.nodes[0];
-                    res.pr_number = prData.number.toString();
-                    res.pr_title = prData.title;
-                    res.pr_merged_at = prData.mergedAt;
-                    res.pr_merge_commit_sha = prData.mergeCommit.oid;
-                    res.commitmessage = prData.title;
-
-                    res["codepipeline-artifact-revision-summary"] = `${prData.mergeCommit.oid}: ${response.repository.nameWithOwner}#${prData.number} ${prData.title}`;
-                }
-
-                if (res["codepipeline-artifact-revision-summary"].length > 2048) {
-                    res["codepipeline-artifact-revision-summary"] = res["codepipeline-artifact-revision-summary"].slice(0, 2048);
-                }
-
-                return res;
-            }).catch((error) => {
-                throw error;
-            });
-
-            for (const key in result) {
-                if (result[key] == null) {
-                    result[key] = "";
-                }
-                // strip non-ascii characters from all values
-                result[key] = result[key].replace(/[^\x20-\x7E]/g, '');
-            }
-
-            console.log(result);
-            return result;
-
-  build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
+  build-frontend:
+    name: Build and push Frontend
     permissions:
       id-token: write
       contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      - name: Assume AWS DEPLOYER role in tooling acct
-        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
-        with:
-          role-to-assume: ${{ env.DEPLOYER_ROLE }}
-          aws-region: ${{ env.AWS_REGION }}
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
-      - name: Login to GDS Dev Dynatrace Container Registry
-        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
-        with:
-          registry: khw46367.live.dynatrace.com
-          username: khw46367
-          password: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
-      - name: Build, tag, and push frontend
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ env.DEV_TOOLING_ECR_FRONTEND_REPO }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
-          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-      - name: Build, tag, and push basic-auth-sidecar
-        working-directory: basic-auth-sidecar
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ env.DEV_BASIC_SIDECAR_ECR_REPO }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
-          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-      - name: Build, tag, and push service down page
-        working-directory: service-down-page-config
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ env.DEV_SERVICE_DOWN_ECR_REPO }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" .
-          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
+    uses: ./.github/workflows/call_build-push-docker-image.yml
+    with:
+      aws-region: eu-west-2
+    secrets:
+      dynatrace_registry: ${{ secrets.DYNATRACE_REGISTRY_NAME }}
+      dynatrace_token: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
+      deployer_role: ${{ secrets.DEV_DEPLOYER_ROLE }}
+      ecr_repo: ${{ secrets.DEV_TOOLING_ECR_FRONTEND_REPO }}
+  build-sidecar:
+    name: Build and push Basic Auth Sidecar
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/call_build-push-docker-image.yml
+    with:
+      aws-region: eu-west-2
+      context: basic-auth-sidecar
+    secrets:
+      dynatrace_registry: ${{ secrets.DYNATRACE_REGISTRY_NAME }}
+      dynatrace_token: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
+      deployer_role: ${{ secrets.DEV_DEPLOYER_ROLE }}
+      ecr_repo: ${{ secrets.DEV_BASIC_SIDECAR_ECR_REPO }}
+  build-service-down:
+    name: Build and push Service Down Page
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/call_build-push-docker-image.yml
+    with:
+      aws-region: eu-west-2
+      context: service-down-page-config
+    secrets:
+      dynatrace_registry: ${{ secrets.DYNATRACE_REGISTRY_NAME }}
+      dynatrace_token: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
+      deployer_role: ${{ secrets.DEV_DEPLOYER_ROLE }}
+      ecr_repo: ${{ secrets.DEV_SERVICE_DOWN_ECR_REPO }}
   deploy:
     needs:
-      - build
+      - build-frontend
+      - build-sidecar
+      - build-service-down
       - pr-data
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -176,11 +70,13 @@ jobs:
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
-          role-to-assume: ${{ env.DEV_GHA_DEPLOYER_ROLE }}
-          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.DEV_DEPLOY_ROLE }}
+          aws-region: eu-west-2
 
       - name: Upload frontend Terraform files
         working-directory: ci/terraform
+        env:
+          METADATA: ${{ needs.pr-data.outputs.data }}
         run: |
           echo "::group::Zip up frontend terraform"
           zip -r frontend.zip .
@@ -188,10 +84,10 @@ jobs:
 
           echo "::group::Upload artifact to S3"
           OBJECT_VERSION="$(aws s3api put-object \
-            --bucket ${{ env.DEV_ARTIFACT_BUCKET }} \
+            --bucket ${{ secrets.DEV_ARTIFACT_BUCKET }} \
             --key frontend.zip \
             --body frontend.zip \
-            --metadata '${{ toJson(fromJson(needs.pr-data.outputs.data)) }}' \
+            --metadata "${METADATA}" \
             --query VersionId --output text)"
           echo "::endgroup::"
           echo "::notice title=Final artifact uploaded to S3::object: frontend.zip, version: ${OBJECT_VERSION}"
