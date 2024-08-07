@@ -10,6 +10,10 @@ on:
         description: "Enable layer caching"
         default: false
         type: boolean
+      context:
+        description: "The build context"
+        required: true
+        type: string
     secrets:
       dynatrace_registry:
         description: "The Dynatrace registry to use (just the username)"
