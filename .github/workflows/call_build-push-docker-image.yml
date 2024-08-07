@@ -63,6 +63,8 @@ jobs:
         uses: docker/build-push-action@5176d81f87c23d6fc96624dfdbcd9f3830bbe445 # v6.5.0
         with:
           context: .
+          build-contexts: |
+            oneagent_codemodules=docker-image://${{ secrets.dynatrace_registry}}.live.dynatrace.com/linux/oneagent-codemodules-musl:nodejs
           push: true
           labels: ${{ steps.metadata.outputs.labels }}
           tags: ${{ steps.metadata.outputs.tags }}
