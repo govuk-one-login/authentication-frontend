@@ -60,9 +60,9 @@ jobs:
         if: github
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
         with:
-          labels: ${{ inputs.context != '.' && format('org.opencontainers.image.title={0}', inputs.context) }}
           images: |
             "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ecr_repo }}"
+          labels: ${{ inputs.context != '.' && format('org.opencontainers.image.title={0}', inputs.context) }}
           tags: |
             type=sha,prefix=,suffix=,format=long
       - name: Build, tag and push image
@@ -74,5 +74,7 @@ jobs:
           push: true
           labels: ${{ steps.metadata.outputs.labels }}
           tags: ${{ steps.metadata.outputs.tags }}
-          cache-from: ${{ inputs.cache && 'type=gha' || '' }}
-          cache-to: ${{ inputs.cache && 'type=gha,mode=max' || '' }}
+          cache-from: type=registry,ref=${{ steps.login-ecr.outputs.registry }}/${{ secrets.ecr_repo }}:cache
+          cache-to: mode=max,image-manifest=true,oci-mediatypes=true,type=registry,ref=${{ steps.login-ecr.outputs.registry }}/${{ secrets.ecr_repo }}:cache
+          # cache-from: ${{ inputs.cache && 'type=gha' || '' }}
+          # cache-to: ${{ inputs.cache && 'type=gha,mode=max' || '' }}
