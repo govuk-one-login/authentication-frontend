@@ -57,13 +57,15 @@ jobs:
 
       - name: Build image metadata
         id: metadata
+        if: github
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
         with:
+          labels: ${{ inputs.context == '.' && '' || format('org.opencontainers.image.title={0}', inputs.context) }}
           images: |
             "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ecr_repo }}"
           tags: |
             type=sha,prefix=,suffix=,format=long
-      - name: Build, tag and push frontend
+      - name: Build, tag and push image
         uses: docker/build-push-action@5176d81f87c23d6fc96624dfdbcd9f3830bbe445 # v6.5.0
         with:
           context: ${{ inputs.context }}
