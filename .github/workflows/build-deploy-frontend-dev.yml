@@ -19,7 +19,6 @@ jobs:
     uses: ./.github/workflows/call_build-push-docker-image.yml
     with:
       aws-region: eu-west-2
-      cache: false
     secrets:
       dynatrace_registry: ${{ secrets.DYNATRACE_REGISTRY_NAME }}
       dynatrace_token: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
@@ -69,7 +68,6 @@ jobs:
     uses: ./.github/workflows/call_build-push-docker-image.yml
     with:
       aws-region: eu-west-2
-      cache: false
       context: basic-auth-sidecar
     secrets:
       dynatrace_registry: ${{ secrets.DYNATRACE_REGISTRY_NAME }}
@@ -106,7 +104,6 @@ jobs:
     uses: ./.github/workflows/call_build-push-docker-image.yml
     with:
       aws-region: eu-west-2
-      cache: false
       context: service-down-page-config
     secrets:
       dynatrace_registry: ${{ secrets.DYNATRACE_REGISTRY_NAME }}
