@@ -85,15 +85,9 @@ Conditions:
 
   UseNginxSidecar:
   # TODO review this condition
-    Fn::And:
-      - !Condition IsNotProduction
-      - !Condition IsNotDevEnvironment
-
-  IsNotDevEnvironment:
-    Fn::Not:
-      - Fn::Equals:
-        - !Ref Environment
-        - dev
+    Fn::Equals:
+      - !Ref Environment
+      - "integration"
 
   IsNotProduction:
     Fn::Not:
@@ -568,45 +562,48 @@ Resources:
               - ''
               - - !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
                 - ':DT_CONNECTION_POINT::'
-        - Name: "nginx-sidecar"
-          Image: !Sub "${BasicAuthSidecarRegistry}:GIT-SHA-PLACEHOLDER"
-          PortMappings:
-            - ContainerPort: 8080
-              HostPort: 8080
-              Protocol: tcp
-          Essential: true
-          LogConfiguration:
-            LogDriver: awslogs
-            Options:
-              awslogs-group: !Ref FrontendTaskLogGroup
-              awslogs-region: !Ref AWS::Region
-              awslogs-create-group: "true"
-              awslogs-stream-prefix: !Ref AWS::StackName
-          Environment:
-            - Name: PROXY_PASS
-              Value: "http://localhost:3000"
-            - Name: NGINX_PORT
-              Value: "8080"
-            - Name: NGINX_HOST
-              Value: !Sub "signin-sp.${Environment}.account.gov.uk"
-            - Name: IP_ALLOW_LIST
-              Value:
-                Fn::ToJsonString:
-                  !FindInMap [ EnvironmentConfiguration, !Ref Environment, ipAllowList ]
-            - Name: TRUSTED_PROXIES
-              Value:
-                Fn::ToJsonString:
-                  - Fn::ImportValue:
-                      !Sub "${VpcStackName}-FirewallSubnetACidr"
-                  - Fn::ImportValue:
-                      !Sub "${VpcStackName}-FirewallSubnetBCidr"
-                  - Fn::ImportValue:
-                      !Sub "${VpcStackName}-FirewallSubnetCCidr"
-          Secrets:
-            - Name: BASIC_AUTH_USERNAME
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_username"
-            - Name: BASIC_AUTH_PASSWORD
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_password"
+        - !If
+          - UseNginxSidecar
+          - Name: "nginx-sidecar"
+            Image: !Sub "${BasicAuthSidecarRegistry}:GIT-SHA-PLACEHOLDER"
+            PortMappings:
+              - ContainerPort: 8080
+                HostPort: 8080
+                Protocol: tcp
+            Essential: true
+            LogConfiguration:
+              LogDriver: awslogs
+              Options:
+                awslogs-group: !Ref FrontendTaskLogGroup
+                awslogs-region: !Ref AWS::Region
+                awslogs-create-group: "true"
+                awslogs-stream-prefix: !Ref AWS::StackName
+            Environment:
+              - Name: PROXY_PASS
+                Value: "http://localhost:3000"
+              - Name: NGINX_PORT
+                Value: "8080"
+              - Name: NGINX_HOST
+                Value: !Sub "signin-sp.${Environment}.account.gov.uk"
+              - Name: IP_ALLOW_LIST
+                Value:
+                  Fn::ToJsonString:
+                    !FindInMap [ EnvironmentConfiguration, !Ref Environment, ipAllowList ]
+              - Name: TRUSTED_PROXIES
+                Value:
+                  Fn::ToJsonString:
+                    - Fn::ImportValue:
+                        !Sub "${VpcStackName}-FirewallSubnetACidr"
+                    - Fn::ImportValue:
+                        !Sub "${VpcStackName}-FirewallSubnetBCidr"
+                    - Fn::ImportValue:
+                        !Sub "${VpcStackName}-FirewallSubnetCCidr"
+            Secrets:
+              - Name: BASIC_AUTH_USERNAME
+                ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_username"
+              - Name: BASIC_AUTH_PASSWORD
+                ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_password"
+          - !Ref AWS::NoValue
       Cpu: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionCpu ]
       Memory: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionMemory ]
       ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
