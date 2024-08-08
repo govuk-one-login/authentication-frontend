@@ -262,11 +262,11 @@ Resources:
               - !GetAtt ContainerServiceSecurityGroup.GroupId
             Subnets:
               - Fn::ImportValue:
-                  !Sub "${VpcStackName}-PrivateSubnetIdA"
+                  !Sub "${VpcStackName}-ProtectedSubnetIdA"
               - Fn::ImportValue:
-                  !Sub "${VpcStackName}-PrivateSubnetIdB"
+                  !Sub "${VpcStackName}-ProtectedSubnetIdB"
               - Fn::ImportValue:
-                  !Sub "${VpcStackName}-PrivateSubnetIdC"
+                  !Sub "${VpcStackName}-ProtectedSubnetIdC"
       PropagateTags: SERVICE
       TaskDefinition: !If
         - UseECSCanaryDeploymentStack
@@ -1086,11 +1086,11 @@ Resources:
         Subnets: !Join
           - ","
           - - Fn::ImportValue:
-                !Sub "${VpcStackName}-PrivateSubnetIdA"
+                !Sub "${VpcStackName}-ProtectedSubnetIdA"
             - Fn::ImportValue:
-                !Sub "${VpcStackName}-PrivateSubnetIdB"
+                !Sub "${VpcStackName}-ProtectedSubnetIdB"
             - Fn::ImportValue:
-                !Sub "${VpcStackName}-PrivateSubnetIdC"
+                !Sub "${VpcStackName}-ProtectedSubnetIdC"
         SecurityGroups: !GetAtt ContainerServiceSecurityGroup.GroupId
         PermissionsBoundary:
           Fn::ImportValue: !Sub "${AWS::StackName}-ECSCanaryPermissionsBoundaryArn"
