@@ -191,6 +191,26 @@ describe("prove identity callback controller", () => {
         status: IdentityProcessingStatus.PROCESSING,
       });
     });
+    it("should return status INTERVENTION when identity processing is INTERVENTION", async () => {
+      const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
+        processIdentity: sinon.fake.returns({
+          success: true,
+          data: {
+            status: IdentityProcessingStatus.INTERVENTION,
+          },
+        }),
+      } as unknown as ProveIdentityCallbackServiceInterface;
+      await proveIdentityStatusCallbackGet(fakeProveIdentityService)(
+        req as Request,
+        res as Response,
+        next
+      );
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith({
+        status: IdentityProcessingStatus.INTERVENTION,
+      });
+    });
     it("should return status ERROR when identity processing is in ERROR", async () => {
       const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
         processIdentity: sinon.fake.returns({
