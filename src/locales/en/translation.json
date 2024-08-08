@@ -2374,7 +2374,7 @@
             "message": {
               "text1": "Go back to the service you were trying to use. You can look for the service using your search engine or find it from the ",
               "link": {
-                "href": "GOV.UK",
+                "href": "https://www.gov.uk",
                 "text": "GOV.UK homepage"
               },
               "text2": "."

@@ -2374,7 +2374,7 @@
             "message": {
               "text1": "Ewch yn ôl i`r gwasanaeth yr oeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio`ch peiriant chwilio neu ddod o hyd iddo o`r ",
               "link": {
-                "href": "GOV.UK",
+                "href": "https://www.gov.uk",
                 "text": "hafan GOV.UK"
               },
               "text2": "."
