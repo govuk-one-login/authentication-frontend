@@ -15,7 +15,12 @@ import { accountInterventionsMiddleware } from "../../middleware/account-interve
 
 const router = express.Router();
 
-router.get(PATH_NAMES.RESET_PASSWORD_REQUEST, resetPasswordRequestGet);
+router.get(
+  PATH_NAMES.RESET_PASSWORD_REQUEST,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
+  resetPasswordRequestGet
+);
 
 router.get(
   PATH_NAMES.RESET_PASSWORD,
@@ -33,7 +38,12 @@ router.post(
   asyncHandler(resetPasswordPost())
 );
 
-router.get(PATH_NAMES.RESET_PASSWORD_REQUIRED, resetPasswordRequiredGet);
+router.get(
+  PATH_NAMES.RESET_PASSWORD_REQUIRED,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
+  resetPasswordRequiredGet
+);
 
 router.post(
   PATH_NAMES.RESET_PASSWORD_REQUIRED,
