@@ -91,8 +91,8 @@ describe("Integration:: authorize", () => {
     app = undefined;
   });
 
-  it("should redirect to /sign-in-or-create", (done) => {
-    request(app)
+  it("should redirect to /sign-in-or-create", async () => {
+    await request(app)
       .get(PATH_NAMES.AUTHORIZE)
       .query({
         client_id: getOrchToAuthExpectedClientId(),
@@ -100,11 +100,11 @@ describe("Integration:: authorize", () => {
         request: "SomeJWE",
       })
       .expect("Location", PATH_NAMES.SIGN_IN_OR_CREATE)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to /sign-in-or-create with Google Analytics tag if 'result' query exists", (done) => {
-    request(app)
+  it("should redirect to /sign-in-or-create with Google Analytics tag if 'result' query exists", async () => {
+    await request(app)
       .get(PATH_NAMES.AUTHORIZE)
       .query({
         client_id: getOrchToAuthExpectedClientId(),
@@ -113,6 +113,6 @@ describe("Integration:: authorize", () => {
         result: "test-result",
       })
       .expect("Location", PATH_NAMES.SIGN_IN_OR_CREATE + "?result=test-result")
-      .expect(302, done);
+      .expect(302);
   });
 });

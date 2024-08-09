@@ -43,9 +43,9 @@ describe("Integration::setup-authenticator-app", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
@@ -61,24 +61,24 @@ describe("Integration::setup-authenticator-app", () => {
     app = undefined;
   });
 
-  it("should return setup authenticator app page", (done) => {
-    request(app)
+  it("should return setup authenticator app page", async () => {
+    await request(app)
       .get(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
-      .expect(200, done);
+      .expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
       .type("form")
       .send({
         code: "123456",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should return validation error when access code not entered", (done) => {
-    request(app)
+  it("should return validation error when access code not entered", async () => {
+    await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
       .type("form")
       .set("Cookie", cookies)
@@ -92,11 +92,11 @@ describe("Integration::setup-authenticator-app", () => {
         );
         expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when access code is too long (more than 6 digits)", (done) => {
-    request(app)
+  it("should return validation error when access code is too long (more than 6 digits)", async () => {
+    await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
       .type("form")
       .set("Cookie", cookies)
@@ -111,11 +111,11 @@ describe("Integration::setup-authenticator-app", () => {
         );
         expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when code has non-digit characters", (done) => {
-    request(app)
+  it("should return validation error when code has non-digit characters", async () => {
+    await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
       .type("form")
       .set("Cookie", cookies)
@@ -130,10 +130,10 @@ describe("Integration::setup-authenticator-app", () => {
         );
         expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to /account-created page when successful validation of code", (done) => {
+  it("should redirect to /account-created page when successful validation of code", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.VERIFY_MFA_CODE)
       .once()
@@ -143,7 +143,7 @@ describe("Integration::setup-authenticator-app", () => {
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT, { success: true });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
       .type("form")
       .set("Cookie", cookies)
@@ -152,6 +152,6 @@ describe("Integration::setup-authenticator-app", () => {
         code: "123456",
       })
       .expect("Location", PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL)
-      .expect(302, done);
+      .expect(302);
   });
 });

@@ -67,12 +67,12 @@ describe("Integration::reset password check email ", () => {
     app = undefined;
   });
 
-  it("should return reset password check email page", (done) => {
+  it("should return reset password check email page", async () => {
     nock(baseApi).post("/reset-password-request").once().reply(204);
-    request(app).get("/reset-password-check-email").expect(200, done);
+    await request(app).get("/reset-password-check-email").expect(200);
   });
 
-  it("should redirect to /reset-password-2fa-auth-app if user's 2FA is set to AUTH_APP", (done) => {
+  it("should redirect to /reset-password-2fa-auth-app if user's 2FA is set to AUTH_APP", async () => {
     nock(baseApi)
       .persist()
       .post(API_ENDPOINTS.VERIFY_CODE)
@@ -80,7 +80,7 @@ describe("Integration::reset password check email ", () => {
 
     setupAccountInterventionsResponse(baseApi, noInterventions);
 
-    request(app)
+    await request(app)
       .post("/reset-password-check-email")
       .type("form")
       .set("Cookie", cookies)
@@ -89,6 +89,6 @@ describe("Integration::reset password check email ", () => {
         code: "123456",
       })
       .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
-      .expect(302, done);
+      .expect(302);
   });
 });

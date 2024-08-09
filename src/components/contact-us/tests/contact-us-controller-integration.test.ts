@@ -30,10 +30,10 @@ describe("Integration:: contact us - public user", () => {
     app = await require("../../../app").createApp();
     smartAgentApiUrl = process.env.SMARTAGENT_API_URL;
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.CONTACT_US)
       .query("supportType=PUBLIC")
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
@@ -49,14 +49,13 @@ describe("Integration:: contact us - public user", () => {
     app = undefined;
   });
 
-  const expectValidationErrorOnPost = (
+  const expectValidationErrorOnPost = async (
     url: string,
     data: Record<string, unknown>,
     errorElement: string,
-    errorDescription: string,
-    done: Mocha.Done
+    errorDescription: string
   ) => {
-    request(app)
+    await request(app)
       .post(url)
       .type("form")
       .set("Cookie", cookies)
@@ -65,14 +64,14 @@ describe("Integration:: contact us - public user", () => {
         const $ = cheerio.load(res.text);
         expect($(errorElement).text()).to.contains(errorDescription);
       })
-      .expect(400, done);
+      .expect(400);
   };
 
-  it("should return contact us page", (done) => {
-    request(app)
+  it("should return contact us page", async () => {
+    await request(app)
       .get(PATH_NAMES.CONTACT_US)
       .query("supportType=PUBLIC")
-      .expect(200, done);
+      .expect(200);
   });
 
   [
@@ -81,8 +80,8 @@ describe("Integration:: contact us - public user", () => {
     "http://remotehost/something",
     "<script>alert(123);</script>",
   ].forEach(function (referer) {
-    it("should return contact us page removing invalid referer url", (done) => {
-      request(app)
+    it("should return contact us page removing invalid referer url", async () => {
+      await request(app)
         .get(PATH_NAMES.CONTACT_US)
         .query("supportType=PUBLIC")
         .set("referer", referer)
@@ -93,7 +92,7 @@ describe("Integration:: contact us - public user", () => {
             encodeURIComponent(referer)
           );
         })
-        .expect(200, done);
+        .expect(200);
     });
   });
 
@@ -105,8 +104,8 @@ describe("Integration:: contact us - public user", () => {
     "http://localhost/anypage",
     "https://localhost/scenario/page",
   ].forEach(function (referer) {
-    it("should return contact us page including valid referer url", (done) => {
-      request(app)
+    it("should return contact us page including valid referer url", async () => {
+      await request(app)
         .get(PATH_NAMES.CONTACT_US)
         .query("supportType=PUBLIC")
         .set("referer", referer)
@@ -116,7 +115,7 @@ describe("Integration:: contact us - public user", () => {
             encodeURIComponent(referer)
           );
         })
-        .expect(200, done);
+        .expect(200);
     });
   });
 
@@ -125,8 +124,8 @@ describe("Integration:: contact us - public user", () => {
     "http://remotehost/something",
     "<script>alert(123);</script>",
   ].forEach(function (referer) {
-    it("should return contact us questions page removing invalid referer queryparam url", (done) => {
-      request(app)
+    it("should return contact us questions page removing invalid referer queryparam url", async () => {
+      await request(app)
         .get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)
         .query("theme=account_creation")
         .query("subtheme=sign_in_phone_number_issue")
@@ -138,7 +137,7 @@ describe("Integration:: contact us - public user", () => {
             encodeURIComponent(referer)
           );
         })
-        .expect(200, done);
+        .expect(200);
     });
   });
 
@@ -150,8 +149,8 @@ describe("Integration:: contact us - public user", () => {
     "http://localhost/anypage",
     "http://localhost:3000/enter-email",
   ].forEach(function (referer) {
-    it("should return contact us questions page including valid referer queryparam url", (done) => {
-      request(app)
+    it("should return contact us questions page including valid referer queryparam url", async () => {
+      await request(app)
         .get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)
         .query("theme=account_creation")
         .query("referer=" + referer)
@@ -161,49 +160,49 @@ describe("Integration:: contact us - public user", () => {
             encodeURIComponent(referer)
           );
         })
-        .expect(200, done);
+        .expect(200);
     });
   });
 
-  it("should return contact us further information signing in page", (done) => {
-    request(app)
+  it("should return contact us further information signing in page", async () => {
+    await request(app)
       .get("/contact-us-further-information")
       .query("theme=signing_in")
-      .expect(200, done);
+      .expect(200);
   });
 
-  it("should return contact us further information account creation page", (done) => {
-    request(app)
+  it("should return contact us further information account creation page", async () => {
+    await request(app)
       .get("/contact-us-further-information")
       .query("theme=account_creation")
-      .expect(200, done);
+      .expect(200);
   });
 
-  it("should return contact us questions page with only a theme", (done) => {
-    request(app)
+  it("should return contact us questions page with only a theme", async () => {
+    await request(app)
       .get("/contact-us-questions")
       .query("theme=email_subscriptions")
-      .expect(200, done);
+      .expect(200);
   });
 
-  it("should return contact us questions page with a theme and a subtheme", (done) => {
-    request(app)
+  it("should return contact us questions page with a theme and a subtheme", async () => {
+    await request(app)
       .get("/contact-us-questions")
       .query("theme=signing_in")
       .query("subtheme=no_security_code")
-      .expect(200, done);
+      .expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.CONTACT_US)
       .query("supportType=PUBLIC")
       .type("form")
       .send({})
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should return validation error when no radio boxes are selected on the signing in contact-us-further-information page", (done) => {
+  it("should return validation error when no radio boxes are selected on the signing in contact-us-further-information page", () => {
     const data = {
       _csrf: token,
       theme: "signing_in",
@@ -212,12 +211,11 @@ describe("Integration:: contact us - public user", () => {
       "/contact-us-further-information",
       data,
       "#subtheme-error",
-      "Select the problem you had when signing in to your GOV.UK One Login",
-      done
+      "Select the problem you had when signing in to your GOV.UK One Login"
     );
   });
 
-  it("should return validation error when no radio boxes are selected on the proving_identity contact-us-further-information page", (done) => {
+  it("should return validation error when no radio boxes are selected on the proving_identity contact-us-further-information page", () => {
     const data = {
       _csrf: token,
       theme: "proving_identity",
@@ -226,12 +224,11 @@ describe("Integration:: contact us - public user", () => {
       "/contact-us-further-information",
       data,
       "#subtheme-error",
-      "Select the problem you had proving your identity",
-      done
+      "Select the problem you had proving your identity"
     );
   });
 
-  it("should return validation error when issue description are not entered on the contact-us-questions page", (done) => {
+  it("should return validation error when issue description are not entered on the contact-us-questions page", () => {
     const data = {
       _csrf: token,
       issueDescription: "",
@@ -242,12 +239,11 @@ describe("Integration:: contact us - public user", () => {
       "/contact-us-questions",
       data,
       "#issueDescription-error",
-      "Enter what you were trying to do",
-      done
+      "Enter what you were trying to do"
     );
   });
 
-  it("should return validation error when user selected yes to contact for feedback and left email field empty", (done) => {
+  it("should return validation error when user selected yes to contact for feedback and left email field empty", () => {
     const data = {
       _csrf: token,
       theme: "signing_in",
@@ -260,13 +256,12 @@ describe("Integration:: contact us - public user", () => {
       "/contact-us-questions",
       data,
       "#email-error",
-      "Enter your email address",
-      done
+      "Enter your email address"
     );
   });
 
-  it("should return validation error when user selected Text message to a phone number from another country and left the Which country field empty", (done) => {
-    request(app)
+  it("should return validation error when user selected Text message to a phone number from another country and left the Which country field empty", async () => {
+    await request(app)
       .post("/contact-us-questions?radio_buttons=true")
       .type("form")
       .set("Cookie", cookies)
@@ -285,10 +280,10 @@ describe("Integration:: contact us - public user", () => {
           "Enter which country your phone number is from"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when user selected yes to contact for feedback but email is in an invalid format", (done) => {
+  it("should return validation error when user selected yes to contact for feedback but email is in an invalid format", () => {
     const data = {
       _csrf: token,
       theme: "signing_in",
@@ -302,12 +297,11 @@ describe("Integration:: contact us - public user", () => {
       "/contact-us-questions",
       data,
       "#email-error",
-      "Enter an email address in the correct format, like name@example.com",
-      done
+      "Enter an email address in the correct format, like name@example.com"
     );
   });
 
-  it("should return validation error when user has not selected how the security code was sent whilst creating an account", (done) => {
+  it("should return validation error when user has not selected how the security code was sent whilst creating an account", () => {
     const data = {
       _csrf: token,
       theme: "account_creation",
@@ -320,13 +314,12 @@ describe("Integration:: contact us - public user", () => {
       "/contact-us-questions?radio_buttons=true",
       data,
       "#securityCodeSentMethod-error",
-      "Select whether you expected to get the code by email, text message or authenticator app",
-      done
+      "Select whether you expected to get the code by email, text message or authenticator app"
     );
   });
 
   describe("when a user had a problem with their identity document", () => {
-    it("should return validation error when user has not selected which identity document they were using", (done) => {
+    it("should return validation error when user has not selected which identity document they were using", () => {
       const data = {
         _csrf: token,
         theme: "proving_identity",
@@ -337,14 +330,13 @@ describe("Integration:: contact us - public user", () => {
         "/contact-us-questions",
         data,
         "#identityDocumentUsed-error",
-        "Select which identity document you were using",
-        done
+        "Select which identity document you were using"
       );
     });
   });
 
   describe("when a user had a problem with their bank or building society details", () => {
-    it("should return validation error when user has not selected which problem they had", (done) => {
+    it("should return validation error when user has not selected which problem they had", () => {
       const data = {
         _csrf: token,
         theme: "proving_identity",
@@ -355,14 +347,13 @@ describe("Integration:: contact us - public user", () => {
         "/contact-us-questions",
         data,
         "#problemWith-error",
-        "Select which problem you were having with your bank or building society details",
-        done
+        "Select which problem you were having with your bank or building society details"
       );
     });
   });
 
   describe("when a user had a problem taking a photo of your identity document using the GOV.UK ID Check app", () => {
-    it("should return validation error when user has not selected which identity document they were using", (done) => {
+    it("should return validation error when user has not selected which identity document they were using", () => {
       const data = {
         _csrf: token,
         theme: "id_check_app",
@@ -374,14 +365,13 @@ describe("Integration:: contact us - public user", () => {
         "/contact-us-questions?radio_buttons=true",
         data,
         "#identityDocumentUsed-error",
-        "Select which identity document you were using",
-        done
+        "Select which identity document you were using"
       );
     });
   });
 
   describe("when a user had a problem with their national insurance number", () => {
-    it("should return validation error when user has not described which problem they had", (done) => {
+    it("should return validation error when user has not described which problem they had", () => {
       const data = {
         _csrf: token,
         theme: "proving_identity",
@@ -392,8 +382,7 @@ describe("Integration:: contact us - public user", () => {
         "/contact-us-questions",
         data,
         "#problemWithNationalInsuranceNumber-error",
-        "What problem were you having with your National Insurance number?",
-        done
+        "What problem were you having with your National Insurance number?"
       );
     });
   });
@@ -417,56 +406,53 @@ describe("Integration:: contact us - public user", () => {
       };
     };
 
-    it("should return validation error when user has not entered what they were trying to do", (done) => {
+    it("should return validation error when user has not entered what they were trying to do", () => {
       const data = phoneNumberIssueData("", "additional detail", "UK");
       expectValidationErrorOnPost(
         "/contact-us-questions",
         data,
         "#issueDescription-error",
-        "Enter what you were trying to do",
-        done
+        "Enter what you were trying to do"
       );
     });
 
-    it("should return validation error when user has not entered what happened", (done) => {
+    it("should return validation error when user has not entered what happened", () => {
       const data = phoneNumberIssueData("more detail", "", "UK");
       expectValidationErrorOnPost(
         "/contact-us-questions",
         data,
         "#additionalDescription-error",
-        "Enter what happened",
-        done
+        "Enter what happened"
       );
     });
 
-    it("should return validation error when user has not entered country the phone number is from", (done) => {
+    it("should return validation error when user has not entered country the phone number is from", () => {
       const data = phoneNumberIssueData("more detail", "additional detail", "");
       expectValidationErrorOnPost(
         "/contact-us-questions",
         data,
         "#countryPhoneNumberFrom-error",
-        "Enter which country your phone number is from",
-        done
+        "Enter which country your phone number is from"
       );
     });
 
-    it("should redirect to success page when valid form submitted", (done) => {
+    it("should redirect to success page when valid form submitted", async () => {
       nock(smartAgentApiUrl).post("/").once().reply(200);
 
-      request(app)
+      await request(app)
         .post("/contact-us-questions")
         .type("form")
         .set("Cookie", cookies)
         .send(phoneNumberIssueData("detail", "description", "UK"))
         .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
-        .expect(302, done);
+        .expect(302);
     });
   });
 
-  it("should redirect to success page when form submitted", (done) => {
+  it("should redirect to success page when form submitted", async () => {
     nock(smartAgentApiUrl).post("/").once().reply(200);
 
-    request(app)
+    await request(app)
       .post("/contact-us-questions")
       .type("form")
       .set("Cookie", cookies)
@@ -481,13 +467,13 @@ describe("Integration:: contact us - public user", () => {
         referer: "https://gov.uk/sign-in",
       })
       .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to success page when authenticator app problem form submitted", (done) => {
+  it("should redirect to success page when authenticator app problem form submitted", async () => {
     nock(smartAgentApiUrl).post("/").once().reply(200);
 
-    request(app)
+    await request(app)
       .post("/contact-us-questions")
       .type("form")
       .set("Cookie", cookies)
@@ -503,27 +489,27 @@ describe("Integration:: contact us - public user", () => {
         referer: "https://gov.uk/sign-in",
       })
       .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
-      .expect(302, done);
+      .expect(302);
   });
 
   describe("Links to /contact-us-from-triage-page", () => {
-    it("should redirect to /contact-us", (done) => {
-      request(app)
+    it("should redirect to /contact-us", async () => {
+      await request(app)
         .get("/contact-us-from-triage-page")
         .query("fromURL=http//localhost/sign-in-or-create")
         .expect("Location", `${PATH_NAMES.CONTACT_US}?`)
-        .expect(302, done);
+        .expect(302);
     });
 
-    it("should redirect to /contact-us-further-information", (done) => {
-      request(app)
+    it("should redirect to /contact-us-further-information", async () => {
+      await request(app)
         .get("/contact-us-from-triage-page")
         .query(`theme=${CONTACT_US_THEMES.ID_CHECK_APP}`)
         .expect(
           "Location",
           `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.ID_CHECK_APP}`
         )
-        .expect(302, done);
+        .expect(302);
     });
   });
 });

@@ -42,9 +42,9 @@ describe("Integration:: updated-terms-code", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
@@ -60,29 +60,29 @@ describe("Integration:: updated-terms-code", () => {
     app = undefined;
   });
 
-  it("should return update terms and conditions page", (done) => {
-    request(app)
+  it("should return update terms and conditions page", async () => {
+    await request(app)
       .get(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
-      .expect(HTTP_STATUS_CODES.OK, done);
+      .expect(HTTP_STATUS_CODES.OK);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
       .type("form")
       .send({
         termsAndConditionsResult: "reject",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should redirect to /auth_code when terms accepted", (done) => {
+  it("should redirect to /auth_code when terms accepted", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.UPDATE_PROFILE)
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
       .type("form")
       .set("Cookie", cookies)
@@ -91,6 +91,6 @@ describe("Integration:: updated-terms-code", () => {
         termsAndConditionsResult: "accept",
       })
       .expect("Location", PATH_NAMES.AUTH_CODE)
-      .expect(302, done);
+      .expect(302);
   });
 });

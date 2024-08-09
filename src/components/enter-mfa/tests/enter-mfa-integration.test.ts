@@ -86,12 +86,12 @@ describe("Integration:: enter mfa", () => {
     app = undefined;
   });
 
-  it("should return check your phone page", (done) => {
-    request(app).get(PATH_NAMES.ENTER_MFA).expect(200, done);
+  it("should return check your phone page", async () => {
+    await request(app).get(PATH_NAMES.ENTER_MFA).expect(200);
   });
 
-  it("following a validation error it should not include link to change security codes where account recovery is not permitted", (done) => {
-    request(app)
+  it("following a validation error it should not include link to change security codes where account recovery is not permitted", async () => {
+    await request(app)
       .get(PATH_NAMES.ENTER_MFA)
       .type("form")
       .set("Cookie", cookies)
@@ -107,21 +107,21 @@ describe("Integration:: enter mfa", () => {
           "You can securely change how you get security codes"
         );
       })
-      .expect(200, done);
+      .expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_MFA)
       .type("form")
       .send({
         code: "123456",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should return validation error when code not entered", (done) => {
-    request(app)
+  it("should return validation error when code not entered", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_MFA)
       .type("form")
       .set("Cookie", cookies)
@@ -134,11 +134,11 @@ describe("Integration:: enter mfa", () => {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains("Enter the code");
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when code is less than 6 characters", (done) => {
-    request(app)
+  it("should return validation error when code is less than 6 characters", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_MFA)
       .type("form")
       .set("Cookie", cookies)
@@ -153,11 +153,11 @@ describe("Integration:: enter mfa", () => {
           "Enter the code using only 6 digits"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when code is greater than 6 characters", (done) => {
-    request(app)
+  it("should return validation error when code is greater than 6 characters", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_MFA)
       .type("form")
       .set("Cookie", cookies)
@@ -172,11 +172,11 @@ describe("Integration:: enter mfa", () => {
           "Enter the code using only 6 digits"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when code entered contains letters", (done) => {
-    request(app)
+  it("should return validation error when code entered contains letters", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_MFA)
       .type("form")
       .set("Cookie", cookies)
@@ -191,16 +191,16 @@ describe("Integration:: enter mfa", () => {
           "Enter the code using only 6 digits"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to /auth-code when valid code entered", (done) => {
+  it("should redirect to /auth-code when valid code entered", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.VERIFY_CODE)
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_MFA)
       .type("form")
       .set("Cookie", cookies)
@@ -210,16 +210,16 @@ describe("Integration:: enter mfa", () => {
         phoneNumber: PHONE_NUMBER,
       })
       .expect("Location", PATH_NAMES.AUTH_CODE)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should return validation error when incorrect code entered", (done) => {
+  it("should return validation error when incorrect code entered", async () => {
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).once().reply(400, {
       code: ERROR_CODES.INVALID_MFA_CODE,
       success: false,
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_MFA)
       .type("form")
       .set("Cookie", cookies)
@@ -234,17 +234,17 @@ describe("Integration:: enter mfa", () => {
           " The code you entered is not correct, or may have expired, try entering it again or request a new code"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to security code expired when incorrect code has been entered 5 times", (done) => {
+  it("should redirect to security code expired when incorrect code has been entered 5 times", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "0";
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
       success: false,
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_MFA)
       .type("form")
       .set("Cookie", cookies)
@@ -256,16 +256,16 @@ describe("Integration:: enter mfa", () => {
         "Location",
         `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.MfaMaxRetries}`
       )
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to security code requests blocked when exceeded request limit", (done) => {
+  it("should redirect to security code requests blocked when exceeded request limit", async () => {
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(1).reply(400, {
       code: ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED,
       success: false,
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_MFA)
       .type("form")
       .set("Cookie", cookies)
@@ -277,16 +277,16 @@ describe("Integration:: enter mfa", () => {
         "Location",
         `${PATH_NAMES.SECURITY_CODE_WAIT}?actionType=${SecurityCodeErrorType.MfaBlocked}`
       )
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to security code requested too many times when exceed request limit", (done) => {
+  it("should redirect to security code requested too many times when exceed request limit", async () => {
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
       code: ERROR_CODES.MFA_SMS_MAX_CODES_SENT,
       success: false,
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_MFA)
       .type("form")
       .set("Cookie", cookies)
@@ -298,17 +298,17 @@ describe("Integration:: enter mfa", () => {
         "Location",
         `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.MfaMaxCodesSent}`
       )
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should lock user if he entered 6 incorrect codes in the reauth journey and the logout switch is turned off", (done) => {
+  it("should lock user if he entered 6 incorrect codes in the reauth journey and the logout switch is turned off", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "0";
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
       success: false,
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_MFA)
       .type("form")
       .set("Cookie", cookies)
@@ -320,6 +320,6 @@ describe("Integration:: enter mfa", () => {
         "Location",
         `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.MfaMaxRetries}`
       )
-      .expect(302, done);
+      .expect(302);
   });
 });

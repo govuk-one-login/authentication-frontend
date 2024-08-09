@@ -31,10 +31,12 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
       support2hrLockout: support2hrLockout(),
     });
   } else {
-    const journeyType = getJourneyTypeFromUserSession(req.session.user);
+    const journeyType = getJourneyTypeFromUserSession(req.session.user, {
+      includeReauthentication: true,
+    });
 
     res.render("resend-mfa-code/index.njk", {
-      phoneNumber: req.session.user.redactedPhoneNumber,
+      redactedPhoneNumber: req.session.user.redactedPhoneNumber,
       isResendCodeRequest: req.query?.isResendCodeRequest,
       support2hrLockout: support2hrLockout(),
       supportReauthentication: supportReauthentication(),

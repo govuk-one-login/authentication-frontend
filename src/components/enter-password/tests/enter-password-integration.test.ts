@@ -61,22 +61,22 @@ describe("Integration::enter password", () => {
     nock.cleanAll();
   });
 
-  it("should return enter password page", (done) => {
-    request(app).get(ENDPOINT).expect(200, done);
+  it("should return enter password page", async () => {
+    await request(app).get(ENDPOINT).expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .send({
         password: "password",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should return validation error when password not entered", (done) => {
-    request(app)
+  it("should return validation error when password not entered", async () => {
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -88,14 +88,14 @@ describe("Integration::enter password", () => {
         const $ = cheerio.load(res.text);
         expect($("#password-error").text()).to.contains("Enter your password");
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when password is incorrect", (done) => {
+  it("should return validation error when password is incorrect", async () => {
     nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(401);
     process.env.SUPPORT_2HR_LOCKOUT = "0";
 
-    request(app)
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -109,13 +109,13 @@ describe("Integration::enter password", () => {
           "Enter the correct password"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to /auth-code when password is correct (VTR Cm)", (done) => {
+  it("should redirect to /auth-code when password is correct (VTR Cm)", async () => {
     nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(200);
 
-    request(app)
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -124,15 +124,15 @@ describe("Integration::enter password", () => {
         password: "password",
       })
       .expect("Location", PATH_NAMES.AUTH_CODE)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to /account-locked from sign-in flow when incorrect password entered 5 times", (done) => {
+  it("should redirect to /account-locked from sign-in flow when incorrect password entered 5 times", async () => {
     nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).times(6).reply(400, {
       code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED,
     });
 
-    request(app)
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -141,6 +141,6 @@ describe("Integration::enter password", () => {
         password: "password",
       })
       .expect("Location", PATH_NAMES.ACCOUNT_LOCKED)
-      .expect(302, done);
+      .expect(302);
   });
 });

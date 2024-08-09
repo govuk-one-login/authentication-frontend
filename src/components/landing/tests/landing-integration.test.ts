@@ -37,10 +37,10 @@ describe("Integration:: landing", () => {
     app = undefined;
   });
 
-  it("should redirect to /sign-in-or-create", (done) => {
-    request(app)
+  it("should redirect to /sign-in-or-create", async () => {
+    await request(app)
       .get(PATH_NAMES.ROOT)
       .expect("Location", PATH_NAMES.SIGN_IN_OR_CREATE)
-      .expect(302, done);
+      .expect(302);
   });
 });

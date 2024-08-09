@@ -115,7 +115,7 @@ describe("Integration::prove identity", () => {
     expect(response.headers.location).to.eq(PATH_NAMES.UNAVAILABLE_PERMANENT);
   });
 
-  const makeRequestToProveIdentityEndpoint = () => {
+  const makeRequestToProveIdentityEndpoint = async () => {
     return request(app).get(PATH_NAMES.PROVE_IDENTITY).set("Cookie", cookies);
   };
 });

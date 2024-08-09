@@ -17,10 +17,11 @@ describe("Integration::healthcheck", () => {
 
   after(() => {
     sandbox.restore();
+    sinon.restore();
     app = undefined;
   });
 
-  it("healthcheck should return 200 OK", (done) => {
-    request(app).get(PATH_NAMES.HEALTHCHECK).expect(200, done);
+  it("healthcheck should return 200 OK", async () => {
+    await request(app).get(PATH_NAMES.HEALTHCHECK).expect(200);
   });
 });

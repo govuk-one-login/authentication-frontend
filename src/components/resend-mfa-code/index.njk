@@ -7,7 +7,7 @@
 {% set hrefBack = 'enter-code' %}
 
 {% set phoneNumberMessage %}
-   {{ 'pages.resendMfaCode.phoneNumber.isResendCodeRequest' | translate }} <span class='govuk-!-font-weight-bold'>{{ phoneNumber | returnLastCharacters({limit: 3}) }}</span>
+   {{ 'pages.resendMfaCode.phoneNumber.isResendCodeRequest' | translate }} <span class='govuk-!-font-weight-bold'>{{ redactedPhoneNumber | returnLastCharacters({limit: 3}) }}</span>
 {% endset %}
 
 {% block content %}

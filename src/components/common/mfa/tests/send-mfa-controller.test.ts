@@ -21,6 +21,7 @@ describe("send mfa controller", () => {
   });
 
   afterEach(() => {
+    process.env.SUPPORT_REAUTHENTICATION = "0";
     sinon.restore();
   });
 
@@ -68,6 +69,52 @@ describe("send mfa controller", () => {
   });
 
   describe("Invalid MFA provided", () => {
+    it("sign-in failed mfa check", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "0";
+      const fakeService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: false,
+          data: {
+            code: 1042,
+          },
+        }),
+      } as unknown as MfaServiceInterface;
+
+      const getJourneyTypeFromUserSessionSpy = sinon.spy(
+        journey,
+        "getJourneyTypeFromUserSession"
+      );
+
+      res.locals.sessionId = "123456-djjad";
+      req.session.user = {
+        email: "test@test.com",
+      };
+      req.session.client = {
+        redirectUri: "https://rp/",
+      };
+      req.path = PATH_NAMES.RESEND_MFA_CODE;
+
+      sendMfaGeneric(fakeService)(req as Request, res as Response);
+
+      expect(
+        getJourneyTypeFromUserSessionSpy
+      ).to.have.been.calledOnceWithExactly(req.session.user, {
+        includeReauthentication: true,
+      });
+      expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.be
+        .undefined;
+      expect(fakeService.sendMfaCode).to.have.been.calledOnceWithExactly(
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        undefined
+      );
+    });
+
     it("reauth failed mfa check", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
       const fakeService: MfaServiceInterface = {

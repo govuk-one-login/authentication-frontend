@@ -39,9 +39,9 @@ describe("Integration::register create password", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
@@ -57,23 +57,23 @@ describe("Integration::register create password", () => {
     app = undefined;
   });
 
-  it("should return create password page", (done) => {
-    request(app).get(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD).expect(200, done);
+  it("should return create password page", async () => {
+    await request(app).get(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD).expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .send({
         email: "test@test.com",
         password: "test@test.com",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should return validation error when password not entered", (done) => {
-    request(app)
+  it("should return validation error when password not entered", async () => {
+    await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .set("Cookie", cookies)
@@ -89,11 +89,11 @@ describe("Integration::register create password", () => {
           "Re-type your password"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when passwords don't match", (done) => {
-    request(app)
+  it("should return validation error when passwords don't match", async () => {
+    await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .set("Cookie", cookies)
@@ -108,11 +108,11 @@ describe("Integration::register create password", () => {
           "Enter the same password in both fields"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when password less than 8 characters", (done) => {
-    request(app)
+  it("should return validation error when password less than 8 characters", async () => {
+    await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .set("Cookie", cookies)
@@ -127,11 +127,11 @@ describe("Integration::register create password", () => {
           "Your password must be at least 8 characters long and must include letters and numbers"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when no numbers present in password", (done) => {
-    request(app)
+  it("should return validation error when no numbers present in password", async () => {
+    await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .set("Cookie", cookies)
@@ -146,11 +146,11 @@ describe("Integration::register create password", () => {
           "Your password must be at least 8 characters long and must include letters and numbers"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when password all numeric", (done) => {
-    request(app)
+  it("should return validation error when password all numeric", async () => {
+    await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .set("Cookie", cookies)
@@ -165,16 +165,16 @@ describe("Integration::register create password", () => {
           "Your password must be at least 8 characters long and must include letters and numbers"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when password is amongst most common passwords", (done) => {
+  it("should return validation error when password is amongst most common passwords", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.SIGNUP_USER)
       .once()
       .reply(400, { code: 1040 });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .set("Cookie", cookies)
@@ -189,16 +189,16 @@ describe("Integration::register create password", () => {
           "Enter a stronger password. Do not use very common passwords, such as ‘password’ or a sequence of numbers."
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to get security codes when valid password entered", (done) => {
+  it("should redirect to get security codes when valid password entered", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.SIGNUP_USER)
       .once()
       .reply(HTTP_STATUS_CODES.OK, {});
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
       .type("form")
       .set("Cookie", cookies)
@@ -208,6 +208,6 @@ describe("Integration::register create password", () => {
         "confirm-password": "testpassword1",
       })
       .expect("Location", PATH_NAMES.GET_SECURITY_CODES)
-      .expect(302, done);
+      .expect(302);
   });
 });
