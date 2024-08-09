@@ -89,7 +89,7 @@
     "libphonenumber-js": "^1.9.44",
     "nunjucks": "^3.2.3",
     "pino": "^8.19.0",
-    "pino-http": "^9.0.0",
+    "pino-http": "^10.2.0",
     "prettier": "^3.2.5",
     "qrcode": "^1.5.0",
     "redis": "^4.6.13",
