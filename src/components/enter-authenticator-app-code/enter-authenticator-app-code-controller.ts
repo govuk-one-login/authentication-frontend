@@ -133,17 +133,27 @@ export const enterAuthenticatorAppCodePost = (
       journeyType
     );
 
+    const checkEmailLink = pathWithQueryParam(
+      PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
+      "type",
+      MFA_METHOD_TYPE.AUTH_APP
+    );
+
     if (!result.success) {
       const error = result.data.code;
 
       if (error === ERROR_CODES.AUTH_APP_INVALID_CODE) {
-        const error = formatValidationError(
+        const validationError = formatValidationError(
           "code",
           req.t(
             "pages.enterAuthenticatorAppCode.code.validationError.invalidCode"
           )
         );
-        return renderBadRequest(res, req, template, error);
+
+        return renderBadRequest(res, req, template, validationError, {
+          isAccountRecoveryPermitted: req.session.user.isAccountRecoveryPermitted,
+          checkEmailLink,
+        });
       }
 
       if (error === ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED) {
