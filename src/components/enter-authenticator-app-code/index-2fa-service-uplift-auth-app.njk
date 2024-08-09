@@ -26,7 +26,7 @@
     <form id="form-tracking" action="/enter-authenticator-app-code" method="post" novalidate="novalidate">
 
         <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-        <input type="hidden" name="isAccountRecoveryPermitted" value="{{isAccountRecoveryPermitted}}"/>
+        <input type="hidden" name="isAccountRecoveryPermitted" value={{isAccountRecoveryPermitted}} />
         <input type="hidden" name="checkEmailLink" value="{{checkEmailLink}}"/>
 
         {{ govukInput({
@@ -54,7 +54,7 @@
 
     </form>
 
-    {% if isAccountRecoveryPermitted === true %}
+    {% if isAccountRecoveryPermitted %}
         {% set detailsHTML %}
             <p class="govuk-body">
                 {{'pages.enterAuthenticatorAppCode.details.text1' | translate}}
