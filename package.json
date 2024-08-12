@@ -132,7 +132,7 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-no-only-tests": "^3.1.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "husky": "^9.0.10",
     "mocha": "10.7.3",
     "mock-req-res": "^1.2.0",
