@@ -49,7 +49,8 @@
       <a href="{{'pages.enterMfa.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterMfa.details.sendCodeLinkText'| translate}}</a>
       {{'pages.enterMfa.details.text 2' | translate}}
     </p>
-    {% if supportAccountRecovery === true %}
+
+    {% if supportAccountRecovery === true or supportAccountRecovery === "true" %}
         <p class="govuk-body">
             {{ 'pages.enterMfa.details.changeGetSecurityCodesText' | translate }}
             <a href={{ checkEmailLink }} class="govuk-link"
@@ -73,4 +74,3 @@
 
 {{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "sign in", contentId: "19601dd7-be55-4ab6-aa44-a6358c4239dc", loggedInStatus: false, dynamic: false })}}
 {% endblock %}
- 
