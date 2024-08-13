@@ -58,29 +58,29 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
     app = undefined;
   });
 
-  it("should return resend mfa code page", (done) => {
-    request(app)
+  it("should return resend mfa code page", async () => {
+    await request(app)
       .get(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
-      .expect(200, done);
+      .expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
       .type("form")
       .send({
         code: "123456",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should redirect to /check-your-phone when new code requested", (done) => {
+  it("should redirect to /check-your-phone when new code requested", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
       .type("form")
       .set("Cookie", cookies)
@@ -89,21 +89,21 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
         isResendCodeRequest: true,
       })
       .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should return 500 error screen when API call fails", (done) => {
+  it("should return 500 error screen when API call fails", async () => {
     nock(baseApi).post(API_ENDPOINTS.SEND_NOTIFICATION).once().reply(500, {
       errorCode: "1234",
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
       })
-      .expect(500, done);
+      .expect(500);
   });
 });

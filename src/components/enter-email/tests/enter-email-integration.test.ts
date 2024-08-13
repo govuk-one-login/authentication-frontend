@@ -67,6 +67,7 @@ describe("Integration::enter email", () => {
   });
 
   after(() => {
+    sinon.restore();
     app = undefined;
   });
 
@@ -74,18 +75,18 @@ describe("Integration::enter email", () => {
     request(app).get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200, done);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .send({
         email: "test@test.com",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should return validation error when email not entered", (done) => {
-    request(app)
+  it("should return validation error when email not entered", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
@@ -99,11 +100,11 @@ describe("Integration::enter email", () => {
           "Enter your email address"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when invalid email entered", (done) => {
-    request(app)
+  it("should return validation error when invalid email entered", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
@@ -119,7 +120,7 @@ describe("Integration::enter email", () => {
       })
       .expect(400);
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
@@ -135,7 +136,7 @@ describe("Integration::enter email", () => {
       })
       .expect(400);
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
@@ -149,10 +150,10 @@ describe("Integration::enter email", () => {
           "Enter an email address in the correct format, like name@example.com\n"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to /enter-password page when email address exists", (done) => {
+  it("should redirect to /enter-password page when email address exists", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
@@ -161,7 +162,7 @@ describe("Integration::enter email", () => {
         doesUserExist: true,
       });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
@@ -170,10 +171,10 @@ describe("Integration::enter email", () => {
         email: "test@test.com",
       })
       .expect("Location", PATH_NAMES.ENTER_PASSWORD)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to /account-not-found when email address not found", (done) => {
+  it("should redirect to /account-not-found when email address not found", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
@@ -182,7 +183,7 @@ describe("Integration::enter email", () => {
         doesUserExist: false,
       });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
@@ -191,10 +192,10 @@ describe("Integration::enter email", () => {
         email: "test@test.com",
       })
       .expect("Location", PATH_NAMES.ACCOUNT_NOT_FOUND)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should return internal server error when /user-exists API call response is 500", (done) => {
+  it("should return internal server error when /user-exists API call response is 500", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
@@ -205,7 +206,7 @@ describe("Integration::enter email", () => {
       .once()
       .reply(200, {});
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
@@ -213,10 +214,10 @@ describe("Integration::enter email", () => {
         _csrf: token,
         email: "test@test.com",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should redirect to /enter-password page when email address exists and check re-auth users api call is successfully", (done) => {
+  it("should redirect to /enter-password page when email address exists and check re-auth users api call is successfully", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
 
     nock(baseApi)
@@ -232,7 +233,7 @@ describe("Integration::enter email", () => {
         doesUserExist: true,
       });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
       .type("form")
       .set("Cookie", cookies)
@@ -241,7 +242,7 @@ describe("Integration::enter email", () => {
         email: "test@test.com",
       })
       .expect("Location", PATH_NAMES.ENTER_PASSWORD)
-      .expect(302, done);
+      .expect(302);
   });
 
   it("should redirect to /signed-out with login_required error when user fails re-auth", async () => {

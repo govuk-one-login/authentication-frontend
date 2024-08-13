@@ -39,9 +39,9 @@ describe("Integration::enter email (create account)", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
@@ -57,22 +57,22 @@ describe("Integration::enter email (create account)", () => {
     app = undefined;
   });
 
-  it("should return enter email page", (done) => {
-    request(app).get(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT).expect(200, done);
+  it("should return enter email page", async () => {
+    await request(app).get(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT).expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
       .type("form")
       .send({
         email: "test@test.com",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should return validation error when email not entered", (done) => {
-    request(app)
+  it("should return validation error when email not entered", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
       .type("form")
       .set("Cookie", cookies)
@@ -86,11 +86,11 @@ describe("Integration::enter email (create account)", () => {
           "Enter your email address"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when invalid email entered", (done) => {
-    request(app)
+  it("should return validation error when invalid email entered", async () => {
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
       .type("form")
       .set("Cookie", cookies)
@@ -106,7 +106,7 @@ describe("Integration::enter email (create account)", () => {
       })
       .expect(400);
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
       .type("form")
       .set("Cookie", cookies)
@@ -122,7 +122,7 @@ describe("Integration::enter email (create account)", () => {
       })
       .expect(400);
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
       .type("form")
       .set("Cookie", cookies)
@@ -136,10 +136,10 @@ describe("Integration::enter email (create account)", () => {
           "Enter an email address in the correct format, like name@example.com\n"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to /enter-password page when email address exists", (done) => {
+  it("should redirect to /enter-password page when email address exists", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
@@ -148,7 +148,7 @@ describe("Integration::enter email (create account)", () => {
         doesUserExist: true,
       });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
       .type("form")
       .set("Cookie", cookies)
@@ -157,10 +157,10 @@ describe("Integration::enter email (create account)", () => {
         email: "test@test.com",
       })
       .expect("Location", PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to /check-your-email when email address not found", (done) => {
+  it("should redirect to /check-your-email when email address not found", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
@@ -172,7 +172,7 @@ describe("Integration::enter email (create account)", () => {
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
       .type("form")
       .set("Cookie", cookies)
@@ -181,15 +181,15 @@ describe("Integration::enter email (create account)", () => {
         email: "test@test.com",
       })
       .expect("Location", PATH_NAMES.CHECK_YOUR_EMAIL)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should return internal server error when /user-exists API call response is 500", (done) => {
+  it("should return internal server error when /user-exists API call response is 500", async () => {
     nock(baseApi).post(API_ENDPOINTS.USER_EXISTS).once().reply(500, {
       message: "Internal Server error",
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
       .type("form")
       .set("Cookie", cookies)
@@ -197,10 +197,10 @@ describe("Integration::enter email (create account)", () => {
         _csrf: token,
         email: "test@test.com",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should redirect to /security-code-requested-too-many-times when exceeded OTP request limit", (done) => {
+  it("should redirect to /security-code-requested-too-many-times when exceeded OTP request limit", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
@@ -212,7 +212,7 @@ describe("Integration::enter email (create account)", () => {
       .once()
       .reply(400, { code: ERROR_CODES.VERIFY_EMAIL_CODE_REQUEST_BLOCKED });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
       .type("form")
       .set("Cookie", cookies)
@@ -224,10 +224,10 @@ describe("Integration::enter email (create account)", () => {
         "Location",
         `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.EmailBlocked}`
       )
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to /security-code-invalid-request when request OTP more than 5 times", (done) => {
+  it("should redirect to /security-code-invalid-request when request OTP more than 5 times", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
@@ -239,7 +239,7 @@ describe("Integration::enter email (create account)", () => {
       .once()
       .reply(400, { code: ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
       .type("form")
       .set("Cookie", cookies)
@@ -252,6 +252,6 @@ describe("Integration::enter email (create account)", () => {
           "you asked to resend the security code too many codes"
         );
       })
-      .expect(200, done);
+      .expect(200);
   });
 });

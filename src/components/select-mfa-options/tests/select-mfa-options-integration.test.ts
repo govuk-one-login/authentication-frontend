@@ -35,9 +35,9 @@ describe("Integration::select-mfa-options", () => {
 
     app = await require("../../../app").createApp();
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.GET_SECURITY_CODES)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
@@ -53,22 +53,22 @@ describe("Integration::select-mfa-options", () => {
     app = undefined;
   });
 
-  it("should return get security codes page", (done) => {
-    request(app).get(PATH_NAMES.GET_SECURITY_CODES).expect(200, done);
+  it("should return get security codes page", async () => {
+    await request(app).get(PATH_NAMES.GET_SECURITY_CODES).expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.GET_SECURITY_CODES)
       .type("form")
       .send({
         mfaOptions: "SMS",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should return validation error when mfa option not selected", (done) => {
-    request(app)
+  it("should return validation error when mfa option not selected", async () => {
+    await request(app)
       .post(PATH_NAMES.GET_SECURITY_CODES)
       .type("form")
       .set("Cookie", cookies)
@@ -82,11 +82,11 @@ describe("Integration::select-mfa-options", () => {
           "Select how you want to get security codes"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to /setup-authenticator-app page when mfaOptions is AUTH_APP", (done) => {
-    request(app)
+  it("should redirect to /setup-authenticator-app page when mfaOptions is AUTH_APP", async () => {
+    await request(app)
       .post(PATH_NAMES.GET_SECURITY_CODES)
       .type("form")
       .set("Cookie", cookies)
@@ -95,11 +95,11 @@ describe("Integration::select-mfa-options", () => {
         mfaOptions: "AUTH_APP",
       })
       .expect("Location", PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to /enter-phone-number page when mfaOptions is SMS", (done) => {
-    request(app)
+  it("should redirect to /enter-phone-number page when mfaOptions is SMS", async () => {
+    await request(app)
       .post(PATH_NAMES.GET_SECURITY_CODES)
       .type("form")
       .set("Cookie", cookies)
@@ -108,6 +108,6 @@ describe("Integration::select-mfa-options", () => {
         mfaOptions: "SMS",
       })
       .expect("Location", PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
-      .expect(302, done);
+      .expect(302);
   });
 });

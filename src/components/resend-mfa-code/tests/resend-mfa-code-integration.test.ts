@@ -10,29 +10,34 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
+const { testPhoneNumber, testRedactedPhoneNumber } = commonVariables;
 
 describe("Integration:: resend mfa code", () => {
   let token: string | string[];
   let cookies: string;
   let app: any;
   let baseApi: string;
+  let validateSessionStub: sinon.SinonStub<any[], any>;
 
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
-    sinon
+    validateSessionStub = sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: "7867",
+          phoneNumber: testPhoneNumber,
+          redactedPhoneNumber: testRedactedPhoneNumber,
           journey: {
             nextPath: PATH_NAMES.ENTER_MFA,
             optionalPaths: [PATH_NAMES.RESEND_MFA_CODE],
           },
+          reauthenticate: "reauth",
         };
 
         next();
@@ -55,44 +60,75 @@ describe("Integration:: resend mfa code", () => {
     nock.cleanAll();
   });
 
+  afterEach(() => {
+    validateSessionStub.restore();
+  });
+
   after(() => {
-    sinon.restore();
+    validateSessionStub.restore();
     app = undefined;
   });
 
-  it("should return resend mfa code page", (done) => {
-    request(app).get(PATH_NAMES.RESEND_MFA_CODE).expect(200, done);
-
-    it("should include the last three digits of the user's telephone number", (done) => {
-      request(app)
-        .get(PATH_NAMES.RESEND_MFA_CODE)
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($(".govuk-inset-text").text()).to.eq(
-            "We will send a code to your phone number ending with 867"
-          );
-        })
-        .expect(200, done);
-    });
+  it("should return resend mfa code page", async () => {
+    await request(app)
+      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("title").text()).to.contain("Get security code");
+      })
+      .expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should include the last three digits of the user's telephone number", async () => {
+    await request(app)
+      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($.text()).to.contain(testRedactedPhoneNumber.slice(-3));
+      })
+      .expect(200);
+  });
+
+  it("should state user could be locked out", async () => {
+    process.env.SUPPORT_2HR_LOCKOUT = "1";
+    await request(app)
+      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .expect((res) => {
+        const $ = cheerio.load(res.text);
+        expect($.text()).to.contain("you will be locked out for 2 hours.");
+      })
+      .expect(200);
+  });
+
+  it("should state reauthenticating user could be logged out", async () => {
+    process.env.SUPPORT_REAUTHENTICATION = "1";
+    process.env.SUPPORT_2HR_LOCKOUT = "1";
+    await request(app)
+      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .expect((res) => {
+        const $ = cheerio.load(res.text);
+        expect($.text()).to.contain("you will be signed out");
+      })
+      .expect(200);
+  });
+
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.RESEND_MFA_CODE)
       .type("form")
       .send({
         code: "123456",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should redirect to /enter-code when new code requested as part of sign in journey", (done) => {
+  it("should redirect to /enter-code when new code requested as part of sign in journey", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.MFA)
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.RESEND_MFA_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -100,16 +136,16 @@ describe("Integration:: resend mfa code", () => {
         _csrf: token,
       })
       .expect("Location", PATH_NAMES.ENTER_MFA)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to /check-your-phone when new code requested as part of account creation journey", (done) => {
+  it("should redirect to /check-your-phone when new code requested as part of account creation journey", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.MFA)
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.RESEND_MFA_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -118,12 +154,12 @@ describe("Integration:: resend mfa code", () => {
         isResendCodeRequest: true,
       })
       .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active", () => {
+  it("should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active", async () => {
     const testSpecificCookies = cookies + "; re=true";
-    request(app)
+    await request(app)
       .get(PATH_NAMES.RESEND_MFA_CODE)
       .set("Cookie", testSpecificCookies)
       .expect((res) => {
@@ -131,22 +167,39 @@ describe("Integration:: resend mfa code", () => {
       });
   });
 
-  it("should return 500 error screen when API call fails", (done) => {
+  it("should return 500 error screen when API call fails", async () => {
     nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(500, {
       errorCode: "1234",
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.RESEND_MFA_CODE)
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", (done) => {
+  it("should return 400 error screen when API call fails", async () => {
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
+      errorCode: "1015",
+    });
+
+    await request(app)
+      .post(PATH_NAMES.RESEND_MFA_CODE)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+      })
+      .expect(500);
+  });
+
+  it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", async () => {
+    process.env.SUPPORT_REAUTHENTICATION = "0";
+
     nock(baseApi)
       .post(API_ENDPOINTS.MFA)
       .times(6)
@@ -163,10 +216,12 @@ describe("Integration:: resend mfa code", () => {
         "Location",
         "/security-code-requested-too-many-times?actionType=mfaMaxCodesSent"
       )
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to /security-code-invalid-request when exceeded OTP request limit", (done) => {
+  it("should redirect to /security-code-invalid-request when exceeded OTP request limit", async () => {
+    process.env.SUPPORT_REAUTHENTICATION = "0";
+
     nock(baseApi)
       .post(API_ENDPOINTS.MFA)
       .once()
@@ -183,6 +238,6 @@ describe("Integration:: resend mfa code", () => {
         "Location",
         "/security-code-invalid-request?actionType=mfaBlocked"
       )
-      .expect(302, done);
+      .expect(302);
   });
 });

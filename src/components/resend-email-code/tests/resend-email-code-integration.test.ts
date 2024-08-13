@@ -59,27 +59,27 @@ describe("Integration:: resend email code", () => {
     app = undefined;
   });
 
-  it("should return resend email code page", (done) => {
-    request(app).get(PATH_NAMES.RESEND_EMAIL_CODE).expect(200, done);
+  it("should return resend email code page", async () => {
+    await request(app).get(PATH_NAMES.RESEND_EMAIL_CODE).expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.RESEND_EMAIL_CODE)
       .type("form")
       .send({
         code: "123456",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should redirect to /check-your-email when new code requested as part of account creation journey", (done) => {
+  it("should redirect to /check-your-email when new code requested as part of account creation journey", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.RESEND_EMAIL_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -87,12 +87,12 @@ describe("Integration:: resend email code", () => {
         _csrf: token,
       })
       .expect("Location", PATH_NAMES.CHECK_YOUR_EMAIL)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active", () => {
+  it("should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active", async () => {
     const testSpecificCookies = cookies + "; re=true";
-    request(app)
+    await request(app)
       .get(PATH_NAMES.RESEND_EMAIL_CODE)
       .set("Cookie", testSpecificCookies)
       .expect((res) => {
@@ -100,28 +100,28 @@ describe("Integration:: resend email code", () => {
       });
   });
 
-  it("should return 500 error screen when API call fails", (done) => {
+  it("should return 500 error screen when API call fails", async () => {
     nock(baseApi).post(API_ENDPOINTS.SEND_NOTIFICATION).once().reply(500, {
       errorCode: "1234",
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.RESEND_EMAIL_CODE)
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should redirect to /security-code-invalid-request when request OTP more than 5 times", (done) => {
+  it("should redirect to /security-code-invalid-request when request OTP more than 5 times", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
       .times(6)
       .reply(400, { code: ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.RESEND_EMAIL_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -132,16 +132,16 @@ describe("Integration:: resend email code", () => {
         "Location",
         "/security-code-invalid-request?actionType=emailMaxCodesSent"
       )
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should redirect to /security-code-requested-too-many-times when exceeded OTP request limit", (done) => {
+  it("should redirect to /security-code-requested-too-many-times when exceeded OTP request limit", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
       .once()
       .reply(400, { code: ERROR_CODES.VERIFY_EMAIL_CODE_REQUEST_BLOCKED });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.RESEND_EMAIL_CODE)
       .type("form")
       .set("Cookie", cookies)
@@ -152,6 +152,6 @@ describe("Integration:: resend email code", () => {
         "Location",
         "/security-code-requested-too-many-times?actionType=emailBlocked"
       )
-      .expect(302, done);
+      .expect(302);
   });
 });

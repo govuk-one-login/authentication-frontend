@@ -90,7 +90,7 @@ describe("Integration:: enter mfa", () => {
     app = undefined;
   });
 
-  it("should redirect to rp if user entered 6 incorrect codes in the reauth journey", (done) => {
+  it("should redirect to rp if user entered 6 incorrect codes in the reauth journey", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
 
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
@@ -98,7 +98,7 @@ describe("Integration:: enter mfa", () => {
       success: false,
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.ENTER_MFA)
       .type("form")
       .set("Cookie", cookies)
@@ -107,6 +107,6 @@ describe("Integration:: enter mfa", () => {
         code: "123455",
       })
       .expect("Location", EXAMPLE_REDIRECT_URI.concat("?error=login_required"))
-      .expect(302, done);
+      .expect(302);
   });
 });

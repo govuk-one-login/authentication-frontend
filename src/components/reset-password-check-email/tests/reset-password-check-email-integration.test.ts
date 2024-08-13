@@ -65,18 +65,18 @@ describe("Integration::reset password check email ", () => {
     app = undefined;
   });
 
-  it("should return reset password check email page", (done) => {
+  it("should return reset password check email page", async () => {
     nock(baseApi).post("/reset-password-request").once().reply(200);
-    request(app).get("/reset-password-check-email").expect(200, done);
+    await request(app).get("/reset-password-check-email").expect(200);
   });
 
-  it("should return error page when 6 password reset codes requested", (done) => {
+  it("should return error page when 6 password reset codes requested", async () => {
     nock(baseApi)
       .post("/reset-password-request")
       .times(6)
       .reply(400, { code: 1022 });
 
-    request(app)
+    await request(app)
       .get("/reset-password-check-email")
       .expect(function (res) {
         const $ = cheerio.load(res.text);
@@ -84,16 +84,16 @@ describe("Integration::reset password check email ", () => {
           "You asked to resend the security code too many times"
         );
       })
-      .expect(200, done);
+      .expect(200);
   });
 
-  it("should return 2hr error page when 6 incorrect codes entered and flag is turned on", (done) => {
+  it("should return 2hr error page when 6 incorrect codes entered and flag is turned on", async () => {
     process.env.SUPPORT_2HR_LOCKOUT = "1";
     nock(baseApi).post(API_ENDPOINTS.RESET_PASSWORD_REQUEST).reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES,
     });
 
-    request(app)
+    await request(app)
       .get("/reset-password-check-email")
       .expect(function (res) {
         const $ = cheerio.load(res.text);
@@ -102,16 +102,16 @@ describe("Integration::reset password check email ", () => {
         );
         expect($(".govuk-body").text()).to.contains("Wait for 2 hours");
       })
-      .expect(200, done);
+      .expect(200);
   });
 
-  it("should return error page when blocked from requesting codes", (done) => {
+  it("should return error page when blocked from requesting codes", async () => {
     nock(baseApi)
       .post("/reset-password-request")
       .once()
       .reply(400, { code: 1023 });
 
-    request(app)
+    await request(app)
       .get("/reset-password-check-email")
       .expect(function (res) {
         const $ = cheerio.load(res.text);
@@ -119,13 +119,13 @@ describe("Integration::reset password check email ", () => {
           "You cannot get a new security code at the moment"
         );
       })
-      .expect(200, done);
+      .expect(200);
   });
 
-  it("should redisplay page with error", (done) => {
+  it("should redisplay page with error", async () => {
     nock(baseApi).post("/verify-code").reply(400, { code: 1021 });
 
-    request(app)
+    await request(app)
       .post("/reset-password-check-email")
       .type("form")
       .set("Cookie", cookies)
@@ -139,21 +139,21 @@ describe("Integration::reset password check email ", () => {
           "The code you entered is not correct"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return internal server error when /reset-password-request API call response is 500", (done) => {
+  it("should return internal server error when /reset-password-request API call response is 500", async () => {
     nock(baseApi).post("/reset-password-request").once().reply(500, {});
-    request(app).get("/reset-password-check-email").expect(500, done);
+    await request(app).get("/reset-password-check-email").expect(500);
   });
 
-  it("should redirect to /reset-password if code is correct", (done) => {
+  it("should redirect to /reset-password if code is correct", async () => {
     nock(baseApi)
       .persist()
       .post(API_ENDPOINTS.VERIFY_CODE)
       .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
 
-    request(app)
+    await request(app)
       .post("/reset-password-check-email")
       .type("form")
       .set("Cookie", cookies)
@@ -162,6 +162,6 @@ describe("Integration::reset password check email ", () => {
         code: "123456",
       })
       .expect("Location", PATH_NAMES.RESET_PASSWORD)
-      .expect(302, done);
+      .expect(302);
   });
 });

@@ -44,9 +44,9 @@ describe("Integration::2fa sms (in reset password flow)", () => {
 
     nock(baseApi).persist().post("/mfa").reply(204);
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
@@ -63,17 +63,17 @@ describe("Integration::2fa sms (in reset password flow)", () => {
     app = undefined;
   });
 
-  it("should return check your phone page", (done) => {
+  it("should return check your phone page", async () => {
     nock(baseApi).persist().post("/mfa").reply(204);
-    request(app).get("/reset-password-2fa-sms").expect(200, done);
+    await request(app).get("/reset-password-2fa-sms").expect(200);
   });
 
-  it("should render index-security-code-entered-exceeded.njk when user is locked out due to too many incorrect codes", (done) => {
+  it("should render index-security-code-entered-exceeded.njk when user is locked out due to too many incorrect codes", async () => {
     process.env.SUPPORT_2HR_LOCKOUT = "1";
     nock(baseApi).persist().post("/mfa").reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
     });
-    request(app)
+    await request(app)
       .get("/reset-password-2fa-sms")
       .expect(function (res) {
         const $ = cheerio.load(res.text);
@@ -82,10 +82,10 @@ describe("Integration::2fa sms (in reset password flow)", () => {
         );
         expect($(".govuk-body").text()).to.contains("Wait for 2 hours");
       })
-      .expect(200, done);
+      .expect(200);
   });
 
-  it("should redirect to reset password step when valid sms code is entered", (done) => {
+  it("should redirect to reset password step when valid sms code is entered", async () => {
     nock(baseApi)
       .persist()
       .post(API_ENDPOINTS.VERIFY_CODE)
@@ -100,16 +100,16 @@ describe("Integration::2fa sms (in reset password flow)", () => {
         code: "123456",
       })
       .expect("Location", PATH_NAMES.RESET_PASSWORD)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should return error page when when user is locked out", (done) => {
+  it("should return error page when when user is locked out", async () => {
     nock(baseApi).persist().post(API_ENDPOINTS.VERIFY_CODE).reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
       success: false,
     });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
       .type("form")
       .set("Cookie", cookies)
@@ -121,6 +121,6 @@ describe("Integration::2fa sms (in reset password flow)", () => {
         "Location",
         `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.MfaMaxRetries}`
       )
-      .expect(302, done);
+      .expect(302);
   });
 });

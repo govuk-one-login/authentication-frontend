@@ -41,9 +41,9 @@ describe("Integration:: check your email", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    request(app)
+    await request(app)
       .get(PATH_NAMES.CHECK_YOUR_EMAIL)
-      .end((err, res) => {
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
@@ -60,22 +60,22 @@ describe("Integration:: check your email", () => {
     delete process.env.SUPPORT_CHECK_EMAIL_FRAUD;
   });
 
-  it("should return verify email page", (done) => {
-    request(app).get(PATH_NAMES.CHECK_YOUR_EMAIL).expect(200, done);
+  it("should return verify email page", async () => {
+    await request(app).get(PATH_NAMES.CHECK_YOUR_EMAIL).expect(200);
   });
 
-  it("should return error when csrf not present", (done) => {
-    request(app)
+  it("should return error when csrf not present", async () => {
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL)
       .type("form")
       .send({
         code: "123456",
       })
-      .expect(500, done);
+      .expect(500);
   });
 
-  it("should return validation error when code not entered", (done) => {
-    request(app)
+  it("should return validation error when code not entered", async () => {
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL)
       .type("form")
       .set("Cookie", cookies)
@@ -87,11 +87,11 @@ describe("Integration:: check your email", () => {
         const $ = cheerio.load(res.text);
         expect($("#code-error").text()).to.contains("Enter the code");
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when code is less than 6 characters", (done) => {
-    request(app)
+  it("should return validation error when code is less than 6 characters", async () => {
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL)
       .type("form")
       .set("Cookie", cookies)
@@ -105,11 +105,11 @@ describe("Integration:: check your email", () => {
           "Enter the code using only 6 digits"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when code is greater than 6 characters", (done) => {
-    request(app)
+  it("should return validation error when code is greater than 6 characters", async () => {
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL)
       .type("form")
       .set("Cookie", cookies)
@@ -123,11 +123,11 @@ describe("Integration:: check your email", () => {
           "Enter the code using only 6 digits"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return validation error when code entered contains letters", (done) => {
-    request(app)
+  it("should return validation error when code entered contains letters", async () => {
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL)
       .type("form")
       .set("Cookie", cookies)
@@ -141,10 +141,10 @@ describe("Integration:: check your email", () => {
           "Enter the code using only 6 digits"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should redirect to /create-password when valid code entered", (done) => {
+  it("should redirect to /create-password when valid code entered", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.VERIFY_CODE)
       .once()
@@ -158,7 +158,7 @@ describe("Integration:: check your email", () => {
         isBlockedStatus: "Pending",
       });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL)
       .type("form")
       .set("Cookie", cookies)
@@ -167,10 +167,10 @@ describe("Integration:: check your email", () => {
         code: "123456",
       })
       .expect("Location", PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
-      .expect(302, done);
+      .expect(302);
   });
 
-  it("should return validation error when incorrect code entered", (done) => {
+  it("should return validation error when incorrect code entered", async () => {
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).once().reply(400, {
       code: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE,
       success: false,
@@ -184,7 +184,7 @@ describe("Integration:: check your email", () => {
         isBlockedStatus: "Pending",
       });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL)
       .type("form")
       .set("Cookie", cookies)
@@ -198,10 +198,10 @@ describe("Integration:: check your email", () => {
           "The code you entered is not correct, or may have expired, try entering it again or request a new code"
         );
       })
-      .expect(400, done);
+      .expect(400);
   });
 
-  it("should return error page when when incorrect code entered more than 5 times", (done) => {
+  it("should return error page when when incorrect code entered more than 5 times", async () => {
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES,
       success: false,
@@ -215,7 +215,7 @@ describe("Integration:: check your email", () => {
         isBlockedStatus: "Pending",
       });
 
-    request(app)
+    await request(app)
       .post(PATH_NAMES.CHECK_YOUR_EMAIL)
       .type("form")
       .set("Cookie", cookies)
@@ -227,6 +227,6 @@ describe("Integration:: check your email", () => {
         "Location",
         `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.EmailMaxRetries}`
       )
-      .expect(302, done);
+      .expect(302);
   });
 });
