@@ -110,6 +110,7 @@ describe("enter authenticator app code controller", () => {
 
     it("should render 2fa service uplift view when uplift is required ", async () => {
       req.session.user.isUpliftRequired = true;
+      req.session.user.email = "someone@example.com";
 
       const fakeService: AccountRecoveryInterface = {
         accountRecovery: sinon.fake.returns({
@@ -132,6 +133,7 @@ describe("enter authenticator app code controller", () => {
           checkEmailLink:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
+          redactedEmail: "s***@example.com",
         }
       );
     });

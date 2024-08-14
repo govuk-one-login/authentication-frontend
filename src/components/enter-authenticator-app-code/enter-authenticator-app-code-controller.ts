@@ -25,6 +25,7 @@ import {
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 import { isLocked } from "../../utils/lock-helper";
+import { redactEmail } from "../../utils/email";
 
 export const ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME =
   "enter-authenticator-app-code/index.njk";
@@ -55,9 +56,16 @@ export function enterAuthenticatorAppCodeGet(
     const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
 
     if (!isAccountRecoveryEnabledForEnvironment) {
-      return res.render(templateName, {
+      let templateOptions: object = {
         isAccountRecoveryPermitted: false,
-      });
+      };
+      if (isUpliftRequired) {
+        templateOptions = {
+          ...templateOptions,
+          redactedEmail: redactEmail(email),
+        };
+      }
+      return res.render(templateName, templateOptions);
     }
 
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
@@ -87,10 +95,19 @@ export function enterAuthenticatorAppCodeGet(
       MFA_METHOD_TYPE.AUTH_APP
     );
 
-    return res.render(templateName, {
+    let templateOptions: object = {
       isAccountRecoveryPermitted: isAccountRecoveryPermittedForUser,
       checkEmailLink,
-    });
+    };
+
+    if (isUpliftRequired) {
+      templateOptions = {
+        ...templateOptions,
+        redactedEmail: redactEmail(email),
+      };
+    }
+
+    return res.render(templateName, templateOptions);
   };
 }
 

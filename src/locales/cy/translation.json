@@ -2465,9 +2465,10 @@
         "header": "Rhowch god diogelwch i barhau",
         "info": {
           "paragraph1": "Mae hyn ar gyfer diogelwch ychwanegol.",
-          "paragraph2": "I gael cod diogelwch, agorwch yr ",
+          "paragraph2": "Rydych wedi mewngofnodi fel: ",
+          "paragraph3": "I gael cod diogelwch, agorwch yr ",
           "authenticatorApp": "ap dilysydd ",
-          "paragraph2End": "rydych wedi’i ddefnyddio i greu eich GOV.UK One Login"
+          "paragraph3End": "rydych wedi’i ddefnyddio i greu eich GOV.UK One Login"
         },
         "code": {
           "label": "Rhowch y cod",
