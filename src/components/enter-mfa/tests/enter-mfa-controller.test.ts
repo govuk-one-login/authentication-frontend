@@ -40,6 +40,8 @@ describe("enter mfa controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ENTER_MFA);
     req.session.user = { redactedPhoneNumber: TEST_PHONE_NUMBER };
+    req.session.user.email = "someone@example.com";
+    req.session.user.isUpliftRequired = false;
     res = mockResponse();
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "0";
@@ -93,6 +95,7 @@ describe("enter mfa controller", () => {
 
     it("should render 2fa service uplift view when uplift is required", async () => {
       req.session.user.isUpliftRequired = true;
+      req.session.user.email = "some-user@example.com";
       process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
 
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
@@ -103,6 +106,7 @@ describe("enter mfa controller", () => {
       expect(res.render).to.have.calledWith(UPLIFT_REQUIRED_SMS_TEMPLATE_NAME, {
         phoneNumber: TEST_PHONE_NUMBER,
         supportAccountRecovery: false,
+        redactedEmail: "s***@example.com",
       });
     });
 

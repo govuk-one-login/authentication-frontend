@@ -554,8 +554,9 @@
         "title": "Enter a security code to continue",
         "header": "Enter a security code to continue",
         "paragraph1": "This is for extra security.",
-        "paragraph2": "It might take a few minutes to arrive. The code will expire after 15 minutes.",
-        "paragraph3": "We have sent a code to your phone number ending with "
+        "paragraph2": "You’re signed in as: ",
+        "paragraph3": "It might take a few minutes to arrive. The code will expire after 15 minutes.",
+        "paragraph4": "We have sent a code to your phone number ending with "
       }
     },
     "passwordResetMfaSms": {

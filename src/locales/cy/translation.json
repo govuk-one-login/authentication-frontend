@@ -554,8 +554,9 @@
         "title": "Rhowch god diogelwch i barhau",
         "header": "Rhowch god diogelwch i barhau",
         "paragraph1": "Mae hyn ar gyfer diogelwch ychwanegol.",
-        "paragraph2": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud.",
-        "paragraph3": "Rydym wedi anfon cod i’ch rhif ffôn sy’n gorffen gyda "
+        "paragraph2": "Rydych wedi mewngofnodi fel: ",
+        "paragraph3": "Efallai y bydd yn cymryd ychydig funudau i gyrraedd. Bydd y cod yn dod i ben ar ôl 15 munud.",
+        "paragraph4": "Rydym wedi anfon cod i’ch rhif ffôn sy’n gorffen gyda "
       }
     },
     "passwordResetMfaSms": {

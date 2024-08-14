@@ -13,21 +13,24 @@
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.enterMfa.upliftRequired.header' | translate }}</h1>
     <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph1' | translate }} </p>
 
+    <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph2' | translate }}{{ redactedEmail }}</p>
+
     {% set insetTextHtml %}
-        <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph3' | translate }} <span
+        <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph4' | translate }} <span
                     class='govuk-!-font-weight-bold'>{{ phoneNumber | returnLastCharacters({limit: 3}) }}</span></p>
     {% endset %}
     {{ govukInsetText({
         html: insetTextHtml
     }) }}
 
-    <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph2' | translate }} </p>
+    <p class="govuk-body">{{ 'pages.enterMfa.upliftRequired.paragraph3' | translate }}</p>
 
     <form id="form-tracking" action="/enter-code" method="post" novalidate="novalidate">
         <input type="hidden" name="phoneNumber" value="{{ phoneNumber }}" />
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
         <input type="hidden" name="supportAccountRecovery" value="{{ supportAccountRecovery }}" />
         <input type="hidden" name="checkEmailLink" value="{{ checkEmailLink }}" />
+        <input type="hidden" name="redactedEmail" value="{{ redactedEmail }}" />
 
         {{ govukInput({
             label: {

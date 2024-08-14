@@ -22,6 +22,7 @@ import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 import { isLocked } from "../../utils/lock-helper";
+import { redactEmail } from "../../utils/email";
 
 export const ENTER_MFA_DEFAULT_TEMPLATE_NAME = "enter-mfa/index.njk";
 export const UPLIFT_REQUIRED_SMS_TEMPLATE_NAME =
@@ -59,10 +60,19 @@ export function enterMfaGet(
       : ENTER_MFA_DEFAULT_TEMPLATE_NAME;
 
     if (!isAccountRecoveryEnabledForEnvironment) {
-      return res.render(templateName, {
+      let templateOptions: object = {
         phoneNumber: req.session.user.redactedPhoneNumber,
         supportAccountRecovery: false,
-      });
+      };
+
+      if (req.session.user.isUpliftRequired) {
+        templateOptions = {
+          ...templateOptions,
+          redactedEmail: redactEmail(req.session.user.email),
+        };
+      }
+
+      return res.render(templateName, templateOptions);
     }
 
     const { email } = req.session.user;
@@ -92,11 +102,20 @@ export function enterMfaGet(
       MFA_METHOD_TYPE.SMS
     );
 
-    res.render(templateName, {
+    let templateOptions: object = {
       phoneNumber: req.session.user.redactedPhoneNumber,
       supportAccountRecovery: req.session.user.isAccountRecoveryPermitted,
       checkEmailLink,
-    });
+    };
+
+    if (req.session.user.isUpliftRequired) {
+      templateOptions = {
+        ...templateOptions,
+        redactedEmail: redactEmail(email),
+      };
+    }
+
+    res.render(templateName, templateOptions);
   };
 }
 
