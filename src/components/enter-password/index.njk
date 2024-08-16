@@ -4,7 +4,9 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "common/show-password/macro.njk" import govukInputWithShowPasswordWithLabelAsPageHeading %}
-{% set showBack = true %}
+{% if isReauthJourney === false or isReauthJourney === "false" %}
+    {% set showBack = true %}
+{% endif %}
 {% set hrefBack = 'enter-email' %}
 {% set pageTitleName = 'pages.enterPassword.title' | translate %}
 
@@ -14,6 +16,7 @@
 
 <form id="form-tracking" action="/enter-password" method="post" novalidate>
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="isReauthJourney" value="{{isReauthJourney}}"/>
 
 {{ govukInputWithShowPasswordWithLabelAsPageHeading(
     'pages.enterPassword.header' | translate,

@@ -42,7 +42,11 @@ const ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY =
   "pages.enterPasswordAccountExists.password.validationError.incorrectPassword";
 
 export function enterPasswordGet(req: Request, res: Response): void {
-  res.render(ENTER_PASSWORD_TEMPLATE);
+  const isReauthJourney =
+    getJourneyTypeFromUserSession(req.session.user, {
+      includeReauthentication: true,
+    }) == JOURNEY_TYPE.REAUTHENTICATION;
+  res.render(ENTER_PASSWORD_TEMPLATE, { isReauthJourney: isReauthJourney });
 }
 
 export function enterSignInRetryBlockedGet(
