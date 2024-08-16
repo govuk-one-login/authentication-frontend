@@ -27,4 +27,16 @@ describe("obscure email", () => {
       expect(redactEmail(data.fullEmail)).to.equal(data.expected)
     );
   });
+
+  it("should return an empty string if email is empty", () => {
+    expect(redactEmail(null)).to.equal("");
+  });
+
+  const INVALID_EMAILS = ["email@", "@example.com", "notanemail"];
+
+  it("should return an empty string if email is invalid", () => {
+    INVALID_EMAILS.forEach((email) => {
+      expect(redactEmail(email)).to.equal("");
+    });
+  });
 });
