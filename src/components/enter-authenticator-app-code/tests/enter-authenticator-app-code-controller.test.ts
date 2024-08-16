@@ -29,6 +29,7 @@ describe("enter authenticator app code controller", () => {
 
   afterEach(() => {
     sinon.restore();
+    delete process.env.SHOW_REDACTED_EMAIL_ON_UPLIFT_ENABLED;
   });
 
   describe("enterAuthenticatorAppCodeGet", () => {
@@ -108,9 +109,10 @@ describe("enter authenticator app code controller", () => {
       );
     });
 
-    it("should render 2fa service uplift view when uplift is required ", async () => {
+    it("should render 2fa service uplift view with redacted email when uplift is required and feature flag on", async () => {
       req.session.user.isUpliftRequired = true;
       req.session.user.email = "someone@example.com";
+      process.env.SHOW_REDACTED_EMAIL_ON_UPLIFT_ENABLED = "1";
 
       const fakeService: AccountRecoveryInterface = {
         accountRecovery: sinon.fake.returns({
@@ -134,6 +136,35 @@ describe("enter authenticator app code controller", () => {
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
           redactedEmail: "s***@example.com",
+        }
+      );
+    });
+
+    it("should render uplift template without redacted email when feature flag is off", async () => {
+      req.session.user.isUpliftRequired = true;
+      process.env.SHOW_REDACTED_EMAIL_ON_UPLIFT_ENABLED = "0";
+
+      const fakeService: AccountRecoveryInterface = {
+        accountRecovery: sinon.fake.returns({
+          success: true,
+          data: {
+            accountRecoveryPermitted: true,
+          },
+        }),
+      } as unknown as AccountRecoveryInterface;
+
+      await enterAuthenticatorAppCodeGet(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
+        {
+          isAccountRecoveryPermitted: true,
+          checkEmailLink:
+            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
+            "?type=AUTH_APP",
         }
       );
     });

@@ -12,7 +12,9 @@
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterAuthenticatorAppCode.upliftRequired.header' | translate }}</h1>
     <p class="govuk-body">{{ 'pages.enterAuthenticatorAppCode.upliftRequired.info.paragraph1' | translate }} </p>
 
-    <p class="govuk-body">{{ 'pages.enterAuthenticatorAppCode.upliftRequired.info.paragraph2' | translate }}{{ redactedEmail }}</p>
+    {% if redactedEmail %}
+        <p class="govuk-body">{{ 'pages.enterAuthenticatorAppCode.upliftRequired.info.paragraph2' | translate }}{{ redactedEmail }}</p>
+    {% endif %}
 
     {% set insetTextHtml %}
         <p class="govuk-body">

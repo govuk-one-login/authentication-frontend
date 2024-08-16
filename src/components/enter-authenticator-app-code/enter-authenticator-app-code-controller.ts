@@ -8,6 +8,7 @@ import {
 } from "../common/constants";
 import {
   getCodeEnteredWrongBlockDurationInMinutes,
+  showRedactedEmailOnUpliftEnabled,
   support2hrLockout,
   supportAccountRecovery,
   supportReauthentication,
@@ -37,6 +38,8 @@ export function enterAuthenticatorAppCodeGet(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email, isUpliftRequired } = req.session.user;
+    const showRedactedEmail =
+      isUpliftRequired && showRedactedEmailOnUpliftEnabled();
 
     const templateName = isUpliftRequired
       ? UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
@@ -59,7 +62,7 @@ export function enterAuthenticatorAppCodeGet(
       let templateOptions: object = {
         isAccountRecoveryPermitted: false,
       };
-      if (isUpliftRequired) {
+      if (showRedactedEmail) {
         templateOptions = {
           ...templateOptions,
           redactedEmail: redactEmail(email),
@@ -100,7 +103,7 @@ export function enterAuthenticatorAppCodeGet(
       checkEmailLink,
     };
 
-    if (isUpliftRequired) {
+    if (showRedactedEmail) {
       templateOptions = {
         ...templateOptions,
         redactedEmail: redactEmail(email),
