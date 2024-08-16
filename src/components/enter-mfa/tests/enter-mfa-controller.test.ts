@@ -49,6 +49,7 @@ describe("enter mfa controller", () => {
 
   afterEach(() => {
     sinon.restore();
+    delete process.env.SHOW_REDACTED_EMAIL_ON_UPLIFT_ENABLED;
   });
 
   describe("enterMfaGet", () => {
@@ -93,10 +94,11 @@ describe("enter mfa controller", () => {
       });
     });
 
-    it("should render 2fa service uplift view when uplift is required", async () => {
+    it("should render 2fa service uplift view with redactedEmail when uplift is required", async () => {
       req.session.user.isUpliftRequired = true;
       req.session.user.email = "some-user@example.com";
       process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
+      process.env.SHOW_REDACTED_EMAIL_ON_UPLIFT_ENABLED = "1";
 
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
         req as Request,
@@ -107,6 +109,23 @@ describe("enter mfa controller", () => {
         phoneNumber: TEST_PHONE_NUMBER,
         supportAccountRecovery: false,
         redactedEmail: "s***@example.com",
+      });
+    });
+
+    it("should render 2fa service uplift view without redactedEmail when uplift is required but feature flag off", async () => {
+      req.session.user.isUpliftRequired = true;
+      req.session.user.email = "some-user@example.com";
+      process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
+      process.env.SHOW_REDACTED_EMAIL_ON_UPLIFT_ENABLED = "0";
+
+      await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(UPLIFT_REQUIRED_SMS_TEMPLATE_NAME, {
+        phoneNumber: TEST_PHONE_NUMBER,
+        supportAccountRecovery: false,
       });
     });
 

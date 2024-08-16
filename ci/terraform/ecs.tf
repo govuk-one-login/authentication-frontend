@@ -149,6 +149,10 @@ locals {
         value = var.support_reauthentication
       },
       {
+        name  = "SHOW_REDACTED_EMAIL_ON_UPLIFT_ENABLED"
+        value = var.show_redacted_email_on_uplift_enabled
+      },
+      {
         name  = "EMAIL_ENTERED_WRONG_BLOCKED_MINUTES"
         value = var.email_entered_wrong_blocked_minutes
       },

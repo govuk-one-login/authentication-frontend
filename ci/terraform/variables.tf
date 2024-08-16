@@ -30,6 +30,11 @@ variable "support_authorize_controller" {
   default = "0"
 }
 
+variable "show_redacted_email_on_uplift_enabled" {
+  type    = string
+  default = "0"
+}
+
 variable "image_uri" {
   type = string
 }

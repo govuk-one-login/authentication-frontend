@@ -173,6 +173,10 @@ export function proveIdentityWelcomeEnabled(): boolean {
   return process.env.PROVE_IDENTITY_WELCOME_ENABLED === "1";
 }
 
+export function showRedactedEmailOnUpliftEnabled(): boolean {
+  return process.env.SHOW_REDACTED_EMAIL_ON_UPLIFT_ENABLED === "1";
+}
+
 export function supportNewIpvSpinner(): boolean {
   return process.env.SUPPORT_NEW_IPV_SPINNER === "1";
 }

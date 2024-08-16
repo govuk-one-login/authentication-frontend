@@ -13,7 +13,11 @@ import {
   pathWithQueryParam,
   SecurityCodeErrorType,
 } from "../common/constants";
-import { support2hrLockout, supportAccountRecovery } from "../../config";
+import {
+  showRedactedEmailOnUpliftEnabled,
+  support2hrLockout,
+  supportAccountRecovery,
+} from "../../config";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
 import { BadRequestError } from "../../utils/error";
@@ -33,6 +37,8 @@ export function enterMfaGet(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
+    const showRedactedEmail =
+      req.session.user.isUpliftRequired && showRedactedEmailOnUpliftEnabled();
 
     if (
       support2hrLockout() &&
@@ -65,7 +71,7 @@ export function enterMfaGet(
         supportAccountRecovery: false,
       };
 
-      if (req.session.user.isUpliftRequired) {
+      if (showRedactedEmail) {
         templateOptions = {
           ...templateOptions,
           redactedEmail: redactEmail(req.session.user.email),
@@ -108,7 +114,7 @@ export function enterMfaGet(
       checkEmailLink,
     };
 
-    if (req.session.user.isUpliftRequired) {
+    if (showRedactedEmail) {
       templateOptions = {
         ...templateOptions,
         redactedEmail: redactEmail(email),
