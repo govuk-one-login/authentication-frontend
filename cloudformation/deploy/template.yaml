@@ -12,10 +12,12 @@ Parameters:
     Type: String
     Description: The name of the environment to deploy to
 
-  CloudFrontDistributionStackName:
+  SubEnvironment:
     Type: String
-    Description: The name of the stack used to create the CloudFront Distribution
-    Default: "auth-fe-cloudfront"
+    Description: >
+      When deploying to dev, optionally configure which sub-environment to deploy to
+      i.e. authdev1, authdev2. This feature is not available for route-to-live environments
+    Default: none
 
   VpcStackName:
     Type: String
@@ -42,10 +44,6 @@ Parameters:
     Type: String
     Description: The ARN of the permissions boundary to apply when creating IAM roles
     Default: none
-
-  FrontendRegistry:
-    Type: String
-    Default: 058264536367.dkr.ecr.eu-west-2.amazonaws.com/frontend-image-repository-containerrepository-fjphveppf1u4
 
   BasicAuthSidecarRegistry:
     Type: String
@@ -89,6 +87,16 @@ Conditions:
       - !Ref Environment
       - "integration"
 
+  UseSubEnvironment:
+    Fn::And:
+      - Fn::Equals:
+        - !Ref Environment
+        - dev
+      - Fn::Not:
+          - Fn::Equals:
+            - !Ref SubEnvironment
+            - none
+
   IsNotProduction:
     Fn::Not:
       - Fn::Equals:
@@ -101,7 +109,15 @@ Mappings:
     eu-west-2:
       AccountId: "652711504416"
   EnvironmentConfiguration:
-    development:
+    authdev1:
+      cloudfrontDistributionStackName: "authdev1-cloudfront"
+      # TODO this is a placeholder, change this when orch stub is setup
+      orchToAuthSigningPublicKey: |
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHzG8IFx1jE1+Ul44jQk96efPknCX
+        VxWS4PqLrKfR/31UQovFQLfyxA46uiMOvr7+0hRwFX1fQhagsIK+dfB5PA==
+        -----END PUBLIC KEY-----
+    dev:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       frontendAutoScalingMinCount: 2
       frontendAutoScalingMaxCount: 4
@@ -434,10 +450,13 @@ Resources:
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: !Sub "${Environment}-frontend-ecs-task-definition"
+      Family: !If
+        - UseSubEnvironment
+        - !Sub "${SubEnvironment}-frontend-ecs-task-definition"
+        - !Sub "${Environment}-frontend-ecs-task-definition"
       ContainerDefinitions:
         - Name: "frontend-application"
-          Image: !Sub "${FrontendRegistry}:GIT-SHA-PLACEHOLDER"
+          Image: "CONTAINER-IMAGE-PLACEHOLDER"
           PortMappings:
             - ContainerPort: 3000
               HostPort: 3000
@@ -458,15 +477,36 @@ Resources:
             - Name: FARGATE
               Value: 1
             - Name: API_BASE_URL
-              Value: !If [IsNotProduction, !Sub "https://oidc.${Environment}.account.gov.uk", "https://oidc.account.gov.uk"]
+              Value: !If
+                - IsNotProduction
+                - !If
+                    - UseSubEnvironment
+                    - !Sub "https://oidc.${SubEnvironment}.${Environment}.account.gov.uk"
+                    - !Sub "https://oidc.${Environment}.account.gov.uk"
+                - "https://oidc.account.gov.uk"
             - Name: FRONTEND_API_BASE_URL
-              Value: !If [IsNotProduction, !Sub "https://auth.${Environment}.account.gov.uk/", "https://auth.account.gov.uk/"]
+              Value: !If
+                - IsNotProduction
+                - !If
+                    - UseSubEnvironment
+                    - !Sub "https://auth.${SubEnvironment}.${Environment}.account.gov.uk/"
+                    - !Sub "https://auth.${Environment}.account.gov.uk/"
+                - "https://auth.account.gov.uk/"
             - Name: ACCOUNT_MANAGEMENT_URL
-              Value: !If [IsNotProduction, !Sub "https://home.${Environment}.account.gov.uk", "https://home.account.gov.uk"]
+              Value: !If
+                - IsNotProduction
+                - !Sub "https://home.${Environment}.account.gov.uk"
+                - "https://home.account.gov.uk"
             - Name: SUPPORT_ACCOUNT_RECOVERY
               Value: 1
             - Name: BASE_URL
-              Value: !If [IsNotProduction, !Sub "signin-sp.${Environment}.account.gov.uk", "signin.account.gov.uk"]
+              Value: !If
+                - IsNotProduction
+                - !If
+                    - UseSubEnvironment
+                    - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
+                    - !Sub "signin-sp.${Environment}.account.gov.uk"
+                - "signin.account.gov.uk"
             - Name: GTM_ID
               Value: GTM-TK92W68
             - Name: REDIS_HOST
@@ -476,13 +516,25 @@ Resources:
             - Name: SUPPORT_AUTHORIZE_CONTROLLER
               Value: 1
             - Name: ENCRYPTION_KEY_ID
-              Value: !Sub "alias/${Environment}-authentication-encryption-key-alias"
+              Value: !If
+                - UseSubEnvironment
+                - !Sub "alias/${SubEnvironment}-authentication-encryption-key-alias"
+                - !Sub "alias/${Environment}-authentication-encryption-key-alias"
             - Name: ORCH_TO_AUTH_SIGNING_KEY
-              Value: !FindInMap [ EnvironmentConfiguration, !Ref Environment, orchToAuthSigningPublicKey ]
+              Value: !If
+                - UseSubEnvironment
+                - !FindInMap [ EnvironmentConfiguration, !Ref SubEnvironment, orchToAuthSigningPublicKey ]
+                - !FindInMap [ EnvironmentConfiguration, !Ref Environment, orchToAuthSigningPublicKey ]
             - Name: ORCH_TO_AUTH_CLIENT_ID
               Value: orchestrationAuth
             - Name: ORCH_TO_AUTH_AUDIENCE
-              Value: !If [IsNotProduction, !Sub "https://signin-sp.${Environment}.account.gov.uk/", "https://signin.account.gov.uk/"]
+              Value: !If
+                - IsNotProduction
+                - !If
+                  - UseSubEnvironment
+                  - !Sub "https://signin.${SubEnvironment}.${Environment}.account.gov.uk/"
+                  - !Sub "https://signin-sp.${Environment}.account.gov.uk/"
+                - "https://signin.account.gov.uk/"
             - Name: URL_FOR_SUPPORT_LINKS
               Value: !Sub
                 - "https://${homeFQDN}/contact-gov-uk-one-login"
@@ -534,19 +586,37 @@ Resources:
               Value: !If [IsNotProduction, "1", "0"]
           Secrets:
             - Name: API_KEY
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${Environment}/frontend-api-key"
+              ValueFrom: !If
+                - UseSubEnvironment
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${SubEnvironment}/frontend-api-key"
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${Environment}/frontend-api-key"
             - Name: REDIS_PASSWORD
               ValueFrom: !Ref ApplicationAuthPass
             - Name: SESSION_EXPIRY
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/session_expiry"
+              ValueFrom: !If
+                - UseSubEnvironment
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/session_expiry"
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/session_expiry"
             - Name: SESSION_SECRET
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/session_secret"
+              ValueFrom: !If
+                - UseSubEnvironment
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/session_secret"
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/session_secret"
             - Name: SMARTAGENT_API_KEY
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_api_key"
+              ValueFrom: !If
+                - UseSubEnvironment
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/smartagent_api_key"
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_api_key"
             - Name: SMARTAGENT_API_URL
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_api_url"
+              ValueFrom: !If
+                - UseSubEnvironment
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/smartagent_api_key"
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_api_url"
             - Name: SMARTAGENT_WEBFORM_ID
-              ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_webform_id"
+              ValueFrom: !If
+                - UseSubEnvironment
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/smartagent_webform_id"
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_webform_id"
             - Name: DT_TENANT
               ValueFrom: !Join
                 - ''
@@ -584,7 +654,10 @@ Resources:
               - Name: NGINX_PORT
                 Value: "8080"
               - Name: NGINX_HOST
-                Value: !Sub "signin-sp.${Environment}.account.gov.uk"
+                Value: !If
+                  - UseSubEnvironment
+                  - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
+                  - !Sub "signin-sp.${Environment}.account.gov.uk"
               - Name: IP_ALLOW_LIST
                 Value:
                   Fn::ToJsonString:
@@ -600,9 +673,15 @@ Resources:
                         !Sub "${VpcStackName}-FirewallSubnetCCidr"
             Secrets:
               - Name: BASIC_AUTH_USERNAME
-                ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_username"
+                ValueFrom: !If
+                  - UseSubEnvironment
+                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_username"
+                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_username"
               - Name: BASIC_AUTH_PASSWORD
-                ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_password"
+                ValueFrom: !If
+                  - UseSubEnvironment
+                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_password"
+                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_password"
           - !Ref AWS::NoValue
       Cpu: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionCpu ]
       Memory: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionMemory ]
@@ -746,13 +825,27 @@ Resources:
   FrontendDnsRecord:
     Type: AWS::Route53::RecordSet
     Properties:
-      Name: !Sub "signin-sp.${Environment}.account.gov.uk"
+      Name: !If
+        - UseSubEnvironment
+        - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
+        - !Sub "signin-sp.${Environment}.account.gov.uk"
       Type: A
-      HostedZoneId: !Sub '{{resolve:ssm:/deploy/${Environment}/signin_route53_hostedzone_id}}'
+      HostedZoneId: !Sub
+        - '{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}'
+        - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       AliasTarget:
         EvaluateTargetHealth: false
         DNSName:
-          Fn::ImportValue: !Sub "${CloudFrontDistributionStackName}-DistributionDomain"
+          Fn::ImportValue: !Sub
+            - "${CFDistributionStackName}-DistributionDomain"
+            - CFDistributionStackName: !FindInMap
+              - EnvironmentConfiguration
+              - !If
+                - UseSubEnvironment
+                - !Ref SubEnvironment
+                - !Ref Environment
+              - cloudfrontDistributionStackName
+              - DefaultValue: "auth-fe-cloudfront"
         HostedZoneId: Z2FDTNDATAQYW2
         # This is always the hosted zone ID when you create an alias record that routes traffic to a CloudFront distribution
 
@@ -763,7 +856,10 @@ Resources:
   ApplicationLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
-      Name: !Sub "${Environment}-frontend"
+      Name: !If
+        - UseSubEnvironment
+        - !Sub "${SubEnvironment}-frontend"
+        - !Sub "${Environment}-frontend"
       Scheme: internet-facing
       SecurityGroups:
         - !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
@@ -794,7 +890,10 @@ Resources:
   ApplicationLoadBalancerTargetGroupA:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Name: !Sub "${Environment}-frontend-target-a"
+      Name: !If
+        - UseSubEnvironment
+        - !Sub "${SubEnvironment}-frontend-target-a"
+        - !Sub "${Environment}-frontend-target-a"
       HealthCheckIntervalSeconds: 10
       HealthCheckTimeoutSeconds: 3
       HealthCheckPath: /healthcheck/
@@ -823,7 +922,10 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Condition: UseECSCanaryDeploymentStack
     Properties:
-      Name: !Sub "${Environment}-frontend-target-b"
+      Name: !If
+        - UseSubEnvironment
+        - !Sub "${SubEnvironment}-frontend-target-b"
+        - !Sub "${Environment}-frontend-target-b"
       HealthCheckIntervalSeconds: 10
       HealthCheckTimeoutSeconds: 3
       HealthCheckPath: /healthcheck/
@@ -851,9 +953,14 @@ Resources:
   ApplicationLoadBalancerDnsRecord:
     Type: AWS::Route53::RecordSet
     Properties:
-      Name: !Sub "origin.signin-sp.${Environment}.account.gov.uk"
+      Name: !If
+        - UseSubEnvironment
+        - !Sub "origin.signin.${SubEnvironment}.${Environment}.account.gov.uk"
+        - !Sub "origin.signin-sp.${Environment}.account.gov.uk"
       Type: A
-      HostedZoneId: !Sub '{{resolve:ssm:/deploy/${Environment}/signin_route53_hostedzone_id}}'
+      HostedZoneId: !Sub
+        - '{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}'
+        - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       AliasTarget:
         EvaluateTargetHealth: false
         DNSName: !Sub
@@ -871,7 +978,9 @@ Resources:
       Port: 443
       Protocol: HTTPS
       Certificates:
-        - CertificateArn: !Sub '{{resolve:ssm:/deploy/${Environment}/signin_certificate_arn}}'
+        - CertificateArn: !Sub
+          - '{{resolve:ssm:/deploy/${env}/signin_certificate_arn}}'
+          - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       SslPolicy: "ELBSecurityPolicy-FS-1-2-Res-2020-10"
 
   ApplicationLoadBalancerListener:
@@ -1571,7 +1680,10 @@ Resources:
   AuthEncryptionKmsAlias:
     Type: AWS::KMS::Alias
     Properties:
-      AliasName: !Sub "alias/${Environment}-authentication-encryption-key-alias"
+      AliasName: !If
+        - UseSubEnvironment
+        - !Sub "alias/${SubEnvironment}-authentication-encryption-key-alias"
+        - !Sub "alias/${Environment}-authentication-encryption-key-alias"
       TargetKeyId: !Ref AuthEncryptionKmsKey
 
   KmsKey:
