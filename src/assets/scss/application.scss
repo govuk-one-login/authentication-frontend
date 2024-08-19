@@ -25,6 +25,7 @@
 @import "components/warning-text/warning-text";
 
 @import "../../../node_modules/@govuk-one-login/frontend-language-toggle/stylesheet/styles";
+@import "prove-identity-callback/spinner";
 
 .interrupt-screen {
   background-color: #1d70b8;
@@ -63,7 +64,7 @@
   background: none;
   cursor: pointer;
   color: #ffffff;
-  box-shadow: 0px 1px #ffffff;
+  box-shadow: 0 1px #ffffff;
   padding: 0;
 }
 
@@ -74,11 +75,11 @@
   background: none;
   padding: 0;
   color: $govuk-link-colour;
-  box-shadow: 0px 1px #ffffff;
-  margin:0;
+  box-shadow: 0 1px #ffffff;
+  margin: 0;
 }
 
-.govuk-btn-as-link:hover{
+.govuk-btn-as-link:hover {
   background: none;
   color: $govuk-link-visited-colour;
   text-decoration: underline;
@@ -91,7 +92,7 @@
 .inverted-button {
   background-color: #ffffff;
   color: #0b0c0c;
-  box-shadow: 0 2px 0 #B1B4B6;
+  box-shadow: 0 2px 0 #b1b4b6;
   font-weight: bold;
 }
 
@@ -183,29 +184,39 @@
 }
 
 .ccms-loader {
-  border: 12px solid #DEE0E2;
+  border: 12px solid #dee0e2;
   border-radius: 50%;
-  border-top-color: #005EA5;
+  border-top-color: #005ea5;
   width: 80px;
   height: 80px;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
+
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
+
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.centre{
-  margin-left:auto;
-  margin-right:auto;
+.centre {
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.text-centre{
+.text-centre {
   text-align: center;
 }
 
