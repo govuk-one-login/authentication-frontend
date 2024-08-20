@@ -8,6 +8,8 @@ Parameters:
     Description: The name of the environment to deploy to
     Type: String
     AllowedValues:
+      - authdev1
+      - authdev2
       - dev
       - build
       - staging
