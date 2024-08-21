@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import {
   DecryptCommandInput,
-  DecryptCommandOutput,
+  DecryptCommandOutput, EncryptionAlgorithmSpec,
   KMS,
 } from "@aws-sdk/client-kms";
 import { KmsDecryptionServiceInterface } from "./types";
@@ -11,14 +11,14 @@ import { base64DecodeToUint8Array } from "../../utils/encoding";
 
 export class KmsDecryptionService implements KmsDecryptionServiceInterface {
   private kmsClient: KMS;
-  private readonly encryptionAlgorithm: string;
+  private readonly encryptionAlgorithm: EncryptionAlgorithmSpec;
   private readonly kmsKeyId: string;
 
   constructor(
     kmsClient = new KMS({
       region: getAwsRegion(),
     }),
-    encryptionAlgorithm = "RSAES_OAEP_SHA_256",
+    encryptionAlgorithm: EncryptionAlgorithmSpec = EncryptionAlgorithmSpec.RSAES_OAEP_SHA_256,
     kmsKeyId = getKmsKeyId()
   ) {
     this.kmsClient = kmsClient;
