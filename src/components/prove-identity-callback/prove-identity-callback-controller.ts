@@ -37,7 +37,9 @@ export function proveIdentityCallbackGetOrPost(
 
     if (response.data.status === IdentityProcessingStatus.PROCESSING) {
       if (supportNewIpvSpinner()) {
-        return res.render("prove-identity-callback/index-new-spinner.njk");
+        return res.render("prove-identity-callback/index-new-spinner.njk", {
+          serviceName: clientName,
+        });
       }
 
       return res.render("prove-identity-callback/index.njk", {
