@@ -32,18 +32,25 @@ export function helmetConfiguration(): Parameters<typeof helmet>[0] {
           (req: Request, res: Response): string =>
             `'nonce-${res.locals.scriptNonce}'`,
           "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
-          "https://www.googletagmanager.com",
+          "https://*.googletagmanager.com",
           "https://www.google-analytics.com",
           "https://ssl.google-analytics.com",
         ],
         imgSrc: [
           "'self'",
           "data:",
-          "https://www.googletagmanager.com",
+          "https://*.google-analytics.com",
+          "https://*.googletagmanager.com",
           "https://www.google-analytics.com",
         ],
         objectSrc: ["'none'"],
-        connectSrc: ["'self'", "https://www.google-analytics.com"],
+        connectSrc: [
+          "'self'",
+          "https://*.google-analytics.com",
+          "https://*.analytics.google.com",
+          "https://*.googletagmanager.com",
+          "https://www.google-analytics.com",
+        ],
       },
     },
     dnsPrefetchControl: {
