@@ -2385,7 +2385,7 @@
           "spinnerState": "You can now continue to the service"
         },
         "longWait": {
-          "spinnerStateText": "Were still trying to return you to the service"
+          "spinnerStateText": "We’re still trying to return you to the service"
         }
       }
     },
