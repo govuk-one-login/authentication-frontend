@@ -23,10 +23,14 @@ import { createMockRequest } from "../../../../test/helpers/mock-request-helper"
 describe("security code controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
+  const date = new Date(Date.UTC(2024, 0, 1, 0));
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
     res = mockResponse();
+    sinon.useFakeTimers({
+      now: new Date(Date.UTC(2024, 0, 1, 0)),
+    });
   });
 
   afterEach(() => {
@@ -251,13 +255,8 @@ describe("security code controller", () => {
   });
 
   describe("support2Hr Lockout", () => {
-    let clock: sinon.SinonFakeTimers;
-    const date = new Date(Date.UTC(2024, 0, 1, 0));
     beforeEach(() => {
       process.env.SUPPORT_2HR_LOCKOUT = "1";
-      clock = sinon.useFakeTimers({
-        now: date.valueOf(),
-      });
     });
 
     after(() => {
@@ -265,8 +264,6 @@ describe("security code controller", () => {
       delete process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES;
       delete process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES;
       delete process.env.REDUCED_CODE_BLOCK_DURATION_MINUTES;
-
-      clock.restore();
     });
 
     describe("securityCodeInvalidGet", () => {
@@ -545,17 +542,8 @@ describe("security code controller", () => {
     });
 
     describe("securityCodeTriesExceededGet", () => {
-      let clock: sinon.SinonFakeTimers;
-      const date = new Date(Date.UTC(2024, 0, 1, 0));
-      beforeEach(() => {
-        clock = sinon.useFakeTimers({
-          now: date.valueOf(),
-        });
-      });
-
       after(() => {
         delete process.env.CODE_REQUEST_BLOCKED_MINUTES;
-        clock.restore();
       });
 
       it(
