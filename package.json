@@ -108,6 +108,7 @@
     "@types/debug": "^4.1.12",
     "@types/express": "^4.17.13",
     "@types/express-session": "^1.17.4",
+    "@types/helmet": "^4.0.0",
     "@types/i18next-fs-backend": "^1.1.1",
     "@types/mocha": "^10.0.7",
     "@types/mock-req-res": "^1.1.3",
