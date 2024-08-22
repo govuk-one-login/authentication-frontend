@@ -3,8 +3,9 @@ import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import chaiAsPromised from "chai-as-promised";
 import { jestSnapshotPlugin } from "mocha-chai-jest-snapshot";
-import supertest from "supertest";
+import supertest, { Test } from "supertest";
 import { expectTaxonomyMatchSnapshot } from "../helpers/expect-taxonomy-helpers";
+import TestAgent = require("supertest/lib/agent");
 
 chai.should();
 chai.use(sinonChai);
@@ -15,7 +16,7 @@ const expect = chai.expect;
 
 const request = (
   app: any,
-  callback: (test: supertest.SuperTest<supertest.Test>) => supertest.Test,
+  callback: (test: TestAgent) => Test,
   options: {
     expectTaxonomyMatchSnapshot?: boolean;
   } = {}
