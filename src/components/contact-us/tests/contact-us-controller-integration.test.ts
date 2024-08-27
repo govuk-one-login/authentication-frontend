@@ -199,7 +199,7 @@ describe("Integration:: contact us - public user", () => {
       .query("supportType=PUBLIC")
       .type("form")
       .send({})
-      .expect(500);
+      .expect(403);
   });
 
   it("should return validation error when no radio boxes are selected on the signing in contact-us-further-information page", () => {

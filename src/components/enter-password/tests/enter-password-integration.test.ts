@@ -72,7 +72,7 @@ describe("Integration::enter password", () => {
       .send({
         password: "password",
       })
-      .expect(500);
+      .expect(403);
   });
 
   it("should return validation error when password not entered", async () => {

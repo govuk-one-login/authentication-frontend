@@ -71,7 +71,7 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
       .send({
         code: "123456",
       })
-      .expect(500);
+      .expect(403);
   });
 
   it("should redirect to /check-your-phone when new code requested", async () => {

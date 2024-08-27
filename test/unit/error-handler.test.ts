@@ -31,16 +31,6 @@ describe("Error handlers", () => {
   });
 
   describe("serverErrorHandler", () => {
-    it("should render 500 view when csrf token is invalid", () => {
-      const err: any = new Error("invalid csrf token");
-      err["code"] = "EBADCSRFTOKEN";
-
-      serverErrorHandler(err, req as Request, res as Response, next);
-
-      expect(res.status).to.have.been.calledOnceWith(500);
-      expect(res.render).to.have.been.calledOnceWith("common/errors/500.njk");
-    });
-
     it("should render 500 view when unexpected error", () => {
       const err = new Error("internal server error");
 

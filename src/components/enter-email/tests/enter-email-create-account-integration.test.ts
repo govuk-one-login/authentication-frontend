@@ -68,7 +68,7 @@ describe("Integration::enter email (create account)", () => {
       .send({
         email: "test@test.com",
       })
-      .expect(500);
+      .expect(403);
   });
 
   it("should return validation error when email not entered", async () => {

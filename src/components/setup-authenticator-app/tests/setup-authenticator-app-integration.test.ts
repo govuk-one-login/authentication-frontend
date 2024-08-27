@@ -74,7 +74,7 @@ describe("Integration::setup-authenticator-app", () => {
       .send({
         code: "123456",
       })
-      .expect(500);
+      .expect(403);
   });
 
   it("should return validation error when access code not entered", async () => {

@@ -119,7 +119,7 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
       .send({
         password: "password",
       })
-      .expect(500);
+      .expect(403);
   });
 
   it("should return validation error when password not entered", async () => {

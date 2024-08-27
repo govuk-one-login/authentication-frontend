@@ -73,7 +73,7 @@ describe("Integration:: updated-terms-code", () => {
       .send({
         termsAndConditionsResult: "reject",
       })
-      .expect(500);
+      .expect(403);
   });
 
   it("should redirect to /auth_code when terms accepted", async () => {

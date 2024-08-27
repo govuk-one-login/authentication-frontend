@@ -70,7 +70,7 @@ describe("Integration:: resend email code", () => {
       .send({
         code: "123456",
       })
-      .expect(500);
+      .expect(403);
   });
 
   it("should redirect to /check-your-email when new code requested as part of account creation journey", async () => {

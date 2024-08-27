@@ -125,7 +125,7 @@ describe("Integration:: check your email security codes", () => {
       .send({
         code: "123456",
       })
-      .expect(500);
+      .expect(403);
   });
 
   it("should return validation error when code not entered", async () => {

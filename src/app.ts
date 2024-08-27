@@ -88,6 +88,7 @@ import { resetPassword2FAAuthAppRouter } from "./components/reset-password-2fa-a
 import { setGTM } from "./middleware/analytics-middleware";
 import { setCurrentUrlMiddleware } from "./middleware/current-url-middleware";
 import { getRedisConfig } from "./utils/redis";
+import { csrfMissingHandler } from "./handlers/csrf-missing-handler";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -217,6 +218,7 @@ async function createApp(): Promise<express.Application> {
   app.use(pageNotFoundHandler);
 
   // Error Handlers
+  app.use(csrfMissingHandler);
   app.use(logErrorMiddleware);
   app.use(serverErrorHandler);
 
