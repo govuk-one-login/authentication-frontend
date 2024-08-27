@@ -1,14 +1,19 @@
-name: Deploy frontend (with SAM Deploy Pipeline)
+name: Deploy frontend (with SAM Deploy Pipeline) to Dev
+run-name: Deploy frontend (with SAM Deploy Pipeline) to ${{ inputs.environment }}
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to run against"
+        type: environment
+        required: true
 
 jobs:
   deploy-basic-auth-sidecar:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    environment: ${{ inputs.environment }}
     permissions:
       id-token: write
       contents: read
@@ -26,6 +31,7 @@ jobs:
   deploy-service-down-page:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    environment: ${{ inputs.environment }}
     permissions:
       id-token: write
       contents: read
@@ -46,6 +52,7 @@ jobs:
       - deploy-service-down-page
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    environment: ${{ inputs.environment }}
     permissions:
       id-token: write
       contents: read
