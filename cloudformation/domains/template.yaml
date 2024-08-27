@@ -1,5 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
+Transform: 'AWS::LanguageExtensions'
+
 Description: >-
   Creates the necessary components for Authentication Frontend application secure pipeline migration testing
 
@@ -8,177 +10,240 @@ Parameters:
     Description: The name of the environment to deploy to
     Type: String
     AllowedValues:
+      - dev
       - build
       - staging
 
+  EndpointSuffix:
+    Description: >
+      (Optional) domain suffix i.e. -sp. Example output FQDN - signin-sp.build.account.gov.uk
+    Type: String
+    Default: ""
+    AllowedPattern: "[a-z0-9-]*"
+    ConstraintDescription: >
+      must be a valid domain name, consists of lowercase letters, numbers and hyphens OR blank
+
+Conditions:
+  CreateDevEnvironmentResources:
+    Fn::Equals:
+      - !Ref Environment
+      - "dev"
+
+  CreateNonProdEnvironmentResources:
+    Fn::Or:
+      - Fn::Equals:
+        - !Ref Environment
+        - "build"
+      - Fn::Equals:
+        - !Ref Environment
+        - "staging"
+
+Mappings:
+  EndpointConfigs:
+    Auth:
+      lowercaseName: auth
+    Manage:
+      lowercaseName: manage
+    Oidc:
+      lowercaseName: oidc
+    Signin:
+      lowercaseName: signin
+
 Resources:
+  #
+  # dev hosted zones
+  #
+  'Fn::ForEach::DevEnvironments':
+    - EnvName
+    - - authdev1
+      - authdev2
+    - ${EnvName}HostedZone:
+        Type: AWS::Route53::HostedZone
+        Condition: CreateDevEnvironmentResources
+        DeletionPolicy: Retain
+        UpdateReplacePolicy: Retain
+        Properties:
+          Name: !Sub ${EnvName}.${Environment}.account.gov.uk
+
+      'Fn::ForEach::Endpoints':
+        - Endpoint
+        - - auth
+          - manage
+          - oidc
+          - signin
+        - ${EnvName}${Endpoint}HostedZone:
+            Type: AWS::Route53::HostedZone
+            Condition: CreateDevEnvironmentResources
+            DeletionPolicy: Retain
+            UpdateReplacePolicy: Retain
+            Properties:
+              Name: !Sub ${Endpoint}.${EnvName}.${Environment}.account.gov.uk
+
+          ${EnvName}${Endpoint}DevDelegation:
+            Type: AWS::Route53::RecordSet
+            Condition: CreateDevEnvironmentResources
+            Properties:
+              Name: !Sub ${Endpoint}.${EnvName}.${Environment}.account.gov.uk
+              Type: NS
+              HostedZoneId: !Ref
+                'Fn::Sub': "${EnvName}HostedZone"
+              ResourceRecords: !GetAtt
+                - !Sub ${EnvName}${Endpoint}HostedZone
+                - NameServers
+              TTL: 60
+
+          ${EnvName}${Endpoint}HostedZoneSSM:
+            Type: AWS::SSM::Parameter
+            Condition: CreateDevEnvironmentResources
+            Properties:
+              Description: !Sub "The ${Endpoint} subdomain Public Hosted Zone Id"
+              Name: !Sub "/deploy/${EnvName}/${Endpoint}_route53_hostedzone_id"
+              Type: String
+              Value: !Ref
+                'Fn::Sub': ${EnvName}${Endpoint}HostedZone
+              Tags:
+                Environment: !Sub ${EnvName}
+                Application: "auth-frontend"
+                Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
+
+          ${EnvName}${Endpoint}Certificate:
+            Type: AWS::CertificateManager::Certificate
+            Condition: CreateDevEnvironmentResources
+            Properties:
+              DomainName: !Sub ${Endpoint}.${EnvName}.${Environment}.account.gov.uk
+              DomainValidationOptions:
+                - DomainName: !Sub ${Endpoint}.${EnvName}.${Environment}.account.gov.uk
+                  HostedZoneId: !GetAtt
+                    - !Sub ${EnvName}${Endpoint}HostedZone
+                    - Id
+              ValidationMethod: DNS
+
+          ${EnvName}${Endpoint}CertificateArnSSM:
+            Type: AWS::SSM::Parameter
+            Condition: CreateDevEnvironmentResources
+            Properties:
+              Description: !Sub "The ${Endpoint} subdomain Certificate ARN"
+              Name: !Sub "/deploy/${EnvName}/${Endpoint}_certificate_arn"
+              Type: String
+              Value: !Ref
+                'Fn::Sub': ${EnvName}${Endpoint}Certificate
+              Tags:
+                Environment: !Sub ${EnvName}
+                Application: "auth-frontend"
+                Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
+
+  #
+  # Non-prod and production hosted zones
+  #
+
   #
   # auth
   #
+  # TODO remove this when we retire and replace the -sp domains with the standard ones
   AccountsAuthHostedZone:
     Type: AWS::Route53::HostedZone
+    Condition: CreateNonProdEnvironmentResources
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
       Name: !Sub auth-sp.${Environment}.account.gov.uk
 
-  AccountsAuthHostedZoneSSM:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Description: The Auth subdomain Public Hosted Zone Id
-      Name: !Sub "/deploy/${Environment}/auth_route53_hostedzone_id"
-      Type: String
-      Value: !Ref AccountsAuthHostedZone
-      Tags:
-        Environment: !Ref Environment
-        Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
-
-  AccountsAuthCertificate:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !Sub auth-sp.${Environment}.account.gov.uk
-      DomainValidationOptions:
-        - DomainName: !Sub auth-sp.${Environment}.account.gov.uk
-          HostedZoneId: !GetAtt AccountsAuthHostedZone.Id
-      ValidationMethod: DNS
-
-  AccountsAuthCertificateArnSSM:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Description: The Auth subdomain Certificate ARN
-      Name: !Sub "/deploy/${Environment}/auth_certificate_arn"
-      Type: String
-      Value: !Ref AccountsAuthCertificate
-      Tags:
-        Environment: !Ref Environment
-        Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
-
   #
   # managed
   #
+  # TODO remove this when we retire and replace the -sp domains with the standard ones
   AccountsManageHostedZone:
     Type: AWS::Route53::HostedZone
+    Condition: CreateNonProdEnvironmentResources
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
       Name: !Sub manage-sp.${Environment}.account.gov.uk
 
-  AccountsManageHostedZoneSSM:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Description: The Manage subdomain Public Hosted Zone Id
-      Name: !Sub "/deploy/${Environment}/manage_route53_hostedzone_id"
-      Type: String
-      Value: !Ref AccountsManageHostedZone
-      Tags:
-        Environment: !Ref Environment
-        Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
-
-  AccountsManageCertificate:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !Sub manage-sp.${Environment}.account.gov.uk
-      DomainValidationOptions:
-        - DomainName: !Sub manage-sp.${Environment}.account.gov.uk
-          HostedZoneId: !GetAtt AccountsManageHostedZone.Id
-      ValidationMethod: DNS
-
-  AccountsManageCertificateArnSSM:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Description: The Manage Subdomain Certificate ARN
-      Name: !Sub "/deploy/${Environment}/manage_certificate_arn"
-      Type: String
-      Value: !Ref AccountsManageCertificate
-      Tags:
-        Environment: !Ref Environment
-        Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
   #
   # oidc
   #
+  # TODO remove this when we retire and replace the -sp domains with the standard ones
   AccountsOidcHostedZone:
     Type: AWS::Route53::HostedZone
+    Condition: CreateNonProdEnvironmentResources
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
       Name: !Sub oidc-sp.${Environment}.account.gov.uk
 
-  AccountsOidcHostedZoneSSM:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Description: The Oidc subdomain Public Hosted Zone Id
-      Name: !Sub "/deploy/${Environment}/oidc_route53_hostedzone_id"
-      Type: String
-      Value: !Ref AccountsOidcHostedZone
-      Tags:
-        Environment: !Ref Environment
-        Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
-
-  AccountsOidcCertificate:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !Sub oidc-sp.${Environment}.account.gov.uk
-      DomainValidationOptions:
-        - DomainName: !Sub oidc-sp.${Environment}.account.gov.uk
-          HostedZoneId: !GetAtt AccountsOidcHostedZone.Id
-      ValidationMethod: DNS
-
-  AccountsOidcCertificateArnSSM:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Description: The Oidc subdomain Certificate ARN
-      Name: !Sub "/deploy/${Environment}/oidc_certificate_arn"
-      Type: String
-      Value: !Ref AccountsOidcCertificate
-      Tags:
-        Environment: !Ref Environment
-        Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
-
   #
   # signin
   #
+  # TODO remove this when we retire and replace the -sp domains with the standard ones
   AccountsSigninHostedZone:
     Type: AWS::Route53::HostedZone
+    Condition: CreateNonProdEnvironmentResources
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
       Name: !Sub signin-sp.${Environment}.account.gov.uk
 
-  AccountsSigninHostedZoneSSM:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Description: The SignIn subdomain Public Hosted Zone Id
-      Name: !Sub "/deploy/${Environment}/signin_route53_hostedzone_id"
-      Type: String
-      Value: !Ref AccountsSigninHostedZone
-      Tags:
-        Environment: !Ref Environment
-        Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
+  'Fn::ForEach::Endpoints':
+    - Endpoint
+    - - Auth
+      - Manage
+      - Oidc
+      - Signin
+    # TODO uncomment this when we retire and replace the -sp domains with the standard ones
+    # - Accounts${Endpoint}HostedZone:
+    #     Type: AWS::Route53::HostedZone
+    #     DeletionPolicy: Retain
+    #     UpdateReplacePolicy: Retain
+    #     Properties:
+    #       Name: !Sub ${Endpoint}${EndpointSuffix}.${Environment}.account.gov.uk
 
-  AccountsSignInCertificate:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !Sub signin-sp.${Environment}.account.gov.uk
-      DomainValidationOptions:
-        - DomainName: !Sub signin-sp.${Environment}.account.gov.uk
-          HostedZoneId: !GetAtt AccountsSigninHostedZone.Id
-      ValidationMethod: DNS
+    - Accounts${Endpoint}HostedZoneSSM:
+        Type: AWS::SSM::Parameter
+        Condition: CreateNonProdEnvironmentResources
+        Properties:
+          Description: !Sub "The ${Endpoint} subdomain Public Hosted Zone Id"
+          Name: !Sub
+            - "/deploy/${Environment}/${lowercaseEndpoint}_route53_hostedzone_id"
+            - lowercaseEndpoint: !FindInMap
+              - EndpointConfigs
+              - !Ref Endpoint
+              - lowercaseName
+          Type: String
+          Value: !Ref
+            Fn::Sub: Accounts${Endpoint}HostedZone
+          Tags:
+            Environment: !Ref Environment
+            Application: "auth-frontend"
+            Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
 
-  AccountsSignInCertificateArnSSM:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Description: The SignIn Domain Certificate ARN
-      Name: !Sub "/deploy/${Environment}/signin_certificate_arn"
-      Type: String
-      Value: !Ref AccountsSignInCertificate
-      Tags:
-        Environment: !Ref Environment
-        Application: "auth-frontend"
-        Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
+      Accounts${Endpoint}Certificate:
+        Type: AWS::CertificateManager::Certificate
+        Condition: CreateNonProdEnvironmentResources
+        Properties:
+          DomainName: !Sub ${Endpoint}${EndpointSuffix}.${Environment}.account.gov.uk
+          DomainValidationOptions:
+            - DomainName: !Sub ${Endpoint}${EndpointSuffix}.${Environment}.account.gov.uk
+              HostedZoneId: !GetAtt
+                - !Sub Accounts${Endpoint}HostedZone
+                - Id
+          ValidationMethod: DNS
+
+      Accounts${Endpoint}CertificateArnSSM:
+        Type: AWS::SSM::Parameter
+        Condition: CreateNonProdEnvironmentResources
+        Properties:
+          Description: !Sub "The ${Endpoint} subdomain Certificate ARN"
+          Name: !Sub
+            - "/deploy/${Environment}/${lowercaseEndpoint}_certificate_arn"
+            - lowercaseEndpoint: !FindInMap
+              - EndpointConfigs
+              - !Ref Endpoint
+              - lowercaseName
+          Type: String
+          Value: !Ref
+            Fn::Sub: Accounts${Endpoint}Certificate
+          Tags:
+            Environment: !Ref Environment
+            Application: "auth-frontend"
+            Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
