@@ -69,7 +69,7 @@ describe("Integration::register create password", () => {
         email: "test@test.com",
         password: "test@test.com",
       })
-      .expect(500);
+      .expect(403);
   });
 
   it("should return validation error when password not entered", async () => {

@@ -119,7 +119,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .send({
         password: "password",
       })
-      .expect(500, done);
+      .expect(403, done);
   });
 
   it("should return validation error when password not entered", (done) => {

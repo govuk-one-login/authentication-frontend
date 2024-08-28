@@ -64,7 +64,7 @@ describe("Integration::select-mfa-options", () => {
       .send({
         mfaOptions: "SMS",
       })
-      .expect(500);
+      .expect(403);
   });
 
   it("should return validation error when mfa option not selected", async () => {

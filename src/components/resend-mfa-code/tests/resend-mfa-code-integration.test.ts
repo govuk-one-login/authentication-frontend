@@ -119,7 +119,7 @@ describe("Integration:: resend mfa code", () => {
       .send({
         code: "123456",
       })
-      .expect(500);
+      .expect(403);
   });
 
   it("should redirect to /enter-code when new code requested as part of sign in journey", async () => {

@@ -71,7 +71,7 @@ describe("Integration::enter phone number", () => {
       .send({
         phoneNumber: "123456789",
       })
-      .expect(500);
+      .expect(403);
   });
 
   it("should return validation error when uk phone number not entered", async () => {
