@@ -18,7 +18,8 @@ export function authorizeService(
     clientSessionId: string,
     persistentSessionId: string,
     req: Request,
-    reauthenticate?: string
+    reauthenticate?: string,
+    oldSessionId?: string
   ): Promise<ApiResponseResult<StartAuthResponse>> {
     let reauthenticateOption = undefined;
     if (supportReauthentication() && reauthenticate) {
@@ -32,6 +33,7 @@ export function authorizeService(
           clientSessionId: clientSessionId,
           persistentSessionId: persistentSessionId,
           reauthenticate: reauthenticateOption,
+          oldSessionId: oldSessionId,
         },
         req,
         API_ENDPOINTS.START

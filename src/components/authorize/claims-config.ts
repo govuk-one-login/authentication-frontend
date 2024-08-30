@@ -33,6 +33,7 @@ export type Claims = {
   rp_state: string;
   reauthenticate?: string;
   claim?: string;
+  old_session_id?: string;
 };
 
 export const requiredClaimsKeys = [
