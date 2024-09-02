@@ -55,6 +55,7 @@ export function enterEmailPost(
   checkReauthService: CheckReauthServiceInterface = checkReauthUsersService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
+    logger.info(`BECKA: In enter email post with session id ${res.locals.sessionId}`)
     const email = req.body.email;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     req.session.user.email = email.toLowerCase();

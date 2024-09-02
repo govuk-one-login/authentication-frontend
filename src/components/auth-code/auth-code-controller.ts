@@ -7,12 +7,14 @@ import { CookieConsentServiceInterface } from "../common/cookie-consent/types";
 import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service";
 import { sanitize } from "../../utils/strings";
 import { COOKIE_CONSENT } from "../../app.constants";
+import { logger } from "../../utils/logger";
 
 export function authCodeGet(
   service: AuthCodeServiceInterface = authCodeService(),
   cookieService: CookieConsentServiceInterface = cookieConsentService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
+    logger.info(`BECKA: In auth code get with session id ${res.locals.sessionId}`)
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const gaId = req.session.client.crossDomainGaTrackingId;
 
