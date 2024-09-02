@@ -3,6 +3,7 @@ import xss from "xss";
 import { ErrorWithLevel } from "../utils/error";
 import { getAppEnv } from "../config";
 import { ERROR_LOG_LEVEL, ERROR_MESSAGES, PATH_NAMES } from "../app.constants";
+import { logger } from "../utils/logger";
 
 export function initialiseSessionMiddleware(
   req: Request,
@@ -10,6 +11,8 @@ export function initialiseSessionMiddleware(
   next: NextFunction
 ): void {
   if (req.path === PATH_NAMES.AUTHORIZE) {
+    logger.info("AIDAN: inside initialise session middleware")
+
     req.session.client = {};
 
     const email =
@@ -39,6 +42,8 @@ export function getSessionIdMiddleware(
   res: Response,
   next: NextFunction
 ): void {
+  logger.info("AIDAN: inside getSessionIdMiddleware")
+
   if (req.cookies && req.cookies.gs) {
     const ids = xss(req.cookies["gs"]).split(".");
 
@@ -58,6 +63,8 @@ export function validateSessionMiddleware(
   res: Response,
   next: NextFunction
 ): void {
+  logger.info("AIDAN: inside validateSessionMiddleware")
+
   if (req.cookies.gs && req.cookies.aps && req.session.id) {
     return next();
   }
