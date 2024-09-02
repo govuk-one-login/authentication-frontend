@@ -24,7 +24,7 @@ export function authorizeService(
     if (supportReauthentication() && reauthenticate) {
       reauthenticateOption = reauthenticate !== "";
     }
-    const response = await axios.client.get<StartAuthResponse>(
+    const response = await axios.client.post<StartAuthResponse>(
       API_ENDPOINTS.START,
       getInternalRequestConfigWithSecurityHeaders(
         {
