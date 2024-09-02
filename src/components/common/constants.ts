@@ -2,6 +2,7 @@ import { PATH_NAMES } from "../../app.constants";
 import { getNextState } from "./state-machine/state-machine";
 import { support2hrLockout } from "../../config";
 import { Request } from "express";
+import { logger } from "../../utils/logger";
 
 export const SECURITY_CODE_ERROR = "actionType";
 
@@ -178,6 +179,7 @@ export async function getNextPathAndUpdateJourney(
   sessionId?: string
 ): Promise<string> {
   const nextState = getNextState(path, event, ctx);
+  logger.info(`BECKA: in getNextPathAndUpdateJourney with session id ${sessionId} transitioning from path ${path} to next state ${nextState}`)
 
   req.session.user.journey = {
     nextPath: nextState.value,

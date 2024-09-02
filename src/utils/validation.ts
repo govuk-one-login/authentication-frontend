@@ -6,6 +6,7 @@ import {
   CONTACT_US_COUNTRY_MAX_LENGTH,
 } from "../app.constants";
 import { Error, PlaceholderReplacement } from "../types";
+import { logger } from "./logger";
 
 export const isObjectEmpty = (obj: Record<string, unknown>): boolean => {
   return Object.keys(obj).length === 0;
@@ -87,6 +88,7 @@ export function renderBadRequest(
   errors: { [k: string]: Error },
   postValidationLocals?: Record<string, unknown>
 ): void {
+  logger.info(`BECKA: in render bad request with session id ${res.locals.sessionId}`)
   res.status(HTTP_STATUS_CODES.BAD_REQUEST);
 
   const uniqueErrorList: Error[] = deDuplicateErrorList(errors);

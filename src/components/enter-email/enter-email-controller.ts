@@ -23,6 +23,7 @@ import {
 } from "../../utils/validation";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 import { isLocked, timestampNSecondsFromNow } from "../../utils/lock-helper";
+import { logger } from "../../utils/logger";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -89,6 +90,7 @@ export function enterEmailPost(
             );
 
           case ERROR_CODES.RE_AUTH_CHECK_NO_USER_OR_NO_MATCH:
+            logger.info(`BECKA: Matched RE_AUTH_CHECK_NO_USER_OR_NO_MATCH in enter email controller with session id ${ res.locals.sessionId}`)
             return handleBadRequest(req, res, EMAIL_ERROR_KEY);
         }
       }
