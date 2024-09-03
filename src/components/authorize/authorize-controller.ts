@@ -84,6 +84,19 @@ export function authorizeGet(
     setSessionDataFromClaims(req, claims);
     setSessionDataFromAuthResponse(req, startAuthResponse);
 
+    if (
+      supportReauthentication() &&
+      req.session.user.reauthenticate &&
+      startAuthResponse.data.user.isBlockedForReauth
+    ) {
+      logger.info(
+        `Start response indicates user with session ${res.locals.sessionId} is blocked for reauth, redirecting back to orchestration`
+      );
+      return res.redirect(
+        req.session.client.redirectUri.concat("?error=login_required")
+      );
+    }
+
     req.session.user.isAccountCreationJourney = undefined;
 
     logger.info(`Reauth claim length ${claims.reauthenticate?.length}`);
