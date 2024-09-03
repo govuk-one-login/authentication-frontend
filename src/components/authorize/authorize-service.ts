@@ -19,13 +19,15 @@ export function authorizeService(
     persistentSessionId: string,
     req: Request,
     reauthenticate?: string,
-    oldSessionId?: string
+    previousSessionId?: string
   ): Promise<ApiResponseResult<StartAuthResponse>> {
     let reauthenticateOption = undefined;
     if (supportReauthentication() && reauthenticate) {
       reauthenticateOption = reauthenticate !== "";
     }
-    const body = oldSessionId ? { "old-session-id": oldSessionId } : {};
+    const body = previousSessionId
+      ? { "previous-session-id": previousSessionId }
+      : {};
     const response = await axios.client.post<StartAuthResponse>(
       API_ENDPOINTS.START,
       body,

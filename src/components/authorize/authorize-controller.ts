@@ -63,7 +63,7 @@ export function authorizeGet(
       persistentSessionId,
       req,
       claims.reauthenticate,
-      claims.old_session_id
+      claims.previous_session_id
     );
 
     if (!startAuthResponse.success) {

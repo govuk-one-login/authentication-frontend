@@ -15,7 +15,7 @@ import {
 } from "../../../../test/helpers/service-test-helper";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
-const oldSessionId = "4waJ14KA9IyxKzY7bIGIA3hUDos";
+const previousSessionId = "4waJ14KA9IyxKzY7bIGIA3hUDos";
 
 describe("authorize service", () => {
   let postStub: SinonStub;
@@ -102,7 +102,7 @@ describe("authorize service", () => {
     ).to.be.true;
   });
 
-  it("sends a request with old session ID in the body when given", () => {
+  it("sends a request with previous session ID in the body when given", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     service.start(
       sessionId,
@@ -110,13 +110,13 @@ describe("authorize service", () => {
       diPersistentSessionId,
       req,
       undefined,
-      oldSessionId
+      previousSessionId
     );
 
     expect(
       postStub.calledOnceWithExactly(
         API_ENDPOINTS.START,
-        { "old-session-id": oldSessionId },
+        { "previous-session-id": previousSessionId },
         {
           headers: {
             ...expectedHeadersFromCommonVarsWithSecurityHeaders,

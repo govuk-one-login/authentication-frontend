@@ -24,7 +24,7 @@ export interface AuthorizeServiceInterface {
     persistentSessionId: string,
     req: Request,
     reauthenticate?: string,
-    oldSessionId?: string
+    previousSessionId?: string
   ) => Promise<ApiResponseResult<StartAuthResponse>>;
 }
 
