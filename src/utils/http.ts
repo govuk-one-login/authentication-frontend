@@ -36,7 +36,6 @@ export interface ConfigOptions {
   baseURL?: string;
   userLanguage?: string;
   reauthenticate?: boolean;
-  oldSessionId?: string;
 }
 
 export function createApiResponse<T>(
@@ -105,10 +104,6 @@ export function getInternalRequestConfigWithSecurityHeaders(
 
   if (options.userLanguage) {
     config.headers["User-Language"] = options.userLanguage;
-  }
-
-  if (options.oldSessionId) {
-    config.headers["Old-Session-Id"] = options.oldSessionId;
   }
 
   return config;

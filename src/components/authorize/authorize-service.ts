@@ -25,15 +25,16 @@ export function authorizeService(
     if (supportReauthentication() && reauthenticate) {
       reauthenticateOption = reauthenticate !== "";
     }
-    const response = await axios.client.get<StartAuthResponse>(
+    const body = oldSessionId ? { "old-session-id": oldSessionId } : {};
+    const response = await axios.client.post<StartAuthResponse>(
       API_ENDPOINTS.START,
+      body,
       getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
           clientSessionId: clientSessionId,
           persistentSessionId: persistentSessionId,
           reauthenticate: reauthenticateOption,
-          oldSessionId: oldSessionId,
         },
         req,
         API_ENDPOINTS.START
