@@ -226,6 +226,7 @@ describe("authorize controller", () => {
         identityRequired: false,
         upliftRequired: false,
         authenticated: false,
+        isBlockedForReauth: false,
       };
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
@@ -237,6 +238,32 @@ describe("authorize controller", () => {
       )(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
+    });
+
+    it("should log user out when reauthentication is requested and support reauthenticate feature flag is on but user is blocked from reauthenticating", async () => {
+      const redirectUri = "https://example.com/redirect";
+      mockClaims.redirect_uri = redirectUri;
+
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+      mockClaims.reauthenticate = "123456";
+      authServiceResponseData.data.user = {
+        identityRequired: false,
+        upliftRequired: false,
+        authenticated: false,
+        isBlockedForReauth: true,
+      };
+      fakeAuthorizeService = mockAuthService(authServiceResponseData);
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+
+      expect(res.redirect).to.have.been.calledWith(
+        redirectUri + "?error=login_required"
+      );
     });
 
     //note that this is currently the same behaviour with the feature flag on or off. This will change if we decide on a different initial page for the reauth journey

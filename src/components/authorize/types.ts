@@ -15,6 +15,7 @@ export interface UserSessionInfo {
   gaCrossDomainTrackingId?: string;
   docCheckingAppUser: boolean;
   mfaMethodType?: string;
+  isBlockedForReauth: boolean;
 }
 
 export interface AuthorizeServiceInterface {
