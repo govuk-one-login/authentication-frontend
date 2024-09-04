@@ -1,4 +1,4 @@
-FROM node:18.20.3-alpine3.20@sha256:e37da457874383fa9217067867ec85fe8fe59f0bfa351ec9752a95438680056e AS builder
+FROM node:22.8.0-alpine3.20@sha256:008735b83ef98c7635b5b73cb9b597172fe1895619a8d65378fa7110e427abb5 AS builder
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install
@@ -7,7 +7,7 @@ COPY ./@types ./@types
 COPY ./src ./src
 RUN yarn build && yarn install --production
 
-FROM node:18.20.3-alpine3.20@sha256:e37da457874383fa9217067867ec85fe8fe59f0bfa351ec9752a95438680056e AS final
+FROM node:22.8.0-alpine3.20@sha256:008735b83ef98c7635b5b73cb9b597172fe1895619a8d65378fa7110e427abb5 AS final
 
 COPY --from=oneagent_codemodules / /
 ENV LD_PRELOAD=/opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so

@@ -1,4 +1,4 @@
-FROM node:18.20.3-alpine3.20@sha256:e37da457874383fa9217067867ec85fe8fe59f0bfa351ec9752a95438680056e as builder
+FROM node:22.8.0-alpine3.20@sha256:008735b83ef98c7635b5b73cb9b597172fe1895619a8d65378fa7110e427abb5 as builder
 WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./
@@ -7,7 +7,7 @@ COPY ./src ./src
 COPY ./@types ./@types
 RUN yarn install && yarn build && yarn clean-modules && yarn install --production=true
 
-FROM node:18.20.3-alpine3.20@sha256:e37da457874383fa9217067867ec85fe8fe59f0bfa351ec9752a95438680056e as final
+FROM node:22.8.0-alpine3.20@sha256:008735b83ef98c7635b5b73cb9b597172fe1895619a8d65378fa7110e427abb5 as final
 
 WORKDIR /app
 COPY --chown=node:node --from=builder /app/package*.json ./
