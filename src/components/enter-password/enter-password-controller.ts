@@ -259,18 +259,16 @@ export function enterPasswordPost(
     res: Response,
     req: Request
   ) {
-    if (journeyType == JOURNEY_TYPE.REAUTHENTICATION) {
-      if (req.session.client?.redirectUri) {
-        return res.redirect(
-          req.session.client.redirectUri.concat("?error=login_required")
-        );
-      } else {
-        throw new ReauthJourneyError(
-          "Re-auth journey failed due to missing redirect uri in client session."
-        );
-      }
-    } else {
+    if (journeyType != JOURNEY_TYPE.REAUTHENTICATION) {
       return res.redirect(getErrorPathByCode(errorCode));
     }
+    if (!req.session.client?.redirectUri) {
+      throw new ReauthJourneyError(
+        "Re-auth journey failed due to missing redirect uri in client session."
+      );
+    }
+    return res.redirect(
+      req.session.client.redirectUri.concat("?error=login_required")
+    );
   }
 }
