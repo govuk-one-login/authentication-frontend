@@ -125,7 +125,10 @@ export function enterPasswordPost(
 
     if (!userLogin.success) {
       const errorCode = userLogin.data.code;
-      if (errorCode === ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED) {
+      if (
+        errorCode === ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED ||
+        errorCode === ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
+      ) {
         return handleMaxCredentialsReached(errorCode, journeyType, res, req);
       }
 
