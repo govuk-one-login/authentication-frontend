@@ -32,6 +32,7 @@ export const helmetConfiguration: HelmetOptions = {
         "https://www.google-analytics.com",
       ],
       frameAncestors: ["'self'", "https://*.account.gov.uk"],
+      formAction: null,
     },
   },
   dnsPrefetchControl: {
