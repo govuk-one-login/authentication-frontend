@@ -821,10 +821,10 @@
   resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-2.1.1.tgz#b9da6a878a371829a0502c9b6c1c143ef6663f4d"
   integrity sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==
 
-"@govuk-one-login/frontend-analytics@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-analytics/-/frontend-analytics-2.0.1.tgz#ff843241de1d1475407f719fb3f0f7180fc62dc1"
-  integrity sha512-8xAsQrRomVYxedFOQ8JDVdYx1JReJevSjU5EDZlcS/x3PhpCxm9DHjEqyOIvTo34zkFFoI4f2um6YkdD9IRQAg==
+"@govuk-one-login/frontend-analytics@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-analytics/-/frontend-analytics-3.0.0.tgz#c1b121d126a9c0254de29fcbc83590d97cbad232"
+  integrity sha512-zjzOlyl1mb1WhKMyROqqCxAf0GWyvMK7igdnivWSyldL9ThaqZ5U4I/vDZl2FT+jII8kbQyOK+pL2AgW+mFIJQ==
   dependencies:
     copy-webpack-plugin "^12.0.2"
 
