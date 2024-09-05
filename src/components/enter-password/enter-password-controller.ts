@@ -124,23 +124,12 @@ export function enterPasswordPost(
     );
 
     if (!userLogin.success) {
+      const errorCode = userLogin.data.code;
       if (
-        userLogin.data.code ===
-        ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED
+        errorCode === ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED ||
+        errorCode === ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
       ) {
-        if (journeyType == JOURNEY_TYPE.REAUTHENTICATION) {
-          if (req.session.client?.redirectUri) {
-            return res.redirect(
-              req.session.client.redirectUri.concat("?error=login_required")
-            );
-          } else {
-            throw new ReauthJourneyError(
-              "Re-auth journey failed due to missing redirect uri in client session."
-            );
-          }
-        } else {
-          return res.redirect(getErrorPathByCode(userLogin.data.code));
-        }
+        return handleMaxCredentialsReached(errorCode, journeyType, res, req);
       }
 
       let validationKey;
@@ -266,4 +255,28 @@ export function enterPasswordPost(
       )
     );
   };
+
+  function handleMaxCredentialsReached(
+    errorCode: number,
+    journeyType: JOURNEY_TYPE,
+    res: Response,
+    req: Request
+  ) {
+    if (journeyType != JOURNEY_TYPE.REAUTHENTICATION) {
+      if (errorCode == ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED) {
+        throw new ReauthJourneyError(
+          "Reauth error code from login handler returned on a non-reauth journey"
+        );
+      }
+      return res.redirect(getErrorPathByCode(errorCode));
+    }
+    if (!req.session.client?.redirectUri) {
+      throw new ReauthJourneyError(
+        "Re-auth journey failed due to missing redirect uri in client session."
+      );
+    }
+    return res.redirect(
+      req.session.client.redirectUri.concat("?error=login_required")
+    );
+  }
 }

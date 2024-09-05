@@ -148,4 +148,21 @@ describe("Integration::enter password", () => {
       .expect("Location", REDIRECT_URI.concat("?error=login_required"))
       .expect(302);
   });
+
+  it("should sign out of re-authentication flow when user has reached limit on other reauth credentials", async () => {
+    nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).times(6).reply(400, {
+      code: ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED,
+    });
+
+    await request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        password: "password",
+      })
+      .expect("Location", REDIRECT_URI.concat("?error=login_required"))
+      .expect(302);
+  });
 });
