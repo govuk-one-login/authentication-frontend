@@ -263,6 +263,11 @@ export function enterPasswordPost(
     req: Request
   ) {
     if (journeyType != JOURNEY_TYPE.REAUTHENTICATION) {
+      if (errorCode == ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED) {
+        throw new ReauthJourneyError(
+          "Reauth error code from login handler returned on a non-reauth journey"
+        );
+      }
       return res.redirect(getErrorPathByCode(errorCode));
     }
     if (!req.session.client?.redirectUri) {
