@@ -266,14 +266,10 @@ describe("Verify code controller tests", () => {
         .called;
       expect(res.redirect).to.have.calledWith("/reset-password");
     });
+  });
 
-    it("should redirect to logged out if reauth is enabled and user entered too many invalid codes", async () => {
-      const verifyCodeService = fakeVerifyCodeServiceHelper(
-        false,
-        ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
-      );
-      process.env.SUPPORT_REAUTHENTICATION = "1";
-
+  describe("Reauth log out scenarios", async () => {
+    beforeEach(() => {
       req = createMockRequest(PATH_NAMES.ENTER_MFA);
       req.session.user = {
         email: "test@test.com",
@@ -283,14 +279,27 @@ describe("Verify code controller tests", () => {
       req.session.client = {
         redirectUri: EXAMPLE_REDIRECT_URI,
       };
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+    });
+    const verifyCodePostOptions = {
+      notificationType: NOTIFICATION_TYPE.MFA_SMS,
+      template: "enter-mfa/index.njk",
+      validationKey: "pages.enterMfa.code.validationError.invalidCode",
+      validationErrorCode: ERROR_CODES.INVALID_MFA_CODE,
+      journeyType: JOURNEY_TYPE.REAUTHENTICATION,
+    };
 
-      await verifyCodePost(verifyCodeService, noInterventionsService, {
-        notificationType: NOTIFICATION_TYPE.MFA_SMS,
-        template: "enter-mfa/index.njk",
-        validationKey: "pages.enterMfa.code.validationError.invalidCode",
-        validationErrorCode: ERROR_CODES.INVALID_MFA_CODE,
-        journeyType: JOURNEY_TYPE.REAUTHENTICATION,
-      })(req as Request, res as Response);
+    it("should redirect to logged out if reauth is enabled and user entered too many invalid codes", async () => {
+      const verifyCodeService = fakeVerifyCodeServiceHelper(
+        false,
+        ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
+      );
+
+      await verifyCodePost(
+        verifyCodeService,
+        noInterventionsService,
+        verifyCodePostOptions
+      )(req as Request, res as Response);
 
       expect(noInterventionsService.accountInterventionStatus).to.not.be.called;
 
