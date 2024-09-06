@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types";
+import {
+  ApiResponseResult,
+  DefaultApiResponse,
+  ExpressRouteFunc,
+} from "../../types";
 import {
   ERROR_CODES,
   getErrorPathByCode,
@@ -134,50 +138,13 @@ export const enterAuthenticatorAppCodePost = (
     );
 
     if (!result.success) {
-      const error = result.data.code;
-
-      if (error === ERROR_CODES.AUTH_APP_INVALID_CODE) {
-        const error = formatValidationError(
-          "code",
-          req.t(
-            "pages.enterAuthenticatorAppCode.code.validationError.invalidCode"
-          )
-        );
-        return renderBadRequest(res, req, template, error);
-      }
-
-      if (error === ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED) {
-        if (
-          supportReauthentication() &&
-          journeyType == JOURNEY_TYPE.REAUTHENTICATION
-        ) {
-          return handleReauthFailure(req, res);
-        }
-        req.session.user.wrongCodeEnteredLock = new Date(
-          Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
-        ).toUTCString();
-      }
-
-      if (error === ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED) {
-        if (
-          supportReauthentication() &&
-          journeyType == JOURNEY_TYPE.REAUTHENTICATION
-        ) {
-          return handleReauthFailure(req, res);
-        } else {
-          throw new ReauthJourneyError(
-            "Reauth erorr response returned on a non reauth journey"
-          );
-        }
-      }
-
-      const path = getErrorPathByCode(result.data.code);
-
-      if (path) {
-        return res.redirect(path);
-      }
-
-      throw new BadRequestError(result.data.message, result.data.code);
+      return handleAuthAppCodePostError(
+        req,
+        res,
+        template,
+        journeyType,
+        result
+      );
     }
 
     res.redirect(
@@ -195,3 +162,50 @@ export const enterAuthenticatorAppCodePost = (
     );
   };
 };
+
+function handleAuthAppCodePostError(
+  req: Request,
+  res: Response,
+  template: string,
+  journeyType: JOURNEY_TYPE,
+  result: ApiResponseResult<DefaultApiResponse>
+) {
+  const error = result.data.code;
+  if (error === ERROR_CODES.AUTH_APP_INVALID_CODE) {
+    const error = formatValidationError(
+      "code",
+      req.t("pages.enterAuthenticatorAppCode.code.validationError.invalidCode")
+    );
+    return renderBadRequest(res, req, template, error);
+  }
+
+  const isReauthJourneyInEnvWithReauthConfigured =
+    supportReauthentication() && journeyType == JOURNEY_TYPE.REAUTHENTICATION;
+
+  if (error === ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED) {
+    if (isReauthJourneyInEnvWithReauthConfigured) {
+      return handleReauthFailure(req, res);
+    }
+    req.session.user.wrongCodeEnteredLock = new Date(
+      Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
+    ).toUTCString();
+  }
+
+  if (error === ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED) {
+    if (isReauthJourneyInEnvWithReauthConfigured) {
+      return handleReauthFailure(req, res);
+    } else {
+      throw new ReauthJourneyError(
+        "Reauth erorr response returned on a non reauth journey"
+      );
+    }
+  }
+
+  const path = getErrorPathByCode(result.data.code);
+
+  if (path) {
+    return res.redirect(path);
+  }
+
+  throw new BadRequestError(result.data.message, result.data.code);
+}
