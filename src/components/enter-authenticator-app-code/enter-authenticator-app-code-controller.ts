@@ -158,6 +158,19 @@ export const enterAuthenticatorAppCodePost = (
         ).toUTCString();
       }
 
+      if (error === ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED) {
+        if (
+          supportReauthentication() &&
+          journeyType == JOURNEY_TYPE.REAUTHENTICATION
+        ) {
+          return handleReauthFailure(req, res);
+        } else {
+          throw new ReauthJourneyError(
+            "Reauth erorr response returned on a non reauth journey"
+          );
+        }
+      }
+
       const path = getErrorPathByCode(result.data.code);
 
       if (path) {
