@@ -68,7 +68,9 @@ export function verifyCodePost(
         if (
           result.data.code ===
             ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||
-          result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
+          result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES ||
+          result.data.code ===
+            ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
         ) {
           return res.redirect(
             req.session.client.redirectUri.concat("?error=login_required")

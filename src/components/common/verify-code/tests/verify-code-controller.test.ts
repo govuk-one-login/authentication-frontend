@@ -307,5 +307,24 @@ describe("Verify code controller tests", () => {
         EXAMPLE_REDIRECT_URI.concat("?error=login_required")
       );
     });
+
+    it("should redirect to logged out if reauth is enabled and user entered too many invalid reauth details", async () => {
+      const verifyCodeService = fakeVerifyCodeServiceHelper(
+        false,
+        ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
+      );
+
+      await verifyCodePost(
+        verifyCodeService,
+        noInterventionsService,
+        verifyCodePostOptions
+      )(req as Request, res as Response);
+
+      expect(noInterventionsService.accountInterventionStatus).to.not.be.called;
+
+      expect(res.redirect).to.have.calledWith(
+        EXAMPLE_REDIRECT_URI.concat("?error=login_required")
+      );
+    });
   });
 });
