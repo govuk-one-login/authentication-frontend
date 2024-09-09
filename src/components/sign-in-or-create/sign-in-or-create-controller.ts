@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { mobileOrWebTemplate } from "../../utils/mobile-or-web-template";
 
 export async function signInOrCreateGet(
   req: Request,
@@ -12,7 +13,14 @@ export async function signInOrCreateGet(
   if (req.query.redirectPost) {
     return await signInOrCreatePost(req, res);
   }
-  res.render("sign-in-or-create/index.njk", {
+
+  // Do not approve a PR with the following line
+  // ===========================================
+  // It is forcing the controller to render the
+  // template that is intended for the mobile app.
+  const template = mobileOrWebTemplate("sign-in-or-create/index.njk", true);
+
+  res.render(template, {
     serviceType: req.session.client.serviceType,
   });
 }

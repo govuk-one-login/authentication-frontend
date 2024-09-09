@@ -1,0 +1,34 @@
+{% extends "common/layout/mobile/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitleName = 'mobileAppPages.signInOrCreate.title' | translate %}
+
+{% block content %}
+    {% include "common/errors/errorSummary.njk" %}
+
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'mobileAppPages.signInOrCreate.header' | translate | striptags | safe }} </h1>
+
+    <p class="govuk-body">
+        {{ 'mobileAppPages.signInOrCreate.introParagraph' | translate }}
+    </p>
+
+    <form action="/sign-in-or-create" method="post" novalidate="novalidate">
+
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        <input type="hidden" name="supportInternationalNumbers" value="{{ supportInternationalNumbers }}" />
+
+        <div>
+            {{ govukButton({
+                text: 'mobileAppPages.signInOrCreate.signInButtonText' | translate,
+                classes: "govuk-button--primary",
+                attributes: {
+                    "id": "sign-in-button"
+                }
+            }) }}
+        </div>
+
+    </form>
+
+    {{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "Home", contentId: "9cd55996-3f12-4e79-adf3-0ec3c4faf7ce", loggedInStatus: false, dynamic: true })}}
+
+{% endblock %}

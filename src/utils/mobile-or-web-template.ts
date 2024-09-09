@@ -6,6 +6,9 @@ export function mobileOrWebTemplate(
   const mobileTemplatesFolderName = "mobile-templates";
 
   return isMobileContext
-    ? webTemplate.replace(capturePathAndFilenameRegExp, `$1${mobileTemplatesFolderName}/$2`)
+    ? webTemplate.replace(
+        capturePathAndFilenameRegExp,
+        `$1${mobileTemplatesFolderName}/$2`
+      )
     : webTemplate;
 }
