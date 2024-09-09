@@ -306,5 +306,34 @@ describe("enter authenticator app code controller", () => {
         `https://rp.gov.uk/redirect?error=login_required`
       );
     });
+
+    it("should redirect to orchestration with error required login reauth journey on reauth sign in details exceeded", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+      const fakeService: VerifyMfaCodeInterface = {
+        verifyMfaCode: sinon.fake.returns({
+          data: {
+            code: ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED,
+            message: "",
+          },
+          success: false,
+        }),
+      } as unknown as VerifyMfaCodeInterface;
+
+      req.t = sinon.fake.returns("translated string");
+      req.body.code = "678988";
+      res.locals.sessionId = "123456-djjad";
+      req.session.user.reauthenticate = "reauth";
+      req.session.client.redirectUri = "https://rp.gov.uk/redirect";
+
+      await enterAuthenticatorAppCodePost(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
+      expect(res.redirect).to.have.been.calledWith(
+        `https://rp.gov.uk/redirect?error=login_required`
+      );
+    });
   });
 });
