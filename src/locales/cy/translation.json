@@ -163,7 +163,7 @@
   "mobileAppPages": {
     "signInOrCreate": {
       "header": "Mewngofnodwch gyda GOV.UK One Login",
-      "introParagraph": "Gallwch ddefnyddio eich GOV.UK One Login i brofi pwy ydych a chael mynediad at rai o wasanaethau’r llywodraeth.",
+      "introParagraph": "Gallwch ddefnyddio eich GOV.UK One Login i brofi pwy ydych a chael mynediad at rai o wasanaethau'r llywodraeth.",
       "signInButtonText": "Mewngofnodi"
     }
   },
