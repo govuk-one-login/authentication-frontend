@@ -160,6 +160,13 @@
       }
     }
   },
+  "mobileAppPages": {
+    "signInOrCreate": {
+      "header": "Sign in with GOV.UK One Login",
+      "introParagraph": "You can use your GOV.UK One Login to prove your identity and access some government services.",
+      "signInButtonText": "Sign in"
+    }
+  },
   "pages": {
     "signInOrCreate": {
       "mandatory": {
