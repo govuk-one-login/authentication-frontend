@@ -15,10 +15,8 @@ import {
 } from "../../../../test/helpers/service-test-helper";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
-const previousSessionId = "4waJ14KA9IyxKzY7bIGIA3hUDos";
-
 describe("authorize service", () => {
-  let postStub: SinonStub;
+  let getStub: SinonStub;
   let service: AuthorizeServiceInterface;
   const { sessionId, clientSessionId, diPersistentSessionId } = commonVariables;
   const req = createMockRequest(PATH_NAMES.AUTHORIZE, {
@@ -30,13 +28,13 @@ describe("authorize service", () => {
     process.env.API_BASE_URL = "another-base-url";
     const httpInstance = new Http();
     service = authorizeService(httpInstance);
-    postStub = sinon.stub(httpInstance.client, "post");
+    getStub = sinon.stub(httpInstance.client, "get");
   });
 
   afterEach(() => {
     resetApiKeyAndBaseUrlEnvVars();
     delete process.env.SUPPORT_REAUTHENTICATION;
-    postStub.reset();
+    getStub.reset();
   });
 
   it("sends a request with the correct headers set to true when reauth is requested and the feature flag is set", () => {
@@ -50,17 +48,13 @@ describe("authorize service", () => {
     );
 
     expect(
-      postStub.calledOnceWithExactly(
-        API_ENDPOINTS.START,
-        {},
-        {
-          headers: {
-            ...expectedHeadersFromCommonVarsWithSecurityHeaders,
-            Reauthenticate: true,
-          },
-          proxy: false,
-        }
-      )
+      getStub.calledOnceWithExactly(API_ENDPOINTS.START, {
+        headers: {
+          ...expectedHeadersFromCommonVarsWithSecurityHeaders,
+          Reauthenticate: true,
+        },
+        proxy: false,
+      })
     ).to.be.true;
   });
 
@@ -75,14 +69,10 @@ describe("authorize service", () => {
     );
 
     expect(
-      postStub.calledOnceWithExactly(
-        API_ENDPOINTS.START,
-        {},
-        {
-          headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
-          proxy: false,
-        }
-      )
+      getStub.calledOnceWithExactly(API_ENDPOINTS.START, {
+        headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
+        proxy: false,
+      })
     ).to.be.true;
   });
 
@@ -91,39 +81,10 @@ describe("authorize service", () => {
     service.start(sessionId, clientSessionId, diPersistentSessionId, req);
 
     expect(
-      postStub.calledOnceWithExactly(
-        API_ENDPOINTS.START,
-        {},
-        {
-          headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
-          proxy: false,
-        }
-      )
-    ).to.be.true;
-  });
-
-  it("sends a request with previous session ID in the body when given", () => {
-    process.env.SUPPORT_REAUTHENTICATION = "1";
-    service.start(
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
-      req,
-      undefined,
-      previousSessionId
-    );
-
-    expect(
-      postStub.calledOnceWithExactly(
-        API_ENDPOINTS.START,
-        { "previous-session-id": previousSessionId },
-        {
-          headers: {
-            ...expectedHeadersFromCommonVarsWithSecurityHeaders,
-          },
-          proxy: false,
-        }
-      )
+      getStub.calledOnceWithExactly(API_ENDPOINTS.START, {
+        headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
+        proxy: false,
+      })
     ).to.be.true;
   });
 });
