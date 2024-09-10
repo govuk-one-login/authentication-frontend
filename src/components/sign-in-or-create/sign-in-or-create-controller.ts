@@ -12,8 +12,12 @@ export async function signInOrCreateGet(
   if (req.query.redirectPost) {
     return await signInOrCreatePost(req, res);
   }
+
   res.render("sign-in-or-create/index.njk", {
     serviceType: req.session.client.serviceType,
+    // Do not approve a PR with  the following line
+    // ============================================
+    mobileContext: true,
   });
 }
 
