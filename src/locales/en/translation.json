@@ -164,13 +164,16 @@
     "signInOrCreate": {
       "mandatory": {
         "title": "Create your GOV.UK One Login or sign in",
-        "header": "Create your GOV.UK One&nbsp;Login or sign&nbsp;in"
+        "titleMobile": "Sign in with GOV.UK One Login",
+        "header": "Create your GOV.UK One&nbsp;Login or sign&nbsp;in",
+        "headerMobile": "Sign in with GOV.UK One Login"
       },
       "optional": {
         "title": "Create a GOV.UK One Login or sign in to save your progress",
         "header": "Create a GOV.UK One Login or sign in to save your progress"
       },
       "paragraph1": "You can use your GOV.UK One Login to access some government services.",
+      "paragraph1Mobile": "You can use your GOV.UK One Login to prove your identity and access some government services.",
       "paragraph2": "In the future, you’ll be able to use it to access all services on GOV.UK.",
       "paragraph3": "You’ll need:",
       "bullet1": "an email address",

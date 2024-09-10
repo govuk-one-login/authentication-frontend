@@ -164,13 +164,16 @@
     "signInOrCreate": {
       "mandatory": {
         "title": "Creu eich GOV.UK One Login neu fewngofnodi",
-        "header": "Creu eich GOV.UK One&nbsp;Login neu fewngofnodi"
+        "titleMobile": "Mewngofnodwch gyda GOV.UK One Login",
+        "header": "Creu eich GOV.UK One&nbsp;Login neu fewngofnodi",
+        "headerMobile": "Mewngofnodwch gyda GOV.UK One Login"
       },
       "optional": {
         "title": "Creu GOV.UK One Login neu fewngofnodi i arbed eich cynnydd",
         "header": "Creu GOV.UK One Login neu fewngofnodi i arbed eich cynnydd"
       },
       "paragraph1": "Gallwch ddefnyddio eich GOV.UK One Login i gael mynediad at rai gwasanaethau’r llywodraeth.",
+      "paragraph1Mobile": "\nGallwch ddefnyddio eich GOV.UK One Login i brofi pwy ydych a chael mynediad at rai o wasanaethau’r llywodraeth",
       "paragraph2": "Yn y dyfodol, gallwch ei ddefnyddio i gael mynediad i bob gwasanaeth ar GOV.UK.",
       "paragraph3": "Byddwch angen:",
       "bullet1": "cyfeiriad e-bost",
