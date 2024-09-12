@@ -155,8 +155,8 @@ Mappings:
       cloudwatchLogRetentionInDays: 7
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5PP1PZmhiuHR57ZEfZXARt9/uiG+
-        KKF+S7us4zEEEmEXZFR1H+kWP5RrLHQy9esxsul9X7V4pygDTY1I6QbMGg==
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEw3VqLzY6ZFWmqruOpvMpPH8PWuQQ
+        1zSWSgFy2sngA1GKybC0zuZluGHfZMnr/BGo+teQzbDCekLijPvlozXY1g==
         -----END PUBLIC KEY-----
       redisNodeSize: cache.m4.xlarge
     integration:
