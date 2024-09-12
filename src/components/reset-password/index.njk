@@ -54,10 +54,7 @@
             'new-password'
         ) }}
 
-        {{ govukDetails({
-            summaryText: 'pages.resetPassword.securePasswordDetails.summary' | translate,
-            text: 'pages.resetPassword.securePasswordDetails.text' | translate
-        }) }}
+        {% include "common/password-guidance/_password-guidance-details.njk" %}
 
         {{ govukButton({
             "text": "general.continue.label" | translate,

@@ -101,6 +101,11 @@
       "hideFullText": "Cuddio cyfrinair wedi’i aildeipio",
       "announceShown": "Mae eich cyfrinair wedi’i aildeipio wedi cael ei ddangos",
       "announceHidden": "Mae eich cyfrinair wedi’i aildeipio wedi cael ei guddio"
+    },
+    "passwordGuidanceDetails": {
+      "summary": "Sut i greu cyfrinair diogel",
+      "threeRandomWordsParagraph": "Ffordd dda o greu cyfrinair diogel a chofiadwy yw defnyddio 3 gair ar hap. Gallwch ddefnyddio rhifau, symbolau a gofodau.",
+      "uniqueParagraph": "Dylech ddefnyddio cyfrinair nad ydych yn ei ddefnyddio ar gyfer unrhyw beth arall."
     }
   },
   "error": {
@@ -350,10 +355,6 @@
           "required": "Ail deipiwch eich cyfrinair",
           "matches": "Rhowch yr un cyfrinair yn y ddau faes"
         }
-      },
-      "securePasswordDetails": {
-        "summary": "Sut i greu cyfrinair diogel",
-        "text": "Ffordd dda o greu cyfrinair diogel a chofiadwy yw defnyddio 3 gair ar hap. Gallwch ddefnyddio rhifau, symbolau a gofodau."
       },
       "termsOfUse": {
         "heading": "Cytuno i delerau defnyddio GOV.UK One Login",
@@ -1678,10 +1679,6 @@
           "required": "Ail-deipiwch eich cyfrinair newydd",
           "matches": "Rhowch yr un cyfrinair yn y ddau faes"
         }
-      },
-      "securePasswordDetails": {
-        "summary": "Sut i greu cyfrinair diogel",
-        "text": "Ffordd dda o greu cyfrinair diogel a chofiadwy yw defnyddio 3 gair ar hap. Gallwch ddefnyddio rhifau, symbolau a gofodau."
       }
     },
     "resetPasswordConfirmation": {

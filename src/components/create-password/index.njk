@@ -47,10 +47,7 @@
             'new-password'
         ) }}
 
-        {{ govukDetails({
-            summaryText: 'pages.createPassword.securePasswordDetails.summary' | translate,
-            text: 'pages.createPassword.securePasswordDetails.text' | translate
-        }) }}
+        {% include "common/password-guidance/_password-guidance-details.njk" %}
 
         {{ govukButton({
             "text": "general.continue.label" | translate,
