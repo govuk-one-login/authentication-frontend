@@ -218,9 +218,9 @@
       }
     },
     "reEnterEmailAccount": {
-      "title": "Re-enter your sign-in details to continue",
-      "header": "Re-enter your sign-in details to continue",
-      "paragraph1": "For security, sign in with GOV.UK One Login again.",
+      "title": "Enter your sign in details for GOV.UK One Login again",
+      "header": "Enter your sign in details for GOV.UK One Login again",
+      "paragraph1": "To keep your information safe, you need to enter your sign in details again. This will help us make sure it’s you.",
       "enterYourEmailAddress": "Enter your email address",
       "enterYourEmailAddressError": "Enter the same email address you used to sign in"
     },

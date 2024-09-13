@@ -218,9 +218,9 @@
       }
     },
     "reEnterEmailAccount": {
-      "title": "Rhowch eich manylion mewngofnodi i mewn eto i barhau",
-      "header": "Rhowch eich manylion mewngofnodi i mewn eto i barhau",
-      "paragraph1": "Er diogelwch, mewngofnodwch gyda GOV.UK One Login eto.",
+      "title": "Rhowch eich manylion mewngofnodi ar gyfer GOV.UK One Login eto",
+      "header": "Rhowch eich manylion mewngofnodi ar gyfer GOV.UK One Login eto",
+      "paragraph1": "Er mwyn cadw’ch gwybodaeth yn ddiogel, mae angen i chi roi eich manylion mewngofnodi eto. Bydd hyn yn ein helpu i sicrhau mai chi sydd yna.",
       "enterYourEmailAddress": "Rhowch eich cyfeiriad e-bost",
       "enterYourEmailAddressError": "Rhowch yr un cyfeiriad e-bost rydych wedi’i ddefnyddio i fewngofnodi"
     },
