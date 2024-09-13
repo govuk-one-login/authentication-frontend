@@ -142,7 +142,7 @@
     "nyc": "^17.0.0",
     "pino-pretty": "^11.2.1",
     "sass": "^1.49.8",
-    "sinon": "^18.0.0",
+    "sinon": "^19.0.0",
     "sinon-chai": "^3.7.0",
     "supertest": "^7.0.0",
     "testcontainers": "^10.7.2",
