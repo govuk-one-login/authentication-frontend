@@ -8,66 +8,63 @@
 
 {% block content %}
 
-{% include "common/errors/errorSummary.njk" %}
+    {% include "common/errors/errorSummary.njk" %}
 
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resetPassword.header' | translate}}</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.resetPassword.header' | translate }}</h1>
 
-{% if isPasswordChangeRequired %}
-    <p class="govuk-body">{{'pages.resetPassword.password.paragraphRequired' | translate}}</p>
-    {% set actionUrl = '/reset-password-required' %}
-{% else %}
-    {% set actionUrl = '/reset-password' %}
-{% endif %}
+    {% if isPasswordChangeRequired %}
+        <p class="govuk-body">{{ 'pages.resetPassword.password.paragraphRequired' | translate }}</p>
+        {% set actionUrl = '/reset-password-required' %}
+    {% else %}
+        {% set actionUrl = '/reset-password' %}
+    {% endif %}
 
-<form action="{{actionUrl}}" method="post" novalidate>
+    <form action="{{ actionUrl }}" method="post" novalidate>
 
-    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
-    {{ govukInputWithHintAndShowPassword(
-        'pages.resetPassword.password.label'  | translate,
-        "password",
-        errors,
-        {
-            show: 'general.showPassword.show' | translate,
-            hide: 'general.showPassword.hide' | translate,
-            showFullText: 'general.showPassword.showFullText' | translate,
-            hideFullText: 'general.showPassword.hideFullText' | translate,
-            announceShown: 'general.showPassword.announceShown' | translate,
-            announceHidden: 'general.showPassword.announceHidden' | translate
-        },
-        'new-password',
-        'pages.resetPassword.password.hintText' | translate
-    ) }}
+        {{ govukInputWithHintAndShowPassword(
+            'pages.resetPassword.password.label'  | translate,
+            "password",
+            errors,
+            {
+                show: 'general.showPassword.show' | translate,
+                hide: 'general.showPassword.hide' | translate,
+                showFullText: 'general.showPassword.showFullText' | translate,
+                hideFullText: 'general.showPassword.hideFullText' | translate,
+                announceShown: 'general.showPassword.announceShown' | translate,
+                announceHidden: 'general.showPassword.announceHidden' | translate
+            },
+            'new-password',
+            'pages.resetPassword.password.hintText' | translate
+        ) }}
 
-    {{ govukInputWithHintAndShowPassword(
-        'pages.resetPassword.confirmPassword.label' | translate,
-        "confirm-password",
-        errors,
-        {
-            show: 'general.showRetypedPassword.show' | translate,
-            hide: 'general.showRetypedPassword.hide' | translate,
-            showFullText: 'general.showRetypedPassword.showFullText' | translate,
-            hideFullText: 'general.showRetypedPassword.hideFullText' | translate,
-            announceShown: 'general.showRetypedPassword.announceShown' | translate,
-            announceHidden: 'general.showRetypedPassword.announceHidden' | translate
-        },
-        'new-password'
-    )  }}
+        {{ govukInputWithHintAndShowPassword(
+            'pages.resetPassword.confirmPassword.label' | translate,
+            "confirm-password",
+            errors,
+            {
+                show: 'general.showRetypedPassword.show' | translate,
+                hide: 'general.showRetypedPassword.hide' | translate,
+                showFullText: 'general.showRetypedPassword.showFullText' | translate,
+                hideFullText: 'general.showRetypedPassword.hideFullText' | translate,
+                announceShown: 'general.showRetypedPassword.announceShown' | translate,
+                announceHidden: 'general.showRetypedPassword.announceHidden' | translate
+            },
+            'new-password'
+        ) }}
 
-    {{ govukDetails({
-    summaryText: 'pages.resetPassword.securePasswordDetails.summary' | translate,
-    text: 'pages.resetPassword.securePasswordDetails.text' | translate
-    }) }}
+        {% include "common/password-guidance/_password-guidance-details.njk" %}
 
-    {{ govukButton({
-        "text": "general.continue.label" | translate,
-        "type": "Submit",
-        "preventDoubleClick": true
-    }) }}
+        {{ govukButton({
+            "text": "general.continue.label" | translate,
+            "type": "Submit",
+            "preventDoubleClick": true
+        }) }}
 
-</form>
+    </form>
 
-{{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "account recovery", contentId: "c8520c6c-9f09-4edf-8c99-7123a3991cfc", loggedInStatus: false, dynamic: false })}}
+    {{ ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "account recovery", contentId: "c8520c6c-9f09-4edf-8c99-7123a3991cfc", loggedInStatus: false, dynamic: false }) }}
 {% endblock %}
 
 {% block scripts %}

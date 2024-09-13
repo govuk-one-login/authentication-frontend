@@ -101,6 +101,11 @@
       "hideFullText": "Hide retyped password",
       "announceShown": "Your retyped password is shown",
       "announceHidden": "Your retyped password is hidden"
+    },
+    "passwordGuidanceDetails": {
+      "summary": "How to create a secure password",
+      "threeRandomWordsParagraph": "A good way to create a secure and memorable password is to use 3 random words. You can use numbers, symbols and spaces.",
+      "uniqueParagraph": "You should use a password that you do not use for anything else."
     }
   },
   "error": {
@@ -350,10 +355,6 @@
           "required": "Re-type your password",
           "matches": "Enter the same password in both fields"
         }
-      },
-      "securePasswordDetails": {
-        "summary": "How to create a secure password",
-        "text": "A good way to create a secure and memorable password is to use 3 random words. You can use numbers, symbols and spaces."
       },
       "termsOfUse": {
         "heading": "Agree to the GOV.UK One Login terms of use",
@@ -1678,10 +1679,6 @@
           "required": "Re-type your new password",
           "matches": "Enter the same password in both fields"
         }
-      },
-      "securePasswordDetails": {
-        "summary": "How to create a secure password",
-        "text": "A good way to create a secure and memorable password is to use 3 random words. You can use numbers, symbols and spaces."
       }
     },
     "resetPasswordConfirmation": {
