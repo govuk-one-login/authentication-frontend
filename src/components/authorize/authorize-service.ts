@@ -25,12 +25,9 @@ export function authorizeService(
     if (supportReauthentication() && reauthenticate) {
       reauthenticateOption = reauthenticate !== "";
     }
-    const body = previousSessionId
-      ? { "previous-session-id": previousSessionId }
-      : {};
     const response = await axios.client.post<StartAuthResponse>(
       API_ENDPOINTS.START,
-      body,
+      createStartBody(previousSessionId, reauthenticate),
       getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
@@ -49,4 +46,14 @@ export function authorizeService(
   return {
     start,
   };
+}
+
+function createStartBody(previousSessionId?: string, reauthenticate?: string) {
+  const body: { [key: string]: any } = {};
+
+  if (previousSessionId !== undefined)
+    body["previous-session-id"] = previousSessionId;
+  if (reauthenticate !== undefined && supportReauthentication())
+    body["rp-pairwise-id-for-reauth"] = reauthenticate;
+  return body;
 }

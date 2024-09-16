@@ -52,7 +52,7 @@ describe("authorize service", () => {
     expect(
       postStub.calledOnceWithExactly(
         API_ENDPOINTS.START,
-        {},
+        { "rp-pairwise-id-for-reauth": "123456" },
         {
           headers: {
             ...expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -120,6 +120,31 @@ describe("authorize service", () => {
         {
           headers: {
             ...expectedHeadersFromCommonVarsWithSecurityHeaders,
+          },
+          proxy: false,
+        }
+      )
+    ).to.be.true;
+  });
+
+  it("sends a request with the pairwise id for reauth in the body when present", () => {
+    process.env.SUPPORT_REAUTHENTICATION = "1";
+    service.start(
+      sessionId,
+      clientSessionId,
+      diPersistentSessionId,
+      req,
+      "123456"
+    );
+
+    expect(
+      postStub.calledOnceWithExactly(
+        API_ENDPOINTS.START,
+        { "rp-pairwise-id-for-reauth": "123456" },
+        {
+          headers: {
+            ...expectedHeadersFromCommonVarsWithSecurityHeaders,
+            Reauthenticate: true,
           },
           proxy: false,
         }
