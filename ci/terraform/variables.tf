@@ -272,6 +272,18 @@ variable "support_check_email_fraud" {
   default     = "1"
 }
 
+variable "support_multi_channel" {
+  description = "Enables different UI rendering per channel"
+  type        = string
+  default     = "0"
+}
+
+variable "default_channel" {
+  description = "To set the default channel."
+  type        = string
+  default     = "web"
+}
+
 variable "prove_identity_welcome_enabled" {
   description = "Do not show the prove identity welcome screen when disabled"
   type        = string

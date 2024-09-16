@@ -1,3 +1,5 @@
+import { CHANNEL } from "./app.constants";
+
 export function getLogLevel(): string {
   return process.env.LOGS_LEVEL || "debug";
 }
@@ -146,6 +148,19 @@ export function supportCheckEmailFraud(): boolean {
   return process.env.SUPPORT_CHECK_EMAIL_FRAUD === "1";
 }
 
+export function supportMultiChannel(): boolean {
+  return process.env.SUPPORT_MULTI_CHANNEL === "1";
+}
+
+export function getDefaultChannel(): string {
+  const configuredChannel = process.env.DEFAULT_CHANNEL;
+  if (isValidChannel(configuredChannel)) {
+    return configuredChannel;
+  } else {
+    return CHANNEL.WEB;
+  }
+}
+
 export function getLanguageToggleEnabled(): boolean {
   return process.env.LANGUAGE_TOGGLE_ENABLED === "1";
 }
@@ -178,4 +193,8 @@ export function supportNewIpvSpinner(): boolean {
 }
 export function supportHttpKeepAlive(): boolean {
   return process.env.SUPPORT_HTTP_KEEP_ALIVE === "1";
+}
+
+export function isValidChannel(channel: string): boolean {
+  return channel === CHANNEL.WEB || channel === CHANNEL.STRATEGIC_APP;
 }

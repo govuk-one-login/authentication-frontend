@@ -165,6 +165,14 @@ locals {
         value = var.support_check_email_fraud
       },
       {
+        name  = "SUPPORT_MULTI_CHANNEL"
+        value = var.support_multi_channel
+      },
+      {
+        name  = "DEFAULT_CHANNEL"
+        value = var.default_channel
+      },
+      {
         name  = "LANGUAGE_TOGGLE_ENABLED"
         value = var.language_toggle_enabled
       },

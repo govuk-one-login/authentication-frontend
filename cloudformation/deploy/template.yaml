@@ -568,6 +568,10 @@ Resources:
               Value: 1
             - Name: SUPPORT_CHECK_EMAIL_FRAUD
               Value: 1
+            - Name: SUPPORT_MULTI_CHANNEL
+              Value: 0
+            - Name: DEFAULT_CHANNEL
+              Value: web
             - Name: LANGUAGE_TOGGLE_ENABLED
               Value: 1
             - Name: PROVE_IDENTITY_WELCOME_ENABLED
