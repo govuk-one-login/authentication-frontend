@@ -52,7 +52,7 @@ describe("authorize service", () => {
     expect(
       postStub.calledOnceWithExactly(
         API_ENDPOINTS.START,
-        {},
+        { "rp-pairwise-id-for-reauth": "123456" },
         {
           headers: {
             ...expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -120,6 +120,36 @@ describe("authorize service", () => {
         {
           headers: {
             ...expectedHeadersFromCommonVarsWithSecurityHeaders,
+          },
+          proxy: false,
+        }
+      )
+    ).to.be.true;
+  });
+
+  it("sends a request with the pairwise id for reauth and previous journey id in the body when present", () => {
+    process.env.SUPPORT_REAUTHENTICATION = "1";
+    service.start(
+      sessionId,
+      clientSessionId,
+      diPersistentSessionId,
+      req,
+      "123456",
+      undefined,
+      "previous-journey-id"
+    );
+
+    expect(
+      postStub.calledOnceWithExactly(
+        API_ENDPOINTS.START,
+        {
+          "rp-pairwise-id-for-reauth": "123456",
+          "previous-govuk-signin-journey-id": "previous-journey-id",
+        },
+        {
+          headers: {
+            ...expectedHeadersFromCommonVarsWithSecurityHeaders,
+            Reauthenticate: true,
           },
           proxy: false,
         }

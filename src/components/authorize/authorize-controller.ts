@@ -63,7 +63,8 @@ export function authorizeGet(
       persistentSessionId,
       req,
       claims.reauthenticate,
-      claims.previous_session_id
+      claims.previous_session_id,
+      claims.previous_govuk_signin_journey_id
     );
 
     if (!startAuthResponse.success) {

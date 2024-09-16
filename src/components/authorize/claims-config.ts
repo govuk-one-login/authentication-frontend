@@ -34,6 +34,7 @@ export type Claims = {
   reauthenticate?: string;
   claim?: string;
   previous_session_id?: string;
+  previous_govuk_signin_journey_id: string;
 };
 
 export const requiredClaimsKeys = [
