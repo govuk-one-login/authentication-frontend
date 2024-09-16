@@ -19,7 +19,8 @@ export function authorizeService(
     persistentSessionId: string,
     req: Request,
     reauthenticate?: string,
-    previousSessionId?: string
+    previousSessionId?: string,
+    previousGovukSigninJourneyId?: string
   ): Promise<ApiResponseResult<StartAuthResponse>> {
     let reauthenticateOption = undefined;
     if (supportReauthentication() && reauthenticate) {
@@ -27,7 +28,11 @@ export function authorizeService(
     }
     const response = await axios.client.post<StartAuthResponse>(
       API_ENDPOINTS.START,
-      createStartBody(previousSessionId, reauthenticate),
+      createStartBody(
+        previousSessionId,
+        reauthenticate,
+        previousGovukSigninJourneyId
+      ),
       getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
@@ -48,12 +53,18 @@ export function authorizeService(
   };
 }
 
-function createStartBody(previousSessionId?: string, reauthenticate?: string) {
+function createStartBody(
+  previousSessionId?: string,
+  reauthenticate?: string,
+  previousGovukSigninJourneyId?: string
+) {
   const body: { [key: string]: any } = {};
 
   if (previousSessionId !== undefined)
     body["previous-session-id"] = previousSessionId;
   if (reauthenticate !== undefined && supportReauthentication())
     body["rp-pairwise-id-for-reauth"] = reauthenticate;
+  if (previousGovukSigninJourneyId !== undefined && supportReauthentication())
+    body["previous-govuk-signin-journey-id"] = previousGovukSigninJourneyId;
   return body;
 }
