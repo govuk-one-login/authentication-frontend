@@ -67,6 +67,7 @@ describe("authentication auth code service", () => {
   afterEach(() => {
     getStub.reset();
     postStub.reset();
+    delete process.env.SUPPORT_REAUTHENTICATION;
   });
 
   describe("with auth orch split feature flag on", () => {
@@ -107,6 +108,64 @@ describe("authentication auth code service", () => {
         "rp-sector-uri": rpSectorHostSentToAuth,
         "is-new-account": isAccountCreationJourneyUserSession,
         "password-reset-time": passwordResetTime,
+      };
+
+      expect(
+        postStub.calledOnceWithExactly(
+          API_ENDPOINTS.ORCH_AUTH_CODE,
+          expectedBody,
+          {
+            headers: expectedHeaders,
+            proxy: sinon.match.bool,
+            baseURL: frontendBaseUrl,
+          }
+        )
+      ).to.be.true;
+      expect(getStub.notCalled).to.be.true;
+      expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);
+    });
+
+    it("it should make a post request to the orch auth endpoint with is reauthenticate journey true for a reauthentication journey", async () => {
+      process.env.SUPPORT_REAUTHENTICATION = "1";
+
+      const req = createMockRequest(PATH_NAMES.AUTH_CODE);
+      req.ip = sourceIp;
+      req.headers = {
+        "txma-audit-encoded": auditEncodedString,
+        "x-forwarded-for": sourceIp,
+      };
+      const claim = ["phone_number", "phone_number_verified"];
+      const state = "state";
+      const sessionClient = {
+        claim: claim,
+        state: state,
+        redirectUri: redirectUriSentToAuth,
+        rpSectorHost: rpSectorHostSentToAuth,
+      };
+
+      const userSessionClient = {
+        isAccountCreationJourney: isAccountCreationJourneyUserSession,
+        passwordResetTime: passwordResetTime,
+        reauthenticate: "123456",
+      };
+
+      const result = await service.getAuthCode(
+        sessionId,
+        clientSessionId,
+        persistentSessionId,
+        sessionClient,
+        userSessionClient,
+        req
+      );
+
+      const expectedBody = {
+        claims: claim,
+        state: state,
+        "redirect-uri": redirectUriSentToAuth,
+        "rp-sector-uri": rpSectorHostSentToAuth,
+        "is-new-account": isAccountCreationJourneyUserSession,
+        "password-reset-time": passwordResetTime,
+        "is-reauth-journey": true,
       };
 
       expect(
