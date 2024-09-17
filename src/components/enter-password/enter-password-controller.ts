@@ -15,7 +15,7 @@ import {
 } from "../common/constants";
 import { BadRequestError, ReauthJourneyError } from "../../utils/error";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { JOURNEY_TYPE, MFA_METHOD_TYPE } from "../../app.constants";
+import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 import xss from "xss";
 import { EnterEmailServiceInterface } from "../enter-email/types";
 import { enterEmailService } from "../enter-email/enter-email-service";
@@ -130,6 +130,13 @@ export function enterPasswordPost(
         errorCode === ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
       ) {
         return handleMaxCredentialsReached(errorCode, journeyType, res, req);
+      }
+
+      if (errorCode === ERROR_CODES.SESSION_ID_MISSING_OR_INVALID) {
+        req.log.warn(
+          `Backend session is missing or invalid - user cannot enter password. Session id ${sessionId}`
+        );
+        return res.redirect(PATH_NAMES.ERROR_PAGE);
       }
 
       let validationKey;

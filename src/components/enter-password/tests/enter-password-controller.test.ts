@@ -135,6 +135,31 @@ describe("enter password controller", () => {
           JOURNEY_TYPE.REAUTHENTICATION
         );
       });
+
+      it("should redirect to error page when backend responds indicating session missing or invalid", async () => {
+        const fakePasswordService: EnterPasswordServiceInterface = {
+          loginUser: sinon.fake.returns({
+            success: false,
+            data: {
+              code: ERROR_CODES.SESSION_ID_MISSING_OR_INVALID,
+            },
+          }),
+        } as unknown as EnterPasswordServiceInterface;
+
+        const fakeMfaService: MfaServiceInterface = {
+          sendMfaCode: sinon.fake.returns({
+            success: true,
+          }),
+        } as unknown as MfaServiceInterface;
+
+        await enterPasswordPost(
+          false,
+          fakePasswordService,
+          fakeMfaService
+        )(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(PATH_NAMES.ERROR_PAGE);
+      });
     });
 
     it("can send the journeyType when sending the password", async () => {
