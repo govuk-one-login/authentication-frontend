@@ -7,7 +7,11 @@ import {
   Http,
 } from "../../utils/http";
 import { AuthCodeResponse, AuthCodeServiceInterface } from "./types";
-import { getApiBaseUrl, getFrontendApiBaseUrl } from "../../config";
+import {
+  getApiBaseUrl,
+  getFrontendApiBaseUrl,
+  supportReauthentication,
+} from "../../config";
 import { AxiosResponse } from "axios";
 import { Request } from "express";
 export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
@@ -39,7 +43,7 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
     let response: AxiosResponse;
 
     if (useOrchAuthCode) {
-      const body = {
+      let body: any = {
         claims: clientSession.claim,
         state: clientSession.state,
         "redirect-uri": clientSession.redirectUri,
@@ -47,6 +51,9 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
         "is-new-account": userSession?.isAccountCreationJourney ?? false,
         "password-reset-time": userSession?.passwordResetTime,
       };
+      if (supportReauthentication() && userSession.reauthenticate) {
+        body = { ...body, "is-reauth-journey": true };
+      }
       response = await axios.client.post(path, body, config);
     } else {
       response = await axios.client.get(path, config);
