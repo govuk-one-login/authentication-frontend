@@ -111,11 +111,17 @@ Mappings:
   EnvironmentConfiguration:
     authdev1:
       cloudfrontDistributionStackName: "authdev1-cloudfront"
-      # TODO this is a placeholder, change this when orch stub is setup
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHzG8IFx1jE1+Ul44jQk96efPknCX
-        VxWS4PqLrKfR/31UQovFQLfyxA46uiMOvr7+0hRwFX1fQhagsIK+dfB5PA==
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEM0ZehmrdDd89uYEFMTakbS7JgwCG
+        XK7CAYMcVvy1pP5yV4O2mnDjYmvjZpvio2ctgOPxDuBb38QP1HD9WAOR2w==
+        -----END PUBLIC KEY-----
+    authdev2:
+      cloudfrontDistributionStackName: "authdev2-cloudfront"
+      orchToAuthSigningPublicKey: |
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwe8ey1GnTbH6E69EJFUkt4WQc1Kl
+        tJwzOYNWUmK/+GxooRp+j9i9KWQ0WlV4gVI0iQkHY3ZKq+RWk94tSDHbyQ==
         -----END PUBLIC KEY-----
     dev:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -127,8 +133,8 @@ Mappings:
       cloudwatchLogRetentionInDays: 1
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHzG8IFx1jE1+Ul44jQk96efPknCX
-        VxWS4PqLrKfR/31UQovFQLfyxA46uiMOvr7+0hRwFX1fQhagsIK+dfB5PA==
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1P2vcnCdqx+MDwMTrJy47tV5ryTf
+        kRaZYTpLsfCpC79ZgKSYEBcguuOUP4DvJpyHomBEnxeUs7s5KRgyMQjY4g==
         -----END PUBLIC KEY-----
       redisNodeSize: cache.t2.small
     build:
@@ -473,7 +479,7 @@ Resources:
             - Name: NODE_ENV
               Value: production
             - Name: APP_ENV
-              Value: !Ref Environment
+              Value: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
             - Name: FARGATE
               Value: 1
             - Name: API_BASE_URL
@@ -481,7 +487,7 @@ Resources:
                 - IsNotProduction
                 - !If
                     - UseSubEnvironment
-                    - !Sub "https://oidc.${SubEnvironment}.${Environment}.account.gov.uk"
+                    - !Sub "https://oidc.${SubEnvironment}.sandpit.account.gov.uk"  # Use sandpit for now as oidc hasn't been migrated yet
                     - !Sub "https://oidc.${Environment}.account.gov.uk"
                 - "https://oidc.account.gov.uk"
             - Name: FRONTEND_API_BASE_URL
@@ -489,7 +495,7 @@ Resources:
                 - IsNotProduction
                 - !If
                     - UseSubEnvironment
-                    - !Sub "https://auth.${SubEnvironment}.${Environment}.account.gov.uk/"
+                    - !Sub "https://auth.${SubEnvironment}.sandpit.account.gov.uk/" # Use sandpit for now as auth hasn't been migrated yet
                     - !Sub "https://auth.${Environment}.account.gov.uk/"
                 - "https://auth.account.gov.uk/"
             - Name: ACCOUNT_MANAGEMENT_URL
@@ -543,7 +549,13 @@ Resources:
                   - !Sub "home.${Environment}.account.gov.uk"
                   - "home.account.gov.uk"
             - Name: SERVICE_DOMAIN
-              Value: !If [IsNotProduction, !Sub "${Environment}.account.gov.uk", "account.gov.uk"]
+              Value: !If
+                - IsNotProduction
+                - !If
+                  - UseSubEnvironment
+                  - !Sub "${SubEnvironment}.${Environment}.account.gov.uk"
+                  - !Sub "${Environment}.account.gov.uk"
+                - "account.gov.uk"
             - Name: PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES
               Value: 1
             - Name: ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES
@@ -1411,7 +1423,10 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       KmsKeyId: !GetAtt KmsKey.Arn
-      LogGroupName: !Sub "/ecs/${Environment}-service-down-page"
+      LogGroupName: !If
+        - UseSubEnvironment
+        - !Sub "/ecs/${SubEnvironment}-service-down-page"
+        - !Sub "/ecs/${Environment}-service-down-page"
       RetentionInDays: !FindInMap [ EnvironmentConfiguration, !Ref Environment, cloudwatchLogRetentionInDays ]
       Tags:
         - Key: Name
@@ -1524,7 +1539,10 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       KmsKeyId: !GetAtt KmsKey.Arn
-      LogGroupName: !Sub "/ecs/${Environment}-frontend"
+      LogGroupName: !If
+        - UseSubEnvironment
+        - !Sub "/ecs/${SubEnvironment}-frontend"
+        - !Sub "/ecs/${Environment}-frontend"
       RetentionInDays: !FindInMap [ EnvironmentConfiguration, !Ref Environment, cloudwatchLogRetentionInDays ]
       Tags:
         - Key: Name
