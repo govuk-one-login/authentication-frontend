@@ -134,7 +134,6 @@
 }
 
 .govuk-show-password__toggle {
-  @include govuk-font(19);
   z-index: 0;
   display: table-cell; // IE fallback
   padding: govuk-spacing(1) govuk-spacing(3);
@@ -145,6 +144,8 @@
   border: solid 2px $govuk-input-border-colour;
   white-space: nowrap;
   cursor: pointer;
+
+  @include govuk-font(19);
 
   @include govuk-media-query($until: mobile) {
     padding: govuk-spacing(1);
