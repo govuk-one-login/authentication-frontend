@@ -558,6 +558,77 @@ describe("authorize controller", () => {
         .to.eventually.be.rejectedWith("Client ID value is incorrect")
         .and.be.an.instanceOf(BadRequestError);
     });
+
+    it("should set session channel session field from jwt claims when claim is present", async () => {
+      process.env.SUPPORT_MULTI_CHANNEL = "1";
+      req.query.request = "JWE";
+      mockClaims.channel = "strategic_app";
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+      expect(req.session.user.channel).to.equal(mockClaims.channel);
+    });
+
+    it("should set session channel session field to default when claim is not present", async () => {
+      process.env.SUPPORT_MULTI_CHANNEL = "1";
+      req.query.request = "JWE";
+      mockClaims.channel = undefined;
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+      expect(req.session.user.channel).to.eq("web");
+    });
+
+    it("should set session channel session field to default when switch is off", async () => {
+      process.env.SUPPORT_MULTI_CHANNEL = "0";
+      req.query.request = "JWE";
+      mockClaims.channel = "strategic_app";
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+      expect(req.session.user.channel).to.eq("web");
+    });
+
+    it("should set session channel session field to the configured default when switch is off", async () => {
+      process.env.SUPPORT_MULTI_CHANNEL = "0";
+      process.env.DEFAULT_CHANNEL = "strategic_app";
+      req.query.request = "JWE";
+      mockClaims.channel = "web";
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+      expect(req.session.user.channel).to.eq("strategic_app");
+    });
+  });
+
+  it("should set session channel session field to default when claim is invalid channel", async () => {
+    process.env.SUPPORT_MULTI_CHANNEL = "1";
+    req.query.request = "JWE";
+    mockClaims.channel = "invalid_channel";
+
+    await authorizeGet(
+      fakeAuthorizeService,
+      fakeCookieConsentService,
+      fakeKmsDecryptionService,
+      fakeJwtService
+    )(req as Request, res as Response);
+    expect(req.session.user.channel).to.eq("web");
   });
 
   function mockAuthService(authResponseData: any): AuthorizeServiceInterface {

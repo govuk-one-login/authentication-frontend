@@ -26,6 +26,9 @@ import {
   getOrchToAuthExpectedClientId,
   supportReauthentication,
   proveIdentityWelcomeEnabled,
+  supportMultiChannel,
+  isValidChannel,
+  getDefaultChannel,
 } from "../../config";
 import { logger } from "../../utils/logger";
 import { Claims } from "./claims-config";
@@ -186,6 +189,11 @@ function setSessionDataFromClaims(req: Request, claims: Claims) {
   req.session.user.reauthenticate = supportReauthentication()
     ? claims.reauthenticate
     : null;
+  req.session.user.channel =
+    supportMultiChannel() && isValidChannel(claims.channel)
+      ? claims.channel
+      : getDefaultChannel();
+  logger.info(`Channel is set to: ${req.session.user.channel}`);
 }
 
 function setSessionDataFromAuthResponse(

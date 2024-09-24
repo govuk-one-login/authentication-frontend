@@ -35,6 +35,7 @@ export type Claims = {
   claim?: string;
   previous_session_id?: string;
   previous_govuk_signin_journey_id: string;
+  channel?: string;
 };
 
 export const requiredClaimsKeys = [

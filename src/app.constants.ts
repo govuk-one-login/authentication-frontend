@@ -231,6 +231,11 @@ export enum JOURNEY_TYPE {
   REAUTHENTICATION = "REAUTHENTICATION",
 }
 
+export enum CHANNEL {
+  WEB = "web",
+  STRATEGIC_APP = "strategic_app",
+}
+
 export const ENVIRONMENT_NAME = {
   PROD: "production",
   DEV: "development",
