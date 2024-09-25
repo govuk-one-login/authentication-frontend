@@ -1,7 +1,7 @@
 import {
   isValidPhoneNumber,
   parsePhoneNumberWithError,
-} from "libphonenumber-js/mobile";
+} from "libphonenumber-js";
 
 const ALLOWED_TEST_NUMBERS = [
   "07700900000",
