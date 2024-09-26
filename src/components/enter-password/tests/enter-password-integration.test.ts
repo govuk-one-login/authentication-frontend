@@ -6,6 +6,10 @@ import * as cheerio from "cheerio";
 import decache from "decache";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
+import {
+  noInterventions,
+  setupAccountInterventionsResponse,
+} from "../../../../test/helpers/account-interventions-helpers";
 
 describe("Integration::enter password", () => {
   let token: string | string[];
@@ -38,7 +42,6 @@ describe("Integration::enter password", () => {
       });
 
     process.env.SUPPORT_REAUTHENTICATION = "0";
-
     app = await require("../../../app").createApp();
 
     baseApi = process.env.FRONTEND_API_BASE_URL;
@@ -124,6 +127,48 @@ describe("Integration::enter password", () => {
         password: "password",
       })
       .expect("Location", PATH_NAMES.AUTH_CODE)
+      .expect(302);
+  });
+
+  it("should redirect to /reset-password-2fa-sms when password is correct and user's MFA is set to SMS when 2FA is not required", async () => {
+    nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(200, {
+      mfaRequired: false,
+      mfaMethodType: "SMS",
+      passwordChangeRequired: true,
+    });
+
+    setupAccountInterventionsResponse(baseApi, noInterventions);
+
+    await request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        password: "password",
+      })
+      .expect("Location", PATH_NAMES.RESET_PASSWORD_REQUIRED)
+      .expect(302);
+  });
+
+  it("should redirect to /reset-password-2fa-sms when password is correct and user's MFA is set to SMS when 2FA is required", async () => {
+    nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(200, {
+      mfaRequired: true,
+      mfaMethodType: "SMS",
+      passwordChangeRequired: true,
+    });
+
+    setupAccountInterventionsResponse(baseApi, noInterventions);
+
+    await request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        password: "password",
+      })
+      .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_SMS)
       .expect(302);
   });
 
