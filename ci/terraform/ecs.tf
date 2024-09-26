@@ -97,6 +97,18 @@ locals {
         value = var.orch_to_auth_audience
       },
       {
+        name  = "ORCH_STUB_TO_AUTH_SIGNING_KEY"
+        value = var.orch_stub_to_auth_signing_public_key
+      },
+      {
+        name  = "ORCH_STUB_TO_AUTH_CLIENT_ID"
+        value = var.orch_stub_to_auth_client_id
+      },
+      {
+        name  = "ORCH_STUB_TO_AUTH_AUDIENCE"
+        value = var.orch_stub_to_auth_audience
+      },
+      {
         name  = "SMARTAGENT_API_KEY"
         value = var.smartagent_api_key
       },
