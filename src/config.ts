@@ -68,6 +68,18 @@ export function getOrchToAuthExpectedAudience(): string {
   return process.env.ORCH_TO_AUTH_AUDIENCE || "UNKNOWN";
 }
 
+export function getOrchStubToAuthSigningPublicKey(): string {
+  return process.env.ORCH_STUB_TO_AUTH_SIGNING_KEY || "UNKNOWN";
+}
+
+export function getOrchStubToAuthExpectedClientId(): string {
+  return process.env.ORCH_STUB_TO_AUTH_CLIENT_ID || "UNKNOWN";
+}
+
+export function getOrchStubToAuthExpectedAudience(): string {
+  return process.env.ORCH_STUB_TO_AUTH_AUDIENCE || "UNKNOWN";
+}
+
 export function getAccountManagementUrl(): string {
   return process.env.ACCOUNT_MANAGEMENT_URL || "http://localhost:6001";
 }
