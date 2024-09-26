@@ -34,7 +34,7 @@ no_photo_id_contact_forms                           = "1"
 
 logging_endpoint_arns = []
 
-orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHzG8IFx1jE1+Ul44jQk96efPknCX\nVxWS4PqLrKfR/31UQovFQLfyxA46uiMOvr7+0hRwFX1fQhagsIK+dfB5PA==\n-----END PUBLIC KEY-----"
+orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1P2vcnCdqx+MDwMTrJy47tV5ryTf\nkRaZYTpLsfCpC79ZgKSYEBcguuOUP4DvJpyHomBEnxeUs7s5KRgyMQjY4g==\n-----END PUBLIC KEY-----"
 orch_to_auth_client_id          = "orchestrationAuth"
 orch_to_auth_audience           = "https://signin.dev.account.gov.uk/"
 
