@@ -252,7 +252,6 @@ export function enterPasswordPost(
           mfaMethodType: userLogin.data.mfaMethodType,
           isMfaMethodVerified: userLogin.data.mfaMethodVerified,
           isPasswordChangeRequired: isPasswordChangeRequired,
-          support2FABeforePasswordReset: true,
         },
         sessionId
       )

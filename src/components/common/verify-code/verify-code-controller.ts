@@ -157,7 +157,6 @@ export function verifyCodePost(
           isIdentityRequired: req.session.user.isIdentityRequired,
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
-          support2FABeforePasswordReset: true,
           mfaMethodType: req.session.user.enterEmailMfaType,
           isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
           isOnForcedPasswordResetJourney:
