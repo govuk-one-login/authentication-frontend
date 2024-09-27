@@ -1,4 +1,6 @@
 import {
+  getOrchStubToAuthExpectedAudience,
+  getOrchStubToAuthExpectedClientId,
   getOrchToAuthExpectedAudience,
   getOrchToAuthExpectedClientId,
 } from "../../config";
@@ -9,6 +11,15 @@ export function getKnownClaims(): {
   return {
     client_id: getOrchToAuthExpectedClientId(),
     aud: getOrchToAuthExpectedAudience(),
+  };
+}
+
+export function getKnownStubClaims(): {
+  [key: string]: string | boolean | number;
+} {
+  return {
+    client_id: getOrchStubToAuthExpectedClientId(),
+    aud: getOrchStubToAuthExpectedAudience(),
   };
 }
 

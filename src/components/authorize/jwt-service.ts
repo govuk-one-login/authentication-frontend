@@ -4,7 +4,12 @@ import {
   getOrchToAuthSigningPublicKey,
 } from "../../config";
 import { JwtClaimsValueError, JwtValidationError } from "../../utils/error";
-import { Claims, requiredClaimsKeys, getKnownClaims } from "./claims-config";
+import {
+  Claims,
+  requiredClaimsKeys,
+  getKnownClaims,
+  getKnownStubClaims,
+} from "./claims-config";
 import * as jose from "jose";
 
 export class JwtService implements JwtServiceInterface {
@@ -59,9 +64,13 @@ export class JwtService implements JwtServiceInterface {
 
   validateCustomClaims(claims: any): Claims {
     const requiredClaims = getKnownClaims();
+    const stubClaims = getKnownStubClaims();
 
     Object.keys(requiredClaims).forEach((claim) => {
-      if (requiredClaims[claim] !== claims[claim]) {
+      if (
+        requiredClaims[claim] !== claims[claim] &&
+        stubClaims[claim] !== claims[claim]
+      ) {
         throw new JwtClaimsValueError(`${claim} has incorrect value`);
       }
     });
