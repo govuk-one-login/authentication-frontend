@@ -122,10 +122,6 @@ export function getPasswordResetCodeEnteredWrongBlockDurationInMinutes(): number
   );
 }
 
-export function support2FABeforePasswordReset(): boolean {
-  return process.env.SUPPORT_2FA_B4_PASSWORD_RESET === "1";
-}
-
 export function support2hrLockout(): boolean {
   return process.env.SUPPORT_2HR_LOCKOUT === "1";
 }

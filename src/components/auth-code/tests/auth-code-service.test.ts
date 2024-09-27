@@ -7,10 +7,7 @@ import { SinonStub } from "sinon";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { AuthCodeServiceInterface } from "../types";
 import { Http } from "../../../utils/http";
-import {
-  support2FABeforePasswordReset,
-  support2hrLockout,
-} from "../../../config";
+import { support2hrLockout } from "../../../config";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("authentication auth code service", () => {
@@ -208,26 +205,6 @@ describe("authentication auth code service", () => {
       ).to.be.true;
       expect(postStub.notCalled).to.be.true;
       expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);
-    });
-  });
-
-  describe("support2FABeforePasswordReset() with the support 2FA before password reset feature flag on", () => {
-    it("should return true when SUPPORT_2FA_B4_PASSWORD_RESET is set to '1'", async () => {
-      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
-
-      expect(support2FABeforePasswordReset()).to.be.true;
-    });
-
-    it("should return false  when SUPPORT_2FA_B4_PASSWORD_RESET is set to '0'", async () => {
-      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
-
-      expect(support2FABeforePasswordReset()).to.be.false;
-    });
-
-    it("should return false when SUPPORT_2FA_B4_PASSWORD_RESET is undefined", async () => {
-      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = undefined;
-
-      expect(support2FABeforePasswordReset()).to.be.false;
     });
   });
 
