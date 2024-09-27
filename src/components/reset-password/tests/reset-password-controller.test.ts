@@ -14,7 +14,6 @@ import { ResetPasswordServiceInterface } from "../types";
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { EnterPasswordServiceInterface } from "../../enter-password/types";
-import { MfaServiceInterface } from "../../common/mfa/types";
 import { ERROR_CODES } from "../../common/constants";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
@@ -44,7 +43,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.RESET_PASSWORD);
     res = mockResponse();
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
   });
 
   afterEach(() => {
@@ -91,7 +89,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
         " passwordChangeRequired: " +
         params.passwordChangeRequired,
       () => {
-        it("should redirect to /enter-code when password updated and phone number verified", async () => {
+        it("should redirect to /auth-code if request is success", async () => {
           const fakeResetService: ResetPasswordServiceInterface = {
             updatePassword: sinon.fake.returns({ success: true }),
           } as unknown as ResetPasswordServiceInterface;
@@ -109,74 +107,14 @@ describe("reset password controller (in 6 digit code flow)", () => {
             }),
           } as unknown as EnterPasswordServiceInterface;
           fakeLoginService.loginUser;
-          const fakeMfAService: MfaServiceInterface = {
-            sendMfaCode: sinon.fake.returns({ success: true }),
-          } as unknown as MfaServiceInterface;
 
-          req.session.user = {
-            email: "joe.bloggs@test.com",
-            isPasswordChangeRequired: params.passwordChangeRequired,
-          };
-          req.body.password = "Password1";
+          await resetPasswordPost(fakeResetService, fakeLoginService)(
+            req as Request,
+            res as Response
+          );
 
-          await resetPasswordPost(
-            fakeResetService,
-            fakeLoginService,
-            fakeMfAService
-          )(req as Request, res as Response);
-
-          expect(fakeResetService.updatePassword).to.have.been.calledOnce;
-          expect(fakeLoginService.loginUser).to.have.been.calledOnce;
-          expect(fakeMfAService.sendMfaCode).to.have.been.calledOnce;
-
-          if (
-            params.supportPasswordResetRequired === "1" &&
-            params.passwordChangeRequired
-          ) {
-            expect(req.session.user.isPasswordChangeRequired).to.be.eq(false);
-          }
-
-          expect(req.session.user.passwordResetTime).not.to.be.undefined;
-
-          expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
+          expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
         });
-
-        it(
-          "should redirect to /auth-code if support2FABeforePasswordReset " +
-            "flag is set to true",
-          async () => {
-            const fakeResetService: ResetPasswordServiceInterface = {
-              updatePassword: sinon.fake.returns({ success: true }),
-            } as unknown as ResetPasswordServiceInterface;
-            const fakeLoginService: EnterPasswordServiceInterface = {
-              loginUser: sinon.fake.returns({
-                success: true,
-                data: {
-                  redactedPhoneNumber: "1234",
-                  latestTermsAndConditionsAccepted: true,
-                  mfaMethodVerified: true,
-                  mfaMethodType: MFA_METHOD_TYPE.SMS,
-                  mfaRequired: true,
-                  passwordChangeRequired: params.passwordChangeRequired,
-                },
-              }),
-            } as unknown as EnterPasswordServiceInterface;
-            fakeLoginService.loginUser;
-            const fakeMfAService: MfaServiceInterface = {
-              sendMfaCode: sinon.fake.returns({ success: true }),
-            } as unknown as MfaServiceInterface;
-
-            process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
-
-            await resetPasswordPost(
-              fakeResetService,
-              fakeLoginService,
-              fakeMfAService
-            )(req as Request, res as Response);
-
-            expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
-          }
-        );
 
         it("should redirect to /get-security-codes when password updated and mfa method not verified", async () => {
           const fakeResetService: ResetPasswordServiceInterface = {
@@ -195,24 +133,19 @@ describe("reset password controller (in 6 digit code flow)", () => {
             }),
           } as unknown as EnterPasswordServiceInterface;
           fakeLoginService.loginUser;
-          const fakeMfAService: MfaServiceInterface = {
-            sendMfaCode: sinon.fake.returns({ success: true }),
-          } as unknown as MfaServiceInterface;
 
           req.session.user = {
             email: "joe.bloggs@test.com",
           };
           req.body.password = "Password1";
 
-          await resetPasswordPost(
-            fakeResetService,
-            fakeLoginService,
-            fakeMfAService
-          )(req as Request, res as Response);
+          await resetPasswordPost(fakeResetService, fakeLoginService)(
+            req as Request,
+            res as Response
+          );
 
           expect(fakeResetService.updatePassword).to.have.been.calledOnce;
           expect(fakeLoginService.loginUser).to.have.been.calledOnce;
-          expect(fakeMfAService.sendMfaCode).to.not.have.been.called;
 
           expect(res.redirect).to.have.calledWith(
             PATH_NAMES.GET_SECURITY_CODES
@@ -220,46 +153,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
         });
       }
     );
-
-    it("should request 2fa when password updated even for non 2fa service", async () => {
-      const fakeResetService: ResetPasswordServiceInterface = {
-        updatePassword: sinon.fake.returns({ success: true }),
-      } as unknown as ResetPasswordServiceInterface;
-      const fakeLoginService: EnterPasswordServiceInterface = {
-        loginUser: sinon.fake.returns({
-          success: true,
-          data: {
-            redactedPhoneNumber: "1234",
-            latestTermsAndConditionsAccepted: true,
-            mfaMethodVerified: true,
-            mfaRequired: false,
-            mfaMethodType: MFA_METHOD_TYPE.SMS,
-            passwordChangeRequired: params.passwordChangeRequired,
-          },
-        }),
-      } as unknown as EnterPasswordServiceInterface;
-      fakeLoginService.loginUser;
-      const fakeMfAService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({ success: true }),
-      } as unknown as MfaServiceInterface;
-
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
-      req.body.password = "Password1";
-
-      await resetPasswordPost(
-        fakeResetService,
-        fakeLoginService,
-        fakeMfAService
-      )(req as Request, res as Response);
-
-      expect(fakeResetService.updatePassword).to.have.been.calledOnce;
-      expect(fakeLoginService.loginUser).to.have.been.calledOnce;
-      expect(fakeMfAService.sendMfaCode).to.have.been.calledOnce;
-
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
-    });
 
     it("should not set the passwordResetTime flag on the session if update password is not a success", async () => {
       const fakeResetService: ResetPasswordServiceInterface = {
@@ -282,20 +175,16 @@ describe("reset password controller (in 6 digit code flow)", () => {
         }),
       } as unknown as EnterPasswordServiceInterface;
       fakeLoginService.loginUser;
-      const fakeMfAService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({ success: true }),
-      } as unknown as MfaServiceInterface;
 
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
       req.body.password = "Password1";
 
-      await resetPasswordPost(
-        fakeResetService,
-        fakeLoginService,
-        fakeMfAService
-      )(req as Request, res as Response);
+      await resetPasswordPost(fakeResetService, fakeLoginService)(
+        req as Request,
+        res as Response
+      );
 
       expect(fakeResetService.updatePassword).to.have.been.calledOnce;
       expect(fakeLoginService.loginUser).not.to.have.been.called;

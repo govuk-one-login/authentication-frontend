@@ -75,7 +75,6 @@ const authStateMachine = createMachine(
       isMfaMethodVerified: true,
       isPasswordChangeRequired: false,
       isAccountRecoveryJourney: false,
-      support2FABeforePasswordReset: false,
       isReauthenticationRequired: false,
       requiresResetPasswordMFASmsCode: false,
       requiresResetPasswordMFAAuthAppCode: false,
@@ -760,26 +759,20 @@ const authStateMachine = createMachine(
         context.requiresTwoFactorAuth === true,
       requiresResetPasswordMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
-        context.isOnForcedPasswordResetJourney !== true &&
-        context.support2FABeforePasswordReset === true,
+        context.isOnForcedPasswordResetJourney !== true,
       requiresResetPasswordMFASmsCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
-        context.isOnForcedPasswordResetJourney !== true &&
-        context.support2FABeforePasswordReset === true,
+        context.isOnForcedPasswordResetJourney !== true,
       isPasswordChangeRequired: (context) => context.isPasswordChangeRequired,
       is2FASMSPasswordChangeRequired: (context) =>
         context.isPasswordChangeRequired === true &&
         context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
-        context.support2FABeforePasswordReset === true &&
         context.requiresTwoFactorAuth === true,
       is2FAAuthAppPasswordChangeRequired: (context) =>
         context.isPasswordChangeRequired === true &&
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
-        context.support2FABeforePasswordReset === true &&
         context.requiresTwoFactorAuth === true,
       isAccountRecoveryJourney: (context) => context.isAccountRecoveryJourney,
-      support2FABeforePasswordReset: (context) =>
-        context.support2FABeforePasswordReset,
     },
   }
 );

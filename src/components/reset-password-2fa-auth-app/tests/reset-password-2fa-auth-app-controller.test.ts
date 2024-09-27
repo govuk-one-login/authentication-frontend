@@ -23,7 +23,6 @@ describe("reset password 2fa auth app controller", () => {
       email: commonVariables.email,
     };
     res = mockResponse();
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
   });
 
   afterEach(() => {
@@ -41,8 +40,7 @@ describe("reset password 2fa auth app controller", () => {
   });
 
   describe("resetPassword2FAAuthAppPost", () => {
-    it("should redirect to reset-password if code entered is correct and feature flag is turned on", async () => {
-      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+    it("should redirect to reset-password if code entered is correct", async () => {
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
           success: true,
@@ -60,7 +58,6 @@ describe("reset password 2fa auth app controller", () => {
     });
 
     it("should render check email page with errors if incorrect code entered", async () => {
-      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
           success: false,

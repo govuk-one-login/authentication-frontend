@@ -554,8 +554,6 @@ Resources:
               Value: 1
             - Name: REDUCED_CODE_BLOCK_DURATION_MINUTES
               Value: 0.5
-            - Name: SUPPORT_2FA_B4_PASSWORD_RESET
-              Value: 1
             - Name: SUPPORT_ACCOUNT_INTERVENTIONS
               Value: 1
             - Name: SUPPORT_REAUTHENTICATION

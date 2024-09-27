@@ -26,7 +26,6 @@ describe("Integration::reset password check email ", () => {
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
 
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
 
     sinon

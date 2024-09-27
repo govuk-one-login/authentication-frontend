@@ -27,7 +27,6 @@ describe("reset password check email controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
     res = mockResponse();
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     req.session.user = {
       email: "joe.bloggs@test.com",
@@ -82,8 +81,7 @@ describe("reset password check email controller", () => {
       expect(res.redirect).to.have.calledWith("/reset-password");
     });
 
-    it("should redirect to check_phone if code entered is correct and feature flag is turned on", async () => {
-      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+    it("should redirect to check_phone if code entered is correct", async () => {
       const fakeService = fakeVerifyCodeServiceHelper(true);
       const fakeInterventionsService =
         accountInterventionsFakeHelper(noInterventions);
@@ -98,8 +96,7 @@ describe("reset password check email controller", () => {
       );
     });
 
-    it("should redirect to check_auth_app if code entered is correct and feature flag is turned on", async () => {
-      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
+    it("should redirect to check_auth_app if code entered is correct", async () => {
       const fakeService = fakeVerifyCodeServiceHelper(true);
       const fakeInterventionsService =
         accountInterventionsFakeHelper(noInterventions);
@@ -131,7 +128,6 @@ describe("reset password check email controller", () => {
 
     it("should redirect to /reset-password without calling the account interventions service when session.user.withinForcedPasswordResetJourney === true and enterEmailMfaType == SMS", async () => {
       req.session.user.withinForcedPasswordResetJourney = true;
-      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
       req.session.user.enterEmailMfaType = "SMS";
 
       const fakeInterventionsService =
@@ -148,7 +144,6 @@ describe("reset password check email controller", () => {
 
     it("should redirect to /reset-password without calling the account interventions service when session.user.withinForcedPasswordResetJourney === true and enterEmailMfaType == AUTH_APP", async () => {
       req.session.user.withinForcedPasswordResetJourney = true;
-      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
       req.session.user.enterEmailMfaType = "AUTH_APP";
 
       const fakeInterventionsService =

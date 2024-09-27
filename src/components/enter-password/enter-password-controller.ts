@@ -19,11 +19,7 @@ import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 import xss from "xss";
 import { EnterEmailServiceInterface } from "../enter-email/types";
 import { enterEmailService } from "../enter-email/enter-email-service";
-import {
-  support2FABeforePasswordReset,
-  support2hrLockout,
-  supportAccountInterventions,
-} from "../../config";
+import { support2hrLockout, supportAccountInterventions } from "../../config";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { AccountInterventionsInterface } from "../account-intervention/types";
@@ -256,7 +252,6 @@ export function enterPasswordPost(
           mfaMethodType: userLogin.data.mfaMethodType,
           isMfaMethodVerified: userLogin.data.mfaMethodVerified,
           isPasswordChangeRequired: isPasswordChangeRequired,
-          support2FABeforePasswordReset: support2FABeforePasswordReset(),
         },
         sessionId
       )

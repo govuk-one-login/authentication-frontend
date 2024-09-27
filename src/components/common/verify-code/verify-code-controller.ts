@@ -18,7 +18,6 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import {
-  support2FABeforePasswordReset,
   supportAccountInterventions,
   supportReauthentication,
 } from "../../../config";
@@ -158,7 +157,6 @@ export function verifyCodePost(
           isIdentityRequired: req.session.user.isIdentityRequired,
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
-          support2FABeforePasswordReset: support2FABeforePasswordReset(),
           mfaMethodType: req.session.user.enterEmailMfaType,
           isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
           isOnForcedPasswordResetJourney:

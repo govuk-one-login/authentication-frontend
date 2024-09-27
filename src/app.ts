@@ -20,7 +20,6 @@ import {
   getNodeEnv,
   getSessionExpiry,
   getSessionSecret,
-  support2FABeforePasswordReset,
   supportAccountInterventions,
   supportAccountRecovery,
   supportAuthorizeController,
@@ -129,10 +128,8 @@ function registerRoutes(app: express.Application) {
   app.use(signedOutRouter);
   app.use(updatedTermsConditionsRouter);
   app.use(resetPasswordRouter);
-  if (support2FABeforePasswordReset()) {
-    app.use(resetPassword2FARouter);
-    app.use(resetPassword2FAAuthAppRouter);
-  }
+  app.use(resetPassword2FARouter);
+  app.use(resetPassword2FAAuthAppRouter);
   app.use(upliftJourneyRouter);
   app.use(contactUsRouter);
   app.use(healthcheckRouter);
