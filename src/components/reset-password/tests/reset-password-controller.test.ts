@@ -14,7 +14,6 @@ import { ResetPasswordServiceInterface } from "../types";
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { EnterPasswordServiceInterface } from "../../enter-password/types";
-import { MfaServiceInterface } from "../../common/mfa/types";
 import { ERROR_CODES } from "../../common/constants";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
@@ -108,15 +107,11 @@ describe("reset password controller (in 6 digit code flow)", () => {
             }),
           } as unknown as EnterPasswordServiceInterface;
           fakeLoginService.loginUser;
-          const fakeMfAService: MfaServiceInterface = {
-            sendMfaCode: sinon.fake.returns({ success: true }),
-          } as unknown as MfaServiceInterface;
 
-          await resetPasswordPost(
-            fakeResetService,
-            fakeLoginService,
-            fakeMfAService
-          )(req as Request, res as Response);
+          await resetPasswordPost(fakeResetService, fakeLoginService)(
+            req as Request,
+            res as Response
+          );
 
           expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
         });
@@ -138,24 +133,19 @@ describe("reset password controller (in 6 digit code flow)", () => {
             }),
           } as unknown as EnterPasswordServiceInterface;
           fakeLoginService.loginUser;
-          const fakeMfAService: MfaServiceInterface = {
-            sendMfaCode: sinon.fake.returns({ success: true }),
-          } as unknown as MfaServiceInterface;
 
           req.session.user = {
             email: "joe.bloggs@test.com",
           };
           req.body.password = "Password1";
 
-          await resetPasswordPost(
-            fakeResetService,
-            fakeLoginService,
-            fakeMfAService
-          )(req as Request, res as Response);
+          await resetPasswordPost(fakeResetService, fakeLoginService)(
+            req as Request,
+            res as Response
+          );
 
           expect(fakeResetService.updatePassword).to.have.been.calledOnce;
           expect(fakeLoginService.loginUser).to.have.been.calledOnce;
-          expect(fakeMfAService.sendMfaCode).to.not.have.been.called;
 
           expect(res.redirect).to.have.calledWith(
             PATH_NAMES.GET_SECURITY_CODES
@@ -185,20 +175,16 @@ describe("reset password controller (in 6 digit code flow)", () => {
         }),
       } as unknown as EnterPasswordServiceInterface;
       fakeLoginService.loginUser;
-      const fakeMfAService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({ success: true }),
-      } as unknown as MfaServiceInterface;
 
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
       req.body.password = "Password1";
 
-      await resetPasswordPost(
-        fakeResetService,
-        fakeLoginService,
-        fakeMfAService
-      )(req as Request, res as Response);
+      await resetPasswordPost(fakeResetService, fakeLoginService)(
+        req as Request,
+        res as Response
+      );
 
       expect(fakeResetService.updatePassword).to.have.been.calledOnce;
       expect(fakeLoginService.loginUser).not.to.have.been.called;

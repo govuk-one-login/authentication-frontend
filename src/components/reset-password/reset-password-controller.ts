@@ -6,20 +6,11 @@ import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-  getNextPathAndUpdateJourney,
-} from "../common/constants";
+import { ERROR_CODES, getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { BadRequestError } from "../../utils/error";
 import { EnterPasswordServiceInterface } from "../enter-password/types";
 import { enterPasswordService } from "../enter-password/enter-password-service";
-import { MfaServiceInterface } from "../common/mfa/types";
-import { mfaService } from "../common/mfa/mfa-service";
-import { MFA_METHOD_TYPE } from "../../app.constants";
-import xss from "xss";
-import { support2FABeforePasswordReset } from "../../config";
 
 const resetPasswordTemplate = "reset-password/index.njk";
 
@@ -47,8 +38,7 @@ export function resetPasswordRequiredGet(req: Request, res: Response): void {
 
 export function resetPasswordPost(
   resetService: ResetPasswordServiceInterface = resetPasswordService(),
-  loginService: EnterPasswordServiceInterface = enterPasswordService(),
-  mfaCodeService: MfaServiceInterface = mfaService()
+  loginService: EnterPasswordServiceInterface = enterPasswordService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email, withinForcedPasswordResetJourney } = req.session.user;
@@ -119,33 +109,6 @@ export function resetPasswordPost(
       !loginResponse.data.mfaMethodVerified;
     if (req.session.user.isPasswordChangeRequired) {
       req.session.user.isPasswordChangeRequired = false;
-    }
-
-    if (
-      !support2FABeforePasswordReset() &&
-      loginResponse.data.mfaMethodVerified &&
-      loginResponse.data.mfaMethodType === MFA_METHOD_TYPE.SMS
-    ) {
-      const mfaResponse = await mfaCodeService.sendMfaCode(
-        sessionId,
-        clientSessionId,
-        email,
-        persistentSessionId,
-        false,
-        xss(req.cookies.lng as string),
-        req
-      );
-
-      if (!mfaResponse.success) {
-        const path = getErrorPathByCode(mfaResponse.data.code);
-        if (path) {
-          return res.redirect(path);
-        }
-        throw new BadRequestError(
-          mfaResponse.data.message,
-          mfaResponse.data.code
-        );
-      }
     }
 
     return res.redirect(
