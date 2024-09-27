@@ -19,7 +19,6 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
   const ENDPOINT = "/reset-password";
 
   before(async () => {
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");

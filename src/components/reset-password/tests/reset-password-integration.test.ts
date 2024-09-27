@@ -19,7 +19,6 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
   const ENDPOINT = "/reset-password";
 
   before(async () => {
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "0";
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
 
     decache("../../../app");
@@ -257,12 +256,12 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .expect(400, done);
   });
 
-  it("should redirect to MFA step when valid password entered", (done) => {
+  it("should redirect to /auth-code when valid password entered", async () => {
     nock(baseApi).post("/reset-password").once().reply(204);
     nock(baseApi).post("/login").once().reply(200);
     nock(baseApi).post("/mfa").once().reply(204);
 
-    request(app)
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -271,7 +270,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
         password: "Testpassword1",
         "confirm-password": "Testpassword1",
       })
-      .expect("Location", PATH_NAMES.ENTER_MFA)
-      .expect(302, done);
+      .expect("Location", PATH_NAMES.AUTH_CODE)
+      .expect(302);
   });
 });
