@@ -5,7 +5,7 @@ import { MfaServiceInterface } from "../common/mfa/types";
 import { sendMfaGeneric } from "../common/mfa/send-mfa-controller";
 import { JOURNEY_TYPE, PATH_NAMES } from "../../app.constants";
 import { pathWithQueryParam } from "../common/constants";
-import { support2hrLockout, supportReauthentication } from "../../config";
+import { supportReauthentication } from "../../config";
 import { isLocked } from "../../utils/lock-helper";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 
