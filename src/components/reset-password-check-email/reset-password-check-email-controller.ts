@@ -8,7 +8,7 @@ import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
 import { NOTIFICATION_TYPE } from "../../app.constants";
-import { support2FABeforePasswordReset, support2hrLockout } from "../../config";
+import { support2hrLockout } from "../../config";
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { isLocked } from "../../utils/lock-helper";
@@ -83,7 +83,7 @@ export function resetPasswordCheckEmailGet(
     };
 
     if (!requestCode || result.success) {
-      const support2FABeforePasswordResetFlag = support2FABeforePasswordReset();
+      const support2FABeforePasswordResetFlag = true;
       const isForcedPasswordResetJourney =
         req.session.user.withinForcedPasswordResetJourney || false;
       return res.render(TEMPLATE_NAME, {
