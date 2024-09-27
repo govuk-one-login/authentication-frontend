@@ -236,12 +236,6 @@ variable "orch_to_auth_audience" {
 variable "dynatrace_secret_arn" {
 }
 
-variable "support_2fa_b4_password_reset" {
-  description = "When true enables 2FA before password reset"
-  type        = string
-  default     = "0"
-}
-
 variable "support_2hr_lockout" {
   description = "When true enables 2hr lockout"
   type        = string

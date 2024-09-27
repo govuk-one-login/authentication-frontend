@@ -137,10 +137,6 @@ locals {
         value = var.reduced_code_block_duration_minutes
       },
       {
-        name  = "SUPPORT_2FA_B4_PASSWORD_RESET"
-        value = var.support_2fa_b4_password_reset
-      },
-      {
         name  = "SUPPORT_ACCOUNT_INTERVENTIONS"
         value = var.support_account_interventions
       },
