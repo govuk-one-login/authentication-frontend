@@ -20,7 +20,6 @@ describe("reset password 2fa auth app controller", () => {
   let res: ResponseOutput;
 
   beforeEach(() => {
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
     req = createMockRequest(PATH_NAMES.RESET_PASSWORD_2FA_SMS);
     res = mockResponse();
   });
@@ -56,7 +55,6 @@ describe("reset password 2fa auth app controller", () => {
         }),
       } as unknown as MfaServiceInterface;
 
-      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
       const date = new Date();
       const futureDate = new Date(
         date.setDate(date.getDate() + 6)
@@ -123,7 +121,6 @@ describe("reset password 2fa auth app controller", () => {
     });
 
     it("should render check email page with errors if incorrect code entered", async () => {
-      process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
       const fakeService: VerifyCodeInterface = {
         verifyCode: sinon.fake.returns({
           success: false,

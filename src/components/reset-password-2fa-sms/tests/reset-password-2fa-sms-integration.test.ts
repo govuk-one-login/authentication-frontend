@@ -22,8 +22,6 @@ describe("Integration::2fa sms (in reset password flow)", () => {
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
 
-    process.env.SUPPORT_2FA_B4_PASSWORD_RESET = "1";
-
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
