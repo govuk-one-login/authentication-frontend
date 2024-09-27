@@ -4,7 +4,9 @@
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "frontend-language-toggle/macro.njk" import languageSelect %}
-
+{% if strategicAppChannel == true %}
+  {% set htmlClasses = 'govuk-template__mobile' %}
+{% endif %}
 {% block head %}
 
     <!--[if !IE 8]><!-->
@@ -21,6 +23,9 @@
     <!--[if lt IE 9]>
     <script src="/html5-shiv/html5shiv.js"></script>
     <![endif]-->
+
+
+
 
     {% block headMetaData %}{% endblock %}
 
@@ -108,6 +113,9 @@
 {% endblock %}
 
 {% block footer %}
+{% if strategicAppChannel === true %}
+
+{% else %}
     {{ govukFooter({
         meta: {
             items: [
@@ -141,6 +149,7 @@
             text: 'general.footer.copyright.linkText' | translate
         }
     }) }}
+{% endif %}
 {% endblock %}
 
 {% block bodyEnd %}
