@@ -38,7 +38,6 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     res.render("resend-mfa-code/index.njk", {
       redactedPhoneNumber: req.session.user.redactedPhoneNumber,
       isResendCodeRequest: req.query?.isResendCodeRequest,
-      support2hrLockout: support2hrLockout(),
       supportReauthentication: supportReauthentication(),
       isReauthJourney: journeyType === JOURNEY_TYPE.REAUTHENTICATION,
     });
