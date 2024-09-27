@@ -16,7 +16,7 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import xss from "xss";
 import { CheckReauthServiceInterface } from "../check-reauth-users/types";
 import { checkReauthUsersService } from "../check-reauth-users/check-reauth-users-service";
-import { support2hrLockout, supportReauthentication } from "../../config";
+import { supportReauthentication } from "../../config";
 import {
   formatValidationError,
   renderBadRequest,
