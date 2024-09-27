@@ -89,6 +89,7 @@ import { setGTM } from "./middleware/analytics-middleware";
 import { setCurrentUrlMiddleware } from "./middleware/current-url-middleware";
 import { getRedisConfig } from "./utils/redis";
 import { csrfMissingHandler } from "./handlers/csrf-missing-handler";
+import { channelMiddleware } from "./middleware/channel-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -201,6 +202,7 @@ async function createApp(): Promise<express.Application> {
   app.use(cookieParser());
   app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
 
+  app.use(channelMiddleware);
   app.use(getSessionIdMiddleware);
   app.post("*", sanitizeRequestMiddleware);
   app.use(csrfMiddleware);
