@@ -170,7 +170,6 @@ describe("security code controller", () => {
             newCodeLink: params.newCodeLink,
             isResendCodeRequest: undefined,
             isAccountCreationJourney: params.isAccountCreationJourney,
-            support2hrLockout: false,
             contentId: params.contentId,
             taxonomyLevel2: params.taxonomyLevel2,
           }
@@ -211,7 +210,6 @@ describe("security code controller", () => {
           "security-code-error/index-too-many-requests.njk",
           {
             newCodeLink: params.expectedCodeLink,
-            support2hrLockout: false,
             contentId: params.contentId,
             taxonomyLevel2: params.taxonomyLevel2,
           }
@@ -565,7 +563,6 @@ describe("security code controller", () => {
               ),
               isResendCodeRequest: undefined,
               isAccountCreationJourney: undefined,
-              support2hrLockout: true,
               contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
               taxonomyLevel2: "sign in",
             }
@@ -594,7 +591,6 @@ describe("security code controller", () => {
               ),
               isResendCodeRequest: undefined,
               isAccountCreationJourney: undefined,
-              support2hrLockout: true,
               contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
               taxonomyLevel2: "sign in",
             }
@@ -616,7 +612,6 @@ describe("security code controller", () => {
               newCodeLink: getNewCodePath(SecurityCodeErrorType.OtpBlocked),
               isResendCodeRequest: undefined,
               isAccountCreationJourney: undefined,
-              support2hrLockout: true,
               contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
               taxonomyLevel2: "sign in",
             }
@@ -642,7 +637,6 @@ describe("security code controller", () => {
               ),
               isResendCodeRequest: undefined,
               isAccountCreationJourney: true,
-              support2hrLockout: true,
               contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
               taxonomyLevel2: "create account",
             }

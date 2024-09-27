@@ -42,9 +42,7 @@ export function sendEmailOtp(
       sendNotificationResponse.data?.code ===
       ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_CODE_REQUEST_BLOCKED
     ) {
-      return res.render("security-code-error/index-wait.njk", {
-        support2hrLockout: support2hrLockout(),
-      });
+      return res.render("security-code-error/index-wait.njk");
     }
     if (
       support2hrLockout() &&

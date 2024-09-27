@@ -12,7 +12,7 @@ import {
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
-import { support2hrLockout, supportCheckEmailFraud } from "../../config";
+import { supportCheckEmailFraud } from "../../config";
 import { isLocked } from "../../utils/lock-helper";
 import { logger } from "../../utils/logger";
 import { CheckEmailFraudBlockInterface } from "../check-email-fraud-block/types";
@@ -45,7 +45,6 @@ export function checkYourEmailGet(req: Request, res: Response): void {
       newCodeLink: getNewCodePath(
         req.query.actionType as SecurityCodeErrorType
       ),
-      support2hrLockout: support2hrLockout(),
       isAccountCreationJourney: true,
     });
   }

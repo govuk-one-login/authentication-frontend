@@ -44,7 +44,6 @@ export function resendEmailCodeGet(req: Request, res: Response): void {
     emailAddress: req.session.user.email,
     requestNewCode:
       req.query.requestNewCode && req.query.requestNewCode === "true",
-    support2hrLockout: support2hrLockout(),
   });
 }
 
