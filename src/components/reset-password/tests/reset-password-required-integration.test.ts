@@ -10,13 +10,13 @@ import {
   setupAccountInterventionsResponse,
 } from "../../../../test/helpers/account-interventions-helpers";
 
-describe("Integration::reset password (in 2FA Before Reset Password flow)", () => {
+describe("Integration::reset password required", () => {
   let token: string | string[];
   let cookies: string;
   let app: any;
   let baseApi: string;
 
-  const ENDPOINT = "/reset-password";
+  const ENDPOINT = PATH_NAMES.RESET_PASSWORD_REQUIRED;
 
   before(async () => {
     decache("../../../app");
@@ -31,7 +31,7 @@ describe("Integration::reset password (in 2FA Before Reset Password flow)", () =
           email: "test@test.com",
           phoneNumber: "7867",
           journey: {
-            nextPath: PATH_NAMES.RESET_PASSWORD,
+            nextPath: ENDPOINT,
           },
           isAuthenticated: true,
           isAccountPartCreated: false,
