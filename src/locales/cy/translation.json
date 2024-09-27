@@ -1723,16 +1723,11 @@
     "accountLocked": {
       "title": "Rydych wedi rhoi’r cyfrinair anghywir i mewn ormod o weithiau",
       "header": "Rydych wedi rhoi’r cyfrinair anghywir i mewn ormod o weithiau",
-      "paragraph_old": "Rydych chi wedi cael eich cloi allan o’ch GOV.UK One Login oherwydd eich bod wedi rhoi’r cyfrinair anghywir i mewn fwy na 5 gwaith. Mae hyn er mwyn cadw eich cyfrif yn ddiogel.",
       "paragraph": "Ni fyddwch yn gallu mewngofnodi am 2 awr, oherwydd eich bod wedi rhoi’r cyfrinair anghywir fwy na 5 gwaith.",
-      "subHeader_old": "Beth nesaf",
       "subHeader": "Beth allwch chi ei wneud",
       "bulletPointSection": {
         "title": "Gallwch:",
-        "first_old": "aros am 15 munud a ",
         "first": "ailosod eich cyfrinair",
-        "firstLink_old": "cheisio mewngofnodi eto",
-        "second_old": "ailosod eich cyfrinair",
         "second": "arhoswch 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o hafan GOV.UK"
       }
     },

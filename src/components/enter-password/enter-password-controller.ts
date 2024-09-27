@@ -80,7 +80,6 @@ export function enterPasswordAccountLockedGet(
 ): void {
   res.render("enter-password/index-account-locked.njk", {
     newLink: "/sign-in-retry-blocked",
-    support2hrLockout: support2hrLockout(),
   });
 }
 
