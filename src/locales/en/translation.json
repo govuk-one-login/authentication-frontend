@@ -2499,20 +2499,11 @@
       "title": "You cannot sign in at the moment",
       "header": "You cannot sign in at the moment",
       "paragraph": "This is because you entered the wrong password more than 5 times the last time you tried to sign in. This is to keep your GOV.UK One Login secure.",
-      "info_old": {
-        "paragraph1Start": "You can ",
-        "firstLink": "try to sign in again",
-        "paragraph1End": " after 15 minutes have passed.",
-        "paragraph2Start": "You can also ",
-        "secondLink": "reset your password",
-        "paragraph2End": "."
-      },
       "subHeader": "What you can do",
       "bulletPointSection": {
         "title": "You can:",
         "first_old": "wait 15 minutes and ",
         "first": "reset your password",
-        "firstLink_old": "try to sign in again",
         "second_old": "reset your password",
         "second": "wait 2 hours, then go back to the service you were trying to use and start again. You can look for the service using your search engine or find it from the GOV.UK homepage"
       }
