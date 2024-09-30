@@ -160,7 +160,7 @@ async function createApp(): Promise<express.Application> {
 
   app.use(
     "/assets",
-    express.static(path.resolve("node_modules/govuk-frontend/govuk/assets"))
+    express.static(path.resolve("node_modules/govuk-frontend/dist/govuk/assets"))
   );
 
   app.use("/public", express.static(path.join(__dirname, "public")));
