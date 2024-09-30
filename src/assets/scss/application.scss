@@ -1,8 +1,8 @@
 @import "base";
-@import "core/all";
-@import "utilities/all";
-@import "objects/all";
-@import "overrides/all";
+@import "core/index";
+@import "utilities/index";
+@import "objects/index";
+@import "overrides/index";
 
 @import "components/back-link/back-link";
 @import "components/button/button";
@@ -181,7 +181,7 @@
 }
 
 .govuk-input--disabled {
-  background-color: govuk-colour("light-grey", $legacy: "grey-3");
+  background-color: govuk-colour("light-grey");
 }
 
 .ccms-loader {
