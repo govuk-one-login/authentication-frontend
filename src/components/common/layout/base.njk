@@ -5,6 +5,8 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "frontend-language-toggle/macro.njk" import languageSelect %}
 
+{% set cspNonce = scriptNonce %}
+
 {% block head %}
 
     <!--[if !IE 8]><!-->
@@ -144,7 +146,12 @@
     {% block scripts %}{% endblock %}
     <script type="text/javascript" src="/public/scripts/cookies.js"></script>
     <script type="text/javascript" src="/public/scripts/application.js"></script>
-    <script type="text/javascript" src="/public/scripts/all.js"></script>
+    <script type="module" src="/public/scripts/govuk-frontend.min.js"></script>
+    <script type="module" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
+      import { initAll } from '/public/scripts/govuk-frontend.min.js'
+
+      initAll()
+    </script>
     <script type="text/javascript" src="/public/scripts/analytics.js"></script>
     <script type="text/javascript" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
         if (window.DI) {
