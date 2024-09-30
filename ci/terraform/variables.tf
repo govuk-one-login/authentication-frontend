@@ -233,6 +233,24 @@ variable "orch_to_auth_audience" {
   default     = ""
 }
 
+variable "orch_stub_to_auth_signing_public_key" {
+  description = "Public key counterpart for KMS key created in Orchestration/OIDC API"
+  type        = string
+  default     = ""
+}
+
+variable "orch_stub_to_auth_client_id" {
+  description = "Client ID that is used by OIDC API when making authorize redirect to Auth Frontend"
+  type        = string
+  default     = ""
+}
+
+variable "orch_stub_to_auth_audience" {
+  description = "Aud value included in JWT by OIDC API when making authorize redirect to Auth Frontend"
+  type        = string
+  default     = ""
+}
+
 variable "dynatrace_secret_arn" {
 }
 

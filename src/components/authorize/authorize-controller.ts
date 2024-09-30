@@ -29,6 +29,7 @@ import {
   supportMultiChannel,
   isValidChannel,
   getDefaultChannel,
+  getOrchStubToAuthExpectedClientId,
 } from "../../config";
 import { logger } from "../../utils/logger";
 import { Claims } from "./claims-config";
@@ -217,7 +218,10 @@ function validateQueryParams(clientId: string, responseType: string) {
     throw new QueryParamsError("Response type is not set");
   }
 
-  if (clientId !== getOrchToAuthExpectedClientId()) {
+  if (
+    clientId !== getOrchToAuthExpectedClientId() &&
+    clientId !== getOrchStubToAuthExpectedClientId()
+  ) {
     throw new QueryParamsError("Client ID value is incorrect");
   }
 }

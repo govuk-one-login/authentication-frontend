@@ -1,26 +1,34 @@
 import { JwtServiceInterface } from "./types";
-import { getOrchToAuthSigningPublicKey } from "../../config";
+import {
+  getOrchStubToAuthSigningPublicKey,
+  getOrchToAuthSigningPublicKey,
+} from "../../config";
 import { JwtClaimsValueError, JwtValidationError } from "../../utils/error";
-import { Claims, requiredClaimsKeys, getKnownClaims } from "./claims-config";
+import {
+  Claims,
+  requiredClaimsKeys,
+  getKnownClaims,
+  getKnownStubClaims,
+} from "./claims-config";
 import * as jose from "jose";
 
 export class JwtService implements JwtServiceInterface {
   private readonly publicKey;
+  private readonly stubPublicKey;
 
-  constructor(publicKey = getOrchToAuthSigningPublicKey()) {
+  constructor(
+    publicKey = getOrchToAuthSigningPublicKey(),
+    stubPublicKey = getOrchStubToAuthSigningPublicKey()
+  ) {
     this.publicKey = publicKey;
+    this.stubPublicKey = stubPublicKey;
   }
 
   async getPayloadWithValidation(jwt: string): Promise<Claims> {
     let claims: jose.JWTPayload;
+
     try {
-      const tempkey = await jose.importSPKI(this.publicKey, "ES256");
-      claims = (
-        await jose.jwtVerify(jwt, tempkey, {
-          requiredClaims: requiredClaimsKeys,
-          clockTolerance: 30,
-        })
-      ).payload;
+      claims = await this.validate(jwt);
     } catch (error) {
       throw new JwtValidationError(error.message);
     }
@@ -32,11 +40,37 @@ export class JwtService implements JwtServiceInterface {
     return this.validateCustomClaims(claims);
   }
 
-  validateCustomClaims(claims: any): Claims {
-    const requiredclaims = getKnownClaims();
+  async validate(jwt: string): Promise<jose.JWTPayload> {
+    try {
+      return await this.validateUsingKey(jwt, this.publicKey);
+    } catch (error) {
+      if (this.stubPublicKey === "" || this.stubPublicKey === "UNKNOWN") {
+        throw error;
+      }
+      return await this.validateUsingKey(jwt, this.stubPublicKey);
+    }
+  }
 
-    Object.keys(requiredclaims).forEach((claim) => {
-      if (requiredclaims[claim] !== claims[claim]) {
+  async validateUsingKey(jwt: string, key: string): Promise<jose.JWTPayload> {
+    const keyObject = await jose.importSPKI(key, "ES256");
+
+    const result = await jose.jwtVerify(jwt, keyObject, {
+      requiredClaims: requiredClaimsKeys,
+      clockTolerance: 30,
+    });
+
+    return result.payload;
+  }
+
+  validateCustomClaims(claims: any): Claims {
+    const requiredClaims = getKnownClaims();
+    const stubClaims = getKnownStubClaims();
+
+    Object.keys(requiredClaims).forEach((claim) => {
+      if (
+        requiredClaims[claim] !== claims[claim] &&
+        stubClaims[claim] !== claims[claim]
+      ) {
         throw new JwtClaimsValueError(`${claim} has incorrect value`);
       }
     });
