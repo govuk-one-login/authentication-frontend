@@ -92,7 +92,7 @@ import { channelMiddleware } from "./middleware/channel-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
-  path.resolve("node_modules/govuk-frontend/"),
+  path.resolve("node_modules/govuk-frontend/dist"),
   path.resolve("node_modules/@govuk-one-login/"),
 ];
 
