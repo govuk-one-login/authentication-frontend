@@ -45,6 +45,9 @@ orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CA
 orch_to_auth_client_id          = "orchestrationAuth"
 orch_to_auth_audience           = "https://signin.authdev1.sandpit.account.gov.uk/"
 
+orch_stub_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEM0ZehmrdDd89uYEFMTakbS7JgwCG\nXK7CAYMcVvy1pP5yV4O2mnDjYmvjZpvio2ctgOPxDuBb38QP1HD9WAOR2w==\n-----END PUBLIC KEY-----"
+orch_stub_to_auth_client_id          = "orchestrationAuth"
+orch_stub_to_auth_audience           = "https://signin.authdev1.sandpit.account.gov.uk/"
 
 dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
 

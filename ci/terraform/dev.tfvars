@@ -37,4 +37,8 @@ orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CA
 orch_to_auth_client_id          = "orchestrationAuth"
 orch_to_auth_audience           = "https://signin.dev.account.gov.uk/"
 
+orch_stub_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1P2vcnCdqx+MDwMTrJy47tV5ryTf\nkRaZYTpLsfCpC79ZgKSYEBcguuOUP4DvJpyHomBEnxeUs7s5KRgyMQjY4g==\n-----END PUBLIC KEY-----"
+orch_stub_to_auth_client_id          = "orchestrationAuth"
+orch_stub_to_auth_audience           = "https://signin.dev.account.gov.uk/"
+
 dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
