@@ -24,6 +24,7 @@ export interface AuthorizeServiceInterface {
     clientSessionId: string,
     persistentSessionId: string,
     req: Request,
+    authenticated: boolean,
     reauthenticate?: string,
     previousSessionId?: string,
     previousGovukSigninJourneyId?: string
