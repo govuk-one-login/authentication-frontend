@@ -47,6 +47,7 @@ export type Claims = {
   previous_session_id?: string;
   previous_govuk_signin_journey_id: string;
   channel?: string;
+  authenticated: boolean;
 };
 
 export const requiredClaimsKeys = [
@@ -66,4 +67,5 @@ export const requiredClaimsKeys = [
   "client_id",
   "redirect_uri",
   "rp_sector_host",
+  "authenticated",
 ];

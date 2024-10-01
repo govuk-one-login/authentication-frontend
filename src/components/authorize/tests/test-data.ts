@@ -29,6 +29,7 @@ export function createMockClaims(): Claims {
     previous_govuk_signin_journey_id: "a7349515-9154-4d20-b282-c42d2d35ac10",
     claim:
       '{"userinfo": {"email_verified": null, "public_subject_id": null, "email": null}}',
+    authenticated: false,
   };
 }
 
