@@ -2,7 +2,7 @@ import { beforeEach, describe } from "mocha";
 import { assert, expect } from "chai";
 import { JwtService } from "../jwt-service";
 import { JwtValidationError, JwtClaimsValueError } from "../../../utils/error";
-import { getKnownClaims } from "../claims-config";
+import { Claims, getKnownClaims } from "../claims-config";
 import {
   createJwt,
   createMockClaims,
@@ -18,7 +18,7 @@ import {
 } from "jose";
 
 describe("JWT service", () => {
-  let claims: any;
+  let claims: Claims;
   let publicKey: string;
   let privateKey: KeyLike;
   let wrongPrivateKey: KeyLike;
@@ -174,7 +174,7 @@ describe("JWT service", () => {
         Object.keys(claims).forEach(async (claim) => {
           const withoutClaim = { ...claims };
           try {
-            delete withoutClaim[claim];
+            delete withoutClaim[claim as keyof Claims];
             const jwtMissingClaim = await createJwt(withoutClaim, privateKey);
             jwtService.getPayloadWithValidation(jwtMissingClaim);
             assert.fail("Expected error to be thrown");

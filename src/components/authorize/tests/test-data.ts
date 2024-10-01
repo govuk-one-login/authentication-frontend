@@ -3,8 +3,9 @@ import {
   getOrchToAuthExpectedAudience,
   getOrchToAuthExpectedClientId,
 } from "../../../config";
+import { Claims } from "../claims-config";
 
-export function createMockClaims(): any {
+export function createMockClaims(): Claims {
   const timestamp = Math.floor(new Date().getTime() / 1000);
   return {
     confidence: "Cl.Cm",
@@ -15,7 +16,6 @@ export function createMockClaims(): any {
     service_type: "MANDATORY",
     nbf: timestamp,
     cookie_consent_shared: true,
-    scope: "openid email phone",
     state: "WLUNPYv0RPdVjhBsG4QMHYYMhGaOc8X-t83Y1XsVh1w",
     redirect_uri: "UNKNOWN",
     exp: timestamp + 1000,
@@ -24,6 +24,9 @@ export function createMockClaims(): any {
     is_one_login_service: false,
     rp_sector_host: "https://rp.sector.uri",
     jti: "fvvMWAladDtl35O_xyBTRLwwojA",
+    rp_redirect_uri: "https://rp.service.gov.uk/redirect/",
+    rp_state: "baeb1828-131f-40ef-9574-eee677d1cdd7",
+    previous_govuk_signin_journey_id: "a7349515-9154-4d20-b282-c42d2d35ac10",
     claim:
       '{"userinfo": {"email_verified": null, "public_subject_id": null, "email": null}}',
   };
