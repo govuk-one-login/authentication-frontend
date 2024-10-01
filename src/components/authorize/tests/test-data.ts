@@ -4,7 +4,7 @@ import {
   getOrchToAuthExpectedClientId,
 } from "../../../config";
 
-export function createmockclaims(): any {
+export function createMockClaims(): any {
   const timestamp = Math.floor(new Date().getTime() / 1000);
   return {
     confidence: "Cl.Cm",
