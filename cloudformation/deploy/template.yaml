@@ -515,10 +515,6 @@ Resources:
                 - "signin.account.gov.uk"
             - Name: GTM_ID
               Value: GTM-TK92W68
-            - Name: REDIS_HOST
-              Value: !GetAtt ApplicationReplicationGroup.PrimaryEndPoint.Address
-            - Name: REDIS_PORT
-              Value: !GetAtt ApplicationReplicationGroup.PrimaryEndPoint.Port
             - Name: SUPPORT_AUTHORIZE_CONTROLLER
               Value: 1
             - Name: ENCRYPTION_KEY_ID
@@ -604,8 +600,21 @@ Resources:
                 - UseSubEnvironment
                 - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${SubEnvironment}/frontend-api-key"
                 - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${Environment}/frontend-api-key"
+            - Name: REDIS_HOST
+              ValueFrom: !If
+                - UseSubEnvironment
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/frontend-cache-redis-master-host"
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/frontend-cache-redis-master-host"
+            - Name: REDIS_PORT
+              ValueFrom: !If
+                - UseSubEnvironment
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/frontend-cache-redis-port"
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/frontend-cache-redis-port"
             - Name: REDIS_PASSWORD
-              ValueFrom: !Ref ApplicationAuthPass
+              ValueFrom: !If
+                - UseSubEnvironment
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/frontend-cache-redis-password"
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/frontend-cache-redis-password"
             - Name: SESSION_EXPIRY
               ValueFrom: !If
                 - UseSubEnvironment
@@ -1547,120 +1556,6 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-FrontendTaskLogGroup"
-        - Key: Environment
-          Value: !Ref Environment
-        - Key: Application
-          Value: "auth-frontend"
-        - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
-
-  #
-  #  ElastiCache
-  #
-
-  ApplicationCacheSubnetGroup:
-    Type: AWS::ElastiCache::SubnetGroup
-    Properties:
-      CacheSubnetGroupName: !Sub "${AWS::StackName}-application-cache-subnet-group"
-      Description: Cache Subnet Group
-      SubnetIds:
-        - Fn::ImportValue:
-            !Sub "${VpcStackName}-PrivateSubnetIdA"
-        - Fn::ImportValue:
-            !Sub "${VpcStackName}-PrivateSubnetIdB"
-        - Fn::ImportValue:
-            !Sub "${VpcStackName}-PrivateSubnetIdC"
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-ApplicationCacheSubnetGroup"
-        - Key: Environment
-          Value: !Ref Environment
-        - Key: Application
-          Value: "auth-frontend"
-        - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
-
-  ApplicationElastiCacheLogGroup:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      KmsKeyId: !GetAtt KmsKey.Arn
-      LogGroupName: !Sub "/aws/vendedlogs/${AWS::StackName}-elasticache-replication-group-logs"
-      RetentionInDays: !FindInMap [ EnvironmentConfiguration, !Ref Environment, cloudwatchLogRetentionInDays ]
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-ApplicationElastiCacheCluster"
-        - Key: Environment
-          Value: !Ref Environment
-        - Key: Application
-          Value: "auth-frontend"
-        - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
-
-  ApplicationElastiCacheSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Frontend Redis Security Group
-      SecurityGroupIngress:
-        - Description: Allow inbound on port 6379
-          SourceSecurityGroupId: !GetAtt ContainerServiceSecurityGroup.GroupId
-          FromPort: 6379
-          IpProtocol: tcp
-          ToPort: 6379
-      VpcId:
-        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
-
-  ApplicationAuthPass:
-    Type: AWS::SecretsManager::Secret
-    Properties:
-      Name: !Sub "${AWS::StackName}-elasticache-application"
-      Description: Random password for elastiCache
-      GenerateSecretString:
-        ExcludeLowercase: false
-        ExcludeNumbers: false
-        ExcludePunctuation: true
-        ExcludeUppercase: false
-        IncludeSpace: false
-        PasswordLength: 32
-      KmsKeyId: !GetAtt KmsKey.Arn
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-ApplicationAuthPass"
-        - Key: Environment
-          Value: !Ref Environment
-        - Key: Application
-          Value: "auth-frontend"
-        - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
-
-  ApplicationReplicationGroup:
-    Type: AWS::ElastiCache::ReplicationGroup
-    Properties:
-      ReplicationGroupId: !Sub "${AWS::StackName}-session-cache"
-      ReplicationGroupDescription: A Redis cluster for storing user session data for the frontend
-      TransitEncryptionEnabled: true
-      AtRestEncryptionEnabled: true
-      AuthToken: !Sub '{{resolve:secretsmanager:${ApplicationAuthPass}}}'
-      AutomaticFailoverEnabled: true
-      CacheNodeType: !FindInMap [ EnvironmentConfiguration, !Ref Environment, redisNodeSize ]
-      CacheSubnetGroupName: !Ref ApplicationCacheSubnetGroup
-      CacheParameterGroupName: default.redis6.x
-      Engine: redis
-      EngineVersion: '6.2'
-      LogDeliveryConfigurations:
-        - DestinationDetails:
-            CloudWatchLogsDetails:
-              LogGroup: !Ref ApplicationElastiCacheLogGroup
-          DestinationType: cloudwatch-logs
-          LogFormat: json
-          LogType: engine-log
-      PreferredMaintenanceWindow: "sun:22:00-sun:23:00"
-      MultiAZEnabled: true
-      NumCacheClusters: 3
-      SecurityGroupIds:
-        - !Ref ApplicationElastiCacheSecurityGroup
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-ApplicationElastiCacheCluster"
         - Key: Environment
           Value: !Ref Environment
         - Key: Application
