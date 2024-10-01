@@ -24,6 +24,7 @@ describe("authorize service", () => {
   const req = createMockRequest(PATH_NAMES.AUTHORIZE, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
+  const isAuthenticated = false;
 
   beforeEach(() => {
     setupApiKeyAndBaseUrlEnvVars();
@@ -41,18 +42,23 @@ describe("authorize service", () => {
 
   it("sends a request with the correct headers set to true when reauth is requested and the feature flag is set", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
+
     service.start(
       sessionId,
       clientSessionId,
       diPersistentSessionId,
       req,
+      isAuthenticated,
       "123456"
     );
 
     expect(
       postStub.calledOnceWithExactly(
         API_ENDPOINTS.START,
-        { "rp-pairwise-id-for-reauth": "123456" },
+        {
+          "rp-pairwise-id-for-reauth": "123456",
+          authenticated: isAuthenticated,
+        },
         {
           headers: {
             ...expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -71,13 +77,14 @@ describe("authorize service", () => {
       clientSessionId,
       diPersistentSessionId,
       req,
+      isAuthenticated,
       "123456"
     );
 
     expect(
       postStub.calledOnceWithExactly(
         API_ENDPOINTS.START,
-        {},
+        { authenticated: isAuthenticated },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
           proxy: false,
@@ -88,12 +95,18 @@ describe("authorize service", () => {
 
   it("sends a request without a reauth header when reauth is not requested", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
-    service.start(sessionId, clientSessionId, diPersistentSessionId, req);
+    service.start(
+      sessionId,
+      clientSessionId,
+      diPersistentSessionId,
+      req,
+      isAuthenticated
+    );
 
     expect(
       postStub.calledOnceWithExactly(
         API_ENDPOINTS.START,
-        {},
+        { authenticated: isAuthenticated },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
           proxy: false,
@@ -109,6 +122,7 @@ describe("authorize service", () => {
       clientSessionId,
       diPersistentSessionId,
       req,
+      isAuthenticated,
       undefined,
       previousSessionId
     );
@@ -116,7 +130,10 @@ describe("authorize service", () => {
     expect(
       postStub.calledOnceWithExactly(
         API_ENDPOINTS.START,
-        { "previous-session-id": previousSessionId },
+        {
+          "previous-session-id": previousSessionId,
+          authenticated: isAuthenticated,
+        },
         {
           headers: {
             ...expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -134,6 +151,7 @@ describe("authorize service", () => {
       clientSessionId,
       diPersistentSessionId,
       req,
+      isAuthenticated,
       "123456",
       undefined,
       "previous-journey-id"
@@ -145,6 +163,7 @@ describe("authorize service", () => {
         {
           "rp-pairwise-id-for-reauth": "123456",
           "previous-govuk-signin-journey-id": "previous-journey-id",
+          authenticated: isAuthenticated,
         },
         {
           headers: {

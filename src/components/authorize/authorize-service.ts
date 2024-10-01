@@ -18,6 +18,7 @@ export function authorizeService(
     clientSessionId: string,
     persistentSessionId: string,
     req: Request,
+    authenticated: boolean,
     reauthenticate?: string,
     previousSessionId?: string,
     previousGovukSigninJourneyId?: string
@@ -29,6 +30,7 @@ export function authorizeService(
     const response = await axios.client.post<StartAuthResponse>(
       API_ENDPOINTS.START,
       createStartBody(
+        authenticated,
         previousSessionId,
         reauthenticate,
         previousGovukSigninJourneyId
@@ -54,11 +56,14 @@ export function authorizeService(
 }
 
 function createStartBody(
+  authenticated: boolean,
   previousSessionId?: string,
   reauthenticate?: string,
   previousGovukSigninJourneyId?: string
 ) {
   const body: { [key: string]: any } = {};
+
+  body["authenticated"] = authenticated;
 
   if (previousSessionId !== undefined)
     body["previous-session-id"] = previousSessionId;
