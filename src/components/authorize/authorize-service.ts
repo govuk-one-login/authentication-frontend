@@ -1,4 +1,8 @@
-import { AuthorizeServiceInterface, StartAuthResponse } from "./types";
+import {
+  AuthorizeServiceInterface,
+  StartAuthResponse,
+  StartRequestParameters,
+} from "./types";
 import { ApiResponseResult } from "../../types";
 import { API_ENDPOINTS } from "../../app.constants";
 import {
@@ -18,23 +22,15 @@ export function authorizeService(
     clientSessionId: string,
     persistentSessionId: string,
     req: Request,
-    authenticated: boolean,
-    reauthenticate?: string,
-    previousSessionId?: string,
-    previousGovukSigninJourneyId?: string
+    startRequestParameters: StartRequestParameters
   ): Promise<ApiResponseResult<StartAuthResponse>> {
     let reauthenticateOption = undefined;
-    if (supportReauthentication() && reauthenticate) {
-      reauthenticateOption = reauthenticate !== "";
+    if (supportReauthentication() && startRequestParameters.reauthenticate) {
+      reauthenticateOption = startRequestParameters.reauthenticate !== "";
     }
     const response = await axios.client.post<StartAuthResponse>(
       API_ENDPOINTS.START,
-      createStartBody(
-        authenticated,
-        previousSessionId,
-        reauthenticate,
-        previousGovukSigninJourneyId
-      ),
+      createStartBody(startRequestParameters),
       getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
@@ -55,21 +51,23 @@ export function authorizeService(
   };
 }
 
-function createStartBody(
-  authenticated: boolean,
-  previousSessionId?: string,
-  reauthenticate?: string,
-  previousGovukSigninJourneyId?: string
-) {
+function createStartBody(startRequestParameters: StartRequestParameters) {
   const body: { [key: string]: any } = {};
 
-  body["authenticated"] = authenticated;
+  body["authenticated"] = startRequestParameters.authenticated;
 
-  if (previousSessionId !== undefined)
-    body["previous-session-id"] = previousSessionId;
-  if (reauthenticate !== undefined && supportReauthentication())
-    body["rp-pairwise-id-for-reauth"] = reauthenticate;
-  if (previousGovukSigninJourneyId !== undefined && supportReauthentication())
-    body["previous-govuk-signin-journey-id"] = previousGovukSigninJourneyId;
+  if (startRequestParameters.previous_session_id !== undefined)
+    body["previous-session-id"] = startRequestParameters.previous_session_id;
+  if (
+    startRequestParameters.reauthenticate !== undefined &&
+    supportReauthentication()
+  )
+    body["rp-pairwise-id-for-reauth"] = startRequestParameters.reauthenticate;
+  if (
+    startRequestParameters.previous_govuk_signin_journey_id !== undefined &&
+    supportReauthentication()
+  )
+    body["previous-govuk-signin-journey-id"] =
+      startRequestParameters.previous_govuk_signin_journey_id;
   return body;
 }

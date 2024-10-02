@@ -66,10 +66,13 @@ export function authorizeGet(
       clientSessionId,
       persistentSessionId,
       req,
-      claims.authenticated,
-      claims.reauthenticate,
-      claims.previous_session_id,
-      claims.previous_govuk_signin_journey_id
+      {
+        authenticated: claims.authenticated,
+        previous_session_id: claims.previous_session_id,
+        previous_govuk_signin_journey_id:
+          claims.previous_govuk_signin_journey_id,
+        reauthenticate: claims.reauthenticate,
+      }
     );
 
     if (!startAuthResponse.success) {

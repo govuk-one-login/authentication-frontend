@@ -43,14 +43,10 @@ describe("authorize service", () => {
   it("sends a request with the correct headers set to true when reauth is requested and the feature flag is set", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
 
-    service.start(
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
-      req,
-      isAuthenticated,
-      "123456"
-    );
+    service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
+      authenticated: isAuthenticated,
+      reauthenticate: "123456",
+    });
 
     expect(
       postStub.calledOnceWithExactly(
@@ -72,14 +68,10 @@ describe("authorize service", () => {
 
   it("sends a request without a reauth header when reauth is requested but the feature flag is not set", () => {
     process.env.SUPPORT_REAUTHENTICATION = "0";
-    service.start(
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
-      req,
-      isAuthenticated,
-      "123456"
-    );
+    service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
+      authenticated: isAuthenticated,
+      reauthenticate: "123456",
+    });
 
     expect(
       postStub.calledOnceWithExactly(
@@ -95,13 +87,9 @@ describe("authorize service", () => {
 
   it("sends a request without a reauth header when reauth is not requested", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
-    service.start(
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
-      req,
-      isAuthenticated
-    );
+    service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
+      authenticated: isAuthenticated,
+    });
 
     expect(
       postStub.calledOnceWithExactly(
@@ -117,15 +105,11 @@ describe("authorize service", () => {
 
   it("sends a request with previous session ID in the body when given", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
-    service.start(
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
-      req,
-      isAuthenticated,
-      undefined,
-      previousSessionId
-    );
+    service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
+      authenticated: isAuthenticated,
+      reauthenticate: undefined,
+      previous_session_id: previousSessionId,
+    });
 
     expect(
       postStub.calledOnceWithExactly(
@@ -146,16 +130,12 @@ describe("authorize service", () => {
 
   it("sends a request with the pairwise id for reauth and previous journey id in the body when present", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
-    service.start(
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
-      req,
-      isAuthenticated,
-      "123456",
-      undefined,
-      "previous-journey-id"
-    );
+    service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
+      authenticated: isAuthenticated,
+      reauthenticate: "123456",
+      previous_session_id: undefined,
+      previous_govuk_signin_journey_id: "previous-journey-id",
+    });
 
     expect(
       postStub.calledOnceWithExactly(
