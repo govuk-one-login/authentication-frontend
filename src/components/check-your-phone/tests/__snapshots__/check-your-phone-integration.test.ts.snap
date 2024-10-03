@@ -3,7 +3,7 @@
 exports[`Integration:: check your phone should render the "you requested too many codes" pages when incorrect code has requested more than 5 times 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "create account",
 }
 `;
 
@@ -17,7 +17,7 @@ Object {
 exports[`Integration:: check your phone should return check your phone page 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "create account",
 }
 `;
 
@@ -31,34 +31,34 @@ Object {
 exports[`Integration:: check your phone should return validation error when code entered contains letters 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "create account",
 }
 `;
 
 exports[`Integration:: check your phone should return validation error when code is greater than 6 characters 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "create account",
 }
 `;
 
 exports[`Integration:: check your phone should return validation error when code is less than 6 characters 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "create account",
 }
 `;
 
 exports[`Integration:: check your phone should return validation error when code not entered 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "create account",
 }
 `;
 
 exports[`Integration:: check your phone should return validation error when incorrect code entered 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "create account",
 }
 `;
