@@ -3,14 +3,14 @@
 exports[`Integration:: resend email code should redirect to /security-code-requested-too-many-times when exceeded OTP request limit 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "sign in",
 }
 `;
 
 exports[`Integration:: resend email code should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "create account",
 }
 `;
 
@@ -31,6 +31,6 @@ Object {
 exports[`Integration:: resend email code should return resend email code page 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "create account",
 }
 `;

@@ -17,6 +17,6 @@ Object {
 exports[`Integration:: resend SMS mfa code (account creation variant) should return resend mfa code page 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "create account",
 }
 `;

@@ -10,7 +10,7 @@ Object {
 exports[`Integration::enter phone number should return enter phone number page 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "create account",
 }
 `;
 

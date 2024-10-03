@@ -3,6 +3,6 @@
 exports[`Integration:: authorize should redirect to /sign-in-or-create with Google Analytics tag if 'result' query exists 1`] = `
 Object {
   "taxonomyLevel1": "accounts",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "create account",
 }
 `;

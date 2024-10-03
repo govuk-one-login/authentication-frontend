@@ -10,7 +10,7 @@ Object {
 exports[`Integration::setup-authenticator-app should return setup authenticator app page 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "create account",
 }
 `;
 
