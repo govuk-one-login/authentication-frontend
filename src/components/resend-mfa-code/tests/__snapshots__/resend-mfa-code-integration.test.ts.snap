@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration:: resend mfa code should include the last three digits of the user's telephone number 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: resend mfa code should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: resend mfa code should return 400 error screen when API call fails 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+}
+`;
+
+exports[`Integration:: resend mfa code should return 500 error screen when API call fails 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+}
+`;
+
+exports[`Integration:: resend mfa code should return error when csrf not present 1`] = `
+Object {
+  "taxonomyLevel1": undefined,
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: resend mfa code should return resend mfa code page 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: resend mfa code should state reauthenticating user could be logged out 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: resend mfa code should state user could be locked out 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;

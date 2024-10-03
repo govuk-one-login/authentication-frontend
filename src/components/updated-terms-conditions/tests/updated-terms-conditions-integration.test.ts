@@ -1,6 +1,5 @@
-import request from "supertest";
 import { beforeEach, describe } from "mocha";
-import { sinon } from "../../../../test/utils/test-utils";
+import { sinon, request } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
@@ -42,13 +41,15 @@ describe("Integration:: updated-terms-code", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(app)
-      .get(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    await request(
+      app,
+      (test) => test.get(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS),
+      { expectTaxonomyMatchSnapshot: false }
+    ).then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
   });
 
   beforeEach(() => {
@@ -61,19 +62,23 @@ describe("Integration:: updated-terms-code", () => {
   });
 
   it("should return update terms and conditions page", async () => {
-    await request(app)
-      .get(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
-      .expect(HTTP_STATUS_CODES.OK);
+    await request(app, (test) =>
+      test
+        .get(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
+        .expect(HTTP_STATUS_CODES.OK)
+    );
   });
 
   it("should return error when csrf not present", async () => {
-    await request(app)
-      .post(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
-      .type("form")
-      .send({
-        termsAndConditionsResult: "reject",
-      })
-      .expect(403);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
+        .type("form")
+        .send({
+          termsAndConditionsResult: "reject",
+        })
+        .expect(403)
+    );
   });
 
   it("should redirect to /auth_code when terms accepted", async () => {
@@ -82,15 +87,17 @@ describe("Integration:: updated-terms-code", () => {
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
-    await request(app)
-      .post(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        termsAndConditionsResult: "accept",
-      })
-      .expect("Location", PATH_NAMES.AUTH_CODE)
-      .expect(302);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          termsAndConditionsResult: "accept",
+        })
+        .expect("Location", PATH_NAMES.AUTH_CODE)
+        .expect(302)
+    );
   });
 });

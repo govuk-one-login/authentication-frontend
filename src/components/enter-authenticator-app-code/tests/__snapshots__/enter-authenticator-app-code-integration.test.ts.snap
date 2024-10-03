@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration:: enter authenticator app code following a validation error it should not include link to change security codes where account recovery is not permitted 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: enter authenticator app code should return enter authenticator app security code 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: enter authenticator app code should return error when csrf not present 1`] = `
+Object {
+  "taxonomyLevel1": undefined,
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: enter authenticator app code should return validation error when code entered contains letters 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: enter authenticator app code should return validation error when code is greater than 6 characters 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: enter authenticator app code should return validation error when code is less than 6 characters 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: enter authenticator app code should return validation error when code not entered 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: enter authenticator app code should return validation error when incorrect code entered 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;

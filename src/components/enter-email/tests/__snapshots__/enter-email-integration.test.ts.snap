@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration::enter email should return enter email page 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration::enter email should return error when csrf not present 1`] = `
+Object {
+  "taxonomyLevel1": undefined,
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration::enter email should return internal server error when /user-exists API call response is 500 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+}
+`;
+
+exports[`Integration::enter email should return validation error when email not entered 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+}
+`;
+
+exports[`Integration::enter email should return validation error when invalid email entered 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+}
+`;
+
+exports[`Integration::enter email should return validation error when invalid email entered 2`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+}
+`;
+
+exports[`Integration::enter email should return validation error when invalid email entered 3`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+}
+`;

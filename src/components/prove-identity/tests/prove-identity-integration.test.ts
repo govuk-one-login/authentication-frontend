@@ -1,6 +1,5 @@
-import request from "supertest";
 import { describe } from "mocha";
-import { sinon } from "../../../../test/utils/test-utils";
+import { request, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import decache from "decache";
 import {
@@ -47,11 +46,11 @@ describe("Integration::prove identity", () => {
 
     app = await require("../../../app").createApp();
 
-    await request(app)
-      .get(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
-      .then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN)).then(
+      (res) => {
         cookies = res.headers["set-cookie"];
-      });
+      }
+    );
   });
 
   beforeEach(() => {
@@ -116,6 +115,8 @@ describe("Integration::prove identity", () => {
   });
 
   const makeRequestToProveIdentityEndpoint = async () => {
-    return request(app).get(PATH_NAMES.PROVE_IDENTITY).set("Cookie", cookies);
+    return request(app, (test) =>
+      test.get(PATH_NAMES.PROVE_IDENTITY).set("Cookie", cookies)
+    );
   };
 });

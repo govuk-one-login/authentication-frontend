@@ -1,6 +1,5 @@
-import request from "supertest";
 import { describe } from "mocha";
-import { sinon } from "../../../../test/utils/test-utils";
+import { request, sinon } from "../../../../test/utils/test-utils";
 import { PATH_NAMES } from "../../../app.constants";
 import decache from "decache";
 
@@ -22,6 +21,6 @@ describe("Integration::healthcheck", () => {
   });
 
   it("healthcheck should return 200 OK", async () => {
-    await request(app).get(PATH_NAMES.HEALTHCHECK).expect(200);
+    await request(app, (test) => test.get(PATH_NAMES.HEALTHCHECK).expect(200));
   });
 });

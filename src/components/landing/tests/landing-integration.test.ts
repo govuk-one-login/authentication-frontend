@@ -1,6 +1,5 @@
-import request from "supertest";
 import { describe } from "mocha";
-import { sinon } from "../../../../test/utils/test-utils";
+import { request, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import decache from "decache";
 import { PATH_NAMES } from "../../../app.constants";
@@ -38,9 +37,11 @@ describe("Integration:: landing", () => {
   });
 
   it("should redirect to /sign-in-or-create", async () => {
-    await request(app)
-      .get(PATH_NAMES.ROOT)
-      .expect("Location", PATH_NAMES.SIGN_IN_OR_CREATE)
-      .expect(302);
+    await request(app, (test) =>
+      test
+        .get(PATH_NAMES.ROOT)
+        .expect("Location", PATH_NAMES.SIGN_IN_OR_CREATE)
+        .expect(302)
+    );
   });
 });

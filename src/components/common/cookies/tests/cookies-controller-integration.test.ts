@@ -1,6 +1,5 @@
-import request from "supertest";
 import { describe } from "mocha";
-import { expect, sinon } from "../../../../../test/utils/test-utils";
+import { expect, sinon, request } from "../../../../../test/utils/test-utils";
 import cheerio from "cheerio";
 import decache from "decache";
 import { PATH_NAMES, ANALYTICS_COOKIES } from "../../../../app.constants";
@@ -16,9 +15,8 @@ describe("Integration:: cookies controller", () => {
 
     app = await require("../../../../app").createApp();
 
-    await request(app)
-      .get(PATH_NAMES.COOKIES_POLICY)
-      .then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.COOKIES_POLICY)).then(
+      (res) => {
         $ = cheerio.load(res.text);
         $("table#analytics-cookies tbody td:first-child").each(
           (i: any, elem: any) => {
@@ -26,7 +24,8 @@ describe("Integration:: cookies controller", () => {
             analyticsCookieNamesListedInCookieNotice.push(cookieName);
           }
         );
-      });
+      }
+    );
   });
 
   after(() => {

@@ -1,6 +1,5 @@
-import request from "supertest";
 import { describe } from "mocha";
-import { sinon } from "../../../../test/utils/test-utils";
+import { request, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
@@ -41,13 +40,13 @@ describe("Integration:: resend email code", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(app)
-      .get(PATH_NAMES.RESEND_EMAIL_CODE)
-      .then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.RESEND_EMAIL_CODE)).then(
+      (res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
-      });
+      }
+    );
   });
 
   beforeEach(() => {
@@ -60,17 +59,21 @@ describe("Integration:: resend email code", () => {
   });
 
   it("should return resend email code page", async () => {
-    await request(app).get(PATH_NAMES.RESEND_EMAIL_CODE).expect(200);
+    await request(app, (test) =>
+      test.get(PATH_NAMES.RESEND_EMAIL_CODE).expect(200)
+    );
   });
 
   it("should return error when csrf not present", async () => {
-    await request(app)
-      .post(PATH_NAMES.RESEND_EMAIL_CODE)
-      .type("form")
-      .send({
-        code: "123456",
-      })
-      .expect(403);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.RESEND_EMAIL_CODE)
+        .type("form")
+        .send({
+          code: "123456",
+        })
+        .expect(403)
+    );
   });
 
   it("should redirect to /check-your-email when new code requested as part of account creation journey", async () => {
@@ -79,25 +82,29 @@ describe("Integration:: resend email code", () => {
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
-    await request(app)
-      .post(PATH_NAMES.RESEND_EMAIL_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-      })
-      .expect("Location", PATH_NAMES.CHECK_YOUR_EMAIL)
-      .expect(302);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.RESEND_EMAIL_CODE)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+        })
+        .expect("Location", PATH_NAMES.CHECK_YOUR_EMAIL)
+        .expect(302)
+    );
   });
 
   it("should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active", async () => {
     const testSpecificCookies = cookies + "; re=true";
-    await request(app)
-      .get(PATH_NAMES.RESEND_EMAIL_CODE)
-      .set("Cookie", testSpecificCookies)
-      .expect((res) => {
-        res.text.includes("You cannot get a new security code at the moment");
-      });
+    await request(app, (test) =>
+      test
+        .get(PATH_NAMES.RESEND_EMAIL_CODE)
+        .set("Cookie", testSpecificCookies)
+        .expect((res) => {
+          res.text.includes("You cannot get a new security code at the moment");
+        })
+    );
   });
 
   it("should return 500 error screen when API call fails", async () => {
@@ -105,14 +112,16 @@ describe("Integration:: resend email code", () => {
       errorCode: "1234",
     });
 
-    await request(app)
-      .post(PATH_NAMES.RESEND_EMAIL_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-      })
-      .expect(500);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.RESEND_EMAIL_CODE)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+        })
+        .expect(500)
+    );
   });
 
   it("should redirect to /security-code-invalid-request when request OTP more than 5 times", async () => {
@@ -121,18 +130,20 @@ describe("Integration:: resend email code", () => {
       .times(6)
       .reply(400, { code: ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT });
 
-    await request(app)
-      .post(PATH_NAMES.RESEND_EMAIL_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-      })
-      .expect(
-        "Location",
-        "/security-code-invalid-request?actionType=emailMaxCodesSent"
-      )
-      .expect(302);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.RESEND_EMAIL_CODE)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+        })
+        .expect(
+          "Location",
+          "/security-code-invalid-request?actionType=emailMaxCodesSent"
+        )
+        .expect(302)
+    );
   });
 
   it("should redirect to /security-code-requested-too-many-times when exceeded OTP request limit", async () => {
@@ -141,17 +152,19 @@ describe("Integration:: resend email code", () => {
       .once()
       .reply(400, { code: ERROR_CODES.VERIFY_EMAIL_CODE_REQUEST_BLOCKED });
 
-    await request(app)
-      .post(PATH_NAMES.RESEND_EMAIL_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-      })
-      .expect(
-        "Location",
-        "/security-code-requested-too-many-times?actionType=emailBlocked"
-      )
-      .expect(302);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.RESEND_EMAIL_CODE)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+        })
+        .expect(
+          "Location",
+          "/security-code-requested-too-many-times?actionType=emailBlocked"
+        )
+        .expect(302)
+    );
   });
 });
