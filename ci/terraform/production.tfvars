@@ -17,6 +17,7 @@ ecs_desired_count                                   = 4
 support_account_recovery                            = "1"
 support_account_interventions                       = "1"
 support_authorize_controller                        = "1"
+support_reauthentication                            = "1"
 support_2hr_lockout                                 = "1"
 code_request_blocked_minutes                        = "120"
 account_recovery_code_entered_wrong_blocked_minutes = "120"
