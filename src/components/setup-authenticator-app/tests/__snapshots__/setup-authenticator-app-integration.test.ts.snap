@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration::setup-authenticator-app should return error when csrf not present 1`] = `
+Object {
+  "taxonomyLevel1": undefined,
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration::setup-authenticator-app should return setup authenticator app page 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration::setup-authenticator-app should return validation error when access code is too long (more than 6 digits) 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+}
+`;
+
+exports[`Integration::setup-authenticator-app should return validation error when access code not entered 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+}
+`;
+
+exports[`Integration::setup-authenticator-app should return validation error when code has non-digit characters 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+}
+`;

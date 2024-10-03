@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration:: check your phone should render the "you requested too many codes" pages when incorrect code has requested more than 5 times 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: check your phone should render the "you requested too many codes" pages when incorrect code has requested more than 5 times 2`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+}
+`;
+
+exports[`Integration:: check your phone should return check your phone page 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: check your phone should return error when csrf not present 1`] = `
+Object {
+  "taxonomyLevel1": undefined,
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: check your phone should return validation error when code entered contains letters 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: check your phone should return validation error when code is greater than 6 characters 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: check your phone should return validation error when code is less than 6 characters 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: check your phone should return validation error when code not entered 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: check your phone should return validation error when incorrect code entered 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;

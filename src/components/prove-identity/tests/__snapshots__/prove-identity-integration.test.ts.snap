@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration::prove identity should redirect when account interventions flags user is blocked 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;

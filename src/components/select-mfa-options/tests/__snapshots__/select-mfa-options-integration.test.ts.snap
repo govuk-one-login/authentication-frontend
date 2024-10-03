@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration::select-mfa-options should return error when csrf not present 1`] = `
+Object {
+  "taxonomyLevel1": undefined,
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration::select-mfa-options should return get security codes page 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration::select-mfa-options should return validation error when mfa option not selected 1`] = `
+Object {
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+}
+`;

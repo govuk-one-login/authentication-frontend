@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration::healthcheck healthcheck should return 200 OK 1`] = `
+Object {
+  "taxonomyLevel1": undefined,
+  "taxonomyLevel2": undefined,
+}
+`;

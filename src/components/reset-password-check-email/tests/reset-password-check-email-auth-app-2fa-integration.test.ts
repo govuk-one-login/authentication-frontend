@@ -1,6 +1,5 @@
-import request from "supertest";
 import { describe } from "mocha";
-import { sinon } from "../../../../test/utils/test-utils";
+import { request, sinon } from "../../../../test/utils/test-utils";
 import decache from "decache";
 
 import cheerio from "cheerio";
@@ -48,13 +47,15 @@ describe("Integration::reset password check email ", () => {
 
     nock(baseApi).post("/reset-password-request").once().reply(204);
 
-    await request(app)
-      .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    await request(
+      app,
+      (test) => test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL),
+      { expectTaxonomyMatchSnapshot: false }
+    ).then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
   });
 
   beforeEach(() => {
@@ -68,7 +69,9 @@ describe("Integration::reset password check email ", () => {
 
   it("should return reset password check email page", async () => {
     nock(baseApi).post("/reset-password-request").once().reply(204);
-    await request(app).get("/reset-password-check-email").expect(200);
+    await request(app, (test) =>
+      test.get("/reset-password-check-email").expect(200)
+    );
   });
 
   it("should redirect to /reset-password-2fa-auth-app if user's 2FA is set to AUTH_APP", async () => {
@@ -79,15 +82,17 @@ describe("Integration::reset password check email ", () => {
 
     setupAccountInterventionsResponse(baseApi, noInterventions);
 
-    await request(app)
-      .post("/reset-password-check-email")
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        code: "123456",
-      })
-      .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
-      .expect(302);
+    await request(app, (test) =>
+      test
+        .post("/reset-password-check-email")
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "123456",
+        })
+        .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
+        .expect(302)
+    );
   });
 });

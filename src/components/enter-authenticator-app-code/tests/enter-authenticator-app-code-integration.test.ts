@@ -1,6 +1,5 @@
-import request from "supertest";
 import { describe } from "mocha";
-import { expect, sinon } from "../../../../test/utils/test-utils";
+import { expect, sinon, request } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
@@ -70,13 +69,15 @@ describe("Integration:: enter authenticator app code", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
-    await request(app)
-      .get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    await request(
+      app,
+      (test) => test.get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE),
+      { expectTaxonomyMatchSnapshot: false }
+    ).then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
   });
 
   beforeEach(() => {
@@ -89,106 +90,120 @@ describe("Integration:: enter authenticator app code", () => {
   });
 
   it("should return enter authenticator app security code", async () => {
-    await request(app).get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE).expect(200);
+    await request(app, (test) =>
+      test.get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE).expect(200)
+    );
   });
 
   it("should return error when csrf not present", async () => {
-    await request(app)
-      .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-      .type("form")
-      .send({
-        code: "123456",
-      })
-      .expect(403);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+        .type("form")
+        .send({
+          code: "123456",
+        })
+        .expect(403)
+    );
   });
 
   it("should return validation error when code not entered", async () => {
-    await request(app)
-      .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        code: "",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#code-error").text()).to.contains("Enter the code");
-      })
-      .expect(400);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#code-error").text()).to.contains("Enter the code");
+        })
+        .expect(400)
+    );
   });
 
   it("should return validation error when code is less than 6 characters", async () => {
-    await request(app)
-      .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        code: "2",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#code-error").text()).to.contains(
-          "Enter the code using only 6 digits"
-        );
-      })
-      .expect(400);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "2",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#code-error").text()).to.contains(
+            "Enter the code using only 6 digits"
+          );
+        })
+        .expect(400)
+    );
   });
 
   it("should return validation error when code is greater than 6 characters", async () => {
-    await request(app)
-      .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        code: "1234567",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#code-error").text()).to.contains(
-          "Enter the code using only 6 digits"
-        );
-      })
-      .expect(400);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "1234567",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#code-error").text()).to.contains(
+            "Enter the code using only 6 digits"
+          );
+        })
+        .expect(400)
+    );
   });
 
   it("should return validation error when code entered contains letters", async () => {
-    await request(app)
-      .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        code: "12ert-",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#code-error").text()).to.contains(
-          "Enter the code using only 6 digits"
-        );
-      })
-      .expect(400);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "12ert-",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#code-error").text()).to.contains(
+            "Enter the code using only 6 digits"
+          );
+        })
+        .expect(400)
+    );
   });
 
   it("following a validation error it should not include link to change security codes where account recovery is not permitted", async () => {
-    await request(app)
-      .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        code: "12ert-",
-        isAccountRecoveryPermitted: false,
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("body").text()).to.not.contains(
-          "You can securely change how you get security codes"
-        );
-      })
-      .expect(400);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "12ert-",
+          isAccountRecoveryPermitted: false,
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("body").text()).to.not.contains(
+            "You can securely change how you get security codes"
+          );
+        })
+        .expect(400)
+    );
   });
 
   it("should redirect to /auth-code when valid code entered", async () => {
@@ -197,16 +212,18 @@ describe("Integration:: enter authenticator app code", () => {
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
 
-    await request(app)
-      .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        code: "123456",
-      })
-      .expect("Location", PATH_NAMES.AUTH_CODE)
-      .expect(302);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "123456",
+        })
+        .expect("Location", PATH_NAMES.AUTH_CODE)
+        .expect(302)
+    );
   });
 
   it("should return validation error when incorrect code entered", async () => {
@@ -215,21 +232,23 @@ describe("Integration:: enter authenticator app code", () => {
       success: false,
     });
 
-    await request(app)
-      .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        code: "123455",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#code-error").text()).to.contains(
-          "The code you entered is not correct, check your authenticator app and try again"
-        );
-      })
-      .expect(400);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "123455",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#code-error").text()).to.contains(
+            "The code you entered is not correct, check your authenticator app and try again"
+          );
+        })
+        .expect(400)
+    );
   });
 
   it("should redirect to security code expired when incorrect code has been entered 5 times", async () => {
@@ -238,18 +257,20 @@ describe("Integration:: enter authenticator app code", () => {
       success: false,
     });
 
-    await request(app)
-      .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        code: "123455",
-      })
-      .expect(
-        "Location",
-        `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.AuthAppMfaMaxRetries}`
-      )
-      .expect(302);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "123455",
+        })
+        .expect(
+          "Location",
+          `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.AuthAppMfaMaxRetries}`
+        )
+        .expect(302)
+    );
   });
 });

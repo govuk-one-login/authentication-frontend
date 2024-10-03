@@ -1,6 +1,5 @@
-import request from "supertest";
 import { describe } from "mocha";
-import { sinon } from "../../../../test/utils/test-utils";
+import { request, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
@@ -71,13 +70,13 @@ describe("Integration:: enter mfa", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
-    await request(app)
-      .get(PATH_NAMES.ENTER_MFA)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA), {
+      expectTaxonomyMatchSnapshot: false,
+    }).then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
   });
 
   beforeEach(() => {
@@ -98,15 +97,20 @@ describe("Integration:: enter mfa", () => {
       success: false,
     });
 
-    await request(app)
-      .post(PATH_NAMES.ENTER_MFA)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        code: "123455",
-      })
-      .expect("Location", EXAMPLE_REDIRECT_URI.concat("?error=login_required"))
-      .expect(302);
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.ENTER_MFA)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "123455",
+        })
+        .expect(
+          "Location",
+          EXAMPLE_REDIRECT_URI.concat("?error=login_required")
+        )
+        .expect(302)
+    );
   });
 });
