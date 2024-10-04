@@ -20,6 +20,19 @@ resource "aws_security_group_rule" "allow_incoming_frontend_redis_from_private_s
   type        = "ingress"
 }
 
+resource "aws_security_group_rule" "allow_incoming_frontend_redis_from_new_auth" {
+  count = length(var.new_auth_protectedsub_cidr_blocks) == 0 ? 0 : 1
+
+  description       = "Allow ingress to Redis from new Auth equivalent environment protected subnets"
+  security_group_id = aws_security_group.frontend_redis_security_group.id
+
+  from_port   = local.redis_port_number
+  protocol    = "tcp"
+  cidr_blocks = var.new_auth_protectedsub_cidr_blocks
+  to_port     = local.redis_port_number
+  type        = "ingress"
+}
+
 resource "aws_security_group" "allow_access_to_frontend_redis" {
   name_prefix = "${var.environment}-allow-access-to-frontend-redis-"
   description = "Allow outgoing access to the frontend Redis session store"
