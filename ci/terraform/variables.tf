@@ -190,6 +190,11 @@ variable "basic_auth_bypass_cidr_blocks" {
   description = "The list of CIDR blocks allowed to bypass basic auth (if enabled)"
 }
 
+variable "new_auth_account_id" {
+  description = "New Auth account id for equivalent environment"
+  default     = ""
+}
+
 variable "new_auth_protectedsub_cidr_blocks" {
   type        = list(string)
   default     = []
