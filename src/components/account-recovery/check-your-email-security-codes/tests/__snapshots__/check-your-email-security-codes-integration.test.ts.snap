@@ -10,41 +10,41 @@ Object {
 exports[`Integration:: check your email security codes should return validation error when code entered contains letters 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "",
+  "taxonomyLevel2": "account recovery",
 }
 `;
 
 exports[`Integration:: check your email security codes should return validation error when code is greater than 6 characters 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "",
+  "taxonomyLevel2": "account recovery",
 }
 `;
 
 exports[`Integration:: check your email security codes should return validation error when code is less than 6 characters 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "",
+  "taxonomyLevel2": "account recovery",
 }
 `;
 
 exports[`Integration:: check your email security codes should return validation error when code not entered 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "",
+  "taxonomyLevel2": "account recovery",
 }
 `;
 
 exports[`Integration:: check your email security codes should return validation error when incorrect code entered 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "",
+  "taxonomyLevel2": "account recovery",
 }
 `;
 
 exports[`Integration:: check your email security codes should return verify email page 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": undefined,
+  "taxonomyLevel2": "account recovery",
 }
 `;

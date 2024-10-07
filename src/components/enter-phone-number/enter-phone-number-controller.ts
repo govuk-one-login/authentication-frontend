@@ -17,15 +17,9 @@ import { supportAccountRecovery } from "../../config";
 import xss from "xss";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 
-const oplValues = {
-  createAccount: {
-    contentId: "0f519eb6-5cd4-476f-968f-d847b3c4c034",
-    taxonomyLevel2: "create account",
-  },
-  accountRecovery: {
-    contentId: "cbca1676-f632-4937-984e-1ae5934d13e2",
-    taxonomyLevel2: "account recovery",
-  },
+const contentIds = {
+  createAccount: "0f519eb6-5cd4-476f-968f-d847b3c4c034",
+  accountRecovery: "cbca1676-f632-4937-984e-1ae5934d13e2",
 };
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
@@ -41,11 +35,8 @@ export function enterPhoneNumberGet(req: Request, res: Response): void {
   res.render("enter-phone-number/index.njk", {
     isAccountPartCreated: req.session.user.isAccountPartCreated,
     contentId: accountRecovery
-      ? oplValues.accountRecovery.contentId
-      : oplValues.createAccount.contentId,
-    taxonomyLevel2: accountRecovery
-      ? oplValues.accountRecovery.taxonomyLevel2
-      : oplValues.createAccount.taxonomyLevel2,
+      ? contentIds.accountRecovery
+      : contentIds.createAccount,
   });
 }
 

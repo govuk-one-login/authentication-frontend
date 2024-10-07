@@ -27,6 +27,7 @@ describe("Integration:: check your phone", () => {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
         req.session.user = {
+          isAccountCreationJourney: true,
           email: "test@test.com",
           journey: {
             nextPath: PATH_NAMES.CHECK_YOUR_PHONE,
