@@ -33,7 +33,6 @@ describe("Integration:: base page ", () => {
           phoneNumber: "7867",
           journey: {
             nextPath: PATH_NAMES.SIGN_IN_OR_CREATE,
-            optionalPaths: [PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION],
           },
         };
 
