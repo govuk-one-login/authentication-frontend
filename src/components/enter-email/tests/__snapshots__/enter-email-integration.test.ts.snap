@@ -3,7 +3,7 @@
 exports[`Integration::enter email should return enter email page 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "sign in",
+  "taxonomyLevel2": "",
 }
 `;
 

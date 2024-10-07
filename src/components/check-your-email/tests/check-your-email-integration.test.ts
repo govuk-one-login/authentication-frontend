@@ -40,13 +40,13 @@ describe("Integration:: check your email", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(app, (test) => test.get(PATH_NAMES.CHECK_YOUR_EMAIL)).then(
-      (res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      }
-    );
+    await request(app, (test) => test.get(PATH_NAMES.CHECK_YOUR_EMAIL), {
+      expectTaxonomyMatchSnapshot: false,
+    }).then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
   });
 
   beforeEach(() => {
@@ -216,7 +216,7 @@ describe("Integration:: check your email", () => {
     );
   });
 
-  it("should return error page when when incorrect code entered more than 5 times", async () => {
+  it("should return error page when incorrect code entered more than 5 times", async () => {
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES,
       success: false,
