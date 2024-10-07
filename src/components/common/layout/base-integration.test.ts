@@ -56,6 +56,7 @@ describe("Integration:: base page ", () => {
     await setupApp(CHANNEL.WEB);
     await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE).expect(200);
   });
+
   it("footer should be on page", async () => {
     await setupApp(CHANNEL.WEB);
     const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
@@ -63,6 +64,7 @@ describe("Integration:: base page ", () => {
     const $ = cheerio.load(response.text);
     expect($(".govuk-footer").length).to.equal(1);
   });
+
   it("footer should not be on page", async () => {
     await setupApp(CHANNEL.STRATEGIC_APP);
     const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
