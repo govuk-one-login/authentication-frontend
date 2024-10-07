@@ -15,7 +15,7 @@ export function getRequestTaxonomyMiddleware(
     options?: object | CallbackFunction,
     callback?: CallbackFunction
   ) {
-    const taxonomy = getRequestTaxonomy();
+    const taxonomy = getRequestTaxonomy(req);
 
     let done = callback;
     let opts;
