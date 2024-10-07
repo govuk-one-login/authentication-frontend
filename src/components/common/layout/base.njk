@@ -104,7 +104,8 @@
 {% endblock %}
 
 {% block footer %}
-{% if webChannel %}
+{% if strategicAppChannel === true %}
+{% else %}
     {{ govukFooter({
         meta: {
             items: [
