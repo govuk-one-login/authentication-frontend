@@ -14,10 +14,8 @@ import {
 import { validateContactUsRequest } from "./contact-us-validation";
 import { validateContactUsQuestionsRequest } from "./contact-us-questions-validation";
 import { asyncHandler } from "../../utils/async";
-import { getRequestTaxonomyMiddleware } from "../../middleware/get-request-taxonomy-middleware";
 
 const router = express.Router();
-router.use(getRequestTaxonomyMiddleware);
 
 router.get(PATH_NAMES.CONTACT_US, contactUsGet);
 router.get(PATH_NAMES.CONTACT_US_FROM_TRIAGE_PAGE, contactUsGetFromTriagePage);
