@@ -1,18 +1,18 @@
-name: Test Sidecar Container
-on:
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - ready_for_review
-      - synchronize
-    paths:
-      - basic-auth-sidecar/**
-      - test/basic-auth-sidecar/**
+# name: Test Sidecar Container
+# on:
+#   pull_request:
+#     types:
+#       - opened
+#       - reopened
+#       - ready_for_review
+#       - synchronize
+#     paths:
+#       - basic-auth-sidecar/**
+#       - test/basic-auth-sidecar/**
 
-jobs:
-  run-tests:
-    runs-on: ubuntu-latest
+# jobs:
+#   run-tests:
+#     runs-on: ubuntu-latest
 
     # steps:
     #   - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
