@@ -29,6 +29,7 @@ const signInVariants: Variant[] = [
   { path: PATH_NAMES.ENTER_PASSWORD },
   { path: PATH_NAMES.RESEND_MFA_CODE },
 ];
+const reauthVariants: Variant[] = [{ user: { reauthenticate: "samplevalue" } }];
 const createAccountVariants: Variant[] = [
   { user: { isAccountCreationJourney: true } },
   { path: PATH_NAMES.CHECK_YOUR_EMAIL },
@@ -88,6 +89,13 @@ const mappingsToTest: VariantExpectation[] = [
     expectedTaxonomy: {
       taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
       taxonomyLevel2: TaxonomyLevel2.SIGN_IN,
+    },
+  })),
+  ...reauthVariants.map((t) => ({
+    ...t,
+    expectedTaxonomy: {
+      taxonomyLevel1: TaxonomyLevel1.ACCOUNTS,
+      taxonomyLevel2: TaxonomyLevel2.REAUTH,
     },
   })),
   ...createAccountVariants.map((t) => ({

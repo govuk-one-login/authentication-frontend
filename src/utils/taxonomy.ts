@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { CONTACT_US_THEMES, PATH_NAMES } from "../app.constants";
-import { supportAccountRecovery } from "../config";
+import { supportAccountRecovery, supportReauthentication } from "../config";
 
 export enum TaxonomyLevel1 {
   BLANK = "",
@@ -16,6 +16,7 @@ export enum TaxonomyLevel2 {
   ACCOUNT_RECOVERY = "account recovery",
   FEEDBACK = "feedback",
   GUIDANCE = "guidance",
+  REAUTH = "re auth",
 }
 
 export type Taxonomy = {
@@ -42,6 +43,7 @@ function getTaxonomyLevel2(req: Request) {
   let taxonomyLevel2 = TaxonomyLevel2.BLANK;
 
   if (isSignInTaxonomy(req)) taxonomyLevel2 = TaxonomyLevel2.SIGN_IN;
+  if (isReauthTaxonomy(req)) taxonomyLevel2 = TaxonomyLevel2.REAUTH;
   if (isCreateAccountTaxonomy(req))
     taxonomyLevel2 = TaxonomyLevel2.CREATE_ACCOUNT;
   if (isFeedbackTaxonomy(req)) {
@@ -67,6 +69,9 @@ const isSignInTaxonomy = (req: Request): boolean =>
     PATH_NAMES.ENTER_PASSWORD,
     PATH_NAMES.RESEND_MFA_CODE,
   ].includes(req.path);
+
+const isReauthTaxonomy = (req: Request): boolean =>
+  supportReauthentication() && Boolean(req?.session?.user?.reauthenticate);
 
 const isCreateAccountTaxonomy = (req: Request): boolean =>
   req?.session?.user?.isAccountCreationJourney ||
@@ -136,4 +141,6 @@ const isAuthenticationTaxonomy = (taxonomyLevel2: TaxonomyLevel2): boolean =>
   ].includes(taxonomyLevel2);
 
 const isAccountTaxonomy = (taxonomyLevel2: TaxonomyLevel2): boolean =>
-  [TaxonomyLevel2.ACCOUNT_INTERVENTION].includes(taxonomyLevel2);
+  [TaxonomyLevel2.ACCOUNT_INTERVENTION, TaxonomyLevel2.REAUTH].includes(
+    taxonomyLevel2
+  );
