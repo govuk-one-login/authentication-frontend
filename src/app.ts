@@ -89,6 +89,8 @@ import { setCurrentUrlMiddleware } from "./middleware/current-url-middleware";
 import { getRedisConfig } from "./utils/redis";
 import { csrfMissingHandler } from "./handlers/csrf-missing-handler";
 import { channelMiddleware } from "./middleware/channel-middleware";
+import { asyncHandler } from "./utils/async";
+import UID from "uid-safe";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -165,7 +167,7 @@ async function createApp(): Promise<express.Application> {
 
   app.use("/public", express.static(path.join(__dirname, "public")));
   app.set("view engine", configureNunjucks(app, APP_VIEWS));
-  app.use(setLocalVarsMiddleware);
+  app.use(asyncHandler(setLocalVarsMiddleware));
   app.use(setGTM);
 
   await i18next
@@ -180,9 +182,22 @@ async function createApp(): Promise<express.Application> {
   app.use(i18nextMiddleware.handle(i18next));
   app.use(helmet(helmetConfiguration));
 
+  app.use(cookieParser());
+
+  const SESSION_COOKIE_NAME = "aps";
+  // Generate a new session ID asynchronously if no session cookie
+  // `express-session` does not support async session ID generation
+  // https://github.com/expressjs/session/issues/107
+  app.use(asyncHandler(async (req, res, next) => {
+    if (!(req.cookies && req.cookies[SESSION_COOKIE_NAME])) {
+      req.generatedSessionId = await UID(24);
+    }
+    next();
+  }));
+
   app.use(
     session({
-      name: "aps",
+      name: SESSION_COOKIE_NAME,
       store: getSessionStore(await getRedisConfig()),
       saveUninitialized: false,
       secret: getSessionSecret(),
@@ -193,10 +208,15 @@ async function createApp(): Promise<express.Application> {
         getSessionExpiry(),
         getSessionSecret()
       ),
+      // Use the newly generated session ID, or fall back to the default behaviour
+      genid: (req) => {
+        const sessionId = req.generatedSessionId || UID.sync(24);
+        delete req.generatedSessionId;
+        return sessionId;
+      },
     })
   );
 
-  app.use(cookieParser());
   app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
 
   app.use(channelMiddleware);
