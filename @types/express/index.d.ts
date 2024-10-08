@@ -7,5 +7,6 @@ declare namespace Express {
     t: TFunction;
     csrfToken?: () => string;
     log: pino.Logger;
+    generatedSessionId?: string;
   }
 }

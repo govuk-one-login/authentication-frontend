@@ -6,12 +6,12 @@ import {
 } from "../config";
 import { generateNonce } from "../utils/strings";
 
-export function setLocalVarsMiddleware(
+export async function setLocalVarsMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
-): void {
-  res.locals.scriptNonce = generateNonce();
+): Promise<void> {
+  res.locals.scriptNonce = await generateNonce();
   res.locals.accountManagementUrl = getAccountManagementUrl();
   res.locals.analyticsCookieDomain = getAnalyticsCookieDomain();
   res.locals.languageToggleEnabled = getLanguageToggleEnabled();

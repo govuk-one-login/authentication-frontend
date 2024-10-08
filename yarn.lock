@@ -2078,6 +2078,11 @@
   resolved "https://registry.yarnpkg.com/@types/trusted-types/-/trusted-types-2.0.7.tgz#baccb07a970b91707df3a3e8ba6896c57ead2d11"
   integrity sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==
 
+"@types/uid-safe@^2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@types/uid-safe/-/uid-safe-2.1.5.tgz#32b27c6f1a9022a29762cf7c4350891dd7b154e2"
+  integrity sha512-RwEfbxqXKEay2b5p8QQVllfnMbVPUZChiKKZ2M6+OSRRmvr4HTCCUZTWhr/QlmrMnNE0ViNBBbP1+5plF9OGRw==
+
 "@types/uuid@^9.0.1":
   version "9.0.8"
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-9.0.8.tgz#7545ba4fc3c003d6c756f651f3bf163d8f0f29ba"
@@ -6571,7 +6576,7 @@ uglify-js@^3.14.5:
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.19.3.tgz#82315e9bbc6f2b25888858acd1fff8441035b77f"
   integrity sha512-v3Xu+yuwBXisp6QYTcH4UbH+xYJXqnq2m/LtQVWKWzYc1iehYnLixoQDN9FH6/j9/oybfd6W9Ghwkl8+UMKTKQ==
 
-uid-safe@2.1.5, uid-safe@~2.1.5:
+uid-safe@2.1.5, uid-safe@^2.1.5, uid-safe@~2.1.5:
   version "2.1.5"
   resolved "https://registry.npmjs.org/uid-safe/-/uid-safe-2.1.5.tgz"
   integrity sha512-KPHm4VL5dDXKz01UuEd88Df+KzynaohSL9fBh096KWAxSKZQDI2uBrVqtvRM4rwrIrRRKsdLNML/lnaaVSRioA==
