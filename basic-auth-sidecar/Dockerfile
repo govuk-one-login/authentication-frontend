@@ -1,4 +1,4 @@
-FROM nginx:mainline-alpine@sha256:a5127daff3d6f4606be3100a252419bfa84fd6ee5cd74d0feaca1a5068f97dcf AS builder
+FROM nginx:mainline-alpine@sha256:2140dad235c130ac861018a4e13a6bc8aea3a35f3a40e20c1b060d51a7efd250 AS builder
 
 ARG ENABLED_MODULES=headers-more
 
@@ -60,7 +60,7 @@ RUN set -ex \
       done \
       && echo "BUILT_MODULES=\"$BUILT_MODULES\"" > /tmp/packages/modules.env
 
-FROM nginx:mainline-alpine@sha256:a5127daff3d6f4606be3100a252419bfa84fd6ee5cd74d0feaca1a5068f97dcf
+FROM nginx:mainline-alpine@sha256:2140dad235c130ac861018a4e13a6bc8aea3a35f3a40e20c1b060d51a7efd250
 COPY --from=builder /tmp/packages /tmp/packages
 RUN set -ex \
       && . /tmp/packages/modules.env \
