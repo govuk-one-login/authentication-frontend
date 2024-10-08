@@ -1,25 +1,18 @@
 {
-    "compilerOptions": {
-        "module": "CommonJS",
-        "esModuleInterop": true,
-        "resolveJsonModule": true,
-        "target": "es2020",
-        "noImplicitAny": true,
-        "moduleResolution": "node",
-        "skipLibCheck": true,
-        // do not check types in node_modules folder
-        "sourceMap": true,
-        "outDir": "dist",
-        "baseUrl": ".",
-        "typeRoots": [
-            "@types",
-            "/node_modules/@types"
-        ]
-    },
-    "include": ["src/**/*.ts"],
-    "exclude": [
-      "test",
-        "coverage",
-        "src/components/**/tests"
-    ]
+  "compilerOptions": {
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "target": "es2020",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    // do not check types in node_modules folder
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "typeRoots": ["@types", "/node_modules/@types"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["test", "coverage", "src/components/**/tests"]
 }
