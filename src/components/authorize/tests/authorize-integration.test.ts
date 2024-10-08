@@ -13,7 +13,7 @@ import { createApiResponse } from "../../../utils/http";
 import { AxiosResponse } from "axios";
 import {
   createJwt,
-  createmockclaims,
+  createMockClaims,
   getPrivateKey,
   getPublicKey,
 } from "./test-data";
@@ -34,7 +34,7 @@ describe("Integration:: authorize", () => {
     const jwtService = require("../jwt-service");
     const publicKey = getPublicKey();
     const privateKey = await getPrivateKey();
-    const jwt = await createJwt(createmockclaims(), privateKey);
+    const jwt = await createJwt(createMockClaims(), privateKey);
 
     sinon
       .stub(authorizeService, "authorizeService")

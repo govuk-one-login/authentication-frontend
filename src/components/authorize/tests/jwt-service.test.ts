@@ -2,10 +2,10 @@ import { beforeEach, describe } from "mocha";
 import { assert, expect } from "chai";
 import { JwtService } from "../jwt-service";
 import { JwtValidationError, JwtClaimsValueError } from "../../../utils/error";
-import { getKnownClaims } from "../claims-config";
+import { Claims, getKnownClaims } from "../claims-config";
 import {
   createJwt,
-  createmockclaims,
+  createMockClaims,
   getPrivateKey,
   getWrongPrivateKey,
   getPublicKey,
@@ -18,7 +18,7 @@ import {
 } from "jose";
 
 describe("JWT service", () => {
-  let claims: any;
+  let claims: Claims;
   let publicKey: string;
   let privateKey: KeyLike;
   let wrongPrivateKey: KeyLike;
@@ -26,22 +26,22 @@ describe("JWT service", () => {
   let jwtService: JwtService;
 
   beforeEach(async () => {
-    claims = createmockclaims();
+    claims = createMockClaims();
     publicKey = getPublicKey();
     privateKey = await getPrivateKey();
     wrongPrivateKey = await getWrongPrivateKey();
-    validJwt = await createJwt(createmockclaims(), privateKey);
+    validJwt = await createJwt(createMockClaims(), privateKey);
     jwtService = new JwtService(publicKey);
   });
 
   describe("getPayloadWithValidation", () => {
     it("should return payload from valid JWT", async () => {
       const result = await jwtService.getPayloadWithValidation(validJwt);
-      expect(result).to.deep.equal(createmockclaims());
+      expect(result).to.deep.equal(createMockClaims());
     });
 
     it("should consider a jwt with a reautheticate claim as valid", async () => {
-      const jwtWithReautheticateClaim = createmockclaims();
+      const jwtWithReautheticateClaim = createMockClaims();
       jwtWithReautheticateClaim.reauthenticate = "123456";
       const jwt = await createJwt(jwtWithReautheticateClaim, privateKey);
 
@@ -60,21 +60,21 @@ describe("JWT service", () => {
       });
 
       it("should accept payloads signed by the stub", async () => {
-        const jwt = await createJwt(createmockclaims(), stubKeyPair.privateKey);
+        const jwt = await createJwt(createMockClaims(), stubKeyPair.privateKey);
 
         const result = await jwtService.getPayloadWithValidation(jwt);
 
-        expect(result).to.deep.equal(createmockclaims());
+        expect(result).to.deep.equal(createMockClaims());
       });
 
       it("should accept standard payloads when a stub key is present", async () => {
         const result = await jwtService.getPayloadWithValidation(validJwt);
 
-        expect(result).to.deep.equal(createmockclaims());
+        expect(result).to.deep.equal(createMockClaims());
       });
 
       it("should reject invalid payloads when a stub key is present", async () => {
-        const jwt = await createJwt(createmockclaims(), wrongPrivateKey);
+        const jwt = await createJwt(createMockClaims(), wrongPrivateKey);
 
         try {
           await jwtService.getPayloadWithValidation(jwt);
@@ -124,7 +124,7 @@ describe("JWT service", () => {
 
       it("should throw error when jwt isn't signed with the correct public key", async () => {
         const JwtWrongSig = await createJwt(
-          createmockclaims(),
+          createMockClaims(),
           wrongPrivateKey
         );
         jwtService = new JwtService(publicKey);
@@ -139,7 +139,7 @@ describe("JWT service", () => {
       });
 
       it("should throw error when jwt contains invalid claim object", async () => {
-        const claims = createmockclaims();
+        const claims = createMockClaims();
         claims["claim"] = "not a json";
 
         const jwtWithInvalidClaimObject = await createJwt(claims, privateKey);
@@ -157,7 +157,7 @@ describe("JWT service", () => {
       });
 
       it("should pass validation when jwt does not contain claim object", async () => {
-        const claims = createmockclaims();
+        const claims = createMockClaims();
         delete claims["claim"];
 
         const jwtWithoutClaimObject = await createJwt(claims, privateKey);
@@ -174,7 +174,7 @@ describe("JWT service", () => {
         Object.keys(claims).forEach(async (claim) => {
           const withoutClaim = { ...claims };
           try {
-            delete withoutClaim[claim];
+            delete withoutClaim[claim as keyof Claims];
             const jwtMissingClaim = await createJwt(withoutClaim, privateKey);
             jwtService.getPayloadWithValidation(jwtMissingClaim);
             assert.fail("Expected error to be thrown");
@@ -239,7 +239,7 @@ describe("JWT service", () => {
     describe("validateCustomClaims", () => {
       let claims: any;
       beforeEach(() => {
-        claims = createmockclaims();
+        claims = createMockClaims();
       });
 
       it("should return claims if correctly supplied", () => {

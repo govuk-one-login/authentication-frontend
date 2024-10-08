@@ -19,7 +19,7 @@ import {
   KmsDecryptionServiceInterface,
 } from "../types";
 import { BadRequestError } from "../../../utils/error";
-import { createmockclaims } from "./test-data";
+import { createMockClaims } from "./test-data";
 import { Claims } from "../claims-config";
 import { getOrchToAuthExpectedClientId } from "../../../config";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
@@ -36,7 +36,7 @@ describe("authorize controller", () => {
   let mockClaims: Claims;
 
   beforeEach(() => {
-    mockClaims = createmockclaims();
+    mockClaims = createMockClaims();
     req = createMockRequest(PATH_NAMES.AUTHORIZE);
     req.query = {
       client_id: getOrchToAuthExpectedClientId(),
