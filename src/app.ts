@@ -89,6 +89,7 @@ import { setCurrentUrlMiddleware } from "./middleware/current-url-middleware";
 import { getRedisConfig } from "./utils/redis";
 import { csrfMissingHandler } from "./handlers/csrf-missing-handler";
 import { channelMiddleware } from "./middleware/channel-middleware";
+import blockedAt from "blocked-at"
 import { asyncHandler } from "./utils/async";
 import UID from "uid-safe";
 
@@ -150,6 +151,10 @@ function registerRoutes(app: express.Application) {
 }
 
 async function createApp(): Promise<express.Application> {
+  blockedAt((time, stack, resource) => {
+    console.log(`Blocked for ${time}ms, operation started here:`, stack)
+    console.log(`resources: ${JSON.stringify(resource)}`)
+  }, {resourcesCap: 100})
   const app: express.Application = express();
   const isProduction = getNodeEnv() === ENVIRONMENT_NAME.PROD;
 
