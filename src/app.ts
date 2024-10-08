@@ -101,6 +101,7 @@ import { Server } from "node:http";
 import { getAnalyticsPropertiesMiddleware } from "./middleware/get-analytics-properties-middleware";
 import { ipvCallbackRouter } from "./components/ipv-callback/ipv-callback-routes";
 import { mfaResetWithIpvRouter } from "./components/mfa-reset-with-ipv/mfa-reset-with-ipv-routes";
+import blockedAt from "blocked-at"
 import { asyncHandler } from "./utils/async";
 import UID from "uid-safe";
 
@@ -165,6 +166,10 @@ function registerRoutes(app: express.Application) {
 }
 
 async function createApp(): Promise<express.Application> {
+  blockedAt((time, stack, resource) => {
+    console.log(`Blocked for ${time}ms, operation started here:`, stack)
+    console.log(`resources: ${JSON.stringify(resource)}`)
+  }, {resourcesCap: 100})
   const app: express.Application = express();
   const isProduction = getNodeEnv() === ENVIRONMENT_NAME.PROD;
 
