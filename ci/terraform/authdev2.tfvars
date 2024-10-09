@@ -46,7 +46,7 @@ cloudfront_auth_dns_enabled      = true
 
 alb_idle_timeout = 30
 
-new_auth_account_id               = 975050272416
+new_auth_account_id               = "975050272416"
 new_auth_protectedsub_cidr_blocks = ["10.6.4.0/23", "10.6.6.0/23", "10.6.8.0/23"]
 
 orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/Yz722IDLN1mPqkPTihkwAkp/rUm\nBhnWynwAkE/YZlskX+N7VmwIjupla7O6hczlIOqkmPdQ1ayDqI8yY2QOiw==\n-----END PUBLIC KEY-----"
