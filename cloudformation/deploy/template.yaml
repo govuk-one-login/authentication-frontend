@@ -517,11 +517,6 @@ Resources:
               Value: GTM-TK92W68
             - Name: SUPPORT_AUTHORIZE_CONTROLLER
               Value: 1
-            - Name: ENCRYPTION_KEY_ID
-              Value: !If
-                - UseSubEnvironment
-                - !Sub "alias/${SubEnvironment}-authentication-encryption-key-alias"
-                - !Sub "alias/${Environment}-authentication-encryption-key-alias"
             - Name: ORCH_TO_AUTH_SIGNING_KEY
               Value: !If
                 - UseSubEnvironment
@@ -600,6 +595,11 @@ Resources:
                 - UseSubEnvironment
                 - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${SubEnvironment}/frontend-api-key"
                 - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${Environment}/frontend-api-key"
+            - Name: ENCRYPTION_KEY_ID
+              ValueFrom: !If
+                - UseSubEnvironment
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/authentication-encryption-key-id"
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/authentication-encryption-key-id"
             - Name: REDIS_HOST
               ValueFrom: !If
                 - UseSubEnvironment
@@ -825,8 +825,9 @@ Resources:
               - Effect: Allow
                 Action:
                   - kms:Decrypt*
-                Resource:
-                  - !GetAtt AuthEncryptionKmsKey.Arn
+                Resource: !Sub
+                  - '{{resolve:secretsmanager:/deploy/${env}/authentication-encryption-key-id}}'
+                  - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       PermissionsBoundary: !If
         - UsePermissionsBoundary
         - !Ref PermissionsBoundary
@@ -1566,40 +1567,6 @@ Resources:
   #
   # Encryption
   #
-
-  AuthEncryptionKmsKey:
-    Type: AWS::KMS::Key
-    Properties:
-      Description: "KMS encryption key for decrypting requests from Orchestration"
-      KeyUsage: "ENCRYPT_DECRYPT"
-      KeySpec: "RSA_2048"
-      KeyPolicy:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
-            Action:
-              - kms:*
-            Resource: "*"
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-AuthEncryptionKmsKey"
-        - Key: Environment
-          Value: !Ref Environment
-        - Key: Application
-          Value: "auth-frontend"
-        - Key: Source
-          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
-
-  AuthEncryptionKmsAlias:
-    Type: AWS::KMS::Alias
-    Properties:
-      AliasName: !If
-        - UseSubEnvironment
-        - !Sub "alias/${SubEnvironment}-authentication-encryption-key-alias"
-        - !Sub "alias/${Environment}-authentication-encryption-key-alias"
-      TargetKeyId: !Ref AuthEncryptionKmsKey
 
   KmsKey:
     Type: AWS::KMS::Key
