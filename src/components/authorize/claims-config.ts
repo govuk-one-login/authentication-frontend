@@ -48,6 +48,7 @@ export type Claims = {
   previous_govuk_signin_journey_id: string;
   channel?: string;
   authenticated: boolean;
+  current_credential_strength?: string;
 };
 
 export const requiredClaimsKeys = [
