@@ -3,7 +3,7 @@ import { describe } from "mocha";
 import { expect } from "chai";
 import * as cheerio from "cheerio";
 import { sinon } from "../../../../../test/utils/test-utils";
-import nock = require("nock");
+import nock from "nock";
 import decache from "decache";
 import { PATH_NAMES, CHANNEL } from "../../../../app.constants";
 
@@ -56,35 +56,67 @@ describe("Integration:: base page ", () => {
     await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE).expect(200);
   });
 
-  it("The footer should appear on the page when the channel is set to 'web'", async () => {
-    await setupApp(CHANNEL.WEB);
-    const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
-    expect(response.status).to.equal(200);
-    const $ = cheerio.load(response.text);
-    expect($(".govuk-footer").length).to.equal(1);
+  describe("Web channel", () => {
+    it("should render the default govukHeader", async () => {
+      await setupApp(CHANNEL.WEB);
+      const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
+      expect(response.status).to.equal(200);
+      const $ = cheerio.load(response.text);
+      expect($("a.govuk-header__link").length).to.equal(1);
+      expect($(".strategic-app-header").length).to.equal(0);
+    });
+
+    it("should render the beta banner", async () => {
+      await setupApp(CHANNEL.WEB);
+      const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
+      expect(response.status).to.equal(200);
+      const $ = cheerio.load(response.text);
+      expect($(".govuk-phase-banner").length).to.equal(1);
+    });
+
+    it("should render the footer", async () => {
+      await setupApp(CHANNEL.WEB);
+      const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
+      expect(response.status).to.equal(200);
+      const $ = cheerio.load(response.text);
+      expect($(".govuk-footer").length).to.equal(1);
+    });
   });
 
-  it("The footer should not appear on the page when the channel is set to 'strategic_app'", async () => {
-    await setupApp(CHANNEL.STRATEGIC_APP);
-    const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
-    expect(response.status).to.equal(200);
-    const $ = cheerio.load(response.text);
-    expect($(".govuk-footer").length).to.equal(0);
+  describe("Strategic App channel", () => {
+    it("should render the custom header with no links", async () => {
+      await setupApp(CHANNEL.STRATEGIC_APP);
+      const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
+      expect(response.status).to.equal(200);
+      const $ = cheerio.load(response.text);
+      expect($("a.govuk-header__link").length).to.equal(0);
+      expect($(".strategic-app-header").length).to.equal(1);
+    });
+
+    it("should not render the beta banner", async () => {
+      await setupApp(CHANNEL.STRATEGIC_APP);
+      const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
+      expect(response.status).to.equal(200);
+      const $ = cheerio.load(response.text);
+      expect($(".govuk-phase-banner").length).to.equal(0);
+    });
+
+    it("should not render the footer", async () => {
+      await setupApp(CHANNEL.STRATEGIC_APP);
+      const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
+      expect(response.status).to.equal(200);
+      const $ = cheerio.load(response.text);
+      expect($(".govuk-footer").length).to.equal(0);
+    });
   });
 
-  it("The beta banner should appear on the page when the channel is set to 'web'", async () => {
-    await setupApp(CHANNEL.WEB);
-    const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
-    expect(response.status).to.equal(200);
-    const $ = cheerio.load(response.text);
-    expect($(".govuk-phase-banner").length).to.equal(1);
-  });
-
-  it("The beta banner should not appear on the page when the channel is set to 'strategic_app'", async () => {
-    await setupApp(CHANNEL.STRATEGIC_APP);
-    const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
-    expect(response.status).to.equal(200);
-    const $ = cheerio.load(response.text);
-    expect($(".govuk-phase-banner").length).to.equal(0);
+  describe("Undefined channel", () => {
+    it("should render the default header if no value is provided for channel", async () => {
+      await setupApp("");
+      const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
+      expect(response.status).to.equal(200);
+      const $ = cheerio.load(response.text);
+      expect($("a.govuk-header__link").length).to.equal(1);
+    });
   });
 });
