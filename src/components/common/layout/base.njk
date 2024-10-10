@@ -59,12 +59,15 @@
 
 {% block main %}
     <div class="govuk-width-container {{ containerClasses }}">
+        {% if strategicAppChannel === true %}
+        {% else %}
         {{ govukPhaseBanner({
             tag: {
                 text: 'general.phaseBanner.tag' | translate
             },
             html: phaseBannerText
         }) }}
+        {% endif %}
         {% block beforeContent %}{% endblock %}
         {% if languageToggleEnabled %}
         {{ languageSelect({
