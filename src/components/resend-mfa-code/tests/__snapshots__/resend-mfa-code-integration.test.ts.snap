@@ -17,14 +17,14 @@ Object {
 exports[`Integration:: resend mfa code should return 400 error screen when API call fails 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "",
+  "taxonomyLevel2": "sign in",
 }
 `;
 
 exports[`Integration:: resend mfa code should return 500 error screen when API call fails 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "",
+  "taxonomyLevel2": "sign in",
 }
 `;
 

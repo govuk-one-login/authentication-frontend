@@ -89,6 +89,7 @@ import { setCurrentUrlMiddleware } from "./middleware/current-url-middleware";
 import { getRedisConfig } from "./utils/redis";
 import { csrfMissingHandler } from "./handlers/csrf-missing-handler";
 import { channelMiddleware } from "./middleware/channel-middleware";
+import { getRequestTaxonomyMiddleware } from "./middleware/get-request-taxonomy-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -210,6 +211,7 @@ async function createApp(): Promise<express.Application> {
   if (getLanguageToggleEnabled()) {
     app.use(setCurrentUrlMiddleware);
   }
+  app.use(getRequestTaxonomyMiddleware);
 
   registerRoutes(app);
 
