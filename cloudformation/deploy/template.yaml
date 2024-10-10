@@ -45,10 +45,6 @@ Parameters:
     Description: The ARN of the permissions boundary to apply when creating IAM roles
     Default: none
 
-  BasicAuthSidecarRegistry:
-    Type: String
-    Default: 058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd
-
   ServiceDownPageRegistry:
     Type: String
     Default: 058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l
@@ -81,12 +77,6 @@ Conditions:
         - !Ref DeploymentStrategy
         - None
 
-  UseNginxSidecar:
-  # TODO review this condition
-    Fn::Equals:
-      - !Ref Environment
-      - "integration"
-
   UseSubEnvironment:
     Fn::And:
       - Fn::Equals:
@@ -96,6 +86,14 @@ Conditions:
           - Fn::Equals:
             - !Ref SubEnvironment
             - none
+
+  UseNginxSidecar:
+  # TODO review this condition
+    Fn::Or:
+      - !Condition UseSubEnvironment
+      - Fn::Equals:
+          - !Ref Environment
+          - "integration"
 
   IsNotProduction:
     Fn::Not:
@@ -110,6 +108,7 @@ Mappings:
       AccountId: "652711504416"
   EnvironmentConfiguration:
     authdev1:
+      basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev1-basic-auth-sidecar-image-repository-containerrepository-g2xwunavhds6"
       cloudfrontDistributionStackName: "authdev1-cloudfront"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
@@ -117,6 +116,7 @@ Mappings:
         XK7CAYMcVvy1pP5yV4O2mnDjYmvjZpvio2ctgOPxDuBb38QP1HD9WAOR2w==
         -----END PUBLIC KEY-----
     authdev2:
+      basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev2-basic-auth-sidecar-image-repository-containerrepository-zvcjtkip2sye"
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
@@ -124,12 +124,12 @@ Mappings:
         tJwzOYNWUmK/+GxooRp+j9i9KWQ0WlV4gVI0iQkHY3ZKq+RWk94tSDHbyQ==
         -----END PUBLIC KEY-----
     dev:
+      basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-acbvxp3ywblv"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       frontendAutoScalingMinCount: 2
       frontendAutoScalingMaxCount: 4
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
-      ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
       cloudwatchLogRetentionInDays: 1
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
@@ -143,7 +143,6 @@ Mappings:
       frontendAutoScalingMaxCount: 6
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
-      ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
       cloudwatchLogRetentionInDays: 7
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
@@ -157,7 +156,6 @@ Mappings:
       frontendAutoScalingMaxCount: 240
       frontendTaskDefinitionCpu: 1024
       frontendTaskDefinitionMemory: 2048
-      ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
       cloudwatchLogRetentionInDays: 7
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
@@ -166,12 +164,12 @@ Mappings:
         -----END PUBLIC KEY-----
       redisNodeSize: cache.m4.xlarge
     integration:
+      basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
       frontendAutoScalingMinCount: 2
       frontendAutoScalingMaxCount: 4
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
-      ipAllowList: ["217.196.229.77/32","217.196.229.79/32","217.196.229.80/32","217.196.229.81/32","51.149.8.0/25","51.149.8.128/29"]
       cloudwatchLogRetentionInDays: 30
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
@@ -185,7 +183,6 @@ Mappings:
       frontendAutoScalingMaxCount: 240
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
-      ipAllowList: []
       cloudwatchLogRetentionInDays: 30
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
@@ -658,7 +655,20 @@ Resources:
         - !If
           - UseNginxSidecar
           - Name: "nginx-sidecar"
-            Image: !Sub "${BasicAuthSidecarRegistry}:GIT-SHA-PLACEHOLDER"
+            Image: !Sub
+              - "${BasicAuthSidecarURI}:GIT-SHA-PLACEHOLDER"
+              - BasicAuthSidecarURI: !If
+                  - UseSubEnvironment
+                  - !FindInMap [
+                      EnvironmentConfiguration,
+                      !Ref SubEnvironment,
+                      basicAuthSidecarURI,
+                    ]
+                  - !FindInMap [
+                      EnvironmentConfiguration,
+                      !Ref Environment,
+                      basicAuthSidecarURI,
+                    ]
             PortMappings:
               - ContainerPort: 8080
                 HostPort: 8080
@@ -681,19 +691,6 @@ Resources:
                   - UseSubEnvironment
                   - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
                   - !Sub "signin-sp.${Environment}.account.gov.uk"
-              - Name: IP_ALLOW_LIST
-                Value:
-                  Fn::ToJsonString:
-                    !FindInMap [ EnvironmentConfiguration, !Ref Environment, ipAllowList ]
-              - Name: TRUSTED_PROXIES
-                Value:
-                  Fn::ToJsonString:
-                    - Fn::ImportValue:
-                        !Sub "${VpcStackName}-FirewallSubnetACidr"
-                    - Fn::ImportValue:
-                        !Sub "${VpcStackName}-FirewallSubnetBCidr"
-                    - Fn::ImportValue:
-                        !Sub "${VpcStackName}-FirewallSubnetCCidr"
             Secrets:
               - Name: BASIC_AUTH_USERNAME
                 ValueFrom: !If
@@ -705,6 +702,11 @@ Resources:
                   - UseSubEnvironment
                   - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_password"
                   - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_password"
+              - Name: IP_ALLOW_LIST
+                ValueFrom: !If
+                  - UseSubEnvironment
+                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_bypass_cidr_blocks"
+                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_bypass_cidr_blocks"
           - !Ref AWS::NoValue
       Cpu: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionCpu ]
       Memory: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionMemory ]
