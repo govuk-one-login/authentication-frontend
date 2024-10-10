@@ -55,7 +55,6 @@ window.DI.analyticsUa = window.DI.analyticsUa || {};
 (function (w) {
   "use strict";
   function appInit() {
-    window.GOVUKFrontend.initAll();
     var cookies = window.GOVSignIn.Cookies();
 
     if (window.DI.analyticsGa4.cookie.hasConsentForAnalytics()) {
