@@ -13,6 +13,7 @@ Parameters:
       - dev
       - build
       - staging
+      - integration
 
   EndpointSuffix:
     Description: >
@@ -37,6 +38,9 @@ Conditions:
       - Fn::Equals:
         - !Ref Environment
         - "staging"
+      - Fn::Equals:
+        - !Ref Environment
+        - "integration"
 
 Mappings:
   EndpointConfigs:
@@ -146,7 +150,7 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      Name: !Sub auth-sp.${Environment}.account.gov.uk
+      Name: !Sub auth${EndpointSuffix}.${Environment}.account.gov.uk
 
   #
   # managed
@@ -158,7 +162,7 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      Name: !Sub manage-sp.${Environment}.account.gov.uk
+      Name: !Sub manage${EndpointSuffix}.${Environment}.account.gov.uk
 
   #
   # oidc
@@ -170,7 +174,7 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      Name: !Sub oidc-sp.${Environment}.account.gov.uk
+      Name: !Sub oidc${EndpointSuffix}.${Environment}.account.gov.uk
 
   #
   # signin
@@ -182,7 +186,7 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      Name: !Sub signin-sp.${Environment}.account.gov.uk
+      Name: !Sub signin${EndpointSuffix}.${Environment}.account.gov.uk
 
   'Fn::ForEach::Endpoints':
     - Endpoint
