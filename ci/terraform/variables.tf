@@ -106,7 +106,7 @@ variable "gtm_id" {
 }
 
 variable "cloudwatch_log_retention" {
-  default = 1
+  default = 30
   type    = number
 }
 
