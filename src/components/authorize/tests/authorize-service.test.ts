@@ -25,6 +25,7 @@ describe("authorize service", () => {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
   const isAuthenticated = false;
+  const currentCredentialStrength = "MEDIUM_LEVEL";
 
   beforeEach(() => {
     setupApiKeyAndBaseUrlEnvVars();
@@ -45,6 +46,7 @@ describe("authorize service", () => {
 
     service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
       authenticated: isAuthenticated,
+      current_credential_strength: currentCredentialStrength,
       reauthenticate: "123456",
     });
 
@@ -70,6 +72,7 @@ describe("authorize service", () => {
     process.env.SUPPORT_REAUTHENTICATION = "0";
     service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
       authenticated: isAuthenticated,
+      current_credential_strength: currentCredentialStrength,
       reauthenticate: "123456",
     });
 
@@ -89,6 +92,7 @@ describe("authorize service", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
       authenticated: isAuthenticated,
+      current_credential_strength: currentCredentialStrength,
     });
 
     expect(
@@ -107,6 +111,7 @@ describe("authorize service", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
       authenticated: isAuthenticated,
+      current_credential_strength: currentCredentialStrength,
       reauthenticate: undefined,
       previous_session_id: previousSessionId,
     });
@@ -132,6 +137,7 @@ describe("authorize service", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
       authenticated: isAuthenticated,
+      current_credential_strength: currentCredentialStrength,
       reauthenticate: "123456",
       previous_session_id: undefined,
       previous_govuk_signin_journey_id: "previous-journey-id",
