@@ -90,7 +90,9 @@ Conditions:
   UseNginxSidecar:
   # TODO review this condition
     Fn::Or:
-      - !Condition UseSubEnvironment
+      - Fn::Equals:
+        - !Ref Environment
+        - "dev"
       - Fn::Equals:
           - !Ref Environment
           - "integration"
@@ -653,59 +655,68 @@ Resources:
                 - ':DT_CONNECTION_POINT::'
         - !If
           - UseNginxSidecar
-          - Name: "nginx-sidecar"
-            Image: !Sub
-              - "${BasicAuthSidecarURI}:GIT-SHA-PLACEHOLDER"
-              - BasicAuthSidecarURI: !If
-                  - UseSubEnvironment
-                  - !FindInMap [
-                      EnvironmentConfiguration,
-                      !Ref SubEnvironment,
-                      basicAuthSidecarURI,
-                    ]
-                  - !FindInMap [
-                      EnvironmentConfiguration,
-                      !Ref Environment,
-                      basicAuthSidecarURI,
-                    ]
-            PortMappings:
-              - ContainerPort: 8080
-                HostPort: 8080
-                Protocol: tcp
-            Essential: true
-            LogConfiguration:
-              LogDriver: awslogs
-              Options:
-                awslogs-group: !Ref FrontendTaskLogGroup
-                awslogs-region: !Ref AWS::Region
-                awslogs-create-group: "true"
-                awslogs-stream-prefix: !Ref AWS::StackName
-            Environment:
-              - Name: PROXY_PASS
-                Value: "http://localhost:3000"
-              - Name: NGINX_PORT
-                Value: "8080"
-              - Name: NGINX_HOST
-                Value: !If
-                  - UseSubEnvironment
-                  - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
-                  - !Sub "signin-sp.${Environment}.account.gov.uk"
-            Secrets:
-              - Name: BASIC_AUTH_USERNAME
-                ValueFrom: !If
-                  - UseSubEnvironment
-                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_username"
-                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_username"
-              - Name: BASIC_AUTH_PASSWORD
-                ValueFrom: !If
-                  - UseSubEnvironment
-                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_password"
-                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_password"
-              - Name: IP_ALLOW_LIST
-                ValueFrom: !If
-                  - UseSubEnvironment
-                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_bypass_cidr_blocks"
-                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_bypass_cidr_blocks"
+          - !If
+            - UseSubEnvironment
+            - Name: "nginx-sidecar"
+              Image: !Sub
+                  - "${BasicAuthSidecarURI}:GIT-SHA-PLACEHOLDER"
+                  - BasicAuthSidecarURI: !FindInMap [ EnvironmentConfiguration, !Ref SubEnvironment, basicAuthSidecarURI ]
+              PortMappings:
+                - ContainerPort: 8080
+                  HostPort: 8080
+                  Protocol: tcp
+              Essential: true
+              LogConfiguration:
+                LogDriver: awslogs
+                Options:
+                  awslogs-group: !Ref FrontendTaskLogGroup
+                  awslogs-region: !Ref AWS::Region
+                  awslogs-create-group: "true"
+                  awslogs-stream-prefix: !Ref AWS::StackName
+              Environment:
+                - Name: PROXY_PASS
+                  Value: "http://localhost:3000"
+                - Name: NGINX_PORT
+                  Value: "8080"
+                - Name: NGINX_HOST
+                  Value: !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
+              Secrets:
+                - Name: BASIC_AUTH_USERNAME
+                  ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_username"
+                - Name: BASIC_AUTH_PASSWORD
+                  ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_password"
+                - Name: IP_ALLOW_LIST
+                  ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_bypass_cidr_blocks"
+            - Name: "nginx-sidecar"
+              Image: !Sub
+                  - "${BasicAuthSidecarURI}:GIT-SHA-PLACEHOLDER"
+                  - BasicAuthSidecarURI: !FindInMap [ EnvironmentConfiguration, !Ref Environment, basicAuthSidecarURI ]
+              PortMappings:
+                - ContainerPort: 8080
+                  HostPort: 8080
+                  Protocol: tcp
+              Essential: true
+              LogConfiguration:
+                LogDriver: awslogs
+                Options:
+                  awslogs-group: !Ref FrontendTaskLogGroup
+                  awslogs-region: !Ref AWS::Region
+                  awslogs-create-group: "true"
+                  awslogs-stream-prefix: !Ref AWS::StackName
+              Environment:
+                - Name: PROXY_PASS
+                  Value: "http://localhost:3000"
+                - Name: NGINX_PORT
+                  Value: "8080"
+                - Name: NGINX_HOST
+                  Value: !Sub "signin-sp.${Environment}.account.gov.uk"
+              Secrets:
+                - Name: BASIC_AUTH_USERNAME
+                  ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_username"
+                - Name: BASIC_AUTH_PASSWORD
+                  ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_password"
+                - Name: IP_ALLOW_LIST
+                  ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_bypass_cidr_blocks"
           - !Ref AWS::NoValue
       Cpu: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionCpu ]
       Memory: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionMemory ]
