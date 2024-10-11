@@ -66,7 +66,7 @@ describe("Integration::enter password", () => {
     nock.cleanAll();
   });
 
-  it("should return enter password page with reauth taxonomy", async () => {
+  it("should return enter password page with reauth analytics properties", async () => {
     await request(app, (test) => test.get(ENDPOINT).expect(200));
   });
 

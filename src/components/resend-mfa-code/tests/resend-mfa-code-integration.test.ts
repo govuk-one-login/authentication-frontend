@@ -69,7 +69,7 @@ describe("Integration:: resend mfa code", () => {
     app = undefined;
   });
 
-  it("should return resend mfa code page with sign in taxonomy", async () => {
+  it("should return resend mfa code page with sign in analytics properties", async () => {
     await request(app, (test) =>
       test
         .get(PATH_NAMES.RESEND_MFA_CODE)
@@ -81,7 +81,7 @@ describe("Integration:: resend mfa code", () => {
     );
   });
 
-  it("should return resend mfa code page with reauth taxonomy", async () => {
+  it("should return resend mfa code page with reauth analytics properties", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     await request(app, (test) =>
       test

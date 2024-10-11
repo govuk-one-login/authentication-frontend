@@ -40,7 +40,7 @@ Object {
 }
 `;
 
-exports[`Integration:: resend mfa code should return resend mfa code page with reauth taxonomy 1`] = `
+exports[`Integration:: resend mfa code should return resend mfa code page with reauth analytics properties 1`] = `
 Object {
   "contentId": "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
   "taxonomyLevel1": "accounts",
@@ -48,7 +48,7 @@ Object {
 }
 `;
 
-exports[`Integration:: resend mfa code should return resend mfa code page with sign in taxonomy 1`] = `
+exports[`Integration:: resend mfa code should return resend mfa code page with sign in analytics properties 1`] = `
 Object {
   "contentId": "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
   "taxonomyLevel1": "authentication",

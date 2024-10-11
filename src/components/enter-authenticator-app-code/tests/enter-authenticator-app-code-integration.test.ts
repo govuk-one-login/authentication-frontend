@@ -95,13 +95,13 @@ describe("Integration:: enter authenticator app code", () => {
     app = undefined;
   });
 
-  it("should return enter authenticator app security code with sign in taxonomy", async () => {
+  it("should return enter authenticator app security code with sign in analytics properties", async () => {
     await request(app, (test) =>
       test.get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE).expect(200)
     );
   });
 
-  it("should return enter authenticator app security code with reauth taxonomy", async () => {
+  it("should return enter authenticator app security code with reauth analytics properties", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     process.env.TEST_SETUP_REAUTH_SESSION = "1";
 

@@ -75,13 +75,13 @@ describe("Integration::enter email", () => {
     app = undefined;
   });
 
-  it("should return enter email page with sign in taxonomy", (done) => {
+  it("should return enter email page with sign in analytics properties", (done) => {
     request(app, (test) =>
       test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200, done)
     );
   });
 
-  it("should return enter email page with reauth taxonomy", (done) => {
+  it("should return enter email page with reauth analytics properties", (done) => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     process.env.TEST_SETUP_REAUTH_SESSION = "1";
     request(app, (test) =>
