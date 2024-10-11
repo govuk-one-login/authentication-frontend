@@ -1,3 +1,5 @@
+import { ContentIdVariants } from "./types";
+
 export enum MFA_METHOD_TYPE {
   SMS = "SMS",
   AUTH_APP = "AUTH_APP",
@@ -71,6 +73,15 @@ export const PATH_NAMES = {
   UNAVAILABLE_PERMANENT: "/unavailable-permanent",
   UNAVAILABLE_TEMPORARY: "/unavailable-temporary",
   RESET_PASSWORD_2FA_AUTH_APP: "/reset-password-2fa-auth-app",
+};
+
+export const CONTENT_IDS: {
+  [path: string]: ContentIdVariants;
+} = {
+  [PATH_NAMES.ENTER_MFA]: {
+    default: "19601dd7-be55-4ab6-aa44-a6358c4239dc",
+    upliftRequired: "",
+  },
 };
 
 export const HREF_BACK = {
