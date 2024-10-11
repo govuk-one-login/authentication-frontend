@@ -4,7 +4,7 @@ import sinonChai from "sinon-chai";
 import chaiAsPromised from "chai-as-promised";
 import { jestSnapshotPlugin } from "mocha-chai-jest-snapshot";
 import supertest, { Test } from "supertest";
-import { expectTaxonomyMatchSnapshot } from "../helpers/expect-taxonomy-helpers";
+import { expectAnalyticsPropertiesMatchSnapshot } from "../helpers/expect-response-helpers";
 import TestAgent = require("supertest/lib/agent");
 
 chai.should();
@@ -18,12 +18,12 @@ const request = (
   app: any,
   callback: (test: TestAgent) => Test,
   options: {
-    expectTaxonomyMatchSnapshot?: boolean;
+    expectAnalyticsPropertiesMatchSnapshot?: boolean;
   } = {}
 ): supertest.Test => {
   let test = callback(supertest(app));
-  if (options.expectTaxonomyMatchSnapshot !== false) {
-    test = test.expect(expectTaxonomyMatchSnapshot);
+  if (options.expectAnalyticsPropertiesMatchSnapshot !== false) {
+    test = test.expect(expectAnalyticsPropertiesMatchSnapshot);
   }
   return test;
 };

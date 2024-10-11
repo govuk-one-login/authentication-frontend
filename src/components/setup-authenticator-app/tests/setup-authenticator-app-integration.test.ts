@@ -45,7 +45,7 @@ describe("Integration::setup-authenticator-app", () => {
     await request(
       app,
       (test) => test.get(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP),
-      { expectTaxonomyMatchSnapshot: false }
+      { expectAnalyticsPropertiesMatchSnapshot: false }
     ).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

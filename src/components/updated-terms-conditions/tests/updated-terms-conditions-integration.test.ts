@@ -44,7 +44,7 @@ describe("Integration:: updated-terms-code", () => {
     await request(
       app,
       (test) => test.get(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS),
-      { expectTaxonomyMatchSnapshot: false }
+      { expectAnalyticsPropertiesMatchSnapshot: false }
     ).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

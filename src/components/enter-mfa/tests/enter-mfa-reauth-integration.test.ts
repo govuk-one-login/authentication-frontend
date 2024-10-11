@@ -72,7 +72,7 @@ describe("Integration:: enter mfa", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
 
     await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA), {
-      expectTaxonomyMatchSnapshot: false,
+      expectAnalyticsPropertiesMatchSnapshot: false,
     }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

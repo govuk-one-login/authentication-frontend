@@ -2,6 +2,7 @@
 
 exports[`Integration::enter email should return enter email page with reauth taxonomy 1`] = `
 Object {
+  "contentId": "",
   "taxonomyLevel1": "accounts",
   "taxonomyLevel2": "re auth",
 }
@@ -9,6 +10,7 @@ Object {
 
 exports[`Integration::enter email should return enter email page with sign in taxonomy 1`] = `
 Object {
+  "contentId": "d8767bcf-ffb8-4b43-8bda-24c6291590bb",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
 }
@@ -16,6 +18,7 @@ Object {
 
 exports[`Integration::enter email should return error when csrf not present 1`] = `
 Object {
+  "contentId": undefined,
   "taxonomyLevel1": undefined,
   "taxonomyLevel2": undefined,
 }
@@ -23,6 +26,7 @@ Object {
 
 exports[`Integration::enter email should return internal server error when /user-exists API call response is 500 1`] = `
 Object {
+  "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
 }
@@ -30,6 +34,7 @@ Object {
 
 exports[`Integration::enter email should return validation error when email not entered 1`] = `
 Object {
+  "contentId": "d8767bcf-ffb8-4b43-8bda-24c6291590bb",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
 }
@@ -37,6 +42,7 @@ Object {
 
 exports[`Integration::enter email should return validation error when invalid email entered 1`] = `
 Object {
+  "contentId": "d8767bcf-ffb8-4b43-8bda-24c6291590bb",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
 }
@@ -44,6 +50,7 @@ Object {
 
 exports[`Integration::enter email should return validation error when invalid email entered 2`] = `
 Object {
+  "contentId": "d8767bcf-ffb8-4b43-8bda-24c6291590bb",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
 }
@@ -51,6 +58,7 @@ Object {
 
 exports[`Integration::enter email should return validation error when invalid email entered 3`] = `
 Object {
+  "contentId": "d8767bcf-ffb8-4b43-8bda-24c6291590bb",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
 }

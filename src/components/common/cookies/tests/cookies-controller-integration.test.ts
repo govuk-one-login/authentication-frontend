@@ -73,7 +73,7 @@ describe("Integration:: cookies controller", () => {
       app = await require("../../../../app").createApp();
 
       await request(app, (test) => test.get(PATH_NAMES.COOKIES_POLICY), {
-        expectTaxonomyMatchSnapshot: false,
+        expectAnalyticsPropertiesMatchSnapshot: false,
       }).then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
@@ -83,7 +83,7 @@ describe("Integration:: cookies controller", () => {
 
     it("successfully makes a call to update the cookie policy", async () => {
       await request(app, (test) => test.post(PATH_NAMES.COOKIES_POLICY), {
-        expectTaxonomyMatchSnapshot: false,
+        expectAnalyticsPropertiesMatchSnapshot: false,
       })
         .type("form")
         .set("Cookie", cookies)

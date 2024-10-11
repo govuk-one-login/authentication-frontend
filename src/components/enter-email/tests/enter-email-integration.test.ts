@@ -50,7 +50,7 @@ describe("Integration::enter email", () => {
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN), {
-      expectTaxonomyMatchSnapshot: false,
+      expectAnalyticsPropertiesMatchSnapshot: false,
     }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

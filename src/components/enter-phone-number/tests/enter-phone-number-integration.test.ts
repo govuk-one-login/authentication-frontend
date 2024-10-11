@@ -39,7 +39,7 @@ describe("Integration::enter phone number", () => {
     await request(
       app,
       (test) => test.get(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER),
-      { expectTaxonomyMatchSnapshot: false }
+      { expectAnalyticsPropertiesMatchSnapshot: false }
     ).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

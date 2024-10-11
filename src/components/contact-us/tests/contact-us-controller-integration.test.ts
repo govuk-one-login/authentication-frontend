@@ -32,7 +32,7 @@ describe("Integration:: contact us - public user", () => {
     await request(
       app,
       (test) => test.get(PATH_NAMES.CONTACT_US).query("supportType=PUBLIC"),
-      { expectTaxonomyMatchSnapshot: false }
+      { expectAnalyticsPropertiesMatchSnapshot: false }
     ).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
