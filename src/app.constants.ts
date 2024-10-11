@@ -80,6 +80,7 @@ export const CONTENT_IDS: {
 } = {
   [PATH_NAMES.ENTER_MFA]: {
     default: "19601dd7-be55-4ab6-aa44-a6358c4239dc",
+    reauth: "c9f09429-b29d-421e-a33a-41149489a0a2",
     upliftRequired: "",
   },
 };

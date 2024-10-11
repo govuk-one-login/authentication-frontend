@@ -105,5 +105,6 @@ export interface UserSessionClient {
 
 export interface ContentIdVariants {
   default: string;
+  reauth?: string;
   upliftRequired?: string;
 }
