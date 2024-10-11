@@ -102,3 +102,9 @@ export interface UserSessionClient {
   rpRedirectUri?: string;
   rpState?: string;
 }
+
+export interface ContentIdVariants {
+  default: string;
+  reauth?: string;
+  upliftRequired?: string;
+}

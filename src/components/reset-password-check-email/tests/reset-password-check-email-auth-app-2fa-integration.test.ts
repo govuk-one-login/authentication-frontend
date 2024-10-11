@@ -50,7 +50,7 @@ describe("Integration::reset password check email ", () => {
     await request(
       app,
       (test) => test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL),
-      { expectTaxonomyMatchSnapshot: false }
+      { expectAnalyticsPropertiesMatchSnapshot: false }
     ).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

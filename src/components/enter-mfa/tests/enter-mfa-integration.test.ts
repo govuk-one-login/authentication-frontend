@@ -67,7 +67,7 @@ describe("Integration:: enter mfa", () => {
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA), {
-      expectTaxonomyMatchSnapshot: false,
+      expectAnalyticsPropertiesMatchSnapshot: false,
     }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
@@ -85,7 +85,7 @@ describe("Integration:: enter mfa", () => {
     app = undefined;
   });
 
-  it("should return check your phone page", async () => {
+  it("should return check your phone page with sign in analytics properties", async () => {
     await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA).expect(200));
   });
 

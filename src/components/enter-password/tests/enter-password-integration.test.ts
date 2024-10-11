@@ -46,7 +46,7 @@ describe("Integration::enter password", () => {
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(app, (test) => test.get(ENDPOINT), {
-      expectTaxonomyMatchSnapshot: false,
+      expectAnalyticsPropertiesMatchSnapshot: false,
     }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
@@ -63,7 +63,7 @@ describe("Integration::enter password", () => {
     nock.cleanAll();
   });
 
-  it("should return enter password page", async () => {
+  it("should return enter password page with sign in analytics properties", async () => {
     await request(app, (test) => test.get(ENDPOINT).expect(200));
   });
 

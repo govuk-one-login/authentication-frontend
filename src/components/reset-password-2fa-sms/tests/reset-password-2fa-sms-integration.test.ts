@@ -42,7 +42,7 @@ describe("Integration::2fa sms (in reset password flow)", () => {
     nock(baseApi).persist().post("/mfa").reply(204);
 
     await request(app, (test) => test.get(PATH_NAMES.RESET_PASSWORD_2FA_SMS), {
-      expectTaxonomyMatchSnapshot: false,
+      expectAnalyticsPropertiesMatchSnapshot: false,
     }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

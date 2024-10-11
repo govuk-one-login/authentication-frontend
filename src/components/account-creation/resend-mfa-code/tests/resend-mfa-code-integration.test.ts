@@ -42,7 +42,7 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
     await request(
       app,
       (test) => test.get(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION),
-      { expectTaxonomyMatchSnapshot: false }
+      { expectAnalyticsPropertiesMatchSnapshot: false }
     ).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

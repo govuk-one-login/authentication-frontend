@@ -96,7 +96,7 @@ describe("Integration:: check your email security codes", () => {
     await request(
       app,
       (test) => test.get(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES),
-      { expectTaxonomyMatchSnapshot: false }
+      { expectAnalyticsPropertiesMatchSnapshot: false }
     ).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

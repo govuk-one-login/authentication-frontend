@@ -46,6 +46,10 @@ describe("Integration:: enter authenticator app code", () => {
             nextPath: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           },
         };
+
+        if (process.env.TEST_SETUP_REAUTH_SESSION === "1") {
+          req.session.user.reauthenticate = "reauth";
+        }
         next();
       });
 
@@ -72,7 +76,7 @@ describe("Integration:: enter authenticator app code", () => {
     await request(
       app,
       (test) => test.get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE),
-      { expectTaxonomyMatchSnapshot: false }
+      { expectAnalyticsPropertiesMatchSnapshot: false }
     ).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
@@ -81,6 +85,8 @@ describe("Integration:: enter authenticator app code", () => {
   });
 
   beforeEach(() => {
+    process.env.SUPPORT_REAUTHENTICATION = "0";
+    process.env.TEST_SETUP_REAUTH_SESSION = "0";
     nock.cleanAll();
   });
 
@@ -89,7 +95,16 @@ describe("Integration:: enter authenticator app code", () => {
     app = undefined;
   });
 
-  it("should return enter authenticator app security code", async () => {
+  it("should return enter authenticator app security code with sign in analytics properties", async () => {
+    await request(app, (test) =>
+      test.get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE).expect(200)
+    );
+  });
+
+  it("should return enter authenticator app security code with reauth analytics properties", async () => {
+    process.env.SUPPORT_REAUTHENTICATION = "1";
+    process.env.TEST_SETUP_REAUTH_SESSION = "1";
+
     await request(app, (test) =>
       test.get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE).expect(200)
     );

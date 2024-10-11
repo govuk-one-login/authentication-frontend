@@ -41,7 +41,7 @@ describe("Integration::enter email (create account)", () => {
     await request(
       app,
       (test) => test.get(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT),
-      { expectTaxonomyMatchSnapshot: false }
+      { expectAnalyticsPropertiesMatchSnapshot: false }
     ).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

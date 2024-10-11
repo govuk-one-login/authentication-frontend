@@ -2,6 +2,7 @@
 
 exports[`Integration:: resend mfa code should include the last three digits of the user's telephone number 1`] = `
 Object {
+  "contentId": "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
 }
@@ -9,6 +10,7 @@ Object {
 
 exports[`Integration:: resend mfa code should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active 1`] = `
 Object {
+  "contentId": "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
 }
@@ -16,6 +18,7 @@ Object {
 
 exports[`Integration:: resend mfa code should return 400 error screen when API call fails 1`] = `
 Object {
+  "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
 }
@@ -23,6 +26,7 @@ Object {
 
 exports[`Integration:: resend mfa code should return 500 error screen when API call fails 1`] = `
 Object {
+  "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
 }
@@ -30,13 +34,23 @@ Object {
 
 exports[`Integration:: resend mfa code should return error when csrf not present 1`] = `
 Object {
+  "contentId": undefined,
   "taxonomyLevel1": undefined,
   "taxonomyLevel2": undefined,
 }
 `;
 
-exports[`Integration:: resend mfa code should return resend mfa code page 1`] = `
+exports[`Integration:: resend mfa code should return resend mfa code page with reauth analytics properties 1`] = `
 Object {
+  "contentId": "a2776ef7-9ef3-4d8d-bdbc-3f798b15e5d4",
+  "taxonomyLevel1": "accounts",
+  "taxonomyLevel2": "re auth",
+}
+`;
+
+exports[`Integration:: resend mfa code should return resend mfa code page with sign in analytics properties 1`] = `
+Object {
+  "contentId": "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
 }
@@ -44,13 +58,15 @@ Object {
 
 exports[`Integration:: resend mfa code should state reauthenticating user could be logged out 1`] = `
 Object {
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "sign in",
+  "contentId": "a2776ef7-9ef3-4d8d-bdbc-3f798b15e5d4",
+  "taxonomyLevel1": "accounts",
+  "taxonomyLevel2": "re auth",
 }
 `;
 
 exports[`Integration:: resend mfa code should state user could be locked out 1`] = `
 Object {
+  "contentId": "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
 }

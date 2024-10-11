@@ -56,6 +56,7 @@ describe("Integration:: resend mfa code", () => {
   });
 
   beforeEach(() => {
+    process.env.SUPPORT_REAUTHENTICATION = "0";
     nock.cleanAll();
   });
 
@@ -68,7 +69,20 @@ describe("Integration:: resend mfa code", () => {
     app = undefined;
   });
 
-  it("should return resend mfa code page", async () => {
+  it("should return resend mfa code page with sign in analytics properties", async () => {
+    await request(app, (test) =>
+      test
+        .get(PATH_NAMES.RESEND_MFA_CODE)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("title").text()).to.contain("Get security code");
+        })
+        .expect(200)
+    );
+  });
+
+  it("should return resend mfa code page with reauth analytics properties", async () => {
+    process.env.SUPPORT_REAUTHENTICATION = "1";
     await request(app, (test) =>
       test
         .get(PATH_NAMES.RESEND_MFA_CODE)
