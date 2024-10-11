@@ -10,7 +10,7 @@ export function getContentId(
 ): string {
   const isReauth =
     supportReauthentication() && Boolean(req?.session?.user?.reauthenticate);
-  const isUpliftRequired = req?.session?.user?.isUpliftRequired;
+  const isUpliftRequired = Boolean(req?.session?.user?.isUpliftRequired);
 
   const supportedPaths = Object.keys(contentIds);
   const matchedSupportedPath = supportedPaths.find((path) => req.path === path);

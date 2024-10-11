@@ -27,7 +27,9 @@ export function getAnalyticsPropertiesMiddleware(
       done = options;
       opts = { contentId, ...taxonomy };
     } else {
-      opts = options ? { contentId, ...options, ...taxonomy } : taxonomy;
+      opts = options
+        ? { contentId, ...options, ...taxonomy }
+        : { contentId, ...taxonomy };
     }
 
     _render.call(this, view, opts, done);
