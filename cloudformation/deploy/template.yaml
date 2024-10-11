@@ -254,7 +254,6 @@ Resources:
     Properties:
       Cluster: !Ref FrontendECSCluster
       LaunchType: FARGATE
-      DesiredCount: 2
       HealthCheckGracePeriodSeconds: 15
       DeploymentConfiguration: !If
         - UseECSCanaryDeploymentStack
