@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration:: enter mfa should return check your phone page with reauth taxonomy 1`] = `
+Object {
+  "taxonomyLevel1": "accounts",
+  "taxonomyLevel2": "re auth",
+}
+`;

@@ -46,6 +46,7 @@ describe("Integration::enter password", () => {
     app = await require("../../../app").createApp();
 
     baseApi = process.env.FRONTEND_API_BASE_URL;
+    process.env.SUPPORT_REAUTHENTICATION = "1";
 
     await request(app, (test) => test.get(ENDPOINT), {
       expectTaxonomyMatchSnapshot: false,
@@ -65,7 +66,7 @@ describe("Integration::enter password", () => {
     nock.cleanAll();
   });
 
-  it("should return enter password page", async () => {
+  it("should return enter password page with reauth taxonomy", async () => {
     await request(app, (test) => test.get(ENDPOINT).expect(200));
   });
 
