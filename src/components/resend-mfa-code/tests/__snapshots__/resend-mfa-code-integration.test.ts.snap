@@ -35,7 +35,14 @@ Object {
 }
 `;
 
-exports[`Integration:: resend mfa code should return resend mfa code page 1`] = `
+exports[`Integration:: resend mfa code should return resend mfa code page with reauth taxonomy 1`] = `
+Object {
+  "taxonomyLevel1": "accounts",
+  "taxonomyLevel2": "re auth",
+}
+`;
+
+exports[`Integration:: resend mfa code should return resend mfa code page with sign in taxonomy 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
@@ -44,8 +51,8 @@ Object {
 
 exports[`Integration:: resend mfa code should state reauthenticating user could be logged out 1`] = `
 Object {
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "sign in",
+  "taxonomyLevel1": "accounts",
+  "taxonomyLevel2": "re auth",
 }
 `;
 

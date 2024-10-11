@@ -1,6 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Integration::enter email should return enter email page 1`] = `
+exports[`Integration::enter email should return enter email page with reauth taxonomy 1`] = `
+Object {
+  "taxonomyLevel1": "accounts",
+  "taxonomyLevel2": "re auth",
+}
+`;
+
+exports[`Integration::enter email should return enter email page with sign in taxonomy 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",

@@ -85,7 +85,7 @@ describe("Integration:: enter mfa", () => {
     app = undefined;
   });
 
-  it("should return check your phone page", async () => {
+  it("should return check your phone page with sign in taxonomy", async () => {
     await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA).expect(200));
   });
 

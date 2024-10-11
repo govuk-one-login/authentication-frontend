@@ -63,7 +63,7 @@ describe("Integration::enter password", () => {
     nock.cleanAll();
   });
 
-  it("should return enter password page", async () => {
+  it("should return enter password page with sign in taxonomy", async () => {
     await request(app, (test) => test.get(ENDPOINT).expect(200));
   });
 

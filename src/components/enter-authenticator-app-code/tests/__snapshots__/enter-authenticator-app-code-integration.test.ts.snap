@@ -7,7 +7,14 @@ Object {
 }
 `;
 
-exports[`Integration:: enter authenticator app code should return enter authenticator app security code 1`] = `
+exports[`Integration:: enter authenticator app code should return enter authenticator app security code with reauth taxonomy 1`] = `
+Object {
+  "taxonomyLevel1": "accounts",
+  "taxonomyLevel2": "re auth",
+}
+`;
+
+exports[`Integration:: enter authenticator app code should return enter authenticator app security code with sign in taxonomy 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
