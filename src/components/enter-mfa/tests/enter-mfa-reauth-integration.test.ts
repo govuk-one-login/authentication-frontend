@@ -90,7 +90,7 @@ describe("Integration:: enter mfa", () => {
     app = undefined;
   });
 
-  it("should return check your phone page with reauth taxonomy", async () => {
+  it("should return check your phone page with reauth analytics properties", async () => {
     await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA).expect(200));
   });
 
