@@ -76,7 +76,7 @@ describe("Integration:: enter authenticator app code", () => {
     await request(
       app,
       (test) => test.get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE),
-      { expectTaxonomyMatchSnapshot: false }
+      { expectAnalyticsPropertiesMatchSnapshot: false }
     ).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

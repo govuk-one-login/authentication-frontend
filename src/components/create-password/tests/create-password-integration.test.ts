@@ -41,7 +41,7 @@ describe("Integration::register create password", () => {
     await request(
       app,
       (test) => test.get(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD),
-      { expectTaxonomyMatchSnapshot: false }
+      { expectAnalyticsPropertiesMatchSnapshot: false }
     ).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

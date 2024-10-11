@@ -2,6 +2,7 @@
 
 exports[`Integration::healthcheck healthcheck should return 200 OK 1`] = `
 Object {
+  "contentId": undefined,
   "taxonomyLevel1": undefined,
   "taxonomyLevel2": undefined,
 }

@@ -49,7 +49,7 @@ describe("Integration::enter password", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
 
     await request(app, (test) => test.get(ENDPOINT), {
-      expectTaxonomyMatchSnapshot: false,
+      expectAnalyticsPropertiesMatchSnapshot: false,
     }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

@@ -44,7 +44,7 @@ describe("Integration::2fa auth app (in reset password flow)", () => {
     await request(
       app,
       (test) => test.get(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP),
-      { expectTaxonomyMatchSnapshot: false }
+      { expectAnalyticsPropertiesMatchSnapshot: false }
     ).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
