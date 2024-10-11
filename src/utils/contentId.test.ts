@@ -16,6 +16,7 @@ const TEST_CONTENT_IDS: {
   },
   [TEST_PATH_NAMES.ALL_ASSOCIATED_IDS]: {
     default: "this-is-a-default-content-id",
+    reauth: "this-is-a-reauth-content-id",
     upliftRequired: "this-is-a-uplift-required-content-id",
   },
 };
@@ -26,6 +27,10 @@ type VariantExpectation = {
   expectedContentId: string;
 };
 
+const TestReauthUser: Partial<UserSession> = {
+  reauthenticate: "testvalue",
+};
+
 const TestUpliftRequiredUser: Partial<UserSession> = {
   isUpliftRequired: true,
 };
@@ -33,6 +38,11 @@ const TestUpliftRequiredUser: Partial<UserSession> = {
 const mappingsToTest: VariantExpectation[] = [
   { expectedContentId: "" },
   {
+    path: TEST_PATH_NAMES.JUST_DEFAULT,
+    expectedContentId: TEST_CONTENT_IDS[TEST_PATH_NAMES.JUST_DEFAULT].default,
+  },
+  {
+    user: TestReauthUser,
     path: TEST_PATH_NAMES.JUST_DEFAULT,
     expectedContentId: TEST_CONTENT_IDS[TEST_PATH_NAMES.JUST_DEFAULT].default,
   },
@@ -47,6 +57,12 @@ const mappingsToTest: VariantExpectation[] = [
       TEST_CONTENT_IDS[TEST_PATH_NAMES.ALL_ASSOCIATED_IDS].default,
   },
   {
+    user: TestReauthUser,
+    path: TEST_PATH_NAMES.ALL_ASSOCIATED_IDS,
+    expectedContentId:
+      TEST_CONTENT_IDS[TEST_PATH_NAMES.ALL_ASSOCIATED_IDS].reauth,
+  },
+  {
     user: TestUpliftRequiredUser,
     path: TEST_PATH_NAMES.ALL_ASSOCIATED_IDS,
     expectedContentId:
@@ -55,6 +71,10 @@ const mappingsToTest: VariantExpectation[] = [
 ];
 
 describe("getContentId", () => {
+  beforeEach(() => {
+    process.env.SUPPORT_REAUTHENTICATION = "1";
+  });
+
   it(`user on path with no associated contentIds returns empty string`, async () => {
     const contentId = getContentId(
       {
