@@ -25,7 +25,7 @@ reduced_code_block_duration_minutes                 = "0.5"
 url_for_support_links                               = "https://home.build.account.gov.uk/contact-gov-uk-one-login"
 language_toggle_enabled                             = "1"
 no_photo_id_contact_forms                           = "1"
-
+default_channel                                     = "strategic_app"
 
 logging_endpoint_arns = [
   "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
