@@ -165,6 +165,22 @@
       }
     }
   },
+  "mobileAppPages": {
+    "signIn": {
+      "title": "Sign in to GOV.UK One Login",
+      "header": "Sign in to GOV.UK One Login",
+      "paragraph": "You can use your GOV.UK One Login to prove your identity and access some government services.",
+      "button": "Sign in"
+    },
+    "accountNotFound": {
+      "title": "You do not have a GOV.UK One Login",
+      "header": "You do not have a GOV.UK One Login",
+      "paragraph1": "There is no GOV.UK One Login for ",
+      "paragraph2": "You need to sign in with an email address that has a GOV.UK One Login to prove your identity.",
+      "tryAnotherLinkText": "Try another email address",
+      "findOutMoreLinkText": "Find out more about using GOV.UK One Login"
+    }
+  },
   "pages": {
     "signInOrCreate": {
       "mandatory": {
