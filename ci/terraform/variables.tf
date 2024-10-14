@@ -146,7 +146,7 @@ variable "health_check_grace_period_seconds" {
 }
 
 variable "deregistration_delay" {
-  default = 30
+  default = 90
 }
 
 variable "sidecar_image_uri" {
