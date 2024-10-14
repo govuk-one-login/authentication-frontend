@@ -2,10 +2,10 @@ import request from "supertest";
 import { describe } from "mocha";
 import { expect } from "chai";
 import * as cheerio from "cheerio";
-import { sinon } from "../../../../test/utils/test-utils";
+import { sinon } from "../../../../../test/utils/test-utils"
 import nock = require("nock");
 import decache from "decache";
-import { PATH_NAMES, CHANNEL } from "../../../app.constants";
+import { PATH_NAMES, CHANNEL } from "../../../../app.constants";
 
 describe("Integration:: base page ", () => {
   let app: any;
@@ -13,7 +13,7 @@ describe("Integration:: base page ", () => {
   const setupApp = async (channel: string) => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = require("../../../../middleware/session-middleware");
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
@@ -39,7 +39,7 @@ describe("Integration:: base page ", () => {
         next();
       });
 
-    app = await require("../../../app").createApp();
+    app = await require("../../../../app").createApp();
   };
 
   beforeEach(() => {
