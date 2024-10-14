@@ -295,3 +295,7 @@ const DYNATRACE_RUM_COOKIES = [
   "rxvt",
 ];
 export const ANALYTICS_COOKIES = [...GA_COOKIES, ...DYNATRACE_RUM_COOKIES];
+
+export const WEB_TO_MOBILE_TEMPLATE_MAPPINGS: Record<string, string> = {
+  "sign-in-or-create/index.njk": "sign-in-or-create/index-mobile.njk",
+};
