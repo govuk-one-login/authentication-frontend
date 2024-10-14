@@ -80,9 +80,16 @@ Conditions:
   ECSServiceCanaryPhasedDeploy:
     Fn::And:
       - !Condition UseECSCanaryDeploymentStack
-      - Fn::Equals:
-        - !Ref Environment
-        - "build"
+      - Fn::Or:
+        - Fn::Equals:
+          - !Ref Environment
+          - "build"
+        - Fn::Equals:
+          - !Ref Environment
+          - "staging"
+        - Fn::Equals:
+          - !Ref SubEnvironment
+          - "authdev1"
 
   UseSubEnvironment:
     Fn::And:
