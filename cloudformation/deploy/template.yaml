@@ -77,6 +77,13 @@ Conditions:
         - !Ref DeploymentStrategy
         - None
 
+  ECSServiceCanaryPhasedDeploy:
+    Fn::And:
+      - !Condition UseECSCanaryDeploymentStack
+      - Fn::Equals:
+        - !Ref Environment
+        - "build"
+
   UseSubEnvironment:
     Fn::And:
       - Fn::Equals:
@@ -268,13 +275,13 @@ Resources:
           - CODE_DEPLOY
           - ECS
       LoadBalancers: !If
-        - UseECSCanaryDeploymentStack
+        - ECSServiceCanaryPhasedDeploy
         - !Ref AWS::NoValue
         - - ContainerName: !If [UseNginxSidecar, "nginx-sidecar", "frontend-application"]
             ContainerPort: !If [UseNginxSidecar, 8080, 3000]
             TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroupA
       NetworkConfiguration: !If
-        - UseECSCanaryDeploymentStack
+        - ECSServiceCanaryPhasedDeploy
         - !Ref AWS::NoValue
         - AwsvpcConfiguration:
             AssignPublicIp: DISABLED
@@ -289,7 +296,7 @@ Resources:
                   !Sub "${VpcStackName}-ProtectedSubnetIdC"
       PropagateTags: SERVICE
       TaskDefinition: !If
-        - UseECSCanaryDeploymentStack
+        - ECSServiceCanaryPhasedDeploy
         - !Ref AWS::NoValue
         - !Ref TaskDefinition
       Tags:
