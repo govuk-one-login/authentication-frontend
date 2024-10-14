@@ -31,6 +31,18 @@ describe("sign in or create controller", () => {
 
       expect(res.render).to.have.calledWith("sign-in-or-create/index.njk");
     });
+
+    describe("where the context is mobile", () => {
+      it("should render the mobile template", async () => {
+        res.locals.strategicAppChannel = true;
+
+        signInOrCreateGet(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWith(
+          "sign-in-or-create/index-mobile.njk"
+        );
+      });
+    });
   });
   describe("signInOrCreatePost", () => {
     it("should redirect to enter email new create account", async () => {
