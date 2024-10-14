@@ -933,6 +933,9 @@ Resources:
       VpcId:
         Fn::ImportValue:
           !Sub "${VpcStackName}-VpcId"
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: "90"
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ApplicationLoadBalancerTargetGroupA"
@@ -965,6 +968,9 @@ Resources:
       VpcId:
         Fn::ImportValue:
           !Sub "${VpcStackName}-VpcId"
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: "90"
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ApplicationLoadBalancerTargetGroupB"
