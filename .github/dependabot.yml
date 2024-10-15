@@ -12,6 +12,7 @@ updates:
     open-pull-requests-limit: 100
     commit-message:
       prefix: BAU
+
   - package-ecosystem: docker
     directories:
       - "basic-auth-sidecar"
@@ -19,15 +20,24 @@ updates:
     schedule:
       interval: daily
       time: "03:00"
+    open-pull-requests-limit: 10
+    groups:
+      docker-all-dependencies:
+        patterns:
+          - "*"
     target-branch: main
-    open-pull-requests-limit: 100
     commit-message:
       prefix: BAU
-  - package-ecosystem: "github-actions"
+
+  - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      # Check for updates to GitHub Actions every week
-      interval: "weekly"
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      gha-all-dependencies:
+        patterns:
+          - "*"
     target-branch: main
     commit-message:
       prefix: BAU
