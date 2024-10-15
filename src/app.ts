@@ -152,11 +152,11 @@ async function createApp(): Promise<express.Application> {
 
   app.enable("trust proxy");
 
+  app.use(loggerMiddleware);
   app.use(healthcheckRouter);
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(noCacheMiddleware);
-  app.use(loggerMiddleware);
 
   app.use(
     "/assets",
