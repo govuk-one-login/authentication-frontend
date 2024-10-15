@@ -15,19 +15,18 @@ import {
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import xss from "xss";
 import { getServiceSignInLink } from "../../config";
+import { getChannelSpecificTemplate } from "../../utils/get-channel-specific-template";
+import { getAccountNotFoundWebTemplate } from "./get-account-not-found-web-template";
 
 export function accountNotFoundGet(req: Request, res: Response): void {
-  if (req.session.client.isOneLoginService) {
-    res.render("account-not-found/index-one-login.njk", {
-      email: req.session.user.email,
-    });
-  } else if (req.session.client.serviceType === SERVICE_TYPE.OPTIONAL) {
-    res.render("account-not-found/index-optional.njk");
-  } else {
-    res.render("account-not-found/index-mandatory.njk", {
-      email: req.session.user.email,
-    });
-  }
+  const webTemplate: string = getAccountNotFoundWebTemplate(
+    req.session.client.isOneLoginService,
+    req.session.client.serviceType
+  );
+
+  res.render(webTemplate, {
+    email: req.session.user.email,
+  });
 }
 
 export function accountNotFoundPost(
