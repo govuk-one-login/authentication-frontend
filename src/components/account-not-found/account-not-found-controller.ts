@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
-  SERVICE_TYPE,
+  WEB_TO_MOBILE_TEMPLATE_MAPPINGS,
 } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
@@ -23,8 +23,13 @@ export function accountNotFoundGet(req: Request, res: Response): void {
     req.session.client.isOneLoginService,
     req.session.client.serviceType
   );
+  const channelTemplate = getChannelSpecificTemplate(
+    webTemplate,
+    res.locals.strategicAppChannel,
+    WEB_TO_MOBILE_TEMPLATE_MAPPINGS
+  );
 
-  res.render(webTemplate, {
+  res.render(channelTemplate, {
     email: req.session.user.email,
   });
 }
