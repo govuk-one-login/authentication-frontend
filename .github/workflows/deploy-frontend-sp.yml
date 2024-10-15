@@ -14,7 +14,7 @@ jobs:
       contents: read
     steps:
       - name: Build and push basic-auth-sidecar image
-        uses: govuk-one-login/devplatform-upload-action-ecr@8f14d1af61737413dc6eb39f071f01dc6d0e6c45 # v1.3.0
+        uses: govuk-one-login/devplatform-upload-action-ecr@5f4cd8b195ad7ae810d60881fa6dbaff1764b5da # v1.3.0
         with:
           role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
           container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY_ARN }}
@@ -31,7 +31,7 @@ jobs:
       contents: read
     steps:
       - name: Build and push service down page image
-        uses: govuk-one-login/devplatform-upload-action-ecr@8f14d1af61737413dc6eb39f071f01dc6d0e6c45 # v1.3.0
+        uses: govuk-one-login/devplatform-upload-action-ecr@5f4cd8b195ad7ae810d60881fa6dbaff1764b5da # v1.3.0
         with:
           role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
           container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY_ARN }}
@@ -51,7 +51,7 @@ jobs:
       contents: read
     steps:
       - name: Build, push and deploy frontend
-        uses: govuk-one-login/devplatform-upload-action-ecr@8f14d1af61737413dc6eb39f071f01dc6d0e6c45 # v1.3.0
+        uses: govuk-one-login/devplatform-upload-action-ecr@5f4cd8b195ad7ae810d60881fa6dbaff1764b5da # v1.3.0
         with:
           role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
           container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY_ARN }}
