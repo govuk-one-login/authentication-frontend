@@ -47,7 +47,11 @@ describe("resend mfa controller", () => {
     let fakeService: SendNotificationServiceInterface;
 
     beforeEach(() => {
-      fakeService = { sendNotification: sinon.fake.returns({ success: true }) };
+      fakeService = {
+        sendNotification: sinon.fake.returns(
+          Promise.resolve({ success: true, data: { message: "", code: 200 } })
+        ),
+      };
       req.path = PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
     });
 

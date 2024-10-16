@@ -119,7 +119,7 @@
     "@types/overload-protection": "^1.2.4",
     "@types/pino-pretty": "^4.7.5",
     "@types/qrcode": "^1.4.2",
-    "@types/sinon": "^10.0.6",
+    "@types/sinon": "^17.0.3",
     "@types/sinon-chai": "^3.2.8",
     "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
