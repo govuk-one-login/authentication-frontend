@@ -89,6 +89,7 @@ import { setCurrentUrlMiddleware } from "./middleware/current-url-middleware";
 import { getRedisConfig } from "./utils/redis";
 import { csrfMissingHandler } from "./handlers/csrf-missing-handler";
 import { channelMiddleware } from "./middleware/channel-middleware";
+import { applyOverloadProtection } from "./middleware/overload-protection-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -154,6 +155,10 @@ async function createApp(): Promise<express.Application> {
 
   app.use(loggerMiddleware);
   app.use(healthcheckRouter);
+  if (getNodeEnv() === "staging") {
+    const protect = applyOverloadProtection(isProduction);
+    app.use(protect);
+  }
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(noCacheMiddleware);
