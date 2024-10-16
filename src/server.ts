@@ -1,5 +1,6 @@
 import { createApp } from "./app";
 import { logger } from "./utils/logger";
+import { frontendVitalSignsInit } from "@govuk-one-login/frontend-vital-signs";
 
 const port: number | string = process.env.PORT || 3000;
 
@@ -15,6 +16,9 @@ const port: number | string = process.env.PORT || 3000;
     });
   server.keepAliveTimeout = 61 * 1000;
   server.headersTimeout = 91 * 1000;
+  frontendVitalSignsInit(server, {
+    staticPaths: [/^\/assets\/.*/, /^\/public\/.*/],
+  });
 })().catch((ex) => {
   logger.error(`Server failed to create app ${ex.message}`);
 });
