@@ -1819,6 +1819,11 @@
   dependencies:
     otplib "*"
 
+"@types/overload-protection@^1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@types/overload-protection/-/overload-protection-1.2.4.tgz#d0ebacee6c95be3421ab252edbc2b801a74ee9b5"
+  integrity sha512-zbKBN5pZXwF4yiXUeF0Cng4Y+sqqTWVeyi++uR6Ycd8oThOGPBMEdHyX81Z1vU4wojh9+NDS0y6JX7nM6ylBCw==
+
 "@types/pino-pretty@*", "@types/pino-pretty@^4.7.5":
   version "4.7.5"
   resolved "https://registry.npmjs.org/@types/pino-pretty/-/pino-pretty-4.7.5.tgz"
@@ -4586,6 +4591,13 @@ log-symbols@^4.1.0:
     chalk "^4.1.0"
     is-unicode-supported "^0.1.0"
 
+loopbench@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/loopbench/-/loopbench-1.2.0.tgz#7601b73f57097c73f426a05ebf781ab7ea4917ff"
+  integrity sha512-ft2PmuZnDw+DJQfT5mpEWudEBRzlpImh7mU7OcPGmefsKlW8Ck0U6nrCCdcwYF+z9zc0SVBzGZA1F1gUfHZuJw==
+  dependencies:
+    xtend "^4.0.1"
+
 loupe@^2.3.6:
   version "2.3.7"
   resolved "https://registry.yarnpkg.com/loupe/-/loupe-2.3.7.tgz#6e69b7d4db7d3ab436328013d37d1c8c3540c697"
@@ -4965,6 +4977,13 @@ otplib@*:
     "@otplib/core" "^12.0.1"
     "@otplib/preset-default" "^12.0.1"
     "@otplib/preset-v11" "^12.0.1"
+
+overload-protection@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/overload-protection/-/overload-protection-1.2.3.tgz#a0e75845a1ccbc9ec9c6039936454ba35500b1ad"
+  integrity sha512-b7XZbmhujnqNoK0Z6NPzA/nhfQnE08ZTHSzzjTMwegb5N9oBAAApx3f9u2R/f3VGaACTQj6QJnGUfX1oFttqfg==
+  dependencies:
+    loopbench "^1.2.0"
 
 p-limit@^2.2.0:
   version "2.3.0"
@@ -6532,7 +6551,7 @@ xstate@^4.26.1:
   resolved "https://registry.npmjs.org/xstate/-/xstate-4.26.1.tgz"
   integrity sha512-JLofAEnN26l/1vbODgsDa+Phqa61PwDlxWu8+2pK+YbXf+y9pQSDLRvcYH2H1kkeUBA5fGp+xFL/zfE8jNMw4g==
 
-xtend@~4.0.1:
+xtend@^4.0.1, xtend@~4.0.1:
   version "4.0.2"
   resolved "https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
