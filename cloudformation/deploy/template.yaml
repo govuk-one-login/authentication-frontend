@@ -1473,7 +1473,7 @@ Resources:
     Type: AWS::Logs::SubscriptionFilter
     Condition: IsSplunkandServicedown
     Properties:
-      DestinationArn: "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
+      DestinationArn: "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython-2"
       FilterPattern: ""
       LogGroupName: !Ref ServiceDownTaskLogGroup
 
@@ -1597,7 +1597,7 @@ Resources:
     Type: AWS::Logs::SubscriptionFilter
     Condition: IsSplunkEnabled
     Properties:
-      DestinationArn: "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython"
+      DestinationArn: "arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython-2"
       FilterPattern: ""
       LogGroupName: !Ref FrontendTaskLogGroup
 
