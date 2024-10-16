@@ -132,7 +132,6 @@ function registerRoutes(app: express.Application) {
   app.use(resetPassword2FAAuthAppRouter);
   app.use(upliftJourneyRouter);
   app.use(contactUsRouter);
-  app.use(healthcheckRouter);
   app.use(proveIdentityRouter);
   app.use(proveIdentityWelcomeRouter);
   app.use(proveIdentityCallbackRouter);
@@ -153,10 +152,11 @@ async function createApp(): Promise<express.Application> {
 
   app.enable("trust proxy");
 
+  app.use(loggerMiddleware);
+  app.use(healthcheckRouter);
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(noCacheMiddleware);
-  app.use(loggerMiddleware);
 
   app.use(
     "/assets",
