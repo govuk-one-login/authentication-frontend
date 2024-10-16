@@ -88,6 +88,9 @@ Conditions:
           - !Ref Environment
           - "staging"
         - Fn::Equals:
+          - !Ref Environment
+          - "integration"
+        - Fn::Equals:
           - !Ref SubEnvironment
           - "authdev1"
 
