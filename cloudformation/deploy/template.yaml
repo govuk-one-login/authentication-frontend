@@ -350,7 +350,7 @@ Resources:
       Namespace: AWS/ECS
       Period: 60
       Statistic: Average
-      Threshold: 50
+      Threshold: 40
       DatapointsToAlarm: 1
       Dimensions:
         - Name: ClusterName
@@ -437,11 +437,11 @@ Resources:
       ServiceNamespace: ecs
       StepScalingPolicyConfiguration:
         AdjustmentType: PercentChangeInCapacity
-        Cooldown: 240
+        Cooldown: 300
         MetricAggregationType: Average
         MinAdjustmentMagnitude: 5
         StepAdjustments:
-          - ScalingAdjustment: -50
+          - ScalingAdjustment: -25
             MetricIntervalUpperBound: 0
 
   ContainerServiceSecurityGroup:
