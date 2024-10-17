@@ -1,6 +1,6 @@
 import { beforeEach, describe } from "mocha";
 import { expect, sinon } from "../utils/test-utils";
-import { startServer } from "../../src/app";
+import { shutdownProcess, startServer } from "../../src/app";
 import express from "express";
 import decache from "decache";
 
@@ -70,6 +70,30 @@ describe("app", () => {
 
       expect(session.disconnectRedisClient).to.be.callCount(1);
       expect(stopVitalSigns).to.be.callCount(1);
+    });
+  });
+
+  describe("shutdownProcess", () => {
+    let exitStub: () => void;
+    beforeEach(() => {
+      exitStub = sinon.stub(process, "exit");
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it("will execute the closeServer callback before exiting successfully", async () => {
+      const callback = sinon.fake();
+      await shutdownProcess(callback)();
+      expect(callback).to.be.callCount(1);
+      expect(exitStub).to.be.calledOnceWith(0);
+    });
+
+    it("will exit with error if callback throw an error", async () => {
+      const callback = sinon.fake(() => {
+        throw new Error("Something unexpected happened");
+      });
+      await shutdownProcess(callback)();
+      expect(exitStub).to.be.calledOnceWith(1);
     });
   });
 });
