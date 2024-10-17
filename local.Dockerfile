@@ -1,4 +1,4 @@
-FROM node:20.17.0-alpine@sha256:1a526b97cace6b4006256570efa1a29cd1fe4b96a5301f8d48e87c5139438a45
+FROM node:23.0.0-alpine@sha256:66fc75e0b8c49a4a0ab647743fde584a5e5ddefc77b7e9113fdc8932a08c323b
 
 ENV NODE_ENV "development"
 ENV PORT 3000
