@@ -24,15 +24,9 @@ import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 
 const TEMPLATE = "setup-authenticator-app/index.njk";
 
-const oplValues = {
-  createAccount: {
-    contentId: "5bc82db9-2012-44bf-9a7d-34d1d22fb035",
-    taxonomyLevel2: "create account",
-  },
-  accountRecovery: {
-    contentId: "124051ef-673a-4eda-b585-96d9d711f545",
-    taxonomyLevel2: "account recovery",
-  },
+const contentIds = {
+  createAccount: "5bc82db9-2012-44bf-9a7d-34d1d22fb035",
+  accountRecovery: "124051ef-673a-4eda-b585-96d9d711f545",
 };
 
 export async function setupAuthenticatorAppGet(
@@ -57,11 +51,8 @@ export async function setupAuthenticatorAppGet(
       req.session.user.authAppSecret
     ),
     contentId: isAccountRecoveryJourney
-      ? oplValues.accountRecovery.contentId
-      : oplValues.createAccount.contentId,
-    taxonomyLevel2: isAccountRecoveryJourney
-      ? oplValues.accountRecovery.taxonomyLevel2
-      : oplValues.createAccount.taxonomyLevel2,
+      ? contentIds.accountRecovery
+      : contentIds.createAccount,
   });
 }
 

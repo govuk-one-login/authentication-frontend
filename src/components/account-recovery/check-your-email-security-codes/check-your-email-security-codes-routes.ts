@@ -26,6 +26,7 @@ router.post(
   PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  checkAccountRecoveryPermitted,
   validateCheckYourEmailRequest(),
   asyncHandler(checkYourEmailSecurityCodesPost())
 );
