@@ -1,7 +1,7 @@
-import express from "express";
+import express, { Application } from "express";
 import cookieParser from "cookie-parser";
 import csurf from "csurf";
-import { loggerMiddleware } from "./utils/logger";
+import { logger, loggerMiddleware } from "./utils/logger";
 
 import { sanitizeRequestMiddleware } from "./middleware/sanitize-request-middleware";
 import i18nextMiddleware from "i18next-http-middleware";
@@ -89,6 +89,8 @@ import { setCurrentUrlMiddleware } from "./middleware/current-url-middleware";
 import { getRedisConfig } from "./utils/redis";
 import { csrfMissingHandler } from "./handlers/csrf-missing-handler";
 import { channelMiddleware } from "./middleware/channel-middleware";
+import { frontendVitalSignsInit } from "@govuk-one-login/frontend-vital-signs";
+import { Server } from "node:http";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -224,4 +226,30 @@ async function createApp(): Promise<express.Application> {
   return app;
 }
 
-export { createApp };
+async function startServer(app: Application): Promise<Server> {
+  const port: number | string = process.env.PORT || 3000;
+  let server: Server;
+
+  await new Promise<void>((resolve) => {
+    server = app
+      .listen(port, () => {
+        logger.info(`Server listening on port ${port}`);
+        app.emit("appStarted");
+        resolve();
+      })
+      .on("error", (error: Error) => {
+        logger.error(`Unable to start server because of ${error.message}`);
+      });
+
+    server.keepAliveTimeout = 61 * 1000;
+    server.headersTimeout = 91 * 1000;
+
+    frontendVitalSignsInit(server, {
+      staticPaths: [/^\/assets\/.*/, /^\/public\/.*/],
+    });
+  });
+
+  return server;
+}
+
+export { createApp, startServer };
