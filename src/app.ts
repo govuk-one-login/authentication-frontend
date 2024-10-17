@@ -63,7 +63,11 @@ import { checkYourEmailRouter } from "./components/check-your-email/check-your-e
 import { securityCodeErrorRouter } from "./components/security-code-error/security-code-error-routes";
 import { upliftJourneyRouter } from "./components/uplift-journey/uplift-journey-routes";
 import { contactUsRouter } from "./components/contact-us/contact-us-routes";
-import { getSessionCookieOptions, getSessionStore } from "./config/session";
+import {
+  disconnectRedisClient,
+  getSessionCookieOptions,
+  getSessionStore,
+} from "./config/session";
 import session from "express-session";
 import { proveIdentityRouter } from "./components/prove-identity/prove-identity-routes";
 import { healthcheckRouter } from "./components/healthcheck/healthcheck-routes";
@@ -226,9 +230,13 @@ async function createApp(): Promise<express.Application> {
   return app;
 }
 
-async function startServer(app: Application): Promise<Server> {
+async function startServer(app: Application): Promise<{
+  server: Server;
+  closeServer: (callback?: (err?: Error) => void) => Promise<void>;
+}> {
   const port: number | string = process.env.PORT || 3000;
   let server: Server;
+  let stopVitalSigns: () => void;
 
   await new Promise<void>((resolve) => {
     server = app
@@ -244,12 +252,24 @@ async function startServer(app: Application): Promise<Server> {
     server.keepAliveTimeout = 61 * 1000;
     server.headersTimeout = 91 * 1000;
 
-    frontendVitalSignsInit(server, {
+    stopVitalSigns = frontendVitalSignsInit(server, {
       staticPaths: [/^\/assets\/.*/, /^\/public\/.*/],
     });
   });
 
-  return server;
+  const closeServer = async () => {
+    await disconnectRedisClient();
+    logger.info(`redis client disconnected`);
+    if (stopVitalSigns) {
+      stopVitalSigns();
+      logger.info(`vital-signs stopped`);
+    }
+    await new Promise<void>((res, rej) =>
+      server.close((err) => (err ? rej(err) : res()))
+    );
+  };
+
+  return { server, closeServer };
 }
 
 export { createApp, startServer };
