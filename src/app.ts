@@ -272,4 +272,17 @@ async function startServer(app: Application): Promise<{
   return { server, closeServer };
 }
 
-export { createApp, startServer };
+const shutdownProcess =
+  (closeServer: () => Promise<void>) => async (): Promise<void> => {
+    try {
+      logger.info("closing server");
+      await closeServer();
+      logger.info("server closed");
+      process.exit(0);
+    } catch (error) {
+      logger.error(`error closing server: ${error.message}`);
+      process.exit(1);
+    }
+  };
+
+export { createApp, startServer, shutdownProcess };
