@@ -13,17 +13,23 @@ describe("app", () => {
     it("should start server on expected port", async () => {
       const app = express();
       const listenSpy = sinon.spy(app, "listen");
-      const server = await startServer(app);
+
+      const { closeServer } = await startServer(app);
+
       expect(listenSpy).to.be.calledOnceWith(process.env.PORT);
-      server.close();
+
+      await closeServer();
     });
 
     it("should start server with expected timeouts", async () => {
       const app = express();
-      const server = await startServer(app);
+
+      const { server, closeServer } = await startServer(app);
+
       expect(server.keepAliveTimeout).to.be.eq(61 * 1000);
       expect(server.headersTimeout).to.be.eq(91 * 1000);
-      server.close();
+
+      await closeServer();
     });
 
     it("should start server with vital-signs package", async () => {
@@ -32,15 +38,38 @@ describe("app", () => {
       const frontendVitalSigns = require("@govuk-one-login/frontend-vital-signs");
       sinon
         .stub(frontendVitalSigns, "frontendVitalSignsInit")
-        .callsFake(() => {});
+        .callsFake(() => () => {});
       const { startServer } = require("../../src/app");
       const app = express();
-      const server = await startServer(app);
+
+      const { server, closeServer } = await startServer(app);
+
       expect(frontendVitalSigns.frontendVitalSignsInit).to.be.calledOnceWith(
         server,
         { staticPaths: [/^\/assets\/.*/, /^\/public\/.*/] }
       );
-      server.close();
+      await closeServer();
+    });
+
+    it("should close server properly", async () => {
+      decache("../../src/app");
+      decache("../../src/config/session");
+      decache("@govuk-one-login/frontend-vital-signs");
+      const frontendVitalSigns = require("@govuk-one-login/frontend-vital-signs");
+      const session = require("../../src/config/session");
+      const stopVitalSigns = sinon.fake(() => {});
+      sinon
+        .stub(frontendVitalSigns, "frontendVitalSignsInit")
+        .callsFake(() => stopVitalSigns);
+      sinon.stub(session, "disconnectRedisClient").callsFake(() => {});
+      const { startServer } = require("../../src/app");
+      const app = express();
+      const { closeServer } = await startServer(app);
+
+      await closeServer();
+
+      expect(session.disconnectRedisClient).to.be.callCount(1);
+      expect(stopVitalSigns).to.be.callCount(1);
     });
   });
 });
