@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { getChannelSpecificTemplate } from "../../utils/get-channel-specific-template";
+import { WEB_TO_MOBILE_TEMPLATE_MAPPINGS } from "../../app.constants";
 
 export async function signInOrCreateGet(
   req: Request,
@@ -12,7 +14,14 @@ export async function signInOrCreateGet(
   if (req.query.redirectPost) {
     return await signInOrCreatePost(req, res);
   }
-  res.render("sign-in-or-create/index.njk", {
+
+  const template = getChannelSpecificTemplate(
+    "sign-in-or-create/index.njk",
+    res.locals.strategicAppChannel,
+    WEB_TO_MOBILE_TEMPLATE_MAPPINGS
+  );
+
+  res.render(template, {
     serviceType: req.session.client.serviceType,
   });
 }
