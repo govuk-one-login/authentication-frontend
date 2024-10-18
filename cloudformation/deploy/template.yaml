@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 
 Description: >
   Authentication Frontend application
@@ -53,11 +53,11 @@ Conditions:
   DeployServiceDownPage:
     Fn::Or:
       - Fn::Equals:
-        - !Ref Environment
-        - "integration"
+          - !Ref Environment
+          - "integration"
       - Fn::Equals:
-        - !Ref Environment
-        - "production"
+          - !Ref Environment
+          - "production"
 
   UseCodeSigning:
     Fn::Not:
@@ -74,42 +74,42 @@ Conditions:
   UseECSCanaryDeploymentStack:
     Fn::Not:
       - Fn::Equals:
-        - !Ref DeploymentStrategy
-        - None
+          - !Ref DeploymentStrategy
+          - None
 
   ECSServiceCanaryPhasedDeploy:
     Fn::And:
       - !Condition UseECSCanaryDeploymentStack
       - Fn::Or:
-        - Fn::Equals:
-          - !Ref Environment
-          - "build"
-        - Fn::Equals:
-          - !Ref Environment
-          - "staging"
-        - Fn::Equals:
-          - !Ref Environment
-          - "integration"
-        - Fn::Equals:
-          - !Ref SubEnvironment
-          - "authdev1"
+          - Fn::Equals:
+              - !Ref Environment
+              - "build"
+          - Fn::Equals:
+              - !Ref Environment
+              - "staging"
+          - Fn::Equals:
+              - !Ref Environment
+              - "integration"
+          - Fn::Equals:
+              - !Ref SubEnvironment
+              - "authdev1"
 
   UseSubEnvironment:
     Fn::And:
       - Fn::Equals:
-        - !Ref Environment
-        - dev
+          - !Ref Environment
+          - dev
       - Fn::Not:
           - Fn::Equals:
-            - !Ref SubEnvironment
-            - none
+              - !Ref SubEnvironment
+              - none
 
   UseNginxSidecar:
-  # TODO review this condition
+    # TODO review this condition
     Fn::Or:
       - Fn::Equals:
-        - !Ref Environment
-        - "dev"
+          - !Ref Environment
+          - "dev"
       - Fn::Equals:
           - !Ref Environment
           - "integration"
@@ -117,28 +117,28 @@ Conditions:
   IsNotProduction:
     Fn::Not:
       - Fn::Equals:
-        - !Ref Environment
-        - production
+          - !Ref Environment
+          - production
 
   IsSplunkEnabled:
     Fn::Or:
       - Fn::Equals:
-        - !Ref Environment
-        - "build"
+          - !Ref Environment
+          - "build"
       - Fn::Equals:
-        - !Ref Environment
-        - "Staging"
+          - !Ref Environment
+          - "Staging"
       - Fn::Equals:
-        - !Ref Environment
-        - "integration"
+          - !Ref Environment
+          - "integration"
       - Fn::Equals:
-        - !Ref Environment
-        - "production"
+          - !Ref Environment
+          - "production"
 
   IsSplunkandServicedown:
     Fn::And:
-    - !Condition DeployServiceDownPage
-    - !Condition IsSplunkEnabled
+      - !Condition DeployServiceDownPage
+      - !Condition IsSplunkEnabled
 
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
@@ -236,20 +236,45 @@ Globals:
       Variables:
         AWS_LAMBDA_EXEC_WRAPPER: /opt/dynatrace
         DT_CONNECTION_AUTH_TOKEN: !Sub
-          - '{{resolve:secretsmanager:${SecretArn}:SecretString:DT_CONNECTION_AUTH_TOKEN}}'
-          - SecretArn: !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
+          - "{{resolve:secretsmanager:${SecretArn}:SecretString:DT_CONNECTION_AUTH_TOKEN}}"
+          - SecretArn:
+              !FindInMap [
+                EnvironmentConfiguration,
+                !Ref Environment,
+                dynatraceSecretArn,
+              ]
         DT_CONNECTION_BASE_URL: !Sub
-          - '{{resolve:secretsmanager:${SecretArn}:SecretString:DT_CONNECTION_BASE_URL}}'
-          - SecretArn: !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
+          - "{{resolve:secretsmanager:${SecretArn}:SecretString:DT_CONNECTION_BASE_URL}}"
+          - SecretArn:
+              !FindInMap [
+                EnvironmentConfiguration,
+                !Ref Environment,
+                dynatraceSecretArn,
+              ]
         DT_CLUSTER_ID: !Sub
-          - '{{resolve:secretsmanager:${SecretArn}:SecretString:DT_CLUSTER_ID}}'
-          - SecretArn: !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
+          - "{{resolve:secretsmanager:${SecretArn}:SecretString:DT_CLUSTER_ID}}"
+          - SecretArn:
+              !FindInMap [
+                EnvironmentConfiguration,
+                !Ref Environment,
+                dynatraceSecretArn,
+              ]
         DT_LOG_COLLECTION_AUTH_TOKEN: !Sub
-          - '{{resolve:secretsmanager:${SecretArn}:SecretString:DT_LOG_COLLECTION_AUTH_TOKEN}}'
-          - SecretArn: !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
+          - "{{resolve:secretsmanager:${SecretArn}:SecretString:DT_LOG_COLLECTION_AUTH_TOKEN}}"
+          - SecretArn:
+              !FindInMap [
+                EnvironmentConfiguration,
+                !Ref Environment,
+                dynatraceSecretArn,
+              ]
         DT_TENANT: !Sub
-          - '{{resolve:secretsmanager:${SecretArn}:SecretString:DT_TENANT}}'
-          - SecretArn: !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
+          - "{{resolve:secretsmanager:${SecretArn}:SecretString:DT_TENANT}}"
+          - SecretArn:
+              !FindInMap [
+                EnvironmentConfiguration,
+                !Ref Environment,
+                dynatraceSecretArn,
+              ]
         DT_OPEN_TELEMETRY_ENABLE_INTEGRATION: "true"
     MemorySize: 1536
     Timeout: 30
@@ -266,8 +291,13 @@ Globals:
       - !Ref AWS::NoValue
     Layers:
       - !Sub
-        - '{{resolve:secretsmanager:${SecretArn}:SecretString:JAVA_LAYER}}'
-        - SecretArn: !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
+        - "{{resolve:secretsmanager:${SecretArn}:SecretString:JAVA_LAYER}}"
+        - SecretArn:
+            !FindInMap [
+              EnvironmentConfiguration,
+              !Ref Environment,
+              dynatraceSecretArn,
+            ]
 
 Resources:
   FrontendECSCluster:
@@ -307,7 +337,8 @@ Resources:
       LoadBalancers: !If
         - ECSServiceCanaryPhasedDeploy
         - !Ref AWS::NoValue
-        - - ContainerName: !If [UseNginxSidecar, "nginx-sidecar", "frontend-application"]
+        - - ContainerName:
+              !If [UseNginxSidecar, "nginx-sidecar", "frontend-application"]
             ContainerPort: !If [UseNginxSidecar, 8080, 3000]
             TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroupA
       NetworkConfiguration: !If
@@ -318,12 +349,9 @@ Resources:
             SecurityGroups:
               - !GetAtt ContainerServiceSecurityGroup.GroupId
             Subnets:
-              - Fn::ImportValue:
-                  !Sub "${VpcStackName}-ProtectedSubnetIdA"
-              - Fn::ImportValue:
-                  !Sub "${VpcStackName}-ProtectedSubnetIdB"
-              - Fn::ImportValue:
-                  !Sub "${VpcStackName}-ProtectedSubnetIdC"
+              - Fn::ImportValue: !Sub "${VpcStackName}-ProtectedSubnetIdA"
+              - Fn::ImportValue: !Sub "${VpcStackName}-ProtectedSubnetIdB"
+              - Fn::ImportValue: !Sub "${VpcStackName}-ProtectedSubnetIdC"
       PropagateTags: SERVICE
       TaskDefinition: !If
         - ECSServiceCanaryPhasedDeploy
@@ -386,10 +414,20 @@ Resources:
   FrontendAutoScalingTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
-      MaxCapacity: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendAutoScalingMaxCount ]
-      MinCapacity: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendAutoScalingMinCount ]
+      MaxCapacity:
+        !FindInMap [
+          EnvironmentConfiguration,
+          !Ref Environment,
+          frontendAutoScalingMaxCount,
+        ]
+      MinCapacity:
+        !FindInMap [
+          EnvironmentConfiguration,
+          !Ref Environment,
+          frontendAutoScalingMinCount,
+        ]
       ResourceId: !Join
-        - '/'
+        - "/"
         - - "service"
           - !Ref FrontendECSCluster
           - !GetAtt FrontendECSService.Name
@@ -404,7 +442,7 @@ Resources:
       PolicyName: !Sub "${AWS::StackName}-FrontendAutoScalingPolicyScaleOut"
       PolicyType: StepScaling
       ResourceId: !Join
-        - '/'
+        - "/"
         - - "service"
           - !Ref FrontendECSCluster
           - !GetAtt FrontendECSService.Name
@@ -432,7 +470,7 @@ Resources:
       PolicyName: !Sub "${AWS::StackName}-FrontendAutoScalingPolicyScaleIn"
       PolicyType: StepScaling
       ResourceId: !Join
-        - '/'
+        - "/"
         - - "service"
           - !Ref FrontendECSCluster
           - !GetAtt FrontendECSService.Name
@@ -476,8 +514,7 @@ Resources:
           FromPort: 8080
           ToPort: 8080
       VpcId:
-        Fn::ImportValue:
-          !Sub "${VpcStackName}-VpcId"
+        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ContainerServiceSecurityGroup"
@@ -514,24 +551,25 @@ Resources:
             - Name: NODE_ENV
               Value: production
             - Name: APP_ENV
-              Value: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+              Value:
+                !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
             - Name: FARGATE
               Value: 1
             - Name: API_BASE_URL
               Value: !If
                 - IsNotProduction
                 - !If
-                    - UseSubEnvironment
-                    - !Sub "https://oidc.${SubEnvironment}.sandpit.account.gov.uk"  # Use sandpit for now as oidc hasn't been migrated yet
-                    - !Sub "https://oidc.${Environment}.account.gov.uk"
+                  - UseSubEnvironment
+                  - !Sub "https://oidc.${SubEnvironment}.sandpit.account.gov.uk" # Use sandpit for now as oidc hasn't been migrated yet
+                  - !Sub "https://oidc.${Environment}.account.gov.uk"
                 - "https://oidc.account.gov.uk"
             - Name: FRONTEND_API_BASE_URL
               Value: !If
                 - IsNotProduction
                 - !If
-                    - UseSubEnvironment
-                    - !Sub "https://auth.${SubEnvironment}.sandpit.account.gov.uk/" # Use sandpit for now as auth hasn't been migrated yet
-                    - !Sub "https://auth.${Environment}.account.gov.uk/"
+                  - UseSubEnvironment
+                  - !Sub "https://auth.${SubEnvironment}.sandpit.account.gov.uk/" # Use sandpit for now as auth hasn't been migrated yet
+                  - !Sub "https://auth.${Environment}.account.gov.uk/"
                 - "https://auth.account.gov.uk/"
             - Name: ACCOUNT_MANAGEMENT_URL
               Value: !If
@@ -544,9 +582,9 @@ Resources:
               Value: !If
                 - IsNotProduction
                 - !If
-                    - UseSubEnvironment
-                    - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
-                    - !Sub "signin-sp.${Environment}.account.gov.uk"
+                  - UseSubEnvironment
+                  - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
+                  - !Sub "signin-sp.${Environment}.account.gov.uk"
                 - "signin.account.gov.uk"
             - Name: GTM_ID
               Value: GTM-TK92W68
@@ -555,8 +593,16 @@ Resources:
             - Name: ORCH_TO_AUTH_SIGNING_KEY
               Value: !If
                 - UseSubEnvironment
-                - !FindInMap [ EnvironmentConfiguration, !Ref SubEnvironment, orchToAuthSigningPublicKey ]
-                - !FindInMap [ EnvironmentConfiguration, !Ref Environment, orchToAuthSigningPublicKey ]
+                - !FindInMap [
+                    EnvironmentConfiguration,
+                    !Ref SubEnvironment,
+                    orchToAuthSigningPublicKey,
+                  ]
+                - !FindInMap [
+                    EnvironmentConfiguration,
+                    !Ref Environment,
+                    orchToAuthSigningPublicKey,
+                  ]
             - Name: ORCH_TO_AUTH_CLIENT_ID
               Value: orchestrationAuth
             - Name: ORCH_TO_AUTH_AUDIENCE
@@ -571,9 +617,9 @@ Resources:
               Value: !Sub
                 - "https://${homeFQDN}/contact-gov-uk-one-login"
                 - homeFQDN: !If
-                  - IsNotProduction
-                  - !Sub "home.${Environment}.account.gov.uk"
-                  - "home.account.gov.uk"
+                    - IsNotProduction
+                    - !Sub "home.${Environment}.account.gov.uk"
+                    - "home.account.gov.uk"
             - Name: SERVICE_DOMAIN
               Value: !If
                 - IsNotProduction
@@ -621,7 +667,12 @@ Resources:
             - Name: GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID
               Value: GTM-KD86CMZ
             - Name: ANALYTICS_COOKIE_DOMAIN
-              Value: !If [IsNotProduction, !Sub ".${Environment}.account.gov.uk", ".account.gov.uk"]
+              Value:
+                !If [
+                  IsNotProduction,
+                  !Sub ".${Environment}.account.gov.uk",
+                  ".account.gov.uk",
+                ]
             - Name: SUPPORT_NEW_IPV_SPINNER
               Value: !If [IsNotProduction, "1", "0"]
           Secrets:
@@ -677,27 +728,44 @@ Resources:
                 - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_webform_id"
             - Name: DT_TENANT
               ValueFrom: !Join
-                - ''
-                - - !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
-                  - ':DT_TENANT::'
+                - ""
+                - - !FindInMap [
+                      EnvironmentConfiguration,
+                      !Ref Environment,
+                      dynatraceSecretArn,
+                    ]
+                  - ":DT_TENANT::"
             - Name: DT_TENANTTOKEN
               ValueFrom: !Join
-                - ''
-                - - !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
-                  - ':DT_TENANTTOKEN::'
+                - ""
+                - - !FindInMap [
+                      EnvironmentConfiguration,
+                      !Ref Environment,
+                      dynatraceSecretArn,
+                    ]
+                  - ":DT_TENANTTOKEN::"
             - Name: DT_CONNECTION_POINT
               ValueFrom: !Join
-              - ''
-              - - !FindInMap [ EnvironmentConfiguration, !Ref Environment, dynatraceSecretArn ]
-                - ':DT_CONNECTION_POINT::'
+                - ""
+                - - !FindInMap [
+                      EnvironmentConfiguration,
+                      !Ref Environment,
+                      dynatraceSecretArn,
+                    ]
+                  - ":DT_CONNECTION_POINT::"
         - !If
           - UseNginxSidecar
           - !If
             - UseSubEnvironment
             - Name: "nginx-sidecar"
               Image: !Sub
-                  - "${BasicAuthSidecarURI}:GIT-SHA-PLACEHOLDER"
-                  - BasicAuthSidecarURI: !FindInMap [ EnvironmentConfiguration, !Ref SubEnvironment, basicAuthSidecarURI ]
+                - "${BasicAuthSidecarURI}:GIT-SHA-PLACEHOLDER"
+                - BasicAuthSidecarURI:
+                    !FindInMap [
+                      EnvironmentConfiguration,
+                      !Ref SubEnvironment,
+                      basicAuthSidecarURI,
+                    ]
               PortMappings:
                 - ContainerPort: 8080
                   HostPort: 8080
@@ -726,8 +794,13 @@ Resources:
                   ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_bypass_cidr_blocks"
             - Name: "nginx-sidecar"
               Image: !Sub
-                  - "${BasicAuthSidecarURI}:GIT-SHA-PLACEHOLDER"
-                  - BasicAuthSidecarURI: !FindInMap [ EnvironmentConfiguration, !Ref Environment, basicAuthSidecarURI ]
+                - "${BasicAuthSidecarURI}:GIT-SHA-PLACEHOLDER"
+                - BasicAuthSidecarURI:
+                    !FindInMap [
+                      EnvironmentConfiguration,
+                      !Ref Environment,
+                      basicAuthSidecarURI,
+                    ]
               PortMappings:
                 - ContainerPort: 8080
                   HostPort: 8080
@@ -755,8 +828,18 @@ Resources:
                 - Name: IP_ALLOW_LIST
                   ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_bypass_cidr_blocks"
           - !Ref AWS::NoValue
-      Cpu: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionCpu ]
-      Memory: !FindInMap [ EnvironmentConfiguration, !Ref Environment, frontendTaskDefinitionMemory ]
+      Cpu:
+        !FindInMap [
+          EnvironmentConfiguration,
+          !Ref Environment,
+          frontendTaskDefinitionCpu,
+        ]
+      Memory:
+        !FindInMap [
+          EnvironmentConfiguration,
+          !Ref Environment,
+          frontendTaskDefinitionMemory,
+        ]
       ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
       TaskRoleArn: !GetAtt TaskRole.Arn
       NetworkMode: awsvpc
@@ -797,8 +880,8 @@ Resources:
                 Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/*"
               - Effect: Allow
                 Action:
-                  - secretsmanager:ListSecrets                                # pragma: allowlist secret
-                  - secretsmanager:GetSecretValue                             # pragma: allowlist secret
+                  - secretsmanager:ListSecrets # pragma: allowlist secret
+                  - secretsmanager:GetSecretValue # pragma: allowlist secret
                 Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:*" # pragma: allowlist secret
         - PolicyName: AllowDecryptOfParameters
           PolicyDocument:
@@ -823,10 +906,10 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - secretsmanager:ListSecrets                                # pragma: allowlist secret
-                  - secretsmanager:GetSecretValue                             # pragma: allowlist secret
+                  - secretsmanager:ListSecrets # pragma: allowlist secret
+                  - secretsmanager:GetSecretValue # pragma: allowlist secret
                 Resource:
-                  - arn:aws:secretsmanager:eu-west-2:216552277552:secret:*    # pragma: allowlist secret
+                  - arn:aws:secretsmanager:eu-west-2:216552277552:secret:* # pragma: allowlist secret
               - Effect: Allow
                 Action:
                   - kms:Decrypt
@@ -875,8 +958,13 @@ Resources:
                 Action:
                   - kms:Decrypt*
                 Resource: !Sub
-                  - '{{resolve:secretsmanager:/deploy/${env}/authentication-encryption-key-id}}'
-                  - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+                  - "{{resolve:secretsmanager:/deploy/${env}/authentication-encryption-key-id}}"
+                  - env:
+                      !If [
+                        UseSubEnvironment,
+                        !Ref SubEnvironment,
+                        !Ref Environment,
+                      ]
       PermissionsBoundary: !If
         - UsePermissionsBoundary
         - !Ref PermissionsBoundary
@@ -904,7 +992,7 @@ Resources:
         - !Sub "signin-sp.${Environment}.account.gov.uk"
       Type: A
       HostedZoneId: !Sub
-        - '{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}'
+        - "{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}"
         - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       AliasTarget:
         EvaluateTargetHealth: false
@@ -912,13 +1000,13 @@ Resources:
           Fn::ImportValue: !Sub
             - "${CFDistributionStackName}-DistributionDomain"
             - CFDistributionStackName: !FindInMap
-              - EnvironmentConfiguration
-              - !If
-                - UseSubEnvironment
-                - !Ref SubEnvironment
-                - !Ref Environment
-              - cloudfrontDistributionStackName
-              - DefaultValue: "auth-fe-cloudfront"
+                - EnvironmentConfiguration
+                - !If
+                  - UseSubEnvironment
+                  - !Ref SubEnvironment
+                  - !Ref Environment
+                - cloudfrontDistributionStackName
+                - DefaultValue: "auth-fe-cloudfront"
         HostedZoneId: Z2FDTNDATAQYW2
         # This is always the hosted zone ID when you create an alias record that routes traffic to a CloudFront distribution
 
@@ -937,12 +1025,9 @@ Resources:
       SecurityGroups:
         - !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
       Subnets:
-        - Fn::ImportValue:
-            !Sub "${VpcStackName}-FirewallSubnetIdA"
-        - Fn::ImportValue:
-            !Sub "${VpcStackName}-FirewallSubnetIdB"
-        - Fn::ImportValue:
-            !Sub "${VpcStackName}-FirewallSubnetIdC"
+        - Fn::ImportValue: !Sub "${VpcStackName}-FirewallSubnetIdA"
+        - Fn::ImportValue: !Sub "${VpcStackName}-FirewallSubnetIdB"
+        - Fn::ImportValue: !Sub "${VpcStackName}-FirewallSubnetIdC"
       LoadBalancerAttributes:
         - Key: access_logs.s3.enabled
           Value: "true"
@@ -979,8 +1064,7 @@ Resources:
         HttpCode: "200"
       TargetType: ip
       VpcId:
-        Fn::ImportValue:
-          !Sub "${VpcStackName}-VpcId"
+        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
           Value: "90"
@@ -1014,8 +1098,7 @@ Resources:
         HttpCode: "200"
       TargetType: ip
       VpcId:
-        Fn::ImportValue:
-          !Sub "${VpcStackName}-VpcId"
+        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
           Value: "90"
@@ -1038,7 +1121,7 @@ Resources:
         - !Sub "origin.signin-sp.${Environment}.account.gov.uk"
       Type: A
       HostedZoneId: !Sub
-        - '{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}'
+        - "{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}"
         - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       AliasTarget:
         EvaluateTargetHealth: false
@@ -1058,8 +1141,9 @@ Resources:
       Protocol: HTTPS
       Certificates:
         - CertificateArn: !Sub
-          - '{{resolve:ssm:/deploy/${env}/signin_certificate_arn}}'
-          - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+            - "{{resolve:ssm:/deploy/${env}/signin_certificate_arn}}"
+            - env:
+                !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       SslPolicy: "ELBSecurityPolicy-FS-1-2-Res-2020-10"
 
   ApplicationLoadBalancerListener:
@@ -1136,8 +1220,7 @@ Resources:
                           - "/"
                           - Ref: AWS::StackId
       VpcId:
-        Fn::ImportValue:
-          !Sub "${VpcStackName}-VpcId"
+        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ApplicationLoadBalancerSecurityGroup"
@@ -1273,12 +1356,9 @@ Resources:
         VpcId: !Sub ${VpcStackName}-VpcId
         Subnets: !Join
           - ","
-          - - Fn::ImportValue:
-                !Sub "${VpcStackName}-ProtectedSubnetIdA"
-            - Fn::ImportValue:
-                !Sub "${VpcStackName}-ProtectedSubnetIdB"
-            - Fn::ImportValue:
-                !Sub "${VpcStackName}-ProtectedSubnetIdC"
+          - - Fn::ImportValue: !Sub "${VpcStackName}-ProtectedSubnetIdA"
+            - Fn::ImportValue: !Sub "${VpcStackName}-ProtectedSubnetIdB"
+            - Fn::ImportValue: !Sub "${VpcStackName}-ProtectedSubnetIdC"
         SecurityGroups: !GetAtt ContainerServiceSecurityGroup.GroupId
         PermissionsBoundary:
           Fn::ImportValue: !Sub "${AWS::StackName}-ECSCanaryPermissionsBoundaryArn"
@@ -1293,7 +1373,8 @@ Resources:
         LoadBalancerListenerARN: !Ref ApplicationLoadBalancerListenerHTTPS
         ECSServiceTaskDefinition: !Ref TaskDefinition
         DeploymentStrategy: !Ref DeploymentStrategy
-        ContainerName: !If [UseNginxSidecar, "nginx-sidecar", "frontend-application"]
+        ContainerName:
+          !If [UseNginxSidecar, "nginx-sidecar", "frontend-application"]
         ContainerPort: !If [UseNginxSidecar, 8080, 3000]
         CloudWatchAlarms: !Sub
           - "${ELB5XXAlarm},${ELB4XXAnomalyAlarm}"
@@ -1325,12 +1406,9 @@ Resources:
           SecurityGroups:
             - !GetAtt ServiceDownSecurityGroup.GroupId
           Subnets:
-            - Fn::ImportValue:
-                !Sub "${VpcStackName}-PrivateSubnetIdA"
-            - Fn::ImportValue:
-                !Sub "${VpcStackName}-PrivateSubnetIdB"
-            - Fn::ImportValue:
-                !Sub "${VpcStackName}-PrivateSubnetIdC"
+            - Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdA"
+            - Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdB"
+            - Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdC"
       PropagateTags: SERVICE
       TaskDefinition: !Ref ServiceDownTaskDefinition
       Tags:
@@ -1368,8 +1446,7 @@ Resources:
           FromPort: 8080
           ToPort: 8080
       VpcId:
-        Fn::ImportValue:
-          !Sub "${VpcStackName}-VpcId"
+        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ServiceDownSecurityGroup"
@@ -1471,8 +1548,7 @@ Resources:
         HttpCode: "200"
       TargetType: ip
       VpcId:
-        Fn::ImportValue:
-          !Sub "${VpcStackName}-VpcId"
+        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ServiceDownLoadBalancerTargetGroup"
@@ -1492,7 +1568,12 @@ Resources:
         - UseSubEnvironment
         - !Sub "/ecs/${SubEnvironment}-service-down-page"
         - !Sub "/ecs/${Environment}-service-down-page"
-      RetentionInDays: !FindInMap [ EnvironmentConfiguration, !Ref Environment, cloudwatchLogRetentionInDays ]
+      RetentionInDays:
+        !FindInMap [
+          EnvironmentConfiguration,
+          !Ref Environment,
+          cloudwatchLogRetentionInDays,
+        ]
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ServiceDownTaskLogGroup"
@@ -1531,7 +1612,7 @@ Resources:
           - Fn::Select:
               - 4
               - Fn::Split:
-                  - '-'
+                  - "-"
                   - Fn::Select:
                       - 2
                       - Fn::Split:
@@ -1572,7 +1653,12 @@ Resources:
             Principal:
               AWS: !Sub
                 - "arn:aws:iam::${ElbAccountId}:root"
-                - ElbAccountId: !FindInMap [ ElasticLoadBalancerAccountIds, !Ref AWS::Region, AccountId ]
+                - ElbAccountId:
+                    !FindInMap [
+                      ElasticLoadBalancerAccountIds,
+                      !Ref AWS::Region,
+                      AccountId,
+                    ]
             Action:
               - s3:PutObject
             Resource: !Sub "${AccessLogsBucket.Arn}/AWSLogs/${AWS::AccountId}/*"
@@ -1616,7 +1702,12 @@ Resources:
         - UseSubEnvironment
         - !Sub "/ecs/${SubEnvironment}-frontend"
         - !Sub "/ecs/${Environment}-frontend"
-      RetentionInDays: !FindInMap [ EnvironmentConfiguration, !Ref Environment, cloudwatchLogRetentionInDays ]
+      RetentionInDays:
+        !FindInMap [
+          EnvironmentConfiguration,
+          !Ref Environment,
+          cloudwatchLogRetentionInDays,
+        ]
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-FrontendTaskLogGroup"
