@@ -3,7 +3,8 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "common/show-password/macro.njk" import govukInputWithShowPassword %}
+{% from "govuk/components/password-input/macro.njk" import govukPasswordInput %}
+
 {% set showBack = true %}
 {% set hrefBack = 'enter-email-create' %}
 {% set pageTitleName = 'pages.enterPasswordAccountExists.title' | translate %}
@@ -23,21 +24,25 @@
     <span class="govuk-body govuk-!-font-weight-bold">{{email}}</span>
 </p>
 
-<p class="govuk-body">{{'pages.enterPasswordAccountExists.info' | translate}}</p>
-    {{ govukInputWithShowPassword(
-        'pages.enterPasswordAccountExists.password.label' | translate,
-        "password",
-        errors,
-        {
-            show: 'general.showPassword.show' | translate,
-            hide: 'general.showPassword.hide' | translate,
-            showFullText: 'general.showPassword.showFullText' | translate,
-            hideFullText: 'general.showPassword.hideFullText' | translate,
-            announceShown: 'general.showPassword.announceShown' | translate,
-            announceHidden: 'general.showPassword.announceHidden' | translate
+<p class="govuk-body">{{ 'pages.enterPasswordAccountExists.info' | translate}}</p>
+
+    {{ govukPasswordInput({
+        label: {
+            text: "pages.enterPasswordAccountExists.password.label" | translate
         },
-        "off"
-    ) }}
+        id: "password",
+        name: "password",
+        autocomplete: "off",
+        showPasswordText: "general.showPassword.show" | translate,
+        hidePasswordText: "general.showPassword.hide" | translate,
+        showPasswordAriaLabelText: "general.showPassword.showFullText" | translate,
+        hidePasswordAriaLabelText: "general.showPassword.hideFullText" | translate,
+        passwordShownAnnouncementText: "general.showPassword.announceShown" | translate,
+        passwordHiddenAnnouncementText: "general.showPassword.announceHidden" | translate,
+        errorMessage: {
+            text: errors["password"].text
+        } if (errors["password"])
+    }) }}
 
     {{ govukButton({
         "text": "general.continue.label" | translate,
@@ -52,8 +57,4 @@
 </form>
 
 {{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "sign in", contentId: "a36232c7-2649-42f8-bf1e-e66ba151aa1c", loggedInStatus: false, dynamic: true })}}
-{% endblock %}
-
-{% block scripts %}
-    <script type="text/javascript" src="/public/scripts/showPassword.js"></script>
 {% endblock %}

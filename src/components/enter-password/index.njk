@@ -3,7 +3,8 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "common/show-password/macro.njk" import govukInputWithShowPasswordWithLabelAsPageHeading %}
+{% from "govuk/components/password-input/macro.njk" import govukPasswordInput %}
+
 {% if isReauthJourney === false or isReauthJourney === "false" %}
     {% set showBack = true %}
 {% endif %}
@@ -18,20 +19,23 @@
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="isReauthJourney" value="{{isReauthJourney}}"/>
 
-{{ govukInputWithShowPasswordWithLabelAsPageHeading(
-    'pages.enterPassword.header' | translate,
-    "password",
-    errors,
-    {
-        show: 'general.showPassword.show' | translate,
-        hide: 'general.showPassword.hide' | translate,
-        showFullText: 'general.showPassword.showFullText' | translate,
-        hideFullText: 'general.showPassword.hideFullText' | translate,
-        announceShown: 'general.showPassword.announceShown' | translate,
-        announceHidden: 'general.showPassword.announceHidden' | translate
+{{ govukPasswordInput({
+    label: {
+        text: "pages.enterPassword.header" | translate,
+        isPageHeading: true
     },
-    "off"
-) }}
+    id: "password",
+    name: "password",
+    showPasswordText: "general.showPassword.show" | translate,
+    hidePasswordText: "general.showPassword.hide" | translate,
+    showPasswordAriaLabelText: "general.showPassword.showFullText" | translate,
+    hidePasswordAriaLabelText: "general.showPassword.hideFullText" | translate,
+    passwordShownAnnouncementText: "general.showPassword.announceShown" | translate,
+    passwordHiddenAnnouncementText: "general.showPassword.announceHidden" | translate,
+    errorMessage: {
+        text: errors["password"].text
+    } if (errors["password"])
+}) }}
 
 {{ govukButton({
     "text": "general.continue.label" | translate,
@@ -46,8 +50,4 @@
 </form>
 
 {{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "sign in", contentId: "6b9f2243-d217-4c55-8ef3-7ac24b1f77e2", loggedInStatus: false, dynamic: true })}}
-{% endblock %}
-
-{% block scripts %}
-    <script type="text/javascript" src="/public/scripts/showPassword.js"></script>
 {% endblock %}
