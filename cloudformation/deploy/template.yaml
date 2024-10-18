@@ -151,6 +151,11 @@ Mappings:
       cloudfrontDistributionStackName: "authdev1-cloudfront"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENB3csRUIdoaTHNn079Jl7JpiXzxF
+        0p2ZIddCErxtIhGMTTqtbQZJCPesSKUVE/DQbpIko3mLoisuFgmQfFouCw==
+        -----END PUBLIC KEY-----
+      orchStubToAuthSigningPublicKey: |
+        -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEM0ZehmrdDd89uYEFMTakbS7JgwCG
         XK7CAYMcVvy1pP5yV4O2mnDjYmvjZpvio2ctgOPxDuBb38QP1HD9WAOR2w==
         -----END PUBLIC KEY-----
@@ -158,6 +163,11 @@ Mappings:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev2-basic-auth-sidecar-image-repository-containerrepository-zvcjtkip2sye"
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       orchToAuthSigningPublicKey: |
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/Yz722IDLN1mPqkPTihkwAkp/rUm
+        BhnWynwAkE/YZlskX+N7VmwIjupla7O6hczlIOqkmPdQ1ayDqI8yY2QOiw==
+        -----END PUBLIC KEY-----
+      orchStubToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwe8ey1GnTbH6E69EJFUkt4WQc1Kl
         tJwzOYNWUmK/+GxooRp+j9i9KWQ0WlV4gVI0iQkHY3ZKq+RWk94tSDHbyQ==
@@ -172,6 +182,11 @@ Mappings:
       cloudwatchLogRetentionInDays: 1
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHzG8IFx1jE1+Ul44jQk96efPknCX
+        VxWS4PqLrKfR/31UQovFQLfyxA46uiMOvr7+0hRwFX1fQhagsIK+dfB5PA==
+        -----END PUBLIC KEY-----
+      orchStubToAuthSigningPublicKey: |
+        -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1P2vcnCdqx+MDwMTrJy47tV5ryTf
         kRaZYTpLsfCpC79ZgKSYEBcguuOUP4DvJpyHomBEnxeUs7s5KRgyMQjY4g==
         -----END PUBLIC KEY-----
@@ -185,6 +200,11 @@ Mappings:
       cloudwatchLogRetentionInDays: 7
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENRdvNXHwk1TvrgFUsWXAE5oDTcPr
+        CBp6HxbvYDLsqwNHiDFEzCwvbXKY2QQR/Rtel0o156CtU9k1lCZJGAsSIA==
+        -----END PUBLIC KEY-----
+      orchStubToAuthSigningPublicKey: |
+        -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmzWAucozlF6eykmgikXj2kI03O7V
         WwuA51+3Ak+stF2dddC60WXEKhrFumKBUnE5GhJNg4v0iN948Mwl+vz5Xw==
         -----END PUBLIC KEY-----
@@ -197,6 +217,11 @@ Mappings:
       frontendTaskDefinitionMemory: 2048
       cloudwatchLogRetentionInDays: 7
       orchToAuthSigningPublicKey: |
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5PP1PZmhiuHR57ZEfZXARt9/uiG+
+        KKF+S7us4zEEEmEXZFR1H+kWP5RrLHQy9esxsul9X7V4pygDTY1I6QbMGg==
+        -----END PUBLIC KEY-----
+      orchStubToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEw3VqLzY6ZFWmqruOpvMpPH8PWuQQ
         1zSWSgFy2sngA1GKybC0zuZluGHfZMnr/BGo+teQzbDCekLijPvlozXY1g==
@@ -610,8 +635,33 @@ Resources:
                 - IsNotProduction
                 - !If
                   - UseSubEnvironment
+                  - !Sub "https://signin.${SubEnvironment}.sandpit.account.gov.uk/" # Use sandpit for now as oidc hasn't been migrated yet
+                  - !Sub "https://signin.${Environment}.account.gov.uk/"
+                - "https://signin.account.gov.uk/"
+            - Name: ORCH_STUB_TO_AUTH_SIGNING_KEY
+              Value: !If
+                - UseSubEnvironment
+                - !FindInMap [
+                    EnvironmentConfiguration,
+                    !Ref SubEnvironment,
+                    orchStubToAuthSigningPublicKey,
+                    DefaultValue: "",
+                  ]
+                - !FindInMap [
+                    EnvironmentConfiguration,
+                    !Ref Environment,
+                    orchStubToAuthSigningPublicKey,
+                    DefaultValue: "",
+                  ]
+            - Name: ORCH_STUB_TO_AUTH_CLIENT_ID
+              Value: orchestrationAuth
+            - Name: ORCH_STUB_TO_AUTH_AUDIENCE
+              Value: !If
+                - IsNotProduction
+                - !If
+                  - UseSubEnvironment
                   - !Sub "https://signin.${SubEnvironment}.${Environment}.account.gov.uk/"
-                  - !Sub "https://signin-sp.${Environment}.account.gov.uk/"
+                  - !Sub "https://signin.${Environment}.account.gov.uk/"
                 - "https://signin.account.gov.uk/"
             - Name: URL_FOR_SUPPORT_LINKS
               Value: !Sub
