@@ -1,4 +1,4 @@
-import { beforeEach, describe } from "mocha";
+import { afterEach, beforeEach, describe } from "mocha";
 import { expect, sinon } from "../utils/test-utils";
 import { startServer } from "../../src/app";
 import express from "express";
@@ -41,6 +41,47 @@ describe("app", () => {
         { staticPaths: [/^\/assets\/.*/, /^\/public\/.*/] }
       );
       server.close();
+    });
+  });
+
+  describe("applyOverloadProtection", () => {
+    beforeEach(() => {
+      decache("../../src/app");
+      sinon.stub(require("../../src/utils/redis"), "getRedisConfig").returns({
+        host: "redis-host",
+        port: Number("1234"),
+        password: "redis-password",
+        tls: true,
+      });
+      process.env.REDIS_KEY = "redis-key";
+    });
+
+    afterEach(() => {
+      sinon.restore();
+      delete process.env.REDIS_KEY;
+      delete process.env.NODE_ENV;
+    });
+
+    it("should not call applyOverloadProtection when the environment isn't staging", async () => {
+      process.env.NODE_ENV = "production";
+
+      const app = await require("../../src/app").createApp();
+
+      const hasOverloadProtection = app._router.stack.some(
+        (layer: { name: string }) => layer.name === "overloadProtection"
+      );
+      expect(hasOverloadProtection).to.eq(false);
+    });
+
+    it("should applyOverloadProtection when the environment is staging", async () => {
+      process.env.NODE_ENV = "staging";
+
+      const app = await require("../../src/app").createApp();
+
+      const hasOverloadProtection = app._router.stack.some(
+        (layer: { name: string }) => layer.name === "overloadProtection"
+      );
+      expect(hasOverloadProtection).to.eq(true);
     });
   });
 });
