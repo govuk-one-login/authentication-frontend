@@ -90,7 +90,6 @@ export function resetPasswordCheckEmailGet(
         email,
         currentPath: req.originalUrl,
         contentId: getContentId(req),
-        taxonomyLevel2: "account recovery",
       });
     }
 
@@ -147,7 +146,6 @@ export function resetPasswordResendCodeGet(req: Request, res: Response): void {
       email: req.session.user.email,
       support2hrLockout: support2hrLockout(),
       contentId: oplValues.resetPasswordResendCode.contentId,
-      taxonomyLevel2: "account recovery",
     }
   );
 }

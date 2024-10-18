@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Integration:: check your email should return error page when when incorrect code entered more than 5 times 1`] = `
+exports[`Integration:: check your email should return error page when incorrect code entered more than 5 times 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
@@ -16,42 +16,42 @@ Object {
 
 exports[`Integration:: check your email should return validation error when code entered contains letters 1`] = `
 Object {
-  "taxonomyLevel1": "accounts",
-  "taxonomyLevel2": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "create account",
 }
 `;
 
 exports[`Integration:: check your email should return validation error when code is greater than 6 characters 1`] = `
 Object {
-  "taxonomyLevel1": "accounts",
-  "taxonomyLevel2": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "create account",
 }
 `;
 
 exports[`Integration:: check your email should return validation error when code is less than 6 characters 1`] = `
 Object {
-  "taxonomyLevel1": "accounts",
-  "taxonomyLevel2": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "create account",
 }
 `;
 
 exports[`Integration:: check your email should return validation error when code not entered 1`] = `
 Object {
-  "taxonomyLevel1": "accounts",
-  "taxonomyLevel2": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "create account",
 }
 `;
 
 exports[`Integration:: check your email should return validation error when incorrect code entered 1`] = `
 Object {
-  "taxonomyLevel1": "accounts",
-  "taxonomyLevel2": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "create account",
 }
 `;
 
 exports[`Integration:: check your email should return verify email page 1`] = `
 Object {
-  "taxonomyLevel1": "accounts",
+  "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
 }
 `;
