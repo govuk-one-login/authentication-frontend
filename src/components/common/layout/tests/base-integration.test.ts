@@ -51,6 +51,27 @@ describe("Integration:: base page ", () => {
     app = undefined;
   });
 
+  it("should return the sign in or create page", async () => {
+    await setupApp(CHANNEL.WEB);
+    await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE).expect(200);
+  });
+
+  it("The footer should appear on the page when the channel is set to 'web'", async () => {
+    await setupApp(CHANNEL.WEB);
+    const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
+    expect(response.status).to.equal(200);
+    const $ = cheerio.load(response.text);
+    expect($(".govuk-footer").length).to.equal(1);
+  });
+
+  it("The footer should not appear on the page when the channel is set to 'strategic_app'", async () => {
+    await setupApp(CHANNEL.STRATEGIC_APP);
+    const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
+    expect(response.status).to.equal(200);
+    const $ = cheerio.load(response.text);
+    expect($(".govuk-footer").length).to.equal(0);
+  });
+
   it("The beta banner should appear on the page when the channel is set to 'web'", async () => {
     await setupApp(CHANNEL.WEB);
     const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
