@@ -661,7 +661,7 @@ Resources:
                 - !If
                   - UseSubEnvironment
                   - !Sub "https://signin.${SubEnvironment}.${Environment}.account.gov.uk/"
-                  - !Sub "https://signin.${Environment}.account.gov.uk/"
+                  - !Sub "https://signin-sp.${Environment}.account.gov.uk/"
                 - "https://signin.account.gov.uk/"
             - Name: URL_FOR_SUPPORT_LINKS
               Value: !Sub
