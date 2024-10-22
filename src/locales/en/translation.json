@@ -487,12 +487,6 @@
     "securityRequestsExceededExpired": {
       "title": "You asked to resend the security code too many times",
       "header": "You asked to resend the security code too many times",
-      "info_old": {
-        "paragraph1": "You need to wait 15 minutes.",
-        "paragraph2Start": "You can then ",
-        "link": "get a new code",
-        "paragraph2End": " and try again."
-      },
       "info": {
         "paragraph1": "You will not be able to continue for 2 hours.",
         "subHeading": "What you can do",
