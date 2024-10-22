@@ -53,7 +53,7 @@ export function sendEmailOtp(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
           newCodeLink: PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
-          show2HrScreen: support2hrLockout(),
+          show2HrScreen: true,
         }
       );
     }

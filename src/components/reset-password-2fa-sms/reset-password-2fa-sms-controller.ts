@@ -20,7 +20,6 @@ import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
-import { support2hrLockout } from "../../config";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 import { isLocked } from "../../utils/lock-helper";
 
@@ -43,7 +42,7 @@ export function resetPassword2FASmsGet(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
           newCodeLink: PATH_NAMES.RESET_PASSWORD_2FA_SMS,
-          show2HrScreen: support2hrLockout(),
+          show2HrScreen: true,
         }
       );
     }
@@ -82,7 +81,7 @@ export function resetPassword2FASmsGet(
             newCodeLink: getNewCodePath(
               req.query.actionType as SecurityCodeErrorType
             ),
-            show2HrScreen: support2hrLockout(),
+            show2HrScreen: true,
             isAccountCreationJourney: false,
           }
         );

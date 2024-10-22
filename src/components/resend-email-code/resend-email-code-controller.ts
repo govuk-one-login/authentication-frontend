@@ -24,9 +24,8 @@ export function resendEmailCodeGet(req: Request, res: Response): void {
 
     let show2HrScreen = false;
     if (
-      support2hrLockout() &&
-      (req.session.user.isPasswordResetJourney ||
-        req.session.user.isAccountRecoveryJourney)
+      req.session.user.isPasswordResetJourney ||
+      req.session.user.isAccountRecoveryJourney
     ) {
       show2HrScreen = true;
     }

@@ -24,7 +24,6 @@ import {
 import { BadRequestError } from "../../utils/error";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
-import { support2hrLockout } from "../../config";
 import { isLocked } from "../../utils/lock-helper";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";

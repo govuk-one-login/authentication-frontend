@@ -63,7 +63,7 @@ export function resetPasswordCheckEmailGet(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
           newCodeLink,
-          show2HrScreen: support2hrLockout(),
+          show2HrScreen: true,
         }
       );
     }
