@@ -21,7 +21,7 @@ export function getAppEnv(): string {
 }
 
 export function getSessionExpiry(): number {
-  return Number(process.env.SESSION_EXPIRY);
+  return Number(process.env.SESSION_EXPIRY) || 3600000;
 }
 
 export function getSessionSecret(): string {
