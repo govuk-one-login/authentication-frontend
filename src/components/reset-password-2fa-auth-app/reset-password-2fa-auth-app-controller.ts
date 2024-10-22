@@ -14,10 +14,7 @@ import {
   renderBadRequest,
 } from "../../utils/validation";
 import { BadRequestError } from "../../utils/error";
-import {
-  getCodeEnteredWrongBlockDurationInMinutes,
-  support2hrLockout,
-} from "../../config";
+import { getCodeEnteredWrongBlockDurationInMinutes } from "../../config";
 import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper";
 
 const TEMPLATE_NAME = "reset-password-2fa-auth-app/index.njk";
@@ -29,7 +26,7 @@ export function resetPassword2FAAuthAppGet(): ExpressRouteFunc {
         {
           newCodeLink: PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP,
           isAuthApp: true,
-          show2HrScreen: support2hrLockout(),
+          show2HrScreen: true,
         }
       );
     }

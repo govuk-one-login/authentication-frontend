@@ -13,7 +13,7 @@ import {
   pathWithQueryParam,
   SecurityCodeErrorType,
 } from "../common/constants";
-import { support2hrLockout, supportAccountRecovery } from "../../config";
+import { supportAccountRecovery } from "../../config";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
 import { BadRequestError } from "../../utils/error";
@@ -33,15 +33,12 @@ export function enterMfaGet(
   return async function (req: Request, res: Response) {
     const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
 
-    if (
-      support2hrLockout() &&
-      isLocked(req.session.user.wrongCodeEnteredLock)
-    ) {
+    if (isLocked(req.session.user.wrongCodeEnteredLock)) {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
           newCodeLink: PATH_NAMES.ENTER_MFA,
-          show2HrScreen: support2hrLockout(),
+          show2HrScreen: true,
         }
       );
     }

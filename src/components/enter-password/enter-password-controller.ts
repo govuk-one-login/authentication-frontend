@@ -220,7 +220,7 @@ export function enterPasswordPost(
           return res.render(
             "security-code-error/index-security-code-entered-exceeded.njk",
             {
-              show2HrScreen: support2hrLockout(),
+              show2HrScreen: true,
               contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
               taxonomyLevel2: isAccountCreationJourney
                 ? "create account"
