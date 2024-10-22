@@ -50,7 +50,6 @@ export function enterMfaGet(
         newCodeLink: getNewCodePath(
           req.query.actionType as SecurityCodeErrorType
         ),
-        support2hrLockout: support2hrLockout(),
         isAccountCreationJourney: false,
       });
     }

@@ -194,7 +194,6 @@ export function enterEmailCreatePost(
           newCodeLink: getNewCodePath(
             req.query.actionType as SecurityCodeErrorType
           ),
-          support2hrLockout: support2hrLockout(),
           isAccountCreationJourney: true,
         });
       }

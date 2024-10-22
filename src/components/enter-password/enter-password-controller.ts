@@ -213,9 +213,7 @@ export function enterPasswordPost(
 
       if (!result.success) {
         if (result.data.code === ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
-          return res.render("security-code-error/index-wait.njk", {
-            support2hrLockout: support2hrLockout(),
-          });
+          return res.render("security-code-error/index-wait.njk");
         }
 
         if (result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {

@@ -167,7 +167,6 @@ describe("enter phone number controller", () => {
           "security-code-error/index-wait.njk",
           {
             newCodeLink: undefined,
-            support2hrLockout: true,
             isAccountCreationJourney: true,
           }
         );
@@ -202,7 +201,6 @@ describe("enter phone number controller", () => {
           "security-code-error/index-wait.njk",
           {
             newCodeLink: undefined,
-            support2hrLockout: true,
             isAccountCreationJourney: true,
           }
         );

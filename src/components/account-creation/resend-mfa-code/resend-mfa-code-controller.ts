@@ -50,7 +50,6 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
       newCodeLink,
       contentId: oplValues.indexWait.contentId,
       taxonomyLevel2: oplValues.indexWait.taxonomyLevel2,
-      support2hrLockout: support2hrLockout(),
       isAccountCreationJourney: req.session.user.isAccountCreationJourney,
     });
   } else {

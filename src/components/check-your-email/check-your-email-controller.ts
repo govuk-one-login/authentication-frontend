@@ -45,7 +45,6 @@ export function checkYourEmailGet(req: Request, res: Response): void {
       newCodeLink: getNewCodePath(
         req.query.actionType as SecurityCodeErrorType
       ),
-      support2hrLockout: support2hrLockout(),
       isAccountCreationJourney: true,
     });
   }
