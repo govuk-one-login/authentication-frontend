@@ -49,7 +49,7 @@ describe("security code controller", () => {
           ),
           isAuthApp: false,
           isBlocked: false,
-          show2HrScreen: false,
+          show2HrScreen: true,
           contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
           taxonomyLevel2: "sign in",
         },
