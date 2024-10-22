@@ -145,7 +145,6 @@ export function resetPasswordResendCodeGet(req: Request, res: Response): void {
     "reset-password-check-email/index-reset-password-resend-code.njk",
     {
       email: req.session.user.email,
-      support2hrLockout: support2hrLockout(),
       contentId: oplValues.resetPasswordResendCode.contentId,
       taxonomyLevel2: "account recovery",
     }
