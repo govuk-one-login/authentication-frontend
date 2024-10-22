@@ -4,9 +4,12 @@
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "frontend-language-toggle/macro.njk" import languageSelect %}
+{% from "../header/macro.njk" import strategicAppHeader %}
+
 {% if strategicAppChannel == true %}
   {% set htmlClasses = 'govuk-template__mobile' %}
 {% endif %}
+
 {% block head %}
 
     <!--[if !IE 8]><!-->
@@ -48,10 +51,16 @@
 {% endblock %}
 
 {% block header %}
+    {% if strategicAppChannel %}
+    {{ strategicAppHeader({
+        useTudorCrown: true
+    })}}
+    {% else %}
     {{ govukHeader({
         homepageUrl: 'general.header.homepageHref' | translate,
         useTudorCrown: true
-    }) }}
+    })}}
+    {% endif %}
 {% endblock %}
 
 {% set phaseBannerText %}

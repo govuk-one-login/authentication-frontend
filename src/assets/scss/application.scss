@@ -239,3 +239,10 @@
 .govuk-template__mobile {
   background-color: $govuk-body-background-colour;
 }
+
+.strategic-app-header {
+  &:hover {
+    text-decoration: none;
+    border-bottom: 0;
+  }
+}
