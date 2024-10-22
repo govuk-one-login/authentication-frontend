@@ -66,7 +66,6 @@ export function enterSignInRetryBlockedGet(
     ) {
       return res.render("enter-password/index-sign-in-retry-blocked.njk", {
         newLink: "/sign-in-retry-blocked",
-        support2hrLockout: support2hrLockout(),
       });
     }
 
