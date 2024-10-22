@@ -1721,16 +1721,11 @@
     "accountLocked": {
       "title": "You entered the wrong password too many times",
       "header": "You entered the wrong password too many times",
-      "paragraph_old": "You’ve been locked out of your GOV.UK One Login because you entered the wrong password more than 5 times. This is to keep your GOV.UK One Login secure.",
       "paragraph": "You will not be able to sign in for 2 hours, because you entered the wrong password more than 5 times. This is to keep your GOV.UK One Login secure.",
-      "subHeader_old": "What next",
       "subHeader": "What you can do",
       "bulletPointSection": {
         "title": "You can:",
-        "first_old": "wait 15 minutes and ",
         "first": "reset your password",
-        "firstLink_old": "try to sign in again",
-        "second_old": "reset your password",
         "second": "wait 2 hours, then go back to the service you were trying to use and start again. You can look for the service using your search engine or find it from the GOV.UK homepage"
       }
     },
