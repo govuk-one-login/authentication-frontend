@@ -501,18 +501,10 @@
       }
     },
     "securityCodeWaitToRequest": {
-      "title_old": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
       "title": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
-      "header_old": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
       "header": "Ni allwch fewngofnodi ar hyn o bryd ",
       "header_create": "Ni allwch greu GOV.UK One Login ar hyn o bryd ",
       "title_create": "Ni allwch greu GOV.UK One Login ar hyn o bryd ",
-      "info_old": {
-        "paragraph1": "Mae hyn oherwydd eich bod wedi gofyn i ailanfon cod diogelwch ormod o weithiau.",
-        "paragraph2Start": "Gallwch ",
-        "link": "gael cod newydd",
-        "paragraph2End": " ar ôl 15 munud."
-      },
       "info": {
         "paragraph1": "Mae hyn oherwydd eich bod wedi gofyn i ail-anfon y cod diogelwch gormod o weithiau y tro diwethaf i chi geisio mewngofnodi.",
         "paragraph1_create": "Mae hyn oherwydd eich bod wedi gofyn i ail-anfon y cod diogelwch gormod o weithiau.",

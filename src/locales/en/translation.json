@@ -501,18 +501,10 @@
       }
     },
     "securityCodeWaitToRequest": {
-      "title_old": "You cannot get a new security code at the moment ",
       "title": "You cannot sign in at the moment ",
-      "header_old": "You cannot get a new security code at the moment ",
       "header": "You cannot sign in at the moment ",
       "header_create": "You cannot create a GOV.UK One Login at the moment ",
       "title_create": "You cannot create a GOV.UK One Login at the moment ",
-      "info_old": {
-        "paragraph1": "This is because you asked to resend the security code too many times.",
-        "paragraph2Start": "You can ",
-        "link": "get a new code",
-        "paragraph2End": " after 15 minutes."
-      },
       "info": {
         "paragraph1": "This is because you asked to resend the security code too many times the last time you tried to sign in.",
         "paragraph1_create": "This is because you asked to resend the security code too many times.",

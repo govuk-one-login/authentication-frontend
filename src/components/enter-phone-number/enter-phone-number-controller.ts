@@ -101,7 +101,6 @@ export function enterPhoneNumberPost(
           newCodeLink: getNewCodePath(
             req.query.actionType as SecurityCodeErrorType
           ),
-          support2hrLockout: support2hrLockout(),
           isAccountCreationJourney:
             req.session.user.isAccountCreationJourney ||
             req.session.user.isAccountPartCreated,

@@ -52,7 +52,6 @@ export function resetPassword2FASmsGet(
         newCodeLink: getNewCodePath(
           req.query.actionType as SecurityCodeErrorType
         ),
-        support2hrLockout: support2hrLockout(),
         isAccountCreationJourney: false,
       });
     }
@@ -73,7 +72,6 @@ export function resetPassword2FASmsGet(
           newCodeLink: getNewCodePath(
             req.query.actionType as SecurityCodeErrorType
           ),
-          support2hrLockout: support2hrLockout(),
           isAccountCreationJourney: false,
         });
       }

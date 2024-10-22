@@ -28,7 +28,6 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
       : "/resend-code";
     res.render("security-code-error/index-wait.njk", {
       newCodeLink,
-      support2hrLockout: support2hrLockout(),
     });
   } else {
     const journeyType = getJourneyTypeFromUserSession(req.session.user, {

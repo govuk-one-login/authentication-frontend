@@ -123,7 +123,7 @@ describe("Integration::reset password check email ", () => {
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($(".govuk-heading-l").text()).to.contains(
-            "You cannot get a new security code at the moment"
+            "You cannot sign in at the moment"
           );
         })
         .expect(200)

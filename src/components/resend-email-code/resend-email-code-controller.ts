@@ -120,7 +120,6 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
         : "/security-code-check-time-limit";
       return res.render("security-code-error/index-wait.njk", {
         newCodeLink,
-        support2hrLockout: support2hrLockout(),
       });
     }
 

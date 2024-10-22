@@ -96,7 +96,6 @@ describe("resend email controller", () => {
         "security-code-error/index-wait.njk",
         {
           newCodeLink: "/security-code-check-time-limit",
-          support2hrLockout: support2hrLockout(),
         }
       );
     });

@@ -38,7 +38,6 @@ export function checkYourPhoneGet(req: Request, res: Response): void {
   if (isLocked(req.session.user.codeRequestLock)) {
     return res.render("security-code-error/index-wait.njk", {
       newCodeLink: RESEND_CODE_LINK,
-      support2hrLockout: support2hrLockout(),
       isAccountCreationJourney: req.session.user.isAccountCreationJourney,
     });
   }
