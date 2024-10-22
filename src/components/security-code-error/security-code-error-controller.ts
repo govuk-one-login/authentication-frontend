@@ -11,7 +11,6 @@ import {
   getCodeRequestBlockDurationInMinutes,
   getPasswordResetCodeEnteredWrongBlockDurationInMinutes,
   getReducedBlockDurationInMinutes,
-  support2hrLockout,
 } from "../../config";
 import { UserSession } from "../../types";
 import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper";
@@ -44,9 +43,10 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
 
   setBlockDurationIfRequired(req, actionType, isEmailCode);
 
-  const show2HrScreen =
-    support2hrLockout() &&
-    isJourneyWhere2HourLockoutScreenShown(req.session.user, isEmailCode);
+  const show2HrScreen = isJourneyWhere2HourLockoutScreenShown(
+    req.session.user,
+    isEmailCode
+  );
 
   return res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(
