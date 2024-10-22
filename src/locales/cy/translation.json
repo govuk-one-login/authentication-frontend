@@ -487,12 +487,6 @@
     "securityRequestsExceededExpired": {
       "title": "Rydych wedi gofyn i ailanfon y cod diogelwch gormod o weithiau",
       "header": "Rydych wedi gofyn i ailanfon y cod diogelwch gormod o weithiau",
-      "info_old": {
-        "paragraph1": "Mae angen i chi aros am 15 munud.",
-        "paragraph2Start": "Yna gallwch ",
-        "link": "gael cod newydd",
-        "paragraph2End": " a rhoi cynnig arall."
-      },
       "info": {
         "paragraph1": "Ni fyddwch yn gallu parhau am 2 awr.",
         "subHeading": "Beth allwch chi ei wneud",

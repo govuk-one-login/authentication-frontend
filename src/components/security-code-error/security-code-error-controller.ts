@@ -80,7 +80,6 @@ export function securityCodeTriesExceededGet(
     ),
     isResendCodeRequest: req.query.isResendCodeRequest,
     isAccountCreationJourney: req.session.user?.isAccountCreationJourney,
-    support2hrLockout: support2hrLockout(),
     contentId: oplValues.requestedTooManyTimes.contentId,
     taxonomyLevel2: isAccountCreationJourney ? "create account" : "sign in",
   });
@@ -94,7 +93,6 @@ export function securityCodeCannotRequestCodeGet(
 
   res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
-    support2hrLockout: support2hrLockout(),
     contentId: oplValues.mfaBlocked.contentId,
     taxonomyLevel2: isAccountCreationJourney ? "create account" : "sign in",
   });
