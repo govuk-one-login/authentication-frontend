@@ -103,7 +103,6 @@ describe("Integration::enter password", () => {
 
   it("should return validation error when password is incorrect", async () => {
     nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(401);
-    process.env.SUPPORT_2HR_LOCKOUT = "0";
 
     await request(app, (test) =>
       test
