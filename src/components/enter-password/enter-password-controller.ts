@@ -42,7 +42,9 @@ export function enterPasswordGet(req: Request, res: Response): void {
     getJourneyTypeFromUserSession(req.session.user, {
       includeReauthentication: true,
     }) == JOURNEY_TYPE.REAUTHENTICATION;
-  res.render(ENTER_PASSWORD_TEMPLATE, { isReauthJourney: isReauthJourney });
+  res.render(ENTER_PASSWORD_TEMPLATE, {
+    isReauthJourney: isReauthJourney,
+  });
 }
 
 export function enterSignInRetryBlockedGet(
@@ -101,7 +103,6 @@ export function enterPasswordPost(
   accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { isAccountCreationJourney } = req.session.user;
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
@@ -224,9 +225,6 @@ export function enterPasswordPost(
             {
               show2HrScreen: support2hrLockout(),
               contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
-              taxonomyLevel2: isAccountCreationJourney
-                ? "create account"
-                : "sign in",
             }
           );
         }
