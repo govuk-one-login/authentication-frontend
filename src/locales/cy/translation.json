@@ -272,7 +272,6 @@
         "label": "Cyfrinair",
         "validationError": {
           "required": "Rhowch eich cyfrinair",
-          "incorrectPassword_old": "Rhowch y cyfrinair cywir",
           "incorrectPassword": "Nid yw’r cyfrinair rydych wedi’i roi yn gywir. Os ydych wedi anghofio eich cyfrinair, gallwch ei ailosod"
         }
       },
@@ -289,7 +288,6 @@
         "label": "Cyfrinair",
         "validationError": {
           "required": "Rhowch eich cyfrinair",
-          "incorrectPassword_old": "Rhowch y cyfrinair cywir",
           "incorrectPassword": "Nid yw’r cyfrinair rydych wedii roi yn gywir. Os ydych wedi anghofio eich cyfrinair, gallwch ei ailosod"
         }
       },

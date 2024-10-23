@@ -115,7 +115,7 @@ describe("Integration::enter password", () => {
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#password-error").text()).to.contains(
-            "Enter the correct password"
+            "The password you entered is not correct"
           );
         })
         .expect(400)
