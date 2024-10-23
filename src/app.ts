@@ -16,6 +16,7 @@ import i18next from "i18next";
 import Backend from "i18next-fs-backend";
 
 import {
+  getAppEnv,
   getLanguageToggleEnabled,
   getNodeEnv,
   getSessionExpiry,
@@ -93,6 +94,7 @@ import { setCurrentUrlMiddleware } from "./middleware/current-url-middleware";
 import { getRedisConfig } from "./utils/redis";
 import { csrfMissingHandler } from "./handlers/csrf-missing-handler";
 import { channelMiddleware } from "./middleware/channel-middleware";
+import { applyOverloadProtection } from "./middleware/overload-protection-middleware";
 import { frontendVitalSignsInit } from "@govuk-one-login/frontend-vital-signs";
 import { Server } from "node:http";
 
@@ -160,6 +162,10 @@ async function createApp(): Promise<express.Application> {
 
   app.use(loggerMiddleware);
   app.use(healthcheckRouter);
+  if (getAppEnv() === "staging") {
+    const protect = applyOverloadProtection(isProduction);
+    app.use(protect);
+  }
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(noCacheMiddleware);
