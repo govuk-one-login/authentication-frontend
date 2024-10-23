@@ -699,8 +699,6 @@ Resources:
               Value: 1
             - Name: EMAIL_ENTERED_WRONG_BLOCKED_MINUTES
               Value: 1
-            - Name: SUPPORT_2HR_LOCKOUT
-              Value: 1
             - Name: NO_PHOTO_ID_CONTACT_FORMS
               Value: 1
             - Name: SUPPORT_CHECK_EMAIL_FRAUD
