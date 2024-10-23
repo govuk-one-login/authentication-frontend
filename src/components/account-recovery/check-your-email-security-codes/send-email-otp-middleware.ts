@@ -9,7 +9,6 @@ import { ERROR_CODES, getErrorPathByCode } from "../../common/constants";
 import { BadRequestError } from "../../../utils/error";
 import xss from "xss";
 import { ExpressRouteFunc } from "../../../types";
-import { support2hrLockout } from "../../../config";
 
 export function sendEmailOtp(
   notificationService = sendNotificationService()
@@ -45,9 +44,8 @@ export function sendEmailOtp(
       return res.render("security-code-error/index-wait.njk");
     }
     if (
-      support2hrLockout() &&
       sendNotificationResponse.data?.code ===
-        ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_INVALID_CODE
+      ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_INVALID_CODE
     ) {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
