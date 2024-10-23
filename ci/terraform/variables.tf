@@ -265,12 +265,6 @@ variable "orch_stub_to_auth_audience" {
 variable "dynatrace_secret_arn" {
 }
 
-variable "support_2hr_lockout" {
-  description = "When true enables 2hr lockout"
-  type        = string
-  default     = "0"
-}
-
 variable "no_photo_id_contact_forms" {
   description = "When true enables no photo id contact forms"
   type        = string
