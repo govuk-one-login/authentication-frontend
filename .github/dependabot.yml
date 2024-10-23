@@ -10,6 +10,19 @@ updates:
       - dependency-name: "node"
         versions: ["17.x", "19.x", "20.x"]
     groups:
+      npm-aws-dependencies:
+        patterns:
+          - "@aws-sdk/*"
+      npm-express-dependencies:
+        patterns:
+          - "express"
+          - "express-session"
+          - "express-validator"
+          - "@types/express"
+          - "@types/express-session"
+      npm-otplib-dependencies:
+        patterns:
+          - "@otplib/*"
       npm-patch-dependencies:
         update-types:
           - patch
