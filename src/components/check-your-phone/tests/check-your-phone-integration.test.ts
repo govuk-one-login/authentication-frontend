@@ -21,8 +21,6 @@ describe("Integration:: check your phone", () => {
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
 
-    process.env.SUPPORT_2HR_LOCKOUT = "1";
-
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
@@ -55,7 +53,6 @@ describe("Integration:: check your phone", () => {
   });
 
   after(() => {
-    process.env.SUPPORT_2HR_LOCKOUT = "0";
     sinon.restore();
     app = undefined;
   });
