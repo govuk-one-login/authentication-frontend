@@ -224,13 +224,19 @@ function isJourneyWhere2HourLockoutScreenShown(
   user: UserSession,
   isEmailCode: boolean
 ): boolean {
+  const isStandardSignInJourney =
+    user.isSignInJourney &&
+    !user.isAccountPartCreated &&
+    !user.isAccountRecoveryJourney;
+  const isPasswordResetJourney = user.isPasswordResetJourney;
+  const isAccountRecoveryEmail = isEmailCode && user.isAccountRecoveryJourney;
+  const isNonAccountCreationEmail =
+    isEmailCode && !user.isAccountCreationJourney;
   return (
-    (user.isSignInJourney &&
-      !user.isAccountPartCreated &&
-      !user.isAccountRecoveryJourney) ||
-    user.isPasswordResetJourney ||
-    (isEmailCode && !user.isAccountCreationJourney) ||
-    (isEmailCode && user.isAccountRecoveryJourney) ||
+    isStandardSignInJourney ||
+    isPasswordResetJourney ||
+    isNonAccountCreationEmail ||
+    isAccountRecoveryEmail ||
     false
   );
 }
