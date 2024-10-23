@@ -14,5 +14,5 @@
     "typeRoots": ["@types", "/node_modules/@types"]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["test", "coverage", "src/components/**/tests"]
+  "exclude": ["test", "coverage", "src/**/tests", "src/**/*.test.ts"]
 }
