@@ -7,11 +7,15 @@ import { ERROR_CODES } from "../common/constants";
 import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
-import { NOTIFICATION_TYPE } from "../../app.constants";
+import {
+  NOTIFICATION_TYPE,
+  WEB_TO_MOBILE_TEMPLATE_MAPPINGS,
+} from "../../app.constants";
 import { support2hrLockout } from "../../config";
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { isLocked } from "../../utils/lock-helper";
+import { getChannelSpecificTemplate } from "../../utils/get-channel-specific-template";
 
 const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
@@ -117,7 +121,13 @@ export function resetPasswordCheckEmailGet(
         errorTemplate = "security-code-error/index-wait.njk";
       }
 
-      return res.render(errorTemplate, {
+      const channelSpecificErrorTemplate = getChannelSpecificTemplate(
+        errorTemplate,
+        res.locals.strategicAppChannel,
+        WEB_TO_MOBILE_TEMPLATE_MAPPINGS
+      );
+
+      return res.render(channelSpecificErrorTemplate, {
         support2hrLockout: support2hrLockout(),
         show2HrScreen: support2hrLockout(),
       });

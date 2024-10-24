@@ -4,7 +4,10 @@ import {
   SECURITY_CODE_ERROR,
   SecurityCodeErrorType,
 } from "../common/constants";
-import { PATH_NAMES } from "../../app.constants";
+import {
+  PATH_NAMES,
+  WEB_TO_MOBILE_TEMPLATE_MAPPINGS,
+} from "../../app.constants";
 import {
   getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes,
   getCodeEnteredWrongBlockDurationInMinutes,
@@ -15,6 +18,7 @@ import {
 } from "../../config";
 import { UserSession } from "../../types";
 import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper";
+import { getChannelSpecificTemplate } from "../../utils/get-channel-specific-template";
 
 const oplValues = {
   mfaMaxRetries: {
@@ -73,7 +77,13 @@ export function securityCodeTriesExceededGet(
 
   const { isAccountCreationJourney } = req.session.user;
 
-  return res.render("security-code-error/index-too-many-requests.njk", {
+  const template = getChannelSpecificTemplate(
+    "security-code-error/index-too-many-requests.njk",
+    res.locals.strategicAppChannel,
+    WEB_TO_MOBILE_TEMPLATE_MAPPINGS
+  );
+
+  return res.render(template, {
     newCodeLink: getNewCodePath(
       req.query.actionType as SecurityCodeErrorType,
       req.session.user.isAccountCreationJourney
