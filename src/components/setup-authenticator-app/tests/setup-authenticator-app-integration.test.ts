@@ -1,7 +1,7 @@
 import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import decache from "decache";
 import {
   API_ENDPOINTS,

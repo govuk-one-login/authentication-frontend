@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { expect, sinon, request } from "../../../../../test/utils/test-utils";
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import decache from "decache";
 import { PATH_NAMES, ANALYTICS_COOKIES } from "../../../../app.constants";
 
