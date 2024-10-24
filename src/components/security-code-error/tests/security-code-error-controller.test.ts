@@ -87,6 +87,45 @@ describe("security code controller", () => {
         });
       }
     );
+
+    describe("where the channel is Strategic App", () => {
+      let req: RequestOutput;
+      let res: ResponseOutput;
+
+      beforeEach(() => {
+        req = createMockRequest(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
+        res = mockResponse();
+        res.locals.strategicAppChannel = true;
+      });
+
+      afterEach(() => {
+        sinon.restore();
+      });
+
+      TEST_SCENARIO_PARAMETERS_FOR_SECURITY_CODE_TRIES_EXCEEDED_GET.forEach(
+        function (params) {
+          it(`should render index-too-many-requests-mobile.njk for ${params.actionType} when max number of codes have been sent`, () => {
+            req.query.actionType = params.actionType;
+            req.session.user.isAccountCreationJourney =
+              params.isAccountCreationJourney;
+
+            securityCodeTriesExceededGet(req as Request, res as Response);
+
+            expect(res.render).to.have.calledWith(
+              "security-code-error/index-too-many-requests-mobile.njk",
+              {
+                newCodeLink: params.newCodeLink,
+                isResendCodeRequest: undefined,
+                isAccountCreationJourney: params.isAccountCreationJourney,
+                support2hrLockout: false,
+                contentId: params.contentId,
+                taxonomyLevel2: params.taxonomyLevel2,
+              }
+            );
+          });
+        }
+      );
+    });
   });
 
   describe("securityCodeCannotRequestGet", () => {
