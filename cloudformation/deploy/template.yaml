@@ -615,7 +615,7 @@ Resources:
                   - UseSubEnvironment
                   - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
                   - !Sub "signin-sp.${Environment}.account.gov.uk"
-                - "signin.account.gov.uk"
+                - "signin-sp.account.gov.uk"
             - Name: GTM_ID
               Value: GTM-TK92W68
             - Name: SUPPORT_AUTHORIZE_CONTROLLER
@@ -874,7 +874,10 @@ Resources:
                 - Name: NGINX_PORT
                   Value: "8080"
                 - Name: NGINX_HOST
-                  Value: !Sub "signin-sp.${Environment}.account.gov.uk"
+                  Value: !If
+                    - IsNotProduction
+                    - !Sub "signin-sp.${Environment}.account.gov.uk"
+                    - "signin-sp.account.gov.uk"
               Secrets:
                 - Name: BASIC_AUTH_USERNAME
                   ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_username"
@@ -1042,9 +1045,12 @@ Resources:
     Type: AWS::Route53::RecordSet
     Properties:
       Name: !If
-        - UseSubEnvironment
-        - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
-        - !Sub "signin-sp.${Environment}.account.gov.uk"
+        - IsNotProduction
+        - !If
+          - UseSubEnvironment
+          - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
+          - !Sub "signin-sp.${Environment}.account.gov.uk"
+        - "signin-sp.account.gov.uk"
       Type: A
       HostedZoneId: !Sub
         - "{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}"
@@ -1171,9 +1177,12 @@ Resources:
     Type: AWS::Route53::RecordSet
     Properties:
       Name: !If
-        - UseSubEnvironment
-        - !Sub "origin.signin.${SubEnvironment}.${Environment}.account.gov.uk"
-        - !Sub "origin.signin-sp.${Environment}.account.gov.uk"
+        - IsNotProduction
+        - !If
+          - UseSubEnvironment
+          - !Sub "origin.signin.${SubEnvironment}.${Environment}.account.gov.uk"
+          - !Sub "origin.signin-sp.${Environment}.account.gov.uk"
+        - "origin.signin-sp.account.gov.uk"
       Type: A
       HostedZoneId: !Sub
         - "{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}"
