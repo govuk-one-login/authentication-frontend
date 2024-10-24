@@ -8,7 +8,6 @@ import { VerifyCodeInterface } from "../common/verify-code/types";
 import { codeService } from "../common/verify-code/verify-code-service";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller";
 import { NOTIFICATION_TYPE } from "../../app.constants";
-import { support2hrLockout } from "../../config";
 import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { isLocked } from "../../utils/lock-helper";
@@ -63,7 +62,7 @@ export function resetPasswordCheckEmailGet(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
           newCodeLink,
-          show2HrScreen: support2hrLockout(),
+          show2HrScreen: true,
         }
       );
     }
@@ -118,8 +117,7 @@ export function resetPasswordCheckEmailGet(
       }
 
       return res.render(errorTemplate, {
-        support2hrLockout: support2hrLockout(),
-        show2HrScreen: support2hrLockout(),
+        show2HrScreen: true,
       });
     } else {
       throw new BadRequestError(result.data.message, result.data.code);
@@ -145,7 +143,6 @@ export function resetPasswordResendCodeGet(req: Request, res: Response): void {
     "reset-password-check-email/index-reset-password-resend-code.njk",
     {
       email: req.session.user.email,
-      support2hrLockout: support2hrLockout(),
       contentId: oplValues.resetPasswordResendCode.contentId,
       taxonomyLevel2: "account recovery",
     }

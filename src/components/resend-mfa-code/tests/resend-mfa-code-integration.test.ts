@@ -93,7 +93,6 @@ describe("Integration:: resend mfa code", () => {
   });
 
   it("should state user could be locked out", async () => {
-    process.env.SUPPORT_2HR_LOCKOUT = "1";
     await request(app, (test) =>
       test
         .get(PATH_NAMES.RESEND_MFA_CODE)
@@ -107,7 +106,6 @@ describe("Integration:: resend mfa code", () => {
 
   it("should state reauthenticating user could be logged out", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
-    process.env.SUPPORT_2HR_LOCKOUT = "1";
     await request(app, (test) =>
       test
         .get(PATH_NAMES.RESEND_MFA_CODE)

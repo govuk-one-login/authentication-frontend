@@ -11,7 +11,6 @@ import {
   getCodeRequestBlockDurationInMinutes,
   getPasswordResetCodeEnteredWrongBlockDurationInMinutes,
   getReducedBlockDurationInMinutes,
-  support2hrLockout,
 } from "../../config";
 import { UserSession } from "../../types";
 import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper";
@@ -44,9 +43,10 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
 
   setBlockDurationIfRequired(req, actionType, isEmailCode);
 
-  const show2HrScreen =
-    support2hrLockout() &&
-    isJourneyWhere2HourLockoutScreenShown(req.session.user, isEmailCode);
+  const show2HrScreen = isJourneyWhere2HourLockoutScreenShown(
+    req.session.user,
+    isEmailCode
+  );
 
   return res.render("security-code-error/index.njk", {
     newCodeLink: getNewCodePath(
@@ -80,7 +80,6 @@ export function securityCodeTriesExceededGet(
     ),
     isResendCodeRequest: req.query.isResendCodeRequest,
     isAccountCreationJourney: req.session.user?.isAccountCreationJourney,
-    support2hrLockout: support2hrLockout(),
     contentId: oplValues.requestedTooManyTimes.contentId,
     taxonomyLevel2: isAccountCreationJourney ? "create account" : "sign in",
   });
@@ -94,7 +93,6 @@ export function securityCodeCannotRequestCodeGet(
 
   res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
-    support2hrLockout: support2hrLockout(),
     contentId: oplValues.mfaBlocked.contentId,
     taxonomyLevel2: isAccountCreationJourney ? "create account" : "sign in",
   });
@@ -226,13 +224,19 @@ function isJourneyWhere2HourLockoutScreenShown(
   user: UserSession,
   isEmailCode: boolean
 ): boolean {
+  const isStandardSignInJourney =
+    user.isSignInJourney &&
+    !user.isAccountPartCreated &&
+    !user.isAccountRecoveryJourney;
+  const isPasswordResetJourney = user.isPasswordResetJourney;
+  const isAccountRecoveryEmail = isEmailCode && user.isAccountRecoveryJourney;
+  const isNonAccountCreationEmail =
+    isEmailCode && !user.isAccountCreationJourney;
   return (
-    (user.isSignInJourney &&
-      !user.isAccountPartCreated &&
-      !user.isAccountRecoveryJourney) ||
-    user.isPasswordResetJourney ||
-    (isEmailCode && !user.isAccountCreationJourney) ||
-    (isEmailCode && user.isAccountRecoveryJourney) ||
+    isStandardSignInJourney ||
+    isPasswordResetJourney ||
+    isNonAccountCreationEmail ||
+    isAccountRecoveryEmail ||
     false
   );
 }

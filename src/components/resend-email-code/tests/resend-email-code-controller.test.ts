@@ -12,7 +12,6 @@ import {
 import { PATH_NAMES } from "../../../app.constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { support2hrLockout } from "../../../config";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("resend email controller", () => {
@@ -96,7 +95,6 @@ describe("resend email controller", () => {
         "security-code-error/index-wait.njk",
         {
           newCodeLink: "/security-code-check-time-limit",
-          support2hrLockout: support2hrLockout(),
         }
       );
     });

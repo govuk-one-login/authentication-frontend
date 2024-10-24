@@ -19,21 +19,17 @@ import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 import xss from "xss";
 import { EnterEmailServiceInterface } from "../enter-email/types";
 import { enterEmailService } from "../enter-email/enter-email-service";
-import { support2hrLockout, supportAccountInterventions } from "../../config";
+import { supportAccountInterventions } from "../../config";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { AccountInterventionsInterface } from "../account-intervention/types";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
-const ENTER_PASSWORD_VALIDATION_KEY_OLD =
-  "pages.enterPassword.password.validationError.incorrectPassword_old";
 const ENTER_PASSWORD_VALIDATION_KEY =
   "pages.enterPassword.password.validationError.incorrectPassword";
 
 const ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE =
   "enter-password/index-account-exists.njk";
-const ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY_OLD =
-  "pages.enterPasswordAccountExists.password.validationError.incorrectPassword_old";
 const ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY =
   "pages.enterPasswordAccountExists.password.validationError.incorrectPassword";
 
@@ -66,7 +62,6 @@ export function enterSignInRetryBlockedGet(
     ) {
       return res.render("enter-password/index-sign-in-retry-blocked.njk", {
         newLink: "/sign-in-retry-blocked",
-        support2hrLockout: support2hrLockout(),
       });
     }
 
@@ -80,7 +75,6 @@ export function enterPasswordAccountLockedGet(
 ): void {
   res.render("enter-password/index-account-locked.njk", {
     newLink: "/sign-in-retry-blocked",
-    support2hrLockout: support2hrLockout(),
   });
 }
 
@@ -135,16 +129,9 @@ export function enterPasswordPost(
         return res.redirect(PATH_NAMES.ERROR_PAGE);
       }
 
-      let validationKey;
-      if (support2hrLockout()) {
-        validationKey = fromAccountExists
-          ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY
-          : ENTER_PASSWORD_VALIDATION_KEY;
-      } else {
-        validationKey = fromAccountExists
-          ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY_OLD
-          : ENTER_PASSWORD_VALIDATION_KEY_OLD;
-      }
+      const validationKey = fromAccountExists
+        ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY
+        : ENTER_PASSWORD_VALIDATION_KEY;
       const error = formatValidationError("password", req.t(validationKey));
 
       return renderBadRequest(
@@ -213,16 +200,14 @@ export function enterPasswordPost(
 
       if (!result.success) {
         if (result.data.code === ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
-          return res.render("security-code-error/index-wait.njk", {
-            support2hrLockout: support2hrLockout(),
-          });
+          return res.render("security-code-error/index-wait.njk");
         }
 
         if (result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
           return res.render(
             "security-code-error/index-security-code-entered-exceeded.njk",
             {
-              show2HrScreen: support2hrLockout(),
+              show2HrScreen: true,
               contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
               taxonomyLevel2: isAccountCreationJourney
                 ? "create account"

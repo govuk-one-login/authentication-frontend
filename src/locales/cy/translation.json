@@ -272,7 +272,6 @@
         "label": "Cyfrinair",
         "validationError": {
           "required": "Rhowch eich cyfrinair",
-          "incorrectPassword_old": "Rhowch y cyfrinair cywir",
           "incorrectPassword": "Nid yw’r cyfrinair rydych wedi’i roi yn gywir. Os ydych wedi anghofio eich cyfrinair, gallwch ei ailosod"
         }
       },
@@ -289,7 +288,6 @@
         "label": "Cyfrinair",
         "validationError": {
           "required": "Rhowch eich cyfrinair",
-          "incorrectPassword_old": "Rhowch y cyfrinair cywir",
           "incorrectPassword": "Nid yw’r cyfrinair rydych wedii roi yn gywir. Os ydych wedi anghofio eich cyfrinair, gallwch ei ailosod"
         }
       },
@@ -487,12 +485,6 @@
     "securityRequestsExceededExpired": {
       "title": "Rydych wedi gofyn i ailanfon y cod diogelwch gormod o weithiau",
       "header": "Rydych wedi gofyn i ailanfon y cod diogelwch gormod o weithiau",
-      "info_old": {
-        "paragraph1": "Mae angen i chi aros am 15 munud.",
-        "paragraph2Start": "Yna gallwch ",
-        "link": "gael cod newydd",
-        "paragraph2End": " a rhoi cynnig arall."
-      },
       "info": {
         "paragraph1": "Ni fyddwch yn gallu parhau am 2 awr.",
         "subHeading": "Beth allwch chi ei wneud",
@@ -501,18 +493,10 @@
       }
     },
     "securityCodeWaitToRequest": {
-      "title_old": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
       "title": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
-      "header_old": "Ni allwch gael cod diogelwch newydd ar hyn o bryd ",
       "header": "Ni allwch fewngofnodi ar hyn o bryd ",
       "header_create": "Ni allwch greu GOV.UK One Login ar hyn o bryd ",
       "title_create": "Ni allwch greu GOV.UK One Login ar hyn o bryd ",
-      "info_old": {
-        "paragraph1": "Mae hyn oherwydd eich bod wedi gofyn i ailanfon cod diogelwch ormod o weithiau.",
-        "paragraph2Start": "Gallwch ",
-        "link": "gael cod newydd",
-        "paragraph2End": " ar ôl 15 munud."
-      },
       "info": {
         "paragraph1": "Mae hyn oherwydd eich bod wedi gofyn i ail-anfon y cod diogelwch gormod o weithiau y tro diwethaf i chi geisio mewngofnodi.",
         "paragraph1_create": "Mae hyn oherwydd eich bod wedi gofyn i ail-anfon y cod diogelwch gormod o weithiau.",
@@ -1729,16 +1713,11 @@
     "accountLocked": {
       "title": "Rydych wedi rhoi’r cyfrinair anghywir i mewn ormod o weithiau",
       "header": "Rydych wedi rhoi’r cyfrinair anghywir i mewn ormod o weithiau",
-      "paragraph_old": "Rydych chi wedi cael eich cloi allan o’ch GOV.UK One Login oherwydd eich bod wedi rhoi’r cyfrinair anghywir i mewn fwy na 5 gwaith. Mae hyn er mwyn cadw eich cyfrif yn ddiogel.",
       "paragraph": "Ni fyddwch yn gallu mewngofnodi am 2 awr, oherwydd eich bod wedi rhoi’r cyfrinair anghywir fwy na 5 gwaith.",
-      "subHeader_old": "Beth nesaf",
       "subHeader": "Beth allwch chi ei wneud",
       "bulletPointSection": {
         "title": "Gallwch:",
-        "first_old": "aros am 15 munud a ",
         "first": "ailosod eich cyfrinair",
-        "firstLink_old": "cheisio mewngofnodi eto",
-        "second_old": "ailosod eich cyfrinair",
         "second": "arhoswch 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o hafan GOV.UK"
       }
     },
@@ -2510,21 +2489,10 @@
       "title": "Ni allwch fewngofnodi ar hyn o bryd",
       "header": "Ni allwch fewngofnodi ar hyn o bryd",
       "paragraph": "Mae hyn oherwydd eich bod wedi rhoi’r cyfrinair anghywir i mewn fwy na 5 gwaith y tro diwethaf i chi geisio mewngofnodi. Mae hyn er mwyn cadw eich GOV.UK One Login yn ddiogel.",
-      "info_old": {
-        "paragraph1Start": "Gallwch ",
-        "firstLink": "geisio mewngofnodi eto",
-        "paragraph1End": " ar ôl i 15 munud fynd heibio.",
-        "paragraph2Start": "Gallwch hefyd ",
-        "secondLink": "ailosod eich cyfrinair",
-        "paragraph2End": "."
-      },
       "subHeader": "Beth allwch chi ei wneud",
       "bulletPointSection": {
         "title": "Gallwch:",
-        "first_old": "aros am 15 munud a ",
         "first": "ailosod eich cyfrinair",
-        "firstLink_old": "cheisio mewngofnodi eto",
-        "second_old": "ailosod eich cyfrinair",
         "second": "arhoswch 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o hafan GOV.UK"
       }
     },

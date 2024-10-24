@@ -15,28 +15,12 @@
 
 <p class="govuk-body">{{'pages.signInRetryBlocked.paragraph' | translate}}</p>
 
-{% if support2hrLockout %}
-
 <h2 class="govuk-heading-m">{{'pages.signInRetryBlocked.subHeader' | translate}}</h2>
 <p class="govuk-body">{{'pages.signInRetryBlocked.bulletPointSection.title' | translate}}</p>
 <ul class="govuk-list govuk-list--bullet">
     <li><a href="/reset-password-request" class="govuk-link">{{'pages.signInRetryBlocked.bulletPointSection.first' | translate}}</a></li>
     <li>{{'pages.signInRetryBlocked.bulletPointSection.second' | translate}}</li>
 </ul>
-{% else %}
-
-<p class="govuk-body">
-    {{'pages.signInRetryBlocked.info_old.paragraph1Start' | translate}}
-    <a class="govuk-link" rel="noreferrer" href={{ newLink }}>{{'pages.signInRetryBlocked.info_old.firstLink' | translate}}</a>
-    {{'pages.signInRetryBlocked.info_old.paragraph1End' | translate}}
-</p>
-
-<p class="govuk-body">
-    {{'pages.signInRetryBlocked.info_old.paragraph2Start' | translate}}
-    <a class="govuk-link" rel="noreferrer" href="/reset-password">{{'pages.signInRetryBlocked.info_old.secondLink' | translate}}</a>
-    {{'pages.signInRetryBlocked.info_old.paragraph2End' | translate}}
-</p>
-{% endif %}
 
 {{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "sign in", contentId: "e020dd02-2f97-46f9-9b26-c98730c89d73", loggedInStatus: false, dynamic: false })}}
 {% endblock %}

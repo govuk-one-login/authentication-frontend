@@ -10,7 +10,6 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import xss from "xss";
-import { support2hrLockout } from "../../config";
 import { isLocked } from "../../utils/lock-helper";
 
 export function resendEmailCodeGet(req: Request, res: Response): void {
@@ -24,9 +23,8 @@ export function resendEmailCodeGet(req: Request, res: Response): void {
 
     let show2HrScreen = false;
     if (
-      support2hrLockout() &&
-      (req.session.user.isPasswordResetJourney ||
-        req.session.user.isAccountRecoveryJourney)
+      req.session.user.isPasswordResetJourney ||
+      req.session.user.isAccountRecoveryJourney
     ) {
       show2HrScreen = true;
     }
@@ -44,7 +42,6 @@ export function resendEmailCodeGet(req: Request, res: Response): void {
     emailAddress: req.session.user.email,
     requestNewCode:
       req.query.requestNewCode && req.query.requestNewCode === "true",
-    support2hrLockout: support2hrLockout(),
   });
 }
 
@@ -120,7 +117,6 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
         : "/security-code-check-time-limit";
       return res.render("security-code-error/index-wait.njk", {
         newCodeLink,
-        support2hrLockout: support2hrLockout(),
       });
     }
 
