@@ -841,12 +841,13 @@
   resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-2.1.1.tgz#b9da6a878a371829a0502c9b6c1c143ef6663f4d"
   integrity sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==
 
-"@govuk-one-login/frontend-analytics@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-analytics/-/frontend-analytics-2.0.1.tgz#ff843241de1d1475407f719fb3f0f7180fc62dc1"
-  integrity sha512-8xAsQrRomVYxedFOQ8JDVdYx1JReJevSjU5EDZlcS/x3PhpCxm9DHjEqyOIvTo34zkFFoI4f2um6YkdD9IRQAg==
+"@govuk-one-login/frontend-analytics@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-analytics/-/frontend-analytics-3.0.1.tgz#3dcf4a117abca0823a11e7190f37c335c464d41d"
+  integrity sha512-Si1ZHG+RV4JBdDBH2bAAJFHRxnukExeix/JOL12prMThUkLsnZbamgPUAcVoByZRydYYXzilJgRw7PNiO1g1Kg==
   dependencies:
     copy-webpack-plugin "^12.0.2"
+    loglevel "^1.9.1"
 
 "@govuk-one-login/frontend-language-toggle@^1.1.0":
   version "1.1.0"
@@ -4799,6 +4800,11 @@ log-symbols@^4.1.0:
   dependencies:
     chalk "^4.1.0"
     is-unicode-supported "^0.1.0"
+
+loglevel@^1.9.1:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.9.2.tgz#c2e028d6c757720107df4e64508530db6621ba08"
+  integrity sha512-HgMmCqIJSAKqo68l0rS2AanEWfkxaZ5wNiEFb5ggm08lDs9Xl2KxBlX3PTcaD2chBM1gXAYf491/M2Rv8Jwayg==
 
 loopbench@^1.2.0:
   version "1.2.0"
