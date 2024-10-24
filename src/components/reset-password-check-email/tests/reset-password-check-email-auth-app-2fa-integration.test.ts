@@ -2,7 +2,7 @@ import { describe } from "mocha";
 import { request, sinon } from "../../../../test/utils/test-utils";
 import decache from "decache";
 
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
