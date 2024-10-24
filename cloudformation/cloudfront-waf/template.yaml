@@ -118,21 +118,23 @@ Conditions:
         - !Ref Environment
         - production
 
-  IsProdLikeEnvironment:
-    !Equals [!Ref Environment, production]
+  IsCSLSLogForwardingEnabled:
+    Fn::Equals:
+      - !Ref Environment
+      - "placeholder"
 
 Mappings:
   PlatformConfiguration:
     dev:
-      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython
+      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython-2
     build:
-      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython
+      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython-2
     staging:
-      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython
+      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython-2
     integration:
-      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython
+      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython-2
     production:
-      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython
+      CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython-2
 
 Resources:
   WAFv2GDSIPSet:
@@ -575,7 +577,7 @@ Resources:
 
   CSLSCloudWatchLogsSubscription:
     Type: AWS::Logs::SubscriptionFilter
-    Condition: IsProdLikeEnvironment
+    Condition: IsCSLSLogForwardingEnabled
     Properties:
       DestinationArn: !FindInMap [ PlatformConfiguration, !Ref Environment, CSLSEGRESS ]
       FilterPattern: ""

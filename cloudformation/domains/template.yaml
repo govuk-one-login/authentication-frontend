@@ -14,6 +14,7 @@ Parameters:
       - build
       - staging
       - integration
+      - production
 
   EndpointSuffix:
     Description: >
@@ -42,6 +43,11 @@ Conditions:
         - !Ref Environment
         - "integration"
 
+  CreateProductionEnvironmentResources:
+    Fn::Equals:
+      - !Ref Environment
+      - "production"
+
 Mappings:
   EndpointConfigs:
     Auth:
@@ -54,9 +60,11 @@ Mappings:
       lowercaseName: signin
 
 Resources:
-  #
-  # dev hosted zones
-  #
+
+  # ==============================
+  # dev hosted zones and resources
+  # ==============================
+
   'Fn::ForEach::DevEnvironments':
     - EnvName
     - - authdev1
@@ -136,9 +144,9 @@ Resources:
                 Application: "auth-frontend"
                 Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
 
-  #
-  # Non-prod and production hosted zones
-  #
+  # ===================================
+  # Non-prod hosted zones and resources
+  # ===================================
 
   #
   # auth
@@ -197,6 +205,7 @@ Resources:
     # TODO uncomment this when we retire and replace the -sp domains with the standard ones
     # - Accounts${Endpoint}HostedZone:
     #     Type: AWS::Route53::HostedZone
+    #     Condition: CreateNonProdEnvironmentResources
     #     DeletionPolicy: Retain
     #     UpdateReplacePolicy: Retain
     #     Properties:
@@ -247,6 +256,75 @@ Resources:
           Type: String
           Value: !Ref
             Fn::Sub: Accounts${Endpoint}Certificate
+          Tags:
+            Environment: !Ref Environment
+            Application: "auth-frontend"
+            Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
+
+  # =====================================
+  # Production hosted zones and resources
+  # =====================================
+
+  'Fn::ForEach::ProdEndpoints':
+    - Endpoint
+    - - Signin
+      # For services not yet migrated to secure pipelines, the corresponding domain and resources are commented out in prod
+      # - Auth
+      # - Manage
+      # - Oidc
+    - Accounts${Endpoint}ProdHostedZone:
+        Type: AWS::Route53::HostedZone
+        Condition: CreateProductionEnvironmentResources
+        DeletionPolicy: Retain
+        UpdateReplacePolicy: Retain
+        Properties:
+          Name: !Sub ${Endpoint}${EndpointSuffix}.account.gov.uk
+
+      Accounts${Endpoint}ProdHostedZoneSSM:
+        Type: AWS::SSM::Parameter
+        Condition: CreateProductionEnvironmentResources
+        Properties:
+          Description: !Sub "The ${Endpoint} subdomain Public Hosted Zone Id"
+          Name: !Sub
+            - "/deploy/${Environment}/${lowercaseEndpoint}_route53_hostedzone_id"
+            - lowercaseEndpoint: !FindInMap
+              - EndpointConfigs
+              - !Ref Endpoint
+              - lowercaseName
+          Type: String
+          Value: !Ref
+            Fn::Sub: Accounts${Endpoint}ProdHostedZone
+          Tags:
+            Environment: !Ref Environment
+            Application: "auth-frontend"
+            Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
+
+      Accounts${Endpoint}ProdCertificate:
+        Type: AWS::CertificateManager::Certificate
+        Condition: CreateProductionEnvironmentResources
+        Properties:
+          DomainName: !Sub ${Endpoint}${EndpointSuffix}.account.gov.uk
+          DomainValidationOptions:
+            - DomainName: !Sub ${Endpoint}${EndpointSuffix}.account.gov.uk
+              HostedZoneId: !GetAtt
+                - !Sub Accounts${Endpoint}ProdHostedZone
+                - Id
+          ValidationMethod: DNS
+
+      Accounts${Endpoint}ProdCertificateArnSSM:
+        Type: AWS::SSM::Parameter
+        Condition: CreateProductionEnvironmentResources
+        Properties:
+          Description: !Sub "The ${Endpoint} subdomain Certificate ARN"
+          Name: !Sub
+            - "/deploy/${Environment}/${lowercaseEndpoint}_certificate_arn"
+            - lowercaseEndpoint: !FindInMap
+              - EndpointConfigs
+              - !Ref Endpoint
+              - lowercaseName
+          Type: String
+          Value: !Ref
+            Fn::Sub: Accounts${Endpoint}ProdCertificate
           Tags:
             Environment: !Ref Environment
             Application: "auth-frontend"
