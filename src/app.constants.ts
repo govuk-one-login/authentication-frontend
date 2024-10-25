@@ -145,6 +145,7 @@ export const API_ENDPOINTS = {
   ACCOUNT_RECOVERY: "/account-recovery",
   CHECK_REAUTH_USER: "/check-reauth-user",
   CHECK_EMAIL_FRAUD_BLOCK: "/check-email-fraud-block",
+  MFA_RESET_AUTHORIZE: "/mfa-reset-authorize",
 };
 
 export const ERROR_MESSAGES = {
