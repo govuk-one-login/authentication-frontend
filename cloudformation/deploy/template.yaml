@@ -91,6 +91,9 @@ Conditions:
               - !Ref Environment
               - "integration"
           - Fn::Equals:
+              - !Ref Environment
+              - "production"
+          - Fn::Equals:
               - !Ref SubEnvironment
               - "authdev1"
 
