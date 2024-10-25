@@ -22,7 +22,6 @@ support_new_ipv_spinner       = "0"
 code_request_blocked_minutes                        = "120"
 account_recovery_code_entered_wrong_blocked_minutes = "120"
 code_entered_wrong_blocked_minutes                  = "120"
-email_entered_wrong_blocked_minutes                 = "120"
 password_reset_code_entered_wrong_blocked_minutes   = "120"
 reduced_code_block_duration_minutes                 = "15"
 

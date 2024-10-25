@@ -169,10 +169,6 @@ export function getLanguageToggleEnabled(): boolean {
   return process.env.LANGUAGE_TOGGLE_ENABLED === "1";
 }
 
-export function getEmailEnteredWrongBlockDurationInMinutes(): number {
-  return Number(process.env.EMAIL_ENTERED_WRONG_BLOCKED_MINUTES) || 15;
-}
-
 export function getGA4ContainerId(): string {
   return process.env.GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID || "";
 }

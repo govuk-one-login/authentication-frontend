@@ -157,10 +157,6 @@ locals {
         value = var.support_reauthentication
       },
       {
-        name  = "EMAIL_ENTERED_WRONG_BLOCKED_MINUTES"
-        value = var.email_entered_wrong_blocked_minutes
-      },
-      {
         name  = "NO_PHOTO_ID_CONTACT_FORMS"
         value = var.no_photo_id_contact_forms
       },
