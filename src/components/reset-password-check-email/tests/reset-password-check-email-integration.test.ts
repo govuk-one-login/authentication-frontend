@@ -57,7 +57,6 @@ describe("Integration::reset password check email ", () => {
 
   beforeEach(() => {
     nock.cleanAll();
-    process.env.SUPPORT_2HR_LOCKOUT = "0";
   });
 
   after(() => {
@@ -92,7 +91,6 @@ describe("Integration::reset password check email ", () => {
   });
 
   it("should return 2hr error page when 6 incorrect codes entered and flag is turned on", async () => {
-    process.env.SUPPORT_2HR_LOCKOUT = "1";
     nock(baseApi).post(API_ENDPOINTS.RESET_PASSWORD_REQUEST).reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES,
     });
@@ -123,7 +121,7 @@ describe("Integration::reset password check email ", () => {
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($(".govuk-heading-l").text()).to.contains(
-            "You cannot get a new security code at the moment"
+            "You cannot sign in at the moment"
           );
         })
         .expect(200)

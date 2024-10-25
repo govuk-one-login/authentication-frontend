@@ -136,10 +136,6 @@ export function getPasswordResetCodeEnteredWrongBlockDurationInMinutes(): number
   );
 }
 
-export function support2hrLockout(): boolean {
-  return process.env.SUPPORT_2HR_LOCKOUT === "1";
-}
-
 export function supportNoPhotoIdContactForms(): boolean {
   return process.env.NO_PHOTO_ID_CONTACT_FORMS === "1";
 }

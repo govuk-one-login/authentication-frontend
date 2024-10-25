@@ -14,7 +14,6 @@ frontend_task_definition_memory  = 1024
 support_account_recovery      = "1"
 support_account_interventions = "1"
 support_authorize_controller  = "1"
-support_2hr_lockout           = "1"
 support_reauthentication      = "1"
 language_toggle_enabled       = "1"
 no_photo_id_contact_forms     = "0"
