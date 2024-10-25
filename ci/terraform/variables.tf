@@ -426,3 +426,9 @@ variable "support_http_keep_alive" {
   default     = "0"
   description = "Switch on http keep alive for axios"
 }
+
+variable "support_mfa_reset_with_ipv" {
+  type        = string
+  default     = "0"
+  description = "Switch to support the IPV prove identity journey when resetting the mfa"
+}
