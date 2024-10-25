@@ -1353,6 +1353,22 @@ Resources:
       FromPort: 8080
       ToPort: 8080
 
+  ApplicationLoadBalancerCloudFrontWAFv2ACLAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    Properties:
+      ResourceArn: !Ref ApplicationLoadBalancer
+      WebACLArn:
+        Fn::ImportValue: !Sub
+          - "${CFDistributionStackName}-CloakingOriginWebACLArn"
+          - CFDistributionStackName: !FindInMap
+              - EnvironmentConfiguration
+              - !If
+                - UseSubEnvironment
+                - !Ref SubEnvironment
+                - !Ref Environment
+              - cloudfrontDistributionStackName
+              - DefaultValue: "auth-fe-cloudfront"
+
   #
   # ECS Alarms
   #
