@@ -195,7 +195,7 @@ function handleAuthAppCodePostError(
       return handleReauthFailure(req, res);
     } else {
       throw new ReauthJourneyError(
-        "Reauth erorr response returned on a non reauth journey"
+        "Reauth error response returned on a non reauth journey"
       );
     }
   }
