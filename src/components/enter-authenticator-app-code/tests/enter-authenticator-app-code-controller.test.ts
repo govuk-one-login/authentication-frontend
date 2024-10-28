@@ -17,6 +17,17 @@ import { VerifyMfaCodeInterface } from "../types";
 import * as journey from "../../common/journey/journey";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
+const fakeAccountRecoveryService = (accountRecoveryPermitted: boolean) => {
+  return {
+    accountRecovery: sinon.fake.returns({
+      success: true,
+      data: {
+        accountRecoveryPermitted: accountRecoveryPermitted,
+      },
+    }),
+  } as unknown as AccountRecoveryInterface;
+};
+
 describe("enter authenticator app code controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
@@ -36,16 +47,7 @@ describe("enter authenticator app code controller", () => {
     it("should render enter mfa code view with isAccountRecoveryPermitted true when user is permitted to perform account recovery, account recovery is enabled for environment and mfa reset with ipv is not enabled", async () => {
       process.env.SUPPORT_MFA_RESET_WITH_IPV = "0";
 
-      const fakeService: AccountRecoveryInterface = {
-        accountRecovery: sinon.fake.returns({
-          success: true,
-          data: {
-            accountRecoveryPermitted: true,
-          },
-        }),
-      } as unknown as AccountRecoveryInterface;
-
-      await enterAuthenticatorAppCodeGet(fakeService)(
+      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
         req as Request,
         res as Response
       );
@@ -62,16 +64,7 @@ describe("enter authenticator app code controller", () => {
     });
 
     it("should render enter mfa code view with isAccountRecoveryPermitted false when user is not permitted to perform account recovery", async () => {
-      const fakeService: AccountRecoveryInterface = {
-        accountRecovery: sinon.fake.returns({
-          success: true,
-          data: {
-            accountRecoveryPermitted: false,
-          },
-        }),
-      } as unknown as AccountRecoveryInterface;
-
-      await enterAuthenticatorAppCodeGet(fakeService)(
+      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(false))(
         req as Request,
         res as Response
       );
@@ -89,16 +82,8 @@ describe("enter authenticator app code controller", () => {
 
     it("should render enter mfa code view with isAccountRecoveryPermitted false when account recovery is disable for the environment", async () => {
       process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
-      const fakeService: AccountRecoveryInterface = {
-        accountRecovery: sinon.fake.returns({
-          success: true,
-          data: {
-            accountRecoveryPermitted: true,
-          },
-        }),
-      } as unknown as AccountRecoveryInterface;
 
-      await enterAuthenticatorAppCodeGet(fakeService)(
+      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
         req as Request,
         res as Response
       );
@@ -114,16 +99,7 @@ describe("enter authenticator app code controller", () => {
     it("should render 2fa service uplift view when uplift is required ", async () => {
       req.session.user.isUpliftRequired = true;
 
-      const fakeService: AccountRecoveryInterface = {
-        accountRecovery: sinon.fake.returns({
-          success: true,
-          data: {
-            accountRecoveryPermitted: true,
-          },
-        }),
-      } as unknown as AccountRecoveryInterface;
-
-      await enterAuthenticatorAppCodeGet(fakeService)(
+      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
         req as Request,
         res as Response
       );
@@ -142,16 +118,7 @@ describe("enter authenticator app code controller", () => {
     it("should render default template when uplift is not required", async () => {
       req.session.user.isUpliftRequired = false;
 
-      const fakeService: AccountRecoveryInterface = {
-        accountRecovery: sinon.fake.returns({
-          success: true,
-          data: {
-            accountRecoveryPermitted: true,
-          },
-        }),
-      } as unknown as AccountRecoveryInterface;
-
-      await enterAuthenticatorAppCodeGet(fakeService)(
+      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
         req as Request,
         res as Response
       );
@@ -170,16 +137,7 @@ describe("enter authenticator app code controller", () => {
     it("should render enter authenticator app code view with mfaResetPath being IPV_DUMMY_URL when mfa reset with ipv is supported", async () => {
       process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
 
-      const fakeService: AccountRecoveryInterface = {
-        accountRecovery: sinon.fake.returns({
-          success: true,
-          data: {
-            accountRecoveryPermitted: true,
-          },
-        }),
-      } as unknown as AccountRecoveryInterface;
-
-      await enterAuthenticatorAppCodeGet(fakeService)(
+      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
         req as Request,
         res as Response
       );
