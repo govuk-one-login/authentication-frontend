@@ -24,6 +24,7 @@ import {
   supportAccountInterventions,
   supportAccountRecovery,
   supportAuthorizeController,
+  supportMfaResetWithIpv,
 } from "./config";
 import { logErrorMiddleware } from "./middleware/log-error-middleware";
 import { getCookieLanguageMiddleware } from "./middleware/cookie-lang-middleware";
@@ -98,6 +99,7 @@ import { applyOverloadProtection } from "./middleware/overload-protection-middle
 import { frontendVitalSignsInit } from "@govuk-one-login/frontend-vital-signs";
 import { Server } from "node:http";
 import { getAnalyticsPropertiesMiddleware } from "./middleware/get-analytics-properties-middleware";
+import { mfaResetWithIpvRouter } from "./components/mfa-reset-with-ipv/mfa-reset-with-ipv-routes";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -152,6 +154,9 @@ function registerRoutes(app: express.Application) {
     app.use(accountInterventionRouter);
     app.use(permanentlyBlockedRouter);
     app.use(temporarilyBlockedRouter);
+  }
+  if (supportMfaResetWithIpv()) {
+    app.use(mfaResetWithIpvRouter);
   }
 }
 
