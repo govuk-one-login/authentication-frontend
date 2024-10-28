@@ -301,4 +301,8 @@ export const WEB_TO_MOBILE_TEMPLATE_MAPPINGS: Record<string, string> = {
   "account-not-found/index-one-login.njk": "account-not-found/index-mobile.njk",
   "account-not-found/index-optional.njk": "account-not-found/index-mobile.njk",
   "account-not-found/index-mandatory.njk": "account-not-found/index-mobile.njk",
+  "security-code-error/index-too-many-requests.njk":
+    "security-code-error/index-too-many-requests-mobile.njk",
+  "security-code-error/index-wait.njk":
+    "security-code-error/index-wait-mobile.njk",
 };
