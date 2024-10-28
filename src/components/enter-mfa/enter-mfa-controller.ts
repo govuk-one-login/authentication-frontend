@@ -13,7 +13,7 @@ import {
   pathWithQueryParam,
   SecurityCodeErrorType,
 } from "../common/constants";
-import { supportAccountRecovery } from "../../config";
+import { supportAccountRecovery, supportMfaResetWithIpv } from "../../config";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
 import { BadRequestError } from "../../utils/error";
@@ -28,7 +28,7 @@ export const UPLIFT_REQUIRED_SMS_TEMPLATE_NAME =
   "enter-mfa/index-2fa-service-uplift-mobile-phone.njk";
 
 export function enterMfaGet(
-  service: AccountRecoveryInterface = accountRecoveryService()
+  acctRecoveryService: AccountRecoveryInterface = accountRecoveryService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
@@ -64,7 +64,7 @@ export function enterMfaGet(
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
-    const accountRecoveryResponse = await service.accountRecovery(
+    const accountRecoveryResponse = await acctRecoveryService.accountRecovery(
       sessionId,
       clientSessionId,
       email,
@@ -82,16 +82,18 @@ export function enterMfaGet(
     req.session.user.isAccountRecoveryPermitted =
       accountRecoveryResponse.data.accountRecoveryPermitted;
 
-    const checkEmailLink = pathWithQueryParam(
-      PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
-      "type",
-      MFA_METHOD_TYPE.SMS
-    );
+    const mfaResetPath = supportMfaResetWithIpv()
+      ? PATH_NAMES.MFA_RESET_WITH_IPV
+      : pathWithQueryParam(
+          PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
+          "type",
+          MFA_METHOD_TYPE.SMS
+        );
 
     res.render(templateName, {
       phoneNumber: req.session.user.redactedPhoneNumber,
       supportAccountRecovery: req.session.user.isAccountRecoveryPermitted,
-      checkEmailLink,
+      mfaResetPath: mfaResetPath,
     });
   };
 }

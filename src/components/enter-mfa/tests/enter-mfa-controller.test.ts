@@ -18,6 +18,8 @@ import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import * as journey from "../../common/journey/journey";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
+const TEST_PHONE_NUMBER = "07582930495";
+
 const fakeAccountRecoveryPermissionCheckService = (
   desiredAccountRecoveryPermittedResponse: boolean
 ) => {
@@ -30,8 +32,6 @@ const fakeAccountRecoveryPermissionCheckService = (
     }),
   } as unknown as AccountRecoveryInterface;
 };
-
-const TEST_PHONE_NUMBER = "07582930495";
 
 describe("enter mfa controller", () => {
   let req: RequestOutput;
@@ -47,6 +47,7 @@ describe("enter mfa controller", () => {
 
   afterEach(() => {
     sinon.restore();
+    delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
   });
 
   describe("enterMfaGet", () => {
@@ -72,12 +73,14 @@ describe("enter mfa controller", () => {
       expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
         phoneNumber: TEST_PHONE_NUMBER,
         supportAccountRecovery: false,
-        checkEmailLink:
+        mfaResetPath:
           PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=SMS",
       });
     });
 
-    it("should render enter mfa code view with supportAccountRecovery true when enabled at environment level and user is not blocked from account recovery", async () => {
+    it("should render enter mfa code view with supportAccountRecovery true when enabled at environment level and user is not blocked from account recovery and mfa reset with ipv is not supported", async () => {
+      process.env.SUPPORT_MFA_RESET_WITH_IPV = "0";
+
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(true))(
         req as Request,
         res as Response
@@ -86,7 +89,7 @@ describe("enter mfa controller", () => {
       expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
         phoneNumber: TEST_PHONE_NUMBER,
         supportAccountRecovery: true,
-        checkEmailLink:
+        mfaResetPath:
           PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=SMS",
       });
     });
@@ -135,6 +138,21 @@ describe("enter mfa controller", () => {
       expect(res.render).to.have.calledWith(
         "security-code-error/index-wait.njk"
       );
+    });
+
+    it("should render enter mfa code view with mfaResetPath being IPV_DUMMY_URL when mfa reset with ipv is supported", async () => {
+      process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
+
+      await enterMfaGet(fakeAccountRecoveryPermissionCheckService(true))(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
+        phoneNumber: TEST_PHONE_NUMBER,
+        supportAccountRecovery: true,
+        mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
+      });
     });
   });
 

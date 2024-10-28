@@ -415,6 +415,7 @@ const authStateMachine = createMachine(
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
+            PATH_NAMES.MFA_RESET_WITH_IPV,
           ],
         },
       },
