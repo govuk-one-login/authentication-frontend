@@ -1524,7 +1524,7 @@
         "how_long_we_keep_your_information": {
           "header": "How long we keep your information",
           "paragraph_one": "We store your personal information for no longer than is reasonably necessary and legally justifiable.",
-          "paragraph_two": "We will keep your GOV.UK One Login for as long as you wish to use it although we will delete it if you do not use it for 3 years. ",
+          "paragraph_two": "We will keep your GOV.UK One Login for as long as you wish to use it although we will delete it if you do not use it for 5 years. ",
           "paragraph_three": "If you choose to delete your GOV.UK One Login, we’ll delete your account and your proven identity information.",
           "paragraph_four": "We delete your still photo generated from your selfie video, driving licence images and biometric facial data from Iproov’s systems after 30 days.",
           "paragraph_five": "The in-person identity check stores your data for 11 days to give you enough time to go to the Post Office to complete your identity check.",
