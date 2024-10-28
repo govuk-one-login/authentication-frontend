@@ -29,10 +29,13 @@ describe("enter authenticator app code controller", () => {
 
   afterEach(() => {
     sinon.restore();
+    delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
   });
 
   describe("enterAuthenticatorAppCodeGet", () => {
-    it("should render enter mfa code view with isAccountRecoveryPermitted true when user is permitted to perform account recovery and account recovery is enabled for environment", async () => {
+    it("should render enter mfa code view with isAccountRecoveryPermitted true when user is permitted to perform account recovery, account recovery is enabled for environment and mfa reset with ipv is not enabled", async () => {
+      process.env.SUPPORT_MFA_RESET_WITH_IPV = "0";
+
       const fakeService: AccountRecoveryInterface = {
         accountRecovery: sinon.fake.returns({
           success: true,
@@ -51,7 +54,7 @@ describe("enter authenticator app code controller", () => {
         "enter-authenticator-app-code/index.njk",
         {
           isAccountRecoveryPermitted: true,
-          checkEmailLink:
+          mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
         }
@@ -77,7 +80,7 @@ describe("enter authenticator app code controller", () => {
         "enter-authenticator-app-code/index.njk",
         {
           isAccountRecoveryPermitted: false,
-          checkEmailLink:
+          mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
         }
@@ -129,7 +132,7 @@ describe("enter authenticator app code controller", () => {
         UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
         {
           isAccountRecoveryPermitted: true,
-          checkEmailLink:
+          mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
         }
@@ -157,9 +160,35 @@ describe("enter authenticator app code controller", () => {
         ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME,
         {
           isAccountRecoveryPermitted: true,
-          checkEmailLink:
+          mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
+        }
+      );
+    });
+
+    it("should render enter authenticator app code view with mfaResetPath being IPV_DUMMY_URL when mfa reset with ipv is supported", async () => {
+      process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
+
+      const fakeService: AccountRecoveryInterface = {
+        accountRecovery: sinon.fake.returns({
+          success: true,
+          data: {
+            accountRecoveryPermitted: true,
+          },
+        }),
+      } as unknown as AccountRecoveryInterface;
+
+      await enterAuthenticatorAppCodeGet(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        "enter-authenticator-app-code/index.njk",
+        {
+          isAccountRecoveryPermitted: true,
+          mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
         }
       );
     });

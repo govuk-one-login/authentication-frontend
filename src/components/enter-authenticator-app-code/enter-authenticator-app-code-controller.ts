@@ -13,6 +13,7 @@ import {
 import {
   getCodeEnteredWrongBlockDurationInMinutes,
   supportAccountRecovery,
+  supportMfaResetWithIpv,
   supportReauthentication,
 } from "../../config";
 import { VerifyMfaCodeInterface } from "./types";
@@ -35,7 +36,7 @@ export const UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME =
   "enter-authenticator-app-code/index-2fa-service-uplift-auth-app.njk";
 
 export function enterAuthenticatorAppCodeGet(
-  service: AccountRecoveryInterface = accountRecoveryService()
+  acctRecoveryService: AccountRecoveryInterface = accountRecoveryService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email, isUpliftRequired } = req.session.user;
@@ -65,7 +66,7 @@ export function enterAuthenticatorAppCodeGet(
 
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
-    const accountRecoveryResponse = await service.accountRecovery(
+    const accountRecoveryResponse = await acctRecoveryService.accountRecovery(
       sessionId,
       clientSessionId,
       email,
@@ -84,15 +85,17 @@ export function enterAuthenticatorAppCodeGet(
       (req.session.user.isAccountRecoveryPermitted =
         accountRecoveryResponse.data.accountRecoveryPermitted);
 
-    const checkEmailLink = pathWithQueryParam(
-      PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
-      "type",
-      MFA_METHOD_TYPE.AUTH_APP
-    );
+    const mfaResetPath = supportMfaResetWithIpv()
+      ? PATH_NAMES.MFA_RESET_WITH_IPV
+      : pathWithQueryParam(
+          PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
+          "type",
+          MFA_METHOD_TYPE.AUTH_APP
+        );
 
     return res.render(templateName, {
       isAccountRecoveryPermitted: isAccountRecoveryPermittedForUser,
-      checkEmailLink,
+      mfaResetPath,
     });
   };
 }
