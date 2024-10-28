@@ -6823,10 +6823,10 @@ xss@^1.0.10:
     commander "^2.20.3"
     cssfilter "0.0.10"
 
-xstate@^4.26.1:
-  version "4.26.1"
-  resolved "https://registry.npmjs.org/xstate/-/xstate-4.26.1.tgz"
-  integrity sha512-JLofAEnN26l/1vbODgsDa+Phqa61PwDlxWu8+2pK+YbXf+y9pQSDLRvcYH2H1kkeUBA5fGp+xFL/zfE8jNMw4g==
+xstate@^5.18.2:
+  version "5.18.2"
+  resolved "https://registry.yarnpkg.com/xstate/-/xstate-5.18.2.tgz#924122af5102f3c3f7e172ebf20a09455ddb2963"
+  integrity sha512-hab5VOe29D0agy8/7dH1lGw+7kilRQyXwpaChoMu4fe6rDP+nsHYhDYKfS2O4iXE7myA98TW6qMEudj/8NXEkA==
 
 xtend@^4.0.1, xtend@~4.0.1:
   version "4.0.2"
