@@ -1,6 +1,5 @@
 import { PATH_NAMES } from "../../app.constants";
 import { getNextState } from "./state-machine/state-machine";
-import { support2hrLockout } from "../../config";
 import { Request } from "express";
 
 export const SECURITY_CODE_ERROR = "actionType";
@@ -81,17 +80,11 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.OtpMaxCodesSent
   ),
-  [ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED]: support2hrLockout()
-    ? pathWithQueryParam(
-        PATH_NAMES["SECURITY_CODE_REQUEST_EXCEEDED"],
-        SECURITY_CODE_ERROR,
-        SecurityCodeErrorType.OtpBlocked
-      )
-    : pathWithQueryParam(
-        PATH_NAMES["SECURITY_CODE_WAIT"],
-        SECURITY_CODE_ERROR,
-        SecurityCodeErrorType.OtpBlocked
-      ),
+  [ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED]: pathWithQueryParam(
+    PATH_NAMES["SECURITY_CODE_REQUEST_EXCEEDED"],
+    SECURITY_CODE_ERROR,
+    SecurityCodeErrorType.OtpBlocked
+  ),
   [ERROR_CODES.ENTERED_INVALID_VERIFY_PHONE_NUMBER_CODE_MAX_TIMES]:
     pathWithQueryParam(
       PATH_NAMES["SECURITY_CODE_INVALID"],

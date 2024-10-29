@@ -151,7 +151,6 @@ describe("enter phone number controller", () => {
             },
           }),
         } as unknown as SendNotificationServiceInterface;
-        process.env.SUPPORT_2HR_LOCKOUT = "1";
         req.body.phoneNumber = "+33645453322";
         req.session.user.email = "test@test.com";
         req.session.user.isAccountPartCreated = true;
@@ -167,7 +166,6 @@ describe("enter phone number controller", () => {
           "security-code-error/index-wait.njk",
           {
             newCodeLink: undefined,
-            support2hrLockout: true,
             isAccountCreationJourney: true,
           }
         );
@@ -186,7 +184,6 @@ describe("enter phone number controller", () => {
             },
           }),
         } as unknown as SendNotificationServiceInterface;
-        process.env.SUPPORT_2HR_LOCKOUT = "1";
         req.body.phoneNumber = "+33645453322";
         req.session.user.email = "test@test.com";
         req.session.user.isAccountCreationJourney = true;
@@ -202,7 +199,6 @@ describe("enter phone number controller", () => {
           "security-code-error/index-wait.njk",
           {
             newCodeLink: undefined,
-            support2hrLockout: true,
             isAccountCreationJourney: true,
           }
         );

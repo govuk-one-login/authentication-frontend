@@ -16,7 +16,7 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import xss from "xss";
 import { CheckReauthServiceInterface } from "../check-reauth-users/types";
 import { checkReauthUsersService } from "../check-reauth-users/check-reauth-users-service";
-import { support2hrLockout, supportReauthentication } from "../../config";
+import { supportReauthentication } from "../../config";
 import {
   formatValidationError,
   renderBadRequest,
@@ -76,12 +76,7 @@ export function enterEmailPost(
 
         switch (checkReauth.data.code) {
           case ERROR_CODES.ACCOUNT_LOCKED:
-            return res.render(
-              "enter-password/index-sign-in-retry-blocked.njk",
-              {
-                support2hrLockout: support2hrLockout(),
-              }
-            );
+            return res.render("enter-password/index-sign-in-retry-blocked.njk");
 
           case ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED:
             return res.redirect(
@@ -104,9 +99,7 @@ export function enterEmailPost(
 
     if (!result.success) {
       if (result.data.code === ERROR_CODES.ACCOUNT_LOCKED) {
-        return res.render("enter-password/index-sign-in-retry-blocked.njk", {
-          support2hrLockout: support2hrLockout(),
-        });
+        return res.render("enter-password/index-sign-in-retry-blocked.njk");
       }
       throw new BadRequestError(result.data.message, result.data.code);
     }
@@ -194,7 +187,6 @@ export function enterEmailCreatePost(
           newCodeLink: getNewCodePath(
             req.query.actionType as SecurityCodeErrorType
           ),
-          support2hrLockout: support2hrLockout(),
           isAccountCreationJourney: true,
         });
       }

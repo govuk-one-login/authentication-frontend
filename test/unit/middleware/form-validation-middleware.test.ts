@@ -1,23 +1,24 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { sinon } from "../../utils/test-utils";
 import {
   validateBodyMiddleware,
   validationErrorFormatter,
 } from "../../../src/middleware/form-validation-middleware";
 import { mockRequest, mockResponse } from "mock-req-res";
+import { SinonStub } from "sinon";
 
 describe("HTML Lang middleware", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
-  let next: NextFunction;
+  let next: SinonStub;
 
   beforeEach(() => {
     req = mockRequest({ i18n: { language: "en" } });
 
     res = mockResponse();
-    next = sinon.fake();
+    next = sinon.stub();
   });
 
   afterEach(() => {

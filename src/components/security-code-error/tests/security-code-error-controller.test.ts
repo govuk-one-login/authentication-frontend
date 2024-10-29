@@ -19,6 +19,7 @@ import {
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { SCENARIOS } from "./test-scenario-data";
 
 describe("security code controller", () => {
   let req: RequestOutput;
@@ -35,128 +36,33 @@ describe("security code controller", () => {
 
   afterEach(() => {
     sinon.restore();
+    delete process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES;
+    delete process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES;
+    delete process.env.REDUCED_CODE_BLOCK_DURATION_MINUTES;
   });
 
   describe("securityCodeExpiredGet", () => {
-    [
-      {
-        actionType: SecurityCodeErrorType.EmailMaxRetries,
-        expectedRenderOptions: {
-          newCodeLink: pathWithQueryParam(
-            PATH_NAMES.RESEND_EMAIL_CODE,
-            "requestNewCode",
-            "true"
-          ),
-          isAuthApp: false,
-          isBlocked: false,
-          show2HrScreen: false,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-          taxonomyLevel2: "sign in",
-        },
-      },
-      {
-        actionType: SecurityCodeErrorType.MfaMaxRetries,
-        expectedRenderOptions: {
-          newCodeLink: pathWithQueryParam(
-            PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-            SECURITY_CODE_ERROR,
-            SecurityCodeErrorType.MfaMaxRetries
-          ),
-          isAuthApp: false,
-          isBlocked: true,
-          show2HrScreen: false,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-          taxonomyLevel2: "sign in",
-        },
-      },
-      {
-        actionType: SecurityCodeErrorType.AuthAppMfaMaxRetries,
-        expectedRenderOptions: {
-          newCodeLink: pathWithQueryParam(
-            PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-            SECURITY_CODE_ERROR,
-            SecurityCodeErrorType.AuthAppMfaMaxRetries
-          ),
-          isAuthApp: true,
-          isBlocked: true,
-          show2HrScreen: false,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-          taxonomyLevel2: "sign in",
-        },
-      },
-      {
-        actionType: SecurityCodeErrorType.OtpMaxRetries,
-        expectedRenderOptions: {
-          newCodeLink: pathWithQueryParam(
-            PATH_NAMES.RESEND_MFA_CODE,
-            "isResendCodeRequest",
-            "true"
-          ),
-          isAuthApp: false,
-          isBlocked: true,
-          show2HrScreen: false,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-          taxonomyLevel2: "sign in",
-        },
-      },
-    ].forEach(({ actionType, expectedRenderOptions }) => {
-      it(`should render invalid OTP code for ${actionType} error when email OTP code has been invalid max number of times`, () => {
-        req.session.user = {
-          email: "joe.bloggs@test.com",
-        };
-        req.query.actionType = actionType;
+    SCENARIOS.SECURITY_CODE_EXPIRED_GET.forEach(
+      ({ actionType, expectedRenderOptions }) => {
+        it(`should render invalid OTP code for ${actionType} error when email OTP code has been invalid max number of times`, () => {
+          req.session.user = {
+            email: "joe.bloggs@test.com",
+          };
+          req.query.actionType = actionType;
 
-        securityCodeInvalidGet(req as Request, res as Response);
+          securityCodeInvalidGet(req as Request, res as Response);
 
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index.njk",
-          expectedRenderOptions
-        );
-      });
-    });
+          expect(res.render).to.have.calledWith(
+            "security-code-error/index.njk",
+            expectedRenderOptions
+          );
+        });
+      }
+    );
   });
 
   describe("securityCodeTriesExceededGet", () => {
-    const TEST_SCENARIO_PARAMETERS = [
-      {
-        actionType: SecurityCodeErrorType.EmailMaxCodesSent,
-        newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
-        isAccountCreationJourney: undefined,
-        contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
-        taxonomyLevel2: "sign in",
-      },
-      {
-        actionType: SecurityCodeErrorType.MfaMaxRetries,
-        newCodeLink: pathWithQueryParam(
-          PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-          SECURITY_CODE_ERROR,
-          SecurityCodeErrorType.MfaMaxRetries
-        ),
-        isAccountCreationJourney: undefined,
-        contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
-        taxonomyLevel2: "sign in",
-      },
-      {
-        actionType: SecurityCodeErrorType.OtpMaxCodesSent,
-        newCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
-        isAccountCreationJourney: undefined,
-        contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
-        taxonomyLevel2: "sign in",
-      },
-      {
-        actionType: SecurityCodeErrorType.OtpMaxRetries,
-        newCodeLink: pathWithQueryParam(
-          PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
-          "isResendCodeRequest",
-          "true"
-        ),
-        isAccountCreationJourney: true,
-        contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
-        taxonomyLevel2: "create account",
-      },
-    ];
-
-    TEST_SCENARIO_PARAMETERS.forEach(function (params) {
+    SCENARIOS.SECURITY_CODE_TRIES_EXCEEDED_GET.forEach(function (params) {
       it(`should render index-too-many-requests.njk for ${params.actionType} when max number of codes have been sent`, () => {
         req.query.actionType = params.actionType;
         req.session.user.isAccountCreationJourney =
@@ -170,7 +76,6 @@ describe("security code controller", () => {
             newCodeLink: params.newCodeLink,
             isResendCodeRequest: undefined,
             isAccountCreationJourney: params.isAccountCreationJourney,
-            support2hrLockout: false,
             contentId: params.contentId,
             taxonomyLevel2: params.taxonomyLevel2,
           }
@@ -180,28 +85,7 @@ describe("security code controller", () => {
   });
 
   describe("securityCodeCannotRequestGet", () => {
-    const TEST_SCENARIO_PARAMETERS = [
-      {
-        actionType: SecurityCodeErrorType.OtpBlocked,
-        expectedCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
-        contentId: "1277915f-ce6e-4a06-89a0-e3458f95631a",
-        taxonomyLevel2: "sign in",
-      },
-      {
-        actionType: SecurityCodeErrorType.MfaBlocked,
-        expectedCodeLink: PATH_NAMES.RESEND_MFA_CODE,
-        contentId: "1277915f-ce6e-4a06-89a0-e3458f95631a",
-        taxonomyLevel2: "sign in",
-      },
-      {
-        actionType: SecurityCodeErrorType.EmailBlocked,
-        expectedCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
-        contentId: "1277915f-ce6e-4a06-89a0-e3458f95631a",
-        taxonomyLevel2: "sign in",
-      },
-    ];
-
-    TEST_SCENARIO_PARAMETERS.forEach(function (params) {
+    SCENARIOS.SECURITY_CODE_CANNOT_REQUEST_GET.forEach(function (params) {
       it(`should render the too many requests page for ${params.actionType} when user is blocked from requesting more OTPs`, () => {
         req.query.actionType = params.actionType;
 
@@ -211,7 +95,6 @@ describe("security code controller", () => {
           "security-code-error/index-too-many-requests.njk",
           {
             newCodeLink: params.expectedCodeLink,
-            support2hrLockout: false,
             contentId: params.contentId,
             taxonomyLevel2: params.taxonomyLevel2,
           }
@@ -254,415 +137,355 @@ describe("security code controller", () => {
     });
   });
 
-  describe("support2Hr Lockout", () => {
-    beforeEach(() => {
-      process.env.SUPPORT_2HR_LOCKOUT = "1";
-    });
+  describe("securityCodeInvalidGet", () => {
+    it(
+      "should render 2hr lockout page when email OTP code has been invalid max number of times" +
+        "in the reset password journey",
+      () => {
+        req.session.user.isPasswordResetJourney = true;
+        req.query.actionType = SecurityCodeErrorType.EmailMaxRetries;
 
-    after(() => {
-      delete process.env.SUPPORT_2HR_LOCKOUT;
-      delete process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES;
-      delete process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES;
-      delete process.env.REDUCED_CODE_BLOCK_DURATION_MINUTES;
-    });
+        securityCodeInvalidGet(req as Request, res as Response);
 
-    describe("securityCodeInvalidGet", () => {
-      it(
-        "should render 2hr lockout page when email OTP code has been invalid max number of times" +
-          "in the reset password journey",
-        () => {
-          req.session.user.isPasswordResetJourney = true;
-          req.query.actionType = SecurityCodeErrorType.EmailMaxRetries;
-
-          securityCodeInvalidGet(req as Request, res as Response);
-
-          expect(res.render).to.have.calledWith(
-            "security-code-error/index.njk",
-            {
-              newCodeLink: pathWithQueryParam(
-                PATH_NAMES.RESEND_EMAIL_CODE,
-                "requestNewCode",
-                "true"
-              ),
-              isAuthApp: false,
-              isBlocked: false,
-              show2HrScreen: true,
-              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-              taxonomyLevel2: "sign in",
-            }
-          );
-        }
-      );
-
-      it(
-        "should render 2hr lockout page when email OTP code has been invalid max number of times" +
-          "in 2FA account recovery journey",
-        () => {
-          req.session.user.isAccountRecoveryJourney = true;
-          req.query.actionType = SecurityCodeErrorType.EmailMaxRetries;
-
-          securityCodeInvalidGet(req as Request, res as Response);
-
-          expect(res.render).to.have.calledWith(
-            "security-code-error/index.njk",
-            {
-              newCodeLink: pathWithQueryParam(
-                PATH_NAMES.RESEND_EMAIL_CODE,
-                "requestNewCode",
-                "true"
-              ),
-              isAuthApp: false,
-              isBlocked: false,
-              show2HrScreen: true,
-              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-              taxonomyLevel2: "sign in",
-            }
-          );
-        }
-      );
-
-      it("should not render the 2 hour lockout page if the user is in the account creation journey", () => {
-        const TEST_SCENARIO_PARAMETERS = [
-          {
-            action: SecurityCodeErrorType.EmailMaxRetries,
-            isBlocked: false,
-            nextPath: PATH_NAMES.RESEND_EMAIL_CODE,
-            queryParam: "requestNewCode",
-          },
-          {
-            action: SecurityCodeErrorType.OtpMaxRetries,
-            isBlocked: true,
-            nextPath: PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
-            queryParam: "isResendCodeRequest",
-          },
-        ];
-
-        TEST_SCENARIO_PARAMETERS.forEach((params) => {
-          req.session.user.isAccountCreationJourney = true;
-          req.query.actionType = params.action;
-
-          securityCodeInvalidGet(req, res);
-
-          expect(res.render).to.have.calledWith(
-            "security-code-error/index.njk",
-            {
-              newCodeLink: pathWithQueryParam(
-                params.nextPath,
-                params.queryParam,
-                "true"
-              ),
-              isAuthApp: false,
-              isBlocked: params.isBlocked,
-              show2HrScreen: false,
-              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-              taxonomyLevel2: "create account",
-            }
-          );
+        expect(res.render).to.have.calledWith("security-code-error/index.njk", {
+          newCodeLink: pathWithQueryParam(
+            PATH_NAMES.RESEND_EMAIL_CODE,
+            "requestNewCode",
+            "true"
+          ),
+          isAuthApp: false,
+          isBlocked: false,
+          show2HrScreen: true,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "sign in",
         });
-      });
+      }
+    );
 
-      it(
-        "should render security-code-error/index.njk and set lock when user entered too many SMS OTPs " +
-          "in the sign-in journey",
-        () => {
-          process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES = "120";
-          req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
-          req.session.user.isSignInJourney = true;
-          securityCodeInvalidGet(req as Request, res as Response);
-          expect(res.render).to.have.calledWith(
-            "security-code-error/index.njk",
-            {
-              newCodeLink: pathWithQueryParam(
-                PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-                "actionType",
-                "mfaMaxRetries"
-              ),
-              isAuthApp: false,
-              isBlocked: true,
-              show2HrScreen: true,
-              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-              taxonomyLevel2: "sign in",
-            }
-          );
-          expect(req.session.user.wrongCodeEnteredLock).to.eq(
-            "Mon, 01 Jan 2024 02:00:00 GMT"
-          );
-        }
-      );
+    it(
+      "should render 2hr lockout page when email OTP code has been invalid max number of times" +
+        "in 2FA account recovery journey",
+      () => {
+        req.session.user.isAccountRecoveryJourney = true;
+        req.query.actionType = SecurityCodeErrorType.EmailMaxRetries;
 
-      it(
-        "should render security-code-error/index.njk and set lock when user entered too many SMS OTPs " +
-          "in the account creation journey",
-        () => {
-          process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES = "30";
-          process.env.REDUCED_CODE_BLOCK_DURATION_MINUTES = "15";
-          req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
-          req.session.user.isAccountCreationJourney = true;
-          securityCodeInvalidGet(req as Request, res as Response);
-          expect(res.render).to.have.calledWith(
-            "security-code-error/index.njk",
-            {
-              newCodeLink: pathWithQueryParam(
-                PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
-                "isResendCodeRequest",
-                "true"
-              ),
-              isAuthApp: false,
-              isBlocked: true,
-              show2HrScreen: false,
-              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-              taxonomyLevel2: "create account",
-            }
-          );
-          expect(req.session.user.wrongCodeEnteredLock).to.eq(
-            "Mon, 01 Jan 2024 00:15:00 GMT"
-          );
-        }
-      );
+        securityCodeInvalidGet(req as Request, res as Response);
 
-      it(
-        "should render security-code-error/index.njk and set lock when user entered too many SMS OTPs " +
-          "in the account recovery journey",
-        () => {
-          process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES = "30";
-          process.env.REDUCED_CODE_BLOCK_DURATION_MINUTES = "15";
-          req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
-          req.session.user.isAccountRecoveryJourney = true;
-          securityCodeInvalidGet(req as Request, res as Response);
-          expect(res.render).to.have.calledWith(
-            "security-code-error/index.njk",
-            {
-              newCodeLink: pathWithQueryParam(
-                PATH_NAMES.RESEND_MFA_CODE,
-                "isResendCodeRequest",
-                "true"
-              ),
-              isAuthApp: false,
-              isBlocked: true,
-              show2HrScreen: false,
-              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-              taxonomyLevel2: "sign in",
-            }
-          );
-          expect(req.session.user.wrongCodeEnteredLock).to.eq(
-            "Mon, 01 Jan 2024 00:15:00 GMT"
-          );
-        }
-      );
+        expect(res.render).to.have.calledWith("security-code-error/index.njk", {
+          newCodeLink: pathWithQueryParam(
+            PATH_NAMES.RESEND_EMAIL_CODE,
+            "requestNewCode",
+            "true"
+          ),
+          isAuthApp: false,
+          isBlocked: false,
+          show2HrScreen: true,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "sign in",
+        });
+      }
+    );
 
-      it(
-        "should render security-code-error/index.njk and set lock when user entered too many EMAIL OTPs " +
-          "in the account recovery journey",
-        () => {
-          process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES =
-            "15";
-          req.query.actionType =
-            SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries;
-          req.session.user.isAccountRecoveryJourney = true;
-          securityCodeInvalidGet(req as Request, res as Response);
-          expect(res.render).to.have.calledWith(
-            "security-code-error/index.njk",
-            {
-              newCodeLink: pathWithQueryParam(
-                PATH_NAMES.RESEND_EMAIL_CODE,
-                "requestNewCode",
-                "true"
-              ),
-              isAuthApp: false,
-              isBlocked: true,
-              show2HrScreen: true,
-              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-              taxonomyLevel2: "sign in",
-            }
-          );
-          expect(req.session.user.wrongCodeEnteredAccountRecoveryLock).to.eq(
-            "Mon, 01 Jan 2024 00:15:00 GMT"
-          );
-        }
-      );
+    it("should not render the 2 hour lockout page if the user is in the account creation journey", () => {
+      SCENARIOS.ACCOUNT_CREATION_JOURNEY.forEach((params) => {
+        req.session.user.isAccountCreationJourney = true;
+        req.query.actionType = params.action;
 
-      it(
-        "should render security-code-error/index.njk and set lock when user entered too many EMAIL OTPs " +
-          "in the reset password journey",
-        () => {
-          process.env.PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES = "120";
-          req.query.actionType =
-            SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries;
-          req.session.user.isPasswordResetJourney = true;
-          securityCodeInvalidGet(req as Request, res as Response);
-          expect(res.render).to.have.calledWith(
-            "security-code-error/index.njk",
-            {
-              newCodeLink: pathWithQueryParam(
-                PATH_NAMES.RESEND_EMAIL_CODE,
-                "requestNewCode",
-                "true"
-              ),
-              isAuthApp: false,
-              isBlocked: true,
-              show2HrScreen: true,
-              contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-              taxonomyLevel2: "sign in",
-            }
-          );
-          expect(req.session.user.wrongCodeEnteredPasswordResetLock).to.eq(
-            "Mon, 01 Jan 2024 02:00:00 GMT"
-          );
-        }
-      );
+        securityCodeInvalidGet(req, res);
 
-      it("should not reset unexpired locks", () => {
-        [
-          SecurityCodeErrorType.MfaMaxRetries,
-          SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries,
-          SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries,
-          SecurityCodeErrorType.OtpMaxRetries,
-        ].forEach((errorType) => {
-          req.query.actionType = errorType;
-          const dateInTheFuture = new Date(
-            date.getTime() + 1 * 1000
-          ).toUTCString();
-          req.session.user.wrongCodeEnteredPasswordResetLock = dateInTheFuture;
-          req.session.user.wrongCodeEnteredAccountRecoveryLock =
-            dateInTheFuture;
-          req.session.user.wrongCodeEnteredLock = dateInTheFuture;
-
-          securityCodeInvalidGet(req as Request, res as Response);
-          const locks = [
-            req.session.user.wrongCodeEnteredPasswordResetLock,
-            req.session.user.wrongCodeEnteredAccountRecoveryLock,
-            req.session.user.wrongCodeEnteredLock,
-          ];
-
-          locks.forEach((lock) => {
-            expect(lock).to.eq(dateInTheFuture);
-          });
+        expect(res.render).to.have.calledWith("security-code-error/index.njk", {
+          newCodeLink: pathWithQueryParam(
+            params.nextPath,
+            params.queryParam,
+            "true"
+          ),
+          isAuthApp: false,
+          isBlocked: params.isBlocked,
+          show2HrScreen: false,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "create account",
         });
       });
     });
 
-    describe("securityCodeTriesExceededGet", () => {
-      after(() => {
-        delete process.env.CODE_REQUEST_BLOCKED_MINUTES;
-      });
-
-      it(
-        "should render index-too-many-requests.njk and set block on session for MfaMaxRetries when max number of " +
-          "codes have been sent and user is in the sign-in journey",
-        () => {
-          process.env.CODE_REQUEST_BLOCKED_MINUTES = "15";
-          req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
-          req.session.user.isSignInJourney = true;
-          securityCodeTriesExceededGet(req as Request, res as Response);
-
-          expect(res.render).to.have.calledWith(
-            "security-code-error/index-too-many-requests.njk",
-            {
-              newCodeLink: pathWithQueryParam(
-                PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-                SECURITY_CODE_ERROR,
-                SecurityCodeErrorType.MfaMaxRetries
-              ),
-              isResendCodeRequest: undefined,
-              isAccountCreationJourney: undefined,
-              support2hrLockout: true,
-              contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
-              taxonomyLevel2: "sign in",
-            }
-          );
-          expect(req.session.user.codeRequestLock).to.eq(
-            "Mon, 01 Jan 2024 00:15:00 GMT"
-          );
-        }
-      );
-
-      it(
-        "should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent" +
-          "and user is in the sign-in journey",
-        () => {
-          req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
-          req.session.user.isPasswordResetJourney = true;
-          securityCodeTriesExceededGet(req as Request, res as Response);
-
-          expect(res.render).to.have.calledWith(
-            "security-code-error/index-too-many-requests.njk",
-            {
-              newCodeLink: pathWithQueryParam(
-                PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-                SECURITY_CODE_ERROR,
-                SecurityCodeErrorType.MfaMaxRetries
-              ),
-              isResendCodeRequest: undefined,
-              isAccountCreationJourney: undefined,
-              support2hrLockout: true,
-              contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
-              taxonomyLevel2: "sign in",
-            }
-          );
-        }
-      );
-
-      it(
-        "should render index-too-many-requests.njk for OtpBlocked when max number of codes have been requested " +
-          "and user is in the 2FA SMS account recovery journey",
-        () => {
-          req.query.actionType = SecurityCodeErrorType.OtpBlocked;
-          req.session.user.isAccountRecoveryJourney = true;
-          securityCodeTriesExceededGet(req as Request, res as Response);
-
-          expect(res.render).to.have.calledWith(
-            "security-code-error/index-too-many-requests.njk",
-            {
-              newCodeLink: getNewCodePath(SecurityCodeErrorType.OtpBlocked),
-              isResendCodeRequest: undefined,
-              isAccountCreationJourney: undefined,
-              support2hrLockout: true,
-              contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
-              taxonomyLevel2: "sign in",
-            }
-          );
-        }
-      );
-
-      it(
-        "should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent" +
-          "and user is in the account creation journey",
-        () => {
-          req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
-          req.session.user.isAccountCreationJourney = true;
-          securityCodeTriesExceededGet(req as Request, res as Response);
-
-          expect(res.render).to.have.calledWith(
-            "security-code-error/index-too-many-requests.njk",
-            {
-              newCodeLink: pathWithQueryParam(
-                PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-                SECURITY_CODE_ERROR,
-                SecurityCodeErrorType.MfaMaxRetries
-              ),
-              isResendCodeRequest: undefined,
-              isAccountCreationJourney: true,
-              support2hrLockout: true,
-              contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
-              taxonomyLevel2: "create account",
-            }
-          );
-        }
-      );
-
-      it("should not extend a lock that already exists", () => {
+    it(
+      "should render security-code-error/index.njk and set lock when user entered too many SMS OTPs " +
+        "in the sign-in journey",
+      () => {
+        process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES = "120";
         req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
+        req.session.user.isSignInJourney = true;
+        securityCodeInvalidGet(req as Request, res as Response);
+        expect(res.render).to.have.calledWith("security-code-error/index.njk", {
+          newCodeLink: pathWithQueryParam(
+            PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
+            "actionType",
+            "mfaMaxRetries"
+          ),
+          isAuthApp: false,
+          isBlocked: true,
+          show2HrScreen: true,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "sign in",
+        });
+        expect(req.session.user.wrongCodeEnteredLock).to.eq(
+          "Mon, 01 Jan 2024 02:00:00 GMT"
+        );
+      }
+    );
 
+    it(
+      "should render security-code-error/index.njk and set lock when user entered too many SMS OTPs " +
+        "in the account creation journey",
+      () => {
+        process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES = "30";
+        process.env.REDUCED_CODE_BLOCK_DURATION_MINUTES = "15";
+        req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
+        req.session.user.isAccountCreationJourney = true;
+        securityCodeInvalidGet(req as Request, res as Response);
+        expect(res.render).to.have.calledWith("security-code-error/index.njk", {
+          newCodeLink: pathWithQueryParam(
+            PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+            "isResendCodeRequest",
+            "true"
+          ),
+          isAuthApp: false,
+          isBlocked: true,
+          show2HrScreen: false,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "create account",
+        });
+        expect(req.session.user.wrongCodeEnteredLock).to.eq(
+          "Mon, 01 Jan 2024 00:15:00 GMT"
+        );
+      }
+    );
+
+    it(
+      "should render security-code-error/index.njk and set lock when user entered too many SMS OTPs " +
+        "in the account recovery journey",
+      () => {
+        process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES = "30";
+        process.env.REDUCED_CODE_BLOCK_DURATION_MINUTES = "15";
+        req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
+        req.session.user.isAccountRecoveryJourney = true;
+        securityCodeInvalidGet(req as Request, res as Response);
+        expect(res.render).to.have.calledWith("security-code-error/index.njk", {
+          newCodeLink: pathWithQueryParam(
+            PATH_NAMES.RESEND_MFA_CODE,
+            "isResendCodeRequest",
+            "true"
+          ),
+          isAuthApp: false,
+          isBlocked: true,
+          show2HrScreen: false,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "sign in",
+        });
+        expect(req.session.user.wrongCodeEnteredLock).to.eq(
+          "Mon, 01 Jan 2024 00:15:00 GMT"
+        );
+      }
+    );
+
+    it(
+      "should render security-code-error/index.njk and set lock when user entered too many EMAIL OTPs " +
+        "in the account recovery journey",
+      () => {
+        process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES = "15";
+        req.query.actionType =
+          SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries;
+        req.session.user.isAccountRecoveryJourney = true;
+        securityCodeInvalidGet(req as Request, res as Response);
+        expect(res.render).to.have.calledWith("security-code-error/index.njk", {
+          newCodeLink: pathWithQueryParam(
+            PATH_NAMES.RESEND_EMAIL_CODE,
+            "requestNewCode",
+            "true"
+          ),
+          isAuthApp: false,
+          isBlocked: true,
+          show2HrScreen: true,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "sign in",
+        });
+        expect(req.session.user.wrongCodeEnteredAccountRecoveryLock).to.eq(
+          "Mon, 01 Jan 2024 00:15:00 GMT"
+        );
+      }
+    );
+
+    it(
+      "should render security-code-error/index.njk and set lock when user entered too many EMAIL OTPs " +
+        "in the reset password journey",
+      () => {
+        process.env.PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES = "120";
+        req.query.actionType =
+          SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries;
+        req.session.user.isPasswordResetJourney = true;
+        securityCodeInvalidGet(req as Request, res as Response);
+        expect(res.render).to.have.calledWith("security-code-error/index.njk", {
+          newCodeLink: pathWithQueryParam(
+            PATH_NAMES.RESEND_EMAIL_CODE,
+            "requestNewCode",
+            "true"
+          ),
+          isAuthApp: false,
+          isBlocked: true,
+          show2HrScreen: true,
+          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+          taxonomyLevel2: "sign in",
+        });
+        expect(req.session.user.wrongCodeEnteredPasswordResetLock).to.eq(
+          "Mon, 01 Jan 2024 02:00:00 GMT"
+        );
+      }
+    );
+
+    it("should not reset unexpired locks", () => {
+      [
+        SecurityCodeErrorType.MfaMaxRetries,
+        SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries,
+        SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries,
+        SecurityCodeErrorType.OtpMaxRetries,
+      ].forEach((errorType) => {
+        req.query.actionType = errorType;
         const dateInTheFuture = new Date(
           date.getTime() + 1 * 1000
         ).toUTCString();
+        req.session.user.wrongCodeEnteredPasswordResetLock = dateInTheFuture;
+        req.session.user.wrongCodeEnteredAccountRecoveryLock = dateInTheFuture;
+        req.session.user.wrongCodeEnteredLock = dateInTheFuture;
 
-        req.session.user.codeRequestLock = dateInTheFuture;
+        securityCodeInvalidGet(req as Request, res as Response);
+        const locks = [
+          req.session.user.wrongCodeEnteredPasswordResetLock,
+          req.session.user.wrongCodeEnteredAccountRecoveryLock,
+          req.session.user.wrongCodeEnteredLock,
+        ];
 
+        locks.forEach((lock) => {
+          expect(lock).to.eq(dateInTheFuture);
+        });
+      });
+    });
+  });
+
+  describe("securityCodeTriesExceededGet", () => {
+    after(() => {
+      delete process.env.CODE_REQUEST_BLOCKED_MINUTES;
+    });
+
+    it(
+      "should render index-too-many-requests.njk and set block on session for MfaMaxRetries when max number of " +
+        "codes have been sent and user is in the sign-in journey",
+      () => {
+        process.env.CODE_REQUEST_BLOCKED_MINUTES = "15";
+        req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
+        req.session.user.isSignInJourney = true;
         securityCodeTriesExceededGet(req as Request, res as Response);
 
-        expect(req.session.user.codeRequestLock).to.eq(dateInTheFuture);
-      });
+        expect(res.render).to.have.calledWith(
+          "security-code-error/index-too-many-requests.njk",
+          {
+            newCodeLink: pathWithQueryParam(
+              PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
+              SECURITY_CODE_ERROR,
+              SecurityCodeErrorType.MfaMaxRetries
+            ),
+            isResendCodeRequest: undefined,
+            isAccountCreationJourney: undefined,
+            contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+            taxonomyLevel2: "sign in",
+          }
+        );
+        expect(req.session.user.codeRequestLock).to.eq(
+          "Mon, 01 Jan 2024 00:15:00 GMT"
+        );
+      }
+    );
+
+    it(
+      "should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent" +
+        "and user is in the sign-in journey",
+      () => {
+        req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
+        req.session.user.isPasswordResetJourney = true;
+        securityCodeTriesExceededGet(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWith(
+          "security-code-error/index-too-many-requests.njk",
+          {
+            newCodeLink: pathWithQueryParam(
+              PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
+              SECURITY_CODE_ERROR,
+              SecurityCodeErrorType.MfaMaxRetries
+            ),
+            isResendCodeRequest: undefined,
+            isAccountCreationJourney: undefined,
+            contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+            taxonomyLevel2: "sign in",
+          }
+        );
+      }
+    );
+
+    it(
+      "should render index-too-many-requests.njk for OtpBlocked when max number of codes have been requested " +
+        "and user is in the 2FA SMS account recovery journey",
+      () => {
+        req.query.actionType = SecurityCodeErrorType.OtpBlocked;
+        req.session.user.isAccountRecoveryJourney = true;
+        securityCodeTriesExceededGet(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWith(
+          "security-code-error/index-too-many-requests.njk",
+          {
+            newCodeLink: getNewCodePath(SecurityCodeErrorType.OtpBlocked),
+            isResendCodeRequest: undefined,
+            isAccountCreationJourney: undefined,
+            contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+            taxonomyLevel2: "sign in",
+          }
+        );
+      }
+    );
+
+    it(
+      "should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent" +
+        "and user is in the account creation journey",
+      () => {
+        req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
+        req.session.user.isAccountCreationJourney = true;
+        securityCodeTriesExceededGet(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWith(
+          "security-code-error/index-too-many-requests.njk",
+          {
+            newCodeLink: pathWithQueryParam(
+              PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
+              SECURITY_CODE_ERROR,
+              SecurityCodeErrorType.MfaMaxRetries
+            ),
+            isResendCodeRequest: undefined,
+            isAccountCreationJourney: true,
+            contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+            taxonomyLevel2: "create account",
+          }
+        );
+      }
+    );
+
+    it("should not extend a lock that already exists", () => {
+      req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
+
+      const dateInTheFuture = new Date(date.getTime() + 1 * 1000).toUTCString();
+
+      req.session.user.codeRequestLock = dateInTheFuture;
+
+      securityCodeTriesExceededGet(req as Request, res as Response);
+
+      expect(req.session.user.codeRequestLock).to.eq(dateInTheFuture);
     });
   });
 });

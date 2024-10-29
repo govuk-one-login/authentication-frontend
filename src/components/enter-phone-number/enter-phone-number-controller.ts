@@ -13,7 +13,7 @@ import { SendNotificationServiceInterface } from "../common/send-notification/ty
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number";
-import { support2hrLockout, supportAccountRecovery } from "../../config";
+import { supportAccountRecovery } from "../../config";
 import xss from "xss";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 
@@ -101,7 +101,6 @@ export function enterPhoneNumberPost(
           newCodeLink: getNewCodePath(
             req.query.actionType as SecurityCodeErrorType
           ),
-          support2hrLockout: support2hrLockout(),
           isAccountCreationJourney:
             req.session.user.isAccountCreationJourney ||
             req.session.user.isAccountPartCreated,

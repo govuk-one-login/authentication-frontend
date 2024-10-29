@@ -161,10 +161,6 @@ locals {
         value = var.email_entered_wrong_blocked_minutes
       },
       {
-        name  = "SUPPORT_2HR_LOCKOUT"
-        value = var.support_2hr_lockout
-      },
-      {
         name  = "NO_PHOTO_ID_CONTACT_FORMS"
         value = var.no_photo_id_contact_forms
       },

@@ -91,6 +91,9 @@ Conditions:
               - !Ref Environment
               - "integration"
           - Fn::Equals:
+              - !Ref Environment
+              - "production"
+          - Fn::Equals:
               - !Ref SubEnvironment
               - "authdev1"
 
@@ -246,6 +249,7 @@ Mappings:
         -----END PUBLIC KEY-----
       redisNodeSize: cache.t2.small
     production:
+      basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
       frontendAutoScalingMinCount: 4
       frontendAutoScalingMaxCount: 240
@@ -614,7 +618,7 @@ Resources:
                   - UseSubEnvironment
                   - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
                   - !Sub "signin-sp.${Environment}.account.gov.uk"
-                - "signin.account.gov.uk"
+                - "signin-sp.account.gov.uk"
             - Name: GTM_ID
               Value: GTM-TK92W68
             - Name: SUPPORT_AUTHORIZE_CONTROLLER
@@ -697,8 +701,6 @@ Resources:
             - Name: SUPPORT_REAUTHENTICATION
               Value: 1
             - Name: EMAIL_ENTERED_WRONG_BLOCKED_MINUTES
-              Value: 1
-            - Name: SUPPORT_2HR_LOCKOUT
               Value: 1
             - Name: NO_PHOTO_ID_CONTACT_FORMS
               Value: 1
@@ -873,7 +875,10 @@ Resources:
                 - Name: NGINX_PORT
                   Value: "8080"
                 - Name: NGINX_HOST
-                  Value: !Sub "signin-sp.${Environment}.account.gov.uk"
+                  Value: !If
+                    - IsNotProduction
+                    - !Sub "signin-sp.${Environment}.account.gov.uk"
+                    - "signin-sp.account.gov.uk"
               Secrets:
                 - Name: BASIC_AUTH_USERNAME
                   ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_username"
@@ -1041,9 +1046,12 @@ Resources:
     Type: AWS::Route53::RecordSet
     Properties:
       Name: !If
-        - UseSubEnvironment
-        - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
-        - !Sub "signin-sp.${Environment}.account.gov.uk"
+        - IsNotProduction
+        - !If
+          - UseSubEnvironment
+          - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
+          - !Sub "signin-sp.${Environment}.account.gov.uk"
+        - "signin-sp.account.gov.uk"
       Type: A
       HostedZoneId: !Sub
         - "{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}"
@@ -1170,9 +1178,12 @@ Resources:
     Type: AWS::Route53::RecordSet
     Properties:
       Name: !If
-        - UseSubEnvironment
-        - !Sub "origin.signin.${SubEnvironment}.${Environment}.account.gov.uk"
-        - !Sub "origin.signin-sp.${Environment}.account.gov.uk"
+        - IsNotProduction
+        - !If
+          - UseSubEnvironment
+          - !Sub "origin.signin.${SubEnvironment}.${Environment}.account.gov.uk"
+          - !Sub "origin.signin-sp.${Environment}.account.gov.uk"
+        - "origin.signin-sp.account.gov.uk"
       Type: A
       HostedZoneId: !Sub
         - "{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}"
@@ -1341,6 +1352,22 @@ Resources:
       IpProtocol: tcp
       FromPort: 8080
       ToPort: 8080
+
+  ApplicationLoadBalancerCloudFrontWAFv2ACLAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    Properties:
+      ResourceArn: !Ref ApplicationLoadBalancer
+      WebACLArn:
+        Fn::ImportValue: !Sub
+          - "${CFDistributionStackName}-CloakingOriginWebACLArn"
+          - CFDistributionStackName: !FindInMap
+              - EnvironmentConfiguration
+              - !If
+                - UseSubEnvironment
+                - !Ref SubEnvironment
+                - !Ref Environment
+              - cloudfrontDistributionStackName
+              - DefaultValue: "auth-fe-cloudfront"
 
   #
   # ECS Alarms

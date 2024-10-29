@@ -1,37 +1,23 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% if support2hrLockout %}
-    {% if isAccountCreationJourney %}
-        {% set pageTitleName = 'pages.securityCodeWaitToRequest.title_create' | translate %}
-    {% else %}
-        {% set pageTitleName = 'pages.securityCodeWaitToRequest.title' | translate %}
-    {% endif %}
+{% if isAccountCreationJourney %}
+    {% set pageTitleName = 'pages.securityCodeWaitToRequest.title_create' | translate %}
 {% else %}
-    {% set pageTitleName = 'pages.securityCodeWaitToRequest.title_old' | translate %}
+    {% set pageTitleName = 'pages.securityCodeWaitToRequest.title' | translate %}
 {% endif %}
 {% block content %}
 
-    {% if support2hrLockout %}
-        {% if isAccountCreationJourney %}
-            <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeWaitToRequest.header_create' | translate }}</h1>
-            <p class="govuk-body">{{'pages.securityCodeWaitToRequest.info.paragraph1_create' | translate}}</p>
-        {% else %}
-            <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeWaitToRequest.header' | translate }}</h1>
-            <p class="govuk-body">{{'pages.securityCodeWaitToRequest.info.paragraph1' | translate}}</p>
-        {% endif %}
-        <h2 class="govuk-heading-s">{{'pages.securityCodeWaitToRequest.info.subHeading' | translate}}</h2>
-        <p class="govuk-body">{{'pages.securityCodeWaitToRequest.info.paragraph2' | translate}}</p>
-        <p class="govuk-body">{{'pages.securityCodeWaitToRequest.info.paragraph3' | translate}}</p>
+    {% if isAccountCreationJourney %}
+        <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeWaitToRequest.header_create' | translate }}</h1>
+        <p class="govuk-body">{{'pages.securityCodeWaitToRequest.info.paragraph1_create' | translate}}</p>
     {% else %}
-        <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeWaitToRequest.header_old' | translate }}</h1>
-        <p class="govuk-body">{{'pages.securityCodeWaitToRequest.info_old.paragraph1' | translate}}</p>
-        <p class="govuk-body">
-            {{'pages.securityCodeWaitToRequest.info_old.paragraph2Start' | translate}}
-            <a class="govuk-link" rel="noreferrer" href="{{ newCodeLink }}">{{'pages.securityCodeWaitToRequest.info_old.link' | translate}}</a>
-            {{'pages.securityCodeWaitToRequest.info_old.paragraph2End' | translate}}
-        </p>
+        <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityCodeWaitToRequest.header' | translate }}</h1>
+        <p class="govuk-body">{{'pages.securityCodeWaitToRequest.info.paragraph1' | translate}}</p>
     {% endif %}
-    
+    <h2 class="govuk-heading-s">{{'pages.securityCodeWaitToRequest.info.subHeading' | translate}}</h2>
+    <p class="govuk-body">{{'pages.securityCodeWaitToRequest.info.paragraph2' | translate}}</p>
+    <p class="govuk-body">{{'pages.securityCodeWaitToRequest.info.paragraph3' | translate}}</p>
+
 {{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: taxonomyLevel2, contentId: contentId, loggedInStatus: false, dynamic: true })}}
 {% endblock %}

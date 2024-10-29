@@ -52,7 +52,6 @@ describe("Integration::2fa sms (in reset password flow)", () => {
 
   beforeEach(() => {
     nock.cleanAll();
-    process.env.SUPPORT_2HR_LOCKOUT = "0";
   });
 
   after(() => {
@@ -68,7 +67,6 @@ describe("Integration::2fa sms (in reset password flow)", () => {
   });
 
   it("should render index-security-code-entered-exceeded.njk when user is locked out due to too many incorrect codes", async () => {
-    process.env.SUPPORT_2HR_LOCKOUT = "1";
     nock(baseApi).persist().post("/mfa").reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
     });

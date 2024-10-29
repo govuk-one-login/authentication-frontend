@@ -7,7 +7,6 @@ import { SinonStub } from "sinon";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { AuthCodeServiceInterface } from "../types";
 import { Http } from "../../../utils/http";
-import { support2hrLockout } from "../../../config";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
 describe("authentication auth code service", () => {
@@ -205,26 +204,6 @@ describe("authentication auth code service", () => {
       ).to.be.true;
       expect(postStub.notCalled).to.be.true;
       expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);
-    });
-  });
-
-  describe("support2hrLockout() with the support 2hr lockout for password and code lockouts", () => {
-    it("should return true when SUPPORT_2HR_LOCKOUT is set to '1'", async () => {
-      process.env.SUPPORT_2HR_LOCKOUT = "1";
-
-      expect(support2hrLockout()).to.be.true;
-    });
-
-    it("should return false  when SUPPORT_2HR_LOCKOUT is set to '0'", async () => {
-      process.env.SUPPORT_2HR_LOCKOUT = "0";
-
-      expect(support2hrLockout()).to.be.false;
-    });
-
-    it("should return false when SUPPORT_2HR_LOCKOUT is undefined", async () => {
-      process.env.SUPPORT_2HR_LOCKOUT = undefined;
-
-      expect(support2hrLockout()).to.be.false;
     });
   });
 });
