@@ -385,15 +385,15 @@ variable "language_toggle_enabled" {
   description = "Enables English / Welsh language toggle in the user interface"
 }
 
-variable "ga4_disabled" {
+variable "ga4_enabled" {
   type        = string
-  default     = "true"
+  default     = "false"
   description = "Enables Google Analytics 4"
 }
 
-variable "ua_disabled" {
+variable "ua_enabled" {
   type        = string
-  default     = "true"
+  default     = "false"
   description = "Enables Universal Analytics"
 }
 
