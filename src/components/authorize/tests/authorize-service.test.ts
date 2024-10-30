@@ -25,6 +25,7 @@ describe("authorize service", () => {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
   const isAuthenticated = false;
+  const currentCredentialStrength = "MEDIUM_LEVEL";
 
   beforeEach(() => {
     setupApiKeyAndBaseUrlEnvVars();
@@ -107,6 +108,7 @@ describe("authorize service", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
       authenticated: isAuthenticated,
+      current_credential_strength: undefined,
       reauthenticate: undefined,
       previous_session_id: previousSessionId,
     });
@@ -132,6 +134,7 @@ describe("authorize service", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
       authenticated: isAuthenticated,
+      current_credential_strength: undefined,
       reauthenticate: "123456",
       previous_session_id: undefined,
       previous_govuk_signin_journey_id: "previous-journey-id",
@@ -149,6 +152,34 @@ describe("authorize service", () => {
           headers: {
             ...expectedHeadersFromCommonVarsWithSecurityHeaders,
             Reauthenticate: true,
+          },
+          proxy: false,
+        }
+      )
+    ).to.be.true;
+  });
+
+  it("sends a request with the current credential strength in the body when present", () => {
+    process.env.SUPPORT_REAUTHENTICATION = "1";
+    service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
+      authenticated: isAuthenticated,
+      current_credential_strength: currentCredentialStrength,
+      reauthenticate: undefined,
+      previous_session_id: undefined,
+      previous_govuk_signin_journey_id: "previous-journey-id",
+    });
+
+    expect(
+      postStub.calledOnceWithExactly(
+        API_ENDPOINTS.START,
+        {
+          "current-credential-strength": currentCredentialStrength,
+          "previous-govuk-signin-journey-id": "previous-journey-id",
+          authenticated: isAuthenticated,
+        },
+        {
+          headers: {
+            ...expectedHeadersFromCommonVarsWithSecurityHeaders,
           },
           proxy: false,
         }

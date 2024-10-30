@@ -4,6 +4,7 @@ import { Request } from "express";
 
 export interface StartRequestParameters {
   authenticated: boolean;
+  current_credential_strength?: string;
   previous_session_id?: string;
   rp_pairwise_id_for_reauth?: string;
   previous_govuk_signin_journey_id?: string;
