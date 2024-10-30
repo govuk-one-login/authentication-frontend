@@ -289,12 +289,6 @@ variable "support_check_email_fraud" {
   default     = "1"
 }
 
-variable "support_multi_channel" {
-  description = "Enables different UI rendering per channel"
-  type        = string
-  default     = "0"
-}
-
 variable "default_channel" {
   description = "To set the default channel."
   type        = string

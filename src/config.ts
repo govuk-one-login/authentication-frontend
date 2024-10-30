@@ -152,10 +152,6 @@ export function supportCheckEmailFraud(): boolean {
   return process.env.SUPPORT_CHECK_EMAIL_FRAUD === "1";
 }
 
-export function supportMultiChannel(): boolean {
-  return process.env.SUPPORT_MULTI_CHANNEL === "1";
-}
-
 export function getDefaultChannel(): string {
   const configuredChannel = process.env.DEFAULT_CHANNEL;
   if (isValidChannel(configuredChannel)) {
