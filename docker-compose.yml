@@ -57,5 +57,19 @@ services:
     networks:
       - di-net
 
+  di-auth-stub-orchstub:
+    image: *stub-image-name
+    pull_policy: never
+    ports:
+      - "${DOCKER_DOCKER_STUB_ORCHSTUB_PORT:-3002}:${DOCKER_DOCKER_STUB_ORCHSTUB_PORT:-3002}"
+    environment:
+      PORT: ${DOCKER_DOCKER_STUB_ORCHSTUB_PORT:-3002}
+    command:
+      - yarn
+      - dummy-server-orchstub
+    restart: on-failure
+    networks:
+      - di-net
+
 networks:
   di-net:

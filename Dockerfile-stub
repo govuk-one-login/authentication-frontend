@@ -11,6 +11,7 @@ COPY --chown=node:node yarn.lock ./
 RUN yarn install
 
 COPY --chown=node:node dev-app.js ./
+COPY --chown=node:node dev-app-orchstub.js ./
 
 EXPOSE $PORT
 
