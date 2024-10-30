@@ -97,6 +97,11 @@ Conditions:
               - !Ref SubEnvironment
               - "authdev1"
 
+  UseMfaResetWithIpv:
+    Fn::Equals:
+        - !Ref Environment
+        - "dev"
+
   UseSubEnvironment:
     Fn::And:
       - Fn::Equals:
@@ -728,7 +733,7 @@ Resources:
             - Name: SUPPORT_NEW_IPV_SPINNER
               Value: !If [IsNotProduction, "1", "0"]
             - Name: SUPPORT_MFA_RESET_WITH_IPV
-              Value: 0
+              Value: !If [UseMfaResetWithIpv, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If
