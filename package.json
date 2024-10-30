@@ -16,6 +16,7 @@
     "copy-assets": "mkdir -p dist && copyfiles -u 1 src/**/*.njk dist/ src/locales/**/** dist/ src/config/*.txt dist/ && copyfiles -u 3 src/assets/javascript/*.js dist/public/scripts -e **/all.js && cp node_modules/govuk-frontend/govuk/all.js dist/public/scripts && cp node_modules/@govuk-one-login/frontend-analytics/lib/analytics.js dist/public/scripts && cp node_modules/@govuk-one-login/spinner/spinner-app.js dist/public/scripts",
     "dev": "tsc && concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\"",
     "dummy-server": "node dev-app.js | pino-pretty",
+    "dummy-server-orchstub": "node dev-app-orchstub.js | pino-pretty",
     "depcheck": "depcheck",
     "lint": "eslint . ",
     "minfiy-build-js": "uglifyjs src/assets/javascript/application.js -o src/assets/javascript/application.js -c -m && uglifyjs src/assets/javascript/cookies.js -o src/assets/javascript/cookies.js -c -m && uglifyjs src/assets/javascript/showPassword.js -o src/assets/javascript/showPassword.js -c -m",
