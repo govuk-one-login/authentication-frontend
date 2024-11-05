@@ -234,6 +234,12 @@ In both cases frontend must have started successfully with the message 'Server l
 REDIS_PORT=6379 REDIS_HOST=localhost yarn test:integration
 ```
 
+We have snapshot tests on some of our integration tests. To update those you will need to run the integration tests as such:
+
+```shell script
+UPDATE_SNAPSHOT=true yarn test:integration
+```
+
 ### Install dependencies
 
 > To install dependencies, run yarn install
