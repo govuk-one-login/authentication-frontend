@@ -4,7 +4,6 @@ const express = require("express");
 const pino = require("pino");
 const axios = require("axios").default;
 const url = require("url");
-const querystring = require("querystring");
 const { randomBytes } = require("crypto");
 
 require("dotenv").config();
@@ -16,21 +15,25 @@ const frontend_port = process.env.FRONTEND_PORT || 3000;
 
 function createAuthorizeRequest() {
   const vtr = process.env.VTR ? `vtr=${encodeURI(process.env.VTR)}&` : "";
-  const ui_locales = process.env.UI_LOCALES && process.env.UI_LOCALES.length > 0 ? `&ui_locales=${process.env.UI_LOCALES}` : "";
-  const redirect_uri = `https://${process.env.STUB_HOSTNAME}/oidc/authorization-code/callback`
+  const ui_locales =
+    process.env.UI_LOCALES && process.env.UI_LOCALES.length > 0
+      ? `&ui_locales=${process.env.UI_LOCALES}`
+      : "";
+  const redirect_uri = `https://${process.env.STUB_HOSTNAME}/oidc/authorization-code/callback`;
 
   return new URL(
     "/authorize?" +
-    vtr +
-    "scope=openid+phone+email" +
-    "&response_type=code" +
-    `&redirect_uri=${encodeURIComponent(redirect_uri)}` +
-    `&state=${randomBytes(32).toString("base64url")}` +
-    `&nonce=${randomBytes(32).toString("base64url")}` +
-    `&client_id=${process.env.TEST_CLIENT_ID}` +
-    "&cookie_consent=accept" +
-    "&_ga=test" +
-    ui_locales, process.env.API_BASE_URL
+      vtr +
+      "scope=openid+phone+email" +
+      "&response_type=code" +
+      `&redirect_uri=${encodeURIComponent(redirect_uri)}` +
+      `&state=${randomBytes(32).toString("base64url")}` +
+      `&nonce=${randomBytes(32).toString("base64url")}` +
+      `&client_id=${process.env.TEST_CLIENT_ID}` +
+      "&cookie_consent=accept" +
+      "&_ga=test" +
+      ui_locales,
+    process.env.API_BASE_URL
   ).toString();
 }
 
@@ -71,14 +74,14 @@ app.get("/", (req, res) => {
 
       const params = new URLSearchParams(location.query);
       // logger.info(`params: ${params}`);
-      const redirectUri = new URL(`http://localhost:${frontend_port}/authorize`)
+      const redirectUri = new URL(
+        `http://localhost:${frontend_port}/authorize`
+      );
       redirectUri.search = params.toString();
 
       logger.info(`orch response location query is: ${redirectUri.toString()}`);
-      logger
-      res.redirect(
-        redirectUri
-      );
+      logger;
+      res.redirect(redirectUri);
     })
     .catch(function (error) {
       logger.error(error, "Error in OIDC request");
