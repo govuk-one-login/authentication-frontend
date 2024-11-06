@@ -8,7 +8,7 @@ updates:
     target-branch: main
     ignore:
       - dependency-name: "node"
-        versions: ["17.x", "19.x", "20.x"]
+        versions: ["> 20"]
     groups:
       npm-pino-dependencies:
         patterns:
@@ -44,6 +44,9 @@ updates:
       interval: daily
       time: "03:00"
     open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: "node"
+        versions: ["> 20"]
     groups:
       docker-all-dependencies:
         patterns:
