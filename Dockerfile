@@ -1,4 +1,4 @@
-FROM node:20.17.0-alpine@sha256:1a526b97cace6b4006256570efa1a29cd1fe4b96a5301f8d48e87c5139438a45 AS builder
+FROM node:23.1.0-alpine@sha256:1467ea23cce893347696b155b9e00e7f0ac7d21555eb6f27236f1328212e045e AS builder
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install
@@ -7,7 +7,7 @@ COPY ./@types ./@types
 COPY ./src ./src
 RUN yarn build && yarn install --production
 
-FROM node:20.17.0-alpine@sha256:1a526b97cace6b4006256570efa1a29cd1fe4b96a5301f8d48e87c5139438a45 AS final
+FROM node:23.1.0-alpine@sha256:1467ea23cce893347696b155b9e00e7f0ac7d21555eb6f27236f1328212e045e AS final
 
 RUN apk add --no-cache tini
 
