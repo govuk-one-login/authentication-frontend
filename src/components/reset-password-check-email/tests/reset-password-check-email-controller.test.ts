@@ -166,7 +166,6 @@ describe("reset password check email controller", () => {
           {
             email: req.session.user.email,
             contentId: "7b663466-8001-436f-b10b-e6ac581d39aa",
-            taxonomyLevel2: "account recovery",
           }
         );
       });

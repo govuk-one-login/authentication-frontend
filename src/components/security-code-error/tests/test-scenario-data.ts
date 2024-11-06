@@ -19,7 +19,6 @@ export const SCENARIOS = {
         isBlocked: false,
         show2HrScreen: true,
         contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-        taxonomyLevel2: "sign in",
       },
     },
     {
@@ -34,7 +33,6 @@ export const SCENARIOS = {
         isBlocked: true,
         show2HrScreen: false,
         contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-        taxonomyLevel2: "sign in",
       },
     },
     {
@@ -49,7 +47,6 @@ export const SCENARIOS = {
         isBlocked: true,
         show2HrScreen: false,
         contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-        taxonomyLevel2: "sign in",
       },
     },
     {
@@ -64,7 +61,6 @@ export const SCENARIOS = {
         isBlocked: true,
         show2HrScreen: false,
         contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-        taxonomyLevel2: "sign in",
       },
     },
   ],
@@ -74,7 +70,6 @@ export const SCENARIOS = {
       newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
       isAccountCreationJourney: undefined,
       contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
-      taxonomyLevel2: "sign in",
     },
     {
       actionType: SecurityCodeErrorType.MfaMaxRetries,
@@ -85,14 +80,12 @@ export const SCENARIOS = {
       ),
       isAccountCreationJourney: undefined,
       contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
-      taxonomyLevel2: "sign in",
     },
     {
       actionType: SecurityCodeErrorType.OtpMaxCodesSent,
       newCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
       isAccountCreationJourney: undefined,
       contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
-      taxonomyLevel2: "sign in",
     },
     {
       actionType: SecurityCodeErrorType.OtpMaxRetries,
@@ -103,7 +96,6 @@ export const SCENARIOS = {
       ),
       isAccountCreationJourney: true,
       contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
-      taxonomyLevel2: "create account",
     },
   ],
   SECURITY_CODE_CANNOT_REQUEST_GET: [
@@ -111,19 +103,16 @@ export const SCENARIOS = {
       actionType: SecurityCodeErrorType.OtpBlocked,
       expectedCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
       contentId: "1277915f-ce6e-4a06-89a0-e3458f95631a",
-      taxonomyLevel2: "sign in",
     },
     {
       actionType: SecurityCodeErrorType.MfaBlocked,
       expectedCodeLink: PATH_NAMES.RESEND_MFA_CODE,
       contentId: "1277915f-ce6e-4a06-89a0-e3458f95631a",
-      taxonomyLevel2: "sign in",
     },
     {
       actionType: SecurityCodeErrorType.EmailBlocked,
       expectedCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
       contentId: "1277915f-ce6e-4a06-89a0-e3458f95631a",
-      taxonomyLevel2: "sign in",
     },
   ],
   ACCOUNT_CREATION_JOURNEY: [

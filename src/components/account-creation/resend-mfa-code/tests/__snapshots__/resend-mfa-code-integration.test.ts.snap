@@ -3,7 +3,7 @@
 exports[`Integration:: resend SMS mfa code (account creation variant) should return 500 error screen when API call fails 1`] = `
 Object {
   "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "",
+  "taxonomyLevel2": "create account",
 }
 `;
 
