@@ -8,7 +8,6 @@ export const helmetConfiguration: HelmetOptions = {
       styleSrc: ["'self'"],
       scriptSrc: [
         "'self'",
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
         (req: Request, res: Response): string =>
           `'nonce-${res.locals.scriptNonce}'`,
         "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",

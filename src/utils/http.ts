@@ -19,7 +19,7 @@ import { createPersonalDataHeaders } from "@govuk-one-login/frontend-passthrough
 import { logger } from "./logger";
 import { Agent } from "https";
 
-interface CustomAxiosRequestHeaders extends Partial<AxiosRequestHeaders> {}
+type CustomAxiosRequestHeaders = Partial<AxiosRequestHeaders>;
 
 const headers: CustomAxiosRequestHeaders = {
   Accept: "application/json",

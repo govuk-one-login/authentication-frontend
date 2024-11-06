@@ -14,7 +14,6 @@ describe("csrfMissingHandler", () => {
     res = {
       headersSent: false,
       statusCode: 200,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
       render: () => {},
       status: function (newStatus: number) {
         this.statusCode = newStatus;

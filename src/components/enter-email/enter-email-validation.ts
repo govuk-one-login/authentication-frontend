@@ -33,7 +33,6 @@ export function validateEnterEmailRequest(
           { value }
         );
       })
-      /* eslint-disable-next-line */
       .matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~\-]+@([^.@][^@\s]+)$/)
       .withMessage((value, { req }) => {
         return req.t(

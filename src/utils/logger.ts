@@ -31,6 +31,7 @@ export function getRefererFrom(referer: string): string {
     try {
       const refererUrl = new URL(referer);
       return refererUrl.pathname;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return undefined;
     }
