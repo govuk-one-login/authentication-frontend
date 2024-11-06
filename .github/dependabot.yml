@@ -9,6 +9,8 @@ updates:
     ignore:
       - dependency-name: "node"
         versions: ["> 20"]
+      - dependency-name: "@types/node"
+        versions: ["> 20"]
     groups:
       npm-pino-dependencies:
         patterns:
