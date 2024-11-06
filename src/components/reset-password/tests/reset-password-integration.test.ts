@@ -43,7 +43,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
     setupAccountInterventionsResponse(baseApi, noInterventions);
 
     await request(app, (test) => test.get(ENDPOINT), {
-      expectTaxonomyMatchSnapshot: false,
+      expectAnalyticsPropertiesMatchSnapshot: false,
     }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

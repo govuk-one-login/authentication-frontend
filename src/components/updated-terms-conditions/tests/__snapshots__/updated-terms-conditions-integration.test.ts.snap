@@ -2,6 +2,7 @@
 
 exports[`Integration:: updated-terms-code should return error when csrf not present 1`] = `
 Object {
+  "contentId": undefined,
   "taxonomyLevel1": undefined,
   "taxonomyLevel2": undefined,
 }
@@ -9,6 +10,7 @@ Object {
 
 exports[`Integration:: updated-terms-code should return update terms and conditions page 1`] = `
 Object {
+  "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "",
 }

@@ -97,7 +97,7 @@ import { channelMiddleware } from "./middleware/channel-middleware";
 import { applyOverloadProtection } from "./middleware/overload-protection-middleware";
 import { frontendVitalSignsInit } from "@govuk-one-login/frontend-vital-signs";
 import { Server } from "node:http";
-import { getRequestTaxonomyMiddleware } from "./middleware/get-request-taxonomy-middleware";
+import { getAnalyticsPropertiesMiddleware } from "./middleware/get-analytics-properties-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -223,7 +223,7 @@ async function createApp(): Promise<express.Application> {
   if (getLanguageToggleEnabled()) {
     app.use(setCurrentUrlMiddleware);
   }
-  app.use(getRequestTaxonomyMiddleware);
+  app.use(getAnalyticsPropertiesMiddleware);
 
   registerRoutes(app);
 

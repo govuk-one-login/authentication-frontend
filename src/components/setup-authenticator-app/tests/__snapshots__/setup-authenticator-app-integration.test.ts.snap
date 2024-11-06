@@ -2,6 +2,7 @@
 
 exports[`Integration::setup-authenticator-app should return error when csrf not present 1`] = `
 Object {
+  "contentId": undefined,
   "taxonomyLevel1": undefined,
   "taxonomyLevel2": undefined,
 }
@@ -9,6 +10,7 @@ Object {
 
 exports[`Integration::setup-authenticator-app should return setup authenticator app page 1`] = `
 Object {
+  "contentId": "5bc82db9-2012-44bf-9a7d-34d1d22fb035",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
 }
@@ -16,6 +18,7 @@ Object {
 
 exports[`Integration::setup-authenticator-app should return validation error when access code is too long (more than 6 digits) 1`] = `
 Object {
+  "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "",
 }
@@ -23,6 +26,7 @@ Object {
 
 exports[`Integration::setup-authenticator-app should return validation error when access code not entered 1`] = `
 Object {
+  "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "",
 }
@@ -30,6 +34,7 @@ Object {
 
 exports[`Integration::setup-authenticator-app should return validation error when code has non-digit characters 1`] = `
 Object {
+  "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "",
 }

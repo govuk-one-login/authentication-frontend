@@ -69,9 +69,10 @@ describe("Integration:: enter mfa", () => {
 
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
+    process.env.SUPPORT_REAUTHENTICATION = "1";
 
     await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA), {
-      expectTaxonomyMatchSnapshot: false,
+      expectAnalyticsPropertiesMatchSnapshot: false,
     }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
@@ -89,9 +90,11 @@ describe("Integration:: enter mfa", () => {
     app = undefined;
   });
 
-  it("should redirect to rp if user entered 6 incorrect codes in the reauth journey", async () => {
-    process.env.SUPPORT_REAUTHENTICATION = "1";
+  it("should return check your phone page with reauth analytics properties", async () => {
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA).expect(200));
+  });
 
+  it("should redirect to rp if user entered 6 incorrect codes in the reauth journey", async () => {
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
       code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
       success: false,

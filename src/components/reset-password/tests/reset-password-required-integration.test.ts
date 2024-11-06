@@ -44,7 +44,7 @@ describe("Integration::reset password required", () => {
     setupAccountInterventionsResponse(baseApi, noInterventions);
 
     await request(app, (test) => test.get(ENDPOINT), {
-      expectTaxonomyMatchSnapshot: false,
+      expectAnalyticsPropertiesMatchSnapshot: false,
     }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();

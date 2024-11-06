@@ -2,6 +2,7 @@
 
 exports[`Integration::enter email (create account) should redirect to /security-code-invalid-request when request OTP more than 5 times 1`] = `
 Object {
+  "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
 }
@@ -9,6 +10,7 @@ Object {
 
 exports[`Integration::enter email (create account) should return enter email page 1`] = `
 Object {
+  "contentId": "390f46f9-1f6b-44f2-8fd7-21a5385a7d3a",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
 }
@@ -16,6 +18,7 @@ Object {
 
 exports[`Integration::enter email (create account) should return error when csrf not present 1`] = `
 Object {
+  "contentId": undefined,
   "taxonomyLevel1": undefined,
   "taxonomyLevel2": undefined,
 }
@@ -23,6 +26,7 @@ Object {
 
 exports[`Integration::enter email (create account) should return internal server error when /user-exists API call response is 500 1`] = `
 Object {
+  "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
 }
@@ -30,6 +34,7 @@ Object {
 
 exports[`Integration::enter email (create account) should return validation error when email not entered 1`] = `
 Object {
+  "contentId": "390f46f9-1f6b-44f2-8fd7-21a5385a7d3a",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
 }
@@ -37,6 +42,7 @@ Object {
 
 exports[`Integration::enter email (create account) should return validation error when invalid email entered 1`] = `
 Object {
+  "contentId": "390f46f9-1f6b-44f2-8fd7-21a5385a7d3a",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
 }
@@ -44,6 +50,7 @@ Object {
 
 exports[`Integration::enter email (create account) should return validation error when invalid email entered 2`] = `
 Object {
+  "contentId": "390f46f9-1f6b-44f2-8fd7-21a5385a7d3a",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
 }
@@ -51,6 +58,7 @@ Object {
 
 exports[`Integration::enter email (create account) should return validation error when invalid email entered 3`] = `
 Object {
+  "contentId": "390f46f9-1f6b-44f2-8fd7-21a5385a7d3a",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
 }

@@ -33,8 +33,11 @@ describe("Integration::enter email", () => {
             nextPath: PATH_NAMES.ENTER_EMAIL_SIGN_IN,
             optionalPaths: [PATH_NAMES.SIGN_IN_OR_CREATE],
           },
-          reauthenticate: "12345",
         };
+
+        if (process.env.TEST_SETUP_REAUTH_SESSION === "1") {
+          req.session.user.reauthenticate = "12345";
+        }
 
         req.session.client = {
           redirectUri: REDIRECT_URI,
@@ -47,7 +50,7 @@ describe("Integration::enter email", () => {
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN), {
-      expectTaxonomyMatchSnapshot: false,
+      expectAnalyticsPropertiesMatchSnapshot: false,
     }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
@@ -58,6 +61,8 @@ describe("Integration::enter email", () => {
   beforeEach(() => {
     nock.cleanAll();
     sinon.restore(); // Restore all stubs before each test
+    process.env.SUPPORT_REAUTHENTICATION = "0";
+    process.env.TEST_SETUP_REAUTH_SESSION = "0";
   });
 
   afterEach(() => {
@@ -70,9 +75,17 @@ describe("Integration::enter email", () => {
     app = undefined;
   });
 
-  it("should return enter email page", (done) => {
-    request(app, (test) =>
-      test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200, done)
+  it("should return enter email page with sign in analytics properties", async () => {
+    await request(app, (test) =>
+      test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200)
+    );
+  });
+
+  it("should return enter email page with reauth analytics properties", async () => {
+    process.env.SUPPORT_REAUTHENTICATION = "1";
+    process.env.TEST_SETUP_REAUTH_SESSION = "1";
+    await request(app, (test) =>
+      test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200)
     );
   });
 
@@ -236,6 +249,7 @@ describe("Integration::enter email", () => {
 
   it("should redirect to /enter-password page when email address exists and check re-auth users api call is successfully", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
+    process.env.TEST_SETUP_REAUTH_SESSION = "1";
 
     nock(baseApi)
       .post(API_ENDPOINTS.CHECK_REAUTH_USER)
@@ -266,6 +280,7 @@ describe("Integration::enter email", () => {
 
   it("should redirect to /signed-out with login_required error when user fails re-auth", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
+    process.env.TEST_SETUP_REAUTH_SESSION = "1";
 
     nock(baseApi)
       .post(API_ENDPOINTS.CHECK_REAUTH_USER)

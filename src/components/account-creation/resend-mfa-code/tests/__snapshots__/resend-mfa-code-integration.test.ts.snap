@@ -2,6 +2,7 @@
 
 exports[`Integration:: resend SMS mfa code (account creation variant) should return 500 error screen when API call fails 1`] = `
 Object {
+  "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
 }
@@ -9,6 +10,7 @@ Object {
 
 exports[`Integration:: resend SMS mfa code (account creation variant) should return error when csrf not present 1`] = `
 Object {
+  "contentId": undefined,
   "taxonomyLevel1": undefined,
   "taxonomyLevel2": undefined,
 }
@@ -16,6 +18,7 @@ Object {
 
 exports[`Integration:: resend SMS mfa code (account creation variant) should return resend mfa code page 1`] = `
 Object {
+  "contentId": "8247477c-3e33-4dae-9528-22e7ed44efb3",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
 }
