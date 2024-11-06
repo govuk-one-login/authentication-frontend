@@ -42,7 +42,7 @@ Object {
 
 exports[`Integration:: resend mfa code should return resend mfa code page with reauth analytics properties 1`] = `
 Object {
-  "contentId": "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
+  "contentId": "a2776ef7-9ef3-4d8d-bdbc-3f798b15e5d4",
   "taxonomyLevel1": "accounts",
   "taxonomyLevel2": "re auth",
 }
@@ -58,7 +58,7 @@ Object {
 
 exports[`Integration:: resend mfa code should state reauthenticating user could be logged out 1`] = `
 Object {
-  "contentId": "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
+  "contentId": "a2776ef7-9ef3-4d8d-bdbc-3f798b15e5d4",
   "taxonomyLevel1": "accounts",
   "taxonomyLevel2": "re auth",
 }

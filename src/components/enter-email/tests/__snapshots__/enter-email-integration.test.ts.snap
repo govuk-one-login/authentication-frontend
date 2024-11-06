@@ -2,7 +2,7 @@
 
 exports[`Integration::enter email should return enter email page with reauth analytics properties 1`] = `
 Object {
-  "contentId": "",
+  "contentId": "aff1628e-177d-4afc-825b-56e926b2fc1f",
   "taxonomyLevel1": "accounts",
   "taxonomyLevel2": "re auth",
 }
