@@ -560,7 +560,6 @@ describe("authorize controller", () => {
     });
 
     it("should set session channel session field from jwt claims when claim is present", async () => {
-      process.env.SUPPORT_MULTI_CHANNEL = "1";
       req.query.request = "JWE";
       mockClaims.channel = "strategic_app";
 
@@ -574,7 +573,6 @@ describe("authorize controller", () => {
     });
 
     it("should set session channel session field to default when claim is not present", async () => {
-      process.env.SUPPORT_MULTI_CHANNEL = "1";
       req.query.request = "JWE";
       mockClaims.channel = undefined;
 
@@ -586,39 +584,9 @@ describe("authorize controller", () => {
       )(req as Request, res as Response);
       expect(req.session.user.channel).to.eq("web");
     });
-
-    it("should set session channel session field to default when switch is off", async () => {
-      process.env.SUPPORT_MULTI_CHANNEL = "0";
-      req.query.request = "JWE";
-      mockClaims.channel = "strategic_app";
-
-      await authorizeGet(
-        fakeAuthorizeService,
-        fakeCookieConsentService,
-        fakeKmsDecryptionService,
-        fakeJwtService
-      )(req as Request, res as Response);
-      expect(req.session.user.channel).to.eq("web");
-    });
-
-    it("should set session channel session field to the configured default when switch is off", async () => {
-      process.env.SUPPORT_MULTI_CHANNEL = "0";
-      process.env.DEFAULT_CHANNEL = "strategic_app";
-      req.query.request = "JWE";
-      mockClaims.channel = "web";
-
-      await authorizeGet(
-        fakeAuthorizeService,
-        fakeCookieConsentService,
-        fakeKmsDecryptionService,
-        fakeJwtService
-      )(req as Request, res as Response);
-      expect(req.session.user.channel).to.eq("strategic_app");
-    });
   });
 
   it("should set session channel session field to default when claim is invalid channel", async () => {
-    process.env.SUPPORT_MULTI_CHANNEL = "1";
     req.query.request = "JWE";
     mockClaims.channel = "invalid_channel";
 
@@ -630,7 +598,6 @@ describe("authorize controller", () => {
     )(req as Request, res as Response);
     expect(req.session.user.channel).to.eq("web");
   });
-
   function mockAuthService(authResponseData: any): AuthorizeServiceInterface {
     return {
       start: sinon.fake.returns({

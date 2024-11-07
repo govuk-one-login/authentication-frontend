@@ -23,12 +23,11 @@ import { KmsDecryptionService } from "./kms-decryption-service";
 import { JwtService } from "./jwt-service";
 import { appendQueryParamIfHasValue } from "../../utils/url";
 import {
+  isValidChannel,
+  getDefaultChannel,
   getOrchToAuthExpectedClientId,
   supportReauthentication,
   proveIdentityWelcomeEnabled,
-  supportMultiChannel,
-  isValidChannel,
-  getDefaultChannel,
   getOrchStubToAuthExpectedClientId,
 } from "../../config";
 import { logger } from "../../utils/logger";
@@ -195,10 +194,10 @@ function setSessionDataFromClaims(req: Request, claims: Claims) {
   req.session.user.reauthenticate = supportReauthentication()
     ? claims.reauthenticate
     : null;
-  req.session.user.channel =
-    supportMultiChannel() && isValidChannel(claims.channel)
-      ? claims.channel
-      : getDefaultChannel();
+
+  req.session.user.channel = isValidChannel(claims.channel)
+    ? claims.channel
+    : getDefaultChannel();
   logger.info(`Channel is set to: ${req.session.user.channel}`);
 }
 
