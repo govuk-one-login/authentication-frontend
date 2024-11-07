@@ -26,30 +26,96 @@ describe("account not found controller", () => {
   });
 
   describe("accountNotFoundGet", () => {
-    it("should render the account not found mandatory view when serviceType undefined", () => {
-      accountNotFoundGet(req, res);
+    describe("when strategicAppChannel is not defined", () => {
+      it("should render the account not found mandatory view when serviceType undefined", () => {
+        accountNotFoundGet(req, res);
 
-      expect(res.render).to.have.calledWith(
-        "account-not-found/index-mandatory.njk"
-      );
+        expect(res.render).to.have.calledWith(
+          "account-not-found/index-mandatory.njk"
+        );
+      });
+
+      it("should render the account not found optional view when serviceType optional", () => {
+        req.session.client.serviceType = SERVICE_TYPE.OPTIONAL;
+        accountNotFoundGet(req, res);
+
+        expect(res.render).to.have.calledWith(
+          "account-not-found/index-optional.njk"
+        );
+      });
+
+      it("should render the account not found optional view when the service is part of One Login", () => {
+        req.session.client.isOneLoginService = true;
+        accountNotFoundGet(req, res);
+
+        expect(res.render).to.have.calledWith(
+          "account-not-found/index-one-login.njk"
+        );
+      });
     });
 
-    it("should render the account not found optional view when serviceType optional", () => {
-      req.session.client.serviceType = SERVICE_TYPE.OPTIONAL;
-      accountNotFoundGet(req, res);
+    describe("when strategicAppChannel is false", () => {
+      beforeEach(() => {
+        res.locals.strategicAppChannel = false;
+      });
 
-      expect(res.render).to.have.calledWith(
-        "account-not-found/index-optional.njk"
-      );
+      it("should render the account not found mandatory view when serviceType undefined", () => {
+        accountNotFoundGet(req, res);
+
+        expect(res.render).to.have.calledWith(
+          "account-not-found/index-mandatory.njk"
+        );
+      });
+
+      it("should render the account not found optional view when serviceType optional", () => {
+        req.session.client.serviceType = SERVICE_TYPE.OPTIONAL;
+        accountNotFoundGet(req, res);
+
+        expect(res.render).to.have.calledWith(
+          "account-not-found/index-optional.njk"
+        );
+      });
+
+      it("should render the account not found optional view when the service is part of One Login", () => {
+        req.session.client.isOneLoginService = true;
+        accountNotFoundGet(req, res);
+
+        expect(res.render).to.have.calledWith(
+          "account-not-found/index-one-login.njk"
+        );
+      });
     });
 
-    it("should render the account not found optional view when the service is part of One Login", () => {
-      req.session.client.isOneLoginService = true;
-      accountNotFoundGet(req, res);
+    describe("when strategicAppChannel is true", () => {
+      beforeEach(() => {
+        res.locals.strategicAppChannel = true;
+      });
 
-      expect(res.render).to.have.calledWith(
-        "account-not-found/index-one-login.njk"
-      );
+      it("should render the account not found mandatory view when serviceType undefined", () => {
+        accountNotFoundGet(req, res);
+
+        expect(res.render).to.have.calledWith(
+          "account-not-found/index-mobile.njk"
+        );
+      });
+
+      it("should render the account not found optional view when serviceType optional", () => {
+        req.session.client.serviceType = SERVICE_TYPE.OPTIONAL;
+        accountNotFoundGet(req, res);
+
+        expect(res.render).to.have.calledWith(
+          "account-not-found/index-mobile.njk"
+        );
+      });
+
+      it("should render the account not found optional view when the service is part of One Login", () => {
+        req.session.client.isOneLoginService = true;
+        accountNotFoundGet(req, res);
+
+        expect(res.render).to.have.calledWith(
+          "account-not-found/index-mobile.njk"
+        );
+      });
     });
   });
 

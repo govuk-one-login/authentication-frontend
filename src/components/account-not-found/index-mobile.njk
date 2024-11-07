@@ -1,0 +1,32 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% set showBack = true %}
+{% set hrefBack = 'enter-email' %}
+{% set pageTitleName = 'mobileAppPages.accountNotFound.title' | translate %}
+
+{% block content %}
+
+    {% include "common/errors/errorSummary.njk" %}
+
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'mobileAppPages.accountNotFound.header' | translate }}</h1>
+
+    <p class="govuk-body">
+        {{ 'mobileAppPages.accountNotFound.paragraph1' | translate }}
+        <span class="govuk-body govuk-!-font-weight-bold">{{ email }}</span>.
+    </p>
+
+    <p class="govuk-body">{{ 'mobileAppPages.accountNotFound.paragraph2' | translate }}</p>
+
+    <p class="govuk-body">
+        <a href="/enter-email" class="govuk-link"
+           rel="noreferrer noopener">{{ 'mobileAppPages.accountNotFound.tryAnotherLinkText' | translate }}</a>
+    </p>
+
+    <p class="govuk-body">
+        <a href="https://www.gov.uk/using-your-gov-uk-one-login" class="govuk-link"
+           rel="noreferrer noopener">{{ 'mobileAppPages.accountNotFound.findOutMoreLinkText' | translate }}</a>
+    </p>
+
+    {{ ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "sign in", contentId: "10e1b70b-e208-4db8-8863-3679a675b51d", loggedInStatus: false, dynamic: false }) }}
+{% endblock %}

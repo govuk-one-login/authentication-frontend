@@ -1,9 +1,5 @@
 import { Request, Response } from "express";
-import {
-  JOURNEY_TYPE,
-  NOTIFICATION_TYPE,
-  SERVICE_TYPE,
-} from "../../app.constants";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { SendNotificationServiceInterface } from "../common/send-notification/types";
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
@@ -15,19 +11,18 @@ import {
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import xss from "xss";
 import { getServiceSignInLink } from "../../config";
+import { getAccountNotFoundTemplate } from "./get-account-not-found-template";
 
 export function accountNotFoundGet(req: Request, res: Response): void {
-  if (req.session.client.isOneLoginService) {
-    res.render("account-not-found/index-one-login.njk", {
-      email: req.session.user.email,
-    });
-  } else if (req.session.client.serviceType === SERVICE_TYPE.OPTIONAL) {
-    res.render("account-not-found/index-optional.njk");
-  } else {
-    res.render("account-not-found/index-mandatory.njk", {
-      email: req.session.user.email,
-    });
-  }
+  const template: string = getAccountNotFoundTemplate(
+    req.session.client.isOneLoginService,
+    req.session.client.serviceType,
+    res.locals.strategicAppChannel
+  );
+
+  res.render(template, {
+    email: req.session.user.email,
+  });
 }
 
 export function accountNotFoundPost(
