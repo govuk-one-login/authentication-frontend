@@ -16,7 +16,7 @@ support_account_interventions = "1"
 support_authorize_controller  = "1"
 support_reauthentication      = "1"
 language_toggle_enabled       = "1"
-no_photo_id_contact_forms     = "0"
+no_photo_id_contact_forms     = "1"
 support_new_ipv_spinner       = "0"
 
 code_request_blocked_minutes                        = "120"
