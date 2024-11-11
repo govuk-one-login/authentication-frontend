@@ -8,6 +8,7 @@ export function accountCreatedGet(req: Request, res: Response): void {
   res.render("account-created/index.njk", {
     serviceType,
     name,
+    strategicAppChannel: res.locals.strategicAppChannel,
   });
 }
 

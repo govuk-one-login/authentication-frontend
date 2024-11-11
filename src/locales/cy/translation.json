@@ -202,6 +202,9 @@
     "reEnterEmailAccount": {
       "paragraph1": "Defnyddiwch yr un cyfeiriad e-bost a ddefnyddiwyd y tro diwethaf i chi fewngofnodi i’r ap hwn. Mae hyn er mwyn cadw’ch gwybodaeth yn ddiogel.",
       "enterYourEmailAddressError": "Rhowch yr un cyfeiriad e-bost a ddefnyddiwyd gennych y tro diwethaf i chi fewngofnodi i’r ap hwn"
+    },
+    "accountCreated": {
+      "text": "Nawr parhewch i ddefnyddio’r ap."
     }
   },
   "pages": {
