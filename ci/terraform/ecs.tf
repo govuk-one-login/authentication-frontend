@@ -177,12 +177,12 @@ locals {
         value = var.prove_identity_welcome_enabled
       },
       {
-        name  = "GA4_DISABLED"
-        value = var.ga4_disabled
+        name  = "GA4_ENABLED"
+        value = var.ga4_enabled
       },
       {
-        name  = "UA_DISABLED"
-        value = var.ua_disabled
+        name  = "UA_ENABLED"
+        value = var.ua_enabled
       },
       {
         name  = "UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID"

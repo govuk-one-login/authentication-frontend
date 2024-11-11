@@ -710,10 +710,10 @@ Resources:
               Value: 1
             - Name: PROVE_IDENTITY_WELCOME_ENABLED
               Value: 0
-            - Name: GA4_DISABLED
-              Value: true
-            - Name: UA_DISABLED
+            - Name: GA4_ENABLED
               Value: false
+            - Name: UA_ENABLED
+              Value: true
             - Name: UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID
               Value: GTM-TK92W68
             - Name: GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID

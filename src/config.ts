@@ -173,12 +173,12 @@ export function getGTMContainerID(): string {
   return process.env.UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID || "";
 }
 
-export function googleAnalytics4Disabled(): string {
-  return process.env.GA4_DISABLED || "true";
+export function googleAnalytics4Enabled(): string {
+  return process.env.GA4_ENABLED || "false";
 }
 
-export function universalAnalyticsDisabled(): string {
-  return process.env.UA_DISABLED || "false";
+export function universalAnalyticsEnabled(): string {
+  return process.env.UA_ENABLED || "false";
 }
 export function proveIdentityWelcomeEnabled(): boolean {
   return process.env.PROVE_IDENTITY_WELCOME_ENABLED === "1";

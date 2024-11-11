@@ -127,12 +127,12 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
     {
         "header": "Analytics",
         "variables": {
-            "GA4_DISABLED": {
-                "value": "false",
+            "GA4_ENABLED": {
+                "value": "true",
                 "comment": "GA4 Enablement",
             },
-            "UA_DISABLED": {
-                "value": "false",
+            "UA_ENABLED": {
+                "value": "true",
                 "comment": "Univeral Analytics",
             },
             "UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID": {

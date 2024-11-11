@@ -3,14 +3,14 @@ import {
   getAnalyticsCookieDomain,
   getGA4ContainerId,
   getGTMContainerID,
-  googleAnalytics4Disabled,
-  universalAnalyticsDisabled,
+  googleAnalytics4Enabled,
+  universalAnalyticsEnabled,
 } from "../config";
 export function setGTM(req: Request, res: Response, next: NextFunction): void {
   res.locals.ga4ContainerId = getGA4ContainerId();
   res.locals.uaContainerId = getGTMContainerID();
   res.locals.analyticsCookieDomain = getAnalyticsCookieDomain();
-  res.locals.isGa4Disabled = googleAnalytics4Disabled();
-  res.locals.isUaDisabled = universalAnalyticsDisabled();
+  res.locals.isGa4Enabled = googleAnalytics4Enabled();
+  res.locals.isUaEnabled = universalAnalyticsEnabled();
   next();
 }
