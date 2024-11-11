@@ -5356,10 +5356,10 @@ pino-http@^10.3.0:
     pino-std-serializers "^7.0.0"
     process-warning "^4.0.0"
 
-pino-pretty@^12.0.0:
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/pino-pretty/-/pino-pretty-12.0.0.tgz#954e8dd1b8acb3ebf3b909defd732ae8e8df3599"
-  integrity sha512-Cx08RuTg6337DbzXqiHpo+2ej0K2FwnyLYIHCmbB5ZhVXJA5XV7zTnvSGoeEERVIGTW9yj7XNtgS+5LpzRdR8w==
+pino-pretty@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/pino-pretty/-/pino-pretty-13.0.0.tgz#21d57fe940e34f2e279905d7dba2d7e2c4f9bf17"
+  integrity sha512-cQBBIVG3YajgoUjo1FdKVRX6t9XPxwB9lcNJVD5GCnNM4Y6T12YYx8c6zEejxQsU0wrg9TwmDulcE9LR7qcJqA==
   dependencies:
     colorette "^2.0.7"
     dateformat "^4.6.3"
@@ -5371,7 +5371,6 @@ pino-pretty@^12.0.0:
     on-exit-leak-free "^2.1.0"
     pino-abstract-transport "^2.0.0"
     pump "^3.0.0"
-    readable-stream "^4.0.0"
     secure-json-parse "^2.4.0"
     sonic-boom "^4.0.1"
     strip-json-comments "^3.1.1"
