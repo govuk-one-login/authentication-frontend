@@ -334,3 +334,8 @@ export const WEB_TO_MOBILE_TEMPLATE_MAPPINGS: Record<string, string> = {
   "account-not-found/index-optional.njk": "account-not-found/index-mobile.njk",
   "account-not-found/index-mandatory.njk": "account-not-found/index-mobile.njk",
 };
+
+export const WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS: Record<string, string> = {
+  "pages.reEnterEmailAccount.enterYourEmailAddressError":
+    "mobileAppPages.reEnterEmailAccount.enterYourEmailAddressError",
+};
