@@ -198,6 +198,10 @@
       "info": {
         "paragraph2": "Arhoswch am 2 awr, yna rhowch gynnig arall."
       }
+    },
+    "reEnterEmailAccount": {
+      "paragraph1": "Defnyddiwch yr un cyfeiriad e-bost a ddefnyddiwyd y tro diwethaf i chi fewngofnodi i’r ap hwn. Mae hyn er mwyn cadw’ch gwybodaeth yn ddiogel.",
+      "enterYourEmailAddressError": "Rhowch yr un cyfeiriad e-bost a ddefnyddiwyd gennych y tro diwethaf i chi fewngofnodi i’r ap hwn"
     }
   },
   "pages": {

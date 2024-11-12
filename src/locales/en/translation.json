@@ -198,6 +198,10 @@
       "info": {
         "paragraph2": "Wait 2 hours, then try again."
       }
+    },
+    "reEnterEmailAccount": {
+      "paragraph1": "Use the same email address you used last time you signed in to this app. This is to keep your information secure.",
+      "enterYourEmailAddressError": "Enter the same email address you used last time you signed in to this app"
     }
   },
   "pages": {

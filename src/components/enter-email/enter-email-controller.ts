@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
+import {
+  JOURNEY_TYPE,
+  NOTIFICATION_TYPE,
+  WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS,
+} from "../../app.constants";
 import { ExpressRouteFunc } from "../../types";
 import { enterEmailService } from "./enter-email-service";
 import { EnterEmailServiceInterface, LockoutInformation } from "./types";
@@ -23,6 +27,7 @@ import {
 } from "../../utils/validation";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 import { isLocked, timestampNSecondsFromNow } from "../../utils/lock-helper";
+import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -38,7 +43,9 @@ export function enterEmailGet(req: Request, res: Response): void {
     if (isLocked(req.session.user.wrongEmailEnteredLock)) {
       return res.render(BLOCKED_TEMPLATE);
     }
-    return res.render(RE_ENTER_EMAIL_TEMPLATE);
+    return res.render(RE_ENTER_EMAIL_TEMPLATE, {
+      isStrategicAppReauth: res.locals.strategicAppChannel,
+    });
   }
 
   return res.render(ENTER_EMAIL_TEMPLATE);
@@ -74,6 +81,12 @@ export function enterEmailPost(
           return res.render(BLOCKED_TEMPLATE);
         }
 
+        const CHANNEL_SPECIFIC_EMAIL_ERROR_KEY = getChannelSpecificErrorMessage(
+          EMAIL_ERROR_KEY,
+          req.body.isStrategicAppReauth === "true",
+          WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS
+        );
+
         switch (checkReauth.data.code) {
           case ERROR_CODES.ACCOUNT_LOCKED:
             return res.render("enter-password/index-sign-in-retry-blocked.njk");
@@ -84,7 +97,7 @@ export function enterEmailPost(
             );
 
           case ERROR_CODES.RE_AUTH_CHECK_NO_USER_OR_NO_MATCH:
-            return handleBadRequest(req, res, EMAIL_ERROR_KEY);
+            return handleBadRequest(req, res, CHANNEL_SPECIFIC_EMAIL_ERROR_KEY);
         }
       }
     }
