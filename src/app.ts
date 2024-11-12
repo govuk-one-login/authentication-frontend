@@ -99,6 +99,7 @@ import { applyOverloadProtection } from "./middleware/overload-protection-middle
 import { frontendVitalSignsInit } from "@govuk-one-login/frontend-vital-signs";
 import { Server } from "node:http";
 import { getAnalyticsPropertiesMiddleware } from "./middleware/get-analytics-properties-middleware";
+import { ipvCallbackRouter } from "./components/ipv-callback/ipv-callback-routes";
 import { mfaResetWithIpvRouter } from "./components/mfa-reset-with-ipv/mfa-reset-with-ipv-routes";
 
 const APP_VIEWS = [
@@ -157,6 +158,7 @@ function registerRoutes(app: express.Application) {
   }
   if (supportMfaResetWithIpv()) {
     app.use(mfaResetWithIpvRouter);
+    app.use(ipvCallbackRouter);
   }
 }
 
