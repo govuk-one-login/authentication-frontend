@@ -1552,7 +1552,7 @@
             "item_six": "phone numbers",
             "item_seven": "email addresses"
           },
-          "paragraph_experian":"We use Experian to check your email address and phone number when you create a GOV.UK One Login and if you change your email address or phone number.",
+          "paragraph_experian": "We use Experian to check your email address and phone number when you create a GOV.UK One Login and if you change your email address or phone number.",
           "sub_header_four": "Sharing your information with our suppliers",
           "paragraph_thirteen": "We work with technology suppliers, for example we use an external hosting provider and a contact centre provider. We only give our suppliers access to your information if they need it to provide their service. Our suppliers act as data processors and are subject to contracts with us which restrict them to only processing your personal data for the sole purpose of providing their services in accordance with our instructions."
         },
