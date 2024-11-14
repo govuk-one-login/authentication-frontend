@@ -179,6 +179,11 @@
       "paragraph2": "Mae angen i chi fewngofnodi gyda chyfeiriad e-bost sydd â GOV.UK One Login i brofi eich hunaniaeth.",
       "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
       "findOutMoreLinkText": "Darganfyddwch fwy am ddefnyddio GOV.UK One Login"
+    },
+    "securityRequestsExceededExpired": {
+      "info": {
+        "paragraph2": "Arhoswch am 2 awr, yna rhowch gynnig arall."
+      }
     }
   },
   "pages": {

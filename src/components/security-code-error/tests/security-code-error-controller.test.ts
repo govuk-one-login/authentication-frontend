@@ -67,6 +67,7 @@ describe("security code controller", () => {
         req.query.actionType = params.actionType;
         req.session.user.isAccountCreationJourney =
           params.isAccountCreationJourney;
+        res.locals.strategicAppChannel = true;
 
         securityCodeTriesExceededGet(req as Request, res as Response);
 
@@ -77,6 +78,7 @@ describe("security code controller", () => {
             isResendCodeRequest: undefined,
             isAccountCreationJourney: params.isAccountCreationJourney,
             contentId: params.contentId,
+            strategicAppChannel: res.locals.strategicAppChannel,
           }
         );
       });
@@ -385,6 +387,7 @@ describe("security code controller", () => {
             isAccountCreationJourney: undefined,
 
             contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+            strategicAppChannel: res.locals.strategicAppChannel,
           }
         );
         expect(req.session.user.codeRequestLock).to.eq(
@@ -394,11 +397,13 @@ describe("security code controller", () => {
     );
 
     it(
-      "should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent" +
+      "should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent " +
         "and user is in the sign-in journey",
       () => {
         req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
         req.session.user.isPasswordResetJourney = true;
+        res.locals.strategicAppChannel = true;
+
         securityCodeTriesExceededGet(req as Request, res as Response);
 
         expect(res.render).to.have.calledWith(
@@ -411,8 +416,8 @@ describe("security code controller", () => {
             ),
             isResendCodeRequest: undefined,
             isAccountCreationJourney: undefined,
-
             contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+            strategicAppChannel: res.locals.strategicAppChannel,
           }
         );
       }
@@ -424,6 +429,7 @@ describe("security code controller", () => {
       () => {
         req.query.actionType = SecurityCodeErrorType.OtpBlocked;
         req.session.user.isAccountRecoveryJourney = true;
+        res.locals.strategicAppChannel = true;
         securityCodeTriesExceededGet(req as Request, res as Response);
 
         expect(res.render).to.have.calledWith(
@@ -434,6 +440,7 @@ describe("security code controller", () => {
             isAccountCreationJourney: undefined,
 
             contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+            strategicAppChannel: res.locals.strategicAppChannel,
           }
         );
       }
@@ -442,6 +449,7 @@ describe("security code controller", () => {
     it("should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent and user is in the account creation journey", () => {
       req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
       req.session.user.isAccountCreationJourney = true;
+      res.locals.strategicAppChannel = true;
       securityCodeTriesExceededGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
@@ -456,6 +464,7 @@ describe("security code controller", () => {
           isAccountCreationJourney: true,
 
           contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+          strategicAppChannel: res.locals.strategicAppChannel,
         }
       );
     });

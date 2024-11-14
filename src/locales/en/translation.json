@@ -179,6 +179,11 @@
       "paragraph2": "You need to sign in with an email address that has a GOV.UK One Login to prove your identity.",
       "tryAnotherLinkText": "Try another email address",
       "findOutMoreLinkText": "Find out more about using GOV.UK One Login"
+    },
+    "securityRequestsExceededExpired": {
+      "info": {
+        "paragraph2": "Wait 2 hours, then try again."
+      }
     }
   },
   "pages": {

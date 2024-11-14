@@ -77,6 +77,7 @@ export function securityCodeTriesExceededGet(
     isResendCodeRequest: req.query.isResendCodeRequest,
     isAccountCreationJourney: req.session.user?.isAccountCreationJourney,
     contentId: oplValues.requestedTooManyTimes.contentId,
+    strategicAppChannel: res.locals.strategicAppChannel,
   });
 }
 

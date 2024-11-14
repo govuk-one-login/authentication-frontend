@@ -8,12 +8,17 @@
 {% endif %}
 
 {% block content %}
-    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.securityRequestsExceededExpired.header' | translate }}</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.securityRequestsExceededExpired.header' | translate }}</h1>
 
-    <p class="govuk-body">{{'pages.securityRequestsExceededExpired.info.paragraph1' | translate}}</p>
-    <h2 class="govuk-heading-s">{{'pages.securityRequestsExceededExpired.info.subHeading' | translate}}</h2>
-    <p class="govuk-body">{{'pages.securityRequestsExceededExpired.info.paragraph2' | translate}}</p>
-    <p class="govuk-body">{{'pages.securityRequestsExceededExpired.info.paragraph3' | translate}}</p>
+    <p class="govuk-body">{{ 'pages.securityRequestsExceededExpired.info.paragraph1' | translate }}</p>
+    <h2 class="govuk-heading-s">{{ 'pages.securityRequestsExceededExpired.info.subHeading' | translate }}</h2>
 
-{{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: taxonomyLevel1, taxonomyLevel2: taxonomyLevel2, contentId: contentId, loggedInStatus: false, dynamic: true })}}
+    {% if strategicAppChannel === true %}
+        <p class="govuk-body">{{ 'mobileAppPages.securityRequestsExceededExpired.info.paragraph2' | translate }}</p>
+    {% else %}
+        <p class="govuk-body">{{ 'pages.securityRequestsExceededExpired.info.paragraph2' | translate }}</p>
+        <p class="govuk-body">{{ 'pages.securityRequestsExceededExpired.info.paragraph3' | translate }}</p>
+    {% endif %}
+
+    {{ ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: taxonomyLevel1, taxonomyLevel2: taxonomyLevel2, contentId: contentId, loggedInStatus: false, dynamic: true }) }}
 {% endblock %}
