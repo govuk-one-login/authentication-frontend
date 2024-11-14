@@ -24,7 +24,11 @@
     {{ govukButton({
         "text": "pages.accountCreated.continue" | translate,
         "type": "Submit",
-        "preventDoubleClick": true
+        "preventDoubleClick": true,
+        attributes: {
+            "data-nav": "true",
+            "data-link": "/undefined"
+        }
     }) }}
 {% endif %}
 </form>

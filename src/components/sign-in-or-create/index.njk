@@ -49,7 +49,9 @@
             name: "optionSelected",
             classes: "govuk-!-margin-right-3",
             attributes: {
-                "id": "create-account-link"
+                "id": "create-account-link",
+                "data-nav":"true",
+                "data-link": "/enter-email-create"
             }
         }) }}
         <div>
@@ -57,7 +59,9 @@
                 text: 'pages.signInOrCreate.signInText' | translate,
                 classes: "govuk-button--secondary",
                 attributes: {
-                    "id": "sign-in-button"
+                    "id": "sign-in-button",
+                    "data-nav": "true",
+                    "data-link": "/enter-email"
                 }
             }) }}
         </div>
