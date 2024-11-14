@@ -193,6 +193,11 @@
           }
         }
       }
+    },
+    "securityCodeWaitToRequest": {
+      "info": {
+        "paragraph2": "Arhoswch am 2 awr, yna rhowch gynnig arall."
+      }
     }
   },
   "pages": {

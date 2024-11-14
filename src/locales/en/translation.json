@@ -193,6 +193,11 @@
           }
         }
       }
+    },
+    "securityCodeWaitToRequest": {
+      "info": {
+        "paragraph2": "Wait 2 hours, then try again."
+      }
     }
   },
   "pages": {
