@@ -184,6 +184,15 @@
       "info": {
         "paragraph2": "Wait 2 hours, then try again."
       }
+    },
+    "securityCodeInvalid": {
+      "2hLockout": {
+        "signInJourney": {
+          "info": {
+            "paragraph3": "Wait 2 hours, then try again."
+          }
+        }
+      }
     }
   },
   "pages": {

@@ -184,6 +184,15 @@
       "info": {
         "paragraph2": "Arhoswch am 2 awr, yna rhowch gynnig arall."
       }
+    },
+    "securityCodeInvalid": {
+      "2hLockout": {
+        "signInJourney": {
+          "info": {
+            "paragraph3": "Arhoswch am 2 awr, yna rhowch gynnig arall."
+          }
+        }
+      }
     }
   },
   "pages": {
