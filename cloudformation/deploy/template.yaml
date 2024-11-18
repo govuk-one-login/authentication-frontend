@@ -1050,7 +1050,7 @@ Resources:
         - "signin-sp.account.gov.uk"
       Type: A
       HostedZoneId: !Sub
-        - "{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}"
+        - "{{resolve:ssm:/deploy/${env}/signin-sp_route53_hostedzone_id}}"
         - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       AliasTarget:
         EvaluateTargetHealth: false
