@@ -17,6 +17,32 @@ import { VerifyMfaCodeInterface } from "../types";
 import * as journey from "../../common/journey/journey";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 
+const fakeAccountRecoveryService = (accountRecoveryPermitted: boolean) => {
+  return {
+    accountRecovery: sinon.fake.returns({
+      success: true,
+      data: {
+        accountRecoveryPermitted: accountRecoveryPermitted,
+      },
+    }),
+  } as unknown as AccountRecoveryInterface;
+};
+
+const fakeVerifyMfaCodeService = (errorCode?: number) => {
+  return {
+    verifyMfaCode: sinon.fake.returns({
+      success: errorCode === undefined,
+      data:
+        errorCode !== undefined
+          ? {
+              code: errorCode,
+              message: "",
+            }
+          : null,
+    }),
+  } as unknown as VerifyMfaCodeInterface;
+};
+
 describe("enter authenticator app code controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
@@ -29,20 +55,14 @@ describe("enter authenticator app code controller", () => {
 
   afterEach(() => {
     sinon.restore();
+    delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
   });
 
   describe("enterAuthenticatorAppCodeGet", () => {
-    it("should render enter mfa code view with isAccountRecoveryPermitted true when user is permitted to perform account recovery and account recovery is enabled for environment", async () => {
-      const fakeService: AccountRecoveryInterface = {
-        accountRecovery: sinon.fake.returns({
-          success: true,
-          data: {
-            accountRecoveryPermitted: true,
-          },
-        }),
-      } as unknown as AccountRecoveryInterface;
+    it("should render enter mfa code view with isAccountRecoveryPermitted true when user is permitted to perform account recovery, account recovery is enabled for environment and mfa reset with ipv is not enabled", async () => {
+      process.env.SUPPORT_MFA_RESET_WITH_IPV = "0";
 
-      await enterAuthenticatorAppCodeGet(fakeService)(
+      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
         req as Request,
         res as Response
       );
@@ -51,7 +71,7 @@ describe("enter authenticator app code controller", () => {
         "enter-authenticator-app-code/index.njk",
         {
           isAccountRecoveryPermitted: true,
-          checkEmailLink:
+          mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
         }
@@ -59,16 +79,7 @@ describe("enter authenticator app code controller", () => {
     });
 
     it("should render enter mfa code view with isAccountRecoveryPermitted false when user is not permitted to perform account recovery", async () => {
-      const fakeService: AccountRecoveryInterface = {
-        accountRecovery: sinon.fake.returns({
-          success: true,
-          data: {
-            accountRecoveryPermitted: false,
-          },
-        }),
-      } as unknown as AccountRecoveryInterface;
-
-      await enterAuthenticatorAppCodeGet(fakeService)(
+      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(false))(
         req as Request,
         res as Response
       );
@@ -77,7 +88,7 @@ describe("enter authenticator app code controller", () => {
         "enter-authenticator-app-code/index.njk",
         {
           isAccountRecoveryPermitted: false,
-          checkEmailLink:
+          mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
         }
@@ -86,16 +97,8 @@ describe("enter authenticator app code controller", () => {
 
     it("should render enter mfa code view with isAccountRecoveryPermitted false when account recovery is disable for the environment", async () => {
       process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
-      const fakeService: AccountRecoveryInterface = {
-        accountRecovery: sinon.fake.returns({
-          success: true,
-          data: {
-            accountRecoveryPermitted: true,
-          },
-        }),
-      } as unknown as AccountRecoveryInterface;
 
-      await enterAuthenticatorAppCodeGet(fakeService)(
+      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
         req as Request,
         res as Response
       );
@@ -111,16 +114,7 @@ describe("enter authenticator app code controller", () => {
     it("should render 2fa service uplift view when uplift is required ", async () => {
       req.session.user.isUpliftRequired = true;
 
-      const fakeService: AccountRecoveryInterface = {
-        accountRecovery: sinon.fake.returns({
-          success: true,
-          data: {
-            accountRecoveryPermitted: true,
-          },
-        }),
-      } as unknown as AccountRecoveryInterface;
-
-      await enterAuthenticatorAppCodeGet(fakeService)(
+      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
         req as Request,
         res as Response
       );
@@ -129,7 +123,7 @@ describe("enter authenticator app code controller", () => {
         UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
         {
           isAccountRecoveryPermitted: true,
-          checkEmailLink:
+          mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
         }
@@ -139,16 +133,7 @@ describe("enter authenticator app code controller", () => {
     it("should render default template when uplift is not required", async () => {
       req.session.user.isUpliftRequired = false;
 
-      const fakeService: AccountRecoveryInterface = {
-        accountRecovery: sinon.fake.returns({
-          success: true,
-          data: {
-            accountRecoveryPermitted: true,
-          },
-        }),
-      } as unknown as AccountRecoveryInterface;
-
-      await enterAuthenticatorAppCodeGet(fakeService)(
+      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
         req as Request,
         res as Response
       );
@@ -157,9 +142,26 @@ describe("enter authenticator app code controller", () => {
         ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME,
         {
           isAccountRecoveryPermitted: true,
-          checkEmailLink:
+          mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
+        }
+      );
+    });
+
+    it("should render enter authenticator app code view with mfaResetPath being IPV_DUMMY_URL when mfa reset with ipv is supported", async () => {
+      process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
+
+      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        "enter-authenticator-app-code/index.njk",
+        {
+          isAccountRecoveryPermitted: true,
+          mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
         }
       );
     });
@@ -167,11 +169,7 @@ describe("enter authenticator app code controller", () => {
 
   describe("enterAuthenticatorAppCodePost", () => {
     it("can send the journeyType when verifying the code", async () => {
-      const fakeService: VerifyMfaCodeInterface = {
-        verifyMfaCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as VerifyMfaCodeInterface;
+      const fakeService = fakeVerifyMfaCodeService();
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
         journey,
@@ -208,11 +206,7 @@ describe("enter authenticator app code controller", () => {
     });
 
     it("should redirect to /auth-code when valid code entered", async () => {
-      const fakeService: VerifyMfaCodeInterface = {
-        verifyMfaCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as VerifyMfaCodeInterface;
+      const fakeService = fakeVerifyMfaCodeService();
 
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
@@ -227,15 +221,9 @@ describe("enter authenticator app code controller", () => {
     });
 
     it("should return error when invalid code entered", async () => {
-      const fakeService: VerifyMfaCodeInterface = {
-        verifyMfaCode: sinon.fake.returns({
-          success: false,
-          data: {
-            code: ERROR_CODES.AUTH_APP_INVALID_CODE,
-            message: "",
-          },
-        }),
-      } as unknown as VerifyMfaCodeInterface;
+      const fakeService = fakeVerifyMfaCodeService(
+        ERROR_CODES.AUTH_APP_INVALID_CODE
+      );
 
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
@@ -253,15 +241,9 @@ describe("enter authenticator app code controller", () => {
     });
 
     it("should redirect to security code expired when invalid authenticator app code entered more than max retries", async () => {
-      const fakeService: VerifyMfaCodeInterface = {
-        verifyMfaCode: sinon.fake.returns({
-          data: {
-            code: ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED,
-            message: "",
-          },
-          success: false,
-        }),
-      } as unknown as VerifyMfaCodeInterface;
+      const fakeService = fakeVerifyMfaCodeService(
+        ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED
+      );
 
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
@@ -280,15 +262,9 @@ describe("enter authenticator app code controller", () => {
 
     it("should redirect to orchestration with error require login reauth journey than max retries", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
-      const fakeService: VerifyMfaCodeInterface = {
-        verifyMfaCode: sinon.fake.returns({
-          data: {
-            code: ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED,
-            message: "",
-          },
-          success: false,
-        }),
-      } as unknown as VerifyMfaCodeInterface;
+      const fakeService = fakeVerifyMfaCodeService(
+        ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED
+      );
 
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
@@ -309,15 +285,9 @@ describe("enter authenticator app code controller", () => {
 
     it("should redirect to orchestration with error required login reauth journey on reauth sign in details exceeded", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
-      const fakeService: VerifyMfaCodeInterface = {
-        verifyMfaCode: sinon.fake.returns({
-          data: {
-            code: ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED,
-            message: "",
-          },
-          success: false,
-        }),
-      } as unknown as VerifyMfaCodeInterface;
+      const fakeService = fakeVerifyMfaCodeService(
+        ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
+      );
 
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";

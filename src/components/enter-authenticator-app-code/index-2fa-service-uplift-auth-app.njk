@@ -27,7 +27,7 @@
 
         <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
         <input type="hidden" name="isAccountRecoveryPermitted" value="{{isAccountRecoveryPermitted}}"/>
-        <input type="hidden" name="checkEmailLink" value="{{checkEmailLink}}"/>
+        <input type="hidden" name="mfaResetPath" value="{{mfaResetPath}}"/>
 
         {{ govukInput({
             label: {
@@ -58,7 +58,7 @@
         {% set detailsHTML %}
             <p class="govuk-body">
                 {{'pages.enterAuthenticatorAppCode.details.text1' | translate}}
-                <a href="{{checkEmailLink}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.text2'| translate}}</a>{{'pages.enterAuthenticatorAppCode.details.text3' | translate}}
+                <a href="{{mfaResetPath}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.text2'| translate}}</a>{{'pages.enterAuthenticatorAppCode.details.text3' | translate}}
             </p>
         {% endset %}
 

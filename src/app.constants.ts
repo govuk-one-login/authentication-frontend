@@ -73,6 +73,7 @@ export const PATH_NAMES = {
   UNAVAILABLE_PERMANENT: "/unavailable-permanent",
   UNAVAILABLE_TEMPORARY: "/unavailable-temporary",
   RESET_PASSWORD_2FA_AUTH_APP: "/reset-password-2fa-auth-app",
+  MFA_RESET_WITH_IPV: "/mfa-reset-with-ipv",
 };
 
 export const CONTENT_IDS: {
@@ -145,6 +146,7 @@ export const API_ENDPOINTS = {
   ACCOUNT_RECOVERY: "/account-recovery",
   CHECK_REAUTH_USER: "/check-reauth-user",
   CHECK_EMAIL_FRAUD_BLOCK: "/check-email-fraud-block",
+  MFA_RESET_AUTHORIZE: "/mfa-reset-authorize",
 };
 
 export const ERROR_MESSAGES = {

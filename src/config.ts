@@ -194,3 +194,7 @@ export function supportHttpKeepAlive(): boolean {
 export function isValidChannel(channel: string): boolean {
   return channel === CHANNEL.WEB || channel === CHANNEL.STRATEGIC_APP;
 }
+
+export function supportMfaResetWithIpv(): boolean {
+  return process.env.SUPPORT_MFA_RESET_WITH_IPV === "1";
+}

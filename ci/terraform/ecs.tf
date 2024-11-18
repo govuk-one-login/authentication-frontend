@@ -203,6 +203,10 @@ locals {
       {
         name  = "SUPPORT_HTTP_KEEP_ALIVE"
         value = var.support_http_keep_alive
+      },
+      {
+        name  = "SUPPORT_MFA_RESET_WITH_IPV"
+        value = var.support_mfa_reset_with_ipv
       }
     ]
 
