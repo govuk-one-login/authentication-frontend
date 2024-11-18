@@ -74,6 +74,7 @@ export const PATH_NAMES = {
   UNAVAILABLE_TEMPORARY: "/unavailable-temporary",
   RESET_PASSWORD_2FA_AUTH_APP: "/reset-password-2fa-auth-app",
   MFA_RESET_WITH_IPV: "/mfa-reset-with-ipv",
+  IPV_CALLBACK: "/ipv/callback/authorize",
 };
 
 export const CONTENT_IDS: {
