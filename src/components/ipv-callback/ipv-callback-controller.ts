@@ -3,6 +3,7 @@ import { ExpressRouteFunc } from "../../types";
 import { ReverificationResultInterface } from "./types";
 import { logger } from "../../utils/logger";
 import { reverificationResultService } from "./reverification-result-service";
+import { BadRequestError } from "../../utils/error";
 
 export function ipvCallbackGet(
   service: ReverificationResultInterface = reverificationResultService()
@@ -22,6 +23,10 @@ export function ipvCallbackGet(
     logger.info(
       `Reverification result for session id ${res.locals.sessionId} is success: ${result.success}`
     );
+
+    if (!result.success) {
+      throw new BadRequestError(result.data.message, result.data.code);
+    }
 
     res.status(200).send("Received successful reverification result");
   };
