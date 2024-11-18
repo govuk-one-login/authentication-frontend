@@ -134,7 +134,7 @@ Conditions:
           - "build"
       - Fn::Equals:
           - !Ref Environment
-          - "Staging"
+          - "staging"
       - Fn::Equals:
           - !Ref Environment
           - "integration"
@@ -1182,7 +1182,7 @@ Resources:
         - "origin.signin-sp.account.gov.uk"
       Type: A
       HostedZoneId: !Sub
-        - "{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}"
+        - "{{resolve:ssm:/deploy/${env}/signin-sp_route53_hostedzone_id}}"
         - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       AliasTarget:
         EvaluateTargetHealth: false
@@ -1202,7 +1202,7 @@ Resources:
       Protocol: HTTPS
       Certificates:
         - CertificateArn: !Sub
-            - "{{resolve:ssm:/deploy/${env}/signin_certificate_arn}}"
+            - "{{resolve:ssm:/deploy/${env}/signin-sp_certificate_arn}}"
             - env:
                 !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       SslPolicy: "ELBSecurityPolicy-FS-1-2-Res-2020-10"
