@@ -148,6 +148,7 @@ export const API_ENDPOINTS = {
   CHECK_REAUTH_USER: "/check-reauth-user",
   CHECK_EMAIL_FRAUD_BLOCK: "/check-email-fraud-block",
   MFA_RESET_AUTHORIZE: "/mfa-reset-authorize",
+  REVERIFICATION_RESULT: "/reverification-result",
 };
 
 export const ERROR_MESSAGES = {
