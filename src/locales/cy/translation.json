@@ -179,6 +179,25 @@
       "paragraph2": "Mae angen i chi fewngofnodi gyda chyfeiriad e-bost sydd â GOV.UK One Login i brofi eich hunaniaeth.",
       "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
       "findOutMoreLinkText": "Darganfyddwch fwy am ddefnyddio GOV.UK One Login"
+    },
+    "securityRequestsExceededExpired": {
+      "info": {
+        "paragraph2": "Arhoswch am 2 awr, yna rhowch gynnig arall."
+      }
+    },
+    "securityCodeInvalid": {
+      "2hLockout": {
+        "signInJourney": {
+          "info": {
+            "paragraph3": "Arhoswch am 2 awr, yna rhowch gynnig arall."
+          }
+        }
+      }
+    },
+    "securityCodeWaitToRequest": {
+      "info": {
+        "paragraph2": "Arhoswch am 2 awr, yna rhowch gynnig arall."
+      }
     }
   },
   "pages": {
@@ -493,7 +512,7 @@
             "paragraph2": "Beth allwch chi ei wneud",
             "paragraph3": "Arhoswch am 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto.",
             "paragraph4": "Os ydych angen ei ddefnyddio yn gynt, gallwch fynd yn ôl i’r gwasanaeth a chwilio am ffyrdd eraill i barhau.",
-            "paragraph5": "This is because you entered the wrong security code too many times the last time you tried to sign in."
+            "paragraph5": "Mae hyn oherwydd eich bod wedi rhoi’r cod diogelwch anghywir gormod o weithiau y tro diwethaf i chi geisio mewngofnodi."
           }
         }
       }
@@ -1533,7 +1552,7 @@
             "item_six": "rhifau ffôn",
             "item_seven": "cyfeiriadau e-bost"
           },
-          "paragraph_experian":"Rydym yn defnyddio Experian i wirio eich cyfeiriad e-bost a rhif ffôn pan fyddwch yn creu eich GOV.UK One Login ac os byddwch yn newid eich cyfeiriad e-bost neu rif ffôn.",
+          "paragraph_experian": "Rydym yn defnyddio Experian i wirio eich cyfeiriad e-bost a rhif ffôn pan fyddwch yn creu eich GOV.UK One Login ac os byddwch yn newid eich cyfeiriad e-bost neu rif ffôn.",
           "sub_header_four": "Rhannu eich gwybodaeth gyda’n cyflenwyr",
           "paragraph_thirteen": "Rydym yn gweithio gyda chyflenwyr technoleg, er enghraifft rydym yn defnyddio darparwr cynnal allanol a darparwr canolfan gyswllt. Rydym ond yn rhoi mynediad i`n cyflenwyr i`ch gwybodaeth os ydynt ei hangen i ddarparu eu gwasanaeth. Mae ein cyflenwyr yn gweithredu fel proseswyr data ac maent yn ddarostyngedig i gontractau gyda ni sy`n eu cyfyngu i brosesu eich data personol ond at ddiben darparu eu gwasanaethau yn unol â`n cyfarwyddiadau."
         },
