@@ -1,4 +1,7 @@
-import { ReverificationResultInterface } from "./types";
+import {
+  ReverificationResultInterface,
+  ReverificationResultResponse,
+} from "./types";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
@@ -19,7 +22,7 @@ export function reverificationResultService(
     req: Request,
     email: string,
     code: string
-  ): Promise<ApiResponseResult<DefaultApiResponse>> {
+  ): Promise<ApiResponseResult<ReverificationResultResponse>> {
     const config = getInternalRequestConfigWithSecurityHeaders(
       {
         sessionId: sessionId,
@@ -36,7 +39,7 @@ export function reverificationResultService(
       config
     );
 
-    return createApiResponse<DefaultApiResponse>(response);
+    return createApiResponse<ReverificationResultResponse>(response);
   };
 
   return {

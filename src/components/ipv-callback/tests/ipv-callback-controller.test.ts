@@ -17,7 +17,7 @@ const fakeReverificationResultService = (success: boolean) => {
   return {
     getReverificationResult: sinon.fake.returns({
       success: success,
-      data: success ? {} : failureData,
+      data: success ? { sub: "some-sub", success: true } : failureData,
     }),
   } as unknown as ReverificationResultInterface;
 };
