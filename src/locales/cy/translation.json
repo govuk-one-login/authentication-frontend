@@ -1888,7 +1888,7 @@
         "section1": {
           "header": "Dywedwch wrthym beth ddigwyddodd",
           "radio1": "Cawsoch broblem ateb cwestiynau diogelwch",
-          "radio2": "Cawsoch broblem gyda’ch dogfen hunaniaeth",
+          "radio2": "Cawsoch broblem gyda’ch ID gyda llun",
           "radio3": "Mae angen i chi ddiweddaru eich gwybodaeth bersonol",
           "radio4": "Roedd problem dechnegol (er enghraifft fe welsoch neges gwall)",
           "radio5": "Rhywbeth arall",
@@ -2255,8 +2255,8 @@
         }
       },
       "provingIdentityProblemWithIdentityDocument": {
-        "title": "Problem gyda’ch dogfen hunaniaeth",
-        "header": "Problem gyda’ch dogfen hunaniaeth",
+        "title": "Problem gyda’ch ID gyda llun",
+        "header": "Problem gyda’ch ID gyda llun",
         "identityDocument": {
           "header": "Dewiswch pa ddogfen hunaniaeth oeddech chi’n ei defnyddio",
           "types": {

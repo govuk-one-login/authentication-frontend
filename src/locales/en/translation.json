@@ -1888,7 +1888,7 @@
         "section1": {
           "header": "Tell us what happened",
           "radio1": "You had a problem answering security questions",
-          "radio2": "You had a problem with your identity document",
+          "radio2": "You had a problem with your photo ID",
           "radio3": "You need to update your personal information",
           "radio4": "There was a technical problem (for example, you saw an error message)",
           "radio5": "Something else",
@@ -2255,8 +2255,8 @@
         }
       },
       "provingIdentityProblemWithIdentityDocument": {
-        "title": "A problem with your identity document",
-        "header": "A problem with your identity document",
+        "title": "A problem with your photo ID",
+        "header": "A problem with your photo ID",
         "identityDocument": {
           "header": "Which identity document were you using?",
           "types": {
