@@ -33,9 +33,9 @@ updates:
       npm-otplib-dependencies:
         patterns:
           - "@otplib/*"
-      npm-typescript-eslint-dependencies:
+      npm-eslint-dependencies:
         patterns:
-          - "@typescript-eslint/*"
+          - "*eslint*"
       npm-patch-dependencies:
         update-types:
           - patch
