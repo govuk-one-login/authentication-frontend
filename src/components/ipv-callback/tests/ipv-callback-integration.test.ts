@@ -44,10 +44,10 @@ describe("Integration:: ipv callback", () => {
   it("should return basic response when ipv callback requested", async () => {
     nock(baseApi).post(API_ENDPOINTS.REVERIFICATION_RESULT).once().reply(200);
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.IPV_CALLBACK).expect(200),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    );
+    const requestPath = PATH_NAMES.IPV_CALLBACK + "?code=" + "12345";
+
+    await request(app, (test) => test.get(requestPath).expect(200), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    });
   });
 });

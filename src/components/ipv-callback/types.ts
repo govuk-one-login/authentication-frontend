@@ -7,6 +7,7 @@ export interface ReverificationResultInterface {
     clientSessionId: string,
     persistentSessionId: string,
     req: Request,
-    email: string
+    email: string,
+    code: string
   ) => Promise<ApiResponseResult<DefaultApiResponse>>; //TODO add type
 }

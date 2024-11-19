@@ -12,12 +12,21 @@ export function ipvCallbackGet(
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
+    const code = req.query.code;
+
+    if (code === undefined) {
+      throw new BadRequestError("Request query missing auth code param", 400);
+    } else if (typeof code !== "string") {
+      throw new BadRequestError("Invalid auth code param type", 400);
+    }
+
     const result = await service.getReverificationResult(
       sessionId,
       clientSessionId,
       persistentSessionId,
       req,
-      email
+      email,
+      code
     );
 
     logger.info(

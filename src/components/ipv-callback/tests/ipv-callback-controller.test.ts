@@ -7,6 +7,7 @@ import { Request, Response } from "express";
 import { ReverificationResultInterface } from "../types";
 import { ipvCallbackGet } from "../ipv-callback-controller";
 import { BadRequestError } from "../../../utils/error";
+import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 const fakeReverificationResultService = (success: boolean) => {
   const failureData = {
@@ -25,9 +26,21 @@ describe("ipv callback controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
+  const { sessionId, clientSessionId, diPersistentSessionId, email } =
+    commonVariables;
+
+  const AUTH_CODE = "5678";
+
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.IPV_CALLBACK);
+    req.query = { code: AUTH_CODE };
+    req.session.user.email = email;
     res = mockResponse();
+    res.locals = {
+      sessionId,
+      clientSessionId,
+      persistentSessionId: diPersistentSessionId,
+    };
   });
 
   afterEach(() => {
@@ -41,8 +54,16 @@ describe("ipv callback controller", () => {
       res as Response
     );
 
-    expect(fakeServiceReturningSuccess.getReverificationResult).to.have.been
-      .called;
+    expect(
+      fakeServiceReturningSuccess.getReverificationResult
+    ).to.have.been.calledWith(
+      sessionId,
+      clientSessionId,
+      diPersistentSessionId,
+      req,
+      email,
+      AUTH_CODE
+    );
     expect(res.status).to.have.been.calledWith(200);
   });
 
@@ -61,5 +82,30 @@ describe("ipv callback controller", () => {
 
     expect(fakeServiceReturningFailure.getReverificationResult).to.have.been
       .called;
+  });
+
+  it("get should raise error when auth code param is missing or invalid", async () => {
+    const missingOrInvalidQueries = [
+      {
+        query: {},
+        expectedMessage: "400:Request query missing auth code param",
+      },
+      {
+        query: { code: ["string-in-a-list"] },
+        expectedMessage: "400:Invalid auth code param type",
+      },
+    ];
+
+    for (const testCase of missingOrInvalidQueries) {
+      const fakeServiceReturningSuccess = fakeReverificationResultService(true);
+      req.query = testCase.query;
+
+      await expect(
+        ipvCallbackGet(fakeServiceReturningSuccess)(
+          req as Request,
+          res as Response
+        )
+      ).to.be.rejectedWith(BadRequestError, testCase.expectedMessage);
+    }
   });
 });

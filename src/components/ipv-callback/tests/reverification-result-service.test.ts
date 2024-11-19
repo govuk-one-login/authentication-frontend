@@ -47,13 +47,14 @@ describe("reverification result service", () => {
       clientSessionId,
       diPersistentSessionId,
       req,
-      email
+      email,
+      "12345"
     );
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.REVERIFICATION_RESULT,
       expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
-      expectedBody: { email },
+      expectedBody: { email, code: "12345" },
     };
 
     checkApiCallMadeWithExpectedBodyAndHeaders(
