@@ -57,6 +57,7 @@ const USER_JOURNEY_EVENTS = {
   PERMANENTLY_BLOCKED_INTERVENTION: "PERMANENTLY_BLOCKED_INTERVENTION",
   PASSWORD_RESET_INTERVENTION: "PASSWORD_RESET_INTERVENTION",
   COMMON_PASSWORD_AND_AIS_STATUS: "COMMON_PASSWORD_AND_AIS_STATUS",
+  IPV_REVERIFICATION_INIT: "IPV_REVERIFICATION_INIT",
 };
 
 const authStateMachine = createMachine(
@@ -726,6 +727,16 @@ const authStateMachine = createMachine(
         type: "final",
       },
       [PATH_NAMES.UNAVAILABLE_TEMPORARY]: {
+        type: "final",
+      },
+      [PATH_NAMES.MFA_RESET_WITH_IPV]: {
+        on: {
+          [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INIT]: [
+            { target: [PATH_NAMES.IPV_CALLBACK] },
+          ],
+        },
+      },
+      [PATH_NAMES.IPV_CALLBACK]: {
         type: "final",
       },
     },
