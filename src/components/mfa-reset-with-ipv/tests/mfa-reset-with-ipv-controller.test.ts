@@ -48,6 +48,15 @@ describe("mfa reset with ipv controller", () => {
       expect(res.redirect).to.have.been.calledWith(IPV_DUMMY_URL);
     });
 
+    it("should set the next path as ipv callback", async () => {
+      await mfaResetWithIpvGet(fakeMfaResetAuthorizeService(true))(
+        req as Request,
+        res as Response
+      );
+
+      expect(req.session.user.journey.nextPath).to.eq(PATH_NAMES.IPV_CALLBACK);
+    });
+
     it("should throw a BadRequestError when the request made to the MFA Reset Authorize endpoint is not successful", async () => {
       await expect(
         mfaResetWithIpvGet(fakeMfaResetAuthorizeService(false))(
