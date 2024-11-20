@@ -25,6 +25,24 @@ Parameters:
     ConstraintDescription: >
       must be a valid domain name, consists of lowercase letters, numbers and hyphens OR blank
 
+  DeployHostedZone:
+    Description: >
+      Deploy the Route53 hosted zone and associated SSM parameter
+    Type: String
+    Default: "Yes"
+    AllowedValues:
+      - "Yes"
+      - "No"
+
+  DeployCertificate:
+    Description: >
+      Deploy domain certificate and associated SSM parameter
+    Type: String
+    Default: "No"
+    AllowedValues:
+      - "Yes"
+      - "No"
+
 Conditions:
   CreateDevEnvironmentResources:
     Fn::Equals:
@@ -47,6 +65,57 @@ Conditions:
     Fn::Equals:
       - !Ref Environment
       - "production"
+
+  CreateDevHostedZone:
+    Fn::And:
+      - !Condition CreateDevEnvironmentResources
+      - Fn::Equals:
+        - !Ref DeployHostedZone
+        - "Yes"
+
+  CreateDevCertificate:
+    Fn::And:
+      - !Condition CreateDevEnvironmentResources
+      - Fn::Equals:
+        - !Ref DeployHostedZone
+        - "Yes"
+      - Fn::Equals:
+        - !Ref DeployCertificate
+        - "Yes"
+
+  CreateNonProdHostedZone:
+    Fn::And:
+      - !Condition CreateNonProdEnvironmentResources
+      - Fn::Equals:
+        - !Ref DeployHostedZone
+        - "Yes"
+
+  CreateNonProdCertificate:
+    Fn::And:
+      - !Condition CreateNonProdEnvironmentResources
+      - Fn::Equals:
+        - !Ref DeployHostedZone
+        - "Yes"
+      - Fn::Equals:
+        - !Ref DeployCertificate
+        - "Yes"
+
+  CreateProductionHostedZone:
+    Fn::And:
+      - !Condition CreateProductionEnvironmentResources
+      - Fn::Equals:
+        - !Ref DeployHostedZone
+        - "Yes"
+
+  CreateProductionCertificate:
+    Fn::And:
+      - !Condition CreateProductionEnvironmentResources
+      - Fn::Equals:
+        - !Ref DeployHostedZone
+        - "Yes"
+      - Fn::Equals:
+        - !Ref DeployCertificate
+        - "Yes"
 
 Mappings:
   EndpointConfigs:
@@ -71,7 +140,7 @@ Resources:
       - authdev2
     - ${EnvName}HostedZone:
         Type: AWS::Route53::HostedZone
-        Condition: CreateDevEnvironmentResources
+        Condition: CreateDevHostedZone
         DeletionPolicy: Retain
         UpdateReplacePolicy: Retain
         Properties:
@@ -79,13 +148,13 @@ Resources:
 
       'Fn::ForEach::Endpoints':
         - Endpoint
-        - - auth
-          - manage
-          - oidc
-          - signin
+        - - signin
+          # - auth
+          # - manage
+          # - oidc
         - ${EnvName}${Endpoint}HostedZone:
             Type: AWS::Route53::HostedZone
-            Condition: CreateDevEnvironmentResources
+            Condition: CreateDevHostedZone
             DeletionPolicy: Retain
             UpdateReplacePolicy: Retain
             Properties:
@@ -93,7 +162,7 @@ Resources:
 
           ${EnvName}${Endpoint}DevDelegation:
             Type: AWS::Route53::RecordSet
-            Condition: CreateDevEnvironmentResources
+            Condition: CreateDevHostedZone
             Properties:
               Name: !Sub ${Endpoint}.${EnvName}.${Environment}.account.gov.uk
               Type: NS
@@ -106,10 +175,10 @@ Resources:
 
           ${EnvName}${Endpoint}HostedZoneSSM:
             Type: AWS::SSM::Parameter
-            Condition: CreateDevEnvironmentResources
+            Condition: CreateDevHostedZone
             Properties:
               Description: !Sub "The ${Endpoint} subdomain Public Hosted Zone Id"
-              Name: !Sub "/deploy/${EnvName}/${Endpoint}_route53_hostedzone_id"
+              Name: !Sub "/deploy/${EnvName}/${Endpoint}${EndpointSuffix}_route53_hostedzone_id"
               Type: String
               Value: !Ref
                 'Fn::Sub': ${EnvName}${Endpoint}HostedZone
@@ -120,7 +189,7 @@ Resources:
 
           ${EnvName}${Endpoint}Certificate:
             Type: AWS::CertificateManager::Certificate
-            Condition: CreateDevEnvironmentResources
+            Condition: CreateDevCertificate
             Properties:
               DomainName: !Sub ${Endpoint}.${EnvName}.${Environment}.account.gov.uk
               DomainValidationOptions:
@@ -132,10 +201,10 @@ Resources:
 
           ${EnvName}${Endpoint}CertificateArnSSM:
             Type: AWS::SSM::Parameter
-            Condition: CreateDevEnvironmentResources
+            Condition: CreateDevCertificate
             Properties:
               Description: !Sub "The ${Endpoint} subdomain Certificate ARN"
-              Name: !Sub "/deploy/${EnvName}/${Endpoint}_certificate_arn"
+              Name: !Sub "/deploy/${EnvName}/${Endpoint}${EndpointSuffix}_certificate_arn"
               Type: String
               Value: !Ref
                 'Fn::Sub': ${EnvName}${Endpoint}Certificate
@@ -148,76 +217,32 @@ Resources:
   # Non-prod hosted zones and resources
   # ===================================
 
-  #
-  # auth
-  #
-  # TODO remove this when we retire and replace the -sp domains with the standard ones
-  AccountsAuthHostedZone:
-    Type: AWS::Route53::HostedZone
-    Condition: CreateNonProdEnvironmentResources
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      Name: !Sub auth${EndpointSuffix}.${Environment}.account.gov.uk
-
-  #
-  # managed
-  #
-  # TODO remove this when we retire and replace the -sp domains with the standard ones
-  AccountsManageHostedZone:
-    Type: AWS::Route53::HostedZone
-    Condition: CreateNonProdEnvironmentResources
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      Name: !Sub manage${EndpointSuffix}.${Environment}.account.gov.uk
-
-  #
-  # oidc
-  #
-  # TODO remove this when we retire and replace the -sp domains with the standard ones
-  AccountsOidcHostedZone:
-    Type: AWS::Route53::HostedZone
-    Condition: CreateNonProdEnvironmentResources
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      Name: !Sub oidc${EndpointSuffix}.${Environment}.account.gov.uk
-
-  #
-  # signin
-  #
-  # TODO remove this when we retire and replace the -sp domains with the standard ones
-  AccountsSigninHostedZone:
-    Type: AWS::Route53::HostedZone
-    Condition: CreateNonProdEnvironmentResources
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      Name: !Sub signin${EndpointSuffix}.${Environment}.account.gov.uk
-
   'Fn::ForEach::Endpoints':
     - Endpoint
-    - - Auth
-      - Manage
-      - Oidc
-      - Signin
-    # TODO uncomment this when we retire and replace the -sp domains with the standard ones
-    # - Accounts${Endpoint}HostedZone:
-    #     Type: AWS::Route53::HostedZone
-    #     Condition: CreateNonProdEnvironmentResources
-    #     DeletionPolicy: Retain
-    #     UpdateReplacePolicy: Retain
-    #     Properties:
-    #       Name: !Sub ${Endpoint}${EndpointSuffix}.${Environment}.account.gov.uk
+    - - Signin
+      # - Auth
+      # - Manage
+      # - Oidc
+    - Accounts${Endpoint}HostedZone:
+        Type: AWS::Route53::HostedZone
+        Condition: CreateNonProdHostedZone
+        DeletionPolicy: Retain
+        UpdateReplacePolicy: Retain
+        Properties:
+          Name: !Sub
+            - ${lowercaseEndpoint}${EndpointSuffix}.${Environment}.account.gov.uk
+            - lowercaseEndpoint: !FindInMap
+              - EndpointConfigs
+              - !Ref Endpoint
+              - lowercaseName
 
-    - Accounts${Endpoint}HostedZoneSSM:
+      Accounts${Endpoint}HostedZoneSSM:
         Type: AWS::SSM::Parameter
-        Condition: CreateNonProdEnvironmentResources
+        Condition: CreateNonProdHostedZone
         Properties:
           Description: !Sub "The ${Endpoint} subdomain Public Hosted Zone Id"
           Name: !Sub
-            - "/deploy/${Environment}/${lowercaseEndpoint}_route53_hostedzone_id"
+            - "/deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_route53_hostedzone_id"
             - lowercaseEndpoint: !FindInMap
               - EndpointConfigs
               - !Ref Endpoint
@@ -232,7 +257,7 @@ Resources:
 
       Accounts${Endpoint}Certificate:
         Type: AWS::CertificateManager::Certificate
-        Condition: CreateNonProdEnvironmentResources
+        Condition: CreateNonProdCertificate
         Properties:
           DomainName: !Sub ${Endpoint}${EndpointSuffix}.${Environment}.account.gov.uk
           DomainValidationOptions:
@@ -244,11 +269,11 @@ Resources:
 
       Accounts${Endpoint}CertificateArnSSM:
         Type: AWS::SSM::Parameter
-        Condition: CreateNonProdEnvironmentResources
+        Condition: CreateNonProdCertificate
         Properties:
           Description: !Sub "The ${Endpoint} subdomain Certificate ARN"
           Name: !Sub
-            - "/deploy/${Environment}/${lowercaseEndpoint}_certificate_arn"
+            - "/deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_certificate_arn"
             - lowercaseEndpoint: !FindInMap
               - EndpointConfigs
               - !Ref Endpoint
@@ -274,7 +299,7 @@ Resources:
       # - Oidc
     - Accounts${Endpoint}ProdHostedZone:
         Type: AWS::Route53::HostedZone
-        Condition: CreateProductionEnvironmentResources
+        Condition: CreateProductionHostedZone
         DeletionPolicy: Retain
         UpdateReplacePolicy: Retain
         Properties:
@@ -282,11 +307,11 @@ Resources:
 
       Accounts${Endpoint}ProdHostedZoneSSM:
         Type: AWS::SSM::Parameter
-        Condition: CreateProductionEnvironmentResources
+        Condition: CreateProductionHostedZone
         Properties:
           Description: !Sub "The ${Endpoint} subdomain Public Hosted Zone Id"
           Name: !Sub
-            - "/deploy/${Environment}/${lowercaseEndpoint}_route53_hostedzone_id"
+            - "/deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_route53_hostedzone_id"
             - lowercaseEndpoint: !FindInMap
               - EndpointConfigs
               - !Ref Endpoint
@@ -301,7 +326,7 @@ Resources:
 
       Accounts${Endpoint}ProdCertificate:
         Type: AWS::CertificateManager::Certificate
-        Condition: CreateProductionEnvironmentResources
+        Condition: CreateProductionCertificate
         Properties:
           DomainName: !Sub ${Endpoint}${EndpointSuffix}.account.gov.uk
           DomainValidationOptions:
@@ -313,11 +338,11 @@ Resources:
 
       Accounts${Endpoint}ProdCertificateArnSSM:
         Type: AWS::SSM::Parameter
-        Condition: CreateProductionEnvironmentResources
+        Condition: CreateProductionCertificate
         Properties:
           Description: !Sub "The ${Endpoint} subdomain Certificate ARN"
           Name: !Sub
-            - "/deploy/${Environment}/${lowercaseEndpoint}_certificate_arn"
+            - "/deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_certificate_arn"
             - lowercaseEndpoint: !FindInMap
               - EndpointConfigs
               - !Ref Endpoint
