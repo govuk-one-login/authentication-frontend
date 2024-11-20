@@ -11,6 +11,12 @@ Parameters:
   Environment:
     Type: String
     Description: The name of the environment to deploy to
+    AllowedValues:
+      - build
+      - staging
+      - production
+      - integration
+      - dev
 
   SubEnvironment:
     Type: String
@@ -99,8 +105,8 @@ Conditions:
 
   UseMfaResetWithIpv:
     Fn::Equals:
-        - !Ref Environment
-        - "dev"
+      - !Ref Environment
+      - "dev"
 
   UseSubEnvironment:
     Fn::And:
@@ -152,6 +158,22 @@ Conditions:
       - !Condition DeployServiceDownPage
       - !Condition IsSplunkEnabled
 
+  MaintainMigratedZoneRecords:
+    Fn::Or:
+      - Fn::Equals:
+          - !Ref SubEnvironment
+          - "authdev1"
+      - Fn::Equals:
+          - !Ref Environment
+          - "staging"
+
+  SwitchToMigratedZone:
+    Fn::And:
+      - !Condition MaintainMigratedZoneRecords
+      - Fn::Equals:
+          - !Ref Environment
+          - "placeholder"
+
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   ElasticLoadBalancerAccountIds:
@@ -171,6 +193,8 @@ Mappings:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEM0ZehmrdDd89uYEFMTakbS7JgwCG
         XK7CAYMcVvy1pP5yV4O2mnDjYmvjZpvio2ctgOPxDuBb38QP1HD9WAOR2w==
         -----END PUBLIC KEY-----
+      transitionalDomain: signin.authdev1.dev.account.gov.uk
+      migratedDomain: signin.authdev1.dev.account.gov.uk
     authdev2:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev2-basic-auth-sidecar-image-repository-containerrepository-zvcjtkip2sye"
       cloudfrontDistributionStackName: "authdev2-cloudfront"
@@ -184,6 +208,8 @@ Mappings:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwe8ey1GnTbH6E69EJFUkt4WQc1Kl
         tJwzOYNWUmK/+GxooRp+j9i9KWQ0WlV4gVI0iQkHY3ZKq+RWk94tSDHbyQ==
         -----END PUBLIC KEY-----
+      transitionalDomain: signin.authdev2.dev.account.gov.uk
+      migratedDomain: signin.authdev2.dev.account.gov.uk
     dev:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-acbvxp3ywblv"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -192,6 +218,8 @@ Mappings:
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       cloudwatchLogRetentionInDays: 1
+      oldCloudFrontDistributionDomain: "d6kww5xvio5k2.cloudfront.net"
+      oldALBDNSName: "dev-frontend-1839011587.eu-west-2.elb.amazonaws.com"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHzG8IFx1jE1+Ul44jQk96efPknCX
@@ -203,6 +231,8 @@ Mappings:
         kRaZYTpLsfCpC79ZgKSYEBcguuOUP4DvJpyHomBEnxeUs7s5KRgyMQjY4g==
         -----END PUBLIC KEY-----
       redisNodeSize: cache.t2.small
+      transitionalDomain: signin-sp.dev.account.gov.uk
+      migratedDomain: signin.dev.account.gov.uk
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       frontendAutoScalingMinCount: 4
@@ -221,6 +251,8 @@ Mappings:
         WwuA51+3Ak+stF2dddC60WXEKhrFumKBUnE5GhJNg4v0iN948Mwl+vz5Xw==
         -----END PUBLIC KEY-----
       redisNodeSize: cache.t2.small
+      transitionalDomain: signin-sp.build.account.gov.uk
+      migratedDomain: signin.build.account.gov.uk
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       frontendAutoScalingMinCount: 4
@@ -228,6 +260,8 @@ Mappings:
       frontendTaskDefinitionCpu: 1024
       frontendTaskDefinitionMemory: 2048
       cloudwatchLogRetentionInDays: 7
+      oldCloudFrontDistributionDomain: "dn583e4460uqv.cloudfront.net"
+      oldALBDNSName: "staging-frontend-972136373.eu-west-2.elb.amazonaws.com"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5PP1PZmhiuHR57ZEfZXARt9/uiG+
@@ -239,6 +273,8 @@ Mappings:
         1zSWSgFy2sngA1GKybC0zuZluGHfZMnr/BGo+teQzbDCekLijPvlozXY1g==
         -----END PUBLIC KEY-----
       redisNodeSize: cache.m4.xlarge
+      transitionalDomain: signin-sp.staging.account.gov.uk
+      migratedDomain: signin.staging.account.gov.uk
     integration:
       basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -253,6 +289,8 @@ Mappings:
         ppx89XLVfgXIoCs2P//N5qdghvzgNIgVehQ7CkzyorO/lnRlWPfjCG4Oxw==
         -----END PUBLIC KEY-----
       redisNodeSize: cache.t2.small
+      transitionalDomain: signin-sp.integration.account.gov.uk
+      migratedDomain: signin.integration.account.gov.uk
     production:
       basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -267,6 +305,8 @@ Mappings:
         +3VZPbjHv+v0AjQ5Ps+avkXWKwOeScG9sS0cDf0utEXi3fN3cEraa9WuKQ==
         -----END PUBLIC KEY-----
       redisNodeSize: cache.m4.xlarge
+      transitionalDomain: signin-sp.account.gov.uk
+      migratedDomain: signin.account.gov.uk
 
 Globals:
   Function:
@@ -617,13 +657,16 @@ Resources:
             - Name: SUPPORT_ACCOUNT_RECOVERY
               Value: 1
             - Name: BASE_URL
-              Value: !If
-                - IsNotProduction
+              Value: !FindInMap
+                - EnvironmentConfiguration
                 - !If
                   - UseSubEnvironment
-                  - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
-                  - !Sub "signin-sp.${Environment}.account.gov.uk"
-                - "signin-sp.account.gov.uk"
+                  - !Ref SubEnvironment
+                  - !Ref Environment
+                - !If
+                  - SwitchToMigratedZone
+                  - migratedDomain
+                  - transitionalDomain
             - Name: GTM_ID
               Value: GTM-TK92W68
             - Name: SUPPORT_AUTHORIZE_CONTROLLER
@@ -669,13 +712,18 @@ Resources:
             - Name: ORCH_STUB_TO_AUTH_CLIENT_ID
               Value: orchestrationAuth
             - Name: ORCH_STUB_TO_AUTH_AUDIENCE
-              Value: !If
-                - IsNotProduction
-                - !If
-                  - UseSubEnvironment
-                  - !Sub "https://signin.${SubEnvironment}.${Environment}.account.gov.uk/"
-                  - !Sub "https://signin-sp.${Environment}.account.gov.uk/"
-                - "https://signin.account.gov.uk/"
+              Value: !Sub
+                - "https://${FQDN}/"
+                - FQDN: !FindInMap
+                  - EnvironmentConfiguration
+                  - !If
+                    - UseSubEnvironment
+                    - !Ref SubEnvironment
+                    - !Ref Environment
+                  - !If
+                    - SwitchToMigratedZone
+                    - migratedDomain
+                    - transitionalDomain
             - Name: URL_FOR_SUPPORT_LINKS
               Value: !Sub
                 - "https://${homeFQDN}/contact-gov-uk-one-login"
@@ -878,10 +926,16 @@ Resources:
                 - Name: NGINX_PORT
                   Value: "8080"
                 - Name: NGINX_HOST
-                  Value: !If
-                    - IsNotProduction
-                    - !Sub "signin-sp.${Environment}.account.gov.uk"
-                    - "signin-sp.account.gov.uk"
+                  Value: !FindInMap
+                    - EnvironmentConfiguration
+                    - !If
+                      - UseSubEnvironment
+                      - !Ref SubEnvironment
+                      - !Ref Environment
+                    - !If
+                      - SwitchToMigratedZone
+                      - migratedDomain
+                      - transitionalDomain
               Secrets:
                 - Name: BASIC_AUTH_USERNAME
                   ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_username"
@@ -1076,6 +1130,74 @@ Resources:
         # This is always the hosted zone ID when you create an alias record that routes traffic to a CloudFront distribution
 
   #
+  # Migrated zone records
+  #
+
+  FrontendDnsRecordA:
+    Type: AWS::Route53::RecordSet
+    Condition: MaintainMigratedZoneRecords
+    Properties:
+      Name: !If
+        - IsNotProduction
+        - !Sub "signin.${Environment}.account.gov.uk"
+        - "signin.account.gov.uk"
+      Type: A
+      HostedZoneId: !Sub
+        - "{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}"
+        - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+      AliasTarget:
+        EvaluateTargetHealth: false
+        DNSName: !If
+          - SwitchToMigratedZone
+          - Fn::ImportValue: !Sub
+              - "${CFDistributionStackName}-DistributionDomain"
+              - CFDistributionStackName: !FindInMap
+                  - EnvironmentConfiguration
+                  - !If
+                    - UseSubEnvironment
+                    - !Ref SubEnvironment
+                    - !Ref Environment
+                  - cloudfrontDistributionStackName
+                  - DefaultValue: "auth-fe-cloudfront"
+          - !FindInMap [
+              EnvironmentConfiguration,
+              !Ref Environment,
+              oldCloudFrontDistributionDomain,
+            ]
+        HostedZoneId: Z2FDTNDATAQYW2
+        # This is always the hosted zone ID when you create an alias record that routes traffic to a CloudFront distribution
+
+  ApplicationLoadBalancerDnsRecordA:
+    Type: AWS::Route53::RecordSet
+    Condition: MaintainMigratedZoneRecords
+    Properties:
+      Name: !If
+        - IsNotProduction
+        - !Sub "origin.signin.${Environment}.account.gov.uk"
+        - "origin.signin.account.gov.uk"
+      Type: A
+      HostedZoneId: !Sub
+        - "{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}"
+        - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+      AliasTarget:
+        EvaluateTargetHealth: false
+        DNSName: !If
+          - SwitchToMigratedZone
+          - !Sub
+            - "dualstack.${ALBDNSName}"
+            - ALBDNSName: !GetAtt ApplicationLoadBalancer.DNSName
+          - !Sub
+            - "dualstack.${ALBDNSName}"
+            - ALBDNSName:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  oldALBDNSName,
+                ]
+        HostedZoneId: "ZHURV8PSTC4K8"
+        # This is always the ALB hosted zone in eu-west-2 region. See https://docs.aws.amazon.com/general/latest/gr/elb.html
+
+  #
   # Load balancing
   #
 
@@ -1196,7 +1318,8 @@ Resources:
         DNSName: !Sub
           - "dualstack.${ALBDNSName}"
           - ALBDNSName: !GetAtt ApplicationLoadBalancer.DNSName
-        HostedZoneId: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
+        HostedZoneId: "ZHURV8PSTC4K8"
+        # This is always the ALB hosted zone in eu-west-2 region. See https://docs.aws.amazon.com/general/latest/gr/elb.html
 
   ApplicationLoadBalancerListenerHTTPS:
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -1208,10 +1331,16 @@ Resources:
       Port: 443
       Protocol: HTTPS
       Certificates:
-        - CertificateArn: !Sub
-            - "{{resolve:ssm:/deploy/${env}/signin-sp_certificate_arn}}"
-            - env:
-                !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+        - CertificateArn: !If
+            - SwitchToMigratedZone
+            - !Sub
+              - "{{resolve:ssm:/deploy/${env}/signin_certificate_arn}}"
+              - env:
+                  !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+            - !Sub
+              - "{{resolve:ssm:/deploy/${env}/signin-sp_certificate_arn}}"
+              - env:
+                  !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       SslPolicy: "ELBSecurityPolicy-FS-1-2-Res-2020-10"
 
   ApplicationLoadBalancerListener:
