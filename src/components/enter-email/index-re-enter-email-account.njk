@@ -14,12 +14,17 @@
 <form action="/enter-email" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="isStrategicAppReauth" value="{{isStrategicAppReauth}}"/>
 
     <h1 class="govuk-heading-l">
         {{ 'pages.reEnterEmailAccount.header' | translate }}
     </h1>
 
-    <p class="govuk-body">{{'pages.reEnterEmailAccount.paragraph1' | translate}}</p>
+    {% if isStrategicAppReauth %}
+        <p class="govuk-body">{{'mobileAppPages.reEnterEmailAccount.paragraph1' | translate}}</p>
+    {% else %}
+        <p class="govuk-body">{{'pages.reEnterEmailAccount.paragraph1' | translate}}</p>
+    {% endif %}
 
     {{ govukInput({
          label: {

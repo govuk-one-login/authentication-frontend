@@ -2,6 +2,8 @@ import { body } from "express-validator";
 import { validateBodyMiddlewareReauthTemplate } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 import { RE_ENTER_EMAIL_TEMPLATE } from "./enter-email-controller";
+import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message";
+import { WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS } from "../../app.constants";
 
 export function validateEnterEmailRequest(
   template = "enter-email/index-existing-account.njk"
@@ -42,7 +44,13 @@ export function validateEnterEmailRequest(
       })
       .custom((value, { req }) => {
         if (req.session.user.reauthenticate) {
-          return req.t("pages.reEnterEmailAccount.enterYourEmailAddressError", {
+          const errorMessage = getChannelSpecificErrorMessage(
+            "pages.reEnterEmailAccount.enterYourEmailAddressError",
+            req.body.isStrategicAppReauth === "true",
+            WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS
+          );
+
+          return req.t(errorMessage, {
             value,
           });
         }
