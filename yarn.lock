@@ -4210,9 +4210,9 @@ husky@^9.0.10:
   integrity sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==
 
 i18next-fs-backend@^2.3.1:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/i18next-fs-backend/-/i18next-fs-backend-2.3.2.tgz#580b91c9a306b452112e0a1ad3b07e9fd266e567"
-  integrity sha512-LIwUlkqDZnUI8lnUxBnEj8K/FrHQTT/Sc+1rvDm9E8YvvY5YxzoEAASNx+W5M9DfD5s77lI5vSAFWeTp26B/3Q==
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/i18next-fs-backend/-/i18next-fs-backend-2.4.0.tgz#62032864ef04f27042ae77e87e6d7a8408dd8fe8"
+  integrity sha512-NLSktIBdoPUC/sKBNw5JtOQEHA6EgwDDOHospvoikAiQg9NDQlQw8UZRXgif/zJRLRV6zxWbT2uN58LXr4hU+A==
 
 i18next-http-middleware@^3.2.0:
   version "3.6.0"
