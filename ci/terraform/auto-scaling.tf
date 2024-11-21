@@ -97,12 +97,12 @@ resource "aws_appautoscaling_policy" "frontend_auto_scaling_policy_scale_in" {
   step_scaling_policy_configuration {
     adjustment_type          = "PercentChangeInCapacity"
     metric_aggregation_type  = "Average"
-    cooldown                 = 240
+    cooldown                 = 300
     min_adjustment_magnitude = 5
 
     step_adjustment {
       metric_interval_upper_bound = 0
-      scaling_adjustment          = -50
+      scaling_adjustment          = -25
     }
   }
 
