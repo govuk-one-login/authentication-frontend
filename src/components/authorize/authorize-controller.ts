@@ -144,7 +144,6 @@ export function authorizeGet(
         secure: true,
         httpOnly: false,
         domain: res.locals.analyticsCookieDomain,
-        encode: String,
       });
 
       if (
