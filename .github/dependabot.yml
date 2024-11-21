@@ -11,8 +11,6 @@ updates:
         versions: ["> 20"]
       - dependency-name: "@types/node"
         versions: ["> 20"]
-      - dependency-name: "@govuk-one-login/frontend-language-toggle"
-        versions: ["2.0.1"]
     groups:
       npm-pino-dependencies:
         patterns:
