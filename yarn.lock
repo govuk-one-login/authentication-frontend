@@ -101,9 +101,9 @@
     tslib "^2.6.2"
 
 "@aws-sdk/client-ssm@^3.366.0":
-  version "3.696.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-ssm/-/client-ssm-3.696.0.tgz#2f321f1851193136c875159c18647ed8a323ce36"
-  integrity sha512-9jq+Rp3pWovd6pMCDqDU+TvfjNOFX9T5jCsCnnv/wLWsbIrSdUIUa8v+WnM1qp4L8gboh1QDUJ5BTVjZdMoalg==
+  version "3.698.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-ssm/-/client-ssm-3.698.0.tgz#cacff08e5334167931eeb8b7b9873ba1f5f9e6b9"
+  integrity sha512-/Lf8rH2/6dDasqJiPuK2fRhLuC0Tm9eFJMWB911FumOHG8Wzp5ceDnCdzeVrAlWHsB2o+ouZ3+lk3r4HLZMTFg==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
