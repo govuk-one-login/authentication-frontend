@@ -34,6 +34,10 @@ updates:
       npm-eslint-dependencies:
         patterns:
           - "*eslint*"
+      npm-i18next-dependencies:
+        patterns:
+          - "i18next*"
+          - "@types/i18next*"
       npm-patch-dependencies:
         update-types:
           - patch
