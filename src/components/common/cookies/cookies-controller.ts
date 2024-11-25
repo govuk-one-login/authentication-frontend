@@ -48,7 +48,6 @@ export function cookiesPost(req: Request, res: Response): void {
     secure: true,
     httpOnly: false,
     domain: res.locals.analyticsCookieDomain,
-    encode: String,
   });
   res.locals.originalReferer = sanitize(req.body.originalReferer);
   res.locals.analyticsConsent = consentValue === "true";

@@ -64,7 +64,6 @@ describe("cookies controller", () => {
           sinon.match({
             secure: true,
             httpOnly: false,
-            encode: String,
           })
         );
       });
@@ -105,7 +104,6 @@ describe("cookies controller", () => {
           sinon.match({
             secure: true,
             httpOnly: false,
-            encode: String,
           })
         );
       });
@@ -135,7 +133,6 @@ describe("cookies controller", () => {
           sinon.match({
             secure: true,
             httpOnly: false,
-            encode: String,
           })
         );
 

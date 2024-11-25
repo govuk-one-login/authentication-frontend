@@ -121,7 +121,6 @@ describe("authorize controller", () => {
           }),
           secure: true,
           httpOnly: false,
-          encode: String,
         })
       );
       expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
@@ -334,7 +333,6 @@ describe("authorize controller", () => {
         sinon.match({
           secure: true,
           httpOnly: false,
-          encode: String,
         })
       );
       expect(res.redirect).to.have.calledWith(
