@@ -4277,9 +4277,9 @@ i18next-fs-backend@^2.3.1:
   integrity sha512-NLSktIBdoPUC/sKBNw5JtOQEHA6EgwDDOHospvoikAiQg9NDQlQw8UZRXgif/zJRLRV6zxWbT2uN58LXr4hU+A==
 
 i18next-http-middleware@^3.2.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/i18next-http-middleware/-/i18next-http-middleware-3.6.0.tgz#4781751fac03e951a74a8c9f95f6bb5bc680fbdd"
-  integrity sha512-pLyTOC8Dzj83byN0s4hd/i/Ewg6T36YjMrc+Zfnqz2Ca0G5ab9IPvPR8xZqr6TS0s/ZtPs2MZucDkWgqoRmNXA==
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/i18next-http-middleware/-/i18next-http-middleware-3.7.0.tgz#4f350158d32658298742da6bda0b20d8ab5f7583"
+  integrity sha512-QzzOwQp1NKtN2q50419vJoR4jePjEzlOverBWZvUDCznHWt/rYTNQCNk1j1zdUnnHCfHxmAMHrfn9YNDc0TB5g==
 
 i18next@^21.0.1:
   version "21.6.5"
