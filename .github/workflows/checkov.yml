@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Checkov GitHub Action
-        uses: bridgecrewio/checkov-action@e6d0a8bcd744a15c35296f51478cd96fcbdada13 # v12.2909.0
+        uses: bridgecrewio/checkov-action@05decb42b761b4c4ce4927c084165bb4705bbcef # v12.2918.0
         with:
           directory: ci/terraform
           soft_fail: true
