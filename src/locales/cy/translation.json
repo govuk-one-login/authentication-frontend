@@ -205,6 +205,11 @@
     },
     "accountCreated": {
       "text": "Nawr parhewch i ddefnyddio’r ap."
+    },
+    "accountLocked": {
+      "bulletPointSection": {
+        "second": "arhoswch am 2 awr, yna rhowch gynnig arall"
+      }
     }
   },
   "pages": {

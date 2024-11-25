@@ -203,8 +203,14 @@
       "paragraph1": "Use the same email address you used last time you signed in to this app. This is to keep your information secure.",
       "enterYourEmailAddressError": "Enter the same email address you used last time you signed in to this app"
     },
+
     "accountCreated": {
       "text": "Now continue to use the app."
+    },
+    "accountLocked": {
+      "bulletPointSection": {
+        "second": "wait 2 hours, then try again"
+      }
     }
   },
   "pages": {
