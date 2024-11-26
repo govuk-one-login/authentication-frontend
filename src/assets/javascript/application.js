@@ -1,28 +1,3 @@
-function initFeedbackRadioButtons() {
-  var feedbackRadioButtons = Array.prototype.slice.call(
-    document.querySelectorAll('input[name="feedbackContact"]')
-  );
-  var container = document.querySelector("#contact-details-container");
-  feedbackRadioButtons.forEach(function (element) {
-    element.addEventListener(
-      "click",
-      function (event) {
-        if (event.target.value === "true") {
-          container.classList.remove("govuk-!-display-none");
-        } else {
-          container.classList.add("govuk-!-display-none");
-          var elements = container.getElementsByTagName("input");
-          for (var i = 0; i < elements.length; i++) {
-            if (elements[i].type == "text") {
-              elements[i].value = "";
-            }
-          }
-        }
-      }.bind(this)
-    );
-  });
-}
-
 var onIntNumberSelected = function (intPhoneNumberCheckbox, phoneNumberInput) {
   if (intPhoneNumberCheckbox.checked) {
     phoneNumberInput.value = "";
@@ -55,7 +30,6 @@ window.DI.analyticsUa = window.DI.analyticsUa || {};
 (function (w) {
   "use strict";
   function appInit() {
-    window.GOVUKFrontend.initAll();
     var cookies = window.GOVSignIn.Cookies();
 
     if (window.DI.analyticsGa4.cookie.hasConsentForAnalytics()) {
@@ -71,10 +45,18 @@ window.DI.analyticsUa = window.DI.analyticsUa || {};
     }
   }
 
-  initFeedbackRadioButtons();
+  w.DI.analyticsUa.init = appInit;
+})(window);
+
+window.addEventListener("load", (event) => {
+  window.GOVUKFrontend.initAll();
   initEnterPhoneNumber();
 
-  if (w.GOVUK && w.GOVUK.Modules && w.GOVUK.Modules.ShowPassword) {
+  if (
+    window.GOVUK &&
+    window.GOVUK.Modules &&
+    window.GOVUK.Modules.ShowPassword
+  ) {
     var modules = document.querySelectorAll('[data-module="show-password"]');
 
     for (var i = 0, l = modules.length; i < l; i++) {
@@ -83,6 +65,4 @@ window.DI.analyticsUa = window.DI.analyticsUa || {};
       }
     }
   }
-
-  w.DI.analyticsUa.init = appInit;
-})(window);
+});
