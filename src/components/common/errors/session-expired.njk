@@ -13,7 +13,11 @@
 {{ govukButton({
 "text": "error.timeoutError.content.govUKHomepageButtonText" | translate,
 "type": "Submit",
-"href": "error.timeoutError.content.govUKHomepageButtonHref" | translate
+"href": "error.timeoutError.content.govUKHomepageButtonHref" | translate,
+attributes: {
+    "data-nav": "true",
+    "data-link": "/undefined"
+}
 }) }}
 
 {{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: taxonomyLevel1, taxonomyLevel2: taxonomyLevel2, contentId: "", loggedInStatus: false, dynamic: false })}}

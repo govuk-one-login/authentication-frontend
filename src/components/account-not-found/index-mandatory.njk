@@ -33,7 +33,11 @@
 {{ govukButton({
     "text": "pages.accountNotFoundMandatory.createAccountButtonText" | translate,
     "type": "Submit",
-    "preventDoubleClick": true
+    "preventDoubleClick": true,
+    attributes: {
+        "data-nav": "true",
+        "data-link": "/undefined"
+    }
 }) }}
 
 <p class="govuk-body">

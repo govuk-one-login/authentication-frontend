@@ -36,7 +36,11 @@
 {{ govukButton({
     "text": "general.continue.label" | translate,
     "type": "Submit",
-    "preventDoubleClick": true
+    "preventDoubleClick": true,
+    attributes: {
+        "data-nav": "true",
+        "data-link": "/undefined"
+    }
 }) }}
 
 <p class="govuk-body">
