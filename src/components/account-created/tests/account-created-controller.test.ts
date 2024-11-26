@@ -34,6 +34,20 @@ describe("account created controller", () => {
 
       expect(res.render).to.have.been.calledWith("account-created/index.njk");
     });
+
+    it("should pass through the strategicAppChannel", () => {
+      req.session.client.serviceType = "MANDATORY";
+      req.session.client.name = "test client name";
+      res.locals.strategicAppChannel = true;
+
+      accountCreatedGet(req as Request, res as Response);
+
+      expect(res.render).to.have.been.calledWith("account-created/index.njk", {
+        serviceType: "MANDATORY",
+        name: "test client name",
+        strategicAppChannel: true,
+      });
+    });
   });
   describe("accountCreatedPost", () => {
     it("should redirect to auth code", async () => {
