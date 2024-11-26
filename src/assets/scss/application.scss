@@ -246,3 +246,10 @@
     border-bottom: 0;
   }
 }
+
+.strategic-app-retry-options {
+  a:first-child {
+    display: inline-block;
+    @include govuk-responsive-margin(2, "bottom");
+  }
+}

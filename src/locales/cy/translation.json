@@ -210,6 +210,12 @@
       "bulletPointSection": {
         "second": "arhoswch am 2 awr, yna rhowch gynnig arall"
       }
+    },
+    "signInRetryBlocked": {
+      "whatCanYouDo": {
+        "resetYourPassword": "Ailosod eich cyfrinair",
+        "waitAndTryAgain": "Gallwch hefyd aros am 2 awr, yna rhowch gynnig arall."
+      }
     }
   },
   "pages": {
