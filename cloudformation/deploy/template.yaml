@@ -657,16 +657,26 @@ Resources:
             - Name: SUPPORT_ACCOUNT_RECOVERY
               Value: 1
             - Name: BASE_URL
-              Value: !FindInMap
-                - EnvironmentConfiguration
-                - !If
-                  - UseSubEnvironment
-                  - !Ref SubEnvironment
-                  - !Ref Environment
-                - !If
-                  - SwitchToMigratedZone
-                  - migratedDomain
-                  - transitionalDomain
+              Value: !If
+                - SwitchToMigratedZone
+                - !FindInMap [
+                    EnvironmentConfiguration,
+                    !If [
+                      UseSubEnvironment,
+                      !Ref SubEnvironment,
+                      !Ref Environment,
+                    ],
+                    migratedDomain,
+                  ]
+                - !FindInMap [
+                    EnvironmentConfiguration,
+                    !If [
+                      UseSubEnvironment,
+                      !Ref SubEnvironment,
+                      !Ref Environment,
+                    ],
+                    transitionalDomain,
+                  ]
             - Name: GTM_ID
               Value: GTM-TK92W68
             - Name: SUPPORT_AUTHORIZE_CONTROLLER
@@ -714,16 +724,26 @@ Resources:
             - Name: ORCH_STUB_TO_AUTH_AUDIENCE
               Value: !Sub
                 - "https://${FQDN}/"
-                - FQDN: !FindInMap
-                  - EnvironmentConfiguration
-                  - !If
-                    - UseSubEnvironment
-                    - !Ref SubEnvironment
-                    - !Ref Environment
-                  - !If
+                - FQDN: !If
                     - SwitchToMigratedZone
-                    - migratedDomain
-                    - transitionalDomain
+                    - !FindInMap [
+                        EnvironmentConfiguration,
+                        !If [
+                          UseSubEnvironment,
+                          !Ref SubEnvironment,
+                          !Ref Environment,
+                        ],
+                        migratedDomain,
+                      ]
+                    - !FindInMap [
+                        EnvironmentConfiguration,
+                        !If [
+                          UseSubEnvironment,
+                          !Ref SubEnvironment,
+                          !Ref Environment,
+                        ],
+                        transitionalDomain,
+                      ]
             - Name: URL_FOR_SUPPORT_LINKS
               Value: !Sub
                 - "https://${homeFQDN}/contact-gov-uk-one-login"
@@ -926,16 +946,26 @@ Resources:
                 - Name: NGINX_PORT
                   Value: "8080"
                 - Name: NGINX_HOST
-                  Value: !FindInMap
-                    - EnvironmentConfiguration
-                    - !If
-                      - UseSubEnvironment
-                      - !Ref SubEnvironment
-                      - !Ref Environment
-                    - !If
-                      - SwitchToMigratedZone
-                      - migratedDomain
-                      - transitionalDomain
+                  Value: !If
+                    - SwitchToMigratedZone
+                    - !FindInMap [
+                        EnvironmentConfiguration,
+                        !If [
+                          UseSubEnvironment,
+                          !Ref SubEnvironment,
+                          !Ref Environment,
+                        ],
+                        migratedDomain,
+                      ]
+                    - !FindInMap [
+                        EnvironmentConfiguration,
+                        !If [
+                          UseSubEnvironment,
+                          !Ref SubEnvironment,
+                          !Ref Environment,
+                        ],
+                        transitionalDomain,
+                      ]
               Secrets:
                 - Name: BASIC_AUTH_USERNAME
                   ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_username"
