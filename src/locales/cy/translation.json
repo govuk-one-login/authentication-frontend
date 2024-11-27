@@ -2459,28 +2459,6 @@
       "title": "placeholder",
       "header": "placeholder"
     },
-    "proveIdentityWelcome": {
-      "title": "Profi pwy ydych chi gyda GOV.UK One Login",
-      "header": "Profi pwy ydych chi gyda GOV.UK One Login",
-      "section1": {
-        "insetAlternativeLanguage": {
-          "start": "Gallwch hefyd ",
-          "linkText": {
-            "inPageLanguage": "ddefnyddio GOV.UK One Login yn Saesneg",
-            "inDestinationLanguage": "(English)",
-            "destinationLanguageCode": "en"
-          },
-          "linkHref": "?lng=en",
-          "end": ""
-        }
-      },
-      "section2": {
-        "paragraph1": "Byddwch angen:",
-        "listItem1_1": "GOV.UK One Login – byddwn yn gofyn i chi fewngofnodi neu greu un pan fyddwch yn parhau",
-        "listItem1_2": "eich ID gyda llun",
-        "listItem1_3": "eich cyfeiriad presennol (efallai y byddwch angen eich cyfeiriad blaenorol hefyd os ydych wedi symud yn ddiweddar)"
-      }
-    },
     "proveIdentityCheck": {
       "title": "Eich dychwelyd chi i’r gwasanaeth ‘[serviceName]’",
       "header": "Eich dychwelyd chi i’r gwasanaeth ‘[serviceName]’",
