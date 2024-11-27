@@ -106,7 +106,6 @@
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
-    "@types/chai-as-promised": "^7.1.5",
     "@types/cheerio": "^0.22.31",
     "@types/cookie-parser": "^1.4.2",
     "@types/csurf": "^1.11.2",
@@ -128,7 +127,6 @@
     "@typescript-eslint/eslint-plugin": "^8.13.0",
     "@typescript-eslint/parser": "^8.13.0",
     "chai": "^4.3.6",
-    "chai-as-promised": "^7.1.1",
     "chai-http": "^5.1.1",
     "cheerio": "^1.0.0-rc.10",
     "concurrently": "^9.0.1",
