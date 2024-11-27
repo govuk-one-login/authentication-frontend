@@ -262,12 +262,6 @@ variable "default_channel" {
   default     = "web"
 }
 
-variable "prove_identity_welcome_enabled" {
-  description = "Do not show the prove identity welcome screen when disabled"
-  type        = string
-  default     = "0"
-}
-
 variable "alb_idle_timeout" {
   description = "Frontend Application Load Balancer idle timeout"
   default     = 60

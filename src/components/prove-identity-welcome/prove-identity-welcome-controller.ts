@@ -2,17 +2,8 @@ import { Request, Response } from "express";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { PATH_NAMES } from "../../app.constants";
-import { proveIdentityWelcomeEnabled } from "../../config";
 export function proveIdentityWelcomeGet(req: Request, res: Response): void {
-  if (!proveIdentityWelcomeEnabled()) {
-    res.redirect("/sign-in-or-create");
-  } else {
-    res.render(
-      req.session.user.isAuthenticated
-        ? "prove-identity-welcome/index-existing-session.njk"
-        : "prove-identity-welcome/index.njk"
-    );
-  }
+  res.redirect("/sign-in-or-create");
 }
 
 export async function proveIdentityWelcomePost(
