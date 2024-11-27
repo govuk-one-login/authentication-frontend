@@ -950,20 +950,12 @@ Resources:
                     - SwitchToMigratedZone
                     - !FindInMap [
                         EnvironmentConfiguration,
-                        !If [
-                          UseSubEnvironment,
-                          !Ref SubEnvironment,
-                          !Ref Environment,
-                        ],
+                        !Ref Environment,
                         migratedDomain,
                       ]
                     - !FindInMap [
                         EnvironmentConfiguration,
-                        !If [
-                          UseSubEnvironment,
-                          !Ref SubEnvironment,
-                          !Ref Environment,
-                        ],
+                        !Ref Environment,
                         transitionalDomain,
                       ]
               Secrets:
