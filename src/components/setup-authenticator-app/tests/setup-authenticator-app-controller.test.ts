@@ -18,6 +18,7 @@ import { SendNotificationServiceInterface } from "../../common/send-notification
 import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
 import * as journey from "../../common/journey/journey";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { strict as assert } from "assert";
 
 describe("setup-authenticator-app controller", () => {
   let req: RequestOutput;
@@ -219,12 +220,15 @@ describe("setup-authenticator-app controller", () => {
         }),
       } as unknown as VerifyMfaCodeInterface;
 
-      await expect(
-        setupAuthenticatorAppPost(fakeMfAService)(
-          req as Request,
-          res as Response
-        )
-      ).to.be.rejectedWith(BadRequestError, "1234:error");
+      await assert.rejects(
+        async () =>
+          setupAuthenticatorAppPost(fakeMfAService)(
+            req as Request,
+            res as Response
+          ),
+        BadRequestError,
+        "1234:error"
+      );
     });
   });
 });

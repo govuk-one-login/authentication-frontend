@@ -7,6 +7,7 @@ import { expect } from "chai";
 import { MfaResetAuthorizeInterface } from "../types";
 import { Request, Response } from "express";
 import { BadRequestError } from "../../../utils/error";
+import { strict as assert } from "assert";
 
 const IPV_DUMMY_URL =
   "https://test-idp-url.com/callback?code=123-4ddkk0sdkkd-ad";
@@ -58,12 +59,15 @@ describe("mfa reset with ipv controller", () => {
     });
 
     it("should throw a BadRequestError when the request made to the MFA Reset Authorize endpoint is not successful", async () => {
-      await expect(
-        mfaResetWithIpvGet(fakeMfaResetAuthorizeService(false))(
-          req as Request,
-          res as Response
-        )
-      ).to.be.rejectedWith(BadRequestError, "500:Test error message");
+      await assert.rejects(
+        async () =>
+          mfaResetWithIpvGet(fakeMfaResetAuthorizeService(false))(
+            req as Request,
+            res as Response
+          ),
+        BadRequestError,
+        "500:Test error message"
+      );
     });
   });
 });

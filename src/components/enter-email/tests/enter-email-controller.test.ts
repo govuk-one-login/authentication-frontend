@@ -17,6 +17,7 @@ import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
+import { strict as assert } from "assert";
 
 describe("enter email controller", () => {
   let req: RequestOutput;
@@ -206,9 +207,12 @@ describe("enter email controller", () => {
         userExists: sinon.fake.throws(error),
       };
 
-      await expect(
-        enterEmailPost(fakeService)(req as Request, res as Response)
-      ).to.be.rejectedWith(Error, "Internal server error");
+      await assert.rejects(
+        async () =>
+          enterEmailPost(fakeService)(req as Request, res as Response),
+        Error,
+        "Internal server error"
+      );
       expect(fakeService.userExists).to.have.been.calledOnce;
     });
 
@@ -219,9 +223,9 @@ describe("enter email controller", () => {
 
       req.session.user = undefined;
 
-      await expect(
-        enterEmailPost(fakeService)(req as Request, res as Response)
-      ).to.be.rejectedWith(
+      await assert.rejects(
+        async () =>
+          enterEmailPost(fakeService)(req as Request, res as Response),
         TypeError,
         "Cannot set properties of undefined (setting 'email')"
       );
