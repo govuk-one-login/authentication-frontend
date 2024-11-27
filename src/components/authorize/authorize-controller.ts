@@ -29,7 +29,6 @@ import {
   getDefaultChannel,
   getOrchToAuthExpectedClientId,
   supportReauthentication,
-  proveIdentityWelcomeEnabled,
   getOrchStubToAuthExpectedClientId,
 } from "../../config";
 import { logger } from "../../utils/logger";
@@ -132,7 +131,6 @@ export function authorizeGet(
         skipAuthentication: false,
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
         isReauthenticationRequired: req.session.user.reauthenticate,
-        proveIdentityWelcomeEnabled: proveIdentityWelcomeEnabled(),
       },
       sessionId
     );
