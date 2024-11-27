@@ -32,28 +32,10 @@ describe("prove your identity welcome controller", () => {
   });
 
   describe("proveIdentityWelcomeGet", () => {
-    it("should render prove your identity welcome page when page enabled", async () => {
-      process.env.PROVE_IDENTITY_WELCOME_ENABLED = "1";
-      proveIdentityWelcomeGet(req as Request, res as Response);
-      expect(res.render).to.have.been.calledWith(
-        "prove-identity-welcome/index.njk"
-      );
-    });
-
     it("should redirect to sign-in-or-create from prove your identity welcome page when not enabled", async () => {
-      process.env.PROVE_IDENTITY_WELCOME_ENABLED = "0";
       proveIdentityWelcomeGet(req as Request, res as Response);
       expect(res.redirect).to.have.been.calledWith(
         PATH_NAMES.SIGN_IN_OR_CREATE
-      );
-    });
-
-    it("should render prove identity welcome page for user that already has an active session if page enabled", async () => {
-      req.session.user.isAuthenticated = true;
-      process.env.PROVE_IDENTITY_WELCOME_ENABLED = "1";
-      proveIdentityWelcomeGet(req as Request, res as Response);
-      expect(res.render).to.have.been.calledWith(
-        "prove-identity-welcome/index-existing-session.njk"
       );
     });
   });
