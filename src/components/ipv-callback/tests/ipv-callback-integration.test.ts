@@ -41,13 +41,21 @@ describe("Integration:: ipv callback", () => {
     sinon.restore();
   });
 
-  it("should return basic response when ipv callback requested", async () => {
+  it("should redirect to GET_SECURITY_CODES when the reverification result is successful", async () => {
     nock(baseApi).post(API_ENDPOINTS.REVERIFICATION_RESULT).once().reply(200);
 
     const requestPath = PATH_NAMES.IPV_CALLBACK + "?code=" + "12345";
 
-    await request(app, (test) => test.get(requestPath).expect(200), {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    });
+    await request(
+      app,
+      (test) =>
+        test
+          .get(requestPath)
+          .expect(302)
+          .expect("Location", PATH_NAMES.GET_SECURITY_CODES),
+      {
+        expectAnalyticsPropertiesMatchSnapshot: false,
+      }
+    );
   });
 });

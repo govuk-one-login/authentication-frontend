@@ -4,6 +4,8 @@ import { ReverificationResultInterface } from "./types";
 import { logger } from "../../utils/logger";
 import { reverificationResultService } from "./reverification-result-service";
 import { BadRequestError } from "../../utils/error";
+import { getNextPathAndUpdateJourney } from "../common/constants";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 
 export function ipvCallbackGet(
   service: ReverificationResultInterface = reverificationResultService()
@@ -37,6 +39,14 @@ export function ipvCallbackGet(
       throw new BadRequestError(result.data.message, result.data.code);
     }
 
-    res.status(200).send("Received successful reverification result");
+    res.redirect(
+      await getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.IPV_REVERIFICATION_COMPLETED,
+        {},
+        sessionId
+      )
+    );
   };
 }
