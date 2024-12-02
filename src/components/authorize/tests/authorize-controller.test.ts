@@ -368,17 +368,17 @@ describe("authorize controller", () => {
         }),
       } as unknown as AuthorizeServiceInterface;
 
-      await expect(
-        authorizeGet(
-          fakeAuthorizeService,
-          fakeCookieConsentService,
-          fakeKmsDecryptionService,
-          fakeJwtService
-        )(req as Request, res as Response)
-      )
-        .to.eventually.be.rejectedWith("1000:Session-Id is missing or invalid")
-        .and.be.an.instanceOf(BadRequestError)
-        .and.have.property("level", "Info");
+      await assertBadRequestErrorThrownWithErrorMessage(
+        async () =>
+          await authorizeGet(
+            fakeAuthorizeService,
+            fakeCookieConsentService,
+            fakeKmsDecryptionService,
+            fakeJwtService
+          )(req as Request, res as Response),
+        "1000:Session-Id is missing or invalid",
+        "Info"
+      );
     });
 
     it("should throw an error without level property if the authorize service returns a code 1001 Request is missing parameters", async () => {
@@ -392,17 +392,16 @@ describe("authorize controller", () => {
         }),
       } as unknown as AuthorizeServiceInterface;
 
-      await expect(
-        authorizeGet(
-          fakeAuthorizeService,
-          fakeCookieConsentService,
-          fakeKmsDecryptionService,
-          fakeJwtService
-        )(req as Request, res as Response)
-      )
-        .to.eventually.be.rejectedWith("1001:Request is missing parameters")
-        .and.be.an.instanceOf(BadRequestError)
-        .and.not.to.have.property("level");
+      await assertBadRequestErrorThrownWithErrorMessage(
+        async () =>
+          await authorizeGet(
+            fakeAuthorizeService,
+            fakeCookieConsentService,
+            fakeKmsDecryptionService,
+            fakeJwtService
+          )(req as Request, res as Response),
+        "1001:Request is missing parameters"
+      );
     });
 
     it("should set session fields from jwt claims", async () => {
@@ -515,46 +514,46 @@ describe("authorize controller", () => {
     it("should throw an error if response_type does not exist in the query params", async () => {
       delete req.query.response_type;
 
-      await expect(
-        authorizeGet(
-          fakeAuthorizeService,
-          fakeCookieConsentService,
-          fakeKmsDecryptionService,
-          fakeJwtService
-        )(req as Request, res as Response)
-      )
-        .to.eventually.be.rejectedWith("Response type is not set")
-        .and.be.an.instanceOf(BadRequestError);
+      await assertBadRequestErrorThrownWithErrorMessage(
+        async () =>
+          await authorizeGet(
+            fakeAuthorizeService,
+            fakeCookieConsentService,
+            fakeKmsDecryptionService,
+            fakeJwtService
+          )(req as Request, res as Response),
+        "Response type is not set"
+      );
     });
 
     it("should throw an error if response_type is null in the query params", async () => {
       req.query.response_type = null as unknown as string;
 
-      await expect(
-        authorizeGet(
-          fakeAuthorizeService,
-          fakeCookieConsentService,
-          fakeKmsDecryptionService,
-          fakeJwtService
-        )(req as Request, res as Response)
-      )
-        .to.eventually.be.rejectedWith("Response type is not set")
-        .and.be.an.instanceOf(BadRequestError);
+      await assertBadRequestErrorThrownWithErrorMessage(
+        async () =>
+          await authorizeGet(
+            fakeAuthorizeService,
+            fakeCookieConsentService,
+            fakeKmsDecryptionService,
+            fakeJwtService
+          )(req as Request, res as Response),
+        "Response type is not set"
+      );
     });
 
     it("should throw an error if client_id value is incorrect in the query params", async () => {
       req.query.client_id = "wrong_client id";
 
-      await expect(
-        authorizeGet(
-          fakeAuthorizeService,
-          fakeCookieConsentService,
-          fakeKmsDecryptionService,
-          fakeJwtService
-        )(req as Request, res as Response)
-      )
-        .to.eventually.be.rejectedWith("Client ID value is incorrect")
-        .and.be.an.instanceOf(BadRequestError);
+      await assertBadRequestErrorThrownWithErrorMessage(
+        async () =>
+          await authorizeGet(
+            fakeAuthorizeService,
+            fakeCookieConsentService,
+            fakeKmsDecryptionService,
+            fakeJwtService
+          )(req as Request, res as Response),
+        "Client ID value is incorrect"
+      );
     });
 
     it("should set session channel session field from jwt claims when claim is present", async () => {
@@ -611,5 +610,28 @@ describe("authorize controller", () => {
       },
       success: true,
     };
+  }
+
+  async function assertBadRequestErrorThrownWithErrorMessage(
+    fn: () => Promise<any>,
+    errorMessage: string,
+    level?: string
+  ) {
+    let caughtError;
+
+    try {
+      await fn();
+    } catch (error) {
+      caughtError = error;
+    }
+
+    expect(caughtError).to.exist; // Ensure an error was thrown
+    expect(caughtError).to.be.an.instanceOf(BadRequestError);
+    if (level) {
+      expect(caughtError).to.have.property("level", level);
+    } else {
+      expect(caughtError).not.to.have.property("level");
+    }
+    expect(caughtError.message).to.equal(errorMessage);
   }
 });

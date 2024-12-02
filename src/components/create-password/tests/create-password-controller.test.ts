@@ -11,6 +11,7 @@ import { CreatePasswordServiceInterface } from "../types";
 import { PATH_NAMES } from "../../../app.constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { strict as assert } from "assert";
 
 describe("create-password controller", () => {
   let req: RequestOutput;
@@ -58,9 +59,9 @@ describe("create-password controller", () => {
         req.body.password = "password1";
         req.session.user = undefined;
 
-        await expect(
-          createPasswordPost(fakeService)(req as Request, res as Response)
-        ).to.be.rejectedWith(
+        await assert.rejects(
+          async () =>
+            createPasswordPost(fakeService)(req as Request, res as Response),
           TypeError,
           "Cannot read properties of undefined (reading 'email')"
         );
@@ -75,9 +76,9 @@ describe("create-password controller", () => {
         req.body = undefined;
         req.session.user.email = "joe.bloggs@test.com";
 
-        await expect(
-          createPasswordPost(fakeService)(req as Request, res as Response)
-        ).to.be.rejectedWith(
+        await assert.rejects(
+          async () =>
+            createPasswordPost(fakeService)(req as Request, res as Response),
           TypeError,
           "Cannot read properties of undefined (reading 'password')"
         );
@@ -93,9 +94,12 @@ describe("create-password controller", () => {
         req.body.password = "password1";
         req.session.user.email = "joe.bloggs@test.com";
 
-        await expect(
-          createPasswordPost(fakeService)(req as Request, res as Response)
-        ).to.be.rejectedWith(Error, "Internal server error");
+        await assert.rejects(
+          async () =>
+            createPasswordPost(fakeService)(req as Request, res as Response),
+          Error,
+          "Internal server error"
+        );
         expect(fakeService.signUpUser).to.have.been.called;
       });
     });

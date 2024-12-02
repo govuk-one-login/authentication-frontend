@@ -13,6 +13,7 @@ import { PATH_NAMES } from "../../../app.constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { ERROR_CODES } from "../../common/constants";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { strict as assert } from "assert";
 
 const OLD_ENV = process.env;
 
@@ -103,12 +104,15 @@ describe("enter phone number controller", () => {
 
       req.body.email = "test.test.com";
 
-      await expect(
-        enterPhoneNumberPost(fakeNotificationService)(
-          req as Request,
-          res as Response
-        )
-      ).to.be.rejectedWith(Error, "Internal server error");
+      await assert.rejects(
+        async () =>
+          enterPhoneNumberPost(fakeNotificationService)(
+            req as Request,
+            res as Response
+          ),
+        Error,
+        "Internal server error"
+      );
 
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
     });

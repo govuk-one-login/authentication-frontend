@@ -8,6 +8,7 @@ import { ReverificationResultInterface } from "../types";
 import { ipvCallbackGet } from "../ipv-callback-controller";
 import { BadRequestError } from "../../../utils/error";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
+import { strict as assert } from "assert";
 
 const fakeReverificationResultService = (success: boolean) => {
   const failureData = {
@@ -70,12 +71,12 @@ describe("ipv callback controller", () => {
   it("get should raise error when reverification result is not successful", async () => {
     const fakeServiceReturningFailure = fakeReverificationResultService(false);
 
-    await expect(
-      ipvCallbackGet(fakeServiceReturningFailure)(
-        req as Request,
-        res as Response
-      )
-    ).to.be.rejectedWith(
+    await assert.rejects(
+      async () =>
+        ipvCallbackGet(fakeServiceReturningFailure)(
+          req as Request,
+          res as Response
+        ),
       BadRequestError,
       "500:Internal error occurred in backend"
     );
@@ -100,12 +101,15 @@ describe("ipv callback controller", () => {
       const fakeServiceReturningSuccess = fakeReverificationResultService(true);
       req.query = testCase.query;
 
-      await expect(
-        ipvCallbackGet(fakeServiceReturningSuccess)(
-          req as Request,
-          res as Response
-        )
-      ).to.be.rejectedWith(BadRequestError, testCase.expectedMessage);
+      await assert.rejects(
+        async () =>
+          ipvCallbackGet(fakeServiceReturningSuccess)(
+            req as Request,
+            res as Response
+          ),
+        BadRequestError,
+        testCase.expectedMessage
+      );
     }
   });
 });

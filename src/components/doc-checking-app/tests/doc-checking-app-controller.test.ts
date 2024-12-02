@@ -9,6 +9,7 @@ import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants";
 import { docCheckingAppGet } from "../doc-checking-app-controller";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { strict as assert } from "assert";
 
 describe("doc checking app controller", () => {
   let req: RequestOutput;
@@ -51,9 +52,12 @@ describe("doc checking app controller", () => {
         }),
       } as unknown as DocCheckingAppInterface;
 
-      await expect(
-        docCheckingAppGet(fakeService)(req as Request, res as Response)
-      ).to.be.rejectedWith("1222:Error occurred");
+      await assert.rejects(
+        async () =>
+          docCheckingAppGet(fakeService)(req as Request, res as Response),
+        Error,
+        "1222:Error occurred"
+      );
     });
   });
 });

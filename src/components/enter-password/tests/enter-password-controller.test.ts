@@ -20,6 +20,7 @@ import { accountInterventionsFakeHelper } from "../../../../test/helpers/account
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 import { ReauthJourneyError } from "../../../utils/error";
+import { strict as assert } from "assert";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
@@ -410,13 +411,16 @@ describe("enter password controller", () => {
         sendMfaCode: sinon.fake(),
       };
 
-      await expect(
-        enterPasswordPost(
-          false,
-          fakeService,
-          fakeMfaService
-        )(req as Request, res as Response)
-      ).to.be.rejectedWith(Error, "Internal server error");
+      await assert.rejects(
+        async () =>
+          enterPasswordPost(
+            false,
+            fakeService,
+            fakeMfaService
+          )(req as Request, res as Response),
+        Error,
+        "Internal server error"
+      );
       expect(fakeService.loginUser).to.have.been.calledOnce;
     });
 

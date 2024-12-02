@@ -7,6 +7,7 @@ import { sendEmailOtp } from "../send-email-otp-middleware";
 import { SendNotificationServiceInterface } from "../../../common/send-notification/types";
 import { BadRequestError } from "../../../../utils/error";
 import { ERROR_CODES } from "../../../common/constants";
+import { strict as assert } from "assert";
 
 describe("sendEmailOTPMiddleware", () => {
   let req: Partial<Request>;
@@ -79,13 +80,16 @@ describe("sendEmailOTPMiddleware", () => {
       }),
     } as unknown as SendNotificationServiceInterface;
 
-    await expect(
-      sendEmailOtp(fakeNotificationService)(
-        req as Request,
-        res as Response,
-        next as NextFunction
-      )
-    ).to.be.rejectedWith(BadRequestError, "999999999999999:test error message");
+    await assert.rejects(
+      async () =>
+        sendEmailOtp(fakeNotificationService)(
+          req as Request,
+          res as Response,
+          next as NextFunction
+        ),
+      BadRequestError,
+      "999999999999999:test error message"
+    );
 
     expect(next).to.not.be.called;
   });
