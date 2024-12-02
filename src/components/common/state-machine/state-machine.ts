@@ -58,6 +58,7 @@ const USER_JOURNEY_EVENTS = {
   PASSWORD_RESET_INTERVENTION: "PASSWORD_RESET_INTERVENTION",
   COMMON_PASSWORD_AND_AIS_STATUS: "COMMON_PASSWORD_AND_AIS_STATUS",
   IPV_REVERIFICATION_INIT: "IPV_REVERIFICATION_INIT",
+  IPV_REVERIFICATION_COMPLETED: "IPV_REVERIFICATION_COMPLETED",
 };
 
 const authStateMachine = createMachine(
@@ -737,7 +738,13 @@ const authStateMachine = createMachine(
         },
       },
       [PATH_NAMES.IPV_CALLBACK]: {
-        type: "final",
+        on: {
+          [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_COMPLETED]: [
+            {
+              target: [PATH_NAMES.GET_SECURITY_CODES],
+            },
+          ],
+        },
       },
     },
   },

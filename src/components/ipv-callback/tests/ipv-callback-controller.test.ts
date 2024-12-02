@@ -48,7 +48,7 @@ describe("ipv callback controller", () => {
     sinon.restore();
   });
 
-  it("get should return a 200 when the reverification result is successful", async () => {
+  it("get should redirect to GET_SECURITY_CODES when the reverification result is successful", async () => {
     const fakeServiceReturningSuccess = fakeReverificationResultService(true);
     await ipvCallbackGet(fakeServiceReturningSuccess)(
       req as Request,
@@ -65,7 +65,7 @@ describe("ipv callback controller", () => {
       email,
       AUTH_CODE
     );
-    expect(res.status).to.have.been.calledWith(200);
+    expect(res.redirect).to.have.been.calledWith(PATH_NAMES.GET_SECURITY_CODES);
   });
 
   it("get should raise error when reverification result is not successful", async () => {
