@@ -2374,42 +2374,6 @@
       "paragraph1": "Arhoswch",
       "paragraph2": "Rydym yn dal i geisio"
     },
-    "proveIdentityCheckNew": {
-      "htmlOnlyVersion": {
-        "title": "Mae oedi cyn eich dychwelyd i`r gwasanaeth",
-        "header": "Mae oedi cyn eich dychwelyd i`r gwasanaeth",
-        "paragraph": "Ceisiwch barhau i`r gwasanaeth eto.",
-        "button": "Parhau i`r gwasanaeth"
-      },
-      "progressivelyEnhancedVersion": {
-        "initial": {
-          "heading": "Yn eich dychwelyd i ",
-          "spinnerStateText": "Aros i gael eich dychwelyd i`r gwasanaeth",
-          "spinnerState": "aros"
-        },
-        "error": {
-          "heading": "Sori, mae yna broblem",
-          "messageText": "Ni allwn eich dychwelyd at y gwasanaeth ar hyn o bryd.",
-          "whatYouCanDo": {
-            "heading": "Beth allwch ei wneud",
-            "message": {
-              "text1": "Ewch yn ôl i`r gwasanaeth yr oeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio`ch peiriant chwilio neu ddod o hyd iddo o`r ",
-              "link": {
-                "href": "https://www.gov.uk",
-                "text": "hafan GOV.UK"
-              },
-              "text2": "."
-            }
-          }
-        },
-        "complete": {
-          "spinnerState": "Gallwch nawr barhau i`r gwasanaeth"
-        },
-        "longWait": {
-          "spinnerStateText": "Rydym yn dal i geisio eich dychwelyd i`r gwasanaeth"
-        }
-      }
-    },
     "getSecurityCodes": {
       "title": "Dewis sut i gael codau diogelwch",
       "header": "Dewis sut i gael codau diogelwch",
