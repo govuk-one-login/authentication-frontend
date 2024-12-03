@@ -2374,42 +2374,6 @@
       "paragraph1": "Please wait",
       "paragraph2": "We’re still trying"
     },
-    "proveIdentityCheckNew": {
-      "htmlOnlyVersion": {
-        "title": "There is a delay returning you to the service",
-        "header": "There is a delay returning you to the service",
-        "paragraph": "Try to continue to the service again.",
-        "button": "Continue to the service"
-      },
-      "progressivelyEnhancedVersion": {
-        "initial": {
-          "heading": "Returning you to ",
-          "spinnerStateText": "Wait to be returned to the service",
-          "spinnerState": "pending"
-        },
-        "error": {
-          "heading": "Sorry, there is a problem",
-          "messageText": "We cannot return you to the service at the moment.",
-          "whatYouCanDo": {
-            "heading": "What you can do",
-            "message": {
-              "text1": "Go back to the service you were trying to use. You can look for the service using your search engine or find it from the ",
-              "link": {
-                "href": "https://www.gov.uk",
-                "text": "GOV.UK homepage"
-              },
-              "text2": "."
-            }
-          }
-        },
-        "complete": {
-          "spinnerState": "You can now continue to the service"
-        },
-        "longWait": {
-          "spinnerStateText": "We’re still trying to return you to the service"
-        }
-      }
-    },
     "getSecurityCodes": {
       "title": "Choose how to get security codes",
       "header": "Choose how to get security codes",

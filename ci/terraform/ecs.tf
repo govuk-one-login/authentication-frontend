@@ -197,10 +197,6 @@ locals {
         value = var.analytics_cookie_domain
       },
       {
-        name  = "SUPPORT_NEW_IPV_SPINNER"
-        value = var.support_new_ipv_spinner
-      },
-      {
         name  = "SUPPORT_HTTP_KEEP_ALIVE"
         value = var.support_http_keep_alive
       },
