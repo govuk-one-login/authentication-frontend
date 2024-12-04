@@ -10,8 +10,16 @@ export function mfaResetWithIpvGet(
   service: MfaResetAuthorizeInterface = mfaResetAuthorizeService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session.user;
+    const { email, isAccountRecoveryPermitted } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+
+    if (isAccountRecoveryPermitted === false) {
+      throw new Error(
+        "User started IPV reverification journey without being permitted. This should be replaced with an appropriate error page"
+      );
+    }
+
+    req.session.user.isAccountRecoveryJourney = true;
 
     const result = await service.ipvRedirectUrl(
       sessionId,
