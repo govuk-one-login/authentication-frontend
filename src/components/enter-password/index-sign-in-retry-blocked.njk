@@ -16,11 +16,19 @@
 <p class="govuk-body">{{'pages.signInRetryBlocked.paragraph' | translate}}</p>
 
 <h2 class="govuk-heading-m">{{'pages.signInRetryBlocked.subHeader' | translate}}</h2>
+{% if strategicAppChannel === true %}
+    <p class="govuk-body strategic-app-retry-options">
+        <a href="/reset-password-request" class="govuk-link">{{ 'mobileAppPages.signInRetryBlocked.whatCanYouDo.resetYourPassword' | translate }}</a>
+        <span class="govuk-visually-hidden">.</span><br>
+        {{ 'mobileAppPages.signInRetryBlocked.whatCanYouDo.waitAndTryAgain' | translate }}
+    </p>
+{% else %}
 <p class="govuk-body">{{'pages.signInRetryBlocked.bulletPointSection.title' | translate}}</p>
 <ul class="govuk-list govuk-list--bullet">
-    <li><a href="/reset-password-request" class="govuk-link">{{'pages.signInRetryBlocked.bulletPointSection.first' | translate}}</a></li>
+    <li><a href="/reset-password-request" class="govuk-link">{{ 'pages.signInRetryBlocked.bulletPointSection.first' | translate }}</a></li>
     <li>{{'pages.signInRetryBlocked.bulletPointSection.second' | translate}}</li>
 </ul>
+{% endif %}
 
 {{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: taxonomyLevel1, taxonomyLevel2: taxonomyLevel2, contentId: "e020dd02-2f97-46f9-9b26-c98730c89d73", loggedInStatus: false, dynamic: false })}}
 {% endblock %}
