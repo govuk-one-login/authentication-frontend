@@ -24,7 +24,6 @@ reduced_code_block_duration_minutes                 = "15"
 support_reauthentication                            = "1"
 language_toggle_enabled                             = "1"
 no_photo_id_contact_forms                           = "1"
-support_new_ipv_spinner                             = "1"
 support_http_keep_alive                             = "1"
 
 url_for_support_links = "https://home.staging.account.gov.uk/contact-gov-uk-one-login"
