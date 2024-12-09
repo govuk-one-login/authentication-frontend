@@ -17,7 +17,8 @@ export function mfaResetAuthorizeService(
     clientSessionId: string,
     persistentSessionId: string,
     req: Request,
-    email: string
+    email: string,
+    orchestrationRedirectUrl: string
   ): Promise<ApiResponseResult<MfaResetAuthorizeResponse>> {
     const config = getInternalRequestConfigWithSecurityHeaders(
       {
@@ -31,7 +32,10 @@ export function mfaResetAuthorizeService(
 
     const response = await axios.client.post<MfaResetAuthorizeResponse>(
       API_ENDPOINTS.MFA_RESET_AUTHORIZE,
-      { email },
+      {
+        email,
+        orchestrationRedirectUrl,
+      },
       config
     );
     return createApiResponse<MfaResetAuthorizeResponse>(response);
