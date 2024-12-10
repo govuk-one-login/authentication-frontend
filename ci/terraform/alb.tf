@@ -21,8 +21,6 @@ resource "aws_lb" "frontend_alb" {
       prefix  = "frontend-alb"
     }
   }
-
-  tags = local.default_tags
 }
 
 resource "aws_wafv2_web_acl_association" "alb_waf_association" {
@@ -47,8 +45,6 @@ resource "aws_alb_target_group" "frontend_alb_target_group" {
     path                = "/healthcheck/"
     unhealthy_threshold = "2"
   }
-
-  tags = local.default_tags
 }
 
 resource "aws_alb_listener" "frontend_alb_listener_https" {
@@ -67,8 +63,6 @@ resource "aws_alb_listener" "frontend_alb_listener_https" {
   depends_on = [
     aws_acm_certificate_validation.frontend_acm_alb_certificate_validation
   ]
-
-  tags = local.default_tags
 }
 
 resource "aws_alb_listener_rule" "frontend_alb_listener_https_robots" {
@@ -105,8 +99,6 @@ resource "aws_alb_listener" "frontend_alb_listener_http" {
       status_code = "HTTP_301"
     }
   }
-
-  tags = local.default_tags
 }
 
 #S3 Bucket for ElB access logs
@@ -164,8 +156,9 @@ resource "aws_alb_target_group" "frontend_service_down_alb_target_group" {
     path                = "/healthcheck/"
     unhealthy_threshold = "2"
   }
-
-  tags = local.default_tags
+  tags = {
+    Service = "service-down-page"
+  }
 }
 
 resource "aws_alb_listener_rule" "service_down_rule" {
@@ -182,5 +175,8 @@ resource "aws_alb_listener_rule" "service_down_rule" {
     path_pattern {
       values = ["/service-page-disabled/*"]
     }
+  }
+  tags = {
+    Service = "service-down-page"
   }
 }

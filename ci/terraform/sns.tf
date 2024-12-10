@@ -4,8 +4,6 @@ resource "aws_sns_topic" "slack_events" {
   provider                         = aws.cloudfront
   name                             = "${var.environment}-cloudfront-alerts"
   lambda_failure_feedback_role_arn = aws_iam_role.sns_logging_iam_role.arn
-
-  tags = local.default_tags
 }
 
 data "aws_iam_policy_document" "sns_topic_policy" {
@@ -56,8 +54,6 @@ resource "aws_iam_role" "sns_logging_iam_role" {
   name_prefix        = "sns-failed-slack-alerts-role"
   path               = "/${var.environment}/"
   assume_role_policy = data.aws_iam_policy_document.sns_can_assume_policy.json
-
-  tags = local.default_tags
 }
 
 data "aws_iam_policy_document" "sns_can_assume_policy" {
@@ -112,8 +108,6 @@ resource "aws_iam_policy" "api_gateway_logging_policy" {
   lifecycle {
     create_before_destroy = true
   }
-
-  tags = local.default_tags
 }
 
 resource "aws_iam_role_policy_attachment" "api_gateway_logging_logs" {

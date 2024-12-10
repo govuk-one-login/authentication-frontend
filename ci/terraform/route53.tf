@@ -34,8 +34,6 @@ resource "aws_acm_certificate" "frontend_alb_certificate" {
   domain_name       = aws_route53_record.frontend.name
   validation_method = "DNS"
 
-  tags = local.default_tags
-
   lifecycle {
     create_before_destroy = true
   }
@@ -102,8 +100,6 @@ resource "aws_acm_certificate" "cloudfront_frontend_certificate" {
   provider          = aws.cloudfront
   domain_name       = local.frontend_fqdn
   validation_method = "DNS"
-
-  tags = local.default_tags
 
   lifecycle {
     create_before_destroy = true

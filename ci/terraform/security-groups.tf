@@ -6,8 +6,6 @@ resource "aws_security_group" "frontend_redis_security_group" {
   lifecycle {
     create_before_destroy = true
   }
-
-  tags = local.default_tags
 }
 
 resource "aws_security_group_rule" "allow_incoming_frontend_redis_from_private_subnet" {
@@ -41,8 +39,6 @@ resource "aws_security_group" "allow_access_to_frontend_redis" {
   lifecycle {
     create_before_destroy = true
   }
-
-  tags = local.default_tags
 }
 
 resource "aws_security_group_rule" "allow_connection_to_frontend_redis" {
@@ -62,8 +58,6 @@ resource "aws_security_group" "frontend_alb_sg" {
   lifecycle {
     create_before_destroy = true
   }
-
-  tags = local.default_tags
 }
 
 resource "aws_security_group_rule" "allow_alb_http_ingress_from_anywhere" {
@@ -106,8 +100,6 @@ resource "aws_security_group" "frontend_ecs_tasks_sg" {
   lifecycle {
     create_before_destroy = true
   }
-
-  tags = local.default_tags
 }
 
 resource "aws_security_group_rule" "allow_ecs_task_ingress_from_alb" {
@@ -131,6 +123,9 @@ resource "aws_security_group" "service_down_page" {
 
   lifecycle {
     create_before_destroy = true
+  }
+  tags = {
+    Service = "service-down-page"
   }
 }
 

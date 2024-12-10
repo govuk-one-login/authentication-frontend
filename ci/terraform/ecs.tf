@@ -309,8 +309,6 @@ resource "aws_ecs_service" "frontend_ecs_service" {
     container_name   = var.basic_auth_password == "" ? local.frontend_container_definition.name : local.sidecar_container_definition.name
     container_port   = local.application_port
   }
-
-  tags = local.default_tags
 }
 
 resource "aws_ecs_task_definition" "frontend_task_definition" {
@@ -327,8 +325,6 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
     local.frontend_container_definition,
     local.sidecar_container_definition,
   ])
-
-  tags = local.default_tags
 }
 
 
@@ -367,7 +363,9 @@ resource "aws_ecs_service" "service_down_ecs_service" {
     container_port   = local.service_down_page_app_port
   }
 
-  tags = local.default_tags
+  tags = {
+    Service = "service-down-page"
+  }
 
   depends_on = [
     aws_alb_listener_rule.service_down_rule[0],
@@ -403,7 +401,9 @@ resource "aws_ecs_task_definition" "service_down_page_task_definition" {
       }]
   }])
 
-  tags = local.default_tags
+  tags = {
+    Service = "service-down-page"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "service_down_page" {
@@ -411,4 +411,8 @@ resource "aws_cloudwatch_log_group" "service_down_page" {
   name  = "/ecs/${var.environment}-service-down-page"
 
   retention_in_days = 1
+
+  tags = {
+    Service = "service-down-page"
+  }
 }

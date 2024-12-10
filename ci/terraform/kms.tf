@@ -3,8 +3,6 @@ resource "aws_kms_key" "authentication_encryption_key" {
   deletion_window_in_days  = 30
   key_usage                = "ENCRYPT_DECRYPT"
   customer_master_key_spec = "RSA_2048"
-
-  tags = local.default_tags
 }
 
 resource "aws_kms_key_policy" "authentication_encryption_key_access_policy" {

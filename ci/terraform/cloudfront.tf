@@ -16,7 +16,6 @@ resource "aws_cloudformation_stack" "cloudfront" {
     StandardLoggingEnabled       = true
     LogDestination               = var.cloudfront_WafAcl_Logdestination
   }
-  tags = local.default_tags
 
   #ignoring below parameter as these parameter are been read via secret manager and terraform continually detects changes
   # Note : we need to remove the below lifecycle if the Header are changed in Secret manager to appy new cloainking header value
@@ -40,5 +39,4 @@ resource "aws_cloudformation_stack" "cloudfront-monitoring" {
     CloudfrontDistribution              = aws_cloudformation_stack.cloudfront.outputs["DistributionId"]
   }
   depends_on = [aws_cloudformation_stack.cloudfront]
-  tags       = local.default_tags
 }
