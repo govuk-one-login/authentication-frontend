@@ -13,9 +13,8 @@ import {
   OIDC_ERRORS,
 } from "../../app.constants";
 import { createServiceRedirectErrorUrl } from "../../utils/error";
-import { supportNewIpvSpinner } from "../../config";
 
-export function proveIdentityCallbackGetOrPost(
+export function proveIdentityCallbackGet(
   service: ProveIdentityCallbackServiceInterface = proveIdentityCallbackService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
@@ -36,12 +35,6 @@ export function proveIdentityCallbackGetOrPost(
     }
 
     if (response.data.status === IdentityProcessingStatus.PROCESSING) {
-      if (supportNewIpvSpinner()) {
-        return res.render("prove-identity-callback/index-new-spinner.njk", {
-          serviceName: clientName,
-        });
-      }
-
       return res.render("prove-identity-callback/index.njk", {
         serviceName: clientName,
       });

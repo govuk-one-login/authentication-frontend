@@ -11,7 +11,7 @@ import {
 } from "../../../app.constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import {
-  proveIdentityCallbackGetOrPost,
+  proveIdentityCallbackGet,
   proveIdentityStatusCallbackGet,
 } from "../prove-identity-callback-controller";
 import {
@@ -52,7 +52,7 @@ describe("prove identity callback controller", () => {
           },
         }),
       } as unknown as ProveIdentityCallbackServiceInterface;
-      await proveIdentityCallbackGetOrPost(fakeProveIdentityService)(
+      await proveIdentityCallbackGet(fakeProveIdentityService)(
         req as Request,
         res as Response
       );
@@ -70,7 +70,7 @@ describe("prove identity callback controller", () => {
         }),
       } as unknown as ProveIdentityCallbackServiceInterface;
 
-      await proveIdentityCallbackGetOrPost(fakeProveIdentityService)(
+      await proveIdentityCallbackGet(fakeProveIdentityService)(
         req as Request,
         res as Response
       );
@@ -78,31 +78,6 @@ describe("prove identity callback controller", () => {
       expect(res.render).to.have.been.calledWith(
         "prove-identity-callback/index.njk"
       );
-    });
-
-    describe("when the SUPPORT_NEW_IPV_SPINNER feature flag is enabled", () => {
-      it("should use the index-new-spinner template when the feature flag is enabled", async () => {
-        process.env.SUPPORT_NEW_IPV_SPINNER = "1";
-
-        const fakeProveIdentityService: ProveIdentityCallbackServiceInterface =
-          {
-            processIdentity: sinon.fake.returns({
-              success: true,
-              data: {
-                status: IdentityProcessingStatus.PROCESSING,
-              },
-            }),
-          } as unknown as ProveIdentityCallbackServiceInterface;
-
-        await proveIdentityCallbackGetOrPost(fakeProveIdentityService)(
-          req as Request,
-          res as Response
-        );
-
-        expect(res.render).to.have.been.calledWith(
-          "prove-identity-callback/index-new-spinner.njk"
-        );
-      });
     });
 
     it("should redirect back to service when identity processing has errored", async () => {
@@ -115,7 +90,7 @@ describe("prove identity callback controller", () => {
         }),
       } as unknown as ProveIdentityCallbackServiceInterface;
 
-      await proveIdentityCallbackGetOrPost(fakeProveIdentityService)(
+      await proveIdentityCallbackGet(fakeProveIdentityService)(
         req as Request,
         res as Response
       );
@@ -141,7 +116,7 @@ describe("prove identity callback controller", () => {
         }),
       } as unknown as ProveIdentityCallbackServiceInterface;
 
-      await proveIdentityCallbackGetOrPost(fakeProveIdentityService)(
+      await proveIdentityCallbackGet(fakeProveIdentityService)(
         req as Request,
         res as Response
       );
