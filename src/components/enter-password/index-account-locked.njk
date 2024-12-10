@@ -17,7 +17,11 @@
 <p class="govuk-body">{{'pages.accountLocked.bulletPointSection.title' | translate}}</p>
 <ul class="govuk-list govuk-list--bullet">
     <li><a href="/reset-password-request" class="govuk-link">{{'pages.accountLocked.bulletPointSection.first' | translate}}</a></li>
-    <li>{{'pages.accountLocked.bulletPointSection.second' | translate}}</li>
+    {% if strategicAppChannel === true %}
+        <li>{{'mobileAppPages.accountLocked.bulletPointSection.second' | translate}}</li>
+    {% else %}
+        <li>{{'pages.accountLocked.bulletPointSection.second' | translate}}</li>
+    {% endif %}
 </ul>
 
 {{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: taxonomyLevel1, taxonomyLevel2: taxonomyLevel2, contentId: "", loggedInStatus: false, dynamic: false })}}
