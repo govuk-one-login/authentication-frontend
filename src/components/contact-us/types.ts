@@ -22,6 +22,7 @@ export interface OptionalData {
   appSessionId?: string;
   appErrorCode?: string;
   country?: string;
+  location?: string;
 }
 
 export interface Questions {
@@ -81,6 +82,7 @@ export interface SmartAgentCustomAttributes {
   "sa-security-mobile-country"?: string;
   "sa-tag-building-society"?: string;
   "sa-tag-national-insurance-number"?: string;
+  "sa-tag-location"?: string;
 }
 
 export interface SmartAgentTicket {

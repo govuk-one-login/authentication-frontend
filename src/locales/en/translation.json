@@ -1919,13 +1919,14 @@
         "header": "A problem proving your identity",
         "section1": {
           "header": "Tell us what happened",
-          "radio1": "You had a problem answering security questions",
-          "radio2": "You had a problem with your photo ID",
-          "radio3": "You need to update your personal information",
-          "radio4": "There was a technical problem (for example, you saw an error message)",
-          "radio5": "Something else",
-          "radio6": "You had a problem with your bank or building society details",
-          "radio7": {
+          "answeringSecurityProblems": "You had a problem answering security questions",
+          "problemWithPhotoId": "You had a problem with your photo ID",
+          "problemUpdatingPersonalInformation": "You need to update your personal information",
+          "problemEnteringAddress": "You had a problem entering your address",
+          "technicalProblem": "There was a technical problem (for example, you saw an error message)",
+          "somethingElse": "Something else",
+          "problemWithBankOrBuildingSociety": "You had a problem with your bank or building society details",
+          "problemWithNINumber": {
             "label": "You had a problem with your National insurance number",
             "hint": "You can read more about getting or finding your National Insurance number at <a href=\"https://www.gov.uk/find-national-insurance-number\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">www.gov.uk/find-national-insurance-number</a>"
           },
@@ -2324,6 +2325,26 @@
         },
         "section2": {
           "label": "Anything else you need to tell us?"
+        }
+      },
+      "provingIdentityProblemEnteringAddress": {
+        "title": "A problem entering your address",
+        "header": "A problem entering your address",
+        "location": {
+          "label": "Do you live in the UK, Channel Islands or the Isle of Man?",
+          "hint": "How you can prove your identity depends on where you live",
+          "options": {
+            "yes": "Yes",
+            "no": "No"
+          },
+          "errorMessage": "Select yes if you live in the UK, Channel Islands or Isle of Man"
+        },
+        "whatWereYouTryingToDo": {
+          "label": "What were you trying to do?",
+          "errorMessage": "Enter what happened"
+        },
+        "whatHappened": {
+          "errorMessage": "Enter more detail"
         }
       },
       "provingIdentitySomethingElse": {

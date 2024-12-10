@@ -79,6 +79,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.provingIdentitySomethingElse.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_NATIONAL_INSURANCE_NUMBER]:
     "pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.title",
+  [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_ADDRESS]:
+    "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
@@ -495,6 +497,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
         userAgent: req.get("User-Agent"),
         appErrorCode: getAppErrorCode(req.body.appErrorCode),
         country: req.body.country,
+        location: req.body.location,
       },
       feedbackContact: req.body.contact === "true",
       questions: questions,
@@ -841,6 +844,16 @@ export function getQuestionsFromFormTypeForMessageBody(
         { lng: "en" }
       ),
     },
+    provingIdentityProblemEnteringAddress: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.whatWereYouTryingToDo.label",
+        { lng: "en" }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.whatHappened.header",
+        { lng: "en" }
+      ),
+    },
     provingIdentitySomethingElse: {
       issueDescription: req.t(
         "pages.contactUsQuestions.provingIdentitySomethingElse.section1.label",
@@ -1024,6 +1037,10 @@ export function getQuestionFromThemes(
     ),
     proving_identity_need_to_update_personal_information: req.t(
       "pages.contactUsQuestions.provingIdentityNeedToUpdatePersonalInformation.title",
+      { lng: "en" }
+    ),
+    proving_identity_problem_with_address: req.t(
+      "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.title",
       { lng: "en" }
     ),
     proving_identity_something_else: req.t(

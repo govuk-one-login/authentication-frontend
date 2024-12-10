@@ -1919,13 +1919,14 @@
         "header": "Problem profi eich hunaniaeth",
         "section1": {
           "header": "Dywedwch wrthym beth ddigwyddodd",
-          "radio1": "Cawsoch broblem ateb cwestiynau diogelwch",
-          "radio2": "Cawsoch broblem gyda’ch ID gyda llun",
-          "radio3": "Mae angen i chi ddiweddaru eich gwybodaeth bersonol",
-          "radio4": "Roedd problem dechnegol (er enghraifft fe welsoch neges gwall)",
-          "radio5": "Rhywbeth arall",
-          "radio6": "Cawsoch broblem gyda’ch manylion banc neu gymdeithas adeiladu",
-          "radio7": {
+          "answeringSecurityProblems": "Cawsoch broblem ateb cwestiynau diogelwch",
+          "problemWithPhotoId": "Cawsoch broblem gyda’ch ID gyda llun",
+          "problemUpdatingPersonalInformation": "Mae angen i chi ddiweddaru eich gwybodaeth bersonol",
+          "problemEnteringAddress": "Rydych wedi cael problem rhoi eich cyfeiriad i mewn",
+          "technicalProblem": "Roedd problem dechnegol (er enghraifft fe welsoch neges gwall)",
+          "somethingElse": "Rhywbeth arall",
+          "problemWithBankOrBuildingSociety": "Cawsoch broblem gyda’ch manylion banc neu gymdeithas adeiladu",
+          "problemWithNINumber": {
             "label": "Cawsoch broblem gyda’ch rhif Yswiriant Gwladol",
             "hint": "Gallwch ddarllen mwy am gael neu ddod o hyd i’ch rhif Yswiriant Gwladol yn <a href=\"https://www.gov.uk/rhif-yswiriant-gwladol-coll\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">www.gov.uk/rhif-yswiriant-gwladol-coll</a>"
           },
@@ -2324,6 +2325,26 @@
         },
         "section2": {
           "label": "Unrhyw beth arall rydych angen dweud wrthym?"
+        }
+      },
+      "provingIdentityProblemEnteringAddress": {
+        "title": "Problem wrth roi eich cyfeiriad",
+        "header": "Problem wrth roi eich cyfeiriad",
+        "location": {
+          "label": "Ydych chi’n byw yn y DU, Ynysoedd y Sianel neu Ynys Manaw?",
+          "hint": "Mae sut y gallwch brofi eich hunaniaeth yn dibynnu ar ble rydych chi’n byw",
+          "options": {
+            "yes": "Ydw",
+            "no": "Na"
+          },
+          "errorMessage": "Dewiswch ydw os ydych chi’n byw yn y DU, Ynysoedd y Sianel neu Ynys Manaw"
+        },
+        "whatWereYouTryingToDo": {
+          "label": "Beth oeddech chi’n ceisio ei wneud?",
+          "errorMessage": "Rhowch beth ddigwyddodd"
+        },
+        "whatHappened": {
+          "errorMessage": "Rhowch fwy o fanylion"
         }
       },
       "provingIdentitySomethingElse": {
