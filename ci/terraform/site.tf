@@ -16,11 +16,29 @@ terraform {
   }
 }
 
+locals {
+  provider_default_tags = {
+    Environment = var.environment
+    Owner       = "di-authentication@digital.cabinet-office.gov.uk"
+    Product     = "GOV.UK Sign In"
+    System      = "Authentication"
+    Service     = "frontend"
+    application = "auth-frontend"
+  }
+}
+
 provider "aws" {
   region = var.aws_region
 
-  assume_role {
-    role_arn = var.deployer_role_arn
+  dynamic "assume_role" {
+    for_each = var.deployer_role_arn != null ? [var.deployer_role_arn] : []
+    content {
+      role_arn = assume_role.value
+    }
+  }
+
+  default_tags {
+    tags = local.provider_default_tags
   }
 }
 
@@ -29,8 +47,15 @@ provider "aws" {
 
   region = "us-east-1"
 
-  assume_role {
-    role_arn = var.deployer_role_arn
+  dynamic "assume_role" {
+    for_each = var.deployer_role_arn != null ? [var.deployer_role_arn] : []
+    content {
+      role_arn = assume_role.value
+    }
+  }
+
+  default_tags {
+    tags = local.provider_default_tags
   }
 }
 
@@ -41,10 +66,3 @@ data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 data "aws_partition" "current" {}
-
-locals {
-  default_tags = {
-    environment = var.environment
-    application = "auth-frontend"
-  }
-}

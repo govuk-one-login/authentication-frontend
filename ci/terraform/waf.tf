@@ -23,8 +23,6 @@ resource "aws_wafv2_ip_set" "cf_gds_ip_set" {
     "18.132.149.145/32"
 
   ]
-
-  tags = local.default_tags
 }
 
 resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
@@ -384,8 +382,6 @@ resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
     metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafRules"
     sampled_requests_enabled   = true
   }
-
-  tags = local.default_tags
 }
 
 # Cloudwatch Logging for frontend Cloudfront WAF
@@ -442,8 +438,6 @@ resource "aws_kms_key" "frontent_cloudfront_cw_log_encryption" {
   deletion_window_in_days = 30
   enable_key_rotation     = true
   policy                  = data.aws_iam_policy_document.frontend_cloudfront_cloudwatch.json
-
-  tags = local.default_tags
 }
 
 resource "aws_cloudwatch_log_group" "frontend_cloudfront_waf_log_group" {
@@ -452,8 +446,6 @@ resource "aws_cloudwatch_log_group" "frontend_cloudfront_waf_log_group" {
   name              = "aws-waf-logs-frontend-cloudfront-${var.environment}"
   kms_key_id        = aws_kms_key.frontent_cloudfront_cw_log_encryption.arn
   retention_in_days = var.cloudwatch_log_retention
-
-  tags = local.default_tags
 }
 
 resource "aws_wafv2_web_acl_logging_configuration" "frontend_cloudfront_waf_logging_config" {

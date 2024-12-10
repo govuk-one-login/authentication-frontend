@@ -5,8 +5,6 @@ locals {
 resource "aws_elasticache_subnet_group" "frontend_redis_session_store" {
   name       = "${var.environment}-frontend-redis-subnet"
   subnet_ids = local.private_subnet_ids
-
-  tags = local.default_tags
 }
 
 
@@ -51,6 +49,4 @@ resource "aws_elasticache_replication_group" "frontend_sessions_store" {
       engine_version
     ]
   }
-
-  tags = local.default_tags
 }
