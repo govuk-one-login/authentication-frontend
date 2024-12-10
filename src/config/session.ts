@@ -1,5 +1,5 @@
 import { RedisClientOptions, createClient } from "redis";
-import RedisStore from "connect-redis";
+import { RedisStore } from "connect-redis";
 import { RedisConfig } from "src/utils/types";
 
 let redisClient: ReturnType<typeof createClient> | undefined;
