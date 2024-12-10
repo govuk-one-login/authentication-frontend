@@ -1,0 +1,28 @@
+{{ govukRadios({
+    name: "location",
+    fieldset: {
+        legend: {
+            text: "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.location.label" | translate,
+            isPageHeading: false,
+            classes: "govuk-fieldset__legend--m"
+        }
+    },
+    hint: {
+        text: "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.location.hint" | translate
+    } if (show_location_hint),
+    items: [
+        {
+            value: "true",
+            text: "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.location.options.yes" | translate,
+            checked: location === "true"
+        },
+        {
+            value: "false",
+            text: "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.location.options.no" | translate,
+            checked: location === "false"
+        }
+    ],
+    errorMessage: {
+        text: errors["location"].text
+    } if (errors["location"])
+}) }}

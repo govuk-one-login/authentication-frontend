@@ -143,6 +143,10 @@
         {% include 'contact-us/questions/_proving-identity-problem-with-national-insurance-number.njk' %}
     {% endif %}
 
+    {% if (theme == 'proving_identity') and (subtheme == 'proving_identity_problem_with_address') %}
+        {% include 'contact-us/questions/_proving-identity-problem-entering-address.njk' %}
+    {% endif %}
+
     {{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: taxonomyLevel1, taxonomyLevel2: taxonomyLevel2, contentId: contentId, loggedInStatus: false, dynamic: false })}}
 
 {% endblock %}
