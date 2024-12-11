@@ -1,7 +1,10 @@
 import * as express from "express";
 import { asyncHandler } from "../../utils/async";
 import { PATH_NAMES } from "../../app.constants";
-import { ipvCallbackGet } from "./ipv-callback-controller";
+import {
+  cannotChangeSecurityCodesGet,
+  ipvCallbackGet,
+} from "./ipv-callback-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 
@@ -12,6 +15,12 @@ router.get(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   asyncHandler(ipvCallbackGet())
+);
+
+router.get(
+  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+  validateSessionMiddleware,
+  cannotChangeSecurityCodesGet
 );
 
 export { router as ipvCallbackRouter };

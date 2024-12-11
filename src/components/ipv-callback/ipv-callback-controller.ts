@@ -50,3 +50,10 @@ export function ipvCallbackGet(
     );
   };
 }
+
+export function cannotChangeSecurityCodesGet(
+  req: Request,
+  res: Response
+): void {
+  res.render("ipv-callback/index-cannot-change-how-get-security-codes.njk");
+}
