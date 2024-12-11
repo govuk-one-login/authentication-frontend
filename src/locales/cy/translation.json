@@ -664,6 +664,18 @@
         "govukLinkText": "hafan GOV.UK"
       }
     },
+    "cannotChangeHowGetSecurityCodeMfaReset": {
+      "title": "Ni allwch newid sut rydych yn cael codau diogelwch",
+      "header": "Ni allwch newid sut rydych yn cael codau diogelwch",
+      "paragraph1": "Gallwch ond mewngofnodi i’ch GOV.UK One Login drwy ddefnyddio’r dull rydych eisoes wedi’i sefydlu i gael codau diogelwch.",
+      "paragraph2": "Os ydych wedi colli mynediad i’r dull hwn yn barhaol, dylech ddileu eich GOV.UK One Login er mwyn i chi allu creu un newydd.",
+      "radios": {
+        "header": "Beth hoffech chi ei wneud?",
+        "option1Text": "Cael help i ddileu eich GOV.UK One Login gan y tîm cymorth",
+        "option1Hint": "Ffoniwch neu defnyddiwch gwe-sgwrs i gysylltu â’r tîm GOV.UK One Login",
+        "option2Text": "Ceisiwch roi cod diogelwch i mewn eto gyda’r dull rydych eisoes wedi’i sefydlu"
+      }
+    },
     "changeSecurityCodesConfirmation": {
       "title": "Rydych wedi newid sut rydych yn cael codau diogelwch",
       "header": "Rydych wedi newid sut rydych yn cael codau diogelwch",

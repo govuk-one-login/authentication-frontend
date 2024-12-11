@@ -2,15 +2,15 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitleName = "You cannot change how you get security codes" %}
+{% set pageTitleName = 'pages.cannotChangeHowGetSecurityCodeMfaReset.title' | translate %}
 
 {% block content %}
-  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">You cannot change how you get security codes</h1>
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.header' | translate}}</h1>
 
-  <p class="govuk-body">You can only sign into your GOV.UK One Login using the method you already have set up to get security codes.</p>
-  <p class="govuk-body">If you’ve permanently lost access to this method, you should delete your GOV.UK One Login so you can create a new one.</p>
+  <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.paragraph1' | translate}}</p>
+  <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.paragraph2' | translate}}</p>
 
-  <h2 class="govuk-heading-m">What would you like to do?</h2>
+  <h2 class="govuk-heading-m">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.header' | translate}}</h2>
 
   {{ govukRadios({
       name: "cannot_change_how_get_security_code_action",
@@ -20,16 +20,16 @@
       items: [
           {
               value: "help-to-delete-account",
-              text: "Get help to delete your GOV.UK One Login from the support team",
+              text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option1Text' | translate,
               id: "help-to-delete-account",
               checked: false,
               hint: {
-                text: "Call or use webchat to contact the GOV.UK One Login team"
+                text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option1Hint' | translate
               }
           },
           {
               value: "retry-security-code",
-              text: "Try entering a security code again with the method you already have set up",
+              text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option2Text' | translate,
               id: "retry-security-code",
               checked: false
           }
