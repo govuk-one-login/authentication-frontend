@@ -2,7 +2,7 @@ default_language_version:
   node: 20.17.0
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -11,23 +11,17 @@ repos:
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
 
-  - repo: https://github.com/awslabs/cfn-python-lint
-    rev: v1.5.0
+  - repo: https://github.com/aws-cloudformation/cfn-lint
+    rev: v1.21.0
     hooks:
-      - id: cfn-python-lint
+      - id: cfn-lint
         exclude: ^(ci|.github)/.*|docker-compose.*|.pre-commit-config.yaml$
-        files: ^.*\.(yml|yaml)$
+        files: template\.ya?ml$
 
-  - repo: https://github.com/govuk-one-login/pre-commit-hooks.git
-    rev: 0.0.1
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.96.2
     hooks:
-      - id: terraform-format
-      - id: terraform-validate
-
-  - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.1
-    hooks:
-      - id: actionlint
+      - id: terraform_fmt
 
   - repo: local
     hooks:
@@ -43,6 +37,38 @@ repos:
         name: Run prettier
         language: node
         types: [text]
-        stages: [commit]
+        stages: [pre-commit]
         entry: yarn run prettier --write --ignore-unknown
         pass_filenames: true
+      - id: tfupdate-lock
+        name: Update terraform provider locks
+        files: ^ci/terraform/site.tf$
+        pass_filenames: false
+        types:
+          - file
+        language: golang
+        additional_dependencies:
+          - github.com/minamijoyo/tfupdate@v0.8.5
+        entry: tfupdate lock
+        args:
+          - --platform
+          - linux_amd64
+          - --platform
+          - linux_arm64
+          - --platform
+          - darwin_amd64
+          - --platform
+          - darwin_arm64
+          - --platform
+          - windows_amd64
+          - -r
+          - ci/terraform
+
+  - repo: https://github.com/lalten/check-gha-pinning
+    rev: v1.3.0
+    hooks:
+      - id: check-gha-pinning
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.4
+    hooks:
+      - id: actionlint

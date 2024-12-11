@@ -13,8 +13,6 @@ data "aws_iam_policy_document" "ecs_assume_role_policy" {
 resource "aws_iam_role" "ecs_task_execution_role" {
   name               = "${var.environment}-frontend-ecs-task-execution-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role_policy.json
-
-  tags = local.default_tags
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy_attachment" {
@@ -30,8 +28,6 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy_attach
 resource "aws_iam_role" "ecs_task_role" {
   name               = "${var.environment}-frontend-ecs-task-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role_policy.json
-
-  tags = local.default_tags
 }
 
 resource "aws_iam_role_policy_attachment" "account_management_ecs_task_role_ssm_policy_attachment" {
@@ -59,7 +55,9 @@ resource "aws_iam_role" "service_down_ecs_task_execution_role" {
   name_prefix        = "${var.environment}-service-down-page-exec-"
   assume_role_policy = data.aws_iam_policy_document.service_down_ecs_assume_role_policy[0].json
 
-  tags = local.default_tags
+  tags = {
+    Service = "service-down-page"
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "service_down_ecs_task_execution_role_policy_attachment" {
