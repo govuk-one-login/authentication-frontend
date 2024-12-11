@@ -4,27 +4,49 @@ import { createMockRequest } from "../../../../test/helpers/mock-request-helper"
 import { PATH_NAMES } from "../../../app.constants";
 import { expect } from "chai";
 import { Request, Response } from "express";
-import { ReverificationResultInterface } from "../types";
 import {
   cannotChangeSecurityCodesGet,
   ipvCallbackGet,
 } from "../ipv-callback-controller";
+import {
+  ReverificationResultFailedResponse,
+  ReverificationResultInterface,
+} from "../types";
 import { BadRequestError } from "../../../utils/error";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 import { strict as assert } from "assert";
 import { describe } from "mocha";
 
-const fakeReverificationResultService = (success: boolean) => {
-  const failureData = {
-    code: 500,
-    message: "Internal error occurred in backend",
-  };
+const reverificationResultService = (status: number, data: object) => {
   return {
     getReverificationResult: sinon.fake.returns({
-      success: success,
-      data: success ? { sub: "some-sub", success: true } : failureData,
+      success: status < 300 && status >= 200,
+      data: data,
     }),
   } as unknown as ReverificationResultInterface;
+};
+
+const reverificationResultFailureData = (failureCode: string) => {
+  return {
+    sub: "some-sub",
+    success: false,
+    failure_code: failureCode,
+    failure_description: "some-description",
+    code: 200,
+    message: "",
+  } as ReverificationResultFailedResponse;
+};
+
+const reverificationSuccessData = {
+  sub: "some-sub",
+  success: true,
+  code: 200,
+  message: "",
+};
+
+const failureData = {
+  code: 500,
+  message: "Internal error occurred in backend",
 };
 
 describe("ipv callback controller", () => {
@@ -54,7 +76,10 @@ describe("ipv callback controller", () => {
 
   describe("ipv callback get", () => {
     it("get should redirect to GET_SECURITY_CODES when the reverification result is successful", async () => {
-      const fakeServiceReturningSuccess = fakeReverificationResultService(true);
+      const fakeServiceReturningSuccess = reverificationResultService(
+        200,
+        reverificationSuccessData
+      );
       await ipvCallbackGet(fakeServiceReturningSuccess)(
         req as Request,
         res as Response
@@ -76,8 +101,10 @@ describe("ipv callback controller", () => {
     });
 
     it("get should raise error when reverification result is not successful", async () => {
-      const fakeServiceReturningFailure =
-        fakeReverificationResultService(false);
+      const fakeServiceReturningFailure = reverificationResultService(
+        500,
+        failureData
+      );
 
       await assert.rejects(
         async () =>
@@ -93,6 +120,49 @@ describe("ipv callback controller", () => {
         .called;
     });
 
+    const ERROR_CODES_REDIRECTING_TO_CANNOT_CHANGE_SECURITY_CODES = [
+      "no_identity_available",
+      "identity_check_incomplete",
+    ];
+    ERROR_CODES_REDIRECTING_TO_CANNOT_CHANGE_SECURITY_CODES.forEach(
+      (errorCode) => {
+        it(`get should redirect to you cannot change how you get security codes page when result is successful but failure code is ${errorCode}`, async () => {
+          const fakeService = reverificationResultService(
+            200,
+            reverificationResultFailureData(errorCode)
+          );
+
+          await ipvCallbackGet(fakeService)(req as Request, res as Response);
+
+          expect(res.redirect).to.be.calledWith(
+            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES
+          );
+        });
+      }
+    );
+
+    const ERROR_CODES_RAISING_BAD_REQUEST_ERROR = [
+      "identity_did_not_match",
+      "identity_check_failed",
+    ];
+    ERROR_CODES_RAISING_BAD_REQUEST_ERROR.forEach((errorCode) => {
+      it(`get should raise error when result is successful but failure code is ${errorCode}`, async () => {
+        const fakeService = reverificationResultService(
+          200,
+          reverificationResultFailureData(errorCode)
+        );
+
+        await assert.rejects(
+          async () =>
+            ipvCallbackGet(fakeService)(req as Request, res as Response),
+          {
+            name: "Error",
+            message: `${errorCode}`,
+          }
+        );
+      });
+    });
+
     it("get should raise error when auth code param is missing or invalid", async () => {
       const missingOrInvalidQueries = [
         {
@@ -106,8 +176,10 @@ describe("ipv callback controller", () => {
       ];
 
       for (const testCase of missingOrInvalidQueries) {
-        const fakeServiceReturningSuccess =
-          fakeReverificationResultService(true);
+        const fakeServiceReturningSuccess = reverificationResultService(
+          200,
+          reverificationSuccessData
+        );
         req.query = testCase.query;
 
         await assert.rejects(
@@ -121,15 +193,15 @@ describe("ipv callback controller", () => {
         );
       }
     });
-  });
 
-  describe("cannotChangeSecurityCodeGet", () => {
-    it("should render the correct template", () => {
-      cannotChangeSecurityCodesGet(req as Request, res as Response);
+    describe("cannotChangeSecurityCodeGet", () => {
+      it("should render the correct template", () => {
+        cannotChangeSecurityCodesGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "ipv-callback/index-cannot-change-how-get-security-codes.njk"
-      );
+        expect(res.render).to.have.calledWith(
+          "ipv-callback/index-cannot-change-how-get-security-codes.njk"
+        );
+      });
     });
   });
 });

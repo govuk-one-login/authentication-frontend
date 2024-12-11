@@ -1,9 +1,35 @@
 import { ApiResponseResult, DefaultApiResponse } from "../../types";
 import { Request } from "express";
 
-export interface ReverificationResultResponse extends DefaultApiResponse {
+export interface ReverificationResultSuccessResponse
+  extends DefaultApiResponse {
   sub: string;
-  success: boolean;
+  success: true;
+}
+
+export interface ReverificationResultFailedResponse extends DefaultApiResponse {
+  sub: string;
+  success: false;
+  failure_code: REVERIFICATION_ERROR_CODE;
+  failure_description: string;
+}
+
+export enum REVERIFICATION_ERROR_CODE {
+  NO_IDENTITY_AVAILABLE = "no_identity_available",
+  IDENTITY_CHECK_INCOMPLETE = "identity_check_incomplete",
+  IDENTITY_CHECK_FAILED = "identity_check_failed",
+  IDENTITY_DID_NOT_MATCH = "identity_did_not_match",
+}
+
+export type ReverificationResultResponse =
+  | ReverificationResultFailedResponse
+  | ReverificationResultSuccessResponse;
+
+export function isReverificationResultFailedResponse(
+  response: ReverificationResultResponse
+): response is ReverificationResultFailedResponse {
+  const responseAsFailed = response as ReverificationResultFailedResponse;
+  return responseAsFailed.success !== undefined && !responseAsFailed.success;
 }
 
 export interface ReverificationResultInterface {

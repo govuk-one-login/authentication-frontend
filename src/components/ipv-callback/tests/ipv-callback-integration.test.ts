@@ -42,7 +42,10 @@ describe("Integration:: ipv callback", () => {
   });
 
   it("should redirect to GET_SECURITY_CODES when the reverification result is successful", async () => {
-    nock(baseApi).post(API_ENDPOINTS.REVERIFICATION_RESULT).once().reply(200);
+    nock(baseApi)
+      .post(API_ENDPOINTS.REVERIFICATION_RESULT)
+      .once()
+      .reply(200, { success: true });
 
     const requestPath = PATH_NAMES.IPV_CALLBACK + "?code=" + "12345";
 

@@ -1,11 +1,16 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { ReverificationResultInterface } from "./types";
+import {
+  isReverificationResultFailedResponse,
+  REVERIFICATION_ERROR_CODE,
+  ReverificationResultInterface,
+} from "./types";
 import { logger } from "../../utils/logger";
 import { reverificationResultService } from "./reverification-result-service";
 import { BadRequestError } from "../../utils/error";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { PATH_NAMES } from "../../app.constants";
 
 export function ipvCallbackGet(
   service: ReverificationResultInterface = reverificationResultService()
@@ -37,6 +42,18 @@ export function ipvCallbackGet(
 
     if (!result.success) {
       throw new BadRequestError(result.data.message, result.data.code);
+    }
+
+    if (isReverificationResultFailedResponse(result.data)) {
+      if (
+        [
+          REVERIFICATION_ERROR_CODE.NO_IDENTITY_AVAILABLE,
+          REVERIFICATION_ERROR_CODE.IDENTITY_CHECK_INCOMPLETE,
+        ].includes(result.data.failure_code)
+      ) {
+        return res.redirect(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
+      }
+      throw new Error(result.data.failure_code);
     }
 
     res.redirect(
