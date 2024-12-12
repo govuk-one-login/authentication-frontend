@@ -205,6 +205,17 @@
     },
     "accountCreated": {
       "text": "Now continue to use the app."
+    },
+    "accountLocked": {
+      "bulletPointSection": {
+        "second": "wait 2 hours, then try again"
+      }
+    },
+    "signInRetryBlocked": {
+      "whatCanYouDo": {
+        "resetYourPassword": "Reset your password",
+        "waitAndTryAgain": "You can also wait 2 hours, then try again."
+      }
     }
   },
   "pages": {
