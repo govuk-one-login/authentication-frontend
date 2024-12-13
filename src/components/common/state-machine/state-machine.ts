@@ -59,6 +59,8 @@ const USER_JOURNEY_EVENTS = {
   COMMON_PASSWORD_AND_AIS_STATUS: "COMMON_PASSWORD_AND_AIS_STATUS",
   IPV_REVERIFICATION_INIT: "IPV_REVERIFICATION_INIT",
   IPV_REVERIFICATION_COMPLETED: "IPV_REVERIFICATION_COMPLETED",
+  IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE:
+    "IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE",
 };
 
 const authStateMachine = createMachine(
@@ -744,7 +746,15 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.GET_SECURITY_CODES],
             },
           ],
+          [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE]: [
+            {
+              target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
+            },
+          ],
         },
+      },
+      [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: {
+        type: "final",
       },
     },
   },

@@ -61,4 +61,25 @@ describe("Integration:: ipv callback", () => {
       }
     );
   });
+
+  it("should redirect to CANNOT_CHANGE_SECURITY_CODES when the reverification result is successful", async () => {
+    nock(baseApi)
+      .post(API_ENDPOINTS.REVERIFICATION_RESULT)
+      .once()
+      .reply(200, { success: false, failure_code: "no_identity_available" });
+
+    const requestPath = PATH_NAMES.IPV_CALLBACK + "?code=" + "12345";
+
+    await request(
+      app,
+      (test) =>
+        test
+          .get(requestPath)
+          .expect(302)
+          .expect("Location", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
+      {
+        expectAnalyticsPropertiesMatchSnapshot: false,
+      }
+    );
+  });
 });

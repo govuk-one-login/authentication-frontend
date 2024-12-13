@@ -20,6 +20,7 @@ router.get(
 router.get(
   PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
   validateSessionMiddleware,
+  allowUserJourneyMiddleware,
   cannotChangeSecurityCodesGet
 );
 
