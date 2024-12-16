@@ -240,6 +240,8 @@ Mappings:
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       cloudwatchLogRetentionInDays: 7
+      oldCloudFrontDistributionDomain: "dqgh68jqbv9m7.cloudfront.net"
+      oldALBDNSName: "build-frontend-41183120.eu-west-2.elb.amazonaws.com"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENRdvNXHwk1TvrgFUsWXAE5oDTcPr
