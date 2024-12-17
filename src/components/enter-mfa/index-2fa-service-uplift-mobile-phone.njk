@@ -27,7 +27,7 @@
         <input type="hidden" name="phoneNumber" value="{{ phoneNumber }}" />
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
         <input type="hidden" name="supportAccountRecovery" value="{{ supportAccountRecovery }}" />
-        <input type="hidden" name="checkEmailLink" value="{{ checkEmailLink }}" />
+        <input type="hidden" name="mfaResetPath" value="{{ mfaResetPath }}" />
 
         {{ govukInput({
             label: {
@@ -53,7 +53,7 @@
             {% if supportAccountRecovery === true or supportAccountRecovery === "true" %}
                 <p class="govuk-body">
                     {{ 'pages.enterMfa.details.changeGetSecurityCodesText' | translate }}
-                    <a href={{ checkEmailLink }} class="govuk-link"
+                    <a href={{ mfaResetPath }} class="govuk-link"
                        rel="noreferrer noopener">{{ 'pages.enterMfa.details.changeGetSecurityCodesLinkText'| translate }}</a>.
                 </p>
             {% endif %}
