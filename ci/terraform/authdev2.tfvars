@@ -9,6 +9,7 @@ service_domain          = "authdev2.sandpit.account.gov.uk"
 zone_id                 = "Z062000928I8D7S9X1OVA"
 session_expiry          = 300000
 gtm_id                  = ""
+redis_node_size         = "cache.t2.micro"
 
 service_down_page         = false
 service_down_image_uri    = "706615647326.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository"
@@ -30,12 +31,13 @@ support_new_ipv_spinner                             = "1"
 
 frontend_task_definition_cpu     = 512
 frontend_task_definition_memory  = 1024
-frontend_auto_scaling_v2_enabled = true
-deployment_min_healthy_percent   = 100
-deployment_max_percent           = 200
-frontend_auto_scaling_min_count  = 1
-frontend_auto_scaling_max_count  = 2
-ecs_desired_count                = 1
+frontend_auto_scaling_v2_enabled = false # Auto scaling not enabled in Authdev2 as its sharing the Dev ecs cluster
+# To enable Autoscalling we need to move the ecs Cluster creation from core to frontend repo
+deployment_min_healthy_percent  = 100
+deployment_max_percent          = 200
+frontend_auto_scaling_min_count = 1
+frontend_auto_scaling_max_count = 2
+ecs_desired_count               = 1
 
 # cloudfront flag
 cloudfront_auth_frontend_enabled = true
@@ -47,7 +49,7 @@ alb_idle_timeout = 30
 new_auth_account_id               = "975050272416"
 new_auth_protectedsub_cidr_blocks = ["10.6.4.0/23", "10.6.6.0/23", "10.6.8.0/23"]
 
-orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/Yz722IDLN1mPqkPTihkwAkp/rUm\nBhnWynwAkE/YZlskX+N7VmwIjupla7O6hczlIOqkmPdQ1ayDqI8yY2QOiw==\n-----END PUBLIC KEY-----"
+orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/Yz722IDLN1mPqkPTihkwAkp/rUmBhnWynwAkE/YZlskX+N7VmwIjupla7O6hczlIOqkmPdQ1ayDqI8yY2QOiw==\n-----END PUBLIC KEY-----"
 orch_to_auth_client_id          = "orchestrationAuth"
 orch_to_auth_audience           = "https://signin.authdev2.sandpit.account.gov.uk/"
 

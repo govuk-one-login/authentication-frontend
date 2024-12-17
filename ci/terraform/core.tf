@@ -2,7 +2,7 @@ data "terraform_remote_state" "core" {
   backend = "s3"
   config = {
     bucket      = var.common_state_bucket
-    key         = "${var.environment}-core-terraform.tfstate"
+    key         = var.environment == "authdev2" ? "dev-core-terraform.tfstate" : "${var.environment}-core-terraform.tfstate"
     assume_role = var.deployer_role_arn != null ? { role_arn = var.deployer_role_arn } : null
     region      = var.aws_region
   }
