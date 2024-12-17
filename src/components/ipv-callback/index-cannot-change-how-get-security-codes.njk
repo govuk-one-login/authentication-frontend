@@ -1,0 +1,45 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitleName = 'pages.cannotChangeHowGetSecurityCodeMfaReset.title' | translate %}
+
+{% block content %}
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.header' | translate}}</h1>
+
+  <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.paragraph1' | translate}}</p>
+  <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.paragraph2' | translate}}</p>
+
+  <h2 class="govuk-heading-m">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.header' | translate}}</h2>
+
+  {{ govukRadios({
+      name: "cannot_change_how_get_security_code_action",
+      attributes: {
+          "id": "radio-cannot-change-how-get-security-code-action"
+      },
+      items: [
+          {
+              value: "help-to-delete-account",
+              text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option1Text' | translate,
+              id: "help-to-delete-account",
+              checked: false,
+              hint: {
+                text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option1Hint' | translate
+              }
+          },
+          {
+              value: "retry-security-code",
+              text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option2Text' | translate,
+              id: "retry-security-code",
+              checked: false
+          }
+      ]
+  }) }}
+
+  {{ govukButton({
+    "text": "general.continue.label" | translate,
+    "type": "Submit",
+    "preventDoubleClick": true
+  }) }}
+
+{% endblock %}

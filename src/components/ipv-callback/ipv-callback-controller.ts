@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
-import { ReverificationResultInterface } from "./types";
+import {
+  isReverificationResultFailedResponse,
+  REVERIFICATION_ERROR_CODE,
+  ReverificationResultInterface,
+} from "./types";
 import { logger } from "../../utils/logger";
 import { reverificationResultService } from "./reverification-result-service";
 import { BadRequestError } from "../../utils/error";
@@ -39,6 +43,26 @@ export function ipvCallbackGet(
       throw new BadRequestError(result.data.message, result.data.code);
     }
 
+    if (isReverificationResultFailedResponse(result.data)) {
+      if (
+        [
+          REVERIFICATION_ERROR_CODE.NO_IDENTITY_AVAILABLE,
+          REVERIFICATION_ERROR_CODE.IDENTITY_CHECK_INCOMPLETE,
+        ].includes(result.data.failure_code)
+      ) {
+        return res.redirect(
+          await getNextPathAndUpdateJourney(
+            req,
+            req.path,
+            USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE,
+            {},
+            sessionId
+          )
+        );
+      }
+      throw new Error(result.data.failure_code);
+    }
+
     res.redirect(
       await getNextPathAndUpdateJourney(
         req,
@@ -49,4 +73,11 @@ export function ipvCallbackGet(
       )
     );
   };
+}
+
+export function cannotChangeSecurityCodesGet(
+  req: Request,
+  res: Response
+): void {
+  res.render("ipv-callback/index-cannot-change-how-get-security-codes.njk");
 }
