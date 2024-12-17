@@ -7,6 +7,7 @@ import {
   CONTACT_US_THEMES,
   CONTACT_US_COUNTRY_MAX_LENGTH,
 } from "../../app.constants";
+
 const sanitizeFreeTextValue: CustomSanitizer = function sanitizeFreeTextValue(
   value: string
 ) {
@@ -15,6 +16,24 @@ const sanitizeFreeTextValue: CustomSanitizer = function sanitizeFreeTextValue(
 
 export function validateContactUsQuestionsRequest(): ValidationChainFunc {
   return [
+    body("location").custom((value, { req }) => {
+      if (
+        req.body.subtheme ===
+          CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_ADDRESS &&
+        value === undefined
+      ) {
+        throw new Error(
+          req.t(
+            "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.location.errorMessage",
+            {
+              value,
+              lng: req.i18n.lng,
+            }
+          )
+        );
+      }
+      return true;
+    }),
     body("securityCodeSentMethod")
       .if(body("theme").equals("account_creation"))
       .if(check("radio_buttons").notEmpty())
@@ -148,6 +167,19 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value, lng: req.i18n.lng }
         );
       }),
+    body("serviceTryingToUse")
+      .if(
+        body("subtheme").equals(
+          CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_ADDRESS
+        )
+      )
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.serviceTryingToUse.errorMessage",
+          { value, lng: req.i18n.lng }
+        );
+      }),
     body("moreDetailDescription")
       .optional()
       .isLength({ max: CONTACT_US_FIELD_MAX_LENGTH })
@@ -185,6 +217,24 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value, lng: req.i18n.lng }
         );
       }),
+    body("location").custom((value, { req }) => {
+      if (
+        req.body.subtheme ===
+          CONTACT_US_THEMES.PROVING_IDENTITY_SOMETHING_ELSE &&
+        value === undefined
+      ) {
+        throw new Error(
+          req.t(
+            "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.location.errorMessage",
+            {
+              value,
+              lng: req.i18n.lng,
+            }
+          )
+        );
+      }
+      return true;
+    }),
     body("contact")
       .notEmpty()
       .withMessage((value, { req }) => {
@@ -277,6 +327,9 @@ export function getErrorMessageForIssueDescription(
   }
   if (theme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK) {
     return "pages.contactUsQuestions.suggestionOrFeedback.section1.errorMessage";
+  }
+  if (subtheme === CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_ADDRESS) {
+    return "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.whatHappened.errorMessage";
   }
   if (theme === CONTACT_US_THEMES.PROVING_IDENTITY) {
     return "pages.contactUsQuestions.provingIdentity.section1.errorMessage";
@@ -456,6 +509,9 @@ export function getErrorMessageForAdditionalDescription(
   }
   if (theme === CONTACT_US_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.anotherProblem.section2.errorMessage";
+  }
+  if (subtheme === CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_ADDRESS) {
+    return "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.whatWereYouTryingToDo.errorMessage";
   }
   if (theme === CONTACT_US_THEMES.PROVING_IDENTITY) {
     return "pages.contactUsQuestions.provingIdentity.section2.errorMessage";

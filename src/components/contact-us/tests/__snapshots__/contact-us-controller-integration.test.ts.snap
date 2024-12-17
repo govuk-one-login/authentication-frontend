@@ -311,3 +311,19 @@ Object {
   "taxonomyLevel2": "feedback",
 }
 `;
+
+exports[`Integration:: contact us - public user when a user has not stated their location should return validation error when they submit the 'A problem entering your address' form 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+}
+`;
+
+exports[`Integration:: contact us - public user when a user has not stated their location should return validation error when they submit the 'Another problem proving your identity' form 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+}
+`;

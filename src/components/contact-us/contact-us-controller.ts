@@ -79,6 +79,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.provingIdentitySomethingElse.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_NATIONAL_INSURANCE_NUMBER]:
     "pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.title",
+  [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_ADDRESS]:
+    "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.title",
 };
 
 const somethingElseSubThemeToPageTitle = {

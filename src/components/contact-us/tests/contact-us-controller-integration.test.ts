@@ -356,6 +356,38 @@ describe("Integration:: contact us - public user", () => {
     });
   });
 
+  describe("when a user has not stated their location", () => {
+    it("should return validation error when they submit the 'Another problem proving your identity' form", async () => {
+      const data = {
+        _csrf: token,
+        theme: "proving_identity",
+        subtheme: "proving_identity_something_else",
+        contact: "false",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#location-error",
+        "Select yes if you live in the UK, Channel Islands or Isle of Man"
+      );
+    });
+
+    it("should return validation error when they submit the 'A problem entering your address' form", async () => {
+      const data = {
+        _csrf: token,
+        theme: "proving_identity",
+        subtheme: "proving_identity_problem_with_address",
+        contact: "false",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#location-error",
+        "Select yes if you live in the UK, Channel Islands or Isle of Man"
+      );
+    });
+  });
+
   describe("when a user had a problem with their bank or building society details", () => {
     it("should return validation error when user has not selected which problem they had", async () => {
       const data = {
