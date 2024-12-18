@@ -43,6 +43,7 @@ export function templateValidationMiddleware(
 
     const translationKeys = new Set<string>();
     const variableNames = new Set<string>();
+    const variableNamesSetInTemplates = new Set<string>(["ga4OnPageLoad"]);
     walk.simple(templateAST, {
       CallExpression(node) {
         const calleeMethodName = (node?.callee as any)?.object?.callee?.property
@@ -57,9 +58,14 @@ export function templateValidationMiddleware(
           translationKeys.add((node.arguments[1] as any)?.value);
         } else if (calleePropertyName === "contextOrFrameLookup") {
           variableNames.add((node.arguments[2] as any)?.value);
+        } else if (calleePropertyName === "setVariable") {
+          // @ts-expect-error value does actually exist
+          variableNamesSetInTemplates.add(node.arguments[0]?.value);
         }
       },
     });
+
+    variableNamesSetInTemplates.forEach((set) => variableNames.delete(set));
 
     req.log.debug(
       `template "${view}" looks up these properties ${JSON.stringify({
