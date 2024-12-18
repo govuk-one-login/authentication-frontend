@@ -34,9 +34,7 @@ describe("templateValidationMiddleware", () => {
       `template "${BASIC_TEMPLATE_PATH}" looks up these properties ${JSON.stringify(
         {
           variableNames: [
-            "ga4OnPageLoad",
             "scriptNonce",
-            "pageTitleName",
             "taxonomyLevel1",
             "taxonomyLevel2",
             "contentId",
