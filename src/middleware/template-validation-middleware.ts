@@ -1,4 +1,12 @@
 import { NextFunction, Request, Response } from "express";
+import fs from "fs";
+import path from "path";
+import nunjucks from "nunjucks";
+import acorn from "acorn";
+import walk from "acorn-walk";
+
+// @ts-expect-error parser does exist, just not typed
+const compiler = nunjucks.compiler as { compile: (path: string) => string };
 
 type CallbackFunction = (err: Error, html: string) => void;
 
@@ -22,6 +30,43 @@ export function templateValidationMiddleware(
     } else {
       opts = options;
     }
+
+    const file = fs.readFileSync(
+      path.join(__dirname, "..", "components", view),
+      { encoding: "utf8", flag: "r" }
+    );
+    const compiledTemplateJS = compiler.compile(file);
+    const templateAST = acorn.parse(compiledTemplateJS, {
+      ecmaVersion: "latest",
+      allowReturnOutsideFunction: true,
+    });
+
+    const translationKeys = new Set<string>();
+    const variableNames = new Set<string>();
+    walk.simple(templateAST, {
+      CallExpression(node) {
+        const calleeMethodName = (node?.callee as any)?.object?.callee?.property
+          ?.name;
+        const calleeMethodArgument = (node?.callee as any)?.object
+          ?.arguments?.[0].value;
+        const calleePropertyName = (node?.callee as any)?.property?.name;
+        if (
+          calleeMethodName === "getFilter" &&
+          calleeMethodArgument === "translate"
+        ) {
+          translationKeys.add((node.arguments[1] as any)?.value);
+        } else if (calleePropertyName === "contextOrFrameLookup") {
+          variableNames.add((node.arguments[2] as any)?.value);
+        }
+      },
+    });
+
+    req.log.debug(
+      `template "${view}" looks up these properties ${JSON.stringify({
+        variableNames: Array.from(variableNames),
+        translationKeys: Array.from(translationKeys),
+      })}`
+    );
 
     _render.call(this, view, opts, done);
   };
