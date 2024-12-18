@@ -21,6 +21,7 @@ import {
   getNodeEnv,
   getSessionExpiry,
   getSessionSecret,
+  shouldValidateTemplates,
   supportAccountInterventions,
   supportAccountRecovery,
   supportAuthorizeController,
@@ -101,6 +102,7 @@ import { Server } from "node:http";
 import { getAnalyticsPropertiesMiddleware } from "./middleware/get-analytics-properties-middleware";
 import { ipvCallbackRouter } from "./components/ipv-callback/ipv-callback-routes";
 import { mfaResetWithIpvRouter } from "./components/mfa-reset-with-ipv/mfa-reset-with-ipv-routes";
+import { templateValidationMiddleware } from "./middleware/template-validation-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -229,6 +231,9 @@ async function createApp(): Promise<express.Application> {
   app.use(outboundContactUsLinksMiddleware);
   if (getLanguageToggleEnabled()) {
     app.use(setCurrentUrlMiddleware);
+  }
+  if (shouldValidateTemplates()) {
+    app.use(templateValidationMiddleware);
   }
   app.use(getAnalyticsPropertiesMiddleware);
 
