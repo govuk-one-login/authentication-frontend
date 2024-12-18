@@ -74,7 +74,6 @@ import session from "express-session";
 import { proveIdentityRouter } from "./components/prove-identity/prove-identity-routes";
 import { healthcheckRouter } from "./components/healthcheck/healthcheck-routes";
 import { crossDomainTrackingMiddleware } from "./middleware/cross-domain-tracking-middleware";
-import { proveIdentityWelcomeRouter } from "./components/prove-identity-welcome/prove-identity-welcome-routes";
 import { proveIdentityCallbackRouter } from "./components/prove-identity-callback/prove-identity-callback-routes";
 import { docCheckingAppRouter } from "./components/doc-checking-app/doc-checking-app-routes";
 import { docCheckingAppCallbackRouter } from "./components/doc-checking-app-callback/doc-checking-app-callback-routes";
@@ -145,7 +144,6 @@ function registerRoutes(app: express.Application) {
   app.use(upliftJourneyRouter);
   app.use(contactUsRouter);
   app.use(proveIdentityRouter);
-  app.use(proveIdentityWelcomeRouter);
   app.use(proveIdentityCallbackRouter);
   app.use(cookiesRouter);
   app.use(docCheckingAppRouter);
