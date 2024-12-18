@@ -74,6 +74,22 @@ export function templateValidationMiddleware(
       })}`
     );
 
+    const context = { ...opts, ...res.locals };
+    translationKeys.forEach((translationKey) => {
+      if (context.t(translationKey) === translationKey) {
+        req.log.warn(
+          `template "${view}" uses translation key "${translationKey}" that has no value`
+        );
+      }
+    });
+    variableNames.forEach((variableName) => {
+      if (context[variableName] === undefined) {
+        req.log.warn(
+          `template "${view}" uses variable name "${variableName}" that has no value`
+        );
+      }
+    });
+
     _render.call(this, view, opts, done);
   };
 
