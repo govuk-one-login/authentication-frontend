@@ -10,6 +10,7 @@ zone_id                 = "Z062000928I8D7S9X1OVA"
 session_expiry          = 300000
 gtm_id                  = ""
 redis_node_size         = "cache.t2.micro"
+vpc_environment         = "dev"
 
 service_down_page         = false
 service_down_image_uri    = "706615647326.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository"
