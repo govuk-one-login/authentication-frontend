@@ -1,4 +1,4 @@
-import { CHANNEL } from "./app.constants";
+import { CHANNEL, LOWER_ENVIRONMENTS } from "./app.constants";
 
 export function getLogLevel(): string {
   return process.env.LOGS_LEVEL || "debug";
@@ -18,6 +18,10 @@ export function getNodeEnv(): string {
 
 export function getAppEnv(): string {
   return process.env.APP_ENV || "local";
+}
+
+export function shouldValidateTemplates(): boolean {
+  return LOWER_ENVIRONMENTS.includes(getAppEnv());
 }
 
 export function getSessionExpiry(): number {
