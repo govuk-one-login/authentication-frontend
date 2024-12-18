@@ -1,6 +1,7 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ExpressRouteFunc } from "../../types";
 import {
+  CrossBrowserInterface,
   isReverificationResultFailedResponse,
   REVERIFICATION_ERROR_CODE,
   ReverificationResultInterface,
@@ -11,6 +12,15 @@ import { BadRequestError } from "../../utils/error";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { PATH_NAMES } from "../../app.constants";
+import {
+  sessionIsValid,
+  validateSessionMiddleware,
+} from "../../middleware/session-middleware";
+import {
+  allowUserJourneyMiddleware,
+  transitionForbidden,
+} from "../../middleware/allow-user-journey-middleware";
+import { CrossBrowserService } from "./cross-browser-service";
 
 const ERROR_TO_EVENT_MAP = new Map<string, string>();
 ERROR_TO_EVENT_MAP.set(
@@ -31,9 +41,28 @@ ERROR_TO_EVENT_MAP.set(
 );
 
 export function ipvCallbackGet(
-  service: ReverificationResultInterface = reverificationResultService()
+  service: ReverificationResultInterface = reverificationResultService(),
+  crossBrowserService: CrossBrowserInterface = new CrossBrowserService()
 ): ExpressRouteFunc {
-  return async function (req: Request, res: Response) {
+  return async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    if (!sessionIsValid(req)) {
+      if (crossBrowserService.isCrossBrowserIssue(req)) {
+        const orchestrationRedirectUrl =
+          await crossBrowserService.getOrchestrationRedirectUrl(req);
+        return res.redirect(orchestrationRedirectUrl);
+      }
+
+      return validateSessionMiddleware(req, res, next);
+    }
+
+    if (transitionForbidden(req)) {
+      return allowUserJourneyMiddleware(req, res, next);
+    }
+
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 

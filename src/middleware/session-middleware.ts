@@ -53,12 +53,16 @@ export function getSessionIdMiddleware(
   next();
 }
 
+export function sessionIsValid(req: Request): boolean {
+  return !!(req.cookies?.gs && req.cookies?.aps && req.session?.id);
+}
+
 export function validateSessionMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  if (req.cookies.gs && req.cookies.aps && req.session.id) {
+  if (sessionIsValid(req)) {
     return next();
   }
 

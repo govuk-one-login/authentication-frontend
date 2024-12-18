@@ -21,7 +21,10 @@ export function mfaResetWithIpvGet(
 
     req.session.user.isAccountRecoveryJourney = true;
 
-    const orchestrationRedirectUrl = req.session.client.redirectUri.concat("?state=", req.session.client.state)
+    const orchestrationRedirectUrl = req.session.client.redirectUri.concat(
+      "?state=",
+      req.session.client.state
+    );
     const result = await service.ipvRedirectUrl(
       sessionId,
       clientSessionId,

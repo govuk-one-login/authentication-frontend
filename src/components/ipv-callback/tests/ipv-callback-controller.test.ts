@@ -1,5 +1,5 @@
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import sinon from "sinon";
+import sinon, { match } from "sinon";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { PATH_NAMES } from "../../../app.constants";
 import { expect } from "chai";
@@ -9,10 +9,11 @@ import {
   ipvCallbackGet,
 } from "../ipv-callback-controller";
 import {
+  CrossBrowserRequest,
   ReverificationResultFailedResponse,
   ReverificationResultInterface,
 } from "../types";
-import { BadRequestError } from "../../../utils/error";
+import { BadRequestError, ErrorWithLevel } from "../../../utils/error";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 import { strict as assert } from "assert";
 import { describe } from "mocha";
@@ -49,6 +50,11 @@ const failureData = {
   message: "Internal error occurred in backend",
 };
 
+const mockIsCrossBrowserIssue =
+  (result: boolean) =>
+  (_: Request): _ is CrossBrowserRequest =>
+    result;
+
 describe("ipv callback controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
@@ -62,6 +68,13 @@ describe("ipv callback controller", () => {
     req = createMockRequest(PATH_NAMES.IPV_CALLBACK);
     req.query = { code: AUTH_CODE };
     req.session.user.email = email;
+    req.session.id = sessionId;
+    req.cookies.gs = sessionId + clientSessionId;
+    req.cookies.aps = sessionId;
+    req.session.user.journey = {
+      nextPath: PATH_NAMES.IPV_CALLBACK,
+      optionalPaths: [],
+    };
     res = mockResponse();
     res.locals = {
       sessionId,
@@ -80,7 +93,7 @@ describe("ipv callback controller", () => {
         200,
         reverificationSuccessData
       );
-      await ipvCallbackGet(fakeServiceReturningSuccess)(
+      await ipvCallbackGet(fakeServiceReturningSuccess, {} as any)(
         req as Request,
         res as Response
       );
@@ -108,7 +121,7 @@ describe("ipv callback controller", () => {
 
       await assert.rejects(
         async () =>
-          ipvCallbackGet(fakeServiceReturningFailure)(
+          ipvCallbackGet(fakeServiceReturningFailure, {} as any)(
             req as Request,
             res as Response
           ),
@@ -184,7 +197,7 @@ describe("ipv callback controller", () => {
 
         await assert.rejects(
           async () =>
-            ipvCallbackGet(fakeServiceReturningSuccess)(
+            ipvCallbackGet(fakeServiceReturningSuccess, {} as any)(
               req as Request,
               res as Response
             ),
@@ -192,6 +205,52 @@ describe("ipv callback controller", () => {
           testCase.expectedMessage
         );
       }
+
+      it("should redirect to orch when cross browser", async () => {
+        req.cookies = {};
+
+        const expectedRedirect =
+          "https://oidc.account.gov.uk/orchestration-redirect?state=7&error=access_denied&error_description=no_session";
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const getOrchestrationRedirectUrl = async (_: CrossBrowserRequest) =>
+          expectedRedirect;
+        await ipvCallbackGet({} as any, {
+          getOrchestrationRedirectUrl,
+          isCrossBrowserIssue: mockIsCrossBrowserIssue(true),
+        })(req as Request, res as Response);
+
+        expect(res.redirect).to.have.been.calledOnceWithExactly(
+          expectedRedirect
+        );
+      });
+
+      it("should error when not cross browser", async () => {
+        req.cookies = {};
+        const destroyStub = sinon.stub();
+        req.session.destroy = destroyStub;
+        const nextStub = sinon.stub();
+
+        await ipvCallbackGet({} as any, {
+          getOrchestrationRedirectUrl: {} as any,
+          isCrossBrowserIssue: mockIsCrossBrowserIssue(false),
+        })(req as Request, res as Response, nextStub);
+
+        expect(destroyStub).to.have.been.calledOnce;
+        expect(nextStub).to.have.been.calledOnceWith(
+          match.instanceOf(ErrorWithLevel)
+        );
+      });
+
+      it("should redirect when transition is forbidden", async () => {
+        req.session.user.journey.nextPath = "/other-path";
+
+        await ipvCallbackGet({} as any, {} as any)(
+          req as Request,
+          res as Response
+        );
+
+        expect(res.redirect).to.have.been.calledOnceWithExactly("/other-path");
+      });
     });
 
     describe("cannotChangeSecurityCodeGet", () => {

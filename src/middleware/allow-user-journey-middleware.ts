@@ -1,16 +1,20 @@
 import { NextFunction, Request, Response } from "express";
 
+export function transitionForbidden(req: Request): boolean {
+  const nextPath = req.session.user.journey.nextPath;
+  return (
+    nextPath !== req.path &&
+    !req.session.user.journey.optionalPaths.includes(req.path)
+  );
+}
+
 export function allowUserJourneyMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  const nextPath = req.session.user.journey.nextPath;
-
-  if (
-    nextPath !== req.path &&
-    !req.session.user.journey.optionalPaths.includes(req.path)
-  ) {
+  if (transitionForbidden(req)) {
+    const nextPath = req.session.user.journey.nextPath;
     req.log.warn(
       `User tried invalid journey to ${
         req.path

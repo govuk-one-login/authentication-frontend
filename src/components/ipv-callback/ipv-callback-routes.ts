@@ -12,12 +12,7 @@ import { validateCannotChangeHowGetSecurityCodesActionRequest } from "./cannot-c
 
 const router = express.Router();
 
-router.get(
-  PATH_NAMES.IPV_CALLBACK,
-  validateSessionMiddleware,
-  allowUserJourneyMiddleware,
-  asyncHandler(ipvCallbackGet())
-);
+router.get(PATH_NAMES.IPV_CALLBACK, asyncHandler(ipvCallbackGet()));
 
 router.get(
   PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
