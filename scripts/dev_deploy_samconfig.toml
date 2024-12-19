@@ -1,0 +1,20 @@
+version = 0.1
+[authdev1.deploy.parameters]
+stack_name = "authdev1-frontend"
+resolve_s3 = false
+s3_bucket = "authdev1-frontend-pipeline-pipelinebucket-kit9bfu7ko2m"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND"
+parameter_overrides = "Environment=\"dev\" SubEnvironment=\"authdev1\" VpcStackName=\"authdev1-vpc\" CodeSigningConfigArn=\"arn:aws:lambda:eu-west-2:975050272416:code-signing-config:csc-08363373ee41af407\" DeploymentStrategy=\"CodeDeployDefault.ECSAllAtOnce\" PermissionsBoundary=\"arn:aws:iam::975050272416:policy/authdev1-frontend-pipeline-AppProgrammaticPermissionsBoundary-0208ecb7797f\""
+image_repositories = []
+
+[authdev2.deploy.parameters]
+stack_name = "authdev2-frontend"
+resolve_s3 = false
+s3_bucket = "authdev2-frontend-pipeline-pipelinebucket-ryomchxfe6bs"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND"
+parameter_overrides = "Environment=\"dev\" SubEnvironment=\"authdev2\" VpcStackName=\"vpc\" CodeSigningConfigArn=\"arn:aws:lambda:eu-west-2:975050272416:code-signing-config:csc-0e7ece3a3ef748670\" DeploymentStrategy=\"None\" PermissionsBoundary=\"arn:aws:iam::975050272416:policy/authdev2-frontend-pipeline-AppProgrammaticPermissionsBoundary-064776019653\""
+image_repositories = []
