@@ -673,7 +673,8 @@
         "header": "What would you like to do?",
         "option1Text": "Get help to delete your GOV.UK One Login from the support team",
         "option1Hint": "Call or use webchat to contact the GOV.UK One Login team",
-        "option2Text": "Try entering a security code again with the method you already have set up"
+        "option2Text": "Try entering a security code again with the method you already have set up",
+        "radioValidationError": "Select what you would like to do"
       }
     },
     "changeSecurityCodesConfirmation": {
