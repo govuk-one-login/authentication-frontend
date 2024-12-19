@@ -20,6 +20,14 @@ ERROR_TO_EVENT_MAP.set(
   REVERIFICATION_ERROR_CODE.IDENTITY_CHECK_INCOMPLETE,
   USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE
 );
+ERROR_TO_EVENT_MAP.set(
+  REVERIFICATION_ERROR_CODE.IDENTITY_CHECK_FAILED,
+  USER_JOURNEY_EVENTS.IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH
+);
+ERROR_TO_EVENT_MAP.set(
+  REVERIFICATION_ERROR_CODE.IDENTITY_DID_NOT_MATCH,
+  USER_JOURNEY_EVENTS.IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH
+);
 
 export function ipvCallbackGet(
   service: ReverificationResultInterface = reverificationResultService()
@@ -81,4 +89,11 @@ export function cannotChangeSecurityCodesGet(
   res: Response
 ): void {
   res.render("ipv-callback/index-cannot-change-how-get-security-codes.njk");
+}
+
+export function cannotChangeSecurityCodesIdentityFailGet(
+  req: Request,
+  res: Response
+): void {
+  res.send("identity-failed");
 }

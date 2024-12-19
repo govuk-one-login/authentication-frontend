@@ -121,12 +121,20 @@ describe("ipv callback controller", () => {
     });
 
     const ERROR_CODES_REDIRECTING_TO_CANNOT_CHANGE_SECURITY_CODES = [
-      "no_identity_available",
-      "identity_check_incomplete",
+      ["no_identity_available", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
+      ["identity_check_incomplete", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
+      [
+        "identity_did_not_match",
+        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
+      ],
+      [
+        "identity_check_failed",
+        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
+      ],
     ];
     ERROR_CODES_REDIRECTING_TO_CANNOT_CHANGE_SECURITY_CODES.forEach(
-      (errorCode) => {
-        it(`get should redirect to you cannot change how you get security codes page when result is successful but failure code is ${errorCode}`, async () => {
+      ([errorCode, expectedPath]) => {
+        it(`get should redirect you to the ${expectedPath} page when result is successful but failure code is ${errorCode}`, async () => {
           const fakeService = reverificationResultService(
             200,
             reverificationResultFailureData(errorCode)
@@ -134,33 +142,25 @@ describe("ipv callback controller", () => {
 
           await ipvCallbackGet(fakeService)(req as Request, res as Response);
 
-          expect(res.redirect).to.be.calledWith(
-            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES
-          );
+          expect(res.redirect).to.be.calledWith(expectedPath);
         });
       }
     );
 
-    const ERROR_CODES_RAISING_BAD_REQUEST_ERROR = [
-      "identity_did_not_match",
-      "identity_check_failed",
-    ];
-    ERROR_CODES_RAISING_BAD_REQUEST_ERROR.forEach((errorCode) => {
-      it(`get should raise error when result is successful but failure code is ${errorCode}`, async () => {
-        const fakeService = reverificationResultService(
-          200,
-          reverificationResultFailureData(errorCode)
-        );
+    it(`get should raise error when result is successful but failure code is invalid`, async () => {
+      const fakeService = reverificationResultService(
+        200,
+        reverificationResultFailureData("this_is_an_invalid_failure_code")
+      );
 
-        await assert.rejects(
-          async () =>
-            ipvCallbackGet(fakeService)(req as Request, res as Response),
-          {
-            name: "Error",
-            message: `${errorCode}`,
-          }
-        );
-      });
+      await assert.rejects(
+        async () =>
+          ipvCallbackGet(fakeService)(req as Request, res as Response),
+        {
+          name: "Error",
+          message: "this_is_an_invalid_failure_code",
+        }
+      );
     });
 
     it("get should raise error when auth code param is missing or invalid", async () => {

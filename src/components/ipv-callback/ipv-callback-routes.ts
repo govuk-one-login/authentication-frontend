@@ -3,6 +3,7 @@ import { asyncHandler } from "../../utils/async";
 import { PATH_NAMES } from "../../app.constants";
 import {
   cannotChangeSecurityCodesGet,
+  cannotChangeSecurityCodesIdentityFailGet,
   ipvCallbackGet,
 } from "./ipv-callback-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
@@ -22,6 +23,13 @@ router.get(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   cannotChangeSecurityCodesGet
+);
+
+router.get(
+  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
+  cannotChangeSecurityCodesIdentityFailGet
 );
 
 export { router as ipvCallbackRouter };
