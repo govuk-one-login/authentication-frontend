@@ -667,6 +667,7 @@
     "cannotChangeHowGetSecurityCodeMfaReset": {
       "title": "You cannot change how you get security codes",
       "header": "You cannot change how you get security codes",
+      "identityFailedPreamble": "This is because there was a problem confirming your identity.",
       "paragraph1": "You can only sign into your GOV.UK One Login using the method you already have set up to get security codes.",
       "paragraph2": "If you’ve permanently lost access to this method, you should delete your GOV.UK One Login so you can create a new one.",
       "radios": {

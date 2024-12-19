@@ -10,6 +10,25 @@ import { reverificationResultService } from "./reverification-result-service";
 import { BadRequestError } from "../../utils/error";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { PATH_NAMES } from "../../app.constants";
+
+const ERROR_TO_EVENT_MAP = new Map<string, string>();
+ERROR_TO_EVENT_MAP.set(
+  REVERIFICATION_ERROR_CODE.NO_IDENTITY_AVAILABLE,
+  USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE
+);
+ERROR_TO_EVENT_MAP.set(
+  REVERIFICATION_ERROR_CODE.IDENTITY_CHECK_INCOMPLETE,
+  USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE
+);
+ERROR_TO_EVENT_MAP.set(
+  REVERIFICATION_ERROR_CODE.IDENTITY_CHECK_FAILED,
+  USER_JOURNEY_EVENTS.IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH
+);
+ERROR_TO_EVENT_MAP.set(
+  REVERIFICATION_ERROR_CODE.IDENTITY_DID_NOT_MATCH,
+  USER_JOURNEY_EVENTS.IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH
+);
 
 export function ipvCallbackGet(
   service: ReverificationResultInterface = reverificationResultService()
@@ -44,23 +63,14 @@ export function ipvCallbackGet(
     }
 
     if (isReverificationResultFailedResponse(result.data)) {
-      if (
-        [
-          REVERIFICATION_ERROR_CODE.NO_IDENTITY_AVAILABLE,
-          REVERIFICATION_ERROR_CODE.IDENTITY_CHECK_INCOMPLETE,
-        ].includes(result.data.failure_code)
-      ) {
-        return res.redirect(
-          await getNextPathAndUpdateJourney(
-            req,
-            req.path,
-            USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE,
-            {},
-            sessionId
-          )
-        );
+      const event = ERROR_TO_EVENT_MAP.get(result.data.failure_code);
+      if (!event) {
+        throw new Error(result.data.failure_code);
       }
-      throw new Error(result.data.failure_code);
+
+      return res.redirect(
+        await getNextPathAndUpdateJourney(req, req.path, event, {}, sessionId)
+      );
     }
 
     res.redirect(
@@ -79,7 +89,13 @@ export function cannotChangeSecurityCodesGet(
   req: Request,
   res: Response
 ): void {
-  res.render("ipv-callback/index-cannot-change-how-get-security-codes.njk");
+  res.render("ipv-callback/index-cannot-change-how-get-security-codes.njk", {
+    variant:
+      req.path === PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL
+        ? "identityFailed"
+        : "incomplete",
+    formPostPath: req.path,
+  });
 }
 
 export function cannotChangeSecurityCodesPost(
