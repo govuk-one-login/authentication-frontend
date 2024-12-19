@@ -81,3 +81,10 @@ export function cannotChangeSecurityCodesGet(
 ): void {
   res.render("ipv-callback/index-cannot-change-how-get-security-codes.njk");
 }
+
+export function cannotChangeSecurityCodesPost(
+  req: Request,
+  res: Response
+): void {
+  res.send("In development");
+}
