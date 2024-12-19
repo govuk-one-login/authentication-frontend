@@ -34,6 +34,9 @@ describe("mfa reset with ipv controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.MFA_RESET_WITH_IPV);
     res = mockResponse();
+    req.session.client.redirectUri =
+      "https://oidc.test.account.gov.uk/orchestration-redirect";
+    req.session.client.state = "orchestration-state";
   });
 
   afterEach(() => {

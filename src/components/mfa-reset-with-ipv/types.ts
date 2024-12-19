@@ -11,6 +11,7 @@ export interface MfaResetAuthorizeInterface {
     clientSessionId: string,
     persistentSessionId: string,
     req: Request,
-    email: string
+    email: string,
+    orchestrationRedirectUrl: string
   ) => Promise<ApiResponseResult<MfaResetAuthorizeResponse>>;
 }

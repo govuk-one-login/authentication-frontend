@@ -42,3 +42,16 @@ export interface ReverificationResultInterface {
     code: string
   ) => Promise<ApiResponseResult<ReverificationResultResponse>>;
 }
+
+export interface CrossBrowserInterface {
+  isCrossBrowserIssue: (req: Request) => req is CrossBrowserRequest;
+  getOrchestrationRedirectUrl: (req: CrossBrowserRequest) => Promise<string>;
+}
+
+export type CrossBrowserRequest = Omit<Request, "query"> & {
+  query: { error: "access_denied"; state: string };
+};
+
+export interface IDReverificationStateResponse extends DefaultApiResponse {
+  orchestrationRedirectUrl: string;
+}

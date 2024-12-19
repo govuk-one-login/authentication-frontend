@@ -20,6 +20,7 @@ describe("mfa reset authorize service", () => {
   let postStub: SinonStub;
   const { sessionId, clientSessionId, email, diPersistentSessionId } =
     commonVariables;
+  const orchestrationRedirectUrl = "http://localhost?state=state";
   const req = createMockRequest(PATH_NAMES.ENTER_MFA, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
@@ -46,13 +47,14 @@ describe("mfa reset authorize service", () => {
       clientSessionId,
       diPersistentSessionId,
       req,
-      email
+      email,
+      orchestrationRedirectUrl
     );
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.MFA_RESET_AUTHORIZE,
       expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
-      expectedBody: { email },
+      expectedBody: { email, orchestrationRedirectUrl },
     };
 
     checkApiCallMadeWithExpectedBodyAndHeaders(

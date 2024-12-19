@@ -5,6 +5,7 @@ import sinonChai from "sinon-chai";
 import {
   getSessionIdMiddleware,
   initialiseSessionMiddleware,
+  sessionIsValid,
   validateSessionMiddleware,
 } from "../session-middleware";
 import { ERROR_MESSAGES } from "../../app.constants";
@@ -62,6 +63,66 @@ describe("session-middleware", () => {
 
       expect(res.locals).is.empty;
       expect(next).to.be.calledOnce;
+    });
+  });
+
+  describe("sessionIsValid", () => {
+    beforeEach(() => {
+      req = {
+        session: {
+          id: "session-id",
+        },
+        cookies: {
+          gs: "gs-cookie",
+          aps: "aps-cookie",
+        },
+      } as any;
+    });
+
+    it("should return true when session is valid", () => {
+      const result = sessionIsValid(req as Request);
+
+      expect(result).to.equal(true);
+    });
+
+    it("should return false when cookies are missing", async () => {
+      delete req.cookies;
+
+      const result = sessionIsValid(req as Request);
+
+      expect(result).to.equal(false);
+    });
+
+    it("should return false when gs cookie is missing", async () => {
+      delete req.cookies.gs;
+
+      const result = sessionIsValid(req as Request);
+
+      expect(result).to.equal(false);
+    });
+
+    it("should return false when aps cookie is missing", async () => {
+      delete req.cookies.aps;
+
+      const result = sessionIsValid(req as Request);
+
+      expect(result).to.equal(false);
+    });
+
+    it("should return false when the session is missing", async () => {
+      delete req.session;
+
+      const result = sessionIsValid(req as Request);
+
+      expect(result).to.equal(false);
+    });
+
+    it("should return false when the session ID is missing", async () => {
+      delete req.session.id;
+
+      const result = sessionIsValid(req as Request);
+
+      expect(result).to.equal(false);
     });
   });
 
