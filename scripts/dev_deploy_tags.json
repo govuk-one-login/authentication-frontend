@@ -1,0 +1,22 @@
+[
+  {
+    "Key": "System",
+    "Value": "Authentication"
+  },
+  {
+    "Key": "Environment",
+    "Value": "dev"
+  },
+  {
+    "Key": "Owner",
+    "Value": "di-authentication@digital.cabinet-office.gov.uk"
+  },
+  {
+    "Key": "is-pipeline-deployment",
+    "Value": "False"
+  },
+  {
+    "Key": "repository",
+    "Value": "govuk-one-login/authentication-frontend"
+  }
+]
