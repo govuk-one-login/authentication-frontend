@@ -10,6 +10,7 @@ import { reverificationResultService } from "./reverification-result-service";
 import { BadRequestError } from "../../utils/error";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { PATH_NAMES } from "../../app.constants";
 
 const ERROR_TO_EVENT_MAP = new Map<string, string>();
 ERROR_TO_EVENT_MAP.set(
@@ -19,6 +20,14 @@ ERROR_TO_EVENT_MAP.set(
 ERROR_TO_EVENT_MAP.set(
   REVERIFICATION_ERROR_CODE.IDENTITY_CHECK_INCOMPLETE,
   USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE
+);
+ERROR_TO_EVENT_MAP.set(
+  REVERIFICATION_ERROR_CODE.IDENTITY_CHECK_FAILED,
+  USER_JOURNEY_EVENTS.IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH
+);
+ERROR_TO_EVENT_MAP.set(
+  REVERIFICATION_ERROR_CODE.IDENTITY_DID_NOT_MATCH,
+  USER_JOURNEY_EVENTS.IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH
 );
 
 export function ipvCallbackGet(

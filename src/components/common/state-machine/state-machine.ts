@@ -61,6 +61,8 @@ const USER_JOURNEY_EVENTS = {
   IPV_REVERIFICATION_COMPLETED: "IPV_REVERIFICATION_COMPLETED",
   IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE:
     "IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE",
+  IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH:
+    "IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH",
 };
 
 const authStateMachine = createMachine(
@@ -751,9 +753,17 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
             },
           ],
+          [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH]: [
+            {
+              target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL],
+            },
+          ],
         },
       },
       [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: {
+        type: "final",
+      },
+      [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: {
         type: "final",
       },
     },

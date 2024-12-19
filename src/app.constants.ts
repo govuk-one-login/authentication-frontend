@@ -68,6 +68,8 @@ export const PATH_NAMES = {
   SECURITY_CODE_ENTERED_EXCEEDED: "/security-code-entered-exceeded",
   CHANGE_SECURITY_CODES: "/change-security-codes",
   CANNOT_CHANGE_SECURITY_CODES: "/cannot-change-security-codes",
+  CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL:
+    "/cannot-change-security-codes-identity-fail",
   CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES: "/check-email-change-security-codes",
   CHANGE_SECURITY_CODES_CONFIRMATION: "/change-codes-confirmed",
   PASSWORD_RESET_REQUIRED: "/password-reset-required",
