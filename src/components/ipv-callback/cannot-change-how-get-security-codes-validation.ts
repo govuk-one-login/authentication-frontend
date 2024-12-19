@@ -7,9 +7,14 @@ export function validateCannotChangeHowGetSecurityCodesActionRequest(): Validati
     body("cannotChangeHowGetSecurityCodeAction")
       .if(body("cannotChangeHowGetSecurityCodeAction").not().equals("true"))
       .notEmpty()
-      .withMessage(
-        "Select what you would like to do"
-      ),
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.cannotChangeHowGetSecurityCodeMfaReset.radios.radioValidationError",
+          {
+            value,
+          }
+        );
+      }),
     validateBodyMiddleware(
       "ipv-callback/index-cannot-change-how-get-security-codes.njk"
     ),
