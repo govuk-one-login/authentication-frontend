@@ -41,4 +41,12 @@ router.get(
   cannotChangeSecurityCodesGet
 );
 
+router.post(
+  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
+  validateCannotChangeHowGetSecurityCodesActionRequest(),
+  cannotChangeSecurityCodesPost
+);
+
 export { router as ipvCallbackRouter };

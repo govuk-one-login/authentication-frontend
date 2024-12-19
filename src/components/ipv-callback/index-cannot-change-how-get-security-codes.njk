@@ -16,7 +16,7 @@
   <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.paragraph1' | translate}}</p>
   <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.paragraph2' | translate}}</p>
 
-  <form action="/cannot-change-security-codes" method="post">
+  <form action="{{ formPostPath }}" method="post">
 
   <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
