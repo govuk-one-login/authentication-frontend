@@ -9,6 +9,10 @@
   {% include "common/errors/errorSummary.njk" %}
   <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.header' | translate}}</h1>
 
+  {% if variant === "identityFailed" %}
+    <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.identityFailedPreamble' | translate}}</p>
+  {% endif %}
+
   <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.paragraph1' | translate}}</p>
   <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.paragraph2' | translate}}</p>
 
