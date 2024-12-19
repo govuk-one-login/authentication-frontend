@@ -673,7 +673,8 @@
         "header": "Beth hoffech chi ei wneud?",
         "option1Text": "Cael help i ddileu eich GOV.UK One Login gan y tîm cymorth",
         "option1Hint": "Ffoniwch neu defnyddiwch gwe-sgwrs i gysylltu â’r tîm GOV.UK One Login",
-        "option2Text": "Ceisiwch roi cod diogelwch i mewn eto gyda’r dull rydych eisoes wedi’i sefydlu"
+        "option2Text": "Ceisiwch roi cod diogelwch i mewn eto gyda’r dull rydych eisoes wedi’i sefydlu",
+        "radioValidationError": "Dewiswch beth hoffech chi ei wneud"
       }
     },
     "changeSecurityCodesConfirmation": {
