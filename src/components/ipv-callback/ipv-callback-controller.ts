@@ -88,12 +88,16 @@ export function cannotChangeSecurityCodesGet(
   req: Request,
   res: Response
 ): void {
-  res.render("ipv-callback/index-cannot-change-how-get-security-codes.njk");
+  res.render("ipv-callback/index-cannot-change-how-get-security-codes.njk", {
+    variant: "incomplete",
+  });
 }
 
 export function cannotChangeSecurityCodesIdentityFailGet(
   req: Request,
   res: Response
 ): void {
-  res.send("identity-failed");
+  res.render("ipv-callback/index-cannot-change-how-get-security-codes.njk", {
+    variant: "identityFailed",
+  });
 }
