@@ -122,9 +122,6 @@ Conditions:
     Fn::Or:
       - Fn::Equals:
           - !Ref Environment
-          - "dev"
-      - Fn::Equals:
-          - !Ref Environment
           - "integration"
       # TODO Nginx sidecar is deployed in prod to block public access, while still using the transitional '-sp' domain
       # The following lines must be removed BEFORE we switch DNS
