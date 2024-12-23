@@ -438,3 +438,20 @@ variable "vpc_environment" {
   type        = string
   default     = null
 }
+
+variable "gov_uk_account_api" {
+  description = "The hostname of the account-api"
+}
+
+variable "apex_redirect_url" {
+  description = "The URL to redirect from the apex static page."
+}
+
+variable "gov_uk_frontend_version" {
+  type        = string
+  description = "The version of govuk frontend added to the repo to be deployed to cloudfront s3."
+}
+
+variable "apex_support_url" {
+  description = "The URL to redirect to the support for from the apex static page."
+}
