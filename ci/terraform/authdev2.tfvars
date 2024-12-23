@@ -11,6 +11,9 @@ session_expiry          = 300000
 gtm_id                  = ""
 redis_node_size         = "cache.t2.micro"
 vpc_environment         = "dev"
+gov_uk_account_api      = "account-api.authdev2.sandpit.auth.ida.digital.cabinet-office.gov.uk."
+apex_redirect_url       = "https://home.account.gov.uk"
+apex_support_url        = "https://signin.authdev2.sandpit.account.gov.uk/contact-us?supportType=PUBLIC"
 
 service_down_page         = false
 service_down_image_uri    = "706615647326.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository"

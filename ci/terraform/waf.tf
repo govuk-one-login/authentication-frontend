@@ -486,3 +486,188 @@ resource "aws_cloudwatch_log_subscription_filter" "frontend_cloudfront_waf_subsc
     create_before_destroy = false
   }
 }
+
+
+data "aws_iam_policy_document" "cloudfront_cloudwatch" {
+  provider = aws.cloudfront
+
+  policy_id = "key-policy-cloudwatch"
+
+  statement {
+    sid = "Enable IAM User Permissions for root user"
+    actions = [
+      "kms:*",
+    ]
+    effect = "Allow"
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root",
+      ]
+    }
+    resources = ["*"]
+  }
+
+  statement {
+    sid = "AllowCloudWatchLogs"
+    actions = [
+      "kms:Encrypt*",
+      "kms:Decrypt*",
+      "kms:Describe*",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+    ]
+    effect = "Allow"
+    principals {
+      type = "Service"
+      identifiers = [
+        "logs.us-east-1.amazonaws.com",
+      ]
+    }
+    resources = ["*"]
+  }
+}
+
+resource "aws_kms_key" "cloudfront_cloudwatch_log_encryption" {
+  provider = aws.cloudfront
+
+  description             = "KMS key for Core Cloudwatch logs"
+  deletion_window_in_days = 30
+  enable_key_rotation     = true
+  policy                  = data.aws_iam_policy_document.cloudfront_cloudwatch.json
+
+  tags = {
+    Service = "cloudfront"
+  }
+}
+
+resource "aws_cloudwatch_log_group" "apex_cloudfront_waf_log_group" {
+  provider = aws.cloudfront
+
+  name              = "aws-waf-logs-apex-cloudfrount-${var.environment}"
+  kms_key_id        = aws_kms_key.cloudfront_cloudwatch_log_encryption.arn
+  retention_in_days = var.cloudwatch_log_retention
+
+  tags = {
+    Service = "cloudfront"
+  }
+}
+
+resource "aws_cloudwatch_log_subscription_filter" "apex_cloudfront_waf_subscription" {
+  provider = aws.cloudfront
+
+  count           = length(var.logging_endpoint_arns)
+  name            = "${aws_cloudwatch_log_group.apex_cloudfront_waf_log_group.name}-splunk-subscription-${count.index}"
+  log_group_name  = aws_cloudwatch_log_group.apex_cloudfront_waf_log_group.name
+  filter_pattern  = ""
+  destination_arn = var.logging_endpoint_arns[count.index]
+
+  lifecycle {
+    create_before_destroy = false
+  }
+}
+
+resource "aws_wafv2_web_acl" "apex_cloudfront_waf_regional_web_acl" {
+  provider = aws.cloudfront
+
+  name  = "${var.environment}-apex-waf-web-acl"
+  scope = "CLOUDFRONT"
+
+  default_action {
+    allow {}
+  }
+
+  rule {
+    action {
+      block {}
+    }
+    priority = 1
+    name     = "${var.environment}-apex-waf-rate-based-rule"
+    statement {
+      rate_based_statement {
+        limit              = 5000
+        aggregate_key_type = "IP"
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${replace(var.environment, "-", "")}ApexWebsiteWafMaxRequestRate"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    override_action {
+      none {}
+    }
+    priority = 2
+    name     = "${var.environment}-apex-common-rule-set"
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${replace(var.environment, "-", "")}ApexWebsiteWafCommonRuleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    override_action {
+      none {}
+    }
+    priority = 3
+    name     = "${var.environment}-apex-bad-rule-set"
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesKnownBadInputsRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${replace(var.environment, "-", "")}ApexWebsiteWafBaduleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = "${replace(var.environment, "-", "")}ApexWebsiteWafRules"
+    sampled_requests_enabled   = true
+  }
+
+  tags = {
+    Service = "cloudfront"
+  }
+}
+
+resource "aws_wafv2_web_acl_logging_configuration" "apex_cloudfront_waf_logging_config" {
+  provider = aws.cloudfront
+
+  log_destination_configs = [aws_cloudwatch_log_group.apex_cloudfront_waf_log_group.arn]
+  resource_arn            = aws_wafv2_web_acl.apex_cloudfront_waf_regional_web_acl.arn
+
+  logging_filter {
+    default_behavior = "DROP"
+
+    filter {
+      behavior = "KEEP"
+
+      condition {
+        action_condition {
+          action = "BLOCK"
+        }
+      }
+
+      requirement = "MEETS_ANY"
+    }
+  }
+}
