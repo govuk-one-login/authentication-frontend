@@ -138,6 +138,12 @@ Conditions:
           - !Ref Environment
           - production
 
+  IsNotStaging:
+    Fn::Not:
+      - Fn::Equals:
+          - !Ref Environment
+          - staging
+
   IsSplunkEnabled:
     Fn::Or:
       - Fn::Equals:
@@ -811,6 +817,8 @@ Resources:
                 ]
             - Name: SUPPORT_NEW_IPV_SPINNER
               Value: !If [IsNotProduction, "1", "0"]
+            - Name: SUPPORT_HTTP_KEEP_ALIVE
+              Value: !If [IsNotStaging, "0", "1"]
             - Name: SUPPORT_MFA_RESET_WITH_IPV
               Value: !If [UseMfaResetWithIpv, "1", "0"]
           Secrets:
