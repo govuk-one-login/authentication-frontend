@@ -55,17 +55,19 @@
     </form>
 
     {% if isAccountRecoveryPermitted === true or isAccountRecoveryPermitted === "true" %}
-        {% set detailsHTML %}
-            <p class="govuk-body">
-                {{'pages.enterAuthenticatorAppCode.details.text1' | translate}}
-                <a href="{{mfaResetPath}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.text2'| translate}}</a>{{'pages.enterAuthenticatorAppCode.details.text3' | translate}}
-            </p>
-        {% endset %}
+        {% if supportMfaResetWithIpv === true or supportMfaResetWithIpv === "true" %}
+            {% set detailsHTML %}
+                <p class="govuk-body">
+                    {{'pages.enterAuthenticatorAppCode.details.text1' | translate}}
+                    <a href="{{mfaResetPath}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.text2'| translate}}</a>{{'pages.enterAuthenticatorAppCode.details.text3' | translate}}
+                </p>
+            {% endset %}
 
-        {{ govukDetails({
-            summaryText: 'pages.enterAuthenticatorAppCode.details.summary' | translate,
-            html: detailsHTML
-        }) }}
+            {{ govukDetails({
+                summaryText: 'pages.enterAuthenticatorAppCode.details.summary' | translate,
+                html: detailsHTML
+            }) }}
+        {% endif %}
     {% endif %}
 
 {{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: taxonomyLevel1, taxonomyLevel2: taxonomyLevel2, contentId: contentId, loggedInStatus: false, dynamic: false })}}
