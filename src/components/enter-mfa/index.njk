@@ -51,11 +51,19 @@
     </p>
 
     {% if supportAccountRecovery === true or supportAccountRecovery === "true" %}
+      {%  if supportMfaResetWithIpv === true or supportMfaResetWithIpv === "true" %}
         <p class="govuk-body">
-            {{ 'pages.enterMfa.details.changeGetSecurityCodesText' | translate }}
-            <a href={{ mfaResetPath }} class="govuk-link"
-               rel="noreferrer noopener">{{ 'pages.enterMfa.details.changeGetSecurityCodesLinkText'| translate }}</a>.
+          {{ 'pages.enterMfa.details.changeGetSecurityCodesTextMfaResetWithIpv' | translate }}
+          <a href={{ mfaResetPath }} class="govuk-link"
+             rel="noreferrer noopener">{{ 'pages.enterMfa.details.changeGetSecurityCodesTextMfaResetWithIpvLinkText'| translate }}</a>.
         </p>
+      {% else %}
+        <p class="govuk-body">
+          {{ 'pages.enterMfa.details.changeGetSecurityCodesText' | translate }}
+          <a href={{ mfaResetPath }} class="govuk-link"
+             rel="noreferrer noopener">{{ 'pages.enterMfa.details.changeGetSecurityCodesLinkText'| translate }}</a>.
+        </p>
+      {% endif %}
     {% endif %}
     {% endset %}
 
