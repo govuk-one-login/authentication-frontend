@@ -9,6 +9,8 @@ service_domain          = "authdev1.sandpit.account.gov.uk"
 zone_id                 = "Z062000928I8D7S9X1OVA"
 session_expiry          = 300000
 gtm_id                  = ""
+redis_node_size         = "cache.t2.micro"
+vpc_environment         = "dev"
 
 support_account_recovery                            = "1"
 support_authorize_controller                        = "1"
@@ -26,12 +28,13 @@ support_new_ipv_spinner                             = "1"
 
 frontend_task_definition_cpu     = 512
 frontend_task_definition_memory  = 1024
-frontend_auto_scaling_v2_enabled = true
-deployment_min_healthy_percent   = 100
-deployment_max_percent           = 200
-frontend_auto_scaling_min_count  = 1
-frontend_auto_scaling_max_count  = 2
-ecs_desired_count                = 1
+frontend_auto_scaling_v2_enabled = false # Auto scaling not enabled in Authdev2 as its sharing the Dev ecs cluster
+# To enable Autoscaling in authdev2 we need to move the ecs Cluster creation from core repo to frontend repo
+deployment_min_healthy_percent  = 100
+deployment_max_percent          = 200
+frontend_auto_scaling_min_count = 1
+frontend_auto_scaling_max_count = 2
+ecs_desired_count               = 1
 
 # cloudfront flag
 cloudfront_auth_frontend_enabled = true
