@@ -56,12 +56,18 @@
 
     {% if isAccountRecoveryPermitted === true or isAccountRecoveryPermitted === "true" %}
         {% set detailsHTML %}
+        {% if supportMfaResetWithIpv === true or supportMfaResetWithIpv === "true" %}
+            <p class="govuk-body">
+                {{'pages.enterAuthenticatorAppCode.details.text1MfaResetWithIpv' | translate}}
+                <a href="{{mfaResetPath}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.text2MfaResetWithIpv'| translate}}</a>{{'pages.enterAuthenticatorAppCode.details.text3' | translate}}
+            </p>
+        {% else %}
             <p class="govuk-body">
                 {{'pages.enterAuthenticatorAppCode.details.text1' | translate}}
                 <a href="{{mfaResetPath}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.text2'| translate}}</a>{{'pages.enterAuthenticatorAppCode.details.text3' | translate}}
             </p>
+        {% endif %}
         {% endset %}
-
         {{ govukDetails({
             summaryText: 'pages.enterAuthenticatorAppCode.details.summary' | translate,
             html: detailsHTML

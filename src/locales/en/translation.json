@@ -2526,6 +2526,8 @@
         "summary": "I do not have access to the authenticator app",
         "text1": "You can securely ",
         "text2": "change how you get security codes",
+        "text1MfaResetWithIpv": "If you no longer have access to your authenticator app, ",
+        "text2MfaResetWithIpv": "check if you can change how you get security codes",
         "text3": "."
       },
       "upliftRequired": {
