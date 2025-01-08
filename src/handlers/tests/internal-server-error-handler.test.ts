@@ -18,6 +18,9 @@ describe("serverErrorHandler", () => {
       status: function (newStatus: number) {
         this.statusCode = newStatus;
       },
+      locals: {
+        strategicAppChannel: false,
+      },
     } as unknown as Response;
     next = sinon.spy();
   });
