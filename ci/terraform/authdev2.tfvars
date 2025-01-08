@@ -1,16 +1,11 @@
-environment             = "authdev2"
-common_state_bucket     = "di-auth-development-tfstate"
-aws_region              = "eu-west-2"
-account_management_fqdn = "acc-mgmt-fg.authdev2.sandpit.auth.ida.digital.cabinet-office.gov.uk"
-oidc_api_fqdn           = "oidc.authdev2.sandpit.account.gov.uk"
-frontend_fqdn           = "signin.authdev2.sandpit.account.gov.uk"
-frontend_api_fqdn       = "auth.authdev2.sandpit.account.gov.uk"
-service_domain          = "authdev2.sandpit.account.gov.uk"
-zone_id                 = "Z062000928I8D7S9X1OVA"
-session_expiry          = 300000
-gtm_id                  = ""
-redis_node_size         = "cache.t2.micro"
-vpc_environment         = "dev"
+environment         = "authdev2"
+common_state_bucket = "di-auth-development-tfstate"
+aws_region          = "eu-west-2"
+service_domain      = "authdev2.sandpit.account.gov.uk"
+session_expiry      = 300000
+gtm_id              = ""
+redis_node_size     = "cache.t2.micro"
+vpc_environment     = "dev"
 
 service_down_page         = false
 service_down_image_uri    = "706615647326.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository"
@@ -39,11 +34,6 @@ deployment_max_percent          = 200
 frontend_auto_scaling_min_count = 1
 frontend_auto_scaling_max_count = 2
 ecs_desired_count               = 1
-
-# cloudfront flag
-cloudfront_auth_frontend_enabled = true
-cloudfront_auth_dns_enabled      = true
-
 
 alb_idle_timeout = 30
 
