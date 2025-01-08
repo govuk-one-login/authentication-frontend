@@ -13,15 +13,6 @@ resource "aws_wafv2_ip_set" "cf_gds_ip_set" {
     "217.196.229.81/32",
     "51.149.8.0/25",   # (GDS and CO VPN)
     "51.149.8.128/29", # (BYOD VPN only)
-    # The following are Pentesters, requested on AUT-2360
-    "51.142.180.30/32",
-    "185.120.72.241/32",
-    "185.120.72.242/32",
-    "185.120.72.243/32",
-    # The following are Pentesters, requested on AUT-2596
-    "3.9.227.33/32",
-    "18.132.149.145/32"
-
   ]
 }
 
