@@ -108,6 +108,13 @@
       "uniqueParagraph": "Dylech ddefnyddio cyfrinair nad ydych yn ei ddefnyddio ar gyfer unrhyw beth arall."
     }
   },
+  "mobileAppError": {
+    "timeoutError": {
+      "content": {
+        "paragraph2": "Canslwch y dudalen hon a cheisiwch fewngofnodi eto."
+      }
+    }
+  },
   "error": {
     "error404": {
       "title": "Tudalen heb ei darganfod",
@@ -133,7 +140,7 @@
       "title": "Mae’n ddrwg gennym, mae’r dudalen wedi dod i ben",
       "header": "Mae’n ddrwg gennym, mae’r dudalen wedi dod i ben",
       "content": {
-        "paragraph1": "Mae hyn oherwydd nad ydych wedi defnyddio GOV.UK One Login am fwy nag awr. ",
+        "paragraph1": "Mae hyn oherwydd nad ydych wedi defnyddio GOV.UK One Login am fwy nag awr.",
         "whatYouCanDo": "Beth allwch chi ei wneud",
         "paragraph2": "Ewch yn ôl i’r gwasanaeth roeddech chi’n ceisio ei ddefnyddio a dechrau eto. Gallwch chwilio am y gwasanaeth gan ddefnyddio eich peiriant chwilio neu dewch o hyd iddo o hafan GOV.UK.",
         "govUKHomepageButtonHref": "https://www.gov.uk/",

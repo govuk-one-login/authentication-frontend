@@ -108,6 +108,13 @@
       "uniqueParagraph": "You should use a password that you do not use for anything else."
     }
   },
+  "mobileAppError": {
+    "timeoutError": {
+      "content": {
+        "paragraph2": "Cancel this page and try signing in again."
+      }
+    }
+  },
   "error": {
     "error404": {
       "title": "Page not found",
