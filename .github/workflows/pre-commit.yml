@@ -30,6 +30,9 @@ jobs:
           cache: "yarn"
           cache-dependency-path: "yarn.lock"
 
+      - name: 🏗️ Set up Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+
       - name: Install dependencies
         run: yarn install
 
