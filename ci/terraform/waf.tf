@@ -68,7 +68,7 @@ resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
     action {
       block {}
     }
-    priority = 20
+    priority = 11
     name     = "${var.environment}-frontend-cloudfront-waf-rate-based-rule"
     statement {
       rate_based_statement {
@@ -83,106 +83,197 @@ resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
     }
   }
 
-  rule {
-    name     = "BlockMoreThan100CheckYourEmailRequestsFromIPPer5Minutes"
-    priority = 21
-    rule_label {
-      name = "MoreThan100CheckYourEmailRequestsFromIPPer5Minutes"
-    }
+  dynamic "rule" {
+    for_each = local.ip_endpoint_rate_limiting_configuration
+    content {
+      name     = "BlockMoreThan${rule.value.limit}RequestsFromIpPer${rule.value.evaluation_window_sec}Seconds"
+      priority = 20 + rule.key
+      rule_label {
+        name = "TooManyRequestsFromIpOnSpecificEndpoints"
+      }
 
-    action {
-      block {}
-    }
+      action {
+        block {}
+      }
 
-    statement {
-      rate_based_statement {
-        limit                 = var.environment == "staging" ? 20000000 : var.rate_limited_endpoints_requests_per_period
-        evaluation_window_sec = var.rate_limited_endpoints_rate_limit_period
-        aggregate_key_type    = "IP"
+      statement {
+        rate_based_statement {
+          limit                 = rule.value.limit
+          evaluation_window_sec = rule.value.evaluation_window_sec
+          aggregate_key_type    = "CUSTOM_KEYS"
+          custom_key {
+            ip {}
+          }
+          custom_key {
+            uri_path {
+              text_transformation {
+                priority = 0
+                type     = "URL_DECODE"
+              }
+              text_transformation {
+                priority = 1
+                type     = "LOWERCASE"
+              }
+            }
+          }
 
-
-        scope_down_statement {
-          or_statement {
-            dynamic "statement" {
-              for_each = var.rate_limited_endpoints
+          scope_down_statement {
+            dynamic "or_statement" {
+              // If there are more than 1 provided endpoints, use an or_statement
+              for_each = length(rule.value.endpoints) > 1 ? [1] : []
               content {
-                byte_match_statement {
-                  positional_constraint = "STARTS_WITH"
-                  search_string         = statement.value
-                  field_to_match {
-                    uri_path {}
+                dynamic "statement" {
+                  for_each = rule.value.endpoints
+                  content {
+                    byte_match_statement {
+                      positional_constraint = "STARTS_WITH"
+                      search_string         = lower(statement.value)
+                      field_to_match {
+                        uri_path {}
+                      }
+                      text_transformation {
+                        priority = 0
+                        type     = "URL_DECODE"
+                      }
+                      text_transformation {
+                        priority = 1
+                        type     = "LOWERCASE"
+                      }
+                    }
                   }
-                  text_transformation {
-                    priority = 0
-                    type     = "LOWERCASE"
-                  }
+                }
+              }
+            }
+            dynamic "byte_match_statement" {
+              // If there's only 1 endpoint, just create the single byte_match_statement
+              for_each = length(rule.value.endpoints) == 1 ? rule.value.endpoints : []
+              content {
+                positional_constraint = "STARTS_WITH"
+                search_string         = lower(byte_match_statement.value)
+                field_to_match {
+                  uri_path {}
+                }
+                text_transformation {
+                  priority = 0
+                  type     = "URL_DECODE"
+                }
+                text_transformation {
+                  priority = 1
+                  type     = "LOWERCASE"
                 }
               }
             }
           }
         }
       }
-    }
 
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafMoreThan100CheckYourEmailRequestsFromIPPer5Minutes"
-      sampled_requests_enabled   = true
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafRatelimitByIP${rule.value.limit}Per${rule.value.evaluation_window_sec}"
+        sampled_requests_enabled   = true
+      }
     }
   }
 
-  rule {
-    name     = "BlockMoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes"
-    priority = 22
+  dynamic "rule" {
+    for_each = local.aps_session_endpoint_rate_limiting_configuration
+    content {
+      name     = "BlockMoreThan${rule.value.limit}RequestsFromOneApsSessionPer${rule.value.evaluation_window_sec}Seconds"
+      priority = 30 + rule.key
+      rule_label {
+        name = "TooManyRequestsFromOneApsSessionOnSpecificEndpoints"
+      }
 
-    rule_label {
-      name = "MoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes"
-    }
+      action {
+        block {}
+      }
 
-    action {
-      block {}
-    }
-
-    statement {
-      rate_based_statement {
-        limit                 = var.environment == "staging" ? 20000000 : var.rate_limited_endpoints_requests_per_period
-        evaluation_window_sec = var.rate_limited_endpoints_rate_limit_period
-        aggregate_key_type    = "CUSTOM_KEYS"
-        custom_key {
-          cookie {
-            name = "aps"
-            text_transformation {
-              priority = 0
-              type     = "URL_DECODE"
+      statement {
+        rate_based_statement {
+          limit                 = rule.value.limit
+          evaluation_window_sec = rule.value.evaluation_window_sec
+          aggregate_key_type    = "CUSTOM_KEYS"
+          custom_key {
+            cookie {
+              name = "aps"
+              text_transformation {
+                priority = 0
+                type     = "URL_DECODE"
+              }
+              text_transformation {
+                priority = 1
+                type     = "LOWERCASE"
+              }
             }
           }
-        }
-        scope_down_statement {
-          or_statement {
-            dynamic "statement" {
-              for_each = var.rate_limited_endpoints
+          custom_key {
+            uri_path {
+              text_transformation {
+                priority = 0
+                type     = "URL_DECODE"
+              }
+              text_transformation {
+                priority = 1
+                type     = "LOWERCASE"
+              }
+            }
+          }
+
+          scope_down_statement {
+            dynamic "or_statement" {
+              // If there are more than 1 provided endpoints, use an or_statement
+              for_each = length(rule.value.endpoints) > 1 ? [1] : []
               content {
-                byte_match_statement {
-                  positional_constraint = "STARTS_WITH"
-                  search_string         = statement.value
-                  field_to_match {
-                    uri_path {}
+                dynamic "statement" {
+                  for_each = rule.value.endpoints
+                  content {
+                    byte_match_statement {
+                      positional_constraint = "STARTS_WITH"
+                      search_string         = lower(statement.value)
+                      field_to_match {
+                        uri_path {}
+                      }
+                      text_transformation {
+                        priority = 0
+                        type     = "URL_DECODE"
+                      }
+                      text_transformation {
+                        priority = 1
+                        type     = "LOWERCASE"
+                      }
+                    }
                   }
-                  text_transformation {
-                    priority = 0
-                    type     = "LOWERCASE"
-                  }
+                }
+              }
+            }
+            dynamic "byte_match_statement" {
+              // If there's only 1 endpoint, just create the single byte_match_statement
+              for_each = length(rule.value.endpoints) == 1 ? rule.value.endpoints : []
+              content {
+                positional_constraint = "STARTS_WITH"
+                search_string         = lower(byte_match_statement.value)
+                field_to_match {
+                  uri_path {}
+                }
+                text_transformation {
+                  priority = 0
+                  type     = "URL_DECODE"
+                }
+                text_transformation {
+                  priority = 1
+                  type     = "LOWERCASE"
                 }
               }
             }
           }
         }
       }
-    }
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafMoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes"
-      sampled_requests_enabled   = true
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafRatelimitByApsSession${rule.value.limit}Per${rule.value.evaluation_window_sec}"
+        sampled_requests_enabled   = true
+      }
     }
   }
 
@@ -190,7 +281,7 @@ resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
     override_action {
       none {}
     }
-    priority = 30
+    priority = 40
     name     = "${var.environment}-frontend-cloudfront-common-rule-set"
 
     statement {
@@ -248,7 +339,7 @@ resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
     override_action {
       none {}
     }
-    priority = 40
+    priority = 50
     name     = "${var.environment}-frontend-cloudfront-bad-rule-set"
 
     statement {
@@ -267,7 +358,7 @@ resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
 
   rule {
     name     = "default_query_param_limit"
-    priority = 50
+    priority = 60
 
     action {
       block {}
@@ -318,7 +409,7 @@ resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
 
   rule {
     name     = "extended_query_param_limit"
-    priority = 60
+    priority = 70
 
     action {
       block {}
@@ -381,6 +472,13 @@ resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
     cloudwatch_metrics_enabled = true
     metric_name                = "${replace(var.environment, "-", "")}FrontendcloudfrontWafRules"
     sampled_requests_enabled   = true
+  }
+
+  lifecycle {
+    precondition {
+      condition     = length(local.ip_endpoint_rate_limiting_configuration) + length(local.aps_session_endpoint_rate_limiting_configuration) < 9
+      error_message = "There can't be more than 9 endpoint_rate_limiting_configuration (quota is shared between IP and APS session)"
+    }
   }
 }
 

@@ -62,3 +62,24 @@ dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:Dyn
 
 ua_enabled              = "true"
 analytics_cookie_domain = ".sandpit.account.gov.uk"
+
+ip_endpoint_rate_limiting_configuration = [
+  {
+    endpoints             = ["/check-your-email", "/check-your-phone"]
+    evaluation_window_sec = 300
+    limit                 = 100
+  },
+  {
+    endpoints             = ["/test-endpoint"]
+    evaluation_window_sec = 60
+    limit                 = 10
+  }
+]
+
+aps_session_endpoint_rate_limiting_configuration = [
+  {
+    endpoints             = ["/check-your-email", "/check-your-phone"]
+    evaluation_window_sec = 300
+    limit                 = 100
+  }
+]

@@ -307,25 +307,101 @@ variable "alb_idle_timeout" {
 }
 
 variable "rate_limited_endpoints" {
-  description = "List of endpoints that should be rate limited by session and IP"
+  description = "**DEPRECATED** List of endpoints that should be rate limited by session and IP"
   type        = list(string)
-  default     = ["/dummy-77349847-9ce0-499c-b378-6d9b49a24d6a", "/dummy-168a5a48-62f9-44b1-b9ea-d4c8a74b8498"] # default to two uuids, which are not real endpoints. This prevents us from having an empty or statement
-  validation {
-    condition     = length(var.rate_limited_endpoints) >= 2
-    error_message = "rate_limited_endpoints must contain at least two endpoints. If you only have one endpoint, add a non-existent dummy, eg. `/dummy-77349847-9ce0-499c-b378-6d9b49a24d6a`"
-  }
+  default     = []
 }
 
 variable "rate_limited_endpoints_rate_limit_period" {
-  description = "Period in seconds for rate limiting for rate limited endpoints"
+  description = "**DEPRECATED** Period in seconds for rate limiting for rate limited endpoints"
   type        = number
   default     = 120
 }
 
 variable "rate_limited_endpoints_requests_per_period" {
-  description = "Number of requests per period allowed for rate limited endpoints"
+  description = "**DEPRECATED** Number of requests per period allowed for rate limited endpoints"
   type        = number
   default     = 100000
+}
+
+variable "ip_endpoint_rate_limiting_configuration" {
+  description = "Configuration to rate limit endpoints by IP"
+  type = list(object({
+    endpoints             = list(string)
+    evaluation_window_sec = number
+    limit                 = number
+  }))
+
+  default = []
+
+  validation {
+    condition     = length(var.ip_endpoint_rate_limiting_configuration) <= 9
+    error_message = "There can be at most 9 configurations"
+  }
+
+  validation {
+    condition     = length(var.ip_endpoint_rate_limiting_configuration) == 0 || alltrue([for config in var.ip_endpoint_rate_limiting_configuration : length(config.endpoints) > 0])
+    error_message = "Each object in the list must have more than 0 endpoints."
+  }
+  validation {
+    condition     = length(var.ip_endpoint_rate_limiting_configuration) == 0 || alltrue([for config in var.ip_endpoint_rate_limiting_configuration : contains([60, 120, 300, 600], config.evaluation_window_sec)])
+    error_message = "evaluation_window_sec must be one of 60, 120, 300, or 600."
+  }
+  validation {
+    condition     = length(var.ip_endpoint_rate_limiting_configuration) == 0 || alltrue([for config in var.ip_endpoint_rate_limiting_configuration : config.limit >= 10])
+    error_message = "limit must be >= 10."
+  }
+}
+
+locals {
+  // for transition to new-style configuration. remove once all environments have had variables updated
+  ip_endpoint_rate_limiting_configuration = length(var.ip_endpoint_rate_limiting_configuration) > 0 ? var.ip_endpoint_rate_limiting_configuration : [
+    {
+      endpoints             = var.rate_limited_endpoints
+      evaluation_window_sec = var.rate_limited_endpoints_rate_limit_period
+      limit                 = var.rate_limited_endpoints_requests_per_period
+    }
+  ]
+}
+
+variable "aps_session_endpoint_rate_limiting_configuration" {
+  description = "Configuration to rate limit endpoints by aps cookie value"
+  type = list(object({
+    endpoints             = list(string)
+    evaluation_window_sec = number
+    limit                 = number
+  }))
+
+  default = []
+
+  validation {
+    condition     = length(var.aps_session_endpoint_rate_limiting_configuration) <= 9
+    error_message = "There can be at most 9 configurations"
+  }
+
+  validation {
+    condition     = length(var.aps_session_endpoint_rate_limiting_configuration) == 0 || alltrue([for config in var.aps_session_endpoint_rate_limiting_configuration : length(config.endpoints) > 0])
+    error_message = "Each object in the list must have more than 0 endpoints."
+  }
+  validation {
+    condition     = length(var.aps_session_endpoint_rate_limiting_configuration) == 0 || alltrue([for config in var.aps_session_endpoint_rate_limiting_configuration : contains([60, 120, 300, 600], config.evaluation_window_sec)])
+    error_message = "evaluation_window_sec must be one of 60, 120, 300, or 600."
+  }
+  validation {
+    condition     = length(var.aps_session_endpoint_rate_limiting_configuration) == 0 || alltrue([for config in var.aps_session_endpoint_rate_limiting_configuration : config.limit >= 10])
+    error_message = "limit must be >= 10."
+  }
+}
+
+locals {
+  // for transition to new-style configuration. remove once all environments have had variables updated
+  aps_session_endpoint_rate_limiting_configuration = length(var.aps_session_endpoint_rate_limiting_configuration) > 0 ? var.aps_session_endpoint_rate_limiting_configuration : [
+    {
+      endpoints             = var.rate_limited_endpoints
+      evaluation_window_sec = var.rate_limited_endpoints_rate_limit_period
+      limit                 = var.rate_limited_endpoints_requests_per_period
+    }
+  ]
 }
 
 
