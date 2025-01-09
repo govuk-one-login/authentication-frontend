@@ -75,7 +75,7 @@ resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
   }
 
   dynamic "rule" {
-    for_each = local.ip_endpoint_rate_limiting_configuration
+    for_each = var.ip_endpoint_rate_limiting_configuration
     content {
       name     = "BlockMoreThan${rule.value.limit}RequestsFromIpPer${rule.value.evaluation_window_sec}Seconds"
       priority = 20 + rule.key
@@ -167,7 +167,7 @@ resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
   }
 
   dynamic "rule" {
-    for_each = local.aps_session_endpoint_rate_limiting_configuration
+    for_each = var.aps_session_endpoint_rate_limiting_configuration
     content {
       name     = "BlockMoreThan${rule.value.limit}RequestsFromOneApsSessionPer${rule.value.evaluation_window_sec}Seconds"
       priority = 30 + rule.key
@@ -467,7 +467,7 @@ resource "aws_wafv2_web_acl" "frontend_cloudfront_waf_web_acl" {
 
   lifecycle {
     precondition {
-      condition     = length(local.ip_endpoint_rate_limiting_configuration) + length(local.aps_session_endpoint_rate_limiting_configuration) < 9
+      condition     = length(var.ip_endpoint_rate_limiting_configuration) + length(var.aps_session_endpoint_rate_limiting_configuration) < 9
       error_message = "There can't be more than 9 endpoint_rate_limiting_configuration (quota is shared between IP and APS session)"
     }
   }
