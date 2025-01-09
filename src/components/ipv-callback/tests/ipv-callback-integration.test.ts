@@ -1,7 +1,12 @@
 import { describe } from "mocha";
 import decache from "decache";
 import { expect, request, sinon } from "../../../../test/utils/test-utils";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
+import {
+  API_ENDPOINTS,
+  CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,
+  MFA_METHOD_TYPE,
+  PATH_NAMES,
+} from "../../../app.constants";
 import express from "express";
 import nock from "nock";
 import * as cheerio from "cheerio";
@@ -92,53 +97,24 @@ describe("Integration:: ipv callback", () => {
   });
 
   describe("cannot change how get security codes", () => {
-    let token: string | string[];
-    let cookies: string;
-
     before(async () => {
-      decache("../../../app");
-      decache("../../../middleware/session-middleware");
       process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
-      sessionMiddleware = require("../../../middleware/session-middleware");
-
-      sinon
-        .stub(sessionMiddleware, "validateSessionMiddleware")
-        .callsFake(function (req: any, res: any, next: any): void {
-          res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-
-          req.session.user = {
-            email: "test@test.com",
-            phoneNumber: "7867",
-            journey: {
-              nextPath: PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
-            },
-          };
-
-          next();
-        });
-
-      app = await require("../../../app").createApp();
-
-      await request(
-        app,
-        (test) => test.get(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      ).then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
     });
 
     after(() => {
-      app = undefined;
       nock.cleanAll();
+    });
+
+    afterEach(() => {
+      app = undefined;
       sinon.restore();
     });
 
     it("returns a dummy page when an option is selected", async () => {
+      const app = await stubSessionMiddlewareAndCreateApp();
+      const { token, cookies } =
+        await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
+
       await request(
         app,
         (test) => test.post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
@@ -150,7 +126,8 @@ describe("Integration:: ipv callback", () => {
         .set("Cookie", cookies)
         .send({
           _csrf: token,
-          cannotChangeHowGetSecurityCodeAction: "help-to-delete-account",
+          cannotChangeHowGetSecurityCodeAction:
+            CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.HELP_DELETE_ACCOUNT,
         })
         .expect(function (res) {
           expect(res.text).to.equals("In development");
@@ -159,6 +136,10 @@ describe("Integration:: ipv callback", () => {
     });
 
     it("returns a validation error when no option is selected", async () => {
+      const app = await stubSessionMiddlewareAndCreateApp();
+      const { token, cookies } =
+        await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
+
       await request(
         app,
         (test) => test.post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
@@ -180,5 +161,98 @@ describe("Integration:: ipv callback", () => {
         })
         .expect(400);
     });
+
+    it("goes to /enter-code when user selects retry security code radio button and their mfaMethodType is SMS", async () => {
+      const app = await stubSessionMiddlewareAndCreateApp(MFA_METHOD_TYPE.SMS);
+      const { token, cookies } =
+        await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
+
+      await request(
+        app,
+        (test) => test.post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
+        {
+          expectAnalyticsPropertiesMatchSnapshot: false,
+        }
+      )
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          cannotChangeHowGetSecurityCodeAction:
+            CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.RETRY_SECURITY_CODE,
+        })
+        .expect("Location", PATH_NAMES.ENTER_MFA)
+        .expect(302);
+    });
+
+    it("goes to /enter-authenticator-app-code when user selects retry security code radio button and their mfaMethodType is AUTH_APP", async () => {
+      const app = await stubSessionMiddlewareAndCreateApp(
+        MFA_METHOD_TYPE.AUTH_APP
+      );
+      const { token, cookies } =
+        await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
+
+      await request(
+        app,
+        (test) => test.post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
+        {
+          expectAnalyticsPropertiesMatchSnapshot: false,
+        }
+      )
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          cannotChangeHowGetSecurityCodeAction:
+            CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.RETRY_SECURITY_CODE,
+        })
+        .expect("Location", PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+        .expect(302);
+    });
   });
 });
+
+const stubSessionMiddlewareAndCreateApp = async (
+  mfaMethodType?: MFA_METHOD_TYPE
+): Promise<express.Application> => {
+  decache("../../../app");
+  decache("../../../middleware/session-middleware");
+  const sessionMiddleware = require("../../../middleware/session-middleware");
+
+  sinon
+    .stub(sessionMiddleware, "validateSessionMiddleware")
+    .callsFake(function (req: any, res: any, next: any): void {
+      res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+
+      req.session.user = {
+        email: "test@test.com",
+        phoneNumber: "7867",
+        journey: {
+          nextPath: PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+        },
+        mfaMethodType: mfaMethodType,
+      };
+
+      next();
+    });
+
+  return await require("../../../app").createApp();
+};
+
+const getCannotChangeSecurityCodesAndReturnTokenAndCookies = async (
+  app: express.Application
+) => {
+  let cookies, token;
+  await request(
+    app,
+    (test) => test.get(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
+    {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }
+  ).then((res) => {
+    const $ = cheerio.load(res.text);
+    token = $("[name=_csrf]").val();
+    cookies = res.headers["set-cookie"];
+  });
+  return { token, cookies };
+};

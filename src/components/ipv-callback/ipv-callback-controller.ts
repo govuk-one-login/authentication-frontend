@@ -10,7 +10,11 @@ import { reverificationResultService } from "./reverification-result-service";
 import { BadRequestError } from "../../utils/error";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { PATH_NAMES } from "../../app.constants";
+import {
+  CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,
+  MFA_METHOD_TYPE,
+  PATH_NAMES,
+} from "../../app.constants";
 
 const ERROR_TO_EVENT_MAP = new Map<string, string>();
 ERROR_TO_EVENT_MAP.set(
@@ -98,9 +102,29 @@ export function cannotChangeSecurityCodesGet(
   });
 }
 
-export function cannotChangeSecurityCodesPost(
+export async function cannotChangeSecurityCodesPost(
   req: Request,
   res: Response
-): void {
-  res.send("In development");
+): Promise<void> {
+  const { sessionId } = res.locals;
+  const cannotChangeHowGetSecurityCodeAction =
+    req.body.cannotChangeHowGetSecurityCodeAction;
+  if (
+    cannotChangeHowGetSecurityCodeAction ===
+    CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.RETRY_SECURITY_CODE
+  ) {
+    return res.redirect(
+      await getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        req.session.user.mfaMethodType === MFA_METHOD_TYPE.SMS
+          ? USER_JOURNEY_EVENTS.VERIFY_MFA
+          : USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE,
+        {},
+        sessionId
+      )
+    );
+  } else {
+    res.send("In development");
+  }
 }
