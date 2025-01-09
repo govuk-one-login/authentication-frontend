@@ -306,24 +306,6 @@ variable "alb_idle_timeout" {
   default     = 60
 }
 
-variable "rate_limited_endpoints" {
-  description = "**DEPRECATED** List of endpoints that should be rate limited by session and IP"
-  type        = list(string)
-  default     = []
-}
-
-variable "rate_limited_endpoints_rate_limit_period" {
-  description = "**DEPRECATED** Period in seconds for rate limiting for rate limited endpoints"
-  type        = number
-  default     = 120
-}
-
-variable "rate_limited_endpoints_requests_per_period" {
-  description = "**DEPRECATED** Number of requests per period allowed for rate limited endpoints"
-  type        = number
-  default     = 100000
-}
-
 variable "ip_endpoint_rate_limiting_configuration" {
   description = "Configuration to rate limit endpoints by IP"
   type = list(object({
@@ -351,17 +333,6 @@ variable "ip_endpoint_rate_limiting_configuration" {
     condition     = length(var.ip_endpoint_rate_limiting_configuration) == 0 || alltrue([for config in var.ip_endpoint_rate_limiting_configuration : config.limit >= 10])
     error_message = "limit must be >= 10."
   }
-}
-
-locals {
-  // for transition to new-style configuration. remove once all environments have had variables updated
-  ip_endpoint_rate_limiting_configuration = length(var.ip_endpoint_rate_limiting_configuration) > 0 ? var.ip_endpoint_rate_limiting_configuration : [
-    {
-      endpoints             = var.rate_limited_endpoints
-      evaluation_window_sec = var.rate_limited_endpoints_rate_limit_period
-      limit                 = var.rate_limited_endpoints_requests_per_period
-    }
-  ]
 }
 
 variable "aps_session_endpoint_rate_limiting_configuration" {
@@ -392,18 +363,6 @@ variable "aps_session_endpoint_rate_limiting_configuration" {
     error_message = "limit must be >= 10."
   }
 }
-
-locals {
-  // for transition to new-style configuration. remove once all environments have had variables updated
-  aps_session_endpoint_rate_limiting_configuration = length(var.aps_session_endpoint_rate_limiting_configuration) > 0 ? var.aps_session_endpoint_rate_limiting_configuration : [
-    {
-      endpoints             = var.rate_limited_endpoints
-      evaluation_window_sec = var.rate_limited_endpoints_rate_limit_period
-      limit                 = var.rate_limited_endpoints_requests_per_period
-    }
-  ]
-}
-
 
 variable "service_down_page" {
   type        = bool
