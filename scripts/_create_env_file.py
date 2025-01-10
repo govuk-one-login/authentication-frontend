@@ -503,11 +503,18 @@ if __name__ == "__main__":
         logger.error("Deploy environment must be specified")
         sys.exit(1)
 
-    _aws_profile_name = "gds-di-development-admin"
-    _state_bucket_name = "digital-identity-dev-tfstate"
-    if re.match(r"^authdev[0-9]+$", deploy_env):
+    if deploy_env in ["sandpit", "build"]:
+        _aws_profile_name = "gds-di-development-admin"
+        _state_bucket_name = "digital-identity-dev-tfstate"
+    elif re.match(r"^authdev[0-9]+$|^dev$", deploy_env):
         _aws_profile_name = "di-auth-development-admin"
         _state_bucket_name = "di-auth-development-tfstate"
+    elif deploy_env == "staging":
+        _aws_profile_name = "di-auth-staging-admin"
+        _state_bucket_name = "di-auth-staging-tfstate"
+    else:
+        logger.error(f"Error: Unknown environment: {deploy_env}")
+        sys.exit(1)
 
     try:
         STATE_GETTER = StateGetter(deploy_env, _state_bucket_name, _aws_profile_name)
