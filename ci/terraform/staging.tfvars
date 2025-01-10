@@ -26,6 +26,7 @@ language_toggle_enabled                             = "1"
 no_photo_id_contact_forms                           = "1"
 support_new_ipv_spinner                             = "1"
 support_http_keep_alive                             = "1"
+support_mfa_reset_with_ipv                          = "1"
 
 url_for_support_links = "https://home.staging.account.gov.uk/contact-gov-uk-one-login"
 
