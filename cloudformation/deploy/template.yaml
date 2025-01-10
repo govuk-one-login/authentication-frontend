@@ -173,13 +173,9 @@ Conditions:
   SwitchToMigratedZone:
     Fn::And:
       - !Condition MaintainMigratedZoneRecords
-      - Fn::Or:
-          - Fn::Equals:
-              - !Ref Environment
-              - "placeholder"
-          - Fn::Equals:
-              - !Ref Environment
-              - "staging"
+      - Fn::Equals:
+          - !Ref Environment
+          - "placeholder"
 
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
