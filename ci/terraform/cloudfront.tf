@@ -1,20 +1,19 @@
 resource "aws_cloudformation_stack" "cloudfront" {
   name = "${var.environment}-auth-fe-cloudfront"
   #using fixed version of cloudfron disturbution template for now
-  template_url = "https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/cloudfront-distribution/template.yaml?versionId=jZcckkadQOPteu3t24UktqjOehImqD1K"
+  template_url = "https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/cloudfront-distribution/template.yaml?versionId=._qPLI5sbnZN3T3jHF7fezX8BT6fK3j3"
 
   capabilities = ["CAPABILITY_NAMED_IAM"]
 
   parameters = {
-    DistributionAlias            = local.frontend_fqdn
-    CloudFrontCertArn            = aws_acm_certificate.cloudfront_frontend_certificate.arn
     AddWWWPrefix                 = var.Add_WWWPrefix
+    CloudFrontCertArn            = aws_acm_certificate.cloudfront_frontend_certificate.arn
+    CloudFrontWafACL             = aws_wafv2_web_acl.frontend_cloudfront_waf_web_acl.arn
+    DistributionAlias            = local.frontend_fqdn
     FraudHeaderEnabled           = var.Fraud_Header_Enabled
     OriginCloakingHeader         = var.auth_origin_cloakingheader
     PreviousOriginCloakingHeader = var.previous_auth_origin_cloakingheader
-    CloudFrontWafACL             = aws_wafv2_web_acl.frontend_cloudfront_waf_web_acl.arn
     StandardLoggingEnabled       = true
-    ForwardAccessLogsToSplunk    = var.cloudfront_ForwardAccessLogsToSplunk
     LogDestination               = var.cloudfront_WafAcl_Logdestination
   }
 

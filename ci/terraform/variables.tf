@@ -412,12 +412,6 @@ variable "cloudfront_WafAcl_Logdestination" {
   default     = "none"
   description = "CSLS logging destinatiin for logging Cloufront CloakingOriginWebACL WAf logs "
 }
-
-variable "cloudfront_ForwardAccessLogsToSplunk" {
-  type        = bool
-  default     = false
-  description = "Enables forwarding of cloudfront access logs to Splunk. Bucket ARN must be added to CSLS's subscription after first deployment"
-}
 #end of cloudfront variable
 
 variable "language_toggle_enabled" {
