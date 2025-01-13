@@ -101,10 +101,6 @@ describe("Integration:: ipv callback", () => {
       process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
     });
 
-    after(() => {
-      nock.cleanAll();
-    });
-
     afterEach(() => {
       app = undefined;
       sinon.restore();
