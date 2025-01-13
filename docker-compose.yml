@@ -64,6 +64,7 @@ services:
       - "${DOCKER_DOCKER_STUB_ORCHSTUB_PORT:-3002}:${DOCKER_DOCKER_STUB_ORCHSTUB_PORT:-3002}"
     environment:
       PORT: ${DOCKER_DOCKER_STUB_ORCHSTUB_PORT:-3002}
+      DEPLOYMENT_NAME: ${DEPLOYMENT_NAME}
     command:
       - yarn
       - dummy-server-orchstub

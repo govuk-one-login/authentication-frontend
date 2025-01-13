@@ -5,14 +5,25 @@ const pino = require("pino");
 const axios = require("axios").default;
 const url = require("url");
 
+const stubUrls = {
+  authdev2: "https://orchstub.authdev2.sandpit.account.gov.uk",
+  authdev1: "https://orchstub.authdev1.sandpit.account.gov.uk",
+  dev: "https://orchstub.signin.dev.account.gov.uk",
+};
+
 require("dotenv").config();
 const logger = pino({ level: process.env.LOG_LEVEL || "info" });
 
 const app = express();
 const port = process.env.PORT || 3002;
 const frontendPort = process.env.FRONTEND_PORT || 3000;
-const stub_url =
-  process.env.STUB_URL || "https://orchstub-authdev1.signin.dev.account.gov.uk";
+const stubUrl = stubUrls[process.env.DEPLOYMENT_NAME];
+
+if (stubUrl === undefined) {
+  logger.warn(
+    `Warning: No orch stub configured for environment ${process.env.DEPLOYMENT_NAME}`
+  );
+}
 
 const getCookieValue = (cookie, cookieName) => {
   let value;
@@ -58,9 +69,15 @@ const buildRedirectURL = (response) => {
 };
 
 app.get("/", async (req, res) => {
+  if (stubUrl === undefined) {
+    res.send(
+      "No orchestration stub url defined for this environment. You may want to use the RP stub at localhost:2000 instead. " +
+        `Currently, this stub is for environments configured for the orchestration stub (${Object.keys(stubUrls).join(", ")})`
+    );
+  }
   // call orch stub
   const orchStubResponse = await axios.post(
-    stub_url,
+    stubUrl,
     "reauthenticate=&level=Cl.Cm&authenticated=no&authenticatedLevel=Cl.Cm&channel=none",
     {
       validateStatus: (status) => {
