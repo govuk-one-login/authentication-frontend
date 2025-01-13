@@ -2979,9 +2979,9 @@ concat-map@0.0.1:
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
 
 concurrently@^9.0.1:
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/concurrently/-/concurrently-9.1.0.tgz#8da6d609f4321752912dab9be8710232ac496aa0"
-  integrity sha512-VxkzwMAn4LP7WyMnJNbHN5mKV9L2IbyDjpzemKr99sXNR3GqRNMMHdm7prV1ws9wg7ETj6WUkNOigZVsptwbgg==
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/concurrently/-/concurrently-9.1.2.tgz#22d9109296961eaee773e12bfb1ce9a66bc9836c"
+  integrity sha512-H9MWcoPsYddwbOGM6difjVwVZHl63nwMEwDJG/L7VGtuaJhb12h2caPG2tVPWs7emuYix252iGfqOyrz1GczTQ==
   dependencies:
     chalk "^4.1.2"
     lodash "^4.17.21"
@@ -4793,9 +4793,9 @@ levn@^0.4.1:
     type-check "~0.4.0"
 
 libphonenumber-js@^1.9.44:
-  version "1.11.16"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.11.16.tgz#3aa64a8a95ffc59253a5df3009940a9604a02102"
-  integrity sha512-Noyazmt0yOvnG0OeRY45Cd1ur8G7Z0HWVkuCuKe+yysGNxPQwBAODBQQ40j0AIagi9ZWurfmmZWNlpg4h4W+XQ==
+  version "1.11.17"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.11.17.tgz#37ddbf16dc4dd45c723a150996c253c58dad034b"
+  integrity sha512-Jr6v8thd5qRlOlc6CslSTzGzzQW03uiscab7KHQZX1Dfo4R6n6FDhZ0Hri6/X7edLIDv9gl4VMZXhxTjLnl0VQ==
 
 locate-path@^5.0.0:
   version "5.0.0"
@@ -5865,9 +5865,9 @@ safe-stable-stringify@^2.3.1:
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
 sass@^1.49.8:
-  version "1.83.0"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.83.0.tgz#e36842c0b88a94ed336fd16249b878a0541d536f"
-  integrity sha512-qsSxlayzoOjdvXMVLkzF84DJFc2HZEL/rFyGIKbbilYtAvlCxyuzUeff9LawTn4btVnLKg75Z8MMr1lxU1lfGw==
+  version "1.83.1"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.83.1.tgz#dee1ab94b47a6f9993d3195d36f556bcbda64846"
+  integrity sha512-EVJbDaEs4Rr3F0glJzFSOvtg2/oy2V/YrGFPqPY24UqcLDWcI9ZY5sN+qyO3c/QCZwzgfirvhXvINiJCE/OLcA==
   dependencies:
     chokidar "^4.0.0"
     immutable "^5.0.2"
@@ -6557,9 +6557,9 @@ typedarray-to-buffer@^3.1.5:
     is-typedarray "^1.0.0"
 
 typescript@^5.6.3:
-  version "5.7.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.7.2.tgz#3169cf8c4c8a828cde53ba9ecb3d2b1d5dd67be6"
-  integrity sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==
+  version "5.7.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.7.3.tgz#919b44a7dbb8583a9b856d162be24a54bf80073e"
+  integrity sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==
 
 uglify-js@^3.14.5:
   version "3.19.3"
@@ -6670,9 +6670,9 @@ uuid@8.0.0:
   integrity sha512-jOXGuXZAWdsTH7eZLtyXMqUb9EcWMGZNbL9YcGBJl4MH4nrxHmZJhEHvyLFrkxo+28uLb/NYRcStH48fnD0Vzw==
 
 uuid@^11.0.2:
-  version "11.0.3"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-11.0.3.tgz#248451cac9d1a4a4128033e765d137e2b2c49a3d"
-  integrity sha512-d0z310fCWv5dJwnX1Y/MncBAqGMKEzlBb1AOf7z9K8ALnd0utBX/msg/fA0+sbyN1ihbMsLhrBlnl1ak7Wa0rg==
+  version "11.0.5"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-11.0.5.tgz#07b46bdfa6310c92c3fb3953a8720f170427fc62"
+  integrity sha512-508e6IcKLrhxKdBbcA2b4KQZlLVp2+J5UwQ6F7Drckkc5N9ZJwFa4TgWtsww9UG8fGHbm6gbV19TdM5pQ4GaIA==
 
 uuid@^3.3.3:
   version "3.4.0"
