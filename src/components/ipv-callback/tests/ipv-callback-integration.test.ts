@@ -14,7 +14,6 @@ import * as cheerio from "cheerio";
 describe("Integration:: ipv callback", () => {
   let app: express.Application;
   let baseApi: string;
-  let sessionMiddleware: any;
 
   before(async () => {
     process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
@@ -26,28 +25,8 @@ describe("Integration:: ipv callback", () => {
 
   describe("ipv callback", () => {
     before(async () => {
-      decache("../../../app");
-      decache("../../../middleware/session-middleware");
       baseApi = process.env.FRONTEND_API_BASE_URL;
-      sessionMiddleware = require("../../../middleware/session-middleware");
-
-      sinon
-        .stub(sessionMiddleware, "validateSessionMiddleware")
-        .callsFake(function (req: any, res: any, next: any): void {
-          res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-
-          req.session.user = {
-            email: "test@test.com",
-            phoneNumber: "7867",
-            journey: {
-              nextPath: PATH_NAMES.IPV_CALLBACK,
-            },
-          };
-
-          next();
-        });
-
-      app = await require("../../../app").createApp();
+      app = await stubSessionMiddlewareAndCreateApp(PATH_NAMES.IPV_CALLBACK);
     });
 
     after(() => {
@@ -106,7 +85,9 @@ describe("Integration:: ipv callback", () => {
     });
 
     it("returns a dummy page when an option is selected", async () => {
-      const app = await stubSessionMiddlewareAndCreateApp();
+      const app = await stubSessionMiddlewareAndCreateApp(
+        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES
+      );
       const { token, cookies } =
         await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
 
@@ -131,7 +112,9 @@ describe("Integration:: ipv callback", () => {
     });
 
     it("returns a validation error when no option is selected", async () => {
-      const app = await stubSessionMiddlewareAndCreateApp();
+      const app = await stubSessionMiddlewareAndCreateApp(
+        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES
+      );
       const { token, cookies } =
         await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
 
@@ -158,7 +141,10 @@ describe("Integration:: ipv callback", () => {
     });
 
     it("goes to /enter-code when user selects retry security code radio button and their mfaMethodType is SMS", async () => {
-      const app = await stubSessionMiddlewareAndCreateApp(MFA_METHOD_TYPE.SMS);
+      const app = await stubSessionMiddlewareAndCreateApp(
+        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+        MFA_METHOD_TYPE.SMS
+      );
       const { token, cookies } =
         await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
 
@@ -182,6 +168,7 @@ describe("Integration:: ipv callback", () => {
 
     it("goes to /enter-authenticator-app-code when user selects retry security code radio button and their mfaMethodType is AUTH_APP", async () => {
       const app = await stubSessionMiddlewareAndCreateApp(
+        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
         MFA_METHOD_TYPE.AUTH_APP
       );
       const { token, cookies } =
@@ -208,6 +195,7 @@ describe("Integration:: ipv callback", () => {
 });
 
 const stubSessionMiddlewareAndCreateApp = async (
+  nextPath: string,
   mfaMethodType?: MFA_METHOD_TYPE
 ): Promise<express.Application> => {
   decache("../../../app");
@@ -223,7 +211,7 @@ const stubSessionMiddlewareAndCreateApp = async (
         email: "test@test.com",
         phoneNumber: "7867",
         journey: {
-          nextPath: PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+          nextPath: nextPath,
         },
         mfaMethodType: mfaMethodType,
       };
