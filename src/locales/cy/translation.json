@@ -667,6 +667,7 @@
     "cannotChangeHowGetSecurityCodeMfaReset": {
       "title": "Ni allwch newid sut rydych yn cael codau diogelwch",
       "header": "Ni allwch newid sut rydych yn cael codau diogelwch",
+      "identityFailedPreamble": "Mae hyn oherwydd bod problem cadarnhau eich hunaniaeth.",
       "paragraph1": "Gallwch ond mewngofnodi i’ch GOV.UK One Login drwy ddefnyddio’r dull rydych eisoes wedi’i sefydlu i gael codau diogelwch.",
       "paragraph2": "Os ydych wedi colli mynediad i’r dull hwn yn barhaol, dylech ddileu eich GOV.UK One Login er mwyn i chi allu creu un newydd.",
       "radios": {
