@@ -16,6 +16,10 @@ describe("Integration:: ipv callback", () => {
   let baseApi: string;
   let sessionMiddleware: any;
 
+  before(async () => {
+    process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
+  });
+
   after(() => {
     delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
   });
@@ -24,7 +28,6 @@ describe("Integration:: ipv callback", () => {
     before(async () => {
       decache("../../../app");
       decache("../../../middleware/session-middleware");
-      process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
       baseApi = process.env.FRONTEND_API_BASE_URL;
       sessionMiddleware = require("../../../middleware/session-middleware");
 
@@ -97,10 +100,6 @@ describe("Integration:: ipv callback", () => {
   });
 
   describe("cannot change how get security codes", () => {
-    before(async () => {
-      process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
-    });
-
     afterEach(() => {
       app = undefined;
       sinon.restore();
