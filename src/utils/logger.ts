@@ -1,20 +1,22 @@
 import pino from "pino";
 import PinoHttp from "pino-http";
 import { getLogLevel } from "../config";
+import { Request, Response } from "express";
 
 const logger = pino({
   name: "di-auth",
   level: getLogLevel(),
   serializers: {
-    req: (req) => {
+    req: (req: Request) => {
       return {
         id: req.id,
         method: req.method,
         url: req.url,
         from: getRefererFrom(req.headers.referer),
+        headers: req.headers,
       };
     },
-    res: (res) => {
+    res: (res: Response) => {
       return {
         status: res.statusCode,
         sessionId: res.locals.sessionId,
