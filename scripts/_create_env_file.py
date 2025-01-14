@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Iterable, TypedDict
 
 import boto3
+import click
 from botocore import exceptions as boto3_exceptions
 from dotenv import dotenv_values
 
@@ -482,7 +483,19 @@ def main(deployment_name: str, aws_profile_name: str, dotenv_file: Path):
     )
 
 
-if __name__ == "__main__":
+NAMED_ENVIRONMENTS = [
+    "sandpit",
+    "dev",
+    "authdev1",
+    "authdev2",
+    "build",
+    "staging",
+]
+
+
+@click.command()
+@click.argument("deploy_env", type=click.Choice(NAMED_ENVIRONMENTS))
+def base_command(deploy_env: str):
     try:
         assert os.getenv("FROM_WRAPPER", "false") == "true"
     except AssertionError:
@@ -492,28 +505,17 @@ if __name__ == "__main__":
         )
         sys.exit(1)
 
-    if len(sys.argv) != 2:
-        logger.error("Usage: build-env.py <deploy_env>")
-        sys.exit(1)
-    try:
-        deploy_env = sys.argv[1]
-        assert isinstance(deploy_env, str)
-        assert len(deploy_env) > 0
-    except (KeyError, AssertionError):
-        logger.error("Deploy environment must be specified")
-        sys.exit(1)
-
     if deploy_env in ["sandpit", "build"]:
         _aws_profile_name = "gds-di-development-admin"
         _state_bucket_name = "digital-identity-dev-tfstate"
-    elif re.match(r"^authdev[0-9]+$|^dev$", deploy_env):
+    elif re.match(r"^authdev[0-9]+$", deploy_env) or deploy_env == "dev":
         _aws_profile_name = "di-auth-development-admin"
         _state_bucket_name = "di-auth-development-tfstate"
     elif deploy_env == "staging":
         _aws_profile_name = "di-auth-staging-admin"
         _state_bucket_name = "di-auth-staging-tfstate"
     else:
-        logger.error(f"Error: Unknown environment: {deploy_env}")
+        logger.fatal(f"Unknown or unsupported environment: {deploy_env}")
         sys.exit(1)
 
     try:
@@ -521,3 +523,7 @@ if __name__ == "__main__":
         main(deploy_env, _aws_profile_name, Path(".env"))
     except FatalError:
         sys.exit(1)
+
+
+if __name__ == "__main__":
+    base_command()
