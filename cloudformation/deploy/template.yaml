@@ -89,16 +89,7 @@ Conditions:
       - Fn::Or:
           - Fn::Equals:
               - !Ref Environment
-              - "build"
-          # - Fn::Equals:
-          #     - !Ref Environment
-          #     - "staging"
-          - Fn::Equals:
-              - !Ref Environment
-              - "integration"
-          - Fn::Equals:
-              - !Ref Environment
-              - "production"
+              - "placeholder"
           - Fn::Equals:
               - !Ref SubEnvironment
               - "authdev1"
