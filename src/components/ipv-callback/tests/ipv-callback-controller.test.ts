@@ -1,11 +1,16 @@
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import sinon from "sinon";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { PATH_NAMES } from "../../../app.constants";
+import {
+  CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,
+  MFA_METHOD_TYPE,
+  PATH_NAMES,
+} from "../../../app.constants";
 import { expect } from "chai";
 import { Request, Response } from "express";
 import {
   cannotChangeSecurityCodesGet,
+  cannotChangeSecurityCodesPost,
   ipvCallbackGet,
 } from "../ipv-callback-controller";
 import {
@@ -200,6 +205,32 @@ describe("ipv callback controller", () => {
 
         expect(res.render).to.have.calledWith(
           "ipv-callback/index-cannot-change-how-get-security-codes.njk"
+        );
+      });
+    });
+
+    describe("cannotChangeSecurityCodePost", () => {
+      it("should redirect to enter sms mfa page when sms mfa user selects 'ry entering a security code again with the method you already have set up' radio button", async () => {
+        req.path = PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES;
+        req.body.cannotChangeHowGetSecurityCodeAction =
+          CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.RETRY_SECURITY_CODE;
+        req.session.user.mfaMethodType = MFA_METHOD_TYPE.SMS;
+
+        await cannotChangeSecurityCodesPost(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
+      });
+
+      it("should redirect to enter auth app mfa page when auth app mfa user selects 'ry entering a security code again with the method you already have set up' radio button", async () => {
+        req.path = PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES;
+        req.body.cannotChangeHowGetSecurityCodeAction =
+          CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.RETRY_SECURITY_CODE;
+        req.session.user.mfaMethodType = MFA_METHOD_TYPE.AUTH_APP;
+
+        await cannotChangeSecurityCodesPost(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(
+          PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
         );
       });
     });

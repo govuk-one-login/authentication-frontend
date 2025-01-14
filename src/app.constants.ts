@@ -343,3 +343,8 @@ export const WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS: Record<string, string> = {
   "pages.reEnterEmailAccount.enterYourEmailAddressError":
     "mobileAppPages.reEnterEmailAccount.enterYourEmailAddressError",
 };
+
+export const CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION = {
+  HELP_DELETE_ACCOUNT: "help-to-delete-account",
+  RETRY_SECURITY_CODE: "retry-security-code",
+};

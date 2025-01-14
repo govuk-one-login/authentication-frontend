@@ -85,6 +85,7 @@ export interface UserSession {
   isSignInJourney?: boolean;
   isVerifyEmailCodeResendRequired?: boolean;
   channel?: string;
+  mfaMethodType?: string;
 }
 
 export interface UserSessionClient {

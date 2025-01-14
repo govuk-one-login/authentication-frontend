@@ -761,10 +761,20 @@ const authStateMachine = createMachine(
         },
       },
       [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: {
-        type: "final",
+        on: {
+          [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
+          [USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE]: [
+            PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+          ],
+        },
       },
       [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: {
-        type: "final",
+        on: {
+          [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
+          [USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE]: [
+            PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+          ],
+        },
       },
     },
   },
