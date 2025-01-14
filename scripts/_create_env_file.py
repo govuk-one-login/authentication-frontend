@@ -21,9 +21,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("build-env-file")
 
 
-STATE_GETTER: "StateGetter" = None
-
-
 class EnvFileVariable(TypedDict):
     value: str
     comment: str | None
@@ -324,10 +321,11 @@ class StateGetter:
 def get_static_variables_from_remote(
     deployment_name: str,
     aws_profile_name: str,
+    state_getter: StateGetter,
 ) -> list[EnvFileSection]:
     try:
         stub_hostname, client_id = (
-            STATE_GETTER.get_stub_hostname_clientid_from_dynamodb()
+            state_getter.get_stub_hostname_clientid_from_dynamodb()
         )
     except ValueError as e:
         logger.error("Error getting stub hostname from DynamoDB: %s", e)
@@ -337,8 +335,8 @@ def get_static_variables_from_remote(
             "variables": {
                 "DEPLOYMENT_NAME": deployment_name,
                 "AWS_PROFILE": aws_profile_name,
-                "API_BASE_URL": STATE_GETTER.get_api_remote_state_value("base_url"),
-                "FRONTEND_API_BASE_URL": STATE_GETTER.get_api_remote_state_value(
+                "API_BASE_URL": state_getter.get_api_remote_state_value("base_url"),
+                "FRONTEND_API_BASE_URL": state_getter.get_api_remote_state_value(
                     "frontend_api_base_url"
                 ),
             },
@@ -346,21 +344,21 @@ def get_static_variables_from_remote(
         {
             "variables": {
                 "STUB_HOSTNAME": stub_hostname,
-                "API_KEY": STATE_GETTER.get_ecs_task_environment_value("API_KEY"),
+                "API_KEY": state_getter.get_ecs_task_environment_value("API_KEY"),
                 "TEST_CLIENT_ID": client_id,
-                "URL_FOR_SUPPORT_LINKS": STATE_GETTER.get_ecs_task_environment_value(
+                "URL_FOR_SUPPORT_LINKS": state_getter.get_ecs_task_environment_value(
                     "URL_FOR_SUPPORT_LINKS"
                 ),
-                "ORCH_TO_AUTH_CLIENT_ID": STATE_GETTER.get_ecs_task_environment_value(
+                "ORCH_TO_AUTH_CLIENT_ID": state_getter.get_ecs_task_environment_value(
                     "ORCH_TO_AUTH_CLIENT_ID"
                 ),
-                "ENCRYPTION_KEY_ID": STATE_GETTER.get_ecs_task_environment_value(
+                "ENCRYPTION_KEY_ID": state_getter.get_ecs_task_environment_value(
                     "ENCRYPTION_KEY_ID"
                 ),
-                "ORCH_TO_AUTH_AUDIENCE": STATE_GETTER.get_ecs_task_environment_value(
+                "ORCH_TO_AUTH_AUDIENCE": state_getter.get_ecs_task_environment_value(
                     "ORCH_TO_AUTH_AUDIENCE"
                 ),
-                "ORCH_TO_AUTH_SIGNING_KEY": STATE_GETTER.get_ecs_task_environment_value(
+                "ORCH_TO_AUTH_SIGNING_KEY": state_getter.get_ecs_task_environment_value(
                     "ORCH_TO_AUTH_SIGNING_KEY"
                 ),
             },
@@ -446,10 +444,15 @@ def build_env_file_lines(
     yield from build_lines_from_section(static_sections)
 
 
-def main(deployment_name: str, aws_profile_name: str, dotenv_file: Path):
+def main(
+    deployment_name: str,
+    aws_profile_name: str,
+    dotenv_file: Path,
+    state_getter: StateGetter,
+):
     start_time = datetime.now()
     static_variables = get_static_variables_from_remote(
-        deployment_name, aws_profile_name
+        deployment_name, aws_profile_name, state_getter
     )
     user_variables = get_user_variables(dotenv_file, static_variables)
 
@@ -519,8 +522,8 @@ def base_command(deploy_env: str):
         sys.exit(1)
 
     try:
-        STATE_GETTER = StateGetter(deploy_env, _state_bucket_name, _aws_profile_name)
-        main(deploy_env, _aws_profile_name, Path(".env"))
+        state_getter = StateGetter(deploy_env, _state_bucket_name, _aws_profile_name)
+        main(deploy_env, _aws_profile_name, Path(".env"), state_getter)
     except FatalError:
         sys.exit(1)
 
