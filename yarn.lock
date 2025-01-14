@@ -898,10 +898,10 @@
     forwarded-parse "^2.1.2"
     pino "^8.20.0"
 
-"@govuk-one-login/frontend-vital-signs@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-vital-signs/-/frontend-vital-signs-0.0.4.tgz#0c0b019c485e953811d37f4c03042f779e0b2112"
-  integrity sha512-IXPZowxi2uxdbMquk2jnTNMr3sYh1Nc3R1UGOTXhad3ta7vYQy1acm/Z9Dux3L2g5xYp9He+cFJFUoOqtMi8FA==
+"@govuk-one-login/frontend-vital-signs@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-vital-signs/-/frontend-vital-signs-0.1.2.tgz#7a627a69e730dad7a6a2234fcb7e7f12d680f99d"
+  integrity sha512-Oi5Q37K0/Mkmes9kLTXijyejF2T8M1bkQJj5ysiZTMdQDUhRqe7WN/jqEqUEN+DvNPcM6Ax9HbvtL09KLwcVig==
   dependencies:
     pino "^8.20.0"
 
