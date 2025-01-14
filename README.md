@@ -52,6 +52,22 @@ The startup script will do this for you so just run this command:
 ./startup.sh -l
 ```
 
+### Using the locally runnning service to test the application
+
+This application will normally be started on port 3000 locally.
+
+However, you cannot hit this directly to run through a local journey since we require an OIDC client in order to use the application.
+
+We have stub clients for local use that are spun up via the startup script that you should instead use.
+
+These are:
+
+- The RP stub (which then goes via orchestration) - normally running on port 2000. Note this cannot now be used if running against authdev1, authdev2 or dev environments.
+- The RP stub configured to not request MFA - normally running on port 5000. The same caveat about environments above applies.
+- An orchestration stub which goes directly to the frontend - normally running on port 3002. You must use this if running against dev, authdev1 or authdev2 backends.
+
+Hitting any one of these stubs will perform the relevant OIDC flows in the background and redirect you to the frontend running at localhost:3000.
+
 ### General guidance on starting the application
 
 When starting for the first time, or after a clean, the frontend will take a few minutes to start as node needs to install all the dependencies.
