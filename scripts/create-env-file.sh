@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
-VENV_DIR="${DIR}/.venv"
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+cd "${PROJECT_ROOT}" || exit 1
+VENV_DIR="${PROJECT_ROOT}/.venv"
 
 # Ensure python is at least 3.10
 min_python_version=3.10
@@ -28,7 +29,7 @@ source "${VENV_DIR}/bin/activate"
 # last_updated file is used to check if we need to reinstall dependencies
 LAST_UPDATED_FILE="${VENV_DIR}/.last_updated"
 
-LAST_REQUIREMENTS_UPDATE="$(git log -1 --pretty="format:%ct" "${DIR}/requirements.txt")"
+LAST_REQUIREMENTS_UPDATE="$(git log -1 --pretty="format:%ct" "${PROJECT_ROOT}/pyproject.toml")"
 
 if [ -f "${LAST_UPDATED_FILE}" ]; then
     last_updated=$(date -r "${LAST_UPDATED_FILE}" +%s)
@@ -41,9 +42,11 @@ force_update_every=2592000 # 30 days
 
 # if requirements.txt has been updated since the last time we updated dependencies, update them
 if [ ! $((LAST_REQUIREMENTS_UPDATE - last_updated)) -lt 0 ]; then
-    echo "INFO:wrapper:requirements.txt has been updated since last dependencies update"
+    echo "INFO:wrapper:pyproject.toml has been updated since last dependencies update"
     echo "INFO:wrapper:Updating python dependencies"
-    pip3 install -r "${DIR}/requirements.txt"
+    pushd "${PROJECT_ROOT}" || exit 1
+    pip3 install .
+    popd || exit 1
     touch "${LAST_UPDATED_FILE}"
     last_updated="${now}"
     echo
@@ -52,7 +55,7 @@ if [ ! $((LAST_REQUIREMENTS_UPDATE - last_updated)) -lt 0 ]; then
 # force update dependencies every $force_update_every seconds, regardless of requirements.txt changes
 elif [ ! $((now - last_updated)) -lt 864000 ]; then
     echo "INFO:wrapper:Force updating python dependencies as it has been more than $((force_update_every / 86400)) days since last update"
-    pip3 install --upgrade -r "${DIR}/requirements.txt"
+    pip3 install --upgrade .
     touch "${LAST_UPDATED_FILE}"
     echo
     echo
@@ -60,4 +63,4 @@ else
     echo "INFO:wrapper:Using existing dependencies"
 fi
 
-FROM_WRAPPER=true python3 "${DIR}/_create_env_file.py" "$@"
+FROM_WRAPPER=true python3 "${PROJECT_ROOT}/scripts/_create_env_file.py" "$@"
