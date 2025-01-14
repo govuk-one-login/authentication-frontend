@@ -104,9 +104,13 @@ Conditions:
               - "authdev1"
 
   UseMfaResetWithIpv:
-    Fn::Equals:
-      - !Ref Environment
-      - "dev"
+    Fn::Or:
+      - Fn::Equals:
+          - !Ref Environment
+          - "dev"
+      - Fn::Equals:
+          - !Ref Environment
+          - "staging"
 
   UseSubEnvironment:
     Fn::And:
