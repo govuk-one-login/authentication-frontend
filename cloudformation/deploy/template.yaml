@@ -107,6 +107,7 @@ Conditions:
     Fn::Equals:
       - !Ref Environment
       - "dev"
+      - "staging"
 
   UseSubEnvironment:
     Fn::And:
