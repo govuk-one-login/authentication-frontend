@@ -69,7 +69,7 @@
     "@govuk-one-login/frontend-analytics": "3.0.1",
     "@govuk-one-login/frontend-language-toggle": "^2.1.0",
     "@govuk-one-login/frontend-passthrough-headers": "^1.1.1",
-    "@govuk-one-login/frontend-vital-signs": "0.0.4",
+    "@govuk-one-login/frontend-vital-signs": "0.1.2",
     "@govuk-one-login/spinner": "^1.0.1",
     "@otplib/core": "^12.0.1",
     "@otplib/plugin-base32-enc-dec": "^12.0.1",
