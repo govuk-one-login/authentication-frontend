@@ -256,6 +256,26 @@ We have snapshot tests on some of our integration tests. To update those you wil
 UPDATE_SNAPSHOT=true yarn test:integration
 ```
 
+#### Running integration tests in IntelliJ
+
+For most of our tests, "right-click-and-running" a test file works. However, for our integration tests, extra configuration is required. Set the following values on the run config:
+
+Environment variables:
+
+```
+REDIS_PORT=<<as above>>
+REDIS_HOST=<<as above>>
+NODE_ENV=development <<see package.json test:integration script>>
+```
+
+Extra Mocha options:
+
+```
+-r dotenv/config <<see package.json test:integration script>>
+```
+
+You may want to set this as default for Mocha files by clicking "Edit configuration templates".
+
 ### Install dependencies
 
 > To install dependencies, run yarn install
