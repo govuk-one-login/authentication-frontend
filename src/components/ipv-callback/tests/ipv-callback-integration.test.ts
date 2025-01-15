@@ -19,25 +19,22 @@ describe("Integration:: ipv callback", () => {
     before(async () => {
       decache("../../../app");
       decache("../../../middleware/session-middleware");
-      decache("../../../middleware/set-local-vars-middleware");
       process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
       baseApi = process.env.FRONTEND_API_BASE_URL;
       sessionMiddleware = require("../../../middleware/session-middleware");
-      sinon.stub(sessionMiddleware, "sessionIsValid").callsFake((req: any) => {
-        req.session.user = {
-          email: "test@test.com",
-          phoneNumber: "7867",
-          journey: {
-            nextPath: PATH_NAMES.IPV_CALLBACK,
-          },
-        };
-        return true;
-      });
-      const setLocalVarsMiddleware = require("../../../middleware/set-local-vars-middleware");
+
       sinon
-        .stub(setLocalVarsMiddleware, "setLocalVarsMiddleware")
-        .callsFake((req: any, res: any, next: any) => {
+        .stub(sessionMiddleware, "validateSessionMiddleware")
+        .callsFake(function (req: any, res: any, next: any): void {
           res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+
+          req.session.user = {
+            email: "test@test.com",
+            phoneNumber: "7867",
+            journey: {
+              nextPath: PATH_NAMES.IPV_CALLBACK,
+            },
+          };
 
           next();
         });
