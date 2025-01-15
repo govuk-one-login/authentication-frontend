@@ -161,6 +161,22 @@ You may need to install pre-commit for the script to work.
 brew install pre-commit
 ```
 
+## Deploying the frontend
+
+The frontend is automatically released when you merge a PR.
+
+However, sometimes, you may want to manually trigger a release to an environment, e.g. for testing reasons. The following scripts are available for this:
+
+- `deploy-authdevs.sh` (you'll be asked which authdev to deploy to when you run the script)
+- `deploy-dev.sh`
+- `deploy-sandpit.sh`
+
+To run the scripts, you'll need to have the AWS profile for the specified environment (see script), along with the `digital-identity-tools-dev-admin` profile.
+
+You also need to have Terraform installed (see [here](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) for Homebrew installation instructions).
+
+Running the script will build and release your local working copy of the frontend code to the requested environment.
+
 ## Troubleshooting the local run
 
 ### General steps to try first

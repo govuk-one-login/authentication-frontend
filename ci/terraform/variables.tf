@@ -117,15 +117,18 @@ variable "logging_endpoint_arns" {
 }
 
 variable "smartagent_webform_id" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "smartagent_api_key" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "smartagent_api_url" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "url_for_support_links" {
