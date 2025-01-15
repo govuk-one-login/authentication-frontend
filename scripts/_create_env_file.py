@@ -361,6 +361,15 @@ def get_static_variables_from_remote(
                 "ORCH_TO_AUTH_SIGNING_KEY": state_getter.get_ecs_task_environment_value(
                     "ORCH_TO_AUTH_SIGNING_KEY"
                 ),
+                "ORCH_STUB_TO_AUTH_AUDIENCE": state_getter.get_ecs_task_environment_value(
+                    "ORCH_STUB_TO_AUTH_AUDIENCE"
+                ),
+                "ORCH_STUB_TO_AUTH_CLIENT_ID": state_getter.get_ecs_task_environment_value(
+                    "ORCH_STUB_TO_AUTH_CLIENT_ID"
+                ),
+                "ORCH_STUB_TO_AUTH_SIGNING_KEY": state_getter.get_ecs_task_environment_value(
+                    "ORCH_STUB_TO_AUTH_SIGNING_KEY"
+                ),
             },
         },
     ]

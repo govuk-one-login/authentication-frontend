@@ -67,6 +67,7 @@ set -o allexport && source .env && set +o allexport
 
 # shellcheck source=./scripts/export_aws_creds.sh
 source "${DIR}/scripts/export_aws_creds.sh"
+unset AWS_PROFILE
 
 if [ "${ACTION_LOCAL:-0}" == "1" ]; then
   echo "Starting frontend local service..."
