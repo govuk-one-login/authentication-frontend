@@ -10,7 +10,10 @@ import {
 import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants";
 import { RequestGet, ResponseRedirect } from "../../../types";
 
-import { supportNoPhotoIdContactForms } from "../../../config";
+import {
+  supportContactFormProblemWithAddress,
+  supportNoPhotoIdContactForms,
+} from "../../../config";
 
 describe("contact us further information controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -47,6 +50,8 @@ describe("contact us further information controller", () => {
           referer: encodeURIComponent(REFERER),
           hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
           supportNoPhotoIdContactForms: false,
+          supportContactFormProblemWithAddress:
+            supportContactFormProblemWithAddress(),
         }
       );
     });
@@ -64,6 +69,8 @@ describe("contact us further information controller", () => {
           referer: encodeURIComponent(REFERER),
           hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
           supportNoPhotoIdContactForms: false,
+          supportContactFormProblemWithAddress:
+            supportContactFormProblemWithAddress(),
         }
       );
     });

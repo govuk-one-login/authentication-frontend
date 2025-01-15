@@ -363,6 +363,7 @@ describe("Integration:: contact us - public user", () => {
         theme: "proving_identity",
         subtheme: "proving_identity_something_else",
         contact: "false",
+        supportContactFormProblemWithAddress: true,
       };
       await expectValidationErrorOnPost(
         "/contact-us-questions",
@@ -378,6 +379,7 @@ describe("Integration:: contact us - public user", () => {
         theme: "proving_identity",
         subtheme: "proving_identity_problem_with_address",
         contact: "false",
+        supportContactFormProblemWithAddress: true,
       };
       await expectValidationErrorOnPost(
         "/contact-us-questions",

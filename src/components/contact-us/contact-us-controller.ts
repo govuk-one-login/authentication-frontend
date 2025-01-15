@@ -14,6 +14,7 @@ import { logger } from "../../utils/logger";
 import {
   getServiceDomain,
   getSupportLinkUrl,
+  supportContactFormProblemWithAddress,
   supportNoPhotoIdContactForms,
 } from "../../config";
 import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
@@ -382,6 +383,8 @@ export function furtherInformationGet(req: Request, res: Response): void {
       validateReferer(req.query.referer as string, serviceDomain)
     ),
     supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
+    supportContactFormProblemWithAddress:
+      supportContactFormProblemWithAddress(),
   });
 }
 
@@ -447,6 +450,9 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
       req.query.subtheme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK
         ? "94ff0276-9791-4a74-95c4-8210ec4028f7"
         : "",
+    supportContactFormProblemWithAddress:
+      supportContactFormProblemWithAddress() ||
+      req.query.supportContactFormProblemWithAddress === "true",
   });
 }
 

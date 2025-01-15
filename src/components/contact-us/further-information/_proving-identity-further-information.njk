@@ -25,10 +25,6 @@
                 text: 'pages.contactUsFurtherInformation.provingIdentity.section1.problemUpdatingPersonalInformation' | translate
             },
             {
-                value: "proving_identity_problem_with_address",
-                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.problemEnteringAddress' | translate
-            },
-            {
                 value: "proving_identity_technical_problem",
                 text: 'pages.contactUsFurtherInformation.provingIdentity.section1.technicalProblem' | translate
             },
@@ -38,6 +34,17 @@
             }
         ]
     %}
+
+
+    {% if supportContactFormProblemWithAddress %}
+    {% set problem_with_address_item = {
+            value: "proving_identity_problem_with_address",
+            text: 'pages.contactUsFurtherInformation.provingIdentity.section1.problemEnteringAddress' | translate
+        }
+    %}
+
+    {% set items = (items.splice(3, 0, problem_with_address_item), items) %}
+    {% endif %}
 
     {% if supportNoPhotoIdContactForms %}
     {% set no_photo_id_bank_item = {

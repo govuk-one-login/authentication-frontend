@@ -68,7 +68,10 @@
 
     {% set show_location_hint = true %}
 
+    {% if supportContactFormProblemWithAddress %}
     {% include 'contact-us/questions/_user-location-question.njk' %}
+    <input type="hidden" name="supportContactFormProblemWithAddress" value="true"/>
+    {% endif %}
 
     {% include 'contact-us/questions/_reply_by_email.njk' %}
 
