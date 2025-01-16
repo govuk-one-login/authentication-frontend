@@ -67,6 +67,13 @@ describe("ipv callback controller", () => {
     req = createMockRequest(PATH_NAMES.IPV_CALLBACK);
     req.query = { code: AUTH_CODE };
     req.session.user.email = email;
+    req.session.id = sessionId;
+    req.cookies.gs = sessionId + clientSessionId;
+    req.cookies.aps = sessionId;
+    req.session.user.journey = {
+      nextPath: PATH_NAMES.IPV_CALLBACK,
+      optionalPaths: [],
+    };
     res = mockResponse();
     res.locals = {
       sessionId,

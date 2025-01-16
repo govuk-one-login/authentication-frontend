@@ -37,7 +37,7 @@ ERROR_TO_EVENT_MAP.set(
 export function ipvCallbackGet(
   service: ReverificationResultInterface = reverificationResultService()
 ): ExpressRouteFunc {
-  return async function (req: Request, res: Response) {
+  return async function (req: Request, res: Response): Promise<void> {
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 

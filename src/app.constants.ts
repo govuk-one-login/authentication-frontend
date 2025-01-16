@@ -152,6 +152,7 @@ export const API_ENDPOINTS = {
   CHECK_EMAIL_FRAUD_BLOCK: "/check-email-fraud-block",
   MFA_RESET_AUTHORIZE: "/mfa-reset-authorize",
   REVERIFICATION_RESULT: "/reverification-result",
+  ID_REVERIFICATION_STATE: "/id-reverification-state",
 };
 
 export const ERROR_MESSAGES = {

@@ -9,11 +9,14 @@ import {
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 import { validateCannotChangeHowGetSecurityCodesActionRequest } from "./cannot-change-how-get-security-codes-validation";
+import { crossBrowserMiddleware } from "./cross-browser-middleware";
+import { CrossBrowserService } from "./cross-browser-service";
 
 const router = express.Router();
 
 router.get(
   PATH_NAMES.IPV_CALLBACK,
+  asyncHandler(crossBrowserMiddleware(new CrossBrowserService())),
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   asyncHandler(ipvCallbackGet())

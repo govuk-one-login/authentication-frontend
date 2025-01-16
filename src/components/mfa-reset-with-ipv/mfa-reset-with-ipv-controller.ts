@@ -21,19 +21,24 @@ export function mfaResetWithIpvGet(
 
     req.session.user.isAccountRecoveryJourney = true;
 
+    const orchestrationRedirectUrl = req.session.client.redirectUri.concat(
+      "?state=",
+      req.session.client.state
+    );
     const result = await service.ipvRedirectUrl(
       sessionId,
       clientSessionId,
       persistentSessionId,
       req,
-      email
+      email,
+      orchestrationRedirectUrl
     );
 
     if (!result.success) {
       throw new BadRequestError(result.data.message, result.data.code);
     }
 
-    getNextPathAndUpdateJourney(
+    await getNextPathAndUpdateJourney(
       req,
       req.path,
       USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INIT,
