@@ -378,14 +378,12 @@ variable "cloudfront_zoneid" {
 
 variable "auth_origin_cloakingheader" {
   type        = string
-  sensitive   = true
   description = "This is header value for Cloufront to to verify requests are coming from the correct CloudFront distribution to ALB "
 }
 
 
 variable "previous_auth_origin_cloakingheader" {
   type        = string
-  sensitive   = true
   description = "This is previous header value when the value is rotated to ensure WAF will allow requests during rotation "
 }
 

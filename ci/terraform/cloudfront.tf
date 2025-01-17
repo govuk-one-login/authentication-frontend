@@ -16,13 +16,6 @@ resource "aws_cloudformation_stack" "cloudfront" {
     StandardLoggingEnabled       = true
     LogDestination               = var.cloudfront_WafAcl_Logdestination
   }
-
-  #ignoring below parameter as these parameter are been read via secret manager and terraform continually detects changes
-  # Note : we need to remove the below lifecycle if the Header are changed in Secret manager to appy new cloainking header value
-  lifecycle {
-    ignore_changes = [parameters["OriginCloakingHeader"], parameters["PreviousOriginCloakingHeader"]]
-  }
-
 }
 
 resource "aws_cloudformation_stack" "cloudfront-monitoring" {
