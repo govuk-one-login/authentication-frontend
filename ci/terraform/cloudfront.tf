@@ -16,6 +16,13 @@ resource "aws_cloudformation_stack" "cloudfront" {
     StandardLoggingEnabled       = true
     LogDestination               = var.cloudfront_WafAcl_Logdestination
   }
+  # Ignoring OriginCloakingHeader & PreviousOriginCloakingHeader parameter changes until it is actually changed.
+  # Cloud-front Template has set NoEcho on these parameter so terraform continually detects changes though there is no change in value read via secret manager store
+  # Imp Note : We will need to remove the below lifecycle if we want to change the Header string in CloudFront custom origin.
+  lifecycle {
+    ignore_changes = [parameters["OriginCloakingHeader"], parameters["PreviousOriginCloakingHeader"]]
+  }
+
 }
 
 resource "aws_cloudformation_stack" "cloudfront-monitoring" {
