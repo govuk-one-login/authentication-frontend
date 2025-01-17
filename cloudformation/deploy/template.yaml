@@ -103,10 +103,10 @@ Conditions:
           - !Ref Environment
           - "staging"
       - Fn::Equals:
-          - !Ref Environment
+          - !Ref SubEnvironment
           - "authdev1"
       - Fn::Equals:
-          - !Ref Environment
+          - !Ref SubEnvironment
           - "authdev2"
 
   UseSubEnvironment:
