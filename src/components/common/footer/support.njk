@@ -43,7 +43,11 @@
 {{ govukButton({
   "text": 'pages.support.section1.supportTypeRadios.continueButtonText' | translate,
   "type": "Submit",
-  "preventDoubleClick": true
+  "preventDoubleClick": true,
+  attributes: {
+      "data-nav": "true",
+      "data-link": "/undefined"
+  }
 }) }}
 
 </form>
