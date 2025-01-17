@@ -11,6 +11,8 @@ import express from "express";
 import nock from "nock";
 import * as cheerio from "cheerio";
 
+const TEST_CONTACT_US_LINK_URL = "https://example.com/contact-us";
+
 describe("Integration:: ipv callback", () => {
   let app: express.Application;
   let baseApi: string;
@@ -26,7 +28,7 @@ describe("Integration:: ipv callback", () => {
   describe("ipv callback", () => {
     before(async () => {
       baseApi = process.env.FRONTEND_API_BASE_URL;
-      app = await stubSessionMiddlewareAndCreateApp(PATH_NAMES.IPV_CALLBACK);
+      app = await stubMiddlewareAndCreateApp(PATH_NAMES.IPV_CALLBACK);
     });
 
     after(() => {
@@ -84,35 +86,8 @@ describe("Integration:: ipv callback", () => {
       sinon.restore();
     });
 
-    it("returns a dummy page when an option is selected", async () => {
-      const app = await stubSessionMiddlewareAndCreateApp(
-        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES
-      );
-      const { token, cookies } =
-        await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
-
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          cannotChangeHowGetSecurityCodeAction:
-            CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.HELP_DELETE_ACCOUNT,
-        })
-        .expect(function (res) {
-          expect(res.text).to.equals("In development");
-        })
-        .expect(200);
-    });
-
     it("returns a validation error when no option is selected", async () => {
-      const app = await stubSessionMiddlewareAndCreateApp(
+      const app = await stubMiddlewareAndCreateApp(
         PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES
       );
       const { token, cookies } =
@@ -140,8 +115,33 @@ describe("Integration:: ipv callback", () => {
         .expect(400);
     });
 
-    it("goes to /enter-code when user selects retry security code radio button and their mfaMethodType is SMS", async () => {
-      const app = await stubSessionMiddlewareAndCreateApp(
+    it("goes to support page when user selects help-to-delete-account radio button", async () => {
+      const app = await stubMiddlewareAndCreateApp(
+        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES
+      );
+      const { token, cookies } =
+        await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
+
+      await request(
+        app,
+        (test) => test.post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
+        {
+          expectAnalyticsPropertiesMatchSnapshot: false,
+        }
+      )
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          cannotChangeHowGetSecurityCodeAction:
+            CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.HELP_DELETE_ACCOUNT,
+        })
+        .expect("Location", TEST_CONTACT_US_LINK_URL)
+        .expect(302);
+    });
+
+    it("goes to /enter-code when user selects retry-security-code radio button and their mfaMethodType is SMS", async () => {
+      const app = await stubMiddlewareAndCreateApp(
         PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
         MFA_METHOD_TYPE.SMS
       );
@@ -166,8 +166,8 @@ describe("Integration:: ipv callback", () => {
         .expect(302);
     });
 
-    it("goes to /enter-authenticator-app-code when user selects retry security code radio button and their mfaMethodType is AUTH_APP", async () => {
-      const app = await stubSessionMiddlewareAndCreateApp(
+    it("goes to /enter-authenticator-app-code when user selects retry-security-code radio button and their mfaMethodType is AUTH_APP", async () => {
+      const app = await stubMiddlewareAndCreateApp(
         PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
         MFA_METHOD_TYPE.AUTH_APP
       );
@@ -194,11 +194,12 @@ describe("Integration:: ipv callback", () => {
   });
 });
 
-const stubSessionMiddlewareAndCreateApp = async (
+const stubMiddlewareAndCreateApp = async (
   nextPath: string,
   mfaMethodType?: MFA_METHOD_TYPE
 ): Promise<express.Application> => {
   decache("../../../app");
+
   decache("../../../middleware/session-middleware");
   const sessionMiddleware = require("../../../middleware/session-middleware");
 
@@ -215,6 +216,17 @@ const stubSessionMiddlewareAndCreateApp = async (
         },
         mfaMethodType: mfaMethodType,
       };
+
+      next();
+    });
+
+  decache("../../../middleware/outbound-contact-us-links-middleware");
+  const outboundContactUsLinksMiddleware = require("../../../middleware/outbound-contact-us-links-middleware");
+
+  sinon
+    .stub(outboundContactUsLinksMiddleware, "outboundContactUsLinksMiddleware")
+    .callsFake(function (req: any, res: any, next: any): void {
+      res.locals.contactUsLinkUrl = TEST_CONTACT_US_LINK_URL;
 
       next();
     });

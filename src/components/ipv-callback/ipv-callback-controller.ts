@@ -109,22 +109,21 @@ export async function cannotChangeSecurityCodesPost(
   const { sessionId } = res.locals;
   const cannotChangeHowGetSecurityCodeAction =
     req.body.cannotChangeHowGetSecurityCodeAction;
-  if (
-    cannotChangeHowGetSecurityCodeAction ===
-    CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.RETRY_SECURITY_CODE
-  ) {
-    return res.redirect(
-      await getNextPathAndUpdateJourney(
-        req,
-        req.path,
-        req.session.user.mfaMethodType === MFA_METHOD_TYPE.SMS
-          ? USER_JOURNEY_EVENTS.VERIFY_MFA
-          : USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE,
-        {},
-        sessionId
-      )
-    );
-  } else {
-    res.send("In development");
+
+  switch (cannotChangeHowGetSecurityCodeAction) {
+    case CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.HELP_DELETE_ACCOUNT:
+      return res.redirect(res.locals.contactUsLinkUrl);
+    case CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.RETRY_SECURITY_CODE:
+      return res.redirect(
+        await getNextPathAndUpdateJourney(
+          req,
+          req.path,
+          req.session.user.mfaMethodType === MFA_METHOD_TYPE.SMS
+            ? USER_JOURNEY_EVENTS.VERIFY_MFA
+            : USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE,
+          {},
+          sessionId
+        )
+      );
   }
 }

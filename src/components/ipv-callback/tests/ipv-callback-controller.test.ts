@@ -217,6 +217,17 @@ describe("ipv callback controller", () => {
     });
 
     describe("cannotChangeSecurityCodePost", () => {
+      it("should redirect to contactUsLinkUrl when help-to-delete-account selected", () => {
+        const TEST_CONTACT_US_LINK_URL = "https://example.com/contact-us";
+        res.locals.contactUsLinkUrl = TEST_CONTACT_US_LINK_URL;
+        req.body.cannotChangeHowGetSecurityCodeAction =
+          "help-to-delete-account";
+
+        cannotChangeSecurityCodesPost(req as Request, res as Response);
+
+        expect(res.redirect).to.have.been.calledWith(TEST_CONTACT_US_LINK_URL);
+      });
+
       it("should redirect to enter sms mfa page when sms mfa user selects 'ry entering a security code again with the method you already have set up' radio button", async () => {
         req.path = PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES;
         req.body.cannotChangeHowGetSecurityCodeAction =
