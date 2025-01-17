@@ -12,6 +12,7 @@ const logger = pino({ level: process.env.LOG_LEVEL || "info" });
 const app = express();
 const port = process.env.PORT || 3001;
 const frontend_port = process.env.FRONTEND_PORT || 3000;
+const sessionExpiry = Number(process.env.SESSION_EXPIRY || 3600000);
 
 function createAuthorizeRequest() {
   const vtr = process.env.VTR ? `vtr=${encodeURI(process.env.VTR)}&` : "";
@@ -53,7 +54,7 @@ app.get("/", (req, res) => {
       if (sessionCookie) {
         sessionCookieValue = getCookieValue(sessionCookie.split(";"), "gs");
         res.cookie("gs", sessionCookieValue, {
-          maxAge: new Date(new Date().getTime() + 60 * 60000),
+          maxAge: sessionExpiry,
         });
       }
 
@@ -62,7 +63,7 @@ app.get("/", (req, res) => {
       if (lngCookie) {
         lngCookieValue = getCookieValue(lngCookie.split(";"), "lng");
         res.cookie("lng", lngCookieValue, {
-          maxAge: new Date(new Date().getTime() + 60 * 60000),
+          maxAge: sessionExpiry,
         });
       }
 
