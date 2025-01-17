@@ -1,13 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Integration::enter email should return a strategic app specific validation error when email not entered and channel is strategic app 1`] = `
-Object {
-  "contentId": "d8767bcf-ffb8-4b43-8bda-24c6291590bb",
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "sign in",
-}
-`;
-
 exports[`Integration::enter email should return enter email page with reauth analytics properties 1`] = `
 Object {
   "contentId": "aff1628e-177d-4afc-825b-56e926b2fc1f",

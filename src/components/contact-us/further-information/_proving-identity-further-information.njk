@@ -14,39 +14,50 @@
     {% set items = [
             {
                 value: "proving_identity_problem_answering_security_questions",
-                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.radio1' | translate
+                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.answeringSecurityProblems' | translate
             },
             {
                 value: "proving_identity_problem_with_identity_document",
-                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.radio2' | translate
+                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.problemWithPhotoId' | translate
             },
             {
                 value: "proving_identity_need_to_update_personal_information",
-                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.radio3' | translate
+                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.problemUpdatingPersonalInformation' | translate
             },
             {
                 value: "proving_identity_technical_problem",
-                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.radio4' | translate
+                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.technicalProblem' | translate
             },
             {
                 value: "proving_identity_something_else",
-                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.radio5' | translate
+                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.somethingElse' | translate
             }
         ]
     %}
 
+
+    {% if supportContactFormProblemWithAddress %}
+    {% set problem_with_address_item = {
+            value: "proving_identity_problem_with_address",
+            text: 'pages.contactUsFurtherInformation.provingIdentity.section1.problemEnteringAddress' | translate
+        }
+    %}
+
+    {% set items = (items.splice(3, 0, problem_with_address_item), items) %}
+    {% endif %}
+
     {% if supportNoPhotoIdContactForms %}
     {% set no_photo_id_bank_item = {
             value: "proving_identity_problem_with_bank_building_society_details",
-            text: 'pages.contactUsFurtherInformation.provingIdentity.section1.radio6' | translate
+            text: 'pages.contactUsFurtherInformation.provingIdentity.section1.problemWithBankOrBuildingSociety' | translate
         }
     %}
 
     {% set no_photo_id_nin_item = {
             value: "proving_identity_problem_with_national_insurance_number",
-            text: 'pages.contactUsFurtherInformation.provingIdentity.section1.radio7.label' | translate,
+            text: 'pages.contactUsFurtherInformation.provingIdentity.section1.problemWithNINumber.label' | translate,
             hint: {
-                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.radio7.hint' | translate | safe
+                text: 'pages.contactUsFurtherInformation.provingIdentity.section1.problemWithNINumber.hint' | translate | safe
             }
         }
     %}

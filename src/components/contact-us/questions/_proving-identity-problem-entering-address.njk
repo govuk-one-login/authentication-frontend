@@ -1,21 +1,22 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-    {{ 'pages.contactUsQuestions.provingIdentitySomethingElse.header' | translate }}
+    {{ 'pages.contactUsQuestions.provingIdentityProblemEnteringAddress.header' | translate }}
 </h1>
 
-<form action="{{formSubmissionUrl}}" method="post" novalidate>
+<form action="{{ formSubmissionUrl }}" method="post" novalidate>
 
-    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-    <input type="hidden" name="theme" value="{{theme}}"/>
-    <input type="hidden" name="subtheme" value="{{subtheme}}"/>
-    <input type="hidden" name="backurl" value="{{backurl}}"/>
-    <input type="hidden" name="fromURL" value="{{fromURL}}"/>
-    <input type="hidden" name="formType" value="provingIdentitySomethingElse"/>
-    <input type="hidden" name="referer" value="{{referer}}"/>
-    {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+    <input type="hidden" name="theme" value="{{ theme }}" />
+    <input type="hidden" name="subtheme" value="{{ subtheme }}" />
+    <input type="hidden" name="backurl" value="{{ backurl }}" />
+    <input type="hidden" name="fromURL" value="{{ fromURL }}" />
+    <input type="hidden" name="formType" value="provingIdentityProblemEnteringAddress" />
+    <input type="hidden" name="referer" value="{{ referer }}" />
+
+    {% include 'contact-us/questions/_user-location-question.njk' %}
 
     {{ govukCharacterCount({
         label: {
-            text: 'pages.contactUsQuestions.provingIdentitySomethingElse.section1.label' | translate,
+            text: 'pages.contactUsQuestions.provingIdentityProblemEnteringAddress.whatWereYouTryingToDo.label' | translate,
             classes: "govuk-label--s"
         },
         id: "issueDescription",
@@ -38,8 +39,11 @@
 
     {{ govukCharacterCount({
         label: {
-            text: 'pages.contactUsQuestions.provingIdentitySomethingElse.section2.label' | translate,
+            text: 'pages.contactUsQuestions.whatHappened.header' | translate,
             classes: "govuk-label--s"
+        },
+        hint: {
+            text: 'pages.contactUsQuestions.whatHappened.paragraph1' | translate
         },
         id: "additionalDescription",
         name: "additionalDescription",
@@ -65,13 +69,6 @@
         text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
         iconFallbackText: "Warning"
     }) }}
-
-    {% set show_location_hint = true %}
-
-    {% if supportContactFormProblemWithAddress %}
-    {% include 'contact-us/questions/_user-location-question.njk' %}
-    <input type="hidden" name="supportContactFormProblemWithAddress" value="true"/>
-    {% endif %}
 
     {% include 'contact-us/questions/_reply_by_email.njk' %}
 

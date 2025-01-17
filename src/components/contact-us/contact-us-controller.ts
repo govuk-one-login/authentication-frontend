@@ -14,6 +14,7 @@ import { logger } from "../../utils/logger";
 import {
   getServiceDomain,
   getSupportLinkUrl,
+  supportContactFormProblemWithAddress,
   supportNoPhotoIdContactForms,
 } from "../../config";
 import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
@@ -79,6 +80,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.provingIdentitySomethingElse.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_NATIONAL_INSURANCE_NUMBER]:
     "pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.title",
+  [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_ADDRESS]:
+    "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
@@ -380,6 +383,8 @@ export function furtherInformationGet(req: Request, res: Response): void {
       validateReferer(req.query.referer as string, serviceDomain)
     ),
     supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
+    supportContactFormProblemWithAddress:
+      supportContactFormProblemWithAddress(),
   });
 }
 
@@ -445,6 +450,9 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
       req.query.subtheme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK
         ? "94ff0276-9791-4a74-95c4-8210ec4028f7"
         : "",
+    supportContactFormProblemWithAddress:
+      supportContactFormProblemWithAddress() ||
+      req.query.supportContactFormProblemWithAddress === "true",
   });
 }
 
@@ -495,6 +503,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
         userAgent: req.get("User-Agent"),
         appErrorCode: getAppErrorCode(req.body.appErrorCode),
         country: req.body.country,
+        location: req.body.location,
       },
       feedbackContact: req.body.contact === "true",
       questions: questions,
@@ -841,6 +850,16 @@ export function getQuestionsFromFormTypeForMessageBody(
         { lng: "en" }
       ),
     },
+    provingIdentityProblemEnteringAddress: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.whatWereYouTryingToDo.label",
+        { lng: "en" }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.whatHappened.header",
+        { lng: "en" }
+      ),
+    },
     provingIdentitySomethingElse: {
       issueDescription: req.t(
         "pages.contactUsQuestions.provingIdentitySomethingElse.section1.label",
@@ -1024,6 +1043,10 @@ export function getQuestionFromThemes(
     ),
     proving_identity_need_to_update_personal_information: req.t(
       "pages.contactUsQuestions.provingIdentityNeedToUpdatePersonalInformation.title",
+      { lng: "en" }
+    ),
+    proving_identity_problem_with_address: req.t(
+      "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.title",
       { lng: "en" }
     ),
     proving_identity_something_else: req.t(

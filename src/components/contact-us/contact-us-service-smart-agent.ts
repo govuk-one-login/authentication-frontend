@@ -12,6 +12,18 @@ import {
 } from "./types";
 import { CONTACT_US_THEMES } from "../../app.constants";
 
+export function prepareUserLocationTitle(residentInUK: string): string {
+  let tag = "";
+
+  if (residentInUK === "true") {
+    tag = "resident_in_uk";
+  } else if (residentInUK === "false") {
+    tag = "not_resident_in_uk";
+  }
+
+  return tag;
+}
+
 export function prepareSecurityCodeSendMethodTitle(
   securityCodeSentMethod: string
 ): string {
@@ -186,6 +198,10 @@ export function contactUsServiceSmartAgent(
 
     customAttributes["sa-security-mobile-country"] =
       contactForm.optionalData.country;
+
+    customAttributes["sa-tag-location"] = prepareUserLocationTitle(
+      contactForm.optionalData.location
+    );
 
     customAttributes["sa-tag-secondary-reason-user-selection"] =
       contactForm.themeQuestions.subthemeQuestion;

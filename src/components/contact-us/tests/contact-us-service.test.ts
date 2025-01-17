@@ -1,6 +1,9 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { getRefererTag } from "../contact-us-service-smart-agent";
+import {
+  getRefererTag,
+  prepareUserLocationTitle,
+} from "../contact-us-service-smart-agent";
 import { ContactForm } from "../types";
 
 describe("contact-us-service", () => {
@@ -55,6 +58,22 @@ describe("contact-us-service", () => {
       expect(getRefererTag(form)).to.equal(
         "Referer obtained via Triage page fromURL: https://localhost:3000/enter-email"
       );
+    });
+  });
+
+  describe("prepareUserLocationTitle", () => {
+    it("should return the UK tag variant when passed 'true'", () => {
+      expect(prepareUserLocationTitle("true")).to.equal("resident_in_uk");
+    });
+
+    it("should return the non-UK tag variant when passed 'false'", () => {
+      expect(prepareUserLocationTitle("false")).to.equal("not_resident_in_uk");
+    });
+
+    it("should return an empty string when passed something else", () => {
+      ["sooth", "falsehood", ""].forEach((i) => {
+        expect(prepareUserLocationTitle(i)).to.equal("");
+      });
     });
   });
 });
