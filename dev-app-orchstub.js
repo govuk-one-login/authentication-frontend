@@ -18,6 +18,7 @@ const app = express();
 const port = process.env.PORT || 3002;
 const frontendPort = process.env.FRONTEND_PORT || 3000;
 const stubUrl = stubUrls[process.env.DEPLOYMENT_NAME];
+const sessionExpiry = Number(process.env.SESSION_EXPIRY || 3600000);
 
 if (stubUrl === undefined) {
   logger.warn(
@@ -42,7 +43,7 @@ const setGsCookie = (orchStubResponse, res) => {
   if (sessionCookie) {
     sessionCookieValue = getCookieValue(sessionCookie.split(";"), "gs");
     res.cookie("gs", sessionCookieValue, {
-      maxAge: new Date(new Date().getTime() + 60 * 60000),
+      maxAge: sessionExpiry,
     });
   }
 };
@@ -53,7 +54,7 @@ const setLngCookie = (orchStubResponse, res) => {
   if (lngCookie) {
     lngCookieValue = getCookieValue(lngCookie.split(";"), "lng");
     res.cookie("lng", lngCookieValue, {
-      maxAge: new Date(new Date().getTime() + 60 * 60000),
+      maxAge: sessionExpiry,
     });
   }
 };
