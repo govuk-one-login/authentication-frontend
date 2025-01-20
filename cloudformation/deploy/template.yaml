@@ -896,7 +896,7 @@ Resources:
             - Name: GA4_ENABLED
               Value: false
             - Name: UA_ENABLED
-              Value: true
+              Value: false
             - Name: UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID
               Value: GTM-TK92W68
             - Name: GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID
