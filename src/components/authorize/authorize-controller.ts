@@ -4,6 +4,7 @@ import {
   COOKIES_PREFERENCES_SET,
   PATH_NAMES,
   ERROR_LOG_LEVEL,
+  COOKIES_CHANNEL,
 } from "../../app.constants";
 import { getNextPathAndUpdateJourney, ERROR_CODES } from "../common/constants";
 import { BadRequestError, QueryParamsError } from "../../utils/error";
@@ -93,6 +94,8 @@ export function authorizeGet(
     req.session.client.prompt = loginPrompt;
     setSessionDataFromClaims(req, claims);
     setSessionDataFromAuthResponse(req, startAuthResponse);
+
+    persistSessionDataInCookies(req, res);
 
     if (
       supportReauthentication() &&
@@ -227,4 +230,11 @@ function validateQueryParams(clientId: string, responseType: string) {
   ) {
     throw new QueryParamsError("Client ID value is incorrect");
   }
+}
+
+function persistSessionDataInCookies(req: Request, res: Response) {
+  res.cookie(COOKIES_CHANNEL, req.session.user?.channel, {
+    secure: true,
+    httpOnly: false,
+  });
 }
