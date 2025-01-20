@@ -5,17 +5,22 @@
 
 {% block content %}
 
-<h1 class="govuk-heading-l">{{ 'error.timeoutError.header' | translate }}</h1>
-<p class="govuk-body">{{ 'error.timeoutError.content.paragraph1' | translate }}</p>
-<p class="govuk-heading-m">{{'error.timeoutError.content.whatYouCanDo' | translate }}</p>
-<p class="govuk-body">{{ 'error.timeoutError.content.paragraph2' | translate }}</p>
+    <h1 class="govuk-heading-l">{{ 'error.timeoutError.header' | translate }}</h1>
+    <p class="govuk-body">{{ 'error.timeoutError.content.paragraph1' | translate }}</p>
+    <p class="govuk-heading-m">{{ 'error.timeoutError.content.whatYouCanDo' | translate }}</p>
 
-{{ govukButton({
-"text": "error.timeoutError.content.govUKHomepageButtonText" | translate,
-"type": "Submit",
-"href": "error.timeoutError.content.govUKHomepageButtonHref" | translate
-}) }}
+    {% if strategicAppChannel === true %}
+        <p class="govuk-body">{{ 'mobileAppError.timeoutError.content.paragraph2' | translate }}</p>
+    {% else %}
+        <p class="govuk-body">{{ 'error.timeoutError.content.paragraph2' | translate }}</p>
 
-{{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: taxonomyLevel1, taxonomyLevel2: taxonomyLevel2, contentId: "", loggedInStatus: false, dynamic: false })}}
+        {{ govukButton({
+            "text": "error.timeoutError.content.govUKHomepageButtonText" | translate,
+            "type": "Submit",
+            "href": "error.timeoutError.content.govUKHomepageButtonHref" | translate
+        }) }}
+    {% endif %}
+
+    {{ ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: taxonomyLevel1, taxonomyLevel2: taxonomyLevel2, contentId: "", loggedInStatus: false, dynamic: false }) }}
 
 {% endblock %}
