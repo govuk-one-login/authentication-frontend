@@ -306,6 +306,7 @@ export const IPV_ERROR_CODES = {
 };
 
 export const COOKIES_PREFERENCES_SET = "cookies_preferences_set";
+export const COOKIES_CHANNEL = "channel";
 
 export const CONTACT_US_REFERER_ALLOWLIST = [
   "",

@@ -50,5 +50,33 @@ describe("session-middleware", () => {
       expect(res.locals.webChannel).to.equal(false);
       expect(next).to.be.calledOnce;
     });
+
+    describe("fallback behaviour", () => {
+      // it("should use 'session' channel if provided")
+      // already tested above
+      // see 'should set strategicAppChannel to true for strategic app clients'
+
+      it("should use 'channel' cookie if 'session' is not provided", () => {
+        const req = mockRequest({
+          cookies: { channel: "strategic_app" },
+        });
+
+        channelMiddleware(req as Request, res as Response, next);
+
+        expect(res.locals.strategicAppChannel).to.equal(true);
+        expect(res.locals.webChannel).to.equal(false);
+        expect(next).to.be.calledOnce;
+      });
+
+      it("should use default channel if no cookie is provided", () => {
+        const req = mockRequest();
+
+        channelMiddleware(req as Request, res as Response, next);
+
+        expect(res.locals.strategicAppChannel).to.equal(false);
+        expect(res.locals.webChannel).to.equal(true);
+        expect(next).to.be.calledOnce;
+      });
+    });
   });
 });

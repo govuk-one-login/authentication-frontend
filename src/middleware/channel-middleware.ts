@@ -1,13 +1,23 @@
 import { NextFunction, Request, Response } from "express";
-import { CHANNEL } from "../app.constants";
+import { CHANNEL, COOKIES_CHANNEL } from "../app.constants";
 
 export function channelMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  res.locals.strategicAppChannel =
-    req.session?.user?.channel === CHANNEL.STRATEGIC_APP;
-  res.locals.webChannel = req.session?.user?.channel === CHANNEL.WEB;
+  if (req.session?.user?.channel) {
+    setChannelFlags(res, req.session.user.channel);
+  } else if (req.cookies[COOKIES_CHANNEL]) {
+    setChannelFlags(res, req.cookies[COOKIES_CHANNEL]);
+  } else {
+    setChannelFlags(res, CHANNEL.WEB);
+  }
+
   next();
+}
+
+function setChannelFlags(res: Response, channel?: string): void {
+  res.locals.strategicAppChannel = channel === CHANNEL.STRATEGIC_APP;
+  res.locals.webChannel = channel === CHANNEL.WEB;
 }
