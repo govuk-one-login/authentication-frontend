@@ -12,7 +12,11 @@
 
     {{ govukButton({
         "text": "error.error404.content.govUKHomepageButtonText" | translate,
-        "type": "Submit",
+        "type": "Submit",,
+        attributes: {
+            "data-nav": "true",
+            "data-link": "/undefined"
+        },
         "href": "error.error404.content.govUKHomepageButtonHref" | translate
     }) }}
 
