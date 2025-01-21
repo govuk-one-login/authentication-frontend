@@ -154,6 +154,7 @@ describe("ipv callback controller", () => {
 
           await ipvCallbackGet(fakeService)(req as Request, res as Response);
 
+          expect(req.session.user.isAccountRecoveryJourney).to.equal(false);
           expect(res.redirect).to.be.calledWith(expectedPath);
         });
       }
