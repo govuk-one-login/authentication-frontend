@@ -42,7 +42,10 @@ export function mfaResetWithIpvGet(
       req,
       req.path,
       USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INIT,
-      null,
+      {
+        mfaMethodType: req.session.user.mfaMethodType,
+        requiresTwoFactorAuth: true,
+      },
       sessionId
     );
 
