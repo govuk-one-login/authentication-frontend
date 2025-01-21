@@ -113,9 +113,15 @@ if [[ $TERRAFORM == "1" ]]; then
     terraform apply ${TERRAFORM_OPTS} -var-file "nonprod-common.tfvars" -var-file "${DEPLOY_ENV}.tfvars" -var "image_uri=${REPO_URL}" -var "image_digest=${IMAGE_DIGEST}"
 
     if [[ $TERRAFORM_OPTS != "-destroy" ]]; then
-        echo -n "Waiting for ECS deployment to complete ... "
-        aws ecs wait services-stable --services "${DEPLOY_ENV}-frontend-ecs-service" --cluster "${DEPLOY_ENV}-app-cluster"
-        echo "done!"
+        if [[ $DEPLOY_ENV == "authdev1" ||  $DEPLOY_ENV == "authdev2" ]]; then
+            echo -n "Waiting for ECS deployment to complete ... "
+            aws ecs wait services-stable --services "${DEPLOY_ENV}-frontend-ecs-service" --cluster "dev-app-cluster"
+            echo "done!"
+        else
+            echo -n "Waiting for ECS deployment to complete ... "
+            aws ecs wait services-stable --services "${DEPLOY_ENV}-frontend-ecs-service" --cluster "${DEPLOY_ENV}-app-cluster"
+            echo "done!"
+        fi
     fi
     popd >/dev/null
 fi
