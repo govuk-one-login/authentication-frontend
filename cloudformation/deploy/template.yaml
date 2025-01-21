@@ -7,6 +7,14 @@ Transform:
   - AWS::LanguageExtensions
   - AWS::Serverless-2016-10-31
 
+Metadata:
+  cfn-lint:
+    config:
+      regions:
+        - eu-west-2
+      ignore_checks:
+        - W8003 # Bypass this cfn-lint check, not working with language extensions and SAM template https://github.com/aws-cloudformation/cfn-lint/issues/3857
+
 Parameters:
   Environment:
     Type: String
@@ -57,13 +65,14 @@ Parameters:
 
 Conditions:
   DeployServiceDownPage:
-    Fn::Or:
-      - Fn::Equals:
-          - !Ref Environment
-          - "integration"
-      - Fn::Equals:
-          - !Ref Environment
-          - "production"
+    Fn::Equals:
+      - !FindInMap [
+          EnvironmentConfiguration,
+          !Ref Environment,
+          DeployServiceDownPage,
+          DefaultValue: "No",
+        ]
+      - "Yes"
 
   UseCodeSigning:
     Fn::Not:
@@ -87,27 +96,49 @@ Conditions:
     Fn::And:
       - !Condition UseECSCanaryDeploymentStack
       - Fn::Or:
-          - Fn::Equals:
-              - !Ref Environment
-              - "placeholder"
-          - Fn::Equals:
-              - !Ref SubEnvironment
-              - "authdev1"
+          - Fn::And:
+              - !Condition UseSubEnvironment
+              - Fn::Equals:
+                  - !FindInMap [
+                      EnvironmentConfiguration,
+                      !Ref SubEnvironment,
+                      ECSServiceCanaryPhasedDeploy,
+                      DefaultValue: "No",
+                    ]
+                  - "Yes"
+          - Fn::And:
+              - !Condition NotSubEnvironment
+              - Fn::Equals:
+                  - !FindInMap [
+                      EnvironmentConfiguration,
+                      !Ref Environment,
+                      ECSServiceCanaryPhasedDeploy,
+                      DefaultValue: "No",
+                    ]
+                  - "Yes"
 
   UseMfaResetWithIpv:
     Fn::Or:
-      - Fn::Equals:
-          - !Ref Environment
-          - "dev"
-      - Fn::Equals:
-          - !Ref Environment
-          - "staging"
-      - Fn::Equals:
-          - !Ref SubEnvironment
-          - "authdev1"
-      - Fn::Equals:
-          - !Ref SubEnvironment
-          - "authdev2"
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  UseMfaResetWithIpv,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  UseMfaResetWithIpv,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
 
   UseSubEnvironment:
     Fn::And:
@@ -119,16 +150,33 @@ Conditions:
               - !Ref SubEnvironment
               - none
 
+  NotSubEnvironment:
+    Fn::Equals:
+      - !Ref SubEnvironment
+      - none
+
   UseNginxSidecar:
     Fn::Or:
-      - Fn::Equals:
-          - !Ref Environment
-          - "integration"
-      # TODO Nginx sidecar is deployed in prod to block public access, while still using the transitional '-sp' domain
-      # The following lines must be removed BEFORE we switch DNS
-      - Fn::Equals:
-          - !Ref Environment
-          - "production"
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  UseNginxSidecar,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  UseNginxSidecar,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
 
   IsNotProduction:
     Fn::Not:
@@ -136,26 +184,38 @@ Conditions:
           - !Ref Environment
           - production
 
-  IsNotStaging:
-    Fn::Not:
-      - Fn::Equals:
-          - !Ref Environment
-          - staging
+  SupportHTTPKeepAlive:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  SupportHTTPKeepAlive,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  SupportHTTPKeepAlive,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
 
   IsSplunkEnabled:
-    Fn::Or:
-      - Fn::Equals:
-          - !Ref Environment
-          - "build"
-      - Fn::Equals:
-          - !Ref Environment
-          - "staging"
-      - Fn::Equals:
-          - !Ref Environment
-          - "integration"
-      - Fn::Equals:
-          - !Ref Environment
-          - "production"
+    Fn::Equals:
+      - !FindInMap [
+          EnvironmentConfiguration,
+          !Ref Environment,
+          IsSplunkEnabled,
+          DefaultValue: "No",
+        ]
+      - "Yes"
 
   IsSplunkandServicedown:
     Fn::And:
@@ -203,9 +263,12 @@ Mappings:
         -----END PUBLIC KEY-----
       transitionalDomain: signin.authdev1.dev.account.gov.uk
       migratedDomain: signin.authdev1.dev.account.gov.uk
+      UseMfaResetWithIpv: "Yes"
     authdev2:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev2-basic-auth-sidecar-image-repository-containerrepository-zvcjtkip2sye"
+      UseNginxSidecar: "Yes"
       cloudfrontDistributionStackName: "authdev2-cloudfront"
+      ECSServiceCanaryPhasedDeploy: "Yes"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/Yz722IDLN1mPqkPTihkwAkp/rUm
@@ -218,8 +281,11 @@ Mappings:
         -----END PUBLIC KEY-----
       transitionalDomain: signin.authdev2.dev.account.gov.uk
       migratedDomain: signin.authdev2.dev.account.gov.uk
+      UseMfaResetWithIpv: "Yes"
     dev:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-acbvxp3ywblv"
+      UseNginxSidecar: "No"
+      DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       frontendAutoScalingMinCount: 2
       frontendAutoScalingMaxCount: 4
@@ -239,10 +305,15 @@ Mappings:
         kRaZYTpLsfCpC79ZgKSYEBcguuOUP4DvJpyHomBEnxeUs7s5KRgyMQjY4g==
         -----END PUBLIC KEY-----
       redisNodeSize: cache.t2.small
+      IsSplunkEnabled: "No"
+      SupportHTTPKeepAlive: "No"
       transitionalDomain: signin-sp.dev.account.gov.uk
       migratedDomain: signin.dev.account.gov.uk
+      UseMfaResetWithIpv: "Yes"
     build:
+      UseNginxSidecar: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
+      DeployServiceDownPage: "No"
       frontendAutoScalingMinCount: 4
       frontendAutoScalingMaxCount: 6
       frontendTaskDefinitionCpu: 512
@@ -261,10 +332,15 @@ Mappings:
         WwuA51+3Ak+stF2dddC60WXEKhrFumKBUnE5GhJNg4v0iN948Mwl+vz5Xw==
         -----END PUBLIC KEY-----
       redisNodeSize: cache.t2.small
+      IsSplunkEnabled: "Yes"
+      SupportHTTPKeepAlive: "No"
       transitionalDomain: signin-sp.build.account.gov.uk
       migratedDomain: signin.build.account.gov.uk
+      UseMfaResetWithIpv: "No"
     staging:
+      UseNginxSidecar: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
+      DeployServiceDownPage: "No"
       frontendAutoScalingMinCount: 4
       frontendAutoScalingMaxCount: 240
       frontendTaskDefinitionCpu: 1024
@@ -283,10 +359,15 @@ Mappings:
         1zSWSgFy2sngA1GKybC0zuZluGHfZMnr/BGo+teQzbDCekLijPvlozXY1g==
         -----END PUBLIC KEY-----
       redisNodeSize: cache.m4.xlarge
+      IsSplunkEnabled: "Yes"
+      SupportHTTPKeepAlive: "Yes"
       transitionalDomain: signin-sp.staging.account.gov.uk
       migratedDomain: signin.staging.account.gov.uk
+      UseMfaResetWithIpv: "Yes"
     integration:
       basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
+      UseNginxSidecar: "Yes"
+      DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
       frontendAutoScalingMinCount: 2
       frontendAutoScalingMaxCount: 4
@@ -301,10 +382,17 @@ Mappings:
         ppx89XLVfgXIoCs2P//N5qdghvzgNIgVehQ7CkzyorO/lnRlWPfjCG4Oxw==
         -----END PUBLIC KEY-----
       redisNodeSize: cache.t2.small
+      IsSplunkEnabled: "Yes"
+      SupportHTTPKeepAlive: "No"
       transitionalDomain: signin-sp.integration.account.gov.uk
       migratedDomain: signin.integration.account.gov.uk
+      UseMfaResetWithIpv: "No"
     production:
       basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
+      # TODO Nginx sidecar is deployed in prod to block public access, while still using the transitional '-sp' domain
+      # UseNginxSidecar must be set to "No" BEFORE we switch DNS
+      UseNginxSidecar: "Yes"
+      DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
       frontendAutoScalingMinCount: 4
       frontendAutoScalingMaxCount: 240
@@ -319,8 +407,11 @@ Mappings:
         +3VZPbjHv+v0AjQ5Ps+avkXWKwOeScG9sS0cDf0utEXi3fN3cEraa9WuKQ==
         -----END PUBLIC KEY-----
       redisNodeSize: cache.m4.xlarge
+      IsSplunkEnabled: "Yes"
+      SupportHTTPKeepAlive: "No"
       transitionalDomain: signin-sp.account.gov.uk
       migratedDomain: signin.account.gov.uk
+      UseMfaResetWithIpv: "No"
 
 Globals:
   Function:
@@ -820,7 +911,7 @@ Resources:
             - Name: SUPPORT_NEW_IPV_SPINNER
               Value: !If [IsNotProduction, "1", "0"]
             - Name: SUPPORT_HTTP_KEEP_ALIVE
-              Value: !If [IsNotStaging, "0", "1"]
+              Value: !If [SupportHTTPKeepAlive, "1", "0"]
             - Name: SUPPORT_MFA_RESET_WITH_IPV
               Value: !If [UseMfaResetWithIpv, "1", "0"]
           Secrets:
