@@ -735,36 +735,10 @@ const authStateMachine = createMachine(
         type: "final",
       },
       [PATH_NAMES.MFA_RESET_WITH_IPV]: {
-        /**
-         * The next page after MFA_RESET_WITH_IPV is a URL to IPV (which is
-         * outside the state machine). Once the user has finished their IPV
-         * journey the user is sent to our IPV_CALLBACK path (which is managed
-         * by the state machine). We want to allow the user to go back from IPV,
-         * back to their MFA code entry pages.
-         *
-         * allowUserJourneyMiddleware will redirect to the first page in the
-         * IPV_REVERIFICATION_INIT array below where the condition is true,
-         * if the user is not on either the page returned from this array or
-         * any of the optionalPaths below.
-         *
-         * While it seems that IPV_CALLBACK should be the next path marked in
-         * the array, this does not allow the user to return to their enter MFA
-         * code page. This happens because the allowUserJourneyMiddleware kicks
-         * in when they are on their MFA code page and says they need to be on
-         * the IPV_CALLBACK page instead, and are incorrectly redirected there
-         * (only IPV should be directing users to IPV_CALLBACK).
-         */
         on: {
           [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INIT]: [
-            { target: [PATH_NAMES.ENTER_MFA], cond: "requiresMFASMSCode" },
-            {
-              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
-              cond: "requiresMFAAuthAppCode",
-            },
+            { target: [PATH_NAMES.IPV_CALLBACK] },
           ],
-        },
-        meta: {
-          optionalPaths: [PATH_NAMES.IPV_CALLBACK],
         },
       },
       [PATH_NAMES.IPV_CALLBACK]: {
@@ -830,9 +804,6 @@ const authStateMachine = createMachine(
       isIdentityRequiredAndProveIdentityWelcomeEnabled: (context) =>
         context.isIdentityRequired === true &&
         context.proveIdentityWelcomeEnabled === true,
-      requiresMFASMSCode: (context) =>
-        context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
-        context.requiresTwoFactorAuth === true,
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.requiresTwoFactorAuth === true,
