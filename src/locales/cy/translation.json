@@ -593,7 +593,9 @@
         "sendCodeLinkHref": "/resend-code",
         "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn.",
         "changeGetSecurityCodesText": "Os na allwch gyrchu’r rhif ffôn ar gyfer eich GOV.UK One Login, gallwch ",
-        "changeGetSecurityCodesLinkText": "newid yn ddiogel sut rydych yn cael codau diogelwch"
+        "changeGetSecurityCodesLinkText": "newid yn ddiogel sut rydych yn cael codau diogelwch",
+        "changeGetSecurityCodesTextWithIpv": "Os nad oes gennych fynediad i’ch ap dilysu mwyach, ",
+        "changeGetSecurityCodesWithIpvLinkText": "gwiriwch a allwch newid sut rydych yn cael codau diogelwch"
       },
       "upliftRequired": {
         "title": "Rhowch god diogelwch i barhau",
@@ -2534,6 +2536,8 @@
         "summary": "Nid oes gennyf fynediad i’r ap dilysydd",
         "text1": "Gallwch newid sut ",
         "text2": "gallwch gael codau diogelwch yn ddiogel",
+        "text1MfaResetWithIpv": "Os nad oes gennych fynediad i’ch ap dilysu mwyach, ",
+        "text2MfaResetWithIpv": "gwiriwch a allwch newid sut rydych yn cael codau diogelwch",
         "text3": "."
       },
       "upliftRequired": {

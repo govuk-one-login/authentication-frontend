@@ -593,7 +593,9 @@
         "sendCodeLinkHref": "/resend-code",
         "text 2": " if the code is not working or you did not receive it.",
         "changeGetSecurityCodesText": "If you cannot access the phone number for your GOV.UK One Login, you can securely ",
-        "changeGetSecurityCodesLinkText": "change how you get security codes"
+        "changeGetSecurityCodesLinkText": "change how you get security codes",
+        "changeGetSecurityCodesTextWithIpv": "If you no longer have access to this phone number,  ",
+        "changeGetSecurityCodesWithIpvLinkText": "check if you can change how you get security codes"
       },
       "upliftRequired": {
         "title": "Enter a security code to continue",
@@ -2534,6 +2536,8 @@
         "summary": "I do not have access to the authenticator app",
         "text1": "You can securely ",
         "text2": "change how you get security codes",
+        "text1MfaResetWithIpv": "If you no longer have access to your authenticator app, ",
+        "text2MfaResetWithIpv": "check if you can change how you get security codes",
         "text3": "."
       },
       "upliftRequired": {

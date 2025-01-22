@@ -95,6 +95,7 @@ export function enterAuthenticatorAppCodeGet(
 
     return res.render(templateName, {
       isAccountRecoveryPermitted: isAccountRecoveryPermittedForUser,
+      supportMfaResetWithIpv: supportMfaResetWithIpv(),
       mfaResetPath,
     });
   };
