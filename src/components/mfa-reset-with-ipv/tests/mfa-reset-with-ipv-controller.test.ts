@@ -1,11 +1,7 @@
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import sinon from "sinon";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import {
-  HTTP_STATUS_CODES,
-  MFA_METHOD_TYPE,
-  PATH_NAMES,
-} from "../../../app.constants";
+import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
 import { mfaResetWithIpvGet } from "../mfa-reset-with-ipv-controller";
 import { expect } from "chai";
 import { MfaResetAuthorizeInterface } from "../types";
@@ -56,20 +52,13 @@ describe("mfa reset with ipv controller", () => {
       expect(res.redirect).to.have.been.calledWith(IPV_DUMMY_URL);
     });
 
-    [
-      [MFA_METHOD_TYPE.SMS, PATH_NAMES.ENTER_MFA],
-      [MFA_METHOD_TYPE.AUTH_APP, PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
-    ].forEach(([mfaMethodType, expectedPath]) => {
-      it(`should set the next path to "${expectedPath}" for the "${mfaMethodType}" MFA method type`, async () => {
-        req.session.user.mfaMethodType = mfaMethodType;
+    it("should set the next path as ipv callback", async () => {
+      await mfaResetWithIpvGet(fakeMfaResetAuthorizeService(true))(
+        req as Request,
+        res as Response
+      );
 
-        await mfaResetWithIpvGet(fakeMfaResetAuthorizeService(true))(
-          req as Request,
-          res as Response
-        );
-
-        expect(req.session.user.journey.nextPath).to.eq(expectedPath);
-      });
+      expect(req.session.user.journey.nextPath).to.eq(PATH_NAMES.IPV_CALLBACK);
     });
 
     it("should throw a BadRequestError when the request made to the MFA Reset Authorize endpoint is not successful", async () => {
