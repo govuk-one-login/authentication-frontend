@@ -759,6 +759,13 @@ const authStateMachine = createMachine(
             },
           ],
         },
+        meta: {
+          optionalPaths: [
+            PATH_NAMES.MFA_RESET_WITH_IPV,
+            PATH_NAMES.ENTER_MFA,
+            PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+          ],
+        },
       },
       [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: {
         on: {
