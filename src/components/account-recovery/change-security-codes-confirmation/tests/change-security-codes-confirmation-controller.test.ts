@@ -23,29 +23,53 @@ describe("change security codes confirmation controller", () => {
 
   afterEach(() => {
     sinon.restore();
+    delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
   });
 
   describe("changeSecurityCodesConfirmationGet", () => {
-    [MFA_METHOD_TYPE.SMS, MFA_METHOD_TYPE.AUTH_APP].forEach(
-      function (mfaMethodType) {
-        it(`should render the change security codes codes confirmation page for mfaMethodType ${mfaMethodType}`, async () => {
-          req.session.user.accountRecoveryVerifiedMfaType = mfaMethodType;
-          req.session.user.email =
-            "security.codes.changed@testtwofactorauth.org";
-          req.session.user.redactedPhoneNumber = "*******1234";
+    const redactedPhoneNumber = "*******1234";
+    const testData = [
+      {
+        methodType: MFA_METHOD_TYPE.SMS,
+        supportMfaResetWithIpv: false,
+      },
+      {
+        methodType: MFA_METHOD_TYPE.AUTH_APP,
+        supportMfaResetWithIpv: false,
+      },
+      {
+        methodType: MFA_METHOD_TYPE.SMS,
+        supportMfaResetWithIpv: true,
+      },
+      {
+        methodType: MFA_METHOD_TYPE.AUTH_APP,
+        supportMfaResetWithIpv: true,
+      },
+    ];
+    testData.forEach(function (testParams) {
+      it(`should render the change security codes codes confirmation page for mfaMethodType ${testParams.methodType}`, async () => {
+        req.session.user.accountRecoveryVerifiedMfaType = testParams.methodType;
+        req.session.user.email = "security.codes.changed@testtwofactorauth.org";
+        req.session.user.redactedPhoneNumber = redactedPhoneNumber;
+        if (testParams.supportMfaResetWithIpv) {
+          process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
+        }
 
-          await changeSecurityCodesConfirmationGet()(
-            req as Request,
-            res as Response
-          );
+        await changeSecurityCodesConfirmationGet()(
+          req as Request,
+          res as Response
+        );
 
-          expect(res.render).to.have.been.calledWith(
-            "account-recovery/change-security-codes-confirmation/index.njk",
-            { mfaMethodType: mfaMethodType, phoneNumber: "*******1234" }
-          );
-        });
-      }
-    );
+        expect(res.render).to.have.been.calledWith(
+          "account-recovery/change-security-codes-confirmation/index.njk",
+          {
+            mfaMethodType: testParams.methodType,
+            phoneNumber: redactedPhoneNumber,
+            supportMfaResetWithIpv: testParams.supportMfaResetWithIpv,
+          }
+        );
+      });
+    });
   });
 
   describe("changeSecurityCodesConfirmationPost", () => {
