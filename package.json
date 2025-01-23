@@ -138,7 +138,7 @@
     "eslint": "^9.14.0",
     "eslint-plugin-no-only-tests": "^3.3.0",
     "husky": "^9.0.10",
-    "mocha": "11.0.1",
+    "mocha": "11.1.0",
     "mocha-chai-jest-snapshot": "^1.1.6",
     "mock-req-res": "^1.2.0",
     "nock": "^13.5.1",
