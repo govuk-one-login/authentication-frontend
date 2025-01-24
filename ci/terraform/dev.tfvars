@@ -43,4 +43,5 @@ orch_stub_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZI
 orch_stub_to_auth_client_id          = "orchestrationAuth"
 orch_stub_to_auth_audience           = "https://signin.dev.account.gov.uk/"
 
-dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
+dynatrace_secret_arn    = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
+analytics_cookie_domain = ".dev.account.gov.uk"
