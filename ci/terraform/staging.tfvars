@@ -43,7 +43,7 @@ orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CA
 orch_to_auth_client_id          = "orchestrationAuth"
 orch_to_auth_audience           = "https://signin.staging.account.gov.uk/"
 
-ua_enabled                           = "false"
+ua_enabled                           = "true"
 universal_analytics_gtm_container_id = "GTM-TK92W68"
 ga4_enabled                          = "true"
 google_analytics_4_gtm_container_id  = "GTM-KD86CMZ"

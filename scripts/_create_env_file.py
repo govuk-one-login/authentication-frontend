@@ -130,7 +130,7 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
                 "comment": "GA4 Enablement",
             },
             "UA_ENABLED": {
-                "value": "false",
+                "value": "true",
                 "comment": "Univeral Analytics",
             },
             "UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID": {
