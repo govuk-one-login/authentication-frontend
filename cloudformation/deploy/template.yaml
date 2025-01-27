@@ -244,6 +244,9 @@ Conditions:
           - Fn::Equals:
               - !Ref Environment
               - "staging"
+          - Fn::Equals:
+              - !Ref Environment
+              - "integration"
 
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
