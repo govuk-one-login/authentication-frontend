@@ -693,6 +693,11 @@
       "info": {
         "paragraphSMS": "Byddwn yn anfon codau diogelwch i’ch rhif ffôn sy’n gorffen gyda [mobile] pan fyddwch yn mewngofnodi.",
         "paragraphAuthApp": "Bydd angen i chi ddefnyddio’ch ap dilysydd i gael codau diogelwch pan rydych yn mewngofnodi."
+      },
+      "infoForJourneyWithIpvReset": {
+        "confirmationParagraph": "Gallwch nawr barhau i’r gwasanaeth roeddech yn ei ddefnyddio.",
+        "paragraphSMS": "Y tro nesaf y byddwch yn mewngofnodi, byddwn yn anfon codau diogelwch i’ch rhif ffôn sy’n gorffen gyda [mobile].",
+        "paragraphAuthApp": "Y tro nesaf y byddwch yn mewngofnodi, bydd angen i chi ddefnyddio’ch ap dilyswr i gael codau diogelwch."
       }
     },
     "checkYourEmailSecurityCodes": {

@@ -693,6 +693,11 @@
       "info": {
         "paragraphSMS": "We’ll send security codes to your phone number ending with [mobile] when you sign in.",
         "paragraphAuthApp": "You’ll need to use your authenticator app to get security codes when you sign in."
+      },
+      "infoForJourneyWithIpvReset": {
+        "confirmationParagraph": "You can now continue to the service you were using.",
+        "paragraphSMS": "Next time you sign in, we’ll send security codes to your phone number ending with [mobile].",
+        "paragraphAuthApp": "Next time you sign in, you’ll need to use your authenticator app to get security codes."
       }
     },
     "checkYourEmailSecurityCodes": {
