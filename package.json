@@ -67,7 +67,7 @@
     "@aws-sdk/client-ssm": "^3.366.0",
     "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "^9.14.0",
-    "@govuk-one-login/frontend-analytics": "3.0.1",
+    "@govuk-one-login/frontend-analytics": "3.1.0",
     "@govuk-one-login/frontend-language-toggle": "^2.1.0",
     "@govuk-one-login/frontend-passthrough-headers": "^1.1.1",
     "@govuk-one-login/frontend-vital-signs": "0.1.2",

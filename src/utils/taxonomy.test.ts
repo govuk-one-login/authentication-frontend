@@ -3,6 +3,9 @@ import {
   Taxonomy,
   TaxonomyLevel1,
   TaxonomyLevel2,
+  TaxonomyLevel3,
+  TaxonomyLevel4,
+  TaxonomyLevel5,
 } from "./taxonomy";
 
 import { describe } from "mocha";
@@ -82,6 +85,9 @@ const mappingsToTest: VariantExpectation[] = [
     expectedTaxonomy: {
       taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
       taxonomyLevel2: TaxonomyLevel2.BLANK,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   },
   ...signInVariants.map((t) => ({
@@ -89,6 +95,9 @@ const mappingsToTest: VariantExpectation[] = [
     expectedTaxonomy: {
       taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
       taxonomyLevel2: TaxonomyLevel2.SIGN_IN,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
   ...reauthVariants.map((t) => ({
@@ -96,6 +105,9 @@ const mappingsToTest: VariantExpectation[] = [
     expectedTaxonomy: {
       taxonomyLevel1: TaxonomyLevel1.ACCOUNTS,
       taxonomyLevel2: TaxonomyLevel2.REAUTH,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
   ...createAccountVariants.map((t) => ({
@@ -103,6 +115,9 @@ const mappingsToTest: VariantExpectation[] = [
     expectedTaxonomy: {
       taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
       taxonomyLevel2: TaxonomyLevel2.CREATE_ACCOUNT,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
   ...feedbackVariants.map((t) => ({
@@ -110,6 +125,9 @@ const mappingsToTest: VariantExpectation[] = [
     expectedTaxonomy: {
       taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
       taxonomyLevel2: TaxonomyLevel2.FEEDBACK,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
   ...guidanceVariants.map((t) => ({
@@ -117,6 +135,9 @@ const mappingsToTest: VariantExpectation[] = [
     expectedTaxonomy: {
       taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
       taxonomyLevel2: TaxonomyLevel2.GUIDANCE,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
   ...accountRecoveryVariants.map((t) => ({
@@ -124,6 +145,9 @@ const mappingsToTest: VariantExpectation[] = [
     expectedTaxonomy: {
       taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
       taxonomyLevel2: TaxonomyLevel2.ACCOUNT_RECOVERY,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
   ...accountInterventionVariants.map((t) => ({
@@ -131,6 +155,9 @@ const mappingsToTest: VariantExpectation[] = [
     expectedTaxonomy: {
       taxonomyLevel1: TaxonomyLevel1.ACCOUNTS,
       taxonomyLevel2: TaxonomyLevel2.ACCOUNT_INTERVENTION,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
 ];
