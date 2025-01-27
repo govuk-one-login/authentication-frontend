@@ -50,5 +50,4 @@ logging_endpoint_arns = [
 
 dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
 
-ua_enabled              = "true"
 analytics_cookie_domain = ".sandpit.account.gov.uk"
