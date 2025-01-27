@@ -28,5 +28,6 @@
            rel="noreferrer noopener">{{ 'mobileAppPages.accountNotFound.findOutMoreLinkText' | translate }}</a>
     </p>
 
-    {{ ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "sign in", contentId: "10e1b70b-e208-4db8-8863-3679a675b51d", loggedInStatus: false, dynamic: false }) }}
+    {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "sign in", contentId: "10e1b70b-e208-4db8-8863-3679a675b51d", loggedInStatus: false, dynamic: false } %}
+    {%- include "ga4-opl/template.njk" -%}
 {% endblock %}
