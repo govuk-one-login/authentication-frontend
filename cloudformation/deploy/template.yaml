@@ -521,7 +521,7 @@ Resources:
       DeploymentConfiguration: !If
         - UseECSCanaryDeploymentStack
         - !Ref AWS::NoValue
-        - MaximumPercent: 150
+        - MaximumPercent: 200
           MinimumHealthyPercent: 50
       DeploymentController:
         Type: !If
@@ -1748,7 +1748,7 @@ Resources:
       LaunchType: FARGATE
       DesiredCount: 2
       DeploymentConfiguration:
-        MaximumPercent: 100
+        MaximumPercent: 200
         MinimumHealthyPercent: 50
       LoadBalancers:
         - ContainerName: "service-down-page"
