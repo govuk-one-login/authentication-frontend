@@ -67,6 +67,7 @@ export function ipvCallbackGet(
     }
 
     if (isReverificationResultFailedResponse(result.data)) {
+      req.session.user.isAccountRecoveryJourney = false;
       const event = ERROR_TO_EVENT_MAP.get(result.data.failure_code);
       if (!event) {
         throw new Error(result.data.failure_code);
