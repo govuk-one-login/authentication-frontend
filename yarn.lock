@@ -922,9 +922,9 @@
     loglevel "^1.9.1"
 
 "@govuk-one-login/frontend-language-toggle@^2.1.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-language-toggle/-/frontend-language-toggle-2.2.0.tgz#78d65fd8112183f20017f67df8d21d15f6a3df96"
-  integrity sha512-Ekg4/Gjxr9pkJyS56Rn3EnrV2Wisy6CHuM65GaDuZ3/AAijoMrfsoJQ6BKK4k9eJDwNasfcaCgWRfYPfgX8p1g==
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-language-toggle/-/frontend-language-toggle-2.2.1.tgz#e30c11f47710ed270b4f25422a8469289c69e0dd"
+  integrity sha512-y9Z4kRVKPEBD8ejVPtSE3UexPn2N8TStdZL33vh+MlBKEJlHBTFIIsm2mYWd2xCAQSk/9G9QWPScygCDFNZQJA==
   dependencies:
     rollup-plugin-copy "^3.5.0"
 
