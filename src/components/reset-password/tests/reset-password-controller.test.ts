@@ -74,6 +74,10 @@ describe("reset password controller (in 6 digit code flow)", () => {
   });
 
   describe("resetPasswordGet", () => {
+    afterEach(() => {
+      delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
+    });
+
     it("should render change password page", () => {
       resetPasswordGet(req as Request, res as Response);
 
@@ -189,6 +193,54 @@ describe("reset password controller (in 6 digit code flow)", () => {
       expect(fakeLoginService.loginUser).not.to.have.been.called;
 
       expect(req.session.user.passwordResetTime).to.be.undefined;
+    });
+  });
+
+  [true, false].forEach(function (supportMfaResetWithIpv) {
+    it(`should call the update password service with the value of allowMfaResetAfterPasswordReset set ${supportMfaResetWithIpv} when this is the value of the mfa reset feature flag`, async () => {
+      if (supportMfaResetWithIpv) {
+        process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
+      } else {
+        process.env.SUPPORT_MFA_RESET_WITH_IPV = "0";
+      }
+      const fakeResetService: ResetPasswordServiceInterface = {
+        updatePassword: sinon.fake.returns({ success: true }),
+      } as unknown as ResetPasswordServiceInterface;
+      const fakeLoginService: EnterPasswordServiceInterface = {
+        loginUser: sinon.fake.returns({
+          success: true,
+          data: {
+            redactedPhoneNumber: "1234",
+            latestTermsAndConditionsAccepted: true,
+            mfaMethodVerified: false,
+            mfaRequired: true,
+            passwordChangeRequired: false,
+          },
+        }),
+      } as unknown as EnterPasswordServiceInterface;
+
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+      };
+      req.body.password = "Password1";
+
+      await resetPasswordPost(fakeResetService, fakeLoginService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeResetService.updatePassword).to.have.been.calledOnceWith(
+        "Password1",
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        supportMfaResetWithIpv,
+        req
+      );
+      expect(fakeLoginService.loginUser).to.have.been.calledOnce;
+
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
     });
   });
 });
