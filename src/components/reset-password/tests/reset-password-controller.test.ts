@@ -109,7 +109,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
               },
             }),
           } as unknown as EnterPasswordServiceInterface;
-          fakeLoginService.loginUser;
 
           await resetPasswordPost(fakeResetService, fakeLoginService)(
             req as Request,
@@ -135,7 +134,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
               },
             }),
           } as unknown as EnterPasswordServiceInterface;
-          fakeLoginService.loginUser;
 
           req.session.user = {
             email: "joe.bloggs@test.com",
@@ -177,7 +175,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
           },
         }),
       } as unknown as EnterPasswordServiceInterface;
-      fakeLoginService.loginUser;
 
       req.session.user = {
         email: "joe.bloggs@test.com",
