@@ -424,12 +424,6 @@ variable "ga4_enabled" {
   description = "Enables Google Analytics 4"
 }
 
-variable "universal_analytics_gtm_container_id" {
-  type        = string
-  default     = "GTM-TK92W68"
-  description = "Universal Analytics Container ID"
-}
-
 variable "google_analytics_4_gtm_container_id" {
   type        = string
   default     = "GTM-KD86CMZ"
