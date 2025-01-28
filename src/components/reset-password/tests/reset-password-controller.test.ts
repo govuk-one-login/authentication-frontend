@@ -93,6 +93,27 @@ describe("reset password controller (in 6 digit code flow)", () => {
       } as unknown as ResetPasswordServiceInterface;
     }
 
+    function fakeLoginServiceReturning(
+      verified: boolean,
+      passwordChangeRequired: boolean,
+      mfaMethodType?: MFA_METHOD_TYPE
+    ) {
+      const baseData = {
+        redactedPhoneNumber: "1234",
+        latestTermsAndConditionsAccepted: true,
+        mfaMethodVerified: verified,
+        mfaRequired: true,
+        passwordChangeRequired: passwordChangeRequired,
+      };
+      const data = mfaMethodType ? { ...baseData, mfaMethodType } : baseData;
+      return {
+        loginUser: sinon.fake.returns({
+          success: true,
+          data,
+        }),
+      } as unknown as EnterPasswordServiceInterface;
+    }
+
     beforeEach(() => {
       req.session.user = {
         email: "joe.bloggs@test.com",
@@ -109,19 +130,12 @@ describe("reset password controller (in 6 digit code flow)", () => {
         () => {
           it("should redirect to /auth-code if request is success", async () => {
             const fakeResetService = fakeResetServiceReturningSuccess(true);
-            const fakeLoginService: EnterPasswordServiceInterface = {
-              loginUser: sinon.fake.returns({
-                success: true,
-                data: {
-                  redactedPhoneNumber: "1234",
-                  latestTermsAndConditionsAccepted: true,
-                  mfaMethodVerified: true,
-                  mfaMethodType: MFA_METHOD_TYPE.SMS,
-                  mfaRequired: true,
-                  passwordChangeRequired: params.passwordChangeRequired,
-                },
-              }),
-            } as unknown as EnterPasswordServiceInterface;
+            const mfaMethodVerified = true;
+            const fakeLoginService = fakeLoginServiceReturning(
+              mfaMethodVerified,
+              params.passwordChangeRequired,
+              MFA_METHOD_TYPE.SMS
+            );
 
             await resetPasswordPost(fakeResetService, fakeLoginService)(
               req as Request,
@@ -133,18 +147,11 @@ describe("reset password controller (in 6 digit code flow)", () => {
 
           it("should redirect to /get-security-codes when password updated and mfa method not verified", async () => {
             const fakeResetService = fakeResetServiceReturningSuccess(true);
-            const fakeLoginService: EnterPasswordServiceInterface = {
-              loginUser: sinon.fake.returns({
-                success: true,
-                data: {
-                  redactedPhoneNumber: "1234",
-                  latestTermsAndConditionsAccepted: true,
-                  mfaMethodVerified: false,
-                  mfaRequired: true,
-                  passwordChangeRequired: params.passwordChangeRequired,
-                },
-              }),
-            } as unknown as EnterPasswordServiceInterface;
+            const mfaMethodVerified = false;
+            const fakeLoginService = fakeLoginServiceReturning(
+              mfaMethodVerified,
+              params.passwordChangeRequired
+            );
 
             await resetPasswordPost(fakeResetService, fakeLoginService)(
               req as Request,
@@ -165,19 +172,12 @@ describe("reset password controller (in 6 digit code flow)", () => {
         const fakeResetService = fakeResetServiceReturningSuccess(false, {
           code: ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING,
         });
-        const fakeLoginService: EnterPasswordServiceInterface = {
-          loginUser: sinon.fake.returns({
-            success: true,
-            data: {
-              redactedPhoneNumber: "1234",
-              latestTermsAndConditionsAccepted: true,
-              mfaMethodVerified: true,
-              mfaRequired: false,
-              mfaMethodType: MFA_METHOD_TYPE.SMS,
-              passwordChangeRequired: params.passwordChangeRequired,
-            },
-          }),
-        } as unknown as EnterPasswordServiceInterface;
+        const mfaMethodVerified = true;
+        const fakeLoginService = fakeLoginServiceReturning(
+          mfaMethodVerified,
+          params.passwordChangeRequired,
+          MFA_METHOD_TYPE.SMS
+        );
 
         await resetPasswordPost(fakeResetService, fakeLoginService)(
           req as Request,
@@ -199,18 +199,13 @@ describe("reset password controller (in 6 digit code flow)", () => {
           process.env.SUPPORT_MFA_RESET_WITH_IPV = "0";
         }
         const fakeResetService = fakeResetServiceReturningSuccess(true);
-        const fakeLoginService: EnterPasswordServiceInterface = {
-          loginUser: sinon.fake.returns({
-            success: true,
-            data: {
-              redactedPhoneNumber: "1234",
-              latestTermsAndConditionsAccepted: true,
-              mfaMethodVerified: false,
-              mfaRequired: true,
-              passwordChangeRequired: false,
-            },
-          }),
-        } as unknown as EnterPasswordServiceInterface;
+        const mfaMethodVerified = false;
+        const passwordChangeRequired = false;
+        const fakeLoginService = fakeLoginServiceReturning(
+          mfaMethodVerified,
+          passwordChangeRequired,
+          MFA_METHOD_TYPE.SMS
+        );
 
         await resetPasswordPost(fakeResetService, fakeLoginService)(
           req as Request,
