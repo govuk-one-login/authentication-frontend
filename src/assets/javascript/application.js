@@ -39,12 +39,23 @@ function getCookieValue(cookieName) {
   return value;
 }
 
+function tryOrReturnDefault(callback, defaultValue) {
+  try {
+    return callback();
+  } catch (e) {
+    return defaultValue;
+  }
+}
+
 function getAnalyticsConsentStatus() {
   const cookieValue = getCookieValue("cookies_preferences_set");
 
   if (!cookieValue) return false;
 
-  const cookieConsent = JSON.parse(decodeURIComponent(cookieValue));
+  const cookieConsent = tryOrReturnDefault(
+    () => JSON.parse(decodeURIComponent(cookieValue)),
+    false
+  );
   return cookieConsent ? cookieConsent.analytics === true : false;
 }
 
