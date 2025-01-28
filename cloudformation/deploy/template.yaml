@@ -236,6 +236,9 @@ Conditions:
       - Fn::Equals:
           - !Ref Environment
           - "production"
+      - Fn::Equals:
+          - !Ref Environment
+          - "build"
 
   SwitchToMigratedZone:
     Fn::And:
