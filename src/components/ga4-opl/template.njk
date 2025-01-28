@@ -1,16 +1,16 @@
-<script {% if params.nonce%} nonce='{{ params.nonce }}'{%  endif %}>
+<script {% if ga4Params.nonce%} nonce='{{ ga4Params.nonce }}'{%  endif %}>
     window.addEventListener('load', function () {
         window
             .DI.analyticsGa4
             .pageViewTracker
             .trackOnPageLoad({
-                statusCode: '{{params.statusCode}}',
-                englishPageTitle: '{{params.englishPageTitle}}',
-                taxonomy_level1: '{{params.taxonomyLevel1}}',
-                taxonomy_level2: '{{params.taxonomyLevel2}}',
-                content_id: '{{params.contentId}}',
-                logged_in_status: {{params.loggedInStatus}},
-                dynamic: {{params.dynamic}}
+                statusCode: '{{ga4Params.statusCode}}',
+                englishPageTitle: '{{ga4Params.englishPageTitle}}',
+                taxonomy_level1: '{{ ga4Params.taxonomyLevel1 | default(taxonomyLevel1, false) }}',
+                taxonomy_level2: '{{ ga4Params.taxonomyLevel2 | default(taxonomyLevel2, false) }}',
+                content_id: '{{ ga4Params.contentId | default(contentId, false) }}',
+                logged_in_status: {{ga4Params.loggedInStatus}},
+                dynamic: {{ga4Params.dynamic}}
             });
     });
 </script>

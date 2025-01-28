@@ -62,5 +62,6 @@
 
   </form>
 
-{{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: taxonomyLevel1, taxonomyLevel2: taxonomyLevel2, contentId: "054e1ea8-97a8-461a-a964-07345c80098e", loggedInStatus: "false", dynamic: true }) }}
+{% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, contentId: "054e1ea8-97a8-461a-a964-07345c80098e", loggedInStatus: "false", dynamic: true } %}
+{%- include "ga4-opl/template.njk" -%}
 {% endblock %}

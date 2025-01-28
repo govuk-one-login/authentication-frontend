@@ -50,5 +50,6 @@
         {% include 'contact-us/further-information/_proving-identity-further-information.njk' %}
     {% endif %}
 
-{{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: taxonomyLevel1, taxonomyLevel2: taxonomyLevel2, contentId: "a06d6387-d411-47db-8f7d-88871286330b", loggedInStatus: false, dynamic: false })}}
+{% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, contentId: "a06d6387-d411-47db-8f7d-88871286330b", loggedInStatus: false, dynamic: false } %}
+{%- include "ga4-opl/template.njk" -%}
 {% endblock %}

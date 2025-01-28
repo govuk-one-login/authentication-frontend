@@ -14,5 +14,6 @@
   <a href="{{signinLink}}" class="govuk-link">{{'pages.signedOut.signInLinkText' | translate}}</a> {{'pages.signedOut.paragraph2' | translate}}
 </p>
 
-{{ga4OnPageLoad({ nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "sign out", contentId: contentId, loggedInStatus: false, dynamic: true })}}
+{% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "sign out", loggedInStatus: false, dynamic: true } %}
+{%- include "ga4-opl/template.njk" -%}
 {% endblock %}
