@@ -922,9 +922,9 @@
     loglevel "^1.9.1"
 
 "@govuk-one-login/frontend-language-toggle@^2.1.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-language-toggle/-/frontend-language-toggle-2.2.0.tgz#78d65fd8112183f20017f67df8d21d15f6a3df96"
-  integrity sha512-Ekg4/Gjxr9pkJyS56Rn3EnrV2Wisy6CHuM65GaDuZ3/AAijoMrfsoJQ6BKK4k9eJDwNasfcaCgWRfYPfgX8p1g==
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-language-toggle/-/frontend-language-toggle-2.2.1.tgz#e30c11f47710ed270b4f25422a8469289c69e0dd"
+  integrity sha512-y9Z4kRVKPEBD8ejVPtSE3UexPn2N8TStdZL33vh+MlBKEJlHBTFIIsm2mYWd2xCAQSk/9G9QWPScygCDFNZQJA==
   dependencies:
     rollup-plugin-copy "^3.5.0"
 
@@ -6404,9 +6404,9 @@ test-exclude@^6.0.0:
     minimatch "^3.0.4"
 
 testcontainers@^10.7.2:
-  version "10.17.1"
-  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-10.17.1.tgz#075ff24cec1fb550dc9990e33cd8c24e1cb67b82"
-  integrity sha512-pYwpm6iH1UtZFVoSWjfUol4JCMyX4UksA5fwDotlTp2GgMqoHud+A+PY60kYUBVdSJJ/5AsSqhhFRvoK4ijISg==
+  version "10.17.2"
+  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-10.17.2.tgz#28dc80aad830b1efbcde72641627d131520250b5"
+  integrity sha512-tnvXQsqwnOUjNENWLllfFmDLQUm24Q0MNL6kbVH35bIKPujEhyG6dOcpU8N5vwA4mD/ZdtwfHel++Z1Tw084uQ==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
     "@types/dockerode" "^3.3.29"
@@ -6422,7 +6422,7 @@ testcontainers@^10.7.2:
     ssh-remote-port-forward "^1.0.4"
     tar-fs "^3.0.6"
     tmp "^0.2.3"
-    undici "^5.28.4"
+    undici "^5.28.5"
 
 thirty-two@^1.0.2:
   version "1.0.2"
@@ -6641,10 +6641,10 @@ undici-types@~6.19.2:
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.19.8.tgz#35111c9d1437ab83a7cdc0abae2f26d88eda0a02"
   integrity sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==
 
-undici@^5.28.4:
-  version "5.28.4"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-5.28.4.tgz#6b280408edb6a1a604a9b20340f45b422e373068"
-  integrity sha512-72RFADWFqKmUb2hmmvNODKL3p9hcB6Gt2DOQMis1SEBaV6a4MH8soBvzg+95CYhCKPFedut2JY9bMfrDl9D23g==
+undici@^5.28.5:
+  version "5.28.5"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-5.28.5.tgz#b2b94b6bf8f1d919bc5a6f31f2c01deb02e54d4b"
+  integrity sha512-zICwjrDrcrUE0pyyJc1I2QzBkLM8FINsgOrt6WjA+BgajVq9Nxu2PbFFXUrAggLfDXlZGZBVZYw7WNV5KiBiBA==
   dependencies:
     "@fastify/busboy" "^2.0.0"
 
