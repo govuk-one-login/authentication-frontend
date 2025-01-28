@@ -3,35 +3,35 @@ import {
   Taxonomy,
   TaxonomyLevel1,
   TaxonomyLevel2,
+  TaxonomyLevel3,
+  TaxonomyLevel4,
+  TaxonomyLevel5,
 } from "./taxonomy";
 
 import { describe } from "mocha";
 import { Request } from "express";
 import { expect } from "chai";
-import { UserSession } from "../types";
 import { CONTACT_US_THEMES, PATH_NAMES } from "../app.constants";
+import { ParsedQs } from "qs";
 
-type Variant = {
-  user?: Partial<UserSession>;
-  path?: string;
-  query?: { [key: string]: string };
+type RequestTaxonomyExpectation = {
+  request: Request;
+  taxonomy: Taxonomy;
 };
 
-type VariantExpectation = Variant & {
-  expectedTaxonomy: Taxonomy;
-};
-
-const signInVariants: Variant[] = [
-  { user: { isSignInJourney: true } },
+const signInRequests: Request[] = [
+  { session: { user: { isSignInJourney: true } } },
   { path: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE },
   { path: PATH_NAMES.ENTER_EMAIL_SIGN_IN },
   { path: PATH_NAMES.ENTER_MFA },
   { path: PATH_NAMES.ENTER_PASSWORD },
   { path: PATH_NAMES.RESEND_MFA_CODE },
-];
-const reauthVariants: Variant[] = [{ user: { reauthenticate: "samplevalue" } }];
-const createAccountVariants: Variant[] = [
-  { user: { isAccountCreationJourney: true } },
+] as Request[];
+const reauthRequests: Request[] = [
+  { session: { user: { reauthenticate: "samplevalue" } } },
+] as Request[];
+const createAccountRequests: Request[] = [
+  { session: { user: { isAccountCreationJourney: true } } },
   { path: PATH_NAMES.CHECK_YOUR_EMAIL },
   { path: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER },
   { path: PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD },
@@ -39,12 +39,14 @@ const createAccountVariants: Variant[] = [
   { path: PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT },
   { path: PATH_NAMES.RESEND_EMAIL_CODE },
   { path: PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION },
-];
-const accountRecoveryVariants: Variant[] = [
+] as Request[];
+const accountRecoveryRequests: Request[] = [
   {
-    user: {
-      isAccountRecoveryJourney: true,
-      isAccountRecoveryPermitted: true,
+    session: {
+      user: {
+        isAccountRecoveryJourney: true,
+        isAccountRecoveryPermitted: true,
+      },
     },
   },
   { path: PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION },
@@ -55,82 +57,107 @@ const accountRecoveryVariants: Variant[] = [
   { path: PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL },
   { path: PATH_NAMES.RESET_PASSWORD_REQUIRED },
   { path: PATH_NAMES.RESET_PASSWORD_RESEND_CODE },
-];
-const feedbackVariants: Variant[] = [
+] as Request[];
+const feedbackRequests: Request[] = [
   { path: PATH_NAMES.CONTACT_US },
   { path: PATH_NAMES.CONTACT_US_FROM_TRIAGE_PAGE },
   { path: PATH_NAMES.CONTACT_US_FURTHER_INFORMATION },
   { path: PATH_NAMES.CONTACT_US_QUESTIONS },
   { path: PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS },
-];
-const guidanceVariants: Variant[] = [
+] as Request[];
+const guidanceRequests: Request[] = [
   {
     path: PATH_NAMES.CONTACT_US_QUESTIONS,
     query: {
       theme: CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK,
-    },
+    } as ParsedQs,
   },
-];
-const accountInterventionVariants: Variant[] = [
+] as Request[];
+const accountInterventionRequests: Request[] = [
   { path: PATH_NAMES.PASSWORD_RESET_REQUIRED },
   { path: PATH_NAMES.UNAVAILABLE_PERMANENT },
   { path: PATH_NAMES.UNAVAILABLE_TEMPORARY },
-];
+] as Request[];
 
-const mappingsToTest: VariantExpectation[] = [
+const expectations: RequestTaxonomyExpectation[] = [
   {
-    expectedTaxonomy: {
+    request: {} as Request,
+    taxonomy: {
       taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
       taxonomyLevel2: TaxonomyLevel2.BLANK,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   },
-  ...signInVariants.map((t) => ({
-    ...t,
-    expectedTaxonomy: {
+  ...signInRequests.map((request) => ({
+    request,
+    taxonomy: {
       taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
       taxonomyLevel2: TaxonomyLevel2.SIGN_IN,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
-  ...reauthVariants.map((t) => ({
-    ...t,
-    expectedTaxonomy: {
+  ...reauthRequests.map((request) => ({
+    request,
+    taxonomy: {
       taxonomyLevel1: TaxonomyLevel1.ACCOUNTS,
       taxonomyLevel2: TaxonomyLevel2.REAUTH,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
-  ...createAccountVariants.map((t) => ({
-    ...t,
-    expectedTaxonomy: {
+  ...createAccountRequests.map((request) => ({
+    request,
+    taxonomy: {
       taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
       taxonomyLevel2: TaxonomyLevel2.CREATE_ACCOUNT,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
-  ...feedbackVariants.map((t) => ({
-    ...t,
-    expectedTaxonomy: {
+  ...feedbackRequests.map((request) => ({
+    request,
+    taxonomy: {
       taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
       taxonomyLevel2: TaxonomyLevel2.FEEDBACK,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
-  ...guidanceVariants.map((t) => ({
-    ...t,
-    expectedTaxonomy: {
+  ...guidanceRequests.map((request) => ({
+    request,
+    taxonomy: {
       taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
       taxonomyLevel2: TaxonomyLevel2.GUIDANCE,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
-  ...accountRecoveryVariants.map((t) => ({
-    ...t,
-    expectedTaxonomy: {
+  ...accountRecoveryRequests.map((request) => ({
+    request,
+    taxonomy: {
       taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
       taxonomyLevel2: TaxonomyLevel2.ACCOUNT_RECOVERY,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
-  ...accountInterventionVariants.map((t) => ({
-    ...t,
-    expectedTaxonomy: {
+  ...accountInterventionRequests.map((request) => ({
+    request,
+    taxonomy: {
       taxonomyLevel1: TaxonomyLevel1.ACCOUNTS,
       taxonomyLevel2: TaxonomyLevel2.ACCOUNT_INTERVENTION,
+      taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
   })),
 ];
@@ -141,14 +168,10 @@ describe("getRequestTaxonomy", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
   });
 
-  mappingsToTest.forEach((mapping) => {
-    it(`user (${JSON.stringify(mapping.user)}) on path (${mapping.path}) should map to taxonomy ${JSON.stringify(mapping.expectedTaxonomy)}`, async () => {
-      const taxonomy = getRequestTaxonomy({
-        session: { user: mapping.user },
-        path: mapping.path,
-        query: mapping.query,
-      } as Request);
-      expect(taxonomy).to.deep.equal(mapping.expectedTaxonomy);
+  expectations.forEach((expectation) => {
+    it(`user (${JSON.stringify(expectation.request.session?.user)}) on path (${expectation.request.path}) should map to taxonomy ${JSON.stringify(expectation.taxonomy)}`, async () => {
+      const taxonomy = getRequestTaxonomy(expectation.request);
+      expect(taxonomy).to.deep.equal(expectation.taxonomy);
     });
   });
 });

@@ -5,6 +5,9 @@ Object {
   "contentId": "1fef9388-34cd-4ea2-b899-a66b7327d2f7",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -13,6 +16,9 @@ Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -21,6 +27,9 @@ Object {
   "contentId": "1fef9388-34cd-4ea2-b899-a66b7327d2f7",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -29,6 +38,9 @@ Object {
   "contentId": undefined,
   "taxonomyLevel1": undefined,
   "taxonomyLevel2": undefined,
+  "taxonomyLevel3": undefined,
+  "taxonomyLevel4": undefined,
+  "taxonomyLevel5": undefined,
 }
 `;
 
@@ -37,6 +49,9 @@ Object {
   "contentId": "1fef9388-34cd-4ea2-b899-a66b7327d2f7",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -45,6 +60,9 @@ Object {
   "contentId": "1fef9388-34cd-4ea2-b899-a66b7327d2f7",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -53,6 +71,9 @@ Object {
   "contentId": "1fef9388-34cd-4ea2-b899-a66b7327d2f7",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -61,6 +82,9 @@ Object {
   "contentId": "1fef9388-34cd-4ea2-b899-a66b7327d2f7",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -69,5 +93,8 @@ Object {
   "contentId": "1fef9388-34cd-4ea2-b899-a66b7327d2f7",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;

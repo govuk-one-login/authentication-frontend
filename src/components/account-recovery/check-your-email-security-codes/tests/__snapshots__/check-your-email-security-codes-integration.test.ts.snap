@@ -5,6 +5,9 @@ Object {
   "contentId": undefined,
   "taxonomyLevel1": undefined,
   "taxonomyLevel2": undefined,
+  "taxonomyLevel3": undefined,
+  "taxonomyLevel4": undefined,
+  "taxonomyLevel5": undefined,
 }
 `;
 
@@ -13,6 +16,9 @@ Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "account recovery",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -21,6 +27,9 @@ Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "account recovery",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -29,6 +38,9 @@ Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "account recovery",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -37,6 +49,9 @@ Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "account recovery",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -45,6 +60,9 @@ Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "account recovery",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -53,5 +71,8 @@ Object {
   "contentId": "e768e27b-1c4d-48ba-8bcf-4c40274a6441",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "account recovery",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;

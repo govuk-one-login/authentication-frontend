@@ -19,9 +19,24 @@ export enum TaxonomyLevel2 {
   REAUTH = "re auth",
 }
 
+export enum TaxonomyLevel3 {
+  BLANK = "",
+}
+
+export enum TaxonomyLevel4 {
+  BLANK = "",
+}
+
+export enum TaxonomyLevel5 {
+  BLANK = "",
+}
+
 export type Taxonomy = {
   taxonomyLevel1: TaxonomyLevel1;
   taxonomyLevel2: TaxonomyLevel2;
+  taxonomyLevel3: TaxonomyLevel3;
+  taxonomyLevel4: TaxonomyLevel4;
+  taxonomyLevel5: TaxonomyLevel5;
 };
 
 export function getRequestTaxonomy(req: Request): Taxonomy {
@@ -36,6 +51,9 @@ export function getRequestTaxonomy(req: Request): Taxonomy {
   return {
     taxonomyLevel1,
     taxonomyLevel2,
+    taxonomyLevel3: TaxonomyLevel3.BLANK,
+    taxonomyLevel4: TaxonomyLevel4.BLANK,
+    taxonomyLevel5: TaxonomyLevel5.BLANK,
   };
 }
 

@@ -5,6 +5,9 @@ Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -13,6 +16,9 @@ Object {
   "contentId": undefined,
   "taxonomyLevel1": undefined,
   "taxonomyLevel2": undefined,
+  "taxonomyLevel3": undefined,
+  "taxonomyLevel4": undefined,
+  "taxonomyLevel5": undefined,
 }
 `;
 
@@ -21,5 +27,8 @@ Object {
   "contentId": "8247477c-3e33-4dae-9528-22e7ed44efb3",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "create account",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;

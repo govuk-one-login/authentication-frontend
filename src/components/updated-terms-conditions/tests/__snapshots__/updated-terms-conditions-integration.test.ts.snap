@@ -5,6 +5,9 @@ Object {
   "contentId": undefined,
   "taxonomyLevel1": undefined,
   "taxonomyLevel2": undefined,
+  "taxonomyLevel3": undefined,
+  "taxonomyLevel4": undefined,
+  "taxonomyLevel5": undefined,
 }
 `;
 
@@ -13,5 +16,8 @@ Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;

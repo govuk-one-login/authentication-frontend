@@ -5,6 +5,9 @@ Object {
   "contentId": "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -13,6 +16,9 @@ Object {
   "contentId": "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -21,6 +27,9 @@ Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -29,6 +38,9 @@ Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -37,6 +49,9 @@ Object {
   "contentId": undefined,
   "taxonomyLevel1": undefined,
   "taxonomyLevel2": undefined,
+  "taxonomyLevel3": undefined,
+  "taxonomyLevel4": undefined,
+  "taxonomyLevel5": undefined,
 }
 `;
 
@@ -45,6 +60,9 @@ Object {
   "contentId": "a2776ef7-9ef3-4d8d-bdbc-3f798b15e5d4",
   "taxonomyLevel1": "accounts",
   "taxonomyLevel2": "re auth",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -53,6 +71,9 @@ Object {
   "contentId": "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -61,6 +82,9 @@ Object {
   "contentId": "a2776ef7-9ef3-4d8d-bdbc-3f798b15e5d4",
   "taxonomyLevel1": "accounts",
   "taxonomyLevel2": "re auth",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
@@ -69,5 +93,8 @@ Object {
   "contentId": "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "sign in",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
