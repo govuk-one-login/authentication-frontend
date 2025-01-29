@@ -43,7 +43,7 @@ describe("Integration:: ipv callback", () => {
         .once()
         .reply(200, { success: true });
 
-      const requestPath = PATH_NAMES.IPV_CALLBACK + "?code=" + "12345";
+      const requestPath = PATH_NAMES.IPV_CALLBACK + "?code=12345&state=abcde";
 
       await request(
         app,
@@ -64,7 +64,7 @@ describe("Integration:: ipv callback", () => {
         .once()
         .reply(200, { success: false, failure_code: "no_identity_available" });
 
-      const requestPath = PATH_NAMES.IPV_CALLBACK + "?code=" + "12345";
+      const requestPath = PATH_NAMES.IPV_CALLBACK + "?code=12345&state=abcde";
 
       await request(
         app,
