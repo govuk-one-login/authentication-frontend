@@ -929,15 +929,15 @@ Resources:
                   - !Sub "${Environment}.account.gov.uk"
                 - "account.gov.uk"
             - Name: PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES
-              Value: 1
+              Value: 120
             - Name: ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES
-              Value: 1
+              Value: 120
             - Name: CODE_REQUEST_BLOCKED_MINUTES
-              Value: 1
+              Value: 120
             - Name: CODE_ENTERED_WRONG_BLOCKED_MINUTES
-              Value: 1
+              Value: 120
             - Name: REDUCED_CODE_BLOCK_DURATION_MINUTES
-              Value: 0.5
+              Value: 15
             - Name: SUPPORT_ACCOUNT_INTERVENTIONS
               Value: 1
             - Name: SUPPORT_REAUTHENTICATION
@@ -953,7 +953,7 @@ Resources:
             - Name: PROVE_IDENTITY_WELCOME_ENABLED
               Value: 0
             - Name: GA4_ENABLED
-              Value: false
+              Value: true
             - Name: UA_ENABLED
               Value: true
             - Name: UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID
