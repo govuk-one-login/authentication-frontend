@@ -21,6 +21,7 @@ export enum TaxonomyLevel2 {
 
 export enum TaxonomyLevel3 {
   BLANK = "",
+  MFA_RESET = "mfa reset",
 }
 
 export enum TaxonomyLevel4 {
@@ -41,6 +42,7 @@ export type Taxonomy = {
 
 export function getRequestTaxonomy(req: Request): Taxonomy {
   const taxonomyLevel2 = getTaxonomyLevel2(req);
+  const taxonomyLevel3 = getTaxonomyLevel3(req);
 
   let taxonomyLevel1 = TaxonomyLevel1.BLANK;
   if (isAuthenticationTaxonomy(taxonomyLevel2))
@@ -51,7 +53,7 @@ export function getRequestTaxonomy(req: Request): Taxonomy {
   return {
     taxonomyLevel1,
     taxonomyLevel2,
-    taxonomyLevel3: TaxonomyLevel3.BLANK,
+    taxonomyLevel3,
     taxonomyLevel4: TaxonomyLevel4.BLANK,
     taxonomyLevel5: TaxonomyLevel5.BLANK,
   };
@@ -77,6 +79,22 @@ function getTaxonomyLevel2(req: Request) {
 
   return taxonomyLevel2;
 }
+
+function getTaxonomyLevel3(req: Request) {
+  let taxonomyLevel3 = TaxonomyLevel3.BLANK;
+
+  if (isMfaResetTaxonomy(req)) {
+    taxonomyLevel3 = TaxonomyLevel3.MFA_RESET;
+  }
+
+  return taxonomyLevel3;
+}
+
+const isMfaResetTaxonomy = (req: Request): boolean =>
+  [
+    PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
+    PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+  ].includes(req.path);
 
 const isSignInTaxonomy = (req: Request): boolean =>
   req?.session?.user?.isSignInJourney ||
@@ -119,6 +137,8 @@ const isAccountRecoveryTaxonomy = (req: Request): boolean => {
       PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
       PATH_NAMES.RESET_PASSWORD_REQUIRED,
       PATH_NAMES.RESET_PASSWORD_RESEND_CODE,
+      PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+      PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
     ].includes(req.path)
   );
 };

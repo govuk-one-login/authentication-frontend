@@ -78,6 +78,10 @@ const accountInterventionRequests: Request[] = [
   { path: PATH_NAMES.UNAVAILABLE_PERMANENT },
   { path: PATH_NAMES.UNAVAILABLE_TEMPORARY },
 ] as Request[];
+const mfaResetRequests: Request[] = [
+  { path: PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES },
+  { path: PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL },
+] as Request[];
 
 const expectations: RequestTaxonomyExpectation[] = [
   {
@@ -156,6 +160,16 @@ const expectations: RequestTaxonomyExpectation[] = [
       taxonomyLevel1: TaxonomyLevel1.ACCOUNTS,
       taxonomyLevel2: TaxonomyLevel2.ACCOUNT_INTERVENTION,
       taxonomyLevel3: TaxonomyLevel3.BLANK,
+      taxonomyLevel4: TaxonomyLevel4.BLANK,
+      taxonomyLevel5: TaxonomyLevel5.BLANK,
+    },
+  })),
+  ...mfaResetRequests.map((request) => ({
+    request,
+    taxonomy: {
+      taxonomyLevel1: TaxonomyLevel1.AUTHENTICATION,
+      taxonomyLevel2: TaxonomyLevel2.ACCOUNT_RECOVERY,
+      taxonomyLevel3: TaxonomyLevel3.MFA_RESET,
       taxonomyLevel4: TaxonomyLevel4.BLANK,
       taxonomyLevel5: TaxonomyLevel5.BLANK,
     },
