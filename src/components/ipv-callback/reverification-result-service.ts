@@ -21,7 +21,8 @@ export function reverificationResultService(
     persistentSessionId: string,
     req: Request,
     email: string,
-    code: string
+    code: string,
+    state: string
   ): Promise<ApiResponseResult<ReverificationResultResponse>> {
     const config = getInternalRequestConfigWithSecurityHeaders(
       {
@@ -35,7 +36,7 @@ export function reverificationResultService(
 
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.REVERIFICATION_RESULT,
-      { email, code },
+      { email, code, state },
       config
     );
 

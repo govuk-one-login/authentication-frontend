@@ -62,10 +62,11 @@ describe("ipv callback controller", () => {
     commonVariables;
 
   const AUTH_CODE = "5678";
+  const STATE = "efghijk";
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.IPV_CALLBACK);
-    req.query = { code: AUTH_CODE };
+    req.query = { code: AUTH_CODE, state: STATE };
     req.session.user.email = email;
     req.session.id = sessionId;
     req.cookies.gs = sessionId + clientSessionId;
@@ -105,7 +106,8 @@ describe("ipv callback controller", () => {
         diPersistentSessionId,
         req,
         email,
-        AUTH_CODE
+        AUTH_CODE,
+        STATE
       );
       expect(res.redirect).to.have.been.calledWith(
         PATH_NAMES.GET_SECURITY_CODES

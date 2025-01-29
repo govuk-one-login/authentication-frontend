@@ -39,7 +39,8 @@ export interface ReverificationResultInterface {
     persistentSessionId: string,
     req: Request,
     email: string,
-    code: string
+    code: string,
+    state: string
   ) => Promise<ApiResponseResult<ReverificationResultResponse>>;
 }
 
