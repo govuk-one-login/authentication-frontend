@@ -398,7 +398,13 @@ Mappings:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEw3VqLzY6ZFWmqruOpvMpPH8PWuQQ
         1zSWSgFy2sngA1GKybC0zuZluGHfZMnr/BGo+teQzbDCekLijPvlozXY1g==
         -----END PUBLIC KEY-----
+      accountRecoveryCodeEnteredWrongBlockedMinutes: 120
+      codeEnteredWrongBlockedMinutes: 120
+      codeRequestBlockedMinutes: 120
+      passwordResetCodeEnteredWrongBlockedMinutes: 120
+      reducedCodeBlockDurationMinutes: 15
       redisNodeSize: cache.m4.xlarge
+      GA4Enabled: "true"
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "Yes"
       transitionalDomain: signin-sp.staging.account.gov.uk
@@ -423,6 +429,11 @@ Mappings:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzzwKLypUL89WVaeTbfBZu0Fws8T7
         ppx89XLVfgXIoCs2P//N5qdghvzgNIgVehQ7CkzyorO/lnRlWPfjCG4Oxw==
         -----END PUBLIC KEY-----
+      accountRecoveryCodeEnteredWrongBlockedMinutes: 120
+      codeEnteredWrongBlockedMinutes: 120
+      codeRequestBlockedMinutes: 120
+      passwordResetCodeEnteredWrongBlockedMinutes: 120
+      reducedCodeBlockDurationMinutes: 15
       redisNodeSize: cache.t2.small
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
@@ -450,7 +461,15 @@ Mappings:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5iJXSuxgbfM6ADQVtNNDi7ED5ly5
         +3VZPbjHv+v0AjQ5Ps+avkXWKwOeScG9sS0cDf0utEXi3fN3cEraa9WuKQ==
         -----END PUBLIC KEY-----
+      accountRecoveryCodeEnteredWrongBlockedMinutes: 120
+      codeEnteredWrongBlockedMinutes: 120
+      codeRequestBlockedMinutes: 120
+      passwordResetCodeEnteredWrongBlockedMinutes: 120
+      reducedCodeBlockDurationMinutes: 15
       redisNodeSize: cache.m4.xlarge
+      GA4Enabled: "true"
+      universalAnalyticsGTMContainerId: "GTM-TT5HDKV"
+      googleAnalytics4GTMContainerId: "GTM-K4PBJH3"
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
       transitionalDomain: signin-sp.account.gov.uk
@@ -834,7 +853,13 @@ Resources:
                     transitionalDomain,
                   ]
             - Name: GTM_ID
-              Value: GTM-TK92W68
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  universalAnalyticsGTMContainerId,
+                  DefaultValue: "GTM-TK92W68",
+                ]
             - Name: SUPPORT_AUTHORIZE_CONTROLLER
               Value: 1
             - Name: ORCH_TO_AUTH_SIGNING_KEY
@@ -929,15 +954,45 @@ Resources:
                   - !Sub "${Environment}.account.gov.uk"
                 - "account.gov.uk"
             - Name: PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES
-              Value: 120
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  passwordResetCodeEnteredWrongBlockedMinutes,
+                  DefaultValue: "1",
+                ]
             - Name: ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES
-              Value: 120
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  accountRecoveryCodeEnteredWrongBlockedMinutes,
+                  DefaultValue: "1",
+                ]
             - Name: CODE_REQUEST_BLOCKED_MINUTES
-              Value: 120
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  codeRequestBlockedMinutes,
+                  DefaultValue: "1",
+                ]
             - Name: CODE_ENTERED_WRONG_BLOCKED_MINUTES
-              Value: 120
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  codeEnteredWrongBlockedMinutes,
+                  DefaultValue: "1",
+                ]
             - Name: REDUCED_CODE_BLOCK_DURATION_MINUTES
-              Value: 15
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  reducedCodeBlockDurationMinutes,
+                  DefaultValue: "0.5",
+                ]
             - Name: SUPPORT_ACCOUNT_INTERVENTIONS
               Value: 1
             - Name: SUPPORT_REAUTHENTICATION
@@ -953,13 +1008,31 @@ Resources:
             - Name: PROVE_IDENTITY_WELCOME_ENABLED
               Value: 0
             - Name: GA4_ENABLED
-              Value: true
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  GA4Enabled,
+                  DefaultValue: "false",
+                ]
             - Name: UA_ENABLED
               Value: true
             - Name: UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID
-              Value: GTM-TK92W68
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  universalAnalyticsGTMContainerId,
+                  DefaultValue: "GTM-TK92W68",
+                ]
             - Name: GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID
-              Value: GTM-KD86CMZ
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  googleAnalytics4GTMContainerId,
+                  DefaultValue: "GTM-KD86CMZ",
+                ]
             - Name: ANALYTICS_COOKIE_DOMAIN
               Value:
                 !If [
