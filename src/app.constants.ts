@@ -105,6 +105,12 @@ export const CONTENT_IDS: {
     default: "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
     reauth: "a2776ef7-9ef3-4d8d-bdbc-3f798b15e5d4",
   },
+  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: {
+    default: "d9290539-0b0c-468f-8f87-22d0400b6431",
+  },
+  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: {
+    default: "d1b7cd24-f508-49ce-bf0d-ac1fe980c09c",
+  },
 };
 
 export const HREF_BACK = {
