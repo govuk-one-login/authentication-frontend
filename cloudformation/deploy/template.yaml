@@ -296,7 +296,7 @@ Mappings:
       transitionalDomain: signin.authdev1.dev.account.gov.uk
       migratedDomain: signin.authdev1.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
-      Enableipvspinner: "Yes"
+      Enableipvspinner: "No"
       orchStubToAuth: "orchestrationAuth"
     authdev2:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev2-basic-auth-sidecar-image-repository-containerrepository-zvcjtkip2sye"
@@ -316,7 +316,7 @@ Mappings:
       transitionalDomain: signin.authdev2.dev.account.gov.uk
       migratedDomain: signin.authdev2.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
-      Enableipvspinner: "Yes"
+      Enableipvspinner: "No"
       orchStubToAuth: "orchestrationAuth"
     dev:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-acbvxp3ywblv"
@@ -346,7 +346,7 @@ Mappings:
       transitionalDomain: signin-sp.dev.account.gov.uk
       migratedDomain: signin.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
-      Enableipvspinner: "Yes"
+      Enableipvspinner: "No"
       orchStubToAuth: "orchestrationAuth"
     build:
       UseNginxSidecar: "No"
@@ -404,7 +404,7 @@ Mappings:
       transitionalDomain: signin-sp.staging.account.gov.uk
       migratedDomain: signin.staging.account.gov.uk
       UseMfaResetWithIpv: "Yes"
-      Enableipvspinner: "Yes"
+      Enableipvspinner: "No"
       orchStubToAuth: "orchestrationAuth"
     integration:
       basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
