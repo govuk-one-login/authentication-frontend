@@ -207,6 +207,29 @@ Conditions:
                 ]
               - "Yes"
 
+  Enableipvspinner:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  Enableipvspinner,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  Enableipvspinner,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+
   IsSplunkEnabled:
     Fn::Equals:
       - !FindInMap [
@@ -273,6 +296,8 @@ Mappings:
       transitionalDomain: signin.authdev1.dev.account.gov.uk
       migratedDomain: signin.authdev1.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
+      Enableipvspinner: "Yes"
+      orchStubToAuth: "orchestrationAuth"
     authdev2:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev2-basic-auth-sidecar-image-repository-containerrepository-zvcjtkip2sye"
       UseNginxSidecar: "Yes"
@@ -291,6 +316,8 @@ Mappings:
       transitionalDomain: signin.authdev2.dev.account.gov.uk
       migratedDomain: signin.authdev2.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
+      Enableipvspinner: "Yes"
+      orchStubToAuth: "orchestrationAuth"
     dev:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-acbvxp3ywblv"
       UseNginxSidecar: "No"
@@ -319,6 +346,8 @@ Mappings:
       transitionalDomain: signin-sp.dev.account.gov.uk
       migratedDomain: signin.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
+      Enableipvspinner: "Yes"
+      orchStubToAuth: "orchestrationAuth"
     build:
       UseNginxSidecar: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -346,6 +375,8 @@ Mappings:
       transitionalDomain: signin-sp.build.account.gov.uk
       migratedDomain: signin.build.account.gov.uk
       UseMfaResetWithIpv: "No"
+      Enableipvspinner: "No"
+      orchStubToAuth: "orchestrationAuth"
     staging:
       UseNginxSidecar: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -373,6 +404,8 @@ Mappings:
       transitionalDomain: signin-sp.staging.account.gov.uk
       migratedDomain: signin.staging.account.gov.uk
       UseMfaResetWithIpv: "Yes"
+      Enableipvspinner: "Yes"
+      orchStubToAuth: "orchestrationAuth"
     integration:
       basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
       UseNginxSidecar: "Yes"
@@ -396,6 +429,8 @@ Mappings:
       transitionalDomain: signin-sp.integration.account.gov.uk
       migratedDomain: signin.integration.account.gov.uk
       UseMfaResetWithIpv: "No"
+      Enableipvspinner: "No"
+      orchStubToAuth: ""
     production:
       basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
       # TODO Nginx sidecar is deployed in prod to block public access, while still using the transitional '-sp' domain
@@ -421,6 +456,8 @@ Mappings:
       transitionalDomain: signin-sp.account.gov.uk
       migratedDomain: signin.account.gov.uk
       UseMfaResetWithIpv: "No"
+      Enableipvspinner: "No"
+      orchStubToAuth: ""
 
 Globals:
   Function:
@@ -814,7 +851,20 @@ Resources:
                     orchToAuthSigningPublicKey,
                   ]
             - Name: ORCH_TO_AUTH_CLIENT_ID
-              Value: orchestrationAuth
+              Value: !If
+                - UseSubEnvironment
+                - !FindInMap [
+                    EnvironmentConfiguration,
+                    !Ref SubEnvironment,
+                    orchStubToAuth,
+                    DefaultValue: "",
+                  ]
+                - !FindInMap [
+                    EnvironmentConfiguration,
+                    !Ref Environment,
+                    orchStubToAuth,
+                    DefaultValue: "",
+                  ]
             - Name: ORCH_TO_AUTH_AUDIENCE
               Value: !If
                 - IsNotProduction
@@ -918,7 +968,7 @@ Resources:
                   ".account.gov.uk",
                 ]
             - Name: SUPPORT_NEW_IPV_SPINNER
-              Value: !If [IsNotProduction, "1", "0"]
+              Value: !If [Enableipvspinner, "1", "0"]
             - Name: SUPPORT_HTTP_KEEP_ALIVE
               Value: !If [SupportHTTPKeepAlive, "1", "0"]
             - Name: SUPPORT_MFA_RESET_WITH_IPV
