@@ -297,7 +297,6 @@ Mappings:
       migratedDomain: signin.authdev1.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       Enableipvspinner: "No"
-      orchStubToAuth: "orchestrationAuth"
     authdev2:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev2-basic-auth-sidecar-image-repository-containerrepository-zvcjtkip2sye"
       UseNginxSidecar: "Yes"
@@ -317,7 +316,6 @@ Mappings:
       migratedDomain: signin.authdev2.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       Enableipvspinner: "No"
-      orchStubToAuth: "orchestrationAuth"
     dev:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-acbvxp3ywblv"
       UseNginxSidecar: "No"
@@ -347,7 +345,6 @@ Mappings:
       migratedDomain: signin.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       Enableipvspinner: "No"
-      orchStubToAuth: "orchestrationAuth"
     build:
       UseNginxSidecar: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -376,7 +373,6 @@ Mappings:
       migratedDomain: signin.build.account.gov.uk
       UseMfaResetWithIpv: "No"
       Enableipvspinner: "No"
-      orchStubToAuth: "orchestrationAuth"
     staging:
       UseNginxSidecar: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -411,7 +407,6 @@ Mappings:
       migratedDomain: signin.staging.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       Enableipvspinner: "No"
-      orchStubToAuth: "orchestrationAuth"
     integration:
       basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
       UseNginxSidecar: "Yes"
@@ -901,20 +896,13 @@ Resources:
                     DefaultValue: "",
                   ]
             - Name: ORCH_STUB_TO_AUTH_CLIENT_ID
-              Value: !If
-                - UseSubEnvironment
-                - !FindInMap [
-                    EnvironmentConfiguration,
-                    !Ref SubEnvironment,
-                    orchStubToAuth,
-                    DefaultValue: "",
-                  ]
-                - !FindInMap [
-                    EnvironmentConfiguration,
-                    !Ref Environment,
-                    orchStubToAuth,
-                    DefaultValue: "",
-                  ]
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  orchStubToAuth,
+                  DefaultValue: "orchestrationAuth",
+                ]
             - Name: ORCH_STUB_TO_AUTH_AUDIENCE
               Value: !Sub
                 - "https://${FQDN}/"
