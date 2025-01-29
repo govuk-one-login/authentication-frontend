@@ -259,6 +259,7 @@ Mappings:
   EnvironmentConfiguration:
     authdev1:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev1-basic-auth-sidecar-image-repository-containerrepository-g2xwunavhds6"
+      UseNginxSidecar: "No"
       cloudfrontDistributionStackName: "authdev1-cloudfront"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
@@ -275,7 +276,7 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
     authdev2:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev2-basic-auth-sidecar-image-repository-containerrepository-zvcjtkip2sye"
-      UseNginxSidecar: "Yes"
+      UseNginxSidecar: "No"
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       ECSServiceCanaryPhasedDeploy: "Yes"
       orchToAuthSigningPublicKey: |
