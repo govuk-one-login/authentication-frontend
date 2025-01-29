@@ -851,20 +851,7 @@ Resources:
                     orchToAuthSigningPublicKey,
                   ]
             - Name: ORCH_TO_AUTH_CLIENT_ID
-              Value: !If
-                - UseSubEnvironment
-                - !FindInMap [
-                    EnvironmentConfiguration,
-                    !Ref SubEnvironment,
-                    orchStubToAuth,
-                    DefaultValue: "",
-                  ]
-                - !FindInMap [
-                    EnvironmentConfiguration,
-                    !Ref Environment,
-                    orchStubToAuth,
-                    DefaultValue: "",
-                  ]
+              Value: orchestrationAuth
             - Name: ORCH_TO_AUTH_AUDIENCE
               Value: !If
                 - IsNotProduction
@@ -889,7 +876,20 @@ Resources:
                     DefaultValue: "",
                   ]
             - Name: ORCH_STUB_TO_AUTH_CLIENT_ID
-              Value: orchestrationAuth
+              Value: !If
+                - UseSubEnvironment
+                - !FindInMap [
+                    EnvironmentConfiguration,
+                    !Ref SubEnvironment,
+                    orchStubToAuth,
+                    DefaultValue: "",
+                  ]
+                - !FindInMap [
+                    EnvironmentConfiguration,
+                    !Ref Environment,
+                    orchStubToAuth,
+                    DefaultValue: "",
+                  ]
             - Name: ORCH_STUB_TO_AUTH_AUDIENCE
               Value: !Sub
                 - "https://${FQDN}/"
