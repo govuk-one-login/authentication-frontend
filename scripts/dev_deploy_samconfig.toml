@@ -6,7 +6,7 @@ s3_bucket = "authdev1-frontend-pipeline-pipelinebucket-kit9bfu7ko2m"
 region = "eu-west-2"
 confirm_changeset = true
 capabilities = "CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND"
-parameter_overrides = "Environment=\"dev\" SubEnvironment=\"authdev1\" VpcStackName=\"authdev1-vpc\" CodeSigningConfigArn=\"arn:aws:lambda:eu-west-2:975050272416:code-signing-config:csc-08363373ee41af407\" DeploymentStrategy=\"CodeDeployDefault.ECSAllAtOnce\" PermissionsBoundary=\"arn:aws:iam::975050272416:policy/authdev1-frontend-pipeline-AppProgrammaticPermissionsBoundary-0208ecb7797f\""
+parameter_overrides = "Environment=\"dev\" SubEnvironment=\"authdev1\" VpcStackName=\"vpc\" CodeSigningConfigArn=\"arn:aws:lambda:eu-west-2:975050272416:code-signing-config:csc-08363373ee41af407\" DeploymentStrategy=\"None\" PermissionsBoundary=\"arn:aws:iam::975050272416:policy/authdev1-frontend-pipeline-AppProgrammaticPermissionsBoundary-0208ecb7797f\""
 image_repositories = []
 
 [authdev2.deploy.parameters]
