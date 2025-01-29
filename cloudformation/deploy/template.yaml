@@ -277,7 +277,6 @@ Mappings:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev2-basic-auth-sidecar-image-repository-containerrepository-zvcjtkip2sye"
       UseNginxSidecar: "Yes"
       cloudfrontDistributionStackName: "authdev2-cloudfront"
-      ECSServiceCanaryPhasedDeploy: "Yes"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/Yz722IDLN1mPqkPTihkwAkp/rUm
