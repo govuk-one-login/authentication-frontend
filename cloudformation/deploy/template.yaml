@@ -207,6 +207,29 @@ Conditions:
                 ]
               - "Yes"
 
+  Enableipvspinner:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  Enableipvspinner,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  Enableipvspinner,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+
   IsSplunkEnabled:
     Fn::Equals:
       - !FindInMap [
@@ -277,6 +300,7 @@ Mappings:
       transitionalDomain: signin.authdev1.dev.account.gov.uk
       migratedDomain: signin.authdev1.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
+      Enableipvspinner: "No"
     authdev2:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev2-basic-auth-sidecar-image-repository-containerrepository-zvcjtkip2sye"
       UseNginxSidecar: "No"
@@ -295,6 +319,7 @@ Mappings:
       transitionalDomain: signin.authdev2.dev.account.gov.uk
       migratedDomain: signin.authdev2.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
+      Enableipvspinner: "No"
     dev:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-acbvxp3ywblv"
       UseNginxSidecar: "No"
@@ -323,6 +348,7 @@ Mappings:
       transitionalDomain: signin-sp.dev.account.gov.uk
       migratedDomain: signin.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
+      Enableipvspinner: "No"
     build:
       UseNginxSidecar: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -350,6 +376,7 @@ Mappings:
       transitionalDomain: signin-sp.build.account.gov.uk
       migratedDomain: signin.build.account.gov.uk
       UseMfaResetWithIpv: "No"
+      Enableipvspinner: "No"
     staging:
       UseNginxSidecar: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -371,12 +398,19 @@ Mappings:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEw3VqLzY6ZFWmqruOpvMpPH8PWuQQ
         1zSWSgFy2sngA1GKybC0zuZluGHfZMnr/BGo+teQzbDCekLijPvlozXY1g==
         -----END PUBLIC KEY-----
+      accountRecoveryCodeEnteredWrongBlockedMinutes: 120
+      codeEnteredWrongBlockedMinutes: 120
+      codeRequestBlockedMinutes: 120
+      passwordResetCodeEnteredWrongBlockedMinutes: 120
+      reducedCodeBlockDurationMinutes: 15
       redisNodeSize: cache.m4.xlarge
+      GA4Enabled: "true"
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "Yes"
       transitionalDomain: signin-sp.staging.account.gov.uk
       migratedDomain: signin.staging.account.gov.uk
       UseMfaResetWithIpv: "Yes"
+      Enableipvspinner: "No"
     integration:
       basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
       UseNginxSidecar: "Yes"
@@ -394,12 +428,19 @@ Mappings:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzzwKLypUL89WVaeTbfBZu0Fws8T7
         ppx89XLVfgXIoCs2P//N5qdghvzgNIgVehQ7CkzyorO/lnRlWPfjCG4Oxw==
         -----END PUBLIC KEY-----
+      accountRecoveryCodeEnteredWrongBlockedMinutes: 120
+      codeEnteredWrongBlockedMinutes: 120
+      codeRequestBlockedMinutes: 120
+      passwordResetCodeEnteredWrongBlockedMinutes: 120
+      reducedCodeBlockDurationMinutes: 15
       redisNodeSize: cache.t2.small
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
       transitionalDomain: signin-sp.integration.account.gov.uk
       migratedDomain: signin.integration.account.gov.uk
       UseMfaResetWithIpv: "No"
+      Enableipvspinner: "No"
+      orchStubToAuth: ""
     production:
       basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
       # TODO Nginx sidecar is deployed in prod to block public access, while still using the transitional '-sp' domain
@@ -419,12 +460,22 @@ Mappings:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5iJXSuxgbfM6ADQVtNNDi7ED5ly5
         +3VZPbjHv+v0AjQ5Ps+avkXWKwOeScG9sS0cDf0utEXi3fN3cEraa9WuKQ==
         -----END PUBLIC KEY-----
+      accountRecoveryCodeEnteredWrongBlockedMinutes: 120
+      codeEnteredWrongBlockedMinutes: 120
+      codeRequestBlockedMinutes: 120
+      passwordResetCodeEnteredWrongBlockedMinutes: 120
+      reducedCodeBlockDurationMinutes: 15
       redisNodeSize: cache.m4.xlarge
+      GA4Enabled: "true"
+      universalAnalyticsGTMContainerId: "GTM-TT5HDKV"
+      googleAnalytics4GTMContainerId: "GTM-K4PBJH3"
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
       transitionalDomain: signin-sp.account.gov.uk
       migratedDomain: signin.account.gov.uk
       UseMfaResetWithIpv: "No"
+      Enableipvspinner: "No"
+      orchStubToAuth: ""
 
 Globals:
   Function:
@@ -801,7 +852,13 @@ Resources:
                     transitionalDomain,
                   ]
             - Name: GTM_ID
-              Value: GTM-TK92W68
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  universalAnalyticsGTMContainerId,
+                  DefaultValue: "GTM-TK92W68",
+                ]
             - Name: SUPPORT_AUTHORIZE_CONTROLLER
               Value: 1
             - Name: ORCH_TO_AUTH_SIGNING_KEY
@@ -843,7 +900,13 @@ Resources:
                     DefaultValue: "",
                   ]
             - Name: ORCH_STUB_TO_AUTH_CLIENT_ID
-              Value: orchestrationAuth
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  orchStubToAuth,
+                  DefaultValue: "orchestrationAuth",
+                ]
             - Name: ORCH_STUB_TO_AUTH_AUDIENCE
               Value: !Sub
                 - "https://${FQDN}/"
@@ -883,15 +946,45 @@ Resources:
                   - !Sub "${Environment}.account.gov.uk"
                 - "account.gov.uk"
             - Name: PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES
-              Value: 1
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  passwordResetCodeEnteredWrongBlockedMinutes,
+                  DefaultValue: "1",
+                ]
             - Name: ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES
-              Value: 1
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  accountRecoveryCodeEnteredWrongBlockedMinutes,
+                  DefaultValue: "1",
+                ]
             - Name: CODE_REQUEST_BLOCKED_MINUTES
-              Value: 1
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  codeRequestBlockedMinutes,
+                  DefaultValue: "1",
+                ]
             - Name: CODE_ENTERED_WRONG_BLOCKED_MINUTES
-              Value: 1
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  codeEnteredWrongBlockedMinutes,
+                  DefaultValue: "1",
+                ]
             - Name: REDUCED_CODE_BLOCK_DURATION_MINUTES
-              Value: 0.5
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  reducedCodeBlockDurationMinutes,
+                  DefaultValue: "0.5",
+                ]
             - Name: SUPPORT_ACCOUNT_INTERVENTIONS
               Value: 1
             - Name: SUPPORT_REAUTHENTICATION
@@ -907,13 +1000,31 @@ Resources:
             - Name: PROVE_IDENTITY_WELCOME_ENABLED
               Value: 0
             - Name: GA4_ENABLED
-              Value: false
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  GA4Enabled,
+                  DefaultValue: "false",
+                ]
             - Name: UA_ENABLED
               Value: true
             - Name: UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID
-              Value: GTM-TK92W68
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  universalAnalyticsGTMContainerId,
+                  DefaultValue: "GTM-TK92W68",
+                ]
             - Name: GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID
-              Value: GTM-KD86CMZ
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  googleAnalytics4GTMContainerId,
+                  DefaultValue: "GTM-KD86CMZ",
+                ]
             - Name: ANALYTICS_COOKIE_DOMAIN
               Value:
                 !If [
@@ -922,7 +1033,7 @@ Resources:
                   ".account.gov.uk",
                 ]
             - Name: SUPPORT_NEW_IPV_SPINNER
-              Value: !If [IsNotProduction, "1", "0"]
+              Value: !If [Enableipvspinner, "1", "0"]
             - Name: SUPPORT_HTTP_KEEP_ALIVE
               Value: !If [SupportHTTPKeepAlive, "1", "0"]
             - Name: SUPPORT_MFA_RESET_WITH_IPV
