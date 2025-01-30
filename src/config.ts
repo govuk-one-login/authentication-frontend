@@ -32,10 +32,6 @@ export function getApiKey(): string {
   return process.env.API_KEY;
 }
 
-export function getGtmId(): string {
-  return process.env.GTM_ID;
-}
-
 export function supportAccountRecovery(): boolean {
   return process.env.SUPPORT_ACCOUNT_RECOVERY === "1";
 }
