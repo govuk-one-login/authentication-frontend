@@ -1004,6 +1004,8 @@ Resources:
                   GA4Enabled,
                   DefaultValue: "false",
                 ]
+            - Name: UA_ENABLED
+              Value: true
             - Name: UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID
               Value:
                 !FindInMap [
