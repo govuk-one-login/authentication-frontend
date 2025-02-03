@@ -8,6 +8,7 @@ frontend_api_fqdn       = "auth.authdev1.sandpit.account.gov.uk"
 service_domain          = "authdev1.sandpit.account.gov.uk"
 zone_id                 = "Z062000928I8D7S9X1OVA"
 session_expiry          = 300000
+gtm_id                  = ""
 redis_node_size         = "cache.t2.micro"
 vpc_environment         = "dev"
 

@@ -69,6 +69,10 @@ locals {
         value = random_string.session_secret.result
       },
       {
+        name  = "GTM_ID"
+        value = var.gtm_id
+      },
+      {
         name  = "REDIS_KEY"
         value = local.redis_key
       },

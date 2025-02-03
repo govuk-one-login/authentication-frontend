@@ -11,11 +11,12 @@ params:
   STATE_BUCKET: digital-identity-dev-tfstate
   STATE_LOCKING_TABLE: digital-identity-dev-tfstate-locking
   DEPLOY_ENVIRONMENT: build
+  GTM_ID: ((build-gtm-id))
   SESSION_EXPIRY: ((build-session-expiry))
   BASIC_AUTH_USERNAME: ((no-basic-auth-username))
   BASIC_AUTH_PASSWORD: ((no-basic-auth-password))
   INCOMING_TRAFFIC_CIDR_BLOCKS: '["0.0.0.0/0"]'
-  BASIC_AUTH_BYPASS_CIDR_BLOCKS: "[]"
+  BASIC_AUTH_BYPASS_CIDR_BLOCKS: '[]'
 inputs:
   - name: frontend-src
   - name: frontend-image
@@ -62,6 +63,7 @@ run:
         -var "deployer_role_arn=${DEPLOYER_ROLE_ARN}" \
         -var "common_state_bucket=${STATE_BUCKET}" \
         -var "session_expiry=${SESSION_EXPIRY}" \
+        -var "gtm_id=${GTM_ID}" \
         -var "session_expiry=${SESSION_EXPIRY}" \
         -var "image_uri=${IMAGE_URI}" \
         -var "image_tag=${IMAGE_TAG}" \

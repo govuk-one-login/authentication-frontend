@@ -101,6 +101,10 @@ variable "session_expiry" {
   type = string
 }
 
+variable "gtm_id" {
+  type = string
+}
+
 variable "cloudwatch_log_retention" {
   default = 30
   type    = number
