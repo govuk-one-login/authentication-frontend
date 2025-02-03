@@ -32,10 +32,6 @@ export function getApiKey(): string {
   return process.env.API_KEY;
 }
 
-export function getGtmId(): string {
-  return process.env.GTM_ID;
-}
-
 export function supportAccountRecovery(): boolean {
   return process.env.SUPPORT_ACCOUNT_RECOVERY === "1";
 }
@@ -169,17 +165,10 @@ export function getGA4ContainerId(): string {
   return process.env.GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID || "";
 }
 
-export function getGTMContainerID(): string {
-  return process.env.UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID || "";
-}
-
 export function googleAnalytics4Enabled(): string {
   return process.env.GA4_ENABLED || "false";
 }
 
-export function universalAnalyticsEnabled(): string {
-  return process.env.UA_ENABLED || "false";
-}
 export function proveIdentityWelcomeEnabled(): boolean {
   return process.env.PROVE_IDENTITY_WELCOME_ENABLED === "1";
 }

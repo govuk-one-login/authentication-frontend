@@ -3,7 +3,6 @@ common_state_bucket = "di-auth-development-tfstate"
 aws_region          = "eu-west-2"
 service_domain      = "authdev2.sandpit.account.gov.uk"
 session_expiry      = 300000
-gtm_id              = ""
 redis_node_size     = "cache.t2.micro"
 vpc_environment     = "dev"
 
@@ -51,8 +50,7 @@ orch_stub_to_auth_audience           = "https://signin.authdev2.sandpit.account.
 
 dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
 
-ua_enabled              = "true"
-analytics_cookie_domain = ".sandpit.account.gov.uk"
+analytics_cookie_domain = ".authdev2.sandpit.account.gov.uk"
 
 ip_endpoint_rate_limiting_configuration = [
   {

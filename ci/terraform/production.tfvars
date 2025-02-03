@@ -42,8 +42,6 @@ orch_to_auth_signing_public_key = "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CA
 orch_to_auth_client_id          = "orchestrationAuth"
 orch_to_auth_audience           = "https://signin.account.gov.uk/"
 
-ua_enabled                           = "true"
-universal_analytics_gtm_container_id = "GTM-TT5HDKV"
-ga4_enabled                          = "true"
-google_analytics_4_gtm_container_id  = "GTM-K4PBJH3"
-analytics_cookie_domain              = ".account.gov.uk"
+ga4_enabled                         = "true"
+google_analytics_4_gtm_container_id = "GTM-K4PBJH3"
+analytics_cookie_domain             = ".account.gov.uk"
