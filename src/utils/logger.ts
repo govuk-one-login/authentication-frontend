@@ -49,7 +49,7 @@ const loggerMiddleware = PinoHttp({
     ignore: (req) =>
       [
         "/public/scripts/analytics.js",
-        "/public/scripts/dataLayerEvents.js",
+        "/public/scripts/cookies.js",
         "/public/scripts/all.js",
         "/public/style.css",
         "/public/scripts",

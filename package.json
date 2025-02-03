@@ -19,7 +19,7 @@
     "dummy-server-orchstub": "node dev-app-orchstub.js | pino-pretty",
     "depcheck": "depcheck",
     "lint": "eslint . ",
-    "minfiy-build-js": "uglifyjs src/assets/javascript/application.js -o src/assets/javascript/application.js -c -m && uglifyjs src/assets/javascript/dataLayerEvents.js -o src/assets/javascript/dataLayerEvents.js -c -m && uglifyjs src/assets/javascript/showPassword.js -o src/assets/javascript/showPassword.js -c -m",
+    "minfiy-build-js": "uglifyjs src/assets/javascript/application.js -o src/assets/javascript/application.js -c -m && uglifyjs src/assets/javascript/cookies.js -o src/assets/javascript/cookies.js -c -m && uglifyjs src/assets/javascript/showPassword.js -o src/assets/javascript/showPassword.js -c -m",
     "pretty": "prettier --write \"*/**/*.{ts,json}\"",
     "check-pretty": "prettier --check \"*/**/*.{ts,json}\"",
     "start": "node dist/server.js",
