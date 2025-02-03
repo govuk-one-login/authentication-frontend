@@ -8,6 +8,7 @@ frontend_api_fqdn       = "auth.authdev1.sandpit.account.gov.uk"
 service_domain          = "authdev1.sandpit.account.gov.uk"
 zone_id                 = "Z062000928I8D7S9X1OVA"
 session_expiry          = 300000
+gtm_id                  = ""
 redis_node_size         = "cache.t2.micro"
 vpc_environment         = "dev"
 
@@ -55,4 +56,5 @@ orch_stub_to_auth_audience           = "https://signin.authdev1.sandpit.account.
 
 dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
 
-analytics_cookie_domain = ".authdev1.sandpit.account.gov.uk"
+ua_enabled              = "true"
+analytics_cookie_domain = ".sandpit.account.gov.uk"

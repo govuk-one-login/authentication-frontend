@@ -101,6 +101,10 @@ variable "session_expiry" {
   type = string
 }
 
+variable "gtm_id" {
+  type = string
+}
+
 variable "cloudwatch_log_retention" {
   default = 30
   type    = number
@@ -418,6 +422,18 @@ variable "ga4_enabled" {
   type        = string
   default     = "false"
   description = "Enables Google Analytics 4"
+}
+
+variable "ua_enabled" {
+  type        = string
+  default     = "false"
+  description = "Enables Universal Analytics"
+}
+
+variable "universal_analytics_gtm_container_id" {
+  type        = string
+  default     = "GTM-TK92W68"
+  description = "Universal Analytics Container ID"
 }
 
 variable "google_analytics_4_gtm_container_id" {

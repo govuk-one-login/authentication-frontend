@@ -25,70 +25,28 @@ function initEnterPhoneNumber() {
   }
 }
 
-// ## Cookie handling
+window.DI = window.DI || {};
+window.DI.analyticsUa = window.DI.analyticsUa || {};
+(function (w) {
+  "use strict";
+  function appInit() {
+    var cookies = window.GOVSignIn.Cookies();
 
-function getCookieValue(cookieName) {
-  const cookies_arr = document.cookie.split(";");
-  let value;
-  cookies_arr.forEach((item) => {
-    const name = item.split("=")[0].toLowerCase().trim();
-    if (name.indexOf(cookieName) !== -1) {
-      value = item.split("=")[1];
+    if (window.DI.analyticsGa4.cookie.hasConsentForAnalytics()) {
+      cookies.initAnalytics();
     }
-  });
-  return value;
-}
 
-function tryOrReturnDefault(callback, defaultValue) {
-  try {
-    return callback();
-  } catch (e) {
-    return defaultValue;
+    if (window.dtrum !== undefined) {
+      if (window.DI.analyticsGa4.cookie.hasConsentForAnalytics()) {
+        window.dtrum.enable();
+      } else {
+        window.dtrum.disable();
+      }
+    }
   }
-}
 
-function getAnalyticsConsentStatus() {
-  const cookieValue = getCookieValue("cookies_preferences_set");
-
-  if (!cookieValue) return false;
-
-  const cookieConsent = tryOrReturnDefault(
-    () => JSON.parse(decodeURIComponent(cookieValue)),
-    false
-  );
-  return cookieConsent ? cookieConsent.analytics === true : false;
-}
-
-// ## Custom analytics initialisation
-
-function initDynaTraceRUM(hasConsentedForAnalytics) {
-  if (hasConsentedForAnalytics) {
-    window.dtrum && window.dtrum.enable();
-  } else {
-    window.dtrum && window.dtrum.disable();
-  }
-}
-
-// ### Initialise analytics on page load
-(function () {
-  const hasConsentedForAnalytics = getAnalyticsConsentStatus();
-  initDynaTraceRUM(hasConsentedForAnalytics);
-  window.GOVSignIn.pushCustomEventsToDataLayer(hasConsentedForAnalytics);
-
-  if (!hasConsentedForAnalytics) {
-    window.addEventListener(
-      "cookie-consent",
-      () => {
-        const newHasConsentedForAnalytics = getAnalyticsConsentStatus();
-        initDynaTraceRUM(newHasConsentedForAnalytics);
-        window.GOVSignIn.pushCustomEventsToDataLayer(
-          newHasConsentedForAnalytics
-        );
-      },
-      { once: true }
-    );
-  }
-})();
+  w.DI.analyticsUa.init = appInit;
+})(window);
 
 window.addEventListener("load", (event) => {
   window.GOVUKFrontend.initAll();
