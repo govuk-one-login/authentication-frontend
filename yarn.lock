@@ -769,7 +769,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.24.8"
 
-"@babel/runtime@^7.12.0", "@babel/runtime@^7.23.2":
+"@babel/runtime@^7.23.2":
   version "7.26.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.26.0.tgz#8600c2f595f277c60815256418b85356a65173c1"
   integrity sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==
@@ -1897,11 +1897,11 @@
     "@types/node" "*"
 
 "@types/i18next-fs-backend@^1.1.1":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@types/i18next-fs-backend/-/i18next-fs-backend-1.1.5.tgz#39dae6057f4386f6eaacc36e69346d3783834ada"
-  integrity sha512-QKKYWkfQ13spBwa+5/lBThkPkMv8svU6a5Z0Bz96IuN+HupJZXVAbP93p5bK7iOcY7Y/g/W9Y6qy5z0i0NpTog==
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/i18next-fs-backend/-/i18next-fs-backend-1.2.0.tgz#42ee4f1a1cf5972ce5480c8f4f76720bd41d97ae"
+  integrity sha512-30XnjBF+SLndemvooRQRtcoD5xmF2nNNTa5RqE63+OWssaZOxN9r895ZvXUMbkk8YZr1Cy3scpQBZ6YXLH+jEg==
   dependencies:
-    i18next "^21.0.1"
+    i18next-fs-backend "*"
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
   version "2.0.6"
@@ -4292,7 +4292,7 @@ husky@^9.0.10:
   resolved "https://registry.yarnpkg.com/husky/-/husky-9.1.7.tgz#d46a38035d101b46a70456a850ff4201344c0b2d"
   integrity sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==
 
-i18next-fs-backend@^2.3.1:
+i18next-fs-backend@*, i18next-fs-backend@^2.3.1:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/i18next-fs-backend/-/i18next-fs-backend-2.6.0.tgz#7b6b54c5ffc2a5073e47eda0673c002376fa1a3c"
   integrity sha512-3ZlhNoF9yxnM8pa8bWp5120/Ob6t4lVl1l/tbLmkml/ei3ud8IWySCHt2lrY5xWRlSU5D9IV2sm5bEbGuTqwTw==
@@ -4302,17 +4302,10 @@ i18next-http-middleware@^3.2.0:
   resolved "https://registry.yarnpkg.com/i18next-http-middleware/-/i18next-http-middleware-3.7.1.tgz#2c748be8f16d04c1cfe4a0003db31d7684d7625f"
   integrity sha512-nVTSGB1P4Gad5PFQYf3xVUOzJ4tVSQYD8Rs0luyWkjEMwqdqAcZ9CqIzqYwVLgB5/BKr1COI0oAei5dlYzmGbg==
 
-i18next@^21.0.1:
-  version "21.6.5"
-  resolved "https://registry.npmjs.org/i18next/-/i18next-21.6.5.tgz"
-  integrity sha512-1oimhzFEpkmxpY2yDyghdycyA1bCKrh9zf04qiB2HytKJCqlrA5e8JfL6KyK/oZvZABLP0GohsZ+tvhHmd+OTA==
-  dependencies:
-    "@babel/runtime" "^7.12.0"
-
 i18next@^24.2.1:
-  version "24.2.1"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-24.2.1.tgz#91e8f11fc9bd7042ec0bd36bed2dd0457aaa35fa"
-  integrity sha512-Q2wC1TjWcSikn1VAJg13UGIjc+okpFxQTxjVAymOnSA3RpttBQNMPf2ovcgoFVsV4QNxTfNZMAxorXZXsk4fBA==
+  version "24.2.2"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-24.2.2.tgz#3ba3d213302068d569142737f03f30929de696de"
+  integrity sha512-NE6i86lBCKRYZa5TaUDkU5S4HFgLIEJRLr3Whf2psgaxBleQ2LC1YW1Vc+SCgkAW7VEzndT6al6+CzegSUHcTQ==
   dependencies:
     "@babel/runtime" "^7.23.2"
 
