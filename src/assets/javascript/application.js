@@ -25,82 +25,28 @@ function initEnterPhoneNumber() {
   }
 }
 
-// ## Cookie handling
-
-function getCookieValue(cookieName) {
-  const cookies_arr = document.cookie.split(";");
-  let value;
-  cookies_arr.forEach((item) => {
-    const name = item.split("=")[0].toLowerCase().trim();
-    if (name.indexOf(cookieName) !== -1) {
-      value = item.split("=")[1];
-    }
-  });
-  return value;
-}
-
-function hasConsentForAnalytics() {
-  const cookieValue = getCookieValue("cookies_preferences_set");
-
-  if (!cookieValue) return false;
-
-  const cookieConsent = JSON.parse(decodeURIComponent(cookieValue));
-  return cookieConsent ? cookieConsent.analytics === true : false;
-}
-
-// ## Custom analytics initialisation
-
-function initCookies() {
-  if (hasConsentForAnalytics()) {
-    console.log("🟣 appInit - cookies - has consented");
-    window.GOVSignIn.Cookies().initAnalytics();
-  } else {
-    console.log("🟣 appInit - cookies - not consented");
-  }
-}
-
-function initDtrum() {
-  if (hasConsentForAnalytics()) {
-    console.log("🟣 appInit - dtrum - has consented");
-    window.dtrum && window.dtrum.enable();
-  } else {
-    console.log("🟣 appInit - dtrum - not consented");
-    window.dtrum && window.dtrum.disable();
-  }
-}
-
-// ### Initialise analytics on UA init
 window.DI = window.DI || {};
 window.DI.analyticsUa = window.DI.analyticsUa || {};
 (function (w) {
   "use strict";
-  console.log("🟢 UA init");
+  function appInit() {
+    var cookies = window.GOVSignIn.Cookies();
 
-  function init() {
-    console.log("🟠 call UA init");
-    initCookies(); // TODO - AUT-3964 - check assumption that this is only for UA things (may require further splitting)
-    initDtrum();
+    if (window.DI.analyticsGa4.cookie.hasConsentForAnalytics()) {
+      cookies.initAnalytics();
+    }
+
+    if (window.dtrum !== undefined) {
+      if (window.DI.analyticsGa4.cookie.hasConsentForAnalytics()) {
+        window.dtrum.enable();
+      } else {
+        window.dtrum.disable();
+      }
+    }
   }
 
-  w.DI.analyticsUa.init = init;
+  w.DI.analyticsUa.init = appInit;
 })(window);
-
-// ### Initialise analytics on page load
-(function () {
-  console.log("🟢 page load init");
-  initDtrum();
-
-  if (!hasConsentForAnalytics()) {
-    window.addEventListener(
-      "cookie-consent",
-      () => {
-        console.log("🟠 cookie-consent init");
-        initDtrum();
-      },
-      { once: true }
-    );
-  }
-})();
 
 window.addEventListener("load", (event) => {
   window.GOVUKFrontend.initAll();
