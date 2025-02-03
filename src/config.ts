@@ -169,6 +169,10 @@ export function getGA4ContainerId(): string {
   return process.env.GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID || "";
 }
 
+export function getGTMContainerID(): string {
+  return process.env.UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID || "";
+}
+
 export function googleAnalytics4Enabled(): string {
   return process.env.GA4_ENABLED || "false";
 }

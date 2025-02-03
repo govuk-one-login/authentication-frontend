@@ -129,6 +129,10 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
                 "value": "true",
                 "comment": "GA4 Enablement",
             },
+            "UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID": {
+                "value": "GTM-TK92W68",
+                "comment": "Universal Analytics Container Id",
+            },
             "GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID": {
                 "value": "GTM-KD86CMZ",
                 "comment": "Listen port for frontend nodemon",
