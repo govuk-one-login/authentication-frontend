@@ -52,14 +52,17 @@ function getAnalyticsConsentStatus() {
 
 function initDtrum(hasConsentedForAnalytics) {
   if (hasConsentedForAnalytics) {
+    console.log("🟣 appInit - dtrum - has consented");
     window.dtrum && window.dtrum.enable();
   } else {
+    console.log("🟣 appInit - dtrum - not consented");
     window.dtrum && window.dtrum.disable();
   }
 }
 
 // ### Initialise analytics on page load
 (function () {
+  console.log("🟢 page load init");
   const hasConsentedForAnalytics = getAnalyticsConsentStatus();
   initDtrum(hasConsentedForAnalytics);
   window.GOVSignIn.pushCustomEventsToDataLayer(hasConsentedForAnalytics);
@@ -68,6 +71,8 @@ function initDtrum(hasConsentedForAnalytics) {
     window.addEventListener(
       "cookie-consent",
       () => {
+        console.log("🟠 cookie-consent init");
+
         const newHasConsentedForAnalytics = getAnalyticsConsentStatus();
         initDtrum(newHasConsentedForAnalytics);
         window.GOVSignIn.pushCustomEventsToDataLayer(

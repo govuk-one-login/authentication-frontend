@@ -83,7 +83,9 @@ function pushLanguageToDataLayer() {
 }
 
 function pushCustomEventsToDataLayer(hasConsentedForAnalytics) {
+  console.log("🟣 appInit - pushCustomEventsToDataLayer");
   if (!hasConsentedForAnalytics) return;
+  console.log("🟣 appInit - pushCustomEventsToDataLayer - consented");
 
   gtag({
     department: {
