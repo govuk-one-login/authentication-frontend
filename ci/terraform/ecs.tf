@@ -267,7 +267,7 @@ locals {
       },
       {
         name  = "IP_ALLOW_LIST"
-        value = length(local.basic_auth_bypass_cidr_blocks) == 0 ? "" : jsonencode(local.basic_auth_bypass_cidr_blocks)
+        value = length(var.basic_auth_bypass_cidr_blocks) == 0 ? "" : jsonencode(var.basic_auth_bypass_cidr_blocks)
       }
     ]
   }
