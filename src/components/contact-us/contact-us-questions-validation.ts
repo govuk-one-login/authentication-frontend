@@ -208,7 +208,6 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       if (
         req.body.subtheme ===
           CONTACT_US_THEMES.PROVING_IDENTITY_SOMETHING_ELSE &&
-        req.body.supportContactFormProblemWithAddress === "true" &&
         value === undefined
       ) {
         throw new Error(
@@ -299,10 +298,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
     body("name").customSanitizer(sanitizeFreeTextValue),
     body("country").customSanitizer(sanitizeFreeTextValue),
     body("countryPhoneNumberFrom").customSanitizer(sanitizeFreeTextValue),
-    validateBodyMiddleware("contact-us/questions/index.njk", (req) => ({
-      supportContactFormProblemWithAddress:
-        req.body.supportContactFormProblemWithAddress === "true",
-    })),
+    validateBodyMiddleware("contact-us/questions/index.njk"),
   ];
 }
 
