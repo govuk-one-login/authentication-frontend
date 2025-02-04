@@ -303,7 +303,7 @@ Mappings:
       Enableipvspinner: "No"
     authdev2:
       basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev2-basic-auth-sidecar-image-repository-containerrepository-zvcjtkip2sye"
-      UseNginxSidecar: "No"
+      UseNginxSidecar: "Yes"
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
