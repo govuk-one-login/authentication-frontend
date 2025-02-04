@@ -17,10 +17,6 @@ variable "redis_node_size" {
   default = "cache.t2.small"
 }
 
-variable "service_domain" {
-  default = null
-}
-
 variable "support_account_recovery" {
   type = string
 }
