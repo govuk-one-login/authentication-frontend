@@ -190,6 +190,19 @@ variable "basic_auth_bypass_cidr_blocks" {
   description = "The list of CIDR blocks allowed to bypass basic auth (if enabled)"
 }
 
+variable "basic_auth_bypass_cidr_blocks_with_description" {
+  default = []
+  type = list(object({
+    cidr_block  = string
+    description = string
+  }))
+  description = "The list of CIDR blocks allowed to bypass basic auth (if enabled) with a description"
+}
+
+locals {
+  basic_auth_bypass_cidr_blocks = distinct(concat(var.basic_auth_bypass_cidr_blocks, [for item in var.basic_auth_bypass_cidr_blocks_with_description : item.cidr_block]))
+}
+
 variable "new_auth_account_id" {
   description = "New Auth account id for equivalent environment"
   default     = ""
