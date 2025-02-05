@@ -16,6 +16,6 @@ export interface AccountInterventionStatus extends DefaultApiResponse {
   passwordResetRequired: boolean;
   blocked: boolean;
   temporarilySuspended: boolean;
-  appliedAt: string;
+  appliedAt: number;
   reproveIdentity: boolean;
 }

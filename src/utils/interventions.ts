@@ -17,6 +17,6 @@ export function passwordHasBeenResetMoreRecentlyThanInterventionApplied(
 ): boolean {
   return (
     req.session.user.passwordResetTime !== undefined &&
-    req.session.user.passwordResetTime > parseInt(status.appliedAt)
+    req.session.user.passwordResetTime > status.appliedAt
   );
 }

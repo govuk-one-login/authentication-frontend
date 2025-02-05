@@ -161,7 +161,7 @@ describe("accountInterventionsMiddleware", () => {
               temporarilySuspended: true,
               reproveIdentity: false,
             },
-            nowUnixTime.toString()
+            nowUnixTime
           );
 
         await callMiddleware(
@@ -188,7 +188,7 @@ describe("accountInterventionsMiddleware", () => {
               temporarilySuspended: true,
               reproveIdentity: false,
             },
-            beforeNow.toString()
+            beforeNow
           );
 
         await callMiddleware(
