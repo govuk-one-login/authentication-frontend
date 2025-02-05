@@ -374,7 +374,7 @@ Mappings:
       SupportHTTPKeepAlive: "No"
       transitionalDomain: signin-sp.build.account.gov.uk
       migratedDomain: signin.build.account.gov.uk
-      UseMfaResetWithIpv: "No"
+      UseMfaResetWithIpv: "Yes"
       Enableipvspinner: "No"
     staging:
       UseNginxSidecar: "No"
