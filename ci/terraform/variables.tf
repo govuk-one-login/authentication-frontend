@@ -22,11 +22,6 @@ variable "redis_node_size" {
   type    = string
 }
 
-variable "service_domain" {
-  default = null
-  type    = string
-}
-
 variable "support_account_recovery" {
   type = string
 }
@@ -77,26 +72,6 @@ variable "frontend_auto_scaling_min_count" {
 variable "frontend_auto_scaling_max_count" {
   type    = number
   default = 4
-}
-
-variable "frontend_auto_scaling_policy_memory_target" {
-  type    = number
-  default = 60
-}
-
-variable "frontend_auto_scaling_policy_cpu_target" {
-  type    = number
-  default = 20
-}
-
-variable "frontend_auto_scaling_policy_scale_out_cooldown" {
-  type    = number
-  default = 120
-}
-
-variable "frontend_auto_scaling_policy_scale_in_cooldown" {
-  type    = number
-  default = 300
 }
 
 variable "app_port" {
@@ -421,12 +396,6 @@ variable "Fraud_Header_Enabled" {
   type        = bool
   default     = true
   description = "flag to switch on Fraud header on cloudfront disturbution"
-}
-
-variable "Standard_Logging_Enabled" {
-  type        = bool
-  default     = false
-  description = "Enables Standard logging to push logs to S3 bucket"
 }
 
 variable "cloudfront_WafAcl_Logdestination" {
