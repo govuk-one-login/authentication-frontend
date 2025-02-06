@@ -45,25 +45,6 @@ updates:
     commit-message:
       prefix: BAU
 
-  - package-ecosystem: docker
-    directories:
-      - "basic-auth-sidecar"
-      - "/"
-    schedule:
-      interval: daily
-      time: "03:00"
-    open-pull-requests-limit: 10
-    ignore:
-      - dependency-name: "node"
-        versions: ["> 20"]
-    groups:
-      docker-all-dependencies:
-        patterns:
-          - "*"
-    target-branch: main
-    commit-message:
-      prefix: BAU
-
   - package-ecosystem: github-actions
     directory: "/"
     schedule:

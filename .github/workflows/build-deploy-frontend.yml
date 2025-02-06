@@ -30,20 +30,6 @@ jobs:
       dynatrace_token: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
       deployer_role: ${{ secrets.DEPLOYER_ROLE }}
       ecr_repo: ${{ secrets.TOOLING_ECR_FRONTEND_REPO }}
-  build-sidecar:
-    name: Build and push Basic Auth Sidecar
-    permissions:
-      id-token: write
-      contents: read
-    uses: ./.github/workflows/call_build-push-docker-image.yml
-    with:
-      aws-region: eu-west-2
-      context: basic-auth-sidecar
-    secrets:
-      dynatrace_registry: ${{ secrets.DYNATRACE_REGISTRY_NAME }}
-      dynatrace_token: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
-      deployer_role: ${{ secrets.DEPLOYER_ROLE }}
-      ecr_repo: ${{ secrets.BASIC_SIDECAR_ECR_REPO }}
   build-service-down:
     name: Build and push Service Down Page
     permissions:
@@ -61,7 +47,6 @@ jobs:
   deploy:
     needs:
       - build-frontend
-      - build-sidecar
       - build-service-down
       - pr-data
     runs-on: ubuntu-latest

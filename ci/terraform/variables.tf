@@ -131,27 +131,6 @@ variable "deregistration_delay" {
   type    = number
 }
 
-variable "sidecar_image_uri" {
-  default = ""
-  type    = string
-}
-variable "sidecar_image_tag" {
-  default = "latest"
-  type    = string
-}
-variable "sidecar_image_digest" {
-  default = ""
-  type    = string
-}
-variable "basic_auth_username" {
-  default = ""
-  type    = string
-}
-variable "basic_auth_password" {
-  default = ""
-  type    = string
-}
-
 variable "service_down_image_uri" {
   type = string
 }
@@ -169,12 +148,6 @@ variable "incoming_traffic_cidr_blocks" {
   default     = ["0.0.0.0/0"]
   type        = list(string)
   description = "The list of CIDR blocks allowed to send requests to the ALB"
-}
-
-variable "basic_auth_bypass_cidr_blocks" {
-  default     = []
-  type        = list(string)
-  description = "The list of CIDR blocks allowed to bypass basic auth (if enabled)"
 }
 
 variable "new_auth_account_id" {
