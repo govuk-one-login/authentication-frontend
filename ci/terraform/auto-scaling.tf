@@ -16,7 +16,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_scale_out_alarm" {
 
   dimensions = {
     ClusterName = "${var.environment}-app-cluster"
-    ServiceName = "${aws_ecs_service.frontend_ecs_service.name}"
+    ServiceName = aws_ecs_service.frontend_ecs_service.name
   }
 
   alarm_description = "Metric alarm to trigger ECS scale up"
@@ -37,7 +37,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_scale_in_alarm" {
 
   dimensions = {
     ClusterName = "${var.environment}-app-cluster"
-    ServiceName = "${aws_ecs_service.frontend_ecs_service.name}"
+    ServiceName = aws_ecs_service.frontend_ecs_service.name
   }
 
   alarm_description = "Metric alarm to trigger ECS scale down"
