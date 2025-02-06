@@ -51,3 +51,10 @@ export function mfaResetWithIpvGet(
     res.redirect(ipvCoreURL);
   };
 }
+
+export function mfaResetOpenInBrowserGet(): ExpressRouteFunc {
+  return async function (req: Request, res: Response) {
+    const template = "mfa-reset-with-ipv/index-open-in-browser-mfa-reset.njk";
+    return res.render(template);
+  };
+}

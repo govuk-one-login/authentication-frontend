@@ -2,7 +2,10 @@ import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import sinon from "sinon";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
-import { mfaResetWithIpvGet } from "../mfa-reset-with-ipv-controller";
+import {
+  mfaResetOpenInBrowserGet,
+  mfaResetWithIpvGet,
+} from "../mfa-reset-with-ipv-controller";
 import { expect } from "chai";
 import { MfaResetAuthorizeInterface } from "../types";
 import { Request, Response } from "express";
@@ -70,6 +73,15 @@ describe("mfa reset with ipv controller", () => {
           ),
         BadRequestError,
         "500:Test error message"
+      );
+    });
+  });
+
+  describe("mfaResetOpenInBrowserGet", async () => {
+    it("should render the correct template", async () => {
+      await mfaResetOpenInBrowserGet()(req as Request, res as Response);
+      expect(res.render).to.have.been.calledWith(
+        "mfa-reset-with-ipv/index-open-in-browser-mfa-reset.njk"
       );
     });
   });
