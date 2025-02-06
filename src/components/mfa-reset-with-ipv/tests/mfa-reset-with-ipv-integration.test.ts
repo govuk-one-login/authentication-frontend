@@ -9,7 +9,10 @@ const IPV_DUMMY_URL =
   "https://test-idp-url.com/callback?code=123-4ddkk0sdkkd-ad";
 
 describe("Mfa reset with ipv", () => {
-  async function setupAppWithSessionMiddleware(currentNextPath: string) {
+  async function setupAppWithSessionMiddleware(
+    currentNextPath: string,
+    isAccountRecoveryPermitted: boolean
+  ) {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = require("../../../middleware/session-middleware");
@@ -29,7 +32,7 @@ describe("Mfa reset with ipv", () => {
             optionalPaths: [],
           },
           mfaMethodType: "AUTH_APP",
-          isAccountRecoveryPermitted: true,
+          isAccountRecoveryPermitted: isAccountRecoveryPermitted,
         };
 
         req.session.client = {
@@ -47,7 +50,7 @@ describe("Mfa reset with ipv", () => {
     let baseApi: string;
 
     before(async () => {
-      app = await setupAppWithSessionMiddleware(PATH_NAMES.MFA_RESET_WITH_IPV);
+      app = await setupAppWithSessionMiddleware(PATH_NAMES.ENTER_MFA, true);
       baseApi = process.env.FRONTEND_API_BASE_URL;
     });
 
@@ -74,6 +77,14 @@ describe("Mfa reset with ipv", () => {
           .expect("Location", IPV_DUMMY_URL)
       );
     });
+
+    it("should return a 500 if account recovery is not permitted", async () => {
+      app = await setupAppWithSessionMiddleware(PATH_NAMES.ENTER_MFA, false);
+
+      await request(app, (test) =>
+        test.get(PATH_NAMES.MFA_RESET_WITH_IPV).expect(500)
+      );
+    });
   });
 
   describe("open in web browser", () => {
@@ -82,7 +93,10 @@ describe("Mfa reset with ipv", () => {
     before(async () => {
       process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
 
-      app = await setupAppWithSessionMiddleware(PATH_NAMES.OPEN_IN_WEB_BROWSER);
+      app = await setupAppWithSessionMiddleware(
+        PATH_NAMES.OPEN_IN_WEB_BROWSER,
+        true
+      );
     });
 
     beforeEach(() => {
