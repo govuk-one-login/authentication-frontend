@@ -50,7 +50,7 @@ function getAnalyticsConsentStatus() {
 
 // ## Custom analytics initialisation
 
-function initDtrum(hasConsentedForAnalytics) {
+function initDynaTraceRUM(hasConsentedForAnalytics) {
   if (hasConsentedForAnalytics) {
     window.dtrum && window.dtrum.enable();
   } else {
@@ -61,7 +61,7 @@ function initDtrum(hasConsentedForAnalytics) {
 // ### Initialise analytics on page load
 (function () {
   const hasConsentedForAnalytics = getAnalyticsConsentStatus();
-  initDtrum(hasConsentedForAnalytics);
+  initDynaTraceRUM(hasConsentedForAnalytics);
   window.GOVSignIn.pushCustomEventsToDataLayer(hasConsentedForAnalytics);
 
   if (!hasConsentedForAnalytics) {
@@ -69,7 +69,7 @@ function initDtrum(hasConsentedForAnalytics) {
       "cookie-consent",
       () => {
         const newHasConsentedForAnalytics = getAnalyticsConsentStatus();
-        initDtrum(newHasConsentedForAnalytics);
+        initDynaTraceRUM(newHasConsentedForAnalytics);
         window.GOVSignIn.pushCustomEventsToDataLayer(
           newHasConsentedForAnalytics
         );
