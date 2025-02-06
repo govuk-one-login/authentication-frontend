@@ -751,6 +751,12 @@ const authStateMachine = createMachine(
       },
       [PATH_NAMES.OPEN_IN_WEB_BROWSER]: {
         type: "final",
+        meta: {
+          optionalPaths: [
+            PATH_NAMES.ENTER_MFA,
+            PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+          ],
+        },
       },
       [PATH_NAMES.IPV_CALLBACK]: {
         on: {
