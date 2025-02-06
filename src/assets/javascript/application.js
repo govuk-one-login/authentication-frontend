@@ -39,7 +39,7 @@ function getCookieValue(cookieName) {
   return value;
 }
 
-function hasConsentForAnalytics() {
+function getAnalyticsConsentStatus() {
   const cookieValue = getCookieValue("cookies_preferences_set");
 
   if (!cookieValue) return false;
@@ -50,17 +50,8 @@ function hasConsentForAnalytics() {
 
 // ## Custom analytics initialisation
 
-function initCookies() {
-  if (hasConsentForAnalytics()) {
-    console.log("🟣 appInit - cookies - has consented");
-    window.GOVSignIn.Cookies().initAnalytics();
-  } else {
-    console.log("🟣 appInit - cookies - not consented");
-  }
-}
-
-function initDtrum() {
-  if (hasConsentForAnalytics()) {
+function initDtrum(hasConsentedForAnalytics) {
+  if (hasConsentedForAnalytics) {
     console.log("🟣 appInit - dtrum - has consented");
     window.dtrum && window.dtrum.enable();
   } else {
@@ -69,33 +60,24 @@ function initDtrum() {
   }
 }
 
-// ### Initialise analytics on UA init
-window.DI = window.DI || {};
-window.DI.analyticsUa = window.DI.analyticsUa || {};
-(function (w) {
-  "use strict";
-  console.log("🟢 UA init");
-
-  function init() {
-    console.log("🟠 call UA init");
-    initCookies(); // TODO - AUT-3964 - check assumption that this is only for UA things (may require further splitting)
-    initDtrum();
-  }
-
-  w.DI.analyticsUa.init = init;
-})(window);
-
 // ### Initialise analytics on page load
 (function () {
   console.log("🟢 page load init");
-  initDtrum();
+  const hasConsentedForAnalytics = getAnalyticsConsentStatus();
+  initDtrum(hasConsentedForAnalytics);
+  window.GOVSignIn.pushCustomEventsToDataLayer(hasConsentedForAnalytics);
 
-  if (!hasConsentForAnalytics()) {
+  if (!hasConsentedForAnalytics) {
     window.addEventListener(
       "cookie-consent",
       () => {
         console.log("🟠 cookie-consent init");
-        initDtrum();
+
+        const newHasConsentedForAnalytics = getAnalyticsConsentStatus();
+        initDtrum(newHasConsentedForAnalytics);
+        window.GOVSignIn.pushCustomEventsToDataLayer(
+          newHasConsentedForAnalytics
+        );
       },
       { once: true }
     );
