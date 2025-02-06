@@ -50,8 +50,7 @@ describe("Mfa reset with ipv", () => {
     let baseApi: string;
 
     before(async () => {
-      app = await setupAppWithSessionMiddleware(PATH_NAMES.ENTER_MFA, true);
-      baseApi = process.env.FRONTEND_API_BASE_URL;
+
     });
 
     beforeEach(() => {
@@ -64,7 +63,28 @@ describe("Mfa reset with ipv", () => {
       delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
     });
 
-    it("should redirect to the mfa reset ipv path", async () => {
+    it("should redirect to the mfa reset ipv path when coming from sms entry", async () => {
+      app = await setupAppWithSessionMiddleware(PATH_NAMES.ENTER_MFA, true);
+      baseApi = process.env.FRONTEND_API_BASE_URL;
+
+      nock(baseApi).post(API_ENDPOINTS.MFA_RESET_AUTHORIZE).once().reply(200, {
+        authorize_url: IPV_DUMMY_URL,
+        code: 200,
+        success: true,
+      });
+      await request(app, (test) =>
+        test
+          .get(PATH_NAMES.MFA_RESET_WITH_IPV)
+          .expect(302)
+          .expect("Location", IPV_DUMMY_URL)
+      );
+    });
+
+    it("should redirect to the mfa reset ipv path when coming from auth app entry", async () => {
+      //TODO this works without state machine changes why??
+      app = await setupAppWithSessionMiddleware(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE, true);
+      baseApi = process.env.FRONTEND_API_BASE_URL;
+
       nock(baseApi).post(API_ENDPOINTS.MFA_RESET_AUTHORIZE).once().reply(200, {
         authorize_url: IPV_DUMMY_URL,
         code: 200,
