@@ -59,7 +59,9 @@ describe("Mfa reset with ipv", () => {
         .expect(200)
         .expect(function (res) {
           const page = cheerio.load(res.text);
-          expect(page("p").text()).to.contain("Hello world");
+          expect(page("h1").text()).to.contain(
+            "Open GOV.UK One Login in a web browser to continue"
+          );
         })
     );
   });
