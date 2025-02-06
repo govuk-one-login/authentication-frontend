@@ -2632,6 +2632,22 @@
         "paragraph1": "Come back later. Your GOV.UK  One Login should be available again in 3 working days.",
         "paragraph2": "You can also go back to the service you were trying to use. You can look for the service using your search engine or find it from the GOV.UK homepage."
       }
+    },
+    "openOneLoginInWebBrowser": {
+      "title": "Open GOV.UK One Login in a web browser to continue",
+      "heading": "Open GOV.UK One Login in a web browser to continue",
+      "section1": {
+        "paragraph1": "You’ll need to use a web browser to sign in to GOV.UK One Login. Then you can check if you can change how you get security codes."
+      },
+      "section2": {
+        "heading": "Sign in using a web browser",
+        "bulletPointSection": {
+          "bullet1": "Open a web browser like Chrome or Safari.",
+          "bullet2": "Copy this web address into the browser: gov.uk/account",
+          "bullet3": "Enter your email address and password, then select ‘Check if you can change how you get security codes’."
+        },
+        "paragraph1": "To continue after you’ve changed how you get security codes, you’ll need to sign back in to the app you’re using now."
+      }
     }
   }
 }
