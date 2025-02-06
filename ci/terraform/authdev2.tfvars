@@ -3,7 +3,6 @@ common_state_bucket = "di-auth-development-tfstate"
 aws_region          = "eu-west-2"
 service_domain      = "authdev2.sandpit.account.gov.uk"
 session_expiry      = 300000
-gtm_id              = ""
 redis_node_size     = "cache.t2.micro"
 vpc_environment     = "dev"
 
