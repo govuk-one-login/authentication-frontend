@@ -1,7 +1,11 @@
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import sinon from "sinon";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
+import {
+  HTTP_STATUS_CODES,
+  MFA_METHOD_TYPE,
+  PATH_NAMES,
+} from "../../../app.constants";
 import {
   mfaResetOpenInBrowserGet,
   mfaResetWithIpvGet,
@@ -80,8 +84,10 @@ describe("mfa reset with ipv controller", () => {
   describe("mfaResetOpenInBrowserGet", async () => {
     it("should render the correct template", async () => {
       await mfaResetOpenInBrowserGet()(req as Request, res as Response);
+      req.session.user.mfaMethodType = MFA_METHOD_TYPE.SMS;
       expect(res.render).to.have.been.calledWith(
-        "mfa-reset-with-ipv/index-open-in-browser-mfa-reset.njk"
+        "mfa-reset-with-ipv/index-open-in-browser-mfa-reset.njk",
+        { backLink: PATH_NAMES.ENTER_MFA }
       );
     });
   });

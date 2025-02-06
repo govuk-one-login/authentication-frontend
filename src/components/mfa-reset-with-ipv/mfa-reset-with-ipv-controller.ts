@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import { BadRequestError } from "../../utils/error";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 
 export function mfaResetWithIpvGet(
   service: MfaResetAuthorizeInterface = mfaResetAuthorizeService()
@@ -54,7 +55,11 @@ export function mfaResetWithIpvGet(
 
 export function mfaResetOpenInBrowserGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
+    const backLink =
+      req.session.user.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP
+        ? PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
+        : PATH_NAMES.ENTER_MFA;
     const template = "mfa-reset-with-ipv/index-open-in-browser-mfa-reset.njk";
-    return res.render(template);
+    return res.render(template, { backLink });
   };
 }

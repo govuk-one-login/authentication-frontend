@@ -28,6 +28,7 @@ describe("Mfa reset with ipv", () => {
           journey: {
             nextPath: PATH_NAMES.OPEN_IN_WEB_BROWSER,
           },
+          mfaMethodType: "AUTH_APP",
         };
 
         next();
@@ -55,6 +56,9 @@ describe("Mfa reset with ipv", () => {
           const page = cheerio.load(res.text);
           expect(page("h1").text()).to.contain(
             "Open GOV.UK One Login in a web browser to continue"
+          );
+          expect(page("a.govuk-back-link").attr("href")).to.eq(
+            PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
           );
         })
     );
