@@ -1,8 +1,24 @@
 {% extends "common/layout/base.njk" %}
-{% set pageTitleName = "Hello world" %}
+{% set pageTitleName = 'pages.openOneLoginInWebBrowser.title' | translate %}
 
 {% block content %}
 
-    <p>Hello world</p>
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+        {{ 'pages.openOneLoginInWebBrowser.heading' | translate }}
+    </h1>
+
+    <p class="govuk-body">{{ 'pages.openOneLoginInWebBrowser.section1.paragraph1' | translate }}</p>
+
+    <h2 class="govuk-heading-m">
+        {{ 'pages.openOneLoginInWebBrowser.section2.heading' | translate }}
+    </h2>
+
+    <ol class="govuk-list govuk-list--number">
+        <li>{{ 'pages.openOneLoginInWebBrowser.section2.bulletPointSection.bullet1' | translate }}</li>
+        <li>{{ 'pages.openOneLoginInWebBrowser.section2.bulletPointSection.bullet2' | translate }}</li>
+        <li>{{ 'pages.openOneLoginInWebBrowser.section2.bulletPointSection.bullet3' | translate }}</li>
+    </ol>
+
+    <p class="govuk-body">{{ 'pages.openOneLoginInWebBrowser.section2.paragraph1' | translate }}</p>
 
 {% endblock %}
