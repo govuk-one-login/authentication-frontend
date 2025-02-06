@@ -181,10 +181,6 @@ locals {
         value = var.ga4_enabled
       },
       {
-        name  = "UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID"
-        value = var.universal_analytics_gtm_container_id
-      },
-      {
         name  = "GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID"
         value = var.google_analytics_4_gtm_container_id
       },
