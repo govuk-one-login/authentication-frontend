@@ -64,6 +64,20 @@ describe("mfa reset with ipv controller", () => {
       expect(req.session.user.journey.nextPath).to.eq(PATH_NAMES.IPV_CALLBACK);
     });
 
+    it("should allow redirect to new guidance page when user has come from a strategic app journey", async () => {
+      res.locals.strategicAppChannel = true;
+      await mfaResetWithIpvGet(fakeMfaResetAuthorizeService(true))(
+        req as Request,
+        res as Response
+      );
+      expect(res.redirect).to.have.been.calledWith(
+        PATH_NAMES.OPEN_IN_WEB_BROWSER
+      );
+      expect(req.session.user.journey.nextPath).to.eq(
+        PATH_NAMES.OPEN_IN_WEB_BROWSER
+      );
+    });
+
     it("should throw a BadRequestError when the request made to the MFA Reset Authorize endpoint is not successful", async () => {
       await assert.rejects(
         async () =>

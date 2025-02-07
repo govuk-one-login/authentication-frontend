@@ -19,6 +19,17 @@ export function mfaResetWithIpvGet(
       );
     }
 
+    if (res.locals.strategicAppChannel === true) {
+      const redirectPath = await getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.MFA_RESET_ATTEMPTED_VIA_AUTH_APP,
+        {},
+        res.locals.sessionId
+      );
+      return res.redirect(redirectPath);
+    }
+
     req.session.user.isAccountRecoveryJourney = true;
 
     const orchestrationRedirectUrl = req.session.client.redirectUri.concat(

@@ -20,6 +20,7 @@ router.get(
 router.get(
   PATH_NAMES.OPEN_IN_WEB_BROWSER,
   validateSessionMiddleware, //TODO journey middleware
+  allowUserJourneyMiddleware,
   asyncHandler(mfaResetOpenInBrowserGet())
 );
 
