@@ -63,6 +63,7 @@ const USER_JOURNEY_EVENTS = {
     "IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE",
   IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH:
     "IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH",
+  MFA_RESET_ATTEMPTED_VIA_AUTH_APP: "MFA_RESET_ATTEMPTED_VIA_AUTH_APP",
 };
 
 const authStateMachine = createMachine(
@@ -743,7 +744,13 @@ const authStateMachine = createMachine(
           [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INIT]: [
             { target: [PATH_NAMES.IPV_CALLBACK] },
           ],
+          [USER_JOURNEY_EVENTS.MFA_RESET_ATTEMPTED_VIA_AUTH_APP]: [
+            { target: [PATH_NAMES.OPEN_IN_WEB_BROWSER] },
+          ],
         },
+      },
+      [PATH_NAMES.OPEN_IN_WEB_BROWSER]: {
+        type: "final",
       },
       [PATH_NAMES.IPV_CALLBACK]: {
         on: {

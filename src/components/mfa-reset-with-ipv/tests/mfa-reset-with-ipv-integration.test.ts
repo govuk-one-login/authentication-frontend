@@ -4,11 +4,14 @@ import decache from "decache";
 import { API_ENDPOINTS, CHANNEL, PATH_NAMES } from "../../../app.constants";
 import nock = require("nock");
 import { authStateMachine } from "../../common/state-machine/state-machine";
+const supertest = require("supertest");
 
 const IPV_DUMMY_URL =
   "https://test-idp-url.com/callback?code=123-4ddkk0sdkkd-ad";
 
 describe("Mfa reset with ipv", () => {
+  const REQUEST_PATH = PATH_NAMES.MFA_RESET_WITH_IPV;
+
   describe("Mfa reset with ipv get", () => {
     before(() => (process.env.SUPPORT_MFA_RESET_WITH_IPV = "1"));
 
@@ -25,6 +28,7 @@ describe("Mfa reset with ipv", () => {
       const previousPath = PATH_NAMES.ENTER_MFA;
       const app = await setupAppWithSessionMiddleware(
         previousPath,
+        REQUEST_PATH,
         true,
         CHANNEL.WEB
       );
@@ -33,10 +37,7 @@ describe("Mfa reset with ipv", () => {
       await request(
         app,
         (test) =>
-          test
-            .get(PATH_NAMES.MFA_RESET_WITH_IPV)
-            .expect(302)
-            .expect("Location", IPV_DUMMY_URL),
+          test.get(REQUEST_PATH).expect(302).expect("Location", IPV_DUMMY_URL),
         { expectAnalyticsPropertiesMatchSnapshot: false }
       );
     });
@@ -45,6 +46,7 @@ describe("Mfa reset with ipv", () => {
       const previousPath = PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE;
       const app = await setupAppWithSessionMiddleware(
         previousPath,
+        REQUEST_PATH,
         true,
         CHANNEL.WEB
       );
@@ -53,25 +55,74 @@ describe("Mfa reset with ipv", () => {
       await request(
         app,
         (test) =>
-          test
-            .get(PATH_NAMES.MFA_RESET_WITH_IPV)
-            .expect(302)
-            .expect("Location", IPV_DUMMY_URL),
+          test.get(REQUEST_PATH).expect(302).expect("Location", IPV_DUMMY_URL),
         { expectAnalyticsPropertiesMatchSnapshot: false }
       );
+    });
+
+    it("should redirect to the new guidance page when using the strategic app", async () => {
+      const previousPath = PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE;
+      const app = await setupAppWithSessionMiddleware(
+        previousPath,
+        REQUEST_PATH,
+        true,
+        CHANNEL.STRATEGIC_APP
+      );
+
+      const expectedGuidancePage = PATH_NAMES.OPEN_IN_WEB_BROWSER;
+
+      const agent = supertest.agent(app);
+
+      await agent
+        .get(REQUEST_PATH)
+        .set("Cookie", "channel=strategic_app")
+        .expect(302)
+        .expect("Location", expectedGuidancePage);
+
+      await agent.get(expectedGuidancePage).expect(200);
     });
 
     it("should return a 500 if account recovery is not permitted", async () => {
       const previousPath = PATH_NAMES.ENTER_MFA;
       const app = await setupAppWithSessionMiddleware(
         previousPath,
+        REQUEST_PATH,
         false,
         CHANNEL.WEB
       );
 
+      await request(app, (test) => test.get(REQUEST_PATH).expect(500), {
+        expectAnalyticsPropertiesMatchSnapshot: false,
+      });
+    });
+  });
+
+  describe("Open One login in browser get", () => {
+    const REQUEST_PATH = PATH_NAMES.OPEN_IN_WEB_BROWSER;
+    before(() => (process.env.SUPPORT_MFA_RESET_WITH_IPV = "1"));
+
+    after(() => {
+      sinon.restore();
+      delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
+    });
+
+    it("should not render the page when coming from an arbitrary page", async () => {
+      const previousPath = PATH_NAMES.AUTHORIZE;
+
+      const app = await setupAppWithSessionMiddleware(
+        previousPath,
+        REQUEST_PATH,
+        true,
+        CHANNEL.STRATEGIC_APP
+      );
+
       await request(
         app,
-        (test) => test.get(PATH_NAMES.MFA_RESET_WITH_IPV).expect(500),
+        (test) =>
+          test
+            .get(PATH_NAMES.OPEN_IN_WEB_BROWSER)
+            .expect(302)
+            .expect("Location", previousPath),
         { expectAnalyticsPropertiesMatchSnapshot: false }
       );
     });
@@ -91,6 +142,7 @@ describe("Mfa reset with ipv", () => {
 
   async function setupAppWithSessionMiddleware(
     currentNextPath: string,
+    firstRequestPath: string,
     isAccountRecoveryPermitted: boolean,
     channel: string
   ) {
@@ -101,26 +153,29 @@ describe("Mfa reset with ipv", () => {
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (req: any, res: any, next: any): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        res.locals.strategicAppChannel = channel === CHANNEL.STRATEGIC_APP;
-        res.locals.webChannel = channel == CHANNEL.WEB;
+        //Because we're using supertest to update the state after a first request, we only specifically
+        //set this up for the first request
+        if (req.path === firstRequestPath) {
+          res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+          res.locals.strategicAppChannel = channel === CHANNEL.STRATEGIC_APP;
+          res.locals.webChannel = channel == CHANNEL.WEB;
 
-        req.session.user = {
-          email: "test@test.com",
-          journey: {
-            nextPath: currentNextPath,
-            optionalPaths:
-              authStateMachine.states[currentNextPath].config.meta
-                .optionalPaths,
-          },
-          mfaMethodType: "AUTH_APP",
-          isAccountRecoveryPermitted: isAccountRecoveryPermitted,
-        };
+          req.session.user = {
+            email: "test@test.com",
+            journey: {
+              nextPath: currentNextPath,
+              optionalPaths:
+                authStateMachine.states[currentNextPath].config?.meta
+                  ?.optionalPaths || [],
+            },
+            mfaMethodType: "AUTH_APP",
+            isAccountRecoveryPermitted: isAccountRecoveryPermitted,
+          };
 
-        req.session.client = {
-          redirectUri: "http://test-redirect.gov.uk/callback",
-        };
-
+          req.session.client = {
+            redirectUri: "http://test-redirect.gov.uk/callback",
+          };
+        }
         next();
       });
 
