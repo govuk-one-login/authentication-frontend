@@ -414,7 +414,7 @@ Mappings:
       basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
       UseNginxSidecar: "Yes"
       DeployServiceDownPage: "Yes"
-      dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
+      dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       frontendAutoScalingMinCount: 2
       frontendAutoScalingMaxCount: 4
       frontendTaskDefinitionCpu: 512
