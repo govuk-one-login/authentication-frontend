@@ -78,6 +78,7 @@ export const PATH_NAMES = {
   RESET_PASSWORD_2FA_AUTH_APP: "/reset-password-2fa-auth-app",
   MFA_RESET_WITH_IPV: "/mfa-reset-with-ipv",
   IPV_CALLBACK: "/ipv/callback/authorize",
+  OPEN_IN_WEB_BROWSER: "/open-one-login-in-web-browser",
 };
 
 export const CONTENT_IDS: {

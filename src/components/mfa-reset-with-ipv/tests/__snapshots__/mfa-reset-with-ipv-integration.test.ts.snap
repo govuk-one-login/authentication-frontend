@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mfa reset with ipv should render the guidance page for when someone is trying to access via an app journey 1`] = `
+Object {
+  "contentId": undefined,
+  "taxonomyLevel1": undefined,
+  "taxonomyLevel2": undefined,
+  "taxonomyLevel3": undefined,
+  "taxonomyLevel4": undefined,
+  "taxonomyLevel5": undefined,
+}
+`;

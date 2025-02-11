@@ -1,8 +1,15 @@
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import sinon from "sinon";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
-import { mfaResetWithIpvGet } from "../mfa-reset-with-ipv-controller";
+import {
+  HTTP_STATUS_CODES,
+  MFA_METHOD_TYPE,
+  PATH_NAMES,
+} from "../../../app.constants";
+import {
+  mfaResetOpenInBrowserGet,
+  mfaResetWithIpvGet,
+} from "../mfa-reset-with-ipv-controller";
 import { expect } from "chai";
 import { MfaResetAuthorizeInterface } from "../types";
 import { Request, Response } from "express";
@@ -61,6 +68,20 @@ describe("mfa reset with ipv controller", () => {
       expect(req.session.user.journey.nextPath).to.eq(PATH_NAMES.IPV_CALLBACK);
     });
 
+    it("should allow redirect to new guidance page when user has come from a strategic app journey", async () => {
+      res.locals.strategicAppChannel = true;
+      await mfaResetWithIpvGet(fakeMfaResetAuthorizeService(true))(
+        req as Request,
+        res as Response
+      );
+      expect(res.redirect).to.have.been.calledWith(
+        PATH_NAMES.OPEN_IN_WEB_BROWSER
+      );
+      expect(req.session.user.journey.nextPath).to.eq(
+        PATH_NAMES.OPEN_IN_WEB_BROWSER
+      );
+    });
+
     it("should throw a BadRequestError when the request made to the MFA Reset Authorize endpoint is not successful", async () => {
       await assert.rejects(
         async () =>
@@ -70,6 +91,17 @@ describe("mfa reset with ipv controller", () => {
           ),
         BadRequestError,
         "500:Test error message"
+      );
+    });
+  });
+
+  describe("mfaResetOpenInBrowserGet", async () => {
+    it("should render the correct template", async () => {
+      await mfaResetOpenInBrowserGet()(req as Request, res as Response);
+      req.session.user.mfaMethodType = MFA_METHOD_TYPE.SMS;
+      expect(res.render).to.have.been.calledWith(
+        "mfa-reset-with-ipv/index-open-in-browser-mfa-reset.njk",
+        { backLink: PATH_NAMES.ENTER_MFA }
       );
     });
   });

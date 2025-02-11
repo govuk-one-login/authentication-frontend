@@ -2632,6 +2632,22 @@
         "paragraph1": "Dewch yn ôl yn nes ymlaen. Dylai eich GOV.UK One Login fod ar gael eto mewn 3 diwrnod gwaith.",
         "paragraph2": "Gallwch hefyd fynd yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o’r hafan GOV.UK."
       }
+    },
+    "openOneLoginInWebBrowser": {
+      "title": "Agorwch GOV.UK One Login mewn porwr gwe i barhau",
+      "heading": "Agorwch GOV.UK One Login mewn porwr gwe i barhau",
+      "section1": {
+        "paragraph1": "Bydd angen i chi ddefnyddio porwr gwe i fewngofnodi i GOV.UK One Login. Yna gallwch wirio a allwch chi newid sut rydych chi’n cael codau diogelwch."
+      },
+      "section2": {
+        "heading": "Mewngofnodwch gan ddefnyddio porwr gwe",
+        "bulletPointSection": {
+          "bullet1": "Agor porwr gwe fel Chrome neu Safari.",
+          "bullet2": "Copiwch y cyfeiriad gwe hwn i’r porwr: gov.uk/account",
+          "bullet3": "Rhowch eich cyfeiriad e-bost a’ch cyfrinair, yna dewiswch ’Gwiriwch a allwch newid sut rydych yn cael codau diogelwch’."
+        },
+        "paragraph1": "I barhau ar ôl i chi newid sut rydych chi’n cael codau diogelwch, bydd angen i chi fewngofnodi yn ôl i’r ap rydych chi’n ei ddefnyddio nawr."
+      }
     }
   }
 }

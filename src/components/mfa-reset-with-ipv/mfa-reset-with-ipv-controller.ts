@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import { BadRequestError } from "../../utils/error";
 import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
 
 export function mfaResetWithIpvGet(
   service: MfaResetAuthorizeInterface = mfaResetAuthorizeService()
@@ -17,6 +18,17 @@ export function mfaResetWithIpvGet(
       throw new Error(
         "User started IPV reverification journey without being permitted. This should be replaced with an appropriate error page"
       );
+    }
+
+    if (res.locals.strategicAppChannel === true) {
+      const redirectPath = await getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.MFA_RESET_ATTEMPTED_VIA_AUTH_APP,
+        {},
+        res.locals.sessionId
+      );
+      return res.redirect(redirectPath);
     }
 
     req.session.user.isAccountRecoveryJourney = true;
@@ -49,5 +61,16 @@ export function mfaResetWithIpvGet(
     const ipvCoreURL = result.data.authorize_url;
 
     res.redirect(ipvCoreURL);
+  };
+}
+
+export function mfaResetOpenInBrowserGet(): ExpressRouteFunc {
+  return async function (req: Request, res: Response) {
+    const backLink =
+      req.session.user.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP
+        ? PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
+        : PATH_NAMES.ENTER_MFA;
+    const template = "mfa-reset-with-ipv/index-open-in-browser-mfa-reset.njk";
+    return res.render(template, { backLink });
   };
 }
