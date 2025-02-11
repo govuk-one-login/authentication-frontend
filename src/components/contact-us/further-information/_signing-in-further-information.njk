@@ -8,8 +8,22 @@
 <input type="hidden" name="theme" value="{{theme}}"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
 <input type="hidden" name="fromURL" value="{{fromURL}}"/>
+<input type="hidden" name="supportMfaResetWithIpv" value="{{supportMfaResetWithIpv}}"/>
 
     {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
+
+    {% if supportMfaResetWithIpv == "true" or supportMfaResetWithIpv == true %}
+        {% set radio3 = {
+            value: "lost_security_code_access",
+            text: 'pages.contactUsFurtherInformation.signingIn.section1.radio3MfaReset' | translate,
+            hint: { text: 'pages.contactUsFurtherInformation.signingIn.section1.radio3MfaResetHint' | translate }
+        } %}
+    {% else %}
+        {% set radio3 = {
+            value: "no_phone_number_access",
+            text: 'pages.contactUsFurtherInformation.signingIn.section1.radio3' | translate
+        } %}
+    {% endif %}
 
     {{ govukRadios({
         name: "subtheme",
@@ -33,10 +47,7 @@
                 value: "forgotten_password",
                 text: 'pages.contactUsFurtherInformation.signingIn.section1.radio4' | translate
             },
-            {
-                value: "no_phone_number_access",
-                text: 'pages.contactUsFurtherInformation.signingIn.section1.radio3' | translate
-            },
+            radio3,
             {
                 value: "account_not_found",
                 text: 'pages.contactUsFurtherInformation.signingIn.section1.radio5' | translate

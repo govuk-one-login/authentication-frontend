@@ -1882,6 +1882,8 @@
           "radio1": "You did not get a security code",
           "radio2": "The security code did not work",
           "radio3": "You’ve changed your phone number or lost your phone",
+          "radio3MfaReset": "You’ve lost access to the way you get a security code for GOV.UK One Login",
+          "radio3MfaResetHint": "You cannot use the phone number or the authenticator app you set up to sign in",
           "radio4": "You’ve forgotten your password",
           "radio5": "You’ve been told your GOV.UK One Login ‘cannot be found’",
           "radio6": "There was a technical problem (for example, the service was unavailable)",
@@ -2136,7 +2138,9 @@
       },
       "noPhoneNumberAccess": {
         "title": "You’ve changed your phone number or lost your phone",
+        "titleMfaReset": "You’ve lost access to the way you get a security code",
         "header": "You’ve changed your phone number or lost your phone",
+        "headerMfaReset": "You’ve lost access to the way you get a security code",
         "section1": {
           "header": "How do you get security codes to sign in?",
           "errorMessageSignIn": "Select whether you get security codes by text message or authenticator app"

@@ -197,6 +197,7 @@ export const CONTACT_US_THEMES = {
   SIGN_IN_PHONE_NUMBER_ISSUE: "sign_in_phone_number_issue",
   FORGOTTEN_PASSWORD: "forgotten_password",
   NO_PHONE_NUMBER_ACCESS: "no_phone_number_access",
+  LOST_SECURITY_CODE_ACCESS: "lost_security_code_access",
   PROVING_IDENTITY: "proving_identity",
   AUTHENTICATOR_APP_PROBLEM: "authenticator_app_problem",
   ID_CHECK_APP: "id_check_app",

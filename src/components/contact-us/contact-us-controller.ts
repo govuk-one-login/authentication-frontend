@@ -14,6 +14,7 @@ import { logger } from "../../utils/logger";
 import {
   getServiceDomain,
   getSupportLinkUrl,
+  supportMfaResetWithIpv,
   supportNoPhotoIdContactForms,
 } from "../../config";
 import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
@@ -33,6 +34,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.forgottenPassword.title",
   [CONTACT_US_THEMES.NO_PHONE_NUMBER_ACCESS]:
     "pages.contactUsQuestions.noPhoneNumberAccess.title",
+  [CONTACT_US_THEMES.LOST_SECURITY_CODE_ACCESS]:
+    "pages.contactUsQuestions.noPhoneNumberAccess.titleMfaReset",
   [CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS]:
     "pages.contactUsQuestions.emailSubscriptions.title",
   [CONTACT_US_THEMES.SOMETHING_ELSE]:
@@ -354,6 +357,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
     return res.render("contact-us/further-information/index.njk", {
       theme: req.query.theme,
       hrefBack: backLinkHref,
+      supportMfaResetWithIpv: supportMfaResetWithIpv(),
       referer: encodeValue(
         validateReferer(req.query.referer as string, serviceDomain)
       ),
@@ -372,6 +376,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
 
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
+    supportMfaResetWithIpv: supportMfaResetWithIpv(),
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
       fromURL: encodeValue(
         validateReferer(req.query.fromURL as string, serviceDomain)
@@ -430,6 +435,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     theme: req.query.theme,
     subtheme: req.query.subtheme,
     backurl: backLinkHref,
+    supportMfaResetWithIpv: supportMfaResetWithIpv(),
     referer: encodeValue(
       validateReferer(req.query.referer as string, serviceDomain)
     ),
@@ -922,6 +928,10 @@ export function getQuestionFromThemes(
     ),
     no_phone_number_access: req.t(
       "pages.contactUsFurtherInformation.signingIn.section1.radio3",
+      { lng: "en" }
+    ),
+    lost_security_code_access: req.t(
+      "pages.contactUsFurtherInformation.signingIn.section1.radio3MfaReset",
       { lng: "en" }
     ),
     forgotten_password: req.t(
