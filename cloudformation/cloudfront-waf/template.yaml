@@ -3,6 +3,8 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: >-
   Create a WAF to attach to the Cloudfront distribution for the Auth Frontend
 
+Transform: 'AWS::LanguageExtensions'
+
 Parameters:
   Environment:
     Description: The name of the environment to deploy to
@@ -16,96 +18,72 @@ Parameters:
       - integration
       - production
 
-  RateLimitedEndpoints:
+  RateLimitByIPEndpoints:
     Description: >-
-      List of endpoints that should be rate-limited by session and IP (maximum 6)
+      List of endpoints that should be rate-limited by session and IP (maximum 10)
     Type: String
     Default: ""
 
-  RateLimitedEndpointsRateLimitPeriod:
+  RateLimitByIPRateLimitPeriod:
     Description: >-
       Period in seconds for rate limiting for rate limited endpoints
     Type: Number
     Default: 120
 
-  RateLimitedEndpointsRequestsPerPeriod:
+  RateLimitByIPRequestsPerPeriod:
+    Description: >-
+      Number of requests per period allowed for rate limited endpoints
+    Type: Number
+    Default: 100000
+
+  RateLimitByApsSessionEndpoints:
+    Description: >-
+      List of endpoints that should be rate-limited by session and IP (maximum 10)
+    Type: String
+    Default: ""
+
+  RateLimitByApsSessionRateLimitPeriod:
+    Description: >-
+      Period in seconds for rate limiting for rate limited endpoints
+    Type: Number
+    Default: 120
+
+  RateLimitByApsSessionRequestsPerPeriod:
     Description: >-
       Number of requests per period allowed for rate limited endpoints
     Type: Number
     Default: 100000
 
 Conditions:
-  IsRateLimitedEndpoint0Enabled:
-    Fn::Not:
-      - Fn::Equals:
-        - Fn::Select:
-          - 0
-          - Fn::Split:
-            - ","
-            - Fn::Sub:
-              - "${Endpoints},,,,,,,"
-              - Endpoints: !Ref RateLimitedEndpoints
-        - ""
+  'Fn::ForEach::RateLimitByIP':
+    - Id
+    - ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    - 'RateLimitByIPEndpoint${Id}Enabled':
+        Fn::Not:
+          - Fn::Equals:
+            - Fn::Select:
+              - Fn::Sub: "${Id}"
+              - Fn::Split:
+                - ","
+                - Fn::Sub:
+                  - "${Endpoints},,,,,,,,,,,"
+                  - Endpoints: !Ref RateLimitByIPEndpoints
+            - ""
 
-  IsRateLimitedEndpoint1Enabled:
-    Fn::Not:
-      - Fn::Equals:
-        - Fn::Select:
-          - 1
-          - Fn::Split:
-            - ","
-            - Fn::Sub:
-              - "${Endpoints},,,,,,,"
-              - Endpoints: !Ref RateLimitedEndpoints
-        - ""
-
-  IsRateLimitedEndpoint2Enabled:
-    Fn::Not:
-      - Fn::Equals:
-        - Fn::Select:
-          - 2
-          - Fn::Split:
-            - ","
-            - Fn::Sub:
-              - "${Endpoints},,,,,,,"
-              - Endpoints: !Ref RateLimitedEndpoints
-        - ""
-
-  IsRateLimitedEndpoint3Enabled:
-    Fn::Not:
-      - Fn::Equals:
-        - Fn::Select:
-          - 3
-          - Fn::Split:
-            - ","
-            - Fn::Sub:
-              - "${Endpoints},,,,,,,"
-              - Endpoints: !Ref RateLimitedEndpoints
-        - ""
-
-  IsRateLimitedEndpoint4Enabled:
-    Fn::Not:
-      - Fn::Equals:
-        - Fn::Select:
-          - 4
-          - Fn::Split:
-            - ","
-            - Fn::Sub:
-              - "${Endpoints},,,,,,,"
-              - Endpoints: !Ref RateLimitedEndpoints
-        - ""
-
-  IsRateLimitedEndpoint5Enabled:
-    Fn::Not:
-      - Fn::Equals:
-        - Fn::Select:
-          - 5
-          - Fn::Split:
-            - ","
-            - Fn::Sub:
-              - "${Endpoints},,,,,,,"
-              - Endpoints: !Ref RateLimitedEndpoints
-        - ""
+  'Fn::ForEach::RateLimitByApsSession':
+    - Id
+    - ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    - 'RateLimitByApsSessionEndpoint${Id}Enabled':
+        Fn::Not:
+          - Fn::Equals:
+            - Fn::Select:
+              - Fn::Sub: "${Id}"
+              - Fn::Split:
+                - ","
+                - Fn::Sub:
+                  - "${Endpoints},,,,,,,,,,,"
+                  - Endpoints: !Ref RateLimitByApsSessionEndpoints
+            - ""
 
   IsStaging:
     Fn::Equals:
@@ -152,14 +130,6 @@ Resources:
         - "217.196.229.81/32"
         - "51.149.8.0/25"     # (GDS and CO VPN)
         - "51.149.8.128/29"   # (BYOD VPN only)
-        # The following are Pentesters, requested on AUT-2360
-        - "51.142.180.30/32"
-        - "185.120.72.241/32"
-        - "185.120.72.242/32"
-        - "185.120.72.243/32"
-        # The following are Pentesters, requested on AUT-2596
-        - "3.9.227.33/32"
-        - "18.132.149.145/32"
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-WAFv2GDSIPSet"
@@ -204,7 +174,7 @@ Resources:
         - Name: !Sub "${Environment}-frontend-cloudfront-waf-rate-based-rule"
           Action:
             Block: {}
-          Priority: 20
+          Priority: 11
           Statement:
             RateBasedStatement:
               Limit: !If [IsStaging, 20000000, 25000]
@@ -215,191 +185,329 @@ Resources:
             SampledRequestsEnabled: true
 
         - !If
-          - IsRateLimitedEndpoint0Enabled         # If at least one endpoint is provided, then create this rule
-          - Name: "BlockMoreThan100CheckYourEmailRequestsFromIPPer5Minutes"
+          - RateLimitByIPEndpoint0Enabled         # If at least one endpoint is provided, then create this rule
+          - Name: !Sub "BlockMoreThan${RateLimitByIPRequestsPerPeriod}RequestsFromIpPer${RateLimitByIPRateLimitPeriod}Seconds"
             Action:
               Block: {}
-            Priority: 21
+            Priority: 20
             RuleLabels:
-              - Name: MoreThan100CheckYourEmailRequestsFromIPPer5Minutes
+              - Name: TooManyRequestsFromIpOnSpecificEndpoints
             Statement:
               RateBasedStatement:
-                EvaluationWindowSec: !Ref RateLimitedEndpointsRateLimitPeriod
-                Limit: !If [IsStaging, 20000000, !Ref RateLimitedEndpointsRequestsPerPeriod]
-                AggregateKeyType: IP
+                EvaluationWindowSec: !Ref RateLimitByIPRateLimitPeriod
+                Limit: !Ref RateLimitByIPRequestsPerPeriod
+                AggregateKeyType: CUSTOM_KEYS
+                CustomKeys:
+                  - IP: {}
+                  - UriPath:
+                      TextTransformations:
+                        - Priority: 0
+                          Type: URL_DECODE
+                        - Priority: 1
+                          Type: LOWERCASE
                 ScopeDownStatement:
                   OrStatement:
                     Statements:
+                      - ByteMatchStatement:
+                          PositionalConstraint: "STARTS_WITH"
+                          SearchString: !Select [0, !Split [',', !Ref RateLimitByIPEndpoints]]
+                          FieldToMatch:
+                            UriPath: {}
+                          TextTransformations:
+                            - Priority: 0
+                              Type: URL_DECODE
+                            - Priority: 1
+                              Type: LOWERCASE
                       - !If
-                        - IsRateLimitedEndpoint0Enabled
+                        - RateLimitByIPEndpoint1Enabled
                         - ByteMatchStatement:
                             PositionalConstraint: "STARTS_WITH"
-                            SearchString: !Select [0, !Split [',', !Ref RateLimitedEndpoints]]
+                            SearchString: !Select [1, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
                             TextTransformations:
                               - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
                                 Type: LOWERCASE
                         - !Ref AWS::NoValue
                       - !If
-                        - IsRateLimitedEndpoint1Enabled
+                        - RateLimitByIPEndpoint2Enabled
                         - ByteMatchStatement:
                             PositionalConstraint: "STARTS_WITH"
-                            SearchString: !Select [1, !Split [',', !Ref RateLimitedEndpoints]]
+                            SearchString: !Select [2, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
                             TextTransformations:
                               - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
                                 Type: LOWERCASE
                         - !Ref AWS::NoValue
                       - !If
-                        - IsRateLimitedEndpoint2Enabled
+                        - RateLimitByIPEndpoint3Enabled
                         - ByteMatchStatement:
                             PositionalConstraint: "STARTS_WITH"
-                            SearchString: !Select [2, !Split [',', !Ref RateLimitedEndpoints]]
+                            SearchString: !Select [3, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
                             TextTransformations:
                               - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
                                 Type: LOWERCASE
                         - !Ref AWS::NoValue
                       - !If
-                        - IsRateLimitedEndpoint3Enabled
+                        - RateLimitByIPEndpoint4Enabled
                         - ByteMatchStatement:
                             PositionalConstraint: "STARTS_WITH"
-                            SearchString: !Select [3, !Split [',', !Ref RateLimitedEndpoints]]
+                            SearchString: !Select [4, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
                             TextTransformations:
                               - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
                                 Type: LOWERCASE
                         - !Ref AWS::NoValue
                       - !If
-                        - IsRateLimitedEndpoint4Enabled
+                        - RateLimitByIPEndpoint5Enabled
                         - ByteMatchStatement:
                             PositionalConstraint: "STARTS_WITH"
-                            SearchString: !Select [4, !Split [',', !Ref RateLimitedEndpoints]]
+                            SearchString: !Select [5, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
                             TextTransformations:
                               - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
                                 Type: LOWERCASE
                         - !Ref AWS::NoValue
                       - !If
-                        - IsRateLimitedEndpoint5Enabled
+                        - RateLimitByIPEndpoint6Enabled
                         - ByteMatchStatement:
                             PositionalConstraint: "STARTS_WITH"
-                            SearchString: !Select [5, !Split [',', !Ref RateLimitedEndpoints]]
+                            SearchString: !Select [6, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
                             TextTransformations:
                               - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
+                                Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - RateLimitByIPEndpoint7Enabled
+                        - ByteMatchStatement:
+                            PositionalConstraint: "STARTS_WITH"
+                            SearchString: !Select [7, !Split [',', !Ref RateLimitByIPEndpoints]]
+                            FieldToMatch:
+                              UriPath: {}
+                            TextTransformations:
+                              - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
+                                Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - RateLimitByIPEndpoint8Enabled
+                        - ByteMatchStatement:
+                            PositionalConstraint: "STARTS_WITH"
+                            SearchString: !Select [8, !Split [',', !Ref RateLimitByIPEndpoints]]
+                            FieldToMatch:
+                              UriPath: {}
+                            TextTransformations:
+                              - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
+                                Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - RateLimitByIPEndpoint9Enabled
+                        - ByteMatchStatement:
+                            PositionalConstraint: "STARTS_WITH"
+                            SearchString: !Select [9, !Split [',', !Ref RateLimitByIPEndpoints]]
+                            FieldToMatch:
+                              UriPath: {}
+                            TextTransformations:
+                              - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
                                 Type: LOWERCASE
                         - !Ref AWS::NoValue
             VisibilityConfig:
               CloudWatchMetricsEnabled: true
-              MetricName: !Sub "${Environment}FrontendcloudfrontWafMoreThan100CheckYourEmailRequestsFromIPPer5Minutes"
+              MetricName: !Sub "${Environment}FrontendcloudfrontWafRateLimitByIP${RateLimitByIPRequestsPerPeriod}Per${RateLimitByIPRateLimitPeriod}"
               SampledRequestsEnabled: true
           - !Ref AWS::NoValue
 
         - !If
-          - IsRateLimitedEndpoint0Enabled         # If at least one endpoint is provided, then create this rule
-          - Name: BlockMoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes
+          - RateLimitByApsSessionEndpoint0Enabled         # If at least one endpoint is provided, then create this rule
+          - Name: !Sub "BlockMoreThan${RateLimitByApsSessionRequestsPerPeriod}RequestsFromOneApsSessionPer${RateLimitByApsSessionRateLimitPeriod}Seconds"
             Action:
               Block: {}
-            Priority: 22
+            Priority: 30
             RuleLabels:
-            - Name: MoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes
+            - Name: TooManyRequestsFromOneApsSessionOnSpecificEndpoints
             Statement:
               RateBasedStatement:
-                EvaluationWindowSec: !Ref RateLimitedEndpointsRateLimitPeriod
-                Limit: !If [IsStaging, 20000000, !Ref RateLimitedEndpointsRequestsPerPeriod]
+                EvaluationWindowSec: !Ref RateLimitByApsSessionRateLimitPeriod
+                Limit: !Ref RateLimitByApsSessionRequestsPerPeriod
                 AggregateKeyType: CUSTOM_KEYS
                 CustomKeys:
-                - Cookie:
-                    Name: aps
-                    TextTransformations:
-                    - Priority: 0
-                      Type: URL_DECODE
+                  - Cookie:
+                      Name: aps
+                      TextTransformations:
+                        - Priority: 0
+                          Type: URL_DECODE
+                        - Priority: 1
+                          Type: LOWERCASE
+                  - UriPath:
+                      TextTransformations:
+                        - Priority: 0
+                          Type: URL_DECODE
+                        - Priority: 1
+                          Type: LOWERCASE
                 ScopeDownStatement:
                   OrStatement:
                     Statements:
+                      - ByteMatchStatement:
+                          FieldToMatch:
+                            UriPath: {}
+                          PositionalConstraint: STARTS_WITH
+                          SearchString: !Select [0, !Split [',', !Ref RateLimitByApsSessionEndpoints]]
+                          TextTransformations:
+                            - Priority: 0
+                              Type: URL_DECODE
+                            - Priority: 1
+                              Type: LOWERCASE
                       - !If
-                        - IsRateLimitedEndpoint0Enabled
+                        - RateLimitByApsSessionEndpoint1Enabled
                         - ByteMatchStatement:
                             FieldToMatch:
                               UriPath: {}
                             PositionalConstraint: STARTS_WITH
-                            SearchString: !Select [0, !Split [',', !Ref RateLimitedEndpoints]]
+                            SearchString: !Select [1, !Split [',', !Ref RateLimitByApsSessionEndpoints]]
                             TextTransformations:
-                            - Priority: 0
-                              Type: LOWERCASE
+                              - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
+                                Type: LOWERCASE
                         - !Ref AWS::NoValue
                       - !If
-                        - IsRateLimitedEndpoint1Enabled
+                        - RateLimitByApsSessionEndpoint2Enabled
                         - ByteMatchStatement:
                             FieldToMatch:
                               UriPath: {}
                             PositionalConstraint: STARTS_WITH
-                            SearchString: !Select [1, !Split [',', !Ref RateLimitedEndpoints]]
+                            SearchString: !Select [2, !Split [',', !Ref RateLimitByApsSessionEndpoints]]
                             TextTransformations:
-                            - Priority: 0
-                              Type: LOWERCASE
+                              - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
+                                Type: LOWERCASE
                         - !Ref AWS::NoValue
                       - !If
-                        - IsRateLimitedEndpoint2Enabled
+                        - RateLimitByApsSessionEndpoint3Enabled
                         - ByteMatchStatement:
                             FieldToMatch:
                               UriPath: {}
                             PositionalConstraint: STARTS_WITH
-                            SearchString: !Select [2, !Split [',', !Ref RateLimitedEndpoints]]
+                            SearchString: !Select [3, !Split [',', !Ref RateLimitByApsSessionEndpoints]]
                             TextTransformations:
-                            - Priority: 0
-                              Type: LOWERCASE
+                              - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
+                                Type: LOWERCASE
                         - !Ref AWS::NoValue
                       - !If
-                        - IsRateLimitedEndpoint3Enabled
+                        - RateLimitByApsSessionEndpoint4Enabled
                         - ByteMatchStatement:
                             FieldToMatch:
                               UriPath: {}
                             PositionalConstraint: STARTS_WITH
-                            SearchString: !Select [3, !Split [',', !Ref RateLimitedEndpoints]]
+                            SearchString: !Select [4, !Split [',', !Ref RateLimitByApsSessionEndpoints]]
                             TextTransformations:
-                            - Priority: 0
-                              Type: LOWERCASE
+                              - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
+                                Type: LOWERCASE
                         - !Ref AWS::NoValue
                       - !If
-                        - IsRateLimitedEndpoint4Enabled
+                        - RateLimitByApsSessionEndpoint5Enabled
                         - ByteMatchStatement:
                             FieldToMatch:
                               UriPath: {}
                             PositionalConstraint: STARTS_WITH
-                            SearchString: !Select [4, !Split [',', !Ref RateLimitedEndpoints]]
+                            SearchString: !Select [5, !Split [',', !Ref RateLimitByApsSessionEndpoints]]
                             TextTransformations:
-                            - Priority: 0
-                              Type: LOWERCASE
+                              - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
+                                Type: LOWERCASE
                         - !Ref AWS::NoValue
                       - !If
-                        - IsRateLimitedEndpoint5Enabled
+                        - RateLimitByApsSessionEndpoint6Enabled
                         - ByteMatchStatement:
                             FieldToMatch:
                               UriPath: {}
                             PositionalConstraint: STARTS_WITH
-                            SearchString: !Select [5, !Split [',', !Ref RateLimitedEndpoints]]
+                            SearchString: !Select [6, !Split [',', !Ref RateLimitByApsSessionEndpoints]]
                             TextTransformations:
-                            - Priority: 0
-                              Type: LOWERCASE
+                              - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
+                                Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - RateLimitByApsSessionEndpoint7Enabled
+                        - ByteMatchStatement:
+                            FieldToMatch:
+                              UriPath: {}
+                            PositionalConstraint: STARTS_WITH
+                            SearchString: !Select [7, !Split [',', !Ref RateLimitByApsSessionEndpoints]]
+                            TextTransformations:
+                              - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
+                                Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - RateLimitByApsSessionEndpoint8Enabled
+                        - ByteMatchStatement:
+                            FieldToMatch:
+                              UriPath: {}
+                            PositionalConstraint: STARTS_WITH
+                            SearchString: !Select [8, !Split [',', !Ref RateLimitByApsSessionEndpoints]]
+                            TextTransformations:
+                              - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
+                                Type: LOWERCASE
+                        - !Ref AWS::NoValue
+                      - !If
+                        - RateLimitByApsSessionEndpoint9Enabled
+                        - ByteMatchStatement:
+                            FieldToMatch:
+                              UriPath: {}
+                            PositionalConstraint: STARTS_WITH
+                            SearchString: !Select [9, !Split [',', !Ref RateLimitByApsSessionEndpoints]]
+                            TextTransformations:
+                              - Priority: 0
+                                Type: URL_DECODE
+                              - Priority: 1
+                                Type: LOWERCASE
                         - !Ref AWS::NoValue
             VisibilityConfig:
               CloudWatchMetricsEnabled: true
-              MetricName: !Sub "${Environment}FrontendcloudfrontWafMoreThan100CheckYourEmailRequestsFromApsSessionPer5Minutes"
+              MetricName: !Sub "${Environment}FrontendcloudfrontWafRateLimitByApsSession${RateLimitByApsSessionRequestsPerPeriod}Per${RateLimitByApsSessionRateLimitPeriod}"
               SampledRequestsEnabled: true
           - !Ref AWS::NoValue
 
         - Name: !Sub "${Environment}-frontend-cloudfront-common-rule-set"
           OverrideAction:
             None: {}
-          Priority: 30
+          Priority: 40
           Statement:
             ManagedRuleGroupStatement:
               Name: AWSManagedRulesCommonRuleSet
@@ -434,7 +542,7 @@ Resources:
         - Name: !Sub "${Environment}-frontend-cloudfront-bad-rule-set"
           OverrideAction:
             None: {}
-          Priority: 40
+          Priority: 50
           Statement:
             ManagedRuleGroupStatement:
               Name: AWSManagedRulesKnownBadInputsRuleSet
@@ -447,7 +555,7 @@ Resources:
         - Name: default_query_param_limit
           Action:
             Block: {}
-          Priority: 50
+          Priority: 60
           Statement:
             AndStatement:
               Statements:
@@ -477,7 +585,7 @@ Resources:
         - Name: extended_query_param_limit
           Action:
             Block: {}
-          Priority: 60
+          Priority: 70
           Statement:
             SizeConstraintStatement:
               ComparisonOperator: GT
