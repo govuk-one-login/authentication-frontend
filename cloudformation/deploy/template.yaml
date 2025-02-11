@@ -464,7 +464,6 @@ Mappings:
       reducedCodeBlockDurationMinutes: 15
       redisNodeSize: cache.m4.xlarge
       GA4Enabled: "true"
-      universalAnalyticsGTMContainerId: "GTM-TT5HDKV"
       googleAnalytics4GTMContainerId: "GTM-K4PBJH3"
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
@@ -848,14 +847,6 @@ Resources:
                     ],
                     transitionalDomain,
                   ]
-            - Name: GTM_ID
-              Value:
-                !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref Environment,
-                  universalAnalyticsGTMContainerId,
-                  DefaultValue: "GTM-TK92W68",
-                ]
             - Name: SUPPORT_AUTHORIZE_CONTROLLER
               Value: 1
             - Name: ORCH_TO_AUTH_SIGNING_KEY
@@ -1003,16 +994,6 @@ Resources:
                   !Ref Environment,
                   GA4Enabled,
                   DefaultValue: "false",
-                ]
-            - Name: UA_ENABLED
-              Value: true
-            - Name: UNIVERSAL_ANALYTICS_GTM_CONTAINER_ID
-              Value:
-                !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref Environment,
-                  universalAnalyticsGTMContainerId,
-                  DefaultValue: "GTM-TK92W68",
                 ]
             - Name: GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID
               Value:

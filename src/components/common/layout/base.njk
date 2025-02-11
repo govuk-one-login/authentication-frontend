@@ -163,7 +163,7 @@
 
 {% block bodyEnd %}
     {% block scripts %}{% endblock %}
-    <script type="text/javascript" src="/public/scripts/cookies.js"></script>
+    <script type="text/javascript" src="/public/scripts/dataLayerEvents.js"></script>
     <script type="text/javascript" src="/public/scripts/application.js"></script>
     <script type="text/javascript" src="/public/scripts/all.js"></script>
     <script type="text/javascript" src="/public/scripts/analytics.js"></script>
@@ -174,11 +174,10 @@
                     .DI
                     .appInit({
                         ga4ContainerId: "{{ga4ContainerId}}",
-                        uaContainerId: "{{uaContainerId}}"
+                        uaContainerId: "not used" // We don't use UA anymore, but it's a required param
                     }, {
                         isDataSensitive: false,
                         enableGa4Tracking: {{isGa4Enabled}},
-                        enableUaTracking: {{isUaEnabled}},
                         cookieDomain: "{{analyticsCookieDomain}}"
                     });
             }

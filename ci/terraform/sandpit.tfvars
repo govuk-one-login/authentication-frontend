@@ -2,7 +2,6 @@ environment         = "sandpit"
 common_state_bucket = "digital-identity-dev-tfstate"
 aws_region          = "eu-west-2"
 session_expiry      = 300000
-gtm_id              = ""
 
 support_account_recovery                            = "1"
 support_authorize_controller                        = "1"
@@ -39,5 +38,4 @@ logging_endpoint_arns = [
 
 dynatrace_secret_arn = "arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables"
 
-ua_enabled              = "true"
 analytics_cookie_domain = ".sandpit.account.gov.uk"
