@@ -442,7 +442,7 @@ Mappings:
       orchStubToAuth: ""
     production:
       basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
-      UseNginxSidecar: "No"
+      UseNginxSidecar: "Yes"
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
       frontendAutoScalingMinCount: 4
