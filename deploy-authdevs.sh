@@ -16,6 +16,9 @@ for ((i = 0; i < ${#envvalue[@]}; ++i)); do
   if ((i == user_in)); then
     printf 'You picked "%s"\n' "${envvalue[$i]}"
     export DEPLOY_ENV=${envvalue[$i]}
+    if [[ ${DEPLOY_ENV} == authdev2 || ${DEPLOY_ENV} == authdev1 ]]; then
+      printf "\e[31;4m%s\e[0m\n" "Note: You have selected ${DEPLOY_ENV} this will deploy to legacy frontend"
+    fi
     printf "Deploying in environment %s\n" "${DEPLOY_ENV}"
     read -r -p "Press enter to continue or Ctrl+C to abort"
   fi
