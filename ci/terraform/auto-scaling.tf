@@ -11,7 +11,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_scale_out_alarm" {
   namespace           = "AWS/ECS"
   period              = 60
   statistic           = "Average"
-  threshold           = 50
+  threshold           = 40
   datapoints_to_alarm = 1
 
   dimensions = {
@@ -32,7 +32,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_service_scale_in_alarm" {
   namespace           = "AWS/ECS"
   period              = 60
   statistic           = "Average"
-  threshold           = 40
+  threshold           = 30
   datapoints_to_alarm = 5
 
   dimensions = {
