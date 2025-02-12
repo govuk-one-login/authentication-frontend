@@ -13,7 +13,7 @@ export type AccountInterventionsFlags = {
 export const setupAccountInterventionsResponse = (
   baseApi: string,
   flags: AccountInterventionsFlags,
-  maybeDateTimeStamp?: string
+  maybeDateTimeStamp?: number
 ): void => {
   const dateTimeStamp =
     maybeDateTimeStamp === undefined ? nowDateTime() : maybeDateTimeStamp;
@@ -31,7 +31,7 @@ export const setupAccountInterventionsResponse = (
 
 const nowDateTime = () => {
   const d = new Date();
-  return d.valueOf().toString();
+  return d.valueOf();
 };
 
 export const noInterventions: AccountInterventionsFlags = {
@@ -43,7 +43,7 @@ export const noInterventions: AccountInterventionsFlags = {
 
 export function accountInterventionsFakeHelper(
   flags: AccountInterventionsFlags,
-  maybeDateTimeStamp?: string
+  maybeDateTimeStamp?: number
 ): AccountInterventionsInterface {
   const dateTimeStamp =
     maybeDateTimeStamp === undefined ? nowDateTime() : maybeDateTimeStamp;
