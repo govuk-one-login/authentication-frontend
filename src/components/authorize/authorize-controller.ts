@@ -5,6 +5,7 @@ import {
   PATH_NAMES,
   ERROR_LOG_LEVEL,
   COOKIES_CHANNEL,
+  CHANNEL,
 } from "../../app.constants";
 import { getNextPathAndUpdateJourney, ERROR_CODES } from "../common/constants";
 import { BadRequestError, QueryParamsError } from "../../utils/error";
@@ -138,7 +139,17 @@ export function authorizeGet(
 
     const cookieConsent = sanitize(startAuthResponse.data.user.cookieConsent);
 
-    if (req.session.client.cookieConsentEnabled && cookieConsent) {
+    if (req.session.user.channel === CHANNEL.STRATEGIC_APP) {
+      const consentCookieValue = cookiesConsentService.createConsentCookieValue(
+        COOKIE_CONSENT.REJECT
+      );
+
+      res.cookie(COOKIES_PREFERENCES_SET, consentCookieValue.value, {
+        secure: true,
+        httpOnly: false,
+        domain: res.locals.analyticsCookieDomain,
+      });
+    } else if (req.session.client.cookieConsentEnabled && cookieConsent) {
       const consentCookieValue =
         cookiesConsentService.createConsentCookieValue(cookieConsent);
 

@@ -7,6 +7,7 @@ import { Request, Response } from "express";
 import { authorizeGet } from "../authorize-controller";
 import { CookieConsentServiceInterface } from "../../common/cookie-consent/types";
 import {
+  CHANNEL,
   COOKIE_CONSENT,
   COOKIES_PREFERENCES_SET,
   OIDC_PROMPT,
@@ -119,6 +120,46 @@ describe("authorize controller", () => {
             expectedExpires.setFullYear(expectedExpires.getFullYear() + 1);
             return Math.abs(date.getTime() - expectedExpires.getTime()) < 1000;
           }),
+          secure: true,
+          httpOnly: false,
+        })
+      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
+    });
+
+    it("should redirect to /sign-in-or-create page with cookie preferences set to false for a strategic app journey regardless of the user's data", async () => {
+      mockClaims.channel = CHANNEL.STRATEGIC_APP;
+
+      req.body.cookie_preferences = "true";
+
+      authServiceResponseData.data.user = {
+        cookieConsent: COOKIE_CONSENT.ACCEPT,
+      };
+
+      fakeAuthorizeService = mockAuthService(authServiceResponseData);
+
+      const fakeCookieConsentService = createMockCookieConsentService(
+        req.body.cookie_preferences
+      );
+
+      const consentCookieValue =
+        fakeCookieConsentService.createConsentCookieValue(
+          req.body.cookie_preferences === "true"
+            ? COOKIE_CONSENT.ACCEPT
+            : COOKIE_CONSENT.REJECT
+        );
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+
+      expect(res.cookie).to.have.been.calledWith(
+        COOKIES_PREFERENCES_SET,
+        consentCookieValue.value,
+        sinon.match({
           secure: true,
           httpOnly: false,
         })
@@ -559,6 +600,10 @@ describe("authorize controller", () => {
     it("should set session channel session field from jwt claims when claim is present", async () => {
       req.query.request = "JWE";
       mockClaims.channel = "strategic_app";
+
+      const fakeCookieConsentService = createMockCookieConsentService(
+        req.body.cookie_preferences
+      );
 
       await authorizeGet(
         fakeAuthorizeService,
