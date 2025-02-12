@@ -9,8 +9,8 @@ cloudfront_auth_dns_enabled      = true
 cloudfront_WafAcl_Logdestination = "csls_cw_logs_destination_prodpython"
 
 frontend_auto_scaling_v2_enabled                    = true
-frontend_task_definition_cpu                        = 512
-frontend_task_definition_memory                     = 1024
+frontend_task_definition_cpu                        = 2048
+frontend_task_definition_memory                     = 4096
 frontend_auto_scaling_min_count                     = 4
 frontend_auto_scaling_max_count                     = 240
 ecs_desired_count                                   = 4
