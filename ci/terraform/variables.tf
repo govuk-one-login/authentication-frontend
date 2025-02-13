@@ -1,24 +1,25 @@
 variable "aws_region" {
   default = "eu-west-2"
+  type    = string
 }
 
 variable "deployer_role_arn" {
   default = null
+  type    = string
 }
 
 variable "environment" {
   description = "the name of the environment being deployed (e.g. sandpit, build), this also matches the PaaS space name"
+  type        = string
 }
 
 variable "common_state_bucket" {
+  type = string
 }
 
 variable "redis_node_size" {
   default = "cache.t2.small"
-}
-
-variable "service_domain" {
-  default = null
+  type    = string
 }
 
 variable "support_account_recovery" {
@@ -60,6 +61,7 @@ variable "frontend_task_definition_memory" {
 
 variable "frontend_auto_scaling_v2_enabled" {
   default = false
+  type    = bool
 }
 
 variable "frontend_auto_scaling_min_count" {
@@ -70,26 +72,6 @@ variable "frontend_auto_scaling_min_count" {
 variable "frontend_auto_scaling_max_count" {
   type    = number
   default = 4
-}
-
-variable "frontend_auto_scaling_policy_memory_target" {
-  type    = number
-  default = 60
-}
-
-variable "frontend_auto_scaling_policy_cpu_target" {
-  type    = number
-  default = 20
-}
-
-variable "frontend_auto_scaling_policy_scale_out_cooldown" {
-  type    = number
-  default = 120
-}
-
-variable "frontend_auto_scaling_policy_scale_in_cooldown" {
-  type    = number
-  default = 300
 }
 
 variable "app_port" {
@@ -131,34 +113,43 @@ variable "url_for_support_links" {
 
 variable "deployment_min_healthy_percent" {
   default = 50
+  type    = number
 }
 
 variable "deployment_max_percent" {
   default = 150
+  type    = number
 }
 
 variable "health_check_grace_period_seconds" {
   default = 15
+  type    = number
 }
 
 variable "deregistration_delay" {
   default = 90
+  type    = number
 }
 
 variable "sidecar_image_uri" {
   default = ""
+  type    = string
 }
 variable "sidecar_image_tag" {
   default = "latest"
+  type    = string
 }
 variable "sidecar_image_digest" {
   default = ""
+  type    = string
 }
 variable "basic_auth_username" {
   default = ""
+  type    = string
 }
 variable "basic_auth_password" {
   default = ""
+  type    = string
 }
 
 variable "service_down_image_uri" {
@@ -189,6 +180,7 @@ variable "basic_auth_bypass_cidr_blocks" {
 variable "new_auth_account_id" {
   description = "New Auth account id for equivalent environment"
   default     = ""
+  type        = string
 }
 
 variable "new_auth_protectedsub_cidr_blocks" {
@@ -200,26 +192,31 @@ variable "new_auth_protectedsub_cidr_blocks" {
 variable "password_reset_code_entered_wrong_blocked_minutes" {
   default     = "15"
   description = "The duration, in minutes, for which a user is blocked after entering the wrong password reset code multiple times"
+  type        = string
 }
 
 variable "account_recovery_code_entered_wrong_blocked_minutes" {
   default     = "15"
   description = "The duration, in minutes, for which a user is blocked after entering the wrong account recovery code multiple times"
+  type        = string
 }
 
 variable "code_request_blocked_minutes" {
   default     = "15"
   description = "The duration, in minutes, for which a user is blocked after requesting the wrong code multiple times"
+  type        = string
 }
 
 variable "code_entered_wrong_blocked_minutes" {
   default     = "15"
   description = "The duration, in minutes, for which a user is blocked after entering the wrong code multiple times"
+  type        = string
 }
 
 variable "reduced_code_block_duration_minutes" {
   default     = "15"
   description = "The reduced duration, in minutes, for certain scenarios which a user is blocked after entering the wrong code multiple times"
+  type        = string
 }
 
 variable "orch_to_auth_signing_public_key" {
@@ -259,6 +256,7 @@ variable "orch_stub_to_auth_audience" {
 }
 
 variable "dynatrace_secret_arn" {
+  type = string
 }
 
 variable "no_photo_id_contact_forms" {
@@ -300,6 +298,7 @@ variable "prove_identity_welcome_enabled" {
 variable "alb_idle_timeout" {
   description = "Frontend Application Load Balancer idle timeout"
   default     = 60
+  type        = number
 }
 
 variable "ip_endpoint_rate_limiting_configuration" {
@@ -393,12 +392,6 @@ variable "Fraud_Header_Enabled" {
   type        = bool
   default     = true
   description = "flag to switch on Fraud header on cloudfront disturbution"
-}
-
-variable "Standard_Logging_Enabled" {
-  type        = bool
-  default     = false
-  description = "Enables Standard logging to push logs to S3 bucket"
 }
 
 variable "cloudfront_WafAcl_Logdestination" {

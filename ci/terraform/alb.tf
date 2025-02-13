@@ -131,7 +131,7 @@ data "aws_iam_policy_document" "s3_bucket_lb_write" {
     ]
 
     principals {
-      identifiers = ["${data.aws_elb_service_account.main.arn}"]
+      identifiers = [data.aws_elb_service_account.main.arn]
       type        = "AWS"
     }
   }
