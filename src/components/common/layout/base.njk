@@ -50,26 +50,43 @@
     {% include 'common/layout/banner.njk' %}
 {% endblock %}
 
+{% set phaseBannerClasses  = "test-banner" if showTestBanner %}
+
 {% block header %}
     {% if strategicAppChannel %}
     {{ strategicAppHeader({
-        useTudorCrown: true
+        useTudorCrown: true,
+        classes: phaseBannerClasses
     })}}
     {% else %}
     {{ govukHeader({
         homepageUrl: 'general.header.homepageHref' | translate,
-        useTudorCrown: true
+        useTudorCrown: true,
+        classes: phaseBannerClasses
     })}}
     {% endif %}
 {% endblock %}
 
 {% set phaseBannerText %}
+{% if showTestBanner %}
+{{ 'general.phaseBanner.testEnvironmentMessage' | translate }}
+{% else %}
 {{ 'general.phaseBanner.message.start' | translate }}
 <a href="{{ contactUsLinkUrl }}" class="govuk-link"
                                                              rel="noopener"
                                                              target="_blank">{{ 'general.phaseBanner.message.linkText' | translate }}</a>
 {{ 'general.phaseBanner.message.end' | translate }}
+{% endif %}
 {% endset %}
+
+{% set phaseBannerTagText %}
+{% if showTestBanner %}
+{{ 'general.phaseBanner.tag.test' | translate }}
+{% else %}
+{{ "general.phaseBanner.tag.beta" | translate }}
+{% endif %}
+{% endset %}
+
 
 {% block main %}
     <div class="govuk-width-container {{ containerClasses }}">
@@ -77,9 +94,10 @@
         {% else %}
         {{ govukPhaseBanner({
             tag: {
-                text: 'general.phaseBanner.tag' | translate
+                text: phaseBannerTagText
             },
-            html: phaseBannerText
+            html: phaseBannerText,
+            classes: phaseBannerClasses
         }) }}
         {% endif %}
         {% block beforeContent %}{% endblock %}

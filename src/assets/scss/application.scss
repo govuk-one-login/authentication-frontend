@@ -198,6 +198,7 @@
   0% {
     -webkit-transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(360deg);
   }
@@ -207,6 +208,7 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -251,5 +253,16 @@
   a:first-child {
     display: inline-block;
     @include govuk-responsive-margin(2, "bottom");
+  }
+}
+
+.test-banner {
+  .govuk-tag {
+    color: #594d00;
+    background-color: #fff7bf;
+  }
+
+  .govuk-header__container {
+    border-bottom: 10px solid govuk-colour("yellow");
   }
 }
