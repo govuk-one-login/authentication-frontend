@@ -101,6 +101,7 @@ import { Server } from "node:http";
 import { getAnalyticsPropertiesMiddleware } from "./middleware/get-analytics-properties-middleware";
 import { ipvCallbackRouter } from "./components/ipv-callback/ipv-callback-routes";
 import { mfaResetWithIpvRouter } from "./components/mfa-reset-with-ipv/mfa-reset-with-ipv-routes";
+import { environmentBannerMiddleware } from "./middleware/environment-banner-middleware";
 
 const APP_VIEWS = [
   path.join(__dirname, "components"),
@@ -220,6 +221,7 @@ async function createApp(): Promise<express.Application> {
   app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
 
   app.use(channelMiddleware);
+  app.use(environmentBannerMiddleware);
   app.use(getSessionIdMiddleware);
   app.post("*", sanitizeRequestMiddleware);
   app.use(csrfMiddleware);

@@ -9,12 +9,16 @@
     "errorSummaryTitle": "Mae problem",
     "sendMessage": "Anfon neges",
     "phaseBanner": {
-      "tag": "beta",
+      "tag": {
+        "beta": "beta",
+        "test": "test"
+      },
       "message": {
         "start": "Mae hwn yn wasanaeth newydd – bydd eich ",
         "linkText": "adborth (agor mewn tab newydd)",
         "end": " yn ein helpu i’w wella."
-      }
+      },
+      "testEnvironmentMessage": "Mae hwn yn amgylchedd prawf."
     },
     "languageToggle": {
       "ariaLabel": "Dewis iaith",

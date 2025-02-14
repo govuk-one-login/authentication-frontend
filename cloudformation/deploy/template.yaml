@@ -155,29 +155,6 @@ Conditions:
       - !Ref SubEnvironment
       - none
 
-  UseNginxSidecar:
-    Fn::Or:
-      - Fn::And:
-          - !Condition UseSubEnvironment
-          - Fn::Equals:
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref SubEnvironment,
-                  UseNginxSidecar,
-                  DefaultValue: "No",
-                ]
-              - "Yes"
-      - Fn::And:
-          - !Condition NotSubEnvironment
-          - Fn::Equals:
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref Environment,
-                  UseNginxSidecar,
-                  DefaultValue: "No",
-                ]
-              - "Yes"
-
   IsNotProduction:
     Fn::Not:
       - Fn::Equals:
@@ -284,8 +261,6 @@ Mappings:
       AccountId: "652711504416"
   EnvironmentConfiguration:
     authdev1:
-      basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev1-basic-auth-sidecar-image-repository-containerrepository-g2xwunavhds6"
-      UseNginxSidecar: "No"
       cloudfrontDistributionStackName: "authdev1-cloudfront"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
@@ -302,8 +277,6 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
       Enableipvspinner: "No"
     authdev2:
-      basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev2-basic-auth-sidecar-image-repository-containerrepository-zvcjtkip2sye"
-      UseNginxSidecar: "No"
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
@@ -320,8 +293,6 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
       Enableipvspinner: "No"
     dev:
-      basicAuthSidecarURI: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-acbvxp3ywblv"
-      UseNginxSidecar: "No"
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       frontendAutoScalingMinCount: 2
@@ -349,7 +320,6 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
       Enableipvspinner: "No"
     build:
-      UseNginxSidecar: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
       frontendAutoScalingMinCount: 4
@@ -377,7 +347,6 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
       Enableipvspinner: "No"
     staging:
-      UseNginxSidecar: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
       frontendAutoScalingMinCount: 4
@@ -411,8 +380,6 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
       Enableipvspinner: "No"
     integration:
-      basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
-      UseNginxSidecar: "Yes"
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       frontendAutoScalingMinCount: 2
@@ -441,8 +408,6 @@ Mappings:
       Enableipvspinner: "No"
       orchStubToAuth: ""
     production:
-      basicAuthSidecarURI: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/basic-auth-sidecar-image-repository-containerrepository-s9nnygnutubd"
-      UseNginxSidecar: "Yes"
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
       frontendAutoScalingMinCount: 4
@@ -585,9 +550,8 @@ Resources:
       LoadBalancers: !If
         - ECSServiceCanaryPhasedDeploy
         - !Ref AWS::NoValue
-        - - ContainerName:
-              !If [UseNginxSidecar, "nginx-sidecar", "frontend-application"]
-            ContainerPort: !If [UseNginxSidecar, 8080, 3000]
+        - - ContainerName: "frontend-application"
+            ContainerPort: "3000"
             TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroupA
       NetworkConfiguration: !If
         - ECSServiceCanaryPhasedDeploy
@@ -1094,92 +1058,6 @@ Resources:
                       dynatraceSecretArn,
                     ]
                   - ":DT_CONNECTION_POINT::"
-        - !If
-          - UseNginxSidecar
-          - !If
-            - UseSubEnvironment
-            - Name: "nginx-sidecar"
-              Image: !Sub
-                - "${BasicAuthSidecarURI}:GIT-SHA-PLACEHOLDER"
-                - BasicAuthSidecarURI:
-                    !FindInMap [
-                      EnvironmentConfiguration,
-                      !Ref SubEnvironment,
-                      basicAuthSidecarURI,
-                    ]
-              PortMappings:
-                - ContainerPort: 8080
-                  HostPort: 8080
-                  Protocol: tcp
-              Essential: true
-              LogConfiguration:
-                LogDriver: awslogs
-                Options:
-                  awslogs-group: !Ref FrontendTaskLogGroup
-                  awslogs-region: !Ref AWS::Region
-                  awslogs-create-group: "true"
-                  awslogs-stream-prefix: !Ref AWS::StackName
-              Environment:
-                - Name: PROXY_PASS
-                  Value: "http://localhost:3000"
-                - Name: NGINX_PORT
-                  Value: "8080"
-                - Name: NGINX_HOST
-                  Value: !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
-              Secrets:
-                - Name: BASIC_AUTH_USERNAME
-                  ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_username"
-                - Name: BASIC_AUTH_PASSWORD
-                  ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_password"
-                - Name: IP_ALLOW_LIST
-                  ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/basic_auth_bypass_cidr_blocks"
-            - Name: "nginx-sidecar"
-              Image: !Sub
-                - "${BasicAuthSidecarURI}:GIT-SHA-PLACEHOLDER"
-                - BasicAuthSidecarURI:
-                    !FindInMap [
-                      EnvironmentConfiguration,
-                      !Ref Environment,
-                      basicAuthSidecarURI,
-                    ]
-              PortMappings:
-                - ContainerPort: 8080
-                  HostPort: 8080
-                  Protocol: tcp
-              Essential: true
-              LogConfiguration:
-                LogDriver: awslogs
-                Options:
-                  awslogs-group: !Ref FrontendTaskLogGroup
-                  awslogs-region: !Ref AWS::Region
-                  awslogs-create-group: "true"
-                  awslogs-stream-prefix: !Ref AWS::StackName
-              Environment:
-                - Name: PROXY_PASS
-                  Value: "http://localhost:3000"
-                - Name: NGINX_PORT
-                  Value: "8080"
-                - Name: NGINX_HOST
-                  Value: !If
-                    - SwitchToMigratedZone
-                    - !FindInMap [
-                        EnvironmentConfiguration,
-                        !Ref Environment,
-                        migratedDomain,
-                      ]
-                    - !FindInMap [
-                        EnvironmentConfiguration,
-                        !Ref Environment,
-                        transitionalDomain,
-                      ]
-              Secrets:
-                - Name: BASIC_AUTH_USERNAME
-                  ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_username"
-                - Name: BASIC_AUTH_PASSWORD
-                  ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_password"
-                - Name: IP_ALLOW_LIST
-                  ValueFrom: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/basic_auth_bypass_cidr_blocks"
-          - !Ref AWS::NoValue
       Cpu:
         !FindInMap [
           EnvironmentConfiguration,
@@ -1822,9 +1700,8 @@ Resources:
         LoadBalancerListenerARN: !Ref ApplicationLoadBalancerListenerHTTPS
         ECSServiceTaskDefinition: !Ref TaskDefinition
         DeploymentStrategy: !Ref DeploymentStrategy
-        ContainerName:
-          !If [UseNginxSidecar, "nginx-sidecar", "frontend-application"]
-        ContainerPort: !If [UseNginxSidecar, 8080, 3000]
+        ContainerName: "frontend-application"
+        ContainerPort: "3000"
         CloudWatchAlarms: !Sub
           - "${ELB5XXAlarm},${ELB4XXAnomalyAlarm}"
           - ELB5XXAlarm: !Ref ELB5XXAlarm

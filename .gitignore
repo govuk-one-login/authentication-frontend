@@ -130,3 +130,4 @@ ci/terraform/*.plan
 .infracost
 src/authentication_frontend.egg-info/
 .venv
+.aws-sam

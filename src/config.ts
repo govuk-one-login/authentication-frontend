@@ -187,3 +187,7 @@ export function isValidChannel(channel: string): boolean {
 export function supportMfaResetWithIpv(): boolean {
   return process.env.SUPPORT_MFA_RESET_WITH_IPV === "1";
 }
+
+export function showTestBanner(): boolean {
+  return getAppEnv() !== "production";
+}

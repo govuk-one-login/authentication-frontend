@@ -17,8 +17,3 @@ while IFS=$'\t' read -r arn name; do
   value=$(aws secretsmanager get-secret-value --secret-id "${arn}" | jq -r '.SecretString')
   export "TF_VAR_${name}"="${value}"
 done <<<"${secrets}"
-
-if [ "$TF_VAR_basic_auth_password" = "none" ]; then
-  export TF_VAR_basic_auth_username=""
-  export TF_VAR_basic_auth_password=""
-fi

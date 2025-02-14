@@ -10,24 +10,6 @@ on:
         required: true
 
 jobs:
-  deploy-basic-auth-sidecar:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    environment: ${{ inputs.environment }}
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Build and push basic-auth-sidecar image
-        uses: govuk-one-login/devplatform-upload-action-ecr@5f4cd8b195ad7ae810d60881fa6dbaff1764b5da # v1.3.0
-        with:
-          role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
-          container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY_ARN }}
-          build-and-push-image-only: true
-          working-directory: basic-auth-sidecar
-          artifact-bucket-name: ${{ secrets.ARTIFACT_SOURCE_BUCKET_NAME }}
-          ecr-repo-name: ${{ secrets.BASIC_AUTH_SIDECAR_ECR_REPOSITORY }}
-
   deploy-service-down-page:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -48,7 +30,6 @@ jobs:
 
   deploy-frontend:
     needs:
-      - deploy-basic-auth-sidecar
       - deploy-service-down-page
     runs-on: ubuntu-latest
     timeout-minutes: 60

@@ -9,12 +9,16 @@
     "errorSummaryTitle": "There is a problem",
     "sendMessage": "Send message",
     "phaseBanner": {
-      "tag": "beta",
+      "tag": {
+        "beta": "beta",
+        "test": "test"
+      },
       "message": {
         "start": "This is a new service – your ",
         "linkText": "feedback (opens in new tab)",
         "end": " will help us to improve it."
-      }
+      },
+      "testEnvironmentMessage": "This is a test environment."
     },
     "languageToggle": {
       "ariaLabel": "Choose Language",

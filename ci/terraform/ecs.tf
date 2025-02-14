@@ -2,8 +2,7 @@ locals {
   service_name   = "${var.environment}-frontend-ecs-service"
   container_name = "frontend-application"
 
-  nginx_port       = 8080
-  application_port = var.basic_auth_password == "" ? var.app_port : local.nginx_port
+  application_port = var.app_port
 
   frontend_container_definition = {
     name      = local.container_name
@@ -213,52 +212,6 @@ locals {
       }
     ]
   }
-
-  sidecar_container_definition = {
-    name      = "nginx-sidecar"
-    image     = "${var.sidecar_image_uri}:${var.sidecar_image_tag}@${var.sidecar_image_digest}"
-    essential = true
-    logConfiguration = {
-      logDriver = "awslogs"
-      options = {
-        awslogs-group         = aws_cloudwatch_log_group.ecs_frontend_task_log.name
-        awslogs-region        = var.aws_region
-        awslogs-stream-prefix = local.service_name
-      }
-    }
-    portMappings = [
-      {
-        protocol      = "tcp"
-        containerPort = local.nginx_port
-        hostPort      = local.nginx_port
-    }]
-    environment = [
-      {
-        name  = "BASIC_AUTH_USERNAME"
-        value = var.basic_auth_username
-      },
-      {
-        name  = "BASIC_AUTH_PASSWORD"
-        value = var.basic_auth_password
-      },
-      {
-        name  = "PROXY_PASS"
-        value = "http://localhost:${var.app_port}"
-      },
-      {
-        name  = "NGINX_PORT"
-        value = "8080"
-      },
-      {
-        name  = "NGINX_HOST"
-        value = local.frontend_fqdn
-      },
-      {
-        name  = "IP_ALLOW_LIST"
-        value = length(var.basic_auth_bypass_cidr_blocks) == 0 ? "" : jsonencode(var.basic_auth_bypass_cidr_blocks)
-      }
-    ]
-  }
 }
 
 resource "random_string" "session_secret" {
@@ -294,7 +247,7 @@ resource "aws_ecs_service" "frontend_ecs_service" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.frontend_alb_target_group.arn
-    container_name   = var.basic_auth_password == "" ? local.frontend_container_definition.name : local.sidecar_container_definition.name
+    container_name   = local.frontend_container_definition.name
     container_port   = local.application_port
   }
 }
@@ -307,12 +260,7 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
   network_mode             = "awsvpc"
   cpu                      = var.frontend_task_definition_cpu
   memory                   = var.frontend_task_definition_memory
-  container_definitions = var.basic_auth_password == "" ? jsonencode([
-    local.frontend_container_definition,
-    ]) : jsonencode([
-    local.frontend_container_definition,
-    local.sidecar_container_definition,
-  ])
+  container_definitions    = jsonencode([local.frontend_container_definition])
 }
 
 
