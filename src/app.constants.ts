@@ -290,9 +290,25 @@ export const ENVIRONMENT_NAME = {
 export const APP_ENV_NAME = {
   PROD: "production",
   INT: "integration",
+  STAGING: "staging",
   BUILD: "build",
+  DEV: "dev",
+  SANDPIT: "sandpit",
+  AUTHDEV1: "authdev1",
+  AUTHDEV2: "authdev2",
   LOCAL: "local",
+  TEST: "test",
 };
+
+export const LOWER_ENVIRONMENTS = [
+  APP_ENV_NAME.BUILD,
+  APP_ENV_NAME.DEV,
+  APP_ENV_NAME.SANDPIT,
+  APP_ENV_NAME.AUTHDEV1,
+  APP_ENV_NAME.AUTHDEV2,
+  APP_ENV_NAME.LOCAL,
+  APP_ENV_NAME.TEST,
+];
 
 export const EXTERNAL_LINKS = {
   GOV_UK: "https://www.gov.uk/",
