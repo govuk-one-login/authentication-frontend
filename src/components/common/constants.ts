@@ -163,6 +163,24 @@ export function pathWithQueryParam(
   return path;
 }
 
+export async function saveSessionState(req: Request): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    req.session.save((error) => {
+      if (error) {
+        reject(new Error(error));
+        req.log.error(
+          "Session could not be saved after setting the user journey."
+        );
+      } else {
+        req.log.debug(
+          "Session was successfully saved after setting the user journey."
+        );
+        resolve();
+      }
+    });
+  });
+}
+
 export async function getNextPathAndUpdateJourney(
   req: Request,
   path: string,
@@ -180,21 +198,7 @@ export async function getNextPathAndUpdateJourney(
         : [],
   };
 
-  await new Promise<void>((resolve, reject) => {
-    req.session.save((error) => {
-      if (error) {
-        reject(new Error(error));
-        req.log.error(
-          "Session could not be saved after setting the user journey."
-        );
-      } else {
-        req.log.debug(
-          "Session was successfully saved after setting the user journey."
-        );
-        resolve();
-      }
-    });
-  });
+  await saveSessionState(req);
 
   req.log.info(
     `User journey transitioned from ${req.path} to ${nextState.value} with session id ${sessionId}`
