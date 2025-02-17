@@ -191,3 +191,9 @@ export function supportMfaResetWithIpv(): boolean {
 export function showTestBanner(): boolean {
   return getAppEnv() !== "production";
 }
+
+export function supportMfaResetContactFormChanges(): boolean {
+  return ["local", "dev", "sandpit", "authdev1", "authdev2", "build"].includes(
+    getAppEnv()
+  );
+}
