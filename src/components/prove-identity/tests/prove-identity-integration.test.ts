@@ -8,8 +8,9 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import { expect } from "chai";
-import { Application } from "express";
+import { Application, NextFunction, Request, Response } from "express";
 import { setupAccountInterventionsResponse } from "../../../../test/helpers/account-interventions-helpers";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 describe("Integration::prove identity", () => {
   let cookies: string;
@@ -26,15 +27,16 @@ describe("Integration::prove identity", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
         req.session.user = {
           email: "joe.bloggs@test.com",
-          journey: {
-            nextPath: PATH_NAMES.PROVE_IDENTITY,
-            optionalPaths: [],
-          },
+          journey: getPermittedJourneyForPath(PATH_NAMES.PROVE_IDENTITY),
         };
 
         req.session.client = {

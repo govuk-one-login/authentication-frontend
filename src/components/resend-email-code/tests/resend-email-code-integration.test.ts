@@ -9,6 +9,8 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 describe("Integration:: resend email code", () => {
   let token: string | string[];
@@ -22,16 +24,17 @@ describe("Integration:: resend email code", () => {
     const sessionMiddleware = require("../../../middleware/session-middleware");
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
         req.session.user = {
           email: "test@test.com",
           phoneNumber: "7867",
-          journey: {
-            nextPath: PATH_NAMES.CREATE_ACCOUNT_CHECK_EMAIL,
-            optionalPaths: [PATH_NAMES.RESEND_EMAIL_CODE],
-          },
+          journey: getPermittedJourneyForPath(PATH_NAMES.RESEND_EMAIL_CODE),
         };
 
         next();

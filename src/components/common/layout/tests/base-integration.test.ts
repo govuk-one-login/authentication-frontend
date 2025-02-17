@@ -6,6 +6,8 @@ import nock from "nock";
 import request from "supertest";
 import { sinon } from "../../../../../test/utils/test-utils";
 import { CHANNEL, PATH_NAMES } from "../../../../app.constants";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper";
 
 describe("Integration:: base page ", () => {
   let app: any;
@@ -16,7 +18,11 @@ describe("Integration:: base page ", () => {
     const sessionMiddleware = require("../../../../middleware/session-middleware");
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         if (channel === CHANNEL.WEB) {
           res.locals.webChannel = true;
@@ -31,9 +37,7 @@ describe("Integration:: base page ", () => {
           email: "test@test.com",
 
           phoneNumber: "7867",
-          journey: {
-            nextPath: PATH_NAMES.SIGN_IN_OR_CREATE,
-          },
+          journey: getPermittedJourneyForPath(PATH_NAMES.SIGN_IN_OR_CREATE),
         };
 
         next();
@@ -43,7 +47,11 @@ describe("Integration:: base page ", () => {
       const envBannerMiddleware = require("../../../../middleware/environment-banner-middleware");
       sinon
         .stub(envBannerMiddleware, "environmentBannerMiddleware")
-        .callsFake(function (req: any, res: any, next: any): void {
+        .callsFake(function (
+          req: Request,
+          res: Response,
+          next: NextFunction
+        ): void {
           res.locals.showTestBanner = showTestBanner;
           next();
         });

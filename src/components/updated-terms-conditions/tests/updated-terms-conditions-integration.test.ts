@@ -8,6 +8,8 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 describe("Integration:: updated-terms-code", () => {
   let token: string | string[];
@@ -22,7 +24,11 @@ describe("Integration:: updated-terms-code", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         res.locals.clientSessionId = "tDy103saszhcxbQq0-mjdzU33d";
         res.locals.persistentSessionId = "dips-123456-abc";
@@ -30,9 +36,9 @@ describe("Integration:: updated-terms-code", () => {
         req.session.user = {
           email: "test@test.com",
           phoneNumber: "7867",
-          journey: {
-            nextPath: PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS,
-          },
+          journey: getPermittedJourneyForPath(
+            PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS
+          ),
         };
 
         next();

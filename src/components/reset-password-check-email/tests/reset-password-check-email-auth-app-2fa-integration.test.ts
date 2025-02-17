@@ -13,6 +13,8 @@ import {
   noInterventions,
   setupAccountInterventionsResponse,
 } from "../../../../test/helpers/account-interventions-helpers";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 describe("Integration::reset password check email ", () => {
   let app: any;
@@ -29,14 +31,17 @@ describe("Integration::reset password check email ", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user = {
           email: "test@test.com",
-          journey: {
-            nextPath: PATH_NAMES.ENTER_PASSWORD,
-            optionalPaths: [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL],
-          },
+          journey: getPermittedJourneyForPath(
+            PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
+          ),
         };
         req.session.user.enterEmailMfaType = "AUTH_APP";
         next();
@@ -68,9 +73,9 @@ describe("Integration::reset password check email ", () => {
   });
 
   it("should return reset password check email page", async () => {
-    nock(baseApi).post("/reset-password-request").once().reply(204);
+    nock(baseApi).post(API_ENDPOINTS.RESET_PASSWORD_REQUEST).once().reply(204);
     await request(app, (test) =>
-      test.get("/reset-password-check-email").expect(200)
+      test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL).expect(200)
     );
   });
 
@@ -84,7 +89,7 @@ describe("Integration::reset password check email ", () => {
 
     await request(app, (test) =>
       test
-        .post("/reset-password-check-email")
+        .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
         .type("form")
         .set("Cookie", cookies)
         .send({

@@ -9,6 +9,8 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 describe("Integration:: check your phone", () => {
   let token: string | string[];
@@ -23,15 +25,17 @@ describe("Integration:: check your phone", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
         req.session.user = {
           isAccountCreationJourney: true,
           email: "test@test.com",
-          journey: {
-            nextPath: PATH_NAMES.CHECK_YOUR_PHONE,
-          },
+          journey: getPermittedJourneyForPath(PATH_NAMES.CHECK_YOUR_PHONE),
         };
 
         next();

@@ -10,6 +10,8 @@ import {
 } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 const { testPhoneNumber, testRedactedPhoneNumber } = commonVariables;
 
 describe("Integration:: resend mfa code", () => {
@@ -25,17 +27,18 @@ describe("Integration:: resend mfa code", () => {
     const sessionMiddleware = require("../../../middleware/session-middleware");
     validateSessionStub = sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
         req.session.user = {
           email: "test@test.com",
           phoneNumber: testPhoneNumber,
           redactedPhoneNumber: testRedactedPhoneNumber,
-          journey: {
-            nextPath: PATH_NAMES.ENTER_MFA,
-            optionalPaths: [PATH_NAMES.RESEND_MFA_CODE],
-          },
+          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
           reauthenticate: "reauth",
         };
 

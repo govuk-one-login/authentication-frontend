@@ -10,6 +10,8 @@ import {
 } from "../../../app.constants";
 import nock = require("nock");
 import { ERROR_CODES } from "../../common/constants";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 describe("Integration::reset password check email ", () => {
   let app: any;
@@ -26,14 +28,17 @@ describe("Integration::reset password check email ", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user = {
           email: "test@test.com",
-          journey: {
-            nextPath: PATH_NAMES.ENTER_PASSWORD,
-            optionalPaths: [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL],
-          },
+          journey: getPermittedJourneyForPath(
+            PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
+          ),
         };
         req.session.user.enterEmailMfaType = "SMS";
         next();
@@ -42,7 +47,7 @@ describe("Integration::reset password check email ", () => {
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    nock(baseApi).post("/reset-password-request").once().reply(204);
+    nock(baseApi).post(API_ENDPOINTS.RESET_PASSWORD_REQUEST).once().reply(204);
 
     await request(
       app,
@@ -65,21 +70,21 @@ describe("Integration::reset password check email ", () => {
   });
 
   it("should return reset password check email page", async () => {
-    nock(baseApi).post("/reset-password-request").once().reply(200);
+    nock(baseApi).post(API_ENDPOINTS.RESET_PASSWORD_REQUEST).once().reply(200);
     await request(app, (test) =>
-      test.get("/reset-password-check-email").expect(200)
+      test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL).expect(200)
     );
   });
 
   it("should return error page when 6 password reset codes requested", async () => {
     nock(baseApi)
-      .post("/reset-password-request")
+      .post(API_ENDPOINTS.RESET_PASSWORD_REQUEST)
       .times(6)
       .reply(400, { code: 1022 });
 
     await request(app, (test) =>
       test
-        .get("/reset-password-check-email")
+        .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($(".govuk-heading-l").text()).to.contains(
@@ -97,7 +102,7 @@ describe("Integration::reset password check email ", () => {
 
     await request(app, (test) =>
       test
-        .get("/reset-password-check-email")
+        .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($(".govuk-heading-l").text()).to.contains(
@@ -111,13 +116,13 @@ describe("Integration::reset password check email ", () => {
 
   it("should return error page when blocked from requesting codes", async () => {
     nock(baseApi)
-      .post("/reset-password-request")
+      .post(API_ENDPOINTS.RESET_PASSWORD_REQUEST)
       .once()
       .reply(400, { code: 1023 });
 
     await request(app, (test) =>
       test
-        .get("/reset-password-check-email")
+        .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($(".govuk-heading-l").text()).to.contains(
@@ -129,11 +134,11 @@ describe("Integration::reset password check email ", () => {
   });
 
   it("should redisplay page with error", async () => {
-    nock(baseApi).post("/verify-code").reply(400, { code: 1021 });
+    nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).reply(400, { code: 1021 });
 
     await request(app, (test) =>
       test
-        .post("/reset-password-check-email")
+        .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
         .type("form")
         .set("Cookie", cookies)
         .send({
@@ -151,9 +156,12 @@ describe("Integration::reset password check email ", () => {
   });
 
   it("should return internal server error when /reset-password-request API call response is 500", async () => {
-    nock(baseApi).post("/reset-password-request").once().reply(500, {});
+    nock(baseApi)
+      .post(API_ENDPOINTS.RESET_PASSWORD_REQUEST)
+      .once()
+      .reply(500, {});
     await request(app, (test) =>
-      test.get("/reset-password-check-email").expect(500)
+      test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL).expect(500)
     );
   });
 
@@ -165,7 +173,7 @@ describe("Integration::reset password check email ", () => {
 
     await request(app, (test) =>
       test
-        .post("/reset-password-check-email")
+        .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
         .type("form")
         .set("Cookie", cookies)
         .send({

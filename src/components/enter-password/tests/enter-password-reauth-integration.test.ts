@@ -5,6 +5,8 @@ import * as cheerio from "cheerio";
 import decache from "decache";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 const REDIRECT_URI = "https://rp.host/redirect";
 
@@ -23,16 +25,18 @@ describe("Integration::enter password", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         res.locals.clientSessionId = "gdsfsfdsgsdgsd-mjdzU854";
         res.locals.persistentSessionId = "dips-123456-abc";
 
         req.session.user = {
           email: "test@test.com",
-          journey: {
-            nextPath: PATH_NAMES.ENTER_PASSWORD,
-          },
+          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_PASSWORD),
           reauthenticate: "subject",
         };
 

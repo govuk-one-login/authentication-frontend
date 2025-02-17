@@ -15,6 +15,8 @@ import {
   AccountRecoveryResponse,
 } from "../../common/account-recovery/types";
 import { createApiResponse } from "../../../utils/http";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 describe("Integration:: enter authenticator app code", () => {
   let token: string | string[];
@@ -31,7 +33,11 @@ describe("Integration:: enter authenticator app code", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals = {
           ...res.locals,
           sessionId: "tDy103saszhcxbQq0-mjdzU854",
@@ -42,9 +48,9 @@ describe("Integration:: enter authenticator app code", () => {
         req.session.user = {
           email: "test@test.com",
           isAccountRecoveryPermitted: true,
-          journey: {
-            nextPath: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
-          },
+          journey: getPermittedJourneyForPath(
+            PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
+          ),
         };
 
         if (process.env.TEST_SETUP_REAUTH_SESSION === "1") {

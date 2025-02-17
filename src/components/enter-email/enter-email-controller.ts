@@ -235,7 +235,7 @@ function handleBadRequest(
   return renderBadRequest(res, req, RE_ENTER_EMAIL_TEMPLATE, error);
 }
 
-function setUpAuthAppLocks(req: any, lockoutArray: LockoutInformation[]) {
+function setUpAuthAppLocks(req: Request, lockoutArray: LockoutInformation[]) {
   lockoutArray.forEach(function (lockoutInformation) {
     if (lockoutInformation.lockType == "codeBlock") {
       const lockTime = timestampNSecondsFromNow(

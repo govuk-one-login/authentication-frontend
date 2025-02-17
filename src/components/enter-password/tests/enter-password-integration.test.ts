@@ -9,6 +9,8 @@ import {
   noInterventions,
   setupAccountInterventionsResponse,
 } from "../../../../test/helpers/account-interventions-helpers";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 describe("Integration::enter password", () => {
   let token: string | string[];
@@ -25,16 +27,18 @@ describe("Integration::enter password", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         res.locals.clientSessionId = "gdsfsfdsgsdgsd-mjdzU854";
         res.locals.persistentSessionId = "dips-123456-abc";
 
         req.session.user = {
           email: "test@test.com",
-          journey: {
-            nextPath: PATH_NAMES.ENTER_PASSWORD,
-          },
+          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_PASSWORD),
         };
 
         next();

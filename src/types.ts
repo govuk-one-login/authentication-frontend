@@ -48,13 +48,18 @@ export interface PlaceholderReplacement {
   replacement: string;
 }
 
+export interface UserJourney {
+  nextPath: string;
+  optionalPaths: string[];
+}
+
 export interface UserSession {
   [key: string]: unknown;
   isAuthenticated?: boolean;
   email?: string;
   redactedPhoneNumber?: string;
   phoneNumber?: string;
-  journey?: { nextPath: string; optionalPaths: string[] };
+  journey?: UserJourney;
   isLatestTermsAndConditionsAccepted?: boolean;
   isIdentityRequired?: boolean;
   isUpliftRequired?: boolean;
