@@ -43,6 +43,10 @@
         {% include 'contact-us/questions/_no-phone-number-access-questions.njk' %}
     {% endif %}
 
+    {% if subtheme == 'lost_security_code_access' %}
+        {% include 'contact-us/questions/_no-phone-number-access-questions.njk' %}
+    {% endif %}
+
     {% if subtheme == 'authenticator_app_problem' %}
         {% include 'contact-us/questions/_authenticator-app-problem.njk' %}
     {% endif %}

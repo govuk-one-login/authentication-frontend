@@ -1,5 +1,9 @@
 <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsQuestions.noPhoneNumberAccess.header' | translate }}
+    {% if supportMfaResetWithIpv === true or supportMfaResetWithIpv === "true" %}
+        {{ 'pages.contactUsQuestions.noPhoneNumberAccess.headerMfaReset' | translate }}
+    {% else %}
+        {{ 'pages.contactUsQuestions.noPhoneNumberAccess.header' | translate }}
+    {% endif %}
 </h1>
 
 <form action="{{formSubmissionUrl}}?radio_buttons=true" method="post" novalidate>
@@ -11,6 +15,7 @@
 <input type="hidden" name="fromURL" value="{{fromURL}}"/>
 <input type="hidden" name="formType" value="noPhoneNumberAccess"/>
 <input type="hidden" name="referer" value="{{referer}}"/>
+<input type="hidden" name="supportMfaResetWithIpv" value="{{supportMfaResetWithIpv}}"/>
 {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
 
 {% set radioHeader = 'pages.contactUsQuestions.noPhoneNumberAccess.section1.header' | translate %}
