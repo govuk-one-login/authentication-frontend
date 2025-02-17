@@ -6,7 +6,7 @@ import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES, pathWithQueryParam } from "../../common/constants";
 import nock = require("nock");
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("Integration::enter phone number", () => {
   let token: string | string[];

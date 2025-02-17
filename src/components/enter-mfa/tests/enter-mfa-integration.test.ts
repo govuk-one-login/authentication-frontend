@@ -16,7 +16,7 @@ import {
 } from "../../common/account-recovery/types";
 import { createApiResponse } from "../../../utils/http";
 import { Request, Response, NextFunction } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("Integration:: enter mfa", () => {
   let token: string | string[];

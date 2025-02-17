@@ -10,7 +10,7 @@ import {
 } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("Integration:: resend email code", () => {
   let token: string | string[];

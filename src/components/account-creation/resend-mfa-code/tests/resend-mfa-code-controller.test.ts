@@ -13,6 +13,7 @@ import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { SendNotificationServiceInterface } from "../../../common/send-notification/types";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 import { commonVariables } from "../../../../../test/helpers/common-test-variables";
+import { getPermittedJourneyForPath } from "../../../../utils/session";
 
 describe("resend mfa controller", () => {
   let req: RequestOutput;
@@ -66,6 +67,7 @@ describe("resend mfa controller", () => {
       req.session.user = {
         email,
         isAccountRecoveryJourney: true,
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESEND_MFA_CODE),
       };
       const expectedJourneyType = "ACCOUNT_RECOVERY";
 
@@ -87,6 +89,7 @@ describe("resend mfa controller", () => {
       req.session.user = {
         email,
         isAccountCreationJourney: true,
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESEND_MFA_CODE),
       };
       const expectedJourneyType = "REGISTRATION";
 

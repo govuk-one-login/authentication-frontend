@@ -19,6 +19,7 @@ import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types
 import * as journey from "../../common/journey/journey";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { strict as assert } from "assert";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("setup-authenticator-app controller", () => {
   let req: RequestOutput;
@@ -128,6 +129,9 @@ describe("setup-authenticator-app controller", () => {
     it("should successfully validate access code and redirect to account created for account recovery journey (to be updated)", async () => {
       req.body.code = "123456";
       req.session.user = {
+        journey: getPermittedJourneyForPath(
+          PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP
+        ),
         authAppSecret: "testsecret",
         email: "t@t.com",
         isAccountRecoveryPermitted: true,

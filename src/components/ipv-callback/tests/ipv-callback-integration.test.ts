@@ -10,7 +10,7 @@ import {
 import express, { NextFunction, Request, Response } from "express";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 const TEST_CONTACT_US_LINK_URL = "https://example.com/contact-us";
 

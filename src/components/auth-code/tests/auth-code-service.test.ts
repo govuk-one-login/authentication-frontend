@@ -8,6 +8,7 @@ import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { AuthCodeServiceInterface } from "../types";
 import { Http } from "../../../utils/http";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("authentication auth code service", () => {
   const redirectUriSentToAuth = "/redirect-uri";
@@ -84,6 +85,7 @@ describe("authentication auth code service", () => {
       };
 
       const userSessionClient = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.AUTH_CODE),
         isAccountCreationJourney: isAccountCreationJourneyUserSession,
         passwordResetTime: passwordResetTime,
       };
@@ -140,6 +142,7 @@ describe("authentication auth code service", () => {
       };
 
       const userSessionClient = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.AUTH_CODE),
         isAccountCreationJourney: isAccountCreationJourneyUserSession,
         passwordResetTime: passwordResetTime,
         reauthenticate: "123456",
@@ -191,7 +194,10 @@ describe("authentication auth code service", () => {
         clientSessionId,
         persistentSessionId,
         {},
-        { authCodeReturnToRP: true },
+        {
+          authCodeReturnToRP: true,
+          journey: getPermittedJourneyForPath(PATH_NAMES.AUTH_CODE),
+        },
         req
       );
 

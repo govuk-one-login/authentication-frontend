@@ -19,6 +19,7 @@ import {
 } from "../../../../test/helpers/account-interventions-helpers";
 import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("reset password check email controller", () => {
   let req: RequestOutput;
@@ -29,6 +30,9 @@ describe("reset password check email controller", () => {
     res = mockResponse();
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     req.session.user = {
+      journey: getPermittedJourneyForPath(
+        PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
+      ),
       email: "joe.bloggs@test.com",
     };
   });

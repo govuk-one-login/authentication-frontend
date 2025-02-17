@@ -9,7 +9,7 @@ import {
   setupAccountInterventionsResponse,
 } from "../../../../test/helpers/account-interventions-helpers";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("Integration::reset password (in 6 digit code flow)", () => {
   let token: string | string[];

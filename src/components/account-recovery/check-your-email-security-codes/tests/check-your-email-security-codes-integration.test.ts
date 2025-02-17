@@ -18,7 +18,7 @@ import {
   AccountInterventionStatus,
 } from "../../../account-intervention/types";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../../utils/session";
 
 describe("Integration:: check your email security codes", () => {
   let token: string | string[];

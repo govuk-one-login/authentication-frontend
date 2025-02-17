@@ -17,6 +17,7 @@ import {
 import { ERROR_CODES, getErrorPathByCode } from "../../constants";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 import { AccountInterventionsInterface } from "../../../account-intervention/types";
+import { getPermittedJourneyForPath } from "../../../../utils/session";
 
 describe("Verify code controller tests", () => {
   let req: RequestOutput;
@@ -46,7 +47,10 @@ describe("Verify code controller tests", () => {
       const verifyCodeService = fakeVerifyCodeServiceHelper(true);
 
       req = createMockRequest(PATH_NAMES.ENTER_PASSWORD);
-      req.session.user = { email: "test@test.com" };
+      req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_PASSWORD),
+        email: "test@test.com",
+      };
 
       await verifyCodePost(
         verifyCodeService,
@@ -67,6 +71,7 @@ describe("Verify code controller tests", () => {
 
       req = createMockRequest(PATH_NAMES.CHECK_YOUR_EMAIL);
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.CHECK_YOUR_EMAIL),
         email: "test@test.com",
         isAccountCreationJourney: true,
       };
@@ -99,7 +104,12 @@ describe("Verify code controller tests", () => {
       req = createMockRequest(
         PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES
       );
-      req.session.user = { email: "test@test.com" };
+      req.session.user = {
+        journey: getPermittedJourneyForPath(
+          PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES
+        ),
+        email: "test@test.com",
+      };
     });
 
     it("if account is blocked, redirects to /unavailable-permanent", async () => {
@@ -198,7 +208,10 @@ describe("Verify code controller tests", () => {
     };
     beforeEach(() => {
       req = createMockRequest(PATH_NAMES.RESET_PASSWORD_2FA_SMS);
-      req.session.user = { email: "test@test.com" };
+      req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD_2FA_SMS),
+        email: "test@test.com",
+      };
     });
 
     it("if account has no AIS status, redirects to reset password", async () => {
@@ -272,6 +285,7 @@ describe("Verify code controller tests", () => {
     beforeEach(() => {
       req = createMockRequest(PATH_NAMES.ENTER_MFA);
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
         email: "test@test.com",
         isAccountCreationJourney: false,
         reauthenticate: "123456",

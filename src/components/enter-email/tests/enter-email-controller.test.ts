@@ -18,6 +18,7 @@ import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 import { strict as assert } from "assert";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("enter email controller", () => {
   let req: RequestOutput;
@@ -47,7 +48,10 @@ describe("enter email controller", () => {
   describe("enterEmailGet", () => {
     beforeEach(() => {
       req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
-      req.session.user = { email };
+      req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_SIGN_IN),
+        email,
+      };
     });
 
     it("should render enter email create account view when user selected create account", () => {
@@ -88,6 +92,7 @@ describe("enter email controller", () => {
       ).toUTCString();
 
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_SIGN_IN),
         email,
         reauthenticate: "1234",
         wrongEmailEnteredLock: futureDate,
@@ -103,6 +108,7 @@ describe("enter email controller", () => {
     it("should render enter password view when isReautheticationRequired is true and check service returns successfully", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_SIGN_IN),
         email,
         reauthenticate: "12345",
       };
@@ -255,6 +261,7 @@ describe("enter email controller", () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_SIGN_IN),
         email,
         reauthenticate: "12345",
       };
@@ -292,6 +299,7 @@ describe("enter email controller", () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_SIGN_IN),
         email,
         reauthenticate: "12345",
       };
@@ -332,6 +340,7 @@ describe("enter email controller", () => {
         process.env.SUPPORT_REAUTHENTICATION = "1";
 
         req.session.user = {
+          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_SIGN_IN),
           email,
           reauthenticate: "12345",
         };
@@ -379,6 +388,7 @@ describe("enter email controller", () => {
       ).toUTCString();
 
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_SIGN_IN),
         email,
         reauthenticate: "758e657867",
         wrongEmailEnteredLock: futureDate,
@@ -416,6 +426,7 @@ describe("enter email controller", () => {
     it("should redirect to /enter-password re-auth page when re-authentication is required and service call is successful", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_SIGN_IN),
         email,
         reauthenticate: "12345",
       };

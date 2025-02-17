@@ -12,6 +12,7 @@ import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types
 import { ERROR_CODES } from "../../common/constants";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("reset password 2fa auth app controller", () => {
   let req: RequestOutput;
@@ -20,6 +21,9 @@ describe("reset password 2fa auth app controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP);
     req.session.user = {
+      journey: getPermittedJourneyForPath(
+        PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP
+      ),
       email: commonVariables.email,
     };
     res = mockResponse();

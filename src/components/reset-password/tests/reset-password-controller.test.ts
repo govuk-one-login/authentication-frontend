@@ -16,6 +16,7 @@ import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { EnterPasswordServiceInterface } from "../../enter-password/types";
 import { ERROR_CODES } from "../../common/constants";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 const TEST_SCENARIO_PARAMETERS = [
   {
@@ -116,6 +117,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
 
     beforeEach(() => {
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD_REQUEST),
         email: "joe.bloggs@test.com",
       };
       req.body.password = newPassword;

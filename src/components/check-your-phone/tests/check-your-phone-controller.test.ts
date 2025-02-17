@@ -20,6 +20,7 @@ import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types
 import * as journey from "../../common/journey/journey";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("check your phone controller", () => {
   let req: RequestOutput;
@@ -140,6 +141,7 @@ describe("check your phone controller", () => {
       } as unknown as VerifyMfaCodeInterface;
 
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.CHECK_YOUR_PHONE),
         isAccountRecoveryPermitted: true,
         isAccountRecoveryJourney: true,
       };

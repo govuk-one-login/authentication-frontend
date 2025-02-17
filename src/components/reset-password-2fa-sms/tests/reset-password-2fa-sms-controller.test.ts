@@ -14,6 +14,7 @@ import { MfaServiceInterface } from "../../common/mfa/types";
 import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers";
 import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("reset password 2fa auth app controller", () => {
   let req: RequestOutput;
@@ -37,6 +38,7 @@ describe("reset password 2fa auth app controller", () => {
         }),
       } as unknown as MfaServiceInterface;
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD_2FA_SMS),
         email: "joe.bloggs@test.com",
       };
 
@@ -61,6 +63,7 @@ describe("reset password 2fa auth app controller", () => {
       ).toUTCString();
 
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD_2FA_SMS),
         email: "joe.bloggs@test.com",
         reauthenticate: "1234",
         wrongCodeEnteredLock: futureDate,
@@ -82,6 +85,7 @@ describe("reset password 2fa auth app controller", () => {
         }),
       } as unknown as MfaServiceInterface;
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD_2FA_SMS),
         email: "joe.bloggs@test.com",
       };
       const tomorrow = new Date();
@@ -107,6 +111,7 @@ describe("reset password 2fa auth app controller", () => {
         }),
       } as unknown as VerifyCodeInterface;
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD_2FA_SMS),
         email: "joe.bloggs@test.com",
       };
       req.session.user.enterEmailMfaType = "SMS";
@@ -130,6 +135,7 @@ describe("reset password 2fa auth app controller", () => {
         }),
       } as unknown as VerifyCodeInterface;
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD_2FA_SMS),
         email: "joe.bloggs@test.com",
       };
       req.session.user.enterEmailMfaType = "SMS";
@@ -153,6 +159,7 @@ describe("reset password 2fa auth app controller", () => {
         reproveIdentity: false,
       });
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD_2FA_SMS),
         email: "joe.bloggs@test.com",
       };
       await resetPassword2FASmsPost(fakeService, fakeInterventionsService)(
@@ -173,6 +180,7 @@ describe("reset password 2fa auth app controller", () => {
         reproveIdentity: false,
       });
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD_2FA_SMS),
         email: "joe.bloggs@test.com",
       };
       await resetPassword2FASmsPost(fakeService, fakeInterventionsService)(

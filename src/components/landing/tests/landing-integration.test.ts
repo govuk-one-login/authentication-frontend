@@ -4,7 +4,7 @@ import nock = require("nock");
 import decache from "decache";
 import { PATH_NAMES } from "../../../app.constants";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("Integration:: landing", () => {
   let app: any;

@@ -14,6 +14,7 @@ import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { ERROR_CODES } from "../../common/constants";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { strict as assert } from "assert";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 const OLD_ENV = process.env;
 
@@ -44,6 +45,9 @@ describe("enter phone number controller", () => {
 
     it("should render enter phone number returning user view when user has a partly created account", () => {
       req.session.user = {
+        journey: getPermittedJourneyForPath(
+          PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
+        ),
         isAccountPartCreated: true,
       };
       enterPhoneNumberGet(req as Request, res as Response);

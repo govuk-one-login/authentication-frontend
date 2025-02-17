@@ -10,7 +10,7 @@ import {
   setupAccountInterventionsResponse,
 } from "../../../../test/helpers/account-interventions-helpers";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("Integration::enter password", () => {
   let token: string | string[];

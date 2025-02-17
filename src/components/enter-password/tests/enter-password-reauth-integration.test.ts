@@ -6,7 +6,7 @@ import decache from "decache";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES } from "../../common/constants";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 const REDIRECT_URI = "https://rp.host/redirect";
 
