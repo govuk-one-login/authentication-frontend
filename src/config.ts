@@ -189,7 +189,7 @@ export function supportMfaResetWithIpv(): boolean {
 }
 
 export function showTestBanner(): boolean {
-  return getAppEnv() !== "production";
+  return getAppEnv() !== "production" || process.env.SHOW_TEST_BANNER === "1";
 }
 
 export function supportMfaResetContactFormChanges(): boolean {
