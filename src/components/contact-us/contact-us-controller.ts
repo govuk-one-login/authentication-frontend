@@ -14,7 +14,7 @@ import { logger } from "../../utils/logger";
 import {
   getServiceDomain,
   getSupportLinkUrl,
-  supportMfaResetWithIpv,
+  supportMfaResetContactFormChanges,
   supportNoPhotoIdContactForms,
 } from "../../config";
 import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
@@ -357,7 +357,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
     return res.render("contact-us/further-information/index.njk", {
       theme: req.query.theme,
       hrefBack: backLinkHref,
-      supportMfaResetWithIpv: supportMfaResetWithIpv(),
+      supportMfaResetWithIpv: supportMfaResetContactFormChanges(),
       referer: encodeValue(
         validateReferer(req.query.referer as string, serviceDomain)
       ),
@@ -376,7 +376,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
 
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
-    supportMfaResetWithIpv: supportMfaResetWithIpv(),
+    supportMfaResetWithIpv: supportMfaResetContactFormChanges(),
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
       fromURL: encodeValue(
         validateReferer(req.query.fromURL as string, serviceDomain)
@@ -435,7 +435,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     theme: req.query.theme,
     subtheme: req.query.subtheme,
     backurl: backLinkHref,
-    supportMfaResetWithIpv: supportMfaResetWithIpv(),
+    supportMfaResetWithIpv: supportMfaResetContactFormChanges(),
     referer: encodeValue(
       validateReferer(req.query.referer as string, serviceDomain)
     ),
