@@ -29,6 +29,7 @@ url_for_support_links                               = "https://home.dev.account.
 language_toggle_enabled                             = "1"
 no_photo_id_contact_forms                           = "1"
 support_mfa_reset_with_ipv                          = "1"
+route_users_to_new_ipv_journey                      = "1"
 
 logging_endpoint_arns = []
 
