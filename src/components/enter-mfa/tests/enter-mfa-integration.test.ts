@@ -15,6 +15,8 @@ import {
   AccountRecoveryResponse,
 } from "../../common/account-recovery/types";
 import { createApiResponse } from "../../../utils/http";
+import { Request, Response, NextFunction } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 describe("Integration:: enter mfa", () => {
   let token: string | string[];
@@ -32,16 +34,18 @@ describe("Integration:: enter mfa", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
         req.session.user = {
           email: "test@test.com",
           phoneNumber: PHONE_NUMBER,
           redactedPhoneNumber: PHONE_NUMBER,
-          journey: {
-            nextPath: PATH_NAMES.ENTER_MFA,
-          },
+          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
         };
         next();
       });

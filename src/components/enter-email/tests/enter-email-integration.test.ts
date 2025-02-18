@@ -9,6 +9,8 @@ import {
 } from "../../../app.constants";
 import nock = require("nock");
 import { ERROR_CODES } from "../../common/constants";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 const REDIRECT_URI = "https://rp.host/redirect";
 
@@ -25,14 +27,15 @@ describe("Integration::enter email", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
         req.session.user = {
-          journey: {
-            nextPath: PATH_NAMES.ENTER_EMAIL_SIGN_IN,
-            optionalPaths: [PATH_NAMES.SIGN_IN_OR_CREATE],
-          },
+          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_SIGN_IN),
         };
 
         if (process.env.TEST_SETUP_REAUTH_SESSION === "1") {

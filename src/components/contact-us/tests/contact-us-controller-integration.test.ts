@@ -4,6 +4,7 @@ import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
 import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants";
+import { NextFunction, Request, Response } from "express";
 
 describe("Integration:: contact us - public user", () => {
   let token: string | string[];
@@ -18,7 +19,11 @@ describe("Integration:: contact us - public user", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user.email = "test@test.com";
         req.session.user.phoneNumber = "7867";

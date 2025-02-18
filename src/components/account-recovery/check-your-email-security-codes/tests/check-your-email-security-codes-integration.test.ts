@@ -17,6 +17,8 @@ import {
   AccountInterventionsInterface,
   AccountInterventionStatus,
 } from "../../../account-intervention/types";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper";
 
 describe("Integration:: check your email security codes", () => {
   let token: string | string[];
@@ -33,7 +35,11 @@ describe("Integration:: check your email security codes", () => {
     const accountInterventionService = require("../../../account-intervention/account-intervention-service");
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals = {
           ...res.locals,
           sessionId: "tDy103saszhcxbQq0-mjdzU854",
@@ -44,9 +50,9 @@ describe("Integration:: check your email security codes", () => {
         req.session.user = {
           email: "test@test.com",
           isAccountRecoveryPermitted: true,
-          journey: {
-            nextPath: PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
-          },
+          journey: getPermittedJourneyForPath(
+            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES
+          ),
         };
 
         next();

@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Mfa reset with ipv Open One login in browser get should not render the page when coming from an arbitrary page 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "sign in",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
 exports[`Mfa reset with ipv should render the guidance page for when someone is trying to access via an app journey 1`] = `
 Object {
   "contentId": undefined,

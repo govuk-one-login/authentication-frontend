@@ -4,6 +4,8 @@ import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
 import { PATH_NAMES } from "../../../app.constants";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 describe("Integration::select-mfa-options", () => {
   let token: string | string[];
@@ -17,16 +19,18 @@ describe("Integration::select-mfa-options", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         res.locals.clientSessionId = "csy103saszhcxbQq0-mjdzU854";
         res.locals.persistentSessionId = "dips-123456-abc";
 
         req.session.user = {
           email: "test@test.com",
-          journey: {
-            nextPath: PATH_NAMES.GET_SECURITY_CODES,
-          },
+          journey: getPermittedJourneyForPath(PATH_NAMES.GET_SECURITY_CODES),
         };
 
         next();

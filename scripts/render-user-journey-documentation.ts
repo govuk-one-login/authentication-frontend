@@ -34,6 +34,12 @@ function renderCurrentPageLink(path: string): string {
   }
 }
 
+function getPathKey(currentState: string) {
+  return Object.keys(PATH_NAMES).find(
+    (key) => PATH_NAMES[key as keyof typeof PATH_NAMES] === currentState
+  );
+}
+
 const htmlContent = `
 <!DOCTYPE html>
 <html>
@@ -46,11 +52,11 @@ const htmlContent = `
       }
       dt {
         font-weight: bold;
-      }        
+      }
       ol.eventConsequences {
         list-style-type: none;
         counter-reset: item;
-      }     
+      }
       ol.eventConsequences li::before {
         content: "️️⬇️ ";
         counter-increment: item;
@@ -110,20 +116,23 @@ const htmlContent = `
                       eventNameIndex === 0
                         ? `<td id="current-state-${currentState}" rowspan="${
                             eventNames.length
-                          }">${renderRouterPageLink(currentState)}</td>`
+                          }">${renderCode(getPathKey(currentState))} ${renderRouterPageLink(currentState)}</td>`
                         : ""
                     }
                     <td>${renderCode(eventName)}</td>
                     <td><ol class="eventConsequences">${eventConsequences
                       .map((consequence: any) => {
                         if (typeof consequence === "string") {
-                          return `<li>${renderCurrentPageLink(
+                          return `<li>${renderCode(getPathKey(consequence))} ${renderCurrentPageLink(
                             consequence
                           )}</li>`;
                         }
 
                         return `<li>${consequence.target
-                          .map((t: string) => renderCurrentPageLink(t))
+                          .map(
+                            (t: string) =>
+                              `${renderCode(getPathKey(t))} ${renderCurrentPageLink(t)}`
+                          )
                           .join(",")}${
                           consequence.cond
                             ? ` <i class="condition" title="Definition: ${authStateMachine.options.guards[
@@ -142,7 +151,7 @@ const htmlContent = `
                               ? optionalPaths
                                   .map(
                                     (p: string) =>
-                                      `<li>${renderCurrentPageLink(p)}</li>`
+                                      `<li>${renderCode(getPathKey(p))} ${renderCurrentPageLink(p)}</li>`
                                   )
                                   .join("\n")
                               : "N/A"

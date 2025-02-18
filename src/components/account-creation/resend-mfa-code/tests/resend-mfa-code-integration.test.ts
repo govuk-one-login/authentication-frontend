@@ -8,6 +8,8 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../../app.constants";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper";
 
 describe("Integration:: resend SMS mfa code (account creation variant)", () => {
   let token: string | string[];
@@ -21,16 +23,19 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
     const sessionMiddleware = require("../../../../middleware/session-middleware");
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
         req.session.user = {
           email: "test@test.com",
           phoneNumber: "7867",
-          journey: {
-            nextPath: PATH_NAMES.ENTER_MFA,
-            optionalPaths: [PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION],
-          },
+          journey: getPermittedJourneyForPath(
+            PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION
+          ),
         };
 
         next();

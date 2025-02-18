@@ -3,7 +3,8 @@ import { request, sinon } from "../../../../test/utils/test-utils";
 import decache from "decache";
 import { API_ENDPOINTS, CHANNEL, PATH_NAMES } from "../../../app.constants";
 import nock = require("nock");
-import { authStateMachine } from "../../common/state-machine/state-machine";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 const supertest = require("supertest");
 
 const IPV_DUMMY_URL =
@@ -152,7 +153,11 @@ describe("Mfa reset with ipv", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         //Because we're using supertest to update the state after a first request, we only specifically
         //set this up for the first request
         if (req.path === firstRequestPath) {
@@ -162,12 +167,7 @@ describe("Mfa reset with ipv", () => {
 
           req.session.user = {
             email: "test@test.com",
-            journey: {
-              nextPath: currentNextPath,
-              optionalPaths:
-                authStateMachine.states[currentNextPath].config?.meta
-                  ?.optionalPaths || [],
-            },
+            journey: getPermittedJourneyForPath(currentNextPath),
             mfaMethodType: "AUTH_APP",
             isAccountRecoveryPermitted: isAccountRecoveryPermitted,
           };

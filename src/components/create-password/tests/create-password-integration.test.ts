@@ -8,6 +8,8 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants";
+import { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 describe("Integration::register create password", () => {
   let token: string | string[];
@@ -22,14 +24,18 @@ describe("Integration::register create password", () => {
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (req: any, res: any, next: any): void {
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
         req.session.user = {
           email: "test@test.com",
-          journey: {
-            nextPath: PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
-          },
+          journey: getPermittedJourneyForPath(
+            PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD
+          ),
         };
 
         next();

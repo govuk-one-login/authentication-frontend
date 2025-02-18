@@ -7,9 +7,10 @@ import {
   MFA_METHOD_TYPE,
   PATH_NAMES,
 } from "../../../app.constants";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import nock from "nock";
 import * as cheerio from "cheerio";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 const TEST_CONTACT_US_LINK_URL = "https://example.com/contact-us";
 
@@ -205,15 +206,17 @@ const stubMiddlewareAndCreateApp = async (
 
   sinon
     .stub(sessionMiddleware, "validateSessionMiddleware")
-    .callsFake(function (req: any, res: any, next: any): void {
+    .callsFake(function (
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ): void {
       res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
       req.session.user = {
         email: "test@test.com",
         phoneNumber: "7867",
-        journey: {
-          nextPath: nextPath,
-        },
+        journey: getPermittedJourneyForPath(nextPath),
         mfaMethodType: mfaMethodType,
       };
 
@@ -225,7 +228,11 @@ const stubMiddlewareAndCreateApp = async (
 
   sinon
     .stub(outboundContactUsLinksMiddleware, "outboundContactUsLinksMiddleware")
-    .callsFake(function (req: any, res: any, next: any): void {
+    .callsFake(function (
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ): void {
       res.locals.contactUsLinkUrl = TEST_CONTACT_US_LINK_URL;
 
       next();
