@@ -11,7 +11,10 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { BadRequestError } from "../../utils/error";
 import { EnterPasswordServiceInterface } from "../enter-password/types";
 import { enterPasswordService } from "../enter-password/enter-password-service";
-import { supportMfaResetWithIpv } from "../../config";
+import {
+  routeUsersToNewIpvJourney,
+  supportMfaResetWithIpv,
+} from "../../config";
 
 const resetPasswordTemplate = "reset-password/index.njk";
 
@@ -45,7 +48,8 @@ export function resetPasswordPost(
 
     // WARNING! Before removing this feature flag, you first need to ensure that this behaviour is the default on the backend
     // Purely removing this feature flag will mean that we start writing to account modifiers again
-    const allowMfaResetAfterPasswordReset = supportMfaResetWithIpv();
+    const allowMfaResetAfterPasswordReset =
+      supportMfaResetWithIpv() && routeUsersToNewIpvJourney();
 
     const updatePasswordResponse = await resetService.updatePassword(
       newPassword,

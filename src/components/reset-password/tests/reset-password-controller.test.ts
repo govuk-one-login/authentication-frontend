@@ -76,6 +76,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
   describe("resetPasswordGet", () => {
     afterEach(() => {
       delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
+      delete process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY;
     });
 
     it("should render change password page", () => {
@@ -191,12 +192,40 @@ describe("reset password controller (in 6 digit code flow)", () => {
       });
     });
 
-    [true, false].forEach(function (supportMfaResetWithIpv) {
-      it(`should call the update password service with the value of allowMfaResetAfterPasswordReset set ${supportMfaResetWithIpv} when this is the value of the mfa reset feature flag`, async () => {
-        if (supportMfaResetWithIpv) {
+    const TEST_DATA = [
+      {
+        supportMfaResetWithIpv: true,
+        routeUsersToNewIpvJourney: true,
+        expectedValueOfMfaResetFlagSubmitted: true,
+      },
+      {
+        supportMfaResetWithIpv: true,
+        routeUsersToNewIpvJourney: false,
+        expectedValueOfMfaResetFlagSubmitted: false,
+      },
+      {
+        supportMfaResetWithIpv: false,
+        routeUsersToNewIpvJourney: false,
+        expectedValueOfMfaResetFlagSubmitted: false,
+      },
+      {
+        supportMfaResetWithIpv: false,
+        routeUsersToNewIpvJourney: true,
+        expectedValueOfMfaResetFlagSubmitted: false,
+      },
+    ];
+
+    TEST_DATA.forEach(function (testData) {
+      it(`should call the update password service with the value of allowMfaResetAfterPasswordReset correctly based on test data ${JSON.stringify(testData)}`, async () => {
+        if (testData.supportMfaResetWithIpv) {
           process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
         } else {
           process.env.SUPPORT_MFA_RESET_WITH_IPV = "0";
+        }
+        if (testData.routeUsersToNewIpvJourney) {
+          process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY = "1";
+        } else {
+          process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY = "0";
         }
         const fakeResetService = fakeResetServiceReturningSuccess(true);
         const mfaMethodVerified = false;
@@ -218,7 +247,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
           undefined,
           undefined,
           undefined,
-          supportMfaResetWithIpv,
+          testData.expectedValueOfMfaResetFlagSubmitted,
           req
         );
         expect(fakeLoginService.loginUser).to.have.been.calledOnce;
