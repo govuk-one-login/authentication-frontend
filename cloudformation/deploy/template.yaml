@@ -140,6 +140,29 @@ Conditions:
                 ]
               - "Yes"
 
+  UseRouteUsersToNewIpvJourney:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref SubEnvironment,
+                UseRouteUsersToNewIpvJourney,
+                DefaultValue: "No",
+              ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref Environment,
+                UseRouteUsersToNewIpvJourney,
+                DefaultValue: "No",
+              ]
+              - "Yes"
+
   UseSubEnvironment:
     Fn::And:
       - Fn::Equals:
@@ -275,6 +298,7 @@ Mappings:
       transitionalDomain: signin.authdev1.dev.account.gov.uk
       migratedDomain: signin.authdev1.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
+      UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
@@ -291,6 +315,7 @@ Mappings:
       transitionalDomain: signin.authdev2.dev.account.gov.uk
       migratedDomain: signin.authdev2.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
+      UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
     dev:
       DeployServiceDownPage: "No"
@@ -318,6 +343,7 @@ Mappings:
       transitionalDomain: signin-sp.dev.account.gov.uk
       migratedDomain: signin.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
+      UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -345,6 +371,7 @@ Mappings:
       transitionalDomain: signin-sp.build.account.gov.uk
       migratedDomain: signin.build.account.gov.uk
       UseMfaResetWithIpv: "Yes"
+      UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -378,6 +405,7 @@ Mappings:
       transitionalDomain: signin-sp.staging.account.gov.uk
       migratedDomain: signin.staging.account.gov.uk
       UseMfaResetWithIpv: "Yes"
+      UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
     integration:
       DeployServiceDownPage: "Yes"
@@ -405,6 +433,7 @@ Mappings:
       transitionalDomain: signin-sp.integration.account.gov.uk
       migratedDomain: signin.integration.account.gov.uk
       UseMfaResetWithIpv: "No"
+      UseRouteUsersToNewIpvJourney: "No"
       Enableipvspinner: "No"
       orchStubToAuth: ""
     production:
@@ -435,6 +464,7 @@ Mappings:
       transitionalDomain: signin-sp.account.gov.uk
       migratedDomain: signin.account.gov.uk
       UseMfaResetWithIpv: "No"
+      UseRouteUsersToNewIpvJourney: "No"
       Enableipvspinner: "No"
       orchStubToAuth: ""
 
@@ -982,6 +1012,8 @@ Resources:
               Value: !If [SupportHTTPKeepAlive, "1", "0"]
             - Name: SUPPORT_MFA_RESET_WITH_IPV
               Value: !If [UseMfaResetWithIpv, "1", "0"]
+            - Name: ROUTE_USERS_TO_NEW_IPV_JOURNEY
+              Value: !If [UseRouteUsersToNewIpvJourney, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If
