@@ -99,6 +99,7 @@ describe("Integration:: enter authenticator app code", () => {
   after(() => {
     sinon.restore();
     delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
+    delete process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY;
     app = undefined;
   });
 
@@ -112,21 +113,44 @@ describe("Integration:: enter authenticator app code", () => {
     {
       description: "when support mfa reset with ipv is off",
       supportMfaResetWithIpv: "0",
+      routeUsersToNewIpvJourney: "0",
       expectedHref:
         PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP",
       expectedLinkText: "change how you get security codes",
     },
     {
-      description: "when support mfa reset with ipv is on",
+      description:
+        "when support mfa reset with ipv is off regardless of route to new journey flag",
+      supportMfaResetWithIpv: "0",
+      routeUsersToNewIpvJourney: "1",
+      expectedHref:
+        PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP",
+      expectedLinkText: "change how you get security codes",
+    },
+    {
+      description:
+        "when support mfa reset with ipv is on and route users to new journey is on",
       supportMfaResetWithIpv: "1",
+      routeUsersToNewIpvJourney: "1",
       expectedHref: PATH_NAMES.MFA_RESET_WITH_IPV,
       expectedLinkText: "check if you can change how you get security codes",
+    },
+    {
+      description:
+        "when support mfa reset with ipv is on but route to new journeys is off",
+      supportMfaResetWithIpv: "1",
+      routeUsersToNewIpvJourney: "0",
+      expectedHref:
+        PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP",
+      expectedLinkText: "change how you get security codes",
     },
   ];
 
   TEST_DATA.forEach((testData) => {
     it(`should display correct link to reset mfa ${testData.description}`, async () => {
       process.env.SUPPORT_MFA_RESET_WITH_IPV = testData.supportMfaResetWithIpv;
+      process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY =
+        testData.routeUsersToNewIpvJourney;
       await request(app, (test) =>
         test
           .get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
