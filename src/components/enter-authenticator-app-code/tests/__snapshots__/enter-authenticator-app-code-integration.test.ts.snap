@@ -22,7 +22,29 @@ Object {
 }
 `;
 
-exports[`Integration:: enter authenticator app code should display correct link to reset mfa when support mfa reset with ipv is on 1`] = `
+exports[`Integration:: enter authenticator app code should display correct link to reset mfa when support mfa reset with ipv is off regardless of route to new journey flag 1`] = `
+Object {
+  "contentId": "89461417-df3f-46a8-9c37-713b9dd78085",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "sign in",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: enter authenticator app code should display correct link to reset mfa when support mfa reset with ipv is on and route users to new journey is on 1`] = `
+Object {
+  "contentId": "89461417-df3f-46a8-9c37-713b9dd78085",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "sign in",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: enter authenticator app code should display correct link to reset mfa when support mfa reset with ipv is on but route to new journeys is off 1`] = `
 Object {
   "contentId": "89461417-df3f-46a8-9c37-713b9dd78085",
   "taxonomyLevel1": "authentication",
