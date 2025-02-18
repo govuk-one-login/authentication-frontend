@@ -11,15 +11,25 @@ repos:
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
 
+  - repo: local
+    hooks:
+      - id: rain-fmt
+        name: rain fmt (cfn templates)
+        language: golang
+        additional_dependencies:
+          - github.com/aws-cloudformation/rain/cmd/rain@v1.21.0
+        entry: rain fmt -w --node-style original
+        files: .*template.yaml$
+
   - repo: https://github.com/aws-cloudformation/cfn-lint
-    rev: v1.21.0
+    rev: v1.25.1
     hooks:
       - id: cfn-lint
         exclude: ^(ci|.github)/.*|docker-compose.*|.pre-commit-config.yaml$
         files: template\.ya?ml$
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.96.2
+    rev: v1.97.3
     hooks:
       - id: terraform_fmt
 
@@ -34,11 +44,16 @@ repos:
           - terraform
         language: golang
         additional_dependencies:
-          - github.com/terraform-linters/tflint@v0.55.0
+          - github.com/terraform-linters/tflint@v0.55.1
         entry: scripts/tflint.py
         args:
           - --minimum-failure-severity=warning
           - --fix
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
 
   - repo: local
     hooks:
@@ -80,18 +95,33 @@ repos:
           - windows_amd64
           - -r
           - ci/terraform
+      - id: shfmt
+        name: shfmt (shell scripts)
+        language: golang
+        additional_dependencies:
+          - mvdan.cc/sh/v3/cmd/shfmt@v3.10.0
+        entry: shfmt
+        types:
+          - file
+          - shell
+        exclude_types:
+          - zsh
+        args:
+          - -w # write
+          - -s # simplify
+          - -l # list files that differ
 
   - repo: https://github.com/lalten/check-gha-pinning
     rev: v1.3.0
     hooks:
       - id: check-gha-pinning
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.4
+    rev: v1.7.7
     hooks:
       - id: actionlint
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.6
+    rev: v0.9.6
     hooks:
       - id: ruff
         args: ["--fix"]
