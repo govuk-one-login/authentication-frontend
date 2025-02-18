@@ -94,7 +94,7 @@ export function enterMfaGet(
       phoneNumber: req.session.user.redactedPhoneNumber,
       supportAccountRecovery: req.session.user.isAccountRecoveryPermitted,
       mfaResetPath: mfaResetPath,
-      supportMfaResetWithIpv: supportMfaResetWithIpv(),
+      routeUserViaIpvReset: supportMfaResetWithIpv(),
     });
   };
 }

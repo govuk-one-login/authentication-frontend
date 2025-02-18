@@ -74,7 +74,7 @@ describe("enter mfa controller", () => {
         supportAccountRecovery: false,
         mfaResetPath:
           PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=SMS",
-        supportMfaResetWithIpv: false,
+        routeUserViaIpvReset: false,
       });
     });
 
@@ -91,7 +91,7 @@ describe("enter mfa controller", () => {
         supportAccountRecovery: true,
         mfaResetPath:
           PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=SMS",
-        supportMfaResetWithIpv: false,
+        routeUserViaIpvReset: false,
       });
     });
 
@@ -153,7 +153,7 @@ describe("enter mfa controller", () => {
         phoneNumber: TEST_PHONE_NUMBER,
         supportAccountRecovery: true,
         mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
-        supportMfaResetWithIpv: true,
+        routeUserViaIpvReset: true,
       });
     });
   });
