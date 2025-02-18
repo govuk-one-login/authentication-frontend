@@ -1,9 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
-Transform: 'AWS::LanguageExtensions'
-
-Description: >-
-  Creates the necessary components for Authentication Frontend application secure pipeline migration testing
+Description: Creates the necessary components for Authentication Frontend application secure pipeline migration testing
 
 Parameters:
   Environment:
@@ -17,105 +14,31 @@ Parameters:
       - production
 
   EndpointSuffix:
-    Description: >
+    Description: |
       (Optional) domain suffix i.e. -sp. Example output FQDN - signin-sp.build.account.gov.uk
     Type: String
     Default: ""
-    AllowedPattern: "[a-z0-9-]*"
-    ConstraintDescription: >
+    AllowedPattern: '[a-z0-9-]*'
+    ConstraintDescription: |
       must be a valid domain name, consists of lowercase letters, numbers and hyphens OR blank
 
   DeployHostedZone:
-    Description: >
+    Description: |
       Deploy the Route53 hosted zone and associated SSM parameter
     Type: String
-    Default: "Yes"
     AllowedValues:
       - "Yes"
       - "No"
+    Default: "Yes"
 
   DeployCertificate:
-    Description: >
+    Description: |
       Deploy domain certificate and associated SSM parameter
     Type: String
-    Default: "No"
     AllowedValues:
       - "Yes"
       - "No"
-
-Conditions:
-  CreateDevEnvironmentResources:
-    Fn::Equals:
-      - !Ref Environment
-      - "dev"
-
-  CreateNonProdEnvironmentResources:
-    Fn::Or:
-      - Fn::Equals:
-        - !Ref Environment
-        - "build"
-      - Fn::Equals:
-        - !Ref Environment
-        - "staging"
-      - Fn::Equals:
-        - !Ref Environment
-        - "integration"
-
-  CreateProductionEnvironmentResources:
-    Fn::Equals:
-      - !Ref Environment
-      - "production"
-
-  CreateDevHostedZone:
-    Fn::And:
-      - !Condition CreateDevEnvironmentResources
-      - Fn::Equals:
-        - !Ref DeployHostedZone
-        - "Yes"
-
-  CreateDevCertificate:
-    Fn::And:
-      - !Condition CreateDevEnvironmentResources
-      - Fn::Equals:
-        - !Ref DeployHostedZone
-        - "Yes"
-      - Fn::Equals:
-        - !Ref DeployCertificate
-        - "Yes"
-
-  CreateNonProdHostedZone:
-    Fn::And:
-      - !Condition CreateNonProdEnvironmentResources
-      - Fn::Equals:
-        - !Ref DeployHostedZone
-        - "Yes"
-
-  CreateNonProdCertificate:
-    Fn::And:
-      - !Condition CreateNonProdEnvironmentResources
-      - Fn::Equals:
-        - !Ref DeployHostedZone
-        - "Yes"
-      - Fn::Equals:
-        - !Ref DeployCertificate
-        - "Yes"
-
-  CreateProductionHostedZone:
-    Fn::And:
-      - !Condition CreateProductionEnvironmentResources
-      - Fn::Equals:
-        - !Ref DeployHostedZone
-        - "Yes"
-
-  CreateProductionCertificate:
-    Fn::And:
-      - !Condition CreateProductionEnvironmentResources
-      - Fn::Equals:
-        - !Ref DeployHostedZone
-        - "Yes"
-      - Fn::Equals:
-        - !Ref DeployCertificate
-        - "Yes"
+    Default: "No"
 
 Mappings:
   EndpointConfigs:
@@ -128,13 +51,79 @@ Mappings:
     Signin:
       lowercaseName: signin
 
+Conditions:
+  CreateDevEnvironmentResources: !Equals
+    - !Ref Environment
+    - dev
+
+  CreateNonProdEnvironmentResources: !Or
+    - !Equals
+      - !Ref Environment
+      - build
+    - !Equals
+      - !Ref Environment
+      - staging
+    - !Equals
+      - !Ref Environment
+      - integration
+
+  CreateProductionEnvironmentResources: !Equals
+    - !Ref Environment
+    - production
+
+  CreateDevHostedZone: !And
+    - !Condition CreateDevEnvironmentResources
+    - !Equals
+      - !Ref DeployHostedZone
+      - "Yes"
+
+  CreateDevCertificate: !And
+    - !Condition CreateDevEnvironmentResources
+    - !Equals
+      - !Ref DeployHostedZone
+      - "Yes"
+    - !Equals
+      - !Ref DeployCertificate
+      - "Yes"
+
+  CreateNonProdHostedZone: !And
+    - !Condition CreateNonProdEnvironmentResources
+    - !Equals
+      - !Ref DeployHostedZone
+      - "Yes"
+
+  CreateNonProdCertificate: !And
+    - !Condition CreateNonProdEnvironmentResources
+    - !Equals
+      - !Ref DeployHostedZone
+      - "Yes"
+    - !Equals
+      - !Ref DeployCertificate
+      - "Yes"
+
+  CreateProductionHostedZone: !And
+    - !Condition CreateProductionEnvironmentResources
+    - !Equals
+      - !Ref DeployHostedZone
+      - "Yes"
+
+  CreateProductionCertificate: !And
+    - !Condition CreateProductionEnvironmentResources
+    - !Equals
+      - !Ref DeployHostedZone
+      - "Yes"
+    - !Equals
+      - !Ref DeployCertificate
+      - "Yes"
+
+Transform: AWS::LanguageExtensions
+
 Resources:
 
   # ==============================
   # dev hosted zones and resources
   # ==============================
-
-  'Fn::ForEach::DevEnvironments':
+  Fn::ForEach::DevEnvironments:
     - EnvName
     - - authdev1
       - authdev2
@@ -145,10 +134,10 @@ Resources:
         UpdateReplacePolicy: Retain
         Properties:
           Name: !Sub ${EnvName}.${Environment}.account.gov.uk
-
-      'Fn::ForEach::Endpoints':
+      Fn::ForEach::Endpoints:
         - Endpoint
         - - signin
+
           # - auth
           # - manage
           # - oidc
@@ -159,7 +148,6 @@ Resources:
             UpdateReplacePolicy: Retain
             Properties:
               Name: !Sub ${Endpoint}.${EnvName}.${Environment}.account.gov.uk
-
           ${EnvName}${Endpoint}DevDelegation:
             Type: AWS::Route53::RecordSet
             Condition: CreateDevHostedZone
@@ -167,12 +155,11 @@ Resources:
               Name: !Sub ${Endpoint}.${EnvName}.${Environment}.account.gov.uk
               Type: NS
               HostedZoneId: !Ref
-                'Fn::Sub': "${EnvName}HostedZone"
+                Fn::Sub: ${EnvName}HostedZone
               ResourceRecords: !GetAtt
                 - !Sub ${EnvName}${Endpoint}HostedZone
                 - NameServers
               TTL: 60
-
           ${EnvName}${Endpoint}HostedZoneSSM:
             Type: AWS::SSM::Parameter
             Condition: CreateDevHostedZone
@@ -181,12 +168,11 @@ Resources:
               Name: !Sub "/deploy/${EnvName}/${Endpoint}${EndpointSuffix}_route53_hostedzone_id"
               Type: String
               Value: !Ref
-                'Fn::Sub': ${EnvName}${Endpoint}HostedZone
+                Fn::Sub: ${EnvName}${Endpoint}HostedZone
               Tags:
                 Environment: !Sub ${EnvName}
-                Application: "auth-frontend"
+                Application: auth-frontend
                 Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
-
           ${EnvName}${Endpoint}Certificate:
             Type: AWS::CertificateManager::Certificate
             Condition: CreateDevCertificate
@@ -198,7 +184,6 @@ Resources:
                     - !Sub ${EnvName}${Endpoint}HostedZone
                     - Id
               ValidationMethod: DNS
-
           ${EnvName}${Endpoint}CertificateArnSSM:
             Type: AWS::SSM::Parameter
             Condition: CreateDevCertificate
@@ -207,19 +192,19 @@ Resources:
               Name: !Sub "/deploy/${EnvName}/${Endpoint}${EndpointSuffix}_certificate_arn"
               Type: String
               Value: !Ref
-                'Fn::Sub': ${EnvName}${Endpoint}Certificate
+                Fn::Sub: ${EnvName}${Endpoint}Certificate
               Tags:
                 Environment: !Sub ${EnvName}
-                Application: "auth-frontend"
+                Application: auth-frontend
                 Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
 
   # ===================================
   # Non-prod hosted zones and resources
   # ===================================
-
-  'Fn::ForEach::Endpoints':
+  Fn::ForEach::Endpoints:
     - Endpoint
     - - Signin
+
       # - Auth
       # - Manage
       # - Oidc
@@ -232,29 +217,27 @@ Resources:
           Name: !Sub
             - ${lowercaseEndpoint}${EndpointSuffix}.${Environment}.account.gov.uk
             - lowercaseEndpoint: !FindInMap
-              - EndpointConfigs
-              - !Ref Endpoint
-              - lowercaseName
-
+                - EndpointConfigs
+                - !Ref Endpoint
+                - lowercaseName
       Accounts${Endpoint}HostedZoneSSM:
         Type: AWS::SSM::Parameter
         Condition: CreateNonProdHostedZone
         Properties:
           Description: !Sub "The ${Endpoint} subdomain Public Hosted Zone Id"
           Name: !Sub
-            - "/deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_route53_hostedzone_id"
+            - /deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_route53_hostedzone_id
             - lowercaseEndpoint: !FindInMap
-              - EndpointConfigs
-              - !Ref Endpoint
-              - lowercaseName
+                - EndpointConfigs
+                - !Ref Endpoint
+                - lowercaseName
           Type: String
           Value: !Ref
             Fn::Sub: Accounts${Endpoint}HostedZone
           Tags:
             Environment: !Ref Environment
-            Application: "auth-frontend"
+            Application: auth-frontend
             Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
-
       Accounts${Endpoint}Certificate:
         Type: AWS::CertificateManager::Certificate
         Condition: CreateNonProdCertificate
@@ -266,33 +249,32 @@ Resources:
                 - !Sub Accounts${Endpoint}HostedZone
                 - Id
           ValidationMethod: DNS
-
       Accounts${Endpoint}CertificateArnSSM:
         Type: AWS::SSM::Parameter
         Condition: CreateNonProdCertificate
         Properties:
           Description: !Sub "The ${Endpoint} subdomain Certificate ARN"
           Name: !Sub
-            - "/deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_certificate_arn"
+            - /deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_certificate_arn
             - lowercaseEndpoint: !FindInMap
-              - EndpointConfigs
-              - !Ref Endpoint
-              - lowercaseName
+                - EndpointConfigs
+                - !Ref Endpoint
+                - lowercaseName
           Type: String
           Value: !Ref
             Fn::Sub: Accounts${Endpoint}Certificate
           Tags:
             Environment: !Ref Environment
-            Application: "auth-frontend"
+            Application: auth-frontend
             Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
 
   # =====================================
   # Production hosted zones and resources
   # =====================================
-
-  'Fn::ForEach::ProdEndpoints':
+  Fn::ForEach::ProdEndpoints:
     - Endpoint
     - - Signin
+
       # For services not yet migrated to secure pipelines, the corresponding domain and resources are commented out in prod
       # - Auth
       # - Manage
@@ -304,26 +286,24 @@ Resources:
         UpdateReplacePolicy: Retain
         Properties:
           Name: !Sub ${Endpoint}${EndpointSuffix}.account.gov.uk
-
       Accounts${Endpoint}ProdHostedZoneSSM:
         Type: AWS::SSM::Parameter
         Condition: CreateProductionHostedZone
         Properties:
           Description: !Sub "The ${Endpoint} subdomain Public Hosted Zone Id"
           Name: !Sub
-            - "/deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_route53_hostedzone_id"
+            - /deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_route53_hostedzone_id
             - lowercaseEndpoint: !FindInMap
-              - EndpointConfigs
-              - !Ref Endpoint
-              - lowercaseName
+                - EndpointConfigs
+                - !Ref Endpoint
+                - lowercaseName
           Type: String
           Value: !Ref
             Fn::Sub: Accounts${Endpoint}ProdHostedZone
           Tags:
             Environment: !Ref Environment
-            Application: "auth-frontend"
+            Application: auth-frontend
             Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml
-
       Accounts${Endpoint}ProdCertificate:
         Type: AWS::CertificateManager::Certificate
         Condition: CreateProductionCertificate
@@ -335,22 +315,21 @@ Resources:
                 - !Sub Accounts${Endpoint}ProdHostedZone
                 - Id
           ValidationMethod: DNS
-
       Accounts${Endpoint}ProdCertificateArnSSM:
         Type: AWS::SSM::Parameter
         Condition: CreateProductionCertificate
         Properties:
           Description: !Sub "The ${Endpoint} subdomain Certificate ARN"
           Name: !Sub
-            - "/deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_certificate_arn"
+            - /deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_certificate_arn
             - lowercaseEndpoint: !FindInMap
-              - EndpointConfigs
-              - !Ref Endpoint
-              - lowercaseName
+                - EndpointConfigs
+                - !Ref Endpoint
+                - lowercaseName
           Type: String
           Value: !Ref
             Fn::Sub: Accounts${Endpoint}ProdCertificate
           Tags:
             Environment: !Ref Environment
-            Application: "auth-frontend"
+            Application: auth-frontend
             Source: govuk-one-login/authentication-frontend/cloudformation/domains/template.yaml

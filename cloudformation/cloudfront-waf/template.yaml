@@ -1,9 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
-Description: >-
-  Create a WAF to attach to the Cloudfront distribution for the Auth Frontend
-
-Transform: 'AWS::LanguageExtensions'
+Description: Create a WAF to attach to the Cloudfront distribution for the Auth Frontend
 
 Parameters:
   Environment:
@@ -19,87 +16,34 @@ Parameters:
       - production
 
   RateLimitByIPEndpoints:
-    Description: >-
-      List of endpoints that should be rate-limited by session and IP (maximum 10)
+    Description: List of endpoints that should be rate-limited by session and IP (maximum 10)
     Type: String
     Default: ""
 
   RateLimitByIPRateLimitPeriod:
-    Description: >-
-      Period in seconds for rate limiting for rate limited endpoints
+    Description: Period in seconds for rate limiting for rate limited endpoints
     Type: Number
     Default: 120
 
   RateLimitByIPRequestsPerPeriod:
-    Description: >-
-      Number of requests per period allowed for rate limited endpoints
+    Description: Number of requests per period allowed for rate limited endpoints
     Type: Number
     Default: 100000
 
   RateLimitByApsSessionEndpoints:
-    Description: >-
-      List of endpoints that should be rate-limited by session and IP (maximum 10)
+    Description: List of endpoints that should be rate-limited by session and IP (maximum 10)
     Type: String
     Default: ""
 
   RateLimitByApsSessionRateLimitPeriod:
-    Description: >-
-      Period in seconds for rate limiting for rate limited endpoints
+    Description: Period in seconds for rate limiting for rate limited endpoints
     Type: Number
     Default: 120
 
   RateLimitByApsSessionRequestsPerPeriod:
-    Description: >-
-      Number of requests per period allowed for rate limited endpoints
+    Description: Number of requests per period allowed for rate limited endpoints
     Type: Number
     Default: 100000
-
-Conditions:
-  'Fn::ForEach::RateLimitByIP':
-    - Id
-    - ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    - 'RateLimitByIPEndpoint${Id}Enabled':
-        Fn::Not:
-          - Fn::Equals:
-            - Fn::Select:
-              - Fn::Sub: "${Id}"
-              - Fn::Split:
-                - ","
-                - Fn::Sub:
-                  - "${Endpoints},,,,,,,,,,,"
-                  - Endpoints: !Ref RateLimitByIPEndpoints
-            - ""
-
-  'Fn::ForEach::RateLimitByApsSession':
-    - Id
-    - ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    - 'RateLimitByApsSessionEndpoint${Id}Enabled':
-        Fn::Not:
-          - Fn::Equals:
-            - Fn::Select:
-              - Fn::Sub: "${Id}"
-              - Fn::Split:
-                - ","
-                - Fn::Sub:
-                  - "${Endpoints},,,,,,,,,,,"
-                  - Endpoints: !Ref RateLimitByApsSessionEndpoints
-            - ""
-
-  IsStaging:
-    Fn::Equals:
-      - !Ref Environment
-      - "staging"
-
-  IsNotProduction:
-    Fn::Not:
-      - Fn::Equals:
-        - !Ref Environment
-        - production
-
-  IsCSLSLogForwardingEnabled:
-    Fn::Equals:
-      - !Ref Environment
-      - "placeholder"
 
 Mappings:
   PlatformConfiguration:
@@ -114,29 +58,74 @@ Mappings:
     production:
       CSLSEGRESS: arn:aws:logs:us-east-1:885513274347:destination:csls_cw_logs_destination_prodpython-2
 
+Conditions:
+  Fn::ForEach::RateLimitByIP:
+    - Id
+    - ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    - RateLimitByIPEndpoint${Id}Enabled: !Not
+        - !Equals
+          - !Select
+            - !Sub "${Id}"
+            - !Split
+              - ','
+              - !Sub
+                - ${Endpoints},,,,,,,,,,,
+                - Endpoints: !Ref RateLimitByIPEndpoints
+          - ""
+
+  Fn::ForEach::RateLimitByApsSession:
+    - Id
+    - ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    - RateLimitByApsSessionEndpoint${Id}Enabled: !Not
+        - !Equals
+          - !Select
+            - !Sub "${Id}"
+            - !Split
+              - ','
+              - !Sub
+                - ${Endpoints},,,,,,,,,,,
+                - Endpoints: !Ref RateLimitByApsSessionEndpoints
+          - ""
+
+  IsStaging: !Equals
+    - !Ref Environment
+    - staging
+
+  IsNotProduction: !Not
+    - !Equals
+      - !Ref Environment
+      - production
+
+  IsCSLSLogForwardingEnabled: !Equals
+    - !Ref Environment
+    - placeholder
+
+Transform: AWS::LanguageExtensions
+
 Resources:
   WAFv2GDSIPSet:
+
     # The IP address blocks below are referenced from here:
     # https://sites.google.com/a/digital.cabinet-office.gov.uk/gds/working-at-gds/gds-internal-it/gds-internal-it-network-public-ip-addresses
     Type: AWS::WAFv2::IPSet
     Properties:
       Name: !Sub "${Environment}-gds-ip-set"
-      Scope: "CLOUDFRONT"
-      IPAddressVersion: "IPV4"
+      Scope: CLOUDFRONT
+      IPAddressVersion: IPV4
       Addresses:
-        - "217.196.229.77/32"
-        - "217.196.229.79/32"
-        - "217.196.229.80/32" # (BYOD VPN Only)
-        - "217.196.229.81/32"
-        - "51.149.8.0/25"     # (GDS and CO VPN)
-        - "51.149.8.128/29"   # (BYOD VPN only)
+        - 217.196.229.77/32
+        - 217.196.229.79/32
+        - 217.196.229.80/32 # (BYOD VPN Only)
+        - 217.196.229.81/32
+        - 51.149.8.0/25 # (GDS and CO VPN)
+        - 51.149.8.128/29 # (BYOD VPN only)
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-WAFv2GDSIPSet"
         - Key: Environment
           Value: !Ref Environment
         - Key: Application
-          Value: "auth-frontend"
+          Value: auth-frontend
         - Key: Source
           Value: govuk-one-login/authentication-frontend/cloudformation/cloudfront-waf/template.yaml
 
@@ -170,7 +159,6 @@ Resources:
               MetricName: !Sub "${Environment}FrontendcloudfrontWafGDSIPs"
               SampledRequestsEnabled: false
           - !Ref AWS::NoValue
-
         - Name: !Sub "${Environment}-frontend-cloudfront-waf-rate-based-rule"
           Action:
             Block: {}
@@ -178,14 +166,13 @@ Resources:
           Statement:
             RateBasedStatement:
               Limit: !If [IsStaging, 20000000, 25000]
-              AggregateKeyType: "IP"
+              AggregateKeyType: IP
           VisibilityConfig:
             CloudWatchMetricsEnabled: true
             MetricName: !Sub "${Environment}FrontendcloudfrontWafMaxRequestRate"
             SampledRequestsEnabled: true
-
         - !If
-          - RateLimitByIPEndpoint0Enabled         # If at least one endpoint is provided, then create this rule
+          - RateLimitByIPEndpoint0Enabled # If at least one endpoint is provided, then create this rule
           - Name: !Sub "BlockMoreThan${RateLimitByIPRequestsPerPeriod}RequestsFromIpPer${RateLimitByIPRateLimitPeriod}Seconds"
             Action:
               Block: {}
@@ -209,7 +196,7 @@ Resources:
                   OrStatement:
                     Statements:
                       - ByteMatchStatement:
-                          PositionalConstraint: "STARTS_WITH"
+                          PositionalConstraint: STARTS_WITH
                           SearchString: !Select [0, !Split [',', !Ref RateLimitByIPEndpoints]]
                           FieldToMatch:
                             UriPath: {}
@@ -221,7 +208,7 @@ Resources:
                       - !If
                         - RateLimitByIPEndpoint1Enabled
                         - ByteMatchStatement:
-                            PositionalConstraint: "STARTS_WITH"
+                            PositionalConstraint: STARTS_WITH
                             SearchString: !Select [1, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
@@ -234,7 +221,7 @@ Resources:
                       - !If
                         - RateLimitByIPEndpoint2Enabled
                         - ByteMatchStatement:
-                            PositionalConstraint: "STARTS_WITH"
+                            PositionalConstraint: STARTS_WITH
                             SearchString: !Select [2, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
@@ -247,7 +234,7 @@ Resources:
                       - !If
                         - RateLimitByIPEndpoint3Enabled
                         - ByteMatchStatement:
-                            PositionalConstraint: "STARTS_WITH"
+                            PositionalConstraint: STARTS_WITH
                             SearchString: !Select [3, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
@@ -260,7 +247,7 @@ Resources:
                       - !If
                         - RateLimitByIPEndpoint4Enabled
                         - ByteMatchStatement:
-                            PositionalConstraint: "STARTS_WITH"
+                            PositionalConstraint: STARTS_WITH
                             SearchString: !Select [4, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
@@ -273,7 +260,7 @@ Resources:
                       - !If
                         - RateLimitByIPEndpoint5Enabled
                         - ByteMatchStatement:
-                            PositionalConstraint: "STARTS_WITH"
+                            PositionalConstraint: STARTS_WITH
                             SearchString: !Select [5, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
@@ -286,7 +273,7 @@ Resources:
                       - !If
                         - RateLimitByIPEndpoint6Enabled
                         - ByteMatchStatement:
-                            PositionalConstraint: "STARTS_WITH"
+                            PositionalConstraint: STARTS_WITH
                             SearchString: !Select [6, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
@@ -299,7 +286,7 @@ Resources:
                       - !If
                         - RateLimitByIPEndpoint7Enabled
                         - ByteMatchStatement:
-                            PositionalConstraint: "STARTS_WITH"
+                            PositionalConstraint: STARTS_WITH
                             SearchString: !Select [7, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
@@ -312,7 +299,7 @@ Resources:
                       - !If
                         - RateLimitByIPEndpoint8Enabled
                         - ByteMatchStatement:
-                            PositionalConstraint: "STARTS_WITH"
+                            PositionalConstraint: STARTS_WITH
                             SearchString: !Select [8, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
@@ -325,7 +312,7 @@ Resources:
                       - !If
                         - RateLimitByIPEndpoint9Enabled
                         - ByteMatchStatement:
-                            PositionalConstraint: "STARTS_WITH"
+                            PositionalConstraint: STARTS_WITH
                             SearchString: !Select [9, !Split [',', !Ref RateLimitByIPEndpoints]]
                             FieldToMatch:
                               UriPath: {}
@@ -340,15 +327,14 @@ Resources:
               MetricName: !Sub "${Environment}FrontendcloudfrontWafRateLimitByIP${RateLimitByIPRequestsPerPeriod}Per${RateLimitByIPRateLimitPeriod}"
               SampledRequestsEnabled: true
           - !Ref AWS::NoValue
-
         - !If
-          - RateLimitByApsSessionEndpoint0Enabled         # If at least one endpoint is provided, then create this rule
+          - RateLimitByApsSessionEndpoint0Enabled # If at least one endpoint is provided, then create this rule
           - Name: !Sub "BlockMoreThan${RateLimitByApsSessionRequestsPerPeriod}RequestsFromOneApsSessionPer${RateLimitByApsSessionRateLimitPeriod}Seconds"
             Action:
               Block: {}
             Priority: 30
             RuleLabels:
-            - Name: TooManyRequestsFromOneApsSessionOnSpecificEndpoints
+              - Name: TooManyRequestsFromOneApsSessionOnSpecificEndpoints
             Statement:
               RateBasedStatement:
                 EvaluationWindowSec: !Ref RateLimitByApsSessionRateLimitPeriod
@@ -503,7 +489,6 @@ Resources:
               MetricName: !Sub "${Environment}FrontendcloudfrontWafRateLimitByApsSession${RateLimitByApsSessionRequestsPerPeriod}Per${RateLimitByApsSessionRateLimitPeriod}"
               SampledRequestsEnabled: true
           - !Ref AWS::NoValue
-
         - Name: !Sub "${Environment}-frontend-cloudfront-common-rule-set"
           OverrideAction:
             None: {}
@@ -513,32 +498,31 @@ Resources:
               Name: AWSManagedRulesCommonRuleSet
               VendorName: AWS
               RuleActionOverrides:
-              - Name: GenericRFI_QUERYARGUMENTS
-                ActionToUse:
-                  Count: {}
-              - Name: GenericRFI_BODY
-                ActionToUse:
-                  Count: {}
-              - Name: SizeRestrictions_QUERYSTRING
-                ActionToUse:
-                  Count: {}
-              - !If
-                - IsNotProduction
-                - Name: EC2MetaDataSSRF_BODY
+                - Name: GenericRFI_QUERYARGUMENTS
                   ActionToUse:
                     Count: {}
-                - !Ref AWS::NoValue
-              - !If
-                - IsNotProduction
-                - Name: EC2MetaDataSSRF_QUERYARGUMENTS
+                - Name: GenericRFI_BODY
                   ActionToUse:
                     Count: {}
-                - !Ref AWS::NoValue
+                - Name: SizeRestrictions_QUERYSTRING
+                  ActionToUse:
+                    Count: {}
+                - !If
+                  - IsNotProduction
+                  - Name: EC2MetaDataSSRF_BODY
+                    ActionToUse:
+                      Count: {}
+                  - !Ref AWS::NoValue
+                - !If
+                  - IsNotProduction
+                  - Name: EC2MetaDataSSRF_QUERYARGUMENTS
+                    ActionToUse:
+                      Count: {}
+                  - !Ref AWS::NoValue
           VisibilityConfig:
             CloudWatchMetricsEnabled: true
             MetricName: !Sub "${Environment}FrontendcloudfrontWafCommonRuleSet"
             SampledRequestsEnabled: true
-
         - Name: !Sub "${Environment}-frontend-cloudfront-bad-rule-set"
           OverrideAction:
             None: {}
@@ -551,7 +535,6 @@ Resources:
             CloudWatchMetricsEnabled: true
             MetricName: !Sub "${Environment}FrontendcloudfrontWafBaduleSet"
             SampledRequestsEnabled: true
-
         - Name: default_query_param_limit
           Action:
             Block: {}
@@ -559,29 +542,28 @@ Resources:
           Statement:
             AndStatement:
               Statements:
-              - SizeConstraintStatement:
-                  ComparisonOperator: GT
-                  FieldToMatch:
-                    QueryString: {}
-                  Size: 2048
-                  TextTransformations:
-                  - Priority: 0
-                    Type: NONE
-              - NotStatement:
-                  Statement:
-                    ByteMatchStatement:
-                      FieldToMatch:
-                        UriPath: {}
-                      PositionalConstraint: EXACTLY
-                      SearchString: /authorize
-                      TextTransformations:
+                - SizeConstraintStatement:
+                    ComparisonOperator: GT
+                    FieldToMatch:
+                      QueryString: {}
+                    Size: 2048
+                    TextTransformations:
                       - Priority: 0
-                        Type: LOWERCASE
+                        Type: NONE
+                - NotStatement:
+                    Statement:
+                      ByteMatchStatement:
+                        FieldToMatch:
+                          UriPath: {}
+                        PositionalConstraint: EXACTLY
+                        SearchString: /authorize
+                        TextTransformations:
+                          - Priority: 0
+                            Type: LOWERCASE
           VisibilityConfig:
             CloudWatchMetricsEnabled: true
             MetricName: !Sub "${Environment}FrontendcloudfrontWafQueryParamSet"
             SampledRequestsEnabled: true
-
         - Name: extended_query_param_limit
           Action:
             Block: {}
@@ -593,19 +575,18 @@ Resources:
                 QueryString: {}
               Size: 8192
               TextTransformations:
-              - Priority: 0
-                Type: NONE
+                - Priority: 0
+                  Type: NONE
           VisibilityConfig:
             CloudWatchMetricsEnabled: true
             MetricName: !Sub "${Environment}FrontendcloudfrontWafAuthorizeQueryParamSet"
             SampledRequestsEnabled: true
-
         - Name: contact_us_logging_count
           Action:
             Count: {}
           Priority: 90
           RuleLabels:
-          - Name: contact-us
+            - Name: contact-us
           Statement:
             ByteMatchStatement:
               FieldToMatch:
@@ -613,8 +594,8 @@ Resources:
               PositionalConstraint: STARTS_WITH
               SearchString: /contact-us
               TextTransformations:
-              - Priority: 0
-                Type: LOWERCASE
+                - Priority: 0
+                  Type: LOWERCASE
           VisibilityConfig:
             CloudWatchMetricsEnabled: true
             MetricName: !Sub "${Environment}FrontendcloudfrontWafContactUsCount"
@@ -625,7 +606,7 @@ Resources:
         - Key: Environment
           Value: !Ref Environment
         - Key: Application
-          Value: "auth-frontend"
+          Value: auth-frontend
         - Key: Source
           Value: govuk-one-login/authentication-frontend/cloudformation/cloudfront-waf/template.yaml
 
@@ -634,7 +615,7 @@ Resources:
     Properties:
       Description: KMS key for Core Cloudwatch logs
       KeyPolicy:
-        Version: 2012-10-17
+        Version: "2012-10-17"
         Id: key-policy-cloudwatch
         Statement:
           - Sid: Enable IAM User Permissions for root user
@@ -642,24 +623,24 @@ Resources:
             Principal:
               AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
             Action:
-              - "kms:*"
+              - kms:*
             Resource:
-              - "*"
+              - '*'
           - Sid: AllowCloudWatchLogs
             Effect: Allow
             Principal:
               Service: !Sub "logs.${AWS::Region}.amazonaws.com"
             Action:
-              - "kms:Encrypt*"
-              - "kms:Decrypt*"
-              - "kms:ReEncrypt*"
-              - "kms:GenerateDataKey*"
-              - "kms:Describe*"
+              - kms:Encrypt*
+              - kms:Decrypt*
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+              - kms:Describe*
             Resource:
-              - "*"
+              - '*'
             Condition:
               ArnEquals:
-                "kms:EncryptionContext:aws:logs:arn": !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:aws-waf-logs-frontend-cloudfront-${Environment}"
+                kms:EncryptionContext:aws:logs:arn: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:aws-waf-logs-frontend-cloudfront-${Environment}"
 
   LogGroup:
     Type: AWS::Logs::LogGroup
@@ -675,21 +656,21 @@ Resources:
         - !GetAtt LogGroup.Arn
       ResourceArn: !GetAtt WAFv2WebACL.Arn
       LoggingFilter:
-        DefaultBehavior: "KEEP"
+        DefaultBehavior: KEEP
         Filters:
-          - Behavior: "KEEP"
+          - Behavior: KEEP
             Conditions:
               - ActionCondition:
-                  Action: "BLOCK"
-            Requirement: "MEETS_ANY"
+                  Action: BLOCK
+            Requirement: MEETS_ANY
 
   CSLSCloudWatchLogsSubscription:
     Type: AWS::Logs::SubscriptionFilter
-    Condition: IsCSLSLogForwardingEnabled
     Properties:
-      DestinationArn: !FindInMap [ PlatformConfiguration, !Ref Environment, CSLSEGRESS ]
+      DestinationArn: !FindInMap [PlatformConfiguration, !Ref Environment, CSLSEGRESS]
       FilterPattern: ""
       LogGroupName: !Ref LogGroup
+    Condition: IsCSLSLogForwardingEnabled
 
 Outputs:
   WAFv2WebACL:
