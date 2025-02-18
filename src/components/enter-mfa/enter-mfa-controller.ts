@@ -13,7 +13,11 @@ import {
   pathWithQueryParam,
   SecurityCodeErrorType,
 } from "../common/constants";
-import { supportAccountRecovery, supportMfaResetWithIpv } from "../../config";
+import {
+  routeUsersToNewIpvJourney,
+  supportAccountRecovery,
+  supportMfaResetWithIpv,
+} from "../../config";
 import { AccountRecoveryInterface } from "../common/account-recovery/types";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
 import { BadRequestError } from "../../utils/error";
@@ -82,7 +86,10 @@ export function enterMfaGet(
     req.session.user.isAccountRecoveryPermitted =
       accountRecoveryResponse.data.accountRecoveryPermitted;
 
-    const mfaResetPath = supportMfaResetWithIpv()
+    const routeUserViaIpvReset =
+      supportMfaResetWithIpv() && routeUsersToNewIpvJourney();
+
+    const mfaResetPath = routeUserViaIpvReset
       ? PATH_NAMES.MFA_RESET_WITH_IPV
       : pathWithQueryParam(
           PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
@@ -94,7 +101,7 @@ export function enterMfaGet(
       phoneNumber: req.session.user.redactedPhoneNumber,
       supportAccountRecovery: req.session.user.isAccountRecoveryPermitted,
       mfaResetPath: mfaResetPath,
-      routeUserViaIpvReset: supportMfaResetWithIpv(),
+      routeUserViaIpvReset: routeUserViaIpvReset,
     });
   };
 }
