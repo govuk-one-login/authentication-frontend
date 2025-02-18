@@ -98,6 +98,7 @@ describe("Integration:: enter authenticator app code", () => {
 
   after(() => {
     sinon.restore();
+    delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
     app = undefined;
   });
 
@@ -105,6 +106,45 @@ describe("Integration:: enter authenticator app code", () => {
     await request(app, (test) =>
       test.get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE).expect(200)
     );
+  });
+
+  const TEST_DATA = [
+    {
+      description: "when support mfa reset with ipv is off",
+      supportMfaResetWithIpv: "0",
+      expectedHref:
+        PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP",
+      expectedLinkText: "change how you get security codes",
+    },
+    {
+      description: "when support mfa reset with ipv is on",
+      supportMfaResetWithIpv: "1",
+      expectedHref: PATH_NAMES.MFA_RESET_WITH_IPV,
+      expectedLinkText: "check if you can change how you get security codes",
+    },
+  ];
+
+  TEST_DATA.forEach((testData) => {
+    it(`should display correct link to reset mfa ${testData.description}`, async () => {
+      process.env.SUPPORT_MFA_RESET_WITH_IPV = testData.supportMfaResetWithIpv;
+      await request(app, (test) =>
+        test
+          .get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+          .expect(200)
+          .expect(function (res) {
+            const $ = cheerio.load(res.text);
+            expect(
+              $("a")
+                .toArray()
+                .some(
+                  (link) =>
+                    $(link).attr("href") === testData.expectedHref &&
+                    $(link).text().trim() === testData.expectedLinkText
+                )
+            ).to.be.true;
+          })
+      );
+    });
   });
 
   it("should return enter authenticator app security code with reauth analytics properties", async () => {
