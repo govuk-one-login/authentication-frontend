@@ -143,7 +143,6 @@ describe("enter mfa controller", () => {
 
     it("should render enter mfa code view with mfaResetPath being IPV_DUMMY_URL when mfa reset with ipv is supported", async () => {
       process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
-      process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY = "1";
 
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(true))(
         req as Request,
