@@ -71,7 +71,7 @@ describe("enter authenticator app code controller", () => {
         "enter-authenticator-app-code/index.njk",
         {
           isAccountRecoveryPermitted: true,
-          routeUserViaIpvReset: false,
+          supportMfaResetWithIpv: false,
           mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
@@ -89,7 +89,7 @@ describe("enter authenticator app code controller", () => {
         "enter-authenticator-app-code/index.njk",
         {
           isAccountRecoveryPermitted: false,
-          routeUserViaIpvReset: false,
+          supportMfaResetWithIpv: false,
           mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
@@ -125,7 +125,7 @@ describe("enter authenticator app code controller", () => {
         UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
         {
           isAccountRecoveryPermitted: true,
-          routeUserViaIpvReset: false,
+          supportMfaResetWithIpv: false,
           mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
@@ -145,7 +145,7 @@ describe("enter authenticator app code controller", () => {
         ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME,
         {
           isAccountRecoveryPermitted: true,
-          routeUserViaIpvReset: false,
+          supportMfaResetWithIpv: false,
           mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
@@ -165,7 +165,7 @@ describe("enter authenticator app code controller", () => {
         "enter-authenticator-app-code/index.njk",
         {
           isAccountRecoveryPermitted: true,
-          routeUserViaIpvReset: true,
+          supportMfaResetWithIpv: true,
           mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
         }
       );
