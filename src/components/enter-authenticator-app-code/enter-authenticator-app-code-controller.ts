@@ -12,7 +12,6 @@ import {
 } from "../common/constants";
 import {
   getCodeEnteredWrongBlockDurationInMinutes,
-  routeUsersToNewIpvJourney,
   supportAccountRecovery,
   supportMfaResetWithIpv,
   supportReauthentication,
@@ -86,10 +85,7 @@ export function enterAuthenticatorAppCodeGet(
       (req.session.user.isAccountRecoveryPermitted =
         accountRecoveryResponse.data.accountRecoveryPermitted);
 
-    const routeUserViaIpvReset =
-      supportMfaResetWithIpv() && routeUsersToNewIpvJourney();
-
-    const mfaResetPath = routeUserViaIpvReset
+    const mfaResetPath = supportMfaResetWithIpv()
       ? PATH_NAMES.MFA_RESET_WITH_IPV
       : pathWithQueryParam(
           PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
@@ -99,7 +95,7 @@ export function enterAuthenticatorAppCodeGet(
 
     return res.render(templateName, {
       isAccountRecoveryPermitted: isAccountRecoveryPermittedForUser,
-      routeUserViaIpvReset: routeUserViaIpvReset,
+      routeUserViaIpvReset: supportMfaResetWithIpv(),
       mfaResetPath,
     });
   };

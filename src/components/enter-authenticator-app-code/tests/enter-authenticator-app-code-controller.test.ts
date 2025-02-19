@@ -56,7 +56,6 @@ describe("enter authenticator app code controller", () => {
   afterEach(() => {
     sinon.restore();
     delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
-    delete process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY;
   });
 
   describe("enterAuthenticatorAppCodeGet", () => {
@@ -156,7 +155,6 @@ describe("enter authenticator app code controller", () => {
 
     it("should render enter authenticator app code view with mfaResetPath being IPV_DUMMY_URL when mfa reset with ipv is supported", async () => {
       process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
-      process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY = "1";
 
       await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
         req as Request,
