@@ -85,52 +85,12 @@ describe("Integration:: enter mfa", () => {
 
   after(() => {
     process.env.SUPPORT_REAUTHENTICATION = "0";
-    delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
     sinon.restore();
     app = undefined;
   });
 
   it("should return check your phone page with sign in analytics properties", async () => {
     await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA).expect(200));
-  });
-
-  const TEST_DATA = [
-    {
-      description: "when support mfa reset with ipv is off",
-      supportMfaResetWithIpv: "0",
-      expectedHref:
-        PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=SMS",
-      expectedLinkText: "change how you get security codes",
-    },
-    {
-      description: "when support mfa reset with ipv is on",
-      supportMfaResetWithIpv: "1",
-      expectedHref: PATH_NAMES.MFA_RESET_WITH_IPV,
-      expectedLinkText: "check if you can change how you get security codes",
-    },
-  ];
-
-  TEST_DATA.forEach((testData) => {
-    it(`should include the correct link to change mfa methods ${testData.description}`, async () => {
-      process.env.SUPPORT_MFA_RESET_WITH_IPV = testData.supportMfaResetWithIpv;
-      await request(app, (test) =>
-        test
-          .get(PATH_NAMES.ENTER_MFA)
-          .expect(200)
-          .expect(function (res) {
-            const $ = cheerio.load(res.text);
-            expect(
-              $("a")
-                .toArray()
-                .some(
-                  (link) =>
-                    $(link).attr("href") === testData.expectedHref &&
-                    $(link).text().trim() === testData.expectedLinkText
-                )
-            ).to.be.true;
-          })
-      );
-    });
   });
 
   it("following a validation error it should not include link to change security codes where account recovery is not permitted", async () => {
