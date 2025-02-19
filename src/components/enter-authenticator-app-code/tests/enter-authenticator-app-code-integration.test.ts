@@ -30,6 +30,7 @@ describe("Integration:: enter authenticator app code", () => {
     decache("../../common/account-recovery/account-recovery-service");
     const sessionMiddleware = require("../../../middleware/session-middleware");
     const accountRecoveryService = require("../../common/account-recovery/account-recovery-service");
+    process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -169,6 +170,17 @@ describe("Integration:: enter authenticator app code", () => {
           })
       );
     });
+  });
+
+  it("cannot access old journey when new journey enabled", async () => {
+    await request(app, (test) =>
+      test
+        .get(
+          PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP"
+        )
+        .expect(302)
+        .expect("Location", PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+    );
   });
 
   it("should return enter authenticator app security code with reauth analytics properties", async () => {

@@ -460,10 +460,13 @@ const authStateMachine = createMachine(
           optionalPaths: [
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.CHECK_YOUR_EMAIL,
-            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
-            PATH_NAMES.MFA_RESET_WITH_IPV,
-            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
-            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
+            ...(supportMfaResetWithIpv()
+              ? [
+                  PATH_NAMES.MFA_RESET_WITH_IPV,
+                  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+                  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
+                ]
+              : [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]),
           ],
         },
       },
