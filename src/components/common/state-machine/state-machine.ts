@@ -6,6 +6,7 @@ import {
 } from "../../../app.constants";
 import {
   proveIdentityWelcomeEnabled,
+  routeUsersToNewIpvJourney,
   supportMfaResetWithIpv,
 } from "../../../config";
 
@@ -424,13 +425,20 @@ const authStateMachine = createMachine(
             PATH_NAMES.SECURITY_CODE_WAIT,
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
-            ...(supportMfaResetWithIpv()
+            ...(supportMfaResetWithIpv() && !routeUsersToNewIpvJourney()
               ? [
                   PATH_NAMES.MFA_RESET_WITH_IPV,
                   PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
                   PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
+                  PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
                 ]
-              : [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]),
+              : supportMfaResetWithIpv() && routeUsersToNewIpvJourney()
+                ? [
+                    PATH_NAMES.MFA_RESET_WITH_IPV,
+                    PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+                    PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
+                  ]
+                : [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]),
           ],
         },
       },
