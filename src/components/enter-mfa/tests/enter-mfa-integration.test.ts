@@ -1,4 +1,4 @@
-import { describe } from "mocha";
+import { afterEach, describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
@@ -17,8 +17,9 @@ import {
 import { createApiResponse } from "../../../utils/http";
 import { Request, Response, NextFunction } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { UserSession } from "../../../types";
 
-describe("Integration:: enter mfa", () => {
+describe.only("Integration:: enter mfa", () => {
   let token: string | string[];
   let cookies: string;
   let app: any;
@@ -26,30 +27,15 @@ describe("Integration:: enter mfa", () => {
   const PHONE_NUMBER = "7867";
 
   before(async () => {
-    process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
     decache("../../common/account-recovery/account-recovery-service");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
     const accountRecoveryService = require("../../common/account-recovery/account-recovery-service");
 
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-
-        req.session.user = {
-          email: "test@test.com",
-          phoneNumber: PHONE_NUMBER,
-          redactedPhoneNumber: PHONE_NUMBER,
-          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
-        };
-        next();
-      });
+        // req.session.user = {
+        //   email: "test@test.com",
+        //   phoneNumber: PHONE_NUMBER,
+        //   redactedPhoneNumber: PHONE_NUMBER,
+        //   journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
+        // };
 
     sinon
       .stub(accountRecoveryService, "accountRecoveryService")
@@ -68,21 +54,23 @@ describe("Integration:: enter mfa", () => {
         return { accountRecovery };
       });
 
-    app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
-
-    await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA), {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    }).then((res) => {
-      const $ = cheerio.load(res.text);
-      token = $("[name=_csrf]").val();
-      cookies = res.headers["set-cookie"];
-    });
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    const baseUserSession = {
+      email: "test@test.com",
+      phoneNumber: PHONE_NUMBER,
+      redactedPhoneNumber: PHONE_NUMBER,
+      journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
+    }
+    await setupAppWithUserSession(baseUserSession)
     nock.cleanAll();
   });
+
+  afterEach(() => {
+    delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
+  })
 
   after(() => {
     process.env.SUPPORT_REAUTHENTICATION = "0";
@@ -158,36 +146,20 @@ describe("Integration:: enter mfa", () => {
     });
   });
 
-  it.only("cannot access old journey when new journey enabled", async () => {
-    // process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
-
-    // decache("../../../app");
-    // decache("../../../middleware/session-middleware");
-    // const sessionMiddleware = require("../../../middleware/session-middleware");
-    // sinon
-    //   .stub(sessionMiddleware, "validateSessionMiddleware")
-    //   .callsFake(function (
-    //     req: Request,
-    //     res: Response,
-    //     next: NextFunction
-    //   ): void {
-    //     res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-    //
-    //     req.session.user = {
-    //       email: "test@test.com",
-    //       phoneNumber: PHONE_NUMBER,
-    //       redactedPhoneNumber: PHONE_NUMBER,
-    //       journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
-    //     };
-    //     next();
-    //   });
-    // app = await require("../../../app").createApp();
+  it("cannot access old journey when new journey enabled", async () => {
+    process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
+    await setupAppWithUserSession({
+      email: "test@test.com",
+      phoneNumber: PHONE_NUMBER,
+      redactedPhoneNumber: PHONE_NUMBER,
+      journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
+    })
 
     await request(app, (test) =>
       test
         .get(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=SMS")
-        .expect("Location", "|asdasd")
-        .expect(200)
+        .expect(302)
+        .expect("Location", PATH_NAMES.ENTER_MFA)
     );
   });
 
@@ -286,7 +258,7 @@ describe("Integration:: enter mfa", () => {
     );
   });
 
-  it("should return validation error when code entered contains letters", async () => {
+  it.only("should return validation error when code entered contains letters", async () => {
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_MFA)
@@ -447,4 +419,31 @@ describe("Integration:: enter mfa", () => {
         .expect(302)
     );
   });
+
+  async function setupAppWithUserSession(user: UserSession) {
+    decache("../../../app");
+    decache("../../../middleware/session-middleware");
+    const sessionMiddleware = require("../../../middleware/session-middleware");
+    sinon
+      .stub(sessionMiddleware, "validateSessionMiddleware")
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
+        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+
+        req.session.user = user;
+        next();
+      });
+    app = await require("../../../app").createApp();
+
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
+  }
 });
