@@ -4,7 +4,10 @@ import {
   OIDC_PROMPT,
   PATH_NAMES,
 } from "../../../app.constants";
-import { proveIdentityWelcomeEnabled } from "../../../config";
+import {
+  proveIdentityWelcomeEnabled,
+  supportMfaResetWithIpv,
+} from "../../../config";
 
 const USER_JOURNEY_EVENTS = {
   AUTHENTICATED: "AUTHENTICATED",
@@ -421,10 +424,13 @@ const authStateMachine = createMachine(
             PATH_NAMES.SECURITY_CODE_WAIT,
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
-            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
-            PATH_NAMES.MFA_RESET_WITH_IPV,
-            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
-            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
+            ...(supportMfaResetWithIpv()
+              ? [
+                  PATH_NAMES.MFA_RESET_WITH_IPV,
+                  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+                  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
+                ]
+              : [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]),
           ],
         },
       },

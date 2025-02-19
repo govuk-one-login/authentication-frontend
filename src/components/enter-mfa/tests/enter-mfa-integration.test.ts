@@ -16,7 +16,6 @@ import {
 } from "../../common/account-recovery/types";
 import { createApiResponse } from "../../../utils/http";
 import { Request, Response, NextFunction } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 describe("Integration:: enter mfa", () => {
   let token: string | string[];
@@ -26,11 +25,16 @@ describe("Integration:: enter mfa", () => {
   const PHONE_NUMBER = "7867";
 
   before(async () => {
+    process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     decache("../../common/account-recovery/account-recovery-service");
+    decache("../../../../test/helpers/session-helper");
     const sessionMiddleware = require("../../../middleware/session-middleware");
     const accountRecoveryService = require("../../common/account-recovery/account-recovery-service");
+    const {
+      getPermittedJourneyForPath,
+    } = require("../../../../test/helpers/session-helper");
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -155,6 +159,15 @@ describe("Integration:: enter mfa", () => {
           })
       );
     });
+  });
+
+  it("cannot access old journey when new journey enabled", async () => {
+    await request(app, (test) =>
+      test
+        .get(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=SMS")
+        .expect(302)
+        .expect("Location", PATH_NAMES.ENTER_MFA)
+    );
   });
 
   it("following a validation error it should not include link to change security codes where account recovery is not permitted", async () => {
