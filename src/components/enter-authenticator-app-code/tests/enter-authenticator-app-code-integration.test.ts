@@ -16,7 +16,7 @@ import {
 } from "../../common/account-recovery/types";
 import { createApiResponse } from "../../../utils/http";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("Integration:: enter authenticator app code", () => {
   let token: string | string[];

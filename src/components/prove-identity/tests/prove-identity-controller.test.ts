@@ -13,6 +13,7 @@ import { Http } from "../../../utils/http";
 import { authCodeService } from "../../auth-code/auth-code-service";
 import { ExpressRouteFunc } from "../../../types";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("prove identity controller", () => {
   let req: RequestOutput;
@@ -77,6 +78,7 @@ describe("prove identity controller", () => {
       };
 
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.PROVE_IDENTITY),
         isAccountCreationJourney: isAccountCreationJourneyUserSession,
         passwordResetTime: passwordResetTimeTestVar,
       };

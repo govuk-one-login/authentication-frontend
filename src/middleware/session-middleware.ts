@@ -3,6 +3,7 @@ import xss from "xss";
 import { ErrorWithLevel } from "../utils/error";
 import { getAppEnv } from "../config";
 import { ERROR_LOG_LEVEL, ERROR_MESSAGES, PATH_NAMES } from "../app.constants";
+import { getPermittedJourneyForPath } from "../utils/session";
 
 export function initialiseSessionMiddleware(
   req: Request,
@@ -28,6 +29,7 @@ export function initialiseSessionMiddleware(
       email: email,
       redactedPhoneNumber: redactedPhoneNumber,
       phoneNumber: phoneNumber,
+      journey: getPermittedJourneyForPath(PATH_NAMES.ROOT),
     };
   }
 

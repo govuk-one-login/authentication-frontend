@@ -9,6 +9,7 @@ import { PATH_NAMES } from "../../../app.constants";
 import { upliftJourneyGet } from "../uplift-journey-controller";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("uplift journey controller", () => {
   let req: RequestOutput;
@@ -17,6 +18,7 @@ describe("uplift journey controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.UPLIFT_JOURNEY);
     req.session.user = {
+      journey: getPermittedJourneyForPath(PATH_NAMES.UPLIFT_JOURNEY),
       email: "test@test.com",
     };
     res = mockResponse();

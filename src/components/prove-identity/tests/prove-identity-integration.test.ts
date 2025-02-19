@@ -10,7 +10,7 @@ import {
 import { expect } from "chai";
 import { Application, NextFunction, Request, Response } from "express";
 import { setupAccountInterventionsResponse } from "../../../../test/helpers/account-interventions-helpers";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("Integration::prove identity", () => {
   let cookies: string;

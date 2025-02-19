@@ -1,22 +1,27 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { JOURNEY_TYPE } from "../../../../app.constants";
+import { JOURNEY_TYPE, PATH_NAMES } from "../../../../app.constants";
 import {
   getJourneyTypeFromUserSession,
   GetJourneyTypeFromUserSessionOptions,
 } from "../journey";
 import { UserSession } from "../../../../types";
+import { getPermittedJourneyForPath } from "../../../../utils/session";
 
 describe("journey", () => {
   describe("getJourneyTypeFromUserSession", () => {
     it("should return undefined by default", () => {
-      const journeyType = getJourneyTypeFromUserSession({});
+      const journeyType = getJourneyTypeFromUserSession({
+        journey: getPermittedJourneyForPath(PATH_NAMES.CHECK_YOUR_EMAIL),
+      });
       expect(journeyType).to.equal(undefined);
     });
 
     it("should return a specified fallback journeyType", () => {
       const journeyType = getJourneyTypeFromUserSession(
-        {},
+        {
+          journey: getPermittedJourneyForPath(PATH_NAMES.CHECK_YOUR_EMAIL),
+        },
         { fallbackJourneyType: JOURNEY_TYPE.SIGN_IN }
       );
       expect(journeyType).to.equal(JOURNEY_TYPE.SIGN_IN);
@@ -71,7 +76,13 @@ describe("journey", () => {
       it(`should return ${expectedJourneyType} when user session includes ${JSON.stringify(
         userSession
       )} and options is ${options}`, () => {
-        const journeyType = getJourneyTypeFromUserSession(userSession, options);
+        const journeyType = getJourneyTypeFromUserSession(
+          {
+            journey: getPermittedJourneyForPath(PATH_NAMES.ROOT),
+            ...userSession,
+          },
+          options
+        );
         expect(journeyType).to.equal(expectedJourneyType);
       });
     });

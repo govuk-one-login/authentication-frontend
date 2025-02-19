@@ -12,6 +12,7 @@ import { MfaServiceInterface } from "../../common/mfa/types";
 import { PATH_NAMES } from "../../../app.constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("resend mfa controller", () => {
   let req: RequestOutput;
@@ -54,6 +55,7 @@ describe("resend mfa controller", () => {
 
       req.session.user = {
         email: "test@test.com",
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESEND_MFA_CODE),
       };
       req.path = PATH_NAMES.RESEND_MFA_CODE;
 

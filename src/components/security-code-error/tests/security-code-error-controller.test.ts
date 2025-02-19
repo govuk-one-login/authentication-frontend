@@ -20,6 +20,7 @@ import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { SCENARIOS } from "./test-scenario-data";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("security code controller", () => {
   let req: RequestOutput;
@@ -46,6 +47,9 @@ describe("security code controller", () => {
       ({ actionType, expectedRenderOptions }) => {
         it(`should render invalid OTP code for ${actionType} error when email OTP code has been invalid max number of times`, () => {
           req.session.user = {
+            journey: getPermittedJourneyForPath(
+              PATH_NAMES.SECURITY_CODE_INVALID
+            ),
             email: "joe.bloggs@test.com",
           };
           req.query.actionType = actionType;

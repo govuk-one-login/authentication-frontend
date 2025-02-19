@@ -59,7 +59,7 @@ export interface UserSession {
   email?: string;
   redactedPhoneNumber?: string;
   phoneNumber?: string;
-  journey?: UserJourney;
+  journey: UserJourney;
   isLatestTermsAndConditionsAccepted?: boolean;
   isIdentityRequired?: boolean;
   isUpliftRequired?: boolean;

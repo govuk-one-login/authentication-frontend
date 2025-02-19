@@ -10,6 +10,7 @@ import { JOURNEY_TYPE, PATH_NAMES } from "../../../../app.constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import * as journey from "../../journey/journey";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
+import { getPermittedJourneyForPath } from "../../../../utils/session";
 
 describe("send mfa controller", () => {
   let req: RequestOutput;
@@ -40,6 +41,7 @@ describe("send mfa controller", () => {
 
       res.locals.sessionId = "123456-djjad";
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESEND_MFA_CODE),
         email: "test@test.com",
         reauthenticate: "test_data",
       };
@@ -87,6 +89,7 @@ describe("send mfa controller", () => {
 
       res.locals.sessionId = "123456-djjad";
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESEND_MFA_CODE),
         email: "test@test.com",
       };
       req.session.client = {
@@ -133,6 +136,7 @@ describe("send mfa controller", () => {
 
       res.locals.sessionId = "123456-djjad";
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESEND_MFA_CODE),
         email: "test@test.com",
         reauthenticate: "test_data",
       };

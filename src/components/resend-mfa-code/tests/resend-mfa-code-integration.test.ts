@@ -11,7 +11,7 @@ import {
 import { ERROR_CODES } from "../../common/constants";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 const { testPhoneNumber, testRedactedPhoneNumber } = commonVariables;
 
 describe("Integration:: resend mfa code", () => {

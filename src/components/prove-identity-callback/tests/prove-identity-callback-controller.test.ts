@@ -19,6 +19,7 @@ import {
   ProveIdentityCallbackServiceInterface,
 } from "../types";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("prove identity callback controller", () => {
   let req: RequestOutput;
@@ -28,7 +29,10 @@ describe("prove identity callback controller", () => {
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.PROVE_IDENTITY_CALLBACK);
-    req.session.user = { email: "test@test.com" };
+    req.session.user = {
+      journey: getPermittedJourneyForPath(PATH_NAMES.PROVE_IDENTITY_CALLBACK),
+      email: "test@test.com",
+    };
     req.session.client = {
       rpRedirectUri: "http://rpservice.com/auth",
       name: "test service",

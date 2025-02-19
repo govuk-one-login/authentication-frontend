@@ -10,7 +10,7 @@ import {
 } from "../../../app.constants";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("Integration::enter email (create account)", () => {
   let token: string | string[];

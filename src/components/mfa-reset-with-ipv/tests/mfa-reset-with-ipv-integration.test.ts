@@ -4,7 +4,7 @@ import decache from "decache";
 import { API_ENDPOINTS, CHANNEL, PATH_NAMES } from "../../../app.constants";
 import nock = require("nock");
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 const supertest = require("supertest");
 
 const IPV_DUMMY_URL =

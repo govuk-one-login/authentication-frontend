@@ -13,6 +13,7 @@ import { PATH_NAMES } from "../../../app.constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("resend email controller", () => {
   let req: RequestOutput;
@@ -44,6 +45,7 @@ describe("resend email controller", () => {
       } as unknown as SendNotificationServiceInterface;
 
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESEND_EMAIL_CODE),
         email: "test@test.com",
       };
       req.path = PATH_NAMES.RESEND_EMAIL_CODE;
@@ -65,6 +67,7 @@ describe("resend email controller", () => {
       } as unknown as SendNotificationServiceInterface;
 
       req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.RESEND_EMAIL_CODE),
         email: "test@test.com",
         isVerifyEmailCodeResendRequired: true,
         isAccountCreationJourney: true,
@@ -84,6 +87,9 @@ describe("resend email controller", () => {
   describe("securityCodeCheckTimeLimit", () => {
     it("should render security-code-error/index-wait.njk if codeRequestLock is set in the future", async () => {
       req.session.user = {
+        journey: getPermittedJourneyForPath(
+          PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT
+        ),
         email: "test@test.com",
         codeRequestLock: new Date(Date.now() + 15 * 60000).toUTCString(),
       };
@@ -101,6 +107,9 @@ describe("resend email controller", () => {
 
     it("should redirect to /resend-email-code if codeRequestLock is set in the past", async () => {
       req.session.user = {
+        journey: getPermittedJourneyForPath(
+          PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT
+        ),
         email: "test@test.com",
         codeRequestLock: new Date(Date.now() - 15 * 60000).toUTCString(),
       };
@@ -113,6 +122,9 @@ describe("resend email controller", () => {
 
     it("should redirect to /resend-email-code if codeRequestLock is not set", async () => {
       req.session.user = {
+        journey: getPermittedJourneyForPath(
+          PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT
+        ),
         email: "test@test.com",
       };
       req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;

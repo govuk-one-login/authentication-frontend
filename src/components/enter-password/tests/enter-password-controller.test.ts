@@ -21,6 +21,7 @@ import { createMockRequest } from "../../../../test/helpers/mock-request-helper"
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 import { ReauthJourneyError } from "../../../utils/error";
 import { strict as assert } from "assert";
+import { getPermittedJourneyForPath } from "../../../utils/session";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
@@ -30,7 +31,10 @@ describe("enter password controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ENTER_PASSWORD);
     res = mockResponse();
-    req.session.user = { email };
+    req.session.user = {
+      journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_PASSWORD),
+      email,
+    };
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
   });
 
@@ -109,7 +113,11 @@ describe("enter password controller", () => {
           "getJourneyTypeFromUserSession"
         );
 
-        req.session.user = { email, reauthenticate: "test_data" };
+        req.session.user = {
+          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_PASSWORD),
+          email,
+          reauthenticate: "test_data",
+        };
 
         await enterPasswordPost(
           false,
@@ -188,7 +196,11 @@ describe("enter password controller", () => {
         "getJourneyTypeFromUserSession"
       );
 
-      req.session.user = { email, reauthenticate: "test_data" };
+      req.session.user = {
+        journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_PASSWORD),
+        email,
+        reauthenticate: "test_data",
+      };
 
       await enterPasswordPost(
         false,
