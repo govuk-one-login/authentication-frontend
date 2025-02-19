@@ -194,10 +194,6 @@ locals {
       {
         name  = "SUPPORT_MFA_RESET_WITH_IPV"
         value = var.support_mfa_reset_with_ipv
-      },
-      {
-        name  = "ROUTE_USERS_TO_NEW_IPV_JOURNEY"
-        value = var.route_users_to_new_ipv_journey
       }
     ]
 
