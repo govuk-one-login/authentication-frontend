@@ -1,0 +1,2303 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Authentication Frontend application
+
+  '
+Transform:
+- AWS::LanguageExtensions
+- AWS::Serverless-2016-10-31
+Metadata:
+  cfn-lint:
+    config:
+      regions:
+      - eu-west-2
+      ignore_checks:
+      - W8003
+Parameters:
+  Environment:
+    Type: String
+    Description: The name of the environment to deploy to
+    AllowedValues:
+    - build
+    - staging
+    - production
+    - integration
+    - dev
+  SubEnvironment:
+    Type: String
+    Description: 'When deploying to dev, optionally configure which sub-environment
+      to deploy to i.e. authdev1, authdev2. This feature is not available for route-to-live
+      environments
+
+      '
+    Default: none
+  VpcStackName:
+    Type: String
+    Description: The name of the stack used to create the VPC
+  CodeSigningConfigArn:
+    Type: String
+    Description: The ARN of the Code Signing Config to use, provided by the deployment
+      pipeline
+    Default: none
+  DeploymentStrategy:
+    Description: Predefined deployment configuration for ECS application
+    Type: String
+    Default: None
+    AllowedValues:
+    - None
+    - CodeDeployDefault.ECSCanary10Percent5Minutes
+    - CodeDeployDefault.ECSCanary10Percent15Minutes
+    - CodeDeployDefault.ECSAllAtOnce
+    - ECSCanary50Percent5Minutes
+  PermissionsBoundary:
+    Type: String
+    Description: The ARN of the permissions boundary to apply when creating IAM roles
+    Default: none
+  ServiceDownPageRegistry:
+    Type: String
+    Default: '058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l'
+Conditions:
+  DeployServiceDownPage:
+    Fn::Equals:
+    - Fn::FindInMap:
+      - EnvironmentConfiguration
+      - Ref: Environment
+      - DeployServiceDownPage
+      - DefaultValue: 'No'
+    - 'Yes'
+  UseCodeSigning:
+    Fn::Not:
+    - Fn::Equals:
+      - Ref: CodeSigningConfigArn
+      - none
+  UsePermissionsBoundary:
+    Fn::Not:
+    - Fn::Equals:
+      - Ref: PermissionsBoundary
+      - none
+  UseECSCanaryDeploymentStack:
+    Fn::Not:
+    - Fn::Equals:
+      - Ref: DeploymentStrategy
+      - None
+  ECSServiceCanaryPhasedDeploy:
+    Fn::And:
+    - Condition: UseECSCanaryDeploymentStack
+    - Fn::Or:
+      - Fn::And:
+        - Condition: UseSubEnvironment
+        - Fn::Equals:
+          - Fn::FindInMap:
+            - EnvironmentConfiguration
+            - Ref: SubEnvironment
+            - ECSServiceCanaryPhasedDeploy
+            - DefaultValue: 'No'
+          - 'Yes'
+      - Fn::And:
+        - Condition: NotSubEnvironment
+        - Fn::Equals:
+          - Fn::FindInMap:
+            - EnvironmentConfiguration
+            - Ref: Environment
+            - ECSServiceCanaryPhasedDeploy
+            - DefaultValue: 'No'
+          - 'Yes'
+  UseMfaResetWithIpv:
+    Fn::Or:
+    - Fn::And:
+      - Condition: UseSubEnvironment
+      - Fn::Equals:
+        - Fn::FindInMap:
+          - EnvironmentConfiguration
+          - Ref: SubEnvironment
+          - UseMfaResetWithIpv
+          - DefaultValue: 'No'
+        - 'Yes'
+    - Fn::And:
+      - Condition: NotSubEnvironment
+      - Fn::Equals:
+        - Fn::FindInMap:
+          - EnvironmentConfiguration
+          - Ref: Environment
+          - UseMfaResetWithIpv
+          - DefaultValue: 'No'
+        - 'Yes'
+  UseSubEnvironment:
+    Fn::And:
+    - Fn::Equals:
+      - Ref: Environment
+      - dev
+    - Fn::Not:
+      - Fn::Equals:
+        - Ref: SubEnvironment
+        - none
+  NotSubEnvironment:
+    Fn::Equals:
+    - Ref: SubEnvironment
+    - none
+  IsNotProduction:
+    Fn::Not:
+    - Fn::Equals:
+      - Ref: Environment
+      - production
+  SupportHTTPKeepAlive:
+    Fn::Or:
+    - Fn::And:
+      - Condition: UseSubEnvironment
+      - Fn::Equals:
+        - Fn::FindInMap:
+          - EnvironmentConfiguration
+          - Ref: SubEnvironment
+          - SupportHTTPKeepAlive
+          - DefaultValue: 'No'
+        - 'Yes'
+    - Fn::And:
+      - Condition: NotSubEnvironment
+      - Fn::Equals:
+        - Fn::FindInMap:
+          - EnvironmentConfiguration
+          - Ref: Environment
+          - SupportHTTPKeepAlive
+          - DefaultValue: 'No'
+        - 'Yes'
+  Enableipvspinner:
+    Fn::Or:
+    - Fn::And:
+      - Condition: UseSubEnvironment
+      - Fn::Equals:
+        - Fn::FindInMap:
+          - EnvironmentConfiguration
+          - Ref: SubEnvironment
+          - Enableipvspinner
+          - DefaultValue: 'No'
+        - 'Yes'
+    - Fn::And:
+      - Condition: NotSubEnvironment
+      - Fn::Equals:
+        - Fn::FindInMap:
+          - EnvironmentConfiguration
+          - Ref: Environment
+          - Enableipvspinner
+          - DefaultValue: 'No'
+        - 'Yes'
+  IsSplunkEnabled:
+    Fn::Equals:
+    - Fn::FindInMap:
+      - EnvironmentConfiguration
+      - Ref: Environment
+      - IsSplunkEnabled
+      - DefaultValue: 'No'
+    - 'Yes'
+  IsSplunkandServicedown:
+    Fn::And:
+    - Condition: DeployServiceDownPage
+    - Condition: IsSplunkEnabled
+  MaintainMigratedZoneRecords:
+    Fn::Or:
+    - Fn::Equals:
+      - Ref: SubEnvironment
+      - authdev1
+    - Fn::Equals:
+      - Ref: Environment
+      - build
+    - Fn::Equals:
+      - Ref: Environment
+      - staging
+    - Fn::Equals:
+      - Ref: Environment
+      - integration
+    - Fn::Equals:
+      - Ref: Environment
+      - production
+  SwitchToMigratedZone:
+    Fn::And:
+    - Condition: MaintainMigratedZoneRecords
+    - Fn::Or:
+      - Fn::Equals:
+        - Ref: Environment
+        - placeholder
+      - Fn::Equals:
+        - Ref: Environment
+        - staging
+      - Fn::Equals:
+        - Ref: Environment
+        - integration
+Mappings:
+  ElasticLoadBalancerAccountIds:
+    eu-west-2:
+      AccountId: '652711504416'
+  EnvironmentConfiguration:
+    authdev1:
+      cloudfrontDistributionStackName: authdev1-cloudfront
+      orchToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----
+
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENB3csRUIdoaTHNn079Jl7JpiXzxF
+
+        0p2ZIddCErxtIhGMTTqtbQZJCPesSKUVE/DQbpIko3mLoisuFgmQfFouCw==
+
+        -----END PUBLIC KEY-----
+
+        '
+      orchStubToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----
+
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEM0ZehmrdDd89uYEFMTakbS7JgwCG
+
+        XK7CAYMcVvy1pP5yV4O2mnDjYmvjZpvio2ctgOPxDuBb38QP1HD9WAOR2w==
+
+        -----END PUBLIC KEY-----
+
+        '
+      transitionalDomain: signin.authdev1.dev.account.gov.uk
+      migratedDomain: signin.authdev1.dev.account.gov.uk
+      UseMfaResetWithIpv: 'Yes'
+      Enableipvspinner: 'No'
+    authdev2:
+      cloudfrontDistributionStackName: authdev2-cloudfront
+      orchToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----
+
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/Yz722IDLN1mPqkPTihkwAkp/rUm
+
+        BhnWynwAkE/YZlskX+N7VmwIjupla7O6hczlIOqkmPdQ1ayDqI8yY2QOiw==
+
+        -----END PUBLIC KEY-----
+
+        '
+      orchStubToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----
+
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwe8ey1GnTbH6E69EJFUkt4WQc1Kl
+
+        tJwzOYNWUmK/+GxooRp+j9i9KWQ0WlV4gVI0iQkHY3ZKq+RWk94tSDHbyQ==
+
+        -----END PUBLIC KEY-----
+
+        '
+      transitionalDomain: signin.authdev2.dev.account.gov.uk
+      migratedDomain: signin.authdev2.dev.account.gov.uk
+      UseMfaResetWithIpv: 'Yes'
+      Enableipvspinner: 'No'
+    dev:
+      DeployServiceDownPage: 'No'
+      dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
+      frontendAutoScalingMinCount: 2
+      frontendAutoScalingMaxCount: 4
+      frontendTaskDefinitionCpu: 512
+      frontendTaskDefinitionMemory: 1024
+      cloudwatchLogRetentionInDays: 1
+      oldCloudFrontDistributionDomain: d6kww5xvio5k2.cloudfront.net
+      oldALBDNSName: dev-frontend-1839011587.eu-west-2.elb.amazonaws.com
+      orchToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----
+
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHzG8IFx1jE1+Ul44jQk96efPknCX
+
+        VxWS4PqLrKfR/31UQovFQLfyxA46uiMOvr7+0hRwFX1fQhagsIK+dfB5PA==
+
+        -----END PUBLIC KEY-----
+
+        '
+      orchStubToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----
+
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1P2vcnCdqx+MDwMTrJy47tV5ryTf
+
+        kRaZYTpLsfCpC79ZgKSYEBcguuOUP4DvJpyHomBEnxeUs7s5KRgyMQjY4g==
+
+        -----END PUBLIC KEY-----
+
+        '
+      redisNodeSize: cache.t2.small
+      IsSplunkEnabled: 'No'
+      SupportHTTPKeepAlive: 'No'
+      transitionalDomain: signin-sp.dev.account.gov.uk
+      migratedDomain: signin.dev.account.gov.uk
+      UseMfaResetWithIpv: 'Yes'
+      Enableipvspinner: 'No'
+    build:
+      dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
+      DeployServiceDownPage: 'No'
+      frontendAutoScalingMinCount: 4
+      frontendAutoScalingMaxCount: 6
+      frontendTaskDefinitionCpu: 512
+      frontendTaskDefinitionMemory: 1024
+      cloudwatchLogRetentionInDays: 7
+      oldCloudFrontDistributionDomain: dqgh68jqbv9m7.cloudfront.net
+      oldALBDNSName: build-frontend-41183120.eu-west-2.elb.amazonaws.com
+      orchToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----
+
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENRdvNXHwk1TvrgFUsWXAE5oDTcPr
+
+        CBp6HxbvYDLsqwNHiDFEzCwvbXKY2QQR/Rtel0o156CtU9k1lCZJGAsSIA==
+
+        -----END PUBLIC KEY-----
+
+        '
+      orchStubToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----
+
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmzWAucozlF6eykmgikXj2kI03O7V
+
+        WwuA51+3Ak+stF2dddC60WXEKhrFumKBUnE5GhJNg4v0iN948Mwl+vz5Xw==
+
+        -----END PUBLIC KEY-----
+
+        '
+      redisNodeSize: cache.t2.small
+      IsSplunkEnabled: 'Yes'
+      SupportHTTPKeepAlive: 'No'
+      transitionalDomain: signin-sp.build.account.gov.uk
+      migratedDomain: signin.build.account.gov.uk
+      UseMfaResetWithIpv: 'Yes'
+      Enableipvspinner: 'No'
+    staging:
+      dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
+      DeployServiceDownPage: 'No'
+      frontendAutoScalingMinCount: 4
+      frontendAutoScalingMaxCount: 240
+      frontendTaskDefinitionCpu: 2048
+      frontendTaskDefinitionMemory: 4096
+      cloudwatchLogRetentionInDays: 7
+      oldCloudFrontDistributionDomain: dn583e4460uqv.cloudfront.net
+      oldALBDNSName: staging-frontend-972136373.eu-west-2.elb.amazonaws.com
+      orchToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----
+
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5PP1PZmhiuHR57ZEfZXARt9/uiG+
+
+        KKF+S7us4zEEEmEXZFR1H+kWP5RrLHQy9esxsul9X7V4pygDTY1I6QbMGg==
+
+        -----END PUBLIC KEY-----
+
+        '
+      orchStubToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----
+
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEw3VqLzY6ZFWmqruOpvMpPH8PWuQQ
+
+        1zSWSgFy2sngA1GKybC0zuZluGHfZMnr/BGo+teQzbDCekLijPvlozXY1g==
+
+        -----END PUBLIC KEY-----
+
+        '
+      accountRecoveryCodeEnteredWrongBlockedMinutes: 120
+      codeEnteredWrongBlockedMinutes: 120
+      codeRequestBlockedMinutes: 120
+      passwordResetCodeEnteredWrongBlockedMinutes: 120
+      reducedCodeBlockDurationMinutes: 15
+      redisNodeSize: cache.m4.xlarge
+      GA4Enabled: 'true'
+      IsSplunkEnabled: 'Yes'
+      SupportHTTPKeepAlive: 'Yes'
+      transitionalDomain: signin-sp.staging.account.gov.uk
+      migratedDomain: signin.staging.account.gov.uk
+      UseMfaResetWithIpv: 'Yes'
+      Enableipvspinner: 'No'
+    integration:
+      DeployServiceDownPage: 'Yes'
+      dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
+      frontendAutoScalingMinCount: 2
+      frontendAutoScalingMaxCount: 4
+      frontendTaskDefinitionCpu: 512
+      frontendTaskDefinitionMemory: 1024
+      cloudwatchLogRetentionInDays: 30
+      oldCloudFrontDistributionDomain: d3dw1x63k50a79.cloudfront.net
+      oldALBDNSName: integration-frontend-1951285918.eu-west-2.elb.amazonaws.com
+      orchToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----
+
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzzwKLypUL89WVaeTbfBZu0Fws8T7
+
+        ppx89XLVfgXIoCs2P//N5qdghvzgNIgVehQ7CkzyorO/lnRlWPfjCG4Oxw==
+
+        -----END PUBLIC KEY-----
+
+        '
+      accountRecoveryCodeEnteredWrongBlockedMinutes: 120
+      codeEnteredWrongBlockedMinutes: 120
+      codeRequestBlockedMinutes: 120
+      passwordResetCodeEnteredWrongBlockedMinutes: 120
+      reducedCodeBlockDurationMinutes: 15
+      redisNodeSize: cache.t2.small
+      IsSplunkEnabled: 'Yes'
+      SupportHTTPKeepAlive: 'No'
+      transitionalDomain: signin-sp.integration.account.gov.uk
+      migratedDomain: signin.integration.account.gov.uk
+      UseMfaResetWithIpv: 'No'
+      Enableipvspinner: 'No'
+      orchStubToAuth: ''
+    production:
+      DeployServiceDownPage: 'Yes'
+      dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
+      frontendAutoScalingMinCount: 4
+      frontendAutoScalingMaxCount: 240
+      frontendTaskDefinitionCpu: 2048
+      frontendTaskDefinitionMemory: 4096
+      cloudwatchLogRetentionInDays: 30
+      oldCloudFrontDistributionDomain: d1sj2b5tywgixi.cloudfront.net
+      oldALBDNSName: production-frontend-1140310834.eu-west-2.elb.amazonaws.com
+      orchToAuthSigningPublicKey: '-----BEGIN PUBLIC KEY-----
+
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5iJXSuxgbfM6ADQVtNNDi7ED5ly5
+
+        +3VZPbjHv+v0AjQ5Ps+avkXWKwOeScG9sS0cDf0utEXi3fN3cEraa9WuKQ==
+
+        -----END PUBLIC KEY-----
+
+        '
+      accountRecoveryCodeEnteredWrongBlockedMinutes: 120
+      codeEnteredWrongBlockedMinutes: 120
+      codeRequestBlockedMinutes: 120
+      passwordResetCodeEnteredWrongBlockedMinutes: 120
+      reducedCodeBlockDurationMinutes: 15
+      redisNodeSize: cache.m4.xlarge
+      GA4Enabled: 'true'
+      googleAnalytics4GTMContainerId: GTM-K4PBJH3
+      IsSplunkEnabled: 'Yes'
+      SupportHTTPKeepAlive: 'No'
+      transitionalDomain: signin-sp.account.gov.uk
+      migratedDomain: signin.account.gov.uk
+      UseMfaResetWithIpv: 'No'
+      Enableipvspinner: 'No'
+      orchStubToAuth: ''
+Globals:
+  Function:
+    Environment:
+      Variables:
+        AWS_LAMBDA_EXEC_WRAPPER: /opt/dynatrace
+        DT_CONNECTION_AUTH_TOKEN:
+          Fn::Sub:
+          - '{{resolve:secretsmanager:${SecretArn}:SecretString:DT_CONNECTION_AUTH_TOKEN}}'
+          - SecretArn:
+              Fn::FindInMap:
+              - EnvironmentConfiguration
+              - Ref: Environment
+              - dynatraceSecretArn
+        DT_CONNECTION_BASE_URL:
+          Fn::Sub:
+          - '{{resolve:secretsmanager:${SecretArn}:SecretString:DT_CONNECTION_BASE_URL}}'
+          - SecretArn:
+              Fn::FindInMap:
+              - EnvironmentConfiguration
+              - Ref: Environment
+              - dynatraceSecretArn
+        DT_CLUSTER_ID:
+          Fn::Sub:
+          - '{{resolve:secretsmanager:${SecretArn}:SecretString:DT_CLUSTER_ID}}'
+          - SecretArn:
+              Fn::FindInMap:
+              - EnvironmentConfiguration
+              - Ref: Environment
+              - dynatraceSecretArn
+        DT_LOG_COLLECTION_AUTH_TOKEN:
+          Fn::Sub:
+          - '{{resolve:secretsmanager:${SecretArn}:SecretString:DT_LOG_COLLECTION_AUTH_TOKEN}}'
+          - SecretArn:
+              Fn::FindInMap:
+              - EnvironmentConfiguration
+              - Ref: Environment
+              - dynatraceSecretArn
+        DT_TENANT:
+          Fn::Sub:
+          - '{{resolve:secretsmanager:${SecretArn}:SecretString:DT_TENANT}}'
+          - SecretArn:
+              Fn::FindInMap:
+              - EnvironmentConfiguration
+              - Ref: Environment
+              - dynatraceSecretArn
+        DT_OPEN_TELEMETRY_ENABLE_INTEGRATION: 'true'
+    MemorySize: 1536
+    Timeout: 30
+    Runtime: java17
+    Architectures:
+    - x86_64
+    PermissionsBoundary:
+      Fn::If:
+      - UsePermissionsBoundary
+      - Ref: PermissionsBoundary
+      - Ref: AWS::NoValue
+    CodeSigningConfigArn:
+      Fn::If:
+      - UseCodeSigning
+      - Ref: CodeSigningConfigArn
+      - Ref: AWS::NoValue
+    Layers:
+    - Fn::Sub:
+      - '{{resolve:secretsmanager:${SecretArn}:SecretString:JAVA_LAYER}}'
+      - SecretArn:
+          Fn::FindInMap:
+          - EnvironmentConfiguration
+          - Ref: Environment
+          - dynatraceSecretArn
+Resources:
+  FrontendECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName:
+        Fn::Sub: ${AWS::StackName}-cluster
+      ClusterSettings:
+      - Name: containerInsights
+        Value: enabled
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-FrontendECSCluster
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  FrontendECSService:
+    Metadata:
+      cfn-lint:
+        config:
+          ignore_checks:
+          - E3056
+    Type: AWS::ECS::Service
+    DependsOn: ApplicationLoadBalancerListenerHTTPS
+    Properties:
+      Cluster:
+        Ref: FrontendECSCluster
+      LaunchType: FARGATE
+      HealthCheckGracePeriodSeconds: 15
+      DeploymentConfiguration:
+        Fn::If:
+        - UseECSCanaryDeploymentStack
+        - Ref: AWS::NoValue
+        - MaximumPercent: 200
+          MinimumHealthyPercent: 50
+      DeploymentController:
+        Type:
+          Fn::If:
+          - UseECSCanaryDeploymentStack
+          - CODE_DEPLOY
+          - ECS
+      LoadBalancers:
+        Fn::If:
+        - ECSServiceCanaryPhasedDeploy
+        - Ref: AWS::NoValue
+        - - ContainerName: frontend-application
+            ContainerPort: '3000'
+            TargetGroupArn:
+              Ref: ApplicationLoadBalancerTargetGroupA
+      NetworkConfiguration:
+        Fn::If:
+        - ECSServiceCanaryPhasedDeploy
+        - Ref: AWS::NoValue
+        - AwsvpcConfiguration:
+            AssignPublicIp: DISABLED
+            SecurityGroups:
+            - Fn::GetAtt:
+              - ContainerServiceSecurityGroup
+              - GroupId
+            Subnets:
+            - Fn::ImportValue:
+                Fn::Sub: ${VpcStackName}-ProtectedSubnetIdA
+            - Fn::ImportValue:
+                Fn::Sub: ${VpcStackName}-ProtectedSubnetIdB
+            - Fn::ImportValue:
+                Fn::Sub: ${VpcStackName}-ProtectedSubnetIdC
+      PropagateTags: SERVICE
+      TaskDefinition:
+        Fn::If:
+        - ECSServiceCanaryPhasedDeploy
+        - Ref: AWS::NoValue
+        - Ref: TaskDefinition
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-FrontendECSService
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  FrontendScaleOutAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName:
+        Fn::Sub: ${FrontendECSCluster}/${FrontendECSService.Name}-AlarmScaleUp
+      AlarmDescription: 'Metric alarm to trigger ECS scale up
+
+        '
+      AlarmActions:
+      - Ref: FrontendAutoScalingPolicyScaleOut
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: 1
+      MetricName: CPUUtilization
+      Namespace: AWS/ECS
+      Period: 60
+      Statistic: Average
+      Threshold: 40
+      DatapointsToAlarm: 1
+      Dimensions:
+      - Name: ClusterName
+        Value:
+          Ref: FrontendECSCluster
+      - Name: ServiceName
+        Value:
+          Fn::GetAtt:
+          - FrontendECSService
+          - Name
+  FrontendScaleInAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName:
+        Fn::Sub: ${FrontendECSCluster}/${FrontendECSService.Name}-AlarmScaleDown
+      AlarmDescription: 'Metric alarm to trigger ECS scale down
+
+        '
+      AlarmActions:
+      - Ref: FrontendAutoScalingPolicyScaleIn
+      ComparisonOperator: LessThanThreshold
+      EvaluationPeriods: 5
+      MetricName: CPUUtilization
+      Namespace: AWS/ECS
+      Period: 60
+      Statistic: Average
+      Threshold: 30
+      DatapointsToAlarm: 5
+      Dimensions:
+      - Name: ClusterName
+        Value:
+          Ref: FrontendECSCluster
+      - Name: ServiceName
+        Value:
+          Fn::GetAtt:
+          - FrontendECSService
+          - Name
+  FrontendAutoScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MaxCapacity:
+        Fn::FindInMap:
+        - EnvironmentConfiguration
+        - Ref: Environment
+        - frontendAutoScalingMaxCount
+      MinCapacity:
+        Fn::FindInMap:
+        - EnvironmentConfiguration
+        - Ref: Environment
+        - frontendAutoScalingMinCount
+      ResourceId:
+        Fn::Join:
+        - /
+        - - service
+          - Ref: FrontendECSCluster
+          - Fn::GetAtt:
+            - FrontendECSService
+            - Name
+      RoleARN:
+        Fn::Sub: arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+  FrontendAutoScalingPolicyScaleOut:
+    DependsOn: FrontendAutoScalingTarget
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName:
+        Fn::Sub: ${AWS::StackName}-FrontendAutoScalingPolicyScaleOut
+      PolicyType: StepScaling
+      ResourceId:
+        Fn::Join:
+        - /
+        - - service
+          - Ref: FrontendECSCluster
+          - Fn::GetAtt:
+            - FrontendECSService
+            - Name
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+      StepScalingPolicyConfiguration:
+        AdjustmentType: PercentChangeInCapacity
+        Cooldown: 60
+        MetricAggregationType: Average
+        MinAdjustmentMagnitude: 10
+        StepAdjustments:
+        - ScalingAdjustment: 300
+          MetricIntervalLowerBound: 0
+          MetricIntervalUpperBound: 10
+        - ScalingAdjustment: 600
+          MetricIntervalLowerBound: 10
+          MetricIntervalUpperBound: 30
+        - ScalingAdjustment: 1000
+          MetricIntervalLowerBound: 30
+  FrontendAutoScalingPolicyScaleIn:
+    DependsOn: FrontendAutoScalingTarget
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName:
+        Fn::Sub: ${AWS::StackName}-FrontendAutoScalingPolicyScaleIn
+      PolicyType: StepScaling
+      ResourceId:
+        Fn::Join:
+        - /
+        - - service
+          - Ref: FrontendECSCluster
+          - Fn::GetAtt:
+            - FrontendECSService
+            - Name
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+      StepScalingPolicyConfiguration:
+        AdjustmentType: PercentChangeInCapacity
+        Cooldown: 300
+        MetricAggregationType: Average
+        MinAdjustmentMagnitude: 5
+        StepAdjustments:
+        - ScalingAdjustment: -25
+          MetricIntervalUpperBound: 0
+  ContainerServiceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group to access the Container Service
+      GroupName:
+        Fn::Join:
+        - '-'
+        - - Ref: AWS::StackName
+          - ContainerService
+          - Fn::Select:
+            - 4
+            - Fn::Split:
+              - '-'
+              - Fn::Select:
+                - 2
+                - Fn::Split:
+                  - /
+                  - Ref: AWS::StackId
+      SecurityGroupIngress:
+      - Description: Allow traffic from the load balancer on port 3000
+        SourceSecurityGroupId:
+          Fn::GetAtt:
+          - ApplicationLoadBalancerSecurityGroup
+          - GroupId
+        IpProtocol: tcp
+        FromPort: 3000
+        ToPort: 3000
+      - Description: Allow traffic from the load balancer on port 8080
+        SourceSecurityGroupId:
+          Fn::GetAtt:
+          - ApplicationLoadBalancerSecurityGroup
+          - GroupId
+        IpProtocol: tcp
+        FromPort: 8080
+        ToPort: 8080
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: ${VpcStackName}-VpcId
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-ContainerServiceSecurityGroup
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family:
+        Fn::If:
+        - UseSubEnvironment
+        - Fn::Sub: ${SubEnvironment}-frontend-ecs-task-definition
+        - Fn::Sub: ${Environment}-frontend-ecs-task-definition
+      ContainerDefinitions:
+      - Name: frontend-application
+        Image: 975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev1-frontend-image-repository-containerrepository-k0a7zjnydazf:f8d4a39396e246855f1eb10d2232db81e2fb1b72
+        PortMappings:
+        - ContainerPort: 3000
+          HostPort: 3000
+          Protocol: tcp
+        Essential: true
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: FrontendTaskLogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-create-group: 'true'
+            awslogs-stream-prefix:
+              Ref: AWS::StackName
+        Environment:
+        - Name: NODE_ENV
+          Value: production
+        - Name: APP_ENV
+          Value:
+            Fn::If:
+            - UseSubEnvironment
+            - Ref: SubEnvironment
+            - Ref: Environment
+        - Name: FARGATE
+          Value: 1
+        - Name: API_BASE_URL
+          Value:
+            Fn::If:
+            - IsNotProduction
+            - Fn::If:
+              - UseSubEnvironment
+              - Fn::Sub: https://oidc.${SubEnvironment}.sandpit.account.gov.uk
+              - Fn::Sub: https://oidc.${Environment}.account.gov.uk
+            - https://oidc.account.gov.uk
+        - Name: FRONTEND_API_BASE_URL
+          Value:
+            Fn::If:
+            - IsNotProduction
+            - Fn::If:
+              - UseSubEnvironment
+              - Fn::Sub: https://auth.${SubEnvironment}.sandpit.account.gov.uk/
+              - Fn::Sub: https://auth.${Environment}.account.gov.uk/
+            - https://auth.account.gov.uk/
+        - Name: ACCOUNT_MANAGEMENT_URL
+          Value:
+            Fn::If:
+            - IsNotProduction
+            - Fn::Sub: https://home.${Environment}.account.gov.uk
+            - https://home.account.gov.uk
+        - Name: SUPPORT_ACCOUNT_RECOVERY
+          Value: 1
+        - Name: BASE_URL
+          Value:
+            Fn::If:
+            - SwitchToMigratedZone
+            - Fn::FindInMap:
+              - EnvironmentConfiguration
+              - Fn::If:
+                - UseSubEnvironment
+                - Ref: SubEnvironment
+                - Ref: Environment
+              - migratedDomain
+            - Fn::FindInMap:
+              - EnvironmentConfiguration
+              - Fn::If:
+                - UseSubEnvironment
+                - Ref: SubEnvironment
+                - Ref: Environment
+              - transitionalDomain
+        - Name: SUPPORT_AUTHORIZE_CONTROLLER
+          Value: 1
+        - Name: ORCH_TO_AUTH_SIGNING_KEY
+          Value:
+            Fn::If:
+            - UseSubEnvironment
+            - Fn::FindInMap:
+              - EnvironmentConfiguration
+              - Ref: SubEnvironment
+              - orchToAuthSigningPublicKey
+            - Fn::FindInMap:
+              - EnvironmentConfiguration
+              - Ref: Environment
+              - orchToAuthSigningPublicKey
+        - Name: ORCH_TO_AUTH_CLIENT_ID
+          Value: orchestrationAuth
+        - Name: ORCH_TO_AUTH_AUDIENCE
+          Value:
+            Fn::If:
+            - IsNotProduction
+            - Fn::If:
+              - UseSubEnvironment
+              - Fn::Sub: https://signin.${SubEnvironment}.sandpit.account.gov.uk/
+              - Fn::Sub: https://signin.${Environment}.account.gov.uk/
+            - https://signin.account.gov.uk/
+        - Name: ORCH_STUB_TO_AUTH_SIGNING_KEY
+          Value:
+            Fn::If:
+            - UseSubEnvironment
+            - Fn::FindInMap:
+              - EnvironmentConfiguration
+              - Ref: SubEnvironment
+              - orchStubToAuthSigningPublicKey
+              - DefaultValue: ''
+            - Fn::FindInMap:
+              - EnvironmentConfiguration
+              - Ref: Environment
+              - orchStubToAuthSigningPublicKey
+              - DefaultValue: ''
+        - Name: ORCH_STUB_TO_AUTH_CLIENT_ID
+          Value:
+            Fn::FindInMap:
+            - EnvironmentConfiguration
+            - Ref: Environment
+            - orchStubToAuth
+            - DefaultValue: orchestrationAuth
+        - Name: ORCH_STUB_TO_AUTH_AUDIENCE
+          Value:
+            Fn::Sub:
+            - https://${FQDN}/
+            - FQDN:
+                Fn::If:
+                - SwitchToMigratedZone
+                - Fn::FindInMap:
+                  - EnvironmentConfiguration
+                  - Fn::If:
+                    - UseSubEnvironment
+                    - Ref: SubEnvironment
+                    - Ref: Environment
+                  - migratedDomain
+                - Fn::FindInMap:
+                  - EnvironmentConfiguration
+                  - Fn::If:
+                    - UseSubEnvironment
+                    - Ref: SubEnvironment
+                    - Ref: Environment
+                  - transitionalDomain
+        - Name: URL_FOR_SUPPORT_LINKS
+          Value:
+            Fn::Sub:
+            - https://${homeFQDN}/contact-gov-uk-one-login
+            - homeFQDN:
+                Fn::If:
+                - IsNotProduction
+                - Fn::Sub: home.${Environment}.account.gov.uk
+                - home.account.gov.uk
+        - Name: SERVICE_DOMAIN
+          Value:
+            Fn::If:
+            - IsNotProduction
+            - Fn::If:
+              - UseSubEnvironment
+              - Fn::Sub: ${SubEnvironment}.${Environment}.account.gov.uk
+              - Fn::Sub: ${Environment}.account.gov.uk
+            - account.gov.uk
+        - Name: PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES
+          Value:
+            Fn::FindInMap:
+            - EnvironmentConfiguration
+            - Ref: Environment
+            - passwordResetCodeEnteredWrongBlockedMinutes
+            - DefaultValue: '1'
+        - Name: ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES
+          Value:
+            Fn::FindInMap:
+            - EnvironmentConfiguration
+            - Ref: Environment
+            - accountRecoveryCodeEnteredWrongBlockedMinutes
+            - DefaultValue: '1'
+        - Name: CODE_REQUEST_BLOCKED_MINUTES
+          Value:
+            Fn::FindInMap:
+            - EnvironmentConfiguration
+            - Ref: Environment
+            - codeRequestBlockedMinutes
+            - DefaultValue: '1'
+        - Name: CODE_ENTERED_WRONG_BLOCKED_MINUTES
+          Value:
+            Fn::FindInMap:
+            - EnvironmentConfiguration
+            - Ref: Environment
+            - codeEnteredWrongBlockedMinutes
+            - DefaultValue: '1'
+        - Name: REDUCED_CODE_BLOCK_DURATION_MINUTES
+          Value:
+            Fn::FindInMap:
+            - EnvironmentConfiguration
+            - Ref: Environment
+            - reducedCodeBlockDurationMinutes
+            - DefaultValue: '0.5'
+        - Name: SHOW_TEST_BANNER
+          Value: 1
+        - Name: SUPPORT_ACCOUNT_INTERVENTIONS
+          Value: 1
+        - Name: SUPPORT_REAUTHENTICATION
+          Value: 1
+        - Name: NO_PHOTO_ID_CONTACT_FORMS
+          Value: 1
+        - Name: SUPPORT_CHECK_EMAIL_FRAUD
+          Value: 1
+        - Name: DEFAULT_CHANNEL
+          Value: web
+        - Name: LANGUAGE_TOGGLE_ENABLED
+          Value: 1
+        - Name: PROVE_IDENTITY_WELCOME_ENABLED
+          Value: 0
+        - Name: GA4_ENABLED
+          Value:
+            Fn::FindInMap:
+            - EnvironmentConfiguration
+            - Ref: Environment
+            - GA4Enabled
+            - DefaultValue: 'false'
+        - Name: GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID
+          Value:
+            Fn::FindInMap:
+            - EnvironmentConfiguration
+            - Ref: Environment
+            - googleAnalytics4GTMContainerId
+            - DefaultValue: GTM-KD86CMZ
+        - Name: ANALYTICS_COOKIE_DOMAIN
+          Value:
+            Fn::If:
+            - IsNotProduction
+            - Fn::Sub: .${Environment}.account.gov.uk
+            - .account.gov.uk
+        - Name: SUPPORT_NEW_IPV_SPINNER
+          Value:
+            Fn::If:
+            - Enableipvspinner
+            - '1'
+            - '0'
+        - Name: SUPPORT_HTTP_KEEP_ALIVE
+          Value:
+            Fn::If:
+            - SupportHTTPKeepAlive
+            - '1'
+            - '0'
+        - Name: SUPPORT_MFA_RESET_WITH_IPV
+          Value:
+            Fn::If:
+            - UseMfaResetWithIpv
+            - '1'
+            - '0'
+        Secrets:
+        - Name: API_KEY
+          ValueFrom:
+            Fn::If:
+            - UseSubEnvironment
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${SubEnvironment}/frontend-api-key
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${Environment}/frontend-api-key
+        - Name: ENCRYPTION_KEY_ID
+          ValueFrom:
+            Fn::If:
+            - UseSubEnvironment
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/authentication-encryption-key-id
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/authentication-encryption-key-id
+        - Name: REDIS_HOST
+          ValueFrom:
+            Fn::If:
+            - UseSubEnvironment
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/frontend-cache-redis-master-host
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/frontend-cache-redis-master-host
+        - Name: REDIS_PORT
+          ValueFrom:
+            Fn::If:
+            - UseSubEnvironment
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/frontend-cache-redis-port
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/frontend-cache-redis-port
+        - Name: REDIS_PASSWORD
+          ValueFrom:
+            Fn::If:
+            - UseSubEnvironment
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/frontend-cache-redis-password
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/frontend-cache-redis-password
+        - Name: SESSION_EXPIRY
+          ValueFrom:
+            Fn::If:
+            - UseSubEnvironment
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/session_expiry
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/session_expiry
+        - Name: SESSION_SECRET
+          ValueFrom:
+            Fn::If:
+            - UseSubEnvironment
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/session_secret
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/session_secret
+        - Name: SMARTAGENT_API_KEY
+          ValueFrom:
+            Fn::If:
+            - UseSubEnvironment
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/smartagent_api_key
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_api_key
+        - Name: SMARTAGENT_API_URL
+          ValueFrom:
+            Fn::If:
+            - UseSubEnvironment
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/smartagent_api_key
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_api_url
+        - Name: SMARTAGENT_WEBFORM_ID
+          ValueFrom:
+            Fn::If:
+            - UseSubEnvironment
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/smartagent_webform_id
+            - Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_webform_id
+        - Name: DT_TENANT
+          ValueFrom:
+            Fn::Join:
+            - ''
+            - - Fn::FindInMap:
+                - EnvironmentConfiguration
+                - Ref: Environment
+                - dynatraceSecretArn
+              - ':DT_TENANT::'
+        - Name: DT_TENANTTOKEN
+          ValueFrom:
+            Fn::Join:
+            - ''
+            - - Fn::FindInMap:
+                - EnvironmentConfiguration
+                - Ref: Environment
+                - dynatraceSecretArn
+              - ':DT_TENANTTOKEN::'
+        - Name: DT_CONNECTION_POINT
+          ValueFrom:
+            Fn::Join:
+            - ''
+            - - Fn::FindInMap:
+                - EnvironmentConfiguration
+                - Ref: Environment
+                - dynatraceSecretArn
+              - ':DT_CONNECTION_POINT::'
+      Cpu:
+        Fn::FindInMap:
+        - EnvironmentConfiguration
+        - Ref: Environment
+        - frontendTaskDefinitionCpu
+      Memory:
+        Fn::FindInMap:
+        - EnvironmentConfiguration
+        - Ref: Environment
+        - frontendTaskDefinitionMemory
+      ExecutionRoleArn:
+        Fn::GetAtt:
+        - TaskExecutionRole
+        - Arn
+      TaskRoleArn:
+        Fn::GetAtt:
+        - TaskRole
+        - Arn
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-TaskDefinition
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  TaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      Policies:
+      - PolicyName: AllowGetParameters
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            Resource:
+              Fn::Sub: arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/*
+          - Effect: Allow
+            Action:
+            - secretsmanager:ListSecrets
+            - secretsmanager:GetSecretValue
+            Resource:
+              Fn::Sub: arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:*
+      - PolicyName: AllowDecryptOfParameters
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - kms:Decrypt
+            Resource:
+            - Fn::Sub: arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/*
+      - PolicyName: CreateLogGroup
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogGroup
+            Resource:
+              Fn::Sub: arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*
+      - PolicyName: GetDynatraceSecret
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - secretsmanager:ListSecrets
+            - secretsmanager:GetSecretValue
+            Resource:
+            - arn:aws:secretsmanager:eu-west-2:216552277552:secret:*
+          - Effect: Allow
+            Action:
+            - kms:Decrypt
+            Resource:
+            - arn:aws:kms:eu-west-2:216552277552:key/*
+      PermissionsBoundary:
+        Fn::If:
+        - UsePermissionsBoundary
+        - Ref: PermissionsBoundary
+        - Ref: AWS::NoValue
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-TaskExecutionRole
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: AllowGetParameters
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            Resource:
+              Fn::Sub: arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/*
+      - PolicyName: AllowAccessToAuthenticationKmsEncryptionKey
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - kms:Decrypt*
+            Resource:
+              Fn::Sub:
+              - '{{resolve:secretsmanager:/deploy/${env}/authentication-encryption-key-id}}'
+              - env:
+                  Fn::If:
+                  - UseSubEnvironment
+                  - Ref: SubEnvironment
+                  - Ref: Environment
+      PermissionsBoundary:
+        Fn::If:
+        - UsePermissionsBoundary
+        - Ref: PermissionsBoundary
+        - Ref: AWS::NoValue
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-TaskRole
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  FrontendDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name:
+        Fn::If:
+        - IsNotProduction
+        - Fn::If:
+          - UseSubEnvironment
+          - Fn::Sub: signin.${SubEnvironment}.${Environment}.account.gov.uk
+          - Fn::Sub: signin-sp.${Environment}.account.gov.uk
+        - signin-sp.account.gov.uk
+      Type: A
+      HostedZoneId:
+        Fn::Sub:
+        - '{{resolve:ssm:/deploy/${env}/signin-sp_route53_hostedzone_id}}'
+        - env:
+            Fn::If:
+            - UseSubEnvironment
+            - Ref: SubEnvironment
+            - Ref: Environment
+      AliasTarget:
+        EvaluateTargetHealth: false
+        DNSName:
+          Fn::ImportValue:
+            Fn::Sub:
+            - ${CFDistributionStackName}-DistributionDomain
+            - CFDistributionStackName:
+                Fn::FindInMap:
+                - EnvironmentConfiguration
+                - Fn::If:
+                  - UseSubEnvironment
+                  - Ref: SubEnvironment
+                  - Ref: Environment
+                - cloudfrontDistributionStackName
+                - DefaultValue: auth-fe-cloudfront
+        HostedZoneId: Z2FDTNDATAQYW2
+  FrontendDnsRecordA:
+    Type: AWS::Route53::RecordSet
+    Condition: MaintainMigratedZoneRecords
+    Properties:
+      Name:
+        Fn::If:
+        - IsNotProduction
+        - Fn::Sub: signin.${Environment}.account.gov.uk
+        - signin.account.gov.uk
+      Type: A
+      HostedZoneId:
+        Fn::Sub:
+        - '{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}'
+        - env:
+            Fn::If:
+            - UseSubEnvironment
+            - Ref: SubEnvironment
+            - Ref: Environment
+      AliasTarget:
+        EvaluateTargetHealth: false
+        DNSName:
+          Fn::If:
+          - SwitchToMigratedZone
+          - Fn::ImportValue:
+              Fn::Sub:
+              - ${CFDistributionStackName}-DistributionDomain
+              - CFDistributionStackName:
+                  Fn::FindInMap:
+                  - EnvironmentConfiguration
+                  - Fn::If:
+                    - UseSubEnvironment
+                    - Ref: SubEnvironment
+                    - Ref: Environment
+                  - cloudfrontDistributionStackName
+                  - DefaultValue: auth-fe-cloudfront
+          - Fn::FindInMap:
+            - EnvironmentConfiguration
+            - Ref: Environment
+            - oldCloudFrontDistributionDomain
+        HostedZoneId: Z2FDTNDATAQYW2
+  ApplicationLoadBalancerDnsRecordA:
+    Type: AWS::Route53::RecordSet
+    Condition: MaintainMigratedZoneRecords
+    Properties:
+      Name:
+        Fn::If:
+        - IsNotProduction
+        - Fn::Sub: origin.signin.${Environment}.account.gov.uk
+        - origin.signin.account.gov.uk
+      Type: A
+      HostedZoneId:
+        Fn::Sub:
+        - '{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}'
+        - env:
+            Fn::If:
+            - UseSubEnvironment
+            - Ref: SubEnvironment
+            - Ref: Environment
+      AliasTarget:
+        EvaluateTargetHealth: false
+        DNSName:
+          Fn::If:
+          - SwitchToMigratedZone
+          - Fn::Sub:
+            - dualstack.${ALBDNSName}
+            - ALBDNSName:
+                Fn::GetAtt:
+                - ApplicationLoadBalancer
+                - DNSName
+          - Fn::Sub:
+            - dualstack.${ALBDNSName}
+            - ALBDNSName:
+                Fn::FindInMap:
+                - EnvironmentConfiguration
+                - Ref: Environment
+                - oldALBDNSName
+        HostedZoneId: ZHURV8PSTC4K8
+  ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name:
+        Fn::If:
+        - UseSubEnvironment
+        - Fn::Sub: ${SubEnvironment}-frontend
+        - Fn::Sub: ${Environment}-frontend
+      Scheme: internet-facing
+      SecurityGroups:
+      - Fn::GetAtt:
+        - ApplicationLoadBalancerSecurityGroup
+        - GroupId
+      Subnets:
+      - Fn::ImportValue:
+          Fn::Sub: ${VpcStackName}-FirewallSubnetIdA
+      - Fn::ImportValue:
+          Fn::Sub: ${VpcStackName}-FirewallSubnetIdB
+      - Fn::ImportValue:
+          Fn::Sub: ${VpcStackName}-FirewallSubnetIdC
+      LoadBalancerAttributes:
+      - Key: access_logs.s3.enabled
+        Value: 'true'
+      - Key: access_logs.s3.bucket
+        Value:
+          Ref: AccessLogsBucket
+      - Key: routing.http.drop_invalid_header_fields.enabled
+        Value: 'true'
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-ApplicationLoadBalancer
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  ApplicationLoadBalancerTargetGroupA:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name:
+        Fn::If:
+        - UseSubEnvironment
+        - Fn::Sub: ${SubEnvironment}-frontend-target-a
+        - Fn::Sub: ${Environment}-frontend-target-a
+      HealthCheckIntervalSeconds: 10
+      HealthCheckTimeoutSeconds: 3
+      HealthCheckPath: /healthcheck/
+      HealthCheckProtocol: HTTP
+      HealthyThresholdCount: 2
+      Port: 80
+      Protocol: HTTP
+      ProtocolVersion: HTTP1
+      Matcher:
+        HttpCode: '200'
+      TargetType: ip
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: ${VpcStackName}-VpcId
+      TargetGroupAttributes:
+      - Key: deregistration_delay.timeout_seconds
+        Value: '90'
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-ApplicationLoadBalancerTargetGroupA
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  ApplicationLoadBalancerTargetGroupB:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Condition: UseECSCanaryDeploymentStack
+    Properties:
+      Name:
+        Fn::If:
+        - UseSubEnvironment
+        - Fn::Sub: ${SubEnvironment}-frontend-target-b
+        - Fn::Sub: ${Environment}-frontend-target-b
+      HealthCheckIntervalSeconds: 10
+      HealthCheckTimeoutSeconds: 3
+      HealthCheckPath: /healthcheck/
+      HealthCheckProtocol: HTTP
+      HealthyThresholdCount: 2
+      Port: 80
+      Protocol: HTTP
+      ProtocolVersion: HTTP1
+      Matcher:
+        HttpCode: '200'
+      TargetType: ip
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: ${VpcStackName}-VpcId
+      TargetGroupAttributes:
+      - Key: deregistration_delay.timeout_seconds
+        Value: '90'
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-ApplicationLoadBalancerTargetGroupB
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  ApplicationLoadBalancerDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name:
+        Fn::If:
+        - IsNotProduction
+        - Fn::If:
+          - UseSubEnvironment
+          - Fn::Sub: origin.signin.${SubEnvironment}.${Environment}.account.gov.uk
+          - Fn::Sub: origin.signin-sp.${Environment}.account.gov.uk
+        - origin.signin-sp.account.gov.uk
+      Type: A
+      HostedZoneId:
+        Fn::Sub:
+        - '{{resolve:ssm:/deploy/${env}/signin-sp_route53_hostedzone_id}}'
+        - env:
+            Fn::If:
+            - UseSubEnvironment
+            - Ref: SubEnvironment
+            - Ref: Environment
+      AliasTarget:
+        EvaluateTargetHealth: false
+        DNSName:
+          Fn::Sub:
+          - dualstack.${ALBDNSName}
+          - ALBDNSName:
+              Fn::GetAtt:
+              - ApplicationLoadBalancer
+              - DNSName
+        HostedZoneId: ZHURV8PSTC4K8
+  ApplicationLoadBalancerListenerHTTPS:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn:
+          Ref: ApplicationLoadBalancerTargetGroupA
+      LoadBalancerArn:
+        Ref: ApplicationLoadBalancer
+      Port: 443
+      Protocol: HTTPS
+      Certificates:
+      - CertificateArn:
+          Fn::If:
+          - SwitchToMigratedZone
+          - Fn::Sub:
+            - '{{resolve:ssm:/deploy/${env}/signin_certificate_arn}}'
+            - env:
+                Fn::If:
+                - UseSubEnvironment
+                - Ref: SubEnvironment
+                - Ref: Environment
+          - Fn::Sub:
+            - '{{resolve:ssm:/deploy/${env}/signin-sp_certificate_arn}}'
+            - env:
+                Fn::If:
+                - UseSubEnvironment
+                - Ref: SubEnvironment
+                - Ref: Environment
+      SslPolicy: ELBSecurityPolicy-FS-1-2-Res-2020-10
+  ApplicationLoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Metadata:
+      checkov:
+        skip:
+        - id: CKV_AWS_2
+          comment: Ignored as this only redirects HTTP to HTTPS.
+        - id: CKV_AWS_103
+          comment: Ignored as only redirects HTTP to HTTPS.
+    Properties:
+      DefaultActions:
+      - Type: redirect
+        RedirectConfig:
+          Port: 443
+          Protocol: HTTPS
+          StatusCode: HTTP_301
+      LoadBalancerArn:
+        Ref: ApplicationLoadBalancer
+      Port: 80
+      Protocol: HTTP
+  ApplicationLoadBalancerListenerRuleRobots:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+      - Type: fixed-response
+        FixedResponseConfig:
+          ContentType: text/plain
+          MessageBody: '"user-agent: *" "disallow: /"
+
+            '
+          StatusCode: 200
+      Conditions:
+      - Field: path-pattern
+        PathPatternConfig:
+          Values:
+          - /robots.txt
+      ListenerArn:
+        Ref: ApplicationLoadBalancerListenerHTTPS
+      Priority: 10
+  ApplicationLoadBalancerListenerServiceDownRule:
+    Condition: DeployServiceDownPage
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+      - Type: forward
+        TargetGroupArn:
+          Ref: ServiceDownLoadBalancerTargetGroup
+      Conditions:
+      - Field: path-pattern
+        PathPatternConfig:
+          Values:
+          - /service-page-disabled/*
+      ListenerArn:
+        Ref: ApplicationLoadBalancerListenerHTTPS
+      Priority: 1000
+  ApplicationLoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group for the Application Load Balancer
+      GroupName:
+        Fn::Join:
+        - '-'
+        - - Ref: AWS::StackName
+          - ApplicationLoadBalancer
+          - Fn::Select:
+            - 4
+            - Fn::Split:
+              - '-'
+              - Fn::Select:
+                - 2
+                - Fn::Split:
+                  - /
+                  - Ref: AWS::StackId
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: ${VpcStackName}-VpcId
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-ApplicationLoadBalancerSecurityGroup
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  ApplicationLoadBalancerSecurityGroupHTTPIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Metadata:
+      checkov:
+        skip:
+        - id: CKV_AWS_260
+          comment: Ignored as this only redirects HTTP to HTTPS.
+    Properties:
+      GroupId:
+        Fn::GetAtt:
+        - ApplicationLoadBalancerSecurityGroup
+        - GroupId
+      CidrIp: '0.0.0.0/0'
+      Description: Allow traffic from anywhere on port 80
+      IpProtocol: tcp
+      FromPort: 80
+      ToPort: 80
+  ApplicationLoadBalancerSecurityGroupHTTPSIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId:
+        Fn::GetAtt:
+        - ApplicationLoadBalancerSecurityGroup
+        - GroupId
+      CidrIp: '0.0.0.0/0'
+      Description: Allow traffic from anywhere on port 443
+      IpProtocol: tcp
+      FromPort: 443
+      ToPort: 443
+  ApplicationLoadBalancerSecurityGroupEgress:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      GroupId:
+        Fn::GetAtt:
+        - ApplicationLoadBalancerSecurityGroup
+        - GroupId
+      DestinationSecurityGroupId:
+        Fn::GetAtt:
+        - ContainerServiceSecurityGroup
+        - GroupId
+      Description: Allow traffic to Container Service on port 3000
+      IpProtocol: tcp
+      FromPort: 3000
+      ToPort: 3000
+  ApplicationLoadBalancerSecurityGroupEgressNginx:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      GroupId:
+        Fn::GetAtt:
+        - ApplicationLoadBalancerSecurityGroup
+        - GroupId
+      DestinationSecurityGroupId:
+        Fn::GetAtt:
+        - ContainerServiceSecurityGroup
+        - GroupId
+      Description: Allow traffic to Container Service on port 8080
+      IpProtocol: tcp
+      FromPort: 8080
+      ToPort: 8080
+  ApplicationLoadBalancerSecurityGroupEgressServiceDownPage:
+    Condition: DeployServiceDownPage
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      GroupId:
+        Fn::GetAtt:
+        - ApplicationLoadBalancerSecurityGroup
+        - GroupId
+      DestinationSecurityGroupId:
+        Fn::GetAtt:
+        - ServiceDownSecurityGroup
+        - GroupId
+      Description: Allow traffic to Service down page on port 8080
+      IpProtocol: tcp
+      FromPort: 8080
+      ToPort: 8080
+  ApplicationLoadBalancerCloudFrontWAFv2ACLAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    Properties:
+      ResourceArn:
+        Ref: ApplicationLoadBalancer
+      WebACLArn:
+        Fn::ImportValue:
+          Fn::Sub:
+          - ${CFDistributionStackName}-CloakingOriginWebACLArn
+          - CFDistributionStackName:
+              Fn::FindInMap:
+              - EnvironmentConfiguration
+              - Fn::If:
+                - UseSubEnvironment
+                - Ref: SubEnvironment
+                - Ref: Environment
+              - cloudfrontDistributionStackName
+              - DefaultValue: auth-fe-cloudfront
+  ELB5XXAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: UseECSCanaryDeploymentStack
+    Properties:
+      AlarmDescription: 'The number of HTTP 5XX server error codes that originate
+        from the load balancer. This count does not include any response codes generated
+        by the targets.
+
+        '
+      MetricName: HTTPCode_ELB_5XX_Count
+      Namespace: AWS/ApplicationELB
+      Statistic: Sum
+      Dimensions:
+      - Name: LoadBalancer
+        Value:
+          Ref: ApplicationLoadBalancer
+      Period: 60
+      EvaluationPeriods: 2
+      DatapointsToAlarm: 2
+      Threshold: 2
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+  ELB4XXAnomalyAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: UseECSCanaryDeploymentStack
+    Properties:
+      AlarmDescription: 'Based on anomaly detection, the number of HTTP 4XX server
+        error codes that originate from the load balancer. This count does not include
+        any response codes generated by the targets.
+
+        '
+      EvaluationPeriods: 2
+      DatapointsToAlarm: 2
+      ThresholdMetricId: ad1
+      ComparisonOperator: GreaterThanUpperThreshold
+      TreatMissingData: notBreaching
+      Metrics:
+      - Id: ad1
+        ReturnData: true
+        Expression: ANOMALY_DETECTION_BAND(m1, 2)
+      - Id: m1
+        ReturnData: true
+        MetricStat:
+          Metric:
+            Namespace: AWS/ApplicationELB
+            MetricName: HTTPCode_ELB_4XX_Count
+            Dimensions:
+            - Name: LoadBalancer
+              Value:
+                Fn::GetAtt:
+                - ApplicationLoadBalancer
+                - LoadBalancerFullName
+          Period: 60
+          Stat: Sum
+  ECSCanaryDeploymentStack:
+    Type: AWS::CloudFormation::Stack
+    Condition: UseECSCanaryDeploymentStack
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      TemplateURL: https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/ecs-canary-deployment/template.yaml?versionId=5RRU1nfKQD_d08FKttr8W7pzrAsqQiUM
+      Parameters:
+        VpcId:
+          Fn::Sub: ${VpcStackName}-VpcId
+        Subnets:
+          Fn::Join:
+          - ','
+          - - Fn::ImportValue:
+                Fn::Sub: ${VpcStackName}-ProtectedSubnetIdA
+            - Fn::ImportValue:
+                Fn::Sub: ${VpcStackName}-ProtectedSubnetIdB
+            - Fn::ImportValue:
+                Fn::Sub: ${VpcStackName}-ProtectedSubnetIdC
+        SecurityGroups:
+          Fn::GetAtt:
+          - ContainerServiceSecurityGroup
+          - GroupId
+        PermissionsBoundary:
+          Fn::ImportValue:
+            Fn::Sub: ${AWS::StackName}-ECSCanaryPermissionsBoundaryArn
+        CodeSigningConfigArn:
+          Fn::If:
+          - UseCodeSigning
+          - Ref: CodeSigningConfigArn
+          - Ref: AWS::NoValue
+        ECSClusterName:
+          Ref: FrontendECSCluster
+        ECSServiceName:
+          Fn::GetAtt:
+          - FrontendECSService
+          - Name
+        TargetGroupName:
+          Fn::GetAtt:
+          - ApplicationLoadBalancerTargetGroupA
+          - TargetGroupName
+        GreenTargetGroupName:
+          Fn::GetAtt:
+          - ApplicationLoadBalancerTargetGroupB
+          - TargetGroupName
+        LoadBalancerListenerARN:
+          Ref: ApplicationLoadBalancerListenerHTTPS
+        ECSServiceTaskDefinition:
+          Ref: TaskDefinition
+        DeploymentStrategy:
+          Ref: DeploymentStrategy
+        ContainerName: frontend-application
+        ContainerPort: '3000'
+        CloudWatchAlarms:
+          Fn::Sub:
+          - ${ELB5XXAlarm},${ELB4XXAnomalyAlarm}
+          - ELB5XXAlarm:
+              Ref: ELB5XXAlarm
+            ELB4XXAnomalyAlarm:
+              Ref: ELB4XXAnomalyAlarm
+  ServiceDownECSService:
+    Condition: DeployServiceDownPage
+    Type: AWS::ECS::Service
+    DependsOn: ApplicationLoadBalancerListenerHTTPS
+    Properties:
+      ServiceName:
+        Fn::Sub: ${AWS::StackName}-ServiceDownECSService
+      Cluster:
+        Ref: FrontendECSCluster
+      LaunchType: FARGATE
+      DesiredCount: 2
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 50
+      LoadBalancers:
+      - ContainerName: service-down-page
+        ContainerPort: 8080
+        TargetGroupArn:
+          Ref: ServiceDownLoadBalancerTargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          SecurityGroups:
+          - Fn::GetAtt:
+            - ServiceDownSecurityGroup
+            - GroupId
+          Subnets:
+          - Fn::ImportValue:
+              Fn::Sub: ${VpcStackName}-PrivateSubnetIdA
+          - Fn::ImportValue:
+              Fn::Sub: ${VpcStackName}-PrivateSubnetIdB
+          - Fn::ImportValue:
+              Fn::Sub: ${VpcStackName}-PrivateSubnetIdC
+      PropagateTags: SERVICE
+      TaskDefinition:
+        Ref: ServiceDownTaskDefinition
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-ServiceDownECSService
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  ServiceDownSecurityGroup:
+    Condition: DeployServiceDownPage
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group to access the Service down page
+      GroupName:
+        Fn::Join:
+        - '-'
+        - - Ref: AWS::StackName
+          - ServiceDownPage
+          - Fn::Select:
+            - 4
+            - Fn::Split:
+              - '-'
+              - Fn::Select:
+                - 2
+                - Fn::Split:
+                  - /
+                  - Ref: AWS::StackId
+      SecurityGroupIngress:
+      - Description: Allow traffic from the load balancer on port 8080
+        SourceSecurityGroupId:
+          Fn::GetAtt:
+          - ApplicationLoadBalancerSecurityGroup
+          - GroupId
+        IpProtocol: tcp
+        FromPort: 8080
+        ToPort: 8080
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: ${VpcStackName}-VpcId
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-ServiceDownSecurityGroup
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  ServiceDownTaskDefinition:
+    Condition: DeployServiceDownPage
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family:
+        Fn::Sub: ${Environment}-frontend-service-down-page-ecs-task-definition
+      ContainerDefinitions:
+      - Name: service-down-page
+        Image:
+          Fn::Sub: ${ServiceDownPageRegistry}:GIT-SHA-PLACEHOLDER
+        PortMappings:
+        - ContainerPort: 8080
+          HostPort: 8080
+          Protocol: tcp
+        Essential: true
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group:
+              Ref: ServiceDownTaskLogGroup
+            awslogs-region:
+              Ref: AWS::Region
+            awslogs-create-group: 'true'
+            awslogs-stream-prefix:
+              Ref: AWS::StackName
+      Cpu: 512
+      Memory: 1024
+      ExecutionRoleArn:
+        Fn::GetAtt:
+        - ServiceDownTaskExecutionRole
+        - Arn
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-ServiceDownTaskDefinition
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  ServiceDownTaskExecutionRole:
+    Condition: DeployServiceDownPage
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      Policies:
+      - PolicyName: CreateLogGroup
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogGroup
+            Resource:
+              Fn::Sub: arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*
+      PermissionsBoundary:
+        Fn::If:
+        - UsePermissionsBoundary
+        - Ref: PermissionsBoundary
+        - Ref: AWS::NoValue
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-ServiceDownTaskExecutionRole
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  ServiceDownLoadBalancerTargetGroup:
+    Condition: DeployServiceDownPage
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name:
+        Fn::Sub: ${Environment}-fe-service-down
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 3
+      HealthCheckPath: /healthcheck/
+      HealthCheckProtocol: HTTP
+      HealthyThresholdCount: 3
+      UnhealthyThresholdCount: 2
+      Port: 80
+      Protocol: HTTP
+      ProtocolVersion: HTTP1
+      Matcher:
+        HttpCode: '200'
+      TargetType: ip
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: ${VpcStackName}-VpcId
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-ServiceDownLoadBalancerTargetGroup
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  ServiceDownTaskLogGroup:
+    Condition: DeployServiceDownPage
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId:
+        Fn::GetAtt:
+        - KmsKey
+        - Arn
+      LogGroupName:
+        Fn::If:
+        - UseSubEnvironment
+        - Fn::Sub: /ecs/${SubEnvironment}-service-down-page
+        - Fn::Sub: /ecs/${Environment}-service-down-page
+      RetentionInDays:
+        Fn::FindInMap:
+        - EnvironmentConfiguration
+        - Ref: Environment
+        - cloudwatchLogRetentionInDays
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-ServiceDownTaskLogGroup
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  ServiceDownTaskLogsSubscriptionFilter:
+    Type: AWS::Logs::SubscriptionFilter
+    Condition: IsSplunkandServicedown
+    Properties:
+      DestinationArn: arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython-2
+      FilterPattern: ''
+      LogGroupName:
+        Ref: ServiceDownTaskLogGroup
+  AccessLogsBucket:
+    Type: AWS::S3::Bucket
+    Metadata:
+      checkov:
+        skip:
+        - id: CKV_AWS_18
+          comment: This is the access logs bucket. It should not log itself
+    Properties:
+      BucketName:
+        Fn::Join:
+        - '-'
+        - - Ref: AWS::StackName
+          - logs
+          - Fn::Select:
+            - 4
+            - Fn::Split:
+              - '-'
+              - Fn::Select:
+                - 2
+                - Fn::Split:
+                  - /
+                  - Ref: AWS::StackId
+      VersioningConfiguration:
+        Status: Enabled
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-AccessLogsBucket
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+      - Key: CheckovRulesToSkip
+        Value: CKV_AWS_18
+  AccessLogsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: AccessLogsBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Sid: AllowLoadBalancerToLogToS3
+          Effect: Allow
+          Principal:
+            AWS:
+              Fn::Sub:
+              - arn:aws:iam::${ElbAccountId}:root
+              - ElbAccountId:
+                  Fn::FindInMap:
+                  - ElasticLoadBalancerAccountIds
+                  - Ref: AWS::Region
+                  - AccountId
+          Action:
+          - s3:PutObject
+          Resource:
+            Fn::Sub: ${AccessLogsBucket.Arn}/AWSLogs/${AWS::AccountId}/*
+        - Sid: AllowAwsLogDeliveryToLogToS3
+          Effect: Allow
+          Principal:
+            Service: delivery.logs.amazonaws.com
+          Action:
+          - s3:PutObject
+          Resource:
+            Fn::Sub: ${AccessLogsBucket.Arn}/AWSLogs/${AWS::AccountId}/*
+          Condition:
+            StringEquals:
+              s3:x-amz-acl: bucket-owner-full-control
+              aws:SourceAccount:
+                Ref: AWS::AccountId
+        - Sid: AllowAwsLogDeliveryToReadBucketAcl
+          Effect: Allow
+          Principal:
+            Service: delivery.logs.amazonaws.com
+          Action:
+          - s3:GetBucketAcl
+          Resource:
+            Fn::GetAtt:
+            - AccessLogsBucket
+            - Arn
+          Condition:
+            StringEquals:
+              aws:SourceAccount:
+                Ref: AWS::AccountId
+        - Sid: AllowSSLRequestsOnly
+          Effect: Deny
+          Action:
+          - s3:*
+          Resource:
+          - Fn::Sub: ${AccessLogsBucket.Arn}/*
+          Principal: '*'
+          Condition:
+            Bool:
+              aws:SecureTransport: 'false'
+  FrontendTaskLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId:
+        Fn::GetAtt:
+        - KmsKey
+        - Arn
+      LogGroupName:
+        Fn::If:
+        - UseSubEnvironment
+        - Fn::Sub: /ecs/${SubEnvironment}-frontend
+        - Fn::Sub: /ecs/${Environment}-frontend
+      RetentionInDays:
+        Fn::FindInMap:
+        - EnvironmentConfiguration
+        - Ref: Environment
+        - cloudwatchLogRetentionInDays
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-FrontendTaskLogGroup
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+  FrontendTaskLogsSubscriptionFilter:
+    Type: AWS::Logs::SubscriptionFilter
+    Condition: IsSplunkEnabled
+    Properties:
+      DestinationArn: arn:aws:logs:eu-west-2:885513274347:destination:csls_cw_logs_destination_prodpython-2
+      FilterPattern: ''
+      LogGroupName:
+        Ref: FrontendTaskLogGroup
+  KmsKey:
+    Type: AWS::KMS::Key
+    Properties:
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            AWS:
+              Fn::Sub: arn:aws:iam::${AWS::AccountId}:root
+          Action:
+          - kms:*
+          Resource: '*'
+        - Effect: Allow
+          Principal:
+            Service:
+              Fn::Sub: logs.${AWS::Region}.amazonaws.com
+          Action:
+          - kms:Encrypt*
+          - kms:Decrypt*
+          - kms:ReEncrypt*
+          - kms:GenerateDataKey*
+          - kms:Describe*
+          Resource: '*'
+          Condition:
+            ArnLike:
+              kms:EncryptionContext:aws:logs:arn:
+                Fn::Sub: arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-KmsKey
+      - Key: Environment
+        Value:
+          Ref: Environment
+      - Key: Application
+        Value: auth-frontend
+      - Key: Source
+        Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml

@@ -13,6 +13,8 @@ export function allowUserJourneyMiddleware(
   res: Response,
   next: NextFunction
 ): void {
+  console.log("MVM req.session.user.journey", req.session.user.journey);
+
   if (transitionForbidden(req)) {
     const nextPath = req.session.user.journey.nextPath;
     req.log.warn(

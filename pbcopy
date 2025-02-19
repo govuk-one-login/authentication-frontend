@@ -1,0 +1,52 @@
+diff --git a/src/components/common/state-machine/state-machine.ts b/src/components/common/state-machine/state-machine.ts
+index e6f0261c..93700059 100644
+--- a/src/components/common/state-machine/state-machine.ts
++++ b/src/components/common/state-machine/state-machine.ts
+@@ -4,7 +4,10 @@ import {
+   OIDC_PROMPT,
+   PATH_NAMES,
+ } from "../../../app.constants";
+-import { proveIdentityWelcomeEnabled } from "../../../config";
++import {
++  proveIdentityWelcomeEnabled,
++  supportMfaResetWithIpv,
++} from "../../../config";
+ 
+ const USER_JOURNEY_EVENTS = {
+   AUTHENTICATED: "AUTHENTICATED",
+@@ -421,10 +424,13 @@ const authStateMachine = createMachine(
+             PATH_NAMES.SECURITY_CODE_WAIT,
+             PATH_NAMES.SECURITY_CODE_INVALID,
+             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+-            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
+-            PATH_NAMES.MFA_RESET_WITH_IPV,
+-            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+-            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
++            ...(supportMfaResetWithIpv()
++              ? [
++                  PATH_NAMES.MFA_RESET_WITH_IPV,
++                  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
++                  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
++                ]
++              : [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]),
+           ],
+         },
+       },
+@@ -446,10 +452,13 @@ const authStateMachine = createMachine(
+           optionalPaths: [
+             PATH_NAMES.SECURITY_CODE_INVALID,
+             PATH_NAMES.CHECK_YOUR_EMAIL,
+-            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
+-            PATH_NAMES.MFA_RESET_WITH_IPV,
+-            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+-            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
++            ...(supportMfaResetWithIpv()
++              ? [
++                  PATH_NAMES.MFA_RESET_WITH_IPV,
++                  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
++                  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
++                ]
++              : [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]),
+           ],
+         },
+       },

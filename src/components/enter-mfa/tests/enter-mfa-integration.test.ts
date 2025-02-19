@@ -26,6 +26,7 @@ describe("Integration:: enter mfa", () => {
   const PHONE_NUMBER = "7867";
 
   before(async () => {
+    process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     decache("../../common/account-recovery/account-recovery-service");
@@ -155,6 +156,39 @@ describe("Integration:: enter mfa", () => {
           })
       );
     });
+  });
+
+  it.only("cannot access old journey when new journey enabled", async () => {
+    // process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
+
+    // decache("../../../app");
+    // decache("../../../middleware/session-middleware");
+    // const sessionMiddleware = require("../../../middleware/session-middleware");
+    // sinon
+    //   .stub(sessionMiddleware, "validateSessionMiddleware")
+    //   .callsFake(function (
+    //     req: Request,
+    //     res: Response,
+    //     next: NextFunction
+    //   ): void {
+    //     res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+    //
+    //     req.session.user = {
+    //       email: "test@test.com",
+    //       phoneNumber: PHONE_NUMBER,
+    //       redactedPhoneNumber: PHONE_NUMBER,
+    //       journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
+    //     };
+    //     next();
+    //   });
+    // app = await require("../../../app").createApp();
+
+    await request(app, (test) =>
+      test
+        .get(PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=SMS")
+        .expect("Location", "|asdasd")
+        .expect(200)
+    );
   });
 
   it("following a validation error it should not include link to change security codes where account recovery is not permitted", async () => {
