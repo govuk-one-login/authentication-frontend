@@ -16,7 +16,8 @@ import {
 } from "../../common/account-recovery/types";
 import { createApiResponse } from "../../../utils/http";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { SendNotificationServiceInterface } from "../../common/send-notification/types";
+import { DefaultApiResponse } from "../../../types";
 
 describe("Integration:: enter authenticator app code", () => {
   let token: string | string[];
@@ -24,13 +25,31 @@ describe("Integration:: enter authenticator app code", () => {
   let app: any;
   let baseApi: string;
 
-  before(async () => {
+  async function setupStubbedApp(
+    options: {
+      supportMfaResetWithIpv?: boolean;
+      routeUsersToNewIpvJourney?: boolean;
+    } = {
+      supportMfaResetWithIpv: false,
+      routeUsersToNewIpvJourney: false,
+    }
+  ) {
+    process.env.SUPPORT_MFA_RESET_WITH_IPV = options.supportMfaResetWithIpv
+      ? "1"
+      : "0";
+    process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY =
+      options.routeUsersToNewIpvJourney ? "1" : "0";
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     decache("../../common/account-recovery/account-recovery-service");
+    decache("../../../../test/helpers/session-helper");
+    decache("../../common/send-notification/send-notification-service");
     const sessionMiddleware = require("../../../middleware/session-middleware");
     const accountRecoveryService = require("../../common/account-recovery/account-recovery-service");
-    process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
+    const {
+      getPermittedJourneyForPath,
+    } = require("../../../../test/helpers/session-helper");
+    const sendNotificationService = require("../../common/send-notification/send-notification-service");
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -77,6 +96,21 @@ describe("Integration:: enter authenticator app code", () => {
         return { accountRecovery };
       });
 
+    sinon
+      .stub(sendNotificationService, "sendNotificationService")
+      .callsFake((): SendNotificationServiceInterface => {
+        async function sendNotification() {
+          const fakeAxiosResponse: AxiosResponse = {
+            data: "test",
+            status: HTTP_STATUS_CODES.OK,
+          } as AxiosResponse;
+
+          return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
+        }
+
+        return { sendNotification };
+      });
+
     app = await require("../../../app").createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
@@ -89,7 +123,7 @@ describe("Integration:: enter authenticator app code", () => {
       token = $("[name=_csrf]").val();
       cookies = res.headers["set-cookie"];
     });
-  });
+  }
 
   beforeEach(() => {
     process.env.SUPPORT_REAUTHENTICATION = "0";
@@ -105,6 +139,7 @@ describe("Integration:: enter authenticator app code", () => {
   });
 
   it("should return enter authenticator app security code with sign in analytics properties", async () => {
+    await setupStubbedApp();
     await request(app, (test) =>
       test.get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE).expect(200)
     );
@@ -113,8 +148,8 @@ describe("Integration:: enter authenticator app code", () => {
   const TEST_DATA = [
     {
       description: "when support mfa reset with ipv is off",
-      supportMfaResetWithIpv: "0",
-      routeUsersToNewIpvJourney: "0",
+      supportMfaResetWithIpv: false,
+      routeUsersToNewIpvJourney: false,
       expectedHref:
         PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP",
       expectedLinkText: "change how you get security codes",
@@ -122,8 +157,8 @@ describe("Integration:: enter authenticator app code", () => {
     {
       description:
         "when support mfa reset with ipv is off regardless of route to new journey flag",
-      supportMfaResetWithIpv: "0",
-      routeUsersToNewIpvJourney: "1",
+      supportMfaResetWithIpv: false,
+      routeUsersToNewIpvJourney: true,
       expectedHref:
         PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP",
       expectedLinkText: "change how you get security codes",
@@ -131,16 +166,16 @@ describe("Integration:: enter authenticator app code", () => {
     {
       description:
         "when support mfa reset with ipv is on and route users to new journey is on",
-      supportMfaResetWithIpv: "1",
-      routeUsersToNewIpvJourney: "1",
+      supportMfaResetWithIpv: true,
+      routeUsersToNewIpvJourney: true,
       expectedHref: PATH_NAMES.MFA_RESET_WITH_IPV,
       expectedLinkText: "check if you can change how you get security codes",
     },
     {
       description:
         "when support mfa reset with ipv is on but route to new journeys is off",
-      supportMfaResetWithIpv: "1",
-      routeUsersToNewIpvJourney: "0",
+      supportMfaResetWithIpv: true,
+      routeUsersToNewIpvJourney: false,
       expectedHref:
         PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP",
       expectedLinkText: "change how you get security codes",
@@ -149,9 +184,10 @@ describe("Integration:: enter authenticator app code", () => {
 
   TEST_DATA.forEach((testData) => {
     it(`should display correct link to reset mfa ${testData.description}`, async () => {
-      process.env.SUPPORT_MFA_RESET_WITH_IPV = testData.supportMfaResetWithIpv;
-      process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY =
-        testData.routeUsersToNewIpvJourney;
+      await setupStubbedApp({
+        supportMfaResetWithIpv: testData.supportMfaResetWithIpv,
+        routeUsersToNewIpvJourney: testData.routeUsersToNewIpvJourney,
+      });
       await request(app, (test) =>
         test
           .get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
@@ -173,6 +209,10 @@ describe("Integration:: enter authenticator app code", () => {
   });
 
   it("cannot access old journey when new journey enabled", async () => {
+    await setupStubbedApp({
+      supportMfaResetWithIpv: true,
+      routeUsersToNewIpvJourney: true,
+    });
     await request(app, (test) =>
       test
         .get(
@@ -183,7 +223,22 @@ describe("Integration:: enter authenticator app code", () => {
     );
   });
 
+  it("can access old journey when new journey enabled but routing users to IPV is disabled", async () => {
+    await setupStubbedApp({
+      supportMfaResetWithIpv: true,
+      routeUsersToNewIpvJourney: false,
+    });
+    await request(app, (test) =>
+      test
+        .get(
+          PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP"
+        )
+        .expect(200)
+    );
+  });
+
   it("should return enter authenticator app security code with reauth analytics properties", async () => {
+    await setupStubbedApp();
     process.env.SUPPORT_REAUTHENTICATION = "1";
     process.env.TEST_SETUP_REAUTH_SESSION = "1";
 
@@ -193,6 +248,7 @@ describe("Integration:: enter authenticator app code", () => {
   });
 
   it("should return error when csrf not present", async () => {
+    await setupStubbedApp();
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
@@ -205,6 +261,7 @@ describe("Integration:: enter authenticator app code", () => {
   });
 
   it("should return validation error when code not entered", async () => {
+    await setupStubbedApp();
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
@@ -223,6 +280,7 @@ describe("Integration:: enter authenticator app code", () => {
   });
 
   it("should return validation error when code is less than 6 characters", async () => {
+    await setupStubbedApp();
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
@@ -243,6 +301,7 @@ describe("Integration:: enter authenticator app code", () => {
   });
 
   it("should return validation error when code is greater than 6 characters", async () => {
+    await setupStubbedApp();
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
@@ -263,6 +322,7 @@ describe("Integration:: enter authenticator app code", () => {
   });
 
   it("should return validation error when code entered contains letters", async () => {
+    await setupStubbedApp();
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
@@ -283,6 +343,7 @@ describe("Integration:: enter authenticator app code", () => {
   });
 
   it("following a validation error it should not include link to change security codes where account recovery is not permitted", async () => {
+    await setupStubbedApp();
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
@@ -304,6 +365,7 @@ describe("Integration:: enter authenticator app code", () => {
   });
 
   it("should redirect to /auth-code when valid code entered", async () => {
+    await setupStubbedApp();
     nock(baseApi)
       .post(API_ENDPOINTS.VERIFY_MFA_CODE)
       .once()
@@ -324,6 +386,7 @@ describe("Integration:: enter authenticator app code", () => {
   });
 
   it("should return validation error when incorrect code entered", async () => {
+    await setupStubbedApp();
     nock(baseApi).post(API_ENDPOINTS.VERIFY_MFA_CODE).once().reply(400, {
       code: ERROR_CODES.AUTH_APP_INVALID_CODE,
       success: false,
@@ -349,6 +412,7 @@ describe("Integration:: enter authenticator app code", () => {
   });
 
   it("should redirect to security code expired when incorrect code has been entered 5 times", async () => {
+    await setupStubbedApp();
     nock(baseApi).post(API_ENDPOINTS.VERIFY_MFA_CODE).times(6).reply(400, {
       code: ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED,
       success: false,

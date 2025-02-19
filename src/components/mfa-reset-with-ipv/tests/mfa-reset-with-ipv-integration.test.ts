@@ -4,7 +4,6 @@ import decache from "decache";
 import { API_ENDPOINTS, CHANNEL, PATH_NAMES } from "../../../app.constants";
 import nock = require("nock");
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 const supertest = require("supertest");
 
 const IPV_DUMMY_URL =
@@ -14,8 +13,6 @@ describe("Mfa reset with ipv", () => {
   const REQUEST_PATH = PATH_NAMES.MFA_RESET_WITH_IPV;
 
   describe("Mfa reset with ipv get", () => {
-    before(() => (process.env.SUPPORT_MFA_RESET_WITH_IPV = "1"));
-
     beforeEach(() => {
       nock.cleanAll();
     });
@@ -23,6 +20,7 @@ describe("Mfa reset with ipv", () => {
     after(() => {
       sinon.restore();
       delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
+      delete process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY;
     });
 
     it("should redirect to the mfa reset ipv path when coming from sms entry", async () => {
@@ -149,7 +147,13 @@ describe("Mfa reset with ipv", () => {
   ) {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
+    decache("../../../../test/helpers/session-helper");
+    process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
+    process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY = "1";
     const sessionMiddleware = require("../../../middleware/session-middleware");
+    const {
+      getPermittedJourneyForPath,
+    } = require("../../../../test/helpers/session-helper");
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
