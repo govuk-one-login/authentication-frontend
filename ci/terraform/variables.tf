@@ -416,6 +416,12 @@ variable "support_mfa_reset_with_ipv" {
   description = "Switch to support the IPV prove identity journey when resetting the mfa"
 }
 
+variable "route_users_to_new_ipv_journey" {
+  type        = string
+  default     = "0"
+  description = "Switch to enable testing of prod connectivity of new journey without affecting normal users"
+}
+
 variable "vpc_environment" {
   description = "The name of the environment this environment is sharing the VPC , this var is only for Authdevs env and must be overide using Authdevs.tfvars, default value should be null always."
   type        = string
