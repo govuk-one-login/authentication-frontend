@@ -168,10 +168,6 @@ locals {
         value = var.language_toggle_enabled
       },
       {
-        name  = "PROVE_IDENTITY_WELCOME_ENABLED"
-        value = var.prove_identity_welcome_enabled
-      },
-      {
         name  = "GA4_ENABLED"
         value = var.ga4_enabled
       },
