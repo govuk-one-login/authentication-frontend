@@ -56,7 +56,6 @@ describe("enter authenticator app code controller", () => {
   afterEach(() => {
     sinon.restore();
     delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
-    delete process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY;
   });
 
   describe("enterAuthenticatorAppCodeGet", () => {
@@ -72,7 +71,7 @@ describe("enter authenticator app code controller", () => {
         "enter-authenticator-app-code/index.njk",
         {
           isAccountRecoveryPermitted: true,
-          routeUserViaIpvReset: false,
+          supportMfaResetWithIpv: false,
           mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
@@ -90,7 +89,7 @@ describe("enter authenticator app code controller", () => {
         "enter-authenticator-app-code/index.njk",
         {
           isAccountRecoveryPermitted: false,
-          routeUserViaIpvReset: false,
+          supportMfaResetWithIpv: false,
           mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
@@ -126,7 +125,7 @@ describe("enter authenticator app code controller", () => {
         UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
         {
           isAccountRecoveryPermitted: true,
-          routeUserViaIpvReset: false,
+          supportMfaResetWithIpv: false,
           mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
@@ -146,7 +145,7 @@ describe("enter authenticator app code controller", () => {
         ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME,
         {
           isAccountRecoveryPermitted: true,
-          routeUserViaIpvReset: false,
+          supportMfaResetWithIpv: false,
           mfaResetPath:
             PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES +
             "?type=AUTH_APP",
@@ -156,7 +155,6 @@ describe("enter authenticator app code controller", () => {
 
     it("should render enter authenticator app code view with mfaResetPath being IPV_DUMMY_URL when mfa reset with ipv is supported", async () => {
       process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
-      process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY = "1";
 
       await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
         req as Request,
@@ -167,7 +165,7 @@ describe("enter authenticator app code controller", () => {
         "enter-authenticator-app-code/index.njk",
         {
           isAccountRecoveryPermitted: true,
-          routeUserViaIpvReset: true,
+          supportMfaResetWithIpv: true,
           mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
         }
       );

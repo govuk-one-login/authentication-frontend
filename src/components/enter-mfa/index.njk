@@ -27,7 +27,7 @@
     <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
     <input type="hidden" name="supportAccountRecovery" value="{{supportAccountRecovery}}"/>
     <input type="hidden" name="mfaResetPath" value="{{mfaResetPath}}"/>
-    <input type="hidden" name="routeUserViaIpvReset" value="{{routeUserViaIpvReset}}"/>
+    <input type="hidden" name="supportMfaResetWithIpv" value="{{supportMfaResetWithIpv}}"/>
 
     {{ govukInput({
   label: {
@@ -52,7 +52,7 @@
     </p>
 
     {% if supportAccountRecovery === true or supportAccountRecovery === "true" %}
-      {% if routeUserViaIpvReset === true or routeUserViaIpvReset === "true" %}
+      {% if supportMfaResetWithIpv === true or supportMfaResetWithIpv === "true" %}
         <p class="govuk-body">
           {{ 'pages.enterMfa.details.changeGetSecurityCodesTextWithIpv' | translate }}
           <a href={{ mfaResetPath }} class="govuk-link"

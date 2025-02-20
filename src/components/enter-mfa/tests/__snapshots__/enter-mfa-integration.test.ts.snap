@@ -11,50 +11,6 @@ Object {
 }
 `;
 
-exports[`Integration:: enter mfa should include the correct link to change mfa methods when support mfa reset with ipv is off 1`] = `
-Object {
-  "contentId": "19601dd7-be55-4ab6-aa44-a6358c4239dc",
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "sign in",
-  "taxonomyLevel3": "",
-  "taxonomyLevel4": "",
-  "taxonomyLevel5": "",
-}
-`;
-
-exports[`Integration:: enter mfa should include the correct link to change mfa methods when support mfa reset with ipv is off regardless of route to new journey flag 1`] = `
-Object {
-  "contentId": "19601dd7-be55-4ab6-aa44-a6358c4239dc",
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "sign in",
-  "taxonomyLevel3": "",
-  "taxonomyLevel4": "",
-  "taxonomyLevel5": "",
-}
-`;
-
-exports[`Integration:: enter mfa should include the correct link to change mfa methods when support mfa reset with ipv is on and route users to new journey is on 1`] = `
-Object {
-  "contentId": "19601dd7-be55-4ab6-aa44-a6358c4239dc",
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "sign in",
-  "taxonomyLevel3": "",
-  "taxonomyLevel4": "",
-  "taxonomyLevel5": "",
-}
-`;
-
-exports[`Integration:: enter mfa should include the correct link to change mfa methods when support mfa reset with ipv is on but route to new journeys is off 1`] = `
-Object {
-  "contentId": "19601dd7-be55-4ab6-aa44-a6358c4239dc",
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "sign in",
-  "taxonomyLevel3": "",
-  "taxonomyLevel4": "",
-  "taxonomyLevel5": "",
-}
-`;
-
 exports[`Integration:: enter mfa should return check your phone page with sign in analytics properties 1`] = `
 Object {
   "contentId": "19601dd7-be55-4ab6-aa44-a6358c4239dc",
