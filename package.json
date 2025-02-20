@@ -142,7 +142,7 @@
     "mocha": "11.0.2",
     "mocha-chai-jest-snapshot": "^1.1.6",
     "mock-req-res": "^1.2.0",
-    "nock": "^13.5.1",
+    "nock": "^14.0.1",
     "nodemon": "3.1.9",
     "nyc": "^17.0.0",
     "pino-pretty": "^13.0.0",

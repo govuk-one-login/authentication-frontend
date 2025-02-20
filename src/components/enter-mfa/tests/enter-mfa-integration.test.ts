@@ -94,9 +94,14 @@ describe("Integration:: enter mfa", () => {
   });
 
   it("following a validation error it should not include link to change security codes where account recovery is not permitted", async () => {
+    nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).once().reply(400, {
+      code: ERROR_CODES.INVALID_MFA_CODE,
+      success: false,
+    });
+
     await request(app, (test) =>
       test
-        .get(PATH_NAMES.ENTER_MFA)
+        .post(PATH_NAMES.ENTER_MFA)
         .type("form")
         .set("Cookie", cookies)
         .send({
@@ -108,10 +113,10 @@ describe("Integration:: enter mfa", () => {
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("body").text()).to.not.contains(
-            "You can securely change how you get security codes"
+            "change how you get security codes."
           );
         })
-        .expect(200)
+        .expect(400)
     );
   });
 
