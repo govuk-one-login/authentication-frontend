@@ -1,4 +1,5 @@
 import { randomBytes } from "crypto";
+import { promisify } from "util";
 import xss from "xss";
 
 export function containsNumber(value: string): boolean {
@@ -13,8 +14,10 @@ export function redactPhoneNumber(value: string): string | undefined {
   return value ? value.trim().slice(value.length - 4) : undefined;
 }
 
-export function generateNonce(): string {
-  return randomBytes(16).toString("hex");
+const asyncRandomBytes = promisify(randomBytes);
+
+export async function generateNonce(): Promise<string> {
+  return (await asyncRandomBytes(16)).toString("hex");
 }
 
 export function sanitize(value: string): string {
