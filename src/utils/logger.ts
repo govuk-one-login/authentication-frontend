@@ -2,6 +2,7 @@ import pino from "pino";
 import PinoHttp from "pino-http";
 import { getLogLevel } from "../config";
 import { Request, Response } from "express";
+import { type IncomingHttpHeaders } from "http";
 
 const logger = pino({
   name: "di-auth",
@@ -13,7 +14,7 @@ const logger = pino({
         method: req.method,
         url: req.url,
         from: getRefererFrom(req.headers.referer),
-        headers: req.headers,
+        headers: sanitiseReferer(req.headers),
       };
     },
     res: (res: Response) => {
@@ -27,6 +28,23 @@ const logger = pino({
     },
   },
 });
+
+export const sanitiseReferer = (headers: IncomingHttpHeaders) => {
+  try {
+    if (headers.referer) {
+      const emailRegex = /[\w-.]+@([\w-]+\.)+[\w-]{2,4}/;
+      const sanitisedReferer = headers.referer.replace(emailRegex, "REDACTED");
+      return {
+        ...headers,
+        referer: sanitisedReferer,
+      };
+    }
+    return headers;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return headers;
+  }
+};
 
 export function getRefererFrom(referer: string): string {
   if (referer) {
