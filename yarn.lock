@@ -904,9 +904,9 @@
     pino "^8.20.0"
 
 "@govuk-one-login/spinner@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@govuk-one-login/spinner/-/spinner-1.0.1.tgz#62a18e68440154244dee7b4319e4eff8988e6b3a"
-  integrity sha512-oDVYmLx9DSgnDCLuJFqtuNijYlj57u+RI3hLFkOPR9fA4APaei9865z7A8hZ6V3/Yba7lVMRX09lFEAc9/VHUw==
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/spinner/-/spinner-1.1.0.tgz#865a5f2a707dc5c47a52f1f59b1d3d491a8bda97"
+  integrity sha512-dRZGqVVNowbUTaa8xXZz3Iy5eFCBhw2TrnkE0b53L16C5MrrP5hb3rmSxAQCqgomKrrsx417uZHGFK07lZJi3A==
 
 "@humanfs/core@^0.19.1":
   version "0.19.1"
