@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
-Transform: 'AWS::LanguageExtensions'
+Transform: "AWS::LanguageExtensions"
 
 Description: >-
   Creates the necessary components for Authentication Frontend application secure pipeline migration testing
@@ -44,78 +44,87 @@ Parameters:
       - "No"
 
 Conditions:
-  CreateDevEnvironmentResources:
-    Fn::Equals:
-      - !Ref Environment
-      - "dev"
+
+  CreateauthdevEnvironmentResources:
+    Fn::Or:
+      - Fn::Equals:
+          - !Ref Environment
+          - "authdev1"
+      - Fn::Equals:
+          - !Ref Environment
+          - "authdev2"
+
 
   CreateNonProdEnvironmentResources:
     Fn::Or:
       - Fn::Equals:
-        - !Ref Environment
-        - "build"
+          - !Ref Environment
+          - "dev"
       - Fn::Equals:
-        - !Ref Environment
-        - "staging"
+          - !Ref Environment
+          - "build"
       - Fn::Equals:
-        - !Ref Environment
-        - "integration"
+          - !Ref Environment
+          - "staging"
+      - Fn::Equals:
+          - !Ref Environment
+          - "integration"
 
   CreateProductionEnvironmentResources:
     Fn::Equals:
       - !Ref Environment
       - "production"
 
-  CreateDevHostedZone:
+  CreateAuthDevHostedZone:
     Fn::And:
-      - !Condition CreateDevEnvironmentResources
+      - !Condition CreateauthdevEnvironmentResources
       - Fn::Equals:
-        - !Ref DeployHostedZone
-        - "Yes"
+          - !Ref DeployHostedZone
+          - "Yes"
 
-  CreateDevCertificate:
+  CreateAuthDevCertificate:
     Fn::And:
-      - !Condition CreateDevEnvironmentResources
+      - !Condition CreateauthdevEnvironmentResources
       - Fn::Equals:
-        - !Ref DeployHostedZone
-        - "Yes"
+          - !Ref DeployHostedZone
+          - "Yes"
       - Fn::Equals:
-        - !Ref DeployCertificate
-        - "Yes"
+          - !Ref DeployCertificate
+          - "Yes"
 
   CreateNonProdHostedZone:
     Fn::And:
       - !Condition CreateNonProdEnvironmentResources
       - Fn::Equals:
-        - !Ref DeployHostedZone
-        - "Yes"
+          - !Ref DeployHostedZone
+          - "Yes"
 
   CreateNonProdCertificate:
     Fn::And:
       - !Condition CreateNonProdEnvironmentResources
       - Fn::Equals:
-        - !Ref DeployHostedZone
-        - "Yes"
+          - !Ref DeployHostedZone
+          - "Yes"
       - Fn::Equals:
-        - !Ref DeployCertificate
-        - "Yes"
+          - !Ref DeployCertificate
+          - "Yes"
 
   CreateProductionHostedZone:
     Fn::And:
       - !Condition CreateProductionEnvironmentResources
       - Fn::Equals:
-        - !Ref DeployHostedZone
-        - "Yes"
+          - !Ref DeployHostedZone
+          - "Yes"
 
   CreateProductionCertificate:
     Fn::And:
       - !Condition CreateProductionEnvironmentResources
       - Fn::Equals:
-        - !Ref DeployHostedZone
-        - "Yes"
+          - !Ref DeployHostedZone
+          - "Yes"
       - Fn::Equals:
-        - !Ref DeployCertificate
-        - "Yes"
+          - !Ref DeployCertificate
+          - "Yes"
 
 Mappings:
   EndpointConfigs:
@@ -129,24 +138,23 @@ Mappings:
       lowercaseName: signin
 
 Resources:
-
   # ==============================
-  # dev hosted zones and resources
+  # Authdevs hosted zones and resources
   # ==============================
 
-  'Fn::ForEach::DevEnvironments':
+  "Fn::ForEach::DevEnvironments":
     - EnvName
     - - authdev1
       - authdev2
     - ${EnvName}HostedZone:
         Type: AWS::Route53::HostedZone
-        Condition: CreateDevHostedZone
+        Condition: CreateAuthDevHostedZone
         DeletionPolicy: Retain
         UpdateReplacePolicy: Retain
         Properties:
-          Name: !Sub ${EnvName}.${Environment}.account.gov.uk
+          Name: !Sub ${EnvName}.dev.account.gov.uk
 
-      'Fn::ForEach::Endpoints':
+      "Fn::ForEach::Endpoints":
         - Endpoint
         - - signin
           # - auth
@@ -154,20 +162,20 @@ Resources:
           # - oidc
         - ${EnvName}${Endpoint}HostedZone:
             Type: AWS::Route53::HostedZone
-            Condition: CreateDevHostedZone
+            Condition: CreateAuthDevHostedZone
             DeletionPolicy: Retain
             UpdateReplacePolicy: Retain
             Properties:
-              Name: !Sub ${Endpoint}.${EnvName}.${Environment}.account.gov.uk
+              Name: !Sub ${Endpoint}.${EnvName}.dev.account.gov.uk
 
           ${EnvName}${Endpoint}DevDelegation:
             Type: AWS::Route53::RecordSet
-            Condition: CreateDevHostedZone
+            Condition: CreateAuthDevHostedZone
             Properties:
-              Name: !Sub ${Endpoint}.${EnvName}.${Environment}.account.gov.uk
+              Name: !Sub ${Endpoint}.${EnvName}.dev.account.gov.uk
               Type: NS
               HostedZoneId: !Ref
-                'Fn::Sub': "${EnvName}HostedZone"
+                "Fn::Sub": "${EnvName}HostedZone"
               ResourceRecords: !GetAtt
                 - !Sub ${EnvName}${Endpoint}HostedZone
                 - NameServers
@@ -175,13 +183,13 @@ Resources:
 
           ${EnvName}${Endpoint}HostedZoneSSM:
             Type: AWS::SSM::Parameter
-            Condition: CreateDevHostedZone
+            Condition: CreateAuthDevHostedZone
             Properties:
               Description: !Sub "The ${Endpoint} subdomain Public Hosted Zone Id"
               Name: !Sub "/deploy/${EnvName}/${Endpoint}${EndpointSuffix}_route53_hostedzone_id"
               Type: String
               Value: !Ref
-                'Fn::Sub': ${EnvName}${Endpoint}HostedZone
+                "Fn::Sub": ${EnvName}${Endpoint}HostedZone
               Tags:
                 Environment: !Sub ${EnvName}
                 Application: "auth-frontend"
@@ -189,11 +197,11 @@ Resources:
 
           ${EnvName}${Endpoint}Certificate:
             Type: AWS::CertificateManager::Certificate
-            Condition: CreateDevCertificate
+            Condition: CreateAuthDevCertificate
             Properties:
-              DomainName: !Sub ${Endpoint}.${EnvName}.${Environment}.account.gov.uk
+              DomainName: !Sub ${Endpoint}.${EnvName}.dev.account.gov.uk
               DomainValidationOptions:
-                - DomainName: !Sub ${Endpoint}.${EnvName}.${Environment}.account.gov.uk
+                - DomainName: !Sub ${Endpoint}.${EnvName}.dev.account.gov.uk
                   HostedZoneId: !GetAtt
                     - !Sub ${EnvName}${Endpoint}HostedZone
                     - Id
@@ -201,13 +209,13 @@ Resources:
 
           ${EnvName}${Endpoint}CertificateArnSSM:
             Type: AWS::SSM::Parameter
-            Condition: CreateDevCertificate
+            Condition: CreateAuthDevCertificate
             Properties:
               Description: !Sub "The ${Endpoint} subdomain Certificate ARN"
               Name: !Sub "/deploy/${EnvName}/${Endpoint}${EndpointSuffix}_certificate_arn"
               Type: String
               Value: !Ref
-                'Fn::Sub': ${EnvName}${Endpoint}Certificate
+                "Fn::Sub": ${EnvName}${Endpoint}Certificate
               Tags:
                 Environment: !Sub ${EnvName}
                 Application: "auth-frontend"
@@ -217,7 +225,7 @@ Resources:
   # Non-prod hosted zones and resources
   # ===================================
 
-  'Fn::ForEach::Endpoints':
+  "Fn::ForEach::Endpoints":
     - Endpoint
     - - Signin
       # - Auth
@@ -232,9 +240,9 @@ Resources:
           Name: !Sub
             - ${lowercaseEndpoint}${EndpointSuffix}.${Environment}.account.gov.uk
             - lowercaseEndpoint: !FindInMap
-              - EndpointConfigs
-              - !Ref Endpoint
-              - lowercaseName
+                - EndpointConfigs
+                - !Ref Endpoint
+                - lowercaseName
 
       Accounts${Endpoint}HostedZoneSSM:
         Type: AWS::SSM::Parameter
@@ -244,9 +252,9 @@ Resources:
           Name: !Sub
             - "/deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_route53_hostedzone_id"
             - lowercaseEndpoint: !FindInMap
-              - EndpointConfigs
-              - !Ref Endpoint
-              - lowercaseName
+                - EndpointConfigs
+                - !Ref Endpoint
+                - lowercaseName
           Type: String
           Value: !Ref
             Fn::Sub: Accounts${Endpoint}HostedZone
@@ -275,9 +283,9 @@ Resources:
           Name: !Sub
             - "/deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_certificate_arn"
             - lowercaseEndpoint: !FindInMap
-              - EndpointConfigs
-              - !Ref Endpoint
-              - lowercaseName
+                - EndpointConfigs
+                - !Ref Endpoint
+                - lowercaseName
           Type: String
           Value: !Ref
             Fn::Sub: Accounts${Endpoint}Certificate
@@ -290,7 +298,7 @@ Resources:
   # Production hosted zones and resources
   # =====================================
 
-  'Fn::ForEach::ProdEndpoints':
+  "Fn::ForEach::ProdEndpoints":
     - Endpoint
     - - Signin
       # For services not yet migrated to secure pipelines, the corresponding domain and resources are commented out in prod
@@ -313,9 +321,9 @@ Resources:
           Name: !Sub
             - "/deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_route53_hostedzone_id"
             - lowercaseEndpoint: !FindInMap
-              - EndpointConfigs
-              - !Ref Endpoint
-              - lowercaseName
+                - EndpointConfigs
+                - !Ref Endpoint
+                - lowercaseName
           Type: String
           Value: !Ref
             Fn::Sub: Accounts${Endpoint}ProdHostedZone
@@ -344,9 +352,9 @@ Resources:
           Name: !Sub
             - "/deploy/${Environment}/${lowercaseEndpoint}${EndpointSuffix}_certificate_arn"
             - lowercaseEndpoint: !FindInMap
-              - EndpointConfigs
-              - !Ref Endpoint
-              - lowercaseName
+                - EndpointConfigs
+                - !Ref Endpoint
+                - lowercaseName
           Type: String
           Value: !Ref
             Fn::Sub: Accounts${Endpoint}ProdCertificate
