@@ -45,7 +45,7 @@ Parameters:
 
 Conditions:
 
-  CreateauthdevEnvironmentResources:
+  CreateAuthdevEnvironmentResources:
     Fn::Or:
       - Fn::Equals:
           - !Ref Environment
@@ -77,14 +77,14 @@ Conditions:
 
   CreateAuthDevHostedZone:
     Fn::And:
-      - !Condition CreateauthdevEnvironmentResources
+      - !Condition CreateAuthdevEnvironmentResources
       - Fn::Equals:
           - !Ref DeployHostedZone
           - "Yes"
 
   CreateAuthDevCertificate:
     Fn::And:
-      - !Condition CreateauthdevEnvironmentResources
+      - !Condition CreateAuthdevEnvironmentResources
       - Fn::Equals:
           - !Ref DeployHostedZone
           - "Yes"
