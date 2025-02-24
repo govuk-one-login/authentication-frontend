@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Integration:: enter mfa can access old journey when new journey enabled but routing users to IPV is disabled 1`] = `
+Object {
+  "contentId": "e768e27b-1c4d-48ba-8bcf-4c40274a6441",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "account recovery",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
 exports[`Integration:: enter mfa following a validation error it should not include link to change security codes where account recovery is not permitted 1`] = `
 Object {
   "contentId": "19601dd7-be55-4ab6-aa44-a6358c4239dc",
