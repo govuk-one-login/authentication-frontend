@@ -967,8 +967,6 @@ Resources:
                   reducedCodeBlockDurationMinutes,
                   DefaultValue: "0.5",
                 ]
-            - Name: SHOW_TEST_BANNER
-              Value: 1 # Show the test banner for all environments - to be removed after the switchover
             - Name: SUPPORT_ACCOUNT_INTERVENTIONS
               Value: 1
             - Name: SUPPORT_REAUTHENTICATION
