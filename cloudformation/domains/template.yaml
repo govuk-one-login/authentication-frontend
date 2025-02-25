@@ -46,14 +46,9 @@ Parameters:
 Conditions:
 
   CreateAuthdevEnvironmentResources:
-    Fn::Or:
-      - Fn::Equals:
-          - !Ref Environment
-          - "authdev1"
-      - Fn::Equals:
-          - !Ref Environment
-          - "authdev2"
-
+    Fn::Equals:
+      - !Ref Environment
+      - "authdevs"
 
   CreateNonProdEnvironmentResources:
     Fn::Or:
