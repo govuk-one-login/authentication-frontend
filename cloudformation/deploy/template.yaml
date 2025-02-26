@@ -370,8 +370,8 @@ Mappings:
       SupportHTTPKeepAlive: "No"
       transitionalDomain: signin-sp.build.account.gov.uk
       migratedDomain: signin.build.account.gov.uk
-      UseMfaResetWithIpv: "Yes"
-      UseRouteUsersToNewIpvJourney: "Yes"
+      UseMfaResetWithIpv: "No"
+      UseRouteUsersToNewIpvJourney: "No"
       Enableipvspinner: "No"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -404,8 +404,8 @@ Mappings:
       SupportHTTPKeepAlive: "Yes"
       transitionalDomain: signin-sp.staging.account.gov.uk
       migratedDomain: signin.staging.account.gov.uk
-      UseMfaResetWithIpv: "Yes"
-      UseRouteUsersToNewIpvJourney: "Yes"
+      UseMfaResetWithIpv: "No"
+      UseRouteUsersToNewIpvJourney: "No"
       Enableipvspinner: "No"
     integration:
       DeployServiceDownPage: "Yes"
