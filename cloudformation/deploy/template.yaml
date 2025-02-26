@@ -405,7 +405,7 @@ Mappings:
       transitionalDomain: signin-sp.staging.account.gov.uk
       migratedDomain: signin.staging.account.gov.uk
       UseMfaResetWithIpv: "Yes"
-      UseRouteUsersToNewIpvJourney: "No"
+      UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
     integration:
       DeployServiceDownPage: "Yes"
