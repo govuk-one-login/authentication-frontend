@@ -195,9 +195,3 @@ export function routeUsersToNewIpvJourney(): boolean {
 export function showTestBanner(): boolean {
   return getAppEnv() !== "production" || process.env.SHOW_TEST_BANNER === "1";
 }
-
-export function supportMfaResetContactFormChanges(): boolean {
-  return ["local", "dev", "sandpit", "authdev1", "authdev2", "build"].includes(
-    getAppEnv()
-  );
-}
