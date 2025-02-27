@@ -433,7 +433,7 @@ Mappings:
       transitionalDomain: signin-sp.integration.account.gov.uk
       migratedDomain: signin.integration.account.gov.uk
       UseMfaResetWithIpv: "Yes"
-      UseRouteUsersToNewIpvJourney: "No"
+      UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       orchStubToAuth: ""
     production:
@@ -464,7 +464,7 @@ Mappings:
       transitionalDomain: signin-sp.account.gov.uk
       migratedDomain: signin.account.gov.uk
       UseMfaResetWithIpv: "Yes"
-      UseRouteUsersToNewIpvJourney: "No"
+      UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       orchStubToAuth: ""
 
