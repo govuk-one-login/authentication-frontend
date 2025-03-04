@@ -2005,7 +2005,32 @@
       },
       "suspectUnauthorisedAccess": {
         "title": "You think somebody else is using your information to access your GOV.UK One Login",
-        "header": "You think somebody else is using your information to access your GOV.UK One Login"
+        "header": "You think somebody else is using your information to access your GOV.UK One Login",
+        "section1": {
+          "resetPasswordLink": "Change your password (opens in a new tab)",
+          "resetPasswordEnd": "before you contact us. This will help keep your GOV.UK One Login safe."
+        },
+        "section2": {
+          "header": "What’s happened to make you think somebody else is accessing your GOV.UK One Login?",
+          "hint": "Select all that apply",
+          "options": {
+            "receivedUnwarrantedSecurityCode": "I received a security code I did not ask for",
+            "unknownActivityHistory":  "There’s something in my activity history that I do not recognise"
+          }
+        },
+        "section3": {
+          "header": "Tell us your GOV.UK One Login email address",
+          "hint": "Enter your email, we may contact you on this address"
+        },
+        "section4": {
+          "header": "Enter the phone number you created your GOV.UK One Login with (optional)",
+          "hint": "We will not contact you by phone, but this could help with our investigation"
+        },
+        "section5": {
+          "privacyNoticeStart": "Read our",
+          "privacyNoticeLink": "privacy notice (opens in a new tab)",
+          "privacyNoticeEnd": "for more information on how we use your personal information"
+        }
       },
       "anotherProblem": {
         "title": "A problem using your GOV.UK One Login",
