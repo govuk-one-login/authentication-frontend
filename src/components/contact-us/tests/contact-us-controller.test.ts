@@ -220,79 +220,85 @@ describe("contact us controller", () => {
       );
     });
 
-    it("should redirect /contact-us-further-information page when 'A problem signing in to your GOV.UK account' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.SIGNING_IN;
-      req.body.referer = REFERER;
+    describe("redirect to /contact-us-further-information page", () => {
+      it("should redirect when 'A problem signing in to your GOV.UK account' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.SIGNING_IN;
+        req.body.referer = REFERER;
 
-      contactUsFormPost(req as Request, res as Response);
+        contactUsFormPost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        "/contact-us-further-information?theme=signing_in&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
-      );
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-further-information?theme=signing_in&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        );
+      });
+
+      it("should redirect when 'A problem proving your identity' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.PROVING_IDENTITY;
+        req.body.referer = REFERER;
+
+        contactUsFormPost(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(
+          `/contact-us-further-information?theme=${CONTACT_US_THEMES.PROVING_IDENTITY}&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email`
+        );
+      });
+
+      it("should redirect when 'A problem creating a GOV.UK account' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.ACCOUNT_CREATION;
+        req.body.referer = REFERER;
+
+        contactUsFormPost(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-further-information?theme=account_creation&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        );
+      });
     });
 
-    it("should redirect /contact-us-further-information page when 'A problem proving your identity' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.PROVING_IDENTITY;
-      req.body.referer = REFERER;
+    describe("redirect to /contact-us-questions page", () => {
+      it("should redirect when 'Another problem using your GOV.UK account' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.SOMETHING_ELSE;
+        req.body.referer = REFERER;
 
-      contactUsFormPost(req as Request, res as Response);
+        contactUsFormPost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        `/contact-us-further-information?theme=${CONTACT_US_THEMES.PROVING_IDENTITY}&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email`
-      );
-    });
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-questions?theme=something_else&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        );
+      });
 
-    it("should redirect /contact-us-further-information page when 'A problem creating a GOV.UK account' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.ACCOUNT_CREATION;
-      req.body.referer = REFERER;
+      it("should redirect when 'GOV.UK email subscriptions' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS;
+        req.body.referer = REFERER;
 
-      contactUsFormPost(req as Request, res as Response);
+        contactUsFormPost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        "/contact-us-further-information?theme=account_creation&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
-      );
-    });
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-questions?theme=email_subscriptions&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        );
+      });
 
-    it("should redirect to /contact-us-further-information page when 'A problem proving your identity' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.PROVING_IDENTITY;
-      req.body.referer = REFERER;
+      it("should redirect when 'A suggestion or feedback about using your GOV.UK account' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
+        req.body.referer = REFERER;
 
-      contactUsFormPost(req as Request, res as Response);
+        contactUsFormPost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        `/contact-us-further-information?theme=${CONTACT_US_THEMES.PROVING_IDENTITY}&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email`
-      );
-    });
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-questions?theme=suggestions_feedback&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        );
+      });
 
-    it("should redirect /contact-us-questions page when 'Another problem using your GOV.UK account' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.SOMETHING_ELSE;
-      req.body.referer = REFERER;
+      it("should redirect when 'You think somebody else is using your information to access your Welcome to GOV.UK One Login' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS;
+        req.body.referer = REFERER;
 
-      contactUsFormPost(req as Request, res as Response);
+        contactUsFormPost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=something_else&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
-      );
-    });
-    it("should redirect /contact-us-questions page when 'GOV.UK email subscriptions' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS;
-      req.body.referer = REFERER;
-
-      contactUsFormPost(req as Request, res as Response);
-
-      expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=email_subscriptions&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
-      );
-    });
-    it("should redirect /contact-us-questions page when 'A suggestion or feedback about using your GOV.UK account' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
-      req.body.referer = REFERER;
-
-      contactUsFormPost(req as Request, res as Response);
-
-      expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=suggestions_feedback&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
-      );
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-questions?theme=suspect_unauthorised_access&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        );
+      });
     });
   });
 });
