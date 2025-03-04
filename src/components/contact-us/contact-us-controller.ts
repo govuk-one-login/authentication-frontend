@@ -38,6 +38,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.noPhoneNumberAccess.titleMfaReset",
   [CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS]:
     "pages.contactUsQuestions.emailSubscriptions.title",
+  [CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS]:
+    "pages.contactUsQuestions.suspectUnauthorisedAccess.title",
   [CONTACT_US_THEMES.SOMETHING_ELSE]:
     "pages.contactUsQuestions.anotherProblem.title",
   [CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK]:
@@ -416,6 +418,7 @@ export function furtherInformationPost(req: Request, res: Response): void {
 
 export function contactUsQuestionsGet(req: Request, res: Response): void {
   const supportLinkURL = getSupportLinkUrl();
+  // TODO - AUT-4118 - Fix this
   const backLinkHref = prepareBackLink(req, supportLinkURL, serviceDomain);
 
   if (!req.query.theme) {
