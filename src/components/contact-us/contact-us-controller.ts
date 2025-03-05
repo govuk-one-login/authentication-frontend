@@ -500,6 +500,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
       themes: { theme: req.body.theme, subtheme: req.body.subtheme },
       subject: "GOV.UK One Login",
       email: req.body.email,
+      telephoneNumber: req.body.phoneNumber,
       name: req.body.name,
       optionalData: {
         ticketIdentifier: ticketIdentifier,
@@ -519,6 +520,15 @@ export function contactUsQuestionsFormPostToSmartAgent(
       securityCodeSentMethod: req.body.securityCodeSentMethod,
       identityDocumentUsed: req.body.identityDocumentUsed,
       problemWith: req.body.problemWith,
+      suspectUnauthorisedAccess:
+        req.body.theme === CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS
+          ? {
+              hasReceivedUnwarrantedSecurityCode:
+                req.body.hasReceivedUnwarrantedSecurityCode === "true",
+              hasUnknownActivityHistory:
+                req.body.hasUnknownActivityHistory === "true",
+            }
+          : undefined,
     });
 
     logger.info(
@@ -558,6 +568,24 @@ export function getQuestionsFromFormTypeForMessageBody(
       ),
       serviceTryingToUse: req.t(
         "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
+    suspectUnauthorisedAccess: {
+      hasReceivedUnwarrantedSecurityCode: req.t(
+        "pages.contactUsQuestions.suspectUnauthorisedAccess.section2.options.receivedUnwarrantedSecurityCode",
+        { lng: "en" }
+      ),
+      hasUnknownActivityHistory: req.t(
+        "pages.contactUsQuestions.suspectUnauthorisedAccess.section2.options.unknownActivityHistory",
+        { lng: "en" }
+      ),
+      email: req.t(
+        "pages.contactUsQuestions.suspectUnauthorisedAccess.section3.header",
+        { lng: "en" }
+      ),
+      phoneNumber: req.t(
+        "pages.contactUsQuestions.suspectUnauthorisedAccess.section4.header",
         { lng: "en" }
       ),
     },
@@ -896,20 +924,6 @@ export function getQuestionFromThemes(
     signing_in: req.t("pages.contactUsPublic.section3.signingIn", {
       lng: "en",
     }),
-    proving_identity: req.t("pages.contactUsPublic.section3.provingIdentity", {
-      lng: "en",
-    }),
-    something_else: req.t("pages.contactUsPublic.section3.somethingElse", {
-      lng: "en",
-    }),
-    email_subscriptions: req.t(
-      "pages.contactUsPublic.section3.emailSubscriptions",
-      { lng: "en" }
-    ),
-    suggestions_feedback: req.t(
-      "pages.contactUsPublic.section3.suggestionsFeedback",
-      { lng: "en" }
-    ),
     id_check_app: req.t("pages.contactUsPublic.section3.idCheckApp", {
       lng: "en",
     }),
@@ -919,7 +933,28 @@ export function getQuestionFromThemes(
         lng: "en",
       }
     ),
+    proving_identity: req.t("pages.contactUsPublic.section3.provingIdentity", {
+      lng: "en",
+    }),
+    email_subscriptions: req.t(
+      "pages.contactUsPublic.section3.emailSubscriptions",
+      { lng: "en" }
+    ),
+    suspect_unauthorised_access: req.t(
+      "pages.contactUsPublic.section3.suspectUnauthorisedAccess",
+      {
+        lng: "en",
+      }
+    ),
+    something_else: req.t("pages.contactUsPublic.section3.somethingElse", {
+      lng: "en",
+    }),
+    suggestions_feedback: req.t(
+      "pages.contactUsPublic.section3.suggestionsFeedback",
+      { lng: "en" }
+    ),
   };
+
   const signinSubthemeToQuestions: { [key: string]: any } = {
     no_security_code: req.t(
       "pages.contactUsFurtherInformation.signingIn.section1.radio1",
@@ -954,6 +989,7 @@ export function getQuestionFromThemes(
       { lng: "en" }
     ),
   };
+
   const accountCreationSubthemeToQuestions: { [key: string]: any } = {
     no_security_code: req.t(
       "pages.contactUsFurtherInformation.accountCreation.section1.radio1",
