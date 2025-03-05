@@ -27,6 +27,7 @@
     "authenticatorAppIssuer": "GOV.UK One Login",
     "yes": "Gallwch",
     "no": "Na",
+    "or": "Neu",
     "cookie": {
       "cookieBanner": {
         "title": "Cwcis ar GOV.UK One Login",

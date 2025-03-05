@@ -27,6 +27,7 @@
     "authenticatorAppIssuer": "GOV.UK One Login",
     "yes": "Yes",
     "no": "No",
+    "or": "Or",
     "cookie": {
       "cookieBanner": {
         "title": "Cookies on GOV.UK One Login",
