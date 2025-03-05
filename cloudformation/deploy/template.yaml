@@ -146,21 +146,21 @@ Conditions:
           - !Condition UseSubEnvironment
           - Fn::Equals:
               - !FindInMap [
-                EnvironmentConfiguration,
-                !Ref SubEnvironment,
-                UseRouteUsersToNewIpvJourney,
-                DefaultValue: "No",
-              ]
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  UseRouteUsersToNewIpvJourney,
+                  DefaultValue: "No",
+                ]
               - "Yes"
       - Fn::And:
           - !Condition NotSubEnvironment
           - Fn::Equals:
               - !FindInMap [
-                EnvironmentConfiguration,
-                !Ref Environment,
-                UseRouteUsersToNewIpvJourney,
-                DefaultValue: "No",
-              ]
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  UseRouteUsersToNewIpvJourney,
+                  DefaultValue: "No",
+                ]
               - "Yes"
 
   UseSubEnvironment:
@@ -245,11 +245,8 @@ Conditions:
       - !Condition DeployServiceDownPage
       - !Condition IsSplunkEnabled
 
-  MaintainMigratedZoneRecords:
+  MaintainSPZoneRecords:
     Fn::Or:
-      - Fn::Equals:
-          - !Ref SubEnvironment
-          - "authdev1"
       - Fn::Equals:
           - !Ref Environment
           - "build"
@@ -264,21 +261,25 @@ Conditions:
           - "production"
 
   SwitchToMigratedZone:
-    Fn::And:
-      - !Condition MaintainMigratedZoneRecords
-      - Fn::Or:
-          - Fn::Equals:
-              - !Ref Environment
-              - "build"
-          - Fn::Equals:
-              - !Ref Environment
-              - "staging"
-          - Fn::Equals:
-              - !Ref Environment
-              - "integration"
-          - Fn::Equals:
-              - !Ref Environment
-              - "production"
+    Fn::Or:
+      - Fn::Equals:
+          - !Ref SubEnvironment
+          - "authdev1"
+      - Fn::Equals:
+          - !Ref SubEnvironment
+          - "authdev2"
+      - Fn::Equals:
+          - !Ref Environment
+          - "build"
+      - Fn::Equals:
+          - !Ref Environment
+          - "staging"
+      - Fn::Equals:
+          - !Ref Environment
+          - "integration"
+      - Fn::Equals:
+          - !Ref Environment
+          - "production"
 
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
@@ -1250,6 +1251,7 @@ Resources:
 
   FrontendDnsRecord:
     Type: AWS::Route53::RecordSet
+    Condition: MaintainSPZoneRecords
     Properties:
       Name: !If
         - IsNotProduction
@@ -1284,11 +1286,13 @@ Resources:
 
   FrontendDnsRecordA:
     Type: AWS::Route53::RecordSet
-    Condition: MaintainMigratedZoneRecords
     Properties:
       Name: !If
         - IsNotProduction
-        - !Sub "signin.${Environment}.account.gov.uk"
+        - !If
+          - UseSubEnvironment
+          - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
+          - !Sub "signin.${Environment}.account.gov.uk"
         - "signin.account.gov.uk"
       Type: A
       HostedZoneId: !Sub
@@ -1318,11 +1322,13 @@ Resources:
 
   ApplicationLoadBalancerDnsRecordA:
     Type: AWS::Route53::RecordSet
-    Condition: MaintainMigratedZoneRecords
     Properties:
       Name: !If
         - IsNotProduction
-        - !Sub "origin.signin.${Environment}.account.gov.uk"
+        - !If
+          - UseSubEnvironment
+          - !Sub "origin.signin.${SubEnvironment}.${Environment}.account.gov.uk"
+          - !Sub "origin.signin.${Environment}.account.gov.uk"
         - "origin.signin.account.gov.uk"
       Type: A
       HostedZoneId: !Sub
@@ -1450,6 +1456,7 @@ Resources:
 
   ApplicationLoadBalancerDnsRecord:
     Type: AWS::Route53::RecordSet
+    Condition: MaintainSPZoneRecords
     Properties:
       Name: !If
         - IsNotProduction
