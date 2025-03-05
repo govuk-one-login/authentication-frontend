@@ -16,7 +16,7 @@
 
     <p class="govuk-body">{{'pages.suspendedPageScreen.section2.paragraph2' | translate }}</p>
 
-    {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, contentId: "895deac9-e21d-4991-b1f7-9509c2d8c10e", loggedInStatus: false, dynamic: false } %}
+    {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
     {%- include "ga4-opl/template.njk" -%}
 
 {% endblock %}

@@ -112,6 +112,48 @@ export const CONTENT_IDS: {
   [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: {
     default: "d1b7cd24-f508-49ce-bf0d-ac1fe980c09c",
   },
+  [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL]: {
+    default: "6857e410-75b8-4807-b475-3f24fc96c9de",
+  },
+  [PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION]: {
+    default: "8247477c-3e33-4dae-9528-22e7ed44efb3",
+  },
+  [PATH_NAMES.PASSWORD_RESET_REQUIRED]: {
+    default: "",
+  },
+  [PATH_NAMES.UNAVAILABLE_PERMANENT]: {
+    default: "",
+  },
+  [PATH_NAMES.UNAVAILABLE_TEMPORARY]: {
+    default: "895deac9-e21d-4991-b1f7-9509c2d8c10e",
+  },
+  [PATH_NAMES.ACCOUNT_NOT_FOUND]: {
+    default: "10e1b70b-e208-4db8-8863-3679a675b51d",
+    mobile: "10e1b70b-e208-4db8-8863-3679a675b51d",
+    clientIsOneLogin: "a70b71e7-b444-46e5-895c-cd2e27bbe6ba",
+    clientUsesOneLoginOptionally: "a70b71e7-b444-46e5-895c-cd2e27bbe6ba",
+  },
+  [PATH_NAMES.ABC]: {
+    default: "",
+  },
+  [PATH_NAMES.ABC]: {
+    default: "",
+  },
+  [PATH_NAMES.ABC]: {
+    default: "",
+  },
+  [PATH_NAMES.ABC]: {
+    default: "",
+  },
+  [PATH_NAMES.ABC]: {
+    default: "",
+  },
+  [PATH_NAMES.ABC]: {
+    default: "",
+  },
+  [PATH_NAMES.ABC]: {
+    default: "",
+  },
 };
 
 export const HREF_BACK = {

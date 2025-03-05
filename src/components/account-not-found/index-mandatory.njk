@@ -42,6 +42,6 @@
 
 </form>
 
-{% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, contentId: "10e1b70b-e208-4db8-8863-3679a675b51d", loggedInStatus: false, dynamic: false } %}
+{% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
 {%- include "ga4-opl/template.njk" -%}
 {% endblock %}

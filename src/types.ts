@@ -113,4 +113,7 @@ export interface ContentIdVariants {
   default: string;
   reauth?: string;
   upliftRequired?: string;
+  mobile?: string;
+  clientIsOneLogin?: string;
+  clientUsesOneLoginOptionally?: string;
 }
