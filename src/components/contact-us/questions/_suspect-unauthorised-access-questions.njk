@@ -22,6 +22,8 @@
     }) }}
 
     {{ govukCheckboxes({
+        name: "suspectUnauthorisedAccessReasons",
+        values: suspectUnauthorisedAccessReasons,
         fieldset: {
             legend: {
                 text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section2.header' | translate,
@@ -34,18 +36,17 @@
         },
         items: [
             {
-                value: "true",
-                id: "hasReceivedUnwarrantedSecurityCode",
-                name: "hasReceivedUnwarrantedSecurityCode",
+                value: "hasReceivedUnwarrantedSecurityCode",
                 text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section2.options.receivedUnwarrantedSecurityCode' | translate
             },
             {
-                value: "true",
-                id: "hasUnknownActivityHistory",
-                name: "hasUnknownActivityHistory",
+                value: "hasUnknownActivityHistory",
                 text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section2.options.unknownActivityHistory' | translate
             }
-        ]
+        ],
+        errorMessage: {
+            text: errors['suspectUnauthorisedAccessReasons'].text
+        } if (errors['suspectUnauthorisedAccessReasons'])
     }) }}
 
     {{ govukInput({
@@ -54,6 +55,7 @@
         type: "email",
         autocomplete: "email",
         spellcheck: false,
+        value: email,
         label: {
             text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section3.header' | translate,
             classes: 'govuk-label--m'
@@ -71,6 +73,7 @@
         type: "tel",
         autocomplete: "tel",
         spellcheck: false,
+        value: phoneNumber,
         label: {
             text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section4.header' | translate,
             classes: 'govuk-label--m'

@@ -2016,6 +2016,9 @@
           "options": {
             "receivedUnwarrantedSecurityCode": "Rwyf wedi derbyn cod diogelwch nad oeddwn wedi gofyn amdano",
             "unknownActivityHistory":  "Mae rhywbeth yn fy hanes gweithgaredd nad wyf yn ei adnabod"
+          },
+          "validationError": {
+            "selectAtLeastOne": "Dewiswch o leiaf un opsiwn"
           }
         },
         "section3": {

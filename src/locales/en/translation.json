@@ -2016,6 +2016,9 @@
           "options": {
             "receivedUnwarrantedSecurityCode": "I received a security code I did not ask for",
             "unknownActivityHistory":  "There’s something in my activity history that I do not recognise"
+          },
+          "validationError": {
+            "selectAtLeastOne": "Select at least one option"
           }
         },
         "section3": {
