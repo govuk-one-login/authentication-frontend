@@ -2020,7 +2020,11 @@
         },
         "section3": {
           "header": "Dywedwch wrthym eich cyfeiriad e-bost GOV.UK One Login",
-          "hint": "Rhowch eich e-bost, efallai y byddwn yn cysylltu â chi drwy’r cyfeiriad hwn"
+          "hint": "Rhowch eich e-bost, efallai y byddwn yn cysylltu â chi drwy’r cyfeiriad hwn",
+          "validationError": {
+            "noEmailAddress": "Rhowch gyfeiriad e-bost eich GOV.UK One Login",
+            "invalidFormat":  "Rhowch gyfeiriad e-bost yn y ffurf cywir, fel name@example.com"
+          }
         },
         "section4": {
           "header": "Rhowch y rhif ffôn y gwnaethoch chi greu eich GOV.UK One Login gyda (dewisol)",

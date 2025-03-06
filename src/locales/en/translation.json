@@ -2020,7 +2020,11 @@
         },
         "section3": {
           "header": "Tell us your GOV.UK One Login email address",
-          "hint": "Enter your email, we may contact you on this address"
+          "hint": "Enter your email, we may contact you on this address",
+          "validationError": {
+            "noEmailAddress": "Enter the email address of your GOV.UK One Login",
+            "invalidFormat":  "Enter an email address in the correct format, like name@example.com"
+          }
         },
         "section4": {
           "header": "Enter the phone number you created your GOV.UK One Login with (optional)",
