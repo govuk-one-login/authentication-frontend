@@ -222,6 +222,15 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       }
       return true;
     }),
+    body("suspectUnauthorisedAccessReasons")
+      .if(body("theme").equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS))
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.suspectUnauthorisedAccess.section2.validationError.selectAtLeastOne",
+          { value, lng: req.i18n.lng }
+        );
+      }),
     body("contact")
       .if(
         body("theme")

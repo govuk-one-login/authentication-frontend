@@ -524,9 +524,13 @@ export function contactUsQuestionsFormPostToSmartAgent(
         req.body.theme === CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS
           ? {
               hasReceivedUnwarrantedSecurityCode:
-                req.body.hasReceivedUnwarrantedSecurityCode === "true",
+                req.body.suspectUnauthorisedAccessReasons.includes(
+                  "hasReceivedUnwarrantedSecurityCode"
+                ),
               hasUnknownActivityHistory:
-                req.body.hasUnknownActivityHistory === "true",
+                req.body.suspectUnauthorisedAccessReasons.includes(
+                  "hasUnknownActivityHistory"
+                ),
             }
           : undefined,
     });
