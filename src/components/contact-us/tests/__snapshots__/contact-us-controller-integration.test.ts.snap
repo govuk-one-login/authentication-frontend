@@ -275,17 +275,6 @@ Object {
 }
 `;
 
-exports[`Integration:: contact us - public user should return validation error when issue description are not entered on the contact-us-questions page 1`] = `
-Object {
-  "contentId": "",
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "feedback",
-  "taxonomyLevel3": "",
-  "taxonomyLevel4": "",
-  "taxonomyLevel5": "",
-}
-`;
-
 exports[`Integration:: contact us - public user should return validation error when no radio boxes are selected on the proving_identity contact-us-further-information page 1`] = `
 Object {
   "contentId": "a06d6387-d411-47db-8f7d-88871286330b",
@@ -308,7 +297,7 @@ Object {
 }
 `;
 
-exports[`Integration:: contact us - public user should return validation error when user has not selected how the security code was sent whilst creating an account 1`] = `
+exports[`Integration:: contact us - public user visiting contact-us-questions directly should return validation error when issue description are not entered on the contact-us-questions page 1`] = `
 Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
@@ -319,7 +308,7 @@ Object {
 }
 `;
 
-exports[`Integration:: contact us - public user should return validation error when user selected Text message to a phone number from another country and left the Which country field empty 1`] = `
+exports[`Integration:: contact us - public user visiting contact-us-questions directly should return validation error when user has not selected how the security code was sent whilst creating an account 1`] = `
 Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
@@ -330,7 +319,7 @@ Object {
 }
 `;
 
-exports[`Integration:: contact us - public user should return validation error when user selected yes to contact for feedback and left email field empty 1`] = `
+exports[`Integration:: contact us - public user visiting contact-us-questions directly should return validation error when user selected Text message to a phone number from another country and left the Which country field empty 1`] = `
 Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
@@ -341,7 +330,51 @@ Object {
 }
 `;
 
-exports[`Integration:: contact us - public user should return validation error when user selected yes to contact for feedback but email is in an invalid format 1`] = `
+exports[`Integration:: contact us - public user visiting contact-us-questions directly should return validation error when user selected yes to contact for feedback and left email field empty 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly should return validation error when user selected yes to contact for feedback but email is in an invalid format 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information should return validation error when email address is invalid 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information should return validation error when email is empty 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information should return validation error when user hasn't selected any reasons 1`] = `
 Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
