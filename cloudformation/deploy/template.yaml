@@ -14,7 +14,6 @@ Metadata:
         - eu-west-2
       ignore_checks:
         - W8003 # Bypass this cfn-lint check, not working with language extensions and SAM template https://github.com/aws-cloudformation/cfn-lint/issues/3857
-        - W1028
 
 Parameters:
   Environment:
@@ -261,30 +260,6 @@ Conditions:
           - !Ref Environment
           - "production"
 
-  SwitchToMigratedZone:
-    Fn::Or:
-      - Fn::Equals:
-          - !Ref SubEnvironment
-          - "authdev1"
-      - Fn::Equals:
-          - !Ref SubEnvironment
-          - "authdev2"
-      - Fn::Equals:
-          - !Ref Environment
-          - "dev"
-      - Fn::Equals:
-          - !Ref Environment
-          - "build"
-      - Fn::Equals:
-          - !Ref Environment
-          - "staging"
-      - Fn::Equals:
-          - !Ref Environment
-          - "integration"
-      - Fn::Equals:
-          - !Ref Environment
-          - "production"
-
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   ElasticLoadBalancerAccountIds:
@@ -303,7 +278,6 @@ Mappings:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEM0ZehmrdDd89uYEFMTakbS7JgwCG
         XK7CAYMcVvy1pP5yV4O2mnDjYmvjZpvio2ctgOPxDuBb38QP1HD9WAOR2w==
         -----END PUBLIC KEY-----
-      transitionalDomain: signin.authdev1.dev.account.gov.uk
       migratedDomain: signin.authdev1.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
@@ -320,7 +294,6 @@ Mappings:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwe8ey1GnTbH6E69EJFUkt4WQc1Kl
         tJwzOYNWUmK/+GxooRp+j9i9KWQ0WlV4gVI0iQkHY3ZKq+RWk94tSDHbyQ==
         -----END PUBLIC KEY-----
-      transitionalDomain: signin.authdev2.dev.account.gov.uk
       migratedDomain: signin.authdev2.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
@@ -333,8 +306,6 @@ Mappings:
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       cloudwatchLogRetentionInDays: 1
-      oldCloudFrontDistributionDomain: "d6kww5xvio5k2.cloudfront.net"
-      oldALBDNSName: "dev-frontend-1839011587.eu-west-2.elb.amazonaws.com"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHzG8IFx1jE1+Ul44jQk96efPknCX
@@ -348,7 +319,6 @@ Mappings:
       redisNodeSize: cache.t2.small
       IsSplunkEnabled: "No"
       SupportHTTPKeepAlive: "No"
-      transitionalDomain: signin-sp.dev.account.gov.uk
       migratedDomain: signin.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
@@ -361,8 +331,6 @@ Mappings:
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       cloudwatchLogRetentionInDays: 7
-      oldCloudFrontDistributionDomain: "dqgh68jqbv9m7.cloudfront.net"
-      oldALBDNSName: "build-frontend-41183120.eu-west-2.elb.amazonaws.com"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENRdvNXHwk1TvrgFUsWXAE5oDTcPr
@@ -376,7 +344,6 @@ Mappings:
       redisNodeSize: cache.t2.small
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
-      transitionalDomain: signin-sp.build.account.gov.uk
       migratedDomain: signin.build.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
@@ -389,8 +356,6 @@ Mappings:
       frontendTaskDefinitionCpu: 2048
       frontendTaskDefinitionMemory: 4096
       cloudwatchLogRetentionInDays: 7
-      oldCloudFrontDistributionDomain: "dn583e4460uqv.cloudfront.net"
-      oldALBDNSName: "staging-frontend-972136373.eu-west-2.elb.amazonaws.com"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5PP1PZmhiuHR57ZEfZXARt9/uiG+
@@ -410,7 +375,6 @@ Mappings:
       GA4Enabled: "true"
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "Yes"
-      transitionalDomain: signin-sp.staging.account.gov.uk
       migratedDomain: signin.staging.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
@@ -423,8 +387,6 @@ Mappings:
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       cloudwatchLogRetentionInDays: 30
-      oldCloudFrontDistributionDomain: "d3dw1x63k50a79.cloudfront.net"
-      oldALBDNSName: "integration-frontend-1951285918.eu-west-2.elb.amazonaws.com"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzzwKLypUL89WVaeTbfBZu0Fws8T7
@@ -438,7 +400,6 @@ Mappings:
       redisNodeSize: cache.t2.small
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
-      transitionalDomain: signin-sp.integration.account.gov.uk
       migratedDomain: signin.integration.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
@@ -452,8 +413,6 @@ Mappings:
       frontendTaskDefinitionCpu: 2048
       frontendTaskDefinitionMemory: 4096
       cloudwatchLogRetentionInDays: 30
-      oldCloudFrontDistributionDomain: "d1sj2b5tywgixi.cloudfront.net"
-      oldALBDNSName: "production-frontend-1140310834.eu-west-2.elb.amazonaws.com"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5iJXSuxgbfM6ADQVtNNDi7ED5ly5
@@ -469,7 +428,6 @@ Mappings:
       googleAnalytics4GTMContainerId: "GTM-K4PBJH3"
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
-      transitionalDomain: signin-sp.account.gov.uk
       migratedDomain: signin.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
@@ -829,26 +787,16 @@ Resources:
             - Name: SUPPORT_ACCOUNT_RECOVERY
               Value: 1
             - Name: BASE_URL
-              Value: !If
-                - SwitchToMigratedZone
-                - !FindInMap [
-                    EnvironmentConfiguration,
-                    !If [
-                      UseSubEnvironment,
-                      !Ref SubEnvironment,
-                      !Ref Environment,
-                    ],
-                    migratedDomain,
-                  ]
-                - !FindInMap [
-                    EnvironmentConfiguration,
-                    !If [
-                      UseSubEnvironment,
-                      !Ref SubEnvironment,
-                      !Ref Environment,
-                    ],
-                    transitionalDomain,
-                  ]
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !If [
+                    UseSubEnvironment,
+                    !Ref SubEnvironment,
+                    !Ref Environment,
+                  ],
+                  migratedDomain,
+                ]
             - Name: SUPPORT_AUTHORIZE_CONTROLLER
               Value: 1
             - Name: ORCH_TO_AUTH_SIGNING_KEY
@@ -900,26 +848,16 @@ Resources:
             - Name: ORCH_STUB_TO_AUTH_AUDIENCE
               Value: !Sub
                 - "https://${FQDN}/"
-                - FQDN: !If
-                    - SwitchToMigratedZone
-                    - !FindInMap [
-                        EnvironmentConfiguration,
-                        !If [
-                          UseSubEnvironment,
-                          !Ref SubEnvironment,
-                          !Ref Environment,
-                        ],
-                        migratedDomain,
-                      ]
-                    - !FindInMap [
-                        EnvironmentConfiguration,
-                        !If [
-                          UseSubEnvironment,
-                          !Ref SubEnvironment,
-                          !Ref Environment,
-                        ],
-                        transitionalDomain,
-                      ]
+                - FQDN:
+                    !FindInMap [
+                      EnvironmentConfiguration,
+                      !If [
+                        UseSubEnvironment,
+                        !Ref SubEnvironment,
+                        !Ref Environment,
+                      ],
+                      migratedDomain,
+                    ]
             - Name: URL_FOR_SUPPORT_LINKS
               Value: !Sub
                 - "https://${homeFQDN}/contact-gov-uk-one-login"
@@ -1304,23 +1242,17 @@ Resources:
         - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       AliasTarget:
         EvaluateTargetHealth: false
-        DNSName: !If
-          - SwitchToMigratedZone
-          - Fn::ImportValue: !Sub
-              - "${CFDistributionStackName}-DistributionDomain"
-              - CFDistributionStackName: !FindInMap
-                  - EnvironmentConfiguration
-                  - !If
-                    - UseSubEnvironment
-                    - !Ref SubEnvironment
-                    - !Ref Environment
-                  - cloudfrontDistributionStackName
-                  - DefaultValue: "auth-fe-cloudfront"
-          - !FindInMap [
-              EnvironmentConfiguration,
-              !Ref Environment,
-              oldCloudFrontDistributionDomain,
-            ]
+        DNSName:
+          Fn::ImportValue: !Sub
+            - "${CFDistributionStackName}-DistributionDomain"
+            - CFDistributionStackName: !FindInMap
+                - EnvironmentConfiguration
+                - !If
+                  - UseSubEnvironment
+                  - !Ref SubEnvironment
+                  - !Ref Environment
+                - cloudfrontDistributionStackName
+                - DefaultValue: "auth-fe-cloudfront"
         HostedZoneId: Z2FDTNDATAQYW2
         # This is always the hosted zone ID when you create an alias record that routes traffic to a CloudFront distribution
 
@@ -1340,19 +1272,9 @@ Resources:
         - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       AliasTarget:
         EvaluateTargetHealth: false
-        DNSName: !If
-          - SwitchToMigratedZone
-          - !Sub
-            - "dualstack.${ALBDNSName}"
-            - ALBDNSName: !GetAtt ApplicationLoadBalancer.DNSName
-          - !Sub
-            - "dualstack.${ALBDNSName}"
-            - ALBDNSName:
-                !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref Environment,
-                  oldALBDNSName,
-                ]
+        DNSName: !Sub
+          - "dualstack.${ALBDNSName}"
+          - ALBDNSName: !GetAtt ApplicationLoadBalancer.DNSName
         HostedZoneId: "ZHURV8PSTC4K8"
         # This is always the ALB hosted zone in eu-west-2 region. See https://docs.aws.amazon.com/general/latest/gr/elb.html
 
@@ -1491,16 +1413,10 @@ Resources:
       Port: 443
       Protocol: HTTPS
       Certificates:
-        - CertificateArn: !If
-            - SwitchToMigratedZone
-            - !Sub
-              - "{{resolve:ssm:/deploy/${env}/signin_certificate_arn}}"
-              - env:
-                  !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
-            - !Sub
-              - "{{resolve:ssm:/deploy/${env}/signin-sp_certificate_arn}}"
-              - env:
-                  !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+        - CertificateArn: !Sub
+            - "{{resolve:ssm:/deploy/${env}/signin_certificate_arn}}"
+            - env:
+                !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       SslPolicy: "ELBSecurityPolicy-FS-1-2-Res-2020-10"
 
   ApplicationLoadBalancerListener:
