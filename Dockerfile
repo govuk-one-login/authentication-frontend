@@ -23,7 +23,7 @@ COPY --chown=node:node docker-entrypoint.sh /docker-entrypoint.sh
 ENV NODE_ENV="production"
 ENV PORT=3000
 ENV NODE_OPTIONS="--require @opentelemetry/auto-instrumentations-node/register"
-ENV OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="https://khw46367.live.dynatrace.com/api/v2/otlp"
+ENV OTEL_EXPORTER_OTLP_ENDPOINT="https://khw46367.live.dynatrace.com/api/v2/otlp"
 
 EXPOSE $PORT
 USER node
