@@ -22,6 +22,7 @@ COPY --chown=node:node docker-entrypoint.sh /docker-entrypoint.sh
 
 ENV NODE_ENV="production"
 ENV PORT=3000
+ENV NODE_OPTIONS="--require @opentelemetry/auto-instrumentations-node/register"
 
 EXPOSE $PORT
 USER node
