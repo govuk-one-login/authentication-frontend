@@ -223,6 +223,11 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       return true;
     }),
     body("contact")
+      .if(
+        body("theme")
+          .not()
+          .equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS)
+      )
       .notEmpty()
       .withMessage((value, { req }) => {
         return req.t(
@@ -231,6 +236,27 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
         );
       }),
     body("email")
+      .if(body("theme").equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS))
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.suspectUnauthorisedAccess.section3.validationError.noEmailAddress",
+          { value, lng: req.i18n.lng }
+        );
+      })
+      .isEmail()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.suspectUnauthorisedAccess.section3.validationError.invalidFormat",
+          { value, lng: req.i18n.lng }
+        );
+      }),
+    body("email")
+      .if(
+        body("theme")
+          .not()
+          .equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS)
+      )
       .if(body("contact").equals("true"))
       .notEmpty()
       .withMessage((value, { req }) => {
