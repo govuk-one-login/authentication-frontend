@@ -252,96 +252,145 @@ describe("Integration:: contact us - public user", () => {
     );
   });
 
-  it("should return validation error when issue description are not entered on the contact-us-questions page", async () => {
-    const data = {
-      _csrf: token,
-      issueDescription: "",
-      theme: "signing_in",
-      subtheme: "technical_error",
-    };
-    await expectValidationErrorOnPost(
-      "/contact-us-questions",
-      data,
-      "#issueDescription-error",
-      "Enter what you were trying to do"
-    );
-  });
+  describe("visiting contact-us-questions directly", () => {
+    it("should return validation error when issue description are not entered on the contact-us-questions page", async () => {
+      const data = {
+        _csrf: token,
+        issueDescription: "",
+        theme: "signing_in",
+        subtheme: "technical_error",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#issueDescription-error",
+        "Enter what you were trying to do"
+      );
+    });
 
-  it("should return validation error when user selected yes to contact for feedback and left email field empty", async () => {
-    const data = {
-      _csrf: token,
-      theme: "signing_in",
-      subtheme: "something_else",
-      issueDescription: "issue",
-      additionalDescription: "additional",
-      contact: "true",
-    };
-    await expectValidationErrorOnPost(
-      "/contact-us-questions",
-      data,
-      "#email-error",
-      "Enter your email address"
-    );
-  });
+    it("should return validation error when user selected yes to contact for feedback and left email field empty", async () => {
+      const data = {
+        _csrf: token,
+        theme: "signing_in",
+        subtheme: "something_else",
+        issueDescription: "issue",
+        additionalDescription: "additional",
+        contact: "true",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#email-error",
+        "Enter your email address"
+      );
+    });
 
-  it("should return validation error when user selected Text message to a phone number from another country and left the Which country field empty", async () => {
-    await request(app, (test) =>
-      test
-        .post("/contact-us-questions?radio_buttons=true")
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
+    it("should return validation error when user selected Text message to a phone number from another country and left the Which country field empty", async () => {
+      await request(app, (test) =>
+        test
+          .post("/contact-us-questions?radio_buttons=true")
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            theme: "account_creation",
+            subtheme: "invalid_security_code",
+            additionalDescription: "additional",
+            contact: "false",
+            securityCodeSentMethod: "text_message_international_number",
+            country: " ",
+          })
+          .expect(function (res) {
+            const $ = cheerio.load(res.text);
+            expect($("#country-error").text()).to.contains(
+              "Enter which country your phone number is from"
+            );
+          })
+          .expect(400)
+      );
+    });
+
+    it("should return validation error when user selected yes to contact for feedback but email is in an invalid format", async () => {
+      const data = {
+        _csrf: token,
+        theme: "signing_in",
+        subtheme: "something_else",
+        issueDescription: "issue",
+        additionalDescription: "additional",
+        contact: "true",
+        email: "test",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#email-error",
+        "Enter an email address in the correct format, like name@example.com"
+      );
+    });
+
+    it("should return validation error when user has not selected how the security code was sent whilst creating an account", async () => {
+      const data = {
+        _csrf: token,
+        theme: "account_creation",
+        subtheme: "no_security_code",
+        moreDetailDescription: "issue",
+        formType: "noSecurityCode",
+        contact: "false",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions?radio_buttons=true",
+        data,
+        "#securityCodeSentMethod-error",
+        "Select whether you expected to get the code by email, text message or authenticator app"
+      );
+    });
+
+    describe("somebody else is using your information", () => {
+      it("should return validation error when user hasn't selected any reasons", async () => {
+        const data = {
           _csrf: token,
-          theme: "account_creation",
-          subtheme: "invalid_security_code",
-          additionalDescription: "additional",
-          contact: "false",
-          securityCodeSentMethod: "text_message_international_number",
-          country: " ",
-        })
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($("#country-error").text()).to.contains(
-            "Enter which country your phone number is from"
-          );
-        })
-        .expect(400)
-    );
-  });
+          theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+          email: "test@example.com",
+        };
+        await expectValidationErrorOnPost(
+          "/contact-us-questions",
+          data,
+          "#suspectUnauthorisedAccessReasons-error",
+          "Select at least one option"
+        );
+      });
 
-  it("should return validation error when user selected yes to contact for feedback but email is in an invalid format", async () => {
-    const data = {
-      _csrf: token,
-      theme: "signing_in",
-      subtheme: "something_else",
-      issueDescription: "issue",
-      additionalDescription: "additional",
-      contact: "true",
-      email: "test",
-    };
-    await expectValidationErrorOnPost(
-      "/contact-us-questions",
-      data,
-      "#email-error",
-      "Enter an email address in the correct format, like name@example.com"
-    );
-  });
+      it("should return validation error when email is empty", async () => {
+        const data = {
+          _csrf: token,
+          theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+          suspectUnauthorisedAccessReasons:
+            "hasReceivedUnwarrantedSecurityCode",
+        };
+        await expectValidationErrorOnPost(
+          "/contact-us-questions",
+          data,
+          "#email-error",
+          "Enter the email address of your GOV.UK One Login"
+        );
+      });
 
-  it("should return validation error when user has not selected how the security code was sent whilst creating an account", async () => {
-    const data = {
-      _csrf: token,
-      theme: "account_creation",
-      subtheme: "no_security_code",
-      moreDetailDescription: "issue",
-      formType: "noSecurityCode",
-      contact: "false",
-    };
-    await expectValidationErrorOnPost(
-      "/contact-us-questions?radio_buttons=true",
-      data,
-      "#securityCodeSentMethod-error",
-      "Select whether you expected to get the code by email, text message or authenticator app"
-    );
+      it("should return validation error when email address is invalid", async () => {
+        const data = {
+          _csrf: token,
+          theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+          suspectUnauthorisedAccessReasons:
+            "hasReceivedUnwarrantedSecurityCode",
+          email: "test",
+        };
+        await expectValidationErrorOnPost(
+          "/contact-us-questions",
+          data,
+          "#email-error",
+          "Enter an email address in the correct format, like name@example.com"
+        );
+      });
+    });
   });
 
   describe("when a user had a problem with their identity document", () => {

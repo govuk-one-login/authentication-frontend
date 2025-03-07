@@ -1,10 +1,14 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import {
+  contactUsServiceSmartAgent,
   getRefererTag,
   prepareUserLocationTitle,
 } from "../contact-us-service-smart-agent";
 import { ContactForm } from "../types";
+import sinon from "sinon";
+import { CONTACT_US_THEMES } from "../../../app.constants";
+import { SmartAgentService } from "../../../utils/smartAgent";
 
 describe("contact-us-service", () => {
   describe("getRefererTag", () => {
@@ -74,6 +78,71 @@ describe("contact-us-service", () => {
       ["sooth", "falsehood", ""].forEach((i) => {
         expect(prepareUserLocationTitle(i)).to.equal("");
       });
+    });
+  });
+
+  describe("contactUsServiceSmartAgent", () => {
+    let mockSmartAgent: sinon.SinonStubbedInstance<SmartAgentService>;
+
+    beforeEach(() => {
+      mockSmartAgent = sinon.createStubInstance(SmartAgentService);
+      mockSmartAgent.createTicket.resolves();
+    });
+
+    it("produces correct payload for suspect_unauthorised_access submission", async () => {
+      // arrange
+      const service = contactUsServiceSmartAgent(mockSmartAgent);
+
+      const contactForm: ContactForm = {
+        // suspect_unauthorised_access fields
+        themes: {
+          theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+        },
+        suspectUnauthorisedAccess: {
+          hasReceivedUnwarrantedSecurityCode: true,
+          hasUnknownActivityHistory: true,
+        },
+        email: "test@example.com",
+        telephoneNumber: "1234567890",
+
+        // other required fields
+        descriptions: {},
+        feedbackContact: false,
+        optionalData: {
+          userAgent: "testUserAgent",
+        },
+        questions: {},
+        referer: "testReferer",
+        subject: "testSubject",
+        themeQuestions: {
+          themeQuestion: "testThemeQuestion",
+        },
+      };
+
+      // act
+      await service.contactUsSubmitFormSmartAgent(contactForm);
+
+      // assert
+      const actualPayload = mockSmartAgent.createTicket.getCall(0).args[0];
+
+      expect(actualPayload.customAttributes["sa-tag-theme"]).equal(
+        "auth_suspect_unauthorised_access"
+      );
+      expect(
+        actualPayload.customAttributes[
+          "sa-tag-has-received-unwarranted-security-code"
+        ]
+      ).equal("yes");
+      expect(
+        actualPayload.customAttributes["sa-tag-has-unknown-activity-history"]
+      ).equal("yes");
+      expect(actualPayload.customAttributes["sa-tag-customer-email"]).equal(
+        "test@example.com"
+      );
+      expect(actualPayload.customAttributes["sa-tag-telephone-number"]).equal(
+        "1234567890"
+      );
+      expect(actualPayload.email).equal("test@example.com");
     });
   });
 });

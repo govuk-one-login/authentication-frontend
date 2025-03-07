@@ -172,6 +172,21 @@ export function contactUsServiceSmartAgent(
       customAttributes["sa-tag-customer-email"] = contactForm.email;
     }
 
+    if (
+      contactForm.themes.theme === CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS
+    ) {
+      customAttributes["sa-tag-customer-email"] = contactForm.email;
+      customAttributes["sa-tag-telephone-number"] = contactForm.telephoneNumber;
+      customAttributes["sa-tag-has-received-unwarranted-security-code"] =
+        contactForm.suspectUnauthorisedAccess.hasReceivedUnwarrantedSecurityCode
+          ? "yes"
+          : "no";
+      customAttributes["sa-tag-has-unknown-activity-history"] = contactForm
+        .suspectUnauthorisedAccess.hasUnknownActivityHistory
+        ? "yes"
+        : "no";
+    }
+
     customAttributes["sa-tag-primary-intent-user-selection"] =
       contactForm.themeQuestions.themeQuestion;
 
@@ -241,7 +256,10 @@ export function contactUsServiceSmartAgent(
       contactForm.descriptions.serviceTryingToUse;
 
     customAttributes["sa-tag-permission-to-email"] = `Permission to email ${
-      contactForm.feedbackContact ? "granted" : "denied"
+      contactForm.feedbackContact ||
+      contactForm.themes.theme === CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS
+        ? "granted"
+        : "denied"
     }`;
 
     customAttributes["sa-tag-identifier"] = getIdentifierTag(
