@@ -151,7 +151,7 @@ if [[ $DEPLOY == "1" ]]; then
         --config-env "$DEPLOY_ENV" \
         --config-file "$SAMCONFIG_FILE" \
         $CONFIRM_CHANGESET_OPTION \
-        --tags $TAGS Product="GOV.UK Sign In" commitsha=${GITHUB_SHA}
+        --tags $TAGS Product="GOV.UK Sign In"
 
     # cleanup
     rm cf-template.yaml*
