@@ -2509,23 +2509,23 @@
     "setupAuthenticatorApp": {
       "title": "Sefydlu ap dilysydd",
       "header": "Sefydlu ap dilysydd",
-      "step1": "1. Agorwch eich ap dilysydd ar eich ffôn clyfar, llechen neu gyfrifiadur.",
+      "step1": "Agorwch eich ap dilysydd ar eich ffôn clyfar, llechen neu gyfrifiadur.",
       "noAuthAppDetails": {
         "summaryText": "Nid oes gennyf ap dilysydd",
         "paragraph1": "Gallwch lawrlwytho ap dilysydd ar gyfer eich ffôn clyfar neu lechen o’ch siop apiau.",
         "paragraph2": "Os nad oes gennych ffôn clyfar neu lechen, chwiliwch ar-lein am ap dilysydd ar gyfer eich cyfrifiadur.",
         "paragraph3": "Gallwch ddefnyddio unrhyw ap dilysydd."
       },
-      "step2": "2. Defnyddiwch eich ap dilysydd i sganio’r cod QR.",
+      "step2": "Defnyddiwch eich ap dilysydd i sganio’r cod QR.",
       "cannotScanDetails": {
         "summaryText": "Ni allaf sganio’r cod QR",
         "paragraph1": "Gallwch roi yr allwedd gyfrinachol i’ch ap dilysydd yn lle hynny.",
         "paragraph2": "Allwedd gyfrinachol: ",
         "paragraph3": "Mae rhai apiau dilysydd yn galw’r allwedd gyfrinachol yn ‘cod’."
       },
-      "step3": "3. Bydd yr ap dilysydd yn dangos cod diogelwch.",
+      "step3": "Bydd yr ap dilysydd yn dangos cod diogelwch.",
       "code": {
-        "label": "4. Rhowch y cod.",
+        "label": "Rhowch y cod.",
         "hintText": "Dyma’r rhif 6-digid a ddangosir yn eich ap dilysydd",
         "validationError": {
           "required": "Rhowch y cod a dangosir yn eich ap dilysydd",
