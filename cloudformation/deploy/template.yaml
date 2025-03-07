@@ -301,8 +301,8 @@ Mappings:
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
-      frontendAutoScalingMinCount: 2
-      frontendAutoScalingMaxCount: 4
+      frontendAutoScalingMinCount: 1
+      frontendAutoScalingMaxCount: 2
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       cloudwatchLogRetentionInDays: 1
