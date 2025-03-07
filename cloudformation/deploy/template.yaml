@@ -958,6 +958,16 @@ Resources:
               Value: !If [UseMfaResetWithIpv, "1", "0"]
             - Name: ROUTE_USERS_TO_NEW_IPV_JOURNEY
               Value: !If [UseRouteUsersToNewIpvJourney, "1", "0"]
+            - Name: NODE_OPTIONS
+              Value: "--require @opentelemetry/auto-instrumentations-node/register"
+            - Name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+              Value: "https://khw46367.live.dynatrace.com/api/v2/otlp/v1/traces"
+            - Name: OTEL_METRICS_EXPORTER
+              Value: "none"
+            - Name: OTEL_LOGS_EXPORTER
+              Value: "none"
+            - Name: OTEL_SERVICE_NAME
+              Value: di-auth
           Secrets:
             - Name: API_KEY
               ValueFrom: !If
@@ -1009,6 +1019,11 @@ Resources:
                 - UseSubEnvironment
                 - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/smartagent_webform_id"
                 - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/smartagent_webform_id"
+            - Name: OTEL_EXPORTER_OTLP_TRACES_HEADERS
+              ValueFrom: !If
+                - UseSubEnvironment
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${SubEnvironment}/otel_exporter_otlp_traces_headers"
+                - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/deploy/${Environment}/otel_exporter_otlp_traces_headers"
             - Name: DT_TENANT
               ValueFrom: !Join
                 - ""
