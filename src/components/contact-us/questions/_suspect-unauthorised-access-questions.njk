@@ -68,12 +68,6 @@
         } if (errors['email'])}) }}
 
     {{ govukInput({
-        id: "phoneNumber",
-        name: "phoneNumber",
-        type: "tel",
-        autocomplete: "tel",
-        spellcheck: false,
-        value: phoneNumber,
         label: {
             text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section4.header' | translate,
             classes: 'govuk-label--m'
@@ -81,9 +75,51 @@
         hint: {
             text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section4.hint' | translate
         },
+        classes: "govuk-!-width-two-thirds",
+        id: "phoneNumber",
+        name: "phoneNumber",
+        type: "tel",
+        autocomplete: "tel",
+        value: phoneNumber,
         errorMessage: {
             text: errors['phoneNumber'].text
-        } if (errors['phoneNumber'])}) }}
+        } if (errors['phoneNumber'])})
+    }}
+
+    {% set internationalNumberHtml %}
+        {{ govukInput({
+            id: "internationalPhoneNumber",
+            name: "internationalPhoneNumber",
+            type: "tel",
+            autocomplete: "tel",
+            value: internationalPhoneNumber,
+            classes: "govuk-!-width-two-thirds",
+            label: {
+                text: 'pages.enterPhoneNumber.internationalPhoneNumber.label' | translate
+            },
+            hint: {
+                text: 'pages.enterPhoneNumber.internationalPhoneNumber.hint' | translate
+            },
+            errorMessage: {
+                text: errors['internationalPhoneNumber'].text
+            } if (errors['internationalPhoneNumber'])
+        }) }}
+    {% endset -%}
+
+    {{ govukCheckboxes({
+        items: [
+            {
+                value: "true",
+                id: "hasInternationalPhoneNumber",
+                name: "hasInternationalPhoneNumber",
+                text: 'pages.enterPhoneNumber.internationalPhoneNumber.checkBoxLabel' | translate,
+                conditional: {
+                html: internationalNumberHtml
+            },
+                checked: hasInternationalPhoneNumber === 'true'
+            }
+        ]
+    }) }}
 
     <p class="govuk-body">{{ 'pages.contactUsQuestions.suspectUnauthorisedAccess.section5.privacyNoticeStart' | translate }} <a href="/privacy-notice" target="_blank" class="govuk-link">{{ 'pages.contactUsQuestions.suspectUnauthorisedAccess.section5.privacyNoticeLink' | translate }}</a> {{ 'pages.contactUsQuestions.suspectUnauthorisedAccess.section5.privacyNoticeEnd' | translate }}</p>
 

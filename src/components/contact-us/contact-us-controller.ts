@@ -475,6 +475,8 @@ export function contactUsQuestionsFormPostToSmartAgent(
       getAppSessionId(req.body.appSessionId)
     );
 
+    const telephoneNumber = getTelephoneNumber(req);
+
     const questions = getQuestionsFromFormTypeForMessageBody(
       req,
       req.body.formType
@@ -500,7 +502,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
       themes: { theme: req.body.theme, subtheme: req.body.subtheme },
       subject: "GOV.UK One Login",
       email: req.body.email,
-      telephoneNumber: req.body.phoneNumber,
+      telephoneNumber: telephoneNumber,
       name: req.body.name,
       optionalData: {
         ticketIdentifier: ticketIdentifier,
@@ -546,7 +548,18 @@ export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
   res.render("contact-us/index-submit-success.njk");
 }
 
-export function getQuestionsFromFormTypeForMessageBody(
+function getTelephoneNumber(req: Request): string | undefined {
+  if (
+    req.body.hasInternationalPhoneNumber === "true" &&
+    req.body.internationalPhoneNumber !== ""
+  ) {
+    return req.body.internationalPhoneNumber;
+  } else if (req.body.phoneNumber !== "") {
+    return req.body.phoneNumber;
+  }
+}
+
+function getQuestionsFromFormTypeForMessageBody(
   req: Request,
   formType: string
 ): Questions {
@@ -916,7 +929,7 @@ export function getQuestionsFromFormTypeForMessageBody(
   return formTypeToQuestions[formType];
 }
 
-export function getQuestionFromThemes(
+function getQuestionFromThemes(
   req: Request,
   theme: string,
   subtheme?: string

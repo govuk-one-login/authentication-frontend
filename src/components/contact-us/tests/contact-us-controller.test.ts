@@ -6,26 +6,30 @@ import { Request, Response } from "express";
 import {
   contactUsFormPost,
   contactUsGet,
-  validateAppErrorCode,
+  contactUsGetFromTriagePage,
+  contactUsQuestionsFormPostToSmartAgent,
+  createTicketIdentifier,
   getAppErrorCode,
   getAppSessionId,
-  validateAppId,
-  createTicketIdentifier,
-  isAppJourney,
-  getPreferredLanguage,
-  contactUsGetFromTriagePage,
-  validateReferer,
-  prepareBackLink,
   getNextUrlBasedOnTheme,
+  getPreferredLanguage,
+  isAppJourney,
+  prepareBackLink,
+  validateAppErrorCode,
+  validateAppId,
+  validateReferer,
 } from "../contact-us-controller";
 import {
+  CONTACT_US_REFERER_ALLOWLIST,
+  CONTACT_US_THEMES,
   PATH_NAMES,
   SUPPORT_TYPE,
-  CONTACT_US_THEMES,
-  CONTACT_US_REFERER_ALLOWLIST,
 } from "../../../app.constants";
-import { RequestGet, ResponseRedirect } from "../../../types";
+import { ExpressRouteFunc, RequestGet, ResponseRedirect } from "../../../types";
 import { getServiceDomain, getSupportLinkUrl } from "../../../config";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { mockResponse } from "mock-req-res";
+import { ContactForm } from "../types";
 
 describe("contact us controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -576,6 +580,76 @@ describe("getNextUrlBasedOnTheme", () => {
     ).to.equal(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION);
     expect(getNextUrlBasedOnTheme(CONTACT_US_THEMES.PROVING_IDENTITY)).to.equal(
       PATH_NAMES.CONTACT_US_FURTHER_INFORMATION
+    );
+  });
+});
+
+describe("contactUsQuestionsFormPostToSmartAgent", () => {
+  const mockContactUsSubmitFormSmartAgent = sinon.fake.resolves(undefined);
+  let mockContactUsQuestionsFormPostToSmartAgent: ExpressRouteFunc;
+  beforeEach(() => {
+    mockContactUsSubmitFormSmartAgent.resetHistory();
+
+    mockContactUsQuestionsFormPostToSmartAgent =
+      contactUsQuestionsFormPostToSmartAgent({
+        contactUsSubmitFormSmartAgent: mockContactUsSubmitFormSmartAgent,
+      });
+  });
+
+  describe("telephoneNumber", () => {
+    [
+      {
+        phoneNumber: "07123123456",
+        internationalPhoneNumber: undefined,
+        hasInternationalPhoneNumber: undefined,
+        expectedTelephoneNumber: "07123123456",
+      },
+      {
+        phoneNumber: undefined,
+        internationalPhoneNumber: "+447123123456",
+        hasInternationalPhoneNumber: "true",
+        expectedTelephoneNumber: "+447123123456",
+      },
+      {
+        phoneNumber: "+44111111111",
+        internationalPhoneNumber: "+44222222222",
+        hasInternationalPhoneNumber: undefined,
+        expectedTelephoneNumber: "+44111111111",
+      },
+      {
+        phoneNumber: "+44111111111",
+        internationalPhoneNumber: "+44222222222",
+        hasInternationalPhoneNumber: "true",
+        expectedTelephoneNumber: "+44222222222",
+      },
+    ].forEach(
+      ({
+        phoneNumber,
+        internationalPhoneNumber,
+        hasInternationalPhoneNumber,
+        expectedTelephoneNumber,
+      }) => {
+        it(`should return ${expectedTelephoneNumber} for - hasInternationalPhoneNumber: ${hasInternationalPhoneNumber}, uk: ${phoneNumber} international: ${internationalPhoneNumber}`, async () => {
+          // arrange
+          const mockRequest = createMockRequest("/contact-us-questions");
+          mockRequest.body.phoneNumber = phoneNumber;
+          mockRequest.body.internationalPhoneNumber = internationalPhoneNumber;
+          mockRequest.body.hasInternationalPhoneNumber =
+            hasInternationalPhoneNumber;
+
+          // act
+          await mockContactUsQuestionsFormPostToSmartAgent(
+            mockRequest,
+            mockResponse()
+          );
+
+          // assert
+          sinon.assert.calledOnce(mockContactUsSubmitFormSmartAgent);
+          const call = mockContactUsSubmitFormSmartAgent.getCall(0);
+          const contactForm: ContactForm = call.firstArg;
+          expect(contactForm.telephoneNumber).to.equal(expectedTelephoneNumber);
+        });
+      }
     );
   });
 });
