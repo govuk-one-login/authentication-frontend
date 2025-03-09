@@ -30,58 +30,65 @@
 
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.setupAuthenticatorApp.header' | translate }}</h1>
 
-    <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step1' | translate }}</p>
-    {{ govukDetails({
-        summaryText: 'pages.setupAuthenticatorApp.noAuthAppDetails.summaryText' | translate,
-        html: noAuthAppInsetTextHtml
-    }) }}
-    <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step2' | translate }}</p>
+    <ol class="govuk-list govuk-list--number">
+        <li>
+            <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step1' | translate }}</p>
+            {{ govukDetails({
+                summaryText: 'pages.setupAuthenticatorApp.noAuthAppDetails.summaryText' | translate,
+                html: noAuthAppInsetTextHtml
+            }) }}
+        </li>
+        <li>
+           <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step2' | translate }}</p>
 
-    <p class="govuk-body">
-        <img id="qr-code" src="{{ qrCode }}" alt="QR Code Image">
-    </p>
+           <p class="govuk-body">
+              <img id="qr-code" src="{{ qrCode }}" alt="QR Code Image">
+           </p>
 
-    {{ govukDetails({
-        summaryText: 'pages.setupAuthenticatorApp.cannotScanDetails.summaryText' | translate,
-        html: cannotScanInsetTextHtml
-    }) }}
+           {{ govukDetails({
+               summaryText: 'pages.setupAuthenticatorApp.cannotScanDetails.summaryText' | translate,
+               html: cannotScanInsetTextHtml
+           }) }}
+        </li>
+        <li>
+            <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step3' | translate }}</p>
+        </li>
+        <li>
+            <form id="form-tracking" method="post" novalidate="novalidate">
 
-    <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step3' | translate }}</p>
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+            <input type="hidden" name="_secretKey" value="{{ secretKey }}" />
 
-    <form id="form-tracking" method="post" novalidate="novalidate">
+            {{ govukInput({
+                label: {
+                    text: 'pages.setupAuthenticatorApp.code.label' | translate
+                },
+                hint: {
+                    text: 'pages.setupAuthenticatorApp.code.hintText' | translate
+                },
+                classes: "govuk-input--width-10 govuk-!-font-weight-bold",
+                id: "code",
+                name: "code",
+                inputmode: "numeric",
+                spellcheck: false,
+                autocomplete: "one-time-code",
+                errorMessage: {
+                    text: errors['code'].text
+                } if (errors['code'])}) }}
 
-        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-        <input type="hidden" name="_secretKey" value="{{ secretKey }}" />
+                {{ govukButton({
+                    "text": "general.continue.label" | translate,
+                    "type": "Submit",
+                    "preventDoubleClick": true
+                }) }}
 
-        {{ govukInput({
-            label: {
-                text: 'pages.setupAuthenticatorApp.code.label' | translate
-            },
-            hint: {
-                text: 'pages.setupAuthenticatorApp.code.hintText' | translate
-            },
-            classes: "govuk-input--width-10 govuk-!-font-weight-bold",
-            id: "code",
-            name: "code",
-            inputmode: "numeric",
-            spellcheck: false,
-            autocomplete: "one-time-code",
-            errorMessage: {
-                text: errors['code'].text
-            } if (errors['code'])}) }}
-
-        {{ govukButton({
-            "text": "general.continue.label" | translate,
-            "type": "Submit",
-            "preventDoubleClick": true
-        }) }}
-
-        <p class="govuk-body">
-            <a href="/get-security-codes" class="govuk-link"
-               rel="noreferrer">{{ 'pages.setupAuthenticatorApp.changeMfaChoiceLinkText' | translate }}</a>
-        </p>
-
-    </form>
+            <p class="govuk-body">
+                <a href="/get-security-codes" class="govuk-link"
+                   rel="noreferrer">{{ 'pages.setupAuthenticatorApp.changeMfaChoiceLinkText' | translate }}</a>
+            </p>
+            </form>
+        </li>
+    </ol>
 
     {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: true } %}
     {%- include "ga4-opl/template.njk" -%}

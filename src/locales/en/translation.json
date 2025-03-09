@@ -2509,23 +2509,23 @@
     "setupAuthenticatorApp": {
       "title": "Set up an authenticator app",
       "header": "Set up an authenticator app",
-      "step1": "1. Open your authenticator app on your smartphone, tablet or computer.",
+      "step1": "Open your authenticator app on your smartphone, tablet or computer.",
       "noAuthAppDetails": {
         "summaryText": "I don’t have an authenticator app",
         "paragraph1": "You can download an authenticator app for your smartphone or tablet from your app store.",
         "paragraph2": "If you don’t have a smartphone or tablet, search online for an authenticator app for your computer.",
         "paragraph3": "You can use any authenticator app."
       },
-      "step2": "2. Use your authenticator app to scan the QR code.",
+      "step2": "Use your authenticator app to scan the QR code.",
       "cannotScanDetails": {
         "summaryText": "I cannot scan the QR code",
         "paragraph1": "You can enter the secret key into your authenticator app instead.",
         "paragraph2": "Secret key: ",
         "paragraph3": "Some authenticator apps call the secret key a ‘code’."
       },
-      "step3": "3. The authenticator app will show a security code.",
+      "step3": "The authenticator app will show a security code.",
       "code": {
-        "label": "4. Enter the code.",
+        "label": "Enter the code.",
         "hintText": "This is the 6-digit number shown in your authenticator app",
         "validationError": {
           "required": "Enter the code shown in your authenticator app",
