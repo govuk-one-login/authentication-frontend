@@ -177,6 +177,29 @@
       }
     }
   },
+  "sharedFields": {
+    "phoneNumber": {
+      "ukPhoneNumber": {
+        "label": "UK mobile phone number",
+        "validationError": {
+          "required": "Enter a UK mobile phone number",
+          "international": "Enter a UK mobile phone number",
+          "length": "Enter a UK mobile phone number, like 07700 900000",
+          "plusNumericOnly": "Enter a UK mobile phone number using only numbers or the + symbol"
+        }
+      },
+      "internationalPhoneNumber": {
+        "checkBoxLabel": "I do not have a UK mobile number",
+        "label": "Mobile phone number",
+        "hint": "Include the country code, for example +33 for France",
+        "validationError": {
+          "required": "Enter a mobile phone number",
+          "plusNumericOnly": "Enter a mobile phone number using only numbers or the + symbol",
+          "internationalFormat": "Enter a mobile phone number in the correct format, including the country code"
+        }
+      }
+    }
+  },
   "mobileAppPages": {
     "signIn": {
       "title": "Sign in to GOV.UK One Login",
@@ -434,25 +457,6 @@
       "header": "Enter your mobile phone number",
       "info": {
         "paragraph1": "We will send a 6 digit security code to the number you give us."
-      },
-      "ukPhoneNumber": {
-        "label": "UK mobile phone number",
-        "validationError": {
-          "required": "Enter a UK mobile phone number",
-          "international": "Enter a UK mobile phone number",
-          "length": "Enter a UK mobile phone number, like 07700 900000",
-          "plusNumericOnly": "Enter a UK mobile phone number using only numbers or the + symbol"
-        }
-      },
-      "internationalPhoneNumber": {
-        "checkBoxLabel": "I do not have a UK mobile number",
-        "label": "Mobile phone number",
-        "hint": "Include the country code, for example +33 for France",
-        "validationError": {
-          "required": "Enter a mobile phone number",
-          "plusNumericOnly": "Enter a mobile phone number using only numbers or the + symbol",
-          "internationalFormat": "Enter a mobile phone number in the correct format, including the country code"
-        }
       }
     },
     "accountCreated": {
