@@ -352,6 +352,72 @@ Object {
 }
 `;
 
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information phone number validation international phone number should return validation error when invalid number 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information phone number validation international phone number should return validation error when not using numbers 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information phone number validation international phone number should return validation error when wrong length 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information phone number validation uk phone number should return validation error when non-uk number 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information phone number validation uk phone number should return validation error when not using numbers 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information phone number validation uk phone number should return validation error when wrong length 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
 exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information should return validation error when email address is invalid 1`] = `
 Object {
   "contentId": "",

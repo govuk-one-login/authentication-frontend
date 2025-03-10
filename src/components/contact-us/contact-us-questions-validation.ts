@@ -7,6 +7,12 @@ import {
   CONTACT_US_THEMES,
   CONTACT_US_COUNTRY_MAX_LENGTH,
 } from "../../app.constants";
+import {
+  containsInternationalMobileNumber,
+  containsLeadingPlusNumbersOrSpacesOnly,
+  containsUKMobileNumber,
+  lengthInRangeWithoutSpaces,
+} from "../../utils/phone-number";
 
 const sanitizeFreeTextValue: CustomSanitizer = function sanitizeFreeTextValue(
   value: string
@@ -280,6 +286,72 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           "pages.contactUsQuestions.replyByEmail.validationError.invalidFormat",
           { value, lng: req.i18n.lng }
         );
+      }),
+    body("phoneNumber")
+      .if(body("theme").equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS))
+      .if(body("phoneNumber").not().equals(""))
+      .if(body("hasInternationalPhoneNumber").not().equals("true"))
+      .custom((value, { req }) => {
+        if (!containsLeadingPlusNumbersOrSpacesOnly(value)) {
+          throw new Error(
+            req.t(
+              "pages.enterPhoneNumber.ukPhoneNumber.validationError.plusNumericOnly"
+            )
+          );
+        }
+        return true;
+      })
+      .custom((value, { req }) => {
+        if (!lengthInRangeWithoutSpaces(value, 10, 14)) {
+          throw new Error(
+            req.t("pages.enterPhoneNumber.ukPhoneNumber.validationError.length")
+          );
+        }
+        return true;
+      })
+      .custom((value, { req }) => {
+        if (!containsUKMobileNumber(value)) {
+          throw new Error(
+            req.t(
+              "pages.enterPhoneNumber.ukPhoneNumber.validationError.international"
+            )
+          );
+        }
+        return true;
+      }),
+    body("internationalPhoneNumber")
+      .if(body("theme").equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS))
+      .if(body("internationalPhoneNumber").not().equals(""))
+      .if(body("hasInternationalPhoneNumber").notEmpty().equals("true"))
+      .custom((value, { req }) => {
+        if (!containsLeadingPlusNumbersOrSpacesOnly(value)) {
+          throw new Error(
+            req.t(
+              "pages.enterPhoneNumber.internationalPhoneNumber.validationError.plusNumericOnly"
+            )
+          );
+        }
+        return true;
+      })
+      .custom((value, { req }) => {
+        if (!lengthInRangeWithoutSpaces(value, 5, 26)) {
+          throw new Error(
+            req.t(
+              "pages.enterPhoneNumber.internationalPhoneNumber.validationError.internationalFormat"
+            )
+          );
+        }
+        return true;
+      })
+      .custom((value, { req }) => {
+        if (!containsInternationalMobileNumber(value)) {
+          throw new Error(
+            req.t(
+              "pages.enterPhoneNumber.internationalPhoneNumber.validationError.internationalFormat"
+            )
+          );
+        }
+        return true;
       }),
     body("country")
       .optional()
