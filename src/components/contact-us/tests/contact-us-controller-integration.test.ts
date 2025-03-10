@@ -390,6 +390,123 @@ describe("Integration:: contact us - public user", () => {
           "Enter an email address in the correct format, like name@example.com"
         );
       });
+
+      describe("phone number validation", () => {
+        describe("hasInternationalPhoneNumber validation", () => {
+          it("should run uk phone number validation when not hasInternationalPhoneNumber", () => {});
+
+          it("should run international phone number validation when  hasInternationalPhoneNumber", () => {});
+        });
+
+        describe("uk phone number", () => {
+          it("should return validation error when not using numbers", async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+              suspectUnauthorisedAccessReasons:
+                "hasReceivedUnwarrantedSecurityCode",
+              email: "test@example.com",
+              phoneNumber: "abc",
+            };
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              "#phoneNumber-error",
+              "Enter a UK mobile phone number using only numbers or the + symbol"
+            );
+          });
+
+          it("should return validation error when wrong length", async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+              suspectUnauthorisedAccessReasons:
+                "hasReceivedUnwarrantedSecurityCode",
+              email: "test@example.com",
+              phoneNumber: "12345",
+            };
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              "#phoneNumber-error",
+              "Enter a UK mobile phone number, like 07700 900000"
+            );
+          });
+
+          it("should return validation error when non-uk number", async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+              suspectUnauthorisedAccessReasons:
+                "hasReceivedUnwarrantedSecurityCode",
+              email: "test@example.com",
+              phoneNumber: "12345",
+            };
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              "#phoneNumber-error",
+              "Enter a UK mobile phone number"
+            );
+          });
+        });
+
+        describe("international phone number", () => {
+          it("should return validation error when not using numbers", async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+              suspectUnauthorisedAccessReasons:
+                "hasReceivedUnwarrantedSecurityCode",
+              email: "test@example.com",
+              hasInternationalPhoneNumber: "true",
+              internationalPhoneNumber: "abc",
+            };
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              "#internationalPhoneNumber-error",
+              "Enter a mobile phone number using only numbers or the + symbol"
+            );
+          });
+
+          it("should return validation error when wrong length", async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+              suspectUnauthorisedAccessReasons:
+                "hasReceivedUnwarrantedSecurityCode",
+              email: "test@example.com",
+              hasInternationalPhoneNumber: "true",
+              internationalPhoneNumber: "+123456789012345678901234567890",
+            };
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              "#internationalPhoneNumber-error",
+              "Enter a mobile phone number in the correct format, including the country code"
+            );
+          });
+
+          it("should return validation error when invalid number", async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+              suspectUnauthorisedAccessReasons:
+                "hasReceivedUnwarrantedSecurityCode",
+              email: "test@example.com",
+              hasInternationalPhoneNumber: "true",
+              internationalPhoneNumber: "+100000000000000000000000",
+            };
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              "#internationalPhoneNumber-error",
+              "Enter a mobile phone number in the correct format, including the country code"
+            );
+          });
+        });
+      });
     });
   });
 
