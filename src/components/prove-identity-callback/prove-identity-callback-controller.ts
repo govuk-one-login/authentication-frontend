@@ -1,6 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { getNextPathAndUpdateJourney } from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { ExpressRouteFunc } from "../../types";
 import {
   IdentityProcessingStatus,
@@ -50,14 +48,11 @@ export function proveIdentityCallbackGetOrPost(
     let redirectPath;
 
     if (response.data.status === IdentityProcessingStatus.COMPLETED) {
-      req.session.user.authCodeReturnToRP = true;
-
-      redirectPath = await getNextPathAndUpdateJourney(
-        req,
-        req.path,
-        USER_JOURNEY_EVENTS.PROVE_IDENTITY_CALLBACK,
-        null,
-        sessionId
+      redirectPath = await service.generateSuccessfulRpReturnUrl(
+        sessionId,
+        clientSessionId,
+        persistentSessionId,
+        req
       );
     } else {
       redirectPath = createServiceRedirectErrorUrl(

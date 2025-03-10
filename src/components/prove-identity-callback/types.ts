@@ -9,6 +9,12 @@ export interface ProveIdentityCallbackServiceInterface {
     persistentSessionId: string,
     req: Request
   ) => Promise<ApiResponseResult<ProcessIdentityResponse>>;
+  generateSuccessfulRpReturnUrl: (
+    sessionId: string,
+    clientSessionId: string,
+    persistentSessionId: string,
+    req: Request
+  ) => Promise<string>;
 }
 
 export type ProcessIdentityResponse =
