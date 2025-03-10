@@ -674,9 +674,7 @@ const authStateMachine = createMachine(
         },
       },
       [PATH_NAMES.PROVE_IDENTITY_CALLBACK]: {
-        on: {
-          [USER_JOURNEY_EVENTS.PROVE_IDENTITY_CALLBACK]: [PATH_NAMES.AUTH_CODE],
-        },
+        type: "final",
         meta: {
           optionalPaths: [
             PATH_NAMES.PROVE_IDENTITY,
