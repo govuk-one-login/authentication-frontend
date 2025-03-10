@@ -10,14 +10,3 @@ Object {
   "taxonomyLevel5": "",
 }
 `;
-
-exports[`Integration::prove identity should redirect when account interventions flags user is blocked 2`] = `
-Object {
-  "contentId": "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "sign in",
-  "taxonomyLevel3": "",
-  "taxonomyLevel4": "",
-  "taxonomyLevel5": "",
-}
-`;

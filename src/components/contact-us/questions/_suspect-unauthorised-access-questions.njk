@@ -1,0 +1,131 @@
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+    {{ 'pages.contactUsQuestions.suspectUnauthorisedAccess.header' | translate }}
+</h1>
+
+<form action="{{ formSubmissionUrl }}" method="post" novalidate>
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+    <input type="hidden" name="theme" value="{{ theme }}" />
+    <input type="hidden" name="subtheme" value="{{ subtheme }}" />
+    <input type="hidden" name="backurl" value="{{ backurl }}" />
+    <input type="hidden" name="fromURL" value="{{ fromURL }}" />
+    <input type="hidden" name="formType" value="suspectUnauthorisedAccess" />
+    <input type="hidden" name="referer" value="{{ referer }}" />
+    {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
+
+    {% set changePasswordHtml %}
+        <p class="govuk-body">
+            <a href="http://www.gov.uk/guidance/changing-the-sign-in-details-for-your-govuk-one-login#change-or-reset-your-password" target="_blank" class="govuk-link">{{ 'pages.contactUsQuestions.suspectUnauthorisedAccess.section1.resetPasswordLink' | translate }}</a> {{ 'pages.contactUsQuestions.suspectUnauthorisedAccess.section1.resetPasswordEnd' | translate }}
+        </p>
+    {% endset %}
+    {{ govukInsetText({
+        html: changePasswordHtml
+    }) }}
+
+    {{ govukCheckboxes({
+        name: "suspectUnauthorisedAccessReasons",
+        values: suspectUnauthorisedAccessReasons,
+        fieldset: {
+            legend: {
+                text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section2.header' | translate,
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
+            }
+        },
+        hint: {
+            text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section2.hint' | translate
+        },
+        items: [
+            {
+                value: "hasReceivedUnwarrantedSecurityCode",
+                text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section2.options.receivedUnwarrantedSecurityCode' | translate
+            },
+            {
+                value: "hasUnknownActivityHistory",
+                text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section2.options.unknownActivityHistory' | translate
+            }
+        ],
+        errorMessage: {
+            text: errors['suspectUnauthorisedAccessReasons'].text
+        } if (errors['suspectUnauthorisedAccessReasons'])
+    }) }}
+
+    {{ govukInput({
+        id: "email",
+        name: "email",
+        type: "email",
+        autocomplete: "email",
+        spellcheck: false,
+        value: email,
+        label: {
+            text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section3.header' | translate,
+            classes: 'govuk-label--m'
+        },
+        hint: {
+            text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section3.hint' | translate
+        },
+        errorMessage: {
+            text: errors['email'].text
+        } if (errors['email'])}) }}
+
+    {{ govukInput({
+        label: {
+            text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section4.header' | translate,
+            classes: 'govuk-label--m'
+        },
+        hint: {
+            text: 'pages.contactUsQuestions.suspectUnauthorisedAccess.section4.hint' | translate
+        },
+        classes: "govuk-!-width-two-thirds",
+        id: "phoneNumber",
+        name: "phoneNumber",
+        type: "tel",
+        autocomplete: "tel",
+        value: phoneNumber,
+        errorMessage: {
+            text: errors['phoneNumber'].text
+        } if (errors['phoneNumber'])})
+    }}
+
+    {% set internationalNumberHtml %}
+        {{ govukInput({
+            id: "internationalPhoneNumber",
+            name: "internationalPhoneNumber",
+            type: "tel",
+            autocomplete: "tel",
+            value: internationalPhoneNumber,
+            classes: "govuk-!-width-two-thirds",
+            label: {
+                text: 'sharedFields.phoneNumber.internationalPhoneNumber.label' | translate
+            },
+            hint: {
+                text: 'sharedFields.phoneNumber.internationalPhoneNumber.hint' | translate
+            },
+            errorMessage: {
+                text: errors['internationalPhoneNumber'].text
+            } if (errors['internationalPhoneNumber'])
+        }) }}
+    {% endset -%}
+
+    {{ govukCheckboxes({
+        items: [
+            {
+                value: "true",
+                id: "hasInternationalPhoneNumber",
+                name: "hasInternationalPhoneNumber",
+                text: 'sharedFields.phoneNumber.internationalPhoneNumber.checkBoxLabel' | translate,
+                conditional: {
+                html: internationalNumberHtml
+            },
+                checked: hasInternationalPhoneNumber === 'true'
+            }
+        ]
+    }) }}
+
+    <p class="govuk-body">{{ 'pages.contactUsQuestions.suspectUnauthorisedAccess.section5.privacyNoticeStart' | translate }} <a href="/privacy-notice" target="_blank" class="govuk-link">{{ 'pages.contactUsQuestions.suspectUnauthorisedAccess.section5.privacyNoticeLink' | translate }}</a> {{ 'pages.contactUsQuestions.suspectUnauthorisedAccess.section5.privacyNoticeEnd' | translate }}</p>
+
+    {{ govukButton({
+        "text": "general.sendMessage" | translate,
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+</form>

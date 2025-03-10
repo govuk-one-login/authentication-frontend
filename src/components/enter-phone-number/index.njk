@@ -25,7 +25,7 @@
 
     {{ govukInput({
   label: {
-  text: 'pages.enterPhoneNumber.ukPhoneNumber.label' | translate
+  text: 'sharedFields.phoneNumber.ukPhoneNumber.label' | translate
   },
   classes: "govuk-!-width-two-thirds",
   id: "phoneNumber",
@@ -48,10 +48,10 @@
     value: internationalPhoneNumber,
     classes: "govuk-!-width-two-thirds",
     label: {
-      text: 'pages.enterPhoneNumber.internationalPhoneNumber.label' | translate
+      text: 'sharedFields.phoneNumber.internationalPhoneNumber.label' | translate
     },
     hint: {
-      text: 'pages.enterPhoneNumber.internationalPhoneNumber.hint' | translate
+      text: 'sharedFields.phoneNumber.internationalPhoneNumber.hint' | translate
     },
     errorMessage: {
     text: errors['internationalPhoneNumber'].text
@@ -65,7 +65,7 @@
         value: "true",
         id: "hasInternationalPhoneNumber",
         name: "hasInternationalPhoneNumber",
-        text: 'pages.enterPhoneNumber.internationalPhoneNumber.checkBoxLabel' | translate,
+        text: 'sharedFields.phoneNumber.internationalPhoneNumber.checkBoxLabel' | translate,
         conditional: {
           html: internationalNumberHtml
         },
