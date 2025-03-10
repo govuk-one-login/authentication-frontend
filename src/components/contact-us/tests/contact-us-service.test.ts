@@ -1,17 +1,180 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import {
-  contactUsServiceSmartAgent,
-  ContactUsSmartAgentService,
+  ContactUsService,
+  getContactUsService,
+  getIdentifierTag,
   getRefererTag,
+  getSubthemeTag,
+  getThemeTag,
+  prepareIdentityDocumentTitle,
+  prepareProblemWithTitle,
+  prepareSecurityCodeSendMethodTitle,
   prepareUserLocationTitle,
-} from "../contact-us-service-smart-agent";
+} from "../contact-us-service";
 import { ContactForm } from "../types";
 import sinon from "sinon";
 import { SmartAgentService } from "../../../utils/smartAgent";
 import { CONTACT_US_THEMES } from "../../../app.constants";
 
 describe("contact-us-service", () => {
+  describe("prepareSecurityCodeSendMethodTitle", () => {
+    [
+      {
+        securityCodeSentMethod: "email",
+        expectedSecurityCodeSentMethodTitle: "Email",
+      },
+      {
+        securityCodeSentMethod: "text_message",
+        expectedSecurityCodeSentMethodTitle: "Text message",
+      },
+      {
+        securityCodeSentMethod: "text_message_uk_number",
+        expectedSecurityCodeSentMethodTitle:
+          "Text message to a UK phone number",
+      },
+      {
+        securityCodeSentMethod: "text_message_international_number",
+        expectedSecurityCodeSentMethodTitle:
+          "Text message to a phone number from another country",
+      },
+      {
+        securityCodeSentMethod: "authenticator_app",
+        expectedSecurityCodeSentMethodTitle: "Authenticator app",
+      },
+      {
+        securityCodeSentMethod: "unknown",
+        expectedSecurityCodeSentMethodTitle: "",
+      },
+    ].forEach(
+      ({ securityCodeSentMethod, expectedSecurityCodeSentMethodTitle }) => {
+        it(`should return '${expectedSecurityCodeSentMethodTitle}' for security code method '${securityCodeSentMethod}'`, () => {
+          const actualSecurityCodeSentMethodTitle =
+            prepareSecurityCodeSendMethodTitle(securityCodeSentMethod);
+
+          expect(actualSecurityCodeSentMethodTitle).to.equal(
+            expectedSecurityCodeSentMethodTitle
+          );
+        });
+      }
+    );
+  });
+
+  describe("prepareIdentityDocumentTitle", () => {
+    [
+      {
+        identityDocumentUsed: "passport",
+        expectedIdentityDocumentTitle: "Passport",
+      },
+      {
+        identityDocumentUsed: "biometricResidencePermit",
+        expectedIdentityDocumentTitle: "Biometric residence permit",
+      },
+      {
+        identityDocumentUsed: "drivingLicence",
+        expectedIdentityDocumentTitle: "Driving licence",
+      },
+      {
+        identityDocumentUsed: "unknown",
+        expectedIdentityDocumentTitle: "",
+      },
+    ].forEach(({ identityDocumentUsed, expectedIdentityDocumentTitle }) => {
+      it(`should return '${expectedIdentityDocumentTitle}' for identity document '${identityDocumentUsed}'`, () => {
+        const actualIdentityDocumentTitle =
+          prepareIdentityDocumentTitle(identityDocumentUsed);
+
+        expect(actualIdentityDocumentTitle).to.equal(
+          expectedIdentityDocumentTitle
+        );
+      });
+    });
+  });
+
+  describe("prepareProblemWithTitle", () => {
+    [
+      {
+        problemWith: "name",
+        expectedProblemWithTitle: "Entering your name",
+      },
+      {
+        problemWith: "bankOrBuildingSocietyDetails",
+        expectedProblemWithTitle:
+          "Entering your bank or building society account details",
+      },
+      {
+        problemWith: "unknown",
+        expectedProblemWithTitle: "",
+      },
+    ].forEach(({ problemWith, expectedProblemWithTitle }) => {
+      it(`should return '${expectedProblemWithTitle}' for problem with '${problemWith}'`, () => {
+        const actualProblemWithTitle = prepareProblemWithTitle(problemWith);
+
+        expect(actualProblemWithTitle).to.equal(expectedProblemWithTitle);
+      });
+    });
+  });
+
+  describe("getIdentifierTag", () => {
+    [
+      {
+        theme: CONTACT_US_THEMES.ID_CHECK_APP,
+        expectedIdentifierTag: "sign_in_app",
+      },
+      {
+        theme: CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE,
+        expectedIdentifierTag: "id_face_to_face",
+      },
+      {
+        theme: "unknown",
+        expectedIdentifierTag: "govuk_sign_in",
+      },
+    ].forEach(({ theme, expectedIdentifierTag }) => {
+      it(`should return '${expectedIdentifierTag}' for theme ${theme}`, () => {
+        const actualIdentifierTag = getIdentifierTag(theme);
+
+        expect(actualIdentifierTag).to.equal(expectedIdentifierTag);
+      });
+    });
+  });
+
+  describe("getThemeTag", () => {
+    [
+      {
+        themes: { theme: CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE },
+        expectedThemeTag: "",
+      },
+      {
+        themes: { theme: "any_other_theme" },
+        expectedThemeTag: "auth_any_other_theme",
+      },
+    ].forEach(({ themes, expectedThemeTag }) => {
+      it(`should return '${expectedThemeTag}' for themes '${JSON.stringify(themes)}'`, () => {
+        const actualThemeTag = getThemeTag(themes);
+
+        expect(actualThemeTag).to.equal(expectedThemeTag);
+      });
+    });
+  });
+
+  describe("getSubthemeTag", () => {
+    [
+      {
+        themes: { theme: "test_theme", subtheme: "test_subtheme" },
+        expectedSubthemeTag: "auth_test_subtheme",
+      },
+      {
+        themes: { theme: "test_theme" },
+        expectedSubthemeTag: "",
+      },
+    ].forEach(({ themes, expectedSubthemeTag }) => {
+      it(`should return '${expectedSubthemeTag}' for subtheme '${JSON.stringify(themes)}'`, () => {
+        const actualSubthemeTag = getSubthemeTag(themes);
+
+        expect(actualSubthemeTag).to.equal(expectedSubthemeTag);
+      });
+    });
+  });
+
   describe("getRefererTag", () => {
     const form: ContactForm = {
       descriptions: undefined,
@@ -82,16 +245,14 @@ describe("contact-us-service", () => {
     });
   });
 
-  describe("contactUsServiceSmartAgent", () => {
+  describe("contactUsService", () => {
     let mockSmartAgentService: sinon.SinonStubbedInstance<SmartAgentService>;
-    let contactUsSmartAgentService: ContactUsSmartAgentService;
+    let contactUsService: ContactUsService;
 
     beforeEach(() => {
       mockSmartAgentService = sinon.createStubInstance(SmartAgentService);
       mockSmartAgentService.createTicket.resolves();
-      contactUsSmartAgentService = contactUsServiceSmartAgent(
-        mockSmartAgentService
-      );
+      contactUsService = getContactUsService(mockSmartAgentService);
     });
 
     describe("contactUsSubmitFormSmartAgent", () => {
@@ -123,9 +284,7 @@ describe("contact-us-service", () => {
         };
 
         // act
-        await contactUsSmartAgentService.contactUsSubmitFormSmartAgent(
-          contactForm
-        );
+        await contactUsService.contactUsSubmitFormSmartAgent(contactForm);
 
         // assert
         const actualPayload =
