@@ -118,13 +118,13 @@ export function getRefererTag(contactForm: ContactForm): string {
   }
 }
 
-export interface ContactUsSmartAgentService {
+export interface ContactUsService {
   contactUsSubmitFormSmartAgent: (contactForm: ContactForm) => Promise<void>;
 }
 
-export function contactUsServiceSmartAgent(
+export function getContactUsService(
   smartAgentClient: SmartAgentService = defaultSmartAgentClient
-): ContactUsSmartAgentService {
+): ContactUsService {
   function formatSmartAgentMessageField(
     descriptions: Descriptions,
     optionalData: OptionalData,

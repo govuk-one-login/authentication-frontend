@@ -17,7 +17,7 @@ import {
   supportMfaResetWithIpv,
   supportNoPhotoIdContactForms,
 } from "../../config";
-import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
+import { getContactUsService } from "./contact-us-service";
 
 const themeToPageTitle = {
   [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:
@@ -468,7 +468,7 @@ export function createTicketIdentifier(appSessionId: string): string {
 }
 
 export function contactUsQuestionsFormPostToSmartAgent(
-  service = contactUsServiceSmartAgent()
+  service = getContactUsService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const ticketIdentifier = createTicketIdentifier(

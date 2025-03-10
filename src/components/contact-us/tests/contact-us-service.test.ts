@@ -1,11 +1,11 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import {
-  contactUsServiceSmartAgent,
-  ContactUsSmartAgentService,
+  ContactUsService,
+  getContactUsService,
   getRefererTag,
   prepareUserLocationTitle,
-} from "../contact-us-service-smart-agent";
+} from "../contact-us-service";
 import { ContactForm } from "../types";
 import sinon from "sinon";
 import { SmartAgentService } from "../../../utils/smartAgent";
@@ -82,16 +82,14 @@ describe("contact-us-service", () => {
     });
   });
 
-  describe("contactUsServiceSmartAgent", () => {
+  describe("contactUsService", () => {
     let mockSmartAgentService: sinon.SinonStubbedInstance<SmartAgentService>;
-    let contactUsSmartAgentService: ContactUsSmartAgentService;
+    let contactUsService: ContactUsService;
 
     beforeEach(() => {
       mockSmartAgentService = sinon.createStubInstance(SmartAgentService);
       mockSmartAgentService.createTicket.resolves();
-      contactUsSmartAgentService = contactUsServiceSmartAgent(
-        mockSmartAgentService
-      );
+      contactUsService = getContactUsService(mockSmartAgentService);
     });
 
     describe("contactUsSubmitFormSmartAgent", () => {
@@ -123,9 +121,7 @@ describe("contact-us-service", () => {
         };
 
         // act
-        await contactUsSmartAgentService.contactUsSubmitFormSmartAgent(
-          contactForm
-        );
+        await contactUsService.contactUsSubmitFormSmartAgent(contactForm);
 
         // assert
         const actualPayload =
