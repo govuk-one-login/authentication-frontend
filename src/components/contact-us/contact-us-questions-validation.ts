@@ -295,7 +295,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
         if (!containsLeadingPlusNumbersOrSpacesOnly(value)) {
           throw new Error(
             req.t(
-              "pages.enterPhoneNumber.ukPhoneNumber.validationError.plusNumericOnly"
+              "sharedFields.phoneNumber.ukPhoneNumber.validationError.plusNumericOnly"
             )
           );
         }
@@ -304,7 +304,9 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .custom((value, { req }) => {
         if (!lengthInRangeWithoutSpaces(value, 10, 14)) {
           throw new Error(
-            req.t("pages.enterPhoneNumber.ukPhoneNumber.validationError.length")
+            req.t(
+              "sharedFields.phoneNumber.ukPhoneNumber.validationError.length"
+            )
           );
         }
         return true;
@@ -313,7 +315,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
         if (!containsUKMobileNumber(value)) {
           throw new Error(
             req.t(
-              "pages.enterPhoneNumber.ukPhoneNumber.validationError.international"
+              "sharedFields.phoneNumber.ukPhoneNumber.validationError.international"
             )
           );
         }
@@ -327,7 +329,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
         if (!containsLeadingPlusNumbersOrSpacesOnly(value)) {
           throw new Error(
             req.t(
-              "pages.enterPhoneNumber.internationalPhoneNumber.validationError.plusNumericOnly"
+              "sharedFields.phoneNumber.internationalPhoneNumber.validationError.plusNumericOnly"
             )
           );
         }
@@ -337,7 +339,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
         if (!lengthInRangeWithoutSpaces(value, 5, 26)) {
           throw new Error(
             req.t(
-              "pages.enterPhoneNumber.internationalPhoneNumber.validationError.internationalFormat"
+              "sharedFields.phoneNumber.internationalPhoneNumber.validationError.internationalFormat"
             )
           );
         }
@@ -347,7 +349,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
         if (!containsInternationalMobileNumber(value)) {
           throw new Error(
             req.t(
-              "pages.enterPhoneNumber.internationalPhoneNumber.validationError.internationalFormat"
+              "sharedFields.phoneNumber.internationalPhoneNumber.validationError.internationalFormat"
             )
           );
         }
