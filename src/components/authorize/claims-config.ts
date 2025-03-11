@@ -49,6 +49,10 @@ export type Claims = {
   channel?: string;
   authenticated: boolean;
   current_credential_strength?: string;
+  cookie_consent: string;
+  _ga?: string;
+  vtr_list: string;
+  scope: string;
 };
 
 export const requiredClaimsKeys = [
@@ -69,4 +73,7 @@ export const requiredClaimsKeys = [
   "redirect_uri",
   "rp_sector_host",
   "authenticated",
+  "cookie_consent",
+  "vtr_list",
+  "scope",
 ];

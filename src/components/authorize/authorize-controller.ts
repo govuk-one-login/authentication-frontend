@@ -74,6 +74,13 @@ export function authorizeGet(
         previous_govuk_signin_journey_id:
           claims.previous_govuk_signin_journey_id,
         reauthenticate: claims.reauthenticate,
+        cookie_consent: claims.cookie_consent,
+        _ga: claims._ga,
+        vtr_list: claims.vtr_list,
+        client_id: claims.client_id,
+        scope: claims.scope,
+        redirect_uri: claims.redirect_uri,
+        state: claims.state,
       }
     );
 
