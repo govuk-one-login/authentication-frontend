@@ -711,6 +711,9 @@ const authStateMachine = createMachine(
             PATH_NAMES.UNAVAILABLE_TEMPORARY,
           ],
         },
+        meta: {
+          optionalPaths: [PATH_NAMES.PROVE_IDENTITY_CALLBACK],
+        },
       },
       [PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT]: {
         on: {
