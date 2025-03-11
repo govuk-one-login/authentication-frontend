@@ -35,7 +35,6 @@ export type Claims = {
   is_one_login_service: boolean;
   service_type: string;
   govuk_signin_journey_id: string;
-  confidence: string;
   state: string;
   client_id: string;
   redirect_uri: string;
@@ -50,6 +49,11 @@ export type Claims = {
   channel?: string;
   authenticated: boolean;
   current_credential_strength?: string;
+  cookie_consent?: string;
+  _ga?: string;
+  scope: string;
+  requested_level_of_confidence?: string;
+  requested_credential_strength: string;
 };
 
 export const requiredClaimsKeys = [
@@ -64,10 +68,11 @@ export const requiredClaimsKeys = [
   "is_one_login_service",
   "service_type",
   "govuk_signin_journey_id",
-  "confidence",
   "state",
   "client_id",
   "redirect_uri",
   "rp_sector_host",
   "authenticated",
+  "scope",
+  "requested_credential_strength",
 ];
