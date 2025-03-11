@@ -7,13 +7,9 @@ import {
   Http,
 } from "../../utils/http";
 import { AuthCodeResponse, AuthCodeServiceInterface } from "./types";
-import {
-  getApiBaseUrl,
-  getFrontendApiBaseUrl,
-  supportReauthentication,
-} from "../../config";
-import { AxiosResponse } from "axios";
+import { supportReauthentication } from "../../config";
 import { Request } from "express";
+
 export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
   const getAuthCode = async function (
     sessionId: string,
@@ -23,15 +19,10 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
     userSession: UserSession,
     req: Request
   ): Promise<ApiResponseResult<AuthCodeResponse>> {
-    const useOrchAuthCode = shouldCallOrchAuthCode(userSession);
-    const baseUrl = useOrchAuthCode ? getFrontendApiBaseUrl() : getApiBaseUrl();
-    const path = useOrchAuthCode
-      ? API_ENDPOINTS.ORCH_AUTH_CODE
-      : API_ENDPOINTS.AUTH_CODE;
+    const path = API_ENDPOINTS.ORCH_AUTH_CODE;
 
     const config = getInternalRequestConfigWithSecurityHeaders(
       {
-        baseURL: baseUrl,
         sessionId: sessionId,
         clientSessionId: clientSessionId,
         persistentSessionId: persistentSessionId,
@@ -40,31 +31,21 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
       path
     );
 
-    let response: AxiosResponse;
-
-    if (useOrchAuthCode) {
-      let body: any = {
-        claims: clientSession.claim,
-        state: clientSession.state,
-        "redirect-uri": clientSession.redirectUri,
-        "rp-sector-uri": clientSession.rpSectorHost,
-        "is-new-account": userSession?.isAccountCreationJourney ?? false,
-        "password-reset-time": userSession?.passwordResetTime,
-      };
-      if (supportReauthentication() && userSession.reauthenticate) {
-        body = { ...body, "is-reauth-journey": true };
-      }
-      response = await axios.client.post(path, body, config);
-    } else {
-      response = await axios.client.get(path, config);
+    let body: any = {
+      claims: clientSession.claim,
+      state: clientSession.state,
+      "redirect-uri": clientSession.redirectUri,
+      "rp-sector-uri": clientSession.rpSectorHost,
+      "is-new-account": userSession?.isAccountCreationJourney ?? false,
+      "password-reset-time": userSession?.passwordResetTime,
+    };
+    if (supportReauthentication() && userSession.reauthenticate) {
+      body = { ...body, "is-reauth-journey": true };
     }
+    const response = await axios.client.post(path, body, config);
 
     return createApiResponse<AuthCodeResponse>(response);
   };
-
-  function shouldCallOrchAuthCode(userSession: UserSession) {
-    return !userSession.authCodeReturnToRP;
-  }
 
   return {
     getAuthCode,

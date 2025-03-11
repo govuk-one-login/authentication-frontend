@@ -99,7 +99,6 @@ describe("prove identity controller", () => {
           {
             headers: sinon.match.object,
             proxy: sinon.match.bool,
-            baseURL: frontendBaseUrl,
           }
         )
       ).to.be.true;
