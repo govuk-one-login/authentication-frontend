@@ -62,6 +62,7 @@ export function authorizeGet(
       throw new BadRequestError(error.message);
     }
 
+    logger.info("VTR list  is: %s", claims.vtr);
     const startAuthResponse = await authService.start(
       sessionId,
       clientSessionId,
@@ -74,6 +75,13 @@ export function authorizeGet(
         previous_govuk_signin_journey_id:
           claims.previous_govuk_signin_journey_id,
         reauthenticate: claims.reauthenticate,
+        cookie_consent: claims.cookie_consent,
+        _ga: claims._ga,
+        vtr: claims.vtr,
+        scope: claims.scope,
+        client_id: claims.rp_client_id,
+        redirect_uri: claims.rp_redirect_uri,
+        state: claims.rp_state,
       }
     );
 
