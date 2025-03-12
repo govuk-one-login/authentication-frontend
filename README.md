@@ -237,6 +237,12 @@ yarn test:unit
 Runs all unit tests found in the `tests/unit/` directory
 using mocha.
 
+#### Running unit tests in IntelliJ
+
+**To run all the tests in the project:** Select the "Unit Tests" run configuration in the top-right and click the play button.
+
+**To run some of the tests (e.g. within a file):** Click the play button next to the tests, or by right-clicking the file.
+
 ### Integration tests
 
 The application stack must be started before the integration tests can be run, either with frontend running in a docker container or on the local machine (./startup -l).
