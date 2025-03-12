@@ -59,6 +59,10 @@ describe("contact us controller", () => {
   });
 
   describe("contactUsGet", () => {
+    before(() => {
+      process.env.CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS = "1";
+    });
+
     it("should render contact us gov page if gov radio option was chosen", () => {
       req.query.supportType = SUPPORT_TYPE.GOV_SERVICE;
       contactUsGet(req as Request, res as Response);
@@ -89,6 +93,7 @@ describe("contact us controller", () => {
           referer: "",
           fromURL: undefined,
           hrefBack: PATH_NAMES.CONTACT_US,
+          contactUsSuspectUnauthorisedAccess: true,
         }
       );
     });
@@ -107,6 +112,7 @@ describe("contact us controller", () => {
           referer: encodeURIComponent(REFERER),
           fromURL: fromUrlEncoded,
           hrefBack: `${PATH_NAMES.CONTACT_US}?fromURL=${fromUrlEncoded}`,
+          contactUsSuspectUnauthorisedAccess: true,
         }
       );
     });
@@ -131,6 +137,7 @@ describe("contact us controller", () => {
             referer: "",
             fromURL: undefined,
             hrefBack: PATH_NAMES.CONTACT_US,
+            contactUsSuspectUnauthorisedAccess: true,
           }
         );
       });

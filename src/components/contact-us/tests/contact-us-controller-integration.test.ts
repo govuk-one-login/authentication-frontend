@@ -74,6 +74,57 @@ describe("Integration:: contact us - public user", () => {
     );
   };
 
+  describe("rendering correct theme options", () => {
+    it("should return all options when CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS is '1'", async () => {
+      process.env.CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS = "1";
+
+      await request(app, (test) =>
+        test
+          .get(PATH_NAMES.CONTACT_US)
+          .expect(200)
+          .expect((res) => {
+            const $ = cheerio.load(res.text);
+            expect($("input[name=theme]").length).to.equal(9);
+            expect($("input[value=account_creation]").length).to.equal(1);
+            expect($("input[value=signing_in]").length).to.equal(1);
+            expect($("input[value=id_check_app]").length).to.equal(1);
+            expect($("input[value=id_face_to_face]").length).to.equal(1);
+            expect($("input[value=proving_identity]").length).to.equal(1);
+            expect($("input[value=email_subscriptions]").length).to.equal(1);
+            expect(
+              $("input[value=suspect_unauthorised_access]").length
+            ).to.equal(1);
+            expect($("input[value=something_else]").length).to.equal(1);
+            expect($("input[value=suggestions_feedback]").length).to.equal(1);
+          })
+      );
+    });
+
+    ["0", undefined].forEach((envVar) => {
+      it(`should return all options except SUSPECT_UNAUTHORISED_ACCESS when CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS is '${envVar}'`, async () => {
+        process.env.CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS = envVar;
+
+        await request(app, (test) => test.get(PATH_NAMES.CONTACT_US))
+          .expect(200)
+          .expect((res) => {
+            const $ = cheerio.load(res.text);
+            expect($("input[name=theme]").length).to.equal(8);
+            expect($("input[value=account_creation]").length).to.equal(1);
+            expect($("input[value=signing_in]").length).to.equal(1);
+            expect($("input[value=id_check_app]").length).to.equal(1);
+            expect($("input[value=id_face_to_face]").length).to.equal(1);
+            expect($("input[value=proving_identity]").length).to.equal(1);
+            expect($("input[value=email_subscriptions]").length).to.equal(1);
+            expect(
+              $("input[value=suspect_unauthorised_access]").length
+            ).to.equal(0);
+            expect($("input[value=something_else]").length).to.equal(1);
+            expect($("input[value=suggestions_feedback]").length).to.equal(1);
+          });
+      });
+    });
+  });
+
   it("should return contact us page", async () => {
     await request(app, (test) =>
       test.get(PATH_NAMES.CONTACT_US).query("supportType=PUBLIC").expect(200)

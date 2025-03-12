@@ -12,6 +12,7 @@ import { ExpressRouteFunc } from "../../types";
 import crypto from "crypto";
 import { logger } from "../../utils/logger";
 import {
+  contactUsSuspectUnauthorisedAccess,
   getServiceDomain,
   getSupportLinkUrl,
   supportMfaResetWithIpv,
@@ -142,6 +143,7 @@ export function contactUsGet(req: Request, res: Response): void {
     ...(getAppSessionId(req.query.appSessionId as string) && {
       appSessionId: getAppSessionId(req.query.appSessionId as string),
     }),
+    contactUsSuspectUnauthorisedAccess: contactUsSuspectUnauthorisedAccess(),
   };
 
   return res.render("contact-us/index-public-contact-us.njk", options);

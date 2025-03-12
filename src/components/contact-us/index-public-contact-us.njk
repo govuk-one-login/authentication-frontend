@@ -80,6 +80,10 @@
         }
     ] %}
 
+    {% if not contactUsSuspectUnauthorisedAccess %}
+        {% set items = items.slice(0, 6).concat(items.slice(7)) %}
+    {% endif %}
+
     {{ govukRadios({
         name: "theme",
         fieldset: {
