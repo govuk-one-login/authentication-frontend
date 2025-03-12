@@ -246,6 +246,7 @@ using mocha.
 ### Integration tests
 
 The application stack must be started before the integration tests can be run, either with frontend running in a docker container or on the local machine (./startup -l).
+
 In either case the command to run the integration tests is the same, but the tests usually run faster when frontend is started outside of docker.
 
 In both cases frontend must have started successfully with the message 'Server listening on port 3000' before the tests can be run. If running frontend in a container check the actual container logs in docker desktop to make sure that frontend has started correctly, otherwise the test run will be invalid.
@@ -264,23 +265,11 @@ UPDATE_SNAPSHOT=true yarn test:integration
 
 #### Running integration tests in IntelliJ
 
-For most of our tests, "right-click-and-running" a test file works. However, for our integration tests, extra configuration is required. Set the following values on the run config:
+**To run all the tests in the project:** Select the "Integration Tests" run configuration in the top-right and click the play button.
 
-Environment variables:
+**To run some of the tests (e.g. within a file):** Click the play button next to the tests, or by right-clicking the file.
 
-```
-REDIS_PORT=<<as above>>
-REDIS_HOST=<<as above>>
-NODE_ENV=development <<see package.json test:integration script>>
-```
-
-Extra Mocha options:
-
-```
--r dotenv/config <<see package.json test:integration script>>
-```
-
-You may want to set this as default for Mocha files by clicking "Edit configuration templates".
+Extra Mocha configuration is required to make the integration tests run. This is set up in the project already within the `.run/Template Mocha.run.xml` file.
 
 ### Install dependencies
 
