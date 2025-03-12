@@ -19,7 +19,7 @@ describe("state-machine", () => {
         expect(nextState.value).to.equal(PATH_NAMES.PROVE_IDENTITY_WELCOME);
       });
 
-      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.PROVE_IDENTITY}`, () => {
+      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.AUTH_CODE}`, () => {
         const nextState = getNextState(
           PATH_NAMES.AUTHORIZE,
           USER_JOURNEY_EVENTS.EXISTING_SESSION,
@@ -29,7 +29,7 @@ describe("state-machine", () => {
           }
         );
 
-        expect(nextState.value).to.equal(PATH_NAMES.PROVE_IDENTITY);
+        expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
       });
       it(`should stay on ${PATH_NAMES.AUTHORIZE}`, () => {
         const nextState = getNextState(
@@ -52,7 +52,7 @@ describe("state-machine", () => {
         );
         expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
       });
-      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.PROVE_IDENTITY}`, () => {
+      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.AUTH_CODE}`, () => {
         const nextState = getNextState(
           PATH_NAMES.AUTHORIZE,
           USER_JOURNEY_EVENTS.EXISTING_SESSION,
@@ -63,7 +63,7 @@ describe("state-machine", () => {
             proveIdentityWelcomeEnabled: false,
           }
         );
-        expect(nextState.value).to.equal(PATH_NAMES.PROVE_IDENTITY);
+        expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
       });
     });
   });
