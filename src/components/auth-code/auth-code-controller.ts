@@ -25,7 +25,6 @@ export function authCodeGet(
       req
     );
 
-    req.session.user.authCodeReturnToRP = false;
     delete req.session.user.reauthenticate;
 
     if (!result.success) {

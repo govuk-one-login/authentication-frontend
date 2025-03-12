@@ -88,15 +88,6 @@ describe("authentication auth code service", () => {
         passwordResetTime: passwordResetTime,
       };
 
-      const result = await service.getAuthCode(
-        sessionId,
-        clientSessionId,
-        persistentSessionId,
-        sessionClient,
-        userSessionClient,
-        req
-      );
-
       const expectedBody = {
         claims: claim,
         state: state,
@@ -106,6 +97,15 @@ describe("authentication auth code service", () => {
         "password-reset-time": passwordResetTime,
       };
 
+      const result = await service.getAuthCode(
+        sessionId,
+        clientSessionId,
+        persistentSessionId,
+        sessionClient,
+        userSessionClient,
+        req
+      );
+
       expect(
         postStub.calledOnceWithExactly(
           API_ENDPOINTS.ORCH_AUTH_CODE,
@@ -113,7 +113,6 @@ describe("authentication auth code service", () => {
           {
             headers: expectedHeaders,
             proxy: sinon.match.bool,
-            baseURL: frontendBaseUrl,
           }
         )
       ).to.be.true;
@@ -171,38 +170,10 @@ describe("authentication auth code service", () => {
           {
             headers: expectedHeaders,
             proxy: sinon.match.bool,
-            baseURL: frontendBaseUrl,
           }
         )
       ).to.be.true;
       expect(getStub.notCalled).to.be.true;
-      expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);
-    });
-
-    it("should make a request for an RP auth code following the prove identity callback page", async () => {
-      const req = createMockRequest(PATH_NAMES.AUTH_CODE);
-      req.ip = sourceIp;
-      req.headers = {
-        "txma-audit-encoded": auditEncodedString,
-        "x-forwarded-for": sourceIp,
-      };
-      const result = await service.getAuthCode(
-        sessionId,
-        clientSessionId,
-        persistentSessionId,
-        {},
-        { authCodeReturnToRP: true },
-        req
-      );
-
-      expect(
-        getStub.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
-          headers: expectedHeaders,
-          baseURL: apiBaseUrl,
-          proxy: sinon.match.bool,
-        })
-      ).to.be.true;
-      expect(postStub.notCalled).to.be.true;
       expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);
     });
   });
