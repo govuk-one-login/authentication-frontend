@@ -260,6 +260,34 @@ Conditions:
           - !Ref Environment
           - "production"
 
+  IsFmsEnabled:
+    Fn::Not:
+      - Fn::Or:
+          - Fn::And:
+              - !Condition UseSubEnvironment
+              - Fn::Equals:
+                  - !FindInMap [
+                      EnvironmentConfiguration,
+                      !Ref SubEnvironment,
+                      fmsGlobalPolicyName,
+                      DefaultValue: "",
+                    ]
+                  - ""
+          - Fn::And:
+              - !Condition NotSubEnvironment
+              - Fn::Equals:
+                  - !FindInMap [
+                      EnvironmentConfiguration,
+                      !Ref Environment,
+                      fmsGlobalPolicyName,
+                      DefaultValue: "",
+                    ]
+                  - ""
+
+  ApplyWafAssociation:
+    Fn::Not:
+      - Condition: IsFmsEnabled
+
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   ElasticLoadBalancerAccountIds:
@@ -282,6 +310,7 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
+      fmsGlobalPolicyName: frontendauthone
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       orchToAuthSigningPublicKey: |
@@ -298,6 +327,7 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
+      fmsGlobalPolicyName: frontendauthtwo
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -323,6 +353,7 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
+      fmsGlobalPolicyName: frontendcloudfront
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -1312,6 +1343,15 @@ Resources:
           Value: "auth-frontend"
         - Key: Source
           Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+        - Key: FMSGlobalCustomPolicy
+          Value: !FindInMap
+            - EnvironmentConfiguration
+            - !If
+              - UseSubEnvironment
+              - !Ref SubEnvironment
+              - !Ref Environment
+            - fmsGlobalPolicyName
+            - DefaultValue: AWS::NoValue
 
   ApplicationLoadBalancerTargetGroupA:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -1563,6 +1603,7 @@ Resources:
 
   ApplicationLoadBalancerCloudFrontWAFv2ACLAssociation:
     Type: AWS::WAFv2::WebACLAssociation
+    Condition: ApplyWafAssociation
     Properties:
       ResourceArn: !Ref ApplicationLoadBalancer
       WebACLArn:
