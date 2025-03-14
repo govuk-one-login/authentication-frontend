@@ -177,6 +177,29 @@
       }
     }
   },
+  "sharedFields": {
+    "phoneNumber": {
+      "ukPhoneNumber": {
+        "label": "Rhif ffôn symudol y DU",
+        "validationError": {
+          "required": "Rhowch rif ffôn symudol y DU",
+          "international": "Rhowch rif ffôn symudol yn y DU",
+          "length": "Rhowch rif ffôn symudol yn y DU, fel 07700 900000",
+          "plusNumericOnly": "Rhowch rif ffôn symudol yn y DU gan ddefnyddio rhifau yn unig neu’r symbol +"
+        }
+      },
+      "internationalPhoneNumber": {
+        "checkBoxLabel": "Nid oes gennyf rif ffôn symudol y DU",
+        "label": "Rhif ffôn symudol",
+        "hint": "Dylech gynnwys y cod gwlad, er enghraifft +33 am Ffrainc",
+        "validationError": {
+          "required": "Rhowch rif ffôn symudol",
+          "plusNumericOnly": "Rhowch rif ffôn symudol gan ddefnyddio rhifau yn unig neu’r symbol +",
+          "internationalFormat": "Rhowch rif ffôn symudol yn y ffurf gywir, gan gynnwys y cod gwlad"
+        }
+      }
+    }
+  },
   "mobileAppPages": {
     "signIn": {
       "title": "Mewngofnodi i GOV.UK One Login",
@@ -434,25 +457,6 @@
       "header": "Rhowch eich rhif ffôn symudol",
       "info": {
         "paragraph1": "Byddwn yn anfon cod diogelwch 6 digid i’r rhif rydych yn ei roi i ni."
-      },
-      "ukPhoneNumber": {
-        "label": "Rhif ffôn symudol y DU",
-        "validationError": {
-          "required": "Rhowch rif ffôn symudol y DU",
-          "international": "Rhowch rif ffôn symudol yn y DU",
-          "length": "Rhowch rif ffôn symudol yn y DU, fel 07700 900000",
-          "plusNumericOnly": "Rhowch rif ffôn symudol yn y DU gan ddefnyddio rhifau yn unig neu’r symbol +"
-        }
-      },
-      "internationalPhoneNumber": {
-        "checkBoxLabel": "Nid oes gennyf rif ffôn symudol y DU",
-        "label": "Rhif ffôn symudol",
-        "hint": "Dylech gynnwys y cod gwlad, er enghraifft +33 am Ffrainc",
-        "validationError": {
-          "required": "Rhowch rif ffôn symudol",
-          "plusNumericOnly": "Rhowch rif ffôn symudol gan ddefnyddio rhifau yn unig neu’r symbol +",
-          "internationalFormat": "Rhowch rif ffôn symudol yn y ffurf gywir, gan gynnwys y cod gwlad"
-        }
       }
     },
     "accountCreated": {
@@ -1874,7 +1878,8 @@
         "suggestionsFeedback": "Awgrym neu adborth am ddefnyddio’ch GOV.UK One Login",
         "idCheckApp": "Problem profi eich hunaniaeth wrth ddefnyddio ap GOV.UK ID Check",
         "provingIdentityFaceToFace": "Problem profi eich hunaniaeth gyda’r Swyddfa Bost",
-        "errorMessage": "Dewiswch reswm dros gysylltu â ni"
+        "errorMessage": "Dewiswch reswm dros gysylltu â ni",
+        "suspectUnauthorisedAccess": "Rydych chi’n meddwl bod rhywun arall yn defnyddio’ch gwybodaeth i gael mynediad i’ch GOV.UK One Login"
       },
       "continueLabel": "Parhau"
     },
@@ -2001,6 +2006,42 @@
         "heading": "Pa wlad?",
         "hintText": "Peidiwch â rhoi eich rhif ffôn",
         "errorIfBlank": "Rhowch o ba wlad y mae eich rhif ffôn yn dod"
+      },
+      "suspectUnauthorisedAccess": {
+        "title": "Rydych chi’n meddwl bod rhywun arall yn defnyddio’ch gwybodaeth i gael mynediad i’ch GOV.UK One Login",
+        "header": "Rydych chi’n meddwl bod rhywun arall yn defnyddio’ch gwybodaeth i gael mynediad i’ch GOV.UK One Login",
+        "section1": {
+          "resetPasswordLink": "Newidiwch eich cyfrinair (agor mewn tab newydd)",
+          "resetPasswordEnd": "cyn i chi gysylltu â ni. Bydd hyn yn helpu i gadw eich GOV.UK One Login yn ddiogel."
+        },
+        "section2": {
+          "header": "Beth sydd wedi digwydd i wneud i chi feddwl bod rhywun arall yn cael mynediad i’ch GOV.UK One Login?",
+          "hint": "Dewis bob un sy’n berthnasol",
+          "options": {
+            "receivedUnwarrantedSecurityCode": "Rwyf wedi derbyn cod diogelwch nad oeddwn wedi gofyn amdano",
+            "unknownActivityHistory":  "Mae rhywbeth yn fy hanes gweithgaredd nad wyf yn ei adnabod"
+          },
+          "validationError": {
+            "selectAtLeastOne": "Dewiswch o leiaf un opsiwn"
+          }
+        },
+        "section3": {
+          "header": "Dywedwch wrthym eich cyfeiriad e-bost GOV.UK One Login",
+          "hint": "Rhowch eich e-bost, efallai y byddwn yn cysylltu â chi drwy’r cyfeiriad hwn",
+          "validationError": {
+            "noEmailAddress": "Rhowch gyfeiriad e-bost eich GOV.UK One Login",
+            "invalidFormat":  "Rhowch gyfeiriad e-bost yn y ffurf cywir, fel name@example.com"
+          }
+        },
+        "section4": {
+          "header": "Rhowch y rhif ffôn y gwnaethoch chi greu eich GOV.UK One Login gyda (dewisol)",
+          "hint": "Ni fyddwn yn cysylltu â chi dros y ffôn, ond gallai hyn helpu gyda’n hymchwiliad"
+        },
+        "section5": {
+          "privacyNoticeStart": "Darllenwch ein",
+          "privacyNoticeLink": "hysbysiad preifatrwydd (agor mewn tab newydd)",
+          "privacyNoticeEnd": "i gael mwy o wybodaeth am sut rydym yn defnyddio eich gwybodaeth bersonol"
+        }
       },
       "anotherProblem": {
         "title": "Problem wrth ddefnyddio eich GOV.UK One Login",

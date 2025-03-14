@@ -7,6 +7,14 @@ import {
   CONTACT_US_THEMES,
   CONTACT_US_COUNTRY_MAX_LENGTH,
 } from "../../app.constants";
+import {
+  internationalPhoneNumberMustBeValid,
+  ukPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
+  ukPhoneNumberMustBeValid,
+  ukPhoneNumberMustHaveLengthWithoutSpacesInRange,
+  internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
+  internationalPhoneNumberMustHaveLengthWithoutSpacesInRange,
+} from "../common/phone-number/phone-number-validation";
 
 const sanitizeFreeTextValue: CustomSanitizer = function sanitizeFreeTextValue(
   value: string
@@ -222,7 +230,21 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       }
       return true;
     }),
+    body("suspectUnauthorisedAccessReasons")
+      .if(body("theme").equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS))
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.suspectUnauthorisedAccess.section2.validationError.selectAtLeastOne",
+          { value, lng: req.i18n.lng }
+        );
+      }),
     body("contact")
+      .if(
+        body("theme")
+          .not()
+          .equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS)
+      )
       .notEmpty()
       .withMessage((value, { req }) => {
         return req.t(
@@ -231,6 +253,27 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
         );
       }),
     body("email")
+      .if(body("theme").equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS))
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.suspectUnauthorisedAccess.section3.validationError.noEmailAddress",
+          { value, lng: req.i18n.lng }
+        );
+      })
+      .isEmail()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.suspectUnauthorisedAccess.section3.validationError.invalidFormat",
+          { value, lng: req.i18n.lng }
+        );
+      }),
+    body("email")
+      .if(
+        body("theme")
+          .not()
+          .equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS)
+      )
       .if(body("contact").equals("true"))
       .notEmpty()
       .withMessage((value, { req }) => {
@@ -246,6 +289,20 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value, lng: req.i18n.lng }
         );
       }),
+    body("phoneNumber")
+      .if(body("theme").equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS))
+      .if(body("phoneNumber").not().equals(""))
+      .if(body("hasInternationalPhoneNumber").not().equals("true"))
+      .custom(ukPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly)
+      .custom(ukPhoneNumberMustHaveLengthWithoutSpacesInRange)
+      .custom(ukPhoneNumberMustBeValid),
+    body("internationalPhoneNumber")
+      .if(body("theme").equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS))
+      .if(body("internationalPhoneNumber").not().equals(""))
+      .if(body("hasInternationalPhoneNumber").notEmpty().equals("true"))
+      .custom(internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly)
+      .custom(internationalPhoneNumberMustHaveLengthWithoutSpacesInRange)
+      .custom(internationalPhoneNumberMustBeValid),
     body("country")
       .optional()
       .custom((value, { req }) => {

@@ -177,6 +177,29 @@
       }
     }
   },
+  "sharedFields": {
+    "phoneNumber": {
+      "ukPhoneNumber": {
+        "label": "UK mobile phone number",
+        "validationError": {
+          "required": "Enter a UK mobile phone number",
+          "international": "Enter a UK mobile phone number",
+          "length": "Enter a UK mobile phone number, like 07700 900000",
+          "plusNumericOnly": "Enter a UK mobile phone number using only numbers or the + symbol"
+        }
+      },
+      "internationalPhoneNumber": {
+        "checkBoxLabel": "I do not have a UK mobile number",
+        "label": "Mobile phone number",
+        "hint": "Include the country code, for example +33 for France",
+        "validationError": {
+          "required": "Enter a mobile phone number",
+          "plusNumericOnly": "Enter a mobile phone number using only numbers or the + symbol",
+          "internationalFormat": "Enter a mobile phone number in the correct format, including the country code"
+        }
+      }
+    }
+  },
   "mobileAppPages": {
     "signIn": {
       "title": "Sign in to GOV.UK One Login",
@@ -434,25 +457,6 @@
       "header": "Enter your mobile phone number",
       "info": {
         "paragraph1": "We will send a 6 digit security code to the number you give us."
-      },
-      "ukPhoneNumber": {
-        "label": "UK mobile phone number",
-        "validationError": {
-          "required": "Enter a UK mobile phone number",
-          "international": "Enter a UK mobile phone number",
-          "length": "Enter a UK mobile phone number, like 07700 900000",
-          "plusNumericOnly": "Enter a UK mobile phone number using only numbers or the + symbol"
-        }
-      },
-      "internationalPhoneNumber": {
-        "checkBoxLabel": "I do not have a UK mobile number",
-        "label": "Mobile phone number",
-        "hint": "Include the country code, for example +33 for France",
-        "validationError": {
-          "required": "Enter a mobile phone number",
-          "plusNumericOnly": "Enter a mobile phone number using only numbers or the + symbol",
-          "internationalFormat": "Enter a mobile phone number in the correct format, including the country code"
-        }
       }
     },
     "accountCreated": {
@@ -1874,7 +1878,8 @@
         "suggestionsFeedback": "A suggestion or feedback about using your GOV.UK One Login",
         "idCheckApp": "A problem proving your identity using the GOV.UK ID Check app",
         "provingIdentityFaceToFace": "A problem proving your identity with the Post Office",
-        "errorMessage": "Select a reason for contacting us"
+        "errorMessage": "Select a reason for contacting us",
+        "suspectUnauthorisedAccess":  "You think somebody else is using your information to access your GOV.UK One Login"
       },
       "continueLabel": "Continue"
     },
@@ -2001,6 +2006,42 @@
         "heading": "Which country?",
         "hintText": "Do not enter your phone number",
         "errorIfBlank": "Enter which country your phone number is from"
+      },
+      "suspectUnauthorisedAccess": {
+        "title": "You think somebody else is using your information to access your GOV.UK One Login",
+        "header": "You think somebody else is using your information to access your GOV.UK One Login",
+        "section1": {
+          "resetPasswordLink": "Change your password (opens in a new tab)",
+          "resetPasswordEnd": "before you contact us. This will help keep your GOV.UK One Login safe."
+        },
+        "section2": {
+          "header": "What’s happened to make you think somebody else is accessing your GOV.UK One Login?",
+          "hint": "Select all that apply",
+          "options": {
+            "receivedUnwarrantedSecurityCode": "I received a security code I did not ask for",
+            "unknownActivityHistory":  "There’s something in my activity history that I do not recognise"
+          },
+          "validationError": {
+            "selectAtLeastOne": "Select at least one option"
+          }
+        },
+        "section3": {
+          "header": "Tell us your GOV.UK One Login email address",
+          "hint": "Enter your email, we may contact you on this address",
+          "validationError": {
+            "noEmailAddress": "Enter the email address of your GOV.UK One Login",
+            "invalidFormat":  "Enter an email address in the correct format, like name@example.com"
+          }
+        },
+        "section4": {
+          "header": "Enter the phone number you created your GOV.UK One Login with (optional)",
+          "hint": "We will not contact you by phone, but this could help with our investigation"
+        },
+        "section5": {
+          "privacyNoticeStart": "Read our",
+          "privacyNoticeLink": "privacy notice (opens in a new tab)",
+          "privacyNoticeEnd": "for more information on how we use your personal information"
+        }
       },
       "anotherProblem": {
         "title": "A problem using your GOV.UK One Login",

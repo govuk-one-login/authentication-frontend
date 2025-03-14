@@ -64,6 +64,10 @@
             text: 'pages.contactUsPublic.section3.emailSubscriptions' | translate
         },
         {
+            value: "suspect_unauthorised_access",
+            text: 'pages.contactUsPublic.section3.suspectUnauthorisedAccess' | translate
+        },
+        {
             value: "something_else",
             text: 'pages.contactUsPublic.section3.somethingElse' | translate
         },
@@ -75,6 +79,10 @@
             text: 'pages.contactUsPublic.section3.suggestionsFeedback' | translate
         }
     ] %}
+
+    {% if not contactUsSuspectUnauthorisedAccess %}
+        {% set items = items.slice(0, 6).concat(items.slice(7)) %}
+    {% endif %}
 
     {{ govukRadios({
         name: "theme",

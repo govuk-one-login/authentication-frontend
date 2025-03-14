@@ -74,6 +74,57 @@ describe("Integration:: contact us - public user", () => {
     );
   };
 
+  describe("rendering correct theme options", () => {
+    it("should return all options when CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS is '1'", async () => {
+      process.env.CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS = "1";
+
+      await request(app, (test) =>
+        test
+          .get(PATH_NAMES.CONTACT_US)
+          .expect(200)
+          .expect((res) => {
+            const $ = cheerio.load(res.text);
+            expect($("input[name=theme]").length).to.equal(9);
+            expect($("input[value=account_creation]").length).to.equal(1);
+            expect($("input[value=signing_in]").length).to.equal(1);
+            expect($("input[value=id_check_app]").length).to.equal(1);
+            expect($("input[value=id_face_to_face]").length).to.equal(1);
+            expect($("input[value=proving_identity]").length).to.equal(1);
+            expect($("input[value=email_subscriptions]").length).to.equal(1);
+            expect(
+              $("input[value=suspect_unauthorised_access]").length
+            ).to.equal(1);
+            expect($("input[value=something_else]").length).to.equal(1);
+            expect($("input[value=suggestions_feedback]").length).to.equal(1);
+          })
+      );
+    });
+
+    ["0", undefined].forEach((envVar) => {
+      it(`should return all options except SUSPECT_UNAUTHORISED_ACCESS when CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS is '${envVar}'`, async () => {
+        process.env.CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS = envVar;
+
+        await request(app, (test) => test.get(PATH_NAMES.CONTACT_US))
+          .expect(200)
+          .expect((res) => {
+            const $ = cheerio.load(res.text);
+            expect($("input[name=theme]").length).to.equal(8);
+            expect($("input[value=account_creation]").length).to.equal(1);
+            expect($("input[value=signing_in]").length).to.equal(1);
+            expect($("input[value=id_check_app]").length).to.equal(1);
+            expect($("input[value=id_face_to_face]").length).to.equal(1);
+            expect($("input[value=proving_identity]").length).to.equal(1);
+            expect($("input[value=email_subscriptions]").length).to.equal(1);
+            expect(
+              $("input[value=suspect_unauthorised_access]").length
+            ).to.equal(0);
+            expect($("input[value=something_else]").length).to.equal(1);
+            expect($("input[value=suggestions_feedback]").length).to.equal(1);
+          });
+      });
+    });
+  });
+
   it("should return contact us page", async () => {
     await request(app, (test) =>
       test.get(PATH_NAMES.CONTACT_US).query("supportType=PUBLIC").expect(200)
@@ -252,96 +303,262 @@ describe("Integration:: contact us - public user", () => {
     );
   });
 
-  it("should return validation error when issue description are not entered on the contact-us-questions page", async () => {
-    const data = {
-      _csrf: token,
-      issueDescription: "",
-      theme: "signing_in",
-      subtheme: "technical_error",
-    };
-    await expectValidationErrorOnPost(
-      "/contact-us-questions",
-      data,
-      "#issueDescription-error",
-      "Enter what you were trying to do"
-    );
-  });
+  describe("visiting contact-us-questions directly", () => {
+    it("should return validation error when issue description are not entered on the contact-us-questions page", async () => {
+      const data = {
+        _csrf: token,
+        issueDescription: "",
+        theme: "signing_in",
+        subtheme: "technical_error",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#issueDescription-error",
+        "Enter what you were trying to do"
+      );
+    });
 
-  it("should return validation error when user selected yes to contact for feedback and left email field empty", async () => {
-    const data = {
-      _csrf: token,
-      theme: "signing_in",
-      subtheme: "something_else",
-      issueDescription: "issue",
-      additionalDescription: "additional",
-      contact: "true",
-    };
-    await expectValidationErrorOnPost(
-      "/contact-us-questions",
-      data,
-      "#email-error",
-      "Enter your email address"
-    );
-  });
+    it("should return validation error when user selected yes to contact for feedback and left email field empty", async () => {
+      const data = {
+        _csrf: token,
+        theme: "signing_in",
+        subtheme: "something_else",
+        issueDescription: "issue",
+        additionalDescription: "additional",
+        contact: "true",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#email-error",
+        "Enter your email address"
+      );
+    });
 
-  it("should return validation error when user selected Text message to a phone number from another country and left the Which country field empty", async () => {
-    await request(app, (test) =>
-      test
-        .post("/contact-us-questions?radio_buttons=true")
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
+    it("should return validation error when user selected Text message to a phone number from another country and left the Which country field empty", async () => {
+      await request(app, (test) =>
+        test
+          .post("/contact-us-questions?radio_buttons=true")
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            theme: "account_creation",
+            subtheme: "invalid_security_code",
+            additionalDescription: "additional",
+            contact: "false",
+            securityCodeSentMethod: "text_message_international_number",
+            country: " ",
+          })
+          .expect(function (res) {
+            const $ = cheerio.load(res.text);
+            expect($("#country-error").text()).to.contains(
+              "Enter which country your phone number is from"
+            );
+          })
+          .expect(400)
+      );
+    });
+
+    it("should return validation error when user selected yes to contact for feedback but email is in an invalid format", async () => {
+      const data = {
+        _csrf: token,
+        theme: "signing_in",
+        subtheme: "something_else",
+        issueDescription: "issue",
+        additionalDescription: "additional",
+        contact: "true",
+        email: "test",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#email-error",
+        "Enter an email address in the correct format, like name@example.com"
+      );
+    });
+
+    it("should return validation error when user has not selected how the security code was sent whilst creating an account", async () => {
+      const data = {
+        _csrf: token,
+        theme: "account_creation",
+        subtheme: "no_security_code",
+        moreDetailDescription: "issue",
+        formType: "noSecurityCode",
+        contact: "false",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions?radio_buttons=true",
+        data,
+        "#securityCodeSentMethod-error",
+        "Select whether you expected to get the code by email, text message or authenticator app"
+      );
+    });
+
+    describe("somebody else is using your information", () => {
+      it("should return validation error when user hasn't selected any reasons", async () => {
+        const data = {
           _csrf: token,
-          theme: "account_creation",
-          subtheme: "invalid_security_code",
-          additionalDescription: "additional",
-          contact: "false",
-          securityCodeSentMethod: "text_message_international_number",
-          country: " ",
-        })
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($("#country-error").text()).to.contains(
-            "Enter which country your phone number is from"
-          );
-        })
-        .expect(400)
-    );
-  });
+          theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+          email: "test@example.com",
+        };
+        await expectValidationErrorOnPost(
+          "/contact-us-questions",
+          data,
+          "#suspectUnauthorisedAccessReasons-error",
+          "Select at least one option"
+        );
+      });
 
-  it("should return validation error when user selected yes to contact for feedback but email is in an invalid format", async () => {
-    const data = {
-      _csrf: token,
-      theme: "signing_in",
-      subtheme: "something_else",
-      issueDescription: "issue",
-      additionalDescription: "additional",
-      contact: "true",
-      email: "test",
-    };
-    await expectValidationErrorOnPost(
-      "/contact-us-questions",
-      data,
-      "#email-error",
-      "Enter an email address in the correct format, like name@example.com"
-    );
-  });
+      it("should return validation error when email is empty", async () => {
+        const data = {
+          _csrf: token,
+          theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+          suspectUnauthorisedAccessReasons:
+            "hasReceivedUnwarrantedSecurityCode",
+        };
+        await expectValidationErrorOnPost(
+          "/contact-us-questions",
+          data,
+          "#email-error",
+          "Enter the email address of your GOV.UK One Login"
+        );
+      });
 
-  it("should return validation error when user has not selected how the security code was sent whilst creating an account", async () => {
-    const data = {
-      _csrf: token,
-      theme: "account_creation",
-      subtheme: "no_security_code",
-      moreDetailDescription: "issue",
-      formType: "noSecurityCode",
-      contact: "false",
-    };
-    await expectValidationErrorOnPost(
-      "/contact-us-questions?radio_buttons=true",
-      data,
-      "#securityCodeSentMethod-error",
-      "Select whether you expected to get the code by email, text message or authenticator app"
-    );
+      it("should return validation error when email address is invalid", async () => {
+        const data = {
+          _csrf: token,
+          theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+          suspectUnauthorisedAccessReasons:
+            "hasReceivedUnwarrantedSecurityCode",
+          email: "test",
+        };
+        await expectValidationErrorOnPost(
+          "/contact-us-questions",
+          data,
+          "#email-error",
+          "Enter an email address in the correct format, like name@example.com"
+        );
+      });
+
+      describe("phone number validation", () => {
+        describe("hasInternationalPhoneNumber validation", () => {
+          it("should run uk phone number validation when not hasInternationalPhoneNumber", () => {});
+
+          it("should run international phone number validation when  hasInternationalPhoneNumber", () => {});
+        });
+
+        describe("uk phone number", () => {
+          it("should return validation error when not using numbers", async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+              suspectUnauthorisedAccessReasons:
+                "hasReceivedUnwarrantedSecurityCode",
+              email: "test@example.com",
+              phoneNumber: "abc",
+            };
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              "#phoneNumber-error",
+              "Enter a UK mobile phone number using only numbers or the + symbol"
+            );
+          });
+
+          it("should return validation error when wrong length", async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+              suspectUnauthorisedAccessReasons:
+                "hasReceivedUnwarrantedSecurityCode",
+              email: "test@example.com",
+              phoneNumber: "12345",
+            };
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              "#phoneNumber-error",
+              "Enter a UK mobile phone number, like 07700 900000"
+            );
+          });
+
+          it("should return validation error when non-uk number", async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+              suspectUnauthorisedAccessReasons:
+                "hasReceivedUnwarrantedSecurityCode",
+              email: "test@example.com",
+              phoneNumber: "12345",
+            };
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              "#phoneNumber-error",
+              "Enter a UK mobile phone number"
+            );
+          });
+        });
+
+        describe("international phone number", () => {
+          it("should return validation error when not using numbers", async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+              suspectUnauthorisedAccessReasons:
+                "hasReceivedUnwarrantedSecurityCode",
+              email: "test@example.com",
+              hasInternationalPhoneNumber: "true",
+              internationalPhoneNumber: "abc",
+            };
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              "#internationalPhoneNumber-error",
+              "Enter a mobile phone number using only numbers or the + symbol"
+            );
+          });
+
+          it("should return validation error when wrong length", async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+              suspectUnauthorisedAccessReasons:
+                "hasReceivedUnwarrantedSecurityCode",
+              email: "test@example.com",
+              hasInternationalPhoneNumber: "true",
+              internationalPhoneNumber: "+123456789012345678901234567890",
+            };
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              "#internationalPhoneNumber-error",
+              "Enter a mobile phone number in the correct format, including the country code"
+            );
+          });
+
+          it("should return validation error when invalid number", async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+              suspectUnauthorisedAccessReasons:
+                "hasReceivedUnwarrantedSecurityCode",
+              email: "test@example.com",
+              hasInternationalPhoneNumber: "true",
+              internationalPhoneNumber: "+100000000000000000000000",
+            };
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              "#internationalPhoneNumber-error",
+              "Enter a mobile phone number in the correct format, including the country code"
+            );
+          });
+        });
+      });
+    });
   });
 
   describe("when a user had a problem with their identity document", () => {

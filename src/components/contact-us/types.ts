@@ -2,6 +2,7 @@ export interface ContactForm {
   subject: string;
   descriptions: Descriptions;
   email?: string;
+  telephoneNumber?: string;
   name?: string;
   themes: Themes;
   optionalData: OptionalData;
@@ -14,6 +15,7 @@ export interface ContactForm {
   identityDocumentUsed?: string;
   problemWith?: string;
   fromURL?: string;
+  suspectUnauthorisedAccess?: SuspectUnauthorisedAccess;
 }
 
 export interface OptionalData {
@@ -38,6 +40,11 @@ export interface Questions {
 export interface ThemeQuestions {
   themeQuestion: string;
   subthemeQuestion?: string;
+}
+
+export interface SuspectUnauthorisedAccess {
+  hasReceivedUnwarrantedSecurityCode: boolean;
+  hasUnknownActivityHistory: boolean;
 }
 
 export interface Descriptions {
@@ -83,6 +90,8 @@ export interface SmartAgentCustomAttributes {
   "sa-tag-building-society"?: string;
   "sa-tag-national-insurance-number"?: string;
   "sa-tag-location"?: string;
+  "sa-tag-has-received-unwarranted-security-code"?: string;
+  "sa-tag-has-unknown-activity-history"?: string;
 }
 
 export interface SmartAgentTicket {

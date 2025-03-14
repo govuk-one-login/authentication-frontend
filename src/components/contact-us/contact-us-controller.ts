@@ -12,12 +12,13 @@ import { ExpressRouteFunc } from "../../types";
 import crypto from "crypto";
 import { logger } from "../../utils/logger";
 import {
+  contactUsSuspectUnauthorisedAccess,
   getServiceDomain,
   getSupportLinkUrl,
   supportMfaResetWithIpv,
   supportNoPhotoIdContactForms,
 } from "../../config";
-import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
+import { getContactUsService } from "./contact-us-service";
 
 const themeToPageTitle = {
   [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:
@@ -38,6 +39,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.noPhoneNumberAccess.titleMfaReset",
   [CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS]:
     "pages.contactUsQuestions.emailSubscriptions.title",
+  [CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS]:
+    "pages.contactUsQuestions.suspectUnauthorisedAccess.title",
   [CONTACT_US_THEMES.SOMETHING_ELSE]:
     "pages.contactUsQuestions.anotherProblem.title",
   [CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK]:
@@ -140,6 +143,7 @@ export function contactUsGet(req: Request, res: Response): void {
     ...(getAppSessionId(req.query.appSessionId as string) && {
       appSessionId: getAppSessionId(req.query.appSessionId as string),
     }),
+    contactUsSuspectUnauthorisedAccess: contactUsSuspectUnauthorisedAccess(),
   };
 
   return res.render("contact-us/index-public-contact-us.njk", options);
@@ -416,6 +420,7 @@ export function furtherInformationPost(req: Request, res: Response): void {
 
 export function contactUsQuestionsGet(req: Request, res: Response): void {
   const supportLinkURL = getSupportLinkUrl();
+  // TODO - AUT-4118 - Fix this
   const backLinkHref = prepareBackLink(req, supportLinkURL, serviceDomain);
 
   if (!req.query.theme) {
@@ -465,12 +470,14 @@ export function createTicketIdentifier(appSessionId: string): string {
 }
 
 export function contactUsQuestionsFormPostToSmartAgent(
-  service = contactUsServiceSmartAgent()
+  service = getContactUsService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const ticketIdentifier = createTicketIdentifier(
       getAppSessionId(req.body.appSessionId)
     );
+
+    const telephoneNumber = getTelephoneNumber(req);
 
     const questions = getQuestionsFromFormTypeForMessageBody(
       req,
@@ -497,6 +504,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
       themes: { theme: req.body.theme, subtheme: req.body.subtheme },
       subject: "GOV.UK One Login",
       email: req.body.email,
+      telephoneNumber: telephoneNumber,
       name: req.body.name,
       optionalData: {
         ticketIdentifier: ticketIdentifier,
@@ -516,6 +524,19 @@ export function contactUsQuestionsFormPostToSmartAgent(
       securityCodeSentMethod: req.body.securityCodeSentMethod,
       identityDocumentUsed: req.body.identityDocumentUsed,
       problemWith: req.body.problemWith,
+      suspectUnauthorisedAccess:
+        req.body.theme === CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS
+          ? {
+              hasReceivedUnwarrantedSecurityCode:
+                req.body.suspectUnauthorisedAccessReasons.includes(
+                  "hasReceivedUnwarrantedSecurityCode"
+                ),
+              hasUnknownActivityHistory:
+                req.body.suspectUnauthorisedAccessReasons.includes(
+                  "hasUnknownActivityHistory"
+                ),
+            }
+          : undefined,
     });
 
     logger.info(
@@ -529,7 +550,18 @@ export function contactUsSubmitSuccessGet(req: Request, res: Response): void {
   res.render("contact-us/index-submit-success.njk");
 }
 
-export function getQuestionsFromFormTypeForMessageBody(
+function getTelephoneNumber(req: Request): string | undefined {
+  if (
+    req.body.hasInternationalPhoneNumber === "true" &&
+    req.body.internationalPhoneNumber !== ""
+  ) {
+    return req.body.internationalPhoneNumber;
+  } else if (req.body.phoneNumber !== "") {
+    return req.body.phoneNumber;
+  }
+}
+
+function getQuestionsFromFormTypeForMessageBody(
   req: Request,
   formType: string
 ): Questions {
@@ -555,6 +587,24 @@ export function getQuestionsFromFormTypeForMessageBody(
       ),
       serviceTryingToUse: req.t(
         "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
+    suspectUnauthorisedAccess: {
+      hasReceivedUnwarrantedSecurityCode: req.t(
+        "pages.contactUsQuestions.suspectUnauthorisedAccess.section2.options.receivedUnwarrantedSecurityCode",
+        { lng: "en" }
+      ),
+      hasUnknownActivityHistory: req.t(
+        "pages.contactUsQuestions.suspectUnauthorisedAccess.section2.options.unknownActivityHistory",
+        { lng: "en" }
+      ),
+      email: req.t(
+        "pages.contactUsQuestions.suspectUnauthorisedAccess.section3.header",
+        { lng: "en" }
+      ),
+      phoneNumber: req.t(
+        "pages.contactUsQuestions.suspectUnauthorisedAccess.section4.header",
         { lng: "en" }
       ),
     },
@@ -881,7 +931,7 @@ export function getQuestionsFromFormTypeForMessageBody(
   return formTypeToQuestions[formType];
 }
 
-export function getQuestionFromThemes(
+function getQuestionFromThemes(
   req: Request,
   theme: string,
   subtheme?: string
@@ -893,20 +943,6 @@ export function getQuestionFromThemes(
     signing_in: req.t("pages.contactUsPublic.section3.signingIn", {
       lng: "en",
     }),
-    proving_identity: req.t("pages.contactUsPublic.section3.provingIdentity", {
-      lng: "en",
-    }),
-    something_else: req.t("pages.contactUsPublic.section3.somethingElse", {
-      lng: "en",
-    }),
-    email_subscriptions: req.t(
-      "pages.contactUsPublic.section3.emailSubscriptions",
-      { lng: "en" }
-    ),
-    suggestions_feedback: req.t(
-      "pages.contactUsPublic.section3.suggestionsFeedback",
-      { lng: "en" }
-    ),
     id_check_app: req.t("pages.contactUsPublic.section3.idCheckApp", {
       lng: "en",
     }),
@@ -916,7 +952,28 @@ export function getQuestionFromThemes(
         lng: "en",
       }
     ),
+    proving_identity: req.t("pages.contactUsPublic.section3.provingIdentity", {
+      lng: "en",
+    }),
+    email_subscriptions: req.t(
+      "pages.contactUsPublic.section3.emailSubscriptions",
+      { lng: "en" }
+    ),
+    suspect_unauthorised_access: req.t(
+      "pages.contactUsPublic.section3.suspectUnauthorisedAccess",
+      {
+        lng: "en",
+      }
+    ),
+    something_else: req.t("pages.contactUsPublic.section3.somethingElse", {
+      lng: "en",
+    }),
+    suggestions_feedback: req.t(
+      "pages.contactUsPublic.section3.suggestionsFeedback",
+      { lng: "en" }
+    ),
   };
+
   const signinSubthemeToQuestions: { [key: string]: any } = {
     no_security_code: req.t(
       "pages.contactUsFurtherInformation.signingIn.section1.radio1",
@@ -951,6 +1008,7 @@ export function getQuestionFromThemes(
       { lng: "en" }
     ),
   };
+
   const accountCreationSubthemeToQuestions: { [key: string]: any } = {
     no_security_code: req.t(
       "pages.contactUsFurtherInformation.accountCreation.section1.radio1",

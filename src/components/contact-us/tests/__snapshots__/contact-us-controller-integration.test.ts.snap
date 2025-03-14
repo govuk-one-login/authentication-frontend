@@ -1,5 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Integration:: contact us - public user rendering correct theme options should return all options except SUSPECT_UNAUTHORISED_ACCESS when CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS is '0' 1`] = `
+Object {
+  "contentId": "e08d04e6-b24f-4bad-9955-1eb860771747",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user rendering correct theme options should return all options except SUSPECT_UNAUTHORISED_ACCESS when CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS is 'undefined' 1`] = `
+Object {
+  "contentId": "e08d04e6-b24f-4bad-9955-1eb860771747",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user rendering correct theme options should return all options when CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS is '1' 1`] = `
+Object {
+  "contentId": "e08d04e6-b24f-4bad-9955-1eb860771747",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
 exports[`Integration:: contact us - public user should return contact us further information account creation page 1`] = `
 Object {
   "contentId": "a06d6387-d411-47db-8f7d-88871286330b",
@@ -275,17 +308,6 @@ Object {
 }
 `;
 
-exports[`Integration:: contact us - public user should return validation error when issue description are not entered on the contact-us-questions page 1`] = `
-Object {
-  "contentId": "",
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "feedback",
-  "taxonomyLevel3": "",
-  "taxonomyLevel4": "",
-  "taxonomyLevel5": "",
-}
-`;
-
 exports[`Integration:: contact us - public user should return validation error when no radio boxes are selected on the proving_identity contact-us-further-information page 1`] = `
 Object {
   "contentId": "a06d6387-d411-47db-8f7d-88871286330b",
@@ -308,7 +330,7 @@ Object {
 }
 `;
 
-exports[`Integration:: contact us - public user should return validation error when user has not selected how the security code was sent whilst creating an account 1`] = `
+exports[`Integration:: contact us - public user visiting contact-us-questions directly should return validation error when issue description are not entered on the contact-us-questions page 1`] = `
 Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
@@ -319,7 +341,7 @@ Object {
 }
 `;
 
-exports[`Integration:: contact us - public user should return validation error when user selected Text message to a phone number from another country and left the Which country field empty 1`] = `
+exports[`Integration:: contact us - public user visiting contact-us-questions directly should return validation error when user has not selected how the security code was sent whilst creating an account 1`] = `
 Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
@@ -330,7 +352,7 @@ Object {
 }
 `;
 
-exports[`Integration:: contact us - public user should return validation error when user selected yes to contact for feedback and left email field empty 1`] = `
+exports[`Integration:: contact us - public user visiting contact-us-questions directly should return validation error when user selected Text message to a phone number from another country and left the Which country field empty 1`] = `
 Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
@@ -341,7 +363,117 @@ Object {
 }
 `;
 
-exports[`Integration:: contact us - public user should return validation error when user selected yes to contact for feedback but email is in an invalid format 1`] = `
+exports[`Integration:: contact us - public user visiting contact-us-questions directly should return validation error when user selected yes to contact for feedback and left email field empty 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly should return validation error when user selected yes to contact for feedback but email is in an invalid format 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information phone number validation international phone number should return validation error when invalid number 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information phone number validation international phone number should return validation error when not using numbers 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information phone number validation international phone number should return validation error when wrong length 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information phone number validation uk phone number should return validation error when non-uk number 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information phone number validation uk phone number should return validation error when not using numbers 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information phone number validation uk phone number should return validation error when wrong length 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information should return validation error when email address is invalid 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information should return validation error when email is empty 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly somebody else is using your information should return validation error when user hasn't selected any reasons 1`] = `
 Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",

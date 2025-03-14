@@ -6,26 +6,30 @@ import { Request, Response } from "express";
 import {
   contactUsFormPost,
   contactUsGet,
-  validateAppErrorCode,
+  contactUsGetFromTriagePage,
+  contactUsQuestionsFormPostToSmartAgent,
+  createTicketIdentifier,
   getAppErrorCode,
   getAppSessionId,
-  validateAppId,
-  createTicketIdentifier,
-  isAppJourney,
-  getPreferredLanguage,
-  contactUsGetFromTriagePage,
-  validateReferer,
-  prepareBackLink,
   getNextUrlBasedOnTheme,
+  getPreferredLanguage,
+  isAppJourney,
+  prepareBackLink,
+  validateAppErrorCode,
+  validateAppId,
+  validateReferer,
 } from "../contact-us-controller";
 import {
+  CONTACT_US_REFERER_ALLOWLIST,
+  CONTACT_US_THEMES,
   PATH_NAMES,
   SUPPORT_TYPE,
-  CONTACT_US_THEMES,
-  CONTACT_US_REFERER_ALLOWLIST,
 } from "../../../app.constants";
-import { RequestGet, ResponseRedirect } from "../../../types";
+import { ExpressRouteFunc, RequestGet, ResponseRedirect } from "../../../types";
 import { getServiceDomain, getSupportLinkUrl } from "../../../config";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { mockResponse } from "mock-req-res";
+import { ContactForm } from "../types";
 
 describe("contact us controller", () => {
   let sandbox: sinon.SinonSandbox;
@@ -55,6 +59,10 @@ describe("contact us controller", () => {
   });
 
   describe("contactUsGet", () => {
+    before(() => {
+      process.env.CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS = "1";
+    });
+
     it("should render contact us gov page if gov radio option was chosen", () => {
       req.query.supportType = SUPPORT_TYPE.GOV_SERVICE;
       contactUsGet(req as Request, res as Response);
@@ -85,6 +93,7 @@ describe("contact us controller", () => {
           referer: "",
           fromURL: undefined,
           hrefBack: PATH_NAMES.CONTACT_US,
+          contactUsSuspectUnauthorisedAccess: true,
         }
       );
     });
@@ -103,6 +112,7 @@ describe("contact us controller", () => {
           referer: encodeURIComponent(REFERER),
           fromURL: fromUrlEncoded,
           hrefBack: `${PATH_NAMES.CONTACT_US}?fromURL=${fromUrlEncoded}`,
+          contactUsSuspectUnauthorisedAccess: true,
         }
       );
     });
@@ -127,6 +137,7 @@ describe("contact us controller", () => {
             referer: "",
             fromURL: undefined,
             hrefBack: PATH_NAMES.CONTACT_US,
+            contactUsSuspectUnauthorisedAccess: true,
           }
         );
       });
@@ -220,79 +231,85 @@ describe("contact us controller", () => {
       );
     });
 
-    it("should redirect /contact-us-further-information page when 'A problem signing in to your GOV.UK account' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.SIGNING_IN;
-      req.body.referer = REFERER;
+    describe("redirect to /contact-us-further-information page", () => {
+      it("should redirect when 'A problem signing in to your GOV.UK account' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.SIGNING_IN;
+        req.body.referer = REFERER;
 
-      contactUsFormPost(req as Request, res as Response);
+        contactUsFormPost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        "/contact-us-further-information?theme=signing_in&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
-      );
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-further-information?theme=signing_in&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        );
+      });
+
+      it("should redirect when 'A problem proving your identity' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.PROVING_IDENTITY;
+        req.body.referer = REFERER;
+
+        contactUsFormPost(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(
+          `/contact-us-further-information?theme=${CONTACT_US_THEMES.PROVING_IDENTITY}&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email`
+        );
+      });
+
+      it("should redirect when 'A problem creating a GOV.UK account' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.ACCOUNT_CREATION;
+        req.body.referer = REFERER;
+
+        contactUsFormPost(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-further-information?theme=account_creation&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        );
+      });
     });
 
-    it("should redirect /contact-us-further-information page when 'A problem proving your identity' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.PROVING_IDENTITY;
-      req.body.referer = REFERER;
+    describe("redirect to /contact-us-questions page", () => {
+      it("should redirect when 'Another problem using your GOV.UK account' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.SOMETHING_ELSE;
+        req.body.referer = REFERER;
 
-      contactUsFormPost(req as Request, res as Response);
+        contactUsFormPost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        `/contact-us-further-information?theme=${CONTACT_US_THEMES.PROVING_IDENTITY}&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email`
-      );
-    });
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-questions?theme=something_else&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        );
+      });
 
-    it("should redirect /contact-us-further-information page when 'A problem creating a GOV.UK account' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.ACCOUNT_CREATION;
-      req.body.referer = REFERER;
+      it("should redirect when 'GOV.UK email subscriptions' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS;
+        req.body.referer = REFERER;
 
-      contactUsFormPost(req as Request, res as Response);
+        contactUsFormPost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        "/contact-us-further-information?theme=account_creation&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
-      );
-    });
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-questions?theme=email_subscriptions&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        );
+      });
 
-    it("should redirect to /contact-us-further-information page when 'A problem proving your identity' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.PROVING_IDENTITY;
-      req.body.referer = REFERER;
+      it("should redirect when 'A suggestion or feedback about using your GOV.UK account' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
+        req.body.referer = REFERER;
 
-      contactUsFormPost(req as Request, res as Response);
+        contactUsFormPost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        `/contact-us-further-information?theme=${CONTACT_US_THEMES.PROVING_IDENTITY}&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email`
-      );
-    });
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-questions?theme=suggestions_feedback&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        );
+      });
 
-    it("should redirect /contact-us-questions page when 'Another problem using your GOV.UK account' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.SOMETHING_ELSE;
-      req.body.referer = REFERER;
+      it("should redirect when 'You think somebody else is using your information to access your Welcome to GOV.UK One Login' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS;
+        req.body.referer = REFERER;
 
-      contactUsFormPost(req as Request, res as Response);
+        contactUsFormPost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=something_else&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
-      );
-    });
-    it("should redirect /contact-us-questions page when 'GOV.UK email subscriptions' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS;
-      req.body.referer = REFERER;
-
-      contactUsFormPost(req as Request, res as Response);
-
-      expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=email_subscriptions&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
-      );
-    });
-    it("should redirect /contact-us-questions page when 'A suggestion or feedback about using your GOV.UK account' radio option is chosen", async () => {
-      req.body.theme = CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
-      req.body.referer = REFERER;
-
-      contactUsFormPost(req as Request, res as Response);
-
-      expect(res.redirect).to.have.calledWith(
-        "/contact-us-questions?theme=suggestions_feedback&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
-      );
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-questions?theme=suspect_unauthorised_access&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        );
+      });
     });
   });
 });
@@ -570,6 +587,76 @@ describe("getNextUrlBasedOnTheme", () => {
     ).to.equal(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION);
     expect(getNextUrlBasedOnTheme(CONTACT_US_THEMES.PROVING_IDENTITY)).to.equal(
       PATH_NAMES.CONTACT_US_FURTHER_INFORMATION
+    );
+  });
+});
+
+describe("contactUsQuestionsFormPostToSmartAgent", () => {
+  const mockContactUsSubmitFormSmartAgent = sinon.fake.resolves(undefined);
+  let mockContactUsQuestionsFormPostToSmartAgent: ExpressRouteFunc;
+  beforeEach(() => {
+    mockContactUsSubmitFormSmartAgent.resetHistory();
+
+    mockContactUsQuestionsFormPostToSmartAgent =
+      contactUsQuestionsFormPostToSmartAgent({
+        contactUsSubmitFormSmartAgent: mockContactUsSubmitFormSmartAgent,
+      });
+  });
+
+  describe("telephoneNumber", () => {
+    [
+      {
+        phoneNumber: "07123123456",
+        internationalPhoneNumber: undefined,
+        hasInternationalPhoneNumber: undefined,
+        expectedTelephoneNumber: "07123123456",
+      },
+      {
+        phoneNumber: undefined,
+        internationalPhoneNumber: "+447123123456",
+        hasInternationalPhoneNumber: "true",
+        expectedTelephoneNumber: "+447123123456",
+      },
+      {
+        phoneNumber: "+44111111111",
+        internationalPhoneNumber: "+44222222222",
+        hasInternationalPhoneNumber: undefined,
+        expectedTelephoneNumber: "+44111111111",
+      },
+      {
+        phoneNumber: "+44111111111",
+        internationalPhoneNumber: "+44222222222",
+        hasInternationalPhoneNumber: "true",
+        expectedTelephoneNumber: "+44222222222",
+      },
+    ].forEach(
+      ({
+        phoneNumber,
+        internationalPhoneNumber,
+        hasInternationalPhoneNumber,
+        expectedTelephoneNumber,
+      }) => {
+        it(`should return ${expectedTelephoneNumber} for - hasInternationalPhoneNumber: ${hasInternationalPhoneNumber}, uk: ${phoneNumber} international: ${internationalPhoneNumber}`, async () => {
+          // arrange
+          const mockRequest = createMockRequest("/contact-us-questions");
+          mockRequest.body.phoneNumber = phoneNumber;
+          mockRequest.body.internationalPhoneNumber = internationalPhoneNumber;
+          mockRequest.body.hasInternationalPhoneNumber =
+            hasInternationalPhoneNumber;
+
+          // act
+          await mockContactUsQuestionsFormPostToSmartAgent(
+            mockRequest,
+            mockResponse()
+          );
+
+          // assert
+          sinon.assert.calledOnce(mockContactUsSubmitFormSmartAgent);
+          const call = mockContactUsSubmitFormSmartAgent.getCall(0);
+          const contactForm: ContactForm = call.firstArg;
+          expect(contactForm.telephoneNumber).to.equal(expectedTelephoneNumber);
+        });
+      }
     );
   });
 });

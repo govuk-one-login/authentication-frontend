@@ -66,6 +66,7 @@ describe("contact us questions controller", () => {
         contentId: "",
       });
     });
+
     it("should render contact-us-questions if a 'GOV.UK email subscriptions' radio option was chosen", () => {
       req.query.theme = CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS;
       req.headers.referer = REFERER;
@@ -88,6 +89,7 @@ describe("contact us questions controller", () => {
         contentId: "",
       });
     });
+
     it("should render contact-us-questions if a 'A suggestion or feedback' radio option was chosen", () => {
       req.query.theme = CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
       req.headers.referer = REFERER;
@@ -126,6 +128,31 @@ describe("contact us questions controller", () => {
         supportMfaResetWithIpv: false,
         referer: encodeURIComponent(REFERER),
         pageTitleHeading: "pages.contactUsQuestions.provingIdentity.title",
+        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
+        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
+        appErrorCode: "",
+        appSessionId: "",
+        contentId: "",
+      });
+    });
+
+    it("should render contact-us-questions if a 'somebody else is using your information' radio option was chosen", () => {
+      req.query.theme = CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS;
+      req.headers.referer = REFERER;
+      req.query.referer = REFERER;
+      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
+      contactUsQuestionsGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
+        theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+        subtheme: undefined,
+        // TODO - AUT-4118 - This shouldn't go back here (same with other backurls above
+        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS}`,
+        supportMfaResetWithIpv: false,
+        referer: encodeURIComponent(REFERER),
+        pageTitleHeading:
+          "pages.contactUsQuestions.suspectUnauthorisedAccess.title",
         contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
         contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
         appErrorCode: "",
