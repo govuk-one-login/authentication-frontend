@@ -1,18 +1,23 @@
 import { NextFunction, Request, Response } from "express";
-import { validationResult } from "express-validator";
+import { ErrorFormatter, validationResult } from "express-validator";
 import { isObjectEmpty, renderBadRequest } from "../utils/validation";
 
-export const validationErrorFormatter = ({
-  msg,
-  param,
-}: {
-  msg: string;
-  param: string;
-}): any => {
-  return {
-    text: msg,
-    href: `#${param}`,
-  };
+export const validationErrorFormatter: ErrorFormatter = (error) => {
+  switch (error.type) {
+    case "field":
+      return {
+        text: error.msg,
+        href: `#${error.path}`,
+      };
+    case "alternative":
+    case "alternative_grouped":
+      return error.msg;
+    case "unknown_fields":
+      const fields = error.fields.map((field) => field.path).join(", ");
+      return `Unknown fields found, please remove them: ${fields}`;
+    default:
+      throw new Error(`Not a known express-validator error: ${error}`);
+  }
 };
 
 export function validateBodyMiddleware(

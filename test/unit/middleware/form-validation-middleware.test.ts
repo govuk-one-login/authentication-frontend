@@ -8,6 +8,7 @@ import {
 } from "../../../src/middleware/form-validation-middleware";
 import { mockRequest, mockResponse } from "mock-req-res";
 import { SinonStub } from "sinon";
+import { FieldValidationError } from "express-validator";
 
 describe("HTML Lang middleware", () => {
   let req: Partial<Request>;
@@ -27,17 +28,18 @@ describe("HTML Lang middleware", () => {
 
   describe("validationErrorFormatter", () => {
     it("should format error message", () => {
-      const error = {
+      const error: FieldValidationError = {
+        type: "field",
         location: "body",
         msg: "error message",
-        param: "param",
+        path: "param",
       };
 
       const formattedError = validationErrorFormatter(error);
 
       expect(formattedError).to.be.eql({
         text: error.msg,
-        href: `#${error.param}`,
+        href: `#${error.path}`,
       });
     });
   });
