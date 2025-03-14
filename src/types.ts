@@ -65,7 +65,6 @@ export interface UserSession {
   isUpliftRequired?: boolean;
   isAccountCreationJourney?: boolean;
   isAccountPartCreated?: boolean;
-  docCheckingAppUser?: boolean;
   identityProcessCheckStart?: number;
   authAppSecret?: string;
   authAppQrCodeUrl?: string;
