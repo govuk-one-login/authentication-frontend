@@ -118,7 +118,7 @@ const authStateMachine = createMachine(
               cond: "isReauthenticationRequired",
             },
             {
-              target: [PATH_NAMES.PROVE_IDENTITY],
+              target: [PATH_NAMES.AUTH_CODE],
               cond: "isIdentityRequired",
             },
             { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
@@ -160,7 +160,7 @@ const authStateMachine = createMachine(
               cond: "requiresAuthAppUplift",
             },
             { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
-            { target: [PATH_NAMES.PROVE_IDENTITY] },
+            { target: [PATH_NAMES.AUTH_CODE] },
           ],
           [USER_JOURNEY_EVENTS.CREATE_OR_SIGN_IN]: [
             PATH_NAMES.SIGN_IN_OR_CREATE,
@@ -300,7 +300,7 @@ const authStateMachine = createMachine(
               cond: "isAccountRecoveryJourney",
             },
             {
-              target: [PATH_NAMES.PROVE_IDENTITY],
+              target: [PATH_NAMES.AUTH_CODE],
               cond: "isIdentityRequired",
             },
             { target: [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL] },
@@ -333,7 +333,7 @@ const authStateMachine = createMachine(
               cond: "isAccountRecoveryJourney",
             },
             {
-              target: [PATH_NAMES.PROVE_IDENTITY],
+              target: [PATH_NAMES.AUTH_CODE],
               cond: "isIdentityRequired",
             },
             { target: [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL] },
@@ -410,7 +410,7 @@ const authStateMachine = createMachine(
               cond: "isLatestTermsAndConditionsAccepted",
             },
             {
-              target: [PATH_NAMES.PROVE_IDENTITY],
+              target: [PATH_NAMES.AUTH_CODE],
               cond: "isIdentityRequired",
             },
             { target: [PATH_NAMES.AUTH_CODE] },
@@ -450,7 +450,7 @@ const authStateMachine = createMachine(
               cond: "isLatestTermsAndConditionsAccepted",
             },
             {
-              target: [PATH_NAMES.PROVE_IDENTITY],
+              target: [PATH_NAMES.AUTH_CODE],
               cond: "isIdentityRequired",
             },
             { target: [PATH_NAMES.AUTH_CODE] },
@@ -486,7 +486,7 @@ const authStateMachine = createMachine(
         on: {
           [USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED]: [
             {
-              target: [PATH_NAMES.PROVE_IDENTITY],
+              target: [PATH_NAMES.AUTH_CODE],
               cond: "isIdentityRequired",
             },
             { target: [PATH_NAMES.AUTH_CODE] },
@@ -591,7 +591,7 @@ const authStateMachine = createMachine(
               cond: "isLatestTermsAndConditionsAccepted",
             },
             {
-              target: [PATH_NAMES.PROVE_IDENTITY],
+              target: [PATH_NAMES.AUTH_CODE],
               cond: "isIdentityRequired",
             },
             { target: [PATH_NAMES.AUTH_CODE] },
@@ -677,7 +677,7 @@ const authStateMachine = createMachine(
         type: "final",
         meta: {
           optionalPaths: [
-            PATH_NAMES.PROVE_IDENTITY,
+            PATH_NAMES.AUTH_CODE,
             PATH_NAMES.PROVE_IDENTITY_CALLBACK_STATUS,
           ],
         },

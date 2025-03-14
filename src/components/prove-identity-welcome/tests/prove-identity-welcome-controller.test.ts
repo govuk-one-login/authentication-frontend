@@ -66,11 +66,11 @@ describe("prove your identity welcome controller", () => {
       );
     });
 
-    it("should redirect to prove your identity when user is authenticated", async () => {
+    it(`should redirect to prove your identity via ${PATH_NAMES.AUTH_CODE} when user is authenticated`, async () => {
       req.session.user.isAuthenticated = true;
       await proveIdentityWelcomePost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.PROVE_IDENTITY);
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
     });
 
     it("should redirect to uplift journey when user is required to step up auth", async () => {

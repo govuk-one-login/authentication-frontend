@@ -22,7 +22,7 @@ reduced_code_block_duration_minutes                 = "0.5"
 url_for_support_links                               = "https://home.build.account.gov.uk/contact-gov-uk-one-login"
 language_toggle_enabled                             = "1"
 no_photo_id_contact_forms                           = "1"
-support_new_ipv_spinner                             = "1"
+support_new_ipv_spinner                             = "0"
 support_mfa_reset_with_ipv                          = "1"
 route_users_to_new_ipv_journey                      = "1"
 
