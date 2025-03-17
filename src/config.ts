@@ -195,7 +195,3 @@ export function routeUsersToNewIpvJourney(): boolean {
 export function showTestBanner(): boolean {
   return getAppEnv() !== "production" || process.env.SHOW_TEST_BANNER === "1";
 }
-
-export function contactUsSuspectUnauthorisedAccess(): boolean {
-  return process.env.CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS === "1";
-}
