@@ -184,7 +184,7 @@ describe("setup-authenticator-app controller", () => {
       );
     });
 
-    it("should successfully validate access code and redirect to iPV", async () => {
+    it("should successfully validate access code and redirect to IPV", async () => {
       req.session.user.authAppSecret = "testsecret";
       req.session.user.email = "t@t.com";
       req.session.user.isIdentityRequired = true;
@@ -202,7 +202,7 @@ describe("setup-authenticator-app controller", () => {
       expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
 
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.PROVE_IDENTITY);
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
     });
 
     it("should throw error when not a valid error from verify access code", async () => {
