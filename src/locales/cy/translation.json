@@ -2068,18 +2068,6 @@
           "errorMessage": "Rhowch beth ddigwyddodd"
         }
       },
-      "emailSubscriptions": {
-        "title": "Eich tanysgrifiadau e-bost GOV.UK",
-        "header": "Eich tanysgrifiadau e-bost GOV.UK",
-        "section1": {
-          "header": "Beth oeddech chi’n ceisio ei wneud a beth ddigwyddodd?",
-          "errorMessage": "Rhowch beth oeddech chi’n ceisio ei wneud a beth ddigwyddodd"
-        },
-        "section2": {
-          "header": "Ydych chi eisiau dweud unrhyw beth arall wrthym",
-          "paragraph1": "Er enghraifft, os ydych eisiau ychwanegu mwy o fanylion neu roi adborth"
-        }
-      },
       "suggestionOrFeedback": {
         "title": "Awgrym neu adborth am ddefnyddio’ch GOV.UK One Login",
         "header": "Awgrym neu adborth am ddefnyddio’ch GOV.UK One Login",

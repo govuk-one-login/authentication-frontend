@@ -2068,18 +2068,6 @@
           "errorMessage": "Enter what happened"
         }
       },
-      "emailSubscriptions": {
-        "title": "Your GOV.UK email subscriptions",
-        "header": "Your GOV.UK email subscriptions",
-        "section1": {
-          "header": "What were you trying to do and what happened?",
-          "errorMessage": "Enter what you were trying to do and what happened"
-        },
-        "section2": {
-          "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give feedback"
-        }
-      },
       "suggestionOrFeedback": {
         "title": "A suggestion or feedback about using your GOV.UK One Login",
         "header": "A suggestion or feedback about using your GOV.UK One Login",

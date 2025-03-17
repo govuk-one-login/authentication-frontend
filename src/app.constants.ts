@@ -187,7 +187,6 @@ export const CONTACT_US_THEMES = {
   ACCOUNT_CREATION: "account_creation",
   SIGNING_IN: "signing_in",
   SOMETHING_ELSE: "something_else",
-  EMAIL_SUBSCRIPTIONS: "email_subscriptions",
   SUGGESTIONS_FEEDBACK: "suggestions_feedback",
   ACCOUNT_NOT_FOUND: "account_not_found",
   TECHNICAL_ERROR: "technical_error",

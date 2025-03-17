@@ -363,9 +363,6 @@ export function getErrorMessageForIssueDescription(
   theme: string,
   subtheme: string
 ): string | undefined {
-  if (theme === CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS) {
-    return "pages.contactUsQuestions.emailSubscriptions.section1.errorMessage";
-  }
   if (theme === CONTACT_US_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.anotherProblem.section1.errorMessage";
   }
@@ -485,9 +482,6 @@ export function getLengthExceededErrorMessageForIssueDescription(
   if (theme === CONTACT_US_THEMES.PROVING_IDENTITY) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
-  if (theme === CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS) {
-    return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
-  }
   if (theme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.suggestionFeedbackTooLongMessage";
   }
@@ -548,9 +542,6 @@ export function getErrorMessageForAdditionalDescription(
   theme: string,
   subtheme: string
 ): string | undefined {
-  if (theme === CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS) {
-    return "pages.contactUsQuestions.emailSubscriptions.section1.errorMessage";
-  }
   if (theme === CONTACT_US_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.anotherProblem.section2.errorMessage";
   }

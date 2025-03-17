@@ -36,8 +36,6 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.noPhoneNumberAccess.title",
   [CONTACT_US_THEMES.LOST_SECURITY_CODE_ACCESS]:
     "pages.contactUsQuestions.noPhoneNumberAccess.titleMfaReset",
-  [CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS]:
-    "pages.contactUsQuestions.emailSubscriptions.title",
   [CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS]:
     "pages.contactUsQuestions.suspectUnauthorisedAccess.title",
   [CONTACT_US_THEMES.SOMETHING_ELSE]:
@@ -637,16 +635,6 @@ function getQuestionsFromFormTypeForMessageBody(
         { lng: "en" }
       ),
     },
-    emailSubscription: {
-      issueDescription: req.t(
-        "pages.contactUsQuestions.emailSubscriptions.section1.header",
-        { lng: "en" }
-      ),
-      optionalDescription: req.t(
-        "pages.contactUsQuestions.emailSubscriptions.section2.header",
-        { lng: "en" }
-      ),
-    },
     forgottenPassword: {
       optionalDescription: req.t(
         "pages.contactUsQuestions.forgottenPassword.section1.header",
@@ -956,10 +944,6 @@ function getQuestionFromThemes(
     proving_identity: req.t("pages.contactUsPublic.section3.provingIdentity", {
       lng: "en",
     }),
-    email_subscriptions: req.t(
-      "pages.contactUsPublic.section3.emailSubscriptions",
-      { lng: "en" }
-    ),
     suspect_unauthorised_access: req.t(
       "pages.contactUsPublic.section3.suspectUnauthorisedAccess",
       {
