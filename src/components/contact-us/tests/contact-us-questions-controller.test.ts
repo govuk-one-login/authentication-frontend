@@ -47,11 +47,6 @@ describe("contact us questions controller", () => {
     describe("from /contact-us", () => {
       [
         {
-          radioButtonText: "GOV.UK email subscriptions",
-          theme: CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS,
-          translationKey: "emailSubscriptions",
-        },
-        {
           radioButtonText: "...somebody else is using your information...",
           theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
           translationKey: "suspectUnauthorisedAccess",

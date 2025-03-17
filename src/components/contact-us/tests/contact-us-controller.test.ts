@@ -271,17 +271,6 @@ describe("contact us controller", () => {
         );
       });
 
-      it("should redirect when 'GOV.UK email subscriptions' radio option is chosen", async () => {
-        req.body.theme = CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS;
-        req.body.referer = REFERER;
-
-        contactUsFormPost(req as Request, res as Response);
-
-        expect(res.redirect).to.have.calledWith(
-          "/contact-us-questions?theme=email_subscriptions&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
-        );
-      });
-
       it("should redirect when 'A suggestion or feedback about using your GOV.UK account' radio option is chosen", async () => {
         req.body.theme = CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
         req.body.referer = REFERER;
