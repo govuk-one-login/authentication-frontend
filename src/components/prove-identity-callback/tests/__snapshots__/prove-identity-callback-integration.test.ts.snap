@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Integration::prove identity should redirect when account interventions flags user is blocked 1`] = `
+exports[`Integration: prove identity callback permission to visit /ipv-callback should redirect when not on permitted journey to /ipv-callback 1`] = `
 Object {
   "contentId": "3104ec55-1a4e-4811-b927-0531fb315480",
   "taxonomyLevel1": "authentication",
