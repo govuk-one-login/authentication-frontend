@@ -1,38 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Integration:: contact us - public user rendering correct theme options should return all options except SUSPECT_UNAUTHORISED_ACCESS when CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS is '0' 1`] = `
-Object {
-  "contentId": "e08d04e6-b24f-4bad-9955-1eb860771747",
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "feedback",
-  "taxonomyLevel3": "",
-  "taxonomyLevel4": "",
-  "taxonomyLevel5": "",
-}
-`;
-
-exports[`Integration:: contact us - public user rendering correct theme options should return all options except SUSPECT_UNAUTHORISED_ACCESS when CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS is 'undefined' 1`] = `
-Object {
-  "contentId": "e08d04e6-b24f-4bad-9955-1eb860771747",
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "feedback",
-  "taxonomyLevel3": "",
-  "taxonomyLevel4": "",
-  "taxonomyLevel5": "",
-}
-`;
-
-exports[`Integration:: contact us - public user rendering correct theme options should return all options when CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS is '1' 1`] = `
-Object {
-  "contentId": "e08d04e6-b24f-4bad-9955-1eb860771747",
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "feedback",
-  "taxonomyLevel3": "",
-  "taxonomyLevel4": "",
-  "taxonomyLevel5": "",
-}
-`;
-
 exports[`Integration:: contact us - public user should return contact us further information account creation page 1`] = `
 Object {
   "contentId": "a06d6387-d411-47db-8f7d-88871286330b",

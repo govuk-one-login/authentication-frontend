@@ -958,8 +958,6 @@ Resources:
               Value: !If [UseMfaResetWithIpv, "1", "0"]
             - Name: ROUTE_USERS_TO_NEW_IPV_JOURNEY
               Value: !If [UseRouteUsersToNewIpvJourney, "1", "0"]
-            - Name: CONTACT_US_SUSPECT_UNAUTHORISED_ACCESS
-              Value: !If [IsNotProduction, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If
