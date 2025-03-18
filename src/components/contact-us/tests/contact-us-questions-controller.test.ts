@@ -43,76 +43,195 @@ describe("contact us questions controller", () => {
     sandbox.restore();
   });
 
-  describe("contactUsQuestionsGetFromContactUsPage", () => {
-    it("should render contact-us-questions if a 'another problem using your account' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.SOMETHING_ELSE;
-      req.headers.referer = REFERER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
+  describe("GET /contact-us-questions", () => {
+    describe("from /contact-us", () => {
+      [
+        {
+          radioButtonText: "GOV.UK email subscriptions",
+          theme: CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS,
+          translationKey: "emailSubscriptions",
+        },
+        {
+          radioButtonText: "...somebody else is using your information...",
+          theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
+          translationKey: "suspectUnauthorisedAccess",
+        },
+        {
+          radioButtonText: "Another problem using your GOV.UK One Login",
+          theme: CONTACT_US_THEMES.SOMETHING_ELSE,
+          translationKey: "anotherProblem",
+        },
+        {
+          radioButtonText: "A suggestion or feedback...",
+          theme: CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK,
+          translationKey: "suggestionOrFeedback",
+        },
+      ].forEach(({ radioButtonText, theme, translationKey }) => {
+        it(`should render ${PATH_NAMES.CONTACT_US_QUESTIONS} if '${radioButtonText}' radio option as chosen`, () => {
+          req.query.theme = theme;
+          req.headers.referer = REFERER;
+          req.query.referer = REFERER;
+          req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
+          contactUsQuestionsGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "something_else",
-        subtheme: undefined,
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.SOMETHING_ELSE}`,
-        supportMfaResetWithIpv: false,
-        pageTitleHeading: "pages.contactUsQuestions.anotherProblem.title",
-        referer: encodeURIComponent(REFERER),
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
+          expect(res.render).to.have.calledWith(
+            "contact-us/questions/index.njk",
+            {
+              formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
+              theme: theme,
+              subtheme: undefined,
+              backurl: `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${theme}`,
+              supportMfaResetWithIpv: false,
+              referer: encodeURIComponent(REFERER),
+              pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+              contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
+              contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
+              appErrorCode: "",
+              appSessionId: "",
+              contentId: "",
+            }
+          );
+        });
+      });
+
+      it("should redirect to contact-us when no theme is present in request", () => {
+        req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
+        contactUsQuestionsGet(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith("/contact-us");
       });
     });
 
-    it("should render contact-us-questions if a 'GOV.UK email subscriptions' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS;
-      req.headers.referer = REFERER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
+    describe("from /contact-us-further-information account_creation", () => {
+      [
+        {
+          radioButtonText: "You did not get a security code",
+          subTheme: CONTACT_US_THEMES.NO_SECURITY_CODE,
+          translationKey: "noSecurityCode",
+        },
+        {
+          radioButtonText: "The security code did not work",
+          subTheme: CONTACT_US_THEMES.INVALID_SECURITY_CODE,
+          translationKey: "invalidSecurityCode",
+        },
+        {
+          radioButtonText: "You had another problem with a phone number",
+          subTheme: CONTACT_US_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE,
+          translationKey: "signInPhoneNumberIssue",
+        },
+        {
+          radioButtonText: "You had a problem with an authenticator app",
+          subTheme: CONTACT_US_THEMES.AUTHENTICATOR_APP_PROBLEM,
+          translationKey: "authenticatorApp",
+        },
+        {
+          radioButtonText: "There was a technical problem...",
+          subTheme: CONTACT_US_THEMES.TECHNICAL_ERROR,
+          translationKey: "technicalError",
+        },
+        {
+          radioButtonText: "Something else",
+          subTheme: CONTACT_US_THEMES.SOMETHING_ELSE,
+          translationKey: "accountCreation", // TODO - AUT-4118 - I think this should be accountCreationProblem instead
+        },
+      ].forEach(({ radioButtonText, subTheme, translationKey }) => {
+        it(`should render ${PATH_NAMES.CONTACT_US_QUESTIONS} if '${radioButtonText}' radio option as chosen`, () => {
+          req.query.theme = CONTACT_US_THEMES.ACCOUNT_CREATION;
+          req.query.subtheme = subTheme;
+          req.headers.referer = REFERER_HEADER;
+          req.query.referer = REFERER;
+          req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
+          contactUsQuestionsGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "email_subscriptions",
-        subtheme: undefined,
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.EMAIL_SUBSCRIPTIONS}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.emailSubscriptions.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
+          expect(res.render).to.have.calledWith(
+            "contact-us/questions/index.njk",
+            {
+              formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
+              theme: CONTACT_US_THEMES.ACCOUNT_CREATION,
+              subtheme: subTheme,
+              backurl: `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
+              supportMfaResetWithIpv: false,
+              referer: encodeURIComponent(REFERER),
+              pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+              contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
+              contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
+              appErrorCode: "",
+              appSessionId: "",
+              contentId: "",
+            }
+          );
+        });
       });
     });
 
-    it("should render contact-us-questions if a 'A suggestion or feedback' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
-      req.headers.referer = REFERER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
+    describe("from /contact-us-further-information signing_in", () => {
+      [
+        {
+          radioButtonText: "You did not get a security code",
+          subTheme: CONTACT_US_THEMES.NO_SECURITY_CODE,
+          translationKey: "noSecurityCode",
+        },
+        {
+          radioButtonText: "The security code did not work",
+          subTheme: CONTACT_US_THEMES.INVALID_SECURITY_CODE,
+          translationKey: "invalidSecurityCode",
+        },
+        {
+          radioButtonText: "You've forgotten your password",
+          subTheme: CONTACT_US_THEMES.FORGOTTEN_PASSWORD,
+          translationKey: "forgottenPassword",
+        },
+        {
+          radioButtonText: "You've changed your phone number...",
+          subTheme: CONTACT_US_THEMES.NO_PHONE_NUMBER_ACCESS,
+          translationKey: "noPhoneNumberAccess",
+        },
+        {
+          radioButtonText: "...GOV.UK One Login 'cannot be found'",
+          subTheme: CONTACT_US_THEMES.ACCOUNT_NOT_FOUND,
+          translationKey: "accountNotFound",
+        },
+        {
+          radioButtonText: "There was a technical problem...",
+          subTheme: CONTACT_US_THEMES.TECHNICAL_ERROR,
+          translationKey: "technicalError",
+        },
+        {
+          radioButtonText: "Something else",
+          subTheme: CONTACT_US_THEMES.SOMETHING_ELSE,
+          translationKey: "anotherProblem", // TODO - AUT-4118 - I think this should be signignInProblem instead (yes, with the typo)
+        },
+      ].forEach(({ radioButtonText, subTheme, translationKey }) => {
+        it(`should render ${PATH_NAMES.CONTACT_US_QUESTIONS} if '${radioButtonText}' radio option as chosen`, () => {
+          req.query.theme = CONTACT_US_THEMES.SIGNING_IN;
+          req.query.subtheme = subTheme;
+          req.headers.referer = REFERER_HEADER;
+          req.query.referer = REFERER;
+          req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
+          contactUsQuestionsGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "suggestions_feedback",
-        subtheme: undefined,
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.suggestionOrFeedback.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
+          expect(res.render).to.have.calledWith(
+            "contact-us/questions/index.njk",
+            {
+              formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
+              theme: CONTACT_US_THEMES.SIGNING_IN,
+              subtheme: subTheme,
+              backurl: `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
+              supportMfaResetWithIpv: false,
+              referer: encodeURIComponent(REFERER),
+              pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+              contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
+              contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
+              appErrorCode: "",
+              appSessionId: "",
+              contentId: "",
+            }
+          );
+        });
       });
     });
 
+    // TODO - AUT-4118 - Make this, and other, tests check if content has been rendered to the page
     it("should render contact-us-questions if a 'A problem proving your identity' radio option was chosen", () => {
       req.query.theme = CONTACT_US_THEMES.PROVING_IDENTITY;
       req.headers.referer = REFERER;
@@ -135,358 +254,20 @@ describe("contact us questions controller", () => {
         contentId: "",
       });
     });
-
-    it("should render contact-us-questions if a 'somebody else is using your information' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS;
-      req.headers.referer = REFERER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
-        subtheme: undefined,
-        // TODO - AUT-4118 - This shouldn't go back here (same with other backurls above
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading:
-          "pages.contactUsQuestions.suspectUnauthorisedAccess.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-
-    it("should redirect to contact-us when no theme is present in request", () => {
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.redirect).to.have.calledWith("/contact-us");
-    });
   });
 
-  describe("contactUsQuestionsGetFromFurtherInformationSigningInPage", () => {
-    it("should render contact-us-questions if a 'you did not receive a security code' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.SIGNING_IN;
-      req.query.subtheme = CONTACT_US_THEMES.NO_SECURITY_CODE;
-      req.headers.referer = REFERER_HEADER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
+  describe("POST /contact-us-questions", () => {
+    it("should redirect /contact-us-submit-success page when ticket posted", async () => {
+      const fakeService = {
+        contactUsSubmitFormSmartAgent: sandbox.fake(),
+      };
 
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "signing_in",
-        subtheme: "no_security_code",
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-    it("should render contact-us-questions if a 'the security code did not work' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.SIGNING_IN;
-      req.query.subtheme = CONTACT_US_THEMES.INVALID_SECURITY_CODE;
-      req.headers.referer = REFERER_HEADER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
+      await contactUsQuestionsFormPostToSmartAgent(fakeService)(
+        req as Request,
+        res as Response
+      );
 
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "signing_in",
-        subtheme: "invalid_security_code",
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-    it("should render contact-us-questions if a 'You do not have access to the phone number' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.SIGNING_IN;
-      req.query.subtheme = CONTACT_US_THEMES.NO_PHONE_NUMBER_ACCESS;
-      req.headers.referer = REFERER_HEADER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "signing_in",
-        subtheme: "no_phone_number_access",
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.noPhoneNumberAccess.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-    it("should render contact-us-questions if a 'You've forgotten your password' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.SIGNING_IN;
-      req.query.subtheme = CONTACT_US_THEMES.FORGOTTEN_PASSWORD;
-      req.headers.referer = REFERER_HEADER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "signing_in",
-        subtheme: "forgotten_password",
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.forgottenPassword.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-    it("should render contact-us-questions if a 'Your account cannot be found' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.SIGNING_IN;
-      req.query.subtheme = CONTACT_US_THEMES.ACCOUNT_NOT_FOUND;
-      req.headers.referer = REFERER_HEADER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "signing_in",
-        subtheme: "account_not_found",
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.accountNotFound.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-    it("should render contact-us-questions if a 'technical problem' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.SIGNING_IN;
-      req.query.subtheme = CONTACT_US_THEMES.TECHNICAL_ERROR;
-      req.headers.referer = REFERER_HEADER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "signing_in",
-        subtheme: "technical_error",
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-    it("should render contact-us-questions if a 'something else' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.SIGNING_IN;
-      req.query.subtheme = CONTACT_US_THEMES.SOMETHING_ELSE;
-      req.headers.referer = REFERER_HEADER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "signing_in",
-        subtheme: "something_else",
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.anotherProblem.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-  });
-
-  describe("contactUsQuestionsGetFromFurtherInformationAccountCreationPage", () => {
-    it("should render contact-us-questions if a 'you did not receive a security code' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.ACCOUNT_CREATION;
-      req.query.subtheme = CONTACT_US_THEMES.NO_SECURITY_CODE;
-      req.headers.referer = REFERER_HEADER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "account_creation",
-        subtheme: "no_security_code",
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.noSecurityCode.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-    it("should render contact-us-questions if a 'the security code did not work' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.ACCOUNT_CREATION;
-      req.query.subtheme = CONTACT_US_THEMES.INVALID_SECURITY_CODE;
-      req.headers.referer = REFERER_HEADER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "account_creation",
-        subtheme: "invalid_security_code",
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.invalidSecurityCode.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-    it("should render contact-us-questions if a 'You have another problem with a phone number' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.ACCOUNT_CREATION;
-      req.query.subtheme = CONTACT_US_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE;
-      req.headers.referer = REFERER_HEADER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "account_creation",
-        subtheme: "sign_in_phone_number_issue",
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading:
-          "pages.contactUsQuestions.signInPhoneNumberIssue.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-    it("should render contact-us-questions if a 'technical problem' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.ACCOUNT_CREATION;
-      req.query.subtheme = CONTACT_US_THEMES.TECHNICAL_ERROR;
-      req.headers.referer = REFERER_HEADER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "account_creation",
-        subtheme: "technical_error",
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.technicalError.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-    it("should render contact-us-questions if a 'something else' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.ACCOUNT_CREATION;
-      req.query.subtheme = CONTACT_US_THEMES.SOMETHING_ELSE;
-      req.headers.referer = REFERER_HEADER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "account_creation",
-        subtheme: "something_else",
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.accountCreation.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-    it("should render contact-us-questions if a 'problem with authenticator app' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.ACCOUNT_CREATION;
-      req.query.subtheme = CONTACT_US_THEMES.AUTHENTICATOR_APP_PROBLEM;
-      req.headers.referer = REFERER_HEADER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "account_creation",
-        subtheme: "authenticator_app_problem",
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.authenticatorApp.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
-      });
-    });
-
-    describe("contactUsFormPost", () => {
-      it("should redirect /contact-us-submit-success page when ticket posted", async () => {
-        const fakeService = {
-          contactUsSubmitFormSmartAgent: sandbox.fake(),
-        };
-
-        await contactUsQuestionsFormPostToSmartAgent(fakeService)(
-          req as Request,
-          res as Response
-        );
-
-        expect(res.redirect).to.have.calledWith("/contact-us-submit-success");
-      });
+      expect(res.redirect).to.have.calledWith("/contact-us-submit-success");
     });
   });
 });
