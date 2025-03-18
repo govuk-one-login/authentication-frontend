@@ -2459,28 +2459,6 @@
       "title": "placeholder",
       "header": "placeholder"
     },
-    "proveIdentityWelcome": {
-      "title": "Prove your identity with GOV.UK One Login",
-      "header": "Prove your identity with GOV.UK One Login",
-      "section1": {
-        "insetAlternativeLanguage": {
-          "start": "You can also ",
-          "linkText": {
-            "inPageLanguage": "use GOV.UK One Login in Welsh",
-            "inDestinationLanguage": "(Cymraeg)",
-            "destinationLanguageCode": "cy"
-          },
-          "linkHref": "?lng=cy",
-          "end": "Not all ways to prove your identity are available in Welsh yet."
-        }
-      },
-      "section2": {
-        "paragraph1": "You’ll need:",
-        "listItem1_1": "a GOV.UK One Login – we’ll ask you to sign in or create one when you continue",
-        "listItem1_2": "your photo ID",
-        "listItem1_3": "your current home address (you might also need your previous address if you’ve recently moved)"
-      }
-    },
     "proveIdentityCheck": {
       "title": "Returning you to the ‘[serviceName]’ service",
       "header": "Returning you to the ‘[serviceName]’ service",

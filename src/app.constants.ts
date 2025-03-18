@@ -58,7 +58,6 @@ export const PATH_NAMES = {
     "/ipv-callback-session-expiry-error",
   PROVE_IDENTITY_CALLBACK_STATUS: "/prove-identity-status",
   HEALTHCHECK: "/healthcheck",
-  PROVE_IDENTITY_WELCOME: "/prove-identity-welcome",
   GET_SECURITY_CODES: "/get-security-codes",
   ENTER_AUTHENTICATOR_APP_CODE: "/enter-authenticator-app-code",
   CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP: "/setup-authenticator-app",

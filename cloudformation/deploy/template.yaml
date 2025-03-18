@@ -910,8 +910,6 @@ Resources:
               Value: web
             - Name: LANGUAGE_TOGGLE_ENABLED
               Value: 1
-            - Name: PROVE_IDENTITY_WELCOME_ENABLED
-              Value: 0
             - Name: GA4_ENABLED
               Value:
                 !FindInMap [

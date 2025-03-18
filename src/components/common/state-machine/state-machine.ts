@@ -5,7 +5,6 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import {
-  proveIdentityWelcomeEnabled,
   routeUsersToNewIpvJourney,
   supportMfaResetWithIpv,
 } from "../../../config";
@@ -88,7 +87,6 @@ const authStateMachine = createMachine(
       requiresResetPasswordMFASmsCode: false,
       requiresResetPasswordMFAAuthAppCode: false,
       isOnForcedPasswordResetJourney: false,
-      proveIdentityWelcomeEnabled: proveIdentityWelcomeEnabled(),
     },
     states: {
       [PATH_NAMES.ROOT]: {
@@ -101,10 +99,6 @@ const authStateMachine = createMachine(
       [PATH_NAMES.AUTHORIZE]: {
         on: {
           [USER_JOURNEY_EVENTS.EXISTING_SESSION]: [
-            {
-              target: [PATH_NAMES.PROVE_IDENTITY_WELCOME],
-              cond: "isIdentityRequiredAndProveIdentityWelcomeEnabled",
-            },
             { target: [PATH_NAMES.ENTER_PASSWORD], cond: "requiresLogin" },
             {
               target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
@@ -130,10 +124,6 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.DOC_CHECKING_APP],
               cond: "skipAuthentication",
             },
-            {
-              target: [PATH_NAMES.PROVE_IDENTITY_WELCOME],
-              cond: "isIdentityRequiredAndProveIdentityWelcomeEnabled",
-            },
             { target: [PATH_NAMES.SIGN_IN_OR_CREATE] },
           ],
         },
@@ -143,25 +133,6 @@ const authStateMachine = createMachine(
           [USER_JOURNEY_EVENTS.SIGN_IN]: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
           [USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT]: [
             PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
-          ],
-        },
-      },
-      [PATH_NAMES.PROVE_IDENTITY_WELCOME]: {
-        on: {
-          [USER_JOURNEY_EVENTS.EXISTING_SESSION]: [
-            {
-              target: [PATH_NAMES.ENTER_PASSWORD],
-              cond: "requiresLogin",
-            },
-            {
-              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
-              cond: "requiresAuthAppUplift",
-            },
-            { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
-            { target: [PATH_NAMES.AUTH_CODE] },
-          ],
-          [USER_JOURNEY_EVENTS.CREATE_OR_SIGN_IN]: [
-            PATH_NAMES.SIGN_IN_OR_CREATE,
           ],
         },
       },
@@ -835,9 +806,6 @@ const authStateMachine = createMachine(
       skipAuthentication: (context) =>
         context.skipAuthentication === true &&
         context.isAuthenticated === false,
-      isIdentityRequiredAndProveIdentityWelcomeEnabled: (context) =>
-        context.isIdentityRequired === true &&
-        context.proveIdentityWelcomeEnabled === true,
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.requiresTwoFactorAuth === true,
