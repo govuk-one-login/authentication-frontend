@@ -49,7 +49,7 @@ describe("prove identity callback service", () => {
       postStub.resolves(axiosResponse);
       const { email, sessionId, clientSessionId, diPersistentSessionId } =
         commonVariables;
-      const req = createMockRequest(PATH_NAMES.PROVE_IDENTITY, {
+      const req = createMockRequest("/testPath", {
         headers: requestHeadersWithIpAndAuditEncoded,
       });
 
