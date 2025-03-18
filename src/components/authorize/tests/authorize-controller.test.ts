@@ -381,23 +381,6 @@ describe("authorize controller", () => {
       );
     });
 
-    it("should redirect to /doc-checking-app when doc check app user", async () => {
-      authServiceResponseData.data.user = {
-        authenticated: false,
-        docCheckingAppUser: true,
-      };
-      fakeAuthorizeService = mockAuthService(authServiceResponseData);
-
-      await authorizeGet(
-        fakeAuthorizeService,
-        fakeCookieConsentService,
-        fakeKmsDecryptionService,
-        fakeJwtService
-      )(req as Request, res as Response);
-
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.DOC_CHECKING_APP);
-    });
-
     it("should throw an error with level Info if the authorize service returns a code 1000 Session-Id is missing or invalid", async () => {
       const fakeAuthorizeService: AuthorizeServiceInterface = {
         start: sinon.fake.returns({

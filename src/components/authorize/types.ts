@@ -22,7 +22,6 @@ export interface UserSessionInfo {
   authenticated: boolean;
   cookieConsent?: string;
   gaCrossDomainTrackingId?: string;
-  docCheckingAppUser: boolean;
   mfaMethodType?: string;
   isBlockedForReauth: boolean;
 }

@@ -129,7 +129,7 @@ export function authorizeGet(
         isIdentityRequired: req.session.user.isIdentityRequired,
         isAuthenticated: req.session.user.isAuthenticated,
         prompt: req.session.client.prompt,
-        skipAuthentication: req.session.user.docCheckingAppUser,
+        skipAuthentication: false,
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
         isReauthenticationRequired: req.session.user.reauthenticate,
         proveIdentityWelcomeEnabled: proveIdentityWelcomeEnabled(),
@@ -223,8 +223,6 @@ function setSessionDataFromAuthResponse(
   req.session.user.isAuthenticated = startAuthResponse.data.user.authenticated;
   req.session.user.isUpliftRequired =
     startAuthResponse.data.user.upliftRequired;
-  req.session.user.docCheckingAppUser =
-    startAuthResponse.data.user.docCheckingAppUser;
   if (startAuthResponse.data.featureFlags) {
     req.session.user.featureFlags = startAuthResponse.data.featureFlags;
   }
