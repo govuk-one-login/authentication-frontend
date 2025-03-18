@@ -1,16 +1,16 @@
-import { MfaServiceInterface } from "./types";
+import { MfaServiceInterface } from "./types.js";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   JOURNEY_TYPE,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
-} from "../../../utils/http";
-import { ApiResponseResult, DefaultApiResponse } from "../../../types";
+} from "../../../utils/http.js";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
 import { Request } from "express";
 
 export function mfaService(axios: Http = http): MfaServiceInterface {

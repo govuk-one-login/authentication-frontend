@@ -10,15 +10,15 @@ import {
   securityCodeTriesExceededGet,
   securityCodeEnteredExceededGet,
   getNewCodePath,
-} from "../security-code-error-controller";
+} from "../security-code-error-controller.js";
 import {
   pathWithQueryParam,
   SECURITY_CODE_ERROR,
   SecurityCodeErrorType,
-} from "../../common/constants";
+} from "../../common/constants.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { PATH_NAMES } from "../../../app.constants";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { PATH_NAMES } from "../../../app.constants.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { SCENARIOS } from "./test-scenario-data";
 
 describe("security code controller", () => {

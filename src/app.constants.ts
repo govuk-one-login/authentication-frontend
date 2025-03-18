@@ -1,4 +1,4 @@
-import { ContentIdVariants } from "./types";
+import { ContentIdVariants } from "./types.js";
 
 export enum MFA_METHOD_TYPE {
   SMS = "SMS",

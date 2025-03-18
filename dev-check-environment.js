@@ -1,9 +1,9 @@
-const chai = require("chai");
-chai.config.truncateThreshold = 0;
-const { expect } = chai;
+import chai from "chai";
+import { describe, it } from "mocha";
 
-const { describe, it } = require("mocha");
-const jose = require("jose");
+chai.config.truncateThreshold = 0;
+import { importSPKI } from "jose";
+const { expect } = chai;
 
 describe("environment", function () {
   const requiredEnvVars = [
@@ -39,7 +39,7 @@ describe("environment", function () {
     it("should be importable by jose", async function () {
       if (key === undefined) return this.skip();
       try {
-        await jose.importSPKI(key, "ES256");
+        await importSPKI(key, "ES256");
       } catch (error) {
         expect.fail(
           `jose could not import the PEM. Other failing tests may help you identify why. Message: ${error.message}`

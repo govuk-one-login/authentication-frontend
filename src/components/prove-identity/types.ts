@@ -1,4 +1,4 @@
-import { DefaultApiResponse } from "../../types";
+import { DefaultApiResponse } from "../../types.js";
 
 export interface IPVAuthorisationResponse extends DefaultApiResponse {
   redirectUri?: string;

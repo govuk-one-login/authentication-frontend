@@ -3,10 +3,10 @@ import {
   getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
-} from "../../utils/http";
-import { API_ENDPOINTS } from "../../app.constants";
-import { CreatePasswordServiceInterface } from "./types";
-import { ApiResponseResult, DefaultApiResponse } from "../../types";
+} from "../../utils/http.js";
+import { API_ENDPOINTS } from "../../app.constants.js";
+import { CreatePasswordServiceInterface } from "./types.js";
+import { ApiResponseResult, DefaultApiResponse } from "../../types.js";
 import { Request } from "express";
 
 export function createPasswordService(

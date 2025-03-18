@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { getRefererFrom } from "../../../src/utils/logger";
+import { getRefererFrom } from "../../../src/utils/logger.js";
 
 describe("logger", () => {
   describe("getRefererFrom", () => {

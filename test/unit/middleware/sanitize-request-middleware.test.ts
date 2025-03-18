@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { describe } from "mocha";
-import { sanitizeRequestMiddleware } from "../../../src/middleware/sanitize-request-middleware";
+import { sanitizeRequestMiddleware } from "../../../src/middleware/sanitize-request-middleware.js";
 import { expect, sinon } from "../../utils/test-utils";
 import { mockRequest, mockResponse } from "mock-req-res";
 

@@ -6,14 +6,14 @@ import { Request, Response } from "express";
 import {
   contactUsQuestionsFormPostToSmartAgent,
   contactUsQuestionsGet,
-} from "../contact-us-controller";
+} from "../contact-us-controller.js";
 import {
   CONTACT_US_THEMES,
   CONTACT_US_FIELD_MAX_LENGTH,
   PATH_NAMES,
   CONTACT_US_COUNTRY_MAX_LENGTH,
-} from "../../../app.constants";
-import { RequestGet, ResponseRedirect } from "../../../types";
+} from "../../../app.constants.js";
+import { RequestGet, ResponseRedirect } from "../../../types.js";
 
 describe("contact us questions controller", () => {
   let sandbox: sinon.SinonSandbox;

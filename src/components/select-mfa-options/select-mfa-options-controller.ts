@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { getNextPathAndUpdateJourney } from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { generateMfaSecret } from "../../utils/mfa";
-import { MFA_METHOD_TYPE } from "../../app.constants";
+import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { generateMfaSecret } from "../../utils/mfa.js";
+import { MFA_METHOD_TYPE } from "../../app.constants.js";
 
 const contentIds = {
   createAccount: "95e26313-bc2f-49bc-bc62-fd715476c1d9",

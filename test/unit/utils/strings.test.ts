@@ -5,7 +5,7 @@ import {
   containsNumbersOnly,
   redactPhoneNumber,
   splitSecretKeyIntoFragments,
-} from "../../../src/utils/strings";
+} from "../../../src/utils/strings.js";
 
 describe("string-helpers", () => {
   describe("containsNumber", () => {

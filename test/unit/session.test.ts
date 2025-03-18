@@ -1,6 +1,6 @@
 import { describe, beforeEach, it } from "mocha";
-import { RedisConfig } from "../../src/utils/types";
-import { isRedisConfigEqual } from "../../src/config/session";
+import { RedisConfig } from "../../src/utils/types.js";
+import { isRedisConfigEqual } from "../../src/config/session.js";
 import { expect, sinon } from "../utils/test-utils";
 import decache from "decache";
 import { RedisModules } from "redis";

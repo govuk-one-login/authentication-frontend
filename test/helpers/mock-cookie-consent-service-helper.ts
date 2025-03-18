@@ -1,5 +1,5 @@
 import { sinon } from "../utils/test-utils";
-import { CookieConsentServiceInterface } from "../../src/components/common/cookie-consent/types";
+import { CookieConsentServiceInterface } from "../../src/components/common/cookie-consent/types.js";
 
 export function createMockCookieConsentService(
   userCookieConsentPreference: string

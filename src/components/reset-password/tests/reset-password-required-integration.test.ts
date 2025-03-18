@@ -2,12 +2,12 @@ import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
-import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants.js";
 import decache from "decache";
 import {
   noInterventions,
   setupAccountInterventionsResponse,
-} from "../../../../test/helpers/account-interventions-helpers";
+} from "../../../../test/helpers/account-interventions-helpers.js";
 import { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 

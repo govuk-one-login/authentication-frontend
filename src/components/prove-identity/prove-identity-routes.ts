@@ -1,11 +1,11 @@
-import { PATH_NAMES } from "../../app.constants";
+import { PATH_NAMES } from "../../app.constants.js";
 
 import * as express from "express";
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { asyncHandler } from "../../utils/async";
-import { proveIdentityGet } from "./prove-identity-controller";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
-import { accountInterventionsMiddleware } from "../../middleware/account-interventions-middleware";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
+import { asyncHandler } from "../../utils/async.js";
+import { proveIdentityGet } from "./prove-identity-controller.js";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
+import { accountInterventionsMiddleware } from "../../middleware/account-interventions-middleware.js";
 
 const router = express.Router();
 

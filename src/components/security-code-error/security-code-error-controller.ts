@@ -3,17 +3,17 @@ import {
   pathWithQueryParam,
   SECURITY_CODE_ERROR,
   SecurityCodeErrorType,
-} from "../common/constants";
-import { PATH_NAMES } from "../../app.constants";
+} from "../common/constants.js";
+import { PATH_NAMES } from "../../app.constants.js";
 import {
   getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes,
   getCodeEnteredWrongBlockDurationInMinutes,
   getCodeRequestBlockDurationInMinutes,
   getPasswordResetCodeEnteredWrongBlockDurationInMinutes,
   getReducedBlockDurationInMinutes,
-} from "../../config";
-import { UserSession } from "../../types";
-import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper";
+} from "../../config.js";
+import { UserSession } from "../../types.js";
+import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper.js";
 
 const oplValues = {
   mfaMaxRetries: {

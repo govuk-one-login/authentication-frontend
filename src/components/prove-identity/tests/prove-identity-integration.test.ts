@@ -6,10 +6,10 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import { expect } from "chai";
 import { Application, NextFunction, Request, Response } from "express";
-import { setupAccountInterventionsResponse } from "../../../../test/helpers/account-interventions-helpers";
+import { setupAccountInterventionsResponse } from "../../../../test/helpers/account-interventions-helpers.js";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 
 describe("Integration::prove identity", () => {

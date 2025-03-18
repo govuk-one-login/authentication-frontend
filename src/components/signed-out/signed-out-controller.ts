@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { BadRequestError } from "../../utils/error";
+import { BadRequestError } from "../../utils/error.js";
 import xss from "xss";
 
 const oplValues = {

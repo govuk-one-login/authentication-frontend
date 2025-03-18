@@ -1,4 +1,4 @@
-import { InvalidBase64Error } from "./error";
+import { InvalidBase64Error } from "./error.js";
 
 export function base64DecodeToUint8Array(value: string): Uint8Array {
   const padding = "=".repeat((4 - (value.length % 4)) % 4);

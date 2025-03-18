@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { generateMfaSecret, generateQRCodeValue } from "../../../src/utils/mfa";
+import { generateMfaSecret, generateQRCodeValue } from "../../../src/utils/mfa.js";
 
 describe("mfa", () => {
   describe("generateMfaSecret", () => {

@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import sinon, { SinonStub } from "sinon";
-import { MfaResetAuthorizeInterface } from "../types";
+import { MfaResetAuthorizeInterface } from "../types.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -8,11 +8,11 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
-import { Http } from "../../../utils/http";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
+import { Http } from "../../../utils/http.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
-import { mfaResetAuthorizeService } from "../mfa-reset-authorize-service";
+import { mfaResetAuthorizeService } from "../mfa-reset-authorize-service.js";
 
 describe("mfa reset authorize service", () => {
   const http = new Http();

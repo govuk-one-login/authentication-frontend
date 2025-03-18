@@ -17,15 +17,15 @@ import {
   validateReferer,
   prepareBackLink,
   getNextUrlBasedOnTheme,
-} from "../contact-us-controller";
+} from "../contact-us-controller.js";
 import {
   PATH_NAMES,
   SUPPORT_TYPE,
   CONTACT_US_THEMES,
   CONTACT_US_REFERER_ALLOWLIST,
-} from "../../../app.constants";
-import { RequestGet, ResponseRedirect } from "../../../types";
-import { getServiceDomain, getSupportLinkUrl } from "../../../config";
+} from "../../../app.constants.js";
+import { RequestGet, ResponseRedirect } from "../../../types.js";
+import { getServiceDomain, getSupportLinkUrl } from "../../../config.js";
 
 describe("contact us controller", () => {
   let sandbox: sinon.SinonSandbox;

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { getNextPathAndUpdateJourney } from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { PATH_NAMES } from "../../app.constants";
-import { proveIdentityWelcomeEnabled } from "../../config";
+import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { PATH_NAMES } from "../../app.constants.js";
+import { proveIdentityWelcomeEnabled } from "../../config.js";
 export function proveIdentityWelcomeGet(req: Request, res: Response): void {
   if (!proveIdentityWelcomeEnabled()) {
     res.redirect("/sign-in-or-create");

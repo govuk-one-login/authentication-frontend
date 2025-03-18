@@ -4,13 +4,13 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
-import { OIDC_PROMPT, PATH_NAMES } from "../../../app.constants";
+import { OIDC_PROMPT, PATH_NAMES } from "../../../app.constants.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import {
   proveIdentityWelcomeGet,
   proveIdentityWelcomePost,
-} from "../prove-identity-welcome-controller";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+} from "../prove-identity-welcome-controller.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 
 describe("prove your identity welcome controller", () => {
   let req: RequestOutput;

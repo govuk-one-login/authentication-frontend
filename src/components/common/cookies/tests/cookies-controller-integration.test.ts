@@ -2,7 +2,7 @@ import { describe } from "mocha";
 import { expect, sinon, request } from "../../../../../test/utils/test-utils";
 import * as cheerio from "cheerio";
 import decache from "decache";
-import { PATH_NAMES, ANALYTICS_COOKIES } from "../../../../app.constants";
+import { PATH_NAMES, ANALYTICS_COOKIES } from "../../../../app.constants.js";
 
 describe("Integration:: cookies controller", () => {
   let app: any;

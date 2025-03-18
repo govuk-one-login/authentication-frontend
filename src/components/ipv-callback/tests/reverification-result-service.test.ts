@@ -7,12 +7,12 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
-import { Http } from "../../../utils/http";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
+import { Http } from "../../../utils/http.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
-import { reverificationResultService } from "../reverification-result-service";
-import { ReverificationResultInterface } from "../types";
+import { reverificationResultService } from "../reverification-result-service.js";
+import { ReverificationResultInterface } from "../types.js";
 
 describe("reverification result service", () => {
   const http = new Http();

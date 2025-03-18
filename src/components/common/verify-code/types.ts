@@ -1,5 +1,5 @@
-import { ApiResponseResult, DefaultApiResponse } from "../../../types";
-import { JOURNEY_TYPE } from "../../../app.constants";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
+import { JOURNEY_TYPE } from "../../../app.constants.js";
 import { Request } from "express";
 
 export interface VerifyCodeInterface {

@@ -2,7 +2,7 @@ import chai, { expect } from "chai";
 import { Request, Response } from "express";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
-import { channelMiddleware } from "../channel-middleware";
+import { channelMiddleware } from "../channel-middleware.js";
 import { describe } from "mocha";
 import { mockRequest, mockResponse } from "mock-req-res";
 

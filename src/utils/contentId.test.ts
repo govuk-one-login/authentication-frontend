@@ -1,7 +1,7 @@
-import { getContentId } from "./contentId";
+import { getContentId } from "./contentId.js";
 import { Request } from "express";
-import { ContentIdVariants, UserSession } from "../types";
-import { expect } from "../../test/utils/test-utils";
+import { ContentIdVariants, UserSession } from "../types.js";
+import { expect } from "../../test/utils/test-utils.js";
 
 const TEST_PATH_NAMES = {
   JUST_DEFAULT: "/just-default",

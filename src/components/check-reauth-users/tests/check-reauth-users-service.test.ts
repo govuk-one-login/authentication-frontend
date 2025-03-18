@@ -1,10 +1,10 @@
 import { describe } from "mocha";
-import { Http } from "../../../utils/http";
+import { Http } from "../../../utils/http.js";
 import { sinon } from "../../../../test/utils/test-utils";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
 import { SinonStub } from "sinon";
-import { checkReauthUsersService } from "../check-reauth-users-service";
-import { CheckReauthServiceInterface } from "../types";
+import { checkReauthUsersService } from "../check-reauth-users-service.js";
+import { CheckReauthServiceInterface } from "../types.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -12,7 +12,7 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("re-authentication service", () => {

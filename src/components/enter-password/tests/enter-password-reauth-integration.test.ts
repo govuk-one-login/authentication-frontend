@@ -3,8 +3,8 @@ import { expect, request, sinon } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
-import { ERROR_CODES } from "../../common/constants";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
+import { ERROR_CODES } from "../../common/constants.js";
 import { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 

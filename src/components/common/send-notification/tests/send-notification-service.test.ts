@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import sinon, { SinonStub } from "sinon";
-import { Http } from "../../../../utils/http";
+import { Http } from "../../../../utils/http.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -12,11 +12,11 @@ import {
   API_ENDPOINTS,
   NOTIFICATION_TYPE,
   PATH_NAMES,
-} from "../../../../app.constants";
-import { SendNotificationServiceInterface } from "../types";
-import { sendNotificationService } from "../send-notification-service";
-import { JOURNEY_TYPE } from "../../constants";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
+} from "../../../../app.constants.js";
+import { SendNotificationServiceInterface } from "../types.js";
+import { sendNotificationService } from "../send-notification-service.js";
+import { JOURNEY_TYPE } from "../../constants.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../../test/helpers/common-test-variables";
 
 describe("send notification service", () => {

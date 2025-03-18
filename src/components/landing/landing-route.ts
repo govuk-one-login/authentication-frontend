@@ -1,8 +1,8 @@
 import * as express from "express";
-import { landingGet } from "./landing-controller";
-import { PATH_NAMES } from "../../app.constants";
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { asyncHandler } from "../../utils/async";
+import { landingGet } from "./landing-controller.js";
+import { PATH_NAMES } from "../../app.constants.js";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
+import { asyncHandler } from "../../utils/async.js";
 
 const router = express.Router();
 

@@ -1,9 +1,9 @@
 // THIS IS FOR DEV TESTING ONLY
 
-const express = require("express");
-const pino = require("pino");
-const axios = require("axios").default;
-const url = require("url");
+import express from "express";
+import pino from "pino";
+import url from "url";
+import axios from "axios";
 
 const stubUrls = {
   authdev2: "https://orchstub.authdev2.sandpit.account.gov.uk",
@@ -11,7 +11,7 @@ const stubUrls = {
   dev: "https://orchstub.signin.dev.account.gov.uk",
 };
 
-require("dotenv").config();
+import "dotenv/config";
 const logger = pino({ level: process.env.LOG_LEVEL || "info" });
 
 const app = express();

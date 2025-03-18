@@ -1,4 +1,4 @@
-import { ApiResponseResult } from "../../src/types";
+import { ApiResponseResult } from "../../src/types.js";
 import { SinonStub } from "sinon";
 import { expect } from "chai";
 import { sinon } from "../utils/test-utils";

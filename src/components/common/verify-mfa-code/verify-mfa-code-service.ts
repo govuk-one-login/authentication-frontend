@@ -3,15 +3,15 @@ import {
   HTTP_STATUS_CODES,
   JOURNEY_TYPE,
   MFA_METHOD_TYPE,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
-} from "../../../utils/http";
-import { ApiResponseResult, DefaultApiResponse } from "../../../types";
-import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
+} from "../../../utils/http.js";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
+import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types.js";
 import { Request } from "express";
 
 export function verifyMfaCodeService(

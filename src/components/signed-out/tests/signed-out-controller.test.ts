@@ -4,10 +4,10 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
-import { signedOutGet } from "../signed-out-controller";
+import { signedOutGet } from "../signed-out-controller.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { PATH_NAMES } from "../../../app.constants";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { PATH_NAMES } from "../../../app.constants.js";
 
 describe("signed out controller", () => {
   let req: RequestOutput;

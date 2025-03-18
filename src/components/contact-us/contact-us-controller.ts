@@ -6,18 +6,18 @@ import {
   CONTACT_US_FIELD_MAX_LENGTH,
   CONTACT_US_COUNTRY_MAX_LENGTH,
   CONTACT_US_REFERER_ALLOWLIST,
-} from "../../app.constants";
-import { Questions, ThemeQuestions } from "./types";
-import { ExpressRouteFunc } from "../../types";
+} from "../../app.constants.js";
+import { Questions, ThemeQuestions } from "./types.js";
+import { ExpressRouteFunc } from "../../types.js";
 import crypto from "crypto";
-import { logger } from "../../utils/logger";
+import { logger } from "../../utils/logger.js";
 import {
   getServiceDomain,
   getSupportLinkUrl,
   supportMfaResetWithIpv,
   supportNoPhotoIdContactForms,
-} from "../../config";
-import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent";
+} from "../../config.js";
+import { contactUsServiceSmartAgent } from "./contact-us-service-smart-agent.js";
 
 const themeToPageTitle = {
   [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:

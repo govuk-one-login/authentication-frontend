@@ -1,21 +1,21 @@
 import { Request, Response } from "express";
-import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
-import { ExpressRouteFunc } from "../../types";
-import { redactPhoneNumber } from "../../utils/strings";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
+import { ExpressRouteFunc } from "../../types.js";
+import { redactPhoneNumber } from "../../utils/strings.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
   SecurityCodeErrorType,
-} from "../common/constants";
-import { BadRequestError } from "../../utils/error";
-import { SendNotificationServiceInterface } from "../common/send-notification/types";
-import { sendNotificationService } from "../common/send-notification/send-notification-service";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number";
-import { supportAccountRecovery } from "../../config";
+} from "../common/constants.js";
+import { BadRequestError } from "../../utils/error.js";
+import { SendNotificationServiceInterface } from "../common/send-notification/types.js";
+import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number.js";
+import { supportAccountRecovery } from "../../config.js";
 import xss from "xss";
-import { getNewCodePath } from "../security-code-error/security-code-error-controller";
+import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 
 const contentIds = {
   createAccount: "0f519eb6-5cd4-476f-968f-d847b3c4c034",

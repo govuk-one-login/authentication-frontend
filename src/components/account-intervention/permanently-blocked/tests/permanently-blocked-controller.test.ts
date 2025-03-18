@@ -4,9 +4,9 @@ import { describe } from "mocha";
 import { sinon } from "../../../../../test/utils/test-utils";
 
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { permanentlyBlockedGet } from "../permanently-blocked-controller";
-import { PATH_NAMES } from "../../../../app.constants";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
+import { permanentlyBlockedGet } from "../permanently-blocked-controller.js";
+import { PATH_NAMES } from "../../../../app.constants.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 
 describe("permanently blocked controller", () => {
   let req: RequestOutput;

@@ -6,19 +6,19 @@ import { Request, Response } from "express";
 import {
   checkYourPhoneGet,
   checkYourPhonePost,
-} from "../check-your-phone-controller";
+} from "../check-your-phone-controller.js";
 
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
+import { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
   PATH_NAMES,
-} from "../../../app.constants";
-import { ERROR_CODES } from "../../common/constants";
+} from "../../../app.constants.js";
+import { ERROR_CODES } from "../../common/constants.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
-import * as journey from "../../common/journey/journey";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types.js";
+import * as journey from "../../common/journey/journey.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("check your phone controller", () => {

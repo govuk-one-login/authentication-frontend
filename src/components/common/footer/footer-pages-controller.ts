@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PATH_NAMES, SUPPORT_TYPE } from "../../../app.constants";
+import { PATH_NAMES, SUPPORT_TYPE } from "../../../app.constants.js";
 
 export function privacyStatementGet(req: Request, res: Response): void {
   res.render("common/footer/privacy-statement.njk");

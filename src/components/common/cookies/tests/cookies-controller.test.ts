@@ -4,16 +4,16 @@ import { describe } from "mocha";
 import { sinon } from "../../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
-import { cookiesGet, cookiesPost } from "../cookies-controller";
+import { cookiesGet, cookiesPost } from "../cookies-controller.js";
 import {
   ANALYTICS_COOKIES,
   COOKIE_CONSENT,
   COOKIES_PREFERENCES_SET,
   PATH_NAMES,
-} from "../../../../app.constants";
+} from "../../../../app.constants.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { createMockCookieConsentService } from "../../../../../test/helpers/mock-cookie-consent-service-helper";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 
 describe("cookies controller", () => {
   let req: RequestOutput;

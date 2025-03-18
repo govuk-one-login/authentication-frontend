@@ -7,15 +7,15 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
-import { Http } from "../../../utils/http";
-import { CreatePasswordServiceInterface } from "../types";
-import { createPasswordService } from "../create-password-service";
+import { Http } from "../../../utils/http.js";
+import { CreatePasswordServiceInterface } from "../types.js";
+import { createPasswordService } from "../create-password-service.js";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+} from "../../../app.constants.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("create password service", () => {

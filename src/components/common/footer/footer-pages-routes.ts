@@ -1,14 +1,14 @@
-import { PATH_NAMES } from "../../../app.constants";
+import { PATH_NAMES } from "../../../app.constants.js";
 import {
   accessibilityStatementGet,
   privacyStatementGet,
   termsConditionsGet,
   supportGet,
   supportPost,
-} from "./footer-pages-controller";
+} from "./footer-pages-controller.js";
 
 import * as express from "express";
-import { validateSupportRequest } from "./support-validation";
+import { validateSupportRequest } from "./support-validation.js";
 
 const router = express.Router();
 

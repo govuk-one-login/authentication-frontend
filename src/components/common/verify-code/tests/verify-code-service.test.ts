@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import sinon, { SinonStub } from "sinon";
-import { Http } from "../../../../utils/http";
+import { Http } from "../../../../utils/http.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -14,10 +14,10 @@ import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
   PATH_NAMES,
-} from "../../../../app.constants";
-import { VerifyCodeInterface } from "../types";
-import { codeService } from "../verify-code-service";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
+} from "../../../../app.constants.js";
+import { VerifyCodeInterface } from "../types.js";
+import { codeService } from "../verify-code-service.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../../test/helpers/common-test-variables";
 
 describe("verify code service", () => {

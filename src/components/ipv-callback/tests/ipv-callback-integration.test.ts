@@ -6,7 +6,7 @@ import {
   CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,
   MFA_METHOD_TYPE,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import express, { NextFunction, Request, Response } from "express";
 import nock from "nock";
 import * as cheerio from "cheerio";

@@ -8,17 +8,17 @@ import {
   IPV_ERROR_CODES,
   OIDC_ERRORS,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import {
   proveIdentityCallbackGetOrPost,
   proveIdentityStatusCallbackGet,
-} from "../prove-identity-callback-controller";
+} from "../prove-identity-callback-controller.js";
 import {
   IdentityProcessingStatus,
   ProveIdentityCallbackServiceInterface,
-} from "../types";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+} from "../types.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 
 describe("prove identity callback controller", () => {
   let req: RequestOutput;

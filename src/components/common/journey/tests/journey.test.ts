@@ -1,11 +1,11 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { JOURNEY_TYPE } from "../../../../app.constants";
+import { JOURNEY_TYPE } from "../../../../app.constants.js";
 import {
   getJourneyTypeFromUserSession,
   GetJourneyTypeFromUserSessionOptions,
 } from "../journey";
-import { UserSession } from "../../../../types";
+import { UserSession } from "../../../../types.js";
 
 describe("journey", () => {
   describe("getJourneyTypeFromUserSession", () => {

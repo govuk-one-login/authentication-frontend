@@ -3,7 +3,7 @@ import { expect, sinon, request } from "../../../../test/utils/test-utils";
 import nock = require("nock");
 import * as cheerio from "cheerio";
 import decache from "decache";
-import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants";
+import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants.js";
 import { NextFunction, Request, Response } from "express";
 
 describe("Integration:: contact us - public user", () => {

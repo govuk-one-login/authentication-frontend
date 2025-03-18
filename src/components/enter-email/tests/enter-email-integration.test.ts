@@ -6,9 +6,9 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import nock = require("nock");
-import { ERROR_CODES } from "../../common/constants";
+import { ERROR_CODES } from "../../common/constants.js";
 import { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 

@@ -3,8 +3,8 @@ import { expect, sinon } from "../../../../../test/utils/test-utils";
 import { describe } from "mocha";
 import { mockRequest, mockResponse } from "mock-req-res";
 
-import { checkAccountRecoveryPermitted } from "../check-account-recovery-middleware";
-import { PATH_NAMES, MFA_METHOD_TYPE } from "../../../../app.constants";
+import { checkAccountRecoveryPermitted } from "../check-account-recovery-middleware.js";
+import { PATH_NAMES, MFA_METHOD_TYPE } from "../../../../app.constants.js";
 
 describe("checkAccountRecoveryPermittedMiddleware", () => {
   let req: Partial<Request>;

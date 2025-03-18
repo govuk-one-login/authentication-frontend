@@ -7,12 +7,12 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import nock = require("nock");
 import {
   noInterventions,
   setupAccountInterventionsResponse,
-} from "../../../../test/helpers/account-interventions-helpers";
+} from "../../../../test/helpers/account-interventions-helpers.js";
 import { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 

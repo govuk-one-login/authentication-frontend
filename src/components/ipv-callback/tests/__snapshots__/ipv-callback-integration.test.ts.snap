@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration:: ipv callback cannot change how get security codes returns a dummy page when an option is selected 1`] = `
+Object {
+  "contentId": undefined,
+  "taxonomyLevel1": undefined,
+  "taxonomyLevel2": undefined,
+}
+`;
+
+exports[`Integration:: ipv callback cannot change how get security codes returns a validation error when no option is selected 1`] = `
+Object {
+  "contentId": undefined,
+  "taxonomyLevel1": undefined,
+  "taxonomyLevel2": undefined,
+}
+`;

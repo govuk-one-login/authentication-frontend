@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import xss from "xss";
-import { ErrorWithLevel } from "../utils/error";
-import { getAppEnv } from "../config";
-import { ERROR_LOG_LEVEL, ERROR_MESSAGES, PATH_NAMES } from "../app.constants";
+import { ErrorWithLevel } from "../utils/error.js";
+import { getAppEnv } from "../config.js";
+import { ERROR_LOG_LEVEL, ERROR_MESSAGES, PATH_NAMES } from "../app.constants.js";
 
 export function initialiseSessionMiddleware(
   req: Request,

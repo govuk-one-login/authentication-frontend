@@ -5,10 +5,10 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import decache from "decache";
 import nock = require("nock");
-import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
+import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { NextFunction, Request, Response } from "express";
 import sinon from "sinon";
-import { ERROR_MESSAGES, HTTP_STATUS_CODES } from "../../app.constants";
+import { ERROR_MESSAGES, HTTP_STATUS_CODES } from "../../app.constants.js";
 import { serverErrorHandler } from "../internal-server-error-handler";
 
 describe("serverErrorHandler", () => {

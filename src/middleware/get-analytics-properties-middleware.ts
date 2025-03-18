@@ -1,7 +1,7 @@
-import { getRequestTaxonomy } from "../utils/taxonomy";
+import { getRequestTaxonomy } from "../utils/taxonomy.js";
 import { NextFunction, Request, Response } from "express";
-import { getContentId } from "../utils/contentId";
-import { CONTENT_IDS } from "../app.constants";
+import { getContentId } from "../utils/contentId.js";
+import { CONTENT_IDS } from "../app.constants.js";
 
 type CallbackFunction = (err: Error, html: string) => void;
 

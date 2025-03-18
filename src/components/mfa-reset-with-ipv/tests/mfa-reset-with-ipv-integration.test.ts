@@ -1,7 +1,7 @@
 import { describe } from "mocha";
 import { request, sinon } from "../../../../test/utils/test-utils";
 import decache from "decache";
-import { API_ENDPOINTS, CHANNEL, PATH_NAMES } from "../../../app.constants";
+import { API_ENDPOINTS, CHANNEL, PATH_NAMES } from "../../../app.constants.js";
 import nock = require("nock");
 import { NextFunction, Request, Response } from "express";
 const supertest = require("supertest");

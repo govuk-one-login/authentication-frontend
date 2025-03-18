@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types";
-import { getNextPathAndUpdateJourney } from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { authCodeGet } from "../auth-code/auth-code-controller";
-import { AuthCodeServiceInterface } from "../auth-code/types";
-import { authCodeService } from "../auth-code/auth-code-service";
+import { ExpressRouteFunc } from "../../types.js";
+import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { authCodeGet } from "../auth-code/auth-code-controller.js";
+import { AuthCodeServiceInterface } from "../auth-code/types.js";
+import { authCodeService } from "../auth-code/auth-code-service.js";
 
 export function proveIdentityGet(
   authCode: AuthCodeServiceInterface = authCodeService()

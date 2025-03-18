@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { isObjectEmpty, renderBadRequest } from "../utils/validation";
+import { isObjectEmpty, renderBadRequest } from "../utils/validation.js";
 
 export const validationErrorFormatter = ({
   msg,

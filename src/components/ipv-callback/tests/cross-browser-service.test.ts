@@ -1,8 +1,8 @@
 import { describe } from "mocha";
-import { CrossBrowserService } from "../cross-browser-service";
-import { CrossBrowserRequest } from "../types";
+import { CrossBrowserService } from "../cross-browser-service.js";
+import { CrossBrowserRequest } from "../types.js";
 import { expect } from "../../../../test/utils/test-utils";
-import { Http } from "../../../utils/http";
+import { Http } from "../../../utils/http.js";
 import { Request } from "express";
 import sinon, { SinonStub } from "sinon";
 import {
@@ -11,9 +11,9 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { PATH_NAMES } from "../../../app.constants";
-import { BadRequestError } from "../../../utils/error";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { PATH_NAMES } from "../../../app.constants.js";
+import { BadRequestError } from "../../../utils/error.js";
 
 describe("CrossBrowserService", () => {
   const http = new Http();

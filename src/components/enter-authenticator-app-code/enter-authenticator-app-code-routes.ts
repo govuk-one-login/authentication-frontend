@@ -1,13 +1,13 @@
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { PATH_NAMES } from "../../app.constants";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
+import { PATH_NAMES } from "../../app.constants.js";
 import express from "express";
 import {
   enterAuthenticatorAppCodeGet,
   enterAuthenticatorAppCodePost,
-} from "./enter-authenticator-app-code-controller";
-import { asyncHandler } from "../../utils/async";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
-import { validateEnterAuthenticatorAppCodeRequest } from "./enter-authenticator-app-code-validation";
+} from "./enter-authenticator-app-code-controller.js";
+import { asyncHandler } from "../../utils/async.js";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
+import { validateEnterAuthenticatorAppCodeRequest } from "./enter-authenticator-app-code-validation.js";
 
 const router = express.Router();
 

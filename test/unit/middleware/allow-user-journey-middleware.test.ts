@@ -5,11 +5,11 @@ import { sinon } from "../../utils/test-utils";
 import {
   allowAndPersistUserJourneyMiddleware,
   allowUserJourneyMiddleware,
-} from "../../../src/middleware/allow-user-journey-middleware";
-import { PATH_NAMES } from "../../../src/app.constants";
+} from "../../../src/middleware/allow-user-journey-middleware.js";
+import { PATH_NAMES } from "../../../src/app.constants.js";
 import { createMockRequest } from "../../helpers/mock-request-helper";
 import { mockResponse } from "mock-req-res";
-import { authStateMachine } from "../../../src/components/common/state-machine/state-machine";
+import { authStateMachine } from "../../../src/components/common/state-machine/state-machine.js";
 
 describe("Allow user journey middleware", () => {
   it("Should call next when use journey is valid", () => {

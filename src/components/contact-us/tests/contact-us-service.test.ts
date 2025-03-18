@@ -3,8 +3,8 @@ import { describe } from "mocha";
 import {
   getRefererTag,
   prepareUserLocationTitle,
-} from "../contact-us-service-smart-agent";
-import { ContactForm } from "../types";
+} from "../contact-us-service-smart-agent.js";
+import { ContactForm } from "../types.js";
 
 describe("contact-us-service", () => {
   describe("getRefererTag", () => {

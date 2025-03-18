@@ -1,12 +1,12 @@
 import { body } from "express-validator";
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
-import { ValidationChainFunc } from "../../types";
+import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
+import { ValidationChainFunc } from "../../types.js";
 import {
   containsLeadingPlusNumbersOrSpacesOnly,
   containsInternationalMobileNumber,
   containsUKMobileNumber,
   lengthInRangeWithoutSpaces,
-} from "../../utils/phone-number";
+} from "../../utils/phone-number.js";
 
 export function validateEnterPhoneNumberRequest(): ValidationChainFunc {
   return [

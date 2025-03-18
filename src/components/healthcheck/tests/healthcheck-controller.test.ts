@@ -3,8 +3,8 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
-import { healthcheckGet } from "../healthcheck-controller";
-import { HTTP_STATUS_CODES } from "../../../app.constants";
+import { healthcheckGet } from "../healthcheck-controller.js";
+import { HTTP_STATUS_CODES } from "../../../app.constants.js";
 
 describe("healthcheck controller", () => {
   let sandbox: sinon.SinonSandbox;

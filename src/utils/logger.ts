@@ -1,6 +1,6 @@
-import pino from "pino";
-import PinoHttp from "pino-http";
-import { getLogLevel } from "../config";
+import { pino } from "pino";
+import { pinoHttp } from "pino-http";
+import { getLogLevel } from "../config.js";
 import { Request, Response } from "express";
 
 const logger = pino({
@@ -42,7 +42,7 @@ export function getRefererFrom(referer: string): string {
   }
 }
 
-const loggerMiddleware = PinoHttp({
+const loggerMiddleware = pinoHttp({
   logger,
   wrapSerializers: false,
   autoLogging: {
@@ -67,7 +67,7 @@ const loggerMiddleware = PinoHttp({
     return `request errored with status code: ${res.statusCode}`;
   },
   customSuccessMessage: function (_req, res) {
-    if (res.statusCode === 404) {
+    if (res.statusCode === 404) {``
       return "resource not found";
     }
     return `request completed with status code of: ${res.statusCode}`;

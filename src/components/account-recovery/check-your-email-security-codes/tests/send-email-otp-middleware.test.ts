@@ -3,10 +3,10 @@ import { expect, sinon } from "../../../../../test/utils/test-utils";
 import { describe } from "mocha";
 import { mockRequest, mockResponse } from "mock-req-res";
 
-import { sendEmailOtp } from "../send-email-otp-middleware";
-import { SendNotificationServiceInterface } from "../../../common/send-notification/types";
-import { BadRequestError } from "../../../../utils/error";
-import { ERROR_CODES } from "../../../common/constants";
+import { sendEmailOtp } from "../send-email-otp-middleware.js";
+import { SendNotificationServiceInterface } from "../../../common/send-notification/types.js";
+import { BadRequestError } from "../../../../utils/error.js";
+import { ERROR_CODES } from "../../../common/constants.js";
 import { strict as assert } from "assert";
 
 describe("sendEmailOTPMiddleware", () => {

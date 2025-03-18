@@ -7,19 +7,19 @@ import {
   enterPasswordGet,
   enterPasswordPost,
   enterSignInRetryBlockedGet,
-} from "../enter-password-controller";
+} from "../enter-password-controller.js";
 
-import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants";
-import { EnterPasswordServiceInterface } from "../types";
-import { MfaServiceInterface } from "../../common/mfa/types";
+import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants.js";
+import { EnterPasswordServiceInterface } from "../types.js";
+import { MfaServiceInterface } from "../../common/mfa/types.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { EnterEmailServiceInterface } from "../../enter-email/types";
-import { ERROR_CODES } from "../../common/constants";
-import * as journey from "../../common/journey/journey";
-import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { EnterEmailServiceInterface } from "../../enter-email/types.js";
+import { ERROR_CODES } from "../../common/constants.js";
+import * as journey from "../../common/journey/journey.js";
+import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
-import { ReauthJourneyError } from "../../../utils/error";
+import { ReauthJourneyError } from "../../../utils/error.js";
 import { strict as assert } from "assert";
 
 describe("enter password controller", () => {

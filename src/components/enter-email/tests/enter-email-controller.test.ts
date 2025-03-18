@@ -8,14 +8,14 @@ import {
   enterEmailCreatePost,
   enterEmailGet,
   enterEmailPost,
-} from "../enter-email-controller";
-import { EnterEmailServiceInterface, LockoutInformation } from "../types";
-import { JOURNEY_TYPE, ERROR_CODES } from "../../common/constants";
-import { PATH_NAMES } from "../../../app.constants";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
+} from "../enter-email-controller.js";
+import { EnterEmailServiceInterface, LockoutInformation } from "../types.js";
+import { JOURNEY_TYPE, ERROR_CODES } from "../../common/constants.js";
+import { PATH_NAMES } from "../../../app.constants.js";
+import { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { CheckReauthServiceInterface } from "../../check-reauth-users/types.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 import { strict as assert } from "assert";
 

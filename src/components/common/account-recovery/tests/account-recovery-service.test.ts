@@ -1,8 +1,8 @@
 import { describe } from "mocha";
 import sinon, { SinonStub } from "sinon";
-import { Http } from "../../../../utils/http";
-import { AccountRecoveryInterface } from "../types";
-import { accountRecoveryService } from "../account-recovery-service";
+import { Http } from "../../../../utils/http.js";
+import { AccountRecoveryInterface } from "../types.js";
+import { accountRecoveryService } from "../account-recovery-service.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -10,8 +10,8 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../../test/helpers/service-test-helper";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../../app.constants";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../../app.constants.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../../test/helpers/common-test-variables";
 
 describe("account recovery service", () => {

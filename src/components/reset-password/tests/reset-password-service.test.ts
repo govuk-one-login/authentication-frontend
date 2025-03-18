@@ -1,8 +1,8 @@
 import { describe } from "mocha";
 import sinon, { SinonStub } from "sinon";
-import { ResetPasswordServiceInterface } from "../types";
-import { resetPasswordService } from "../reset-password-service";
-import { Http } from "../../../utils/http";
+import { ResetPasswordServiceInterface } from "../types.js";
+import { resetPasswordService } from "../reset-password-service.js";
+import { Http } from "../../../utils/http.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -14,8 +14,8 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+} from "../../../app.constants.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 
 describe("reset password service", () => {

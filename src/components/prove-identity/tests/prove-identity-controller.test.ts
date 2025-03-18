@@ -4,15 +4,15 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
-import { proveIdentityGet } from "../prove-identity-controller";
+import { proveIdentityGet } from "../prove-identity-controller.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
 import { SinonStub } from "sinon";
-import { AuthCodeServiceInterface } from "../../auth-code/types";
-import { Http } from "../../../utils/http";
-import { authCodeService } from "../../auth-code/auth-code-service";
-import { ExpressRouteFunc } from "../../../types";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { AuthCodeServiceInterface } from "../../auth-code/types.js";
+import { Http } from "../../../utils/http.js";
+import { authCodeService } from "../../auth-code/auth-code-service.js";
+import { ExpressRouteFunc } from "../../../types.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 
 describe("prove identity controller", () => {
   let req: RequestOutput;

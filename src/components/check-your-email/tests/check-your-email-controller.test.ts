@@ -4,18 +4,18 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils";
 import { Request, Response } from "express";
 
-import { VerifyCodeInterface } from "../../common/verify-code/types";
+import { VerifyCodeInterface } from "../../common/verify-code/types.js";
 import {
   checkYourEmailGet,
   checkYourEmailPost,
-} from "../check-your-email-controller";
-import { PATH_NAMES } from "../../../app.constants";
-import { ERROR_CODES, getErrorPathByCode } from "../../common/constants";
+} from "../check-your-email-controller.js";
+import { PATH_NAMES } from "../../../app.constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../../common/constants.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { CheckEmailFraudBlockInterface } from "../../check-email-fraud-block/types";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { CheckEmailFraudBlockInterface } from "../../check-email-fraud-block/types.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
-import { AccountInterventionsInterface } from "../../account-intervention/types";
+import { AccountInterventionsInterface } from "../../account-intervention/types.js";
 
 describe("check your email controller", () => {
   let req: RequestOutput;

@@ -11,7 +11,7 @@ import {
 import { describe } from "mocha";
 import { Request } from "express";
 import { expect } from "chai";
-import { CONTACT_US_THEMES, PATH_NAMES } from "../app.constants";
+import { CONTACT_US_THEMES, PATH_NAMES } from "../app.constants.js";
 import { ParsedQs } from "qs";
 
 type RequestTaxonomyExpectation = {

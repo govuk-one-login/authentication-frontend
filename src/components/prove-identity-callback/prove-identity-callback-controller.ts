@@ -1,19 +1,19 @@
 import { NextFunction, Request, Response } from "express";
-import { getNextPathAndUpdateJourney } from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { ExpressRouteFunc } from "../../types";
+import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { ExpressRouteFunc } from "../../types.js";
 import {
   IdentityProcessingStatus,
   ProveIdentityCallbackServiceInterface,
-} from "./types";
-import { proveIdentityCallbackService } from "./prove-identity-callback-service";
+} from "./types.js";
+import { proveIdentityCallbackService } from "./prove-identity-callback-service.js";
 import {
   HTTP_STATUS_CODES,
   IPV_ERROR_CODES,
   OIDC_ERRORS,
-} from "../../app.constants";
-import { createServiceRedirectErrorUrl } from "../../utils/error";
-import { supportNewIpvSpinner } from "../../config";
+} from "../../app.constants.js";
+import { createServiceRedirectErrorUrl } from "../../utils/error.js";
+import { supportNewIpvSpinner } from "../../config.js";
 
 export function proveIdentityCallbackGetOrPost(
   service: ProveIdentityCallbackServiceInterface = proveIdentityCallbackService()

@@ -7,8 +7,8 @@ import {
 } from "@otplib/core";
 import * as base32EncDec from "@otplib/plugin-base32-enc-dec";
 import crypto from "crypto";
-import { APP_ENV_NAME } from "../app.constants";
-import { getAppEnv } from "../config";
+import { APP_ENV_NAME } from "../app.constants.js";
+import { getAppEnv } from "../config.js";
 
 function createRandomBytes(size: number, encoding: KeyEncodings): string {
   return crypto.randomBytes(size).toString(encoding);

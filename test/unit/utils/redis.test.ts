@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { ENVIRONMENT_NAME } from "../../../src/app.constants";
+import { ENVIRONMENT_NAME } from "../../../src/app.constants.js";
 import { sinon } from "../../../test/utils/test-utils";
 import ssm from "../../../src/utils/ssm";
-import { getRedisConfig } from "../../../src/utils/redis";
+import { getRedisConfig } from "../../../src/utils/redis.js";
 
 describe("get correct redis config values", () => {
   let getParametersStub: sinon.SinonStub;

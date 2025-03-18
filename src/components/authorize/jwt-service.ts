@@ -1,15 +1,15 @@
-import { JwtServiceInterface } from "./types";
+import { JwtServiceInterface } from "./types.js";
 import {
   getOrchStubToAuthSigningPublicKey,
   getOrchToAuthSigningPublicKey,
-} from "../../config";
-import { JwtClaimsValueError, JwtValidationError } from "../../utils/error";
+} from "../../config.js";
+import { JwtClaimsValueError, JwtValidationError } from "../../utils/error.js";
 import {
   Claims,
   requiredClaimsKeys,
   getKnownClaims,
   getKnownStubClaims,
-} from "./claims-config";
+} from "./claims-config.js";
 import * as jose from "jose";
 
 export class JwtService implements JwtServiceInterface {

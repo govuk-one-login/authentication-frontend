@@ -3,8 +3,8 @@ import { describe } from "mocha";
 import {
   getAdditionalAxiosConfig,
   getInternalRequestConfigWithSecurityHeaders,
-} from "../../../src/utils/http";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../src/app.constants";
+} from "../../../src/utils/http.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../src/app.constants.js";
 import { createMockRequest } from "../../helpers/mock-request-helper";
 const headersLibrary = require("@govuk-one-login/frontend-passthrough-headers");
 import sinon, { SinonSpy } from "sinon";

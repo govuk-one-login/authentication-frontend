@@ -7,10 +7,10 @@ import { Request, Response } from "express";
 import {
   accountCreatedGet,
   accountCreatedPost,
-} from "../account-created-controller";
-import { PATH_NAMES } from "../../../app.constants";
+} from "../account-created-controller.js";
+import { PATH_NAMES } from "../../../app.constants.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 
 describe("account created controller", () => {
   let req: RequestOutput;

@@ -1,6 +1,6 @@
 import { Request } from "express";
-import { CONTACT_US_THEMES, PATH_NAMES } from "../app.constants";
-import { supportAccountRecovery, supportReauthentication } from "../config";
+import { CONTACT_US_THEMES, PATH_NAMES } from "../app.constants.js";
+import { supportAccountRecovery, supportReauthentication } from "../config.js";
 
 export enum TaxonomyLevel1 {
   BLANK = "",

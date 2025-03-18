@@ -1,13 +1,13 @@
-import { PATH_NAMES } from "../../app.constants";
+import { PATH_NAMES } from "../../app.constants.js";
 
 import * as express from "express";
 
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
 import {
   proveIdentityWelcomeGet,
   proveIdentityWelcomePost,
-} from "./prove-identity-welcome-controller";
+} from "./prove-identity-welcome-controller.js";
 
 const router = express.Router();
 

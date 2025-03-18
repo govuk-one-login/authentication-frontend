@@ -1,6 +1,6 @@
 import { Request } from "express";
-import { supportReauthentication } from "../config";
-import { ContentIdVariants } from "../types";
+import { supportReauthentication } from "../config.js";
+import { ContentIdVariants } from "../types.js";
 
 export function getContentId(
   req: Request,
