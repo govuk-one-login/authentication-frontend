@@ -245,21 +245,6 @@ Conditions:
       - !Condition DeployServiceDownPage
       - !Condition IsSplunkEnabled
 
-  MaintainSPZoneRecords:
-    Fn::Or:
-      - Fn::Equals:
-          - !Ref Environment
-          - "build"
-      - Fn::Equals:
-          - !Ref Environment
-          - "staging"
-      - Fn::Equals:
-          - !Ref Environment
-          - "integration"
-      - Fn::Equals:
-          - !Ref Environment
-          - "production"
-
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   ElasticLoadBalancerAccountIds:
@@ -1190,41 +1175,6 @@ Resources:
           Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
 
   #
-  # CloudFront distribution
-  #
-
-  FrontendDnsRecord:
-    Type: AWS::Route53::RecordSet
-    Condition: MaintainSPZoneRecords
-    Properties:
-      Name: !If
-        - IsNotProduction
-        - !If
-          - UseSubEnvironment
-          - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
-          - !Sub "signin-sp.${Environment}.account.gov.uk"
-        - "signin-sp.account.gov.uk"
-      Type: A
-      HostedZoneId: !Sub
-        - "{{resolve:ssm:/deploy/${env}/signin-sp_route53_hostedzone_id}}"
-        - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
-      AliasTarget:
-        EvaluateTargetHealth: false
-        DNSName:
-          Fn::ImportValue: !Sub
-            - "${CFDistributionStackName}-DistributionDomain"
-            - CFDistributionStackName: !FindInMap
-                - EnvironmentConfiguration
-                - !If
-                  - UseSubEnvironment
-                  - !Ref SubEnvironment
-                  - !Ref Environment
-                - cloudfrontDistributionStackName
-                - DefaultValue: "auth-fe-cloudfront"
-        HostedZoneId: Z2FDTNDATAQYW2
-        # This is always the hosted zone ID when you create an alias record that routes traffic to a CloudFront distribution
-
-  #
   # Migrated zone records
   #
 
@@ -1381,29 +1331,6 @@ Resources:
           Value: "auth-frontend"
         - Key: Source
           Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
-
-  ApplicationLoadBalancerDnsRecord:
-    Type: AWS::Route53::RecordSet
-    Condition: MaintainSPZoneRecords
-    Properties:
-      Name: !If
-        - IsNotProduction
-        - !If
-          - UseSubEnvironment
-          - !Sub "origin.signin.${SubEnvironment}.${Environment}.account.gov.uk"
-          - !Sub "origin.signin-sp.${Environment}.account.gov.uk"
-        - "origin.signin-sp.account.gov.uk"
-      Type: A
-      HostedZoneId: !Sub
-        - "{{resolve:ssm:/deploy/${env}/signin-sp_route53_hostedzone_id}}"
-        - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
-      AliasTarget:
-        EvaluateTargetHealth: false
-        DNSName: !Sub
-          - "dualstack.${ALBDNSName}"
-          - ALBDNSName: !GetAtt ApplicationLoadBalancer.DNSName
-        HostedZoneId: "ZHURV8PSTC4K8"
-        # This is always the ALB hosted zone in eu-west-2 region. See https://docs.aws.amazon.com/general/latest/gr/elb.html
 
   ApplicationLoadBalancerListenerHTTPS:
     Type: AWS::ElasticLoadBalancingV2::Listener
