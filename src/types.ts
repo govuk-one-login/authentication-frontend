@@ -107,8 +107,12 @@ export interface UserSessionClient {
   rpState?: string;
 }
 
-export interface ContentIdVariants {
-  default: string;
-  reauth?: string;
-  upliftRequired?: string;
+type CustomContentIdFunction = (req: Request) => string;
+
+export function isCustomContentIdFunction(
+  obj: string | ContentId
+): obj is CustomContentIdFunction {
+  return typeof obj !== "string";
 }
+
+export type ContentId = string | CustomContentIdFunction;
