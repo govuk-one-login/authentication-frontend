@@ -11,6 +11,8 @@ const isContactUsSuggestionsFeedbackTheme = (req: Request) =>
   req.query.subtheme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
 const supportTypeIsGovService = (req: Request) =>
   req.query.supportType === SUPPORT_TYPE.GOV_SERVICE;
+const urlContains = (req: Request, str: string) =>
+  req.originalUrl.includes(str);
 
 export const CONTENT_IDS: {
   [path: string]: ContentId;
@@ -63,6 +65,17 @@ export const CONTENT_IDS: {
     isReauth(req)
       ? "a2776ef7-9ef3-4d8d-bdbc-3f798b15e5d4"
       : "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
+  [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL]: (req: Request) => {
+    if (urlContains(req, "csrf")) {
+      return "e48886d5-7be8-424d-8471-d9a9bf49d1b7";
+    }
+    if (urlContains(req, "requestcode")) {
+      return "8cbc57f9-28df-4279-a001-cc62a9dd3415";
+    }
+    return "b78d016b-0f2c-4599-9c2f-76b3a6397997";
+  },
+  [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]:
+    "7b663466-8001-436f-b10b-e6ac581d39aa",
   [PATH_NAMES.SUPPORT]: "",
   [PATH_NAMES.TERMS_AND_CONDITIONS]: "",
   [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS]: "",
