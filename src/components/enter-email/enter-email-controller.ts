@@ -201,6 +201,7 @@ export function enterEmailCreatePost(
             req.query.actionType as SecurityCodeErrorType
           ),
           isAccountCreationJourney: true,
+          contentId: "",
         });
       }
       const path = getErrorPathByCode(sendNotificationResponse.data.code);

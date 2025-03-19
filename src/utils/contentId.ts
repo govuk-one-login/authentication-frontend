@@ -7,6 +7,8 @@ const isReauth = (req: Request) =>
   supportReauthentication() && Boolean(req?.session?.user?.reauthenticate);
 const isUpliftRequired = (req: Request) =>
   Boolean(req?.session?.user?.isUpliftRequired);
+const isAccountRecoveryJourney = (req: Request) =>
+  req.session.user.isAccountRecoveryJourney;
 const isContactUsSuggestionsFeedbackTheme = (req: Request) =>
   req.query.subtheme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
 const clientIsOneLogin = (req: Request) =>
@@ -30,6 +32,11 @@ export const CONTENT_IDS: {
     "d9290539-0b0c-468f-8f87-22d0400b6431",
   [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]:
     "d1b7cd24-f508-49ce-bf0d-ac1fe980c09c",
+  [PATH_NAMES.CHECK_YOUR_EMAIL]: "054e1ea8-97a8-461a-a964-07345c80098e",
+  [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]: (req: Request) =>
+    isAccountRecoveryJourney(req)
+      ? "e768e27b-1c4d-48ba-8bcf-4c40274a6441"
+      : "95e26313-bc2f-49bc-bc62-fd715476c1d9",
   [PATH_NAMES.CONTACT_US]: (req: Request) =>
     supportTypeIsGovService(req) ? "" : "e08d04e6-b24f-4bad-9955-1eb860771747",
   [PATH_NAMES.CONTACT_US_FURTHER_INFORMATION]:
@@ -50,6 +57,8 @@ export const CONTENT_IDS: {
     }
     return "89461417-df3f-46a8-9c37-713b9dd78085";
   },
+  [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT]:
+    "390f46f9-1f6b-44f2-8fd7-21a5385a7d3a",
   [PATH_NAMES.ENTER_EMAIL_SIGN_IN]: (req: Request) =>
     isReauth(req)
       ? "aff1628e-177d-4afc-825b-56e926b2fc1f"
@@ -69,6 +78,7 @@ export const CONTENT_IDS: {
       : "6b9f2243-d217-4c55-8ef3-7ac24b1f77e2",
   [PATH_NAMES.PRIVACY_POLICY]: "",
   [PATH_NAMES.PRIVACY_STATEMENT]: "",
+  [PATH_NAMES.RESEND_EMAIL_CODE]: "3104ec55-1a4e-4811-b927-0531fb315480",
   [PATH_NAMES.RESEND_MFA_CODE]: (req: Request) =>
     isReauth(req)
       ? "a2776ef7-9ef3-4d8d-bdbc-3f798b15e5d4"
