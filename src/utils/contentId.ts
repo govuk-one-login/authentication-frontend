@@ -82,6 +82,7 @@ export const CONTENT_IDS: {
     isAccountRecoveryJourney(req)
       ? "e768e27b-1c4d-48ba-8bcf-4c40274a6441"
       : "95e26313-bc2f-49bc-bc62-fd715476c1d9",
+  [PATH_NAMES.PASSWORD_RESET_REQUIRED]: "",
   [PATH_NAMES.PRIVACY_POLICY]: "",
   [PATH_NAMES.PRIVACY_STATEMENT]: "",
   [PATH_NAMES.RESEND_EMAIL_CODE]: "3104ec55-1a4e-4811-b927-0531fb315480",
@@ -89,6 +90,10 @@ export const CONTENT_IDS: {
     isReauth(req)
       ? "a2776ef7-9ef3-4d8d-bdbc-3f798b15e5d4"
       : "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
+  [PATH_NAMES.RESET_PASSWORD]: "c8520c6c-9f09-4edf-8c99-7123a3991cfc",
+  [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP]:
+    "943b41f4-8262-417f-8866-c0639319ccf0",
+  [PATH_NAMES.RESET_PASSWORD_2FA_SMS]: "",
   [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL]: (req: Request) => {
     if (urlContains(req, "csrf")) {
       return "e48886d5-7be8-424d-8471-d9a9bf49d1b7";
@@ -98,6 +103,7 @@ export const CONTENT_IDS: {
     }
     return "b78d016b-0f2c-4599-9c2f-76b3a6397997";
   },
+  [PATH_NAMES.RESET_PASSWORD_REQUIRED]: "c8520c6c-9f09-4edf-8c99-7123a3991cfc",
   [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]:
     "7b663466-8001-436f-b10b-e6ac581d39aa",
   [PATH_NAMES.SUPPORT]: "",
