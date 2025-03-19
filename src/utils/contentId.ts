@@ -32,6 +32,8 @@ export const CONTENT_IDS: {
     "d9290539-0b0c-468f-8f87-22d0400b6431",
   [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]:
     "d1b7cd24-f508-49ce-bf0d-ac1fe980c09c",
+  [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]:
+    "1abedb1b-7d09-4e81-9f88-a8b4297635b3",
   [PATH_NAMES.CHECK_YOUR_EMAIL]: "054e1ea8-97a8-461a-a964-07345c80098e",
   [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]: (req: Request) =>
     isAccountRecoveryJourney(req)
@@ -76,6 +78,10 @@ export const CONTENT_IDS: {
     isReauth(req)
       ? "c6f4fed1-ee6d-4d23-a14f-4466e9c1349c"
       : "6b9f2243-d217-4c55-8ef3-7ac24b1f77e2",
+  [PATH_NAMES.GET_SECURITY_CODES]: (req: Request) =>
+    isAccountRecoveryJourney(req)
+      ? "e768e27b-1c4d-48ba-8bcf-4c40274a6441"
+      : "95e26313-bc2f-49bc-bc62-fd715476c1d9",
   [PATH_NAMES.PRIVACY_POLICY]: "",
   [PATH_NAMES.PRIVACY_STATEMENT]: "",
   [PATH_NAMES.RESEND_EMAIL_CODE]: "3104ec55-1a4e-4811-b927-0531fb315480",

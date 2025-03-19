@@ -24,7 +24,7 @@ Object {
 
 exports[`Integration::select-mfa-options should return validation error when mfa option not selected 1`] = `
 Object {
-  "contentId": "",
+  "contentId": "95e26313-bc2f-49bc-bc62-fd715476c1d9",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "",
   "taxonomyLevel3": "",
