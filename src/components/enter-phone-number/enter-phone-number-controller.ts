@@ -17,26 +17,9 @@ import { supportAccountRecovery } from "../../config";
 import xss from "xss";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 
-const contentIds = {
-  createAccount: "0f519eb6-5cd4-476f-968f-d847b3c4c034",
-  accountRecovery: "cbca1676-f632-4937-984e-1ae5934d13e2",
-};
-
 export function enterPhoneNumberGet(req: Request, res: Response): void {
-  const { isAccountRecoveryJourney, isAccountRecoveryPermitted } =
-    req.session.user;
-  const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
-
-  const accountRecovery =
-    isAccountRecoveryJourney &&
-    isAccountRecoveryPermitted &&
-    isAccountRecoveryEnabledForEnvironment;
-
   res.render("enter-phone-number/index.njk", {
     isAccountPartCreated: req.session.user.isAccountPartCreated,
-    contentId: accountRecovery
-      ? contentIds.accountRecovery
-      : contentIds.createAccount,
   });
 }
 
@@ -95,6 +78,7 @@ export function enterPhoneNumberPost(
           isAccountCreationJourney:
             req.session.user.isAccountCreationJourney ||
             req.session.user.isAccountPartCreated,
+          contentId: "",
         });
       }
       const path = getErrorPathByCode(sendNotificationResponse.data.code);

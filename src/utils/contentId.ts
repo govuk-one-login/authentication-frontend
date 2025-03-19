@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { supportReauthentication } from "../config";
+import { supportAccountRecovery, supportReauthentication } from "../config";
 import { ContentId, isCustomContentIdFunction } from "../types";
 import { CONTACT_US_THEMES, PATH_NAMES, SUPPORT_TYPE } from "../app.constants";
 
@@ -9,6 +9,10 @@ const isUpliftRequired = (req: Request) =>
   Boolean(req?.session?.user?.isUpliftRequired);
 const isAccountRecoveryJourney = (req: Request) =>
   req.session.user.isAccountRecoveryJourney;
+const isAccountRecoveryJourneyAndEnabled = (req: Request) =>
+  req.session.user.isAccountRecoveryJourney &&
+  req.session.user.isAccountRecoveryPermitted &&
+  supportAccountRecovery();
 const isContactUsSuggestionsFeedbackTheme = (req: Request) =>
   req.query.subtheme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
 const clientIsOneLogin = (req: Request) =>
@@ -39,6 +43,15 @@ export const CONTENT_IDS: {
     isAccountRecoveryJourney(req)
       ? "e768e27b-1c4d-48ba-8bcf-4c40274a6441"
       : "95e26313-bc2f-49bc-bc62-fd715476c1d9",
+  [PATH_NAMES.CHECK_YOUR_PHONE]: "1fef9388-34cd-4ea2-b899-a66b7327d2f7",
+  [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: (req: Request) =>
+    isAccountRecoveryJourneyAndEnabled(req)
+      ? "cbca1676-f632-4937-984e-1ae5934d13e2"
+      : "0f519eb6-5cd4-476f-968f-d847b3c4c034",
+  [PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP]: (req: Request) =>
+    isAccountRecoveryJourney(req)
+      ? "124051ef-673a-4eda-b585-96d9d711f545"
+      : "5bc82db9-2012-44bf-9a7d-34d1d22fb035",
   [PATH_NAMES.CONTACT_US]: (req: Request) =>
     supportTypeIsGovService(req) ? "" : "e08d04e6-b24f-4bad-9955-1eb860771747",
   [PATH_NAMES.CONTACT_US_FURTHER_INFORMATION]:

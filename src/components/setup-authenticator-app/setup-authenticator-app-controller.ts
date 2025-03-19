@@ -24,11 +24,6 @@ import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 
 const TEMPLATE = "setup-authenticator-app/index.njk";
 
-const contentIds = {
-  createAccount: "5bc82db9-2012-44bf-9a7d-34d1d22fb035",
-  accountRecovery: "124051ef-673a-4eda-b585-96d9d711f545",
-};
-
 export async function setupAuthenticatorAppGet(
   req: Request,
   res: Response
@@ -43,16 +38,11 @@ export async function setupAuthenticatorAppGet(
   req.session.user.isAccountCreationJourney =
     !req.session.user.isAccountRecoveryJourney;
 
-  const isAccountRecoveryJourney = req.session.user.isAccountRecoveryJourney;
-
   res.render(TEMPLATE, {
     qrCode: req.session.user.authAppQrCodeUrl,
     secretKeyFragmentArray: splitSecretKeyIntoFragments(
       req.session.user.authAppSecret
     ),
-    contentId: isAccountRecoveryJourney
-      ? contentIds.accountRecovery
-      : contentIds.createAccount,
   });
 }
 
