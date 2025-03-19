@@ -88,7 +88,6 @@ describe("contact us questions controller", () => {
               contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
               appErrorCode: "",
               appSessionId: "",
-              contentId: "",
             }
           );
         });
@@ -157,7 +156,6 @@ describe("contact us questions controller", () => {
               contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
               appErrorCode: "",
               appSessionId: "",
-              contentId: "",
             }
           );
         });
@@ -224,7 +222,6 @@ describe("contact us questions controller", () => {
               contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
               appErrorCode: "",
               appSessionId: "",
-              contentId: "",
             }
           );
         });
@@ -261,7 +258,6 @@ describe("contact us questions controller", () => {
               contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
               appErrorCode: "",
               appSessionId: "",
-              contentId: "",
             }
           );
         });

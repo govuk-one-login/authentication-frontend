@@ -457,10 +457,6 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
     appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
     appSessionId: getAppSessionId(req.query.appSessionId as string),
-    contentId:
-      req.query.subtheme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK
-        ? "94ff0276-9791-4a74-95c4-8210ec4028f7"
-        : "",
   });
 }
 

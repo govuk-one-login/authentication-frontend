@@ -1,12 +1,16 @@
 import { Request } from "express";
 import { supportReauthentication } from "../config";
 import { ContentId, isCustomContentIdFunction } from "../types";
-import { PATH_NAMES } from "../app.constants";
+import { CONTACT_US_THEMES, PATH_NAMES, SUPPORT_TYPE } from "../app.constants";
 
 const isReauth = (req: Request) =>
   supportReauthentication() && Boolean(req?.session?.user?.reauthenticate);
 const isUpliftRequired = (req: Request) =>
   Boolean(req?.session?.user?.isUpliftRequired);
+const isContactUsSuggestionsFeedbackTheme = (req: Request) =>
+  req.query.subtheme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
+const supportTypeIsGovService = (req: Request) =>
+  req.query.supportType === SUPPORT_TYPE.GOV_SERVICE;
 
 export const CONTENT_IDS: {
   [path: string]: ContentId;
@@ -16,6 +20,16 @@ export const CONTENT_IDS: {
     "d9290539-0b0c-468f-8f87-22d0400b6431",
   [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]:
     "d1b7cd24-f508-49ce-bf0d-ac1fe980c09c",
+  [PATH_NAMES.CONTACT_US]: (req: Request) =>
+    supportTypeIsGovService(req) ? "" : "e08d04e6-b24f-4bad-9955-1eb860771747",
+  [PATH_NAMES.CONTACT_US_FURTHER_INFORMATION]:
+    "a06d6387-d411-47db-8f7d-88871286330b",
+  [PATH_NAMES.CONTACT_US_QUESTIONS]: (req: Request) =>
+    isContactUsSuggestionsFeedbackTheme(req)
+      ? "94ff0276-9791-4a74-95c4-8210ec4028f7"
+      : "",
+  [PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS]:
+    "0e020971-d828-4679-97fe-23af6e96ab14",
   [PATH_NAMES.COOKIES_POLICY]: "",
   [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE]: (req: Request) => {
     if (isReauth(req)) {
