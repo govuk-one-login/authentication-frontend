@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-envvalue=("authdev1" "authdev2" "authdev1-sp" "authdev2-sp")
+envvalue=("authdev1" "authdev2")
 
 select word in "${envvalue[@]}"; do
   if [[ -z "$word" ]]; then
@@ -16,9 +16,6 @@ for ((i = 0; i < ${#envvalue[@]}; ++i)); do
   if ((i == user_in)); then
     printf 'You picked "%s"\n' "${envvalue[$i]}"
     export DEPLOY_ENV=${envvalue[$i]}
-    if [[ ${DEPLOY_ENV} == authdev2 || ${DEPLOY_ENV} == authdev1 ]]; then
-      printf "\e[31;4m%s\e[0m\n" "Note: You have selected ${DEPLOY_ENV} this will deploy to legacy frontend"
-    fi
     printf "Deploying in environment %s\n" "${DEPLOY_ENV}"
     read -r -p "Press enter to continue or Ctrl+C to abort"
   fi
@@ -28,14 +25,5 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 export AWS_PROFILE="di-auth-development-admin"
 
-if [[ $DEPLOY_ENV == *"-sp"* ]]; then
-  # remove "new" from DEPLOY_ENV
-  DEPLOY_ENV=$(echo "${DEPLOY_ENV}" | cut -d'-' -f1)
-  export DEPLOY_ENV
-
-  # shellcheck source=scripts/dev_sam_deploy.sh
+# shellcheck source=scripts/dev_deploy_common.sh
   source "${DIR}/scripts/dev_sam_deploy.sh"
-else
-  # shellcheck source=scripts/dev_deploy_common.sh
-  source "${DIR}/scripts/dev_deploy_common.sh"
-fi
