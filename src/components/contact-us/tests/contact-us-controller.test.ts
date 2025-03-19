@@ -507,11 +507,19 @@ describe("prepareBackLink", () => {
     ).to.equal(supportLinkURL);
   });
 
-  it("should return the CONTACT_US_FURTHER_INFORMATION path when the req.path ends with the CONTACT_US_QUESTIONS path", () => {
+  it("should return the CONTACT_US_FURTHER_INFORMATION path when the req.path ends with the CONTACT_US_QUESTIONS path and has req.query.subtheme", () => {
     req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
+    req.query.subtheme = "testSubtheme";
     expect(
       prepareBackLink(req as Request, supportLinkURL, serviceDomain)
     ).to.equal(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION);
+  });
+
+  it("should return the CONTACT_US path when the req.path ends with the CONTACT_US_QUESTIONS path and doesn't have req.query.subtheme", () => {
+    req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
+    expect(
+      prepareBackLink(req as Request, supportLinkURL, serviceDomain)
+    ).to.equal(PATH_NAMES.CONTACT_US);
   });
 
   it("should return the supportLinkURL with a fromURL parameter when one is included in the req.url", () => {

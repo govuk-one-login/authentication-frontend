@@ -80,7 +80,7 @@ describe("contact us questions controller", () => {
               formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
               theme: theme,
               subtheme: undefined,
-              backurl: `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${theme}`,
+              backurl: `${PATH_NAMES.CONTACT_US}?theme=${theme}`,
               supportMfaResetWithIpv: false,
               referer: encodeURIComponent(REFERER),
               pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
@@ -132,7 +132,7 @@ describe("contact us questions controller", () => {
         {
           radioButtonText: "Something else",
           subTheme: CONTACT_US_THEMES.SOMETHING_ELSE,
-          translationKey: "accountCreation", // TODO - AUT-4118 - I think this should be accountCreationProblem instead
+          translationKey: "accountCreation",
         },
       ].forEach(({ radioButtonText, subTheme, translationKey }) => {
         it(`should render ${PATH_NAMES.CONTACT_US_QUESTIONS} if '${radioButtonText}' radio option as chosen`, () => {
@@ -199,7 +199,7 @@ describe("contact us questions controller", () => {
         {
           radioButtonText: "Something else",
           subTheme: CONTACT_US_THEMES.SOMETHING_ELSE,
-          translationKey: "anotherProblem", // TODO - AUT-4118 - I think this should be signignInProblem instead (yes, with the typo)
+          translationKey: "anotherProblem",
         },
       ].forEach(({ radioButtonText, subTheme, translationKey }) => {
         it(`should render ${PATH_NAMES.CONTACT_US_QUESTIONS} if '${radioButtonText}' radio option as chosen`, () => {
@@ -231,27 +231,40 @@ describe("contact us questions controller", () => {
       });
     });
 
-    // TODO - AUT-4118 - Make this, and other, tests check if content has been rendered to the page
-    it("should render contact-us-questions if a 'A problem proving your identity' radio option was chosen", () => {
-      req.query.theme = CONTACT_US_THEMES.PROVING_IDENTITY;
-      req.headers.referer = REFERER;
-      req.query.referer = REFERER;
-      req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-      contactUsQuestionsGet(req as Request, res as Response);
+    describe("from /contact-us-further-information proving_identity", () => {
+      [
+        {
+          radioButtonText: "Something else",
+          subTheme: CONTACT_US_THEMES.PROVING_IDENTITY_SOMETHING_ELSE,
+          translationKey: "provingIdentitySomethingElse",
+        },
+      ].forEach(({ radioButtonText, subTheme, translationKey }) => {
+        it(`should render ${PATH_NAMES.CONTACT_US_QUESTIONS} if '${radioButtonText}' radio option as chosen`, () => {
+          req.query.theme = CONTACT_US_THEMES.PROVING_IDENTITY;
+          req.query.subtheme = subTheme;
+          req.headers.referer = REFERER;
+          req.query.referer = REFERER;
+          req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
+          contactUsQuestionsGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
-        formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-        theme: "proving_identity",
-        subtheme: undefined,
-        backurl: `/contact-us-further-information?theme=${CONTACT_US_THEMES.PROVING_IDENTITY}`,
-        supportMfaResetWithIpv: false,
-        referer: encodeURIComponent(REFERER),
-        pageTitleHeading: "pages.contactUsQuestions.provingIdentity.title",
-        contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-        contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-        appErrorCode: "",
-        appSessionId: "",
-        contentId: "",
+          expect(res.render).to.have.calledWith(
+            "contact-us/questions/index.njk",
+            {
+              formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
+              theme: CONTACT_US_THEMES.PROVING_IDENTITY,
+              subtheme: subTheme,
+              backurl: `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.PROVING_IDENTITY}`,
+              supportMfaResetWithIpv: false,
+              referer: encodeURIComponent(REFERER),
+              pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+              contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
+              contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
+              appErrorCode: "",
+              appSessionId: "",
+              contentId: "",
+            }
+          );
+        });
       });
     });
   });
