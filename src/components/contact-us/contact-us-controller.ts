@@ -180,7 +180,10 @@ export function prepareBackLink(
     } else {
       hrefBack = PATH_NAMES.CONTACT_US;
     }
-  } else if (req.path.endsWith(PATH_NAMES.CONTACT_US_QUESTIONS)) {
+  } else if (
+    req.path.endsWith(PATH_NAMES.CONTACT_US_QUESTIONS) &&
+    !!req.query.subtheme
+  ) {
     hrefBack = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
   } else {
     hrefBack = PATH_NAMES.CONTACT_US;
