@@ -11,10 +11,12 @@ const isUpliftRequired = (req: Request) =>
 export const CONTENT_IDS: {
   [path: string]: ContentId;
 } = {
+  [PATH_NAMES.ACCESSIBILITY_STATEMENT]: "",
   [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]:
     "d9290539-0b0c-468f-8f87-22d0400b6431",
   [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]:
     "d1b7cd24-f508-49ce-bf0d-ac1fe980c09c",
+  [PATH_NAMES.COOKIES_POLICY]: "",
   [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE]: (req: Request) => {
     if (isReauth(req)) {
       return "6e5cc49f-4770-4089-8547-06149e0f59b1";
@@ -41,10 +43,15 @@ export const CONTENT_IDS: {
     isReauth(req)
       ? "c6f4fed1-ee6d-4d23-a14f-4466e9c1349c"
       : "6b9f2243-d217-4c55-8ef3-7ac24b1f77e2",
+  [PATH_NAMES.PRIVACY_POLICY]: "",
+  [PATH_NAMES.PRIVACY_STATEMENT]: "",
   [PATH_NAMES.RESEND_MFA_CODE]: (req: Request) =>
     isReauth(req)
       ? "a2776ef7-9ef3-4d8d-bdbc-3f798b15e5d4"
       : "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
+  [PATH_NAMES.SUPPORT]: "",
+  [PATH_NAMES.TERMS_AND_CONDITIONS]: "",
+  [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS]: "",
 };
 
 export function getContentId(
