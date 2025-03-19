@@ -13,12 +13,6 @@ import { sendNotificationService } from "../../common/send-notification/send-not
 import { BadRequestError } from "../../../utils/error";
 import { isLocked } from "../../../utils/lock-helper";
 
-const contentIds = {
-  default: "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
-  enterExceeded: "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
-  indexWait: "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
-};
-
 export function resendMfaCodeGet(req: Request, res: Response): void {
   const newCodeLink = req.query?.isResendCodeRequest
     ? pathWithQueryParam(
@@ -32,19 +26,16 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     res.render("security-code-error/index-security-code-entered-exceeded.njk", {
       newCodeLink: newCodeLink,
       isAuthApp: false,
-      contentId: contentIds.enterExceeded,
     });
   } else if (isLocked(req.session.user.codeRequestLock)) {
     res.render("security-code-error/index-wait.njk", {
       newCodeLink,
-      contentId: contentIds.indexWait,
       isAccountCreationJourney: req.session.user.isAccountCreationJourney,
     });
   } else {
     res.render("account-creation/resend-mfa-code/index.njk", {
       phoneNumber: req.session.user.redactedPhoneNumber,
       isResendCodeRequest: req.query?.isResendCodeRequest,
-      contentId: contentIds.default,
     });
   }
 }
