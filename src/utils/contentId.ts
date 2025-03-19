@@ -9,6 +9,10 @@ const isUpliftRequired = (req: Request) =>
   Boolean(req?.session?.user?.isUpliftRequired);
 const isContactUsSuggestionsFeedbackTheme = (req: Request) =>
   req.query.subtheme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
+const clientIsOneLogin = (req: Request) =>
+  Boolean(req.session?.client?.isOneLoginService);
+const clientUsesOneLoginOptionally = (req: Request) =>
+  Boolean(req.session?.client?.serviceType);
 const supportTypeIsGovService = (req: Request) =>
   req.query.supportType === SUPPORT_TYPE.GOV_SERVICE;
 const urlContains = (req: Request, str: string) =>
@@ -18,6 +22,10 @@ export const CONTENT_IDS: {
   [path: string]: ContentId;
 } = {
   [PATH_NAMES.ACCESSIBILITY_STATEMENT]: "",
+  [PATH_NAMES.ACCOUNT_NOT_FOUND]: (req: Request) =>
+    clientIsOneLogin(req) || clientUsesOneLoginOptionally(req)
+      ? "a70b71e7-b444-46e5-895c-cd2e27bbe6ba"
+      : "10e1b70b-e208-4db8-8863-3679a675b51d",
   [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]:
     "d9290539-0b0c-468f-8f87-22d0400b6431",
   [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]:
