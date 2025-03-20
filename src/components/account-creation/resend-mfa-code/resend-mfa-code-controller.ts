@@ -12,6 +12,7 @@ import { SendNotificationServiceInterface } from "../../common/send-notification
 import { sendNotificationService } from "../../common/send-notification/send-notification-service";
 import { BadRequestError } from "../../../utils/error";
 import { isLocked } from "../../../utils/lock-helper";
+import { isAccountRecoveryJourney } from "../../../utils/request";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
   const newCodeLink = req.query?.isResendCodeRequest
@@ -45,9 +46,9 @@ export const resendMfaCodePost = (
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const { email, isAccountRecoveryJourney, phoneNumber } = req.session.user;
+    const { email, phoneNumber } = req.session.user;
 
-    const journeyType = isAccountRecoveryJourney
+    const journeyType = isAccountRecoveryJourney(req)
       ? JOURNEY_TYPE.ACCOUNT_RECOVERY
       : JOURNEY_TYPE.REGISTRATION;
 

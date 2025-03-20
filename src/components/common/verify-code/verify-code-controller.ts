@@ -17,12 +17,10 @@ import {
   NOTIFICATION_TYPE,
   PATH_NAMES,
 } from "../../../app.constants";
-import {
-  supportAccountInterventions,
-  supportReauthentication,
-} from "../../../config";
+import { supportAccountInterventions } from "../../../config";
 import { AccountInterventionsInterface } from "../../account-intervention/types";
 import { isSuspendedWithoutUserActions } from "../../../utils/interventions";
+import { isReauth } from "../../../utils/request";
 
 interface Config {
   notificationType: NOTIFICATION_TYPE;
@@ -63,7 +61,7 @@ export function verifyCodePost(
         return renderBadRequest(res, req, options.template, error);
       }
 
-      if (supportReauthentication() && req.session.user.reauthenticate) {
+      if (isReauth(req)) {
         if (
           result.data.code ===
             ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||

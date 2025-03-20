@@ -3,15 +3,16 @@ import { getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { generateMfaSecret } from "../../utils/mfa";
 import { MFA_METHOD_TYPE } from "../../app.constants";
+import { isAccountRecoveryJourney } from "../../utils/request";
 
 export function getSecurityCodesGet(req: Request, res: Response): void {
+  const accountRecoveryJourney = isAccountRecoveryJourney(req);
   req.session.user.isAccountCreationJourney =
-    !req.session.user.isAccountRecoveryJourney ||
-    req.session.user.isAccountPartCreated;
+    !accountRecoveryJourney || req.session.user.isAccountPartCreated;
 
   res.render("select-mfa-options/index.njk", {
     isAccountPartCreated: req.session.user.isAccountPartCreated,
-    isAccountRecoveryJourney: req.session.user.isAccountRecoveryJourney,
+    isAccountRecoveryJourney: accountRecoveryJourney,
     selectedMfaOption: req.session.user.selectedMfaOption,
   });
 }

@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import {
   PATH_NAMES,
-  SUPPORT_TYPE,
   CONTACT_US_THEMES,
   CONTACT_US_FIELD_MAX_LENGTH,
   CONTACT_US_COUNTRY_MAX_LENGTH,
@@ -19,6 +18,7 @@ import {
   supportNoPhotoIdContactForms,
 } from "../../config";
 import { getContactUsService } from "./contact-us-service";
+import { supportTypeIsGovService } from "../../utils/request";
 
 const themeToPageTitle = {
   [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:
@@ -102,7 +102,7 @@ const somethingElseSubThemeToPageTitle = {
 const serviceDomain = getServiceDomain();
 
 export function contactUsGet(req: Request, res: Response): void {
-  if (req.query.supportType === SUPPORT_TYPE.GOV_SERVICE) {
+  if (supportTypeIsGovService(req)) {
     return res.render("contact-us/index-gov-service-contact-us.njk");
   }
   const REFERER = "referer";

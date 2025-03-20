@@ -16,7 +16,7 @@ import { PATH_NAMES } from "../../../app.constants";
 import { sanitize } from "../../../utils/strings";
 import xss from "xss";
 import { getJourneyTypeFromUserSession } from "../journey/journey";
-import { supportReauthentication } from "../../../config";
+import { isReauth } from "../../../utils/request";
 
 function addGA(req: Request, redirectPath: string) {
   if (req.query._ga) {
@@ -43,7 +43,7 @@ function handleErrors(
       : res.redirect(path + "?isResendCodeRequest=true");
   }
 
-  if (supportReauthentication() && req.session.user.reauthenticate) {
+  if (isReauth(req)) {
     if (
       mfaFailResponse.data.code ===
         ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||

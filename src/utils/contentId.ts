@@ -1,28 +1,17 @@
 import { Request } from "express";
-import { supportAccountRecovery, supportReauthentication } from "../config";
 import { ContentIdFunction } from "../types";
-import { CONTACT_US_THEMES, PATH_NAMES, SUPPORT_TYPE } from "../app.constants";
-
-const isReauth = (req: Request) =>
-  supportReauthentication() && Boolean(req?.session?.user?.reauthenticate);
-const isUpliftRequired = (req: Request) =>
-  Boolean(req?.session?.user?.isUpliftRequired);
-const isAccountRecoveryJourney = (req: Request) =>
-  req.session.user.isAccountRecoveryJourney;
-const isAccountRecoveryJourneyAndEnabled = (req: Request) =>
-  req.session.user.isAccountRecoveryJourney &&
-  req.session.user.isAccountRecoveryPermitted &&
-  supportAccountRecovery();
-const isContactUsSuggestionsFeedbackTheme = (req: Request) =>
-  req.query.subtheme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
-const clientIsOneLogin = (req: Request) =>
-  Boolean(req.session?.client?.isOneLoginService);
-const clientUsesOneLoginOptionally = (req: Request) =>
-  Boolean(req.session?.client?.serviceType);
-const supportTypeIsGovService = (req: Request) =>
-  req.query.supportType === SUPPORT_TYPE.GOV_SERVICE;
-const urlContains = (req: Request, str: string) =>
-  req.originalUrl.includes(str);
+import { PATH_NAMES } from "../app.constants";
+import {
+  isReauth,
+  isUpliftRequired,
+  isAccountRecoveryJourney,
+  isAccountRecoveryJourneyAndEnabled,
+  isContactUsSuggestionsFeedbackTheme,
+  clientIsOneLogin,
+  clientUsesOneLoginOptionally,
+  supportTypeIsGovService,
+  urlContains,
+} from "./request";
 
 const CONTENT_IDS: {
   [path: string]: ContentIdFunction;

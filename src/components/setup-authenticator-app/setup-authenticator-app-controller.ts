@@ -21,6 +21,10 @@ import xss from "xss";
 import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
+import {
+  isAccountRecoveryJourney,
+  isAccountRecoveryJourneyAndEnabled,
+} from "../../utils/request";
 
 const TEMPLATE = "setup-authenticator-app/index.njk";
 
@@ -35,8 +39,7 @@ export async function setupAuthenticatorAppGet(
   );
 
   req.session.user.authAppQrCodeUrl = await QRCode.toDataURL(qrCodeText);
-  req.session.user.isAccountCreationJourney =
-    !req.session.user.isAccountRecoveryJourney;
+  req.session.user.isAccountCreationJourney = !isAccountRecoveryJourney(req);
 
   res.render(TEMPLATE, {
     qrCode: req.session.user.authAppQrCodeUrl,
@@ -51,11 +54,7 @@ export function setupAuthenticatorAppPost(
   notificationService: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const {
-      authAppSecret,
-      isAccountRecoveryJourney,
-      isAccountRecoveryPermitted,
-    } = req.session.user;
+    const { authAppSecret } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const code = req.body.code;
 
@@ -100,7 +99,7 @@ export function setupAuthenticatorAppPost(
     req.session.user.redactedPhoneNumber = null;
 
     const accountRecoveryEnabledJourney =
-      isAccountRecoveryPermitted && isAccountRecoveryJourney;
+      isAccountRecoveryJourneyAndEnabled(req);
 
     let notificationType = NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
 

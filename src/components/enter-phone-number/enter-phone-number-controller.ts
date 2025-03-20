@@ -13,9 +13,9 @@ import { SendNotificationServiceInterface } from "../common/send-notification/ty
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number";
-import { supportAccountRecovery } from "../../config";
 import xss from "xss";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
+import { isAccountRecoveryJourneyAndEnabled } from "../../utils/request";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
   res.render("enter-phone-number/index.njk", {
@@ -27,11 +27,9 @@ export function enterPhoneNumberPost(
   service: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email, isAccountRecoveryJourney, isAccountRecoveryPermitted } =
-      req.session.user;
+    const { email } = req.session.user;
     const hasInternationalPhoneNumber = req.body.hasInternationalPhoneNumber;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
     let phoneNumber;
 
     if (hasInternationalPhoneNumber === "true") {
@@ -45,12 +43,7 @@ export function enterPhoneNumberPost(
     req.session.user.redactedPhoneNumber = redactPhoneNumber(phoneNumber);
     req.session.user.phoneNumber = phoneNumber;
 
-    const accountRecovery =
-      isAccountRecoveryJourney &&
-      isAccountRecoveryPermitted &&
-      isAccountRecoveryEnabledForEnvironment;
-
-    const journeyType = accountRecovery
+    const journeyType = isAccountRecoveryJourneyAndEnabled(req)
       ? JOURNEY_TYPE.ACCOUNT_RECOVERY
       : JOURNEY_TYPE.REGISTRATION;
 

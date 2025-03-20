@@ -1,6 +1,9 @@
 import { Request } from "express";
 import { CONTACT_US_THEMES, PATH_NAMES } from "../app.constants";
-import { supportAccountRecovery, supportReauthentication } from "../config";
+import {
+  isAccountRecoveryJourneyAndEnabled,
+  isReauth as isReauthTaxonomy,
+} from "./request";
 
 export enum TaxonomyLevel1 {
   BLANK = "",
@@ -106,9 +109,6 @@ const isSignInTaxonomy = (req: Request): boolean =>
     PATH_NAMES.RESEND_MFA_CODE,
   ].includes(req.path);
 
-const isReauthTaxonomy = (req: Request): boolean =>
-  supportReauthentication() && Boolean(req?.session?.user?.reauthenticate);
-
 const isCreateAccountTaxonomy = (req: Request): boolean =>
   req?.session?.user?.isAccountCreationJourney ||
   [
@@ -122,12 +122,8 @@ const isCreateAccountTaxonomy = (req: Request): boolean =>
   ].includes(req.path);
 
 const isAccountRecoveryTaxonomy = (req: Request): boolean => {
-  const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
-
   return (
-    (req?.session?.user?.isAccountRecoveryJourney &&
-      req?.session?.user?.isAccountRecoveryPermitted &&
-      isAccountRecoveryEnabledForEnvironment) ||
+    isAccountRecoveryJourneyAndEnabled(req) ||
     [
       PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION,
       PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
