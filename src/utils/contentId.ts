@@ -24,7 +24,7 @@ const supportTypeIsGovService = (req: Request) =>
 const urlContains = (req: Request, str: string) =>
   req.originalUrl.includes(str);
 
-export const CONTENT_IDS: {
+const CONTENT_IDS: {
   [path: string]: ContentIdFunction;
 } = {
   [PATH_NAMES.ACCESSIBILITY_STATEMENT]: () => "",
