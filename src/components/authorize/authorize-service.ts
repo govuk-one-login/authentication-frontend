@@ -72,5 +72,13 @@ function createStartBody(startRequestParameters: StartRequestParameters) {
   )
     body["previous-govuk-signin-journey-id"] =
       startRequestParameters.previous_govuk_signin_journey_id;
+  body["cookie_consent"] = startRequestParameters.cookie_consent;
+  if (startRequestParameters._ga !== undefined)
+    body["_ga"] = startRequestParameters._ga;
+  body["vtr_list"] = startRequestParameters.vtr_list;
+  body["client_id"] = startRequestParameters.client_id;
+  body["scope"] = startRequestParameters.scope;
+  body["redirect_uri"] = startRequestParameters.redirect_uri;
+  body["state"] = startRequestParameters.state;
   return body;
 }
