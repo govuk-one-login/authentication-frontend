@@ -1,6 +1,10 @@
 import { Request } from "express";
 import { supportAccountRecovery, supportReauthentication } from "../config";
-import { CONTACT_US_THEMES, SUPPORT_TYPE } from "../app.constants";
+import {
+  CONTACT_US_THEMES,
+  SERVICE_TYPE,
+  SUPPORT_TYPE,
+} from "../app.constants";
 
 export const isReauth = (req: Request): boolean =>
   supportReauthentication() && Boolean(req.session?.user?.reauthenticate);
@@ -25,7 +29,7 @@ export const clientIsOneLogin = (req: Request): boolean =>
   Boolean(req.session?.client?.isOneLoginService);
 
 export const clientUsesOneLoginOptionally = (req: Request): boolean =>
-  Boolean(req.session?.client?.serviceType);
+  req.session?.client?.serviceType === SERVICE_TYPE.OPTIONAL;
 
 export const supportTypeIsGovService = (req: Request): boolean =>
   Boolean(

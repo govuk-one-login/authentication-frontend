@@ -11,7 +11,11 @@ import {
   supportTypeIsGovService,
   urlContains,
 } from "./request";
-import { CONTACT_US_THEMES, SUPPORT_TYPE } from "../app.constants";
+import {
+  CONTACT_US_THEMES,
+  SERVICE_TYPE,
+  SUPPORT_TYPE,
+} from "../app.constants";
 
 describe("request utilities", () => {
   const blankRequest = {} as Request;
@@ -176,10 +180,18 @@ describe("request utilities", () => {
       expect(clientUsesOneLoginOptionally(blankRequest)).to.equal(false);
     });
 
-    it(`returns true when used property has a value`, async () => {
+    it(`returns false when used property is not as expected`, async () => {
       expect(
         clientUsesOneLoginOptionally({
-          session: { client: { serviceType: "something" } },
+          session: { client: { serviceType: SERVICE_TYPE.MANDATORY } },
+        } as any as Request)
+      ).to.equal(false);
+    });
+
+    it(`returns true when used property is as expected`, async () => {
+      expect(
+        clientUsesOneLoginOptionally({
+          session: { client: { serviceType: SERVICE_TYPE.OPTIONAL } },
         } as any as Request)
       ).to.equal(true);
     });
