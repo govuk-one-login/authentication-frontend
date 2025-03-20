@@ -61,6 +61,7 @@ const loggerMiddleware = PinoHttp({
         "/assets/fonts/bold-b542beb274-v2.woff2",
         "/assets/images/favicon.ico",
         "/assets/fonts/light-94a07e06a1-v2.woff2",
+        "/healthcheck",
       ].includes(req.url),
   },
   customErrorMessage: function (_req, res) {

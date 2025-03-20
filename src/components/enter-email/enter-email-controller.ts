@@ -52,7 +52,6 @@ export function enterEmailGet(req: Request, res: Response): void {
 }
 
 export function enterEmailCreateGet(req: Request, res: Response): void {
-  req.session.user.isAccountCreationJourney = true;
   return res.render("enter-email/index-create-account.njk");
 }
 
@@ -126,6 +125,7 @@ export function enterEmailPost(
 
     req.session.user.enterEmailMfaType = result.data.mfaMethodType;
     req.session.user.redactedPhoneNumber = result.data.phoneNumberLastThree;
+    req.session.user.isAccountCreationJourney = !result.data.doesUserExist;
 
     const nextState = result.data.doesUserExist
       ? USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS
