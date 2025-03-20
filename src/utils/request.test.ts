@@ -5,7 +5,7 @@ import {
   isUpliftRequired,
   isAccountRecoveryJourney,
   isAccountRecoveryJourneyAndEnabled,
-  isContactUsSuggestionsFeedbackTheme,
+  isContactUsSuggestionsFeedbackSubtheme,
   clientIsOneLogin,
   clientUsesOneLoginOptionally,
   supportTypeIsGovService,
@@ -127,12 +127,14 @@ describe("request utilities", () => {
 
   describe("isContactUsSuggestionsFeedbackTheme", () => {
     it(`returns false when required properties are not in the request`, async () => {
-      expect(isContactUsSuggestionsFeedbackTheme(blankRequest)).to.equal(false);
+      expect(isContactUsSuggestionsFeedbackSubtheme(blankRequest)).to.equal(
+        false
+      );
     });
 
     it(`returns true when used property is not as expected`, async () => {
       expect(
-        isContactUsSuggestionsFeedbackTheme({
+        isContactUsSuggestionsFeedbackSubtheme({
           query: { subtheme: CONTACT_US_THEMES.ACCOUNT_CREATION },
         } as any as Request)
       ).to.equal(false);
@@ -140,7 +142,7 @@ describe("request utilities", () => {
 
     it(`returns true when used property is as expected`, async () => {
       expect(
-        isContactUsSuggestionsFeedbackTheme({
+        isContactUsSuggestionsFeedbackSubtheme({
           query: { subtheme: CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK },
         } as any as Request)
       ).to.equal(true);

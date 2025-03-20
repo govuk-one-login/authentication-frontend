@@ -18,7 +18,7 @@ export const isAccountRecoveryJourneyAndEnabled = (req: Request): boolean =>
       req.session?.user?.isAccountRecoveryPermitted
   );
 
-export const isContactUsSuggestionsFeedbackTheme = (req: Request): boolean =>
+export const isContactUsSuggestionsFeedbackSubtheme = (req: Request): boolean =>
   req.query?.subtheme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK;
 
 export const clientIsOneLogin = (req: Request): boolean =>

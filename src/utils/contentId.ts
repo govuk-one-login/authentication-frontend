@@ -6,7 +6,7 @@ import {
   isUpliftRequired,
   isAccountRecoveryJourney,
   isAccountRecoveryJourneyAndEnabled,
-  isContactUsSuggestionsFeedbackTheme,
+  isContactUsSuggestionsFeedbackSubtheme,
   clientIsOneLogin,
   clientUsesOneLoginOptionally,
   supportTypeIsGovService,
@@ -46,7 +46,7 @@ const CONTENT_IDS: {
   [PATH_NAMES.CONTACT_US_FURTHER_INFORMATION]: () =>
     "a06d6387-d411-47db-8f7d-88871286330b",
   [PATH_NAMES.CONTACT_US_QUESTIONS]: (req: Request) =>
-    isContactUsSuggestionsFeedbackTheme(req)
+    isContactUsSuggestionsFeedbackSubtheme(req)
       ? "94ff0276-9791-4a74-95c4-8210ec4028f7"
       : "",
   [PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS]: () =>
