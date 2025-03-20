@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { supportAccountRecovery, supportReauthentication } from "../config";
-import { ContentId, isCustomContentIdFunction } from "../types";
+import { ContentIdFunction } from "../types";
 import { CONTACT_US_THEMES, PATH_NAMES, SUPPORT_TYPE } from "../app.constants";
 
 const isReauth = (req: Request) =>
@@ -25,25 +25,25 @@ const urlContains = (req: Request, str: string) =>
   req.originalUrl.includes(str);
 
 export const CONTENT_IDS: {
-  [path: string]: ContentId;
+  [path: string]: ContentIdFunction;
 } = {
-  [PATH_NAMES.ACCESSIBILITY_STATEMENT]: "",
+  [PATH_NAMES.ACCESSIBILITY_STATEMENT]: () => "",
   [PATH_NAMES.ACCOUNT_NOT_FOUND]: (req: Request) =>
     clientIsOneLogin(req) || clientUsesOneLoginOptionally(req)
       ? "a70b71e7-b444-46e5-895c-cd2e27bbe6ba"
       : "10e1b70b-e208-4db8-8863-3679a675b51d",
-  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]:
+  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: () =>
     "d9290539-0b0c-468f-8f87-22d0400b6431",
-  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]:
+  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: () =>
     "d1b7cd24-f508-49ce-bf0d-ac1fe980c09c",
-  [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]:
+  [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]: () =>
     "1abedb1b-7d09-4e81-9f88-a8b4297635b3",
-  [PATH_NAMES.CHECK_YOUR_EMAIL]: "054e1ea8-97a8-461a-a964-07345c80098e",
+  [PATH_NAMES.CHECK_YOUR_EMAIL]: () => "054e1ea8-97a8-461a-a964-07345c80098e",
   [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]: (req: Request) =>
     isAccountRecoveryJourney(req)
       ? "e768e27b-1c4d-48ba-8bcf-4c40274a6441"
       : "95e26313-bc2f-49bc-bc62-fd715476c1d9",
-  [PATH_NAMES.CHECK_YOUR_PHONE]: "1fef9388-34cd-4ea2-b899-a66b7327d2f7",
+  [PATH_NAMES.CHECK_YOUR_PHONE]: () => "1fef9388-34cd-4ea2-b899-a66b7327d2f7",
   [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: (req: Request) =>
     isAccountRecoveryJourneyAndEnabled(req)
       ? "cbca1676-f632-4937-984e-1ae5934d13e2"
@@ -54,18 +54,18 @@ export const CONTENT_IDS: {
       : "5bc82db9-2012-44bf-9a7d-34d1d22fb035",
   [PATH_NAMES.CONTACT_US]: (req: Request) =>
     supportTypeIsGovService(req) ? "" : "e08d04e6-b24f-4bad-9955-1eb860771747",
-  [PATH_NAMES.CONTACT_US_FURTHER_INFORMATION]:
+  [PATH_NAMES.CONTACT_US_FURTHER_INFORMATION]: () =>
     "a06d6387-d411-47db-8f7d-88871286330b",
   [PATH_NAMES.CONTACT_US_QUESTIONS]: (req: Request) =>
     isContactUsSuggestionsFeedbackTheme(req)
       ? "94ff0276-9791-4a74-95c4-8210ec4028f7"
       : "",
-  [PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS]:
+  [PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS]: () =>
     "0e020971-d828-4679-97fe-23af6e96ab14",
-  [PATH_NAMES.COOKIES_POLICY]: "",
-  [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]:
+  [PATH_NAMES.COOKIES_POLICY]: () => "",
+  [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]: () =>
     "8c0cc624-2e97-471d-ad36-6b695f9a038d",
-  [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL]:
+  [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL]: () =>
     "6857e410-75b8-4807-b475-3f24fc96c9de",
   [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE]: (req: Request) => {
     if (isReauth(req)) {
@@ -76,7 +76,7 @@ export const CONTENT_IDS: {
     }
     return "89461417-df3f-46a8-9c37-713b9dd78085";
   },
-  [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT]:
+  [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT]: () =>
     "390f46f9-1f6b-44f2-8fd7-21a5385a7d3a",
   [PATH_NAMES.ENTER_EMAIL_SIGN_IN]: (req: Request) =>
     isReauth(req)
@@ -99,22 +99,22 @@ export const CONTENT_IDS: {
     isAccountRecoveryJourney(req)
       ? "e768e27b-1c4d-48ba-8bcf-4c40274a6441"
       : "95e26313-bc2f-49bc-bc62-fd715476c1d9",
-  [PATH_NAMES.PASSWORD_RESET_REQUIRED]: "",
-  [PATH_NAMES.PRIVACY_POLICY]: "",
-  [PATH_NAMES.PRIVACY_STATEMENT]: "",
-  [PATH_NAMES.PROVE_IDENTITY_CALLBACK]: "",
-  [PATH_NAMES.PROVE_IDENTITY_CALLBACK_SESSION_EXPIRY_ERROR]: "",
-  [PATH_NAMES.RESEND_EMAIL_CODE]: "3104ec55-1a4e-4811-b927-0531fb315480",
+  [PATH_NAMES.PASSWORD_RESET_REQUIRED]: () => "",
+  [PATH_NAMES.PRIVACY_POLICY]: () => "",
+  [PATH_NAMES.PRIVACY_STATEMENT]: () => "",
+  [PATH_NAMES.PROVE_IDENTITY_CALLBACK]: () => "",
+  [PATH_NAMES.PROVE_IDENTITY_CALLBACK_SESSION_EXPIRY_ERROR]: () => "",
+  [PATH_NAMES.RESEND_EMAIL_CODE]: () => "3104ec55-1a4e-4811-b927-0531fb315480",
   [PATH_NAMES.RESEND_MFA_CODE]: (req: Request) =>
     isReauth(req)
       ? "a2776ef7-9ef3-4d8d-bdbc-3f798b15e5d4"
       : "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
-  [PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION]:
+  [PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION]: () =>
     "8247477c-3e33-4dae-9528-22e7ed44efb3",
-  [PATH_NAMES.RESET_PASSWORD]: "c8520c6c-9f09-4edf-8c99-7123a3991cfc",
-  [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP]:
+  [PATH_NAMES.RESET_PASSWORD]: () => "c8520c6c-9f09-4edf-8c99-7123a3991cfc",
+  [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP]: () =>
     "943b41f4-8262-417f-8866-c0639319ccf0",
-  [PATH_NAMES.RESET_PASSWORD_2FA_SMS]: "",
+  [PATH_NAMES.RESET_PASSWORD_2FA_SMS]: () => "",
   [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL]: (req: Request) => {
     if (urlContains(req, "csrf")) {
       return "e48886d5-7be8-424d-8471-d9a9bf49d1b7";
@@ -124,39 +124,35 @@ export const CONTENT_IDS: {
     }
     return "b78d016b-0f2c-4599-9c2f-76b3a6397997";
   },
-  [PATH_NAMES.RESET_PASSWORD_REQUIRED]: "c8520c6c-9f09-4edf-8c99-7123a3991cfc",
-  [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]:
+  [PATH_NAMES.RESET_PASSWORD_REQUIRED]: () =>
+    "c8520c6c-9f09-4edf-8c99-7123a3991cfc",
+  [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]: () =>
     "7b663466-8001-436f-b10b-e6ac581d39aa",
-  [PATH_NAMES.SECURITY_CODE_INVALID]: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
-  [PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED]:
+  [PATH_NAMES.SECURITY_CODE_INVALID]: () =>
+    "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+  [PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED]: () =>
     "445409a8-2aaf-47fc-82a9-b277eca4601d",
-  [PATH_NAMES.SECURITY_CODE_WAIT]: "1277915f-ce6e-4a06-89a0-e3458f95631a",
-  [PATH_NAMES.SIGNED_OUT]: "83a49745-773f-49f6-aa15-58399e9a856c",
-  [PATH_NAMES.SIGN_IN_OR_CREATE]: "9cd55996-3f12-4e79-adf3-0ec3c4faf7ce",
-  [PATH_NAMES.SUPPORT]: "",
-  [PATH_NAMES.TERMS_AND_CONDITIONS]: "",
-  [PATH_NAMES.UNAVAILABLE_PERMANENT]: "",
-  [PATH_NAMES.UNAVAILABLE_TEMPORARY]: "895deac9-e21d-4991-b1f7-9509c2d8c10e",
-  [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS]: "",
+  [PATH_NAMES.SECURITY_CODE_WAIT]: () => "1277915f-ce6e-4a06-89a0-e3458f95631a",
+  [PATH_NAMES.SIGNED_OUT]: () => "83a49745-773f-49f6-aa15-58399e9a856c",
+  [PATH_NAMES.SIGN_IN_OR_CREATE]: () => "9cd55996-3f12-4e79-adf3-0ec3c4faf7ce",
+  [PATH_NAMES.SUPPORT]: () => "",
+  [PATH_NAMES.TERMS_AND_CONDITIONS]: () => "",
+  [PATH_NAMES.UNAVAILABLE_PERMANENT]: () => "",
+  [PATH_NAMES.UNAVAILABLE_TEMPORARY]: () =>
+    "895deac9-e21d-4991-b1f7-9509c2d8c10e",
+  [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS]: () => "",
 };
 
 export function getContentId(
   req: Request,
   contentIds: {
-    [path: string]: ContentId;
+    [path: string]: ContentIdFunction;
   } = CONTENT_IDS
 ): string {
   const supportedPaths = Object.keys(contentIds);
   const matchedSupportedPath = supportedPaths.find((path) => req.path === path);
   const contentId = matchedSupportedPath && contentIds[matchedSupportedPath];
 
-  if (!contentId) {
-    return "";
-  }
-
-  if (isCustomContentIdFunction(contentId)) {
-    return contentId(req);
-  }
-
-  return contentId;
+  if (!contentId) return "";
+  return contentId(req);
 }

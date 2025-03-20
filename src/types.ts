@@ -107,12 +107,4 @@ export interface UserSessionClient {
   rpState?: string;
 }
 
-type CustomContentIdFunction = (req: Request) => string;
-
-export function isCustomContentIdFunction(
-  obj: string | ContentId
-): obj is CustomContentIdFunction {
-  return typeof obj !== "string";
-}
-
-export type ContentId = string | CustomContentIdFunction;
+export type ContentIdFunction = (req: Request) => string;
