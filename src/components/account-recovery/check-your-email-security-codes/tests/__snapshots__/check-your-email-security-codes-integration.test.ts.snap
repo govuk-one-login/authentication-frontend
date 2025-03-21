@@ -13,7 +13,7 @@ Object {
 
 exports[`Integration:: check your email security codes should return validation error when code entered contains letters 1`] = `
 Object {
-  "contentId": "",
+  "contentId": "e768e27b-1c4d-48ba-8bcf-4c40274a6441",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "account recovery",
   "taxonomyLevel3": "",
@@ -24,7 +24,7 @@ Object {
 
 exports[`Integration:: check your email security codes should return validation error when code is greater than 6 characters 1`] = `
 Object {
-  "contentId": "",
+  "contentId": "e768e27b-1c4d-48ba-8bcf-4c40274a6441",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "account recovery",
   "taxonomyLevel3": "",
@@ -35,7 +35,7 @@ Object {
 
 exports[`Integration:: check your email security codes should return validation error when code is less than 6 characters 1`] = `
 Object {
-  "contentId": "",
+  "contentId": "e768e27b-1c4d-48ba-8bcf-4c40274a6441",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "account recovery",
   "taxonomyLevel3": "",
@@ -46,7 +46,7 @@ Object {
 
 exports[`Integration:: check your email security codes should return validation error when code not entered 1`] = `
 Object {
-  "contentId": "",
+  "contentId": "e768e27b-1c4d-48ba-8bcf-4c40274a6441",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "account recovery",
   "taxonomyLevel3": "",
@@ -57,7 +57,7 @@ Object {
 
 exports[`Integration:: check your email security codes should return validation error when incorrect code entered 1`] = `
 Object {
-  "contentId": "",
+  "contentId": "e768e27b-1c4d-48ba-8bcf-4c40274a6441",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "account recovery",
   "taxonomyLevel3": "",

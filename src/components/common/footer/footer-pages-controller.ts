@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { PATH_NAMES, SUPPORT_TYPE } from "../../../app.constants";
+import { PATH_NAMES } from "../../../app.constants";
+import { supportTypeIsGovService } from "../../../utils/request";
 
 export function privacyStatementGet(req: Request, res: Response): void {
   res.render("common/footer/privacy-statement.njk");
@@ -18,7 +19,7 @@ export function supportGet(req: Request, res: Response): void {
 }
 
 export function supportPost(req: Request, res: Response): void {
-  if (req.body.supportType === SUPPORT_TYPE.GOV_SERVICE) {
+  if (supportTypeIsGovService(req)) {
     res.redirect(
       appendQueryParam(
         "supportType",

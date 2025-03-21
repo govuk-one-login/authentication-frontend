@@ -26,6 +26,7 @@ import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 import { isLocked } from "../../utils/lock-helper";
+import { isUpliftRequired } from "../../utils/request";
 
 export const ENTER_MFA_DEFAULT_TEMPLATE_NAME = "enter-mfa/index.njk";
 export const UPLIFT_REQUIRED_SMS_TEMPLATE_NAME =
@@ -54,7 +55,7 @@ export function enterMfaGet(
         isAccountCreationJourney: false,
       });
     }
-    const templateName = req.session.user.isUpliftRequired
+    const templateName = isUpliftRequired(req)
       ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME
       : ENTER_MFA_DEFAULT_TEMPLATE_NAME;
 
@@ -111,9 +112,7 @@ export const enterMfaPost = (
   accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
-    const { isUpliftRequired } = req.session.user;
-
-    const template = isUpliftRequired
+    const template = isUpliftRequired(req)
       ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME
       : ENTER_MFA_DEFAULT_TEMPLATE_NAME;
 

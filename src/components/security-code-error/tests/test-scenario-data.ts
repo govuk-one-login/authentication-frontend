@@ -18,7 +18,6 @@ export const SCENARIOS = {
         isAuthApp: false,
         isBlocked: false,
         show2HrScreen: true,
-        contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
       },
     },
     {
@@ -32,7 +31,6 @@ export const SCENARIOS = {
         isAuthApp: false,
         isBlocked: true,
         show2HrScreen: false,
-        contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
       },
     },
     {
@@ -46,7 +44,6 @@ export const SCENARIOS = {
         isAuthApp: true,
         isBlocked: true,
         show2HrScreen: false,
-        contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
       },
     },
     {
@@ -60,7 +57,6 @@ export const SCENARIOS = {
         isAuthApp: false,
         isBlocked: true,
         show2HrScreen: false,
-        contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
       },
     },
   ],
@@ -69,7 +65,6 @@ export const SCENARIOS = {
       actionType: SecurityCodeErrorType.EmailMaxCodesSent,
       newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
       isAccountCreationJourney: undefined,
-      contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
     },
     {
       actionType: SecurityCodeErrorType.MfaMaxRetries,
@@ -79,13 +74,11 @@ export const SCENARIOS = {
         SecurityCodeErrorType.MfaMaxRetries
       ),
       isAccountCreationJourney: undefined,
-      contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
     },
     {
       actionType: SecurityCodeErrorType.OtpMaxCodesSent,
       newCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
       isAccountCreationJourney: undefined,
-      contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
     },
     {
       actionType: SecurityCodeErrorType.OtpMaxRetries,
@@ -95,24 +88,20 @@ export const SCENARIOS = {
         "true"
       ),
       isAccountCreationJourney: true,
-      contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
     },
   ],
   SECURITY_CODE_CANNOT_REQUEST_GET: [
     {
       actionType: SecurityCodeErrorType.OtpBlocked,
       expectedCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
-      contentId: "1277915f-ce6e-4a06-89a0-e3458f95631a",
     },
     {
       actionType: SecurityCodeErrorType.MfaBlocked,
       expectedCodeLink: PATH_NAMES.RESEND_MFA_CODE,
-      contentId: "1277915f-ce6e-4a06-89a0-e3458f95631a",
     },
     {
       actionType: SecurityCodeErrorType.EmailBlocked,
       expectedCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
-      contentId: "1277915f-ce6e-4a06-89a0-e3458f95631a",
     },
   ],
   ACCOUNT_CREATION_JOURNEY: [

@@ -1,7 +1,6 @@
 import { getRequestTaxonomy } from "../utils/taxonomy";
 import { NextFunction, Request, Response } from "express";
 import { getContentId } from "../utils/contentId";
-import { CONTENT_IDS } from "../app.constants";
 
 type CallbackFunction = (err: Error, html: string) => void;
 
@@ -18,7 +17,7 @@ export function getAnalyticsPropertiesMiddleware(
     callback?: CallbackFunction
   ) {
     const taxonomy = getRequestTaxonomy(req);
-    const contentId = getContentId(req, CONTENT_IDS);
+    const contentId = getContentId(req);
 
     let done = callback;
     let opts;

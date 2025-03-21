@@ -77,7 +77,7 @@ describe("security code controller", () => {
             newCodeLink: params.newCodeLink,
             isResendCodeRequest: undefined,
             isAccountCreationJourney: params.isAccountCreationJourney,
-            contentId: params.contentId,
+
             strategicAppChannel: res.locals.strategicAppChannel,
           }
         );
@@ -96,7 +96,6 @@ describe("security code controller", () => {
           "security-code-error/index-too-many-requests.njk",
           {
             newCodeLink: params.expectedCodeLink,
-            contentId: params.contentId,
           }
         );
       });
@@ -114,7 +113,6 @@ describe("security code controller", () => {
         {
           newCodeLink: PATH_NAMES.RESEND_MFA_CODE,
           isAuthApp: false,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
         }
       );
     });
@@ -129,7 +127,6 @@ describe("security code controller", () => {
         {
           newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           isAuthApp: true,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
         }
       );
     });
@@ -154,7 +151,6 @@ describe("security code controller", () => {
           isAuthApp: false,
           isBlocked: false,
           show2HrScreen: true,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
         });
       }
     );
@@ -177,7 +173,6 @@ describe("security code controller", () => {
           isAuthApp: false,
           isBlocked: false,
           show2HrScreen: true,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
         });
       }
     );
@@ -198,7 +193,6 @@ describe("security code controller", () => {
           isAuthApp: false,
           isBlocked: params.isBlocked,
           show2HrScreen: false,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
         });
       });
     });
@@ -220,7 +214,6 @@ describe("security code controller", () => {
           isAuthApp: false,
           isBlocked: true,
           show2HrScreen: true,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
         });
         expect(req.session.user.wrongCodeEnteredLock).to.eq(
           "Mon, 01 Jan 2024 02:00:00 GMT"
@@ -246,7 +239,6 @@ describe("security code controller", () => {
           isAuthApp: false,
           isBlocked: true,
           show2HrScreen: false,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
         });
         expect(req.session.user.wrongCodeEnteredLock).to.eq(
           "Mon, 01 Jan 2024 00:15:00 GMT"
@@ -272,7 +264,6 @@ describe("security code controller", () => {
           isAuthApp: false,
           isBlocked: true,
           show2HrScreen: false,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
         });
         expect(req.session.user.wrongCodeEnteredLock).to.eq(
           "Mon, 01 Jan 2024 00:15:00 GMT"
@@ -298,7 +289,6 @@ describe("security code controller", () => {
           isAuthApp: false,
           isBlocked: true,
           show2HrScreen: true,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
         });
         expect(req.session.user.wrongCodeEnteredAccountRecoveryLock).to.eq(
           "Mon, 01 Jan 2024 00:15:00 GMT"
@@ -324,7 +314,6 @@ describe("security code controller", () => {
           isAuthApp: false,
           isBlocked: true,
           show2HrScreen: true,
-          contentId: "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
         });
         expect(req.session.user.wrongCodeEnteredPasswordResetLock).to.eq(
           "Mon, 01 Jan 2024 02:00:00 GMT"
@@ -386,7 +375,6 @@ describe("security code controller", () => {
             isResendCodeRequest: undefined,
             isAccountCreationJourney: undefined,
 
-            contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
             strategicAppChannel: res.locals.strategicAppChannel,
           }
         );
@@ -416,7 +404,7 @@ describe("security code controller", () => {
             ),
             isResendCodeRequest: undefined,
             isAccountCreationJourney: undefined,
-            contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
+
             strategicAppChannel: res.locals.strategicAppChannel,
           }
         );
@@ -439,7 +427,6 @@ describe("security code controller", () => {
             isResendCodeRequest: undefined,
             isAccountCreationJourney: undefined,
 
-            contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
             strategicAppChannel: res.locals.strategicAppChannel,
           }
         );
@@ -463,7 +450,6 @@ describe("security code controller", () => {
           isResendCodeRequest: undefined,
           isAccountCreationJourney: true,
 
-          contentId: "445409a8-2aaf-47fc-82a9-b277eca4601d",
           strategicAppChannel: res.locals.strategicAppChannel,
         }
       );

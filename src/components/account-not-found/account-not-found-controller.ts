@@ -12,10 +12,11 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import xss from "xss";
 import { getServiceSignInLink } from "../../config";
 import { getAccountNotFoundTemplate } from "./get-account-not-found-template";
+import { clientIsOneLogin } from "../../utils/request";
 
 export function accountNotFoundGet(req: Request, res: Response): void {
   const template: string = getAccountNotFoundTemplate(
-    req.session.client.isOneLoginService,
+    clientIsOneLogin(req),
     req.session.client.serviceType,
     res.locals.strategicAppChannel
   );

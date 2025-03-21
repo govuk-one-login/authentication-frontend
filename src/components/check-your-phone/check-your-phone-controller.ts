@@ -25,6 +25,7 @@ import { BadRequestError } from "../../utils/error";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 import { isLocked } from "../../utils/lock-helper";
+import { isAccountRecoveryJourneyAndEnabled } from "../../utils/request";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";
 const RESEND_CODE_LINK = pathWithQueryParam(
@@ -52,8 +53,6 @@ export const checkYourPhonePost = (
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const { isAccountRecoveryJourney, isAccountRecoveryPermitted } =
-      req.session.user;
 
     const journeyType = getJourneyTypeFromUserSession(req.session.user, {
       includeAccountRecovery: true,
@@ -92,7 +91,7 @@ export const checkYourPhonePost = (
     }
 
     const accountRecoveryEnabledJourney =
-      isAccountRecoveryPermitted && isAccountRecoveryJourney;
+      isAccountRecoveryJourneyAndEnabled(req);
 
     let notificationType = NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
 

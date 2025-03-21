@@ -24,6 +24,6 @@
 
     </form>
 
-    {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "Home", contentId: "9cd55996-3f12-4e79-adf3-0ec3c4faf7ce", loggedInStatus: false, dynamic: true } %}
+    {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "Home", loggedInStatus: false, dynamic: true } %}
     {%- include "ga4-opl/template.njk" -%}
 {% endblock %}

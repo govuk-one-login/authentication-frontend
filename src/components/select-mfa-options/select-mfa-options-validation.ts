@@ -2,6 +2,7 @@ import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
 import { ValidationChainFunc } from "../../types";
 import { Request } from "express";
+import { isAccountRecoveryJourney } from "../../utils/request";
 
 export function validateMultiFactorAuthenticationRequest(): ValidationChainFunc {
   return [
@@ -24,6 +25,6 @@ const postValidationLocals = function locals(
 ): Record<string, unknown> {
   return {
     isAccountPartCreated: req.session.user.isAccountPartCreated,
-    isAccountRecoveryJourney: req.session.user.isAccountRecoveryJourney,
+    isAccountRecoveryJourney: isAccountRecoveryJourney(req),
   };
 };

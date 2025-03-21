@@ -107,8 +107,4 @@ export interface UserSessionClient {
   rpState?: string;
 }
 
-export interface ContentIdVariants {
-  default: string;
-  reauth?: string;
-  upliftRequired?: string;
-}
+export type ContentIdFunction = (req: Request) => string;

@@ -28,6 +28,7 @@ import {
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 import { isLocked, timestampNSecondsFromNow } from "../../utils/lock-helper";
 import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message";
+import { isReauth } from "../../utils/request";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -63,13 +64,12 @@ export function enterEmailPost(
     const email = req.body.email;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     req.session.user.email = email.toLowerCase();
-    const reauthenticateJourney = req.session.user.reauthenticate;
 
-    if (supportReauthentication() && reauthenticateJourney) {
+    if (isReauth(req)) {
       const checkReauth = await checkReauthService.checkReauthUsers(
         sessionId,
         email,
-        reauthenticateJourney,
+        req.session.user.reauthenticate,
         clientSessionId,
         persistentSessionId,
         req
@@ -201,6 +201,7 @@ export function enterEmailCreatePost(
             req.query.actionType as SecurityCodeErrorType
           ),
           isAccountCreationJourney: true,
+          contentId: "",
         });
       }
       const path = getErrorPathByCode(sendNotificationResponse.data.code);

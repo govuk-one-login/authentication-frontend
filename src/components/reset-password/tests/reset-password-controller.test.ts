@@ -68,7 +68,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
 
       expect(res.render).to.have.calledWith("reset-password/index.njk", {
         isPasswordChangeRequired: true,
-        contentId: "a95d02f6-6445-4112-b0c2-7a6d4f804b99",
       });
     });
   });

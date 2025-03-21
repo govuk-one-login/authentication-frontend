@@ -13,30 +13,13 @@ import { SendNotificationServiceInterface } from "../common/send-notification/ty
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number";
-import { supportAccountRecovery } from "../../config";
 import xss from "xss";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
-
-const contentIds = {
-  createAccount: "0f519eb6-5cd4-476f-968f-d847b3c4c034",
-  accountRecovery: "cbca1676-f632-4937-984e-1ae5934d13e2",
-};
+import { isAccountRecoveryJourneyAndEnabled } from "../../utils/request";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
-  const { isAccountRecoveryJourney, isAccountRecoveryPermitted } =
-    req.session.user;
-  const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
-
-  const accountRecovery =
-    isAccountRecoveryJourney &&
-    isAccountRecoveryPermitted &&
-    isAccountRecoveryEnabledForEnvironment;
-
   res.render("enter-phone-number/index.njk", {
     isAccountPartCreated: req.session.user.isAccountPartCreated,
-    contentId: accountRecovery
-      ? contentIds.accountRecovery
-      : contentIds.createAccount,
   });
 }
 
@@ -44,11 +27,9 @@ export function enterPhoneNumberPost(
   service: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email, isAccountRecoveryJourney, isAccountRecoveryPermitted } =
-      req.session.user;
+    const { email } = req.session.user;
     const hasInternationalPhoneNumber = req.body.hasInternationalPhoneNumber;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
     let phoneNumber;
 
     if (hasInternationalPhoneNumber === "true") {
@@ -62,12 +43,7 @@ export function enterPhoneNumberPost(
     req.session.user.redactedPhoneNumber = redactPhoneNumber(phoneNumber);
     req.session.user.phoneNumber = phoneNumber;
 
-    const accountRecovery =
-      isAccountRecoveryJourney &&
-      isAccountRecoveryPermitted &&
-      isAccountRecoveryEnabledForEnvironment;
-
-    const journeyType = accountRecovery
+    const journeyType = isAccountRecoveryJourneyAndEnabled(req)
       ? JOURNEY_TYPE.ACCOUNT_RECOVERY
       : JOURNEY_TYPE.REGISTRATION;
 
@@ -95,6 +71,7 @@ export function enterPhoneNumberPost(
           isAccountCreationJourney:
             req.session.user.isAccountCreationJourney ||
             req.session.user.isAccountPartCreated,
+          contentId: "",
         });
       }
       const path = getErrorPathByCode(sendNotificationResponse.data.code);

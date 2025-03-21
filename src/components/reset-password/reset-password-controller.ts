@@ -18,22 +18,13 @@ import {
 
 const resetPasswordTemplate = "reset-password/index.njk";
 
-const oplValues = {
-  accountRecovery: {
-    contentId: "a95d02f6-6445-4112-b0c2-7a6d4f804b99",
-  },
-};
-
 export function resetPasswordGet(req: Request, res: Response): void {
-  res.render(resetPasswordTemplate, {
-    contentId: oplValues.accountRecovery.contentId,
-  });
+  res.render(resetPasswordTemplate);
 }
 
 export function resetPasswordRequiredGet(req: Request, res: Response): void {
   res.render(resetPasswordTemplate, {
     isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
-    contentId: oplValues.accountRecovery.contentId,
   });
 }
 
