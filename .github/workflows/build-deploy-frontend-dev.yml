@@ -1,78 +1,57 @@
-name: Build and deploy frontend Dev
+name: Build and deploy frontend to Dev
+run-name: Deploy frontend  to ${{ inputs.environment }}
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to run against"
+        type: environment
+        required: true
 
 jobs:
-  pr-data:
-    name: Get data for merged PR
-    permissions:
-      contents: read
-      pull-requests: read
-    uses: ./.github/workflows/call_get_pr_data.yml
+  # NOTE:
+  # IF you are testing service down page deployment in dev envs
+  # THEN while uncommenting this job, also enable feature flag DeployServiceDownPage: "Yes" in template.yaml
+  # AND override ServiceDownPageRegistry param to env specific settings
+  # deploy-service-down-page:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 60
+  #   environment: ${{ inputs.environment }}
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #   steps:
+  #     - name: Build and push service down page image
+  #       uses: govuk-one-login/devplatform-upload-action-ecr@5f4cd8b195ad7ae810d60881fa6dbaff1764b5da # v1.3.0
+  #       with:
+  #         role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
+  #         container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY_ARN }}
+  #         build-and-push-image-only: true
+  #         working-directory: service-down-page-config
+  #         artifact-bucket-name: ${{ secrets.ARTIFACT_SOURCE_BUCKET_NAME }}
+  #         ecr-repo-name: ${{ secrets.SERVICE_DOWN_PAGE_ECR_REPOSITORY }}
 
-  build-frontend:
-    name: Build and push Frontend
-    permissions:
-      id-token: write
-      contents: read
-    uses: ./.github/workflows/call_build-push-docker-image.yml
-    with:
-      aws-region: eu-west-2
-    secrets:
-      dynatrace_registry: ${{ secrets.DYNATRACE_REGISTRY_NAME }}
-      dynatrace_token: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
-      deployer_role: ${{ secrets.DEV_DEPLOYER_ROLE }}
-      ecr_repo: ${{ secrets.DEV_TOOLING_ECR_FRONTEND_REPO }}
-  build-service-down:
-    name: Build and push Service Down Page
-    permissions:
-      id-token: write
-      contents: read
-    uses: ./.github/workflows/call_build-push-docker-image.yml
-    with:
-      aws-region: eu-west-2
-      context: service-down-page-config
-    secrets:
-      dynatrace_registry: ${{ secrets.DYNATRACE_REGISTRY_NAME }}
-      dynatrace_token: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
-      deployer_role: ${{ secrets.DEV_DEPLOYER_ROLE }}
-      ecr_repo: ${{ secrets.DEV_SERVICE_DOWN_ECR_REPO }}
-  deploy:
-    needs:
-      - build-frontend
-      - build-service-down
-      - pr-data
+  deploy-frontend:
+    # needs:
+    #   - deploy-service-down-page
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    environment: ${{ inputs.environment }}
     permissions:
       id-token: write
       contents: read
     steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@ececac1a45f3b08a01d2dd070d28d111c5fe6722 # v4.1.0
+      - name: Build, push and deploy frontend
+        uses: govuk-one-login/devplatform-upload-action-ecr@5f4cd8b195ad7ae810d60881fa6dbaff1764b5da # v1.3.0
         with:
-          role-to-assume: ${{ secrets.DEV_DEPLOY_ROLE }}
-          aws-region: eu-west-2
-
-      - name: Upload frontend Terraform files
-        working-directory: ci/terraform
-        env:
-          METADATA: ${{ needs.pr-data.outputs.data }}
-        run: |
-          echo "::group::Zip up frontend terraform"
-          zip -r frontend.zip .
-          echo "::endgroup::"
-
-          echo "::group::Upload artifact to S3"
-          OBJECT_VERSION="$(aws s3api put-object \
-            --bucket ${{ secrets.DEV_ARTIFACT_BUCKET }} \
-            --key frontend.zip \
-            --body frontend.zip \
-            --metadata "${METADATA}" \
-            --query VersionId --output text)"
-          echo "::endgroup::"
-          echo "::notice title=Final artifact uploaded to S3::object: frontend.zip, version: ${OBJECT_VERSION}"
+          role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
+          container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY_ARN }}
+          artifact-bucket-name: ${{ secrets.ARTIFACT_SOURCE_BUCKET_NAME }}
+          ecr-repo-name: ${{ secrets.FRONTEND_ECR_REPOSITORY }}
+          template-file: cloudformation/deploy/template.yaml
+          private-docker-registry: khw46367.live.dynatrace.com
+          private-docker-login-username: khw46367
+          private-docker-login-password: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
+          build-contexts: |
+            oneagent_codemodules=docker-image://${{ secrets.DYNATRACE_REGISTRY_NAME}}.live.dynatrace.com/linux/oneagent-codemodules-musl:nodejs
