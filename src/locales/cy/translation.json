@@ -1874,7 +1874,6 @@
         "signingIn": "Problem mewngofnodi i’ch GOV.UK One Login",
         "provingIdentity": "Problem profi eich hunaniaeth",
         "somethingElse": "Problem arall wrth ddefnyddio eich GOV.UK One Login",
-        "emailSubscriptions": "Tanysgrifiadau e-bost GOV.UK",
         "suggestionsFeedback": "Awgrym neu adborth am ddefnyddio’ch GOV.UK One Login",
         "idCheckApp": "Problem profi eich hunaniaeth wrth ddefnyddio ap GOV.UK ID Check",
         "provingIdentityFaceToFace": "Problem profi eich hunaniaeth gyda’r Swyddfa Bost",
@@ -2067,18 +2066,6 @@
           "header": "Beth ddigwyddodd?",
           "paragraph1": "Er enghraifft, roedd gennych broblem gyda’r cod QR neu ddod o hyd i ap dilysydd",
           "errorMessage": "Rhowch beth ddigwyddodd"
-        }
-      },
-      "emailSubscriptions": {
-        "title": "Eich tanysgrifiadau e-bost GOV.UK",
-        "header": "Eich tanysgrifiadau e-bost GOV.UK",
-        "section1": {
-          "header": "Beth oeddech chi’n ceisio ei wneud a beth ddigwyddodd?",
-          "errorMessage": "Rhowch beth oeddech chi’n ceisio ei wneud a beth ddigwyddodd"
-        },
-        "section2": {
-          "header": "Ydych chi eisiau dweud unrhyw beth arall wrthym",
-          "paragraph1": "Er enghraifft, os ydych eisiau ychwanegu mwy o fanylion neu roi adborth"
         }
       },
       "suggestionOrFeedback": {

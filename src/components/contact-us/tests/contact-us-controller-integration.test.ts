@@ -200,7 +200,7 @@ describe("Integration:: contact us - public user", () => {
     await request(app, (test) =>
       test
         .get("/contact-us-questions")
-        .query("theme=email_subscriptions")
+        .query("theme=something_else")
         .expect(200)
     );
   });

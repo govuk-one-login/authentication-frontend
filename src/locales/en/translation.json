@@ -1874,7 +1874,6 @@
         "signingIn": "A problem signing in to your GOV.UK One Login",
         "provingIdentity": "A problem proving your identity",
         "somethingElse": "Another problem using your GOV.UK One Login",
-        "emailSubscriptions": "GOV.UK email subscriptions",
         "suggestionsFeedback": "A suggestion or feedback about using your GOV.UK One Login",
         "idCheckApp": "A problem proving your identity using the GOV.UK ID Check app",
         "provingIdentityFaceToFace": "A problem proving your identity with the Post Office",
@@ -2067,18 +2066,6 @@
           "header": "What happened?",
           "paragraph1": "For example, you had a problem with the QR code or finding an authenticator app",
           "errorMessage": "Enter what happened"
-        }
-      },
-      "emailSubscriptions": {
-        "title": "Your GOV.UK email subscriptions",
-        "header": "Your GOV.UK email subscriptions",
-        "section1": {
-          "header": "What were you trying to do and what happened?",
-          "errorMessage": "Enter what you were trying to do and what happened"
-        },
-        "section2": {
-          "header": "Anything else you want to tell us",
-          "paragraph1": "For example, if you want to add more detail or give feedback"
         }
       },
       "suggestionOrFeedback": {
