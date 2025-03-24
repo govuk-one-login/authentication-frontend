@@ -38,6 +38,6 @@
 {% endif %}
 </form>
 
-{% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, contentId: "6857e410-75b8-4807-b475-3f24fc96c9de", loggedInStatus: false, dynamic: false } %}
+{% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
 {%- include "ga4-opl/template.njk" -%}
 {% endblock %}

@@ -12,12 +12,7 @@ import { SendNotificationServiceInterface } from "../../common/send-notification
 import { sendNotificationService } from "../../common/send-notification/send-notification-service";
 import { BadRequestError } from "../../../utils/error";
 import { isLocked } from "../../../utils/lock-helper";
-
-const contentIds = {
-  default: "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
-  enterExceeded: "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
-  indexWait: "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
-};
+import { isAccountRecoveryJourney } from "../../../utils/request";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
   const newCodeLink = req.query?.isResendCodeRequest
@@ -32,19 +27,16 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     res.render("security-code-error/index-security-code-entered-exceeded.njk", {
       newCodeLink: newCodeLink,
       isAuthApp: false,
-      contentId: contentIds.enterExceeded,
     });
   } else if (isLocked(req.session.user.codeRequestLock)) {
     res.render("security-code-error/index-wait.njk", {
       newCodeLink,
-      contentId: contentIds.indexWait,
       isAccountCreationJourney: req.session.user.isAccountCreationJourney,
     });
   } else {
     res.render("account-creation/resend-mfa-code/index.njk", {
       phoneNumber: req.session.user.redactedPhoneNumber,
       isResendCodeRequest: req.query?.isResendCodeRequest,
-      contentId: contentIds.default,
     });
   }
 }
@@ -54,9 +46,9 @@ export const resendMfaCodePost = (
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const { email, isAccountRecoveryJourney, phoneNumber } = req.session.user;
+    const { email, phoneNumber } = req.session.user;
 
-    const journeyType = isAccountRecoveryJourney
+    const journeyType = isAccountRecoveryJourney(req)
       ? JOURNEY_TYPE.ACCOUNT_RECOVERY
       : JOURNEY_TYPE.REGISTRATION;
 

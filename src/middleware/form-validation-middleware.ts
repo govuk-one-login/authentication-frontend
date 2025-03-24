@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { isObjectEmpty, renderBadRequest } from "../utils/validation";
+import { isReauth, isUpliftRequired } from "../utils/request";
 
 export const validationErrorFormatter = ({
   msg,
@@ -41,9 +42,7 @@ export function validateBodyMiddlewareUpliftTemplate(
   postValidationLocals?: (req: Request) => Record<string, unknown>
 ) {
   return (req: Request, res: Response, next: NextFunction): any => {
-    const { isUpliftRequired } = req.session.user;
-
-    const template = isUpliftRequired ? upliftTemplate : defaultTemplate;
+    const template = isUpliftRequired(req) ? upliftTemplate : defaultTemplate;
 
     const errors = validationResult(req)
       .formatWith(validationErrorFormatter)
@@ -66,9 +65,7 @@ export function validateBodyMiddlewareReauthTemplate(
   postValidationLocals?: (req: Request) => Record<string, unknown>
 ) {
   return (req: Request, res: Response, next: NextFunction): any => {
-    const { reauthenticate } = req.session.user;
-
-    const template = reauthenticate ? reAuthTemplate : defaultTemplate;
+    const template = isReauth(req) ? reAuthTemplate : defaultTemplate;
 
     const errors = validationResult(req)
       .formatWith(validationErrorFormatter)

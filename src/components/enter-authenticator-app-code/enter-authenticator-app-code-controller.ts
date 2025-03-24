@@ -30,6 +30,7 @@ import {
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 import { isLocked } from "../../utils/lock-helper";
+import { isUpliftRequired } from "../../utils/request";
 
 export const ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME =
   "enter-authenticator-app-code/index.njk";
@@ -40,9 +41,9 @@ export function enterAuthenticatorAppCodeGet(
   acctRecoveryService: AccountRecoveryInterface = accountRecoveryService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email, isUpliftRequired } = req.session.user;
+    const { email } = req.session.user;
 
-    const templateName = isUpliftRequired
+    const templateName = isUpliftRequired(req)
       ? UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
       : ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME;
 
@@ -122,9 +123,8 @@ export const enterAuthenticatorAppCodePost = (
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const { isUpliftRequired } = req.session.user;
 
-    const template = isUpliftRequired
+    const template = isUpliftRequired(req)
       ? UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
       : ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME;
 

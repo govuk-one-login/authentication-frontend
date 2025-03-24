@@ -165,7 +165,6 @@ describe("reset password check email controller", () => {
           "reset-password-check-email/index-reset-password-resend-code.njk",
           {
             email: req.session.user.email,
-            contentId: "7b663466-8001-436f-b10b-e6ac581d39aa",
           }
         );
       });

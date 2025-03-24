@@ -11,6 +11,7 @@ import { SendNotificationServiceInterface } from "../common/send-notification/ty
 import { sendNotificationService } from "../common/send-notification/send-notification-service";
 import xss from "xss";
 import { isLocked } from "../../utils/lock-helper";
+import { isAccountRecoveryJourney } from "../../utils/request";
 
 export function resendEmailCodeGet(req: Request, res: Response): void {
   if (
@@ -24,7 +25,7 @@ export function resendEmailCodeGet(req: Request, res: Response): void {
     let show2HrScreen = false;
     if (
       req.session.user.isPasswordResetJourney ||
-      req.session.user.isAccountRecoveryJourney
+      isAccountRecoveryJourney(req)
     ) {
       show2HrScreen = true;
     }
@@ -51,9 +52,9 @@ export function resendEmailCodePost(
   return async function (req: Request, res: Response) {
     const email = req.session.user.email.toLowerCase();
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const isAccountRecoveryJourney = req.session.user?.isAccountRecoveryJourney;
+    const accountRecoveryJourney = isAccountRecoveryJourney(req);
 
-    const journeyType = isAccountRecoveryJourney
+    const journeyType = accountRecoveryJourney
       ? JOURNEY_TYPE.ACCOUNT_RECOVERY
       : JOURNEY_TYPE.REGISTRATION;
 
@@ -61,7 +62,9 @@ export function resendEmailCodePost(
       sessionId,
       clientSessionId,
       email,
-      getNotificationTemplateType(isAccountRecoveryJourney),
+      accountRecoveryJourney
+        ? NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES
+        : NOTIFICATION_TYPE.VERIFY_EMAIL,
       persistentSessionId,
       xss(req.cookies.lng as string),
       req,
@@ -83,7 +86,7 @@ export function resendEmailCodePost(
       );
     }
 
-    if (isAccountRecoveryJourney) {
+    if (accountRecoveryJourney) {
       req.session.user.isAccountRecoveryCodeResent = true;
     }
     if (
@@ -99,7 +102,7 @@ export function resendEmailCodePost(
         req.path,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
         {
-          isAccountRecoveryJourney: isAccountRecoveryJourney,
+          isAccountRecoveryJourney: accountRecoveryJourney,
         },
         sessionId
       )
@@ -110,7 +113,7 @@ export function resendEmailCodePost(
 export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { sessionId } = res.locals;
-    const isAccountRecoveryJourney = req.session.user?.isAccountRecoveryJourney;
+    const accountRecoveryJourney = isAccountRecoveryJourney(req);
     if (isLocked(req.session.user.codeRequestLock)) {
       const newCodeLink = req.query?.isResendCodeRequest
         ? "/security-code-check-time-limit?isResendCodeRequest=true"
@@ -120,7 +123,7 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
       });
     }
 
-    if (isAccountRecoveryJourney) {
+    if (accountRecoveryJourney) {
       req.session.user.isAccountRecoveryCodeResent = true;
     }
 
@@ -130,20 +133,10 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
         req.path,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
         {
-          isAccountRecoveryJourney: isAccountRecoveryJourney,
+          isAccountRecoveryJourney: accountRecoveryJourney,
         },
         sessionId
       )
     );
   };
-}
-
-function getNotificationTemplateType(
-  isAccountRecoveryJourney: boolean
-): NOTIFICATION_TYPE {
-  if (isAccountRecoveryJourney) {
-    return NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES;
-  } else {
-    return NOTIFICATION_TYPE.VERIFY_EMAIL;
-  }
 }

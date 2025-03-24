@@ -33,6 +33,7 @@ import {
 } from "../../config";
 import { logger } from "../../utils/logger";
 import { Claims } from "./claims-config";
+import { isReauth, isUpliftRequired } from "../../utils/request";
 
 export function authorizeGet(
   authService: AuthorizeServiceInterface = authorizeService(),
@@ -124,13 +125,13 @@ export function authorizeGet(
       PATH_NAMES.AUTHORIZE,
       nextStateEvent,
       {
-        requiresUplift: req.session.user.isUpliftRequired,
+        requiresUplift: isUpliftRequired(req),
         isIdentityRequired: req.session.user.isIdentityRequired,
         isAuthenticated: req.session.user.isAuthenticated,
         prompt: req.session.client.prompt,
         skipAuthentication: false,
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
-        isReauthenticationRequired: req.session.user.reauthenticate,
+        isReauthenticationRequired: isReauth(req),
       },
       sessionId
     );

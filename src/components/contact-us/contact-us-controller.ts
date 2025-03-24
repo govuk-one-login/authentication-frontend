@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import {
   PATH_NAMES,
-  SUPPORT_TYPE,
   CONTACT_US_THEMES,
   CONTACT_US_FIELD_MAX_LENGTH,
   CONTACT_US_COUNTRY_MAX_LENGTH,
@@ -18,6 +17,7 @@ import {
   supportNoPhotoIdContactForms,
 } from "../../config";
 import { getContactUsService } from "./contact-us-service";
+import { supportTypeIsGovService } from "../../utils/request";
 
 const themeToPageTitle = {
   [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:
@@ -99,7 +99,7 @@ const somethingElseSubThemeToPageTitle = {
 const serviceDomain = getServiceDomain();
 
 export function contactUsGet(req: Request, res: Response): void {
-  if (req.query.supportType === SUPPORT_TYPE.GOV_SERVICE) {
+  if (supportTypeIsGovService(req)) {
     return res.render("contact-us/index-gov-service-contact-us.njk");
   }
   const REFERER = "referer";
@@ -453,10 +453,6 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
     appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
     appSessionId: getAppSessionId(req.query.appSessionId as string),
-    contentId:
-      req.query.subtheme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK
-        ? "94ff0276-9791-4a74-95c4-8210ec4028f7"
-        : "",
   });
 }
 
