@@ -47,12 +47,6 @@ describe("authorize service", () => {
     service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
       authenticated: isAuthenticated,
       reauthenticate: "123456",
-      cookie_consent: "accept",
-      vtr_list: "[Cl.Cm]",
-      client_id: "test-client-id",
-      scope: "openid",
-      redirect_uri: "http://example.com/redirect",
-      state: "1234567890",
     });
 
     expect(
@@ -61,12 +55,6 @@ describe("authorize service", () => {
         {
           "rp-pairwise-id-for-reauth": "123456",
           authenticated: isAuthenticated,
-          cookie_consent: "accept",
-          vtr_list: "[Cl.Cm]",
-          client_id: "test-client-id",
-          scope: "openid",
-          redirect_uri: "http://example.com/redirect",
-          state: "1234567890",
         },
         {
           headers: {
@@ -84,26 +72,12 @@ describe("authorize service", () => {
     service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
       authenticated: isAuthenticated,
       reauthenticate: "123456",
-      cookie_consent: "accept",
-      vtr_list: "[Cl.Cm]",
-      client_id: "test-client-id",
-      scope: "openid",
-      redirect_uri: "http://example.com/redirect",
-      state: "1234567890",
     });
 
     expect(
       postStub.calledOnceWithExactly(
         API_ENDPOINTS.START,
-        {
-          authenticated: isAuthenticated,
-          cookie_consent: "accept",
-          vtr_list: "[Cl.Cm]",
-          client_id: "test-client-id",
-          scope: "openid",
-          redirect_uri: "http://example.com/redirect",
-          state: "1234567890",
-        },
+        { authenticated: isAuthenticated },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
           proxy: false,
@@ -116,26 +90,12 @@ describe("authorize service", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
       authenticated: isAuthenticated,
-      cookie_consent: "accept",
-      vtr_list: "[Cl.Cm]",
-      client_id: "test-client-id",
-      scope: "openid",
-      redirect_uri: "http://example.com/redirect",
-      state: "1234567890",
     });
 
     expect(
       postStub.calledOnceWithExactly(
         API_ENDPOINTS.START,
-        {
-          authenticated: isAuthenticated,
-          cookie_consent: "accept",
-          vtr_list: "[Cl.Cm]",
-          client_id: "test-client-id",
-          scope: "openid",
-          redirect_uri: "http://example.com/redirect",
-          state: "1234567890",
-        },
+        { authenticated: isAuthenticated },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
           proxy: false,
@@ -151,12 +111,6 @@ describe("authorize service", () => {
       current_credential_strength: undefined,
       reauthenticate: undefined,
       previous_session_id: previousSessionId,
-      cookie_consent: "accept",
-      vtr_list: "[Cl.Cm]",
-      client_id: "test-client-id",
-      scope: "openid",
-      redirect_uri: "http://example.com/redirect",
-      state: "1234567890",
     });
 
     expect(
@@ -165,12 +119,6 @@ describe("authorize service", () => {
         {
           "previous-session-id": previousSessionId,
           authenticated: isAuthenticated,
-          cookie_consent: "accept",
-          vtr_list: "[Cl.Cm]",
-          client_id: "test-client-id",
-          scope: "openid",
-          redirect_uri: "http://example.com/redirect",
-          state: "1234567890",
         },
         {
           headers: {
@@ -190,12 +138,6 @@ describe("authorize service", () => {
       reauthenticate: "123456",
       previous_session_id: undefined,
       previous_govuk_signin_journey_id: "previous-journey-id",
-      cookie_consent: "accept",
-      vtr_list: "[Cl.Cm]",
-      client_id: "test-client-id",
-      scope: "openid",
-      redirect_uri: "http://example.com/redirect",
-      state: "1234567890",
     });
 
     expect(
@@ -205,12 +147,6 @@ describe("authorize service", () => {
           "rp-pairwise-id-for-reauth": "123456",
           "previous-govuk-signin-journey-id": "previous-journey-id",
           authenticated: isAuthenticated,
-          cookie_consent: "accept",
-          vtr_list: "[Cl.Cm]",
-          client_id: "test-client-id",
-          scope: "openid",
-          redirect_uri: "http://example.com/redirect",
-          state: "1234567890",
         },
         {
           headers: {
@@ -231,13 +167,6 @@ describe("authorize service", () => {
       reauthenticate: undefined,
       previous_session_id: undefined,
       previous_govuk_signin_journey_id: "previous-journey-id",
-      cookie_consent: "accept",
-      vtr_list: "[Cl.Cm]",
-      client_id: "test-client-id",
-      scope: "openid",
-      redirect_uri: "http://example.com/redirect",
-      state: "1234567890",
-      _ga: "987654321",
     });
 
     expect(
@@ -247,13 +176,6 @@ describe("authorize service", () => {
           "current-credential-strength": currentCredentialStrength,
           "previous-govuk-signin-journey-id": "previous-journey-id",
           authenticated: isAuthenticated,
-          cookie_consent: "accept",
-          vtr_list: "[Cl.Cm]",
-          client_id: "test-client-id",
-          scope: "openid",
-          redirect_uri: "http://example.com/redirect",
-          state: "1234567890",
-          _ga: "987654321",
         },
         {
           headers: {
