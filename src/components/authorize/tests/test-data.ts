@@ -31,9 +31,6 @@ export function createMockClaims(): Claims {
       '{"userinfo": {"email_verified": null, "public_subject_id": null, "email": null}}',
     authenticated: false,
     current_credential_strength: "MEDIUM_LEVEL",
-    cookie_consent: "accept",
-    vtr_list: "[Cl.Cm]",
-    scope: "openid",
   };
 }
 
