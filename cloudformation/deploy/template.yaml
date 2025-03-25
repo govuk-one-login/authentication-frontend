@@ -1674,7 +1674,7 @@ Resources:
     DeletionPolicy: Delete
     UpdateReplacePolicy: Delete
     Properties:
-      TemplateURL: https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/ecs-canary-deployment/template.yaml?versionId=5RRU1nfKQD_d08FKttr8W7pzrAsqQiUM # v2.1.1
+      TemplateURL: https://template-storage-templatebucket-1upzyw6v9cs42.s3.amazonaws.com/ecs-canary-deployment/template.yaml?versionId=gVRaSSPqy7XFvDtOB3PL0XPh4GUfrlTi # v2.1.2
       Parameters:
         VpcId: !Sub ${VpcStackName}-VpcId
         Subnets: !Join
