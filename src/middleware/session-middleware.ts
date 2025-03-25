@@ -10,6 +10,7 @@ export function initialiseSessionMiddleware(
   next: NextFunction
 ): void {
   if (req.path === PATH_NAMES.AUTHORIZE) {
+    const initialSession = req.session?.user;
     req.session.client = {};
 
     const email =
@@ -29,7 +30,10 @@ export function initialiseSessionMiddleware(
       redactedPhoneNumber: redactedPhoneNumber,
       phoneNumber: phoneNumber,
     };
+    const sessionAtEnd = req.session.user;
+    req.log.info(`is session changed is ${sessionAtEnd === initialSession}`)
   }
+
 
   next();
 }
