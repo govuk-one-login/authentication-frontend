@@ -51,7 +51,9 @@ export async function allowAndPersistUserJourneyMiddleware(
     req.session.user.journey.nextPath = req.path;
     req.session.user.journey.optionalPaths =
       authStateMachine.states[req.path]?.meta?.optionalPaths || [];
-    await saveSessionState(req);
+      req.log.info(`BECKA expires is ${req.session.cookie.expires}`)
+
+    // await saveSessionState(req);
   }
 
   next();

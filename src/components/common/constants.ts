@@ -198,7 +198,8 @@ export async function getNextPathAndUpdateJourney(
         : [],
   };
 
-  await saveSessionState(req);
+  req.log.info(`BECKA expires is ${req.session.cookie.expires}`)
+  // await saveSessionState(req);
 
   req.log.info(
     `User journey transitioned from ${req.path} to ${nextState.value} with session id ${sessionId}`
