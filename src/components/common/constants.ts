@@ -165,6 +165,10 @@ export function pathWithQueryParam(
 
 export async function saveSessionState(req: Request): Promise<void> {
   await new Promise<void>((resolve, reject) => {
+    // This is required to update the ttl on the session to make it rolling.
+    // Prior to explicitly saving the session state on e.g. updating the journey,
+    // this was done automatically by our connect-redis and express session middleware.
+    req.session.touch();
     req.session.save((error) => {
       if (error) {
         reject(new Error(error));
