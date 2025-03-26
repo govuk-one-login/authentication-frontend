@@ -833,9 +833,9 @@
     "@types/json-schema" "^7.0.15"
 
 "@eslint/eslintrc@^3.1.0", "@eslint/eslintrc@^3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-3.3.0.tgz#96a558f45842989cca7ea1ecd785ad5491193846"
-  integrity sha512-yaVPAiNAalnCZedKLdR21GOGILMLKPyqSLWaAjQFvYA2i/ciDi8ArYVr69Anohb6cH2Ukhqti4aFnYyPm8wdwQ==
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-3.3.1.tgz#e55f7f1dd400600dd066dbba349c4c0bac916964"
+  integrity sha512-gtF186CXhIl1p4pJNGZw8Yc6RlshoePRvE0X91oPGb3vZ8pM3qOS9W9NGPat9LziaBV7XrJWGylNQXkGcnM3IQ==
   dependencies:
     ajv "^6.12.4"
     debug "^4.3.2"
@@ -2493,9 +2493,9 @@ aws-sdk@^2.814.0:
     xml2js "0.6.2"
 
 axios@^1.6.8:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.8.3.tgz#9ebccd71c98651d547162a018a1a95a4b4ed4de8"
-  integrity sha512-iP4DebzoNlP/YN2dpwCgb8zoCmhtkajzS48JvwmkSkXvPI3DHc7m+XYL5tGnSlJtR6nImXZmdCuN5aP8dh1d8A==
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.8.4.tgz#78990bb4bc63d2cae072952d374835950a82f447"
+  integrity sha512-eBSYY4Y68NNlHbHBMdeDmKNtDgXWhQsJcGqzO3iLUM0GraQFSS9cVgPX5I9b3lbdFKyYoAEGAZF1DwhTaljNAw==
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.0"
