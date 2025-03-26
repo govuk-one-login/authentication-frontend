@@ -169,6 +169,7 @@ export async function saveSessionState(req: Request): Promise<void> {
     // Prior to explicitly saving the session state on e.g. updating the journey,
     // this was done automatically by our connect-redis and express session middleware.
     req.session.touch();
+    req.log.info(`BECKA session expiry is ${req.session.cookie.expires}`)
     req.session.save((error) => {
       if (error) {
         reject(new Error(error));
