@@ -333,6 +333,7 @@ Mappings:
       migratedDomain: signin.build.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
+      ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -364,6 +365,7 @@ Mappings:
       migratedDomain: signin.staging.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
+      ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
     integration:
       DeployServiceDownPage: "Yes"
