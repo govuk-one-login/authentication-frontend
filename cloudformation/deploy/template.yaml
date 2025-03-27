@@ -420,6 +420,7 @@ Mappings:
       migratedDomain: signin.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
+      ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       orchStubToAuth: ""
 
