@@ -165,6 +165,7 @@ export function pathWithQueryParam(
 
 export async function saveSessionState(req: Request): Promise<void> {
   await new Promise<void>((resolve, reject) => {
+    req.session.dirty = true;
     req.session.save((error) => {
       if (error) {
         reject(new Error(error));

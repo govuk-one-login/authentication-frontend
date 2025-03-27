@@ -30,7 +30,7 @@ export function initialiseSessionMiddleware(
       phoneNumber: phoneNumber,
     };
   }
-
+  req.session.dirty = false;
   next();
 }
 
