@@ -103,7 +103,7 @@
     "uid-safe": "^2.1.5",
     "uuid": "^11.0.2",
     "xss": "^1.0.10",
-    "xstate": "^4.26.1"
+    "xstate": "^5.19.2"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
