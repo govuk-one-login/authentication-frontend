@@ -9,14 +9,14 @@ The [Startup settings](https://govukverify.atlassian.net/wiki/spaces/LO/pages/43
 ## Startup sequence
 
 1. Bootstrap target account with the Stack Orchestration tool. Configurations and instruction can be found in the [authentication-infrastructure](https://github.com/govuk-one-login/authentication-infrastructure) GitHub repository
-2. Deploy frontend. The bootstrap step 1 sets up required dependencies and the frontend pipeline stack in the target account. GitHub workflow [deploy-frontend-sp](../.github/workflows/deploy-frontend-sp.yml) packages and uploads the artifacts, which then triggers deployment via AWS CodePipeline in the target account
+2. Deploy frontend. The bootstrap step 1 sets up required dependencies and the frontend pipeline stack in the target account. GitHub workflow [build-deploy-frontend](../../.github/workflows/build-deploy-frontend.yml) packages and uploads the artifacts, which then triggers deployment via AWS CodePipeline in the target account
 
 ## How to deploy authentication-frontend to development environments
 
 ### Using GitHub Workflows
 
 Follow to [how-to](https://govukverify.atlassian.net/wiki/spaces/LO/pages/4462215197/How+to+deploy+frontend+to+dev+environments+using+secure+pipeline) guide.
-It uses the dedicated GitHub workflow [.github/workflows/deploy-frontend-sp-dev.yml](../../.github/workflows/deploy-frontend-sp-dev.yml). The workflow is manually triggered with workflow_dispatch.
+It uses the dedicated GitHub workflow [build-deploy-frontend-dev](../../.github/workflows/build-deploy-frontend-dev.yml). The workflow is manually triggered with workflow_dispatch.
 
 ### Command-line tooling
 
@@ -28,8 +28,6 @@ Users will see two new environment options. The "-sp" authdev deployments switch
 $ ./deploy-authdevs.sh
 1) authdev1
 2) authdev2
-3) authdev1-sp
-4) authdev2-sp
 ```
 
 Example run:
