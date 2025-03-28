@@ -900,10 +900,10 @@
   dependencies:
     rollup-plugin-copy "^3.5.0"
 
-"@govuk-one-login/frontend-passthrough-headers@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-passthrough-headers/-/frontend-passthrough-headers-1.2.0.tgz#7b6ef128a37aa7f6b3d91709c598b3562e91d8d6"
-  integrity sha512-R0Ysvmk2i2KPjfZnn18sh3xE+cFC/mNT9jKcwblMnsGJTuFNs4RAbvjshUKKEieg4nKVcNYv+5zTEl9kSJsQ4A==
+"@govuk-one-login/frontend-passthrough-headers@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-passthrough-headers/-/frontend-passthrough-headers-1.3.0.tgz#ffeac238ba00c39af9766dd1d8d8ae9ed48c0a7f"
+  integrity sha512-OiewfAZoxY5Ucz+akK7pmgfSXtPSbynMx2+N3JUISj02Mgd2TzT52GwtBU7bVvIJbA31Stef7UnHRfWzyEDxAQ==
   dependencies:
     aws-lambda "^1.0.7"
     forwarded-parse "^2.1.2"
