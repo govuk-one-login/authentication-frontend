@@ -71,6 +71,7 @@ describe("session-middleware", () => {
       req = {
         session: {
           id: "session-id",
+          sessionRestored: true,
         },
         cookies: {
           gs: "gs-cookie",
@@ -157,6 +158,7 @@ describe("session-middleware", () => {
     it("should call next if all required session properties are present", () => {
       req.cookies.gs = "gs-cookie";
       req.cookies.aps = "aps-cookie";
+      req.session.sessionRestored = true;
 
       validateSessionMiddleware(req, res, next);
 
@@ -178,6 +180,18 @@ describe("session-middleware", () => {
 
     it("should destroy session and call next with error if aps cookie is missing", () => {
       req.cookies.gs = "gs-cookie";
+
+      validateSessionMiddleware(req, res, next);
+
+      expect(req.session.destroy).to.have.been.calledOnce;
+      expect(res.status).to.have.been.calledOnceWith(401);
+      expect(next).to.have.been.calledOnce;
+      expect(next.args[0][0]).to.be.an("error");
+    });
+
+    it("should destroy session and call next with error if sessionRestored is missing", () => {
+      req.cookies.gs = "gs-cookie";
+      req.cookies.aps = "aps-cookie";
 
       validateSessionMiddleware(req, res, next);
 
