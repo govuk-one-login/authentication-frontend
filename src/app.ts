@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import cookieParser from "cookie-parser";
 import csurf from "csurf";
+import serveStatic from "serve-static";
 import { logger, loggerMiddleware } from "./utils/logger";
 
 import { sanitizeRequestMiddleware } from "./middleware/sanitize-request-middleware";
@@ -175,14 +176,26 @@ async function createApp(): Promise<express.Application> {
   }
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
-  app.use(noCacheMiddleware);
+
+  const staticAssetOptions: serveStatic.ServeStaticOptions<express.Response> = {
+    cacheControl: true,
+    immutable: false,
+    maxAge: "60s",
+  };
 
   app.use(
     "/assets",
-    express.static(path.resolve("node_modules/govuk-frontend/govuk/assets"))
+    express.static(
+      path.resolve("node_modules/govuk-frontend/govuk/assets"),
+      staticAssetOptions
+    )
   );
 
-  app.use("/public", express.static(path.join(__dirname, "public")));
+  app.use(
+    "/public",
+    express.static(path.join(__dirname, "public"), staticAssetOptions)
+  );
+  app.use(noCacheMiddleware);
   app.set("view engine", configureNunjucks(app, APP_VIEWS));
   app.use(asyncHandler(setLocalVarsMiddleware));
   app.use(setGTM);

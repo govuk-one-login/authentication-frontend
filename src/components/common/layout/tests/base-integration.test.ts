@@ -173,4 +173,14 @@ describe("Integration:: base page ", () => {
       expect($("a.govuk-header__link").length).to.equal(1);
     });
   });
+
+  describe("Cache-Control", () => {
+    it("should not be cached", async () => {
+      await setupApp("");
+      const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
+      expect(response.header["cache-control"]).to.equal(
+        "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
+      );
+    });
+  });
 });
