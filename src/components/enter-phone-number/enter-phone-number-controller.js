@@ -1,0 +1,52 @@
+import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
+import { redactPhoneNumber } from "../../utils/strings";
+import { ERROR_CODES, getErrorPathByCode, getNextPathAndUpdateJourney, } from "../common/constants";
+import { BadRequestError } from "../../utils/error";
+import { sendNotificationService } from "../common/send-notification/send-notification-service";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number";
+import xss from "xss";
+import { getNewCodePath } from "../security-code-error/security-code-error-controller";
+import { isAccountRecoveryJourneyAndEnabled } from "../../utils/request";
+export function enterPhoneNumberGet(req, res) {
+    res.render("enter-phone-number/index.njk", {
+        isAccountPartCreated: req.session.user.isAccountPartCreated,
+    });
+}
+export function enterPhoneNumberPost(service = sendNotificationService()) {
+    return async function (req, res) {
+        const { email } = req.session.user;
+        const hasInternationalPhoneNumber = req.body.hasInternationalPhoneNumber;
+        const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+        let phoneNumber;
+        if (hasInternationalPhoneNumber === "true") {
+            phoneNumber = convertInternationalPhoneNumberToE164Format(req.body.internationalPhoneNumber);
+        }
+        else {
+            phoneNumber = req.body.phoneNumber;
+        }
+        req.session.user.redactedPhoneNumber = redactPhoneNumber(phoneNumber);
+        req.session.user.phoneNumber = phoneNumber;
+        const journeyType = isAccountRecoveryJourneyAndEnabled(req)
+            ? JOURNEY_TYPE.ACCOUNT_RECOVERY
+            : JOURNEY_TYPE.REGISTRATION;
+        const sendNotificationResponse = await service.sendNotification(sessionId, clientSessionId, email, NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER, persistentSessionId, xss(req.cookies.lng), req, journeyType, phoneNumber);
+        if (!sendNotificationResponse.success) {
+            if (sendNotificationResponse.data.code ==
+                ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT) {
+                return res.render("security-code-error/index-wait.njk", {
+                    newCodeLink: getNewCodePath(req.query.actionType),
+                    isAccountCreationJourney: req.session.user.isAccountCreationJourney ||
+                        req.session.user.isAccountPartCreated,
+                    contentId: "",
+                });
+            }
+            const path = getErrorPathByCode(sendNotificationResponse.data.code);
+            if (path) {
+                return res.redirect(path);
+            }
+            throw new BadRequestError(sendNotificationResponse.data.message, sendNotificationResponse.data.code);
+        }
+        return res.redirect(await getNextPathAndUpdateJourney(req, req.path, USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER, null, sessionId));
+    };
+}

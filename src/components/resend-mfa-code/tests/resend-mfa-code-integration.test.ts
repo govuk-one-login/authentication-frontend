@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
 import {
@@ -24,7 +24,9 @@ describe("Integration:: resend mfa code", () => {
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
     validateSessionStub = sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (
@@ -46,7 +48,7 @@ describe("Integration:: resend mfa code", () => {
       });
 
     process.env.SUPPORT_REAUTHENTICATION = "0";
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(app, (test) => test.get(PATH_NAMES.RESEND_MFA_CODE)).then(

@@ -1,0 +1,27 @@
+import { getNextPathAndUpdateJourney } from "../common/constants";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { generateMfaSecret } from "../../utils/mfa";
+import { MFA_METHOD_TYPE } from "../../app.constants";
+import { isAccountRecoveryJourney } from "../../utils/request";
+export function getSecurityCodesGet(req, res) {
+    const accountRecoveryJourney = isAccountRecoveryJourney(req);
+    req.session.user.isAccountCreationJourney =
+        !accountRecoveryJourney || req.session.user.isAccountPartCreated;
+    res.render("select-mfa-options/index.njk", {
+        isAccountPartCreated: req.session.user.isAccountPartCreated,
+        isAccountRecoveryJourney: accountRecoveryJourney,
+        selectedMfaOption: req.session.user.selectedMfaOption,
+    });
+}
+export async function getSecurityCodesPost(req, res) {
+    if (Object.values(MFA_METHOD_TYPE).includes(req.body.mfaOptions)) {
+        req.session.user.selectedMfaOption = req.body.mfaOptions;
+    }
+    const isAuthApp = req.body.mfaOptions === "AUTH_APP";
+    if (isAuthApp) {
+        req.session.user.authAppSecret = generateMfaSecret();
+    }
+    res.redirect(await getNextPathAndUpdateJourney(req, req.path, isAuthApp
+        ? USER_JOURNEY_EVENTS.MFA_OPTION_AUTH_APP_SELECTED
+        : USER_JOURNEY_EVENTS.MFA_OPTION_SMS_SELECTED, null, res.locals.sessionId));
+}

@@ -14,7 +14,7 @@ describe("Integration:: cookies controller", () => {
     before(async () => {
       decache("../../../../app");
 
-      app = await require("../../../../app").createApp();
+      app = await (await import("../../../../app")).createApp();
 
       await request(app, (test) => test.get(PATH_NAMES.COOKIES_POLICY)).then(
         (res) => {
@@ -70,7 +70,7 @@ describe("Integration:: cookies controller", () => {
     before(async () => {
       decache("../../../../app");
 
-      app = await require("../../../../app").createApp();
+      app = await (await import("../../../../app")).createApp();
 
       await request(app, (test) => test.get(PATH_NAMES.COOKIES_POLICY), {
         expectAnalyticsPropertiesMatchSnapshot: false,

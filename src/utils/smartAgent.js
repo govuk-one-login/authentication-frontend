@@ -1,0 +1,37 @@
+import axios from "axios";
+import smartAgentConfig from "../config/smartAgent";
+import { logger } from "./logger";
+export class SmartAgentService {
+    webformID;
+    apiKey;
+    apiUrl;
+    constructor(config) {
+        this.webformID = config.webformID;
+        this.apiKey = config.apiKey;
+        this.apiUrl = config.apiUrl;
+    }
+    async createTicket(payload) {
+        await axios
+            .post(this.apiUrl, {
+            webformID: this.webformID,
+            message: payload.message,
+            email: payload.email || "Email not provided",
+            customAttributes: payload.customAttributes,
+        }, {
+            headers: {
+                "x-api-key": this.apiKey,
+                "Content-Type": "application/json",
+            },
+        })
+            .catch((error) => {
+            logger.info(`Error posting to SmartAgent API`);
+            logger.info(`webformID is ${this.webformID}`);
+            logger.info(`apiKey is ${this.apiKey}`);
+            logger.info(`apiUrl is ${this.apiUrl}`);
+            logger.error(error.toJSON());
+            throw new Error(`Failed contact form submission to SmartAgent: ${error?.response?.status} ${error?.response?.statusText}. Ticket identifier: ${payload.customAttributes["sa-ticket-id"]}`);
+        });
+    }
+}
+const defaultSmartAgentClient = new SmartAgentService(smartAgentConfig);
+export { defaultSmartAgentClient };

@@ -7,7 +7,7 @@ import {
   PATH_NAMES,
 } from "../../../app.constants";
 import decache from "decache";
-import nock = require("nock");
+import nock from "nock";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
 import { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
@@ -21,7 +21,9 @@ describe("Integration::2fa sms (in reset password flow)", () => {
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -41,7 +43,7 @@ describe("Integration::2fa sms (in reset password flow)", () => {
         next();
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
 
     baseApi = process.env.FRONTEND_API_BASE_URL;
 

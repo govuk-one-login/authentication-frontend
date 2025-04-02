@@ -1,0 +1,80 @@
+import { resetPasswordCheckEmailService } from "./reset-password-check-email-service";
+import { BadRequestError } from "../../utils/error";
+import { ERROR_CODES } from "../common/constants";
+import { codeService } from "../common/verify-code/verify-code-service";
+import { verifyCodePost } from "../common/verify-code/verify-code-controller";
+import { NOTIFICATION_TYPE } from "../../app.constants";
+import { accountInterventionService } from "../account-intervention/account-intervention-service";
+import { isLocked } from "../../utils/lock-helper";
+const TEMPLATE_NAME = "reset-password-check-email/index.njk";
+export function resetPasswordCheckEmailGet(service = resetPasswordCheckEmailService()) {
+    return async function (req, res) {
+        const { email } = req.session.user;
+        const sessionId = res.locals.sessionId;
+        const requestCode = !(req.query.requestCode && req.query.requestCode === "false");
+        req.session.user.isPasswordResetJourney = true;
+        let result;
+        if (requestCode) {
+            result = await service.resetPasswordRequest(email, sessionId, res.locals.clientSessionId, res.locals.persistentSessionId, req.session.user.withinForcedPasswordResetJourney, req);
+        }
+        if (isLocked(req.session.user.wrongCodeEnteredPasswordResetLock)) {
+            const newCodeLink = req.query?.isResendCodeRequest
+                ? "/security-code-check-time-limit?isResendCodeRequest=true"
+                : "/security-code-check-time-limit";
+            return res.render("security-code-error/index-security-code-entered-exceeded.njk", {
+                newCodeLink,
+                show2HrScreen: true,
+            });
+        }
+        if (result.success && req.session.user.enterEmailMfaType === undefined) {
+            req.session.user.enterEmailMfaType = result.data.mfaMethodType;
+            req.session.user.redactedPhoneNumber = result.data.phoneNumberLastThree;
+        }
+        if (!requestCode || result.success) {
+            const isForcedPasswordResetJourney = req.session.user.withinForcedPasswordResetJourney || false;
+            return res.render(TEMPLATE_NAME, {
+                isForcedPasswordResetJourney,
+                email,
+                currentPath: req.originalUrl,
+            });
+        }
+        if ([
+            ERROR_CODES.RESET_PASSWORD_LINK_MAX_RETRIES_REACHED,
+            ERROR_CODES.RESET_PASSWORD_LINK_BLOCKED,
+            ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES,
+        ].includes(result.data.code)) {
+            let errorTemplate;
+            if (result.data.code === ERROR_CODES.RESET_PASSWORD_LINK_MAX_RETRIES_REACHED) {
+                errorTemplate = "security-code-error/index-too-many-requests.njk";
+            }
+            else if (result.data.code ===
+                ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES) {
+                errorTemplate =
+                    "security-code-error/index-security-code-entered-exceeded.njk";
+            }
+            else {
+                errorTemplate = "security-code-error/index-wait.njk";
+            }
+            return res.render(errorTemplate, {
+                show2HrScreen: true,
+                contentId: "",
+            });
+        }
+        else {
+            throw new BadRequestError(result.data.message, result.data.code);
+        }
+    };
+}
+export function resetPasswordCheckEmailPost(service = codeService(), accountInterventionsService = accountInterventionService()) {
+    return verifyCodePost(service, accountInterventionsService, {
+        notificationType: NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE,
+        template: TEMPLATE_NAME,
+        validationKey: "pages.resetPasswordCheckEmail.code.validationError.invalidCode",
+        validationErrorCode: ERROR_CODES.RESET_PASSWORD_INVALID_CODE,
+    });
+}
+export function resetPasswordResendCodeGet(req, res) {
+    res.render("reset-password-check-email/index-reset-password-resend-code.njk", {
+        email: req.session.user.email,
+    });
+}

@@ -1,0 +1,7 @@
+import { getNextPathAndUpdateJourney } from "../common/constants";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+export async function docCheckingAppCallbackGet(req, res) {
+    const { sessionId } = res.locals;
+    const redirectPath = await getNextPathAndUpdateJourney(req, req.path, USER_JOURNEY_EVENTS.DOC_CHECKING_AUTH_CALLBACK, null, sessionId);
+    res.redirect(redirectPath);
+}

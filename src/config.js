@@ -1,0 +1,146 @@
+import { CHANNEL } from "./app.constants";
+export function getLogLevel() {
+    return process.env.LOGS_LEVEL || "debug";
+}
+export function getApiBaseUrl() {
+    return process.env.API_BASE_URL;
+}
+export function getFrontendApiBaseUrl() {
+    return process.env.FRONTEND_API_BASE_URL;
+}
+export function getNodeEnv() {
+    return process.env.NODE_ENV || "development";
+}
+export function getAppEnv() {
+    return process.env.APP_ENV || "local";
+}
+export function getSessionExpiry() {
+    return Number(process.env.SESSION_EXPIRY) || 3600000;
+}
+export function getSessionSecret() {
+    return process.env.SESSION_SECRET;
+}
+export function getApiKey() {
+    return process.env.API_KEY;
+}
+export function supportAccountRecovery() {
+    return process.env.SUPPORT_ACCOUNT_RECOVERY === "1";
+}
+export function supportAuthorizeController() {
+    return process.env.SUPPORT_AUTHORIZE_CONTROLLER === "1";
+}
+export function getSupportLinkUrl() {
+    return process.env.URL_FOR_SUPPORT_LINKS || "/contact-us";
+}
+export function getAwsRegion() {
+    return process.env.AWS_REGION || "eu-west-2";
+}
+export function getKmsKeyId() {
+    return process.env.ENCRYPTION_KEY_ID;
+}
+export function getOrchToAuthSigningPublicKey() {
+    return process.env.ORCH_TO_AUTH_SIGNING_KEY;
+}
+export function getOrchToAuthExpectedClientId() {
+    return process.env.ORCH_TO_AUTH_CLIENT_ID || "UNKNOWN";
+}
+export function getOrchToAuthExpectedAudience() {
+    return process.env.ORCH_TO_AUTH_AUDIENCE || "UNKNOWN";
+}
+export function getOrchStubToAuthSigningPublicKey() {
+    return process.env.ORCH_STUB_TO_AUTH_SIGNING_KEY || "UNKNOWN";
+}
+export function getOrchStubToAuthExpectedClientId() {
+    return process.env.ORCH_STUB_TO_AUTH_CLIENT_ID || "UNKNOWN";
+}
+export function getOrchStubToAuthExpectedAudience() {
+    return process.env.ORCH_STUB_TO_AUTH_AUDIENCE || "UNKNOWN";
+}
+export function getAccountManagementUrl() {
+    return process.env.ACCOUNT_MANAGEMENT_URL || "http://localhost:6001";
+}
+export function getAnalyticsCookieDomain() {
+    return process.env.ANALYTICS_COOKIE_DOMAIN;
+}
+export function getGoogleAnalyticsAndDynatraceCookieDomain() {
+    return getServiceDomain() === "localhost" ? "localhost" : ".account.gov.uk";
+}
+export function getServiceDomain() {
+    return process.env.SERVICE_DOMAIN || "localhost";
+}
+export function getSmartAgentApiKey() {
+    return process.env.SMARTAGENT_API_KEY || "";
+}
+export function getSmartAgentApiUrl() {
+    return process.env.SMARTAGENT_API_URL || "";
+}
+export function getSmartAgentWebformId() {
+    return process.env.SMARTAGENT_WEBFORM_ID || "";
+}
+export function getServiceSignInLink() {
+    return process.env.SERVICE_SIGN_IN_LINK || "https://www.gov.uk/sign-in";
+}
+export function getCodeRequestBlockDurationInMinutes() {
+    return Number(process.env.CODE_REQUEST_BLOCKED_MINUTES) || 15;
+}
+export function getCodeEnteredWrongBlockDurationInMinutes() {
+    return Number(process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES) || 15;
+}
+export function getReducedBlockDurationInMinutes() {
+    return Number(process.env.REDUCED_CODE_BLOCK_DURATION_MINUTES) || 15;
+}
+export function getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes() {
+    return (Number(process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES) ||
+        15);
+}
+export function getPasswordResetCodeEnteredWrongBlockDurationInMinutes() {
+    return (Number(process.env.PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES) || 15);
+}
+export function supportNoPhotoIdContactForms() {
+    return process.env.NO_PHOTO_ID_CONTACT_FORMS === "1";
+}
+export function supportAccountInterventions() {
+    return process.env.SUPPORT_ACCOUNT_INTERVENTIONS === "1";
+}
+export function supportReauthentication() {
+    return process.env.SUPPORT_REAUTHENTICATION === "1";
+}
+export function supportCheckEmailFraud() {
+    return process.env.SUPPORT_CHECK_EMAIL_FRAUD === "1";
+}
+export function getDefaultChannel() {
+    const configuredChannel = process.env.DEFAULT_CHANNEL;
+    if (isValidChannel(configuredChannel)) {
+        return configuredChannel;
+    }
+    else {
+        return CHANNEL.WEB;
+    }
+}
+export function getLanguageToggleEnabled() {
+    return process.env.LANGUAGE_TOGGLE_ENABLED === "1";
+}
+export function getGA4ContainerId() {
+    return process.env.GOOGLE_ANALYTICS_4_GTM_CONTAINER_ID || "";
+}
+export function googleAnalytics4Enabled() {
+    return process.env.GA4_ENABLED || "false";
+}
+export function supportNewIpvSpinner() {
+    return process.env.SUPPORT_NEW_IPV_SPINNER === "1";
+}
+export function supportHttpKeepAlive() {
+    return process.env.SUPPORT_HTTP_KEEP_ALIVE === "1";
+}
+export function isValidChannel(channel) {
+    return channel === CHANNEL.WEB || channel === CHANNEL.STRATEGIC_APP;
+}
+export function supportMfaResetWithIpv() {
+    return process.env.SUPPORT_MFA_RESET_WITH_IPV === "1";
+}
+export function routeUsersToNewIpvJourney() {
+    return process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY === "1";
+}
+export function showTestBanner() {
+    return getAppEnv() !== "production" || process.env.SHOW_TEST_BANNER === "1";
+}

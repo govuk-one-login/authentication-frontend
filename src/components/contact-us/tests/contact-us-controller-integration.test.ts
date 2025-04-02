@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { expect, sinon, request } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
 import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants";
@@ -15,7 +15,9 @@ describe("Integration:: contact us - public user", () => {
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -31,7 +33,7 @@ describe("Integration:: contact us - public user", () => {
         next();
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
     smartAgentApiUrl = process.env.SMARTAGENT_API_URL;
 
     await request(

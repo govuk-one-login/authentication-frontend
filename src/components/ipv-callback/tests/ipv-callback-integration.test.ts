@@ -202,7 +202,9 @@ const stubMiddlewareAndCreateApp = async (
   decache("../../../app");
 
   decache("../../../middleware/session-middleware");
-  const sessionMiddleware = require("../../../middleware/session-middleware");
+  const sessionMiddleware = await import(
+    "../../../middleware/session-middleware"
+  );
 
   sinon
     .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -224,7 +226,9 @@ const stubMiddlewareAndCreateApp = async (
     });
 
   decache("../../../middleware/outbound-contact-us-links-middleware");
-  const outboundContactUsLinksMiddleware = require("../../../middleware/outbound-contact-us-links-middleware");
+  const outboundContactUsLinksMiddleware = await import(
+    "../../../middleware/outbound-contact-us-links-middleware"
+  );
 
   sinon
     .stub(outboundContactUsLinksMiddleware, "outboundContactUsLinksMiddleware")
@@ -238,7 +242,7 @@ const stubMiddlewareAndCreateApp = async (
       next();
     });
 
-  return await require("../../../app").createApp();
+  return (await import("../../../app")).createApp();
 };
 
 const getCannotChangeSecurityCodesAndReturnTokenAndCookies = async (

@@ -1,0 +1,21 @@
+import { getNextPathAndUpdateJourney } from "../common/constants";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { getChannelSpecificTemplate } from "../../utils/get-channel-specific-template";
+import { WEB_TO_MOBILE_TEMPLATE_MAPPINGS } from "../../app.constants";
+export async function signInOrCreateGet(req, res) {
+    req.session.user.isAccountCreationJourney = false;
+    req.session.user.isPasswordResetJourney = false;
+    req.session.user.isSignInJourney = false;
+    if (req.query.redirectPost) {
+        return await signInOrCreatePost(req, res);
+    }
+    const template = getChannelSpecificTemplate("sign-in-or-create/index.njk", res.locals.strategicAppChannel, WEB_TO_MOBILE_TEMPLATE_MAPPINGS);
+    res.render(template, {
+        serviceType: req.session.client.serviceType,
+    });
+}
+export async function signInOrCreatePost(req, res) {
+    res.redirect(await getNextPathAndUpdateJourney(req, req.path, req.body.optionSelected === "create"
+        ? USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT
+        : USER_JOURNEY_EVENTS.SIGN_IN, null, res.locals.sessionId));
+}
