@@ -29,6 +29,8 @@ export function initialiseSessionMiddleware(
       redactedPhoneNumber: redactedPhoneNumber,
       phoneNumber: phoneNumber,
     };
+
+    req.session.sessionRestored = true;
   }
 
   next();

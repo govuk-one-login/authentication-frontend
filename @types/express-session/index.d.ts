@@ -7,5 +7,6 @@ declare module "express-session" {
   interface SessionData {
     user: UserSession;
     client: UserSessionClient;
+    sessionRestored?: boolean;
   }
 }
