@@ -57,6 +57,7 @@ describe("CrossBrowserMiddleware", () => {
     req.session.id = sessionId;
     req.cookies.gs = sessionId + clientSessionId;
     req.cookies.aps = sessionId;
+    req.session.sessionRestored = true;
 
     await crossBrowserMiddleware(mockCrossBrowserService(true))(req, res, next);
 

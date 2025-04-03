@@ -56,7 +56,12 @@ export function getSessionIdMiddleware(
 }
 
 export function sessionIsValid(req: Request): boolean {
-  return !!(req.cookies?.gs && req.cookies?.aps && req.session?.id);
+  return !!(
+    req.cookies?.gs &&
+    req.cookies?.aps &&
+    req.session?.id &&
+    req.session?.sessionRestored
+  );
 }
 
 export function validateSessionMiddleware(
