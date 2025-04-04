@@ -50,14 +50,19 @@ describe("enter email controller", () => {
       req.session.user = { email };
     });
 
-    it("should render enter email create account view when user selected create account", () => {
-      req.query.type = JOURNEY_TYPE.CREATE_ACCOUNT;
+    it("should render enter email create account view with the strategic app channel passed through when user selected create account", () => {
+      const STRATEGIC_APP_VALUES = [true, false];
+      STRATEGIC_APP_VALUES.forEach((strategicAppChannel) => {
+        res.locals.strategicAppChannel = strategicAppChannel;
+        req.query.type = JOURNEY_TYPE.CREATE_ACCOUNT;
 
-      enterEmailCreateGet(req as Request, res as Response);
+        enterEmailCreateGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "enter-email/index-create-account.njk"
-      );
+        expect(res.render).to.have.calledWith(
+          "enter-email/index-create-account.njk",
+          { strategicAppChannel: strategicAppChannel }
+        );
+      });
     });
 
     it("should render enter email view when supportReauthentication flag is switched off", async () => {

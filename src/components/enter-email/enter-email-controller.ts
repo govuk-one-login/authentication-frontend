@@ -53,7 +53,9 @@ export function enterEmailGet(req: Request, res: Response): void {
 }
 
 export function enterEmailCreateGet(req: Request, res: Response): void {
-  return res.render("enter-email/index-create-account.njk");
+  return res.render("enter-email/index-create-account.njk", {
+    strategicAppChannel: res.locals.strategicAppChannel,
+  });
 }
 
 export function enterEmailPost(

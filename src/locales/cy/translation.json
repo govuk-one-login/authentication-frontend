@@ -446,9 +446,11 @@
         "heading": "Cytuno i delerau defnyddio GOV.UK One Login",
         "paragraph1": "Drwy barhau, rydych yn cadarnhau eich bod yn cytuno i’n:",
         "bullet1LinkText": "hysbysiad preifatrwydd (agor mewn tab newydd)",
+        "bullet1LinkTextApp": "hysbysiad preifatrwydd",
         "bullet1Text": ", sy’n egluro sut rydym yn defnyddio eich gwybodaeth bersonol",
         "bullet1LinkHref": "/privacy-notice",
         "bullet2LinkText": "telerau ac amodau (agor mewn tab newydd)",
+        "bullet2LinkTextApp": "telerau ac amodau",
         "bullet2LinkHref": "/terms-and-conditions"
       }
     },
