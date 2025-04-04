@@ -8,7 +8,6 @@ resource "aws_cloudformation_stack" "cloudfront" {
   parameters = {
     AddWWWPrefix                 = var.Add_WWWPrefix
     CloudFrontCertArn            = aws_acm_certificate.cloudfront_frontend_certificate.arn
-    CloudFrontWafACL             = aws_wafv2_web_acl.frontend_cloudfront_waf_web_acl.arn
     DistributionAlias            = local.frontend_fqdn
     FraudHeaderEnabled           = var.Fraud_Header_Enabled
     OriginCloakingHeader         = var.auth_origin_cloakingheader
@@ -22,6 +21,15 @@ resource "aws_cloudformation_stack" "cloudfront" {
   lifecycle {
     ignore_changes = [parameters["OriginCloakingHeader"], parameters["PreviousOriginCloakingHeader"]]
   }
+
+
+  tags = (
+    var.environment == "sandpit" ?
+    {
+      "FMSGlobalCustomPolicy"     = "true"
+      "FMSGlobalCustomPolicyName" = "frontend"
+    } : {}
+  )
 
 }
 
