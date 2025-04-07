@@ -35,9 +35,18 @@
 <h2 class="govuk-heading-s">{{'pages.createPassword.termsOfUse.heading' | translate}}</h2>
 
 <p class="govuk-body">{{'pages.createPassword.termsOfUse.paragraph1' | translate}}</p>
+
+{% if strategicAppChannel %}
+  {% set bullet1LinkText = 'pages.createPassword.termsOfUse.bullet1LinkTextApp' %}
+  {% set bullet2LinkText = 'pages.createPassword.termsOfUse.bullet2LinkTextApp' %}
+{% else %}
+  {% set bullet1LinkText = 'pages.createPassword.termsOfUse.bullet1LinkText' %}
+  {% set bullet2LinkText = 'pages.createPassword.termsOfUse.bullet2LinkText' %}
+{% endif %}
+
 <ul class="govuk-list govuk-list--bullet">
-  <li><a href="{{'pages.createPassword.termsOfUse.bullet1LinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener" target="_blank">{{'pages.createPassword.termsOfUse.bullet1LinkText'| translate}}</a>{{'pages.createPassword.termsOfUse.bullet1Text'| translate}}</li>
-  <li><a href="{{'pages.createPassword.termsOfUse.bullet2LinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener" target="_blank">{{'pages.createPassword.termsOfUse.bullet2LinkText'| translate}}</a></li>
+    <li><a href="{{'pages.createPassword.termsOfUse.bullet1LinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener" target="_blank">{{ bullet1LinkText | translate}}</a>{{'pages.createPassword.termsOfUse.bullet1Text'| translate}}</li>
+    <li><a href="{{'pages.createPassword.termsOfUse.bullet2LinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener" target="_blank">{{ bullet2LinkText | translate}}</a></li>
 </ul>
 
 {{ govukButton({
