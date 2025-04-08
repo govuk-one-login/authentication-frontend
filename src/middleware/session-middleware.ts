@@ -3,6 +3,7 @@ import xss from "xss";
 import { ErrorWithLevel } from "../utils/error";
 import { getAppEnv } from "../config";
 import { ERROR_LOG_LEVEL, ERROR_MESSAGES, PATH_NAMES } from "../app.constants";
+import { logger } from "../utils/logger";
 
 export function initialiseSessionMiddleware(
   req: Request,
@@ -71,8 +72,29 @@ export function validateSessionMiddleware(
 ): void {
   if (sessionIsValid(req)) {
     return next();
+  } else {
+    return handleSessionError(req, res, next);
   }
+}
 
+export function requiredSessionFieldsMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
+  if (!req.session?.user?.email) {
+    logger.info("required session field 'email' is missing");
+    return handleSessionError(req, res, next);
+  } else {
+    return next();
+  }
+}
+
+function handleSessionError(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
   req.session.destroy((error) => {
     if (error) {
       req.log.error(`Failed to delete session: ${error}`);
