@@ -130,9 +130,12 @@ if [[ $DEPLOY == "1" ]]; then
     sam build --template-file="$TEMPLATE_FILE"
     mv .aws-sam/build/template.yaml cf-template.yaml
 
+    IMAGE_DIGEST="$(docker inspect "$ECR_REGISTRY/$ECR_REPO_NAME:$GITHUB_SHA" | jq -r '.[0].RepoDigests[0] | split("@") | .[1]')"
+    echo "Digest = ${IMAGE_DIGEST}"
+
     if grep -q "CONTAINER-IMAGE-PLACEHOLDER" cf-template.yaml; then
         echo "Replacing \"CONTAINER-IMAGE-PLACEHOLDER\" with new ECR image ref"
-        sed -i.bak "s|CONTAINER-IMAGE-PLACEHOLDER|$ECR_REGISTRY/$ECR_REPO_NAME:$GITHUB_SHA|" cf-template.yaml
+        sed -i.bak "s|CONTAINER-IMAGE-PLACEHOLDER|$ECR_REGISTRY/$ECR_REPO_NAME@$IMAGE_DIGEST|" cf-template.yaml
     else
         echo "WARNING!!! Image placeholder text \"CONTAINER-IMAGE-PLACEHOLDER\" not found - uploading template anyway"
     fi
@@ -147,6 +150,7 @@ if [[ $DEPLOY == "1" ]]; then
 
     # shellcheck disable=SC2086
     sam deploy \
+        --no-fail-on-empty-changeset \
         --template-file cf-template.yaml \
         --config-env "$DEPLOY_ENV" \
         --config-file "$SAMCONFIG_FILE" \
