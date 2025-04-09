@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { request, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import nock from "nock";
 import decache from "decache";
 import { PATH_NAMES } from "../../../app.constants";
 import { NextFunction, Request, Response } from "express";
@@ -12,7 +12,9 @@ describe("Integration:: landing", () => {
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (
@@ -28,7 +30,7 @@ describe("Integration:: landing", () => {
         next();
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
   });
 
   beforeEach(() => {

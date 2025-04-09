@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
 import { AxiosResponse } from "axios";
@@ -47,12 +47,18 @@ describe("Integration:: enter mfa", () => {
     decache("../../common/account-recovery/account-recovery-service");
     decache("../../../../test/helpers/session-helper");
     decache("../../common/send-notification/send-notification-service");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
-    const accountRecoveryService = require("../../common/account-recovery/account-recovery-service");
-    const sendNotificationService = require("../../common/send-notification/send-notification-service");
-    const {
-      getPermittedJourneyForPath,
-    } = require("../../../../test/helpers/session-helper");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
+    const accountRecoveryService = await import(
+      "../../common/account-recovery/account-recovery-service"
+    );
+    const sendNotificationService = import(
+      "../../common/send-notification/send-notification-service"
+    );
+    const { getPermittedJourneyForPath } = await import(
+      "../../../../test/helpers/session-helper"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -107,7 +113,7 @@ describe("Integration:: enter mfa", () => {
         return { sendNotification };
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA), {

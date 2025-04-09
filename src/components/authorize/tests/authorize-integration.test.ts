@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { sinon, request } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import nock from "nock";
 import decache from "decache";
 import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
 import {
@@ -30,9 +30,9 @@ describe("Integration:: authorize", () => {
     decache("../authorize-service");
     decache("../kms-decryption-service");
     decache("../jwt-service");
-    const authorizeService = require("../authorize-service");
-    const KmsDecryptionService = require("../kms-decryption-service");
-    const jwtService = require("../jwt-service");
+    const authorizeService = await import("../authorize-service");
+    const KmsDecryptionService = await import("../kms-decryption-service");
+    const jwtService = await import("../jwt-service");
     const publicKey = getPublicKey();
     const privateKey = await getPrivateKey();
     const jwt = await createJwt(createMockClaims(), privateKey);
@@ -62,7 +62,7 @@ describe("Integration:: authorize", () => {
       return new JwtService(publicKey);
     });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
   });
 
   beforeEach(() => {

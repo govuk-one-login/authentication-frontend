@@ -2,9 +2,9 @@ import { describe } from "mocha";
 import { request, sinon } from "../../../../test/utils/test-utils";
 import decache from "decache";
 import { API_ENDPOINTS, CHANNEL, PATH_NAMES } from "../../../app.constants";
-import nock = require("nock");
+import nock from "nock";
 import { NextFunction, Request, Response } from "express";
-const supertest = require("supertest");
+import supertest from "supertest";
 
 const IPV_DUMMY_URL =
   "https://test-idp-url.com/callback?code=123-4ddkk0sdkkd-ad";
@@ -150,10 +150,12 @@ describe("Mfa reset with ipv", () => {
     decache("../../../../test/helpers/session-helper");
     process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
     process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY = "1";
-    const sessionMiddleware = require("../../../middleware/session-middleware");
-    const {
-      getPermittedJourneyForPath,
-    } = require("../../../../test/helpers/session-helper");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
+    const { getPermittedJourneyForPath } = await import(
+      "../../../../test/helpers/session-helper"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -183,6 +185,6 @@ describe("Mfa reset with ipv", () => {
         next();
       });
 
-    return await require("../../../app").createApp();
+    return (await import("../../../app")).createApp();
   }
 });

@@ -6,7 +6,7 @@ import serveStatic from "serve-static";
 import { logger, loggerMiddleware } from "./utils/logger";
 
 import { sanitizeRequestMiddleware } from "./middleware/sanitize-request-middleware";
-import i18nextMiddleware from "i18next-http-middleware";
+import * as i18nextMiddleware from "i18next-http-middleware";
 import * as path from "path";
 import { configureNunjucks } from "./config/nunchucks";
 import { i18nextConfigurationOptions } from "./config/i18next";

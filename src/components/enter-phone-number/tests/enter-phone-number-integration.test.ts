@@ -4,7 +4,7 @@ import * as cheerio from "cheerio";
 import decache from "decache";
 import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
 import { ERROR_CODES, pathWithQueryParam } from "../../common/constants";
-import nock = require("nock");
+import nock from "nock";
 import { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
@@ -18,7 +18,9 @@ describe("Integration::enter phone number", () => {
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -40,7 +42,7 @@ describe("Integration::enter phone number", () => {
         next();
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(

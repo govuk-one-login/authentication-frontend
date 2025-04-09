@@ -15,8 +15,9 @@ describe("applyOverloadProtection", () => {
       exports: overloadProtectionStub,
     } as NodeModule;
 
-    applyOverloadProtection =
-      require("../overload-protection-middleware").applyOverloadProtection;
+    applyOverloadProtection = (
+      await import("../overload-protection-middleware")
+    ).applyOverloadProtection;
   });
 
   it("should call overloadProtection with correct options in production mode", () => {

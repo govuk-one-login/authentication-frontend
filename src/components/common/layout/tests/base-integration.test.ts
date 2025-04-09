@@ -16,7 +16,9 @@ describe("Integration:: base page ", () => {
   const setupApp = async (channel: string, showTestBanner?: boolean) => {
     decache("../../../../app");
     decache("../../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../../middleware/session-middleware"
+    );
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (
@@ -44,7 +46,9 @@ describe("Integration:: base page ", () => {
       });
     if (showTestBanner !== undefined) {
       decache("../../../../middleware/environment-banner-middleware");
-      const envBannerMiddleware = require("../../../../middleware/environment-banner-middleware");
+      const envBannerMiddleware = await import(
+        "../../../../middleware/environment-banner-middleware"
+      );
       sinon
         .stub(envBannerMiddleware, "environmentBannerMiddleware")
         .callsFake(function (
@@ -57,7 +61,7 @@ describe("Integration:: base page ", () => {
         });
     }
 
-    app = await require("../../../../app").createApp();
+    app = await (await import("../../../../app")).createApp();
   };
 
   beforeEach(() => {

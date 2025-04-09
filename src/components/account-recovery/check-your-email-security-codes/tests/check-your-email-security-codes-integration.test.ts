@@ -1,7 +1,7 @@
 import { describe } from "mocha";
 import { AxiosResponse } from "axios";
 import { expect, sinon, request } from "../../../../../test/utils/test-utils";
-import nock = require("nock");
+import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
 import {
@@ -30,9 +30,15 @@ describe("Integration:: check your email security codes", () => {
     decache("../../../../app");
     decache("../../../../middleware/session-middleware");
     decache("../../../common/send-notification/send-notification-service");
-    const sessionMiddleware = require("../../../../middleware/session-middleware");
-    const sendNotificationService = require("../../../common/send-notification/send-notification-service");
-    const accountInterventionService = require("../../../account-intervention/account-intervention-service");
+    const sessionMiddleware = await import(
+      "../../../../middleware/session-middleware"
+    );
+    const sendNotificationService = import(
+      "../../../common/send-notification/send-notification-service"
+    );
+    const accountInterventionService = import(
+      "../../../account-intervention/account-intervention-service"
+    );
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (
@@ -96,7 +102,7 @@ describe("Integration:: check your email security codes", () => {
 
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
 
-    app = await require("../../../../app").createApp();
+    app = await (await import("../../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     await request(

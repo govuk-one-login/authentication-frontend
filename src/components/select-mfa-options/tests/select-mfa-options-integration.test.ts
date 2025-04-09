@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
 import { PATH_NAMES } from "../../../app.constants";
@@ -15,7 +15,9 @@ describe("Integration::select-mfa-options", () => {
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -36,7 +38,7 @@ describe("Integration::select-mfa-options", () => {
         next();
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
 
     await request(app, (test) => test.get(PATH_NAMES.GET_SECURITY_CODES)).then(
       (res) => {

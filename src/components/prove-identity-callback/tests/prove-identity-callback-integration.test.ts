@@ -52,7 +52,9 @@ const stubMiddlewareAndCreateApp = async (
   decache("../../../app");
 
   decache("../../../middleware/session-middleware");
-  const sessionMiddleware = require("../../../middleware/session-middleware");
+  const sessionMiddleware = await import(
+    "../../../middleware/session-middleware"
+  );
   sinon
     .stub(sessionMiddleware, "validateSessionMiddleware")
     .callsFake(function (
@@ -77,7 +79,9 @@ const stubMiddlewareAndCreateApp = async (
 
   if (redirectPath) {
     decache("../prove-identity-callback-service");
-    const proveIdentityCallbackServiceFile = require("../prove-identity-callback-service");
+    const proveIdentityCallbackServiceFile = await import(
+      "../prove-identity-callback-service"
+    );
     sinon
       .stub(proveIdentityCallbackServiceFile, "proveIdentityCallbackService")
       .returns({
@@ -88,5 +92,5 @@ const stubMiddlewareAndCreateApp = async (
       });
   }
 
-  return await require("../../../app").createApp();
+  return (await import("../../../app")).createApp();
 };

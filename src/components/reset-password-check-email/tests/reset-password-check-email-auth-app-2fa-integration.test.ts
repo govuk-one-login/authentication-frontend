@@ -8,7 +8,7 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants";
-import nock = require("nock");
+import nock from "nock";
 import {
   noInterventions,
   setupAccountInterventionsResponse,
@@ -25,7 +25,9 @@ describe("Integration::reset password check email ", () => {
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
 
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
 
@@ -47,7 +49,7 @@ describe("Integration::reset password check email ", () => {
         next();
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     nock(baseApi).post("/reset-password-request").once().reply(204);

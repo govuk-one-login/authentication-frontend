@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import nock from "nock";
 import * as cheerio from "cheerio";
 import { PATH_NAMES } from "../../../app.constants";
 import decache from "decache";
@@ -25,7 +25,9 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
 
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -43,7 +45,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
 
         next();
       });
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
     setupAccountInterventionsResponse(baseApi, noInterventions);
 

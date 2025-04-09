@@ -35,11 +35,13 @@ describe("app", () => {
     it("should start server with vital-signs package", async () => {
       decache("../../src/app");
       decache("@govuk-one-login/frontend-vital-signs");
-      const frontendVitalSigns = require("@govuk-one-login/frontend-vital-signs");
+      const frontendVitalSigns = await import(
+        "@govuk-one-login/frontend-vital-signs"
+      );
       sinon
         .stub(frontendVitalSigns, "frontendVitalSignsInit")
         .callsFake(() => () => {});
-      const { startServer } = require("../../src/app");
+      const { startServer } = await import("../../src/app");
       const app = express();
 
       const { server, closeServer } = await startServer(app);
@@ -55,14 +57,16 @@ describe("app", () => {
       decache("../../src/app");
       decache("../../src/config/session");
       decache("@govuk-one-login/frontend-vital-signs");
-      const frontendVitalSigns = require("@govuk-one-login/frontend-vital-signs");
-      const session = require("../../src/config/session");
+      const frontendVitalSigns = await import(
+        "@govuk-one-login/frontend-vital-signs"
+      );
+      const session = await import("../../src/config/session");
       const stopVitalSigns = sinon.fake(() => {});
       sinon
         .stub(frontendVitalSigns, "frontendVitalSignsInit")
         .callsFake(() => stopVitalSigns);
       sinon.stub(session, "disconnectRedisClient").callsFake(() => {});
-      const { startServer } = require("../../src/app");
+      const { startServer } = await import("../../src/app");
       const app = express();
       const { closeServer } = await startServer(app);
 
@@ -98,14 +102,16 @@ describe("app", () => {
   });
 
   describe("applyOverloadProtection", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       decache("../../src/app");
-      sinon.stub(require("../../src/utils/redis"), "getRedisConfig").returns({
-        host: "redis-host",
-        port: Number("1234"),
-        password: "redis-password",
-        tls: true,
-      });
+      sinon
+        .stub(await import("../../src/utils/redis"), "getRedisConfig")
+        .returns({
+          host: "redis-host",
+          port: Number("1234"),
+          password: "redis-password",
+          tls: true,
+        });
       process.env.REDIS_KEY = "redis-key";
     });
 
@@ -118,7 +124,7 @@ describe("app", () => {
     it("should not call applyOverloadProtection when the environment isn't staging", async () => {
       process.env.APP_ENV = "production";
 
-      const app = await require("../../src/app").createApp();
+      const app = await (await import("../../src/app")).createApp();
 
       const hasOverloadProtection = app._router.stack.some(
         (layer: { name: string }) => layer.name === "overloadProtection"
@@ -129,7 +135,7 @@ describe("app", () => {
     it("should applyOverloadProtection when the environment is staging", async () => {
       process.env.APP_ENV = "staging";
 
-      const app = await require("../../src/app").createApp();
+      const app = await (await import("../../src/app")).createApp();
 
       const hasOverloadProtection = app._router.stack.some(
         (layer: { name: string }) => layer.name === "overloadProtection"
