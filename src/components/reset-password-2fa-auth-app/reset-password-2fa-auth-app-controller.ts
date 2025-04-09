@@ -4,19 +4,22 @@ import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
-} from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types";
-import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
-import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
+} from "../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types.js";
+import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service.js";
+import {
+  JOURNEY_TYPE,
+  MFA_METHOD_TYPE,
+  PATH_NAMES,
+} from "../../app.constants.js";
 import {
   formatValidationError,
   renderBadRequest,
-} from "../../utils/validation";
-import { BadRequestError } from "../../utils/error";
-import { getCodeEnteredWrongBlockDurationInMinutes } from "../../config";
-import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper";
-
+} from "../../utils/validation.js";
+import { BadRequestError } from "../../utils/error.js";
+import { getCodeEnteredWrongBlockDurationInMinutes } from "../../config.js";
+import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper.js";
 const TEMPLATE_NAME = "reset-password-2fa-auth-app/index.njk";
 export function resetPassword2FAAuthAppGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {

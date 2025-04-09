@@ -1,13 +1,17 @@
-import { ApiResponseResult, UserSession, UserSessionClient } from "../../types";
-import { API_ENDPOINTS } from "../../app.constants";
+import {
+  ApiResponseResult,
+  UserSession,
+  UserSessionClient,
+} from "../../types.js";
+import { API_ENDPOINTS } from "../../app.constants.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
-} from "../../utils/http";
-import { AuthCodeResponse, AuthCodeServiceInterface } from "./types";
-import { supportReauthentication } from "../../config";
+} from "../../utils/http.js";
+import { AuthCodeResponse, AuthCodeServiceInterface } from "./types.js";
+import { supportReauthentication } from "../../config.js";
 import { Request } from "express";
 
 export function authCodeService(axios: Http = http): AuthCodeServiceInterface {

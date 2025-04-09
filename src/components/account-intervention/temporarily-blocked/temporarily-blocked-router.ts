@@ -1,8 +1,7 @@
-import { PATH_NAMES } from "../../../app.constants";
+import { PATH_NAMES } from "../../../app.constants.js";
 import * as express from "express";
-import { validateSessionMiddleware } from "../../../middleware/session-middleware";
-import { temporarilyBlockedGet } from "./temporarily-blocked-controller";
-
+import { validateSessionMiddleware } from "../../../middleware/session-middleware.js";
+import { temporarilyBlockedGet } from "./temporarily-blocked-controller.js";
 const router = express.Router();
 
 router.get(

@@ -3,9 +3,8 @@ import {
   getAccountManagementUrl,
   getAnalyticsCookieDomain,
   getLanguageToggleEnabled,
-} from "../config";
-import { generateNonce } from "../utils/strings";
-
+} from "../config.js";
+import { generateNonce } from "../utils/strings.js";
 export async function setLocalVarsMiddleware(
   req: Request,
   res: Response,

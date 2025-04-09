@@ -1,11 +1,11 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { Request, Response } from "express";
-import { sinon } from "../../utils/test-utils";
+import { sinon } from "../../utils/test-utils.js";
 import {
   validateBodyMiddleware,
   validationErrorFormatter,
-} from "../../../src/middleware/form-validation-middleware";
+} from "../../../src/middleware/form-validation-middleware.js";
 import { mockRequest, mockResponse } from "mock-req-res";
 import { SinonStub } from "sinon";
 

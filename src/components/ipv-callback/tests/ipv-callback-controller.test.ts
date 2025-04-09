@@ -1,24 +1,24 @@
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import sinon from "sinon";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import {
   CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,
   MFA_METHOD_TYPE,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import { expect } from "chai";
 import { Request, Response } from "express";
 import {
   cannotChangeSecurityCodesGet,
   cannotChangeSecurityCodesPost,
   ipvCallbackGet,
-} from "../ipv-callback-controller";
+} from "../ipv-callback-controller.js";
 import {
   ReverificationResultFailedResponse,
   ReverificationResultInterface,
-} from "../types";
-import { BadRequestError } from "../../../utils/error";
-import { commonVariables } from "../../../../test/helpers/common-test-variables";
+} from "../types.js";
+import { BadRequestError } from "../../../utils/error.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { strict as assert } from "assert";
 import { describe } from "mocha";
 

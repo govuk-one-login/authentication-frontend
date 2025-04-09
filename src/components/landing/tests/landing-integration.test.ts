@@ -1,11 +1,10 @@
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils";
+import { request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import decache from "decache";
-import { PATH_NAMES } from "../../../app.constants";
+import { PATH_NAMES } from "../../../app.constants.js";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 describe("Integration:: landing", () => {
   let app: any;
 

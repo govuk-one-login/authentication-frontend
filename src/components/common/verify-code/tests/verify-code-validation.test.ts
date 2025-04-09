@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { removeWhiteSpace } from "../verify-code-validation";
-
+import { removeWhiteSpace } from "../verify-code-validation.js";
 describe("removeWhiteSpace", () => {
   it("should return the provided string if it is just 6 digits", () => {
     const input = "123456";

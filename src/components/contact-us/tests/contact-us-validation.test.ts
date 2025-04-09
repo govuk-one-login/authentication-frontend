@@ -1,9 +1,8 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { getContactUsErrorMessage } from "../contact-us-validation";
-import { CONTACT_US_THEMES } from "../../../app.constants";
-
+import { getContactUsErrorMessage } from "../contact-us-validation.js";
+import { CONTACT_US_THEMES } from "../../../app.constants.js";
 describe("getContactUsErrorMessage", () => {
   it("should return the correct locale key for the given theme", () => {
     expect(getContactUsErrorMessage("")).to.eq(

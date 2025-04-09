@@ -1,23 +1,22 @@
 import { describe } from "mocha";
 import sinon, { SinonStub } from "sinon";
-import { Http } from "../../../utils/http";
-import { CheckEmailFraudBlockInterface } from "../types";
-import { checkEmailFraudBlockService } from "../check-email-fraud-block-service";
+import { Http } from "../../../utils/http.js";
+import { CheckEmailFraudBlockInterface } from "../types.js";
+import { checkEmailFraudBlockService } from "../check-email-fraud-block-service.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
-} from "../../../../test/helpers/service-test-helper";
+} from "../../../../test/helpers/service-test-helper.js";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { commonVariables } from "../../../../test/helpers/common-test-variables";
-
+} from "../../../app.constants.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("check email fraud block service", () => {
   const httpInstance = new Http();
   const service: CheckEmailFraudBlockInterface =

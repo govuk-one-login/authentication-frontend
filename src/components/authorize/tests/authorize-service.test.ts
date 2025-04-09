@@ -1,20 +1,19 @@
 import { describe } from "mocha";
 import { expect } from "chai";
-import { Http } from "../../../utils/http";
-import { authorizeService } from "../authorize-service";
-import { sinon } from "../../../../test/utils/test-utils";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
+import { Http } from "../../../utils/http.js";
+import { authorizeService } from "../authorize-service.js";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
 import { SinonStub } from "sinon";
-import { AuthorizeServiceInterface } from "../types";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { AuthorizeServiceInterface } from "../types.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import {
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
-} from "../../../../test/helpers/service-test-helper";
-import { commonVariables } from "../../../../test/helpers/common-test-variables";
-
+} from "../../../../test/helpers/service-test-helper.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 const previousSessionId = "4waJ14KA9IyxKzY7bIGIA3hUDos";
 
 describe("authorize service", () => {

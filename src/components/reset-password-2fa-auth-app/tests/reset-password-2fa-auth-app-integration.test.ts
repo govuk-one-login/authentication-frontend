@@ -1,17 +1,16 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils";
+import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import decache from "decache";
 import nock from "nock";
-import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
+import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 describe("Integration::2fa auth app (in reset password flow)", () => {
   let app: any;
   let baseApi: string;

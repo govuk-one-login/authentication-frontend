@@ -3,8 +3,7 @@ import {
   getOrchStubToAuthExpectedClientId,
   getOrchToAuthExpectedAudience,
   getOrchToAuthExpectedClientId,
-} from "../../config";
-
+} from "../../config.js";
 export function getKnownClaims(): {
   [key: string]: string | boolean | number;
 } {

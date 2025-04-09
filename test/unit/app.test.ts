@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe } from "mocha";
-import { expect, sinon } from "../utils/test-utils";
-import { shutdownProcess, startServer } from "../../src/app";
+import { expect, sinon } from "../utils/test-utils.js";
+import { shutdownProcess, startServer } from "../../src/app.js";
 import express from "express";
 import decache from "decache";
 

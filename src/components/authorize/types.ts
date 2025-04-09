@@ -1,5 +1,5 @@
-import { ApiResponseResult, DefaultApiResponse } from "../../types";
-import { Claims } from "./claims-config";
+import { ApiResponseResult, DefaultApiResponse } from "../../types.js";
+import { Claims } from "./claims-config.js";
 import { Request } from "express";
 
 export interface StartRequestParameters {

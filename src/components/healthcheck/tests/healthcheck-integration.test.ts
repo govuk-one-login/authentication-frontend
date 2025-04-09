@@ -1,6 +1,6 @@
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils";
-import { PATH_NAMES } from "../../../app.constants";
+import { request, sinon } from "../../../../test/utils/test-utils.js";
+import { PATH_NAMES } from "../../../app.constants.js";
 import decache from "decache";
 
 describe("Integration::healthcheck", () => {

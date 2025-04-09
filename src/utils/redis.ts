@@ -1,8 +1,8 @@
 import { Parameter } from "@aws-sdk/client-ssm";
-import { RedisConfig } from "./types";
-import { ENVIRONMENT_NAME } from "../app.constants";
-import ssm from "./ssm";
-import { getAppEnv, getNodeEnv } from "../config";
+import { RedisConfig } from "./types.js";
+import { ENVIRONMENT_NAME } from "../app.constants.js";
+import ssm from "./ssm.js";
+import { getAppEnv, getNodeEnv } from "../config.js";
 import { GetParametersCommandOutput } from "@aws-sdk/client-ssm/dist-types/commands/GetParametersCommand";
 import * as process from "node:process";
 

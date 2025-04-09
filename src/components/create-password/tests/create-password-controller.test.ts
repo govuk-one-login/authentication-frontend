@@ -1,16 +1,16 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import { Request, Response } from "express";
 import {
   createPasswordPost,
   createPasswordGet,
-} from "../create-password-controller";
-import { CreatePasswordServiceInterface } from "../types";
-import { PATH_NAMES } from "../../../app.constants";
+} from "../create-password-controller.js";
+import { CreatePasswordServiceInterface } from "../types.js";
+import { PATH_NAMES } from "../../../app.constants.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { strict as assert } from "assert";
 
 describe("create-password controller", () => {

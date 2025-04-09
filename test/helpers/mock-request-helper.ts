@@ -1,4 +1,4 @@
-import { sinon } from "../utils/test-utils";
+import { sinon } from "../utils/test-utils.js";
 import { mockRequest, RequestOutput } from "mock-req-res";
 
 export interface MockRequestOptions {

@@ -11,12 +11,11 @@ import {
   prepareProblemWithTitle,
   prepareSecurityCodeSendMethodTitle,
   prepareUserLocationTitle,
-} from "../contact-us-service";
-import { ContactForm } from "../types";
+} from "../contact-us-service.js";
+import { ContactForm } from "../types.js";
 import sinon from "sinon";
-import { SmartAgentService } from "../../../utils/smartAgent";
-import { CONTACT_US_THEMES } from "../../../app.constants";
-
+import { SmartAgentService } from "../../../utils/smartAgent.js";
+import { CONTACT_US_THEMES } from "../../../app.constants.js";
 describe("contact-us-service", () => {
   describe("prepareSecurityCodeSendMethodTitle", () => {
     [

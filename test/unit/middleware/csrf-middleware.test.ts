@@ -1,9 +1,8 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { csrfMiddleware } from "../../../src/middleware/csrf-middleware";
+import { csrfMiddleware } from "../../../src/middleware/csrf-middleware.js";
 import { NextFunction } from "express";
-import { sinon } from "../../utils/test-utils";
-
+import { sinon } from "../../utils/test-utils.js";
 describe("CSRF middleware", () => {
   it("should add csrf token to request locals", () => {
     const csrfTokenStub = sinon.fake();

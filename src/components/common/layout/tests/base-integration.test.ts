@@ -4,11 +4,10 @@ import decache from "decache";
 import { describe } from "mocha";
 import nock from "nock";
 import request from "supertest";
-import { sinon } from "../../../../../test/utils/test-utils";
-import { CHANNEL, PATH_NAMES } from "../../../../app.constants";
+import { sinon } from "../../../../../test/utils/test-utils.js";
+import { CHANNEL, PATH_NAMES } from "../../../../app.constants.js";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper";
-
+import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper.js";
 describe("Integration:: base page ", () => {
   let app: any;
 

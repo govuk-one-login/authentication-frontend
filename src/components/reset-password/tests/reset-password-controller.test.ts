@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import { Request, Response } from "express";
 
 import {
@@ -9,14 +9,13 @@ import {
   resetPasswordPost,
   resetPasswordRequestGet,
   resetPasswordRequiredGet,
-} from "../reset-password-controller";
-import { ResetPasswordServiceInterface } from "../types";
-import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants";
+} from "../reset-password-controller.js";
+import { ResetPasswordServiceInterface } from "../types.js";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { EnterPasswordServiceInterface } from "../../enter-password/types";
-import { ERROR_CODES } from "../../common/constants";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-
+import { EnterPasswordServiceInterface } from "../../enter-password/types.js";
+import { ERROR_CODES } from "../../common/constants.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 const TEST_SCENARIO_PARAMETERS = [
   {
     supportPasswordResetRequired: "0",

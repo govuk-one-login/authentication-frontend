@@ -1,13 +1,12 @@
-import { PATH_NAMES } from "../../app.constants";
-
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
+import { PATH_NAMES } from "../../app.constants.js";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
 import {
   resendEmailCodeGet,
   resendEmailCodePost,
   securityCodeCheckTimeLimit,
-} from "./resend-email-code-controller";
-import { asyncHandler } from "../../utils/async";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
+} from "./resend-email-code-controller.js";
+import { asyncHandler } from "../../utils/async.js";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
 import express from "express";
 
 const router = express.Router();

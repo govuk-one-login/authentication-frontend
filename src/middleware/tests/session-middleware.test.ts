@@ -8,8 +8,8 @@ import {
   requiredSessionFieldsMiddleware,
   sessionIsValid,
   validateSessionMiddleware,
-} from "../session-middleware";
-import { ERROR_MESSAGES } from "../../app.constants";
+} from "../session-middleware.js";
+import { ERROR_MESSAGES } from "../../app.constants.js";
 import { describe } from "mocha";
 import { mockRequest, mockResponse } from "mock-req-res";
 

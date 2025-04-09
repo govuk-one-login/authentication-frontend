@@ -1,12 +1,11 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils";
+import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
-import { PATH_NAMES } from "../../../app.constants";
+import { PATH_NAMES } from "../../../app.constants.js";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 describe("Integration::select-mfa-options", () => {
   let token: string | string[];
   let cookies: string;

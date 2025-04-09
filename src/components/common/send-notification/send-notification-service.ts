@@ -1,12 +1,12 @@
-import { ApiResponseResult, DefaultApiResponse } from "../../../types";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
-} from "../../../utils/http";
-import { SendNotificationServiceInterface } from "./types";
+} from "../../../utils/http.js";
+import { SendNotificationServiceInterface } from "./types.js";
 import { Request } from "express";
 
 export function sendNotificationService(

@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { isObjectEmpty, renderBadRequest } from "../utils/validation";
-import { isReauth, isUpliftRequired } from "../utils/request";
-
+import { isObjectEmpty, renderBadRequest } from "../utils/validation.js";
+import { isReauth, isUpliftRequired } from "../utils/request.js";
 export const validationErrorFormatter = ({
   msg,
   param,

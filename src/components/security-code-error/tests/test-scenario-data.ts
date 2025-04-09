@@ -2,9 +2,8 @@ import {
   pathWithQueryParam,
   SECURITY_CODE_ERROR,
   SecurityCodeErrorType,
-} from "../../common/constants";
-import { PATH_NAMES } from "../../../app.constants";
-
+} from "../../common/constants.js";
+import { PATH_NAMES } from "../../../app.constants.js";
 export const SCENARIOS = {
   SECURITY_CODE_EXPIRED_GET: [
     {

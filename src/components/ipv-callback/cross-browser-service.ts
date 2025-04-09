@@ -2,17 +2,16 @@ import {
   CrossBrowserInterface,
   CrossBrowserRequest,
   IDReverificationStateResponse,
-} from "./types";
+} from "./types.js";
 import { Request } from "express";
-import { API_ENDPOINTS } from "../../app.constants";
+import { API_ENDPOINTS } from "../../app.constants.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
-} from "../../utils/http";
-import { BadRequestError } from "../../utils/error";
-
+} from "../../utils/http.js";
+import { BadRequestError } from "../../utils/error.js";
 export class CrossBrowserService implements CrossBrowserInterface {
   constructor(private readonly axios: Http = http) {}
   isCrossBrowserIssue(req: Request): req is CrossBrowserRequest {

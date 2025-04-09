@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
-import { getNextPathAndUpdateJourney } from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { generateMfaSecret } from "../../utils/mfa";
-import { MFA_METHOD_TYPE } from "../../app.constants";
-import { isAccountRecoveryJourney } from "../../utils/request";
-
+import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { generateMfaSecret } from "../../utils/mfa.js";
+import { MFA_METHOD_TYPE } from "../../app.constants.js";
+import { isAccountRecoveryJourney } from "../../utils/request.js";
 export function getSecurityCodesGet(req: Request, res: Response): void {
   const accountRecoveryJourney = isAccountRecoveryJourney(req);
   req.session.user.isAccountCreationJourney =

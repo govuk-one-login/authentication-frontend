@@ -1,18 +1,17 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import { Request, Response } from "express";
 
 import {
   resendMfaCodeGet,
   resendMfaCodePost,
-} from "../resend-mfa-code-controller";
-import { MfaServiceInterface } from "../../common/mfa/types";
-import { PATH_NAMES } from "../../../app.constants";
+} from "../resend-mfa-code-controller.js";
+import { MfaServiceInterface } from "../../common/mfa/types.js";
+import { PATH_NAMES } from "../../../app.constants.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 describe("resend mfa controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

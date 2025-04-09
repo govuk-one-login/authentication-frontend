@@ -1,6 +1,6 @@
 import { body } from "express-validator";
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
-import { ValidationChainFunc } from "../../types";
+import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
+import { ValidationChainFunc } from "../../types.js";
 import {
   internationalPhoneNumberMustBeValid,
   internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
@@ -8,8 +8,7 @@ import {
   ukPhoneNumberMustBeValid,
   ukPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
   ukPhoneNumberMustHaveLengthWithoutSpacesInRange,
-} from "../common/phone-number/phone-number-validation";
-
+} from "../common/phone-number/phone-number-validation.js";
 export function validateEnterPhoneNumberRequest(): ValidationChainFunc {
   return [
     body("phoneNumber")

@@ -1,5 +1,5 @@
 import { beforeEach, describe } from "mocha";
-import { sinon, request } from "../../../../test/utils/test-utils";
+import { sinon, request } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
@@ -7,10 +7,9 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 describe("Integration:: updated-terms-code", () => {
   let token: string | string[];
   let cookies: string;

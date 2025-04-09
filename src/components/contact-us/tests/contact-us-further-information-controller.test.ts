@@ -1,17 +1,15 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import { Request, Response } from "express";
 import {
   furtherInformationGet,
   furtherInformationPost,
-} from "../contact-us-controller";
-import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants";
-import { RequestGet, ResponseRedirect } from "../../../types";
-
-import { supportNoPhotoIdContactForms } from "../../../config";
-
+} from "../contact-us-controller.js";
+import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants.js";
+import { RequestGet, ResponseRedirect } from "../../../types.js";
+import { supportNoPhotoIdContactForms } from "../../../config.js";
 describe("contact us further information controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;

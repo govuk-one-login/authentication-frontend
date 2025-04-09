@@ -1,6 +1,5 @@
 import { describe } from "mocha";
-import { expect, sinon } from "../../../test/utils/test-utils";
-
+import { expect, sinon } from "../../../test/utils/test-utils.js";
 describe("applyOverloadProtection", () => {
   let overloadProtectionStub: any;
   let applyOverloadProtection: any;

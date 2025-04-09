@@ -1,9 +1,8 @@
 import { expect } from "chai";
 import { NextFunction, Request, Response } from "express";
 import sinon from "sinon";
-import { HTTP_STATUS_CODES } from "../../app.constants";
-import { csrfMissingHandler } from "../csrf-missing-handler";
-
+import { HTTP_STATUS_CODES } from "../../app.constants.js";
+import { csrfMissingHandler } from "../csrf-missing-handler.js";
 describe("csrfMissingHandler", () => {
   let req: Request;
   let res: Response;

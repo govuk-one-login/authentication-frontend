@@ -1,15 +1,18 @@
 import { beforeEach, describe } from "mocha";
 import { assert, expect } from "chai";
-import { JwtService } from "../jwt-service";
-import { JwtValidationError, JwtClaimsValueError } from "../../../utils/error";
-import { Claims, getKnownClaims } from "../claims-config";
+import { JwtService } from "../jwt-service.js";
+import {
+  JwtValidationError,
+  JwtClaimsValueError,
+} from "../../../utils/error.js";
+import { Claims, getKnownClaims } from "../claims-config.js";
 import {
   createJwt,
   createMockClaims,
   getPrivateKey,
   getWrongPrivateKey,
   getPublicKey,
-} from "./test-data";
+} from "./test-data.js";
 import {
   KeyLike,
   generateKeyPair,

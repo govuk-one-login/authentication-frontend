@@ -3,7 +3,7 @@ import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import { jestSnapshotPlugin } from "mocha-chai-jest-snapshot";
 import supertest, { Test } from "supertest";
-import { expectAnalyticsPropertiesMatchSnapshot } from "../helpers/expect-response-helpers";
+import { expectAnalyticsPropertiesMatchSnapshot } from "../helpers/expect-response-helpers.js";
 import TestAgent from "supertest/lib/agent";
 
 chai.should();

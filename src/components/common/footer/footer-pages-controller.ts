@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { PATH_NAMES } from "../../../app.constants";
-import { supportTypeIsGovService } from "../../../utils/request";
-
+import { PATH_NAMES } from "../../../app.constants.js";
+import { supportTypeIsGovService } from "../../../utils/request.js";
 export function privacyStatementGet(req: Request, res: Response): void {
   res.render("common/footer/privacy-statement.njk");
 }

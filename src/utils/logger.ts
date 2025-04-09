@@ -1,6 +1,6 @@
 import pino from "pino";
 import PinoHttp from "pino-http";
-import { getLogLevel } from "../config";
+import { getLogLevel } from "../config.js";
 import { Request, Response } from "express";
 
 const logger = pino({

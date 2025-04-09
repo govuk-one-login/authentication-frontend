@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { NextFunction, Request, Response } from "express";
-import { sinon } from "../../utils/test-utils";
-import { setHtmlLangMiddleware } from "../../../src/middleware/html-lang-middleware";
+import { sinon } from "../../utils/test-utils.js";
+import { setHtmlLangMiddleware } from "../../../src/middleware/html-lang-middleware.js";
 import { mockRequest, mockResponse } from "mock-req-res";
 
 describe("HTML-lang middleware", () => {

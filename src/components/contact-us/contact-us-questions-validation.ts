@@ -1,12 +1,12 @@
 import { CustomSanitizer, body, check } from "express-validator";
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
-import { ValidationChainFunc } from "../../types";
+import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
+import { ValidationChainFunc } from "../../types.js";
 import xss from "xss";
 import {
   CONTACT_US_FIELD_MAX_LENGTH,
   CONTACT_US_THEMES,
   CONTACT_US_COUNTRY_MAX_LENGTH,
-} from "../../app.constants";
+} from "../../app.constants.js";
 import {
   internationalPhoneNumberMustBeValid,
   ukPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
@@ -14,8 +14,7 @@ import {
   ukPhoneNumberMustHaveLengthWithoutSpacesInRange,
   internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
   internationalPhoneNumberMustHaveLengthWithoutSpacesInRange,
-} from "../common/phone-number/phone-number-validation";
-
+} from "../common/phone-number/phone-number-validation.js";
 const sanitizeFreeTextValue: CustomSanitizer = function sanitizeFreeTextValue(
   value: string
 ) {

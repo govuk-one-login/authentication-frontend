@@ -1,13 +1,13 @@
 import { describe } from "mocha";
-import { enterPasswordService } from "../enter-password-service";
-import { ApiResponseResult } from "../../../types";
-import { EnterPasswordServiceInterface, UserLoginResponse } from "../types";
+import { enterPasswordService } from "../enter-password-service.js";
+import { ApiResponseResult } from "../../../types.js";
+import { EnterPasswordServiceInterface, UserLoginResponse } from "../types.js";
 import { expect } from "chai";
 import { Request } from "express";
-import { Http } from "../../../utils/http";
-import { sinon } from "../../../../test/utils/test-utils";
-import { API_ENDPOINTS } from "../../../app.constants";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { Http } from "../../../utils/http.js";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import { API_ENDPOINTS } from "../../../app.constants.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { SinonStub } from "sinon";
 
 describe("enter-password-service", () => {

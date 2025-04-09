@@ -10,13 +10,13 @@ import {
   getApiKey,
   getFrontendApiBaseUrl,
   supportHttpKeepAlive,
-} from "../config";
-import { ApiResponseResult } from "../types";
-import { HTTP_STATUS_CODES } from "../app.constants";
-import { ApiError } from "./error";
+} from "../config.js";
+import { ApiResponseResult } from "../types.js";
+import { HTTP_STATUS_CODES } from "../app.constants.js";
+import { ApiError } from "./error.js";
 import { Request } from "express";
 import { createPersonalDataHeaders } from "@govuk-one-login/frontend-passthrough-headers";
-import { logger } from "./logger";
+import { logger } from "./logger.js";
 import { Agent } from "https";
 
 type CustomAxiosRequestHeaders = Partial<AxiosRequestHeaders>;

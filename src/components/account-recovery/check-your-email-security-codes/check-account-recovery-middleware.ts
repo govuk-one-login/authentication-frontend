@@ -1,8 +1,7 @@
-import { PATH_NAMES, MFA_METHOD_TYPE } from "../../../app.constants";
+import { PATH_NAMES, MFA_METHOD_TYPE } from "../../../app.constants.js";
 import { Request, Response, NextFunction } from "express";
-import { getNextPathAndUpdateJourney } from "../../common/constants";
-import { USER_JOURNEY_EVENTS } from "../../common/state-machine/state-machine";
-
+import { getNextPathAndUpdateJourney } from "../../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../../common/state-machine/state-machine.js";
 export function checkAccountRecoveryPermitted(
   req: Request,
   res: Response,

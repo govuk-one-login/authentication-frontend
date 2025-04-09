@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { showTestBanner } from "../config";
-
+import { showTestBanner } from "../config.js";
 export function environmentBannerMiddleware(
   req: Request,
   res: Response,

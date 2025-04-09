@@ -1,5 +1,5 @@
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils";
+import { request, sinon } from "../../../../test/utils/test-utils.js";
 import decache from "decache";
 
 import * as cheerio from "cheerio";
@@ -7,15 +7,14 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import nock from "nock";
 import {
   noInterventions,
   setupAccountInterventionsResponse,
-} from "../../../../test/helpers/account-interventions-helpers";
+} from "../../../../test/helpers/account-interventions-helpers.js";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 describe("Integration::reset password check email ", () => {
   let app: any;
   let baseApi: string;

@@ -1,13 +1,13 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import { Request, Response } from "express";
 
-import { authCodeGet } from "../auth-code-controller";
-import { AuthCodeServiceInterface } from "../types";
-import { CookieConsentServiceInterface } from "../../common/cookie-consent/types";
-import { COOKIE_CONSENT } from "../../../app.constants";
+import { authCodeGet } from "../auth-code-controller.js";
+import { AuthCodeServiceInterface } from "../types.js";
+import { CookieConsentServiceInterface } from "../../common/cookie-consent/types.js";
+import { COOKIE_CONSENT } from "../../../app.constants.js";
 import {
   mockRequest,
   mockResponse,

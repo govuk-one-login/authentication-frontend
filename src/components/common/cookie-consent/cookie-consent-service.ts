@@ -1,7 +1,6 @@
 import xss from "xss";
-import { COOKIE_CONSENT } from "../../../app.constants";
-import { CookieConsentModel, CookieConsentServiceInterface } from "./types";
-
+import { COOKIE_CONSENT } from "../../../app.constants.js";
+import { CookieConsentModel, CookieConsentServiceInterface } from "./types.js";
 export function cookieConsentService(): CookieConsentServiceInterface {
   const getCookieConsent = function (cookieConsentValue: string): any {
     const cookieConsent = xss(cookieConsentValue);

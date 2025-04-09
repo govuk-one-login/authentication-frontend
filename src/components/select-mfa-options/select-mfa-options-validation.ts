@@ -1,9 +1,8 @@
 import { body } from "express-validator";
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
-import { ValidationChainFunc } from "../../types";
+import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
+import { ValidationChainFunc } from "../../types.js";
 import { Request } from "express";
-import { isAccountRecoveryJourney } from "../../utils/request";
-
+import { isAccountRecoveryJourney } from "../../utils/request.js";
 export function validateMultiFactorAuthenticationRequest(): ValidationChainFunc {
   return [
     body("mfaOptions")

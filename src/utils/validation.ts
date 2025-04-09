@@ -4,9 +4,8 @@ import {
   PLACEHOLDER_REPLACEMENTS,
   CONTACT_US_FIELD_MAX_LENGTH,
   CONTACT_US_COUNTRY_MAX_LENGTH,
-} from "../app.constants";
-import { Error, PlaceholderReplacement } from "../types";
-
+} from "../app.constants.js";
+import { Error, PlaceholderReplacement } from "../types.js";
 export const isObjectEmpty = (obj: Record<string, unknown>): boolean => {
   return Object.keys(obj).length === 0;
 };
