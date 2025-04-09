@@ -1,5 +1,5 @@
-import pino from "pino";
-import PinoHttp from "pino-http";
+import { pino } from "pino";
+import { pinoHttp } from "pino-http";
 import { getLogLevel } from "../config.js";
 import { Request, Response } from "express";
 
@@ -43,7 +43,7 @@ export function getRefererFrom(referer: string): string {
   }
 }
 
-const loggerMiddleware = PinoHttp({
+const loggerMiddleware = pinoHttp({
   logger,
   wrapSerializers: false,
   autoLogging: {
