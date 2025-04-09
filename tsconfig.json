@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "ESNext",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "target": "es2020",
+    "target": "ESNext",
     "noImplicitAny": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "skipLibCheck": true,
     // do not check types in node_modules folder
     "sourceMap": true,
