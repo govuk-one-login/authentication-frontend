@@ -3,7 +3,7 @@ import path from "path";
 
 esbuild
   .build({
-    entryPoints: ["./src/**/*.ts"],
+    entryPoints: ["./src/server.ts"],
     outdir: "dist",
     format: "esm",
     platform: "node",
