@@ -122,7 +122,3 @@ async function fetchParametersFromSSM(
 
   return result;
 }
-
-module.exports = {
-  getRedisConfig,
-};
