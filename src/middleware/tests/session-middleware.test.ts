@@ -5,6 +5,7 @@ import sinonChai from "sinon-chai";
 import {
   getSessionIdMiddleware,
   initialiseSessionMiddleware,
+  requiredSessionFieldsMiddleware,
   sessionIsValid,
   validateSessionMiddleware,
 } from "../session-middleware";
@@ -127,33 +128,59 @@ describe("session-middleware", () => {
     });
   });
 
-  describe("validateSessionMiddleware", () => {
-    beforeEach(() => {
-      req = {
-        cookies: {},
-        headers: {},
-        session: {
-          id: "session-id",
-          destroy: sinon.stub().callsArg(0),
-        },
-        log: {
-          error: sinon.stub(),
-          info: sinon.stub(),
-        },
-        get: function (headerName: string) {
-          if (headerName === "Referrer") {
-            return this.headers["referer"] || this.headers["referrer"];
-          }
-        },
-      } as any;
-      res = {
-        locals: {},
-        status: sinon.stub().returns({
-          json: sinon.stub(),
-        }),
-      } as any;
-      next = sinon.fake();
+  const setupSession = () => {
+    req = {
+      cookies: {},
+      headers: {},
+      session: {
+        id: "session-id",
+        destroy: sinon.stub().callsArg(0),
+        user: {},
+      },
+      log: {
+        error: sinon.stub(),
+        info: sinon.stub(),
+      },
+      get: function (headerName: string) {
+        if (headerName === "Referrer") {
+          return this.headers["referer"] || this.headers["referrer"];
+        }
+      },
+    } as any;
+    res = {
+      locals: {},
+      status: sinon.stub().returns({
+        json: sinon.stub(),
+      }),
+    } as any;
+    next = sinon.fake();
+  };
+
+  describe("requiredSessionFieldsMiddleware", () => {
+    beforeEach(setupSession);
+
+    it("should call next if email present on session", () => {
+      req.session.user.email = "email@email";
+
+      requiredSessionFieldsMiddleware(req, res, next);
+
+      expect(req.session.destroy).to.not.have.been.called;
+      expect(res.status).to.not.have.been.called;
+      expect(next).to.have.been.calledOnce;
     });
+
+    it("should destroy session and call next with error if email missing from session", () => {
+      requiredSessionFieldsMiddleware(req, res, next);
+
+      expect(req.session.destroy).to.have.been.calledOnce;
+      expect(res.status).to.have.been.calledOnceWith(401);
+      expect(next).to.have.been.calledOnce;
+      expect(next.args[0][0]).to.be.an("error");
+    });
+  });
+
+  describe("validateSessionMiddleware", () => {
+    beforeEach(setupSession);
 
     it("should call next if all required session properties are present", () => {
       req.cookies.gs = "gs-cookie";
