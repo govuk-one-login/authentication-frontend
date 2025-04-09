@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { PATH_NAMES } from "../../../app.constants.js";
 export function passwordResetRequiredGet(req: Request, res: Response): void {
   req.session.user.withinForcedPasswordResetJourney = true;

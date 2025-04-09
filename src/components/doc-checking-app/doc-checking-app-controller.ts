@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types.js";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
 import { BadRequestError } from "../../utils/error.js";
-import { DocCheckingAppInterface } from "./types.js";
+import type { DocCheckingAppInterface } from "./types.js";
 import { getNextPathAndUpdateJourney } from "../common/constants.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { docCheckingAppService } from "./doc-checking-app-service.js";

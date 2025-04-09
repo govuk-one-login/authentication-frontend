@@ -3,7 +3,7 @@ import {
   getOrchToAuthExpectedAudience,
   getOrchToAuthExpectedClientId,
 } from "../../../config.js";
-import { Claims } from "../claims-config.js";
+import type { Claims } from "../claims-config.js";
 export function createMockClaims(): Claims {
   const timestamp = Math.floor(new Date().getTime() / 1000);
   return {

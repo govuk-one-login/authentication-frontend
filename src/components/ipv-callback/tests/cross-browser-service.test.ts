@@ -1,10 +1,11 @@
 import { describe } from "mocha";
 import { CrossBrowserService } from "../cross-browser-service.js";
-import { CrossBrowserRequest } from "../types.js";
+import type { CrossBrowserRequest } from "../types.js";
 import { expect } from "../../../../test/utils/test-utils.js";
 import { Http } from "../../../utils/http.js";
-import { Request } from "express";
-import sinon, { SinonStub } from "sinon";
+import type { Request } from "express";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
 import {
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,

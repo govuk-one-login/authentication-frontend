@@ -10,7 +10,7 @@ import {
 } from "../../../app.constants.js";
 import { ERROR_CODES } from "../../common/constants.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 const { testPhoneNumber, testRedactedPhoneNumber } = commonVariables;

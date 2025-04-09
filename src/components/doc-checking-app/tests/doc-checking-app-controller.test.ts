@@ -2,10 +2,11 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
-import { DocCheckingAppInterface } from "../types.js";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import type { DocCheckingAppInterface } from "../types.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { docCheckingAppGet } from "../doc-checking-app-controller.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";

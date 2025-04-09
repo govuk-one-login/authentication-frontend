@@ -1,4 +1,5 @@
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import sinon from "sinon";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import {
@@ -7,13 +8,13 @@ import {
   PATH_NAMES,
 } from "../../../app.constants.js";
 import { expect } from "chai";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   cannotChangeSecurityCodesGet,
   cannotChangeSecurityCodesPost,
   ipvCallbackGet,
 } from "../ipv-callback-controller.js";
-import {
+import type {
   ReverificationResultFailedResponse,
   ReverificationResultInterface,
 } from "../types.js";

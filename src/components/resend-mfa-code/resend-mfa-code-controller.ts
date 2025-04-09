@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types.js";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
 import { mfaService } from "../common/mfa/mfa-service.js";
-import { MfaServiceInterface } from "../common/mfa/types.js";
+import type { MfaServiceInterface } from "../common/mfa/types.js";
 import { sendMfaGeneric } from "../common/mfa/send-mfa-controller.js";
 import { JOURNEY_TYPE, PATH_NAMES } from "../../app.constants.js";
 import { pathWithQueryParam } from "../common/constants.js";

@@ -1,7 +1,8 @@
-import { ValidationChain } from "express-validator";
+import type { ValidationChain } from "express-validator";
 
-import express, { NextFunction, Request, Response } from "express";
-import { MFA_METHOD_TYPE } from "./app.constants";
+import type { NextFunction, Request, Response } from "express";
+import type express from "express";
+import { MFA_METHOD_TYPE } from "./app.constants.js";
 
 export type ExpressRouteFunc = (
   req: Request,

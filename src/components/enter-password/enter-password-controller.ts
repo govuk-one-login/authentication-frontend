@@ -1,12 +1,12 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types.js";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
 import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation.js";
 import { enterPasswordService } from "./enter-password-service.js";
-import { EnterPasswordServiceInterface } from "./types.js";
-import { MfaServiceInterface } from "../common/mfa/types.js";
+import type { EnterPasswordServiceInterface } from "./types.js";
+import type { MfaServiceInterface } from "../common/mfa/types.js";
 import { mfaService } from "../common/mfa/mfa-service.js";
 import {
   ERROR_CODES,
@@ -21,12 +21,12 @@ import {
   PATH_NAMES,
 } from "../../app.constants.js";
 import xss from "xss";
-import { EnterEmailServiceInterface } from "../enter-email/types.js";
+import type { EnterEmailServiceInterface } from "../enter-email/types.js";
 import { enterEmailService } from "../enter-email/enter-email-service.js";
 import { supportAccountInterventions } from "../../config.js";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
-import { AccountInterventionsInterface } from "../account-intervention/types.js";
+import type { AccountInterventionsInterface } from "../account-intervention/types.js";
 import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";

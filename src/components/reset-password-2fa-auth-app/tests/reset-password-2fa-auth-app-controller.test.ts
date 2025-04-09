@@ -1,14 +1,15 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import type { Request, Response } from "express";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants.js";
 import {
   resetPassword2FAAuthAppGet,
   resetPassword2FAAuthAppPost,
 } from "../reset-password-2fa-auth-app-controller.js";
-import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types.js";
+import type { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types.js";
 import { ERROR_CODES } from "../../common/constants.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";

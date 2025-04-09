@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   COOKIE_CONSENT,
   COOKIES_PREFERENCES_SET,
@@ -12,13 +12,13 @@ import {
   ERROR_CODES,
 } from "../common/constants.js";
 import { BadRequestError, QueryParamsError } from "../../utils/error.js";
-import { ApiResponseResult, ExpressRouteFunc } from "../../types.js";
-import { CookieConsentServiceInterface } from "../common/cookie-consent/types.js";
+import type { ApiResponseResult, ExpressRouteFunc } from "../../types.js";
+import type { CookieConsentServiceInterface } from "../common/cookie-consent/types.js";
 import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service.js";
 import { sanitize } from "../../utils/strings.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { authorizeService } from "./authorize-service.js";
-import {
+import type {
   AuthorizeServiceInterface,
   KmsDecryptionServiceInterface,
   JwtServiceInterface,
@@ -35,7 +35,7 @@ import {
   getOrchStubToAuthExpectedClientId,
 } from "../../config.js";
 import { logger } from "../../utils/logger.js";
-import { Claims } from "./claims-config.js";
+import type { Claims } from "./claims-config.js";
 import { isReauth, isUpliftRequired } from "../../utils/request.js";
 export function authorizeGet(
   authService: AuthorizeServiceInterface = authorizeService(),

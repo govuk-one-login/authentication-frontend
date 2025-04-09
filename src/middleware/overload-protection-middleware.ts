@@ -1,6 +1,5 @@
-import overloadProtection, {
-  HttpProtectionInstance,
-} from "overload-protection";
+import type { HttpProtectionInstance } from "overload-protection";
+import overloadProtection from "overload-protection";
 
 export const applyOverloadProtection = (
   isProduction: boolean

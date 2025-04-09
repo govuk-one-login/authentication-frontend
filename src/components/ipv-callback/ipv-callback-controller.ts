@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types.js";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
+import type { ReverificationResultInterface } from "./types.js";
 import {
   isReverificationResultFailedResponse,
   REVERIFICATION_ERROR_CODE,
-  ReverificationResultInterface,
 } from "./types.js";
 import { logger } from "../../utils/logger.js";
 import { reverificationResultService } from "./reverification-result-service.js";

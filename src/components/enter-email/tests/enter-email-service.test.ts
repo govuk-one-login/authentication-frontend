@@ -1,5 +1,6 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -7,7 +8,7 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper.js";
-import { EnterEmailServiceInterface } from "../types.js";
+import type { EnterEmailServiceInterface } from "../types.js";
 import { enterEmailService } from "../enter-email-service.js";
 import { Http } from "../../../utils/http.js";
 import {

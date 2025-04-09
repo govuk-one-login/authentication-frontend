@@ -1,6 +1,7 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
-import { MfaResetAuthorizeInterface } from "../types.js";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
+import type { MfaResetAuthorizeInterface } from "../types.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,

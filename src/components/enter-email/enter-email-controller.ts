@@ -1,24 +1,27 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
   WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS,
 } from "../../app.constants.js";
-import { ExpressRouteFunc } from "../../types.js";
+import type { ExpressRouteFunc } from "../../types.js";
 import { enterEmailService } from "./enter-email-service.js";
-import { EnterEmailServiceInterface, LockoutInformation } from "./types.js";
+import type {
+  EnterEmailServiceInterface,
+  LockoutInformation,
+} from "./types.js";
+import type { SecurityCodeErrorType } from "../common/constants.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
-  SecurityCodeErrorType,
 } from "../common/constants.js";
 import { BadRequestError } from "../../utils/error.js";
-import { SendNotificationServiceInterface } from "../common/send-notification/types.js";
+import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import xss from "xss";
-import { CheckReauthServiceInterface } from "../check-reauth-users/types.js";
+import type { CheckReauthServiceInterface } from "../check-reauth-users/types.js";
 import { checkReauthUsersService } from "../check-reauth-users/check-reauth-users-service.js";
 import { supportReauthentication } from "../../config.js";
 import {

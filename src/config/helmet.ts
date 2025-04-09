@@ -1,5 +1,5 @@
-import { HelmetOptions } from "helmet";
-import { Request, Response } from "express";
+import type { HelmetOptions } from "helmet";
+import type { Request, Response } from "express";
 
 export const helmetConfiguration: HelmetOptions = {
   contentSecurityPolicy: {

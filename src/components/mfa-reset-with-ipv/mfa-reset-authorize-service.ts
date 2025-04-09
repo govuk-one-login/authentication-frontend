@@ -1,16 +1,16 @@
-import {
+import type {
   MfaResetAuthorizeInterface,
   MfaResetAuthorizeResponse,
 } from "./types.js";
+import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
-  Http,
 } from "../../utils/http.js";
-import { ApiResponseResult } from "../../types.js";
+import type { ApiResponseResult } from "../../types.js";
 import { API_ENDPOINTS } from "../../app.constants.js";
-import { Request } from "express";
+import type { Request } from "express";
 
 export function mfaResetAuthorizeService(
   axios: Http = http

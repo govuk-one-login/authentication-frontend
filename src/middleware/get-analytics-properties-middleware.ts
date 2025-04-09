@@ -1,5 +1,5 @@
 import { getRequestTaxonomy } from "../utils/taxonomy.js";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { getContentId } from "../utils/contentId.js";
 type CallbackFunction = (err: Error, html: string) => void;
 

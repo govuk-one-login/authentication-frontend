@@ -1,6 +1,7 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
-import { ResetPasswordServiceInterface } from "../types.js";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
+import type { ResetPasswordServiceInterface } from "../types.js";
 import { resetPasswordService } from "../reset-password-service.js";
 import { Http } from "../../../utils/http.js";
 import {

@@ -1,5 +1,6 @@
 import { sinon } from "../utils/test-utils.js";
-import { mockRequest, RequestOutput } from "mock-req-res";
+import type { RequestOutput } from "mock-req-res";
+import { mockRequest } from "mock-req-res";
 
 export interface MockRequestOptions {
   headers?: any;

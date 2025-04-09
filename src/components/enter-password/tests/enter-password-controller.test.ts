@@ -2,17 +2,18 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   enterPasswordGet,
   enterPasswordPost,
   enterSignInRetryBlockedGet,
 } from "../enter-password-controller.js";
 import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants.js";
-import { EnterPasswordServiceInterface } from "../types.js";
-import { MfaServiceInterface } from "../../common/mfa/types.js";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { EnterEmailServiceInterface } from "../../enter-email/types.js";
+import type { EnterPasswordServiceInterface } from "../types.js";
+import type { MfaServiceInterface } from "../../common/mfa/types.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import type { EnterEmailServiceInterface } from "../../enter-email/types.js";
 import { ERROR_CODES } from "../../common/constants.js";
 import * as journey from "../../common/journey/journey.js";
 import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers.js";

@@ -1,4 +1,5 @@
-import { createMachine, EventType, StateValue } from "xstate";
+import type { EventType, StateValue } from "xstate";
+import { createMachine } from "xstate";
 import {
   MFA_METHOD_TYPE,
   OIDC_PROMPT,

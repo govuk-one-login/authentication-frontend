@@ -10,7 +10,8 @@ import {
 } from "../../../src/app.constants.js";
 import { createMockRequest } from "../../helpers/mock-request-helper.js";
 import headersLibrary from "@govuk-one-login/frontend-passthrough-headers";
-import sinon, { SinonSpy } from "sinon";
+import type { SinonSpy } from "sinon";
+import sinon from "sinon";
 import { commonVariables } from "../../helpers/common-test-variables.js";
 describe("getInternalRequestConfigWithSecurityHeaders", () => {
   const req = createMockRequest(API_ENDPOINTS.START);

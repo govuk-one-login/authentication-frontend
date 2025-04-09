@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
-import { ExpressRouteFunc } from "../../types.js";
-import { SendNotificationServiceInterface } from "../common/send-notification/types.js";
+import type { ExpressRouteFunc } from "../../types.js";
+import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
 import { BadRequestError } from "../../utils/error.js";
 import {

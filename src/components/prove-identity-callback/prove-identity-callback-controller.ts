@@ -1,9 +1,7 @@
-import { NextFunction, Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types.js";
-import {
-  IdentityProcessingStatus,
-  ProveIdentityCallbackServiceInterface,
-} from "./types.js";
+import type { NextFunction, Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
+import type { ProveIdentityCallbackServiceInterface } from "./types.js";
+import { IdentityProcessingStatus } from "./types.js";
 import { proveIdentityCallbackService } from "./prove-identity-callback-service.js";
 import {
   HTTP_STATUS_CODES,

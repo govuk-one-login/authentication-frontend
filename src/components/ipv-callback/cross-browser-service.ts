@@ -1,14 +1,14 @@
-import {
+import type {
   CrossBrowserInterface,
   CrossBrowserRequest,
   IDReverificationStateResponse,
 } from "./types.js";
-import { Request } from "express";
+import type { Request } from "express";
 import { API_ENDPOINTS } from "../../app.constants.js";
+import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
-  Http,
   http,
 } from "../../utils/http.js";
 import { BadRequestError } from "../../utils/error.js";

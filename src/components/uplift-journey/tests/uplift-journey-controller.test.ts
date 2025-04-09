@@ -2,12 +2,13 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
-import { MfaServiceInterface } from "../../common/mfa/types.js";
+import type { MfaServiceInterface } from "../../common/mfa/types.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { upliftJourneyGet } from "../uplift-journey-controller.js";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 describe("uplift journey controller", () => {
   let req: RequestOutput;

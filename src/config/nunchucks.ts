@@ -1,6 +1,6 @@
-import express from "express";
+import type express from "express";
 import * as nunjucks from "nunjucks";
-import { Environment } from "nunjucks";
+import type { Environment } from "nunjucks";
 import i18next from "i18next";
 import { returnLastCharactersOnly } from "../utils/phone-number.js";
 import { getNodeEnv } from "../config.js";

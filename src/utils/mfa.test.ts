@@ -1,5 +1,6 @@
 import { expect } from "../../test/utils/test-utils";
-import { MfaMethod, MfaMethodPriorityIdentifier } from "../types";
+import type { MfaMethod } from "../types";
+import { MfaMethodPriorityIdentifier } from "../types";
 import { MFA_METHOD_TYPE } from "../app.constants";
 import {
   getDefaultSmsMfaMethod,

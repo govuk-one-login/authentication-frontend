@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { NextFunction } from "express";
+import type { NextFunction } from "express";
 import { sinon } from "../../utils/test-utils.js";
 import { PATH_NAMES } from "../../../src/app.constants.js";
 import { mockResponse } from "mock-req-res";

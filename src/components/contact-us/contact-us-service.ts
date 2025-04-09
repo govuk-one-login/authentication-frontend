@@ -1,8 +1,6 @@
-import {
-  defaultSmartAgentClient,
-  SmartAgentService,
-} from "../../utils/smartAgent.js";
-import {
+import type { SmartAgentService } from "../../utils/smartAgent.js";
+import { defaultSmartAgentClient } from "../../utils/smartAgent.js";
+import type {
   ContactForm,
   Descriptions,
   OptionalData,

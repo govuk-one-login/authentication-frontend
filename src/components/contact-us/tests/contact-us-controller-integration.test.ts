@@ -4,8 +4,8 @@ import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
 import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants.js";
-import { NextFunction, Request, Response } from "express";
-import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
+import type { NextFunction, Request, Response } from "express";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 describe("Integration:: contact us - public user", () => {
   let token: string | string[];

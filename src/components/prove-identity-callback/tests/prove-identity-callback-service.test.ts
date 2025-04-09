@@ -1,5 +1,6 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -8,7 +9,7 @@ import {
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper.js";
 import { Http } from "../../../utils/http.js";
-import { ProveIdentityCallbackServiceInterface } from "../types.js";
+import type { ProveIdentityCallbackServiceInterface } from "../types.js";
 import { proveIdentityCallbackService } from "../prove-identity-callback-service.js";
 import {
   API_ENDPOINTS,
@@ -19,8 +20,8 @@ import {
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { expect } from "chai";
-import { CookieConsentServiceInterface } from "../../common/cookie-consent/types.js";
-import { Request } from "express";
+import type { CookieConsentServiceInterface } from "../../common/cookie-consent/types.js";
+import type { Request } from "express";
 
 describe("prove identity callback service", () => {
   const httpInstance = new Http();

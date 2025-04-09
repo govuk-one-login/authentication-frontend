@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { expect, sinon } from "../../../../../test/utils/test-utils.js";
 import { describe } from "mocha";
 import { mockRequest, mockResponse } from "mock-req-res";

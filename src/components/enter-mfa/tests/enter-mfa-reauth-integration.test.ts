@@ -3,19 +3,19 @@ import { request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
-import { AxiosResponse } from "axios";
+import type { AxiosResponse } from "axios";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants.js";
 import { ERROR_CODES } from "../../common/constants.js";
-import {
+import type {
   AccountRecoveryInterface,
   AccountRecoveryResponse,
 } from "../../common/account-recovery/types.js";
 import { createApiResponse } from "../../../utils/http.js";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 

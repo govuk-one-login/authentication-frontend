@@ -1,5 +1,6 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -8,7 +9,7 @@ import {
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper.js";
 import { Http } from "../../../utils/http.js";
-import { CreatePasswordServiceInterface } from "../types.js";
+import type { CreatePasswordServiceInterface } from "../types.js";
 import { createPasswordService } from "../create-password-service.js";
 import {
   API_ENDPOINTS,

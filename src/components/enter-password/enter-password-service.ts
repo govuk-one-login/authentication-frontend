@@ -1,17 +1,17 @@
+import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
-  Http,
   http,
 } from "../../utils/http.js";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  JOURNEY_TYPE,
-} from "../../app.constants.js";
-import { EnterPasswordServiceInterface, UserLoginResponse } from "./types.js";
-import { ApiResponseResult } from "../../types.js";
-import { Request } from "express";
+import type { JOURNEY_TYPE } from "../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants.js";
+import type {
+  EnterPasswordServiceInterface,
+  UserLoginResponse,
+} from "./types.js";
+import type { ApiResponseResult } from "../../types.js";
+import type { Request } from "express";
 
 export function enterPasswordService(
   axios: Http = http

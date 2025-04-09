@@ -10,7 +10,7 @@ import {
 } from "../../../app.constants.js";
 import nock from "nock";
 import { ERROR_CODES } from "../../common/constants.js";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 describe("Integration::reset password check email ", () => {
   let app: any;

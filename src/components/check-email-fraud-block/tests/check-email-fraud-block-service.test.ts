@@ -1,7 +1,8 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
 import { Http } from "../../../utils/http.js";
-import { CheckEmailFraudBlockInterface } from "../types.js";
+import type { CheckEmailFraudBlockInterface } from "../types.js";
 import { checkEmailFraudBlockService } from "../check-email-fraud-block-service.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,

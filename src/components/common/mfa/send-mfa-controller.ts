@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
-import {
+import type { Request, Response } from "express";
+import type {
   ApiResponseResult,
   DefaultApiResponse,
   ExpressRouteFunc,
 } from "../../../types.js";
-import { MfaServiceInterface } from "./types.js";
+import type { MfaServiceInterface } from "./types.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,

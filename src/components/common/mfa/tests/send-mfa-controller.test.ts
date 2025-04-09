@@ -2,12 +2,13 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 import { sendMfaGeneric } from "../send-mfa-controller.js";
-import { MfaServiceInterface } from "../types.js";
+import type { MfaServiceInterface } from "../types.js";
 import { JOURNEY_TYPE, PATH_NAMES } from "../../../../app.constants.js";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import * as journey from "../../journey/journey.js";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 describe("send mfa controller", () => {

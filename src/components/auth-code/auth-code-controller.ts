@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types.js";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
 import { authCodeService } from "./auth-code-service.js";
-import { AuthCodeServiceInterface } from "./types.js";
+import type { AuthCodeServiceInterface } from "./types.js";
 import { BadRequestError } from "../../utils/error.js";
-import { CookieConsentServiceInterface } from "../common/cookie-consent/types.js";
+import type { CookieConsentServiceInterface } from "../common/cookie-consent/types.js";
 import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service.js";
 import { sanitize } from "../../utils/strings.js";
 import { COOKIE_CONSENT } from "../../app.constants.js";

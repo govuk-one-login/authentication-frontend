@@ -1,18 +1,18 @@
-import {
+import type {
   AuthorizeServiceInterface,
   StartAuthResponse,
   StartRequestParameters,
 } from "./types.js";
-import { ApiResponseResult } from "../../types.js";
+import type { ApiResponseResult } from "../../types.js";
 import { API_ENDPOINTS } from "../../app.constants.js";
+import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
-  Http,
 } from "../../utils/http.js";
 import { supportReauthentication } from "../../config.js";
-import { Request } from "express";
+import type { Request } from "express";
 
 export function authorizeService(
   axios: Http = http

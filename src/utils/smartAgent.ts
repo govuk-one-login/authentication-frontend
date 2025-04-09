@@ -1,6 +1,7 @@
 import axios from "axios";
-import smartAgentConfig, { SmartAgentConfig } from "../config/smartAgent.js";
-import { SmartAgentTicket } from "../components/contact-us/types.js";
+import type { SmartAgentConfig } from "../config/smartAgent.js";
+import smartAgentConfig from "../config/smartAgent.js";
+import type { SmartAgentTicket } from "../components/contact-us/types.js";
 import { logger } from "./logger.js";
 export class SmartAgentService {
   private readonly webformID: string;

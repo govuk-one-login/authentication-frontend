@@ -1,6 +1,6 @@
+import type { Taxonomy } from "./taxonomy.js";
 import {
   getRequestTaxonomy,
-  Taxonomy,
   TaxonomyLevel1,
   TaxonomyLevel2,
   TaxonomyLevel3,
@@ -8,10 +8,10 @@ import {
   TaxonomyLevel5,
 } from "./taxonomy.js";
 import { describe } from "mocha";
-import { Request } from "express";
+import type { Request } from "express";
 import { expect } from "chai";
 import { CONTACT_US_THEMES, PATH_NAMES } from "../app.constants.js";
-import { ParsedQs } from "qs";
+import type { ParsedQs } from "qs";
 
 type RequestTaxonomyExpectation = {
   request: Request;

@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import QRCode from "qrcode";
-import { ExpressRouteFunc } from "../../types.js";
+import type { ExpressRouteFunc } from "../../types.js";
 import {
   ERROR_CODES,
   getNextPathAndUpdateJourney,
@@ -16,7 +16,7 @@ import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation.js";
-import { SendNotificationServiceInterface } from "../common/send-notification/types.js";
+import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
 import {
   JOURNEY_TYPE,
@@ -24,7 +24,7 @@ import {
   NOTIFICATION_TYPE,
 } from "../../app.constants.js";
 import xss from "xss";
-import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types.js";
+import type { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types.js";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service.js";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import {

@@ -1,4 +1,4 @@
-import { Request } from "express";
+import type { Request } from "express";
 import { CONTACT_US_THEMES, PATH_NAMES } from "../app.constants.js";
 import {
   isAccountRecoveryJourneyAndEnabled,

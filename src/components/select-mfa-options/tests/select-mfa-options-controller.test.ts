@@ -1,13 +1,14 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants.js";
 import {
   getSecurityCodesGet,
   getSecurityCodesPost,
 } from "../select-mfa-options-controller.js";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 describe("select-mfa-options controller", () => {
   let req: RequestOutput;

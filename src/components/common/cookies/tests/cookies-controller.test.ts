@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 import { cookiesGet, cookiesPost } from "../cookies-controller.js";
 import {
@@ -11,7 +11,8 @@ import {
   COOKIES_PREFERENCES_SET,
   PATH_NAMES,
 } from "../../../../app.constants.js";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import { createMockCookieConsentService } from "../../../../../test/helpers/mock-cookie-consent-service-helper.js";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 describe("cookies controller", () => {

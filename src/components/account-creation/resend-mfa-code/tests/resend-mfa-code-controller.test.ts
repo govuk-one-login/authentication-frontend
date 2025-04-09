@@ -2,15 +2,16 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 import {
   resendMfaCodeGet,
   resendMfaCodePost,
 } from "../resend-mfa-code-controller.js";
 import { PATH_NAMES } from "../../../../app.constants.js";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { SendNotificationServiceInterface } from "../../../common/send-notification/types.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import type { SendNotificationServiceInterface } from "../../../common/send-notification/types.js";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
 describe("resend mfa controller", () => {

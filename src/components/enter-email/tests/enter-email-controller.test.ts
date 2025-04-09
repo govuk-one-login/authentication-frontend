@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   enterEmailCreateGet,
   enterEmailCreatePost,
@@ -10,12 +10,16 @@ import {
   enterEmailGet,
   enterEmailPost,
 } from "../enter-email-controller.js";
-import { EnterEmailServiceInterface, LockoutInformation } from "../types.js";
+import type {
+  EnterEmailServiceInterface,
+  LockoutInformation,
+} from "../types.js";
 import { JOURNEY_TYPE, ERROR_CODES } from "../../common/constants.js";
 import { PATH_NAMES } from "../../../app.constants.js";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { CheckReauthServiceInterface } from "../../check-reauth-users/types.js";
+import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import type { CheckReauthServiceInterface } from "../../check-reauth-users/types.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { strict as assert } from "assert";

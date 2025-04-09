@@ -1,5 +1,6 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
 import { Http } from "../../../../utils/http.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
@@ -15,7 +16,7 @@ import {
   NOTIFICATION_TYPE,
   PATH_NAMES,
 } from "../../../../app.constants.js";
-import { VerifyCodeInterface } from "../types.js";
+import type { VerifyCodeInterface } from "../types.js";
 import { codeService } from "../verify-code-service.js";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";

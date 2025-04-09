@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { createServiceRedirectErrorUrl } from "../utils/error.js";
 import { IPV_ERROR_CODES, OIDC_ERRORS } from "../app.constants.js";
 import { addSecondsToDate } from "../utils/date.js";

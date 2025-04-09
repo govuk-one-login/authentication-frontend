@@ -1,22 +1,22 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   JOURNEY_TYPE,
   MFA_METHOD_TYPE,
   NOTIFICATION_TYPE,
   PATH_NAMES,
 } from "../../app.constants.js";
-import { ExpressRouteFunc } from "../../types.js";
+import type { ExpressRouteFunc } from "../../types.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
   pathWithQueryParam,
 } from "../common/constants.js";
-import { SendNotificationServiceInterface } from "../common/send-notification/types.js";
+import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import xss from "xss";
-import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types.js";
+import type { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types.js";
 import {
   formatValidationError,
   renderBadRequest,

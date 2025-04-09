@@ -1,13 +1,13 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "src/types";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "src/types.js";
 import xss from "xss";
-import { MfaServiceInterface } from "../common/mfa/types.js";
+import type { MfaServiceInterface } from "../common/mfa/types.js";
 import { mfaService } from "../common/mfa/mfa-service.js";
+import type { SecurityCodeErrorType } from "../common/constants.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   pathWithQueryParam,
-  SecurityCodeErrorType,
 } from "../common/constants.js";
 import { BadRequestError } from "../../utils/error.js";
 import {
@@ -16,9 +16,9 @@ import {
   PATH_NAMES,
 } from "../../app.constants.js";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
-import { VerifyCodeInterface } from "../common/verify-code/types.js";
+import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
-import { AccountInterventionsInterface } from "../account-intervention/types.js";
+import type { AccountInterventionsInterface } from "../account-intervention/types.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import { isLocked } from "../../utils/lock-helper.js";

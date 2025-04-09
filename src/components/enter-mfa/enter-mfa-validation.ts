@@ -1,5 +1,5 @@
 import { validateBodyMiddlewareUpliftTemplate } from "../../middleware/form-validation-middleware.js";
-import { ValidationChainFunc } from "../../types.js";
+import type { ValidationChainFunc } from "../../types.js";
 import { validateCode } from "../common/verify-code/verify-code-validation.js";
 import {
   ENTER_MFA_DEFAULT_TEMPLATE_NAME,

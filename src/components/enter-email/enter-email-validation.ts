@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 import { validateBodyMiddlewareReauthTemplate } from "../../middleware/form-validation-middleware.js";
-import { ValidationChainFunc } from "../../types.js";
+import type { ValidationChainFunc } from "../../types.js";
 import { RE_ENTER_EMAIL_TEMPLATE } from "./enter-email-controller.js";
 import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message.js";
 import { WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS } from "../../app.constants.js";

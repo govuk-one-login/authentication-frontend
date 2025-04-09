@@ -3,21 +3,21 @@ import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
-import { AxiosResponse } from "axios";
+import type { AxiosResponse } from "axios";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants.js";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
-import {
+import type {
   AccountRecoveryInterface,
   AccountRecoveryResponse,
 } from "../../common/account-recovery/types.js";
 import { createApiResponse } from "../../../utils/http.js";
-import { NextFunction, Request, Response } from "express";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
-import { DefaultApiResponse } from "../../../types.js";
+import type { NextFunction, Request, Response } from "express";
+import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
+import type { DefaultApiResponse } from "../../../types.js";
 describe("Integration:: enter authenticator app code", () => {
   let token: string | string[];
   let cookies: string;
