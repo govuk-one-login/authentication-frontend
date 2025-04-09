@@ -1,5 +1,5 @@
 import { describe } from "mocha";
-import { AxiosResponse } from "axios";
+import type { AxiosResponse } from "axios";
 import {
   expect,
   sinon,
@@ -17,14 +17,14 @@ import {
   ERROR_CODES,
   SecurityCodeErrorType,
 } from "../../../common/constants.js";
-import { SendNotificationServiceInterface } from "../../../common/send-notification/types.js";
-import { DefaultApiResponse } from "../../../../types.js";
+import type { SendNotificationServiceInterface } from "../../../common/send-notification/types.js";
+import type { DefaultApiResponse } from "../../../../types.js";
 import { createApiResponse } from "../../../../utils/http.js";
-import {
+import type {
   AccountInterventionsInterface,
   AccountInterventionStatus,
 } from "../../../account-intervention/types.js";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper.js";
 describe("Integration:: check your email security codes", () => {
   let token: string | string[];

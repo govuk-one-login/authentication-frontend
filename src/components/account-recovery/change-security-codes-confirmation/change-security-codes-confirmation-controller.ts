@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { MFA_METHOD_TYPE } from "../../../app.constants.js";
-import { ExpressRouteFunc } from "../../../types.js";
+import type { ExpressRouteFunc } from "../../../types.js";
 import { USER_JOURNEY_EVENTS } from "../../common/state-machine/state-machine.js";
 import { getNextPathAndUpdateJourney } from "../../common/constants.js";
 import { supportMfaResetWithIpv } from "../../../config.js";

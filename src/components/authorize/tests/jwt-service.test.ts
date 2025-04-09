@@ -5,7 +5,8 @@ import {
   JwtValidationError,
   JwtClaimsValueError,
 } from "../../../utils/error.js";
-import { Claims, getKnownClaims } from "../claims-config.js";
+import type { Claims } from "../claims-config.js";
+import { getKnownClaims } from "../claims-config.js";
 import {
   createJwt,
   createMockClaims,
@@ -13,12 +14,8 @@ import {
   getWrongPrivateKey,
   getPublicKey,
 } from "./test-data.js";
-import {
-  KeyLike,
-  generateKeyPair,
-  exportSPKI,
-  GenerateKeyPairResult,
-} from "jose";
+import type { KeyLike, GenerateKeyPairResult } from "jose";
+import { generateKeyPair, exportSPKI } from "jose";
 
 describe("JWT service", () => {
   let claims: Claims;

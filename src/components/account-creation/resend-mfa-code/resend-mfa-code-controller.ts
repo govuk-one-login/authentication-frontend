@@ -1,7 +1,7 @@
 import xss from "xss";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
-import { ExpressRouteFunc } from "../../../types.js";
+import type { ExpressRouteFunc } from "../../../types.js";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
@@ -11,7 +11,7 @@ import {
   getErrorPathByCode,
   pathWithQueryParam,
 } from "../../common/constants.js";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
+import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
 import { sendNotificationService } from "../../common/send-notification/send-notification-service.js";
 import { BadRequestError } from "../../../utils/error.js";
 import { isLocked } from "../../../utils/lock-helper.js";

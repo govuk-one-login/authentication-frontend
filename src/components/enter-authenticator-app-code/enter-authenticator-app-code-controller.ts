@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import {
+import type { Request, Response } from "express";
+import type {
   ApiResponseResult,
   DefaultApiResponse,
   ExpressRouteFunc,
@@ -17,8 +17,8 @@ import {
   supportMfaResetWithIpv,
   supportReauthentication,
 } from "../../config.js";
-import { VerifyMfaCodeInterface } from "./types.js";
-import { AccountRecoveryInterface } from "../common/account-recovery/types.js";
+import type { VerifyMfaCodeInterface } from "./types.js";
+import type { AccountRecoveryInterface } from "../common/account-recovery/types.js";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service.js";
 import { BadRequestError, ReauthJourneyError } from "../../utils/error.js";
 import {

@@ -1,13 +1,13 @@
+import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
-  Http,
   http,
 } from "../../utils/http.js";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants.js";
-import { CheckReauthServiceInterface } from "./types.js";
-import { ApiResponseResult, DefaultApiResponse } from "../../types.js";
-import { Request } from "express";
+import type { CheckReauthServiceInterface } from "./types.js";
+import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
+import type { Request } from "express";
 
 export function checkReauthUsersService(
   axios: Http = http

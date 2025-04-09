@@ -4,8 +4,8 @@ import { Http } from "../../../utils/http.js";
 import { authorizeService } from "../authorize-service.js";
 import { sinon } from "../../../../test/utils/test-utils.js";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
-import { SinonStub } from "sinon";
-import { AuthorizeServiceInterface } from "../types.js";
+import type { SinonStub } from "sinon";
+import type { AuthorizeServiceInterface } from "../types.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import {
   expectedHeadersFromCommonVarsWithSecurityHeaders,

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   pathWithQueryParam,
   SECURITY_CODE_ERROR,
@@ -12,7 +12,7 @@ import {
   getPasswordResetCodeEnteredWrongBlockDurationInMinutes,
   getReducedBlockDurationInMinutes,
 } from "../../config.js";
-import { UserSession } from "../../types.js";
+import type { UserSession } from "../../types.js";
 import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper.js";
 export function securityCodeInvalidGet(req: Request, res: Response): void {
   const actionType = req.query.actionType as SecurityCodeErrorType;

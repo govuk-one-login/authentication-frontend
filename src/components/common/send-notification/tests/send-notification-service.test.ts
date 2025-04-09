@@ -1,5 +1,6 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
 import { Http } from "../../../../utils/http.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
@@ -13,7 +14,7 @@ import {
   NOTIFICATION_TYPE,
   PATH_NAMES,
 } from "../../../../app.constants.js";
-import { SendNotificationServiceInterface } from "../types.js";
+import type { SendNotificationServiceInterface } from "../types.js";
 import { sendNotificationService } from "../send-notification-service.js";
 import { JOURNEY_TYPE } from "../../constants.js";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";

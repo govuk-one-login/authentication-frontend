@@ -1,5 +1,5 @@
 import chai, { expect } from "chai";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import { channelMiddleware } from "../channel-middleware.js";

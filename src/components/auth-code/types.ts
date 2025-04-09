@@ -1,10 +1,10 @@
-import {
+import type {
   ApiResponseResult,
   DefaultApiResponse,
   UserSession,
   UserSessionClient,
 } from "../../types.js";
-import { Request } from "express";
+import type { Request } from "express";
 
 export interface AuthCodeResponse extends DefaultApiResponse {
   location: string;

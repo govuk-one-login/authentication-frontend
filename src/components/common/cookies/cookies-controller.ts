@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { cookieConsentService } from "../cookie-consent/cookie-consent-service.js";
 import { sanitize } from "../../../utils/strings.js";
 import {

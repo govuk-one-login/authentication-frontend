@@ -1,7 +1,8 @@
 import { PATH_NAMES } from "../../../app.constants.js";
 import { describe } from "mocha";
 import { request, sinon } from "../../../../test/utils/test-utils.js";
-import express, { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
+import type express from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import decache from "decache";
 import { IdentityProcessingStatus } from "../types.js";

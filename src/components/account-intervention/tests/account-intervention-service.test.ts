@@ -1,6 +1,7 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
-import { AccountInterventionsInterface } from "../types.js";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
+import type { AccountInterventionsInterface } from "../types.js";
 import { accountInterventionService } from "../account-intervention-service.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,

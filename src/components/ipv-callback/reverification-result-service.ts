@@ -1,16 +1,16 @@
-import {
+import type {
   ReverificationResultInterface,
   ReverificationResultResponse,
 } from "./types.js";
+import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
-  Http,
 } from "../../utils/http.js";
-import { ApiResponseResult, DefaultApiResponse } from "../../types.js";
+import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
 import { API_ENDPOINTS } from "../../app.constants.js";
-import { Request } from "express";
+import type { Request } from "express";
 
 export function reverificationResultService(
   axios: Http = http

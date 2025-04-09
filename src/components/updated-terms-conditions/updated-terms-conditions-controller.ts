@@ -1,11 +1,9 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types.js";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
 import { BadRequestError } from "../../utils/error.js";
 import { EXTERNAL_LINKS, PATH_NAMES } from "../../app.constants.js";
-import {
-  UpdateProfileServiceInterface,
-  UpdateType,
-} from "../common/update-profile/types.js";
+import type { UpdateProfileServiceInterface } from "../common/update-profile/types.js";
+import { UpdateType } from "../common/update-profile/types.js";
 import { updateProfileService } from "../common/update-profile/update-profile-service.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { getNextPathAndUpdateJourney } from "../common/constants.js";

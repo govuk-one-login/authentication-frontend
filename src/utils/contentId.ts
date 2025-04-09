@@ -1,5 +1,5 @@
-import { Request } from "express";
-import { ContentIdFunction } from "../types.js";
+import type { Request } from "express";
+import type { ContentIdFunction } from "../types.js";
 import { PATH_NAMES } from "../app.constants.js";
 import {
   isReauth,

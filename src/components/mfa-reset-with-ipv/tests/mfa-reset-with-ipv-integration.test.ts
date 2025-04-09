@@ -3,7 +3,7 @@ import { request, sinon } from "../../../../test/utils/test-utils.js";
 import decache from "decache";
 import { API_ENDPOINTS, CHANNEL, PATH_NAMES } from "../../../app.constants.js";
 import nock from "nock";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import supertest from "supertest";
 
 const IPV_DUMMY_URL =

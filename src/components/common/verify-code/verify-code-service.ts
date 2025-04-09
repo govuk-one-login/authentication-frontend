@@ -1,13 +1,13 @@
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants.js";
+import type { Http } from "../../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
-  Http,
 } from "../../../utils/http.js";
-import { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
-import { VerifyCodeInterface } from "./types.js";
-import { Request } from "express";
+import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
+import type { VerifyCodeInterface } from "./types.js";
+import type { Request } from "express";
 
 export function codeService(axios: Http = http): VerifyCodeInterface {
   const verifyCode = async function (

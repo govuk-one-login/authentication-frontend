@@ -1,5 +1,5 @@
-import { ApiResponseResult } from "../../src/types.js";
-import { SinonStub } from "sinon";
+import type { ApiResponseResult } from "../../src/types.js";
+import type { SinonStub } from "sinon";
 import { expect } from "chai";
 import { sinon } from "../utils/test-utils.js";
 import { commonVariables } from "./common-test-variables.js";

@@ -9,7 +9,7 @@ import {
 import decache from "decache";
 import nock from "nock";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 describe("Integration::2fa sms (in reset password flow)", () => {
   let app: any;

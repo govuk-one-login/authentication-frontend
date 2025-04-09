@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { healthcheckGet } from "../healthcheck-controller.js";
 import { HTTP_STATUS_CODES } from "../../../app.constants.js";
 describe("healthcheck controller", () => {

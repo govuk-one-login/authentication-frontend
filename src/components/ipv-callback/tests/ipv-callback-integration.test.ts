@@ -7,7 +7,8 @@ import {
   MFA_METHOD_TYPE,
   PATH_NAMES,
 } from "../../../app.constants.js";
-import express, { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
+import type express from "express";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";

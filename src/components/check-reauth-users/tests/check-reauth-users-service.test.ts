@@ -2,9 +2,9 @@ import { describe } from "mocha";
 import { Http } from "../../../utils/http.js";
 import { sinon } from "../../../../test/utils/test-utils.js";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
-import { SinonStub } from "sinon";
+import type { SinonStub } from "sinon";
 import { checkReauthUsersService } from "../check-reauth-users-service.js";
-import { CheckReauthServiceInterface } from "../types.js";
+import type { CheckReauthServiceInterface } from "../types.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,

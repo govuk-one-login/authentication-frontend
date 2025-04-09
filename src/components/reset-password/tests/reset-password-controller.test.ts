@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 import {
   resetPasswordGet,
@@ -10,10 +10,11 @@ import {
   resetPasswordRequestGet,
   resetPasswordRequiredGet,
 } from "../reset-password-controller.js";
-import { ResetPasswordServiceInterface } from "../types.js";
+import type { ResetPasswordServiceInterface } from "../types.js";
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants.js";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { EnterPasswordServiceInterface } from "../../enter-password/types.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import type { EnterPasswordServiceInterface } from "../../enter-password/types.js";
 import { ERROR_CODES } from "../../common/constants.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 const TEST_SCENARIO_PARAMETERS = [

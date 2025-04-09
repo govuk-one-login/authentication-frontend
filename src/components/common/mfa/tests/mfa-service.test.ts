@@ -1,7 +1,8 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
 import { Http } from "../../../../utils/http.js";
-import { MfaServiceInterface } from "../types.js";
+import type { MfaServiceInterface } from "../types.js";
 import { mfaService } from "../mfa-service.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,

@@ -1,4 +1,5 @@
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import sinon from "sinon";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import {
@@ -11,8 +12,8 @@ import {
   mfaResetWithIpvGet,
 } from "../mfa-reset-with-ipv-controller.js";
 import { expect } from "chai";
-import { MfaResetAuthorizeInterface } from "../types.js";
-import { Request, Response } from "express";
+import type { MfaResetAuthorizeInterface } from "../types.js";
+import type { Request, Response } from "express";
 import { BadRequestError } from "../../../utils/error.js";
 import { strict as assert } from "assert";
 

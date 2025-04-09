@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types.js";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
 import { createPasswordService } from "./create-password-service.js";
-import { CreatePasswordServiceInterface } from "./types.js";
+import type { CreatePasswordServiceInterface } from "./types.js";
 import { BadRequestError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import {

@@ -1,6 +1,6 @@
-import { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
-import { JOURNEY_TYPE } from "../../../app.constants.js";
-import { Request } from "express";
+import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
+import type { JOURNEY_TYPE } from "../../../app.constants.js";
+import type { Request } from "express";
 
 export interface MfaServiceInterface {
   sendMfaCode: (

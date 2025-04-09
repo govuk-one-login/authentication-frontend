@@ -1,21 +1,21 @@
+import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
-  Http,
   http,
 } from "../../utils/http.js";
 import { API_ENDPOINTS, COOKIE_CONSENT } from "../../app.constants.js";
-import { ApiResponseResult } from "../../types.js";
-import {
+import type { ApiResponseResult } from "../../types.js";
+import type {
   ProcessIdentityResponse,
   ProveIdentityCallbackServiceInterface,
 } from "./types.js";
-import { Request } from "express";
+import type { Request } from "express";
 import { getApiBaseUrl } from "../../config.js";
-import { AuthCodeResponse } from "../auth-code/types.js";
+import type { AuthCodeResponse } from "../auth-code/types.js";
 import { ApiError } from "../../utils/error.js";
 import { sanitize } from "../../utils/strings.js";
-import { CookieConsentServiceInterface } from "../common/cookie-consent/types.js";
+import type { CookieConsentServiceInterface } from "../common/cookie-consent/types.js";
 import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service.js";
 export function proveIdentityCallbackService(
   axios: Http = http,

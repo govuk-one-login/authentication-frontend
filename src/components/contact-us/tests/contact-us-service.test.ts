@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
+import type { ContactUsService } from "../contact-us-service.js";
 import {
-  ContactUsService,
   getContactUsService,
   getIdentifierTag,
   getRefererTag,
@@ -12,7 +12,7 @@ import {
   prepareSecurityCodeSendMethodTitle,
   prepareUserLocationTitle,
 } from "../contact-us-service.js";
-import { ContactForm } from "../types.js";
+import type { ContactForm } from "../types.js";
 import sinon from "sinon";
 import { SmartAgentService } from "../../../utils/smartAgent.js";
 import { CONTACT_US_THEMES } from "../../../app.constants.js";

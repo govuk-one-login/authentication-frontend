@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { getAccountManagementUrl } from "../config.js";
 import { ERROR_MESSAGES, HTTP_STATUS_CODES } from "../app.constants.js";
 export function serverErrorHandler(

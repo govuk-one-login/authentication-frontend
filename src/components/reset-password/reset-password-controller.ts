@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types.js";
-import { ResetPasswordServiceInterface } from "./types.js";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
+import type { ResetPasswordServiceInterface } from "./types.js";
 import { resetPasswordService } from "./reset-password-service.js";
 import {
   formatValidationError,
@@ -12,7 +12,7 @@ import {
 } from "../common/constants.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { BadRequestError } from "../../utils/error.js";
-import { EnterPasswordServiceInterface } from "../enter-password/types.js";
+import type { EnterPasswordServiceInterface } from "../enter-password/types.js";
 import { enterPasswordService } from "../enter-password/enter-password-service.js";
 import {
   routeUsersToNewIpvJourney,

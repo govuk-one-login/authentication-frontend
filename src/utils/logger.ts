@@ -1,7 +1,7 @@
 import { pino } from "pino";
 import { pinoHttp } from "pino-http";
 import { getLogLevel } from "../config.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 const logger = pino({
   name: "di-auth",

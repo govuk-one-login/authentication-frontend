@@ -1,8 +1,9 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { Request, Response } from "express";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import type { Request, Response } from "express";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import { fakeVerifyCodeServiceHelper } from "../../../../../test/helpers/verify-code-helpers.js";
 import { verifyCodePost } from "../verify-code-controller.js";
 import {
@@ -16,7 +17,7 @@ import {
 } from "../../../../app.constants.js";
 import { ERROR_CODES, getErrorPathByCode } from "../../constants.js";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
-import { AccountInterventionsInterface } from "../../../account-intervention/types.js";
+import type { AccountInterventionsInterface } from "../../../account-intervention/types.js";
 describe("Verify code controller tests", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

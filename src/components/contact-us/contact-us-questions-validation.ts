@@ -1,6 +1,7 @@
-import { CustomSanitizer, body, check } from "express-validator";
+import type { CustomSanitizer } from "express-validator";
+import { body, check } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
-import { ValidationChainFunc } from "../../types.js";
+import type { ValidationChainFunc } from "../../types.js";
 import xss from "xss";
 import {
   CONTACT_US_FIELD_MAX_LENGTH,

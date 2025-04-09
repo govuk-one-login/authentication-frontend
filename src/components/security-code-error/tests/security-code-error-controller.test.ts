@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 import {
   securityCodeCannotRequestCodeGet,
@@ -16,7 +16,8 @@ import {
   SECURITY_CODE_ERROR,
   SecurityCodeErrorType,
 } from "../../common/constants.js";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { SCENARIOS } from "./test-scenario-data.js";

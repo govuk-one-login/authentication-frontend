@@ -1,16 +1,16 @@
+import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
-  Http,
   http,
 } from "../../utils/http.js";
 import { API_ENDPOINTS } from "../../app.constants.js";
-import { ApiResponseResult } from "../../types.js";
-import {
+import type { ApiResponseResult } from "../../types.js";
+import type {
   CheckEmailFraudBlockInterface,
   CheckEmailFraudBlockResponse,
 } from "./types.js";
-import { Request } from "express";
+import type { Request } from "express";
 
 export function checkEmailFraudBlockService(
   axios: Http = http

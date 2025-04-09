@@ -8,7 +8,7 @@ import {
   noInterventions,
   setupAccountInterventionsResponse,
 } from "../../../../test/helpers/account-interventions-helpers.js";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 describe("Integration::reset password required", () => {
   let token: string | string[];

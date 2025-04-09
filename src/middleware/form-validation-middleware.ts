@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { isObjectEmpty, renderBadRequest } from "../utils/validation.js";
 import { isReauth, isUpliftRequired } from "../utils/request.js";

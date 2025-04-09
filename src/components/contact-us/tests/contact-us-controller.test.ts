@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   contactUsFormPost,
   contactUsGet,
@@ -25,7 +25,7 @@ import {
   PATH_NAMES,
   SUPPORT_TYPE,
 } from "../../../app.constants.js";
-import {
+import type {
   ExpressRouteFunc,
   RequestGet,
   ResponseRedirect,
@@ -33,7 +33,7 @@ import {
 import { getServiceDomain, getSupportLinkUrl } from "../../../config.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { mockResponse } from "mock-req-res";
-import { ContactForm } from "../types.js";
+import type { ContactForm } from "../types.js";
 describe("contact us controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;

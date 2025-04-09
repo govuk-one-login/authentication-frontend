@@ -1,4 +1,4 @@
-import request from "supertest";
+import type request from "supertest";
 import { expect } from "../utils/test-utils.js";
 export function expectAnalyticsPropertiesMatchSnapshot(
   res: request.Response

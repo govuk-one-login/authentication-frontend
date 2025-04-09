@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { getNextPathAndUpdateJourney } from "../components/common/constants.js";
 import { USER_JOURNEY_EVENTS } from "../components/common/state-machine/state-machine.js";
 import { accountInterventionService } from "../components/account-intervention/account-intervention-service.js";
-import { ExpressRouteFunc } from "../types.js";
+import type { ExpressRouteFunc } from "../types.js";
 import { supportAccountInterventions } from "../config.js";
 import { logger } from "../utils/logger.js";
 import {

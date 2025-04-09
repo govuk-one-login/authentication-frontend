@@ -1,11 +1,11 @@
-import { JwtServiceInterface } from "./types.js";
+import type { JwtServiceInterface } from "./types.js";
 import {
   getOrchStubToAuthSigningPublicKey,
   getOrchToAuthSigningPublicKey,
 } from "../../config.js";
 import { JwtClaimsValueError, JwtValidationError } from "../../utils/error.js";
+import type { Claims } from "./claims-config.js";
 import {
-  Claims,
   requiredClaimsKeys,
   getKnownClaims,
   getKnownStubClaims,

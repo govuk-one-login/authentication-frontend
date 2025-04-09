@@ -1,13 +1,13 @@
+import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
-  Http,
   http,
 } from "../../utils/http.js";
 import { API_ENDPOINTS } from "../../app.constants.js";
-import { EnterEmailServiceInterface, UserExists } from "./types.js";
-import { ApiResponseResult } from "../../types.js";
-import { Request } from "express";
+import type { EnterEmailServiceInterface, UserExists } from "./types.js";
+import type { ApiResponseResult } from "../../types.js";
+import type { Request } from "express";
 
 export function enterEmailService(
   axios: Http = http

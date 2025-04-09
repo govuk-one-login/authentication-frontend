@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   ERROR_CODES,
   getErrorPathByCode,
@@ -9,8 +9,8 @@ import {
   renderBadRequest,
 } from "../../../utils/validation.js";
 import { BadRequestError } from "../../../utils/error.js";
-import { VerifyCodeInterface } from "./types.js";
-import { ExpressRouteFunc } from "../../../types.js";
+import type { VerifyCodeInterface } from "./types.js";
+import type { ExpressRouteFunc } from "../../../types.js";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine.js";
 import {
   JOURNEY_TYPE,
@@ -18,7 +18,7 @@ import {
   PATH_NAMES,
 } from "../../../app.constants.js";
 import { supportAccountInterventions } from "../../../config.js";
-import { AccountInterventionsInterface } from "../../account-intervention/types.js";
+import type { AccountInterventionsInterface } from "../../account-intervention/types.js";
 import { isSuspendedWithoutUserActions } from "../../../utils/interventions.js";
 import { isReauth } from "../../../utils/request.js";
 interface Config {

@@ -1,6 +1,6 @@
-import { ApiResponseResult, DefaultApiResponse } from "../../types.js";
-import { Request, Response } from "express";
-import { JOURNEY_TYPE, MFA_METHOD_TYPE } from "../../app.constants.js";
+import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
+import type { Request, Response } from "express";
+import type { JOURNEY_TYPE, MFA_METHOD_TYPE } from "../../app.constants.js";
 export interface VerifyMfaCodeInterface {
   verifyMfaCode: (
     methodType: MFA_METHOD_TYPE,

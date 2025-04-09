@@ -1,5 +1,5 @@
 import { JOURNEY_TYPE } from "../../../app.constants.js";
-import { UserSession } from "../../../types.js";
+import type { UserSession } from "../../../types.js";
 type GetJourneyTypeFromUserSessionOptions = {
   fallbackJourneyType?: JOURNEY_TYPE;
   includeReauthentication?: true;

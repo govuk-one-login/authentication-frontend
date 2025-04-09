@@ -1,15 +1,15 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
-import { ExpressRouteFunc } from "../../types.js";
+import type { ExpressRouteFunc } from "../../types.js";
 import { redactPhoneNumber } from "../../utils/strings.js";
+import type { SecurityCodeErrorType } from "../common/constants.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
-  SecurityCodeErrorType,
 } from "../common/constants.js";
 import { BadRequestError } from "../../utils/error.js";
-import { SendNotificationServiceInterface } from "../common/send-notification/types.js";
+import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number.js";

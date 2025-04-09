@@ -1,8 +1,8 @@
 import { body } from "express-validator";
 import { containsNumber, containsNumbersOnly } from "../../utils/strings.js";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
-import { ValidationChainFunc } from "../../types.js";
-import { Request } from "express";
+import type { ValidationChainFunc } from "../../types.js";
+import type { Request } from "express";
 
 export function validateResetPasswordRequest(): ValidationChainFunc {
   return [

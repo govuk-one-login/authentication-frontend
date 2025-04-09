@@ -1,14 +1,17 @@
 import { describe } from "mocha";
 import { enterPasswordService } from "../enter-password-service.js";
-import { ApiResponseResult } from "../../../types.js";
-import { EnterPasswordServiceInterface, UserLoginResponse } from "../types.js";
+import type { ApiResponseResult } from "../../../types.js";
+import type {
+  EnterPasswordServiceInterface,
+  UserLoginResponse,
+} from "../types.js";
 import { expect } from "chai";
-import { Request } from "express";
+import type { Request } from "express";
 import { Http } from "../../../utils/http.js";
 import { sinon } from "../../../../test/utils/test-utils.js";
 import { API_ENDPOINTS } from "../../../app.constants.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
-import { SinonStub } from "sinon";
+import type { SinonStub } from "sinon";
 
 describe("enter-password-service", () => {
   let req: Partial<Request>;

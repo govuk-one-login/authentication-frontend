@@ -4,7 +4,7 @@ import {
   containsUKMobileNumber,
   lengthInRangeWithoutSpaces,
 } from "../../../utils/phone-number.js";
-import { Meta } from "express-validator";
+import type { Meta } from "express-validator";
 
 //region Non-country specific validators
 const phoneNumberMustContainLeadingPlusNumbersOrSpacesOnly = (

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { supportTypeIsGovService } from "../../../utils/request.js";
 export function privacyStatementGet(req: Request, res: Response): void {

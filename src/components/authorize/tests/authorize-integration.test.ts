@@ -3,14 +3,14 @@ import { sinon, request } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import decache from "decache";
 import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
-import {
+import type {
   AuthorizeServiceInterface,
   JwtServiceInterface,
   KmsDecryptionServiceInterface,
   StartAuthResponse,
 } from "../types.js";
 import { createApiResponse } from "../../../utils/http.js";
-import { AxiosResponse } from "axios";
+import type { AxiosResponse } from "axios";
 import {
   createJwt,
   createMockClaims,

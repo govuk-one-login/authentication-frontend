@@ -2,10 +2,10 @@ import { expect } from "chai";
 import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 import { authorizeGet } from "../authorize-controller.js";
-import { CookieConsentServiceInterface } from "../../common/cookie-consent/types.js";
+import type { CookieConsentServiceInterface } from "../../common/cookie-consent/types.js";
 import {
   CHANNEL,
   COOKIE_CONSENT,
@@ -13,15 +13,16 @@ import {
   OIDC_PROMPT,
   PATH_NAMES,
 } from "../../../app.constants.js";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import {
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import type {
   AuthorizeServiceInterface,
   JwtServiceInterface,
   KmsDecryptionServiceInterface,
 } from "../types.js";
 import { BadRequestError } from "../../../utils/error.js";
 import { createMockClaims } from "./test-data.js";
-import { Claims } from "../claims-config.js";
+import type { Claims } from "../claims-config.js";
 import { getOrchToAuthExpectedClientId } from "../../../config.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { createMockCookieConsentService } from "../../../../test/helpers/mock-cookie-consent-service-helper.js";

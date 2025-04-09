@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { sinon } from "../utils/test-utils.js";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { pageNotFoundHandler } from "../../src/handlers/page-not-found-handler.js";
 import { serverErrorHandler } from "../../src/handlers/internal-server-error-handler.js";
 import { mockRequest, mockResponse } from "mock-req-res";

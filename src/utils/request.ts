@@ -1,4 +1,4 @@
-import { Request } from "express";
+import type { Request } from "express";
 import { supportAccountRecovery, supportReauthentication } from "../config.js";
 import {
   CONTACT_US_THEMES,

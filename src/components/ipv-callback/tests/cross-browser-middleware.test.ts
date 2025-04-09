@@ -1,12 +1,13 @@
 import sinon from "sinon";
 import { describe } from "mocha";
-import { Request } from "express";
+import type { Request } from "express";
 import { expect } from "chai";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { crossBrowserMiddleware } from "../cross-browser-middleware.js";
-import { CrossBrowserService } from "../cross-browser-service.js";
+import type { CrossBrowserService } from "../cross-browser-service.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 const expectedRedirect =
   "https://oidc.account.gov.uk/orchestration-redirect?state=7&error=access_denied&error_description=no_session";

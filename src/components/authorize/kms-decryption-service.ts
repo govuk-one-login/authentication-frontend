@@ -1,11 +1,10 @@
 import crypto from "crypto";
-import {
+import type {
   DecryptCommandInput,
   DecryptCommandOutput,
-  EncryptionAlgorithmSpec,
-  KMS,
 } from "@aws-sdk/client-kms";
-import { KmsDecryptionServiceInterface } from "./types.js";
+import { EncryptionAlgorithmSpec, KMS } from "@aws-sdk/client-kms";
+import type { KmsDecryptionServiceInterface } from "./types.js";
 import { getAwsRegion, getKmsKeyId } from "../../config.js";
 import { DecryptionError } from "../../utils/error.js";
 import { base64DecodeToUint8Array } from "../../utils/encoding.js";

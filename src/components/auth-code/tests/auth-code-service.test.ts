@@ -3,9 +3,9 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils.js";
 import { authCodeService } from "../auth-code-service.js";
-import { SinonStub } from "sinon";
+import type { SinonStub } from "sinon";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
-import { AuthCodeServiceInterface } from "../types.js";
+import type { AuthCodeServiceInterface } from "../types.js";
 import { Http } from "../../../utils/http.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 describe("authentication auth code service", () => {

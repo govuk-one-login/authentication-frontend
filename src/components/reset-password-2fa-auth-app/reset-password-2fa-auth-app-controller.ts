@@ -1,12 +1,12 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "src/types";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "src/types.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
 } from "../common/constants.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
-import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types.js";
+import type { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types.js";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service.js";
 import {
   JOURNEY_TYPE,

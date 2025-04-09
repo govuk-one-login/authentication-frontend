@@ -1,5 +1,5 @@
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
-import { ValidationChainFunc } from "../../types.js";
+import type { ValidationChainFunc } from "../../types.js";
 import {
   validateCode,
   whitespaceSanitizer,

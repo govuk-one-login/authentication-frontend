@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   PATH_NAMES,
   CONTACT_US_THEMES,
@@ -6,8 +6,8 @@ import {
   CONTACT_US_COUNTRY_MAX_LENGTH,
   CONTACT_US_REFERER_ALLOWLIST,
 } from "../../app.constants.js";
-import { Questions, ThemeQuestions } from "./types.js";
-import { ExpressRouteFunc } from "../../types.js";
+import type { Questions, ThemeQuestions } from "./types.js";
+import type { ExpressRouteFunc } from "../../types.js";
 import crypto from "crypto";
 import { logger } from "../../utils/logger.js";
 import {

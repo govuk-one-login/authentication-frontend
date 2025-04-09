@@ -1,6 +1,6 @@
 import { getContentId } from "./contentId.js";
-import { Request } from "express";
-import { ContentIdFunction } from "../types.js";
+import type { Request } from "express";
+import type { ContentIdFunction } from "../types.js";
 import { expect } from "../../test/utils/test-utils.js";
 const TEST_PATH_NAMES = {
   CUSTOM_FUNCTION: "/custom-function",

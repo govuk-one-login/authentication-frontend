@@ -1,15 +1,15 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   HREF_BACK,
   MFA_METHOD_TYPE,
   NOTIFICATION_TYPE,
 } from "../../../app.constants.js";
-import { VerifyCodeInterface } from "../../common/verify-code/types.js";
+import type { VerifyCodeInterface } from "../../common/verify-code/types.js";
 import { codeService } from "../../common/verify-code/verify-code-service.js";
 import { verifyCodePost } from "../../common/verify-code/verify-code-controller.js";
-import { ExpressRouteFunc } from "../../../types.js";
+import type { ExpressRouteFunc } from "../../../types.js";
 import { ERROR_CODES } from "../../common/constants.js";
-import { AccountInterventionsInterface } from "../../account-intervention/types.js";
+import type { AccountInterventionsInterface } from "../../account-intervention/types.js";
 import { accountInterventionService } from "../../account-intervention/account-intervention-service.js";
 const TEMPLATE_NAME =
   "account-recovery/check-your-email-security-codes/index.njk";

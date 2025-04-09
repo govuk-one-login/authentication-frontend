@@ -1,5 +1,6 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -8,7 +9,7 @@ import {
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper.js";
 import { Http } from "../../../utils/http.js";
-import { DocCheckingAppInterface } from "../types.js";
+import type { DocCheckingAppInterface } from "../types.js";
 import { docCheckingAppService } from "../doc-checking-app-service.js";
 import {
   API_ENDPOINTS,

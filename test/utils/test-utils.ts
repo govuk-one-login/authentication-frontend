@@ -2,9 +2,10 @@ import chai from "chai";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import { jestSnapshotPlugin } from "mocha-chai-jest-snapshot";
-import supertest, { Test } from "supertest";
+import type { Test } from "supertest";
+import supertest from "supertest";
 import { expectAnalyticsPropertiesMatchSnapshot } from "../helpers/expect-response-helpers.js";
-import TestAgent from "supertest/lib/agent";
+import type TestAgent from "supertest/lib/agent";
 
 chai.should();
 chai.use(sinonChai);
