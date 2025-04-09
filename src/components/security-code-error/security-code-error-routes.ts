@@ -1,14 +1,12 @@
-import { PATH_NAMES } from "../../app.constants";
-
+import { PATH_NAMES } from "../../app.constants.js";
 import express from "express";
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
 import {
   securityCodeCannotRequestCodeGet,
   securityCodeInvalidGet,
   securityCodeTriesExceededGet,
   securityCodeEnteredExceededGet,
-} from "./security-code-error-controller";
-
+} from "./security-code-error-controller.js";
 const router = express.Router();
 
 router.get(

@@ -3,31 +3,31 @@ import {
   NOTIFICATION_TYPE,
   PATH_NAMES,
   MFA_METHOD_TYPE,
-} from "../../app.constants";
-import { VerifyCodeInterface } from "../common/verify-code/types";
-import { codeService } from "../common/verify-code/verify-code-service";
-import { verifyCodePost } from "../common/verify-code/verify-code-controller";
-import { ExpressRouteFunc } from "../../types";
+} from "../../app.constants.js";
+import { VerifyCodeInterface } from "../common/verify-code/types.js";
+import { codeService } from "../common/verify-code/verify-code-service.js";
+import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
+import { ExpressRouteFunc } from "../../types.js";
 import {
   ERROR_CODES,
   pathWithQueryParam,
   SecurityCodeErrorType,
-} from "../common/constants";
+} from "../common/constants.js";
 import {
   routeUsersToNewIpvJourney,
   supportAccountRecovery,
   supportMfaResetWithIpv,
-} from "../../config";
-import { AccountRecoveryInterface } from "../common/account-recovery/types";
-import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
-import { BadRequestError } from "../../utils/error";
-import { getJourneyTypeFromUserSession } from "../common/journey/journey";
-import { AccountInterventionsInterface } from "../account-intervention/types";
-import { accountInterventionService } from "../account-intervention/account-intervention-service";
-import { getNewCodePath } from "../security-code-error/security-code-error-controller";
-import { isLocked } from "../../utils/lock-helper";
-import { isUpliftRequired } from "../../utils/request";
-import { getDefaultSmsMfaMethod } from "../../utils/mfa";
+} from "../../config.js";
+import { AccountRecoveryInterface } from "../common/account-recovery/types.js";
+import { accountRecoveryService } from "../common/account-recovery/account-recovery-service.js";
+import { BadRequestError } from "../../utils/error.js";
+import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
+import { AccountInterventionsInterface } from "../account-intervention/types.js";
+import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
+import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
+import { isLocked } from "../../utils/lock-helper.js";
+import { isUpliftRequired } from "../../utils/request.js";
+import { getDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 export const ENTER_MFA_DEFAULT_TEMPLATE_NAME = "enter-mfa/index.njk";
 export const UPLIFT_REQUIRED_SMS_TEMPLATE_NAME =

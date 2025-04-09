@@ -6,8 +6,7 @@ import {
   appendFromUrlWhenTriagePageUrl,
   buildUrlFromRequest,
   outboundContactUsLinksMiddleware,
-} from "../outbound-contact-us-links-middleware";
-
+} from "../outbound-contact-us-links-middleware.js";
 chai.use(sinonChai);
 
 describe("Middleware", () => {

@@ -3,12 +3,11 @@ import {
   MFA_METHOD_TYPE,
   OIDC_PROMPT,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import {
   routeUsersToNewIpvJourney,
   supportMfaResetWithIpv,
-} from "../../../config";
-
+} from "../../../config.js";
 const USER_JOURNEY_EVENTS = {
   AUTHENTICATED: "AUTHENTICATED",
   CREDENTIALS_VALIDATED: "CREDENTIALS_VALIDATED",

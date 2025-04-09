@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types";
-import { ResetPasswordCheckEmailServiceInterface } from "./types";
-import { resetPasswordCheckEmailService } from "./reset-password-check-email-service";
-import { BadRequestError } from "../../utils/error";
-import { ERROR_CODES } from "../common/constants";
-import { VerifyCodeInterface } from "../common/verify-code/types";
-import { codeService } from "../common/verify-code/verify-code-service";
-import { verifyCodePost } from "../common/verify-code/verify-code-controller";
-import { NOTIFICATION_TYPE } from "../../app.constants";
-import { AccountInterventionsInterface } from "../account-intervention/types";
-import { accountInterventionService } from "../account-intervention/account-intervention-service";
-import { isLocked } from "../../utils/lock-helper";
-import { upsertDefaultSmsMfaMethod } from "../../utils/mfa";
+import { ExpressRouteFunc } from "../../types.js";
+import { ResetPasswordCheckEmailServiceInterface } from "./types.js";
+import { resetPasswordCheckEmailService } from "./reset-password-check-email-service.js";
+import { BadRequestError } from "../../utils/error.js";
+import { ERROR_CODES } from "../common/constants.js";
+import { VerifyCodeInterface } from "../common/verify-code/types.js";
+import { codeService } from "../common/verify-code/verify-code-service.js";
+import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
+import { NOTIFICATION_TYPE } from "../../app.constants.js";
+import { AccountInterventionsInterface } from "../account-intervention/types.js";
+import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
+import { isLocked } from "../../utils/lock-helper.js";
+import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 

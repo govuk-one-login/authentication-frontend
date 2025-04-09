@@ -1,12 +1,11 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { JOURNEY_TYPE } from "../../../../app.constants";
+import { JOURNEY_TYPE } from "../../../../app.constants.js";
 import {
   getJourneyTypeFromUserSession,
   GetJourneyTypeFromUserSessionOptions,
-} from "../journey";
-import { UserSession } from "../../../../types";
-
+} from "../journey.js";
+import { UserSession } from "../../../../types.js";
 describe("journey", () => {
   describe("getJourneyTypeFromUserSession", () => {
     it("should return undefined by default", () => {

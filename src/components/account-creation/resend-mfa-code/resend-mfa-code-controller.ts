@@ -1,19 +1,22 @@
 import xss from "xss";
 import { Request, Response } from "express";
 
-import { ExpressRouteFunc } from "../../../types";
+import { ExpressRouteFunc } from "../../../types.js";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
   PATH_NAMES,
-} from "../../../app.constants";
-import { getErrorPathByCode, pathWithQueryParam } from "../../common/constants";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { sendNotificationService } from "../../common/send-notification/send-notification-service";
-import { BadRequestError } from "../../../utils/error";
-import { isLocked } from "../../../utils/lock-helper";
-import { isAccountRecoveryJourney } from "../../../utils/request";
-import { getDefaultSmsMfaMethod } from "../../../utils/mfa";
+} from "../../../app.constants.js";
+import {
+  getErrorPathByCode,
+  pathWithQueryParam,
+} from "../../common/constants.js";
+import { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
+import { sendNotificationService } from "../../common/send-notification/send-notification-service.js";
+import { BadRequestError } from "../../../utils/error.js";
+import { isLocked } from "../../../utils/lock-helper.js";
+import { isAccountRecoveryJourney } from "../../../utils/request.js";
+import { getDefaultSmsMfaMethod } from "../../../utils/mfa.js";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
   const newCodeLink = req.query?.isResendCodeRequest

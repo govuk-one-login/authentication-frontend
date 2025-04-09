@@ -1,17 +1,17 @@
 import { describe } from "mocha";
 import decache from "decache";
-import { expect, request, sinon } from "../../../../test/utils/test-utils";
+import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import {
   API_ENDPOINTS,
   CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,
   MFA_METHOD_TYPE,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import express, { NextFunction, Request, Response } from "express";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 const TEST_CONTACT_US_LINK_URL = "https://example.com/contact-us";
 

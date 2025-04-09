@@ -1,25 +1,25 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import { Request, Response } from "express";
 
 import {
   resetPasswordCheckEmailGet,
   resetPasswordCheckEmailPost,
   resetPasswordResendCodeGet,
-} from "../reset-password-check-email-controller";
-import { ResetPasswordCheckEmailServiceInterface } from "../types";
+} from "../reset-password-check-email-controller.js";
+import { ResetPasswordCheckEmailServiceInterface } from "../types.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { PATH_NAMES } from "../../../app.constants";
-import { ERROR_CODES } from "../../common/constants";
+import { PATH_NAMES } from "../../../app.constants.js";
+import { ERROR_CODES } from "../../common/constants.js";
 import {
   accountInterventionsFakeHelper,
   noInterventions,
-} from "../../../../test/helpers/account-interventions-helpers";
-import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { getDefaultSmsMfaMethod } from "../../../utils/mfa";
+} from "../../../../test/helpers/account-interventions-helpers.js";
+import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { getDefaultSmsMfaMethod } from "../../../utils/mfa.js";
 
 describe("reset password check email controller", () => {
   let req: RequestOutput;

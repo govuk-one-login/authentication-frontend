@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types";
-import { authCodeService } from "./auth-code-service";
-import { AuthCodeServiceInterface } from "./types";
-import { BadRequestError } from "../../utils/error";
-import { CookieConsentServiceInterface } from "../common/cookie-consent/types";
-import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service";
-import { sanitize } from "../../utils/strings";
-import { COOKIE_CONSENT } from "../../app.constants";
-
+import { ExpressRouteFunc } from "../../types.js";
+import { authCodeService } from "./auth-code-service.js";
+import { AuthCodeServiceInterface } from "./types.js";
+import { BadRequestError } from "../../utils/error.js";
+import { CookieConsentServiceInterface } from "../common/cookie-consent/types.js";
+import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service.js";
+import { sanitize } from "../../utils/strings.js";
+import { COOKIE_CONSENT } from "../../app.constants.js";
 export function authCodeGet(
   service: AuthCodeServiceInterface = authCodeService(),
   cookieService: CookieConsentServiceInterface = cookieConsentService()

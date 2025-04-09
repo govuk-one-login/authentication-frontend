@@ -1,5 +1,5 @@
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../src/app.constants";
-import { AccountInterventionsInterface } from "../../src/components/account-intervention/types";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../src/app.constants.js";
+import { AccountInterventionsInterface } from "../../src/components/account-intervention/types.js";
 import nock from "nock";
 import sinon from "sinon";
 

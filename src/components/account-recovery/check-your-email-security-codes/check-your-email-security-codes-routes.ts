@@ -1,15 +1,14 @@
 import * as express from "express";
-import { PATH_NAMES } from "../../../app.constants";
-import { validateSessionMiddleware } from "../../../middleware/session-middleware";
-import { checkAccountRecoveryPermitted } from "./check-account-recovery-middleware";
-import { sendEmailOtp } from "./send-email-otp-middleware";
+import { PATH_NAMES } from "../../../app.constants.js";
+import { validateSessionMiddleware } from "../../../middleware/session-middleware.js";
+import { checkAccountRecoveryPermitted } from "./check-account-recovery-middleware.js";
+import { sendEmailOtp } from "./send-email-otp-middleware.js";
 import {
   checkYourEmailSecurityCodesGet,
   checkYourEmailSecurityCodesPost,
-} from "./check-your-email-security-codes-controller";
-import { validateCheckYourEmailRequest } from "./check-your-email-security-codes-validation";
-import { allowUserJourneyMiddleware } from "../../../middleware/allow-user-journey-middleware";
-
+} from "./check-your-email-security-codes-controller.js";
+import { validateCheckYourEmailRequest } from "./check-your-email-security-codes-validation.js";
+import { allowUserJourneyMiddleware } from "../../../middleware/allow-user-journey-middleware.js";
 const router = express.Router();
 
 router.get(

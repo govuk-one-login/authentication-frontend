@@ -1,13 +1,12 @@
-import { RequestType, UpdateProfileServiceInterface } from "./types";
-
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import { RequestType, UpdateProfileServiceInterface } from "./types.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
-} from "../../../utils/http";
-import { ApiResponseResult, DefaultApiResponse } from "../../../types";
+} from "../../../utils/http.js";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
 import { Request } from "express";
 
 export function updateProfileService(

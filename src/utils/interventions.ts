@@ -1,6 +1,5 @@
 import { Request } from "express";
-import { AccountInterventionStatus } from "../components/account-intervention/types";
-
+import { AccountInterventionStatus } from "../components/account-intervention/types.js";
 export function isSuspendedWithoutUserActions(
   status: AccountInterventionStatus
 ): boolean {

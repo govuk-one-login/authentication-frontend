@@ -1,5 +1,4 @@
-import { logger } from "./logger";
-
+import { logger } from "./logger.js";
 export function getChannelSpecificTemplate(
   webTemplateAndPath: string,
   isStrategicAppChannel: boolean,

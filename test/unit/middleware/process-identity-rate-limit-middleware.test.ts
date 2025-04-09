@@ -1,13 +1,12 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { NextFunction } from "express";
-import { sinon } from "../../utils/test-utils";
-import { PATH_NAMES } from "../../../src/app.constants";
+import { sinon } from "../../utils/test-utils.js";
+import { PATH_NAMES } from "../../../src/app.constants.js";
 import { mockResponse } from "mock-req-res";
-import { processIdentityRateLimitMiddleware } from "../../../src/middleware/process-identity-rate-limit-middleware";
-import { addSecondsToDate } from "../../../src/utils/date";
-import { createMockRequest } from "../../helpers/mock-request-helper";
-
+import { processIdentityRateLimitMiddleware } from "../../../src/middleware/process-identity-rate-limit-middleware.js";
+import { addSecondsToDate } from "../../../src/utils/date.js";
+import { createMockRequest } from "../../helpers/mock-request-helper.js";
 describe("process identity rate limit middleware", () => {
   it("Should call next when first request", () => {
     const req = createMockRequest(PATH_NAMES.PROVE_IDENTITY_CALLBACK);

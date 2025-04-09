@@ -3,13 +3,13 @@ import {
   getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
-} from "../../utils/http";
-import { API_ENDPOINTS } from "../../app.constants";
+} from "../../utils/http.js";
+import { API_ENDPOINTS } from "../../app.constants.js";
 import {
   AccountInterventionStatus,
   AccountInterventionsInterface,
-} from "./types";
-import { ApiResponseResult } from "../../types";
+} from "./types.js";
+import { ApiResponseResult } from "../../types.js";
 import { Request } from "express";
 
 export function accountInterventionService(

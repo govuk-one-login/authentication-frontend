@@ -2,9 +2,9 @@ import express from "express";
 import * as nunjucks from "nunjucks";
 import { Environment } from "nunjucks";
 import i18next from "i18next";
-import { returnLastCharactersOnly } from "../utils/phone-number";
-import { getNodeEnv } from "../config";
-import { ENVIRONMENT_NAME } from "../app.constants";
+import { returnLastCharactersOnly } from "../utils/phone-number.js";
+import { getNodeEnv } from "../config.js";
+import { ENVIRONMENT_NAME } from "../app.constants.js";
 import addLanguageParam from "@govuk-one-login/frontend-language-toggle";
 
 export function configureNunjucks(

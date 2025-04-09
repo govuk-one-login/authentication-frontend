@@ -1,29 +1,33 @@
 import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types";
+import { ExpressRouteFunc } from "../../types.js";
 import {
   formatValidationError,
   renderBadRequest,
-} from "../../utils/validation";
-import { enterPasswordService } from "./enter-password-service";
-import { EnterPasswordServiceInterface } from "./types";
-import { MfaServiceInterface } from "../common/mfa/types";
-import { mfaService } from "../common/mfa/mfa-service";
+} from "../../utils/validation.js";
+import { enterPasswordService } from "./enter-password-service.js";
+import { EnterPasswordServiceInterface } from "./types.js";
+import { MfaServiceInterface } from "../common/mfa/types.js";
+import { mfaService } from "../common/mfa/mfa-service.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
-} from "../common/constants";
-import { BadRequestError, ReauthJourneyError } from "../../utils/error";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
+} from "../common/constants.js";
+import { BadRequestError, ReauthJourneyError } from "../../utils/error.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import {
+  JOURNEY_TYPE,
+  MFA_METHOD_TYPE,
+  PATH_NAMES,
+} from "../../app.constants.js";
 import xss from "xss";
-import { EnterEmailServiceInterface } from "../enter-email/types";
-import { enterEmailService } from "../enter-email/enter-email-service";
-import { supportAccountInterventions } from "../../config";
-import { getJourneyTypeFromUserSession } from "../common/journey/journey";
-import { accountInterventionService } from "../account-intervention/account-intervention-service";
-import { AccountInterventionsInterface } from "../account-intervention/types";
-import { upsertDefaultSmsMfaMethod } from "../../utils/mfa";
+import { EnterEmailServiceInterface } from "../enter-email/types.js";
+import { enterEmailService } from "../enter-email/enter-email-service.js";
+import { supportAccountInterventions } from "../../config.js";
+import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
+import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
+import { AccountInterventionsInterface } from "../account-intervention/types.js";
+import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =

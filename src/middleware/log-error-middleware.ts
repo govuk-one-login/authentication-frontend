@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { ERROR_LOG_LEVEL } from "../app.constants";
-
+import { ERROR_LOG_LEVEL } from "../app.constants.js";
 export function logErrorMiddleware(
   error: any,
   req: Request,

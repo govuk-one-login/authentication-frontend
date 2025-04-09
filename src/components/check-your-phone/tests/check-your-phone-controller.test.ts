@@ -1,26 +1,24 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import { Request, Response } from "express";
 import {
   checkYourPhoneGet,
   checkYourPhonePost,
-} from "../check-your-phone-controller";
-
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
+} from "../check-your-phone-controller.js";
+import { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
   PATH_NAMES,
-} from "../../../app.constants";
-import { ERROR_CODES } from "../../common/constants";
+} from "../../../app.constants.js";
+import { ERROR_CODES } from "../../common/constants.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
-import * as journey from "../../common/journey/journey";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { commonVariables } from "../../../../test/helpers/common-test-variables";
-
+import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types.js";
+import * as journey from "../../common/journey/journey.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("check your phone controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

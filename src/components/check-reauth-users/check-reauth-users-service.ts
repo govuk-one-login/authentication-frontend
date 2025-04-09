@@ -3,10 +3,10 @@ import {
   getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
-} from "../../utils/http";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants";
-import { CheckReauthServiceInterface } from "./types";
-import { ApiResponseResult, DefaultApiResponse } from "../../types";
+} from "../../utils/http.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants.js";
+import { CheckReauthServiceInterface } from "./types.js";
+import { ApiResponseResult, DefaultApiResponse } from "../../types.js";
 import { Request } from "express";
 
 export function checkReauthUsersService(

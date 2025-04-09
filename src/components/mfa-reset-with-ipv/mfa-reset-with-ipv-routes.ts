@@ -1,11 +1,11 @@
 import express from "express";
-import { PATH_NAMES } from "../../app.constants";
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
+import { PATH_NAMES } from "../../app.constants.js";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
 import {
   mfaResetOpenInBrowserGet,
   mfaResetWithIpvGet,
-} from "./mfa-reset-with-ipv-controller";
+} from "./mfa-reset-with-ipv-controller.js";
 
 const router = express.Router();
 

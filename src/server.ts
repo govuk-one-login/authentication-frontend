@@ -1,6 +1,5 @@
-import { createApp, shutdownProcess, startServer } from "./app";
-import { logger } from "./utils/logger";
-
+import { createApp, shutdownProcess, startServer } from "./app.js";
+import { logger } from "./utils/logger.js";
 (async () => {
   const app = await createApp();
   const { closeServer } = await startServer(app);

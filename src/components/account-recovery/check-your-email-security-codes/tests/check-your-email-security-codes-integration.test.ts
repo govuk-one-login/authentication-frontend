@@ -1,6 +1,10 @@
 import { describe } from "mocha";
 import { AxiosResponse } from "axios";
-import { expect, sinon, request } from "../../../../../test/utils/test-utils";
+import {
+  expect,
+  sinon,
+  request,
+} from "../../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
@@ -8,18 +12,20 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../../app.constants";
-import { ERROR_CODES, SecurityCodeErrorType } from "../../../common/constants";
-import { SendNotificationServiceInterface } from "../../../common/send-notification/types";
-import { DefaultApiResponse } from "../../../../types";
-import { createApiResponse } from "../../../../utils/http";
+} from "../../../../app.constants.js";
+import {
+  ERROR_CODES,
+  SecurityCodeErrorType,
+} from "../../../common/constants.js";
+import { SendNotificationServiceInterface } from "../../../common/send-notification/types.js";
+import { DefaultApiResponse } from "../../../../types.js";
+import { createApiResponse } from "../../../../utils/http.js";
 import {
   AccountInterventionsInterface,
   AccountInterventionStatus,
-} from "../../../account-intervention/types";
+} from "../../../account-intervention/types.js";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper";
-
+import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper.js";
 describe("Integration:: check your email security codes", () => {
   let token: string | string[];
   let cookies: string;

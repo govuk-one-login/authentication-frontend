@@ -1,6 +1,6 @@
 import * as express from "express";
-import { landingGet } from "./landing-controller";
-import { PATH_NAMES } from "../../app.constants";
+import { landingGet } from "./landing-controller.js";
+import { PATH_NAMES } from "../../app.constants.js";
 
 const router = express.Router();
 

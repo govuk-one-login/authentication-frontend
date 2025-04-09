@@ -1,16 +1,16 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils";
+import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import { PATH_NAMES } from "../../../app.constants";
+import { PATH_NAMES } from "../../../app.constants.js";
 import decache from "decache";
 import {
   noInterventions,
   setupAccountInterventionsResponse,
-} from "../../../../test/helpers/account-interventions-helpers";
+} from "../../../../test/helpers/account-interventions-helpers.js";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 describe("Integration::reset password (in 6 digit code flow)", () => {
   let token: string | string[];

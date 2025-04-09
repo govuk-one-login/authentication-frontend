@@ -3,7 +3,7 @@ import {
   containsLeadingPlusNumbersOrSpacesOnly,
   containsUKMobileNumber,
   lengthInRangeWithoutSpaces,
-} from "../../../utils/phone-number";
+} from "../../../utils/phone-number.js";
 import { Meta } from "express-validator";
 
 //region Non-country specific validators

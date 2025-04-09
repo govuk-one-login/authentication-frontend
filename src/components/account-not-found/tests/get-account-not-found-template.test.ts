@@ -1,8 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { getAccountNotFoundTemplate } from "../get-account-not-found-template";
-import { SERVICE_TYPE } from "../../../app.constants";
-
+import { getAccountNotFoundTemplate } from "../get-account-not-found-template.js";
+import { SERVICE_TYPE } from "../../../app.constants.js";
 describe("getAccountNotFoundWebTemplate", () => {
   describe("when isStrategicApp is false", () => {
     describe("when isOneLoginService is true", () => {

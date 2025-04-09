@@ -3,10 +3,10 @@ import {
   getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
-} from "../../utils/http";
-import { API_ENDPOINTS } from "../../app.constants";
-import { EnterEmailServiceInterface, UserExists } from "./types";
-import { ApiResponseResult } from "../../types";
+} from "../../utils/http.js";
+import { API_ENDPOINTS } from "../../app.constants.js";
+import { EnterEmailServiceInterface, UserExists } from "./types.js";
+import { ApiResponseResult } from "../../types.js";
 import { Request } from "express";
 
 export function enterEmailService(

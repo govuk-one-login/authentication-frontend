@@ -1,5 +1,5 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils";
+import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
@@ -7,12 +7,12 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { ERROR_CODES } from "../../common/constants";
-import { commonVariables } from "../../../../test/helpers/common-test-variables";
+} from "../../../app.constants.js";
+import { ERROR_CODES } from "../../common/constants.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 const { testPhoneNumber, testRedactedPhoneNumber } = commonVariables;
 
 describe("Integration:: resend mfa code", () => {

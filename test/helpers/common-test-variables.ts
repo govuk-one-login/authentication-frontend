@@ -1,5 +1,4 @@
-import { redactPhoneNumber } from "../../src/utils/strings";
-
+import { redactPhoneNumber } from "../../src/utils/strings.js";
 export const commonVariables = {
   email: "joe.bloggs@example.com",
   sessionId: "123456-djjad",

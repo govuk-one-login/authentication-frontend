@@ -1,19 +1,17 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import { Request, Response } from "express";
 import {
   updatedTermsConditionsGet,
   updatedTermsConditionsPost,
-} from "../updated-terms-conditions-controller";
-
-import { UpdateProfileServiceInterface } from "../../common/update-profile/types";
-import { EXTERNAL_LINKS, PATH_NAMES } from "../../../app.constants";
+} from "../updated-terms-conditions-controller.js";
+import { UpdateProfileServiceInterface } from "../../common/update-profile/types.js";
+import { EXTERNAL_LINKS, PATH_NAMES } from "../../../app.constants.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { commonVariables } from "../../../../test/helpers/common-test-variables";
-
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("updated terms conditions controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

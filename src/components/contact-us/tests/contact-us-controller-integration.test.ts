@@ -1,9 +1,9 @@
 import { describe } from "mocha";
-import { expect, sinon, request } from "../../../../test/utils/test-utils";
+import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
-import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants";
+import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants.js";
 import { NextFunction, Request, Response } from "express";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
 

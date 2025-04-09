@@ -6,8 +6,7 @@ import {
   lengthInRangeWithoutSpaces,
   convertInternationalPhoneNumberToE164Format,
   returnLastCharactersOnly,
-} from "../../../src/utils/phone-number";
-
+} from "../../../src/utils/phone-number.js";
 describe("phone-number", () => {
   describe("containsUKMobileNumber", () => {
     it("should return false when text entered as UK phone number", () => {

@@ -6,35 +6,37 @@ import {
   ERROR_LOG_LEVEL,
   COOKIES_CHANNEL,
   CHANNEL,
-} from "../../app.constants";
-import { getNextPathAndUpdateJourney, ERROR_CODES } from "../common/constants";
-import { BadRequestError, QueryParamsError } from "../../utils/error";
-import { ApiResponseResult, ExpressRouteFunc } from "../../types";
-import { CookieConsentServiceInterface } from "../common/cookie-consent/types";
-import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service";
-import { sanitize } from "../../utils/strings";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { authorizeService } from "./authorize-service";
+} from "../../app.constants.js";
+import {
+  getNextPathAndUpdateJourney,
+  ERROR_CODES,
+} from "../common/constants.js";
+import { BadRequestError, QueryParamsError } from "../../utils/error.js";
+import { ApiResponseResult, ExpressRouteFunc } from "../../types.js";
+import { CookieConsentServiceInterface } from "../common/cookie-consent/types.js";
+import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service.js";
+import { sanitize } from "../../utils/strings.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { authorizeService } from "./authorize-service.js";
 import {
   AuthorizeServiceInterface,
   KmsDecryptionServiceInterface,
   JwtServiceInterface,
   StartAuthResponse,
-} from "./types";
-import { KmsDecryptionService } from "./kms-decryption-service";
-import { JwtService } from "./jwt-service";
-import { appendQueryParamIfHasValue } from "../../utils/url";
+} from "./types.js";
+import { KmsDecryptionService } from "./kms-decryption-service.js";
+import { JwtService } from "./jwt-service.js";
+import { appendQueryParamIfHasValue } from "../../utils/url.js";
 import {
   isValidChannel,
   getDefaultChannel,
   getOrchToAuthExpectedClientId,
   supportReauthentication,
   getOrchStubToAuthExpectedClientId,
-} from "../../config";
-import { logger } from "../../utils/logger";
-import { Claims } from "./claims-config";
-import { isReauth, isUpliftRequired } from "../../utils/request";
-
+} from "../../config.js";
+import { logger } from "../../utils/logger.js";
+import { Claims } from "./claims-config.js";
+import { isReauth, isUpliftRequired } from "../../utils/request.js";
 export function authorizeGet(
   authService: AuthorizeServiceInterface = authorizeService(),
   cookiesConsentService: CookieConsentServiceInterface = cookieConsentService(),

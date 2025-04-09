@@ -1,15 +1,15 @@
 import {
   ReverificationResultInterface,
   ReverificationResultResponse,
-} from "./types";
+} from "./types.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
-} from "../../utils/http";
-import { ApiResponseResult, DefaultApiResponse } from "../../types";
-import { API_ENDPOINTS } from "../../app.constants";
+} from "../../utils/http.js";
+import { ApiResponseResult, DefaultApiResponse } from "../../types.js";
+import { API_ENDPOINTS } from "../../app.constants.js";
 import { Request } from "express";
 
 export function reverificationResultService(

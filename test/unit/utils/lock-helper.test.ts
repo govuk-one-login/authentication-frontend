@@ -4,7 +4,7 @@ import {
   isLocked,
   timestampNMinutesFromNow,
   timestampNSecondsFromNow,
-} from "../../../src/utils/lock-helper";
+} from "../../../src/utils/lock-helper.js";
 import sinon from "sinon";
 describe("lockout-helper", () => {
   let clock: sinon.SinonFakeTimers;

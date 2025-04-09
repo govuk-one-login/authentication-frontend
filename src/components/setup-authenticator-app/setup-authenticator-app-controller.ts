@@ -1,33 +1,36 @@
 import { Request, Response } from "express";
 import QRCode from "qrcode";
-import { ExpressRouteFunc } from "../../types";
-import { ERROR_CODES, getNextPathAndUpdateJourney } from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { ExpressRouteFunc } from "../../types.js";
+import {
+  ERROR_CODES,
+  getNextPathAndUpdateJourney,
+} from "../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import {
   generateQRCodeValue,
   removeDefaultSmsMfaMethod,
-} from "../../utils/mfa";
-import { BadRequestError } from "../../utils/error";
-import { splitSecretKeyIntoFragments } from "../../utils/strings";
+} from "../../utils/mfa.js";
+import { BadRequestError } from "../../utils/error.js";
+import { splitSecretKeyIntoFragments } from "../../utils/strings.js";
 import {
   formatValidationError,
   renderBadRequest,
-} from "../../utils/validation";
-import { SendNotificationServiceInterface } from "../common/send-notification/types";
-import { sendNotificationService } from "../common/send-notification/send-notification-service";
+} from "../../utils/validation.js";
+import { SendNotificationServiceInterface } from "../common/send-notification/types.js";
+import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
 import {
   JOURNEY_TYPE,
   MFA_METHOD_TYPE,
   NOTIFICATION_TYPE,
-} from "../../app.constants";
+} from "../../app.constants.js";
 import xss from "xss";
-import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types";
-import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
-import { getJourneyTypeFromUserSession } from "../common/journey/journey";
+import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types.js";
+import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service.js";
+import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import {
   isAccountRecoveryJourney,
   isAccountRecoveryJourneyAndEnabled,
-} from "../../utils/request";
+} from "../../utils/request.js";
 
 const TEMPLATE = "setup-authenticator-app/index.njk";
 

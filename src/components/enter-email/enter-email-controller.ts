@@ -3,33 +3,33 @@ import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
   WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS,
-} from "../../app.constants";
-import { ExpressRouteFunc } from "../../types";
-import { enterEmailService } from "./enter-email-service";
-import { EnterEmailServiceInterface, LockoutInformation } from "./types";
+} from "../../app.constants.js";
+import { ExpressRouteFunc } from "../../types.js";
+import { enterEmailService } from "./enter-email-service.js";
+import { EnterEmailServiceInterface, LockoutInformation } from "./types.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
   SecurityCodeErrorType,
-} from "../common/constants";
-import { BadRequestError } from "../../utils/error";
-import { SendNotificationServiceInterface } from "../common/send-notification/types";
-import { sendNotificationService } from "../common/send-notification/send-notification-service";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+} from "../common/constants.js";
+import { BadRequestError } from "../../utils/error.js";
+import { SendNotificationServiceInterface } from "../common/send-notification/types.js";
+import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import xss from "xss";
-import { CheckReauthServiceInterface } from "../check-reauth-users/types";
-import { checkReauthUsersService } from "../check-reauth-users/check-reauth-users-service";
-import { supportReauthentication } from "../../config";
+import { CheckReauthServiceInterface } from "../check-reauth-users/types.js";
+import { checkReauthUsersService } from "../check-reauth-users/check-reauth-users-service.js";
+import { supportReauthentication } from "../../config.js";
 import {
   formatValidationError,
   renderBadRequest,
-} from "../../utils/validation";
-import { getNewCodePath } from "../security-code-error/security-code-error-controller";
-import { isLocked, timestampNSecondsFromNow } from "../../utils/lock-helper";
-import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message";
-import { isReauth } from "../../utils/request";
-import { upsertDefaultSmsMfaMethod } from "../../utils/mfa";
+} from "../../utils/validation.js";
+import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
+import { isLocked, timestampNSecondsFromNow } from "../../utils/lock-helper.js";
+import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message.js";
+import { isReauth } from "../../utils/request.js";
+import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";

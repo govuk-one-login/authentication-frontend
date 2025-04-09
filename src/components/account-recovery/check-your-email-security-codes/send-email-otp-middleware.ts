@@ -1,15 +1,14 @@
 import { Request, Response, NextFunction } from "express";
-import { sendNotificationService } from "../../common/send-notification/send-notification-service";
+import { sendNotificationService } from "../../common/send-notification/send-notification-service.js";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
   PATH_NAMES,
-} from "../../../app.constants";
-import { ERROR_CODES, getErrorPathByCode } from "../../common/constants";
-import { BadRequestError } from "../../../utils/error";
+} from "../../../app.constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../../common/constants.js";
+import { BadRequestError } from "../../../utils/error.js";
 import xss from "xss";
-import { ExpressRouteFunc } from "../../../types";
-
+import { ExpressRouteFunc } from "../../../types.js";
 export function sendEmailOtp(
   notificationService = sendNotificationService()
 ): ExpressRouteFunc {

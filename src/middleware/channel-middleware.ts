@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { CHANNEL, COOKIES_CHANNEL } from "../app.constants";
-
+import { CHANNEL, COOKIES_CHANNEL } from "../app.constants.js";
 export function channelMiddleware(
   req: Request,
   res: Response,

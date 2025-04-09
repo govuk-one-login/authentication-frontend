@@ -1,5 +1,5 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils";
+import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
@@ -8,17 +8,17 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
+} from "../../../app.constants.js";
+import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import {
   AccountRecoveryInterface,
   AccountRecoveryResponse,
-} from "../../common/account-recovery/types";
-import { createApiResponse } from "../../../utils/http";
+} from "../../common/account-recovery/types.js";
+import { createApiResponse } from "../../../utils/http.js";
 import { Request, Response, NextFunction } from "express";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { DefaultApiResponse } from "../../../types";
-import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
+import { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
+import { DefaultApiResponse } from "../../../types.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 describe("Integration:: enter mfa", () => {
   let token: string | string[];

@@ -7,14 +7,14 @@ import {
 } from "@otplib/core";
 import * as base32EncDec from "@otplib/plugin-base32-enc-dec";
 import crypto from "crypto";
-import { APP_ENV_NAME, MFA_METHOD_TYPE } from "../app.constants";
-import { getAppEnv } from "../config";
+import { APP_ENV_NAME, MFA_METHOD_TYPE } from "../app.constants.js";
+import { getAppEnv } from "../config.js";
 import {
   MfaMethod,
   isSmsMfaMethod,
   MfaMethodPriorityIdentifier,
   SmsMfaMethod,
-} from "../types";
+} from "../types.js";
 
 function createRandomBytes(size: number, encoding: KeyEncodings): string {
   return crypto.randomBytes(size).toString(encoding);

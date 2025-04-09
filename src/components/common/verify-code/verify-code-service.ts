@@ -1,12 +1,12 @@
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
-} from "../../../utils/http";
-import { ApiResponseResult, DefaultApiResponse } from "../../../types";
-import { VerifyCodeInterface } from "./types";
+} from "../../../utils/http.js";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
+import { VerifyCodeInterface } from "./types.js";
 import { Request } from "express";
 
 export function codeService(axios: Http = http): VerifyCodeInterface {

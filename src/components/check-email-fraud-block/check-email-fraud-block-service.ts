@@ -3,13 +3,13 @@ import {
   getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
-} from "../../utils/http";
-import { API_ENDPOINTS } from "../../app.constants";
-import { ApiResponseResult } from "../../types";
+} from "../../utils/http.js";
+import { API_ENDPOINTS } from "../../app.constants.js";
+import { ApiResponseResult } from "../../types.js";
 import {
   CheckEmailFraudBlockInterface,
   CheckEmailFraudBlockResponse,
-} from "./types";
+} from "./types.js";
 import { Request } from "express";
 
 export function checkEmailFraudBlockService(

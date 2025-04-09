@@ -1,28 +1,28 @@
 import { Request, Response } from "express";
 import { ExpressRouteFunc } from "src/types";
 import xss from "xss";
-import { MfaServiceInterface } from "../common/mfa/types";
-import { mfaService } from "../common/mfa/mfa-service";
+import { MfaServiceInterface } from "../common/mfa/types.js";
+import { mfaService } from "../common/mfa/mfa-service.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   pathWithQueryParam,
   SecurityCodeErrorType,
-} from "../common/constants";
-import { BadRequestError } from "../../utils/error";
+} from "../common/constants.js";
+import { BadRequestError } from "../../utils/error.js";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
   PATH_NAMES,
-} from "../../app.constants";
-import { verifyCodePost } from "../common/verify-code/verify-code-controller";
-import { VerifyCodeInterface } from "../common/verify-code/types";
-import { codeService } from "../common/verify-code/verify-code-service";
-import { AccountInterventionsInterface } from "../account-intervention/types";
-import { accountInterventionService } from "../account-intervention/account-intervention-service";
-import { getNewCodePath } from "../security-code-error/security-code-error-controller";
-import { isLocked } from "../../utils/lock-helper";
-import { getDefaultSmsMfaMethod } from "../../utils/mfa";
+} from "../../app.constants.js";
+import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
+import { VerifyCodeInterface } from "../common/verify-code/types.js";
+import { codeService } from "../common/verify-code/verify-code-service.js";
+import { AccountInterventionsInterface } from "../account-intervention/types.js";
+import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
+import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
+import { isLocked } from "../../utils/lock-helper.js";
+import { getDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 const TEMPLATE_NAME = "reset-password-2fa-sms/index.njk";
 const RESEND_CODE_LINK = pathWithQueryParam(

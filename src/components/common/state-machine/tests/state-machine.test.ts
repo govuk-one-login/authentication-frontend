@@ -1,8 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { getNextState, USER_JOURNEY_EVENTS } from "../state-machine";
-import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../../app.constants";
-
+import { getNextState, USER_JOURNEY_EVENTS } from "../state-machine.js";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../../app.constants.js";
 describe("state-machine", () => {
   describe(`getNextState - ${PATH_NAMES.AUTHORIZE} on ${USER_JOURNEY_EVENTS.EXISTING_SESSION}`, () => {
     describe("where isIdentityRequired", () => {

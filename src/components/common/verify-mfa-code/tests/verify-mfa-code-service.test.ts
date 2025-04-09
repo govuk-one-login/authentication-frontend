@@ -1,25 +1,24 @@
 import { describe } from "mocha";
 import sinon, { SinonStub } from "sinon";
-import { Http } from "../../../../utils/http";
+import { Http } from "../../../../utils/http.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
-} from "../../../../../test/helpers/service-test-helper";
+} from "../../../../../test/helpers/service-test-helper.js";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   JOURNEY_TYPE,
   MFA_METHOD_TYPE,
   PATH_NAMES,
-} from "../../../../app.constants";
-import { VerifyMfaCodeInterface } from "../../../enter-authenticator-app-code/types";
-import { verifyMfaCodeService } from "../verify-mfa-code-service";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
-import { commonVariables } from "../../../../../test/helpers/common-test-variables";
-
+} from "../../../../app.constants.js";
+import { VerifyMfaCodeInterface } from "../../../enter-authenticator-app-code/types.js";
+import { verifyMfaCodeService } from "../verify-mfa-code-service.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
 describe("verify mfa code service", () => {
   const httpInstance = new Http();
   const service: VerifyMfaCodeInterface = verifyMfaCodeService(httpInstance);

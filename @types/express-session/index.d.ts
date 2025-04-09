@@ -1,6 +1,5 @@
 import "express-session";
-import { UserSessionClient } from "../../src/types";
-
+import { UserSessionClient } from "../../src/types.js";
 declare module "express-session" {
   import { UserSession } from "../../src/types";
 

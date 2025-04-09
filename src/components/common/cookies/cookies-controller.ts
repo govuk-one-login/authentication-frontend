@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
-import { cookieConsentService } from "../cookie-consent/cookie-consent-service";
-import { sanitize } from "../../../utils/strings";
+import { cookieConsentService } from "../cookie-consent/cookie-consent-service.js";
+import { sanitize } from "../../../utils/strings.js";
 import {
   COOKIES_PREFERENCES_SET,
   COOKIE_CONSENT,
   ANALYTICS_COOKIES,
-} from "../../../app.constants";
-import { getGoogleAnalyticsAndDynatraceCookieDomain } from "../../../config";
-
+} from "../../../app.constants.js";
+import { getGoogleAnalyticsAndDynatraceCookieDomain } from "../../../config.js";
 const cookieService = cookieConsentService();
 
 export function cookiesGet(req: Request, res: Response): void {

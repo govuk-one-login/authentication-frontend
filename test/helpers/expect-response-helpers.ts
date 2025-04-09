@@ -1,6 +1,5 @@
 import request from "supertest";
-import { expect } from "../utils/test-utils";
-
+import { expect } from "../utils/test-utils.js";
 export function expectAnalyticsPropertiesMatchSnapshot(
   res: request.Response
 ): void {

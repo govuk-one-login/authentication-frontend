@@ -3,21 +3,20 @@ import { describe } from "mocha";
 
 import { Request, Response } from "express";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { fakeVerifyCodeServiceHelper } from "../../../../../test/helpers/verify-code-helpers";
-import { verifyCodePost } from "../verify-code-controller";
+import { fakeVerifyCodeServiceHelper } from "../../../../../test/helpers/verify-code-helpers.js";
+import { verifyCodePost } from "../verify-code-controller.js";
 import {
   accountInterventionsFakeHelper,
   noInterventions,
-} from "../../../../../test/helpers/account-interventions-helpers";
+} from "../../../../../test/helpers/account-interventions-helpers.js";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
   PATH_NAMES,
-} from "../../../../app.constants";
-import { ERROR_CODES, getErrorPathByCode } from "../../constants";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
-import { AccountInterventionsInterface } from "../../../account-intervention/types";
-
+} from "../../../../app.constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../../constants.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
+import { AccountInterventionsInterface } from "../../../account-intervention/types.js";
 describe("Verify code controller tests", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

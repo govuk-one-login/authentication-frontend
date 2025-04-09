@@ -1,18 +1,18 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import { Request, Response } from "express";
 
 import {
   enterPhoneNumberGet,
   enterPhoneNumberPost,
-} from "../enter-phone-number-controller";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { PATH_NAMES } from "../../../app.constants";
+} from "../enter-phone-number-controller.js";
+import { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
+import { PATH_NAMES } from "../../../app.constants.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { ERROR_CODES } from "../../common/constants";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { ERROR_CODES } from "../../common/constants.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { strict as assert } from "assert";
 import { getDefaultSmsMfaMethod } from "../../../utils/mfa";
 

@@ -1,17 +1,15 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
-
+import { sinon } from "../../../../test/utils/test-utils.js";
 import {
   accountNotFoundGet,
   accountNotFoundPost,
-} from "../account-not-found-controller";
-import { PATH_NAMES, SERVICE_TYPE } from "../../../app.constants";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
+} from "../account-not-found-controller.js";
+import { PATH_NAMES, SERVICE_TYPE } from "../../../app.constants.js";
+import { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 describe("account not found controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

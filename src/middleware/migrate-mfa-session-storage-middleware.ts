@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { upsertDefaultSmsMfaMethod } from "../utils/mfa";
-import { UserSession } from "../types";
+import { upsertDefaultSmsMfaMethod } from "../utils/mfa.js";
+import { UserSession } from "../types.js";
 
 export function migrateMfaSessionStorageMiddleware(
   req: Request,

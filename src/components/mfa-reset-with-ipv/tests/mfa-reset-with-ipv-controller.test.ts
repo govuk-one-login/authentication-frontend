@@ -1,19 +1,19 @@
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import sinon from "sinon";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import {
   HTTP_STATUS_CODES,
   MFA_METHOD_TYPE,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import {
   mfaResetOpenInBrowserGet,
   mfaResetWithIpvGet,
-} from "../mfa-reset-with-ipv-controller";
+} from "../mfa-reset-with-ipv-controller.js";
 import { expect } from "chai";
-import { MfaResetAuthorizeInterface } from "../types";
+import { MfaResetAuthorizeInterface } from "../types.js";
 import { Request, Response } from "express";
-import { BadRequestError } from "../../../utils/error";
+import { BadRequestError } from "../../../utils/error.js";
 import { strict as assert } from "assert";
 
 const IPV_DUMMY_URL =

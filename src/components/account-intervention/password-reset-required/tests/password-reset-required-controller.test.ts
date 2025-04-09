@@ -1,13 +1,11 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../../test/utils/test-utils";
-
+import { sinon } from "../../../../../test/utils/test-utils.js";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { passwordResetRequiredGet } from "../password-reset-required-controller";
-import { PATH_NAMES } from "../../../../app.constants";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
-
+import { passwordResetRequiredGet } from "../password-reset-required-controller.js";
+import { PATH_NAMES } from "../../../../app.constants.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 describe("password reset required controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

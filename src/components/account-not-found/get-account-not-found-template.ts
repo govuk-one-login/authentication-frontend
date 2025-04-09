@@ -1,9 +1,8 @@
 import {
   SERVICE_TYPE,
   WEB_TO_MOBILE_TEMPLATE_MAPPINGS,
-} from "../../app.constants";
-import { getChannelSpecificTemplate } from "../../utils/get-channel-specific-template";
-
+} from "../../app.constants.js";
+import { getChannelSpecificTemplate } from "../../utils/get-channel-specific-template.js";
 export function getAccountNotFoundTemplate(
   isOneLoginService: boolean,
   serviceType: string,

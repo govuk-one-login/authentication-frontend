@@ -1,7 +1,9 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { generateMfaSecret, generateQRCodeValue } from "../../../src/utils/mfa";
-
+import {
+  generateMfaSecret,
+  generateQRCodeValue,
+} from "../../../src/utils/mfa.js";
 describe("mfa", () => {
   describe("generateMfaSecret", () => {
     it("should return a secret with a length of 32 chars", () => {

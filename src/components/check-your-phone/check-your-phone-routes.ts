@@ -1,13 +1,12 @@
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { PATH_NAMES } from "../../app.constants";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
+import { PATH_NAMES } from "../../app.constants.js";
 import express from "express";
 import {
   checkYourPhoneGet,
   checkYourPhonePost,
-} from "./check-your-phone-controller";
-import { validateSmsCodeRequest } from "./check-your-phone-validation";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
-
+} from "./check-your-phone-controller.js";
+import { validateSmsCodeRequest } from "./check-your-phone-validation.js";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
 const router = express.Router();
 
 router.get(

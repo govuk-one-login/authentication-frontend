@@ -3,14 +3,14 @@ import {
   getInternalRequestConfigWithSecurityHeaders,
   Http,
   http,
-} from "../../utils/http";
+} from "../../utils/http.js";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   JOURNEY_TYPE,
-} from "../../app.constants";
-import { EnterPasswordServiceInterface, UserLoginResponse } from "./types";
-import { ApiResponseResult } from "../../types";
+} from "../../app.constants.js";
+import { EnterPasswordServiceInterface, UserLoginResponse } from "./types.js";
+import { ApiResponseResult } from "../../types.js";
 import { Request } from "express";
 
 export function enterPasswordService(

@@ -1,12 +1,12 @@
-import { API_ENDPOINTS } from "../../../app.constants";
+import { API_ENDPOINTS } from "../../../app.constants.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
-} from "../../../utils/http";
-import { ApiResponseResult, DefaultApiResponse } from "../../../types";
-import { AccountRecoveryInterface, AccountRecoveryResponse } from "./types";
+} from "../../../utils/http.js";
+import { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
+import { AccountRecoveryInterface, AccountRecoveryResponse } from "./types.js";
 import { Request } from "express";
 
 export function accountRecoveryService(

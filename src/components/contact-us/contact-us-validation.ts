@@ -1,7 +1,6 @@
 import { body } from "express-validator";
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
-import { ValidationChainFunc } from "../../types";
-
+import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
+import { ValidationChainFunc } from "../../types.js";
 export function getContactUsErrorMessage(theme: string): string {
   let errorMessage: string = "pages.contactUsPublic.section3.errorMessage";
   if (theme === "signing_in") {

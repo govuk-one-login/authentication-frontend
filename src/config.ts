@@ -1,5 +1,4 @@
-import { CHANNEL } from "./app.constants";
-
+import { CHANNEL } from "./app.constants.js";
 export function getLogLevel(): string {
   return process.env.LOGS_LEVEL || "debug";
 }

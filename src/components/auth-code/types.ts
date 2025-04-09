@@ -3,7 +3,7 @@ import {
   DefaultApiResponse,
   UserSession,
   UserSessionClient,
-} from "../../types";
+} from "../../types.js";
 import { Request } from "express";
 
 export interface AuthCodeResponse extends DefaultApiResponse {

@@ -2,16 +2,16 @@ import {
   AuthorizeServiceInterface,
   StartAuthResponse,
   StartRequestParameters,
-} from "./types";
-import { ApiResponseResult } from "../../types";
-import { API_ENDPOINTS } from "../../app.constants";
+} from "./types.js";
+import { ApiResponseResult } from "../../types.js";
+import { API_ENDPOINTS } from "../../app.constants.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
   Http,
-} from "../../utils/http";
-import { supportReauthentication } from "../../config";
+} from "../../utils/http.js";
+import { supportReauthentication } from "../../config.js";
 import { Request } from "express";
 
 export function authorizeService(

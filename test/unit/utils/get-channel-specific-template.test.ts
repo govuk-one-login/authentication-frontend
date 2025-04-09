@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { getChannelSpecificTemplate } from "../../../src/utils/get-channel-specific-template";
-
+import { getChannelSpecificTemplate } from "../../../src/utils/get-channel-specific-template.js";
 const mappings = {
   "webTemplate.njk": "mobileTemplate.njk",
 };

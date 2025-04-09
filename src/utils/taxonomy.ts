@@ -1,10 +1,9 @@
 import { Request } from "express";
-import { CONTACT_US_THEMES, PATH_NAMES } from "../app.constants";
+import { CONTACT_US_THEMES, PATH_NAMES } from "../app.constants.js";
 import {
   isAccountRecoveryJourneyAndEnabled,
   isReauth as isReauthTaxonomy,
-} from "./request";
-
+} from "./request.js";
 export enum TaxonomyLevel1 {
   BLANK = "",
   AUTHENTICATION = "authentication",
