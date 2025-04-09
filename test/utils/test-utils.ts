@@ -4,7 +4,7 @@ import sinonChai from "sinon-chai";
 import { jestSnapshotPlugin } from "mocha-chai-jest-snapshot";
 import supertest, { Test } from "supertest";
 import { expectAnalyticsPropertiesMatchSnapshot } from "../helpers/expect-response-helpers";
-import TestAgent = require("supertest/lib/agent");
+import TestAgent from "supertest/lib/agent";
 
 chai.should();
 chai.use(sinonChai);

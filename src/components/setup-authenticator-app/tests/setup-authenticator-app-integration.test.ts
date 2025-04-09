@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
 import {
@@ -21,7 +21,9 @@ describe("Integration::setup-authenticator-app", () => {
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -45,7 +47,7 @@ describe("Integration::setup-authenticator-app", () => {
         next();
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(

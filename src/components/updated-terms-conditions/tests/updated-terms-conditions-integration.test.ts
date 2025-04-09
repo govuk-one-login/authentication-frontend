@@ -1,6 +1,6 @@
 import { beforeEach, describe } from "mocha";
 import { sinon, request } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
 import {
@@ -20,7 +20,9 @@ describe("Integration:: updated-terms-code", () => {
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -44,7 +46,7 @@ describe("Integration:: updated-terms-code", () => {
         next();
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(

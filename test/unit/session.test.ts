@@ -17,10 +17,10 @@ describe("session", () => {
   let connect: () => void;
   let disconnect: () => void;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     decache("../../src/config/session");
     decache("redis");
-    redis = require("redis");
+    redis = await import("redis");
     connect = sinon.fake();
     disconnect = sinon.fake();
     sinon
@@ -29,23 +29,23 @@ describe("session", () => {
   });
 
   describe("getSessionStore", () => {
-    it("should create a new client if none already exists and connect to redis", () => {
-      const { getSessionStore } = require("../../src/config/session");
+    it("should create a new client if none already exists and connect to redis", async () => {
+      const { getSessionStore } = await import("../../src/config/session");
       getSessionStore(redisConfig);
       expect(redis.createClient).to.be.callCount(1);
       expect(connect).to.be.callCount(1);
     });
 
-    it("should throw error when there is already a redis client and the config is different", () => {
-      const { getSessionStore } = require("../../src/config/session");
+    it("should throw error when there is already a redis client and the config is different", async () => {
+      const { getSessionStore } = await import("../../src/config/session");
       getSessionStore(redisConfig);
       expect(() =>
         getSessionStore({ ...redisConfig, host: "somethingdifferent" })
       ).to.throw();
     });
 
-    it("should not create a new client if one already exists with the same configuration", () => {
-      const { getSessionStore } = require("../../src/config/session");
+    it("should not create a new client if one already exists with the same configuration", async () => {
+      const { getSessionStore } = await import("../../src/config/session");
       getSessionStore(redisConfig);
       getSessionStore(redisConfig);
       getSessionStore(redisConfig);
@@ -56,16 +56,17 @@ describe("session", () => {
   });
 
   describe("disconnectRedisClient", () => {
-    it("should not error if there is no client", () => {
-      const { disconnectRedisClient } = require("../../src/config/session");
+    it("should not error if there is no client", async () => {
+      const { disconnectRedisClient } = await import(
+        "../../src/config/session"
+      );
       expect(() => disconnectRedisClient()).to.not.throw();
     });
 
     it("should disconnect the client if a client exists, clear up and allow new client", async () => {
-      const {
-        getSessionStore,
-        disconnectRedisClient,
-      } = require("../../src/config/session");
+      const { getSessionStore, disconnectRedisClient } = await import(
+        "../../src/config/session"
+      );
       getSessionStore(redisConfig);
 
       await disconnectRedisClient();

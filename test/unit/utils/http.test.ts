@@ -6,7 +6,7 @@ import {
 } from "../../../src/utils/http";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../src/app.constants";
 import { createMockRequest } from "../../helpers/mock-request-helper";
-const headersLibrary = require("@govuk-one-login/frontend-passthrough-headers");
+import headersLibrary from "@govuk-one-login/frontend-passthrough-headers";
 import sinon, { SinonSpy } from "sinon";
 import { commonVariables } from "../../helpers/common-test-variables";
 
