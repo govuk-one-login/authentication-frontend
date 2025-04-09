@@ -3,8 +3,8 @@ import type { RedisConfig } from "./types.js";
 import { ENVIRONMENT_NAME } from "../app.constants.js";
 import ssm from "./ssm.js";
 import { getAppEnv, getNodeEnv } from "../config.js";
-import type { GetParametersCommandOutput } from "@aws-sdk/client-ssm/dist-types/commands/GetParametersCommand";
 import * as process from "node:process";
+import type { GetParametersCommandOutput } from "@aws-sdk/client-ssm/dist-types/commands/index.js";
 
 function getRedisHost(): string | undefined {
   return getNodeEnv() !== ENVIRONMENT_NAME.PROD
