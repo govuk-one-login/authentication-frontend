@@ -4,6 +4,7 @@
   "description": "",
   "author": "",
   "license": "ISC",
+  "type": "module",
   "engines": {
     "node": "20.17.x"
   },
