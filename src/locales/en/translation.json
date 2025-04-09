@@ -204,7 +204,7 @@
     "signIn": {
       "title": "Sign in to GOV.UK One Login",
       "header": "Sign in to GOV.UK One Login",
-      "paragraph": "You can use your GOV.UK One Login to prove your identity and access some government services.",
+      "paragraph": "You can use your GOV.UK One Login to access some government services and apps.",
       "button": "Sign in"
     },
     "accountNotFound": {
