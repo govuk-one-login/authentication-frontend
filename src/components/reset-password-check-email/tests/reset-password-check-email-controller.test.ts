@@ -19,6 +19,7 @@ import {
 } from "../../../../test/helpers/account-interventions-helpers";
 import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { match } from "sinon";
 
 describe("reset password check email controller", () => {
   let req: RequestOutput;
@@ -122,7 +123,31 @@ describe("reset password check email controller", () => {
       );
 
       expect(res.render).to.have.calledWith(
-        "reset-password-check-email/index.njk"
+        "reset-password-check-email/index.njk",
+        match({
+          email: "joe.bloggs@test.com",
+          isForcedPasswordResetJourney: false,
+        })
+      );
+    });
+
+    it("should render check email page with errors if incorrect code entered on forced password reset", async () => {
+      const fakeService = fakeVerifyCodeServiceHelper(
+        false,
+        ERROR_CODES.RESET_PASSWORD_INVALID_CODE
+      );
+      req.session.user.withinForcedPasswordResetJourney = true;
+      await resetPasswordCheckEmailPost(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        "reset-password-check-email/index.njk",
+        match({
+          email: "joe.bloggs@test.com",
+          isForcedPasswordResetJourney: true,
+        })
       );
     });
 
