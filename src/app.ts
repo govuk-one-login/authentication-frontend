@@ -102,9 +102,13 @@ import { mfaResetWithIpvRouter } from "./components/mfa-reset-with-ipv/mfa-reset
 import { asyncHandler } from "./utils/async.js";
 import { environmentBannerMiddleware } from "./middleware/environment-banner-middleware.js";
 import UID from "uid-safe";
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
+
+const directory_name = dirname(fileURLToPath(import.meta.url));
 
 const APP_VIEWS = [
-  path.join(__dirname, "components"),
+  path.join(directory_name, "components"),
   path.resolve("node_modules/govuk-frontend/"),
   path.resolve("node_modules/@govuk-one-login/"),
 ];
@@ -192,7 +196,7 @@ async function createApp(): Promise<express.Application> {
 
   app.use(
     "/public",
-    express.static(path.join(__dirname, "public"), staticAssetOptions)
+    express.static(path.join(directory_name, "public"), staticAssetOptions)
   );
   app.use(noCacheMiddleware);
   app.set("view engine", configureNunjucks(app, APP_VIEWS));
@@ -204,7 +208,7 @@ async function createApp(): Promise<express.Application> {
     .use(i18nextMiddleware.LanguageDetector)
     .init(
       i18nextConfigurationOptions(
-        path.join(__dirname, "locales/{{lng}}/{{ns}}.json")
+        path.join(directory_name, "locales/{{lng}}/{{ns}}.json")
       )
     );
 
