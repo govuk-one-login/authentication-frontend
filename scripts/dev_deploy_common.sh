@@ -85,7 +85,7 @@ if [[ $BUILD == "1" ]]; then
     echo "Digest = ${IMAGE_DIGEST}"
     echo "Complete"
 else
-    docker pull "${REPO_URL}:${IMAGE_TAG}"
+    docker pull --platform=linux/amd64 "${REPO_URL}:${IMAGE_TAG}"
     IMAGE_DIGEST="$(docker inspect "${REPO_URL}:${IMAGE_TAG}" | jq -r '.[0].RepoDigests[0] | split("@") | .[1]')"
 fi
 
