@@ -1,25 +1,23 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 
 import {
   IPV_ERROR_CODES,
   OIDC_ERRORS,
   PATH_NAMES,
-} from "../../../app.constants";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+} from "../../../app.constants.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import {
   proveIdentityCallbackGetOrPost,
   proveIdentityStatusCallbackGet,
-} from "../prove-identity-callback-controller";
-import {
-  IdentityProcessingStatus,
-  ProveIdentityCallbackServiceInterface,
-} from "../types";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-
+} from "../prove-identity-callback-controller.js";
+import type { ProveIdentityCallbackServiceInterface } from "../types.js";
+import { IdentityProcessingStatus } from "../types.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 describe("prove identity callback controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

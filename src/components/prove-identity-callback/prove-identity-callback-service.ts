@@ -1,23 +1,22 @@
+import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
-  Http,
   http,
-} from "../../utils/http";
-import { API_ENDPOINTS, COOKIE_CONSENT } from "../../app.constants";
-import { ApiResponseResult } from "../../types";
-import {
+} from "../../utils/http.js";
+import { API_ENDPOINTS, COOKIE_CONSENT } from "../../app.constants.js";
+import type { ApiResponseResult } from "../../types.js";
+import type {
   ProcessIdentityResponse,
   ProveIdentityCallbackServiceInterface,
-} from "./types";
-import { Request } from "express";
-import { getApiBaseUrl } from "../../config";
-import { AuthCodeResponse } from "../auth-code/types";
-import { ApiError } from "../../utils/error";
-import { sanitize } from "../../utils/strings";
-import { CookieConsentServiceInterface } from "../common/cookie-consent/types";
-import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service";
-
+} from "./types.js";
+import type { Request } from "express";
+import { getApiBaseUrl } from "../../config.js";
+import type { AuthCodeResponse } from "../auth-code/types.js";
+import { ApiError } from "../../utils/error.js";
+import { sanitize } from "../../utils/strings.js";
+import type { CookieConsentServiceInterface } from "../common/cookie-consent/types.js";
+import { cookieConsentService } from "../common/cookie-consent/cookie-consent-service.js";
 export function proveIdentityCallbackService(
   axios: Http = http,
   cookieService: CookieConsentServiceInterface = cookieConsentService()

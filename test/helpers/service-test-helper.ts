@@ -1,9 +1,8 @@
-import { ApiResponseResult } from "../../src/types";
-import { SinonStub } from "sinon";
+import type { ApiResponseResult } from "../../src/types.js";
+import type { SinonStub } from "sinon";
 import { expect } from "chai";
-import { sinon } from "../utils/test-utils";
-import { commonVariables } from "./common-test-variables";
-
+import { sinon } from "../utils/test-utils.js";
+import { commonVariables } from "./common-test-variables.js";
 export const expectedHeadersFromCommonVarsWithSecurityHeaders = {
   "X-API-Key": commonVariables.apiKey,
   "Session-Id": commonVariables.sessionId,

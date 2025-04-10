@@ -1,17 +1,17 @@
 import { describe } from "mocha";
 import decache from "decache";
-import { expect, request, sinon } from "../../../../test/utils/test-utils";
+import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import {
   API_ENDPOINTS,
   CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,
   MFA_METHOD_TYPE,
   PATH_NAMES,
-} from "../../../app.constants";
-import express, { NextFunction, Request, Response } from "express";
+} from "../../../app.constants.js";
+import type { NextFunction, Request, Response } from "express";
+import type express from "express";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 const TEST_CONTACT_US_LINK_URL = "https://example.com/contact-us";
 
 describe("Integration:: ipv callback", () => {
@@ -202,7 +202,9 @@ const stubMiddlewareAndCreateApp = async (
   decache("../../../app");
 
   decache("../../../middleware/session-middleware");
-  const sessionMiddleware = require("../../../middleware/session-middleware");
+  const sessionMiddleware = await import(
+    "../../../middleware/session-middleware"
+  );
 
   sinon
     .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -224,7 +226,9 @@ const stubMiddlewareAndCreateApp = async (
     });
 
   decache("../../../middleware/outbound-contact-us-links-middleware");
-  const outboundContactUsLinksMiddleware = require("../../../middleware/outbound-contact-us-links-middleware");
+  const outboundContactUsLinksMiddleware = await import(
+    "../../../middleware/outbound-contact-us-links-middleware"
+  );
 
   sinon
     .stub(outboundContactUsLinksMiddleware, "outboundContactUsLinksMiddleware")
@@ -238,7 +242,7 @@ const stubMiddlewareAndCreateApp = async (
       next();
     });
 
-  return await require("../../../app").createApp();
+  return (await import("../../../app")).createApp();
 };
 
 const getCannotChangeSecurityCodesAndReturnTokenAndCookies = async (

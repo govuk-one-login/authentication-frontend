@@ -1,9 +1,8 @@
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
-import { ValidationChainFunc } from "../../types";
-import { validateCode } from "../common/verify-code/verify-code-validation";
-import { pathWithQueryParam } from "../common/constants";
-import { PATH_NAMES } from "../../app.constants";
-
+import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
+import type { ValidationChainFunc } from "../../types.js";
+import { validateCode } from "../common/verify-code/verify-code-validation.js";
+import { pathWithQueryParam } from "../common/constants.js";
+import { PATH_NAMES } from "../../app.constants.js";
 export function validateSmsCodeRequest(): ValidationChainFunc {
   return [
     validateCode({

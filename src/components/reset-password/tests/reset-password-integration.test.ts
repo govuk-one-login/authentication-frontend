@@ -1,16 +1,15 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
 import * as cheerio from "cheerio";
-import { PATH_NAMES } from "../../../app.constants";
+import { PATH_NAMES } from "../../../app.constants.js";
 import decache from "decache";
 import {
   noInterventions,
   setupAccountInterventionsResponse,
-} from "../../../../test/helpers/account-interventions-helpers";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-
+} from "../../../../test/helpers/account-interventions-helpers.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 describe("Integration::reset password (in 6 digit code flow)", () => {
   let token: string | string[];
   let cookies: string;
@@ -24,7 +23,9 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
 
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -42,7 +43,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
 
         next();
       });
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
     setupAccountInterventionsResponse(baseApi, noInterventions);
 

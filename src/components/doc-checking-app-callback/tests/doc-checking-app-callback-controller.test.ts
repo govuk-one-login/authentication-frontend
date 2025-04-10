@@ -1,14 +1,14 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 
-import { PATH_NAMES } from "../../../app.constants";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { docCheckingAppCallbackGet } from "../doc-checking-app-callback-controller";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-
+import { PATH_NAMES } from "../../../app.constants.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import { docCheckingAppCallbackGet } from "../doc-checking-app-callback-controller.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 describe("doc checking app callback controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

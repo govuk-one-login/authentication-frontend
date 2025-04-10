@@ -4,6 +4,7 @@
   "description": "",
   "author": "",
   "license": "ISC",
+  "type": "module",
   "engines": {
     "node": "20.17.x"
   },
@@ -14,7 +15,7 @@
     "clean": "rm -rf dist node_modules logs.json",
     "clean-modules": "rm -rf node_modules",
     "copy-assets": "mkdir -p dist && copyfiles -u 1 src/**/*.njk dist/ src/locales/**/** dist/ src/config/*.txt dist/ && copyfiles -u 3 src/assets/javascript/*.js dist/public/scripts -e **/all.js && cp node_modules/govuk-frontend/govuk/all.js dist/public/scripts && cp node_modules/@govuk-one-login/frontend-analytics/lib/analytics.js dist/public/scripts && cp node_modules/@govuk-one-login/spinner/spinner-app.js dist/public/scripts",
-    "dev": "tsc && concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\"",
+    "dev": "yarn build-ts && concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\"",
     "dummy-server": "node dev-app.js | pino-pretty",
     "dummy-server-orchstub": "node dev-app-orchstub.js | pino-pretty",
     "depcheck": "depcheck",
@@ -114,6 +115,7 @@
     "@types/express": "4.17.21",
     "@types/express-session": "1.18.1",
     "@types/i18next-fs-backend": "1.2.0",
+    "@types/jsdom": "21.1.7",
     "@types/mocha": "10.0.10",
     "@types/mock-req-res": "1.1.6",
     "@types/node": "20.17.6",

@@ -1,14 +1,14 @@
-import { createMachine, EventType, StateValue } from "xstate";
+import type { EventType, StateValue } from "xstate";
+import { createMachine } from "xstate";
 import {
   MFA_METHOD_TYPE,
   OIDC_PROMPT,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import {
   routeUsersToNewIpvJourney,
   supportMfaResetWithIpv,
-} from "../../../config";
-
+} from "../../../config.js";
 const USER_JOURNEY_EVENTS = {
   AUTHENTICATED: "AUTHENTICATED",
   CREDENTIALS_VALIDATED: "CREDENTIALS_VALIDATED",

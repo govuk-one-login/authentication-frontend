@@ -1,12 +1,11 @@
 import { body } from "express-validator";
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
-import { ValidationChainFunc } from "../../types";
-import { Request } from "express";
+import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
+import type { ValidationChainFunc } from "../../types.js";
+import type { Request } from "express";
 import {
   containsNumbersOnly,
   splitSecretKeyIntoFragments,
-} from "../../utils/strings";
-
+} from "../../utils/strings.js";
 export function validateSetupAuthAppRequest(): ValidationChainFunc {
   return [
     body("code")

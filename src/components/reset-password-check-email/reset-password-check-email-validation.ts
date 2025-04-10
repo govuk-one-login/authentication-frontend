@@ -1,7 +1,6 @@
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
-import { ValidationChainFunc } from "../../types";
-import { validateCode } from "../common/verify-code/verify-code-validation";
-
+import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
+import type { ValidationChainFunc } from "../../types.js";
+import { validateCode } from "../common/verify-code/verify-code-validation.js";
 export function validateResetPasswordCheckEmailRequest(): ValidationChainFunc {
   return [
     validateCode({

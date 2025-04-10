@@ -1,3 +1,3 @@
-const { SSM } = require("@aws-sdk/client-ssm");
+import { SSM } from "@aws-sdk/client-ssm";
 
 export default new SSM();

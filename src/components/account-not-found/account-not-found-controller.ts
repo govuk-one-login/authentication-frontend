@@ -1,19 +1,18 @@
-import { Request, Response } from "express";
-import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
-import { ExpressRouteFunc } from "../../types";
-import { SendNotificationServiceInterface } from "../common/send-notification/types";
-import { sendNotificationService } from "../common/send-notification/send-notification-service";
-import { BadRequestError } from "../../utils/error";
+import type { Request, Response } from "express";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
+import type { ExpressRouteFunc } from "../../types.js";
+import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
+import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
+import { BadRequestError } from "../../utils/error.js";
 import {
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
-} from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+} from "../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import xss from "xss";
-import { getServiceSignInLink } from "../../config";
-import { getAccountNotFoundTemplate } from "./get-account-not-found-template";
-import { clientIsOneLogin } from "../../utils/request";
-
+import { getServiceSignInLink } from "../../config.js";
+import { getAccountNotFoundTemplate } from "./get-account-not-found-template.js";
+import { clientIsOneLogin } from "../../utils/request.js";
 export function accountNotFoundGet(req: Request, res: Response): void {
   const template: string = getAccountNotFoundTemplate(
     clientIsOneLogin(req),

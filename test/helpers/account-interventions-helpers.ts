@@ -1,6 +1,6 @@
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../src/app.constants";
-import { AccountInterventionsInterface } from "../../src/components/account-intervention/types";
-import nock = require("nock");
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../src/app.constants.js";
+import type { AccountInterventionsInterface } from "../../src/components/account-intervention/types.js";
+import nock from "nock";
 import sinon from "sinon";
 
 export type AccountInterventionsFlags = {

@@ -1,17 +1,16 @@
 import { afterEach, describe } from "mocha";
-import { expect, sinon, request } from "../../../../test/utils/test-utils";
+import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
 import decache from "decache";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import nock = require("nock");
-import { ERROR_CODES } from "../../common/constants";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-
+} from "../../../app.constants.js";
+import nock from "nock";
+import { ERROR_CODES } from "../../common/constants.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 const REDIRECT_URI = "https://rp.host/redirect";
 
 describe("Integration::enter email", () => {
@@ -23,7 +22,9 @@ describe("Integration::enter email", () => {
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -49,7 +50,7 @@ describe("Integration::enter email", () => {
         next();
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN), {

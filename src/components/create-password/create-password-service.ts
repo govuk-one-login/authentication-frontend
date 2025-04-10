@@ -1,13 +1,13 @@
+import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
-  Http,
   http,
-} from "../../utils/http";
-import { API_ENDPOINTS } from "../../app.constants";
-import { CreatePasswordServiceInterface } from "./types";
-import { ApiResponseResult, DefaultApiResponse } from "../../types";
-import { Request } from "express";
+} from "../../utils/http.js";
+import { API_ENDPOINTS } from "../../app.constants.js";
+import type { CreatePasswordServiceInterface } from "./types.js";
+import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
+import type { Request } from "express";
 
 export function createPasswordService(
   axios: Http = http

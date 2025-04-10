@@ -1,14 +1,13 @@
 import * as express from "express";
-import { PATH_NAMES } from "../../app.constants";
+import { PATH_NAMES } from "../../app.constants.js";
 import {
   enterPhoneNumberGet,
   enterPhoneNumberPost,
-} from "./enter-phone-number-controller";
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { validateEnterPhoneNumberRequest } from "./enter-phone-number-validation";
-import { asyncHandler } from "../../utils/async";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
-
+} from "./enter-phone-number-controller.js";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
+import { validateEnterPhoneNumberRequest } from "./enter-phone-number-validation.js";
+import { asyncHandler } from "../../utils/async.js";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
 const router = express.Router();
 
 router.get(

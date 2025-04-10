@@ -1,15 +1,15 @@
-const typescriptEslint = require("@typescript-eslint/eslint-plugin");
-const noOnlyTestPlugin = require("eslint-plugin-no-only-tests");
-const globals = require("globals");
-const parser = require("@typescript-eslint/parser");
-const { FlatCompat } = require("@eslint/eslintrc");
-const js = require("@eslint/js");
+import typescriptEslint from "@typescript-eslint/eslint-plugin";
+import noOnlyTestPlugin from "eslint-plugin-no-only-tests";
+import globals from "globals";
+import parser from "@typescript-eslint/parser";
+import { FlatCompat } from "@eslint/eslintrc";
+import js from "@eslint/js";
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+  baseDirectory: import.meta.dirname,
   recommendedConfig: js.configs.recommended,
 });
 
-module.exports = [
+const config = [
   ...compat.extends("plugin:@typescript-eslint/recommended"),
   {
     plugins: {
@@ -41,6 +41,7 @@ module.exports = [
         },
       ],
       "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/consistent-type-imports": "error",
       "padding-line-between-statements": [
         "error",
         { blankLine: "any", prev: "*", next: "*" },
@@ -68,3 +69,5 @@ module.exports = [
     ],
   },
 ];
+
+export default config;

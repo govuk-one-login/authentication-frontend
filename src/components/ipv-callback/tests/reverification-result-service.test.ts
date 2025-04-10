@@ -1,19 +1,19 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
-} from "../../../../test/helpers/service-test-helper";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
-import { Http } from "../../../utils/http";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { commonVariables } from "../../../../test/helpers/common-test-variables";
-import { reverificationResultService } from "../reverification-result-service";
-import { ReverificationResultInterface } from "../types";
-
+} from "../../../../test/helpers/service-test-helper.js";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
+import { Http } from "../../../utils/http.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
+import { reverificationResultService } from "../reverification-result-service.js";
+import type { ReverificationResultInterface } from "../types.js";
 describe("reverification result service", () => {
   const http = new Http();
   const service: ReverificationResultInterface =

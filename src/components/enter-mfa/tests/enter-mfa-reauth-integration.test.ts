@@ -1,23 +1,22 @@
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import { request, sinon } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
-import { AxiosResponse } from "axios";
+import type { AxiosResponse } from "axios";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { ERROR_CODES } from "../../common/constants";
-import {
+} from "../../../app.constants.js";
+import { ERROR_CODES } from "../../common/constants.js";
+import type {
   AccountRecoveryInterface,
   AccountRecoveryResponse,
-} from "../../common/account-recovery/types";
-import { createApiResponse } from "../../../utils/http";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-
+} from "../../common/account-recovery/types.js";
+import { createApiResponse } from "../../../utils/http.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 describe("Integration:: enter mfa", () => {
   let token: string | string[];
   let cookies: string;
@@ -30,8 +29,12 @@ describe("Integration:: enter mfa", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     decache("../../common/account-recovery/account-recovery-service");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
-    const accountRecoveryService = require("../../common/account-recovery/account-recovery-service");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
+    const accountRecoveryService = await import(
+      "../../common/account-recovery/account-recovery-service"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -71,7 +74,7 @@ describe("Integration:: enter mfa", () => {
         return { accountRecovery };
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
     process.env.SUPPORT_REAUTHENTICATION = "1";
 

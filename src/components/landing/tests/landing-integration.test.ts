@@ -1,18 +1,19 @@
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import { request, sinon } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
 import decache from "decache";
-import { PATH_NAMES } from "../../../app.constants";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-
+import { PATH_NAMES } from "../../../app.constants.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 describe("Integration:: landing", () => {
   let app: any;
 
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (
@@ -28,7 +29,7 @@ describe("Integration:: landing", () => {
         next();
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
   });
 
   beforeEach(() => {

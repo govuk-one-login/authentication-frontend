@@ -1,27 +1,26 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
-} from "../constants";
+} from "../constants.js";
 import {
   formatValidationError,
   renderBadRequest,
-} from "../../../utils/validation";
-import { BadRequestError } from "../../../utils/error";
-import { VerifyCodeInterface } from "./types";
-import { ExpressRouteFunc } from "../../../types";
-import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine";
+} from "../../../utils/validation.js";
+import { BadRequestError } from "../../../utils/error.js";
+import type { VerifyCodeInterface } from "./types.js";
+import type { ExpressRouteFunc } from "../../../types.js";
+import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine.js";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
   PATH_NAMES,
-} from "../../../app.constants";
-import { supportAccountInterventions } from "../../../config";
-import { AccountInterventionsInterface } from "../../account-intervention/types";
-import { isSuspendedWithoutUserActions } from "../../../utils/interventions";
-import { isReauth } from "../../../utils/request";
-
+} from "../../../app.constants.js";
+import { supportAccountInterventions } from "../../../config.js";
+import type { AccountInterventionsInterface } from "../../account-intervention/types.js";
+import { isSuspendedWithoutUserActions } from "../../../utils/interventions.js";
+import { isReauth } from "../../../utils/request.js";
 interface Config {
   notificationType: NOTIFICATION_TYPE;
   template: string;

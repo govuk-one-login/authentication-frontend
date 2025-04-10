@@ -2,9 +2,8 @@ import { exec } from "child_process";
 import fs from "fs";
 import os from "os";
 import path from "path";
-import { authStateMachine } from "../src/components/common/state-machine/state-machine";
-import { PATH_NAMES } from "../src/app.constants";
-
+import { authStateMachine } from "../src/components/common/state-machine/state-machine.js";
+import { PATH_NAMES } from "../src/app.constants.js";
 const allSupportedStates = Object.keys(authStateMachine.config.states);
 function renderCode(str: string) {
   return `<code>${str}</code>`;

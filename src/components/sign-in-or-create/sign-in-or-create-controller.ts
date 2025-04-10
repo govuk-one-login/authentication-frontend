@@ -1,9 +1,8 @@
-import { Request, Response } from "express";
-import { getNextPathAndUpdateJourney } from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { getChannelSpecificTemplate } from "../../utils/get-channel-specific-template";
-import { WEB_TO_MOBILE_TEMPLATE_MAPPINGS } from "../../app.constants";
-
+import type { Request, Response } from "express";
+import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { getChannelSpecificTemplate } from "../../utils/get-channel-specific-template.js";
+import { WEB_TO_MOBILE_TEMPLATE_MAPPINGS } from "../../app.constants.js";
 export async function signInOrCreateGet(
   req: Request,
   res: Response

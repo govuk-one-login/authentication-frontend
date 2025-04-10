@@ -1,6 +1,5 @@
 import { describe } from "mocha";
-import { expect, sinon } from "../../../test/utils/test-utils";
-
+import { expect, sinon } from "../../../test/utils/test-utils.js";
 describe("applyOverloadProtection", () => {
   let overloadProtectionStub: any;
   let applyOverloadProtection: any;
@@ -15,8 +14,9 @@ describe("applyOverloadProtection", () => {
       exports: overloadProtectionStub,
     } as NodeModule;
 
-    applyOverloadProtection =
-      require("../overload-protection-middleware").applyOverloadProtection;
+    applyOverloadProtection = (
+      await import("../overload-protection-middleware")
+    ).applyOverloadProtection;
   });
 
   it("should call overloadProtection with correct options in production mode", () => {

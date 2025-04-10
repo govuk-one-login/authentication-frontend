@@ -1,19 +1,19 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 
 import {
   resendEmailCodePost,
   resendEmailCodeGet,
   securityCodeCheckTimeLimit,
-} from "../resend-email-code-controller";
-import { PATH_NAMES } from "../../../app.constants";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-
+} from "../resend-email-code-controller.js";
+import { PATH_NAMES } from "../../../app.constants.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 describe("resend email controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

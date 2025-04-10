@@ -1,18 +1,17 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types";
-import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
 import {
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
-} from "../common/constants";
-import { BadRequestError } from "../../utils/error";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { SendNotificationServiceInterface } from "../common/send-notification/types";
-import { sendNotificationService } from "../common/send-notification/send-notification-service";
+} from "../common/constants.js";
+import { BadRequestError } from "../../utils/error.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
+import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
 import xss from "xss";
-import { isLocked } from "../../utils/lock-helper";
-import { isAccountRecoveryJourney } from "../../utils/request";
-
+import { isLocked } from "../../utils/lock-helper.js";
+import { isAccountRecoveryJourney } from "../../utils/request.js";
 export function resendEmailCodeGet(req: Request, res: Response): void {
   if (
     isLocked(req.session.user.wrongCodeEnteredAccountRecoveryLock) ||

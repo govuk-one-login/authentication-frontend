@@ -1,17 +1,16 @@
 import { describe } from "mocha";
-import { expect, sinon, request } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-
+} from "../../../app.constants.js";
+import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 describe("Integration:: check your email", () => {
   let token: string | string[];
   let cookies: string;
@@ -22,7 +21,9 @@ describe("Integration:: check your email", () => {
     process.env.SUPPORT_CHECK_EMAIL_FRAUD = "1";
     decache("../../../app");
     decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -41,7 +42,7 @@ describe("Integration:: check your email", () => {
         next();
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(app, (test) => test.get(PATH_NAMES.CHECK_YOUR_EMAIL), {

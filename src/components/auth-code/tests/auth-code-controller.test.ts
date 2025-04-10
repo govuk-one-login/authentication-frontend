@@ -1,19 +1,15 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 
-import { authCodeGet } from "../auth-code-controller";
-import { AuthCodeServiceInterface } from "../types";
-import { CookieConsentServiceInterface } from "../../common/cookie-consent/types";
-import { COOKIE_CONSENT } from "../../../app.constants";
-import {
-  mockRequest,
-  mockResponse,
-  RequestOutput,
-  ResponseOutput,
-} from "mock-req-res";
+import { authCodeGet } from "../auth-code-controller.js";
+import type { AuthCodeServiceInterface } from "../types.js";
+import type { CookieConsentServiceInterface } from "../../common/cookie-consent/types.js";
+import { COOKIE_CONSENT } from "../../../app.constants.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockRequest, mockResponse } from "mock-req-res";
 
 describe("auth code controller", () => {
   let req: RequestOutput;

@@ -1,9 +1,12 @@
 import { describe } from "mocha";
-import { expect, sinon, request } from "../../../../../test/utils/test-utils";
+import {
+  expect,
+  sinon,
+  request,
+} from "../../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
 import decache from "decache";
-import { PATH_NAMES, ANALYTICS_COOKIES } from "../../../../app.constants";
-
+import { PATH_NAMES, ANALYTICS_COOKIES } from "../../../../app.constants.js";
 describe("Integration:: cookies controller", () => {
   let app: any;
   let $: any;
@@ -14,7 +17,7 @@ describe("Integration:: cookies controller", () => {
     before(async () => {
       decache("../../../../app");
 
-      app = await require("../../../../app").createApp();
+      app = await (await import("../../../../app")).createApp();
 
       await request(app, (test) => test.get(PATH_NAMES.COOKIES_POLICY)).then(
         (res) => {
@@ -70,7 +73,7 @@ describe("Integration:: cookies controller", () => {
     before(async () => {
       decache("../../../../app");
 
-      app = await require("../../../../app").createApp();
+      app = await (await import("../../../../app")).createApp();
 
       await request(app, (test) => test.get(PATH_NAMES.COOKIES_POLICY), {
         expectAnalyticsPropertiesMatchSnapshot: false,

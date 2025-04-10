@@ -1,16 +1,15 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { NextFunction } from "express";
-import { sinon } from "../../utils/test-utils";
+import type { NextFunction } from "express";
+import { sinon } from "../../utils/test-utils.js";
 import {
   allowAndPersistUserJourneyMiddleware,
   allowUserJourneyMiddleware,
-} from "../../../src/middleware/allow-user-journey-middleware";
-import { PATH_NAMES } from "../../../src/app.constants";
-import { createMockRequest } from "../../helpers/mock-request-helper";
+} from "../../../src/middleware/allow-user-journey-middleware.js";
+import { PATH_NAMES } from "../../../src/app.constants.js";
+import { createMockRequest } from "../../helpers/mock-request-helper.js";
 import { mockResponse } from "mock-req-res";
-import { authStateMachine } from "../../../src/components/common/state-machine/state-machine";
-
+import { authStateMachine } from "../../../src/components/common/state-machine/state-machine.js";
 describe("Allow user journey middleware", () => {
   it("Should call next when use journey is valid", () => {
     const req = createMockRequest(PATH_NAMES.ENTER_MFA);

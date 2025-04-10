@@ -4,18 +4,19 @@ import decache from "decache";
 import { describe } from "mocha";
 import nock from "nock";
 import request from "supertest";
-import { sinon } from "../../../../../test/utils/test-utils";
-import { CHANNEL, PATH_NAMES } from "../../../../app.constants";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper";
-
+import { sinon } from "../../../../../test/utils/test-utils.js";
+import { CHANNEL, PATH_NAMES } from "../../../../app.constants.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper.js";
 describe("Integration:: base page ", () => {
   let app: any;
 
   const setupApp = async (channel: string, showTestBanner?: boolean) => {
     decache("../../../../app");
     decache("../../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../../middleware/session-middleware");
+    const sessionMiddleware = await import(
+      "../../../../middleware/session-middleware"
+    );
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (
@@ -44,7 +45,9 @@ describe("Integration:: base page ", () => {
       });
     if (showTestBanner !== undefined) {
       decache("../../../../middleware/environment-banner-middleware");
-      const envBannerMiddleware = require("../../../../middleware/environment-banner-middleware");
+      const envBannerMiddleware = await import(
+        "../../../../middleware/environment-banner-middleware"
+      );
       sinon
         .stub(envBannerMiddleware, "environmentBannerMiddleware")
         .callsFake(function (
@@ -57,7 +60,7 @@ describe("Integration:: base page ", () => {
         });
     }
 
-    app = await require("../../../../app").createApp();
+    app = await (await import("../../../../app")).createApp();
   };
 
   beforeEach(() => {

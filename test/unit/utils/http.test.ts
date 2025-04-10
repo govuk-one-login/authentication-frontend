@@ -3,13 +3,16 @@ import { describe } from "mocha";
 import {
   getAdditionalAxiosConfig,
   getInternalRequestConfigWithSecurityHeaders,
-} from "../../../src/utils/http";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../src/app.constants";
-import { createMockRequest } from "../../helpers/mock-request-helper";
-const headersLibrary = require("@govuk-one-login/frontend-passthrough-headers");
-import sinon, { SinonSpy } from "sinon";
-import { commonVariables } from "../../helpers/common-test-variables";
-
+} from "../../../src/utils/http.js";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+} from "../../../src/app.constants.js";
+import { createMockRequest } from "../../helpers/mock-request-helper.js";
+import headersLibrary from "@govuk-one-login/frontend-passthrough-headers";
+import type { SinonSpy } from "sinon";
+import sinon from "sinon";
+import { commonVariables } from "../../helpers/common-test-variables.js";
 describe("getInternalRequestConfigWithSecurityHeaders", () => {
   const req = createMockRequest(API_ENDPOINTS.START);
   const path = API_ENDPOINTS.START;

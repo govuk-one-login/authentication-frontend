@@ -1,16 +1,16 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 
-import { sendMfaGeneric } from "../send-mfa-controller";
-import { MfaServiceInterface } from "../types";
-import { JOURNEY_TYPE, PATH_NAMES } from "../../../../app.constants";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import * as journey from "../../journey/journey";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
-
+import { sendMfaGeneric } from "../send-mfa-controller.js";
+import type { MfaServiceInterface } from "../types.js";
+import { JOURNEY_TYPE, PATH_NAMES } from "../../../../app.constants.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import * as journey from "../../journey/journey.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 describe("send mfa controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

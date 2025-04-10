@@ -1,25 +1,31 @@
 import { describe } from "mocha";
-import { AxiosResponse } from "axios";
-import { expect, sinon, request } from "../../../../../test/utils/test-utils";
-import nock = require("nock");
+import type { AxiosResponse } from "axios";
+import {
+  expect,
+  sinon,
+  request,
+} from "../../../../../test/utils/test-utils.js";
+import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../../app.constants";
-import { ERROR_CODES, SecurityCodeErrorType } from "../../../common/constants";
-import { SendNotificationServiceInterface } from "../../../common/send-notification/types";
-import { DefaultApiResponse } from "../../../../types";
-import { createApiResponse } from "../../../../utils/http";
+} from "../../../../app.constants.js";
 import {
+  ERROR_CODES,
+  SecurityCodeErrorType,
+} from "../../../common/constants.js";
+import type { SendNotificationServiceInterface } from "../../../common/send-notification/types.js";
+import type { DefaultApiResponse } from "../../../../types.js";
+import { createApiResponse } from "../../../../utils/http.js";
+import type {
   AccountInterventionsInterface,
   AccountInterventionStatus,
-} from "../../../account-intervention/types";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper";
-
+} from "../../../account-intervention/types.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper.js";
 describe("Integration:: check your email security codes", () => {
   let token: string | string[];
   let cookies: string;
@@ -30,9 +36,15 @@ describe("Integration:: check your email security codes", () => {
     decache("../../../../app");
     decache("../../../../middleware/session-middleware");
     decache("../../../common/send-notification/send-notification-service");
-    const sessionMiddleware = require("../../../../middleware/session-middleware");
-    const sendNotificationService = require("../../../common/send-notification/send-notification-service");
-    const accountInterventionService = require("../../../account-intervention/account-intervention-service");
+    const sessionMiddleware = await import(
+      "../../../../middleware/session-middleware"
+    );
+    const sendNotificationService = import(
+      "../../../common/send-notification/send-notification-service"
+    );
+    const accountInterventionService = import(
+      "../../../account-intervention/account-intervention-service"
+    );
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
       .callsFake(function (
@@ -96,7 +108,7 @@ describe("Integration:: check your email security codes", () => {
 
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
 
-    app = await require("../../../../app").createApp();
+    app = await (await import("../../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     await request(

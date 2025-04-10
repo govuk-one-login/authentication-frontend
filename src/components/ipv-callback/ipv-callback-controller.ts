@@ -1,21 +1,20 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
+import type { ReverificationResultInterface } from "./types.js";
 import {
   isReverificationResultFailedResponse,
   REVERIFICATION_ERROR_CODE,
-  ReverificationResultInterface,
-} from "./types";
-import { logger } from "../../utils/logger";
-import { reverificationResultService } from "./reverification-result-service";
-import { BadRequestError } from "../../utils/error";
-import { getNextPathAndUpdateJourney } from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+} from "./types.js";
+import { logger } from "../../utils/logger.js";
+import { reverificationResultService } from "./reverification-result-service.js";
+import { BadRequestError } from "../../utils/error.js";
+import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import {
   CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,
   MFA_METHOD_TYPE,
   PATH_NAMES,
-} from "../../app.constants";
-
+} from "../../app.constants.js";
 const ERROR_TO_EVENT_MAP = new Map<string, string>();
 ERROR_TO_EVENT_MAP.set(
   REVERIFICATION_ERROR_CODE.NO_IDENTITY_AVAILABLE,

@@ -1,11 +1,11 @@
-import { PATH_NAMES } from "../../../app.constants";
+import { PATH_NAMES } from "../../../app.constants.js";
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils";
-import express, { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { request, sinon } from "../../../../test/utils/test-utils.js";
+import type { NextFunction, Request, Response } from "express";
+import type express from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import decache from "decache";
-import { IdentityProcessingStatus } from "../types";
-
+import { IdentityProcessingStatus } from "../types.js";
 describe("Integration: prove identity callback", () => {
   let app: express.Application;
 
@@ -52,7 +52,9 @@ const stubMiddlewareAndCreateApp = async (
   decache("../../../app");
 
   decache("../../../middleware/session-middleware");
-  const sessionMiddleware = require("../../../middleware/session-middleware");
+  const sessionMiddleware = await import(
+    "../../../middleware/session-middleware"
+  );
   sinon
     .stub(sessionMiddleware, "validateSessionMiddleware")
     .callsFake(function (
@@ -77,7 +79,9 @@ const stubMiddlewareAndCreateApp = async (
 
   if (redirectPath) {
     decache("../prove-identity-callback-service");
-    const proveIdentityCallbackServiceFile = require("../prove-identity-callback-service");
+    const proveIdentityCallbackServiceFile = await import(
+      "../prove-identity-callback-service"
+    );
     sinon
       .stub(proveIdentityCallbackServiceFile, "proveIdentityCallbackService")
       .returns({
@@ -88,5 +92,5 @@ const stubMiddlewareAndCreateApp = async (
       });
   }
 
-  return await require("../../../app").createApp();
+  return (await import("../../../app")).createApp();
 };

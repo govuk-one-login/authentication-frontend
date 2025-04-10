@@ -1,5 +1,5 @@
 declare namespace Express {
-  import pino from "pino";
+  import type pino from "pino";
   interface Request {
     i18n?: {
       language?: string;

@@ -1,7 +1,6 @@
-import { getRequestTaxonomy } from "../utils/taxonomy";
-import { NextFunction, Request, Response } from "express";
-import { getContentId } from "../utils/contentId";
-
+import { getRequestTaxonomy } from "../utils/taxonomy.js";
+import type { NextFunction, Request, Response } from "express";
+import { getContentId } from "../utils/contentId.js";
 type CallbackFunction = (err: Error, html: string) => void;
 
 export function getAnalyticsPropertiesMiddleware(

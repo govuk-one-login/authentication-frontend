@@ -1,20 +1,19 @@
 import { describe } from "mocha";
-import { Http } from "../../../utils/http";
-import { sinon } from "../../../../test/utils/test-utils";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants";
-import { SinonStub } from "sinon";
-import { checkReauthUsersService } from "../check-reauth-users-service";
-import { CheckReauthServiceInterface } from "../types";
+import { Http } from "../../../utils/http.js";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
+import type { SinonStub } from "sinon";
+import { checkReauthUsersService } from "../check-reauth-users-service.js";
+import type { CheckReauthServiceInterface } from "../types.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
-} from "../../../../test/helpers/service-test-helper";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { commonVariables } from "../../../../test/helpers/common-test-variables";
-
+} from "../../../../test/helpers/service-test-helper.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("re-authentication service", () => {
   const httpInstance = new Http();
   const service: CheckReauthServiceInterface =

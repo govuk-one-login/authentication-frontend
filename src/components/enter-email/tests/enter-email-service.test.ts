@@ -1,23 +1,23 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
-} from "../../../../test/helpers/service-test-helper";
-import { EnterEmailServiceInterface } from "../types";
-import { enterEmailService } from "../enter-email-service";
-import { Http } from "../../../utils/http";
+} from "../../../../test/helpers/service-test-helper.js";
+import type { EnterEmailServiceInterface } from "../types.js";
+import { enterEmailService } from "../enter-email-service.js";
+import { Http } from "../../../utils/http.js";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { commonVariables } from "../../../../test/helpers/common-test-variables";
-
+} from "../../../app.constants.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("enter email service", () => {
   const httpInstance = new Http();
   const service: EnterEmailServiceInterface = enterEmailService(httpInstance);

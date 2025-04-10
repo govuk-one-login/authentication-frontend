@@ -1,13 +1,12 @@
 import { describe } from "mocha";
 import { mockRequest, mockResponse } from "mock-req-res";
-import { PATH_NAMES } from "../../../src/app.constants";
-import { NextFunction, Request, Response } from "express";
-import { sinon } from "../../utils/test-utils";
+import { PATH_NAMES } from "../../../src/app.constants.js";
+import type { NextFunction, Request, Response } from "express";
+import { sinon } from "../../utils/test-utils.js";
 import { expect } from "chai";
-import { accountInterventionsMiddleware } from "../../../src/middleware/account-interventions-middleware";
-import { AccountInterventionsInterface } from "../../../src/components/account-intervention/types";
-import { accountInterventionsFakeHelper } from "../../helpers/account-interventions-helpers";
-
+import { accountInterventionsMiddleware } from "../../../src/middleware/account-interventions-middleware.js";
+import type { AccountInterventionsInterface } from "../../../src/components/account-intervention/types.js";
+import { accountInterventionsFakeHelper } from "../../helpers/account-interventions-helpers.js";
 describe("accountInterventionsMiddleware", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;

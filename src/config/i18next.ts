@@ -1,6 +1,5 @@
-import { LOCALE } from "../app.constants";
-import { getServiceDomain } from "../config";
-
+import { LOCALE } from "../app.constants.js";
+import { getServiceDomain } from "../config.js";
 export function i18nextConfigurationOptions(
   path: string
 ): Record<string, unknown> {

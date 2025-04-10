@@ -1,10 +1,9 @@
-import { Request, Response } from "express";
-import { MFA_METHOD_TYPE } from "../../../app.constants";
-import { ExpressRouteFunc } from "../../../types";
-import { USER_JOURNEY_EVENTS } from "../../common/state-machine/state-machine";
-import { getNextPathAndUpdateJourney } from "../../common/constants";
-import { supportMfaResetWithIpv } from "../../../config";
-
+import type { Request, Response } from "express";
+import { MFA_METHOD_TYPE } from "../../../app.constants.js";
+import type { ExpressRouteFunc } from "../../../types.js";
+import { USER_JOURNEY_EVENTS } from "../../common/state-machine/state-machine.js";
+import { getNextPathAndUpdateJourney } from "../../common/constants.js";
+import { supportMfaResetWithIpv } from "../../../config.js";
 export function changeSecurityCodesConfirmationGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const type = req.session.user.accountRecoveryVerifiedMfaType;

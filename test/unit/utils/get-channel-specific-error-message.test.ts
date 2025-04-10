@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { getChannelSpecificErrorMessage } from "../../../src/utils/get-channel-specific-error-message";
-
+import { getChannelSpecificErrorMessage } from "../../../src/utils/get-channel-specific-error-message.js";
 const mappings = {
   "pages.error.specificError": "mobileAppPages.error.specificError",
 };

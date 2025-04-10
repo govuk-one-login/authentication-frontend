@@ -1,24 +1,24 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
-import { Http } from "../../../../utils/http";
-import { MfaServiceInterface } from "../types";
-import { mfaService } from "../mfa-service";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
+import { Http } from "../../../../utils/http.js";
+import type { MfaServiceInterface } from "../types.js";
+import { mfaService } from "../mfa-service.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
-} from "../../../../../test/helpers/service-test-helper";
+} from "../../../../../test/helpers/service-test-helper.js";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   JOURNEY_TYPE,
   PATH_NAMES,
-} from "../../../../app.constants";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
-import { commonVariables } from "../../../../../test/helpers/common-test-variables";
-
+} from "../../../../app.constants.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
 describe("mfa service", () => {
   const httpInstance = new Http();
   const service: MfaServiceInterface = mfaService(httpInstance);

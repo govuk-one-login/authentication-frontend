@@ -1,5 +1,5 @@
 import { describe } from "mocha";
-import { createApp } from "../../src/app";
+import { createApp } from "../../src/app.js";
 import request from "supertest";
 import { expect } from "chai";
 

@@ -1,23 +1,22 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 import {
   ENTER_MFA_DEFAULT_TEMPLATE_NAME,
   enterMfaGet,
   enterMfaPost,
   UPLIFT_REQUIRED_SMS_TEMPLATE_NAME,
-} from "../enter-mfa-controller";
-
-import { VerifyCodeInterface } from "../../common/verify-code/types";
-import { AccountRecoveryInterface } from "../../common/account-recovery/types";
-import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants";
-import { ERROR_CODES } from "../../common/constants";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import * as journey from "../../common/journey/journey";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-
+} from "../enter-mfa-controller.js";
+import type { VerifyCodeInterface } from "../../common/verify-code/types.js";
+import type { AccountRecoveryInterface } from "../../common/account-recovery/types.js";
+import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants.js";
+import { ERROR_CODES } from "../../common/constants.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import * as journey from "../../common/journey/journey.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 const TEST_PHONE_NUMBER = "07582930495";
 
 const fakeAccountRecoveryPermissionCheckService = (

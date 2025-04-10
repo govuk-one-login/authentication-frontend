@@ -1,6 +1,7 @@
-import { ValidationChain } from "express-validator";
+import type { ValidationChain } from "express-validator";
 
-import express, { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
+import type express from "express";
 
 export type ExpressRouteFunc = (
   req: Request,

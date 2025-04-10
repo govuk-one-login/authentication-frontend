@@ -1,8 +1,7 @@
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware";
-import { ValidationChainFunc } from "../../types";
+import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
+import type { ValidationChainFunc } from "../../types.js";
 import { body } from "express-validator";
-import { PATH_NAMES } from "../../app.constants";
-
+import { PATH_NAMES } from "../../app.constants.js";
 export function validateCannotChangeHowGetSecurityCodesActionRequest(): ValidationChainFunc {
   return [
     body("cannotChangeHowGetSecurityCodeAction")

@@ -1,25 +1,24 @@
 import { describe } from "mocha";
-import { sinon, request } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import { sinon, request } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
 import decache from "decache";
-import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
-import {
+import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
+import type {
   AuthorizeServiceInterface,
   JwtServiceInterface,
   KmsDecryptionServiceInterface,
   StartAuthResponse,
-} from "../types";
-import { createApiResponse } from "../../../utils/http";
-import { AxiosResponse } from "axios";
+} from "../types.js";
+import { createApiResponse } from "../../../utils/http.js";
+import type { AxiosResponse } from "axios";
 import {
   createJwt,
   createMockClaims,
   getPrivateKey,
   getPublicKey,
-} from "./test-data";
-import { JwtService } from "../jwt-service";
-import { getOrchToAuthExpectedClientId } from "../../../config";
-
+} from "./test-data.js";
+import { JwtService } from "../jwt-service.js";
+import { getOrchToAuthExpectedClientId } from "../../../config.js";
 describe("Integration:: authorize", () => {
   let app: any;
   let userCookieConsent = false;
@@ -30,9 +29,9 @@ describe("Integration:: authorize", () => {
     decache("../authorize-service");
     decache("../kms-decryption-service");
     decache("../jwt-service");
-    const authorizeService = require("../authorize-service");
-    const KmsDecryptionService = require("../kms-decryption-service");
-    const jwtService = require("../jwt-service");
+    const authorizeService = await import("../authorize-service");
+    const KmsDecryptionService = await import("../kms-decryption-service");
+    const jwtService = await import("../jwt-service");
     const publicKey = getPublicKey();
     const privateKey = await getPrivateKey();
     const jwt = await createJwt(createMockClaims(), privateKey);
@@ -62,7 +61,7 @@ describe("Integration:: authorize", () => {
       return new JwtService(publicKey);
     });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
   });
 
   beforeEach(() => {

@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { describe } from "mocha";
-import { sanitizeRequestMiddleware } from "../../../src/middleware/sanitize-request-middleware";
-import { expect, sinon } from "../../utils/test-utils";
+import { sanitizeRequestMiddleware } from "../../../src/middleware/sanitize-request-middleware.js";
+import { expect, sinon } from "../../utils/test-utils.js";
 import { mockRequest, mockResponse } from "mock-req-res";
 
 describe("sanitize-request-middleware", () => {

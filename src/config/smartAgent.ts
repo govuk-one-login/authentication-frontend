@@ -2,8 +2,7 @@ import {
   getSmartAgentApiKey,
   getSmartAgentApiUrl,
   getSmartAgentWebformId,
-} from "../config";
-
+} from "../config.js";
 export interface SmartAgentConfig {
   webformID: string;
   apiKey: string;

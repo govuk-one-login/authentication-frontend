@@ -1,24 +1,23 @@
 import { describe } from "mocha";
-import { expect, sinon, request } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
 import * as cheerio from "cheerio";
 import decache from "decache";
-import { AxiosResponse } from "axios";
+import type { AxiosResponse } from "axios";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
-import {
+} from "../../../app.constants.js";
+import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
+import type {
   AccountRecoveryInterface,
   AccountRecoveryResponse,
-} from "../../common/account-recovery/types";
-import { createApiResponse } from "../../../utils/http";
-import { NextFunction, Request, Response } from "express";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { DefaultApiResponse } from "../../../types";
-
+} from "../../common/account-recovery/types.js";
+import { createApiResponse } from "../../../utils/http.js";
+import type { NextFunction, Request, Response } from "express";
+import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
+import type { DefaultApiResponse } from "../../../types.js";
 describe("Integration:: enter authenticator app code", () => {
   let token: string | string[];
   let cookies: string;
@@ -44,12 +43,18 @@ describe("Integration:: enter authenticator app code", () => {
     decache("../../common/account-recovery/account-recovery-service");
     decache("../../../../test/helpers/session-helper");
     decache("../../common/send-notification/send-notification-service");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
-    const accountRecoveryService = require("../../common/account-recovery/account-recovery-service");
-    const {
-      getPermittedJourneyForPath,
-    } = require("../../../../test/helpers/session-helper");
-    const sendNotificationService = require("../../common/send-notification/send-notification-service");
+    const sessionMiddleware = await import(
+      "../../../middleware/session-middleware"
+    );
+    const accountRecoveryService = await import(
+      "../../common/account-recovery/account-recovery-service"
+    );
+    const { getPermittedJourneyForPath } = await import(
+      "../../../../test/helpers/session-helper"
+    );
+    const sendNotificationService = import(
+      "../../common/send-notification/send-notification-service"
+    );
 
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -111,7 +116,7 @@ describe("Integration:: enter authenticator app code", () => {
         return { sendNotification };
       });
 
-    app = await require("../../../app").createApp();
+    app = await (await import("../../../app")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     await request(

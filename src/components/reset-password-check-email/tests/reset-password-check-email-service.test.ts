@@ -1,23 +1,23 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
-import { Http } from "../../../utils/http";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
+import { Http } from "../../../utils/http.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
-} from "../../../../test/helpers/service-test-helper";
+} from "../../../../test/helpers/service-test-helper.js";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { ResetPasswordCheckEmailServiceInterface } from "../types";
-import { resetPasswordCheckEmailService } from "../reset-password-check-email-service";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { commonVariables } from "../../../../test/helpers/common-test-variables";
-
+} from "../../../app.constants.js";
+import type { ResetPasswordCheckEmailServiceInterface } from "../types.js";
+import { resetPasswordCheckEmailService } from "../reset-password-check-email-service.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("reset password check email service", () => {
   const httpInstance = new Http();
   const service: ResetPasswordCheckEmailServiceInterface =
