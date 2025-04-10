@@ -37,7 +37,6 @@
     <form action="/reset-password-check-email" method="post" novalidate="novalidate">
 
         <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-        <input type="hidden" name="email" value="{{email}}"/>
         {{ govukInput({
         label: {
             text: 'pages.resetPasswordCheckEmail.code.label' | translate

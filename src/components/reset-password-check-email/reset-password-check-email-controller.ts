@@ -60,12 +60,9 @@ export function resetPasswordCheckEmailGet(
     }
 
     if (!requestCode || result.success) {
-      const isForcedPasswordResetJourney =
-        req.session.user.withinForcedPasswordResetJourney || false;
       return res.render(TEMPLATE_NAME, {
-        isForcedPasswordResetJourney,
-        email,
         currentPath: req.originalUrl,
+        ...resetPasswordCheckEmailTemplateParametersFromRequest(req),
       });
     }
 
@@ -112,6 +109,8 @@ export function resetPasswordCheckEmailPost(
     validationKey:
       "pages.resetPasswordCheckEmail.code.validationError.invalidCode",
     validationErrorCode: ERROR_CODES.RESET_PASSWORD_INVALID_CODE,
+    postValidationLocalsProvider:
+      resetPasswordCheckEmailTemplateParametersFromRequest,
   });
 }
 
@@ -122,4 +121,14 @@ export function resetPasswordResendCodeGet(req: Request, res: Response): void {
       email: req.session.user.email,
     }
   );
+}
+
+export function resetPasswordCheckEmailTemplateParametersFromRequest(
+  req: Request
+): Record<string, unknown> {
+  return {
+    email: req.session.user.email.toLowerCase(),
+    isForcedPasswordResetJourney:
+      req.session.user.withinForcedPasswordResetJourney ?? false,
+  };
 }
