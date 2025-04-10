@@ -41,6 +41,7 @@ const config = [
         },
       ],
       "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/consistent-type-imports": "error",
       "padding-line-between-statements": [
         "error",
         { blankLine: "any", prev: "*", next: "*" },
