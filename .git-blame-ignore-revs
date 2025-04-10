@@ -24,3 +24,9 @@ fb02790f6eac244e16429ddbd7faba076f3fadfb
 
 ## Reformatting of translation files
 f4c49fd77202b3f0df96c82bbc9156b1fc184059
+
+## CommonJS -> ESM migration, adding .js file extensions
+ace59d3d05ce8a1855682cc7cb339412eb19cbeb
+
+## CommonJS -> ESM migration, using 'import type'
+3fb20cd18efdce8e6d8385f17da322b67e28f7ec
