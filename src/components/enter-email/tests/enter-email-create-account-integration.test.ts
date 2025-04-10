@@ -283,3 +283,33 @@ describe("Integration::enter email (create account)", () => {
     );
   });
 });
+
+describe("Integration::enter email (create account request)", () => {
+  it(`should redirect to ${PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT} when ${PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST} is accessed`, async () => {
+    decache("../../../app");
+    decache("../../../middleware/session-middleware");
+    const sessionMiddleware = require("../../../middleware/session-middleware");
+    sinon
+      .stub(sessionMiddleware, "validateSessionMiddleware")
+      .callsFake(function (
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): void {
+        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+        req.session.user = {
+          journey: getPermittedJourneyForPath(PATH_NAMES.SIGN_IN_OR_CREATE),
+        };
+        next();
+      });
+
+    const app = await require("../../../app").createApp();
+
+    await request(app, (test) =>
+      test
+        .get(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST)
+        .expect("Location", PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
+        .expect(302)
+    );
+  });
+});

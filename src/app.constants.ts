@@ -14,6 +14,7 @@ export const PATH_NAMES = {
   SUPPORT: "/support",
   SIGN_IN_OR_CREATE: "/sign-in-or-create",
   ENTER_EMAIL_CREATE_ACCOUNT: "/enter-email-create",
+  ENTER_EMAIL_CREATE_ACCOUNT_REQUEST: "/enter-email-create-request",
   ENTER_EMAIL_SIGN_IN: "/enter-email",
   ACCOUNT_NOT_FOUND: "/account-not-found",
   CHECK_YOUR_EMAIL: "/check-your-email",

@@ -5,21 +5,22 @@ import {
   signInOrCreatePost,
 } from "./sign-in-or-create-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
+import { allowAndPersistUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
+import { asyncHandler } from "../../utils/async";
 
 const router = express.Router();
 
 router.get(
   PATH_NAMES.SIGN_IN_OR_CREATE,
   validateSessionMiddleware,
-  allowUserJourneyMiddleware,
+  asyncHandler(allowAndPersistUserJourneyMiddleware),
   signInOrCreateGet
 );
 
 router.post(
   PATH_NAMES.SIGN_IN_OR_CREATE,
   validateSessionMiddleware,
-  allowUserJourneyMiddleware,
+  asyncHandler(allowAndPersistUserJourneyMiddleware),
   signInOrCreatePost
 );
 
