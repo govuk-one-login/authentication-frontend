@@ -1,6 +1,5 @@
 import type express from "express";
-import * as nunjucks from "nunjucks";
-import type { Environment } from "nunjucks";
+import nunjucks from "nunjucks";
 import i18next from "i18next";
 import { returnLastCharactersOnly } from "../utils/phone-number.js";
 import { getNodeEnv } from "../config.js";
@@ -10,7 +9,7 @@ import addLanguageParam from "@govuk-one-login/frontend-language-toggle";
 export function configureNunjucks(
   app: express.Application,
   viewsPath: string[]
-): Environment {
+): nunjucks.Environment {
   const nunjucksEnv: nunjucks.Environment = nunjucks.configure(viewsPath, {
     autoescape: true,
     express: app,
