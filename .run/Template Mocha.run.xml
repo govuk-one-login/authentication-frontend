@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="true" type="mocha-javascript-test-runner">
     <node-interpreter>project</node-interpreter>
-    <node-options />
+    <node-options>--loader ts-node/esm</node-options>
     <working-directory />
     <pass-parent-env>true</pass-parent-env>
     <envs>
