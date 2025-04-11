@@ -19,6 +19,8 @@ describe("Integration::reset password check email ", () => {
   let token: string | string[];
   let cookies: string;
 
+  const sessionEmail = "test@test.com";
+
   before(async () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
@@ -35,7 +37,7 @@ describe("Integration::reset password check email ", () => {
       ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user = {
-          email: "test@test.com",
+          email: sessionEmail,
           journey: getPermittedJourneyForPath(
             PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
           ),
@@ -147,9 +149,29 @@ describe("Integration::reset password check email ", () => {
         })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
-          expect($("#code-error").text()).to.contains(
+          expect($("#code-error").text()).to.contain(
             "The code you entered is not correct"
           );
+          expect(res.text).to.contain(sessionEmail);
+        })
+        .expect(400)
+    );
+  });
+
+  it("should validate the input", async () => {
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#code-error").text()).to.contain("Enter the code");
+          expect(res.text).to.contain(sessionEmail);
         })
         .expect(400)
     );
