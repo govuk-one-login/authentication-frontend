@@ -72,5 +72,18 @@ function createStartBody(startRequestParameters: StartRequestParameters) {
   )
     body["previous-govuk-signin-journey-id"] =
       startRequestParameters.previous_govuk_signin_journey_id;
+  if (startRequestParameters.cookie_consent !== undefined)
+    body["cookie_consent"] = startRequestParameters.cookie_consent;
+  if (startRequestParameters._ga !== undefined)
+    body["_ga"] = startRequestParameters._ga;
+  body["requested_credential_strength"] =
+    startRequestParameters.requested_credential_strength;
+  if (startRequestParameters.requested_level_of_confidence !== undefined)
+    body["requested_level_of_confidence"] =
+      startRequestParameters.requested_level_of_confidence;
+  body["client_id"] = startRequestParameters.client_id;
+  body["scope"] = startRequestParameters.scope;
+  body["redirect_uri"] = startRequestParameters.redirect_uri;
+  body["state"] = startRequestParameters.state;
   return body;
 }

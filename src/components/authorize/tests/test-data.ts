@@ -8,9 +8,9 @@ import { Claims } from "../claims-config";
 export function createMockClaims(): Claims {
   const timestamp = Math.floor(new Date().getTime() / 1000);
   return {
-    confidence: "Cl.Cm",
     iss: "UNKNOWN",
     client_id: getOrchToAuthExpectedClientId(),
+    rp_client_id: "test-rp-client-id",
     govuk_signin_journey_id: "QOFzoB3o-9gGplMgdT1dJfH4vaI",
     aud: getOrchToAuthExpectedAudience(),
     service_type: "MANDATORY",
@@ -31,6 +31,8 @@ export function createMockClaims(): Claims {
       '{"userinfo": {"email_verified": null, "public_subject_id": null, "email": null}}',
     authenticated: false,
     current_credential_strength: "MEDIUM_LEVEL",
+    requested_credential_strength: "Cl.Cm",
+    scope: "openid",
   };
 }
 
