@@ -76,10 +76,11 @@ app.get("/", async (req, res) => {
         `Currently, this stub is for environments configured for the orchestration stub (${Object.keys(stubUrls).join(", ")})`
     );
   }
+  const channel = req.query.channel || "none";
   // call orch stub
   const orchStubResponse = await axios.post(
     stubUrl,
-    "reauthenticate=&level=Cl.Cm&authenticated=no&authenticatedLevel=Cl.Cm&channel=none",
+    `reauthenticate=&level=Cl.Cm&authenticated=no&authenticatedLevel=Cl.Cm&channel=${channel}`,
     {
       validateStatus: (status) => {
         return status === 302;

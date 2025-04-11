@@ -22,8 +22,10 @@
             }
         }) }}
 
+        <p class="govuk-body">
+            {{ 'mobileAppPages.signIn.createLinkBefore' | translate }}<a href="/enter-email-create-request" class="govuk-link" rel="noreferrer noopener">{{ 'mobileAppPages.signIn.createLinkInside' | translate }}</a>{{ 'mobileAppPages.signIn.createLinkAfter' | translate }}
+        </p>
     </form>
-
     {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "Home", loggedInStatus: false, dynamic: true } %}
     {%- include "ga4-opl/template.njk" -%}
 {% endblock %}

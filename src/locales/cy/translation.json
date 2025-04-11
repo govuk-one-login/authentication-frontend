@@ -204,8 +204,11 @@
     "signIn": {
       "title": "Mewngofnodi i GOV.UK One Login",
       "header": "Mewngofnodi i GOV.UK One Login",
-      "paragraph": "Gallwch ddefnyddio eich GOV.UK One Login i brofi eich hunaniaeth a chael mynediad at rai o wasanaethau’r llywodraeth.",
-      "button": "Mewngofnodi"
+      "paragraph": "Gallwch ddefnyddio eich GOV.UK One Login i gael mynediad at rai gwasanaethau ac apiau’r.",
+      "button": "Mewngofnodi",
+      "createLinkBefore": "Gallwch ",
+      "createLinkInside": "greu GOV.UK One Login",
+      "createLinkAfter": " os nad oes gennych un eisoes."
     },
     "accountNotFound": {
       "title": "Nid oes gennych GOV.UK One Login",

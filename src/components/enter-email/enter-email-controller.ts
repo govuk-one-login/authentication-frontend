@@ -58,6 +58,21 @@ export function enterEmailCreateGet(req: Request, res: Response): void {
   });
 }
 
+export async function enterEmailCreateRequestGet(
+  req: Request,
+  res: Response
+): Promise<void> {
+  return res.redirect(
+    await getNextPathAndUpdateJourney(
+      req,
+      req.path,
+      USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT,
+      null,
+      res.locals.sessionId
+    )
+  );
+}
+
 export function enterEmailPost(
   service: EnterEmailServiceInterface = enterEmailService(),
   checkReauthService: CheckReauthServiceInterface = checkReauthUsersService()
