@@ -214,9 +214,10 @@
       "title": "Nid oes gennych GOV.UK One Login",
       "header": "Nid oes gennych GOV.UK One Login",
       "paragraph1": "Nid oes GOV.UK One Login ar gyfer ",
-      "paragraph2": "Mae angen i chi fewngofnodi gyda chyfeiriad e-bost sydd â GOV.UK One Login i brofi eich hunaniaeth.",
-      "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
-      "findOutMoreLinkText": "Darganfyddwch fwy am ddefnyddio GOV.UK One Login"
+      "paragraph2": "Bydd angen i chi greu GOV.UK One Login i ddefnyddio’r ap.",
+      "insetText1": "Ar hyn o bryd, mae cyfrifon ar wahân ar gyfer mewngofnodi i wahanol wasanaethau’r llywodraeth.",
+      "createAccountButtonText": "Creu GOV.UK One Login",
+      "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall"
     },
     "securityRequestsExceededExpired": {
       "info": {

@@ -214,9 +214,10 @@
       "title": "You do not have a GOV.UK One Login",
       "header": "You do not have a GOV.UK One Login",
       "paragraph1": "There is no GOV.UK One Login for ",
-      "paragraph2": "You need to sign in with an email address that has a GOV.UK One Login to prove your identity.",
-      "tryAnotherLinkText": "Try another email address",
-      "findOutMoreLinkText": "Find out more about using GOV.UK One Login"
+      "paragraph2": "You’ll need to create a GOV.UK One Login to use the app.",
+      "insetText1": "At the moment, there are separate accounts for signing in to different government services.",
+      "createAccountButtonText": "Create a GOV.UK One Login",
+      "tryAnotherLinkText": "Try another email address"
     },
     "securityRequestsExceededExpired": {
       "info": {
