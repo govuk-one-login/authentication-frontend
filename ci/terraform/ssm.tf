@@ -1,77 +1,33 @@
 locals {
-  redis_key = "frontend"
+  redis_key = "frontend-cache"
 }
 
-data "aws_iam_policy_document" "key_policy" {
-  policy_id = "key-policy-ssm"
-  statement {
-    sid = "Enable IAM User Permissions for root user"
-    actions = [
-      "kms:*",
-    ]
-    effect = "Allow"
-    principals {
-      type = "AWS"
-      identifiers = [
-        format(
-          "arn:%s:iam::%s:root",
-          data.aws_partition.current.partition,
-          data.aws_caller_identity.current.account_id
-        )
-      ]
-    }
-    resources = ["*"]
-  }
+data "aws_ssm_parameter" "redis_master_host" {
+  name = "${var.environment}-${local.redis_key}-redis-master-host"
 }
 
-resource "aws_kms_key" "parameter_store_key" {
-  description             = "KMS key for account management frontend parameter store"
-  deletion_window_in_days = 30
-  enable_key_rotation     = true
-  policy                  = data.aws_iam_policy_document.key_policy.json
-
-  customer_master_key_spec = "SYMMETRIC_DEFAULT"
-  key_usage                = "ENCRYPT_DECRYPT"
+data "aws_ssm_parameter" "redis_replica_host" {
+  name = "${var.environment}-${local.redis_key}-redis-replica-host"
 }
 
-resource "aws_kms_alias" "parameter_store_key_alias" {
-  name          = "alias/${var.environment}-frontend-parameter-store-encryption-key"
-  target_key_id = aws_kms_key.parameter_store_key.id
+data "aws_ssm_parameter" "redis_tls" {
+  name = "${var.environment}-${local.redis_key}-redis-tls"
 }
 
-resource "aws_ssm_parameter" "redis_master_host" {
-  name   = "${var.environment}-${local.redis_key}-redis-master-host"
-  type   = "SecureString"
-  key_id = aws_kms_alias.parameter_store_key_alias.id
-  value  = aws_elasticache_replication_group.frontend_sessions_store.primary_endpoint_address
+data "aws_ssm_parameter" "redis_password" {
+  name = "${var.environment}-${local.redis_key}-redis-password"
 }
 
-resource "aws_ssm_parameter" "redis_replica_host" {
-  name   = "${var.environment}-${local.redis_key}-redis-replica-host"
-  type   = "SecureString"
-  key_id = aws_kms_alias.parameter_store_key_alias.id
-  value  = aws_elasticache_replication_group.frontend_sessions_store.reader_endpoint_address
+data "aws_ssm_parameter" "redis_port" {
+  name = "${var.environment}-${local.redis_key}-redis-port"
 }
 
-resource "aws_ssm_parameter" "redis_tls" {
-  name   = "${var.environment}-${local.redis_key}-redis-tls"
-  type   = "SecureString"
-  key_id = aws_kms_alias.parameter_store_key_alias.id
-  value  = "true"
+data "aws_kms_key" "parameter_store_key" {
+  key_id = "alias/${var.environment}-frontend-cache-parameter-store-encryption-key"
 }
 
-resource "aws_ssm_parameter" "redis_password" {
-  name   = "${var.environment}-${local.redis_key}-redis-password"
-  type   = "SecureString"
-  key_id = aws_kms_alias.parameter_store_key_alias.id
-  value  = random_password.redis_password.result
-}
-
-resource "aws_ssm_parameter" "redis_port" {
-  name   = "${var.environment}-${local.redis_key}-redis-port"
-  type   = "SecureString"
-  key_id = aws_kms_alias.parameter_store_key_alias.id
-  value  = aws_elasticache_replication_group.frontend_sessions_store.port
+data "aws_kms_alias" "parameter_store_key_alias" {
+  name = "alias/${var.environment}-frontend-cache-parameter-store-encryption-key"
 }
 
 data "aws_iam_policy_document" "redis_parameter_policy" {
@@ -85,11 +41,11 @@ data "aws_iam_policy_document" "redis_parameter_policy" {
     ]
 
     resources = [
-      aws_ssm_parameter.redis_master_host.arn,
-      aws_ssm_parameter.redis_replica_host.arn,
-      aws_ssm_parameter.redis_tls.arn,
-      aws_ssm_parameter.redis_password.arn,
-      aws_ssm_parameter.redis_port.arn,
+      data.aws_ssm_parameter.redis_master_host.arn,
+      data.aws_ssm_parameter.redis_replica_host.arn,
+      data.aws_ssm_parameter.redis_tls.arn,
+      data.aws_ssm_parameter.redis_password.arn,
+      data.aws_ssm_parameter.redis_port.arn,
     ]
   }
   statement {
@@ -101,8 +57,8 @@ data "aws_iam_policy_document" "redis_parameter_policy" {
     ]
 
     resources = [
-      aws_kms_alias.parameter_store_key_alias.arn,
-      aws_kms_key.parameter_store_key.arn
+      data.aws_kms_alias.parameter_store_key_alias.arn,
+      data.aws_kms_key.parameter_store_key.arn
     ]
   }
 }

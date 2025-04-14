@@ -219,6 +219,14 @@ resource "random_string" "session_secret" {
   special = false
 }
 
+data "aws_security_group" "allow_access_to_frontend_redis" {
+  filter {
+    name   = "group-name"
+    values = ["${var.environment}-allow-access-to-frontend-redis-20220126153336906700000002"]
+    # temporarily hardcoding value only for sandpit because TF is now only used in sandpit and will be deleted
+  }
+}
+
 resource "aws_ecs_service" "frontend_ecs_service" {
   name            = local.service_name
   cluster         = local.cluster_id
@@ -239,7 +247,7 @@ resource "aws_ecs_service" "frontend_ecs_service" {
       local.allow_egress_security_group_id,
       local.allow_aws_service_access_security_group_id,
       aws_security_group.frontend_ecs_tasks_sg.id,
-      aws_security_group.allow_access_to_frontend_redis.id,
+      data.aws_security_group.allow_access_to_frontend_redis.id,
     ]
     subnets          = local.private_subnet_ids
     assign_public_ip = false
