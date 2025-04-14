@@ -2,7 +2,6 @@ import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { PATH_NAMES } from "../../app.constants";
 import express from "express";
 import { enterMfaGet, enterMfaPost } from "./enter-mfa-controller";
-import { asyncHandler } from "../../utils/async";
 import { validateEnterMfaRequest } from "./enter-mfa-validation";
 import {
   allowAndPersistUserJourneyMiddleware,
@@ -14,8 +13,8 @@ const router = express.Router();
 router.get(
   PATH_NAMES.ENTER_MFA,
   validateSessionMiddleware,
-  asyncHandler(allowAndPersistUserJourneyMiddleware),
-  asyncHandler(enterMfaGet())
+  allowAndPersistUserJourneyMiddleware,
+  enterMfaGet()
 );
 
 router.post(
@@ -23,6 +22,6 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateEnterMfaRequest(),
-  asyncHandler(enterMfaPost())
+  enterMfaPost()
 );
 export { router as enterMfaRouter };

@@ -6,7 +6,6 @@ import {
   createPasswordPost,
 } from "./create-password-controller";
 import { validateCreatePasswordRequest } from "./create-password-validation";
-import { asyncHandler } from "../../utils/async";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 
 const router = express.Router();
@@ -22,7 +21,7 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateCreatePasswordRequest(),
-  asyncHandler(createPasswordPost())
+  createPasswordPost()
 );
 
 export { router as createPasswordRouter };

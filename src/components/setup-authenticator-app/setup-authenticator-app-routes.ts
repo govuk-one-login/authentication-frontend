@@ -7,7 +7,6 @@ import {
   setupAuthenticatorAppGet,
   setupAuthenticatorAppPost,
 } from "./setup-authenticator-app-controller";
-import { asyncHandler } from "../../utils/async";
 import { validateSetupAuthAppRequest } from "./setup-authenticator-app-validation";
 
 const router = express.Router();
@@ -24,7 +23,7 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateSetupAuthAppRequest(),
-  asyncHandler(setupAuthenticatorAppPost())
+  setupAuthenticatorAppPost()
 );
 
 export { router as setupAuthenticatorAppRouter };

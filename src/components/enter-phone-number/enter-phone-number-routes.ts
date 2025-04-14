@@ -6,7 +6,6 @@ import {
 } from "./enter-phone-number-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { validateEnterPhoneNumberRequest } from "./enter-phone-number-validation";
-import { asyncHandler } from "../../utils/async";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 
 const router = express.Router();
@@ -23,7 +22,7 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateEnterPhoneNumberRequest(),
-  asyncHandler(enterPhoneNumberPost())
+  enterPhoneNumberPost()
 );
 
 export { router as enterPhoneNumberRouter };

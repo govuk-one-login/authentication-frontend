@@ -9,7 +9,6 @@ import {
 } from "./enter-email-controller";
 import * as express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { asyncHandler } from "../../utils/async";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 
 const router = express.Router();
@@ -38,7 +37,7 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateEnterEmailRequest(),
-  asyncHandler(enterEmailPost())
+  enterEmailPost()
 );
 
 router.post(
@@ -46,7 +45,7 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateEnterEmailRequest("enter-email/index-create-account.njk"),
-  asyncHandler(enterEmailCreatePost())
+  enterEmailCreatePost()
 );
 
 export { router as enterEmailRouter };

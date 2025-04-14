@@ -5,7 +5,6 @@ import {
   enterAuthenticatorAppCodeGet,
   enterAuthenticatorAppCodePost,
 } from "./enter-authenticator-app-code-controller";
-import { asyncHandler } from "../../utils/async";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 import { validateEnterAuthenticatorAppCodeRequest } from "./enter-authenticator-app-code-validation";
 
@@ -15,7 +14,7 @@ router.get(
   PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  asyncHandler(enterAuthenticatorAppCodeGet())
+  enterAuthenticatorAppCodeGet()
 );
 
 router.post(
@@ -23,6 +22,6 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateEnterAuthenticatorAppCodeRequest(),
-  asyncHandler(enterAuthenticatorAppCodePost())
+  enterAuthenticatorAppCodePost()
 );
 export { router as enterAuthenticatorAppCodeRouter };

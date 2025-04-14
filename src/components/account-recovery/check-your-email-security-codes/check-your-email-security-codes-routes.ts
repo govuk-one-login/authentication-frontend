@@ -1,7 +1,6 @@
 import * as express from "express";
 import { PATH_NAMES } from "../../../app.constants";
 import { validateSessionMiddleware } from "../../../middleware/session-middleware";
-import { asyncHandler } from "../../../utils/async";
 import { checkAccountRecoveryPermitted } from "./check-account-recovery-middleware";
 import { sendEmailOtp } from "./send-email-otp-middleware";
 import {
@@ -18,7 +17,7 @@ router.get(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   checkAccountRecoveryPermitted,
-  asyncHandler(sendEmailOtp()),
+  sendEmailOtp(),
   checkYourEmailSecurityCodesGet
 );
 
@@ -28,6 +27,6 @@ router.post(
   allowUserJourneyMiddleware,
   checkAccountRecoveryPermitted,
   validateCheckYourEmailRequest(),
-  asyncHandler(checkYourEmailSecurityCodesPost())
+  checkYourEmailSecurityCodesPost()
 );
 export { router as checkYourEmailSecurityCodesRouter };

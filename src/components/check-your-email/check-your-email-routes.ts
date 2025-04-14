@@ -1,7 +1,6 @@
 import * as express from "express";
 import { PATH_NAMES } from "../../app.constants";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { asyncHandler } from "../../utils/async";
 import {
   checkYourEmailGet,
   checkYourEmailPost,
@@ -23,7 +22,7 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateCheckYourEmailRequest(),
-  asyncHandler(checkYourEmailPost())
+  checkYourEmailPost()
 );
 
 export { router as checkYourEmailRouter };

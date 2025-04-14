@@ -1,5 +1,4 @@
 import * as express from "express";
-import { asyncHandler } from "../../utils/async";
 import { PATH_NAMES } from "../../app.constants";
 import {
   cannotChangeSecurityCodesGet,
@@ -16,10 +15,10 @@ const router = express.Router();
 
 router.get(
   PATH_NAMES.IPV_CALLBACK,
-  asyncHandler(crossBrowserMiddleware(new CrossBrowserService())),
+  crossBrowserMiddleware(new CrossBrowserService()),
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  asyncHandler(ipvCallbackGet())
+  ipvCallbackGet()
 );
 
 router.get(

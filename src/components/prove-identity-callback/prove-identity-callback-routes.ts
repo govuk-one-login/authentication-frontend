@@ -8,7 +8,6 @@ import {
   proveIdentityCallbackSessionExpiryError,
   proveIdentityStatusCallbackGet,
 } from "./prove-identity-callback-controller";
-import { asyncHandler } from "../../utils/async";
 import { processIdentityRateLimitMiddleware } from "../../middleware/process-identity-rate-limit-middleware";
 
 const router = express.Router();
@@ -18,7 +17,7 @@ router.get(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   processIdentityRateLimitMiddleware,
-  asyncHandler(proveIdentityCallbackGetOrPost())
+  proveIdentityCallbackGetOrPost()
 );
 
 router.post(
@@ -26,7 +25,7 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   processIdentityRateLimitMiddleware,
-  asyncHandler(proveIdentityCallbackGetOrPost())
+  proveIdentityCallbackGetOrPost()
 );
 
 router.get(
@@ -39,7 +38,7 @@ router.get(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   processIdentityRateLimitMiddleware,
-  asyncHandler(proveIdentityStatusCallbackGet())
+  proveIdentityStatusCallbackGet()
 );
 
 export { router as proveIdentityCallbackRouter };
