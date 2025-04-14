@@ -11,4 +11,16 @@ describe("static assets", () => {
     );
     expect(response.header["cache-control"]).to.equal("public, max-age=60");
   });
+
+  it("should be served without the x-powered-by header", async () => {
+    const app = await createApp();
+    const response = await request(app).get(
+      "/assets/images/govuk-crest-2x.png"
+    );
+    expect(
+      Object.keys(response.headers)
+        .map((s) => s.toLowerCase())
+        .includes("x-powered-by")
+    ).to.be.false;
+  });
 });
