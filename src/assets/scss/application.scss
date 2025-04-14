@@ -1,31 +1,31 @@
-@import "base";
-@import "core/all";
-@import "utilities/all";
-@import "objects/all";
-@import "overrides/all";
+@use "base" as *;
+@use "core/all" as *;
+@use "utilities/all" as *;
+@use "objects/all" as *;
+@use "overrides/all" as *;
 
-@import "components/back-link/back-link";
-@import "components/button/button";
-@import "components/character-count/character-count";
-@import "components/checkboxes/checkboxes";
-@import "components/cookie-banner/cookie-banner";
-@import "components/details/details";
-@import "components/error-summary/error-summary";
-@import "components/footer/footer";
-@import "components/header/header";
-@import "components/input/input";
-@import "components/inset-text/inset-text";
-@import "components/notification-banner/notification-banner";
-@import "components/panel/panel";
-@import "components/phase-banner/phase-banner";
-@import "components/radios/radios";
-@import "components/skip-link/skip-link";
-@import "components/summary-list/summary-list";
-@import "components/table/table";
-@import "components/warning-text/warning-text";
+@use "components/back-link/back-link" as *;
+@use "components/button/button" as *;
+@use "components/character-count/character-count" as *;
+@use "components/checkboxes/checkboxes" as *;
+@use "components/cookie-banner/cookie-banner" as *;
+@use "components/details/details" as *;
+@use "components/error-summary/error-summary" as *;
+@use "components/footer/footer" as *;
+@use "components/header/header" as *;
+@use "components/input/input" as *;
+@use "components/inset-text/inset-text" as *;
+@use "components/notification-banner/notification-banner" as *;
+@use "components/panel/panel" as *;
+@use "components/phase-banner/phase-banner" as *;
+@use "components/radios/radios" as *;
+@use "components/skip-link/skip-link" as *;
+@use "components/summary-list/summary-list" as *;
+@use "components/table/table" as *;
+@use "components/warning-text/warning-text" as *;
 
-@import "../../../node_modules/@govuk-one-login/frontend-language-toggle/build/stylesheet/styles";
-@import "prove-identity-callback/spinner";
+@use "../../../node_modules/@govuk-one-login/frontend-language-toggle/build/stylesheet/styles" as *;
+@use "prove-identity-callback/spinner" as *;
 
 .interrupt-screen {
   background-color: #1d70b8;
