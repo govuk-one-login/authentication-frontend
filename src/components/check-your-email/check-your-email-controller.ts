@@ -28,6 +28,7 @@ export function checkYourEmailGet(req: Request, res: Response): void {
         req.query.actionType as SecurityCodeErrorType
       ),
       isAccountCreationJourney: true,
+      isStrategicAppJourney: res.locals.strategicAppChannel === true,
     });
   }
   res.render(TEMPLATE_NAME, {
