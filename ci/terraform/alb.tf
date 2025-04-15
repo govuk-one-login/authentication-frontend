@@ -10,7 +10,7 @@ resource "aws_lb" "frontend_alb" {
     aws_s3_bucket_policy.allow_access_alb
   ]
 
-  enable_deletion_protection = true
+  enable_deletion_protection = false
   drop_invalid_header_fields = true
 
   dynamic "access_logs" {
