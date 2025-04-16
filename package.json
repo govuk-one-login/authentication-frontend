@@ -91,7 +91,7 @@
     "i18next-fs-backend": "2.6.0",
     "i18next-http-middleware": "3.7.2",
     "jose": "5.10.0",
-    "jsdom": "26.1.0",
+    "jsdom": "26.0.0",
     "libphonenumber-js": "1.12.6",
     "nunjucks": "3.2.4",
     "overload-protection": "1.2.3",
