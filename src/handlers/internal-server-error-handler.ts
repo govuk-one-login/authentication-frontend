@@ -13,8 +13,10 @@ export function serverErrorHandler(
   }
 
   if (
-    res.statusCode == HTTP_STATUS_CODES.UNAUTHORIZED &&
-    err.message === ERROR_MESSAGES.INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST
+    (res.statusCode == HTTP_STATUS_CODES.UNAUTHORIZED &&
+      err.message ===
+        ERROR_MESSAGES.INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST) ||
+    res.statusCode == HTTP_STATUS_CODES.FORBIDDEN
   ) {
     return res.render("common/errors/mid-journey-direct-navigation.njk", {
       accountManagementUrl: getAccountManagementUrl(),
