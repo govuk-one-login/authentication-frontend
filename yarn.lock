@@ -3538,7 +3538,7 @@ eslint@9.24.0:
     natural-compare "^1.4.0"
     optionator "^0.9.3"
 
-esmock@^2.7.0:
+esmock@2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/esmock/-/esmock-2.7.0.tgz#6090b14ec1c78bf29f2428a63c9b9fd6e53eb7e1"
   integrity sha512-nYSvky0rP//13eYIGJ7b1dhsaBxtS370UoDWbILo1jHlO4hrCUkp/LD3e54QVhySxAGLsufxi5A4+wUAxPUIrg==
@@ -6333,7 +6333,7 @@ tsscmp@1.0.6:
   resolved "https://registry.npmjs.org/tsscmp/-/tsscmp-1.0.6.tgz"
   integrity sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==
 
-tsx@^4.19.3:
+tsx@4.19.3:
   version "4.19.3"
   resolved "https://registry.yarnpkg.com/tsx/-/tsx-4.19.3.tgz#2bdbcb87089374d933596f8645615142ed727666"
   integrity sha512-4H8vUNGNjQ4V2EOoGw005+c+dGuPSnhpPBPHBtsZdGZBk/iJb4kguGlPWaZTZ3q5nMtFOEsY0nRDlh9PJyd6SQ==

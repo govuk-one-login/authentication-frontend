@@ -4,7 +4,7 @@ describe("applyOverloadProtection", () => {
   let overloadProtectionStub: any;
   let applyOverloadProtection: any;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     delete require.cache[require.resolve("overload-protection")];
     delete require.cache[require.resolve("../overload-protection-middleware")];
 
