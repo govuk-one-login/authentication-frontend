@@ -1291,6 +1291,8 @@ Resources:
           Value: "auth-frontend"
         - Key: Source
           Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+        - Key: FMSRegionalPolicy
+          Value: false
 
   ApplicationLoadBalancerTargetGroupA:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
