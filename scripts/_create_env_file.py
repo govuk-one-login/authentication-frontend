@@ -314,7 +314,7 @@ class StateGetter:
             raise KeyError(f"Key {key} not found in ecs task environment") from e
 
 
-def get_static_variables_from_remote(
+def get_static_variables(
     deployment_name: str,
     aws_profile_name: str,
     state_getter: StateGetter,
@@ -351,15 +351,13 @@ def get_static_variables_from_remote(
                 "ENCRYPTION_KEY_ID": state_getter.get_ecs_task_environment_value(
                     "ENCRYPTION_KEY_ID"
                 ),
-                "ORCH_TO_AUTH_AUDIENCE": state_getter.get_ecs_task_environment_value(
-                    "ORCH_TO_AUTH_AUDIENCE"
-                ),
+                "ORCH_TO_AUTH_AUDIENCE": get_signin_url(deployment_name),
                 "ORCH_TO_AUTH_SIGNING_KEY": state_getter.get_ecs_task_environment_value(
                     "ORCH_TO_AUTH_SIGNING_KEY"
                 ),
-                "ORCH_STUB_TO_AUTH_AUDIENCE": state_getter.get_ecs_task_environment_value(
-                    "ORCH_STUB_TO_AUTH_AUDIENCE"
-                ),
+                "ORCH_STUB_TO_AUTH_AUDIENCE": get_signin_url(deployment_name)
+                if "dev" in deployment_name
+                else "",
                 "ORCH_STUB_TO_AUTH_CLIENT_ID": state_getter.get_ecs_task_environment_value(
                     "ORCH_STUB_TO_AUTH_CLIENT_ID"
                 ),
@@ -369,6 +367,13 @@ def get_static_variables_from_remote(
             },
         },
     ]
+
+
+def get_signin_url(deployment_name: str) -> str:
+    if deployment_name.startswith("authdev"):
+        return "https://signin.{}.dev.account.gov.uk/".format(deployment_name)
+    else:
+        return "https://signin.{}.account.gov.uk/".format(deployment_name)
 
 
 def get_user_variables(
@@ -456,7 +461,7 @@ def main(
     state_getter: StateGetter,
 ):
     start_time = datetime.now()
-    static_variables = get_static_variables_from_remote(
+    static_variables = get_static_variables(
         deployment_name, aws_profile_name, state_getter
     )
     user_variables = get_user_variables(dotenv_file, static_variables)

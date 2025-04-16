@@ -6,8 +6,8 @@ const axios = require("axios").default;
 const url = require("url");
 
 const stubUrls = {
-  authdev2: "https://orchstub.authdev2.sandpit.account.gov.uk",
-  authdev1: "https://orchstub.authdev1.sandpit.account.gov.uk",
+  authdev2: "https://orchstub-authdev2.signin.dev.account.gov.uk",
+  authdev1: "https://orchstub-authdev1.signin.dev.account.gov.uk",
   dev: "https://orchstub.signin.dev.account.gov.uk",
 };
 
