@@ -87,7 +87,7 @@
     "globals": "16.0.0",
     "govuk-frontend": "4.9.0",
     "helmet": "8.1.0",
-    "i18next": "24.2.3",
+    "i18next": "25.0.0",
     "i18next-fs-backend": "2.6.0",
     "i18next-http-middleware": "3.7.2",
     "jose": "5.10.0",
