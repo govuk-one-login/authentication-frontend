@@ -16,10 +16,9 @@ export function serverErrorHandler(
     res.statusCode == HTTP_STATUS_CODES.UNAUTHORIZED &&
     err.message === ERROR_MESSAGES.INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST
   ) {
-    return res.render(
-      "common/errors/mid-journey-direct-navigation-without-session.njk",
-      { accountManagementUrl: getAccountManagementUrl() }
-    );
+    return res.render("common/errors/mid-journey-direct-navigation.njk", {
+      accountManagementUrl: getAccountManagementUrl(),
+    });
   }
 
   if (res.statusCode == HTTP_STATUS_CODES.UNAUTHORIZED) {

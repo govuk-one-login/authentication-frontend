@@ -152,7 +152,7 @@
         "govUKHomepageButtonText": "Ewch i hafan GOV.UK"
       }
     },
-    "sessionRequiredMidJourneyError": {
+    "midJourneyError": {
       "title": "Mae’n ddrwg gennym, ni allwch gael mynediad i GOV.UK One Login o’r dudalen hon",
       "header": "Mae’n ddrwg gennym, ni allwch gael mynediad i GOV.UK One Login o’r dudalen hon",
       "content": {

@@ -41,8 +41,7 @@ describe("serverErrorHandler", () => {
       ERROR_MESSAGES.INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST
     );
     const renderSpy = sinon.spy(res, "render");
-    const expectedTemplate =
-      "common/errors/mid-journey-direct-navigation-without-session.njk";
+    const expectedTemplate = "common/errors/mid-journey-direct-navigation.njk";
     const expectedData = {
       accountManagementUrl: "http://localhost:6001",
     };
