@@ -46,7 +46,7 @@ describe("app", () => {
 
       expect(frontendVitalSigns.frontendVitalSignsInit).to.be.calledOnceWith(
         server,
-        { staticPaths: [/^\/assets\/.*/, /^\/public\/.*/] }
+        { staticPaths: [/^\/assets\/.*/, /^\/public\/.*/], interval: 10000 }
       );
       await closeServer();
     });

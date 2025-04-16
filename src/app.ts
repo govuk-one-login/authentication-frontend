@@ -23,6 +23,7 @@ import {
   getNodeEnv,
   getSessionExpiry,
   getSessionSecret,
+  getVitalSignsIntervalSeconds,
   supportAccountInterventions,
   supportAccountRecovery,
   supportAuthorizeController,
@@ -301,6 +302,7 @@ async function startServer(app: Application): Promise<{
 
     stopVitalSigns = frontendVitalSignsInit(server, {
       staticPaths: [/^\/assets\/.*/, /^\/public\/.*/],
+      interval: getVitalSignsIntervalSeconds() * 1000,
     });
   });
 
