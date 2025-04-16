@@ -5,7 +5,6 @@ import {
   accountNotFoundPost,
 } from "./account-not-found-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { asyncHandler } from "../../utils/async";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 
 const router = express.Router();
@@ -21,7 +20,7 @@ router.post(
   PATH_NAMES.ACCOUNT_NOT_FOUND,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  asyncHandler(accountNotFoundPost())
+  accountNotFoundPost()
 );
 
 export { router as accountNotFoundRouter };

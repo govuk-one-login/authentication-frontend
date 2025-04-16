@@ -13,7 +13,6 @@ import {
 } from "./contact-us-controller";
 import { validateContactUsRequest } from "./contact-us-validation";
 import { validateContactUsQuestionsRequest } from "./contact-us-questions-validation";
-import { asyncHandler } from "../../utils/async";
 
 const router = express.Router();
 
@@ -40,7 +39,7 @@ router.get(PATH_NAMES.CONTACT_US_QUESTIONS, contactUsQuestionsGet);
 router.post(
   PATH_NAMES.CONTACT_US_QUESTIONS,
   validateContactUsQuestionsRequest(),
-  asyncHandler(contactUsQuestionsFormPostToSmartAgent())
+  contactUsQuestionsFormPostToSmartAgent()
 );
 
 router.get(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS, contactUsSubmitSuccessGet);

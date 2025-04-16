@@ -6,7 +6,6 @@ import {
   updatedTermsConditionsPost,
 } from "./updated-terms-conditions-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { asyncHandler } from "../../utils/async";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 
 const router = express.Router();
@@ -22,7 +21,7 @@ router.post(
   PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  asyncHandler(updatedTermsConditionsPost())
+  updatedTermsConditionsPost()
 );
 
 export { router as updatedTermsConditionsRouter };

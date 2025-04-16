@@ -6,7 +6,6 @@ import {
 import * as express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
-import { asyncHandler } from "../../utils/async";
 
 const router = express.Router();
 
@@ -14,14 +13,14 @@ router.get(
   PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  asyncHandler(resetPassword2FAAuthAppGet())
+  resetPassword2FAAuthAppGet()
 );
 
 router.post(
   PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  asyncHandler(resetPassword2FAAuthAppPost())
+  resetPassword2FAAuthAppPost()
 );
 
 export { router as resetPassword2FAAuthAppRouter };

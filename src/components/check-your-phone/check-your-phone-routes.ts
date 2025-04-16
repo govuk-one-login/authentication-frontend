@@ -5,7 +5,6 @@ import {
   checkYourPhoneGet,
   checkYourPhonePost,
 } from "./check-your-phone-controller";
-import { asyncHandler } from "../../utils/async";
 import { validateSmsCodeRequest } from "./check-your-phone-validation";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 
@@ -23,6 +22,6 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateSmsCodeRequest(),
-  asyncHandler(checkYourPhonePost())
+  checkYourPhonePost()
 );
 export { router as checkYourPhoneRouter };

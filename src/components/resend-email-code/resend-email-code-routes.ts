@@ -6,7 +6,6 @@ import {
   resendEmailCodePost,
   securityCodeCheckTimeLimit,
 } from "./resend-email-code-controller";
-import { asyncHandler } from "../../utils/async";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 import express from "express";
 
@@ -23,13 +22,13 @@ router.post(
   PATH_NAMES.RESEND_EMAIL_CODE,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  asyncHandler(resendEmailCodePost())
+  resendEmailCodePost()
 );
 
 router.get(
   PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
   validateSessionMiddleware,
-  asyncHandler(securityCodeCheckTimeLimit())
+  securityCodeCheckTimeLimit()
 );
 
 export { router as resendEmailCodeRouter };

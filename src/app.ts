@@ -1,4 +1,5 @@
 import express, { Application } from "express";
+import "express-async-errors";
 import cookieParser from "cookie-parser";
 import csurf from "csurf";
 import serveStatic from "serve-static";
@@ -100,7 +101,6 @@ import { Server } from "node:http";
 import { getAnalyticsPropertiesMiddleware } from "./middleware/get-analytics-properties-middleware";
 import { ipvCallbackRouter } from "./components/ipv-callback/ipv-callback-routes";
 import { mfaResetWithIpvRouter } from "./components/mfa-reset-with-ipv/mfa-reset-with-ipv-routes";
-import { asyncHandler } from "./utils/async";
 import { environmentBannerMiddleware } from "./middleware/environment-banner-middleware";
 import UID from "uid-safe";
 
@@ -198,7 +198,7 @@ async function createApp(): Promise<express.Application> {
   );
   app.use(noCacheMiddleware);
   app.set("view engine", configureNunjucks(app, APP_VIEWS));
-  app.use(asyncHandler(setLocalVarsMiddleware));
+  app.use(setLocalVarsMiddleware);
   app.use(setGTM);
 
   await i18next
@@ -219,14 +219,12 @@ async function createApp(): Promise<express.Application> {
   // Generate a new session ID asynchronously if no session cookie
   // `express-session` does not support async session ID generation
   // https://github.com/expressjs/session/issues/107
-  app.use(
-    asyncHandler(async (req, res, next) => {
-      if (!req.cookies?.[SESSION_COOKIE_NAME]) {
-        req.generatedSessionId = await UID(24);
-      }
-      next();
-    })
-  );
+  app.use(async (req, res, next) => {
+    if (!req.cookies?.[SESSION_COOKIE_NAME]) {
+      req.generatedSessionId = await UID(24);
+    }
+    next();
+  });
 
   app.use(
     session({

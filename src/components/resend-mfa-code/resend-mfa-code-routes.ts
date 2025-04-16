@@ -6,7 +6,6 @@ import {
   resendMfaCodeGet,
   resendMfaCodePost,
 } from "./resend-mfa-code-controller";
-import { asyncHandler } from "../../utils/async";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 
 const router = express.Router();
@@ -22,7 +21,7 @@ router.post(
   PATH_NAMES.RESEND_MFA_CODE,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  asyncHandler(resendMfaCodePost())
+  resendMfaCodePost()
 );
 
 export { router as resendMfaCodeRouter };

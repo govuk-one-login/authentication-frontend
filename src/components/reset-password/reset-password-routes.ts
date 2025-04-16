@@ -1,7 +1,6 @@
 import * as express from "express";
 import { PATH_NAMES } from "../../app.constants";
 
-import { asyncHandler } from "../../utils/async";
 import { validateResetPasswordRequest } from "./reset-password-validation";
 import {
   resetPasswordGet,
@@ -26,7 +25,7 @@ router.get(
   PATH_NAMES.RESET_PASSWORD,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  asyncHandler(accountInterventionsMiddleware(true, false)),
+  accountInterventionsMiddleware(true, false),
   resetPasswordGet
 );
 
@@ -35,7 +34,7 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateResetPasswordRequest(),
-  asyncHandler(resetPasswordPost())
+  resetPasswordPost()
 );
 
 router.get(
@@ -50,7 +49,7 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateResetPasswordRequest(),
-  asyncHandler(resetPasswordPost())
+  resetPasswordPost()
 );
 
 export { router as resetPasswordRouter };

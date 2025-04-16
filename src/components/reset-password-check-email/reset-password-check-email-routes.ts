@@ -6,7 +6,6 @@ import {
   resetPasswordResendCodeGet,
 } from "./reset-password-check-email-controller";
 import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { asyncHandler } from "../../utils/async";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
 import { validateResetPasswordCheckEmailRequest } from "./reset-password-check-email-validation";
 
@@ -16,7 +15,7 @@ router.get(
   PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  asyncHandler(resetPasswordCheckEmailGet())
+  resetPasswordCheckEmailGet()
 );
 
 router.post(
@@ -24,7 +23,7 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateResetPasswordCheckEmailRequest(),
-  asyncHandler(resetPasswordCheckEmailPost())
+  resetPasswordCheckEmailPost()
 );
 
 router.get(
