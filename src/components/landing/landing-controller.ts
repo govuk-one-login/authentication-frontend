@@ -1,14 +1,18 @@
-import { Request, Response } from "express";
-import { PATH_NAMES } from "../../app.constants";
-import { getNextPathAndUpdateJourney } from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+import { NextFunction, Request, Response } from "express";
+import {
+  ERROR_LOG_LEVEL,
+  ERROR_MESSAGES,
+  HTTP_STATUS_CODES,
+} from "../../app.constants";
+import { ErrorWithLevel } from "../../utils/error";
 
-export async function landingGet(req: Request, res: Response): Promise<void> {
-  return res.redirect(
-    await getNextPathAndUpdateJourney(
-      req,
-      PATH_NAMES.ROOT,
-      USER_JOURNEY_EVENTS.ROOT
-    )
+export function landingGet(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
+  res.status(HTTP_STATUS_CODES.FORBIDDEN);
+  return next(
+    new ErrorWithLevel(ERROR_MESSAGES.FORBIDDEN, ERROR_LOG_LEVEL.INFO)
   );
 }
