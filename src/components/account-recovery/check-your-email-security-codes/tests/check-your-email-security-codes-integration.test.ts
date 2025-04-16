@@ -37,7 +37,7 @@ describe("Integration:: check your email security codes", () => {
     decache("../../../../middleware/session-middleware");
     decache("../../../common/send-notification/send-notification-service");
     const sessionMiddleware = await import(
-      "../../../../middleware/session-middleware"
+      "../../../../middleware/session-middleware.js"
     );
     const sendNotificationService = import(
       "../../../common/send-notification/send-notification-service"
@@ -108,7 +108,7 @@ describe("Integration:: check your email security codes", () => {
 
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
 
-    app = await (await import("../../../../app")).createApp();
+    app = await (await import("../../../../app.js")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     await request(

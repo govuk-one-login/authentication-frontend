@@ -15,7 +15,7 @@ describe("applyOverloadProtection", () => {
     } as NodeModule;
 
     applyOverloadProtection = (
-      await import("../overload-protection-middleware")
+      await import("../overload-protection-middleware.js")
     ).applyOverloadProtection;
   });
 

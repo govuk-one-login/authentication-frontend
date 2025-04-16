@@ -29,9 +29,9 @@ describe("Integration:: authorize", () => {
     decache("../authorize-service");
     decache("../kms-decryption-service");
     decache("../jwt-service");
-    const authorizeService = await import("../authorize-service");
-    const KmsDecryptionService = await import("../kms-decryption-service");
-    const jwtService = await import("../jwt-service");
+    const authorizeService = await import("../authorize-service.js");
+    const KmsDecryptionService = await import("../kms-decryption-service.js");
+    const jwtService = await import("../jwt-service.js");
     const publicKey = getPublicKey();
     const privateKey = await getPrivateKey();
     const jwt = await createJwt(createMockClaims(), privateKey);
@@ -61,7 +61,7 @@ describe("Integration:: authorize", () => {
       return new JwtService(publicKey);
     });
 
-    app = await (await import("../../../app")).createApp();
+    app = await (await import("../../../app.js")).createApp();
   });
 
   beforeEach(() => {

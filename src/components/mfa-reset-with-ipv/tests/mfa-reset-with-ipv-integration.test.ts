@@ -151,10 +151,10 @@ describe("Mfa reset with ipv", () => {
     process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
     process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY = "1";
     const sessionMiddleware = await import(
-      "../../../middleware/session-middleware"
+      "../../../middleware/session-middleware.js"
     );
     const { getPermittedJourneyForPath } = await import(
-      "../../../../test/helpers/session-helper"
+      "../../../../test/helpers/session-helper.js"
     );
 
     sinon
@@ -185,6 +185,6 @@ describe("Mfa reset with ipv", () => {
         next();
       });
 
-    return (await import("../../../app")).createApp();
+    return (await import("../../../app.js")).createApp();
   }
 });

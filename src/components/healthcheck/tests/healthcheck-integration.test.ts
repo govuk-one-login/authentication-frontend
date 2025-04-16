@@ -11,7 +11,7 @@ describe("Integration::healthcheck", () => {
     decache("../../../app");
     decache("../../../middleware/requires-auth-middleware");
     sandbox = sinon.createSandbox();
-    app = await (await import("../../../app")).createApp();
+    app = await (await import("../../../app.js")).createApp();
   });
 
   after(() => {

@@ -30,14 +30,14 @@ describe("session", () => {
 
   describe("getSessionStore", () => {
     it("should create a new client if none already exists and connect to redis", async () => {
-      const { getSessionStore } = await import("../../src/config/session");
+      const { getSessionStore } = await import("../../src/config/session.js");
       getSessionStore(redisConfig);
       expect(redis.createClient).to.be.callCount(1);
       expect(connect).to.be.callCount(1);
     });
 
     it("should throw error when there is already a redis client and the config is different", async () => {
-      const { getSessionStore } = await import("../../src/config/session");
+      const { getSessionStore } = await import("../../src/config/session.js");
       getSessionStore(redisConfig);
       expect(() =>
         getSessionStore({ ...redisConfig, host: "somethingdifferent" })
@@ -45,7 +45,7 @@ describe("session", () => {
     });
 
     it("should not create a new client if one already exists with the same configuration", async () => {
-      const { getSessionStore } = await import("../../src/config/session");
+      const { getSessionStore } = await import("../../src/config/session.js");
       getSessionStore(redisConfig);
       getSessionStore(redisConfig);
       getSessionStore(redisConfig);
@@ -58,14 +58,14 @@ describe("session", () => {
   describe("disconnectRedisClient", () => {
     it("should not error if there is no client", async () => {
       const { disconnectRedisClient } = await import(
-        "../../src/config/session"
+        "../../src/config/session.js"
       );
       expect(() => disconnectRedisClient()).to.not.throw();
     });
 
     it("should disconnect the client if a client exists, clear up and allow new client", async () => {
       const { getSessionStore, disconnectRedisClient } = await import(
-        "../../src/config/session"
+        "../../src/config/session.js"
       );
       getSessionStore(redisConfig);
 

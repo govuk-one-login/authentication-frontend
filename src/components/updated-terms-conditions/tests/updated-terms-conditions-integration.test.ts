@@ -22,7 +22,7 @@ describe("Integration:: updated-terms-code", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = await import(
-      "../../../middleware/session-middleware"
+      "../../../middleware/session-middleware.js"
     );
 
     sinon
@@ -47,7 +47,7 @@ describe("Integration:: updated-terms-code", () => {
         next();
       });
 
-    app = await (await import("../../../app")).createApp();
+    app = await (await import("../../../app.js")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(

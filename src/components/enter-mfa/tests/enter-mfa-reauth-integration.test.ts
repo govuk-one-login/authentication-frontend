@@ -32,10 +32,10 @@ describe("Integration:: enter mfa", () => {
     decache("../../../middleware/session-middleware");
     decache("../../common/account-recovery/account-recovery-service");
     const sessionMiddleware = await import(
-      "../../../middleware/session-middleware"
+      "../../../middleware/session-middleware.js"
     );
     const accountRecoveryService = await import(
-      "../../common/account-recovery/account-recovery-service"
+      "../../common/account-recovery/account-recovery-service.js"
     );
 
     sinon
@@ -78,7 +78,7 @@ describe("Integration:: enter mfa", () => {
         return { accountRecovery };
       });
 
-    app = await (await import("../../../app")).createApp();
+    app = await (await import("../../../app.js")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
     process.env.SUPPORT_REAUTHENTICATION = "1";
 

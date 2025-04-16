@@ -47,16 +47,16 @@ describe("Integration:: enter mfa", () => {
     decache("../../../../test/helpers/session-helper");
     decache("../../common/send-notification/send-notification-service");
     const sessionMiddleware = await import(
-      "../../../middleware/session-middleware"
+      "../../../middleware/session-middleware.js"
     );
     const accountRecoveryService = await import(
-      "../../common/account-recovery/account-recovery-service"
+      "../../common/account-recovery/account-recovery-service.js"
     );
     const sendNotificationService = import(
       "../../common/send-notification/send-notification-service"
     );
     const { getPermittedJourneyForPath } = await import(
-      "../../../../test/helpers/session-helper"
+      "../../../../test/helpers/session-helper.js"
     );
 
     sinon
@@ -112,7 +112,7 @@ describe("Integration:: enter mfa", () => {
         return { sendNotification };
       });
 
-    app = await (await import("../../../app")).createApp();
+    app = await (await import("../../../app.js")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA), {

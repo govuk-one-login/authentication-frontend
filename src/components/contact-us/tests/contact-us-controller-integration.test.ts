@@ -17,7 +17,7 @@ describe("Integration:: contact us - public user", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = await import(
-      "../../../middleware/session-middleware"
+      "../../../middleware/session-middleware.js"
     );
 
     sinon
@@ -34,7 +34,7 @@ describe("Integration:: contact us - public user", () => {
         next();
       });
 
-    app = await (await import("../../../app")).createApp();
+    app = await (await import("../../../app.js")).createApp();
     smartAgentApiUrl = process.env.SMARTAGENT_API_URL;
 
     await request(

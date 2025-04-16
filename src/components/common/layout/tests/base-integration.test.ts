@@ -17,7 +17,7 @@ describe("Integration:: base page ", () => {
     decache("../../../../app");
     decache("../../../../middleware/session-middleware");
     const sessionMiddleware = await import(
-      "../../../../middleware/session-middleware"
+      "../../../../middleware/session-middleware.js"
     );
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -47,7 +47,7 @@ describe("Integration:: base page ", () => {
     if (showTestBanner !== undefined) {
       decache("../../../../middleware/environment-banner-middleware");
       const envBannerMiddleware = await import(
-        "../../../../middleware/environment-banner-middleware"
+        "../../../../middleware/environment-banner-middleware.js"
       );
       sinon
         .stub(envBannerMiddleware, "environmentBannerMiddleware")
@@ -61,7 +61,7 @@ describe("Integration:: base page ", () => {
         });
     }
 
-    app = await (await import("../../../../app")).createApp();
+    app = await (await import("../../../../app.js")).createApp();
   };
 
   beforeEach(() => {

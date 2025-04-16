@@ -26,7 +26,7 @@ describe("Integration:: resend mfa code", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = await import(
-      "../../../middleware/session-middleware"
+      "../../../middleware/session-middleware.js"
     );
     validateSessionStub = sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -51,7 +51,7 @@ describe("Integration:: resend mfa code", () => {
       });
 
     process.env.SUPPORT_REAUTHENTICATION = "0";
-    app = await (await import("../../../app")).createApp();
+    app = await (await import("../../../app.js")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(app, (test) => test.get(PATH_NAMES.RESEND_MFA_CODE)).then(

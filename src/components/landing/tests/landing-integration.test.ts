@@ -12,7 +12,7 @@ describe("Integration:: landing", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = await import(
-      "../../../middleware/session-middleware"
+      "../../../middleware/session-middleware.js"
     );
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -29,7 +29,7 @@ describe("Integration:: landing", () => {
         next();
       });
 
-    app = await (await import("../../../app")).createApp();
+    app = await (await import("../../../app.js")).createApp();
   });
 
   beforeEach(() => {

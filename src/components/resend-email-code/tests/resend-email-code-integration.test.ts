@@ -23,7 +23,7 @@ describe("Integration:: resend email code", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = await import(
-      "../../../middleware/session-middleware"
+      "../../../middleware/session-middleware.js"
     );
     sinon
       .stub(sessionMiddleware, "validateSessionMiddleware")
@@ -43,7 +43,7 @@ describe("Integration:: resend email code", () => {
         next();
       });
 
-    app = await (await import("../../../app")).createApp();
+    app = await (await import("../../../app.js")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(app, (test) => test.get(PATH_NAMES.RESEND_EMAIL_CODE)).then(

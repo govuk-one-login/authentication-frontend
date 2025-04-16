@@ -25,7 +25,7 @@ describe("Integration::reset password check email ", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = await import(
-      "../../../middleware/session-middleware"
+      "../../../middleware/session-middleware.js"
     );
 
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
@@ -48,7 +48,7 @@ describe("Integration::reset password check email ", () => {
         next();
       });
 
-    app = await (await import("../../../app")).createApp();
+    app = await (await import("../../../app.js")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     nock(baseApi).post("/reset-password-request").once().reply(204);

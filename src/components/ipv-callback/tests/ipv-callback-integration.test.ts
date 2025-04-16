@@ -205,7 +205,7 @@ const stubMiddlewareAndCreateApp = async (
 
   decache("../../../middleware/session-middleware");
   const sessionMiddleware = await import(
-    "../../../middleware/session-middleware"
+    "../../../middleware/session-middleware.js"
   );
 
   sinon
@@ -229,7 +229,7 @@ const stubMiddlewareAndCreateApp = async (
 
   decache("../../../middleware/outbound-contact-us-links-middleware");
   const outboundContactUsLinksMiddleware = await import(
-    "../../../middleware/outbound-contact-us-links-middleware"
+    "../../../middleware/outbound-contact-us-links-middleware.js"
   );
 
   sinon
@@ -244,7 +244,7 @@ const stubMiddlewareAndCreateApp = async (
       next();
     });
 
-  return (await import("../../../app")).createApp();
+  return (await import("../../../app.js")).createApp();
 };
 
 const getCannotChangeSecurityCodesAndReturnTokenAndCookies = async (

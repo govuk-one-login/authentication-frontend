@@ -15,7 +15,7 @@ describe("Integration::select-mfa-options", () => {
     decache("../../../app");
     decache("../../../middleware/session-middleware");
     const sessionMiddleware = await import(
-      "../../../middleware/session-middleware"
+      "../../../middleware/session-middleware.js"
     );
 
     sinon
@@ -37,7 +37,7 @@ describe("Integration::select-mfa-options", () => {
         next();
       });
 
-    app = await (await import("../../../app")).createApp();
+    app = await (await import("../../../app.js")).createApp();
 
     await request(app, (test) => test.get(PATH_NAMES.GET_SECURITY_CODES)).then(
       (res) => {

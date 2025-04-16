@@ -44,13 +44,13 @@ describe("Integration:: enter authenticator app code", () => {
     decache("../../../../test/helpers/session-helper");
     decache("../../common/send-notification/send-notification-service");
     const sessionMiddleware = await import(
-      "../../../middleware/session-middleware"
+      "../../../middleware/session-middleware.js"
     );
     const accountRecoveryService = await import(
-      "../../common/account-recovery/account-recovery-service"
+      "../../common/account-recovery/account-recovery-service.js"
     );
     const { getPermittedJourneyForPath } = await import(
-      "../../../../test/helpers/session-helper"
+      "../../../../test/helpers/session-helper.js"
     );
     const sendNotificationService = import(
       "../../common/send-notification/send-notification-service"
@@ -116,7 +116,7 @@ describe("Integration:: enter authenticator app code", () => {
         return { sendNotification };
       });
 
-    app = await (await import("../../../app")).createApp();
+    app = await (await import("../../../app.js")).createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     await request(
