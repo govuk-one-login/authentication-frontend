@@ -52,6 +52,10 @@ export function getKmsKeyId(): string {
   return process.env.ENCRYPTION_KEY_ID;
 }
 
+export function getVitalSignsIntervalSeconds(): number {
+  return Number(process.env.VITAL_SIGNS_INTERVAL_SECONDS) || 10;
+}
+
 export function getOrchToAuthSigningPublicKey(): string {
   return process.env.ORCH_TO_AUTH_SIGNING_KEY;
 }

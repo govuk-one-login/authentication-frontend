@@ -137,6 +137,10 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
                 "value": "localhost",
                 "comment": "Analytics cookie domain where cookie is set",
             },
+            "VITAL_SIGNS_INTERVAL_SECONDS": {
+                "value": "360",
+                "comment": "How often the vital signs statistics will be written to logs",
+            },
         },
     },
 ]
