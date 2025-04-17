@@ -2,7 +2,6 @@ import { describe } from "mocha";
 import { request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import decache from "decache";
 import type { AxiosResponse } from "axios";
 import {
   API_ENDPOINTS,
@@ -18,6 +17,7 @@ import { createApiResponse } from "../../../utils/http.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+import esmock from "esmock";
 
 describe("Integration:: enter mfa", () => {
   let token: string | string[];
@@ -28,57 +28,54 @@ describe("Integration:: enter mfa", () => {
   const EXAMPLE_REDIRECT_URI = "https://rp.host/redirect";
 
   before(async () => {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    decache("../../common/account-recovery/account-recovery-service");
-    const sessionMiddleware = await import(
-      "../../../middleware/session-middleware.js"
-    );
-    const accountRecoveryService = await import(
-      "../../common/account-recovery/account-recovery-service.js"
-    );
-
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        req.session.user = {
-          email: "test@test.com",
-          mfaMethods: buildMfaMethods({
-            phoneNumber: PHONE_NUMBER,
-            redactedPhoneNumber: PHONE_NUMBER,
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+            req.session.user = {
+              email: "test@test.com",
+              mfaMethods: buildMfaMethods({
+                phoneNumber: PHONE_NUMBER,
+                redactedPhoneNumber: PHONE_NUMBER,
+              }),
+              reauthenticate: "12345",
+              journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
+            };
+            req.session.client = {
+              redirectUri: EXAMPLE_REDIRECT_URI,
+            };
+            next();
           }),
-          reauthenticate: "12345",
-          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
-        };
-        req.session.client = {
-          redirectUri: EXAMPLE_REDIRECT_URI,
-        };
-        next();
-      });
+        },
+        "../../common/account-recovery/account-recovery-service.js": {
+          accountRecoveryService: sinon.fake((): AccountRecoveryInterface => {
+            async function accountRecovery() {
+              const fakeAxiosResponse: AxiosResponse = {
+                data: {
+                  accountRecoveryPermitted: true,
+                },
+                status: HTTP_STATUS_CODES.OK,
+              } as AxiosResponse;
 
-    sinon
-      .stub(accountRecoveryService, "accountRecoveryService")
-      .callsFake((): AccountRecoveryInterface => {
-        async function accountRecovery() {
-          const fakeAxiosResponse: AxiosResponse = {
-            data: {
-              accountRecoveryPermitted: true,
-            },
-            status: HTTP_STATUS_CODES.OK,
-          } as AxiosResponse;
+              return createApiResponse<AccountRecoveryResponse>(
+                fakeAxiosResponse
+              );
+            }
 
-          return createApiResponse<AccountRecoveryResponse>(fakeAxiosResponse);
-        }
+            return { accountRecovery };
+          }),
+        },
+      }
+    );
 
-        return { accountRecovery };
-      });
-
-    app = await (await import("../../../app.js")).createApp();
+    app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
     process.env.SUPPORT_REAUTHENTICATION = "1";
 

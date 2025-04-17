@@ -2,11 +2,12 @@ import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import decache from "decache";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import esmock from "esmock";
+
 const REDIRECT_URI = "https://rp.host/redirect";
 
 describe("Integration::enter password", () => {
@@ -18,37 +19,37 @@ describe("Integration::enter password", () => {
   const ENDPOINT = "/enter-password";
 
   before(async () => {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    const sessionMiddleware = await import(
-      "../../../middleware/session-middleware.js"
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+            res.locals.clientSessionId = "gdsfsfdsgsdgsd-mjdzU854";
+            res.locals.persistentSessionId = "dips-123456-abc";
+
+            req.session.user = {
+              email: "test@test.com",
+              journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_PASSWORD),
+              reauthenticate: "subject",
+            };
+
+            req.session.client = {
+              redirectUri: REDIRECT_URI,
+            };
+
+            next();
+          }),
+        },
+      }
     );
 
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        res.locals.clientSessionId = "gdsfsfdsgsdgsd-mjdzU854";
-        res.locals.persistentSessionId = "dips-123456-abc";
-
-        req.session.user = {
-          email: "test@test.com",
-          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_PASSWORD),
-          reauthenticate: "subject",
-        };
-
-        req.session.client = {
-          redirectUri: REDIRECT_URI,
-        };
-
-        next();
-      });
-
-    app = await (await import("../../../app.js")).createApp();
+    app = await createApp();
 
     baseApi = process.env.FRONTEND_API_BASE_URL;
     process.env.SUPPORT_REAUTHENTICATION = "1";

@@ -2,7 +2,6 @@ import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import decache from "decache";
 import type { AxiosResponse } from "axios";
 import {
   API_ENDPOINTS,
@@ -19,6 +18,9 @@ import type { Request, Response, NextFunction } from "express";
 import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
 import type { DefaultApiResponse } from "../../../types.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+import esmock from "esmock";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+
 describe("Integration:: enter mfa", () => {
   let token: string | string[];
   let cookies: string;
@@ -41,78 +43,68 @@ describe("Integration:: enter mfa", () => {
     process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY =
       options.routeUsersToNewIpvJourney ? "1" : "0";
 
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    decache("../../common/account-recovery/account-recovery-service");
-    decache("../../../../test/helpers/session-helper");
-    decache("../../common/send-notification/send-notification-service");
-    const sessionMiddleware = await import(
-      "../../../middleware/session-middleware.js"
-    );
-    const accountRecoveryService = await import(
-      "../../common/account-recovery/account-recovery-service.js"
-    );
-    const sendNotificationService = import(
-      "../../common/send-notification/send-notification-service"
-    );
-    const { getPermittedJourneyForPath } = await import(
-      "../../../../test/helpers/session-helper.js"
-    );
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-
-        req.session.user = {
-          email: "test@test.com",
-          mfaMethods: buildMfaMethods({
-            phoneNumber: PHONE_NUMBER,
-            redactedPhoneNumber: PHONE_NUMBER,
+            req.session.user = {
+              email: "test@test.com",
+              mfaMethods: buildMfaMethods({
+                phoneNumber: PHONE_NUMBER,
+                redactedPhoneNumber: PHONE_NUMBER,
+              }),
+              journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
+              isAccountRecoveryPermitted: true,
+            };
+            next();
           }),
-          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
-          isAccountRecoveryPermitted: true,
-        };
-        next();
-      });
+        },
+        "../../common/account-recovery/account-recovery-service.js": {
+          accountRecoveryService: sinon.fake((): AccountRecoveryInterface => {
+            async function accountRecovery() {
+              const fakeAxiosResponse: AxiosResponse = {
+                data: {
+                  accountRecoveryPermitted: true,
+                },
+                status: HTTP_STATUS_CODES.OK,
+              } as AxiosResponse;
 
-    sinon
-      .stub(accountRecoveryService, "accountRecoveryService")
-      .callsFake((): AccountRecoveryInterface => {
-        async function accountRecovery() {
-          const fakeAxiosResponse: AxiosResponse = {
-            data: {
-              accountRecoveryPermitted: true,
-            },
-            status: HTTP_STATUS_CODES.OK,
-          } as AxiosResponse;
+              return createApiResponse<AccountRecoveryResponse>(
+                fakeAxiosResponse
+              );
+            }
 
-          return createApiResponse<AccountRecoveryResponse>(fakeAxiosResponse);
-        }
+            return { accountRecovery };
+          }),
+        },
+        "../../common/send-notification/send-notification-service.js": {
+          sendNotificationService: sinon.fake(
+            (): SendNotificationServiceInterface => {
+              async function sendNotification() {
+                const fakeAxiosResponse: AxiosResponse = {
+                  data: "test",
+                  status: HTTP_STATUS_CODES.OK,
+                } as AxiosResponse;
 
-        return { accountRecovery };
-      });
+                return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
+              }
 
-    sinon
-      .stub(sendNotificationService, "sendNotificationService")
-      .callsFake((): SendNotificationServiceInterface => {
-        async function sendNotification() {
-          const fakeAxiosResponse: AxiosResponse = {
-            data: "test",
-            status: HTTP_STATUS_CODES.OK,
-          } as AxiosResponse;
+              return { sendNotification };
+            }
+          ),
+        },
+      }
+    );
 
-          return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
-        }
-
-        return { sendNotification };
-      });
-
-    app = await (await import("../../../app.js")).createApp();
+    app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA), {

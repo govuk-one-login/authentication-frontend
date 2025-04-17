@@ -1,7 +1,6 @@
 import { describe } from "mocha";
 import { sinon, request } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
-import decache from "decache";
 import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import type {
   AuthorizeServiceInterface,
@@ -19,49 +18,52 @@ import {
 } from "./test-data.js";
 import { JwtService } from "../jwt-service.js";
 import { getOrchToAuthExpectedClientId } from "../../../config.js";
+import esmock from "esmock";
+
 describe("Integration:: authorize", () => {
   let app: any;
   let userCookieConsent = false;
 
   beforeEach(async () => {
     process.env.SUPPORT_AUTHORIZE_CONTROLLER = "1";
-    decache("../../../app");
-    decache("../authorize-service");
-    decache("../kms-decryption-service");
-    decache("../jwt-service");
-    const authorizeService = await import("../authorize-service.js");
-    const KmsDecryptionService = await import("../kms-decryption-service.js");
-    const jwtService = await import("../jwt-service.js");
     const publicKey = getPublicKey();
     const privateKey = await getPrivateKey();
     const jwt = await createJwt(createMockClaims(), privateKey);
 
-    sinon
-      .stub(authorizeService, "authorizeService")
-      .callsFake((): AuthorizeServiceInterface => {
-        async function start() {
-          return createApiResponse<StartAuthResponse>(
-            fakeAxiosStartResponse(userCookieConsent)
-          );
-        }
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../authorize-service.js": {
+          authorizeService: sinon.fake((): AuthorizeServiceInterface => {
+            async function start() {
+              return createApiResponse<StartAuthResponse>(
+                fakeAxiosStartResponse(userCookieConsent)
+              );
+            }
 
-        return { start };
-      });
+            return { start };
+          }),
+        },
+        "../kms-decryption-service.js": {
+          KmsDecryptionService: sinon.fake(
+            (): KmsDecryptionServiceInterface => {
+              async function decrypt() {
+                return Promise.resolve(jwt);
+              }
+              return { decrypt };
+            }
+          ),
+        },
+        "../jwt-service.js": {
+          JwtService: sinon.fake((): JwtServiceInterface => {
+            return new JwtService(publicKey);
+          }),
+        },
+      }
+    );
 
-    sinon
-      .stub(KmsDecryptionService, "KmsDecryptionService")
-      .callsFake((): KmsDecryptionServiceInterface => {
-        async function decrypt() {
-          return Promise.resolve(jwt);
-        }
-        return { decrypt };
-      });
-
-    sinon.stub(jwtService, "JwtService").callsFake((): JwtServiceInterface => {
-      return new JwtService(publicKey);
-    });
-
-    app = await (await import("../../../app.js")).createApp();
+    app = await createApp();
   });
 
   beforeEach(() => {

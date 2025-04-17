@@ -1,7 +1,6 @@
 import { afterEach, describe } from "mocha";
 import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
-import decache from "decache";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
@@ -11,6 +10,8 @@ import nock from "nock";
 import { ERROR_CODES } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import esmock from "esmock";
+
 const REDIRECT_URI = "https://rp.host/redirect";
 
 describe("Integration::enter email", () => {
@@ -20,37 +21,39 @@ describe("Integration::enter email", () => {
   let baseApi: string;
 
   before(async () => {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    const sessionMiddleware = await import(
-      "../../../middleware/session-middleware.js"
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+
+            req.session.user = {
+              journey: getPermittedJourneyForPath(
+                PATH_NAMES.ENTER_EMAIL_SIGN_IN
+              ),
+            };
+
+            if (process.env.TEST_SETUP_REAUTH_SESSION === "1") {
+              req.session.user.reauthenticate = "12345";
+            }
+
+            req.session.client = {
+              redirectUri: REDIRECT_URI,
+            };
+
+            next();
+          }),
+        },
+      }
     );
 
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-
-        req.session.user = {
-          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_SIGN_IN),
-        };
-
-        if (process.env.TEST_SETUP_REAUTH_SESSION === "1") {
-          req.session.user.reauthenticate = "12345";
-        }
-
-        req.session.client = {
-          redirectUri: REDIRECT_URI,
-        };
-
-        next();
-      });
-
-    app = await (await import("../../../app.js")).createApp();
+    app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN), {

@@ -1,7 +1,5 @@
 import { describe } from "mocha";
 import { request, sinon } from "../../../../test/utils/test-utils.js";
-import decache from "decache";
-
 import * as cheerio from "cheerio";
 import {
   API_ENDPOINTS,
@@ -15,6 +13,8 @@ import {
 } from "../../../../test/helpers/account-interventions-helpers.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import esmock from "esmock";
+
 describe("Integration::reset password check email ", () => {
   let app: any;
   let baseApi: string;
@@ -22,33 +22,31 @@ describe("Integration::reset password check email ", () => {
   let cookies: string;
 
   before(async () => {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    const sessionMiddleware = await import(
-      "../../../middleware/session-middleware.js"
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+            req.session.user = {
+              email: "test@test.com",
+              journey: getPermittedJourneyForPath(
+                PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
+              ),
+            };
+            req.session.user.enterEmailMfaType = "AUTH_APP";
+            next();
+          }),
+        },
+      }
     );
 
-    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
-
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        req.session.user = {
-          email: "test@test.com",
-          journey: getPermittedJourneyForPath(
-            PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
-          ),
-        };
-        req.session.user.enterEmailMfaType = "AUTH_APP";
-        next();
-      });
-
-    app = await (await import("../../../app.js")).createApp();
+    app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     nock(baseApi).post("/reset-password-request").once().reply(204);

@@ -5,8 +5,8 @@ import {
   request,
 } from "../../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
-import decache from "decache";
 import { PATH_NAMES, ANALYTICS_COOKIES } from "../../../../app.constants.js";
+import esmock from "esmock";
 describe("Integration:: cookies controller", () => {
   let app: any;
   let $: any;
@@ -15,9 +15,9 @@ describe("Integration:: cookies controller", () => {
 
   describe("get cookies", () => {
     before(async () => {
-      decache("../../../../app");
+      const { createApp } = await esmock("../../../../app.js");
 
-      app = await (await import("../../../../app.js")).createApp();
+      app = await createApp();
 
       await request(app, (test) => test.get(PATH_NAMES.COOKIES_POLICY)).then(
         (res) => {
@@ -71,9 +71,9 @@ describe("Integration:: cookies controller", () => {
     let app: any;
 
     before(async () => {
-      decache("../../../../app");
+      const { createApp } = await esmock("../../../../app.js");
 
-      app = await (await import("../../../../app.js")).createApp();
+      app = await createApp();
 
       await request(app, (test) => test.get(PATH_NAMES.COOKIES_POLICY), {
         expectAnalyticsPropertiesMatchSnapshot: false,
