@@ -85,7 +85,10 @@ if [[ $BUILD == "1" ]]; then
     echo "Digest = ${IMAGE_DIGEST}"
     echo "Complete"
 else
-    docker pull "${REPO_URL}:${IMAGE_TAG}"
+    # Adding --platform=linux/amd64 to ensure the image is pulled for the correct architecture
+    # This is required for the buildx build command to work on M1 Macs
+    echo "Pulling image..."
+    docker pull --platform=linux/amd64 "${REPO_URL}:${IMAGE_TAG}"
     IMAGE_DIGEST="$(docker inspect "${REPO_URL}:${IMAGE_TAG}" | jq -r '.[0].RepoDigests[0] | split("@") | .[1]')"
 fi
 
