@@ -40,7 +40,6 @@ const USER_JOURNEY_EVENTS = {
   SIGN_IN: "SIGN_IN",
   CREATE_NEW_ACCOUNT: "CREATE_NEW_ACCOUNT",
   SEND_EMAIL_CODE: "SEND_EMAIL_CODE",
-  ROOT: "ROOT",
   PASSWORD_CREATED: "PASSWORD_CREATED",
   REQUEST_PASSWORD_RESET: "REQUEST_PASSWORD_RESET",
   PASSWORD_RESET_REQUESTED: "PASSWORD_RESET_REQUESTED",
@@ -89,13 +88,6 @@ const authStateMachine = createMachine(
       isOnForcedPasswordResetJourney: false,
     },
     states: {
-      [PATH_NAMES.ROOT]: {
-        on: {
-          [USER_JOURNEY_EVENTS.ROOT]: [
-            { target: [PATH_NAMES.SIGN_IN_OR_CREATE] },
-          ],
-        },
-      },
       [PATH_NAMES.AUTHORIZE]: {
         on: {
           [USER_JOURNEY_EVENTS.EXISTING_SESSION]: [

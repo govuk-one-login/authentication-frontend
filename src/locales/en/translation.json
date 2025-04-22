@@ -152,7 +152,7 @@
         "govUKHomepageButtonText": "Go to the GOV.UK homepage"
       }
     },
-    "sessionRequiredMidJourneyError": {
+    "midJourneyError": {
       "title": "Sorry, you cannot access GOV.UK One Login from this page",
       "header": "Sorry, you cannot access GOV.UK One Login from this page",
       "content": {

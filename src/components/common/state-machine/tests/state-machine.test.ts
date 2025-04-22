@@ -68,11 +68,6 @@ describe("state-machine", () => {
     });
   });
   describe("getNextState - login journey (2fa)", () => {
-    it("should move from initial state to sign or create when user event is landing", () => {
-      const nextState = getNextState(PATH_NAMES.ROOT, USER_JOURNEY_EVENTS.ROOT);
-      expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
-    });
-
     it("should move from sign or create to enter email when user event is sign in", () => {
       const nextState = getNextState(
         PATH_NAMES.SIGN_IN_OR_CREATE,
@@ -108,11 +103,6 @@ describe("state-machine", () => {
   });
 
   describe("getNextState - login journey (non 2fa)", () => {
-    it("should move from initial state to sign or create when user event is landing", () => {
-      const nextState = getNextState(PATH_NAMES.ROOT, USER_JOURNEY_EVENTS.ROOT);
-      expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
-    });
-
     it("should move from sign or create to enter email when user event is sign in", () => {
       const nextState = getNextState(
         PATH_NAMES.SIGN_IN_OR_CREATE,
@@ -139,11 +129,6 @@ describe("state-machine", () => {
     });
   });
   describe("getNextState - register", () => {
-    it("should move from initial state to sign or create when user event is landing", () => {
-      const nextState = getNextState(PATH_NAMES.ROOT, USER_JOURNEY_EVENTS.ROOT);
-      expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
-    });
-
     it("should move from sign or create to enter email when user event is create account", () => {
       const nextState = getNextState(
         PATH_NAMES.SIGN_IN_OR_CREATE,

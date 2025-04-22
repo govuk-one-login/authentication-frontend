@@ -35,14 +35,13 @@ describe("serverErrorHandler", () => {
     expect(res.statusCode).to.equal(200);
   });
 
-  it("should render mid-journey-direct-navigation-without-session template if session is invalid and not a GOV.UK request", () => {
+  it("should render mid-journey-direct-navigation template if session is invalid and not a GOV.UK request", () => {
     res.statusCode = HTTP_STATUS_CODES.UNAUTHORIZED;
     const err = new Error(
       ERROR_MESSAGES.INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST
     );
     const renderSpy = sinon.spy(res, "render");
-    const expectedTemplate =
-      "common/errors/mid-journey-direct-navigation-without-session.njk";
+    const expectedTemplate = "common/errors/mid-journey-direct-navigation.njk";
     const expectedData = {
       accountManagementUrl: "http://localhost:6001",
     };
@@ -54,6 +53,24 @@ describe("serverErrorHandler", () => {
       expectedData
     );
     expect(res.statusCode).to.equal(HTTP_STATUS_CODES.UNAUTHORIZED);
+  });
+
+  it("should render mid-journey-direct-navigation template if user navigates to root", () => {
+    res.statusCode = HTTP_STATUS_CODES.FORBIDDEN;
+    const err = new Error(ERROR_MESSAGES.FORBIDDEN);
+    const renderSpy = sinon.spy(res, "render");
+    const expectedTemplate = "common/errors/mid-journey-direct-navigation.njk";
+    const expectedData = {
+      accountManagementUrl: "http://localhost:6001",
+    };
+
+    serverErrorHandler(err, req, res, next);
+
+    expect(renderSpy).to.have.been.calledOnceWith(
+      expectedTemplate,
+      expectedData
+    );
+    expect(res.statusCode).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
   });
 
   it("should render session-expired template if session is invalid and it is a GOV.UK request", () => {
