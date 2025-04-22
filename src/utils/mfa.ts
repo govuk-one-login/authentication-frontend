@@ -11,6 +11,7 @@ import { APP_ENV_NAME, MFA_METHOD_TYPE } from "../app.constants";
 import { getAppEnv } from "../config";
 import {
   MfaMethod,
+  isSmsMfaMethod,
   MfaMethodPriorityIdentifier,
   SmsMfaMethod,
 } from "../types";
@@ -78,4 +79,16 @@ export function upsertDefaultSmsMfaMethod(
     nextMfaMethods.push(nextMfa);
   }
   return nextMfaMethods;
+}
+
+export function getDefaultSmsMfaMethod(
+  mfaMethods: MfaMethod[] | undefined
+): SmsMfaMethod | undefined {
+  if (!mfaMethods) return undefined;
+  return mfaMethods
+    .filter(isSmsMfaMethod)
+    .find(
+      (mfaMethod) =>
+        mfaMethod.priorityIdentifier === MfaMethodPriorityIdentifier.DEFAULT
+    );
 }

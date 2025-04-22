@@ -1,7 +1,7 @@
 import { expect } from "../../test/utils/test-utils";
 import { MfaMethod, MfaMethodPriorityIdentifier } from "../types";
 import { MFA_METHOD_TYPE } from "../app.constants";
-import { upsertDefaultSmsMfaMethod } from "./mfa";
+import { getDefaultSmsMfaMethod, upsertDefaultSmsMfaMethod } from "./mfa";
 
 describe("mfa", () => {
   describe("upsertDefaultSmsMfaMethod", () => {
@@ -129,6 +129,45 @@ describe("mfa", () => {
               phoneNumber: test.phoneNumber,
             })
           ).to.deep.eq(test.expectedMfaMethods);
+        });
+      }
+    );
+  });
+
+  describe("getDefaultSmsMfaMethodDetail", () => {
+    [
+      {
+        title: "returns undefined with empty array",
+        mfaMethods: [] as MfaMethod[],
+        expectedMfaMethod: undefined,
+      },
+      {
+        title: "returns expected redactedPhoneNumber with SMS DEFAULT",
+        mfaMethods: [
+          {
+            type: MFA_METHOD_TYPE.SMS,
+            priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+            redactedPhoneNumber: "123",
+            phoneNumber: "089",
+          },
+        ] as MfaMethod[],
+        expectedMfaMethod: {
+          type: MFA_METHOD_TYPE.SMS,
+          priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+          redactedPhoneNumber: "123",
+          phoneNumber: "089",
+        },
+      },
+    ].forEach(
+      (test: {
+        title: string;
+        mfaMethods: MfaMethod[];
+        expectedMfaMethod: MfaMethod;
+      }) => {
+        it(test.title, async () => {
+          expect(getDefaultSmsMfaMethod(test.mfaMethods)).to.deep.eq(
+            test.expectedMfaMethod
+          );
         });
       }
     );

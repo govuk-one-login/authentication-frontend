@@ -122,6 +122,10 @@ export type SmsMfaMethod = {
   redactedPhoneNumber?: string;
 };
 
+export const isSmsMfaMethod = (
+  mfaMethod: MfaMethod
+): mfaMethod is SmsMfaMethod => mfaMethod.type === MFA_METHOD_TYPE.SMS;
+
 export type AuthAppMfaMethod = {
   type: MFA_METHOD_TYPE.AUTH_APP;
   priorityIdentifier: MfaMethodPriorityIdentifier;
