@@ -26,6 +26,7 @@ import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 import { isLocked } from "../../utils/lock-helper";
 import { isAccountRecoveryJourneyAndEnabled } from "../../utils/request";
+import { getDefaultSmsMfaMethod } from "../../utils/mfa";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";
 const RESEND_CODE_LINK = pathWithQueryParam(
@@ -42,7 +43,8 @@ export function checkYourPhoneGet(req: Request, res: Response): void {
     });
   }
   return res.render(TEMPLATE_NAME, {
-    phoneNumber: req.session.user.redactedPhoneNumber,
+    phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
+      ?.redactedPhoneNumber,
     resendCodeLink: RESEND_CODE_LINK,
   });
 }
@@ -67,7 +69,7 @@ export const checkYourPhonePost = (
       persistentSessionId,
       req,
       journeyType,
-      req.session.user.phoneNumber
+      getDefaultSmsMfaMethod(req.session.user.mfaMethods)?.phoneNumber
     );
 
     if (!result.success) {

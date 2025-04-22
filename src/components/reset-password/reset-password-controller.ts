@@ -15,6 +15,7 @@ import {
   routeUsersToNewIpvJourney,
   supportMfaResetWithIpv,
 } from "../../config";
+import { upsertDefaultSmsMfaMethod } from "../../utils/mfa";
 
 const resetPasswordTemplate = "reset-password/index.njk";
 
@@ -99,8 +100,10 @@ export function resetPasswordPost(
       );
     }
 
-    req.session.user.redactedPhoneNumber =
-      loginResponse.data.redactedPhoneNumber;
+    req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
+      req.session.user.mfaMethods,
+      { redactedPhoneNumber: loginResponse.data.redactedPhoneNumber }
+    );
     req.session.user.isLatestTermsAndConditionsAccepted =
       loginResponse.data.latestTermsAndConditionsAccepted;
     req.session.user.isAccountPartCreated =

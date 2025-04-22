@@ -16,6 +16,7 @@ import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-n
 import xss from "xss";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 import { isAccountRecoveryJourneyAndEnabled } from "../../utils/request";
+import { upsertDefaultSmsMfaMethod } from "../../utils/mfa";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
   res.render("enter-phone-number/index.njk", {
@@ -40,8 +41,10 @@ export function enterPhoneNumberPost(
       phoneNumber = req.body.phoneNumber;
     }
 
-    req.session.user.redactedPhoneNumber = redactPhoneNumber(phoneNumber);
-    req.session.user.phoneNumber = phoneNumber;
+    req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
+      req.session.user.mfaMethods,
+      { phoneNumber, redactedPhoneNumber: redactPhoneNumber(phoneNumber) }
+    );
 
     const journeyType = isAccountRecoveryJourneyAndEnabled(req)
       ? JOURNEY_TYPE.ACCOUNT_RECOVERY

@@ -4,6 +4,7 @@ import { ExpressRouteFunc } from "../../../types";
 import { USER_JOURNEY_EVENTS } from "../../common/state-machine/state-machine";
 import { getNextPathAndUpdateJourney } from "../../common/constants";
 import { supportMfaResetWithIpv } from "../../../config";
+import { getDefaultSmsMfaMethod } from "../../../utils/mfa";
 
 export function changeSecurityCodesConfirmationGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
@@ -13,7 +14,8 @@ export function changeSecurityCodesConfirmationGet(): ExpressRouteFunc {
         "account-recovery/change-security-codes-confirmation/index.njk",
         {
           mfaMethodType: type,
-          phoneNumber: req.session.user.redactedPhoneNumber,
+          phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
+            ?.redactedPhoneNumber,
           supportMfaResetWithIpv: supportMfaResetWithIpv(),
         }
       );

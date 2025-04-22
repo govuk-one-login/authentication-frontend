@@ -10,6 +10,7 @@ import {
 } from "../../../../app.constants";
 import { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper";
+import { buildMfaMethods } from "../../../../../test/helpers/mfa-helper";
 
 describe("Integration:: resend SMS mfa code (account creation variant)", () => {
   let token: string | string[];
@@ -32,7 +33,7 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
 
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: "7867",
+          mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
           journey: getPermittedJourneyForPath(
             PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION
           ),

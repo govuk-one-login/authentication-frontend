@@ -7,6 +7,7 @@ import { ERROR_CODES, pathWithQueryParam } from "../../common/constants";
 import nock = require("nock");
 import { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
 
 describe("Integration::enter phone number", () => {
   let token: string | string[];
@@ -29,7 +30,7 @@ describe("Integration::enter phone number", () => {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: "7867",
+          mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
           journey: getPermittedJourneyForPath(
             PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
           ),

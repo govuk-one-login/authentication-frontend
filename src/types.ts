@@ -58,8 +58,6 @@ export interface UserSession {
   [key: string]: unknown;
   isAuthenticated?: boolean;
   email?: string;
-  redactedPhoneNumber?: string;
-  phoneNumber?: string;
   mfaMethods?: MfaMethod[];
   journey?: UserJourney;
   isLatestTermsAndConditionsAccepted?: boolean;

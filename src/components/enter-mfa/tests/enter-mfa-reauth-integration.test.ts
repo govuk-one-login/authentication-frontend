@@ -17,6 +17,7 @@ import {
 import { createApiResponse } from "../../../utils/http";
 import { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
 
 describe("Integration:: enter mfa", () => {
   let token: string | string[];
@@ -43,8 +44,10 @@ describe("Integration:: enter mfa", () => {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: PHONE_NUMBER,
-          redactedPhoneNumber: PHONE_NUMBER,
+          mfaMethods: buildMfaMethods({
+            phoneNumber: PHONE_NUMBER,
+            redactedPhoneNumber: PHONE_NUMBER,
+          }),
           reauthenticate: "12345",
           journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
         };

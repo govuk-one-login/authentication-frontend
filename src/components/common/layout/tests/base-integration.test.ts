@@ -8,6 +8,7 @@ import { sinon } from "../../../../../test/utils/test-utils";
 import { CHANNEL, PATH_NAMES } from "../../../../app.constants";
 import { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper";
+import { buildMfaMethods } from "../../../../../test/helpers/mfa-helper";
 
 describe("Integration:: base page ", () => {
   let app: any;
@@ -35,8 +36,7 @@ describe("Integration:: base page ", () => {
         };
         req.session.user = {
           email: "test@test.com",
-
-          phoneNumber: "7867",
+          mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
           journey: getPermittedJourneyForPath(PATH_NAMES.SIGN_IN_OR_CREATE),
         };
 

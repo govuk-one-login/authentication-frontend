@@ -12,6 +12,7 @@ import { ERROR_CODES } from "../../common/constants";
 import { commonVariables } from "../../../../test/helpers/common-test-variables";
 import { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
 const { testPhoneNumber, testRedactedPhoneNumber } = commonVariables;
 
 describe("Integration:: resend mfa code", () => {
@@ -36,8 +37,10 @@ describe("Integration:: resend mfa code", () => {
 
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: testPhoneNumber,
-          redactedPhoneNumber: testRedactedPhoneNumber,
+          mfaMethods: buildMfaMethods({
+            phoneNumber: testPhoneNumber,
+            redactedPhoneNumber: testRedactedPhoneNumber,
+          }),
           journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
           reauthenticate: "reauth",
         };

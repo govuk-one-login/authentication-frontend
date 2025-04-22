@@ -18,6 +18,7 @@ import { createApiResponse } from "../../../utils/http";
 import { Request, Response, NextFunction } from "express";
 import { SendNotificationServiceInterface } from "../../common/send-notification/types";
 import { DefaultApiResponse } from "../../../types";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
 
 describe("Integration:: enter mfa", () => {
   let token: string | string[];
@@ -64,8 +65,10 @@ describe("Integration:: enter mfa", () => {
 
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: PHONE_NUMBER,
-          redactedPhoneNumber: PHONE_NUMBER,
+          mfaMethods: buildMfaMethods({
+            phoneNumber: PHONE_NUMBER,
+            redactedPhoneNumber: PHONE_NUMBER,
+          }),
           journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
           isAccountRecoveryPermitted: true,
         };

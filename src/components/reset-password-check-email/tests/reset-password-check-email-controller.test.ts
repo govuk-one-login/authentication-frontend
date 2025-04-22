@@ -19,6 +19,7 @@ import {
 } from "../../../../test/helpers/account-interventions-helpers";
 import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { getDefaultSmsMfaMethod } from "../../../utils/mfa";
 
 describe("reset password check email controller", () => {
   let req: RequestOutput;
@@ -56,7 +57,9 @@ describe("reset password check email controller", () => {
       );
 
       expect(req.session.user.enterEmailMfaType).to.eq("SMS");
-      expect(req.session.user.redactedPhoneNumber).to.eq("123");
+      expect(
+        getDefaultSmsMfaMethod(req.session.user.mfaMethods).redactedPhoneNumber
+      ).to.eq("123");
 
       expect(res.render).to.have.calledWith(
         "reset-password-check-email/index.njk"
