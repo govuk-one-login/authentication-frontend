@@ -92,3 +92,16 @@ export function getDefaultSmsMfaMethod(
         mfaMethod.priorityIdentifier === MfaMethodPriorityIdentifier.DEFAULT
     );
 }
+
+export function removeDefaultSmsMfaMethod(
+  mfaMethod: MfaMethod[] | undefined
+): MfaMethod[] {
+  if (!mfaMethod) return undefined;
+  return mfaMethod.filter(
+    (mfaMethod) =>
+      !(
+        mfaMethod.priorityIdentifier === MfaMethodPriorityIdentifier.DEFAULT &&
+        isSmsMfaMethod(mfaMethod)
+      )
+  );
+}
