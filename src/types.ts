@@ -60,6 +60,7 @@ export interface UserSession {
   email?: string;
   redactedPhoneNumber?: string;
   phoneNumber?: string;
+  mfaMethods?: MfaMethod[];
   journey?: UserJourney;
   isLatestTermsAndConditionsAccepted?: boolean;
   isIdentityRequired?: boolean;
