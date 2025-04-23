@@ -18,7 +18,6 @@ import type { NextFunction, Request, Response } from "express";
 import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
 import type { DefaultApiResponse } from "../../../types.js";
 import esmock from "esmock";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 
 describe("Integration:: enter authenticator app code", () => {
   let token: string | string[];
@@ -40,6 +39,17 @@ describe("Integration:: enter authenticator app code", () => {
       : "0";
     process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY =
       options.routeUsersToNewIpvJourney ? "1" : "0";
+
+    const { getPermittedJourneyForPath } = await esmock(
+      "../../../../test/helpers/session-helper.js",
+      {},
+      {
+        "../../../config.js": {
+          supportMfaResetWithIpv: () => options.supportMfaResetWithIpv,
+          routeUsersToNewIpvJourney: () => options.routeUsersToNewIpvJourney,
+        },
+      }
+    );
 
     const { createApp } = await esmock(
       "../../../app.js",

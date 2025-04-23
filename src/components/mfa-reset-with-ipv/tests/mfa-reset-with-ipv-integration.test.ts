@@ -4,7 +4,6 @@ import { API_ENDPOINTS, CHANNEL, PATH_NAMES } from "../../../app.constants.js";
 import nock from "nock";
 import type { NextFunction, Request, Response } from "express";
 import supertest from "supertest";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import esmock from "esmock";
 
 const IPV_DUMMY_URL =
@@ -148,6 +147,17 @@ describe("Mfa reset with ipv", () => {
   ) {
     process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
     process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY = "1";
+
+    const { getPermittedJourneyForPath } = await esmock(
+      "../../../../test/helpers/session-helper.js",
+      {},
+      {
+        "../../../config.js": {
+          supportMfaResetWithIpv: () => true,
+          routeUsersToNewIpvJourney: () => true,
+        },
+      }
+    );
 
     const { createApp } = await esmock(
       "../../../app.js",
