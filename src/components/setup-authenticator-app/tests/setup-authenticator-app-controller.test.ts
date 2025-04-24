@@ -20,6 +20,7 @@ import type { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/
 import * as journey from "../../common/journey/journey.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { strict as assert } from "assert";
+import esmock from "esmock";
 
 describe("setup-authenticator-app controller", () => {
   let req: RequestOutput;
@@ -66,14 +67,20 @@ describe("setup-authenticator-app controller", () => {
       } as unknown as VerifyMfaCodeInterface;
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
-        journey,
-        "getJourneyTypeFromUserSession"
+        journey.getJourneyTypeFromUserSession
       );
 
-      await setupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
-        req as Request,
-        res as Response
-      );
+      const { setupAuthenticatorAppPost: mockSetupAuthenticatorAppPost } =
+        await esmock("../setup-authenticator-app-controller.js", {
+          "../../common/journey/journey.js": {
+            getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
+          },
+        });
+
+      await mockSetupAuthenticatorAppPost(
+        fakeMfAService,
+        fakeNotificationService
+      )(req as Request, res as Response);
 
       expect(
         getJourneyTypeFromUserSessionSpy

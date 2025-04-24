@@ -18,6 +18,7 @@ import { mockResponse } from "mock-req-res";
 import * as journey from "../../common/journey/journey.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+import esmock from "esmock";
 
 const TEST_PHONE_NUMBER = "07582930495";
 
@@ -171,15 +172,23 @@ describe("enter mfa controller", () => {
       } as unknown as VerifyCodeInterface;
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
-        journey,
-        "getJourneyTypeFromUserSession"
+        journey.getJourneyTypeFromUserSession
       );
 
       req.body.code = "123456";
       req.session.user.reauthenticate = "test_data";
       req.session.user.email = "test@test.com";
 
-      await enterMfaPost(fakeService)(req as Request, res as Response);
+      const { enterMfaPost: mockEnterMfaPost } = await esmock(
+        "../enter-mfa-controller.js",
+        {
+          "../../common/journey/journey.js": {
+            getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
+          },
+        }
+      );
+
+      await mockEnterMfaPost(fakeService)(req as Request, res as Response);
 
       expect(
         getJourneyTypeFromUserSessionSpy

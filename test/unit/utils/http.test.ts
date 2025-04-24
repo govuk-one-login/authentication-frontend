@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { describe } from "mocha";
+import type { ConfigOptions } from "../../../src/utils/http.js";
 import {
   getAdditionalAxiosConfig,
   getInternalRequestConfigWithSecurityHeaders,
@@ -13,6 +14,10 @@ import * as headersLibrary from "@govuk-one-login/frontend-passthrough-headers";
 import type { SinonSpy } from "sinon";
 import sinon from "sinon";
 import { commonVariables } from "../../helpers/common-test-variables.js";
+import esmock from "esmock";
+import type { Request } from "express";
+import type { AxiosRequestConfig } from "axios";
+
 describe("getInternalRequestConfigWithSecurityHeaders", () => {
   const req = createMockRequest(API_ENDPOINTS.START);
   const path = API_ENDPOINTS.START;
@@ -37,16 +42,25 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
 
   describe("headers", () => {
     let createPersonalDataHeadersSpy: SinonSpy;
+    let mockGetInternalRequestConfigWithSecurityHeaders: (
+      options: ConfigOptions,
+      req: Request,
+      path: string
+    ) => AxiosRequestConfig;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       createPersonalDataHeadersSpy = sinon.spy(
-        headersLibrary,
-        "createPersonalDataHeaders"
+        headersLibrary.createPersonalDataHeaders
       );
-    });
 
-    afterEach(() => {
-      createPersonalDataHeadersSpy.restore();
+      ({
+        getInternalRequestConfigWithSecurityHeaders:
+          mockGetInternalRequestConfigWithSecurityHeaders,
+      } = await esmock("../../../src/utils/http.js", {
+        "@govuk-one-login/frontend-passthrough-headers": {
+          createPersonalDataHeaders: createPersonalDataHeadersSpy,
+        },
+      }));
     });
 
     it("should set the route specific headers on a request", () => {
@@ -54,7 +68,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
       const userLanguage = "cy";
       req.ip = ip;
       req.headers["x-forwarded-for"] = ip;
-      const actualConfig = getInternalRequestConfigWithSecurityHeaders(
+      const actualConfig = mockGetInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
           clientSessionId: clientSessionId,
@@ -86,7 +100,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
         "cloudfront-viewer-address": ipAddressFromCloudfrontHeader,
       };
 
-      const actualConfig = getInternalRequestConfigWithSecurityHeaders(
+      const actualConfig = mockGetInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
           clientSessionId: clientSessionId,
@@ -121,7 +135,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
         "cloudfront-viewer-address": ipAddressFromCloudfrontHeader,
       };
 
-      const actualConfig = getInternalRequestConfigWithSecurityHeaders(
+      const actualConfig = mockGetInternalRequestConfigWithSecurityHeaders(
         {
           baseURL: "https://some-other-base",
         },
@@ -146,7 +160,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
     });
 
     it("should handle errors from the frontend-passthrough-headers library", () => {
-      const actualConfig = getInternalRequestConfigWithSecurityHeaders(
+      const actualConfig = mockGetInternalRequestConfigWithSecurityHeaders(
         {},
         req,
         "bad path"

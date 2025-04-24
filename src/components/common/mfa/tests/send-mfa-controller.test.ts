@@ -4,20 +4,41 @@ import { describe } from "mocha";
 import { sinon } from "../../../../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
 
-import { sendMfaGeneric } from "../send-mfa-controller.js";
 import type { MfaServiceInterface } from "../types.js";
 import { JOURNEY_TYPE, PATH_NAMES } from "../../../../app.constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import * as journey from "../../journey/journey.js";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
+import esmock from "esmock";
+import type { SinonSpy } from "sinon";
+import type { ExpressRouteFunc } from "../../../../types";
+
 describe("send mfa controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
-  beforeEach(() => {
+  let getJourneyTypeFromUserSessionSpy: SinonSpy;
+  let mockSendMfaGeneric: (
+    mfaCodeService: MfaServiceInterface
+  ) => ExpressRouteFunc;
+
+  beforeEach(async () => {
     req = createMockRequest(PATH_NAMES.CHECK_YOUR_PHONE);
     res = mockResponse();
+
+    getJourneyTypeFromUserSessionSpy = sinon.spy(
+      journey.getJourneyTypeFromUserSession
+    );
+
+    ({ sendMfaGeneric: mockSendMfaGeneric } = await esmock(
+      "../send-mfa-controller.js",
+      {
+        "../../journey/journey.js": {
+          getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
+        },
+      }
+    ));
   });
 
   afterEach(() => {
@@ -33,11 +54,6 @@ describe("send mfa controller", () => {
         }),
       } as unknown as MfaServiceInterface;
 
-      const getJourneyTypeFromUserSessionSpy = sinon.spy(
-        journey,
-        "getJourneyTypeFromUserSession"
-      );
-
       res.locals.sessionId = "123456-djjad";
       req.session.user = {
         email: "test@test.com",
@@ -45,7 +61,7 @@ describe("send mfa controller", () => {
       };
       req.path = PATH_NAMES.RESEND_MFA_CODE;
 
-      await sendMfaGeneric(fakeService)(req as Request, res as Response);
+      await mockSendMfaGeneric(fakeService)(req as Request, res as Response);
 
       expect(
         getJourneyTypeFromUserSessionSpy
@@ -80,11 +96,6 @@ describe("send mfa controller", () => {
         }),
       } as unknown as MfaServiceInterface;
 
-      const getJourneyTypeFromUserSessionSpy = sinon.spy(
-        journey,
-        "getJourneyTypeFromUserSession"
-      );
-
       res.locals.sessionId = "123456-djjad";
       req.session.user = {
         email: "test@test.com",
@@ -94,7 +105,7 @@ describe("send mfa controller", () => {
       };
       req.path = PATH_NAMES.RESEND_MFA_CODE;
 
-      sendMfaGeneric(fakeService)(req as Request, res as Response);
+      mockSendMfaGeneric(fakeService)(req as Request, res as Response);
 
       expect(
         getJourneyTypeFromUserSessionSpy
@@ -126,11 +137,6 @@ describe("send mfa controller", () => {
         }),
       } as unknown as MfaServiceInterface;
 
-      const getJourneyTypeFromUserSessionSpy = sinon.spy(
-        journey,
-        "getJourneyTypeFromUserSession"
-      );
-
       res.locals.sessionId = "123456-djjad";
       req.session.user = {
         email: "test@test.com",
@@ -141,7 +147,7 @@ describe("send mfa controller", () => {
       };
       req.path = PATH_NAMES.RESEND_MFA_CODE;
 
-      await sendMfaGeneric(fakeService)(req as Request, res as Response);
+      await mockSendMfaGeneric(fakeService)(req as Request, res as Response);
 
       expect(
         getJourneyTypeFromUserSessionSpy

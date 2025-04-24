@@ -17,6 +17,8 @@ import { mockResponse } from "mock-req-res";
 import type { VerifyMfaCodeInterface } from "../types.js";
 import * as journey from "../../common/journey/journey.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import esmock from "esmock";
+
 const fakeAccountRecoveryService = (accountRecoveryPermitted: boolean) => {
   return {
     accountRecovery: sinon.fake.returns({
@@ -179,14 +181,21 @@ describe("enter authenticator app code controller", () => {
       const fakeService = fakeVerifyMfaCodeService();
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
-        journey,
-        "getJourneyTypeFromUserSession"
+        journey.getJourneyTypeFromUserSession
       );
 
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
 
-      await enterAuthenticatorAppCodePost(fakeService)(
+      const {
+        enterAuthenticatorAppCodePost: mockEnterAuthenticatorAppCodePost,
+      } = await esmock("../enter-authenticator-app-code-controller.js", {
+        "../../common/journey/journey.js": {
+          getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
+        },
+      });
+
+      await mockEnterAuthenticatorAppCodePost(fakeService)(
         req as Request,
         res as Response
       );

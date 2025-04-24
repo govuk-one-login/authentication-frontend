@@ -21,6 +21,7 @@ import { createMockRequest } from "../../../../test/helpers/mock-request-helper.
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { ReauthJourneyError } from "../../../utils/error.js";
 import { strict as assert } from "assert";
+import esmock from "esmock";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
@@ -105,13 +106,21 @@ describe("enter password controller", () => {
         } as unknown as MfaServiceInterface;
 
         const getJourneyTypeFromUserSessionSpy = sinon.spy(
-          journey,
-          "getJourneyTypeFromUserSession"
+          journey.getJourneyTypeFromUserSession
         );
 
         req.session.user = { email, reauthenticate: "test_data" };
 
-        await enterPasswordPost(
+        const { enterPasswordPost: mockEnterPasswordPost } = await esmock(
+          "../enter-password-controller.js",
+          {
+            "../../common/journey/journey.js": {
+              getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
+            },
+          }
+        );
+
+        await mockEnterPasswordPost(
           false,
           fakeService,
           fakeMfaService
@@ -184,13 +193,21 @@ describe("enter password controller", () => {
       } as unknown as MfaServiceInterface;
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
-        journey,
-        "getJourneyTypeFromUserSession"
+        journey.getJourneyTypeFromUserSession
       );
 
       req.session.user = { email, reauthenticate: "test_data" };
 
-      await enterPasswordPost(
+      const { enterPasswordPost: mockEnterPasswordPost } = await esmock(
+        "../enter-password-controller.js",
+        {
+          "../../common/journey/journey.js": {
+            getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
+          },
+        }
+      );
+
+      await mockEnterPasswordPost(
         false,
         fakeService,
         fakeMfaService

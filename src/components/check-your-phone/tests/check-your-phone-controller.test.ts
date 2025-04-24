@@ -20,6 +20,8 @@ import type { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/
 import * as journey from "../../common/journey/journey.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
+import esmock from "esmock";
+
 describe("check your phone controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
@@ -70,14 +72,22 @@ describe("check your phone controller", () => {
       } as unknown as VerifyMfaCodeInterface;
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
-        journey,
-        "getJourneyTypeFromUserSession"
+        journey.getJourneyTypeFromUserSession
       );
 
       req.session.user.isAccountRecoveryPermitted = true;
       req.session.user.isAccountRecoveryJourney = true;
 
-      await checkYourPhonePost(fakeService, fakeNotificationService)(
+      const { checkYourPhonePost: mockCheckYourPhonePost } = await esmock(
+        "../check-your-phone-controller.js",
+        {
+          "../../common/journey/journey.js": {
+            getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
+          },
+        }
+      );
+
+      await mockCheckYourPhonePost(fakeService, fakeNotificationService)(
         req as Request,
         res as Response
       );
