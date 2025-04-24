@@ -39,6 +39,7 @@ export type Claims = {
   state: string;
   client_id: string;
   redirect_uri: string;
+  rp_client_id: string;
   rp_sector_host: string;
   rp_redirect_uri: string;
   rp_state: string;

@@ -203,6 +203,7 @@ function setSessionDataFromClaims(req: Request, claims: Claims) {
   req.session.client.rpSectorHost = claims.rp_sector_host;
   req.session.client.rpRedirectUri = claims.rp_redirect_uri;
   req.session.client.rpState = claims.rp_state;
+  req.session.client.rpClientId = claims.rp_client_id;
   req.session.user.reauthenticate = supportReauthentication()
     ? claims.reauthenticate
     : null;
