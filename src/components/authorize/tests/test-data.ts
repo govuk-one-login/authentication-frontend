@@ -26,6 +26,7 @@ export function createMockClaims(): Claims {
     jti: "fvvMWAladDtl35O_xyBTRLwwojA",
     rp_redirect_uri: "https://rp.service.gov.uk/redirect/",
     rp_state: "baeb1828-131f-40ef-9574-eee677d1cdd7",
+    rp_client_id: "RP_CLIENT_ID",
     previous_govuk_signin_journey_id: "a7349515-9154-4d20-b282-c42d2d35ac10",
     claim:
       '{"userinfo": {"email_verified": null, "public_subject_id": null, "email": null}}',

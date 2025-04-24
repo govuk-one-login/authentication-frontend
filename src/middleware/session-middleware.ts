@@ -53,6 +53,9 @@ export function getSessionIdMiddleware(
       req.cookies["di-persistent-session-id"]
     );
   }
+  if (req.session?.client?.rpClientId) {
+    res.locals.clientId = req.session.client.rpClientId;
+  }
   next();
 }
 

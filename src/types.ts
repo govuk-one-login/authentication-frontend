@@ -102,6 +102,7 @@ export interface UserSessionClient {
   state?: string;
   isOneLoginService?: boolean;
   claim?: string[];
+  rpClientId?: string;
   rpSectorHost?: string;
   rpRedirectUri?: string;
   rpState?: string;

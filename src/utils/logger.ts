@@ -23,6 +23,7 @@ const logger = pino({
         clientSessionId: res.locals.clientSessionId,
         persistentSessionId: res.locals.persistentSessionId,
         languageFromCookie: res.locals.language?.toUpperCase(),
+        clientId: res.locals.clientId,
       };
     },
   },
