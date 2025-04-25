@@ -30,6 +30,7 @@ interface Config {
   isOnForcedPasswordResetJourney?: boolean;
   callback?: (req: Request, res: Response) => void;
   journeyType?: JOURNEY_TYPE;
+  postValidationLocalsProvider?: (req: Request) => Record<string, unknown>;
 }
 
 export function verifyCodePost(
@@ -58,7 +59,17 @@ export function verifyCodePost(
           "code",
           req.t(options.validationKey)
         );
-        return renderBadRequest(res, req, options.template, error);
+        if (options.postValidationLocalsProvider) {
+          return renderBadRequest(
+            res,
+            req,
+            options.template,
+            error,
+            options.postValidationLocalsProvider(req)
+          );
+        } else {
+          return renderBadRequest(res, req, options.template, error);
+        }
       }
 
       if (isReauth(req)) {
