@@ -37,6 +37,7 @@ export const PATH_NAMES = {
   SECURITY_CODE_REQUEST_EXCEEDED: "/security-code-requested-too-many-times",
   SECURITY_CODE_WAIT: "/security-code-invalid-request",
   SECURITY_CODE_CHECK_TIME_LIMIT: "/security-code-check-time-limit",
+  HOW_DO_YOU_WANT_SECURITY_CODES: "/how-do-you-want-security-codes",
   AUTH_CODE: "/auth-code",
   RESEND_MFA_CODE: "/resend-code",
   RESEND_MFA_CODE_ACCOUNT_CREATION: "/resend-code-create-account",
