@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe } from "mocha";
 import { expect, sinon } from "../utils/test-utils.js";
-import { shutdownProcess, startServer } from "../../src/app.js";
+import { createApp, shutdownProcess, startServer } from "../../src/app.js";
 import express from "express";
 import esmock from "esmock";
 
@@ -44,10 +44,10 @@ describe("app", () => {
 
       const { server, closeServer } = await startServer(app);
 
-      expect(fakeFrontendVitalSignsInit).to.be.calledOnceWith(
-        server,
-        { staticPaths: [/^\/assets\/.*/, /^\/public\/.*/], interval: 10000 }
-      );
+      expect(fakeFrontendVitalSignsInit).to.be.calledOnceWith(server, {
+        staticPaths: [/^\/assets\/.*/, /^\/public\/.*/],
+        interval: 10000,
+      });
       await closeServer();
     });
 
@@ -99,20 +99,7 @@ describe("app", () => {
   });
 
   describe("applyOverloadProtection", () => {
-    let createApp: () => Promise<express.Application>;
-
     beforeEach(async () => {
-      ({ createApp } = await esmock("../../src/app.js", {
-        "../../src/utils/redis.js": {
-          getRedisConfig: sinon.fake.resolves({
-            host: "redis-host",
-            port: Number("1234"),
-            password: "redis-password",
-            tls: true,
-          }),
-        },
-      }));
-
       process.env.REDIS_KEY = "redis-key";
     });
 
