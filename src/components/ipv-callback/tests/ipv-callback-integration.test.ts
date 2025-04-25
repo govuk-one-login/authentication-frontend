@@ -11,6 +11,7 @@ import express, { NextFunction, Request, Response } from "express";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
 
 const TEST_CONTACT_US_LINK_URL = "https://example.com/contact-us";
 
@@ -215,7 +216,7 @@ const stubMiddlewareAndCreateApp = async (
 
       req.session.user = {
         email: "test@test.com",
-        phoneNumber: "7867",
+        mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
         journey: getPermittedJourneyForPath(nextPath),
         mfaMethodType: mfaMethodType,
       };

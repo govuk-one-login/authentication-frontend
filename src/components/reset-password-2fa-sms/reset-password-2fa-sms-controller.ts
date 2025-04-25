@@ -22,6 +22,7 @@ import { AccountInterventionsInterface } from "../account-intervention/types";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 import { isLocked } from "../../utils/lock-helper";
+import { getDefaultSmsMfaMethod } from "../../utils/mfa";
 
 const TEMPLATE_NAME = "reset-password-2fa-sms/index.njk";
 const RESEND_CODE_LINK = pathWithQueryParam(
@@ -96,7 +97,8 @@ export function resetPassword2FASmsGet(
       );
     }
     return res.render(TEMPLATE_NAME, {
-      phoneNumber: req.session.user.redactedPhoneNumber,
+      phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
+        ?.redactedPhoneNumber,
       resendCodeLink: RESEND_CODE_LINK,
     });
   };

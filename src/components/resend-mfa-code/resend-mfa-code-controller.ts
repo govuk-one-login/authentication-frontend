@@ -8,6 +8,7 @@ import { pathWithQueryParam } from "../common/constants";
 import { supportReauthentication } from "../../config";
 import { isLocked } from "../../utils/lock-helper";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
+import { getDefaultSmsMfaMethod } from "../../utils/mfa";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
   if (isLocked(req.session.user.wrongCodeEnteredLock)) {
@@ -35,7 +36,8 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     });
 
     res.render("resend-mfa-code/index.njk", {
-      redactedPhoneNumber: req.session.user.redactedPhoneNumber,
+      redactedPhoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
+        ?.redactedPhoneNumber,
       isResendCodeRequest: req.query?.isResendCodeRequest,
       supportReauthentication: supportReauthentication(),
       isReauthJourney: journeyType === JOURNEY_TYPE.REAUTHENTICATION,

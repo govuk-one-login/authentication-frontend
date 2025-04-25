@@ -27,6 +27,7 @@ import { accountInterventionService } from "../account-intervention/account-inte
 import { getNewCodePath } from "../security-code-error/security-code-error-controller";
 import { isLocked } from "../../utils/lock-helper";
 import { isUpliftRequired } from "../../utils/request";
+import { getDefaultSmsMfaMethod } from "../../utils/mfa";
 
 export const ENTER_MFA_DEFAULT_TEMPLATE_NAME = "enter-mfa/index.njk";
 export const UPLIFT_REQUIRED_SMS_TEMPLATE_NAME =
@@ -61,7 +62,8 @@ export function enterMfaGet(
 
     if (!isAccountRecoveryEnabledForEnvironment) {
       return res.render(templateName, {
-        phoneNumber: req.session.user.redactedPhoneNumber,
+        phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
+          ?.redactedPhoneNumber,
         supportAccountRecovery: false,
       });
     }
@@ -99,7 +101,8 @@ export function enterMfaGet(
         );
 
     res.render(templateName, {
-      phoneNumber: req.session.user.redactedPhoneNumber,
+      phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
+        ?.redactedPhoneNumber,
       supportAccountRecovery: req.session.user.isAccountRecoveryPermitted,
       mfaResetPath: mfaResetPath,
       routeUserViaIpvReset: routeUserViaIpvReset,

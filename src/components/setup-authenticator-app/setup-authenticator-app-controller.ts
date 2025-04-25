@@ -3,7 +3,10 @@ import QRCode from "qrcode";
 import { ExpressRouteFunc } from "../../types";
 import { ERROR_CODES, getNextPathAndUpdateJourney } from "../common/constants";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { generateQRCodeValue } from "../../utils/mfa";
+import {
+  generateQRCodeValue,
+  removeDefaultSmsMfaMethod,
+} from "../../utils/mfa";
 import { BadRequestError } from "../../utils/error";
 import { splitSecretKeyIntoFragments } from "../../utils/strings";
 import {
@@ -95,8 +98,9 @@ export function setupAuthenticatorAppPost(
     }
 
     req.session.user.authAppSecret = null;
-    req.session.user.phoneNumber = null;
-    req.session.user.redactedPhoneNumber = null;
+    req.session.user.mfaMethods = removeDefaultSmsMfaMethod(
+      req.session.user.mfaMethods
+    );
 
     const accountRecoveryEnabledJourney =
       isAccountRecoveryJourneyAndEnabled(req);

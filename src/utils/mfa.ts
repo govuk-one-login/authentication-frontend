@@ -7,8 +7,14 @@ import {
 } from "@otplib/core";
 import * as base32EncDec from "@otplib/plugin-base32-enc-dec";
 import crypto from "crypto";
-import { APP_ENV_NAME } from "../app.constants";
+import { APP_ENV_NAME, MFA_METHOD_TYPE } from "../app.constants";
 import { getAppEnv } from "../config";
+import {
+  MfaMethod,
+  isSmsMfaMethod,
+  MfaMethodPriorityIdentifier,
+  SmsMfaMethod,
+} from "../types";
 
 function createRandomBytes(size: number, encoding: KeyEncodings): string {
   return crypto.randomBytes(size).toString(encoding);
@@ -42,4 +48,60 @@ export function generateQRCodeValue(
     issuer: issuer,
     type: Strategy.TOTP,
   });
+}
+
+export function upsertDefaultSmsMfaMethod(
+  mfaMethodArray: MfaMethod[] | undefined,
+  newMfaMethod: Partial<SmsMfaMethod>
+): MfaMethod[] {
+  const previousMfaMethods = mfaMethodArray || [];
+  const index = previousMfaMethods.findIndex(
+    (mfaMethod: MfaMethod) => mfaMethod.type === MFA_METHOD_TYPE.SMS
+  );
+
+  const previousMfa = index > -1 && previousMfaMethods[index];
+  const nextMfa: MfaMethod = {
+    ...previousMfa,
+    type: MFA_METHOD_TYPE.SMS,
+    priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+    ...(newMfaMethod.redactedPhoneNumber && {
+      redactedPhoneNumber: newMfaMethod.redactedPhoneNumber,
+    }),
+    ...(newMfaMethod.phoneNumber && {
+      phoneNumber: newMfaMethod.phoneNumber,
+    }),
+  };
+
+  const nextMfaMethods = previousMfaMethods.slice();
+  if (previousMfa) {
+    nextMfaMethods.splice(index, 1, nextMfa);
+  } else {
+    nextMfaMethods.push(nextMfa);
+  }
+  return nextMfaMethods;
+}
+
+export function getDefaultSmsMfaMethod(
+  mfaMethods: MfaMethod[] | undefined
+): SmsMfaMethod | undefined {
+  if (!mfaMethods) return undefined;
+  return mfaMethods
+    .filter(isSmsMfaMethod)
+    .find(
+      (mfaMethod) =>
+        mfaMethod.priorityIdentifier === MfaMethodPriorityIdentifier.DEFAULT
+    );
+}
+
+export function removeDefaultSmsMfaMethod(
+  mfaMethod: MfaMethod[] | undefined
+): MfaMethod[] {
+  if (!mfaMethod) return undefined;
+  return mfaMethod.filter(
+    (mfaMethod) =>
+      !(
+        mfaMethod.priorityIdentifier === MfaMethodPriorityIdentifier.DEFAULT &&
+        isSmsMfaMethod(mfaMethod)
+      )
+  );
 }

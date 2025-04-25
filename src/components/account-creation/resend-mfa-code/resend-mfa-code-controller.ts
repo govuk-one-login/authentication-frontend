@@ -13,6 +13,7 @@ import { sendNotificationService } from "../../common/send-notification/send-not
 import { BadRequestError } from "../../../utils/error";
 import { isLocked } from "../../../utils/lock-helper";
 import { isAccountRecoveryJourney } from "../../../utils/request";
+import { getDefaultSmsMfaMethod } from "../../../utils/mfa";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
   const newCodeLink = req.query?.isResendCodeRequest
@@ -35,7 +36,8 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     });
   } else {
     res.render("account-creation/resend-mfa-code/index.njk", {
-      phoneNumber: req.session.user.redactedPhoneNumber,
+      phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
+        ?.redactedPhoneNumber,
       isResendCodeRequest: req.query?.isResendCodeRequest,
     });
   }
@@ -46,7 +48,8 @@ export const resendMfaCodePost = (
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const { email, phoneNumber } = req.session.user;
+    const { email, mfaMethods } = req.session.user;
+    const phoneNumber = getDefaultSmsMfaMethod(mfaMethods)?.phoneNumber;
 
     const journeyType = isAccountRecoveryJourney(req)
       ? JOURNEY_TYPE.ACCOUNT_RECOVERY

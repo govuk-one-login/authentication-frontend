@@ -5,6 +5,7 @@ import * as cheerio from "cheerio";
 import decache from "decache";
 import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants";
 import { NextFunction, Request, Response } from "express";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
 
 describe("Integration:: contact us - public user", () => {
   let token: string | string[];
@@ -26,7 +27,7 @@ describe("Integration:: contact us - public user", () => {
       ): void {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user.email = "test@test.com";
-        req.session.user.phoneNumber = "7867";
+        req.session.user.mfaMethods = buildMfaMethods({ phoneNumber: "7867" });
 
         next();
       });

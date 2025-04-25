@@ -29,6 +29,7 @@ import { getNewCodePath } from "../security-code-error/security-code-error-contr
 import { isLocked, timestampNSecondsFromNow } from "../../utils/lock-helper";
 import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message";
 import { isReauth } from "../../utils/request";
+import { upsertDefaultSmsMfaMethod } from "../../utils/mfa";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -141,7 +142,10 @@ export function enterEmailPost(
     }
 
     req.session.user.enterEmailMfaType = result.data.mfaMethodType;
-    req.session.user.redactedPhoneNumber = result.data.phoneNumberLastThree;
+    req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
+      req.session.user.mfaMethods,
+      { redactedPhoneNumber: result.data.phoneNumberLastThree }
+    );
     req.session.user.isAccountCreationJourney = !result.data.doesUserExist;
 
     const nextState = result.data.doesUserExist

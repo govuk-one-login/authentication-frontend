@@ -13,22 +13,9 @@ export function initialiseSessionMiddleware(
   if (req.path === PATH_NAMES.AUTHORIZE) {
     req.session.client = {};
 
-    const email =
-      req.session && req.session.user ? req.session.user.email : undefined;
-    const redactedPhoneNumber =
-      req.session && req.session.user
-        ? req.session.user.redactedPhoneNumber
-        : undefined;
-
-    const phoneNumber =
-      req.session && req.session.user
-        ? req.session.user.phoneNumber
-        : undefined;
-
     req.session.user = {
-      email: email,
-      redactedPhoneNumber: redactedPhoneNumber,
-      phoneNumber: phoneNumber,
+      email: req.session?.user?.email,
+      mfaMethods: req.session?.user?.mfaMethods,
     };
 
     req.session.sessionRestored = true;

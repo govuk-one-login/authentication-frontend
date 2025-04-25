@@ -11,6 +11,7 @@ import {
   changeSecurityCodesConfirmationPost,
 } from "../change-security-codes-confirmation-controller";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
+import { buildMfaMethods } from "../../../../../test/helpers/mfa-helper";
 
 describe("change security codes confirmation controller", () => {
   let req: RequestOutput;
@@ -50,7 +51,7 @@ describe("change security codes confirmation controller", () => {
       it(`should render the change security codes codes confirmation page for mfaMethodType ${testParams.methodType}`, async () => {
         req.session.user.accountRecoveryVerifiedMfaType = testParams.methodType;
         req.session.user.email = "security.codes.changed@testtwofactorauth.org";
-        req.session.user.redactedPhoneNumber = redactedPhoneNumber;
+        req.session.user.mfaMethods = buildMfaMethods({ redactedPhoneNumber });
         if (testParams.supportMfaResetWithIpv) {
           process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
         }

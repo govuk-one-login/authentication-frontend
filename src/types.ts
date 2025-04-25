@@ -1,6 +1,7 @@
 import { ValidationChain } from "express-validator";
 
 import express, { NextFunction, Request, Response } from "express";
+import { MFA_METHOD_TYPE } from "./app.constants";
 
 export type ExpressRouteFunc = (
   req: Request,
@@ -57,8 +58,7 @@ export interface UserSession {
   [key: string]: unknown;
   isAuthenticated?: boolean;
   email?: string;
-  redactedPhoneNumber?: string;
-  phoneNumber?: string;
+  mfaMethods?: MfaMethod[];
   journey?: UserJourney;
   isLatestTermsAndConditionsAccepted?: boolean;
   isIdentityRequired?: boolean;
@@ -109,3 +109,26 @@ export interface UserSessionClient {
 }
 
 export type ContentIdFunction = (req: Request) => string;
+
+export enum MfaMethodPriorityIdentifier {
+  DEFAULT = "DEFAULT",
+  BACKUP = "BACKUP",
+}
+
+export type SmsMfaMethod = {
+  type: MFA_METHOD_TYPE.SMS;
+  priorityIdentifier: MfaMethodPriorityIdentifier;
+  phoneNumber?: string;
+  redactedPhoneNumber?: string;
+};
+
+export const isSmsMfaMethod = (
+  mfaMethod: MfaMethod
+): mfaMethod is SmsMfaMethod => mfaMethod.type === MFA_METHOD_TYPE.SMS;
+
+export type AuthAppMfaMethod = {
+  type: MFA_METHOD_TYPE.AUTH_APP;
+  priorityIdentifier: MfaMethodPriorityIdentifier;
+};
+
+export type MfaMethod = SmsMfaMethod | AuthAppMfaMethod;

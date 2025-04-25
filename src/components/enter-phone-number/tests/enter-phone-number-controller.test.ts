@@ -14,6 +14,7 @@ import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import { ERROR_CODES } from "../../common/constants";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
 import { strict as assert } from "assert";
+import { getDefaultSmsMfaMethod } from "../../../utils/mfa";
 
 const OLD_ENV = process.env;
 
@@ -71,7 +72,9 @@ describe("enter phone number controller", () => {
 
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
-      expect(req.session.user.redactedPhoneNumber).to.be.eq("3990");
+      expect(
+        getDefaultSmsMfaMethod(req.session.user.mfaMethods).redactedPhoneNumber
+      ).to.be.eq("3990");
     });
 
     it("should redirect to /check-your-phone when success with valid international number", async () => {
@@ -91,7 +94,9 @@ describe("enter phone number controller", () => {
 
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(PATH_NAMES.CHECK_YOUR_PHONE);
-      expect(req.session.user.redactedPhoneNumber).to.be.eq("3322");
+      expect(
+        getDefaultSmsMfaMethod(req.session.user.mfaMethods).redactedPhoneNumber
+      ).to.be.eq("3322");
     });
 
     it("should throw error when API call to /send-notification throws error", async () => {

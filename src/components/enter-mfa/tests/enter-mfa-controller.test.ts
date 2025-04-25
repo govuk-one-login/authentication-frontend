@@ -17,6 +17,7 @@ import { ERROR_CODES } from "../../common/constants";
 import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
 import * as journey from "../../common/journey/journey";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
 
 const TEST_PHONE_NUMBER = "07582930495";
 
@@ -39,7 +40,9 @@ describe("enter mfa controller", () => {
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ENTER_MFA);
-    req.session.user = { redactedPhoneNumber: TEST_PHONE_NUMBER };
+    req.session.user = {
+      mfaMethods: buildMfaMethods({ redactedPhoneNumber: TEST_PHONE_NUMBER }),
+    };
     res = mockResponse();
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
   });

@@ -10,6 +10,7 @@ import {
 } from "../../../../test/helpers/account-interventions-helpers";
 import { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
 
 describe("Integration::reset password (in 6 digit code flow)", () => {
   let token: string | string[];
@@ -36,7 +37,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
         res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
         req.session.user = {
           email: "test@test.com",
-          phoneNumber: "7867",
+          mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
           journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD),
         };
 

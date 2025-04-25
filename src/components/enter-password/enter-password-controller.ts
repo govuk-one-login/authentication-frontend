@@ -23,6 +23,7 @@ import { supportAccountInterventions } from "../../config";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey";
 import { accountInterventionService } from "../account-intervention/account-intervention-service";
 import { AccountInterventionsInterface } from "../account-intervention/types";
+import { upsertDefaultSmsMfaMethod } from "../../utils/mfa";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -148,7 +149,10 @@ export function enterPasswordPost(
 
     const isPasswordChangeRequired = userLogin.data.passwordChangeRequired;
 
-    req.session.user.redactedPhoneNumber = userLogin.data.redactedPhoneNumber;
+    req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
+      req.session.user.mfaMethods,
+      { redactedPhoneNumber: userLogin.data.redactedPhoneNumber }
+    );
     req.session.user.isAccountPartCreated = !userLogin.data.mfaMethodVerified;
     req.session.user.isLatestTermsAndConditionsAccepted =
       userLogin.data.latestTermsAndConditionsAccepted;
