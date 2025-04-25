@@ -44,6 +44,7 @@ describe("authorize controller", () => {
       response_type: "code",
     };
     res = mockResponse();
+    res.cookie = sinon.spy(res.cookie);
     authServiceResponseData = createAuthServiceReponseData();
 
     fakeAuthorizeService = mockAuthService({

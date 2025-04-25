@@ -22,6 +22,7 @@ describe("cookies controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.COOKIES_POLICY);
     res = mockResponse();
+    res.cookie = sinon.spy(res.cookie);
   });
 
   afterEach(() => {
