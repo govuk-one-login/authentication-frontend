@@ -632,11 +632,7 @@ describe("authorize controller", () => {
 
     expect(caughtError).to.exist; // Ensure an error was thrown
     expect(caughtError).to.be.an.instanceOf(BadRequestError);
-    if (level) {
-      expect(caughtError).to.have.property("level", level);
-    } else {
-      expect(caughtError).not.to.have.property("level");
-    }
+    expect(caughtError).to.have.property("level", level);
     expect(caughtError.message).to.equal(errorMessage);
   }
 });
