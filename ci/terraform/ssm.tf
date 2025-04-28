@@ -1,5 +1,5 @@
 locals {
-  redis_key = "frontend-cache"
+  redis_key = "frontend"
 }
 
 data "aws_ssm_parameter" "redis_master_host" {
@@ -23,11 +23,11 @@ data "aws_ssm_parameter" "redis_port" {
 }
 
 data "aws_kms_key" "parameter_store_key" {
-  key_id = "alias/${var.environment}-frontend-cache-parameter-store-encryption-key"
+  key_id = "alias/${var.environment}-frontend-parameter-store-encryption-key"
 }
 
 data "aws_kms_alias" "parameter_store_key_alias" {
-  name = "alias/${var.environment}-frontend-cache-parameter-store-encryption-key"
+  name = "alias/${var.environment}-frontend-parameter-store-encryption-key"
 }
 
 data "aws_iam_policy_document" "redis_parameter_policy" {
