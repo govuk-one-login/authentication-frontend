@@ -81,9 +81,9 @@ function createStartBody(startRequestParameters: StartRequestParameters) {
   if (startRequestParameters.requested_level_of_confidence !== undefined)
     body["requested_level_of_confidence"] =
       startRequestParameters.requested_level_of_confidence;
-  body["client_id"] = startRequestParameters.client_id;
+  body["client_id"] = startRequestParameters.rp_client_id;
   body["scope"] = startRequestParameters.scope;
-  body["redirect_uri"] = startRequestParameters.redirect_uri;
-  body["state"] = startRequestParameters.state;
+  body["redirect_uri"] = startRequestParameters.rp_redirect_uri;
+  body["state"] = startRequestParameters.rp_state;
   return body;
 }

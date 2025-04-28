@@ -70,20 +70,7 @@ export function authorizeGet(
       persistentSessionId,
       req,
       {
-        authenticated: claims.authenticated,
-        current_credential_strength: claims.current_credential_strength,
-        previous_session_id: claims.previous_session_id,
-        previous_govuk_signin_journey_id:
-          claims.previous_govuk_signin_journey_id,
-        reauthenticate: claims.reauthenticate,
-        cookie_consent: claims.cookie_consent,
-        _ga: claims._ga,
-        scope: claims.scope,
-        client_id: claims.rp_client_id,
-        redirect_uri: claims.rp_redirect_uri,
-        state: claims.rp_state,
-        requested_credential_strength: claims.requested_credential_strength,
-        requested_level_of_confidence: claims.requested_level_of_confidence,
+        ...claims,
       }
     );
 
