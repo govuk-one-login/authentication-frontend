@@ -11,10 +11,10 @@ export interface StartRequestParameters {
   reauthenticate?: string;
   cookie_consent?: string;
   _ga?: string;
-  client_id: string;
+  rp_client_id: string;
   scope: string;
-  redirect_uri: string;
-  state: string;
+  rp_redirect_uri: string;
+  rp_state: string;
   requested_level_of_confidence?: string;
   requested_credential_strength: string;
 }
