@@ -4,6 +4,7 @@ import { API_ENDPOINTS, CHANNEL, PATH_NAMES } from "../../../app.constants.js";
 import nock from "nock";
 import type { NextFunction, Request, Response } from "express";
 import supertest from "supertest";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import esmock from "esmock";
 
 const IPV_DUMMY_URL =
@@ -19,8 +20,6 @@ describe("Mfa reset with ipv", () => {
 
     after(() => {
       sinon.restore();
-      delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
-      delete process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY;
     });
 
     it("should redirect to the mfa reset ipv path when coming from sms entry", async () => {
@@ -98,11 +97,9 @@ describe("Mfa reset with ipv", () => {
 
   describe("Open One login in browser get", () => {
     const REQUEST_PATH = PATH_NAMES.OPEN_IN_WEB_BROWSER;
-    before(() => (process.env.SUPPORT_MFA_RESET_WITH_IPV = "1"));
 
     after(() => {
       sinon.restore();
-      delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
     });
 
     it("should not render the page when coming from an arbitrary page", async () => {
@@ -145,20 +142,6 @@ describe("Mfa reset with ipv", () => {
     isAccountRecoveryPermitted: boolean,
     channel: string
   ) {
-    process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
-    process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY = "1";
-
-    const { getPermittedJourneyForPath } = await esmock(
-      "../../../../test/helpers/session-helper.js",
-      {},
-      {
-        "../../../config.js": {
-          supportMfaResetWithIpv: () => true,
-          routeUsersToNewIpvJourney: () => true,
-        },
-      }
-    );
-
     const { createApp } = await esmock(
       "../../../app.js",
       {},

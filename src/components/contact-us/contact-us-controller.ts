@@ -13,7 +13,6 @@ import { logger } from "../../utils/logger.js";
 import {
   getServiceDomain,
   getSupportLinkUrl,
-  supportMfaResetWithIpv,
   supportNoPhotoIdContactForms,
 } from "../../config.js";
 import { getContactUsService } from "./contact-us-service.js";
@@ -359,7 +358,6 @@ export function furtherInformationGet(req: Request, res: Response): void {
     return res.render("contact-us/further-information/index.njk", {
       theme: req.query.theme,
       hrefBack: backLinkHref,
-      supportMfaResetWithIpv: supportMfaResetWithIpv(),
       referer: encodeValue(
         validateReferer(req.query.referer as string, serviceDomain)
       ),
@@ -378,7 +376,6 @@ export function furtherInformationGet(req: Request, res: Response): void {
 
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
-    supportMfaResetWithIpv: supportMfaResetWithIpv(),
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
       fromURL: encodeValue(
         validateReferer(req.query.fromURL as string, serviceDomain)
@@ -438,7 +435,6 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     theme: req.query.theme,
     subtheme: req.query.subtheme,
     backurl: backLinkHref,
-    supportMfaResetWithIpv: supportMfaResetWithIpv(),
     referer: encodeValue(
       validateReferer(req.query.referer as string, serviceDomain)
     ),

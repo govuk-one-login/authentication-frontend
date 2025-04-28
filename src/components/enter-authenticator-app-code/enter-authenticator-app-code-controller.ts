@@ -8,13 +8,10 @@ import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
-  pathWithQueryParam,
 } from "../common/constants.js";
 import {
   getCodeEnteredWrongBlockDurationInMinutes,
-  routeUsersToNewIpvJourney,
   supportAccountRecovery,
-  supportMfaResetWithIpv,
   supportReauthentication,
 } from "../../config.js";
 import type { VerifyMfaCodeInterface } from "./types.js";
@@ -90,21 +87,9 @@ export function enterAuthenticatorAppCodeGet(
       (req.session.user.isAccountRecoveryPermitted =
         accountRecoveryResponse.data.accountRecoveryPermitted);
 
-    const routeUserViaIpvReset =
-      supportMfaResetWithIpv() && routeUsersToNewIpvJourney();
-
-    const mfaResetPath = routeUserViaIpvReset
-      ? PATH_NAMES.MFA_RESET_WITH_IPV
-      : pathWithQueryParam(
-          PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
-          "type",
-          MFA_METHOD_TYPE.AUTH_APP
-        );
-
     return res.render(templateName, {
       isAccountRecoveryPermitted: isAccountRecoveryPermittedForUser,
-      routeUserViaIpvReset: routeUserViaIpvReset,
-      mfaResetPath,
+      mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
     });
   };
 }

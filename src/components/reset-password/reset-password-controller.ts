@@ -14,10 +14,6 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { BadRequestError } from "../../utils/error.js";
 import type { EnterPasswordServiceInterface } from "../enter-password/types.js";
 import { enterPasswordService } from "../enter-password/enter-password-service.js";
-import {
-  routeUsersToNewIpvJourney,
-  supportMfaResetWithIpv,
-} from "../../config.js";
 import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 const resetPasswordTemplate = "reset-password/index.njk";
@@ -41,18 +37,12 @@ export function resetPasswordPost(
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const newPassword = req.body.password;
 
-    // WARNING! Before removing this feature flag, you first need to ensure that this behaviour is the default on the backend
-    // Purely removing this feature flag will mean that we start writing to account modifiers again
-    const allowMfaResetAfterPasswordReset =
-      supportMfaResetWithIpv() && routeUsersToNewIpvJourney();
-
     const updatePasswordResponse = await resetService.updatePassword(
       newPassword,
       sessionId,
       clientSessionId,
       persistentSessionId,
       withinForcedPasswordResetJourney,
-      allowMfaResetAfterPasswordReset,
       req
     );
 

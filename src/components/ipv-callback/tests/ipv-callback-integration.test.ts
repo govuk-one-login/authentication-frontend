@@ -20,14 +20,6 @@ describe("Integration:: ipv callback", () => {
   let app: express.Application;
   let baseApi: string;
 
-  before(async () => {
-    process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
-  });
-
-  after(() => {
-    delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
-  });
-
   describe("ipv callback", () => {
     before(async () => {
       baseApi = process.env.FRONTEND_API_BASE_URL;

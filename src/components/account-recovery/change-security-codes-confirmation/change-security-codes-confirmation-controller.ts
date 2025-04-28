@@ -3,7 +3,6 @@ import { MFA_METHOD_TYPE } from "../../../app.constants.js";
 import type { ExpressRouteFunc } from "../../../types.js";
 import { USER_JOURNEY_EVENTS } from "../../common/state-machine/state-machine.js";
 import { getNextPathAndUpdateJourney } from "../../common/constants.js";
-import { supportMfaResetWithIpv } from "../../../config.js";
 import { getDefaultSmsMfaMethod } from "../../../utils/mfa.js";
 
 export function changeSecurityCodesConfirmationGet(): ExpressRouteFunc {
@@ -16,7 +15,6 @@ export function changeSecurityCodesConfirmationGet(): ExpressRouteFunc {
           mfaMethodType: type,
           phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
             ?.redactedPhoneNumber,
-          supportMfaResetWithIpv: supportMfaResetWithIpv(),
         }
       );
     } else {

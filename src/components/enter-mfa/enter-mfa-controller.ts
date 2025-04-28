@@ -1,20 +1,12 @@
 import type { Request, Response } from "express";
-import {
-  NOTIFICATION_TYPE,
-  PATH_NAMES,
-  MFA_METHOD_TYPE,
-} from "../../app.constants.js";
+import { NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants.js";
 import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import type { SecurityCodeErrorType } from "../common/constants.js";
-import { ERROR_CODES, pathWithQueryParam } from "../common/constants.js";
-import {
-  routeUsersToNewIpvJourney,
-  supportAccountRecovery,
-  supportMfaResetWithIpv,
-} from "../../config.js";
+import { ERROR_CODES } from "../common/constants.js";
+import { supportAccountRecovery } from "../../config.js";
 import type { AccountRecoveryInterface } from "../common/account-recovery/types.js";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service.js";
 import { BadRequestError } from "../../utils/error.js";
@@ -86,23 +78,11 @@ export function enterMfaGet(
     req.session.user.isAccountRecoveryPermitted =
       accountRecoveryResponse.data.accountRecoveryPermitted;
 
-    const routeUserViaIpvReset =
-      supportMfaResetWithIpv() && routeUsersToNewIpvJourney();
-
-    const mfaResetPath = routeUserViaIpvReset
-      ? PATH_NAMES.MFA_RESET_WITH_IPV
-      : pathWithQueryParam(
-          PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
-          "type",
-          MFA_METHOD_TYPE.SMS
-        );
-
     res.render(templateName, {
       phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
         ?.redactedPhoneNumber,
       supportAccountRecovery: req.session.user.isAccountRecoveryPermitted,
-      mfaResetPath: mfaResetPath,
-      routeUserViaIpvReset: routeUserViaIpvReset,
+      mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
     });
   };
 }

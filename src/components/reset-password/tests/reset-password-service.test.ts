@@ -45,7 +45,6 @@ describe("reset password service", () => {
       commonVariables;
     const newPassword = "abcdef";
     const isForcedPasswordReset = false;
-    const allowMfaResetAfterPasswordReset = true;
     const req = createMockRequest(PATH_NAMES.RESET_PASSWORD, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
@@ -56,7 +55,6 @@ describe("reset password service", () => {
       clientSessionId,
       diPersistentSessionId,
       isForcedPasswordReset,
-      allowMfaResetAfterPasswordReset,
       req
     );
 
@@ -66,7 +64,7 @@ describe("reset password service", () => {
       expectedBody: {
         password: newPassword,
         isForcedPasswordReset: isForcedPasswordReset,
-        allowMfaResetAfterPasswordReset: allowMfaResetAfterPasswordReset,
+        allowMfaResetAfterPasswordReset: true,
       },
     };
 

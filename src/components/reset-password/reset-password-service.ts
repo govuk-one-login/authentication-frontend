@@ -18,7 +18,6 @@ export function resetPasswordService(
     clientSessionId: string,
     persistentSessionId: string,
     isForcedPasswordReset: boolean,
-    allowMfaResetAfterPasswordReset: boolean,
     req: Request
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
@@ -26,7 +25,7 @@ export function resetPasswordService(
       {
         password: newPassword,
         isForcedPasswordReset: isForcedPasswordReset,
-        allowMfaResetAfterPasswordReset: allowMfaResetAfterPasswordReset,
+        allowMfaResetAfterPasswordReset: true,
       },
       getInternalRequestConfigWithSecurityHeaders(
         {

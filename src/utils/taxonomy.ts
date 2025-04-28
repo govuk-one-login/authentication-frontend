@@ -125,7 +125,6 @@ const isAccountRecoveryTaxonomy = (req: Request): boolean => {
     isAccountRecoveryJourneyAndEnabled(req) ||
     [
       PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION,
-      PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
       PATH_NAMES.RESET_PASSWORD,
       PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP,
       PATH_NAMES.RESET_PASSWORD_2FA_SMS,

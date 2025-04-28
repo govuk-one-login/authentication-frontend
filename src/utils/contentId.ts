@@ -27,10 +27,6 @@ const CONTENT_IDS: {
   [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]: () =>
     "1abedb1b-7d09-4e81-9f88-a8b4297635b3",
   [PATH_NAMES.CHECK_YOUR_EMAIL]: () => "054e1ea8-97a8-461a-a964-07345c80098e",
-  [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]: (req: Request) =>
-    isAccountRecoveryJourney(req)
-      ? "e768e27b-1c4d-48ba-8bcf-4c40274a6441"
-      : "95e26313-bc2f-49bc-bc62-fd715476c1d9",
   [PATH_NAMES.CHECK_YOUR_PHONE]: () => "1fef9388-34cd-4ea2-b899-a66b7327d2f7",
   [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: (req: Request) =>
     isAccountRecoveryJourneyAndEnabled(req)

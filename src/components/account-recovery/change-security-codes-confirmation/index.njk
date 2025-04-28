@@ -11,19 +11,11 @@
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
 
-{% if supportMfaResetWithIpv === true %}
-    <p class="govuk-body">{{'pages.changeSecurityCodesConfirmation.infoForJourneyWithIpvReset.confirmationParagraph' | translate }}</p>
-    {% if mfaMethodType === 'SMS' %}
-        <p class="govuk-body">{{'pages.changeSecurityCodesConfirmation.infoForJourneyWithIpvReset.paragraphSMS' | translate | replace("[mobile]", phoneNumber)}}</p>
-    {% elseif mfaMethodType === 'AUTH_APP' %}
-        <p class="govuk-body">{{'pages.changeSecurityCodesConfirmation.infoForJourneyWithIpvReset.paragraphAuthApp' | translate}}</p>
-    {% endif %}
-{% else %}
-    {% if mfaMethodType === 'SMS' %}
-        <p class="govuk-body">{{'pages.changeSecurityCodesConfirmation.info.paragraphSMS' | translate | replace("[mobile]", phoneNumber)}}</p>
-    {% elseif mfaMethodType === 'AUTH_APP' %}
-        <p class="govuk-body">{{'pages.changeSecurityCodesConfirmation.info.paragraphAuthApp' | translate}}</p>
-    {% endif %}
+<p class="govuk-body">{{'pages.changeSecurityCodesConfirmation.infoForJourneyWithIpvReset.confirmationParagraph' | translate }}</p>
+{% if mfaMethodType === 'SMS' %}
+    <p class="govuk-body">{{'pages.changeSecurityCodesConfirmation.infoForJourneyWithIpvReset.paragraphSMS' | translate | replace("[mobile]", phoneNumber)}}</p>
+{% elseif mfaMethodType === 'AUTH_APP' %}
+    <p class="govuk-body">{{'pages.changeSecurityCodesConfirmation.infoForJourneyWithIpvReset.paragraphAuthApp' | translate}}</p>
 {% endif %}
 
 {{ govukButton({

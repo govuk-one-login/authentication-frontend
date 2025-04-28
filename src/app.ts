@@ -27,7 +27,6 @@ import {
   supportAccountInterventions,
   supportAccountRecovery,
   supportAuthorizeController,
-  supportMfaResetWithIpv,
 } from "./config.js";
 import { logErrorMiddleware } from "./middleware/log-error-middleware.js";
 import { getCookieLanguageMiddleware } from "./middleware/cookie-lang-middleware.js";
@@ -83,7 +82,6 @@ import { setupAuthenticatorAppRouter } from "./components/setup-authenticator-ap
 import { enterAuthenticatorAppCodeRouter } from "./components/enter-authenticator-app-code/enter-authenticator-app-code-routes.js";
 import { cookiesRouter } from "./components/common/cookies/cookies-routes.js";
 import { errorPageRouter } from "./components/common/errors/error-routes.js";
-import { checkYourEmailSecurityCodesRouter } from "./components/account-recovery/check-your-email-security-codes/check-your-email-security-codes-routes.js";
 import { changeSecurityCodesConfirmationRouter } from "./components/account-recovery/change-security-codes-confirmation/change-security-codes-confirmation-routes.js";
 import { outboundContactUsLinksMiddleware } from "./middleware/outbound-contact-us-links-middleware.js";
 import { accountInterventionRouter } from "./components/account-intervention/password-reset-required/password-reset-required-router.js";
@@ -132,7 +130,6 @@ function registerRoutes(app: express.Application) {
   app.use(footerRouter);
   app.use(checkYourPhoneRouter);
   if (supportAccountRecovery()) {
-    app.use(checkYourEmailSecurityCodesRouter);
     app.use(changeSecurityCodesConfirmationRouter);
   }
   if (supportAuthorizeController()) {
@@ -161,10 +158,8 @@ function registerRoutes(app: express.Application) {
     app.use(permanentlyBlockedRouter);
     app.use(temporarilyBlockedRouter);
   }
-  if (supportMfaResetWithIpv()) {
-    app.use(mfaResetWithIpvRouter);
-    app.use(ipvCallbackRouter);
-  }
+  app.use(mfaResetWithIpvRouter);
+  app.use(ipvCallbackRouter);
 }
 
 async function createApp(): Promise<express.Application> {

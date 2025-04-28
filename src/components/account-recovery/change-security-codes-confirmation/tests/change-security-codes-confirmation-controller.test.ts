@@ -25,7 +25,6 @@ describe("change security codes confirmation controller", () => {
 
   afterEach(() => {
     sinon.restore();
-    delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
   });
 
   describe("changeSecurityCodesConfirmationGet", () => {
@@ -33,19 +32,9 @@ describe("change security codes confirmation controller", () => {
     const testData = [
       {
         methodType: MFA_METHOD_TYPE.SMS,
-        supportMfaResetWithIpv: false,
       },
       {
         methodType: MFA_METHOD_TYPE.AUTH_APP,
-        supportMfaResetWithIpv: false,
-      },
-      {
-        methodType: MFA_METHOD_TYPE.SMS,
-        supportMfaResetWithIpv: true,
-      },
-      {
-        methodType: MFA_METHOD_TYPE.AUTH_APP,
-        supportMfaResetWithIpv: true,
       },
     ];
     testData.forEach(function (testParams) {
@@ -53,9 +42,6 @@ describe("change security codes confirmation controller", () => {
         req.session.user.accountRecoveryVerifiedMfaType = testParams.methodType;
         req.session.user.email = "security.codes.changed@testtwofactorauth.org";
         req.session.user.mfaMethods = buildMfaMethods({ redactedPhoneNumber });
-        if (testParams.supportMfaResetWithIpv) {
-          process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
-        }
 
         await changeSecurityCodesConfirmationGet()(
           req as Request,
@@ -67,7 +53,6 @@ describe("change security codes confirmation controller", () => {
           {
             mfaMethodType: testParams.methodType,
             phoneNumber: redactedPhoneNumber,
-            supportMfaResetWithIpv: testParams.supportMfaResetWithIpv,
           }
         );
       });
