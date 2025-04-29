@@ -1,11 +1,12 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { sinon } from "../../utils/test-utils";
 import { migrateMfaSessionStorageMiddleware } from "../../../src/middleware/migrate-mfa-session-storage-middleware";
-import { MfaMethodPriorityIdentifier, UserSession } from "../../../src/types";
+import type { UserSession } from "../../../src/types";
+import { MfaMethodPriorityIdentifier } from "../../../src/types";
 import { MFA_METHOD_TYPE } from "../../../src/app.constants";
-import { Session } from "express-session";
+import type { Session } from "express-session";
 
 describe("migrateMfaSessionStorageMiddleware", () => {
   let request: Request;

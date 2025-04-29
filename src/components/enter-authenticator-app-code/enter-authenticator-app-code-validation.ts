@@ -1,11 +1,10 @@
-import { validateBodyMiddlewareUpliftTemplate } from "../../middleware/form-validation-middleware";
-import { ValidationChainFunc } from "../../types";
-import { validateCode } from "../common/verify-code/verify-code-validation";
+import { validateBodyMiddlewareUpliftTemplate } from "../../middleware/form-validation-middleware.js";
+import type { ValidationChainFunc } from "../../types.js";
+import { validateCode } from "../common/verify-code/verify-code-validation.js";
 import {
   ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME,
   UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
-} from "./enter-authenticator-app-code-controller";
-
+} from "./enter-authenticator-app-code-controller.js";
 export function validateEnterAuthenticatorAppCodeRequest(): ValidationChainFunc {
   return [
     validateCode({

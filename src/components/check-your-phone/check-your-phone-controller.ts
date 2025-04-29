@@ -1,32 +1,32 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   JOURNEY_TYPE,
   MFA_METHOD_TYPE,
   NOTIFICATION_TYPE,
   PATH_NAMES,
-} from "../../app.constants";
-import { ExpressRouteFunc } from "../../types";
+} from "../../app.constants.js";
+import type { ExpressRouteFunc } from "../../types.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
   pathWithQueryParam,
-} from "../common/constants";
-import { SendNotificationServiceInterface } from "../common/send-notification/types";
-import { sendNotificationService } from "../common/send-notification/send-notification-service";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
+} from "../common/constants.js";
+import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
+import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import xss from "xss";
-import { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types";
+import type { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types.js";
 import {
   formatValidationError,
   renderBadRequest,
-} from "../../utils/validation";
-import { BadRequestError } from "../../utils/error";
-import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
-import { getJourneyTypeFromUserSession } from "../common/journey/journey";
-import { isLocked } from "../../utils/lock-helper";
-import { isAccountRecoveryJourneyAndEnabled } from "../../utils/request";
-import { getDefaultSmsMfaMethod } from "../../utils/mfa";
+} from "../../utils/validation.js";
+import { BadRequestError } from "../../utils/error.js";
+import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service.js";
+import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
+import { isLocked } from "../../utils/lock-helper.js";
+import { isAccountRecoveryJourneyAndEnabled } from "../../utils/request.js";
+import { getDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";
 const RESEND_CODE_LINK = pathWithQueryParam(

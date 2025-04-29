@@ -1,17 +1,14 @@
-import {
-  defaultSmartAgentClient,
-  SmartAgentService,
-} from "../../utils/smartAgent";
-import {
+import type { SmartAgentService } from "../../utils/smartAgent.js";
+import { defaultSmartAgentClient } from "../../utils/smartAgent.js";
+import type {
   ContactForm,
   Descriptions,
   OptionalData,
   Questions,
   SmartAgentCustomAttributes,
   Themes,
-} from "./types";
-import { CONTACT_US_THEMES } from "../../app.constants";
-
+} from "./types.js";
+import { CONTACT_US_THEMES } from "../../app.constants.js";
 export function prepareUserLocationTitle(residentInUK: string): string {
   let tag = "";
 

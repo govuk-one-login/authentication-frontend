@@ -1,5 +1,4 @@
-import { logger } from "./logger";
-
+import { logger } from "./logger.js";
 export function getChannelSpecificErrorMessage(
   webMessage: string,
   isStrategicAppChannel: boolean,

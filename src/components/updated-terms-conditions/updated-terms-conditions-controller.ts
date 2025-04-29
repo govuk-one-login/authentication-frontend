@@ -1,15 +1,12 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types";
-import { BadRequestError } from "../../utils/error";
-import { EXTERNAL_LINKS, PATH_NAMES } from "../../app.constants";
-import {
-  UpdateProfileServiceInterface,
-  UpdateType,
-} from "../common/update-profile/types";
-import { updateProfileService } from "../common/update-profile/update-profile-service";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { getNextPathAndUpdateJourney } from "../common/constants";
-
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
+import { BadRequestError } from "../../utils/error.js";
+import { EXTERNAL_LINKS, PATH_NAMES } from "../../app.constants.js";
+import type { UpdateProfileServiceInterface } from "../common/update-profile/types.js";
+import { UpdateType } from "../common/update-profile/types.js";
+import { updateProfileService } from "../common/update-profile/update-profile-service.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { getNextPathAndUpdateJourney } from "../common/constants.js";
 export function updatedTermsConditionsGet(req: Request, res: Response): void {
   res.render("updated-terms-conditions/index.njk");
 }

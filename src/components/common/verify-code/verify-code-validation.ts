@@ -1,6 +1,6 @@
-import { body, ValidationChain } from "express-validator";
-import { containsNumbersOnly } from "../../../utils/strings";
-
+import type { ValidationChain } from "express-validator";
+import { body } from "express-validator";
+import { containsNumbersOnly } from "../../../utils/strings.js";
 export function removeWhiteSpace(value: string): string {
   const re = /[\r\n\t\f\v\s]/g;
 

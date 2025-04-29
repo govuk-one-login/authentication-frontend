@@ -1,24 +1,31 @@
 import { describe } from "mocha";
-import { AxiosResponse } from "axios";
-import { expect, sinon, request } from "../../../../../test/utils/test-utils";
-import nock = require("nock");
+import type { AxiosResponse } from "axios";
+import {
+  expect,
+  sinon,
+  request,
+} from "../../../../../test/utils/test-utils.js";
+import nock from "nock";
 import * as cheerio from "cheerio";
-import decache from "decache";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../../app.constants";
-import { ERROR_CODES, SecurityCodeErrorType } from "../../../common/constants";
-import { SendNotificationServiceInterface } from "../../../common/send-notification/types";
-import { DefaultApiResponse } from "../../../../types";
-import { createApiResponse } from "../../../../utils/http";
+} from "../../../../app.constants.js";
 import {
+  ERROR_CODES,
+  SecurityCodeErrorType,
+} from "../../../common/constants.js";
+import type { SendNotificationServiceInterface } from "../../../common/send-notification/types.js";
+import type { DefaultApiResponse } from "../../../../types.js";
+import { createApiResponse } from "../../../../utils/http.js";
+import type {
   AccountInterventionsInterface,
   AccountInterventionStatus,
-} from "../../../account-intervention/types";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper";
+} from "../../../account-intervention/types.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper.js";
+import esmock from "esmock";
 
 describe("Integration:: check your email security codes", () => {
   let token: string | string[];
@@ -27,76 +34,78 @@ describe("Integration:: check your email security codes", () => {
   let baseApi: string;
 
   before(async () => {
-    decache("../../../../app");
-    decache("../../../../middleware/session-middleware");
-    decache("../../../common/send-notification/send-notification-service");
-    const sessionMiddleware = require("../../../../middleware/session-middleware");
-    const sendNotificationService = require("../../../common/send-notification/send-notification-service");
-    const accountInterventionService = require("../../../account-intervention/account-intervention-service");
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals = {
-          ...res.locals,
-          sessionId: "tDy103saszhcxbQq0-mjdzU854",
-          clientSessionId: "test-client-session-id",
-          persistentSessionId: "test-persistent-session-id",
-        };
+    const { createApp } = await esmock(
+      "../../../../app.js",
+      {},
+      {
+        "../../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals = {
+              ...res.locals,
+              sessionId: "tDy103saszhcxbQq0-mjdzU854",
+              clientSessionId: "test-client-session-id",
+              persistentSessionId: "test-persistent-session-id",
+            };
 
-        req.session.user = {
-          email: "test@test.com",
-          isAccountRecoveryPermitted: true,
-          journey: getPermittedJourneyForPath(
-            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES
+            req.session.user = {
+              email: "test@test.com",
+              isAccountRecoveryPermitted: true,
+              journey: getPermittedJourneyForPath(
+                PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES
+              ),
+            };
+
+            next();
+          }),
+        },
+        "../../../account-intervention/account-intervention-service.js": {
+          accountInterventionService: sinon.fake(
+            (): AccountInterventionsInterface => {
+              async function accountInterventionStatus() {
+                const fakeAxiosResponse: AxiosResponse = {
+                  data: {
+                    passwordResetRequired: false,
+                    blocked: false,
+                    temporarilySuspended: false,
+                  },
+                  status: HTTP_STATUS_CODES.OK,
+                } as AxiosResponse;
+
+                return createApiResponse<AccountInterventionStatus>(
+                  fakeAxiosResponse
+                );
+              }
+
+              return { accountInterventionStatus };
+            }
           ),
-        };
+        },
+        "../../../common/send-notification/send-notification-service.js": {
+          sendNotificationService: sinon.fake(
+            (): SendNotificationServiceInterface => {
+              async function sendNotification() {
+                const fakeAxiosResponse: AxiosResponse = {
+                  data: "test",
+                  status: HTTP_STATUS_CODES.OK,
+                } as AxiosResponse;
 
-        next();
-      });
+                return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
+              }
 
-    sinon
-      .stub(accountInterventionService, "accountInterventionService")
-      .callsFake((): AccountInterventionsInterface => {
-        async function accountInterventionStatus() {
-          const fakeAxiosResponse: AxiosResponse = {
-            data: {
-              passwordResetRequired: false,
-              blocked: false,
-              temporarilySuspended: false,
-            },
-            status: HTTP_STATUS_CODES.OK,
-          } as AxiosResponse;
-
-          return createApiResponse<AccountInterventionStatus>(
-            fakeAxiosResponse
-          );
-        }
-
-        return { accountInterventionStatus };
-      });
-
-    sinon
-      .stub(sendNotificationService, "sendNotificationService")
-      .callsFake((): SendNotificationServiceInterface => {
-        async function sendNotification() {
-          const fakeAxiosResponse: AxiosResponse = {
-            data: "test",
-            status: HTTP_STATUS_CODES.OK,
-          } as AxiosResponse;
-
-          return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
-        }
-
-        return { sendNotification };
-      });
+              return { sendNotification };
+            }
+          ),
+        },
+      }
+    );
 
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
 
-    app = await require("../../../../app").createApp();
+    app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     await request(

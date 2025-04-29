@@ -1,14 +1,14 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types";
-import { mfaService } from "../common/mfa/mfa-service";
-import { MfaServiceInterface } from "../common/mfa/types";
-import { sendMfaGeneric } from "../common/mfa/send-mfa-controller";
-import { JOURNEY_TYPE, PATH_NAMES } from "../../app.constants";
-import { pathWithQueryParam } from "../common/constants";
-import { supportReauthentication } from "../../config";
-import { isLocked } from "../../utils/lock-helper";
-import { getJourneyTypeFromUserSession } from "../common/journey/journey";
-import { getDefaultSmsMfaMethod } from "../../utils/mfa";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
+import { mfaService } from "../common/mfa/mfa-service.js";
+import type { MfaServiceInterface } from "../common/mfa/types.js";
+import { sendMfaGeneric } from "../common/mfa/send-mfa-controller.js";
+import { JOURNEY_TYPE, PATH_NAMES } from "../../app.constants.js";
+import { pathWithQueryParam } from "../common/constants.js";
+import { supportReauthentication } from "../../config.js";
+import { isLocked } from "../../utils/lock-helper.js";
+import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
+import { getDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
   if (isLocked(req.session.user.wrongCodeEnteredLock)) {

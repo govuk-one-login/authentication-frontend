@@ -1,22 +1,22 @@
 import { describe } from "mocha";
-import { expect, sinon } from "../../../test/utils/test-utils";
+import { expect, sinon } from "../../../test/utils/test-utils.js";
+import esmock from "esmock";
 
 describe("applyOverloadProtection", () => {
   let overloadProtectionStub: any;
   let applyOverloadProtection: any;
 
-  beforeEach(() => {
-    delete require.cache[require.resolve("overload-protection")];
-    delete require.cache[require.resolve("../overload-protection-middleware")];
-
+  beforeEach(async () => {
     overloadProtectionStub = sinon.stub();
 
-    require.cache[require.resolve("overload-protection")] = {
-      exports: overloadProtectionStub,
-    } as NodeModule;
-
-    applyOverloadProtection =
-      require("../overload-protection-middleware").applyOverloadProtection;
+    ({ applyOverloadProtection } = await esmock(
+      "../overload-protection-middleware.js",
+      {
+        "overload-protection": {
+          default: overloadProtectionStub,
+        },
+      }
+    ));
   });
 
   it("should call overloadProtection with correct options in production mode", () => {

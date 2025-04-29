@@ -1,10 +1,9 @@
 import { body } from "express-validator";
-import { validateBodyMiddlewareReauthTemplate } from "../../middleware/form-validation-middleware";
-import { ValidationChainFunc } from "../../types";
-import { RE_ENTER_EMAIL_TEMPLATE } from "./enter-email-controller";
-import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message";
-import { WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS } from "../../app.constants";
-
+import { validateBodyMiddlewareReauthTemplate } from "../../middleware/form-validation-middleware.js";
+import type { ValidationChainFunc } from "../../types.js";
+import { RE_ENTER_EMAIL_TEMPLATE } from "./enter-email-controller.js";
+import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message.js";
+import { WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS } from "../../app.constants.js";
 export function validateEnterEmailRequest(
   template = "enter-email/index-existing-account.njk"
 ): ValidationChainFunc {

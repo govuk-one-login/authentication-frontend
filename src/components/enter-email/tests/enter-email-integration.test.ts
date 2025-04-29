@@ -1,16 +1,16 @@
 import { afterEach, describe } from "mocha";
-import { expect, sinon, request } from "../../../../test/utils/test-utils";
+import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
-import decache from "decache";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import nock = require("nock");
-import { ERROR_CODES } from "../../common/constants";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+} from "../../../app.constants.js";
+import nock from "nock";
+import { ERROR_CODES } from "../../common/constants.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import esmock from "esmock";
 
 const REDIRECT_URI = "https://rp.host/redirect";
 
@@ -21,35 +21,39 @@ describe("Integration::enter email", () => {
   let baseApi: string;
 
   before(async () => {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+            req.session.user = {
+              journey: getPermittedJourneyForPath(
+                PATH_NAMES.ENTER_EMAIL_SIGN_IN
+              ),
+            };
 
-        req.session.user = {
-          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_SIGN_IN),
-        };
+            if (process.env.TEST_SETUP_REAUTH_SESSION === "1") {
+              req.session.user.reauthenticate = "12345";
+            }
 
-        if (process.env.TEST_SETUP_REAUTH_SESSION === "1") {
-          req.session.user.reauthenticate = "12345";
-        }
+            req.session.client = {
+              redirectUri: REDIRECT_URI,
+            };
 
-        req.session.client = {
-          redirectUri: REDIRECT_URI,
-        };
+            next();
+          }),
+        },
+      }
+    );
 
-        next();
-      });
-
-    app = await require("../../../app").createApp();
+    app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN), {

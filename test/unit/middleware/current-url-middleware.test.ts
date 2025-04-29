@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { NextFunction, Request, Response } from "express";
-import { sinon } from "../../utils/test-utils";
-import { setCurrentUrlMiddleware } from "../../../src/middleware/current-url-middleware";
+import type { NextFunction, Request, Response } from "express";
+import { sinon } from "../../utils/test-utils.js";
+import { setCurrentUrlMiddleware } from "../../../src/middleware/current-url-middleware.js";
 import { mockRequest, mockResponse } from "mock-req-res";
 
 describe("currentUrl middleware", () => {

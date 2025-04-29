@@ -1,13 +1,12 @@
 import chai, { expect } from "chai";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import {
   appendFromUrlWhenTriagePageUrl,
   buildUrlFromRequest,
   outboundContactUsLinksMiddleware,
-} from "../outbound-contact-us-links-middleware";
-
+} from "../outbound-contact-us-links-middleware.js";
 chai.use(sinonChai);
 
 describe("Middleware", () => {

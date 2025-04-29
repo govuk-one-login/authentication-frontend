@@ -1,4 +1,4 @@
-import axios, {
+import type {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosError,
@@ -6,17 +6,18 @@ import axios, {
   AxiosRequestHeaders,
   CreateAxiosDefaults,
 } from "axios";
+import axios from "axios";
 import {
   getApiKey,
   getFrontendApiBaseUrl,
   supportHttpKeepAlive,
-} from "../config";
-import { ApiResponseResult } from "../types";
-import { HTTP_STATUS_CODES } from "../app.constants";
-import { ApiError } from "./error";
-import { Request } from "express";
+} from "../config.js";
+import type { ApiResponseResult } from "../types.js";
+import { HTTP_STATUS_CODES } from "../app.constants.js";
+import { ApiError } from "./error.js";
+import type { Request } from "express";
 import { createPersonalDataHeaders } from "@govuk-one-login/frontend-passthrough-headers";
-import { logger } from "./logger";
+import { logger } from "./logger.js";
 import { Agent } from "https";
 
 type CustomAxiosRequestHeaders = Partial<AxiosRequestHeaders>;

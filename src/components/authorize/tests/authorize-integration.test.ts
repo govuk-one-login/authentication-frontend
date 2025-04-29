@@ -1,24 +1,24 @@
 import { describe } from "mocha";
-import { sinon, request } from "../../../../test/utils/test-utils";
-import nock = require("nock");
-import decache from "decache";
-import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants";
-import {
+import { sinon, request } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
+import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
+import type {
   AuthorizeServiceInterface,
   JwtServiceInterface,
   KmsDecryptionServiceInterface,
   StartAuthResponse,
-} from "../types";
-import { createApiResponse } from "../../../utils/http";
-import { AxiosResponse } from "axios";
+} from "../types.js";
+import { createApiResponse } from "../../../utils/http.js";
+import type { AxiosResponse } from "axios";
 import {
   createJwt,
   createMockClaims,
   getPrivateKey,
   getPublicKey,
-} from "./test-data";
-import { JwtService } from "../jwt-service";
-import { getOrchToAuthExpectedClientId } from "../../../config";
+} from "./test-data.js";
+import { JwtService } from "../jwt-service.js";
+import { getOrchToAuthExpectedClientId } from "../../../config.js";
+import esmock from "esmock";
 
 describe("Integration:: authorize", () => {
   let app: any;
@@ -26,43 +26,44 @@ describe("Integration:: authorize", () => {
 
   beforeEach(async () => {
     process.env.SUPPORT_AUTHORIZE_CONTROLLER = "1";
-    decache("../../../app");
-    decache("../authorize-service");
-    decache("../kms-decryption-service");
-    decache("../jwt-service");
-    const authorizeService = require("../authorize-service");
-    const KmsDecryptionService = require("../kms-decryption-service");
-    const jwtService = require("../jwt-service");
     const publicKey = getPublicKey();
     const privateKey = await getPrivateKey();
     const jwt = await createJwt(createMockClaims(), privateKey);
 
-    sinon
-      .stub(authorizeService, "authorizeService")
-      .callsFake((): AuthorizeServiceInterface => {
-        async function start() {
-          return createApiResponse<StartAuthResponse>(
-            fakeAxiosStartResponse(userCookieConsent)
-          );
-        }
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../authorize-service.js": {
+          authorizeService: sinon.fake((): AuthorizeServiceInterface => {
+            async function start() {
+              return createApiResponse<StartAuthResponse>(
+                fakeAxiosStartResponse(userCookieConsent)
+              );
+            }
 
-        return { start };
-      });
+            return { start };
+          }),
+        },
+        "../kms-decryption-service.js": {
+          KmsDecryptionService: sinon.fake(
+            (): KmsDecryptionServiceInterface => {
+              async function decrypt() {
+                return Promise.resolve(jwt);
+              }
+              return { decrypt };
+            }
+          ),
+        },
+        "../jwt-service.js": {
+          JwtService: sinon.fake((): JwtServiceInterface => {
+            return new JwtService(publicKey);
+          }),
+        },
+      }
+    );
 
-    sinon
-      .stub(KmsDecryptionService, "KmsDecryptionService")
-      .callsFake((): KmsDecryptionServiceInterface => {
-        async function decrypt() {
-          return Promise.resolve(jwt);
-        }
-        return { decrypt };
-      });
-
-    sinon.stub(jwtService, "JwtService").callsFake((): JwtServiceInterface => {
-      return new JwtService(publicKey);
-    });
-
-    app = await require("../../../app").createApp();
+    app = await createApp();
   });
 
   beforeEach(() => {

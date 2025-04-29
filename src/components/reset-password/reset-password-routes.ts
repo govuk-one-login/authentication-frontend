@@ -1,16 +1,15 @@
 import * as express from "express";
-import { PATH_NAMES } from "../../app.constants";
-
-import { validateResetPasswordRequest } from "./reset-password-validation";
+import { PATH_NAMES } from "../../app.constants.js";
+import { validateResetPasswordRequest } from "./reset-password-validation.js";
 import {
   resetPasswordGet,
   resetPasswordPost,
   resetPasswordRequestGet,
   resetPasswordRequiredGet,
-} from "./reset-password-controller";
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
-import { accountInterventionsMiddleware } from "../../middleware/account-interventions-middleware";
+} from "./reset-password-controller.js";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
+import { accountInterventionsMiddleware } from "../../middleware/account-interventions-middleware.js";
 
 const router = express.Router();
 

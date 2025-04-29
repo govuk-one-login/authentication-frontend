@@ -1,25 +1,25 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
-import { Http } from "../../../../utils/http";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
+import { Http } from "../../../../utils/http.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
-} from "../../../../../test/helpers/service-test-helper";
+} from "../../../../../test/helpers/service-test-helper.js";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
   PATH_NAMES,
-} from "../../../../app.constants";
-import { VerifyCodeInterface } from "../types";
-import { codeService } from "../verify-code-service";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
-import { commonVariables } from "../../../../../test/helpers/common-test-variables";
-
+} from "../../../../app.constants.js";
+import type { VerifyCodeInterface } from "../types.js";
+import { codeService } from "../verify-code-service.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
 describe("verify code service", () => {
   const httpInstance = new Http();
   const service: VerifyCodeInterface = codeService(httpInstance);

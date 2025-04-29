@@ -1,4 +1,4 @@
-import { CookieOptions } from "csurf";
+import type { CookieOptions } from "csurf";
 
 export function getCSRFCookieOptions(isProdEnv: boolean): CookieOptions {
   return {

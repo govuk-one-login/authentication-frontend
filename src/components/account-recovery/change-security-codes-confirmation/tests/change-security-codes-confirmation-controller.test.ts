@@ -1,17 +1,18 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 
-import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../../app.constants";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../../app.constants.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import {
   changeSecurityCodesConfirmationGet,
   changeSecurityCodesConfirmationPost,
-} from "../change-security-codes-confirmation-controller";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
-import { buildMfaMethods } from "../../../../../test/helpers/mfa-helper";
+} from "../change-security-codes-confirmation-controller.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
+import { buildMfaMethods } from "../../../../../test/helpers/mfa-helper.js";
 
 describe("change security codes confirmation controller", () => {
   let req: RequestOutput;

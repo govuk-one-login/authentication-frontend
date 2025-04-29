@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
+import type { WindowLike } from "dompurify";
+import createDOMPurify from "dompurify";
+import { JSDOM } from "jsdom";
 
-const createDOMPurify = require("dompurify");
-const { JSDOM } = require("jsdom");
-
-const window = new JSDOM("").window;
+const window = new JSDOM("").window as unknown as WindowLike;
 const DOMPurify = createDOMPurify(window);
 
 export function sanitizeRequestMiddleware(

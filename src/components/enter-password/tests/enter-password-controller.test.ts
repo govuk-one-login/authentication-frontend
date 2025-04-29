@@ -1,26 +1,27 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 import {
   enterPasswordGet,
   enterPasswordPost,
   enterSignInRetryBlockedGet,
-} from "../enter-password-controller";
-
-import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants";
-import { EnterPasswordServiceInterface } from "../types";
-import { MfaServiceInterface } from "../../common/mfa/types";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { EnterEmailServiceInterface } from "../../enter-email/types";
-import { ERROR_CODES } from "../../common/constants";
-import * as journey from "../../common/journey/journey";
-import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { commonVariables } from "../../../../test/helpers/common-test-variables";
-import { ReauthJourneyError } from "../../../utils/error";
+} from "../enter-password-controller.js";
+import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants.js";
+import type { EnterPasswordServiceInterface } from "../types.js";
+import type { MfaServiceInterface } from "../../common/mfa/types.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import type { EnterEmailServiceInterface } from "../../enter-email/types.js";
+import { ERROR_CODES } from "../../common/constants.js";
+import * as journey from "../../common/journey/journey.js";
+import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
+import { ReauthJourneyError } from "../../../utils/error.js";
 import { strict as assert } from "assert";
+import esmock from "esmock";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
@@ -105,13 +106,21 @@ describe("enter password controller", () => {
         } as unknown as MfaServiceInterface;
 
         const getJourneyTypeFromUserSessionSpy = sinon.spy(
-          journey,
-          "getJourneyTypeFromUserSession"
+          journey.getJourneyTypeFromUserSession
         );
 
         req.session.user = { email, reauthenticate: "test_data" };
 
-        await enterPasswordPost(
+        const { enterPasswordPost: mockEnterPasswordPost } = await esmock(
+          "../enter-password-controller.js",
+          {
+            "../../common/journey/journey.js": {
+              getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
+            },
+          }
+        );
+
+        await mockEnterPasswordPost(
           false,
           fakeService,
           fakeMfaService
@@ -184,13 +193,21 @@ describe("enter password controller", () => {
       } as unknown as MfaServiceInterface;
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
-        journey,
-        "getJourneyTypeFromUserSession"
+        journey.getJourneyTypeFromUserSession
       );
 
       req.session.user = { email, reauthenticate: "test_data" };
 
-      await enterPasswordPost(
+      const { enterPasswordPost: mockEnterPasswordPost } = await esmock(
+        "../enter-password-controller.js",
+        {
+          "../../common/journey/journey.js": {
+            getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
+          },
+        }
+      );
+
+      await mockEnterPasswordPost(
         false,
         fakeService,
         fakeMfaService

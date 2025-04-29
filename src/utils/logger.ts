@@ -1,7 +1,7 @@
-import pino from "pino";
-import PinoHttp from "pino-http";
-import { getLogLevel } from "../config";
-import { Request, Response } from "express";
+import { pino } from "pino";
+import { pinoHttp } from "pino-http";
+import { getLogLevel } from "../config.js";
+import type { Request, Response } from "express";
 
 const logger = pino({
   name: "di-auth",
@@ -43,7 +43,7 @@ export function getRefererFrom(referer: string): string {
   }
 }
 
-const loggerMiddleware = PinoHttp({
+const loggerMiddleware = pinoHttp({
   logger,
   wrapSerializers: false,
   autoLogging: {

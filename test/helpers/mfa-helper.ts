@@ -1,4 +1,5 @@
-import { MfaMethod, MfaMethodPriorityIdentifier } from "../../src/types";
+import type { MfaMethod } from "../../src/types";
+import { MfaMethodPriorityIdentifier } from "../../src/types";
 import { MFA_METHOD_TYPE } from "../../src/app.constants";
 
 export function buildMfaMethods({

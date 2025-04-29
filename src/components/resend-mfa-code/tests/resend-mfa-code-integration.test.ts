@@ -1,18 +1,18 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
 import * as cheerio from "cheerio";
-import decache from "decache";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { ERROR_CODES } from "../../common/constants";
-import { commonVariables } from "../../../../test/helpers/common-test-variables";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
+} from "../../../app.constants.js";
+import { ERROR_CODES } from "../../common/constants.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+import esmock from "esmock";
 const { testPhoneNumber, testRedactedPhoneNumber } = commonVariables;
 
 describe("Integration:: resend mfa code", () => {
@@ -20,36 +20,38 @@ describe("Integration:: resend mfa code", () => {
   let cookies: string;
   let app: any;
   let baseApi: string;
-  let validateSessionStub: sinon.SinonStub<any[], any>;
 
   before(async () => {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
-    validateSessionStub = sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
-        req.session.user = {
-          email: "test@test.com",
-          mfaMethods: buildMfaMethods({
-            phoneNumber: testPhoneNumber,
-            redactedPhoneNumber: testRedactedPhoneNumber,
+            req.session.user = {
+              email: "test@test.com",
+              mfaMethods: buildMfaMethods({
+                phoneNumber: testPhoneNumber,
+                redactedPhoneNumber: testRedactedPhoneNumber,
+              }),
+              journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
+              reauthenticate: "reauth",
+            };
+
+            next();
           }),
-          journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
-          reauthenticate: "reauth",
-        };
-
-        next();
-      });
+        },
+      }
+    );
 
     process.env.SUPPORT_REAUTHENTICATION = "0";
-    app = await require("../../../app").createApp();
+    app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(app, (test) => test.get(PATH_NAMES.RESEND_MFA_CODE)).then(
@@ -66,12 +68,7 @@ describe("Integration:: resend mfa code", () => {
     nock.cleanAll();
   });
 
-  afterEach(() => {
-    validateSessionStub.restore();
-  });
-
   after(() => {
-    validateSessionStub.restore();
     app = undefined;
   });
 

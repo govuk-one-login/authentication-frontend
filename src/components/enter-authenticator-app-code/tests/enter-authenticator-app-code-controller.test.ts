@@ -1,21 +1,23 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 import {
   ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME,
   enterAuthenticatorAppCodeGet,
   enterAuthenticatorAppCodePost,
   UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
-} from "../enter-authenticator-app-code-controller";
-import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants";
-import { ERROR_CODES } from "../../common/constants";
-import { AccountRecoveryInterface } from "../../common/account-recovery/types";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { VerifyMfaCodeInterface } from "../types";
-import * as journey from "../../common/journey/journey";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+} from "../enter-authenticator-app-code-controller.js";
+import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants.js";
+import { ERROR_CODES } from "../../common/constants.js";
+import type { AccountRecoveryInterface } from "../../common/account-recovery/types.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import type { VerifyMfaCodeInterface } from "../types.js";
+import * as journey from "../../common/journey/journey.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import esmock from "esmock";
 
 const fakeAccountRecoveryService = (accountRecoveryPermitted: boolean) => {
   return {
@@ -179,14 +181,21 @@ describe("enter authenticator app code controller", () => {
       const fakeService = fakeVerifyMfaCodeService();
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
-        journey,
-        "getJourneyTypeFromUserSession"
+        journey.getJourneyTypeFromUserSession
       );
 
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
 
-      await enterAuthenticatorAppCodePost(fakeService)(
+      const {
+        enterAuthenticatorAppCodePost: mockEnterAuthenticatorAppCodePost,
+      } = await esmock("../enter-authenticator-app-code-controller.js", {
+        "../../common/journey/journey.js": {
+          getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
+        },
+      });
+
+      await mockEnterAuthenticatorAppCodePost(fakeService)(
         req as Request,
         res as Response
       );

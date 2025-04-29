@@ -1,7 +1,6 @@
-import { NextFunction, Request, Response } from "express";
-import { authStateMachine } from "../components/common/state-machine/state-machine";
-import { saveSessionState } from "../components/common/constants";
-
+import type { NextFunction, Request, Response } from "express";
+import { authStateMachine } from "../components/common/state-machine/state-machine.js";
+import { saveSessionState } from "../components/common/constants.js";
 export function transitionForbidden(req: Request): boolean {
   const nextPath = req.session.user.journey.nextPath;
   return (

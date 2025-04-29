@@ -1,5 +1,4 @@
-import { PATH_NAMES } from "../../app.constants";
-
+import { PATH_NAMES } from "../../app.constants.js";
 import * as express from "express";
 import {
   contactUsGet,
@@ -10,9 +9,9 @@ import {
   furtherInformationPost,
   contactUsQuestionsFormPostToSmartAgent,
   contactUsGetFromTriagePage,
-} from "./contact-us-controller";
-import { validateContactUsRequest } from "./contact-us-validation";
-import { validateContactUsQuestionsRequest } from "./contact-us-questions-validation";
+} from "./contact-us-controller.js";
+import { validateContactUsRequest } from "./contact-us-validation.js";
+import { validateContactUsQuestionsRequest } from "./contact-us-questions-validation.js";
 
 const router = express.Router();
 

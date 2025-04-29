@@ -1,18 +1,17 @@
+import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
-  Http,
   http,
-} from "../../utils/http";
-import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants";
-import { Request } from "express";
+} from "../../utils/http.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants.js";
+import type { Request } from "express";
 
-import {
+import type {
   ResetPasswordCheckEmailServiceInterface,
   ResetPasswordRequestResponse,
-} from "./types";
-import { ApiResponseResult, DefaultApiResponse } from "../../types";
-
+} from "./types.js";
+import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
 export function resetPasswordCheckEmailService(
   axios: Http = http
 ): ResetPasswordCheckEmailServiceInterface {

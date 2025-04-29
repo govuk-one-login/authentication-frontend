@@ -1,22 +1,22 @@
-import { Request, Response } from "express";
-import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants";
-import { ExpressRouteFunc } from "../../types";
-import { redactPhoneNumber } from "../../utils/strings";
+import type { Request, Response } from "express";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
+import type { ExpressRouteFunc } from "../../types.js";
+import { redactPhoneNumber } from "../../utils/strings.js";
+import type { SecurityCodeErrorType } from "../common/constants.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
-  SecurityCodeErrorType,
-} from "../common/constants";
-import { BadRequestError } from "../../utils/error";
-import { SendNotificationServiceInterface } from "../common/send-notification/types";
-import { sendNotificationService } from "../common/send-notification/send-notification-service";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number";
+} from "../common/constants.js";
+import { BadRequestError } from "../../utils/error.js";
+import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
+import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number.js";
 import xss from "xss";
-import { getNewCodePath } from "../security-code-error/security-code-error-controller";
-import { isAccountRecoveryJourneyAndEnabled } from "../../utils/request";
-import { upsertDefaultSmsMfaMethod } from "../../utils/mfa";
+import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
+import { isAccountRecoveryJourneyAndEnabled } from "../../utils/request.js";
+import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
   res.render("enter-phone-number/index.njk", {

@@ -1,20 +1,20 @@
 import { describe } from "mocha";
-import { CrossBrowserService } from "../cross-browser-service";
-import { CrossBrowserRequest } from "../types";
-import { expect } from "../../../../test/utils/test-utils";
-import { Http } from "../../../utils/http";
-import { Request } from "express";
-import sinon, { SinonStub } from "sinon";
+import { CrossBrowserService } from "../cross-browser-service.js";
+import type { CrossBrowserRequest } from "../types.js";
+import { expect } from "../../../../test/utils/test-utils.js";
+import { Http } from "../../../utils/http.js";
+import type { Request } from "express";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
 import {
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
-} from "../../../../test/helpers/service-test-helper";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { PATH_NAMES } from "../../../app.constants";
-import { BadRequestError } from "../../../utils/error";
-
+} from "../../../../test/helpers/service-test-helper.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { PATH_NAMES } from "../../../app.constants.js";
+import { BadRequestError } from "../../../utils/error.js";
 describe("CrossBrowserService", () => {
   const http = new Http();
   const underTest = new CrossBrowserService(http);

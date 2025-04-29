@@ -1,11 +1,11 @@
 import { describe } from "mocha";
-import { expect, sinon, request } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
 import * as cheerio from "cheerio";
-import decache from "decache";
-import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants";
-import { NextFunction, Request, Response } from "express";
-import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
+import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants.js";
+import type { NextFunction, Request, Response } from "express";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+import esmock from "esmock";
 
 describe("Integration:: contact us - public user", () => {
   let token: string | string[];
@@ -14,25 +14,29 @@ describe("Integration:: contact us - public user", () => {
   let smartAgentApiUrl: string;
 
   before(async () => {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+            req.session.user.email = "test@test.com";
+            req.session.user.mfaMethods = buildMfaMethods({
+              phoneNumber: "7867",
+            });
 
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        req.session.user.email = "test@test.com";
-        req.session.user.mfaMethods = buildMfaMethods({ phoneNumber: "7867" });
+            next();
+          }),
+        },
+      }
+    );
 
-        next();
-      });
-
-    app = await require("../../../app").createApp();
+    app = await createApp();
     smartAgentApiUrl = process.env.SMARTAGENT_API_URL;
 
     await request(

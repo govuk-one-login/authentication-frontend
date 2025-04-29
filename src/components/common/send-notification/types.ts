@@ -1,5 +1,5 @@
-import { ApiResponseResult, DefaultApiResponse } from "../../../types";
-import { Request } from "express";
+import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
+import type { Request } from "express";
 
 export interface SendNotificationServiceInterface {
   sendNotification: (

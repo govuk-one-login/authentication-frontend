@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import {
   ERROR_LOG_LEVEL,
   ERROR_MESSAGES,
   HTTP_STATUS_CODES,
-} from "../../app.constants";
-import { ErrorWithLevel } from "../../utils/error";
+} from "../../app.constants.js";
+import { ErrorWithLevel } from "../../utils/error.js";
 
 export function landingGet(
   req: Request,

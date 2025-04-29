@@ -1,16 +1,16 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
 import * as cheerio from "cheerio";
-import { PATH_NAMES } from "../../../app.constants";
-import decache from "decache";
+import { PATH_NAMES } from "../../../app.constants.js";
 import {
   noInterventions,
   setupAccountInterventionsResponse,
-} from "../../../../test/helpers/account-interventions-helpers";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
+} from "../../../../test/helpers/account-interventions-helpers.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+import esmock from "esmock";
 
 describe("Integration::reset password (in 6 digit code flow)", () => {
   let token: string | string[];
@@ -23,27 +23,30 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
   before(async () => {
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
 
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+            req.session.user = {
+              email: "test@test.com",
+              mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
+              journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD),
+            };
 
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        req.session.user = {
-          email: "test@test.com",
-          mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
-          journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD),
-        };
+            next();
+          }),
+        },
+      }
+    );
 
-        next();
-      });
-    app = await require("../../../app").createApp();
+    app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
     setupAccountInterventionsResponse(baseApi, noInterventions);
 

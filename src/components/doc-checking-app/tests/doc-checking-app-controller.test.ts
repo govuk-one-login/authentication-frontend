@@ -1,14 +1,15 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 
-import { DocCheckingAppInterface } from "../types";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { PATH_NAMES } from "../../../app.constants";
-import { docCheckingAppGet } from "../doc-checking-app-controller";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+import type { DocCheckingAppInterface } from "../types.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import { PATH_NAMES } from "../../../app.constants.js";
+import { docCheckingAppGet } from "../doc-checking-app-controller.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { strict as assert } from "assert";
 
 describe("doc checking app controller", () => {

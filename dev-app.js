@@ -1,12 +1,13 @@
 // THIS IS FOR DEV TESTING ONLY
 
-const express = require("express");
-const pino = require("pino");
-const axios = require("axios").default;
-const url = require("url");
-const { randomBytes } = require("crypto");
+import express from "express";
+import pino from "pino";
+import { default as axios } from "axios";
+import url from "url";
+import { randomBytes } from "crypto";
 
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 const logger = pino({ level: process.env.LOG_LEVEL || "info" });
 
 const app = express();

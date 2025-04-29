@@ -1,23 +1,22 @@
-import { Request, Response } from "express";
-import {
+import type { Request, Response } from "express";
+import type {
   ApiResponseResult,
   DefaultApiResponse,
   ExpressRouteFunc,
-} from "../../../types";
-import { MfaServiceInterface } from "./types";
+} from "../../../types.js";
+import type { MfaServiceInterface } from "./types.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
-} from "../constants";
-import { BadRequestError } from "../../../utils/error";
-import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine";
-import { PATH_NAMES } from "../../../app.constants";
-import { sanitize } from "../../../utils/strings";
+} from "../constants.js";
+import { BadRequestError } from "../../../utils/error.js";
+import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine.js";
+import { PATH_NAMES } from "../../../app.constants.js";
+import { sanitize } from "../../../utils/strings.js";
 import xss from "xss";
-import { getJourneyTypeFromUserSession } from "../journey/journey";
-import { isReauth } from "../../../utils/request";
-
+import { getJourneyTypeFromUserSession } from "../journey/journey.js";
+import { isReauth } from "../../../utils/request.js";
 function addGA(req: Request, redirectPath: string) {
   if (req.query._ga) {
     const queryParams = new URLSearchParams({

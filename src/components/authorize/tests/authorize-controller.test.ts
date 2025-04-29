@@ -1,31 +1,31 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 
-import { authorizeGet } from "../authorize-controller";
-import { CookieConsentServiceInterface } from "../../common/cookie-consent/types";
+import { authorizeGet } from "../authorize-controller.js";
+import type { CookieConsentServiceInterface } from "../../common/cookie-consent/types.js";
 import {
   CHANNEL,
   COOKIE_CONSENT,
   COOKIES_PREFERENCES_SET,
   OIDC_PROMPT,
   PATH_NAMES,
-} from "../../../app.constants";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import {
+} from "../../../app.constants.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import type {
   AuthorizeServiceInterface,
   JwtServiceInterface,
   KmsDecryptionServiceInterface,
-} from "../types";
-import { BadRequestError } from "../../../utils/error";
-import { createMockClaims } from "./test-data";
-import { Claims } from "../claims-config";
-import { getOrchToAuthExpectedClientId } from "../../../config";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { createMockCookieConsentService } from "../../../../test/helpers/mock-cookie-consent-service-helper";
-
+} from "../types.js";
+import { BadRequestError } from "../../../utils/error.js";
+import { createMockClaims } from "./test-data.js";
+import type { Claims } from "../claims-config.js";
+import { getOrchToAuthExpectedClientId } from "../../../config.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { createMockCookieConsentService } from "../../../../test/helpers/mock-cookie-consent-service-helper.js";
 describe("authorize controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
@@ -44,6 +44,7 @@ describe("authorize controller", () => {
       response_type: "code",
     };
     res = mockResponse();
+    res.cookie = sinon.spy(res.cookie);
     authServiceResponseData = createAuthServiceReponseData();
 
     fakeAuthorizeService = mockAuthService({
@@ -632,11 +633,7 @@ describe("authorize controller", () => {
 
     expect(caughtError).to.exist; // Ensure an error was thrown
     expect(caughtError).to.be.an.instanceOf(BadRequestError);
-    if (level) {
-      expect(caughtError).to.have.property("level", level);
-    } else {
-      expect(caughtError).not.to.have.property("level");
-    }
+    expect(caughtError).to.have.property("level", level);
     expect(caughtError.message).to.equal(errorMessage);
   }
 });

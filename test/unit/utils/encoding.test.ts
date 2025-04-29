@@ -1,8 +1,7 @@
 import { describe } from "mocha";
 import { assert, expect } from "chai";
-import { InvalidBase64Error } from "../../../src/utils/error";
-import { base64DecodeToUint8Array } from "../../../src/utils/encoding";
-
+import { InvalidBase64Error } from "../../../src/utils/error.js";
+import { base64DecodeToUint8Array } from "../../../src/utils/encoding.js";
 describe("base64DecodeToUint8Array", () => {
   describe("success", () => {
     it("should return int8array with correct Base64", () => {

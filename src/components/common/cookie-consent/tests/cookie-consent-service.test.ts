@@ -1,9 +1,8 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { cookieConsentService } from "../cookie-consent-service";
-import { COOKIE_CONSENT } from "../../../../app.constants";
-
+import { cookieConsentService } from "../cookie-consent-service.js";
+import { COOKIE_CONSENT } from "../../../../app.constants.js";
 describe("cookie consent service", () => {
   describe("getCookieConsent", () => {
     it("should return cookie consent value rejected when no cookie present", () => {

@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 
 import {
   securityCodeCannotRequestCodeGet,
@@ -10,17 +10,17 @@ import {
   securityCodeTriesExceededGet,
   securityCodeEnteredExceededGet,
   getNewCodePath,
-} from "../security-code-error-controller";
+} from "../security-code-error-controller.js";
 import {
   pathWithQueryParam,
   SECURITY_CODE_ERROR,
   SecurityCodeErrorType,
-} from "../../common/constants";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { PATH_NAMES } from "../../../app.constants";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { SCENARIOS } from "./test-scenario-data";
-
+} from "../../common/constants.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import { PATH_NAMES } from "../../../app.constants.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { SCENARIOS } from "./test-scenario-data.js";
 describe("security code controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

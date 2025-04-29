@@ -1,12 +1,11 @@
-import { MfaResetAuthorizeInterface } from "./types";
-import { mfaResetAuthorizeService } from "./mfa-reset-authorize-service";
-import { ExpressRouteFunc } from "../../types";
-import { Request, Response } from "express";
-import { BadRequestError } from "../../utils/error";
-import { getNextPathAndUpdateJourney } from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
-
+import type { MfaResetAuthorizeInterface } from "./types.js";
+import { mfaResetAuthorizeService } from "./mfa-reset-authorize-service.js";
+import type { ExpressRouteFunc } from "../../types.js";
+import type { Request, Response } from "express";
+import { BadRequestError } from "../../utils/error.js";
+import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants.js";
 export function mfaResetWithIpvGet(
   service: MfaResetAuthorizeInterface = mfaResetAuthorizeService()
 ): ExpressRouteFunc {

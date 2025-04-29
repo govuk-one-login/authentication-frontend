@@ -2,7 +2,6 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import englishTranslations from "../en/translation.json";
 import welshTranslations from "../cy/translation.json";
-
 export function traverseObjectProperties(
   obj: any,
   func: (key: string, value?: string) => void

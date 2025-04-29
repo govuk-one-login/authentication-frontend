@@ -1,13 +1,12 @@
 import * as express from "express";
-import { PATH_NAMES } from "../../app.constants";
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
+import { PATH_NAMES } from "../../app.constants.js";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
 import {
   checkYourEmailGet,
   checkYourEmailPost,
-} from "./check-your-email-controller";
-import { validateCheckYourEmailRequest } from "./check-your-email-validation";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
-
+} from "./check-your-email-controller.js";
+import { validateCheckYourEmailRequest } from "./check-your-email-validation.js";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
 const router = express.Router();
 
 router.get(

@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe } from "mocha";
-import { expect, sinon } from "../utils/test-utils";
-import { shutdownProcess, startServer } from "../../src/app";
+import { expect, sinon } from "../utils/test-utils.js";
+import { createApp, shutdownProcess, startServer } from "../../src/app.js";
 import express from "express";
-import decache from "decache";
+import esmock from "esmock";
 
 describe("app", () => {
   describe("startServer", () => {
@@ -33,43 +33,44 @@ describe("app", () => {
     });
 
     it("should start server with vital-signs package", async () => {
-      decache("../../src/app");
-      decache("@govuk-one-login/frontend-vital-signs");
-      const frontendVitalSigns = require("@govuk-one-login/frontend-vital-signs");
-      sinon
-        .stub(frontendVitalSigns, "frontendVitalSignsInit")
-        .callsFake(() => () => {});
-      const { startServer } = require("../../src/app");
+      const fakeFrontendVitalSignsInit = sinon.fake();
+      const { startServer } = await esmock("../../src/app.js", {
+        "@govuk-one-login/frontend-vital-signs": {
+          frontendVitalSignsInit: fakeFrontendVitalSignsInit,
+        },
+      });
+
       const app = express();
 
       const { server, closeServer } = await startServer(app);
 
-      expect(frontendVitalSigns.frontendVitalSignsInit).to.be.calledOnceWith(
-        server,
-        { staticPaths: [/^\/assets\/.*/, /^\/public\/.*/], interval: 10000 }
-      );
+      expect(fakeFrontendVitalSignsInit).to.be.calledOnceWith(server, {
+        staticPaths: [/^\/assets\/.*/, /^\/public\/.*/],
+        interval: 10000,
+      });
       await closeServer();
     });
 
     it("should close server properly", async () => {
-      decache("../../src/app");
-      decache("../../src/config/session");
-      decache("@govuk-one-login/frontend-vital-signs");
-      const frontendVitalSigns = require("@govuk-one-login/frontend-vital-signs");
-      const session = require("../../src/config/session");
-      const stopVitalSigns = sinon.fake(() => {});
-      sinon
-        .stub(frontendVitalSigns, "frontendVitalSignsInit")
-        .callsFake(() => stopVitalSigns);
-      sinon.stub(session, "disconnectRedisClient").callsFake(() => {});
-      const { startServer } = require("../../src/app");
+      const fakeFrontendVitalSignsInit = sinon.fake();
+      const fakeDisconnectRedisClient = sinon.fake();
+
+      const { startServer } = await esmock("../../src/app.js", {
+        "@govuk-one-login/frontend-vital-signs": {
+          frontendVitalSignsInit: fakeFrontendVitalSignsInit,
+        },
+        "../../src/config/session.js": {
+          disconnectRedisClient: fakeDisconnectRedisClient,
+        },
+      });
+
       const app = express();
       const { closeServer } = await startServer(app);
 
       await closeServer();
 
-      expect(session.disconnectRedisClient).to.be.callCount(1);
-      expect(stopVitalSigns).to.be.callCount(1);
+      expect(fakeDisconnectRedisClient).to.be.callCount(1);
+      expect(fakeFrontendVitalSignsInit).to.be.callCount(1);
     });
   });
 
@@ -98,19 +99,11 @@ describe("app", () => {
   });
 
   describe("applyOverloadProtection", () => {
-    beforeEach(() => {
-      decache("../../src/app");
-      sinon.stub(require("../../src/utils/redis"), "getRedisConfig").returns({
-        host: "redis-host",
-        port: Number("1234"),
-        password: "redis-password",
-        tls: true,
-      });
+    beforeEach(async () => {
       process.env.REDIS_KEY = "redis-key";
     });
 
     afterEach(() => {
-      sinon.restore();
       delete process.env.REDIS_KEY;
       delete process.env.APP_ENV;
     });
@@ -118,7 +111,7 @@ describe("app", () => {
     it("should not call applyOverloadProtection when the environment isn't staging", async () => {
       process.env.APP_ENV = "production";
 
-      const app = await require("../../src/app").createApp();
+      const app = await createApp();
 
       const hasOverloadProtection = app._router.stack.some(
         (layer: { name: string }) => layer.name === "overloadProtection"
@@ -129,7 +122,7 @@ describe("app", () => {
     it("should applyOverloadProtection when the environment is staging", async () => {
       process.env.APP_ENV = "staging";
 
-      const app = await require("../../src/app").createApp();
+      const app = await createApp();
 
       const hasOverloadProtection = app._router.stack.some(
         (layer: { name: string }) => layer.name === "overloadProtection"

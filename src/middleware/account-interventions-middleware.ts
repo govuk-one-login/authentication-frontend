@@ -1,15 +1,14 @@
-import { NextFunction, Request, Response } from "express";
-import { getNextPathAndUpdateJourney } from "../components/common/constants";
-import { USER_JOURNEY_EVENTS } from "../components/common/state-machine/state-machine";
-import { accountInterventionService } from "../components/account-intervention/account-intervention-service";
-import { ExpressRouteFunc } from "../types";
-import { supportAccountInterventions } from "../config";
-import { logger } from "../utils/logger";
+import type { NextFunction, Request, Response } from "express";
+import { getNextPathAndUpdateJourney } from "../components/common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../components/common/state-machine/state-machine.js";
+import { accountInterventionService } from "../components/account-intervention/account-intervention-service.js";
+import type { ExpressRouteFunc } from "../types.js";
+import { supportAccountInterventions } from "../config.js";
+import { logger } from "../utils/logger.js";
 import {
   isSuspendedWithoutUserActions,
   passwordHasBeenResetMoreRecentlyThanInterventionApplied,
-} from "../utils/interventions";
-
+} from "../utils/interventions.js";
 export function accountInterventionsMiddleware(
   handleSuspendedStatus: boolean,
   handlePasswordResetStatus: boolean,

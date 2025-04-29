@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 import {
   contactUsFormPost,
   contactUsGet,
@@ -18,19 +18,22 @@ import {
   validateAppErrorCode,
   validateAppId,
   validateReferer,
-} from "../contact-us-controller";
+} from "../contact-us-controller.js";
 import {
   CONTACT_US_REFERER_ALLOWLIST,
   CONTACT_US_THEMES,
   PATH_NAMES,
   SUPPORT_TYPE,
-} from "../../../app.constants";
-import { ExpressRouteFunc, RequestGet, ResponseRedirect } from "../../../types";
-import { getServiceDomain, getSupportLinkUrl } from "../../../config";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+} from "../../../app.constants.js";
+import type {
+  ExpressRouteFunc,
+  RequestGet,
+  ResponseRedirect,
+} from "../../../types.js";
+import { getServiceDomain, getSupportLinkUrl } from "../../../config.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { mockResponse } from "mock-req-res";
-import { ContactForm } from "../types";
-
+import type { ContactForm } from "../types.js";
 describe("contact us controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;

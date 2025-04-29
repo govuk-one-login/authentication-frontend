@@ -1,11 +1,11 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
 import * as cheerio from "cheerio";
-import decache from "decache";
-import { PATH_NAMES } from "../../../app.constants";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+import { PATH_NAMES } from "../../../app.constants.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import esmock from "esmock";
 
 describe("Integration::select-mfa-options", () => {
   let token: string | string[];
@@ -13,30 +13,34 @@ describe("Integration::select-mfa-options", () => {
   let app: any;
 
   before(async () => {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+            res.locals.clientSessionId = "csy103saszhcxbQq0-mjdzU854";
+            res.locals.persistentSessionId = "dips-123456-abc";
 
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        res.locals.clientSessionId = "csy103saszhcxbQq0-mjdzU854";
-        res.locals.persistentSessionId = "dips-123456-abc";
+            req.session.user = {
+              email: "test@test.com",
+              journey: getPermittedJourneyForPath(
+                PATH_NAMES.GET_SECURITY_CODES
+              ),
+            };
 
-        req.session.user = {
-          email: "test@test.com",
-          journey: getPermittedJourneyForPath(PATH_NAMES.GET_SECURITY_CODES),
-        };
+            next();
+          }),
+        },
+      }
+    );
 
-        next();
-      });
-
-    app = await require("../../../app").createApp();
+    app = await createApp();
 
     await request(app, (test) => test.get(PATH_NAMES.GET_SECURITY_CODES)).then(
       (res) => {

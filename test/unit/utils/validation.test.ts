@@ -3,9 +3,8 @@ import { describe } from "mocha";
 import {
   replaceErrorMessagePlaceholders,
   deDuplicateErrorList,
-} from "../../../src/utils/validation";
-import { PLACEHOLDER_REPLACEMENTS } from "../../../src/app.constants";
-
+} from "../../../src/utils/validation.js";
+import { PLACEHOLDER_REPLACEMENTS } from "../../../src/app.constants.js";
 describe("validation", () => {
   describe("replaceErrorMessagePlaceholders", () => {
     it("should make all replacements", () => {

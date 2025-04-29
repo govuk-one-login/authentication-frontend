@@ -1,20 +1,20 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { PATH_NAMES } from "../../../app.constants";
-import { ERROR_CODES } from "../../common/constants";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import { PATH_NAMES } from "../../../app.constants.js";
+import { ERROR_CODES } from "../../common/constants.js";
 import {
   resetPassword2FASmsGet,
   resetPassword2FASmsPost,
-} from "../reset-password-2fa-sms-controller";
-import { VerifyCodeInterface } from "../../common/verify-code/types";
-import { MfaServiceInterface } from "../../common/mfa/types";
-import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers";
-import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-
+} from "../reset-password-2fa-sms-controller.js";
+import type { VerifyCodeInterface } from "../../common/verify-code/types.js";
+import type { MfaServiceInterface } from "../../common/mfa/types.js";
+import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers.js";
+import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 describe("reset password 2fa auth app controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

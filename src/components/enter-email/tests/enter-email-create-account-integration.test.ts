@@ -1,16 +1,16 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
 import * as cheerio from "cheerio";
-import decache from "decache";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
+} from "../../../app.constants.js";
+import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import esmock from "esmock";
 
 describe("Integration::enter email (create account)", () => {
   let token: string | string[];
@@ -19,28 +19,31 @@ describe("Integration::enter email (create account)", () => {
   let baseApi: string;
 
   before(async () => {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
-        req.session.user = {
-          journey: getPermittedJourneyForPath(
-            PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT
-          ),
-        };
+            req.session.user = {
+              journey: getPermittedJourneyForPath(
+                PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT
+              ),
+            };
 
-        next();
-      });
+            next();
+          }),
+        },
+      }
+    );
 
-    app = await require("../../../app").createApp();
+    app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(
@@ -286,24 +289,27 @@ describe("Integration::enter email (create account)", () => {
 
 describe("Integration::enter email (create account request)", () => {
   it(`should redirect to ${PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT} when ${PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST} is accessed`, async () => {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        req.session.user = {
-          journey: getPermittedJourneyForPath(PATH_NAMES.SIGN_IN_OR_CREATE),
-        };
-        next();
-      });
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+            req.session.user = {
+              journey: getPermittedJourneyForPath(PATH_NAMES.SIGN_IN_OR_CREATE),
+            };
+            next();
+          }),
+        },
+      }
+    );
 
-    const app = await require("../../../app").createApp();
+    const app = await createApp();
 
     await request(app, (test) =>
       test

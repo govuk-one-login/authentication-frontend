@@ -1,37 +1,40 @@
-import { Request, Response } from "express";
-import {
+import type { Request, Response } from "express";
+import type {
   ApiResponseResult,
   DefaultApiResponse,
   ExpressRouteFunc,
-} from "../../types";
+} from "../../types.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
   pathWithQueryParam,
-} from "../common/constants";
+} from "../common/constants.js";
 import {
   getCodeEnteredWrongBlockDurationInMinutes,
   routeUsersToNewIpvJourney,
   supportAccountRecovery,
   supportMfaResetWithIpv,
   supportReauthentication,
-} from "../../config";
-import { VerifyMfaCodeInterface } from "./types";
-import { AccountRecoveryInterface } from "../common/account-recovery/types";
-import { accountRecoveryService } from "../common/account-recovery/account-recovery-service";
-import { BadRequestError, ReauthJourneyError } from "../../utils/error";
-import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants";
-import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service";
+} from "../../config.js";
+import type { VerifyMfaCodeInterface } from "./types.js";
+import type { AccountRecoveryInterface } from "../common/account-recovery/types.js";
+import { accountRecoveryService } from "../common/account-recovery/account-recovery-service.js";
+import { BadRequestError, ReauthJourneyError } from "../../utils/error.js";
+import {
+  JOURNEY_TYPE,
+  MFA_METHOD_TYPE,
+  PATH_NAMES,
+} from "../../app.constants.js";
+import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service.js";
 import {
   formatValidationError,
   renderBadRequest,
-} from "../../utils/validation";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { getJourneyTypeFromUserSession } from "../common/journey/journey";
-import { isLocked } from "../../utils/lock-helper";
-import { isUpliftRequired } from "../../utils/request";
-
+} from "../../utils/validation.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
+import { isLocked } from "../../utils/lock-helper.js";
+import { isUpliftRequired } from "../../utils/request.js";
 export const ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME =
   "enter-authenticator-app-code/index.njk";
 export const UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME =

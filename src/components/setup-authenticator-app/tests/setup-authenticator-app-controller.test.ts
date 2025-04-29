@@ -1,24 +1,26 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
   PATH_NAMES,
-} from "../../../app.constants";
+} from "../../../app.constants.js";
 import {
   setupAuthenticatorAppGet,
   setupAuthenticatorAppPost,
-} from "../setup-authenticator-app-controller";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { ERROR_CODES } from "../../common/constants";
-import { BadRequestError } from "../../../utils/error";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types";
-import * as journey from "../../common/journey/journey";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
+} from "../setup-authenticator-app-controller.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import { ERROR_CODES } from "../../common/constants.js";
+import { BadRequestError } from "../../../utils/error.js";
+import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
+import type { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types.js";
+import * as journey from "../../common/journey/journey.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { strict as assert } from "assert";
+import esmock from "esmock";
 
 describe("setup-authenticator-app controller", () => {
   let req: RequestOutput;
@@ -65,14 +67,20 @@ describe("setup-authenticator-app controller", () => {
       } as unknown as VerifyMfaCodeInterface;
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
-        journey,
-        "getJourneyTypeFromUserSession"
+        journey.getJourneyTypeFromUserSession
       );
 
-      await setupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
-        req as Request,
-        res as Response
-      );
+      const { setupAuthenticatorAppPost: mockSetupAuthenticatorAppPost } =
+        await esmock("../setup-authenticator-app-controller.js", {
+          "../../common/journey/journey.js": {
+            getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
+          },
+        });
+
+      await mockSetupAuthenticatorAppPost(
+        fakeMfAService,
+        fakeNotificationService
+      )(req as Request, res as Response);
 
       expect(
         getJourneyTypeFromUserSessionSpy

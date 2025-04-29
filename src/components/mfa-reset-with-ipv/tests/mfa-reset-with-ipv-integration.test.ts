@@ -1,10 +1,10 @@
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils";
-import decache from "decache";
-import { API_ENDPOINTS, CHANNEL, PATH_NAMES } from "../../../app.constants";
-import nock = require("nock");
-import { NextFunction, Request, Response } from "express";
-const supertest = require("supertest");
+import { request, sinon } from "../../../../test/utils/test-utils.js";
+import { API_ENDPOINTS, CHANNEL, PATH_NAMES } from "../../../app.constants.js";
+import nock from "nock";
+import type { NextFunction, Request, Response } from "express";
+import supertest from "supertest";
+import esmock from "esmock";
 
 const IPV_DUMMY_URL =
   "https://test-idp-url.com/callback?code=123-4ddkk0sdkkd-ad";
@@ -145,44 +145,55 @@ describe("Mfa reset with ipv", () => {
     isAccountRecoveryPermitted: boolean,
     channel: string
   ) {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    decache("../../../../test/helpers/session-helper");
     process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
     process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY = "1";
-    const sessionMiddleware = require("../../../middleware/session-middleware");
-    const {
-      getPermittedJourneyForPath,
-    } = require("../../../../test/helpers/session-helper");
 
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        //Because we're using supertest to update the state after a first request, we only specifically
-        //set this up for the first request
-        if (req.path === firstRequestPath) {
-          res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-          res.locals.strategicAppChannel = channel === CHANNEL.STRATEGIC_APP;
-          res.locals.webChannel = channel == CHANNEL.WEB;
+    const { getPermittedJourneyForPath } = await esmock(
+      "../../../../test/helpers/session-helper.js",
+      {},
+      {
+        "../../../config.js": {
+          supportMfaResetWithIpv: () => true,
+          routeUsersToNewIpvJourney: () => true,
+        },
+      }
+    );
 
-          req.session.user = {
-            email: "test@test.com",
-            journey: getPermittedJourneyForPath(currentNextPath),
-            mfaMethodType: "AUTH_APP",
-            isAccountRecoveryPermitted: isAccountRecoveryPermitted,
-          };
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            //Because we're using supertest to update the state after a first request, we only specifically
+            //set this up for the first request
+            if (req.path === firstRequestPath) {
+              res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+              res.locals.strategicAppChannel =
+                channel === CHANNEL.STRATEGIC_APP;
+              res.locals.webChannel = channel == CHANNEL.WEB;
 
-          req.session.client = {
-            redirectUri: "http://test-redirect.gov.uk/callback",
-          };
-        }
-        next();
-      });
+              req.session.user = {
+                email: "test@test.com",
+                journey: getPermittedJourneyForPath(currentNextPath),
+                mfaMethodType: "AUTH_APP",
+                isAccountRecoveryPermitted: isAccountRecoveryPermitted,
+              };
 
-    return await require("../../../app").createApp();
+              req.session.client = {
+                redirectUri: "http://test-redirect.gov.uk/callback",
+              };
+            }
+            next();
+          }),
+        },
+      }
+    );
+
+    return await createApp();
   }
 });

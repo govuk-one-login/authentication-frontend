@@ -1,9 +1,8 @@
-import { describe, beforeEach, it } from "mocha";
-import { RedisConfig } from "../../src/utils/types";
-import { isRedisConfigEqual } from "../../src/config/session";
-import { expect, sinon } from "../utils/test-utils";
-import decache from "decache";
-import { RedisModules } from "redis";
+import { beforeEach, describe, it } from "mocha";
+import type { RedisConfig } from "../../src/utils/types.js";
+import { isRedisConfigEqual } from "../../src/config/session.js";
+import { expect, sinon } from "../utils/test-utils.js";
+import esmock from "esmock";
 
 describe("session", () => {
   const redisConfig = {
@@ -13,59 +12,57 @@ describe("session", () => {
     tls: true,
   };
 
-  let redis: RedisModules;
   let connect: () => void;
   let disconnect: () => void;
+  let redisCreateClient: () => any;
+  let getSessionStore: any;
+  let disconnectRedisClient: any;
 
-  beforeEach(() => {
-    decache("../../src/config/session");
-    decache("redis");
-    redis = require("redis");
+  beforeEach(async () => {
     connect = sinon.fake();
     disconnect = sinon.fake();
-    sinon
-      .stub(redis, "createClient")
-      .callsFake(() => ({ connect, disconnect }));
+    redisCreateClient = sinon.fake(() => ({ connect, disconnect }));
+
+    ({ getSessionStore, disconnectRedisClient } = await esmock(
+      "../../src/config/session.js",
+      {
+        redis: {
+          createClient: redisCreateClient,
+        },
+      }
+    ));
   });
 
   describe("getSessionStore", () => {
-    it("should create a new client if none already exists and connect to redis", () => {
-      const { getSessionStore } = require("../../src/config/session");
+    it("should create a new client if none already exists and connect to redis", async () => {
       getSessionStore(redisConfig);
-      expect(redis.createClient).to.be.callCount(1);
+      expect(redisCreateClient).to.be.callCount(1);
       expect(connect).to.be.callCount(1);
     });
 
-    it("should throw error when there is already a redis client and the config is different", () => {
-      const { getSessionStore } = require("../../src/config/session");
+    it("should throw error when there is already a redis client and the config is different", async () => {
       getSessionStore(redisConfig);
       expect(() =>
         getSessionStore({ ...redisConfig, host: "somethingdifferent" })
       ).to.throw();
     });
 
-    it("should not create a new client if one already exists with the same configuration", () => {
-      const { getSessionStore } = require("../../src/config/session");
+    it("should not create a new client if one already exists with the same configuration", async () => {
       getSessionStore(redisConfig);
       getSessionStore(redisConfig);
       getSessionStore(redisConfig);
       getSessionStore(redisConfig);
-      expect(redis.createClient).to.be.callCount(1);
+      expect(redisCreateClient).to.be.callCount(1);
       expect(connect).to.be.callCount(1);
     });
   });
 
   describe("disconnectRedisClient", () => {
-    it("should not error if there is no client", () => {
-      const { disconnectRedisClient } = require("../../src/config/session");
+    it("should not error if there is no client", async () => {
       expect(() => disconnectRedisClient()).to.not.throw();
     });
 
     it("should disconnect the client if a client exists, clear up and allow new client", async () => {
-      const {
-        getSessionStore,
-        disconnectRedisClient,
-      } = require("../../src/config/session");
       getSessionStore(redisConfig);
 
       await disconnectRedisClient();
@@ -73,7 +70,7 @@ describe("session", () => {
       expect(disconnect).to.be.callCount(1);
 
       getSessionStore(redisConfig);
-      expect(redis.createClient).to.be.callCount(2);
+      expect(redisCreateClient).to.be.callCount(2);
       expect(connect).to.be.callCount(2);
     });
   });

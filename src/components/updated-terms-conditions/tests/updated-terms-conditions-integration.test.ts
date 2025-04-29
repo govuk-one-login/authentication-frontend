@@ -1,16 +1,16 @@
 import { beforeEach, describe } from "mocha";
-import { sinon, request } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import { sinon, request } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
 import * as cheerio from "cheerio";
-import decache from "decache";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
+} from "../../../app.constants.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+import esmock from "esmock";
 
 describe("Integration:: updated-terms-code", () => {
   let token: string | string[];
@@ -19,33 +19,35 @@ describe("Integration:: updated-terms-code", () => {
   let baseApi: string;
 
   before(async () => {
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+            res.locals.clientSessionId = "tDy103saszhcxbQq0-mjdzU33d";
+            res.locals.persistentSessionId = "dips-123456-abc";
 
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        res.locals.clientSessionId = "tDy103saszhcxbQq0-mjdzU33d";
-        res.locals.persistentSessionId = "dips-123456-abc";
+            req.session.user = {
+              email: "test@test.com",
+              mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
+              journey: getPermittedJourneyForPath(
+                PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS
+              ),
+            };
 
-        req.session.user = {
-          email: "test@test.com",
-          mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
-          journey: getPermittedJourneyForPath(
-            PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS
-          ),
-        };
+            next();
+          }),
+        },
+      }
+    );
 
-        next();
-      });
-
-    app = await require("../../../app").createApp();
+    app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(

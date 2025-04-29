@@ -1,11 +1,10 @@
-import { NextFunction, Request, Response } from "express";
-import { expect, sinon } from "../../utils/test-utils";
+import type { NextFunction, Request, Response } from "express";
+import { expect, sinon } from "../../utils/test-utils.js";
 import { describe } from "mocha";
-import { logErrorMiddleware } from "../../../src/middleware/log-error-middleware";
+import { logErrorMiddleware } from "../../../src/middleware/log-error-middleware.js";
 import { mockRequest, mockResponse } from "mock-req-res";
-import { ErrorWithLevel } from "../../../src/utils/error";
-import { ERROR_LOG_LEVEL } from "../../../src/app.constants";
-
+import { ErrorWithLevel } from "../../../src/utils/error.js";
+import { ERROR_LOG_LEVEL } from "../../../src/app.constants.js";
 describe("logErrorMiddleware", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;

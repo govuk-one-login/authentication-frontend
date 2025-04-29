@@ -1,8 +1,7 @@
-import { sessionIsValid } from "../../middleware/session-middleware";
-import { NextFunction, Request, Response } from "express";
-import { CrossBrowserService } from "./cross-browser-service";
-import { ExpressRouteFunc } from "../../types";
-
+import { sessionIsValid } from "../../middleware/session-middleware.js";
+import type { NextFunction, Request, Response } from "express";
+import type { CrossBrowserService } from "./cross-browser-service.js";
+import type { ExpressRouteFunc } from "../../types.js";
 export const crossBrowserMiddleware = (
   crossBrowserService: CrossBrowserService
 ): ExpressRouteFunc => {

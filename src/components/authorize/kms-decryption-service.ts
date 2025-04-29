@@ -1,15 +1,13 @@
 import crypto from "crypto";
-import {
+import type {
   DecryptCommandInput,
   DecryptCommandOutput,
-  EncryptionAlgorithmSpec,
-  KMS,
 } from "@aws-sdk/client-kms";
-import { KmsDecryptionServiceInterface } from "./types";
-import { getAwsRegion, getKmsKeyId } from "../../config";
-import { DecryptionError } from "../../utils/error";
-import { base64DecodeToUint8Array } from "../../utils/encoding";
-
+import { EncryptionAlgorithmSpec, KMS } from "@aws-sdk/client-kms";
+import type { KmsDecryptionServiceInterface } from "./types.js";
+import { getAwsRegion, getKmsKeyId } from "../../config.js";
+import { DecryptionError } from "../../utils/error.js";
+import { base64DecodeToUint8Array } from "../../utils/encoding.js";
 export class KmsDecryptionService implements KmsDecryptionServiceInterface {
   private kmsClient: KMS;
   private readonly encryptionAlgorithm: EncryptionAlgorithmSpec;

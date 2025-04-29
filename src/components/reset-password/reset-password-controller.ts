@@ -1,21 +1,24 @@
-import { Request, Response } from "express";
-import { ExpressRouteFunc } from "../../types";
-import { ResetPasswordServiceInterface } from "./types";
-import { resetPasswordService } from "./reset-password-service";
+import type { Request, Response } from "express";
+import type { ExpressRouteFunc } from "../../types.js";
+import type { ResetPasswordServiceInterface } from "./types.js";
+import { resetPasswordService } from "./reset-password-service.js";
 import {
   formatValidationError,
   renderBadRequest,
-} from "../../utils/validation";
-import { ERROR_CODES, getNextPathAndUpdateJourney } from "../common/constants";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine";
-import { BadRequestError } from "../../utils/error";
-import { EnterPasswordServiceInterface } from "../enter-password/types";
-import { enterPasswordService } from "../enter-password/enter-password-service";
+} from "../../utils/validation.js";
+import {
+  ERROR_CODES,
+  getNextPathAndUpdateJourney,
+} from "../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { BadRequestError } from "../../utils/error.js";
+import type { EnterPasswordServiceInterface } from "../enter-password/types.js";
+import { enterPasswordService } from "../enter-password/enter-password-service.js";
 import {
   routeUsersToNewIpvJourney,
   supportMfaResetWithIpv,
-} from "../../config";
-import { upsertDefaultSmsMfaMethod } from "../../utils/mfa";
+} from "../../config.js";
+import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 const resetPasswordTemplate = "reset-password/index.njk";
 

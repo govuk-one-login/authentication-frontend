@@ -1,17 +1,18 @@
 import { describe } from "mocha";
-import decache from "decache";
-import { expect, request, sinon } from "../../../../test/utils/test-utils";
+import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import {
   API_ENDPOINTS,
   CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,
   MFA_METHOD_TYPE,
   PATH_NAMES,
-} from "../../../app.constants";
-import express, { NextFunction, Request, Response } from "express";
+} from "../../../app.constants.js";
+import type { NextFunction, Request, Response } from "express";
+import type express from "express";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-import { buildMfaMethods } from "../../../../test/helpers/mfa-helper";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+import esmock from "esmock";
 
 const TEST_CONTACT_US_LINK_URL = "https://example.com/contact-us";
 
@@ -200,46 +201,43 @@ const stubMiddlewareAndCreateApp = async (
   nextPath: string,
   mfaMethodType?: MFA_METHOD_TYPE
 ): Promise<express.Application> => {
-  decache("../../../app");
+  const { createApp } = await esmock(
+    "../../../app.js",
+    {},
+    {
+      "../../../middleware/session-middleware.js": {
+        validateSessionMiddleware: sinon.fake(function (
+          req: Request,
+          res: Response,
+          next: NextFunction
+        ): void {
+          res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
-  decache("../../../middleware/session-middleware");
-  const sessionMiddleware = require("../../../middleware/session-middleware");
+          req.session.user = {
+            email: "test@test.com",
+            mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
+            journey: getPermittedJourneyForPath(nextPath),
+            mfaMethodType: mfaMethodType,
+          };
 
-  sinon
-    .stub(sessionMiddleware, "validateSessionMiddleware")
-    .callsFake(function (
-      req: Request,
-      res: Response,
-      next: NextFunction
-    ): void {
-      res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+          next();
+        }),
+      },
+      "../../../middleware/outbound-contact-us-links-middleware.js": {
+        outboundContactUsLinksMiddleware: sinon.fake(function (
+          req: Request,
+          res: Response,
+          next: NextFunction
+        ): void {
+          res.locals.contactUsLinkUrl = TEST_CONTACT_US_LINK_URL;
 
-      req.session.user = {
-        email: "test@test.com",
-        mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
-        journey: getPermittedJourneyForPath(nextPath),
-        mfaMethodType: mfaMethodType,
-      };
+          next();
+        }),
+      },
+    }
+  );
 
-      next();
-    });
-
-  decache("../../../middleware/outbound-contact-us-links-middleware");
-  const outboundContactUsLinksMiddleware = require("../../../middleware/outbound-contact-us-links-middleware");
-
-  sinon
-    .stub(outboundContactUsLinksMiddleware, "outboundContactUsLinksMiddleware")
-    .callsFake(function (
-      req: Request,
-      res: Response,
-      next: NextFunction
-    ): void {
-      res.locals.contactUsLinkUrl = TEST_CONTACT_US_LINK_URL;
-
-      next();
-    });
-
-  return await require("../../../app").createApp();
+  return await createApp();
 };
 
 const getCannotChangeSecurityCodesAndReturnTokenAndCookies = async (

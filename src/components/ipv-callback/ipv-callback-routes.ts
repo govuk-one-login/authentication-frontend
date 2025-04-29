@@ -1,15 +1,15 @@
 import * as express from "express";
-import { PATH_NAMES } from "../../app.constants";
+import { PATH_NAMES } from "../../app.constants.js";
 import {
   cannotChangeSecurityCodesGet,
   cannotChangeSecurityCodesPost,
   ipvCallbackGet,
-} from "./ipv-callback-controller";
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
-import { validateCannotChangeHowGetSecurityCodesActionRequest } from "./cannot-change-how-get-security-codes-validation";
-import { crossBrowserMiddleware } from "./cross-browser-middleware";
-import { CrossBrowserService } from "./cross-browser-service";
+} from "./ipv-callback-controller.js";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
+import { validateCannotChangeHowGetSecurityCodesActionRequest } from "./cannot-change-how-get-security-codes-validation.js";
+import { crossBrowserMiddleware } from "./cross-browser-middleware.js";
+import { CrossBrowserService } from "./cross-browser-service.js";
 
 const router = express.Router();
 

@@ -1,23 +1,24 @@
 import { describe } from "mocha";
-import sinon, { SinonStub } from "sinon";
-import { Http } from "../../../../utils/http";
-import { UpdateProfileServiceInterface, UpdateType } from "../types";
+import type { SinonStub } from "sinon";
+import sinon from "sinon";
+import { Http } from "../../../../utils/http.js";
+import type { UpdateProfileServiceInterface } from "../types.js";
+import { UpdateType } from "../types.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
-} from "../../../../../test/helpers/service-test-helper";
+} from "../../../../../test/helpers/service-test-helper.js";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../../app.constants";
-import { updateProfileService } from "../update-profile-service";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
-import { commonVariables } from "../../../../../test/helpers/common-test-variables";
-
+} from "../../../../app.constants.js";
+import { updateProfileService } from "../update-profile-service.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
 describe("update profile service", () => {
   const httpInstance = new Http();
   const service: UpdateProfileServiceInterface =

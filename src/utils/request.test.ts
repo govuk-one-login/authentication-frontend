@@ -1,5 +1,5 @@
-import { Request } from "express";
-import { expect } from "../../test/utils/test-utils";
+import type { Request } from "express";
+import { expect } from "../../test/utils/test-utils.js";
 import {
   isReauth,
   isUpliftRequired,
@@ -10,13 +10,12 @@ import {
   clientUsesOneLoginOptionally,
   supportTypeIsGovService,
   urlContains,
-} from "./request";
+} from "./request.js";
 import {
   CONTACT_US_THEMES,
   SERVICE_TYPE,
   SUPPORT_TYPE,
-} from "../app.constants";
-
+} from "../app.constants.js";
 describe("request utilities", () => {
   const blankRequest = {} as Request;
 

@@ -1,12 +1,11 @@
-import { PATH_NAMES } from "../../app.constants";
-
+import { PATH_NAMES } from "../../app.constants.js";
 import * as express from "express";
 import {
   updatedTermsConditionsGet,
   updatedTermsConditionsPost,
-} from "./updated-terms-conditions-controller";
-import { validateSessionMiddleware } from "../../middleware/session-middleware";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware";
+} from "./updated-terms-conditions-controller.js";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
 
 const router = express.Router();
 

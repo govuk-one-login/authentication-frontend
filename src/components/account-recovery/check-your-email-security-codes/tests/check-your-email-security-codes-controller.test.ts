@@ -1,22 +1,22 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 import {
   checkYourEmailSecurityCodesGet,
   checkYourEmailSecurityCodesPost,
-} from "../check-your-email-security-codes-controller";
-import { PATH_NAMES } from "../../../../app.constants";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
+} from "../check-your-email-security-codes-controller.js";
+import { PATH_NAMES } from "../../../../app.constants.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
 import {
   accountInterventionsFakeHelper,
   noInterventions,
-} from "../../../../../test/helpers/account-interventions-helpers";
-import { fakeVerifyCodeServiceHelper } from "../../../../../test/helpers/verify-code-helpers";
-import { ERROR_CODES } from "../../../common/constants";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
-
+} from "../../../../../test/helpers/account-interventions-helpers.js";
+import { fakeVerifyCodeServiceHelper } from "../../../../../test/helpers/verify-code-helpers.js";
+import { ERROR_CODES } from "../../../common/constants.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 describe("check your email change security codes controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

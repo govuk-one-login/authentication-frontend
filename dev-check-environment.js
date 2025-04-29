@@ -1,9 +1,9 @@
-const chai = require("chai");
+import chai from "chai";
 chai.config.truncateThreshold = 0;
 const { expect } = chai;
 
-const { describe, it } = require("mocha");
-const jose = require("jose");
+import { describe, it } from "mocha";
+import * as jose from "jose";
 
 describe("environment", function () {
   const requiredEnvVars = [

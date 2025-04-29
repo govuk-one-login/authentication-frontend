@@ -1,6 +1,6 @@
-import { PATH_NAMES } from "../../app.constants";
-import { getNextState } from "./state-machine/state-machine";
-import { Request } from "express";
+import { PATH_NAMES } from "../../app.constants.js";
+import { getNextState } from "./state-machine/state-machine.js";
+import type { Request } from "express";
 
 export const SECURITY_CODE_ERROR = "actionType";
 

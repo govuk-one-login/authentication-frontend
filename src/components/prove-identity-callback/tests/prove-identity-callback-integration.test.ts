@@ -1,10 +1,11 @@
-import { PATH_NAMES } from "../../../app.constants";
+import { PATH_NAMES } from "../../../app.constants.js";
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils";
-import express, { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper";
-import decache from "decache";
-import { IdentityProcessingStatus } from "../types";
+import { request, sinon } from "../../../../test/utils/test-utils.js";
+import type { NextFunction, Request, Response } from "express";
+import type express from "express";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { IdentityProcessingStatus } from "../types.js";
+import esmock from "esmock";
 
 describe("Integration: prove identity callback", () => {
   let app: express.Application;
@@ -49,44 +50,46 @@ const stubMiddlewareAndCreateApp = async (
   previousPath: string,
   redirectPath?: string
 ) => {
-  decache("../../../app");
+  const { createApp } = await esmock(
+    "../../../app.js",
+    {},
+    {
+      "../../../middleware/session-middleware.js": {
+        validateSessionMiddleware: sinon.fake(function (
+          req: Request,
+          res: Response,
+          next: NextFunction
+        ): void {
+          res.locals.sessionId = "testSessionId";
+          res.locals.clientSessionId = "testClientSessionId";
+          res.locals.persistentSessionId = "testPersistentSessionId";
 
-  decache("../../../middleware/session-middleware");
-  const sessionMiddleware = require("../../../middleware/session-middleware");
-  sinon
-    .stub(sessionMiddleware, "validateSessionMiddleware")
-    .callsFake(function (
-      req: Request,
-      res: Response,
-      next: NextFunction
-    ): void {
-      res.locals.sessionId = "testSessionId";
-      res.locals.clientSessionId = "testClientSessionId";
-      res.locals.persistentSessionId = "testPersistentSessionId";
+          req.session.client = {
+            name: "testClientName",
+          };
+          req.session.user = {
+            email: "test@test.com",
+            journey: getPermittedJourneyForPath(previousPath),
+          };
 
-      req.session.client = {
-        name: "testClientName",
-      };
-      req.session.user = {
-        email: "test@test.com",
-        journey: getPermittedJourneyForPath(previousPath),
-      };
-
-      next();
-    });
-
-  if (redirectPath) {
-    decache("../prove-identity-callback-service");
-    const proveIdentityCallbackServiceFile = require("../prove-identity-callback-service");
-    sinon
-      .stub(proveIdentityCallbackServiceFile, "proveIdentityCallbackService")
-      .returns({
-        processIdentity: sinon.fake.resolves({
-          data: { status: IdentityProcessingStatus.COMPLETED },
+          next();
         }),
-        generateSuccessfulRpReturnUrl: sinon.fake.resolves(redirectPath),
-      });
-  }
+      },
+      ...(redirectPath
+        ? {
+            "../prove-identity-callback-service.js": {
+              proveIdentityCallbackService: () => ({
+                processIdentity: sinon.fake.resolves({
+                  data: { status: IdentityProcessingStatus.COMPLETED },
+                }),
+                generateSuccessfulRpReturnUrl:
+                  sinon.fake.resolves(redirectPath),
+              }),
+            },
+          }
+        : {}),
+    }
+  );
 
-  return await require("../../../app").createApp();
+  return await createApp();
 };

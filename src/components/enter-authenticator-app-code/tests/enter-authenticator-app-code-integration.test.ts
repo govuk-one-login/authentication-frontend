@@ -1,23 +1,23 @@
 import { describe } from "mocha";
-import { expect, sinon, request } from "../../../../test/utils/test-utils";
-import nock = require("nock");
+import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
+import nock from "nock";
 import * as cheerio from "cheerio";
-import decache from "decache";
-import { AxiosResponse } from "axios";
+import type { AxiosResponse } from "axios";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants";
-import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants";
-import {
+} from "../../../app.constants.js";
+import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
+import type {
   AccountRecoveryInterface,
   AccountRecoveryResponse,
-} from "../../common/account-recovery/types";
-import { createApiResponse } from "../../../utils/http";
-import { NextFunction, Request, Response } from "express";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { DefaultApiResponse } from "../../../types";
+} from "../../common/account-recovery/types.js";
+import { createApiResponse } from "../../../utils/http.js";
+import type { NextFunction, Request, Response } from "express";
+import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
+import type { DefaultApiResponse } from "../../../types.js";
+import esmock from "esmock";
 
 describe("Integration:: enter authenticator app code", () => {
   let token: string | string[];
@@ -39,79 +39,87 @@ describe("Integration:: enter authenticator app code", () => {
       : "0";
     process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY =
       options.routeUsersToNewIpvJourney ? "1" : "0";
-    decache("../../../app");
-    decache("../../../middleware/session-middleware");
-    decache("../../common/account-recovery/account-recovery-service");
-    decache("../../../../test/helpers/session-helper");
-    decache("../../common/send-notification/send-notification-service");
-    const sessionMiddleware = require("../../../middleware/session-middleware");
-    const accountRecoveryService = require("../../common/account-recovery/account-recovery-service");
-    const {
-      getPermittedJourneyForPath,
-    } = require("../../../../test/helpers/session-helper");
-    const sendNotificationService = require("../../common/send-notification/send-notification-service");
 
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals = {
-          ...res.locals,
-          sessionId: "tDy103saszhcxbQq0-mjdzU854",
-          clientSessionId: "test-client-session-id",
-          persistentSessionId: "test-persistent-session-id",
-        };
+    const { getPermittedJourneyForPath } = await esmock(
+      "../../../../test/helpers/session-helper.js",
+      {},
+      {
+        "../../../config.js": {
+          supportMfaResetWithIpv: () => options.supportMfaResetWithIpv,
+          routeUsersToNewIpvJourney: () => options.routeUsersToNewIpvJourney,
+        },
+      }
+    );
 
-        req.session.user = {
-          email: "test@test.com",
-          isAccountRecoveryPermitted: true,
-          journey: getPermittedJourneyForPath(
-            PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals = {
+              ...res.locals,
+              sessionId: "tDy103saszhcxbQq0-mjdzU854",
+              clientSessionId: "test-client-session-id",
+              persistentSessionId: "test-persistent-session-id",
+            };
+
+            req.session.user = {
+              email: "test@test.com",
+              isAccountRecoveryPermitted: true,
+              journey: getPermittedJourneyForPath(
+                PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
+              ),
+            };
+
+            if (process.env.TEST_SETUP_REAUTH_SESSION === "1") {
+              req.session.user.reauthenticate = "reauth";
+            }
+            next();
+          }),
+        },
+        "../../common/account-recovery/account-recovery-service.js": {
+          accountRecoveryService: sinon.fake((): AccountRecoveryInterface => {
+            async function accountRecovery() {
+              const fakeAxiosResponse: AxiosResponse = {
+                data: {
+                  accountRecoveryPermitted: true,
+                },
+                status: HTTP_STATUS_CODES.OK,
+              } as AxiosResponse;
+
+              return createApiResponse<AccountRecoveryResponse>(
+                fakeAxiosResponse
+              );
+            }
+
+            return { accountRecovery };
+          }),
+        },
+        "../../common/send-notification/send-notification-service.js": {
+          sendNotificationService: sinon.fake(
+            (): SendNotificationServiceInterface => {
+              async function sendNotification() {
+                const fakeAxiosResponse: AxiosResponse = {
+                  data: "test",
+                  status: HTTP_STATUS_CODES.OK,
+                } as AxiosResponse;
+
+                return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
+              }
+
+              return { sendNotification };
+            }
           ),
-        };
+        },
+      }
+    );
 
-        if (process.env.TEST_SETUP_REAUTH_SESSION === "1") {
-          req.session.user.reauthenticate = "reauth";
-        }
-        next();
-      });
-
-    sinon
-      .stub(accountRecoveryService, "accountRecoveryService")
-      .callsFake((): AccountRecoveryInterface => {
-        async function accountRecovery() {
-          const fakeAxiosResponse: AxiosResponse = {
-            data: {
-              accountRecoveryPermitted: true,
-            },
-            status: HTTP_STATUS_CODES.OK,
-          } as AxiosResponse;
-
-          return createApiResponse<AccountRecoveryResponse>(fakeAxiosResponse);
-        }
-
-        return { accountRecovery };
-      });
-
-    sinon
-      .stub(sendNotificationService, "sendNotificationService")
-      .callsFake((): SendNotificationServiceInterface => {
-        async function sendNotification() {
-          const fakeAxiosResponse: AxiosResponse = {
-            data: "test",
-            status: HTTP_STATUS_CODES.OK,
-          } as AxiosResponse;
-
-          return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
-        }
-
-        return { sendNotification };
-      });
-
-    app = await require("../../../app").createApp();
+    app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
     await request(

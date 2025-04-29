@@ -1,63 +1,70 @@
 import { expect } from "chai";
 import * as cheerio from "cheerio";
-import decache from "decache";
 import { describe } from "mocha";
 import nock from "nock";
 import request from "supertest";
-import { sinon } from "../../../../../test/utils/test-utils";
-import { CHANNEL, PATH_NAMES } from "../../../../app.constants";
-import { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper";
-import { buildMfaMethods } from "../../../../../test/helpers/mfa-helper";
+import { sinon } from "../../../../../test/utils/test-utils.js";
+import { CHANNEL, PATH_NAMES } from "../../../../app.constants.js";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper.js";
+import { buildMfaMethods } from "../../../../../test/helpers/mfa-helper.js";
+import esmock from "esmock";
 
 describe("Integration:: base page ", () => {
   let app: any;
 
   const setupApp = async (channel: string, showTestBanner?: boolean) => {
-    decache("../../../../app");
-    decache("../../../../middleware/session-middleware");
-    const sessionMiddleware = require("../../../../middleware/session-middleware");
-    sinon
-      .stub(sessionMiddleware, "validateSessionMiddleware")
-      .callsFake(function (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): void {
-        res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-        if (channel === CHANNEL.WEB) {
-          res.locals.webChannel = true;
-        } else if (channel === CHANNEL.STRATEGIC_APP) {
-          res.locals.strategicAppChannel = true;
-        }
+    const maybeMockEnvBannerMiddleware =
+      showTestBanner != undefined
+        ? {
+            "../../../../middleware/environment-banner-middleware.js": {
+              environmentBannerMiddleware: sinon.fake(function (
+                req: Request,
+                res: Response,
+                next: NextFunction
+              ): void {
+                res.locals.showTestBanner = showTestBanner;
+                next();
+              }),
+            },
+          }
+        : {};
 
-        req.session.client = {
-          serviceType: "MANDATORY",
-        };
-        req.session.user = {
-          email: "test@test.com",
-          mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
-          journey: getPermittedJourneyForPath(PATH_NAMES.SIGN_IN_OR_CREATE),
-        };
+    const { createApp } = await esmock(
+      "../../../../app.js",
+      {},
+      {
+        "../../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+            if (channel === CHANNEL.WEB) {
+              res.locals.webChannel = true;
+            } else if (channel === CHANNEL.STRATEGIC_APP) {
+              res.locals.strategicAppChannel = true;
+            }
 
-        next();
-      });
-    if (showTestBanner !== undefined) {
-      decache("../../../../middleware/environment-banner-middleware");
-      const envBannerMiddleware = require("../../../../middleware/environment-banner-middleware");
-      sinon
-        .stub(envBannerMiddleware, "environmentBannerMiddleware")
-        .callsFake(function (
-          req: Request,
-          res: Response,
-          next: NextFunction
-        ): void {
-          res.locals.showTestBanner = showTestBanner;
-          next();
-        });
-    }
+            req.session.client = {
+              serviceType: "MANDATORY",
+            };
+            req.session.user = {
+              email: "test@test.com",
 
-    app = await require("../../../../app").createApp();
+              mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
+              journey: getPermittedJourneyForPath(PATH_NAMES.SIGN_IN_OR_CREATE),
+            };
+
+            next();
+          }),
+        },
+        ...maybeMockEnvBannerMiddleware,
+      }
+    );
+
+    app = await createApp();
   };
 
   beforeEach(() => {

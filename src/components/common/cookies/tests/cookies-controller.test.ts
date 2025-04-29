@@ -1,20 +1,20 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 
-import { cookiesGet, cookiesPost } from "../cookies-controller";
+import { cookiesGet, cookiesPost } from "../cookies-controller.js";
 import {
   ANALYTICS_COOKIES,
   COOKIE_CONSENT,
   COOKIES_PREFERENCES_SET,
   PATH_NAMES,
-} from "../../../../app.constants";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { createMockCookieConsentService } from "../../../../../test/helpers/mock-cookie-consent-service-helper";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
-
+} from "../../../../app.constants.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import { createMockCookieConsentService } from "../../../../../test/helpers/mock-cookie-consent-service-helper.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 describe("cookies controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
@@ -22,6 +22,7 @@ describe("cookies controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.COOKIES_POLICY);
     res = mockResponse();
+    res.cookie = sinon.spy(res.cookie);
   });
 
   afterEach(() => {

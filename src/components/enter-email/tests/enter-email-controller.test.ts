@@ -1,23 +1,27 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils";
-import { Request, Response } from "express";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import type { Request, Response } from "express";
 import {
   enterEmailCreateGet,
   enterEmailCreatePost,
   enterEmailCreateRequestGet,
   enterEmailGet,
   enterEmailPost,
-} from "../enter-email-controller";
-import { EnterEmailServiceInterface, LockoutInformation } from "../types";
-import { JOURNEY_TYPE, ERROR_CODES } from "../../common/constants";
-import { PATH_NAMES } from "../../../app.constants";
-import { SendNotificationServiceInterface } from "../../common/send-notification/types";
-import { mockResponse, RequestOutput, ResponseOutput } from "mock-req-res";
-import { CheckReauthServiceInterface } from "../../check-reauth-users/types";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper";
-import { commonVariables } from "../../../../test/helpers/common-test-variables";
+} from "../enter-email-controller.js";
+import type {
+  EnterEmailServiceInterface,
+  LockoutInformation,
+} from "../types.js";
+import { JOURNEY_TYPE, ERROR_CODES } from "../../common/constants.js";
+import { PATH_NAMES } from "../../../app.constants.js";
+import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
+import type { RequestOutput, ResponseOutput } from "mock-req-res";
+import { mockResponse } from "mock-req-res";
+import type { CheckReauthServiceInterface } from "../../check-reauth-users/types.js";
+import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { strict as assert } from "assert";
 
 describe("enter email controller", () => {
