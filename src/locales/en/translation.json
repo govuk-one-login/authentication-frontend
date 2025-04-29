@@ -1254,22 +1254,21 @@
       "sections": {
         "about": {
           "header": "About GOV.UK One Login",
-          "paragraph_one": "The GOV.UK One Login system provides a single way to sign in and prove your identity when accessing government services online.",
+          "paragraph_one": "GOV.UK One Login provides a single way to sign in and prove your identity when accessing government services online.",
           "paragraph_two": {
             "part_one": "GOV.UK One Login is provided by the",
             "part_two": {
               "link_text": "Government Digital Service (GDS)",
               "link_href": "https://www.gov.uk/government/organisations/government-digital-service"
             },
-            "part_three": ", part of the Cabinet Office."
+            "part_three": ", part of the Department for Science, Innovation and Technology (DSIT)."
           },
-          "paragraph_three": "Mentions of ‘us‘ and ‘we‘ in this privacy notice refer to GDS.",
-          "paragraph_four": "The Cabinet Office, as GDS’s parent organisation, is the data controller of the personal data you provide when you use GOV.UK One Login. This means that the Cabinet Office is ultimately responsible for the personal data we collect and process on GOV.UK One Login. This includes determining things like what personal data should be collected, from whom and what it will be used for.",
-          "paragraph_five": "Other government departments are responsible for any personal data you provide when you use their online services. For example they may collect data from you either before they redirect you to GOV.UK One Login or after GOV.UK One Login returns you to their service after you’ve completed your authentication or identity checks. This means that they are data controllers for that information and will decide what data to collect from you, why they need that data and how long they keep that data for. Details of this will be in their own privacy notices."
+          "paragraph_three": "Mentions of ‘us’ and ‘we’ in this privacy notice refer to GDS.",
+          "paragraph_four": "The Department for Science, Innovation and Technology (DSIT), as GDS’s parent organisation, is the data controller of the personal data you provide when you use GOV.UK One Login. This means that DSIT is ultimately responsible for the personal data we collect and process on GOV.UK One Login. This includes determining things like what personal data should be collected, from whom, and what it will be used for.",
+          "paragraph_five": "Other government departments are responsible for any personal data you provide when you use their online services. For example they may collect data from you either before they redirect you to GOV.UK One Login or after GOV.UK One Login returns you to their service, after you’ve completed your authentication or identity checks. This means that they are data controllers for that information and will decide what data to collect from you, why they need that data and how long they keep that data for. Details of this will be in their own privacy notices."
         },
         "information_we_collect": {
           "header": "What information we collect",
-          "sub_header": "When you authenticate your GOV.UK One Login or prove your identity",
           "paragraph_one": "When you are referred to GOV.UK One Login by an online government service to sign in or prove your identity we will know what service you have come from.",
           "paragraph_two": "The information we then collect from you will depend on:",
           "list": {
@@ -1277,8 +1276,10 @@
             "item_two": "the evidence and documents you have available to prove your identity",
             "item_three": "the type of device you use, for example a laptop, tablet or smartphone"
           },
-          "paragraph_three": "In all cases, we will create a GOV.UK One Login using your email address. Where you choose to receive authentication codes using text message, we will also collect your phone number. If the online government service is only using GOV.UK One Login to sign you in to their service, we will not collect any further data from you.",
-          "paragraph_four": "Where online government services use GOV.UK One Login to prove your identity, we need to conduct identity checks and therefore process additional personal data."
+          "paragraph_three": "In all cases, we will create a GOV.UK One Login using your email address. Where you choose to receive authentication codes using text message, we will also collect your phone number.",
+          "paragraph_four": "If the online government service is only using GOV.UK One Login to sign you in to their service, we will not collect any further information from you.",
+          "paragraph_five": "Where online government services use GOV.UK One Login to prove your identity, we need to conduct identity checks and therefore process additional personal data. The process includes a fraud check with Experian to make sure the data you give us is accurate and to check there are no signs your identity has been stolen or misused.",
+          "paragraph_six": "There are 3 main ways to prove your identity. The things we check depend on which way you prove your identity."
         },
         "using_id_check_app": {
           "header": "Using the GOV.UK ID Check app to prove your identity",
@@ -1293,141 +1294,141 @@
               "link_href": "https://apps.apple.com/gb/app/gov-uk-id-check/id1629050566",
               "link_text": "Apple"
             },
-            "part_three": " App Stores. It consists of a sequence of checks that are conducted by specialist identity checking service providers on our behalf."
+            "part_three": " app stores. It consists of a sequence of checks that are carried out  by specialist identity checking service providers on our behalf, as well as the fraud check described below."
           },
-          "sub_header_one": "Genuine document, liveness and likeness checks",
           "paragraph_two": "We need to check that:",
           "list_one": {
             "item_one": "your documents are real",
             "item_two": "you are a real person (also known as a ‘liveness’ check)",
             "item_three": "you are the same person as in the document photos (also known as a ‘likeness’ check)"
           },
-          "paragraph_three": "We use an identity checking service provider called Iproov and their subcontractors Veriff and Innovalor to conduct these checks. Iproov acts as a data processor with Veriff and Innovalor as sub-processors, which means that they may only process your personal data for the sole purpose of fulfilling our instructions.",
+          "paragraph_three": "We use an identity checking service provider called Iproov and their subcontractors Veriff and Inverid to conduct these checks. Iproov acts as a data processor with Veriff and Inverid as sub-processors, which means that they may only process your personal data for the sole purpose of fulfilling our instructions.",
+          "sub_header_one": "Information we may collect to check your documents are real",
           "paragraph_four": "We need to check your identity document security features to prove that they are genuine documents.",
           "paragraph_five": "For driving licences, you will need to take a photo of the front and back of your licence with your phone camera. The app will require permission to access your camera and photos for this.",
           "paragraph_six": "For e-passports, biometric residence permits and cards, and frontier worker permits the app will read your document information from its near field communication (NFC) chip.",
-          "paragraph_seven": "We collect the following information:",
+          "paragraph_seven": "We may collect the following information:",
           "list_two": {
             "item_one": "name",
             "item_two": "date of birth",
-            "item_three": "address (driving licences only)",
-            "item_four": "document number",
-            "item_five": "expiry date",
-            "item_six": "issuing country",
-            "item_seven": "nationality (except driving licences)",
-            "item_eight": "photo image"
+            "item_three": "address",
+            "item_four": "postcode",
+            "item_five": "document number",
+            "item_six": "expiry date",
+            "item_seven": "issuing country",
+            "item_eight": "nationality",
+            "item_nine": "photo image"
           },
           "paragraph_eight": "When Iproov has completed the check, they send us the outcome of the check and your identity document information.",
-          "paragraph_nine": "We do a “liveness” check to prove whether a user is a real person and not anything that might impersonate an individual such as a mannequin, wax figure, 3D mask, picture or deepfake.",
-          "paragraph_ten": "You will need to take a selfie video using your phone camera. The App will require permission to access your camera and videos for this. This check is conducted in real-time which means that neither we nor Iproov store the video.",
-          "paragraph_eleven": "When Iproov has completed the check, they send us the outcome of the check.",
-          "paragraph_twelve": "We do a likeness check to prove that you are the same person as in your identity document photo.",
-          "paragraph_thirteen": "This check uses a still image generated from your selfie video and your identity document photo to measure the unique patterns of your face. This is called facial biometric data. The biometric data from both images is compared to establish whether the user is the actual owner of the identity document.",
+          "paragraph_nine": "If you use a driving licence, you’ll be able to check that the app has correctly captured the details.",
+          "paragraph_ten": "You’ll need to agree to us sharing your details with:",
+          "list_three": {
+            "item_one": "the Driver and Vehicle Licensing Agency (DVLA) if your licence was issued in Great Britain",
+            "item_two": "the Driver and Vehicle Agency (DVA) if your licence was issued in Northern Ireland"
+          },
+          "paragraph_eleven": "They will check the information you’ve provided matches what’s in their records.",
+          "sub_header_two": "Using a selfie video to check you are a real person",
+          "paragraph_twelve": "We also do a ‘liveness’ check to prove whether you are a real person and not anything that might impersonate an individual such as a mannequin, wax figure, 3D mask, picture or deepfake.",
+          "paragraph_thirteen": "You will need to take a selfie video using your phone camera. The app will require permission to access your camera and videos for this. This check is conducted in real-time which means that neither we nor Iproov store the video.",
           "paragraph_fourteen": "When Iproov has completed the check, they send us the outcome of the check.",
-          "sub_header_two": "Fraud check",
-          "paragraph_fifteen": "We use an identity checking service provider called Experian to conduct a fraud check to:",
-          "list_four": {
-            "item_one": "look for any signs that your identity has been stolen or misused",
-            "item_two": "check whether there is a record of you existing over time"
-          },
-          "paragraph_sixteen": {
-            "part_one": "They do so as an independent data controller in accordance with their",
-            "link": {
-              "link_text": "privacy notice",
-              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
-            }
-          },
-          "paragraph_seventeen": "When you have completed the checks above using the App, you will be returned to the GOV.UK One Login website where we will collect your name, date of birth and address. We send these to Experian so they can conduct a counter fraud check.",
-          "paragraph_eighteen": "When Experian has completed the check, they send us a fraud score, plus details of any associated fraudulent activity.",
-          "paragraph_nineteen": "This fraud check will not affect your credit score, as it is a ‘soft search’. An entry about it will be added to your credit record, but it will only be visible to you. Other organisations that use Experian to run their own credit checks will not be able to see it."
+          "sub_header_four": "How we check you are the person in your photo",
+          "paragraph_fifteen": "We do a ‘likeness’ check to prove that you are the same person as in your identity document photo.",
+          "paragraph_sixteen": "This check uses a still image generated from your selfie video and your identity document photo to measure the unique patterns of your face. This is called facial biometric data. The biometric data from both images is compared to establish whether you are the actual owner of the identity document.",
+          "paragraph_seventeen": "When Iproov has completed the check, they send us the outcome of the check."
         },
         "using_web_to_prove_identity": {
           "header": "Using your web browser to prove your identity",
-          "paragraph_one": "This route consists of 3 separate identity checks.",
-          "sub_header_one": "An identity document check",
-          "paragraph_two": "We check your passport or driving licence details are genuine using the authoritative datasets held, respectively, by HM Passport Office (HMPO) or the Driver and Vehicle Licensing Agency (DVLA) in Great Britain or the Driver and Vehicle Agency in Northern Ireland (DVA (NI)). You will need to provide your driving licence or passport details which we then send to HMPO, DVLA or DVA (NI) to validate against their records.",
-          "paragraph_three": "When HMPO, DVLA or DVA (NI) have completed their checks, they send us confirmation as to whether the data matches or not and if not, the reason why it didn’t match.",
-          "paragraph_four": "HMPO, DVLA and DVA (NI) do so as independent data controllers in accordance with their privacy notices.",
-          "sub_header_two": "Knowledge Based Verification check (security questions)",
-          "paragraph_five": {
-            "part_one": "We conduct a Knowledge Based Verification (KBV) check, or security questions, using questions about your credit or financial history that only you should know the answer to. This check is conducted by Experian as an independent data controller in accordance with their",
+          "paragraph_one": "The checks we carry out depend on whether you have a photo ID like a passport or driving licence and what government service you are accessing. We also carry out the fraud check described below.",
+          "sub_header_one": "How we check your photo ID",
+          "paragraph_two": "If you have photo ID like a passport or driving licence, we’ll check the details are genuine using the authoritative datasets held, respectively, by:",
+          "list_one": {
+            "item_one": "HM Passport Office (HMPO)",
+            "item_two": "DVLA or DVA, depending on if your driving licence was issued in Great Britain or Northern Ireland"
+          },
+          "paragraph_three": "You will need to provide your driving licence or passport details which we then send to HMPO, DVLA or DVA to validate against their records.",
+          "paragraph_four": "When HMPO, DVLA or DVA have completed their checks, they tell us whether the data matches or not and if not, the reason why it didn’t match.",
+          "paragraph_five": "HMPO, DVLA and DVA do so as independent data controllers in accordance with their privacy notices.\n",
+          "sub_header_two": "How we check your bank details",
+          "paragraph_six": "If you prove your identity without photo ID, we may ask you to provide your name and the account number and sort code of a UK current bank account in your name.",
+          "paragraph_seven": "We then check your UK current account details against the details held by banks across the UK, using a checking service provided by Experian.",
+          "paragraph_eight": "When Experian have completed the check, they tell us:",
+          "list_two": {
+            "item_one": "whether the information you provided matches or not",
+            "item_two": "where the name you provided is a partial match to banking records, the official name on record"
+          },
+          "sub_header_three": "How we check your HMRC record",
+          "paragraph_nine": "If you prove your identity without photo ID, we may also ask you to provide your National Insurance number. We share your National Insurance number, name, postcode and date of birth with HM Revenue and Customs (HMRC), who check if they have a record of you and that the information matches what you told us.",
+          "paragraph_ten": "When HMRC have completed the check, they confirm to us whether the information you provided matches their records or not.",
+          "sub_header_four": "What information we collect when you answer security questions",
+          "paragraph_eleven": {
+            "part_one": "We ask you security questions, also known as a ‘knowledge based verification’ (‘KBV’) check, using questions about your credit or financial history that only you should know the answer to. This check is conducted by Experian as an independent data controller in accordance with their",
             "link": {
-              "link_text": "privacy notice",
-              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
+              "link_href": "https://www.experian.co.uk/consumer/privacy.html",
+              "link_text": "privacy notice"
             }
           },
-          "paragraph_six": "For this check we use your name, date of birth and address to retrieve relevant questions from Experian. We collect your answers and send them to Experian to check that they match the information they already have about you.",
-          "paragraph_seven": "When Experian has completed the check they respond to us with a Pass / Fail outcome.",
-          "paragraph_eight": "GDS does not store or retain the questions or your answers.",
-          "paragraph_nine": "This fraud check will not affect your credit score, as it is a ‘soft search’. An entry about it will be added to your credit record, but it will only be visible to you. Other organisations that use Experian to run their own credit checks will not be able to see it.",
-          "sub_header_three": "Fraud check",
-          "paragraph_ten": "We use an identity checking service provider called Experian to conduct a fraud check to:",
+          "paragraph_twelve": "For this check we use your name, date of birth and address to retrieve relevant questions from Experian. We collect your answers and send them to Experian to check that they match the information they already have about you.",
+          "paragraph_thirteen": "When Experian has completed the check they respond to us with a Pass / Fail outcome.",
+          "paragraph_fourteen": "GDS does not store or retain the questions or your answers."
+        },
+        "proving_identity_at_post_office": {
+          "header": "Proving your identity at a Post Office",
+          "paragraph_one": "GOV.UK One Login gives you the option to prove your identity at a Post Office. This route consists of a sequence of checks carried out by specialist identity checking services on our behalf, as well as the fraud check described below.",
+          "paragraph_two": "We need to check that:",
+          "list_one": {
+            "item_one": "your identity documents are real",
+            "item_two": "you are the same person as in the identity document photos (also known as a ‘likeness’ check)"
+          },
+          "paragraph_three": "These checks are conducted by the Post Office and their subcontractor Yoti on our behalf. The Post Office acts as a data processor with Yoti as a sub-processor, which means that they may only process your personal data for the sole purpose of fulfilling our instructions.",
+          "sub_header_one": "What information we collect before you go to the Post Office",
+          "paragraph_four": "We ask you what identity document you would like to use to prove your identity. You can use any of the following identity documents:",
+          "list_two": {
+            "item_one": "UK passport",
+            "item_two": "non-UK passport",
+            "item_three": "UK photocard driving licence",
+            "item_four": "European Union (EU) photocard driving licence",
+            "item_five": "National identity card from the EU, Norway, Iceland or Liechtenstein"
+          },
+          "paragraph_five": "We ask you:",
+          "list_three": {
+            "item_one": "for your identity document’s expiry date and issuing country",
+            "item_two": "to confirm that the address you provided previously matches the address shown on your identity document, for documents that have an address on them.",
+            "item_three": "to choose which Post Office branch you would like to attend"
+          },
+          "paragraph_six": "We send this information plus your name, address and date of birth to the Post Office before you go to a branch. We also send you an email with a link to download a Post Office In Branch Verification customer letter. This will contain a QR code and instructions about what you will need to do next. You will need to open the link, enter your email address, and download and print the letter and take it with you when you attend the Post Office, or show it on your device.",
+          "sub_header_two": "What information we collect at the Post Office",
+          "paragraph_seven": "When you attend the Post Office, a member of staff will scan the QR code on your letter and check the identity document you have with you against the details you provided.",
+          "paragraph_eight": "The Post Office and Yoti will then check your identity document security features to make sure it is a genuine document.",
+          "list_four": {
+            "item_one": "For all identity documents, the Post Office will take a photo of the front and back of the document to check the document’s security features, such as holograms, and to read the document information.",
+            "item_two": "For UK e-passports, the Post Office will also use a tablet to check your document’s security features and to read your document information from the NFC chip."
+          },
+          "paragraph_nine": "The Post Office will also take a photo of your face, from which they will measure the unique patterns of your face. This is called facial biometric data. The biometric data from your photo will be compared against the biometric data from the photo on your identity document to check whether you are the actual owner of the identity document.",
+          "sub_header_three": "What happens after your Post Office visit",
+          "paragraph_ten": "When the Post Office and Yoti have completed the checks, they send us the result of the check and your identity document information.",
+          "paragraph_eleven": "We then use your email address to tell you that the results of your check are available. To see your result and share it with the service you needed to prove your identity for, you will need to sign in to GOV.UK One Login and be redirected to the government service you were using."
+        },
+        "borrow_phone_identity": {
+          "header": "If you let somebody borrow your phone to prove their identity",
+          "paragraph_one": "Technical information about the device being used will be collected by GOV.UK One Login as set out below."
+        },
+        "handle_information": {
+          "header": "How we handle your information to check against fraud",
+          "paragraph_one": "However you prove your identity, we will run an online fraud check using an identity checking service provider called Experian to:",
           "list": {
             "item_one": "look for any signs that your identity has been stolen or misused",
             "item_two": "check whether there is a record of you existing over time"
           },
-          "paragraph_eleven": {
-            "part_one": "They do so as an independent data controller in accordance with their ",
+          "paragraph_two": {
+            "part_one": "They do this as an independent data controller in accordance with the",
             "link": {
-              "link_text": "privacy notice",
-              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
+              "link_href": "https://www.experian.co.uk/consumer/privacy.html",
+              "link_text": "Experian privacy notice"
             }
           },
-          "paragraph_twelve": "When you have completed the checks above, we will collect your name, date of birth and address. We send these to Experian so they can conduct the check.",
-          "paragraph_thirteen": "When Experian has completed the check, they send us a fraud score, plus details of any associated fraudulent activity.",
-          "paragraph_fourteen": "This fraud check will not affect your credit score, as it is a ‘soft search’. An entry about it will be added to your credit record, but it will only be visible to you. Other organisations that use Experian to run their own credit checks will not be able to see it."
-        },
-        "proving_identity_at_post_office": {
-          "header": "Proving your identity at a Post Office",
-          "paragraph_one": "GOV.UK One Login gives you the option to prove your identity at a Post Office. This route consists of 3 separate identity checks.",
-          "sub_header_one": "Fraud check",
-          "paragraph_two": "We use an identity checking service provider called Experian to conduct on online fraud check to:",
-          "list_one": {
-            "item_one": "look for any signs that your identity has been stolen or misused",
-            "item_two": "check whether there is a record of you existing over time"
-          },
-          "paragraph_three": {
-            "part_one": "They do so as an independent data controller in accordance with their",
-            "link": {
-              "link_text": "privacy notice",
-              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
-            }
-          },
-          "paragraph_four": "We collect your name, date of birth and address and send them to Experian so they can conduct the check.",
-          "paragraph_five": "When Experian has completed the check, they send us a fraud score, plus details of any associated fraudulent activity.",
-          "paragraph_five_one": "This fraud check will not affect your credit score, as it is a ‘soft search’. An entry about it will be added to your credit record, but it will only be visible to you. Other organisations that use Experian to run their own credit checks will not be able to see it.",
-          "sub_header_two": "Genuine document check and likeness check",
-          "paragraph_six": "We need to check that:",
-          "list_two": {
-            "item_one": "your identity documents are real",
-            "item_two": "you are the same person as in the identity document photos (also known as a ‘likeness’ check)"
-          },
-          "paragraph_seven": "These checks are conducted by the Post Office and their subcontractor Yoti on our behalf. The Post Office acts as a data processor with Yoti as a sub-processor, which means that they may only process your personal data for the sole purpose of fulfilling our instructions.",
-          "paragraph_eight": "We ask you what identity document you would like to use to prove your identity. You can use any of the following identity documents:",
-          "list_three": {
-            "item_one": "UK passport",
-            "item_two": "non-UK passport",
-            "item_three": "UK photocard driving licence",
-            "item_four": "UK biometric residence permits",
-            "item_five": "European Union (EU) photocard driving licence",
-            "item_six": "National identity card from a European Economic Area (EEA) country"
-          },
-          "paragraph_nine": "We ask you:",
-          "list_four": {
-            "item_one": "for your identity document’s expiry date and issuing country ",
-            "item_two": "to confirm that the address you provided previously matches the address shown on your identity document, for documents that have an address on them.",
-            "item_three": "to choose which Post Office branch you would like to attend"
-          },
-          "paragraph_ten": "We send this information plus your name, address and date of birth to the Post Office before you go to a branch. We also send you an email with a link to download a Post Office In Branch Verification customer letter. This will contain a QR code and instructions about what you will need to do next. You will need to open the link, enter your email address, and download and print the letter and take it with you when you attend the Post Office, or show it on your device.",
-          "paragraph_eleven": "When you attend the Post Office, a member of staff will scan the QR code on your letter and check the identity document you have with you against the details you provided.",
-          "paragraph_twelve": "The Post Office and Yoti will then check your identity document security features to make sure it is a genuine document.",
-          "list_five": {
-            "item_one": "For all identity documents, the Post Office will take a photo of the front and back of the document to check the document’s security features, such as holograms, and to read the document information.",
-            "item_two": "For UK e-passports, the Post Office will also use a tablet to check your document’s security features and to read your document information from the NFC chip."
-          },
-          "paragraph_thirteen": "The Post Office will also take a photo of your face,from which they will measure the unique patterns of your face. This is called facial biometric data. The biometric data from your photo will be compared against the biometric data from the photo on your identity document to check whether you are the actual owner of the identity document.",
-          "paragraph_fourteen": "When the Post Office and Yoti have completed the checks, they send us the result of the check and your identity document information.",
-          "paragraph_fifteen": "We then use your email address to tell you that the results of your check are available. To see your result and share it with the service you needed to prove your identity for, you will need to sign in to GOV.UK One Login and be redirected to the government service you were using."
+          "paragraph_three": "We collect your name, date of birth and address and send them to Experian so they can conduct the check.",
+          "paragraph_four": "When Experian has completed the check, they send us a fraud score, based on any potential or associated fraudulent activity. If you have concerns involving potential fraud of your identity data, you should contact Experian directly, as the independent controller of this search data.",
+          "paragraph_five": "This fraud check will not affect your credit score, as it is a ‘soft search’. An entry about it will be added to your credit record, but it will only be visible to you. Other organisations that use Experian to run their own credit checks will not be able to see it."
         },
         "technical_information": {
           "header": "Technical information",
@@ -1459,29 +1460,29 @@
           "paragraph_six": "If you agree to take part in our survey about the help you received, we collect your answers to the questions. These are linked to the record of when you contacted us, which includes information such as your name, email address or telephone number."
         },
         "if_you_agree_to_analytics": {
-          "header": "If you agree to web / app analytics",
-          "paragraph_one": "If you give your consent, we use Google Analytics to collect information about how you use GOV.UK One Login. For example:",
+          "header": "If you agree to web or app analytics (cookies)",
+          "paragraph_one": {
+            "part_one": "We use Google Analytics and Dynatrace to collect information about how you use GOV.UK One Login. These is done using cookies. Cookies are small files saved on your phone, tablet or computer when you visit a website. Our cookie privacy notice and consent process is set out in the",
+            "link_text": "GOV.UK One Login cookies policy",
+            "link_href": "https://signin.account.gov.uk/cookies"
+          },
+          "paragraph_two": "Some cookies are strictly necessary for GOV.UK One Login to support authentication and security.",
+          "paragraph_three": "Further cookies support our analysis of the platform and allows GOV.UK One Login to improve the citizen experience. These cookies will require your consent.",
+          "paragraph_four": "We use cookies to review:",
           "list": {
             "item_one": "information about the pages you use",
             "item_two": "how long you spend on each page",
             "item_three": "how you got to GOV.UK One Login",
             "item_four": "what you click on while you use the service",
-            "item_five": "technical information including IP addresses, the type of device and web browser you use",
-            "item_six": "an indication of your location (such as your city and country) using your anonymised IP address"
+            "item_five": "technical information including IP addresses",
+            "item_six": "an indication of your location (such as your city and country) using your anonymised IP address",
+            "item_seven": "how quickly pages load",
+            "item_eight": "if you see any error messages",
+            "item_nine": "technical information including your IP address and a unique identifier, and the type of device and web browser you use"
           },
-          "paragraph_two": "The information collected is classed as personal data because Google Analytics assigns a unique identifier to each visitor. This does not however enable us or Google to determine your real world identity. We will also not combine analytics information with the data you provide when authenticating your GOV.UK One Login or proving your identity or any other data that we may hold in order to determine your real world identity.",
-          "paragraph_three": "We also use Firebase Crashlytics to collect information about problems you may experience when you use the GOV.UK ID Check app, such as the app crashing.",
-          "paragraph_four": "In both cases, Google acts as our data processor and we do not permit Google to use or share this data for their own purposes.",
-          "dynatrace": {
-            "paragraph_one": "We use Dynatrace to collect information about problems you may experience when using GOV.UK One Login. For example:",
-            "list": {
-              "item_one": "how quickly pages load",
-              "item_two": "if you see any error messages",
-              "item_three": "technical information including your IP address and a unique identifier"
-            },
-            "paragraph_two": "The information we collect does not enable us or Dynatrace to determine your real world identity. We will not combine analytics information with any other data to determine your real world identity.",
-            "paragraph_three": "Dynatrace acts as our data processor and we do not permit them to use or share this data for their own purposes."
-          }
+          "paragraph_five": "The information collected is classed as personal data because Google Analytics and Dynatrace assign a unique identifier to each visitor. This does not however enable us or Google to determine your real world identity. We will also not combine analytics information with the data you provide when authenticating your GOV.UK One Login or proving your identity or any other data that we may hold in order to determine your real world identity.",
+          "paragraph_six": "We also use Firebase Crashlytics to collect information about problems you may experience when you use the GOV.UK ID Check app, such as the app crashing.",
+          "paragraph_seven": "In all  cases, Google, Dynatrace and Firebase Crashlytics act as our data processor and we do not allow them to use or share this data for their own purposes."
         },
         "why_we_need_your_information": {
           "header": "Why we need your information",
@@ -1531,7 +1532,7 @@
           "sub_header_three": "Public Task (UK GDPR Article (6)(1)(e))",
           "paragraph_four": "For all other purposes including the administration of your GOV.UK One Login, proving your identity and enabling you to reuse that proven identity, and fraud monitoring, the legal basis is that it is necessary for the performance of a task carried out in the public interest or the exercise of our functions as a government department.",
           "sub_header_four": "Special category data",
-          "paragraph_five": "If you prove your identity using the GOV.UK Identity Check app, you will do a likeness check which will involve processing your facial biometric data. Under UK Law, biometric data is classed as special category data and the Cabinet Office is required to have an additional legal basis to process it. The Cabinet Office processes biometric data on the legal basis that the processing is necessary for reasons of substantial public interest. UK Law also requires the Cabinet Office to meet a specific substantial public interest condition from the UK Data Protection Act 2018. The Cabinet Office relies on the following 2 conditions:",
+          "paragraph_five": "If you prove your identity using the GOV.UK Identity Check app, you will do a likeness check which will involve processing your facial biometric data. Under UK Law, biometric data is classed as special category data and DSIT is required to have an additional legal basis to process it. DSIT processes biometric data on the legal basis that the processing is necessary for reasons of substantial public interest. UK Law also requires DSIT to meet a specific substantial public interest condition from the UK Data Protection Act 2018. DSIT relies on the following 2 conditions:",
           "list_three": {
             "item_one": "statutory and government purposes for identity checking (paragraph 6, schedule 1, Data Protection Act 2018)",
             "item_two": "preventing or detecting unlawful acts for fraud detection and prevention (paragraph 10, schedule 1, Data Protection Act 2018)"
@@ -1577,27 +1578,32 @@
           "paragraph_nine": "These service providers are:",
           "list_four": {
             "item_one": {
-              "part_one": "His Majesty’s Passport Office (HMPO), as an independent data controller under an MoU, to conduct passport genuine document checks. You can read ",
+              "part_one": "His Majesty’s Passport Office (HMPO), as an independent data controller under an MoU, to conduct passport genuine document checks; read ",
               "link_text": "HMPO’s privacy notice",
               "link_href": "https://www.gov.uk/government/statistics/hmpo-privacy-information-notice/privacy-information-notice-accessible-version"
             },
             "item_two": {
-              "part_one": "the Driver and Vehicle Licensing Agency (DVLA), as an independent data controller under an MoU, for GB driving licence genuine document checks. You can read ",
+              "part_one": "the Driver and Vehicle Licensing Agency (DVLA), as an independent data controller under an MoU, for GB driving licence genuine document checks; read ",
               "link_text": "DVLA’s privacy notice",
               "link_href": "https://www.gov.uk/government/publications/dvla-privacy-policy/dvla-privacy-policy"
             },
             "item_three": {
-              "part_one": "the Driver and Vehicle Agency Northern Ireland (DVA NI), as an independent data controller under an MoU, for Northern Irish driving licence genuine document checks. You can read ",
+              "part_one": "the Driver and Vehicle Agency Northern Ireland (DVA NI), as an independent data controller under an MoU, for Northern Irish driving licence genuine document checks; see ",
               "link_text": "DVA NI’s privacy notice",
               "link_href": "https://www.infrastructure-ni.gov.uk/publications/gdpr-privacy-notices-dfi-business-areas"
             },
             "item_four": {
-              "part_one": "Experian, as an independent data controller subject to a contract with us, for Knowledge-Base Verification (KBV) and fraud checks. You can read ",
+              "part_one": "Experian, as an independent data controller subject to a contract with us, for checking answers to security questions, bank account checks and fraud checks;  read ",
               "link_text": "Experian’s consumer privacy notice",
               "link_href": "https://www.experian.co.uk/legal/crain/"
             },
-            "item_five": "iProov, as a data processor with Veriff and Innovalor as its sub-processors, subject to a contract with us, for biometric likeness checks, genuine document checks and liveness checks",
-            "item_six": "Post Office, as a data processor with Yoti as its sub-processor, subject to a contract with us, for in-person identity checks "
+            "item_five": "iProov, as a data processor with Veriff and Inverid  as its sub-processors, subject to a contract with us, for biometric likeness checks, genuine document checks and liveness checks",
+            "item_six": "Post Office, as a data processor with Yoti as its sub-processor, subject to a contract with us, for in-person identity checks",
+            "item_seven": {
+              "part_one": "HMRC as an independent data controller under an MoU, for bank account checks;  read more in ",
+              "link_text": "HMRC’s privacy notice",
+              "link_href": "https://www.gov.uk/government/publications/data-protection-act-dpa-information-hm-revenue-and-customs-hold-about-you/data-protection-act-dpa-information-hm-revenue-and-customs-hold-about-you"
+            }
           },
           "paragraph_ten": "In all cases we only provide the minimum information needed to perform the checks.",
           "sub_header_three": "Sharing your information to protect against fraud",
@@ -1609,19 +1615,27 @@
             "item_four": "Experian (a credit reference agency)",
             "item_five": "data processors who provide relevant monitoring services"
           },
-          "paragraph_twelve": "The information we share includes:",
+          "paragraph_twelve": "The information we may share includes:",
           "list_six": {
-            "item_one": "IP addresses and geolocations",
-            "item_two": "unique account identifiers",
-            "item_three": "information about the devices being used",
-            "item_four": "identity document details, including name and date of birth",
-            "item_five": "address history",
-            "item_six": "phone numbers",
-            "item_seven": "email addresses"
+            "item_one": "phone numbers",
+            "item_two": "email addresses",
+            "item_three": "IP addresses",
+            "item_four": "location, derived from the IP address and expressed as a country, for example ‘GB’",
+            "item_five": "unique account identifiers",
+            "item_six": "information about the devices being used, including device ID",
+            "item_seven": "identity document details, including name and date of birth",
+            "item_eight": "address history"
           },
-          "paragraph_experian": "We use Experian to check your email address and phone number when you create a GOV.UK One Login and if you change your email address or phone number.",
+          "paragraph_thirteen": "Where we have a concern about fraudulent activity, we might also share details from:",
+          "list_seven": {
+            "item_one": "passports",
+            "item_two": "driving licences",
+            "item_three": "biometric residence permits",
+            "item_four": "identity cards"
+          },
+          "paragraph_fourteen": "This information we share may have been provided by you to GOV.UK One Login directly. Or it may have been shared with us by government services that run the services you have accessed through GOV.UK One Login, or third parties such as credit reference agencies such as Experian.",
           "sub_header_four": "Sharing your information with our suppliers",
-          "paragraph_thirteen": "We work with technology suppliers, for example we use an external hosting provider and a contact centre provider. We only give our suppliers access to your information if they need it to provide their service. Our suppliers act as data processors and are subject to contracts with us which restrict them to only processing your personal data for the sole purpose of providing their services in accordance with our instructions."
+          "paragraph_fifteen": "We work with technology suppliers, for example we use an external hosting provider and a contact centre provider. We only give our suppliers access to your information if they need it to provide their service. Our suppliers act as data processors and are subject to contracts with us which restrict them to only processing your personal data for the sole purpose of providing their services in accordance with our instructions."
         },
         "how_long_we_keep_your_information": {
           "header": "How long we keep your information",
@@ -1648,11 +1662,12 @@
         "where_information_processed_stored": {
           "header": "Where your information is processed and stored",
           "paragraph_one": "All personal data processed directly for the administration of your GOV.UK One Login and for identity checking is stored in the UK or in the European Economic Area (EEA). The EEA has been assessed by the UK Government as having adequate legal protections for data privacy in line with those in the UK.",
-          "paragraph_two": "Data collected by Google Analytics or Dynatrace may be transferred outside the European Economic Area (EEA) for processing and some of our suppliers may provide technical support from outside of the EEA. In both cases, we ensure your information is just as well protected, for example by including extra clauses in our contracts with suppliers."
+          "paragraph_two": "Data collected by Google Analytics or Dynatrace may be transferred outside the European Economic Area (EEA) for processing and some of our suppliers may provide technical support from outside of the EEA. In both cases, we make sure your information is just as well protected, for example by including extra clauses in our contracts with suppliers. Google is also supported by the US Data Privacy Framework, which extends to UK data protection and processing security.",
+          "paragraph_three": "Where locations of processors or sub-processors are outside the UK, we rely on agreed model contract clauses set out by GDPR for assurance and data protection."
         },
         "how_we_protect_your_information": {
           "header": "How we protect your personal information and keep it secure",
-          "paragraph_one": "We are committed to doing all that we can to keep your information secure. We have set up systems and processes to prevent unauthorised access or disclosure of your information - for example, we use varying levels of encryption. We also make sure that any third parties that we deal with keep all personal information they process on our behalf secure.",
+          "paragraph_one": "We are committed to doing all that we can to keep your information secure. We have set up systems and processes to prevent unauthorised access or disclosure of your information – for example, we use varying levels of encryption. We also make sure that any third parties that we deal with keep all personal information they process on our behalf secure.",
           "paragraph_two": "As the owner of your GOV.UK One Login, you also have some responsibility for its security. For example, you should:",
           "list_one": {
             "item_one": {
@@ -1741,7 +1756,7 @@
           "header": "Changes to this notice",
           "paragraph_one": "We may change this privacy notice. In that case, the ‘last updated’ date of this document will also change. Any changes to this privacy notice will apply to you and your information immediately.",
           "paragraph_two": "If these changes affect how your personal information is processed, GDS will let you know.",
-          "paragraph_three": "Last updated: 28 June 2024"
+          "paragraph_three": "Last updated: April 2025"
         }
       }
     },
