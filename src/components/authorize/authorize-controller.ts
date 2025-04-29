@@ -68,7 +68,12 @@ export function authorizeGet(
       persistentSessionId,
       req,
       {
-        ...claims,
+        authenticated: claims.authenticated,
+        current_credential_strength: claims.current_credential_strength,
+        previous_session_id: claims.previous_session_id,
+        previous_govuk_signin_journey_id:
+          claims.previous_govuk_signin_journey_id,
+        reauthenticate: claims.reauthenticate,
       }
     );
 
