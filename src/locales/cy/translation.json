@@ -1254,22 +1254,21 @@
       "sections": {
         "about": {
           "header": "Am GOV.UK One Login",
-          "paragraph_one": "Mae’r system GOV.UK One Login yn darparu un ffordd o fewngofnodi a phrofi eich hunaniaeth wrth gael mynediad at wasanaethau’r llywodraeth ar-lein.",
+          "paragraph_one": "GOV.UK Mae One Login yn darparu un ffordd i fewngofnodi a phrofi eich hunaniaeth wrth gyrchu gwasanaethau’r llywodraeth ar-lein.",
           "paragraph_two": {
             "part_one": "Mae GOV.UK One Login yn cael eu darparu gan",
             "part_two": {
               "link_text": "Gwasanaeth Digidol y Llywodraeth (GDS)",
               "link_href": "https://www.gov.uk/government/organisations/government-digital-service"
             },
-            "part_three": ", rhan o Swyddfa’r Cabinet."
+            "part_three": ", rhan o’r Adran Wyddoniaeth, Arloesedd a Thechnoleg (DSIT)."
           },
           "paragraph_three": "Mae sôn am ‘ni’ yn yr hysbysiad preifatrwydd hwn yn cyfeirio at GDS.",
-          "paragraph_four": "Swyddfa’r Cabinet, fel rhiant-sefydliad GDS, yw rheolwr data’r data personol rydych yn ei ddarparu pan fyddwch yn defnyddio GOV.UK One Login. Mae hyn yn golygu mai Swyddfa’r Cabinet sy’n gyfrifol yn y pen draw am y data personol rydym yn ei gasglu a’i brosesu ar GOV.UK One Login. Mae hyn yn cynnwys penderfynu ar bethau fel pa ddata personol y dylid ei gasglu, gan bwy a beth y bydd yn cael ei ddefnyddio ar ei gyfer.",
+          "paragraph_four": "Yr Adran Wyddoniaeth, Arloesedd a Thechnoleg (DSIT), fel rhiant-sefydliad GDS, yw rheolydd data’r data personol rydych chi’n ei ddarparu pan fyddwch chi’n defnyddio GOV.UK One Login. Mae hyn yn golygu bod DSIT yn y pen draw yn gyfrifol am y data personol rydym yn ei gasglu a’i brosesu ar GOV.UK One Login. Mae hyn yn cynnwys penderfynu ar bethau fel pa ddata personol y dylid eu casglu, gan bwy, a beth y bydd yn cael ei ddefnyddio ar ei gyfer.",
           "paragraph_five": "Adrannau eraill y llywodraeth sy’n gyfrifol am unrhyw ddata personol rydych yn ei ddarparu pan fyddwch yn defnyddio eu gwasanaethau ar-lein. Er enghraifft, gallant gasglu data gennych naill ai cyn iddynt eich ailgyfeirio i GOV.UK One Login neu ar ôl i GOV.UK One Login eich dychwelyd i’w gwasanaeth ar ôl i chi gwblhau eich dilysiad neu wiriadau hunaniaeth. Mae hyn yn golygu eu bod yn rheolwyr data ar gyfer y wybodaeth honno a byddant yn penderfynu pa ddata i’w casglu gennych chi, pam maent angen y data hwnnw a pha mor hir y maent yn cadw’r data hwnnw. Bydd y manylion hyn yn eu hysbysiadau preifatrwydd eu hunain."
         },
         "information_we_collect": {
           "header": "Pa wybodaeth rydym yn ei chasglu",
-          "sub_header": "Pan fyddwch yn dilysu eich GOV.UK One Login neu’n profi eich hunaniaeth",
           "paragraph_one": "Pan fyddwch yn cael eich cyfeirio at GOV.UK One Login gan wasanaeth llywodraeth ar-lein i fewngofnodi neu i brofi eich hunaniaeth byddwn yn gwybod pa wasanaeth rydych wedi dod ohono.",
           "paragraph_two": "Bydd y wybodaeth rydym wedyn yn ei gasglu gennych yn dibynnu ar:",
           "list": {
@@ -1277,8 +1276,11 @@
             "item_two": "y dystiolaeth a’r dogfennau sydd gennych ar gael i brofi eich hunaniaeth",
             "item_three": "y math o ddyfais rydych yn ei ddefnyddio, er enghraifft gliniadur, tabled neu ffôn clyfar"
           },
-          "paragraph_three": "Ym mhob achos, byddwn yn creu GOV.UK One Login gan ddefnyddio eich cyfeiriad e-bost. Lle rydych yn dewis derbyn codau dilysu gan ddefnyddio neges destun, byddwn hefyd yn casglu eich rhif ffôn. Os yw gwasanaeth ar-lein y llywodraeth ond yn defnyddio GOV.UK One Login i’ch mewngofnodi i’w gwasanaeth, ni fyddwn yn casglu unrhyw ddata pellach gennych chi.",
-          "paragraph_four": "Lle mae gwasanaethau ar-lein y llywodraeth yn defnyddio GOV.UK One Login i brofi hunaniaeth, mae angen i ni gynnal gwiriadau hunaniaeth ac felly prosesu data personol ychwanegol."
+          "paragraph_three": "Ym mhob achos, byddwn yn creu GOV.UK One Login gan ddefnyddio’ch cyfeiriad e-bost. Pan fyddwch yn dewis derbyn codau dilysu gan ddefnyddio neges destun, byddwn hefyd yn casglu eich rhif ffôn.",
+          "paragraph_four": "Os mai dim ond GOV.UK One Login y mae’r gwasanaeth ar-lein y llywodreath yn ei ddefnyddio i fewngofnodi i’w gwasanaeth, ni fyddwn yn casglu unrhyw wybodaeth bellach gennych chi.",
+          "paragraph_five": "Pan fydd gwasanaethau ar-lein y llywodraeth yn defnyddio GOV.UK One Login i brofi pwy ydych chi, mae angen i ni gynnal gwiriadau adnabod ac felly prosesu data personol ychwanegol. Mae’r broses yn cynnwys gwiriad twyll gydag Experian i sicrhau bod y data fyddwch yn ei roi i ni yn gywir ac i wirio nad oes unrhyw arwyddion bod eich hunaniaeth wedi cael ei dwyn neu ei gamddefnyddio.",
+          "paragraph_six": "Mae 3 prif ffordd o brofi pwy ydych chi. Mae’r pethau rydyn ni’n eu gwirio yn dibynnu ar ba ffordd rydych chi’n profi pwy ydych chi."
+
         },
         "using_id_check_app": {
           "header": "Defnyddio’r ap Gwirio ID GOV.UK i brofi eich hunaniaeth",
@@ -1293,141 +1295,141 @@
               "link_href": "https://apps.apple.com/gb/app/gov-uk-id-check/id1629050566",
               "link_text": "Apple"
             },
-            "part_three": " App Stores. Mae’n cynnwys dilyniant o wiriadau sy’n cael eu cynnal gan ddarparwyr gwasanaethau gwirio hunaniaeth arbenigol ar ein rhan."
+            "part_three": "Mae’n cynnwys cyfres o wiriadau sy’n cael eu cynnal gan ddarparwyr gwasanaeth gwirio hunaniaeth arbenigol ar ein rhan, yn ogystal â’r gwiriad twyll a ddisgrifir isod."
           },
-          "sub_header_one": "Gwiriadau dogfen, bywiogrwydd a thebygrwydd",
           "paragraph_two": "Mae angen i ni wirio:",
           "list_one": {
             "item_one": "bod eich dogfennau yn rhai go iawn",
             "item_two": "rydych yn berson go iawn (a elwir hefyd yn wiriad ’bywiogrwydd’)",
             "item_three": "chi yw’r un person ag sydd yn y lluniau dogfen (a elwir hefyd yn wiriad ’tebygrwydd’)"
           },
-          "paragraph_three": "Rydym yn defnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Iproov a’u his-gontractwyr Veriff ac Innovalor i gynnal y gwiriadau hyn. Mae Iproov yn gweithredu fel prosesydd data gyda Veriff ac Innovalor fel is-broseswyr, sy’n golygu y gallant ond prosesu eich data personol at bwrpas cyflawni ein cyfarwyddiadau.",
+          "paragraph_three": "Rydym yn defnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Iproov a’u his-gontractwyr Veriff ac Inverid i gynnal y gwiriadau hyn. Mae Iproov yn gweithredu fel prosesydd data gyda Veriff ac Inverid fel is-broseswyr, sy’n golygu mai dim ond am y pwrpas o gyflawni ein cyfarwyddiadau y gallant brosesu’ch data personol.",
+          "sub_header_one": "Gwybodaeth y byddwn efallai yn ei chasglu i wirio bod eich dogfennau’n rhai go iawn",
           "paragraph_four": "Mae angen i ni wirio eich nodweddion diogelwch eich dogfennau hunaniaeth i brofi eu bod yn ddogfennau dilys.",
           "paragraph_five": "Ar gyfer trwyddedau gyrru, bydd angen i chi dynnu llun o flaen a chefn eich trwydded gyda chamera eich ffôn. Bydd yr ap yn gofyn am ganiatâd i fynd i mewn i’ch camera a’ch lluniau i wneud hyn.",
           "paragraph_six": "Ar gyfer e-basbortau, trwyddedau a chardiau preswylio biometrig, a thrwyddedau gweithwyr ffin, bydd yr ap yn darllen y wybodaeth ar eich dogfen o’r sglodyn near field communication (NFC).",
-          "paragraph_seven": "Rydym yn casglu’r wybodaeth ganlynol:",
+          "paragraph_seven": "Efallai y byddwn yn casglu’r wybodaeth ganlynol:",
           "list_two": {
             "item_one": "enw",
             "item_two": "dyddiad geni",
-            "item_three": "cyfeiriad (trwyddedau gyrru’n unig)",
-            "item_four": "rhif y ddogfen",
-            "item_five": "dyddiad dod i ben",
-            "item_six": "gwlad gyhoeddi",
-            "item_seven": "cenedligrwydd (heblaw am drwyddedau gyrru)",
-            "item_eight": "llun"
+            "item_three": "cyfeiriad",
+            "item_four": "cod post",
+            "item_five": "rhif dogfen",
+            "item_six": "dyddiad dod i ben",
+            "item_seven": "gwlad cyhoeddi",
+            "item_eight": "cenedligrwydd",
+            "item_nine": "llun delwedd"
           },
-          "paragraph_eight": "Pan fydd Iproov wedi cwblhau’r gwiriad, byddant yn anfon canlyniad y gwiriad a gwybodaeth eich dogfen hunaniaeth atom.",
-          "paragraph_nine": "Rydym yn gwneud gwiriad \"bywiogrwydd\" i brofi a yw defnyddiwr yn berson go iawn ac nid unrhyw beth a allai dynwared unigolyn fel mannequin, ffigwr cwyr, mwgwd 3D, llun neu ffugiad dwfn.",
-          "paragraph_ten": "Bydd angen i chi gymryd fideo hunlun gan ddefnyddio camera eich ffôn. Bydd angen caniatâd i’r ap gael mynediad at eich camera a fideos ar gyfer hyn. Mae’r gwiriad hwn yn cael ei gynnal mewn amser real sy’n golygu nad ydym ni nac Iproov yn storio’r fideo.",
-          "paragraph_eleven": "Pan mae Iproov wedi cwblhau’r gwiriad, maent yn anfon canlyniad y gwiriad atom.",
-          "paragraph_twelve": "Rydym yn gwneud gwiriad tebygrwydd i brofi mai chi yw’r un person ag yn eich dogfen hunaniaeth gyda llun.",
-          "paragraph_thirteen": "Mae’r gwiriad hwn yn defnyddio delwedd llonydd a gynhyrchir o’ch fideo hunlun a’r llun yn eich dogfen hunaniaeth i fesur patrymau unigryw eich wyneb. Data biometrig wynebol yw’r enw ar hyn. Mae’r data biometrig o’r ddwy ddelwedd yn cael ei gymharu i sefydlu ai’r defnyddiwr yw gwir berchennog y ddogfen hunaniaeth.",
-          "paragraph_fourteen": "Pan mae Iproov wedi cwblhau’r gwiriad, maent yn anfon canlyniad y gwiriad atom.",
-          "sub_header_two": "Gwiriad twyll",
-          "paragraph_fifteen": "Rydym yn defnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Experian i gynnal archwiliad twyll i:",
-          "list_four": {
-            "item_one": "gynnal gwiriad twyll i chwilio am unrhyw arwyddion bod eich hunaniaeth wedi cael ei ddwyn neu ei gamddefnyddio",
-            "item_two": "gwirio os oes cofnod ohonoch yn bodoli dros amser"
+          "paragraph_eight": "Pan fydd Iproov wedi cwblhau’r gwiriad, maent yn anfon canlyniad y gwiriad a’ch gwybodaeth am eich dogfen adnabod atom.",
+          "paragraph_nine": "Os ydych chi’n defnyddio trwydded yrru, byddwch yn gallu gwirio bod yr ap wedi cipio’r manylion yn gywir.",
+          "paragraph_ten": "Bydd angen i chi gytuno i ni rannu eich manylion gyda:",
+          "list_three": {
+            "item_one": "yr Asiantaeth Trwyddedu Gyrwyr a Cherbydau (DVLA) os cyhoeddwyd eich trwydded ym Mhrydain Fawr",
+            "item_two": "yr Asiantaeth Gyrwyr a Cherbydau (DVA) os cyhoeddwyd eich trwydded yng Ngogledd Iwerddon"
           },
-          "paragraph_sixteen": {
-            "part_one": "Maent yn gwneud hynny fel rheolydd data annibynnol yn unol â’u",
-            "link": {
-              "link_text": "hysbysiad preifatrwydd",
-              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
-            }
-          },
-          "paragraph_seventeen": "Pan fyddwch wedi cwblhau’r gwiriadau uchod gan ddefnyddio’r Ap, byddwch yn cael eich dychwelyd i wefan GOV.UK One Login lle byddwn yn casglu eich enw, eich dyddiad geni a’ch cyfeiriad. Rydym yn anfon y rhain i Experian er mwyn iddynt allu cynnal gwiriad gwrth-dwyll.",
-          "paragraph_eighteen": "Pan mae Experian wedi cwblhau’r gwiriad, maent yn anfon sgôr twyll atom, ynghyd â manylion am unrhyw weithgaredd twyllodrus cysylltiedig.",
-          "paragraph_nineteen": "Ni fydd y gwiriad twyll hwn yn effeithio ar eich sgôr credyd, gan ei fod yn ’chwiliad meddal’. Bydd cofnod amdano yn cael ei ychwanegu at eich cofnod credyd, ond dim ond i chi y bydd yn weladwy. Ni fydd sefydliadau eraill sy’n defnyddio Experian i gynnal eu gwiriadau credyd eu hunain yn gallu ei weld."
+          "paragraph_eleven": "Byddant yn gwirio bod y wybodaeth rydych chi wedi’i darparu yn cyd-fynd â’r hyn sydd yn eu cofnodion.",
+          "sub_header_two": "Defnyddio fideo hunlun i wirio eich bod yn berson go iawn",
+          "paragraph_twelve": "Rydyn ni hefyd yn gwneud gwiriad ’bywiogrwydd’ i brofi a ydych chi’n berson go iawn ac nid unrhyw beth a allai ddynwared unigolyn fel mannequin, ffigur cwyr, mwgwd 3D, llun neu ffugiad dwfn.",
+          "paragraph_thirteen": "Bydd angen i chi gymryd fideo hunlun gan ddefnyddio’ch camera ffôn. Bydd angen caniatâd ar yr ap i gael mynediad i’ch camera a’ch fideos ar gyfer hyn. Mae’r gwiriad hwn yn cael ei gynnal mewn amser real sy’n golygu nad ydym ni nac Iproov yn cadw’r fideo. ",
+          "paragraph_fourteen": "Pan fydd Iproov wedi cwblhau’r gwiriad, maent yn anfon canlyniad y gwiriad atom.",
+          "sub_header_four": "Sut rydyn ni’n gwirio mai chi yw’r person yn eich llun",
+          "paragraph_fifteen": "Rydym yn gwneud gwiriad ’tebygrwydd’ i brofi eich bod yr un person ag yn eich llun dogfen adnabod.",
+          "paragraph_sixteen": "Mae’r gwiriad hwn yn defnyddio delwedd llonydd a gynhyrchir o’ch fideo hunlun a’ch llun dogfen adnabod i fesur patrymau unigryw eich wyneb. Gelwir hyn yn ddata biometrig wyneb. Mae’r data biometrig o’r ddwy ddelwedd yn cael ei gymharu i benderfynu ai chi yw perchennog gwirioneddol y ddogfen hunaniaeth.",
+          "paragraph_seventeen": "Pan fydd Iproov wedi cwblhau’r gwiriad, maent yn anfon canlyniad y gwiriad atom."
         },
         "using_web_to_prove_identity": {
-          "header": "Defnyddio eich porwr gwe i brofi eich hunaniaeth",
-          "paragraph_one": "Mae’r llwybr hwn yn cynnwys 3 gwiriad hunaniaeth ar wahân.",
-          "sub_header_one": "Gwiriad dogfen hunaniaeth",
-          "paragraph_two": "Rydym yn gwirio bod manylion eich pasbort neu drwydded yrru yn ddilys gan ddefnyddio’r setiau data awdurdodol a ddelir, yn y drefn honno, gan Swyddfa Pasbort EF (HMPO) neu’r Asiantaeth Trwyddedu Gyrwyr a Cherbydau (DVLA) ym Mhrydain Fawr neu’r Asiantaeth Gyrwyr a Cherbydau yng Ngogledd Iwerddon (DVA (NI)). Bydd angen i chi ddarparu manylion eich trwydded yrru neu basbort a anfonwn wedyn i HMPO, DVLA neu DVA (NI) i ddilysu yn erbyn eu cofnodion.",
-          "paragraph_three": "Pan mae HMPO, DVLA neu DVA (NI) wedi cwblhau eu gwiriadau, maent yn anfon cadarnhad i ni a yw’r data’n cyfateb ai peidio ac os na, y rheswm pam nad oedd yn cyfateb.",
-          "paragraph_four": "Mae HMPO, DVLA a DVA (NI) yn gwneud hynny fel rheolwr data annibynnol yn unol â’u hysbysiad preifatrwydd.",
-          "sub_header_two": "Gwiriad Dilysu Ar Sail Gwybodaeth (cwestiynau diogelwch)",
-          "paragraph_five": {
-            "part_one": "Rydym yn cynnal gwiriad Dilysu Ar Sail Gwybodaeth (KBV), neu gwestiynau diogelwch, gan ddefnyddio cwestiynau am hanes eich credyd neu ariannol mai dim ond chi ddylai wybod yr ateb iddynt. Mae’r gwiriad hwn yn cael ei gynnal gan Experian fel rheolwr data annibynnol yn unol â’u",
+          "header": "Defnyddio eich porwr gwe i brofi dy hunaniaeth",
+          "paragraph_one": "Mae’r gwiriadau rydyn ni’n eu cynnal yn dibynnu a oes gennych chi ID gyda llun fel pasbort neu drwydded yrru a pha wasanaeth y llywodraeth rydych chi’n ei ddefnyddio. Rydym hefyd yn cynnal y gwiriad twyll a ddisgrifir isod.",
+          "sub_header_one": "Sut rydyn ni’n gwirio’ch ID gyda llun",
+          "paragraph_two": "Os oes gennych chi ID gyda llun fel pasbort neu drwydded yrru, byddwn yn gwirio bod y manylion yn ddilys gan ddefnyddio’r setiau data awdurdodol a ddelir, yn y drefn honno, drwy:",
+          "list_one": {
+            "item_one": "Swyddfa Basport EF (HMPO)",
+            "item_two": "DVLA neu DVA, yn dibynnu a gafodd eich trwydded yrru ei chyhoeddi ym Mhrydain Fawr neu Ogledd Iwerddon"
+          },
+          "paragraph_three": "Bydd angen i chi ddarparu manylion eich trwydded yrru neu basbort yr ydym wedyn yn eu hanfon at HMPO, DVLA neu DVA i’w dilysu yn erbyn eu cofnodion.",
+          "paragraph_four": "Pan fydd HMPO, DVLA neu DVA wedi cwblhau eu gwiriadau, maent yn dweud wrthym a yw’r data’n cyfateb ai peidio ac os na, y rheswm pam na wnaeth gyfateb.",
+          "paragraph_five": "Mae HMPO, DVLA a DVA yn gwneud hynny fel rheolyddion data annibynnol yn unol â’u hysbysiadau preifatrwydd.",
+          "sub_header_two": "Sut rydyn ni’n gwirio eich manylion banc",
+          "paragraph_six": "Os ydych chi’n profi pwy ydych chi heb ID gyda llun, efallai y byddwn yn gofyn i chi roi eich enw a rhif cyfrif a chod didoli cyfrif banc cyfredol yn eich enw chi.",
+          "paragraph_seven": "Yna byddwn yn gwirio manylion eich cyfrif cyfredol yn y DU yn erbyn y manylion sydd gan fanciau ledled y DU, gan ddefnyddio gwasanaeth gwirio a ddarperir gan Experian.",
+          "paragraph_eight": "Pan fydd Experian wedi cwblhau’r gwiriad, maent yn dweud wrthym:",
+          "list_two": {
+            "item_one": "os yw’r wybodaeth a ddarparwyd gennych yn cyfateb ai peidio",
+            "item_two": "lle mae’r enw a ddarparwyd gennych yn cyfateb yn rhannol i gofnodion bancio, yr enw swyddogol ar gofnod"
+          },
+          "sub_header_three": "Sut rydyn ni’n gwirio eich cofnod CThEF",
+          "paragraph_nine": "Os ydych chi’n profi pwy ydych chi heb ID gyda llun, efallai y byddwn hefyd yn gofyn i chi ddarparu eich rhif Yswiriant Gwladol. Rydym yn rhannu eich rhif Yswiriant Gwladol, enw, cod post a dyddiad geni gyda Chyllid a Thollau EF (CThEF), sy’n gwirio a oes ganddynt gofnod ohonoch a bod y wybodaeth yn cyfateb i’r hyn a ddywedoch wrthym.",
+          "paragraph_ten": "Pan fydd CThEF wedi cwblhau’r gwiriad, maent yn cadarnhau i ni a yw’r wybodaeth a ddarparwyd gennych yn cyd-fynd â’u cofnodion ai peidio.",
+          "sub_header_four": "Pa wybodaeth rydyn ni’n ei chasglu pan fyddwch chi’n ateb cwestiynau diogelwch",
+          "paragraph_eleven": {
+            "part_one": "Rydym yn gofyn cwestiynau diogelwch i chi, a elwir hefyd yn wiriad ’dilysu yn seiliedig ar wybodaeth’ (’KBV’), gan ddefnyddio cwestiynau am eich credyd neu hanes ariannol na ddylech wybod yr ateb iddo. Mae’r gwiriad hwn yn cael ei gynnal gan Experian fel rheolydd data annibynnol yn unol â’u ",
             "link": {
-              "link_text": "hysbysiad preifatrwydd",
-              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
+              "link_href": "https://www.experian.co.uk/consumer/privacy.html",
+              "link_text": "Rhybudd Preifatrwydd"
             }
           },
-          "paragraph_six": "Ar gyfer y gwiriad hwn rydym yn defnyddio eich enw, dyddiad geni a chyfeiriad i adfer cwestiynau perthnasol gan Experian. Rydym yn casglu eich atebion ac yn eu hanfon i Experian i wirio eu bod yn cyd-fynd â’r wybodaeth sydd ganddynt amdanoch chi yn barod.",
-          "paragraph_seven": "Pan mae Experian wedi cwblhau’r gwiriad maent yn ymateb i ni gyda chanlyniad Pasio / Methu.",
-          "paragraph_eight": "Nid yw GDS yn storio nac yn cadw’r cwestiynau na’ch atebion.",
-          "paragraph_nine": "Ni fydd y gwiriad twyll hwn yn effeithio ar eich sgôr credyd, gan ei fod yn ’chwiliad meddal’. Bydd cofnod amdano yn cael ei ychwanegu at eich cofnod credyd, ond dim ond i chi y bydd yn weladwy. Ni fydd sefydliadau eraill sy’n defnyddio Experian i gynnal eu gwiriadau credyd eu hunain yn gallu ei weld.",
-          "sub_header_three": "Gwiriad twyll",
-          "paragraph_ten": "Rydym yn defnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Experian i gynnal archwiliad twyll i:",
+          "paragraph_twelve": "Ar gyfer y gwiriad hwn rydym yn defnyddio eich enw, dyddiad geni a chyfeiriad i adfer cwestiynau perthnasol gan Experian. Rydym yn casglu eich atebion ac yn eu hanfon at Experian i wirio eu bod yn cyfateb i’r wybodaeth sydd ganddynt eisoes amdanoch chi. ",
+          "paragraph_thirteen": "Pan fydd Experian wedi cwblhau’r gwiriad maent yn ymateb i ni gyda chanlyniad Pas / Methu.",
+          "paragraph_fourteen": "Nid yw GDS yn cadw’r cwestiynau na’ch atebion."
+        },
+        "proving_identity_at_post_office": {
+          "header": "Profi pwy ydych chi mewn Swyddfa’r Post",
+          "paragraph_one": "GOV.UK Mae One Login yn rhoi’r dewis i chi brofi pwy ydych chi mewn Swyddfa’r Post. Mae’r broses hon yn cynnwys cyfres o wiriadau a gynhelir gan wasanaethau gwirio hunaniaeth arbenigol ar ein rhan, yn ogystal â’r gwiriad twyll a ddisgrifir isod.",
+          "paragraph_two": "Rydym angen gwirio:",
+          "list_one": {
+            "item_one": "bod eich dogfennau adnabod yn real",
+            "item_two": "mae chi yw’r un person ag yn y lluniau dogfen adnabod (a elwir hefyd yn wiriad ’tebygrwydd’)"
+          },
+          "paragraph_three": "Mae’r gwiriadau hyn yn cael eu cynnal gan Swyddfa’r Post a’u his-gontractwr Yoti ar ein rhan. Mae Swyddfa’r Post yn gweithredu fel prosesydd data gyda Yoti fel is-brosesydd, sy’n golygu mai dim ond at yr unig bwrpas o gyflawni ein cyfarwyddiadau y gallant brosesu’ch data personol.",
+          "sub_header_one": "Pa wybodaeth rydyn ni’n ei chasglu cyn i chi fynd i Swyddfa’r Post",
+          "paragraph_four": "Rydym yn gofyn i chi pa ddogfen adnabod yr hoffech ei defnyddio i brofi pwy ydych chi. Gallwch ddefnyddio unrhyw un o’r dogfennau adnabod canlynol:",
+          "list_two": {
+            "item_one": "pasbort y DU",
+            "item_two": "pasbort y tu allan i’r DU",
+            "item_three": "trwydded yrru cerdyn gyda llun y DU",
+            "item_four": "trwydded yrru cerdyn gyda llun yr Undeb Ewropeaidd (UE)",
+            "item_five": "Cerdyn adnabod cenedlaethol o’r UE, Norwy, Gwlad yr Iâ neu Liechtenstein"
+          },
+          "paragraph_five": "Rydyn ni’n gofyn i chi:",
+          "list_three": {
+            "item_one": "am dyddiad dod i ben eich dogfen adnabod a gwlad gyhoeddi",
+            "item_two": "i gadarnhau bod y cyfeiriad a ddarparwyd gennych yn flaenorol yn cyfateb i’r cyfeiriad a ddangosir ar eich dogfen adnabod, ar gyfer dogfennau sydd â chyfeiriad arnynt.",
+            "item_three": "dewis pa gangen Swyddfa’r Post hoffech chi fynychu"
+          },
+          "paragraph_six": "Rydym yn anfon y wybodaeth hon ynghyd â’ch enw, cyfeiriad a dyddiad geni i Swyddfa’r Post cyn i chi fynd i gangen. Rydym hefyd yn anfon e-bost atoch gyda dolen i lawrlwytho llythyr Dilysu Cwsmer yng nghangen Swyddfa’r Post. Bydd hyn yn cynnwys cod QR a chyfarwyddiadau ynghylch yr hyn y bydd angen i chi ei wneud nesaf. Bydd angen i chi agor y ddolen, nodi’ch cyfeiriad e-bost, a lawrlwytho ac argraffu’r llythyr a mynd ag ef gyda chi pan fyddwch yn mynd i Swyddfa’r Post, neu ei ddangos ar eich dyfais.",
+          "sub_header_two": "Pa wybodaeth rydyn ni’n ei chasglu yn Swyddfa’r Post",
+          "paragraph_seven": "Pan fyddwch yn mynd i Swyddfa’r Post, bydd aelod o staff yn sganio’r cod QR ar eich llythyr ac yn gwirio’r ddogfen adnabod sydd gennych yn erbyn y manylion a ddarparwyd gennych.",
+          "paragraph_eight": "Yna bydd Swyddfa’r Post ac Yoti yn gwirio nodweddion diogelwch eich dogfen adnabod i sicrhau ei bod yn ddogfen ddilys.",
+          "list_four": {
+            "item_one": "Ar gyfer pob dogfen adnabod, bydd Swyddfa’r Post yn tynnu llun o flaen a chefn y ddogfen i wirio nodweddion diogelwch y ddogfen, fel hologramau, ac i ddarllen gwybodaeth y ddogfen.",
+            "item_two": "Ar gyfer e-basbortau yn y DU, bydd Swyddfa’r Post hefyd yn defnyddio tabled i wirio nodweddion diogelwch eich dogfen ac i ddarllen gwybodaeth eich dogfen o sglodyn yr NFC."
+          },
+          "paragraph_nine": "Bydd Swyddfa’r Post hefyd yn tynnu llun o’ch wyneb, a byddant yn mesur patrymau unigryw eich wyneb ohono. Gelwir hyn yn ddata biometrig y wyneb. Bydd y data biometrig o’ch llun yn cael ei gymharu yn erbyn y data biometrig o’r llun ar eich dogfen adnabod i wirio ai chi yw perchennog gwirioneddol y ddogfen adnabod.",
+          "sub_header_three": "Beth sy’n digwydd ar ôl eich ymweliad â Swyddfa’r Post",
+          "paragraph_ten": "Pan fydd Swyddfa’r Post a Yoti wedi cwblhau’r gwiriadau, maent yn anfon canlyniad y gwiriad a’ch gwybodaeth am eich dogfen adnabod atom.",
+          "paragraph_eleven": "Yna rydym yn defnyddio eich cyfeiriad e-bost i ddweud wrthych fod canlyniadau eich gwiriad ar gael. I weld eich canlyniad a’i rannu gyda’r gwasanaeth oedd yn gofyn i chi brofi eich hunaniaeth, bydd angen i chi fewngofnodi i GOV.UK One Login a chael eich ailgyfeirio at wasanaeth y llywodraeth yr oeddech chi’n ei ddefnyddio. "
+        },
+        "borrow_phone_identity": {
+          "header": "Os ydych chi’n gadael i rywun fenthyg eich ffôn i brofi pwy ydynt",
+          "paragraph_one": "Bydd gwybodaeth dechnegol am y ddyfais sy’n cael ei defnyddio yn cael ei chasglu gan GOV.UK One Login fel y nodir isod."
+        },
+        "handle_information": {
+          "header": "Sut rydym yn trin eich gwybodaeth i wirio yn erbyn twyll",
+          "paragraph_one": "Sut bynnag rydych chi’n profi pwy ydych chi, byddwn yn cynnal gwiriad twyll ar-lein gan ddefnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Experian i:",
           "list": {
             "item_one": "chwilio am unrhyw arwyddion bod eich hunaniaeth wedi cael ei ddwyn neu ei gamddefnyddio",
             "item_two": "gwirio a oes cofnod ohonoch yn bodoli dros amser"
           },
-          "paragraph_eleven": {
-            "part_one": "Maent yn gwneud hynny fel rheolydd data annibynnol yn unol â’u",
+          "paragraph_two": {
+            "part_one": "maent yn gwneud hyn fel rheolydd data annibynnol yn unol â’r",
             "link": {
-              "link_text": "hysbysiad preifatrwydd",
-              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
+              "link_href": "https://www.experian.co.uk/consumer/privacy.html",
+              "link_text": "Hysbysiad Preifatrwydd Experian"
             }
           },
-          "paragraph_twelve": "Pan fyddwch wedi cwblhau’r gwiriadau uchod, byddwn yn casglu eich enw, dyddiad geni a chyfeiriad. Rydym yn anfon y rhain at Experian fel y gallant gynnal y gwiriad.",
-          "paragraph_thirteen": "Pan fydd Experian wedi cwblhau’r gwiriad, maent yn anfon sgôr twyll atom, ynghyd â manylion unrhyw weithgaredd twyllodrus cysylltiedig.",
-          "paragraph_fourteen": "Ni fydd y gwiriad twyll hwn yn effeithio ar eich sgôr credyd, gan ei fod yn ’chwiliad meddal’. Bydd cofnod amdano yn cael ei ychwanegu at eich cofnod credyd, ond dim ond i chi y bydd yn weladwy. Ni fydd sefydliadau eraill sy’n defnyddio Experian i gynnal eu gwiriadau credyd eu hunain yn gallu ei weld."
-        },
-        "proving_identity_at_post_office": {
-          "header": "Profi eich hunaniaeth yn y Swyddfa Bost",
-          "paragraph_one": "Mae GOV.UK One Login yn rhoi’r dewis i chi brofi eich hunaniaeth mewn Swyddfa Bost. Mae’r llwybr hwn yn cynnwys 3 gwiriad hunaniaeth ar wahân.",
-          "sub_header_one": "Gwiriad twyll",
-          "paragraph_two": "Rydym yn defnyddio darparwr gwasanaeth gwirio hunaniaeth o’r enw Experian i gynnal gwiriadau twyll ar-lein i:",
-          "list_one": {
-            "item_one": "chwilio am unrhyw arwyddion bod eich hunaniaeth wedi cael ei ddwyn neu ei gamddefnyddio",
-            "item_two": "gwirio a oes cofnod ohonoch yn bodoli dros amser"
-          },
-          "paragraph_three": {
-            "part_one": "Maent yn gwneud hynny fel rheolydd data annibynnol yn unol â’u",
-            "link": {
-              "link_text": "hysbysiad preifatrwydd",
-              "link_href": "https://www.experian.co.uk/consumer/privacy.html"
-            }
-          },
-          "paragraph_four": "Rydym yn casglu eich enw, dyddiad geni a chyfeiriad ac yn eu hanfon i Experian fel y gallant gynnal y gwiriad.",
-          "paragraph_five": "Pan fydd Experian wedi cwblhau’r gwiriad, maent yn anfon sgôr twyll atom, ynghyd â manylion unrhyw weithgaredd twyllodrus cysylltiedig.",
-          "paragraph_five_one": "Ni fydd y gwiriad twyll hwn yn effeithio ar eich sgôr credyd, gan ei fod yn ’chwiliad meddal’. Bydd cofnod amdano yn cael ei ychwanegu at eich cofnod credyd, ond dim ond i chi y bydd yn weladwy. Ni fydd sefydliadau eraill sy’n defnyddio Experian i gynnal eu gwiriadau credyd eu hunain yn gallu ei weld.",
-          "sub_header_two": "Gwiriad dogfennau dilys a gwiriad tebygrwydd",
-          "paragraph_six": "Mae angen i ni wirio:",
-          "list_two": {
-            "item_one": "bod eich dogfennau hunaniaeth yn rhai gwirioneddol",
-            "item_two": "mai chi yw’r un person ag sydd yn y lluniau dogfen hunaniaeth (a elwir hefyd yn wiriad ’tebygrwydd’)"
-          },
-          "paragraph_seven": "Mae’r gwiriadau hyn yn cael eu cynnal gan Swyddfa’r Post a’u his-gontractwr Yoti ar ein rhan. Mae Swyddfa’r Post yn gweithredu fel prosesydd data gyda Yoti fel is-brosesydd, sy’n golygu mai dim ond at ddiben o gyflawni ein cyfarwyddiadau y gallant brosesu’ch data personol.",
-          "paragraph_eight": "Rydym yn gofyn i chi pa ddogfen hunaniaeth yr hoffech ei defnyddio i brofi pwy ydych chi. Gallwch ddefnyddio unrhyw un o’r dogfennau hunaniaeth canlynol:",
-          "list_three": {
-            "item_one": "pasbort y DU",
-            "item_two": "pasbort o’r tu allan i’r DU",
-            "item_three": "Trwydded yrru cerdyn gyda llun y DU",
-            "item_four": "Trwyddedau preswylio biometrig y DU",
-            "item_five": "trwydded yrru cerdyn gyda llun yr Undeb Ewropeaidd (UE)",
-            "item_six": "Cerdyn hunaniaeth genedlaethol o wlad Ardal Economaidd Ewropeaidd (AEE)"
-          },
-          "paragraph_nine": "Rydym yn gofyn i chi:",
-          "list_four": {
-            "item_one": "am ddyddiad dod i ben a gwlad cyhoeddi eich dogfen hunaniaeth",
-            "item_two": "i gadarnhau bod y cyfeiriad a ddarparwyd gennych yn flaenorol yn cyfateb i’r cyfeiriad a ddangosir ar eich dogfen hunaniaeth, ar gyfer dogfennau sydd â chyfeiriad arnynt.",
-            "item_three": "dewis pa gangen Swyddfa’r Post yr hoffech fynychu"
-          },
-          "paragraph_ten": "Rydym yn anfon y wybodaeth hon ynghyd â’ch enw, cyfeiriad a dyddiad geni i Swyddfa’r Post cyn i chi fynd i gangen. Rydym hefyd yn anfon e-bost atoch gyda dolen i lawrlwytho llythyr cwsmer Dilysu Mewn Cangen Swyddfa’r Post. Bydd hyn yn cynnwys cod QR a chyfarwyddiadau o beth fydd angen i chi ei wneud nesaf. Bydd angen i chi agor y ddolen, rhoi eich cyfeiriad e-bost, a lawrlwytho ac argraffu’r llythyr a mynd ag ef gyda chi pan fyddwch yn mynd i Swyddfa’r Post, neu ei ddangos ar eich dyfais.",
-          "paragraph_eleven": "Pan fyddwch yn mynd i Swyddfa’r Post, bydd aelod o staff yn sganio’r cod QR ar eich llythyr ac yn gwirio’r ddogfen hunaniaeth sydd gennych gyda chi yn erbyn y manylion a ddarparwyd gennych.",
-          "paragraph_twelve": "Yna bydd Swyddfa’r Post ac Yoti yn gwirio nodweddion diogelwch eich dogfen hunaniaeth i sicrhau ei bod yn ddogfen ddilys.",
-          "list_five": {
-            "item_one": "Ar gyfer pob dogfen hunaniaeth, bydd Swyddfa’r Post yn tynnu llun o flaen a chefn y ddogfen i wirio nodweddion diogelwch y ddogfen, fel hologramau, ac i ddarllen gwybodaeth y ddogfen.",
-            "item_two": "Ar gyfer e-basbortau y DU, bydd Swyddfa’r Post hefyd yn defnyddio tabled i wirio nodweddion diogelwch eich dogfen ac i ddarllen gwybodaeth eich dogfen o’r sglodyn NFC."
-          },
-          "paragraph_thirteen": "Bydd Swyddfa’r Post hefyd yn tynnu llun o’ch wyneb, a byddant yn mesur patrymau unigryw eich wyneb ohono. Gelwir hyn yn ddata gwyneb biometrig. Bydd y data biometrig o’ch llun yn cael ei gymharu yn erbyn y data biometrig o’r llun ar eich dogfen hunaniaeth i wirio ai chi yw perchennog gwirioneddol y ddogfen hunaniaeth.",
-          "paragraph_fourteen": "Pan fydd Swyddfa’r Post a Yoti wedi cwblhau’r gwiriadau, maent yn anfon canlyniad y gwiriad a’ch gwybodaeth dogfen hunaniaeth atom.",
-          "paragraph_fifteen": "Yna rydym yn defnyddio’ch cyfeiriad e-bost i ddweud wrthych fod canlyniadau eich gwiriad ar gael. I weld eich canlyniad a’i rannu gyda’r gwasanaeth roeddech angen profi eich hunaniaeth ar ei gyfer, bydd angen i chi fewngofnodi i GOV.UK One Login a chael eich ailgyfeirio at wasanaeth y llywodraeth roeddech yn ei ddefnyddio."
+          "paragraph_three": "Rydym yn casglu eich enw, dyddiad geni a chyfeiriad ac yn eu hanfon i Experian fel y gallant gynnal y gwiriad.",
+          "paragraph_four": "Pan fydd Experian wedi cwblhau’r gwiriad, maent yn anfon sgôr twyll atom, yn seiliedig ar unrhyw weithgaredd twyllodrus posibl neu gysylltiedig. Os oes gennych bryderon sy’n ymwneud â thwyll posibl o’ch data adnabod, dylech gysylltu ag Experian yn uniongyrchol, fel rheolydd annibynnol y data chwilio hwn.",
+          "paragraph_five": "Ni fydd y gwiriad twyll hwn yn effeithio ar eich sgôr credyd, gan ei fod yn ’chwiliad meddal’. Bydd cofnod amdano yn cael ei ychwanegu at eich cofnod credyd, ond dim ond i chi y bydd yn weladwy. Ni fydd sefydliadau eraill sy’n defnyddio Experian i gynnal eu gwiriadau credyd eu hunain yn gallu ei weld."
         },
         "technical_information": {
           "header": "Gwybodaeth dechnegol",
@@ -1459,29 +1461,29 @@
           "paragraph_six": "Os ydych chi`n cytuno i gymryd rhan yn ein harolwg am yr help a gawsoch, rydym yn casglu eich atebion i`r cwestiynau. Mae`r rhain yn cael eu cysylltu â`r cofnod o`r adeg y gwnaethoch gysylltu â ni, sy`n cynnwys gwybodaeth fel eich enw, cyfeiriad e-bost neu rif ffôn."
         },
         "if_you_agree_to_analytics": {
-          "header": "Os ydych yn cytuno i ddadansoddi gwe / ap",
-          "paragraph_one": "Os ydych yn rhoi eich caniatâd, rydym yn defnyddio Google Analytics i gasglu gwybodaeth am sut rydych yn defnyddio GOV.UK One Login. Er enghraifft:",
-          "list": {
-            "item_one": "gwybodaeth am y tudalennau rydych yn eu defnyddio",
-            "item_two": "pa mor hir rydych yn ei dreulio ar bob tudalen",
-            "item_three": "sut gyrhaeddoch chi GOV.UK One Login",
-            "item_four": "beth rydych yn clicio arno tra’ch bod yn defnyddio’r gwasanaeth",
-            "item_five": "gwybodaeth dechnegol gan gynnwys cyfeiriadau IP, y math o ddyfais a phorwr gwe rydych yn ei ddefnyddio",
-            "item_six": "arwydd o’ch lleoliad (fel eich dinas a’ch gwlad) gan ddefnyddio’ch cyfeiriad IP dienw"
+          "header": "Os ydych yn cytuno i ddadansoddeg gwe neu ap (cwcis)",
+          "paragraph_one": {
+            "part_one": "Rydym yn defnyddio Google Analytics a Dynatrace i gasglu gwybodaeth am sut rydych chi’n defnyddio GOV.UK One Login. Mae’r rhain yn cael eu gwneud gan ddefnyddio cwcis. Mae cwcis yn ffeiliau bach sy’n cael eu cadw ar eich ffôn, llechen neu gyfrifiadur pan fyddwch chi’n ymweld â gwefan. Mae ein hysbysiad preifatrwydd cwcis a’n proses gydsynio wedi’u nodi yn",
+            "link_text": "Polisi Cwcis GOV.UK One Login",
+            "link_href": "https://signin.account.gov.uk/cookies"
           },
-          "paragraph_two": "Mae’r wybodaeth a gesglir yn cael ei hystyried yn ddata personol oherwydd bod Google Analytics yn neilltuo dynodwr unigryw i bob ymwelydd. Fodd bynnag, nid yw hyn yn ein galluogi ni na Google i bennu eich hunaniaeth yn y byd go iawn. Ni fyddwn hefyd yn cyfuno gwybodaeth dadansoddi â’r data a ddarperir gennych wrth ddilysu eich GOV.UK One Login neu brofi eich hunaniaeth neu unrhyw ddata arall y gallwn ei ddal er mwyn pennu eich hunaniaeth yn y byd go iawn.",
-          "paragraph_three": "Rydym hefyd yn defnyddio Firebase Crashlytics i gasglu gwybodaeth am broblemau y gallech eu profi pan fyddwch yn defnyddio’r ap Gwirio ID GOV.UK, fel yr ap yn chwalu.",
-          "paragraph_four": "Yn y ddau achos, mae Google yn gweithredu fel ein prosesydd data ac nid ydym yn caniatáu i Google ddefnyddio na rhannu’r data hwn at eu dibenion eu hunain.",
-          "dynatrace": {
-            "paragraph_one": "Rydym yn defnyddio Dynatrace i gasglu gwybodaeth am broblemau y gallech eu profi wrth ddefnyddio GOV.UK One Login. Er enghraifft:",
-            "list": {
-              "item_one": "pa mor gyflym mae tudalennau’n llwytho",
-              "item_two": "os byddwch yn gweld unrhyw negeseuon gwall",
-              "item_three": "gwybodaeth dechnegol gan gynnwys eich cyfeiriad IP a dynodwr unigryw"
-            },
-            "paragraph_two": "Nid yw’r wybodaeth a gasglwn yn ein galluogi ni na Dynatrace i benderfynu ar eich hunaniaeth yn y byd go iawn. Ni fyddwn yn cyfuno gwybodaeth ddadansoddi gydag unrhyw ddata arall i bennu eich hunaniaeth yn y byd go iawn.",
-            "paragraph_three": "Mae Dynatrace yn gweithredu fel ein prosesydd data ac nid ydym yn caniatáu iddynt ddefnyddio neu rannu’r data hwn at eu dibenion eu hunain."
-          }
+          "paragraph_two": "Mae rhai cwcis yn gwbl angenrheidiol ar gyfer GOV.UK One Login i gefnogi dilysu a diogelwch.",
+          "paragraph_three": "Mae cwcis pellach yn cefnogi ein dadansoddiad o’r platfform ac yn caniatáu GOV.UK One Login i wella profiad y dinesydd. Bydd y cwcis hyn yn gofyn am eich caniatâd.",
+          "paragraph_four": "Rydym yn defnyddio cwcis i adolygu:",
+          "list": {
+            "item_one": "gwybodaeth am y tudalennau rydych chi’n eu defnyddio",
+            "item_two": "pa mor hir rydych chi’n ei dreulio ar bob tudalen",
+            "item_three": "sut wnaethoch chi gyrraedd GOV.UK One Login",
+            "item_four": "beth ’ydych chi’n clicio arno tra’ch bod chi’n defnyddio’r gwasanaeth",
+            "item_five": "gwybodaeth dechnegol gan gynnwys cyfeiriadau IP",
+            "item_six": "arwydd o’ch lleoliad (fel eich dinas a’ch gwlad) gan ddefnyddio eich cyfeiriad IP dienw",
+            "item_seven": "pa mor gyflym mae tudalennau’n llwytho",
+            "item_eight": "os gwelwch unrhyw negeseuon gwall",
+            "item_nine": "gwybodaeth dechnegol gan gynnwys eich cyfeiriad IP a dynodwr unigryw, a’r math o ddyfais a porwr gwe rydych chi’n ei ddefnyddio"
+          },
+          "paragraph_five": "Mae’r wybodaeth a gesglir yn cael ei hystyried yn ddata personol oherwydd bod Google Analytics a Dynatrace yn neilltuo dynodwr unigryw i bob ymwelydd. Fodd bynnag, nid yw hyn yn ein galluogi ni na Google i benderfynu ar eich hunaniaeth go iawn. Ni fyddwn ychwaith yn cyfuno gwybodaeth ddadansoddol â’r data rydych chi’n ei ddarparu wrth ddilysu eich GOV.UK One Login neu brofi eich hunaniaeth neu unrhyw ddata arall a allai fod gennym er mwyn penderfynu ar eich hunaniaeth go iawn.",
+          "paragraph_six": "Rydyn ni hefyd yn defnyddio Firebase Crashlytics i gasglu gwybodaeth am broblemau y gallech chi eu profi pan fyddwch chi’n defnyddio ap Gwirio ID GOV.UK, fel yr ap yn stopio gweithio.",
+          "paragraph_seven": "Ym mhob achos, mae Google, Dynatrace a Firebase Crashlytics yn gweithredu fel ein prosesydd data ac nid ydym yn caniatáu iddynt ddefnyddio na rhannu’r data hwn at eu dibenion eu hunain."
         },
         "why_we_need_your_information": {
           "header": "Pam rydym angen eich gwybodaeth",
@@ -1531,7 +1533,7 @@
           "sub_header_three": "Public Task (UK GDPR Article (6)(1)(e))",
           "paragraph_four": "At bob diben arall gan gynnwys gweinyddu eich GOV.UK One Login, profi eich hunaniaeth a’ch galluogi i ailddefnyddio’r hunaniaeth brofedig honno, a monitro twyll, y sail gyfreithiol yw ei bod yn angenrheidiol ar gyfer cyflawni tasg a gyflawnir er budd y cyhoedd neu arfer ein swyddogaethau fel adran o’r llywodraeth.",
           "sub_header_four": "Data categori arbennig",
-          "paragraph_five": "Os ydych yn profi eich hunaniaeth gan ddefnyddio’r ap Gwirio Hunaniaeth GOV.UK, byddwch yn gwneud gwiriad tebygrwydd a fydd yn cynnwys prosesu data biometreg eich wyneb. O dan Gyfraith y DU, mae data biometrig yn cael ei ystyried yn ddata categori arbennig ac mae’n ofynnol i Swyddfa’r Cabinet gael sail gyfreithiol ychwanegol i’w brosesu. Mae Swyddfa’r Cabinet yn prosesu data biometrig ar y sail gyfreithiol bod y prosesu yn angenrheidiol am resymau o fudd sylweddol i’r cyhoedd. Mae Cyfraith y DU hefyd yn ei gwneud yn ofynnol i Swyddfa’r Cabinet fodloni cyflwr budd cyhoeddus sylweddol penodol o Ddeddf Diogelu Data’r DU 2018. Mae Swyddfa’r Cabinet yn dibynnu ar y 2 amod canlynol:",
+          "paragraph_five": "Os ydych chi’n profi pwy ydych chi gan ddefnyddio’r ap Gwirio ID GOV.UK, byddwch yn gwneud gwiriad tebyg a fydd yn golygu prosesu eich data biometrig wyneb. O dan Gyfraith y DU, mae data biometrig yn cael ei ddosbarthu fel data categori arbennig ac mae’n ofynnol i DSIT fod â sail gyfreithiol ychwanegol i’w brosesu. Mae DSIT yn prosesu data biometrig ar y sail gyfreithiol bod y prosesu’n angenrheidiol am resymau sydd o fudd sylweddol i’r cyhoedd. Mae cyfraith y DU hefyd yn ei gwneud yn ofynnol i DSIT fodloni amod budd cyhoeddus sylweddol penodol o Ddeddf Diogelu Data’r DU 2018. DSIT yn dibynnu ar y 2 amod canlynol:",
           "list_three": {
             "item_one": "dibenion statudol a llywodraethol ar gyfer gwirio hunaniaeth (paragraff 6, atodlen 1, Deddf Diogelu Data 2018)",
             "item_two": "atal neu ganfod gweithredoedd anghyfreithlon ar gyfer canfod ac atal twyll (paragraff 10, atodlen 1, Deddf Diogelu Data 2018)"
@@ -1577,27 +1579,32 @@
           "paragraph_nine": "Y darparwyr gwasanaeth hyn yw:",
           "list_four": {
             "item_one": {
-              "part_one": "Swyddfa Pasbort Ei Fawrhydi (HMPO), fel rheolwr data annibynnol o dan MoU, i gynnal gwiriadau dogfen pasbort gwirioneddol. Gallwch ddarllen ",
-              "link_text": "Hysbysiad preifatrwydd HMPO",
+              "part_one": "Swyddfa Pasbort Ei Fawrhydi (HMPO), fel rheolydd data annibynnol o dan Weinyddiaeth Amddiffyn, i gynnal gwiriadau dogfen dilys pasport; darllen ",
+              "link_text": "Hysbysiad Preifatrwydd HMPO",
               "link_href": "https://www.gov.uk/government/statistics/hmpo-privacy-information-notice/privacy-information-notice-accessible-version"
             },
             "item_two": {
-              "part_one": "Asiantaeth Trwyddedu Gyrwyr a Cherbydau (DVLA), fel rheolwr data annibynnol o dan MoU, i gynnal gwiriadau dogfen trywdded yrru Prydain Fawr gwirioneddol. Gallwch ddarllen ",
-              "link_text": "polisi preifatrwydd DVLA",
+              "part_one": "yr Asiantaeth Trwyddedu Gyrwyr a Cherbydau (DVLA), fel rheolydd data annibynnol o dan Weinyddiaeth Amddiffyn, ar gyfer gwiriadau dogfen dilys trwydded yrru GB; darllen ",
+              "link_text": "Rhybudd Preifatrwydd DVLA",
               "link_href": "https://www.gov.uk/government/publications/dvla-privacy-policy/dvla-privacy-policy"
             },
             "item_three": {
-              "part_one": "Asiantaeth Gyrwyr a Cherbydau Gogledd Iwerddon (DVA NI), fel rheolwr data annibynnol o dan MoU, i gynnal gwiriadau dogfen trywdded yrru Gogledd Iwerddon gwirioneddol. Gallwch ddarllen",
-              "link_text": "polisi preifatrwydd DVA NI",
+              "part_one": "Asiantaeth Gyrwyr a Cherbydau Gogledd Iwerddon (DVA NI), fel rheolydd data annibynnol o dan Weinyddiaeth Amddiffyn, ar gyfer gwiriadau dogfen dilys trwydded yrru Gogledd Iwerddon; Gweler ",
+              "link_text": "Rhybudd Preifatrwydd DVA Ni",
               "link_href": "https://www.infrastructure-ni.gov.uk/publications/gdpr-privacy-notices-dfi-business-areas"
             },
             "item_four": {
-              "part_one": "Experian, fel rheolwr data annibynnol yn amodol ar gontract gyda ni, ar gyfer Dilysu Ar Sail Gwybodaeth (KBV) a gwiriadau twyll. Gallwch ddarllen ",
-              "link_text": "Hysbysiad preifatrwydd defnyddwyr Experian",
+              "part_one": "Experian, fel rheolwr data annibynnol sy’n destun contract gyda ni, am wirio atebion i gwestiynau diogelwch, gwiriadau cyfrifon banc a gwiriadau twyll;  darllen ",
+              "link_text": "Hysbysiad Preifatrwydd defnyddwyr Experian",
               "link_href": "https://www.experian.co.uk/legal/crain/"
             },
-            "item_five": "iProov, fel prosesydd data gyda Veriff ac Innovalor fel ei is-broseswyr, yn amodol ar gontract gyda ni, ar gyfer gwiriadau tebygrwydd biometreg, gwiriadau dogfennau gwirioneddol a gwiriadau bywiogrwydd",
-            "item_six": "Swyddfa’r Post, fel prosesydd data gyda Yoti fel ei is-brosesydd, yn amodol ar gontract gyda ni, ar gyfer gwiriadau hunaniaeth bersonol"
+            "item_five": "iProov, fel prosesydd data gyda Veriff ac Inverid fel ei is-broseswyr, yn amodol ar gontract gyda ni, ar gyfer gwiriadau tebygrwydd biometrig, gwiriadau dogfennau dilys a gwiriadau bywiogrwydd",
+            "item_six": "Swyddfa’r Post, fel prosesydd data gyda Yoti fel ei is-brosesydd, yn amodol ar gontract gyda ni, ar gyfer gwiriadau hunaniaeth bersonol",
+            "item_seven": {
+              "part_one": "Cyllid a Thollau EF fel rheolydd data annibynnol o dan Weinyddiaeth Amddiffyn, ar gyfer gwiriadau cyfrif banc;  Darllen mwy yn ",
+              "link_text": "Hysbysiad Preifatrwydd CThEF",
+              "link_href": "https://www.gov.uk/government/publications/data-protection-act-dpa-information-hm-revenue-and-customs-hold-about-you/data-protection-act-dpa-information-hm-revenue-and-customs-hold-about-you"
+            }
           },
           "paragraph_ten": "Ym mhob achos rydym ond yn darparu’r isafswm o wybodaeth sydd ei angen i gyflawni’r gwiriadau.",
           "sub_header_three": "Rhannu eich gwybodaeth er mwyn diogelu rhag twyll",
@@ -1609,19 +1616,27 @@
             "item_four": "Experian (asiantaeth gwirio credyd)",
             "item_five": "proseswyr data sy’n darparu gwasanaethau monitro perthnasol"
           },
-          "paragraph_twelve": "Mae’r wybodaeth a rannwn yn cynnwys:",
+          "paragraph_twelve": "Mae’r wybodaeth y gallwn ei rhannu yn cynnwys:",
           "list_six": {
-            "item_one": "cyfeiriadau IP a lleoliadau daearegol",
-            "item_two": "dynodwyr cyfrif unigryw",
-            "item_three": "gwybodaeth am y dyfeisiau sy’n cael eu defnyddio",
-            "item_four": "manylion dogfen hunaniaeth, gan gynnwys enw a dyddiad geni",
-            "item_five": "hanes cyfeiriad",
-            "item_six": "rhifau ffôn",
-            "item_seven": "cyfeiriadau e-bost"
+            "item_one": "rhifau ffôn",
+            "item_two": "cyfeiriadau e-bost",
+            "item_three": "cyfeiriadau IP",
+            "item_four": "lleoliad, sy’n deillio o’r cyfeiriad IP ac a fynegir fel gwlad, er enghraifft ’GB’",
+            "item_five": "adnabyddwyr cyfrifon unigryw",
+            "item_six": "gwybodaeth am y dyfeisiau sy’n cael eu defnyddio, gan gynnwys ID dyfais",
+            "item_seven": "manylion dogfen adnabod, gan gynnwys enw a dyddiad geni",
+            "item_eight": "’Hanes Cyfeiriad’"
           },
-          "paragraph_experian": "Rydym yn defnyddio Experian i wirio eich cyfeiriad e-bost a rhif ffôn pan fyddwch yn creu eich GOV.UK One Login ac os byddwch yn newid eich cyfeiriad e-bost neu rif ffôn.",
-          "sub_header_four": "Rhannu eich gwybodaeth gyda’n cyflenwyr",
-          "paragraph_thirteen": "Rydym yn gweithio gyda chyflenwyr technoleg, er enghraifft rydym yn defnyddio darparwr cynnal allanol a darparwr canolfan gyswllt. Rydym ond yn rhoi mynediad i`n cyflenwyr i`ch gwybodaeth os ydynt ei hangen i ddarparu eu gwasanaeth. Mae ein cyflenwyr yn gweithredu fel proseswyr data ac maent yn ddarostyngedig i gontractau gyda ni sy`n eu cyfyngu i brosesu eich data personol ond at ddiben darparu eu gwasanaethau yn unol â`n cyfarwyddiadau."
+          "paragraph_thirteen": "Lle mae gennym bryder am weithgaredd twyllodrus, efallai y byddwn hefyd yn rhannu manylion gan:",
+          "list_seven": {
+            "item_one": "pasbortau",
+            "item_two": "trwyddedau gyrru",
+            "item_three": "trwyddedau preswylio biometrig",
+            "item_four": "cardiau adnabod"
+          },
+          "paragraph_fourteen": "Efallai bod y wybodaeth hon a rannwn wedi cael ei darparu gennych chi i GOV.UK One Login yn uniongyrchol. Neu efallai ei fod wedi cael ei rannu gyda ni gan wasanaethau’r llywodraeth sy’n rhedeg y gwasanaethau rydych chi wedi’u cyrchu drwy GOV.UK One Login, neu drydydd partïon fel asiantaethau cyfeirio credyd fel Experian.",
+          "sub_header_four": "Rhannwch eich gwybodaeth gyda’n cyflenwyr",
+          "paragraph_fifteen": "Rydym yn gweithio gyda chyflenwyr technoleg, er enghraifft rydym yn defnyddio darparwr cynnal allanol a darparwr canolfan gyswllt. Rydym ond yn rhoi mynediad i’n cyflenwyr i’ch gwybodaeth os oes ei hangen arnynt i ddarparu eu gwasanaeth. Mae ein cyflenwyr yn gweithredu fel proseswyr data ac maent yn ddarostyngedig i gontractau gyda ni sy’n eu cyfyngu i brosesu eich data personol yn unig at yr unig bwrpas o ddarparu eu gwasanaethau yn unol â’n cyfarwyddiadau."
         },
         "how_long_we_keep_your_information": {
           "header": "Pa mor hir rydym yn cadw eich gwybodaeth",
@@ -1646,14 +1661,15 @@
           "paragraph_one": "Nid yw GOV.UK One Login wedi’i gynllunio ar gyfer, neu wedi’i dargedu’n fwriadol at, blant 13 oed neu iau. Nid ydym yn casglu na chynnal gwybodaeth yn fwriadol am unrhyw un dan 13 oed."
         },
         "where_information_processed_stored": {
-          "header": "Lle mae eich gwybodaeth yn cael ei brosesu a’i storio",
-          "paragraph_one": "Mae’r holl ddata personol sy’n cael ei brosesu’n uniongyrchol ar gyfer gweinyddu’ch GOV.UK One Login ac ar gyfer gwirio hunaniaeth yn cael ei storio yn y DU neu yn yr Ardal Economaidd Ewropeaidd (AEE). Mae’r AEE wedi cael ei asesu gan Swyddfa’r Comisiynydd Gwybodaeth fel un sydd ag amddiffyniadau cyfreithiol digonol ar gyfer preifatrwydd data yn unol â’r rhai yn y DU.",
-          "paragraph_two": "Gellir trosglwyddo data a gesglir gan Google Analytics neu Dynatrace y tu allan i’r Ardal Economaidd Ewropeaidd (AEE) i’w brosesu a gall rhai o’n cyflenwyr ddarparu cymorth technegol o’r tu allan i’r AEE."
+          "header": "Ble mae eich gwybodaeth yn cael ei phrosesu a’i chadw",
+          "paragraph_one": "Mae’r holl ddata personol sy’n cael ei brosesu’n uniongyrchol ar gyfer gweinyddu eich GOV.UK One Login ac ar gyfer gwirio hunaniaeth yn cael ei gadw yn y DU neu yn yr Ardal Economaidd Ewropeaidd (AEE). Mae’r AEE wedi cael ei hasesu gan Lywodraeth y DU fel rhai sydd â mesurau diogelu cyfreithiol digonol ar gyfer preifatrwydd data yn unol â’r rhai yn y DU.",
+          "paragraph_two": "Gall data a gesglir gan Google Analytics neu Dynatrace gael ei drosglwyddo y tu allan i’r Ardal Economaidd Ewropeaidd (AEE) i’w brosesu a gall rhai o’n cyflenwyr ddarparu cymorth technegol o’r tu allan i’r AEE. Yn y ddau achos, rydym yn sicrhau bod eich gwybodaeth yn cael ei gwarchod yr un mor dda, er enghraifft trwy gynnwys cymalau ychwanegol yn ein contractau gyda chyflenwyr. Mae Google hefyd yn cael ei gefnogi gan Fframwaith Preifatrwydd Data’r UD, sy’n ymestyn i ddiogelwch diogelu a phrosesu data’r DU.",
+          "paragraph_three": "Pan fo lleoliadau proseswyr neu is-broseswyr y tu allan i’r DU, rydym yn dibynnu ar gymalau contract model y cytunwyd arnynt a nodir gan GDPR i gael sicrwydd a diogelu data."
         },
         "how_we_protect_your_information": {
-          "header": "Sut rydym yn diogelu eich gwybodaeth bersonol a’i gadw’n ddiogel",
-          "paragraph_one": "Rydym wedi ymrwymo i wneud popeth o fewn ein gallu i gadw eich gwybodaeth yn ddiogel. Rydym wedi sefydlu systemau a phrosesau i atal mynediad heb awdurdod neu ddatgelu eich gwybodaeth - er enghraifft, rydym yn defnyddio lefelau amrywiol o amgryptio. Rydym hefyd yn gwneud yn siwr bod unrhyw drydydd partïon rydym yn delio â nhw yn cadw’r holl wybodaeth bersonol y maent yn ei brosesu ar ein rhan yn ddiogel.",
-          "paragraph_two": "Fel perchennog eich GOV.UK One Login, mae gennych chi hefyd rywfaint o gyfrifoldeb am ei ddiogelwch. Er enghraifft, dylech:",
+          "header": "Sut rydym yn diogelu eich gwybodaeth bersonol a’i chadw’n ddiogel",
+          "paragraph_one": "Rydym wedi ymrwymo i wneud popeth o fewn ein gallu i gadw’ch gwybodaeth yn ddiogel. Rydym wedi sefydlu systemau a phrosesau i atal mynediad heb awdurdod neu ddatgelu eich gwybodaeth - er enghraifft, rydym yn defnyddio lefelau amrywiol o amgryptio. Rydym hefyd yn sicrhau bod unrhyw drydydd partïon yr ydym yn delio â nhw yn cadw’r holl wybodaeth bersonol y maent yn ei phrosesu ar ein rhan yn ddiogel.",
+          "paragraph_two": "Fel perchennog eich GOV.UK One Login, mae gennych chi hefyd rywfaint o gyfrifoldeb am ei ddiogelwch. Er enghraifft, dylech chi:",
           "list_one": {
             "item_one": {
               "part_one": "ddewis gyfrinair cryf ar gyfer eich GOV.UK One Login a sicrhau eich bod yn ei gadw’n ddiogel - mae Canolfan Seiberddiogelwch Genedlaethol y DU (NCSC) yn darparu",
@@ -1741,7 +1757,7 @@
           "header": "Newidiadau i’r hysbysiad hwn",
           "paragraph_one": "Efallai y byddwn yn newid yr hysbysiad preifatrwydd hwn. Yn yr achos hynny, bydd dyddiad ’diweddaru olaf’ y ddogfen hon hefyd yn newid. Bydd unrhyw newidiadau i’r hysbysiad preifatrwydd hwn yn berthnasol i chi a’ch gwybodaeth ar unwaith.",
           "paragraph_two": "Os yw’r newidiadau hyn yn effeithio ar sut mae eich gwybodaeth bersonol yn cael ei phrosesu, bydd GDS yn rhoi gwybod i chi.",
-          "paragraph_three": "Diweddarwyd diwethaf: 28 Mehefin 2024"
+          "paragraph_three": "Diweddarwyd diwethaf: Ebrill 2025"
         }
       }
     },
