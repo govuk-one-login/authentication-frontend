@@ -37,7 +37,7 @@ frontend_auto_scaling_min_count = 1
 frontend_auto_scaling_max_count = 2
 ecs_desired_count               = 1
 
-# cloudfront flag
+# cloudfront flag to enable authdev1
 cloudfront_auth_frontend_enabled = true
 cloudfront_auth_dns_enabled      = true
 
