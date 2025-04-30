@@ -2635,6 +2635,12 @@
         },
         "paragraph1": "To continue after you’ve changed how you get security codes, you’ll need to sign back in to the app you’re using now."
       }
+    },
+    "howDoYouWantSecurityCodes": {
+      "mfaReset": {
+        "preamble": "If you have permanently lost access to both of these methods, ",
+        "link": "check if you can change how you get security codes"
+      }
     }
   }
 }

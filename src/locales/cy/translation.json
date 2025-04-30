@@ -2635,6 +2635,12 @@
         },
         "paragraph1": "I barhau ar ôl i chi newid sut rydych chi’n cael codau diogelwch, bydd angen i chi fewngofnodi yn ôl i’r ap rydych chi’n ei ddefnyddio nawr."
       }
+    },
+    "howDoYouWantSecurityCodes": {
+      "mfaReset": {
+        "preamble": "Os ydych chi wedi colli mynediad parhaol i’r ddau ddull yma, ",
+        "link": "gwiriwch a allwch chi newid sut rydych yn cael codau diogelwch"
+      }
     }
   }
 }

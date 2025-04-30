@@ -1,6 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Integration::how do you want security codes should include link to reset mfa methods 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
 exports[`Integration::how do you want security codes should return how do you want security codes page 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration::how do you want security codes should return how do you want security codes page as expected 1`] = `
 Object {
   "contentId": "",
   "taxonomyLevel1": "authentication",
