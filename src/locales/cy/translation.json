@@ -2637,6 +2637,7 @@
       }
     },
     "howDoYouWantSecurityCodes": {
+      "title": "Sut ydych chi am gael cod diogelwch?",
       "mfaReset": {
         "preamble": "Os ydych chi wedi colli mynediad parhaol i’r ddau ddull yma, ",
         "link": "gwiriwch a allwch chi newid sut rydych yn cael codau diogelwch"
