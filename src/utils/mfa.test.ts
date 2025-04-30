@@ -1,12 +1,12 @@
-import { expect } from "../../test/utils/test-utils";
-import type { MfaMethod } from "../types";
-import { MfaMethodPriorityIdentifier } from "../types";
-import { MFA_METHOD_TYPE } from "../app.constants";
+import { expect } from "../../test/utils/test-utils.js";
+import type { MfaMethod } from "../types.js";
+import { MfaMethodPriority } from "../types.js";
+import { MFA_METHOD_TYPE } from "../app.constants.js";
 import {
   getDefaultSmsMfaMethod,
   removeDefaultSmsMfaMethod,
   upsertDefaultSmsMfaMethod,
-} from "./mfa";
+} from "./mfa.js";
 
 describe("mfa", () => {
   describe("upsertDefaultSmsMfaMethod", () => {
@@ -19,7 +19,7 @@ describe("mfa", () => {
         expectedMfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,
-            priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+            priority: MfaMethodPriority.DEFAULT,
             redactedPhoneNumber: "123",
           },
         ] as MfaMethod[],
@@ -29,7 +29,7 @@ describe("mfa", () => {
         initialMfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,
-            priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+            priority: MfaMethodPriority.DEFAULT,
             redactedPhoneNumber: "123",
           },
         ] as MfaMethod[],
@@ -38,7 +38,7 @@ describe("mfa", () => {
         expectedMfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,
-            priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+            priority: MfaMethodPriority.DEFAULT,
             redactedPhoneNumber: "890",
           },
         ] as MfaMethod[],
@@ -49,7 +49,7 @@ describe("mfa", () => {
         initialMfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,
-            priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+            priority: MfaMethodPriority.DEFAULT,
             redactedPhoneNumber: "123",
             phoneNumber: "98534567123",
           },
@@ -59,7 +59,7 @@ describe("mfa", () => {
         expectedMfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,
-            priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+            priority: MfaMethodPriority.DEFAULT,
             redactedPhoneNumber: "890",
             phoneNumber: "98534567123",
           },
@@ -73,7 +73,7 @@ describe("mfa", () => {
         expectedMfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,
-            priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+            priority: MfaMethodPriority.DEFAULT,
             phoneNumber: "123",
           },
         ] as MfaMethod[],
@@ -83,7 +83,7 @@ describe("mfa", () => {
         initialMfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,
-            priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+            priority: MfaMethodPriority.DEFAULT,
             phoneNumber: "123",
           },
         ] as MfaMethod[],
@@ -92,7 +92,7 @@ describe("mfa", () => {
         expectedMfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,
-            priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+            priority: MfaMethodPriority.DEFAULT,
             phoneNumber: "890",
           },
         ] as MfaMethod[],
@@ -103,7 +103,7 @@ describe("mfa", () => {
         initialMfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,
-            priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+            priority: MfaMethodPriority.DEFAULT,
             redactedPhoneNumber: "123",
             phoneNumber: "98534567123",
           },
@@ -113,7 +113,7 @@ describe("mfa", () => {
         expectedMfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,
-            priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+            priority: MfaMethodPriority.DEFAULT,
             redactedPhoneNumber: "123",
             phoneNumber: "123456789",
           },
@@ -151,14 +151,14 @@ describe("mfa", () => {
         mfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,
-            priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+            priority: MfaMethodPriority.DEFAULT,
             redactedPhoneNumber: "123",
             phoneNumber: "089",
           },
         ] as MfaMethod[],
         expectedMfaMethod: {
           type: MFA_METHOD_TYPE.SMS,
-          priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+          priority: MfaMethodPriority.DEFAULT,
           redactedPhoneNumber: "123",
           phoneNumber: "089",
         },
@@ -185,7 +185,7 @@ describe("mfa", () => {
         mfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,
-            priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+            priority: MfaMethodPriority.DEFAULT,
             redactedPhoneNumber: "123",
             phoneNumber: "089",
           },

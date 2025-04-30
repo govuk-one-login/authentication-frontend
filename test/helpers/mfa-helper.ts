@@ -1,6 +1,6 @@
-import type { MfaMethod } from "../../src/types";
-import { MfaMethodPriorityIdentifier } from "../../src/types";
-import { MFA_METHOD_TYPE } from "../../src/app.constants";
+import type { MfaMethod } from "../../src/types.js";
+import { MfaMethodPriority } from "../../src/types.js";
+import { MFA_METHOD_TYPE } from "../../src/app.constants.js";
 
 export function buildMfaMethods({
   phoneNumber,
@@ -13,7 +13,7 @@ export function buildMfaMethods({
     return [
       {
         type: MFA_METHOD_TYPE.SMS,
-        priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+        priority: MfaMethodPriority.DEFAULT,
         phoneNumber,
         redactedPhoneNumber,
       },

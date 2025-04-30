@@ -10,7 +10,7 @@ import crypto from "crypto";
 import { APP_ENV_NAME, MFA_METHOD_TYPE } from "../app.constants.js";
 import { getAppEnv } from "../config.js";
 import type { MfaMethod, SmsMfaMethod } from "../types.js";
-import { isSmsMfaMethod, MfaMethodPriorityIdentifier } from "../types.js";
+import { isSmsMfaMethod, MfaMethodPriority } from "../types.js";
 
 function createRandomBytes(size: number, encoding: KeyEncodings): string {
   return crypto.randomBytes(size).toString(encoding);
@@ -59,7 +59,7 @@ export function upsertDefaultSmsMfaMethod(
   const nextMfa: MfaMethod = {
     ...previousMfa,
     type: MFA_METHOD_TYPE.SMS,
-    priorityIdentifier: MfaMethodPriorityIdentifier.DEFAULT,
+    priority: MfaMethodPriority.DEFAULT,
     ...(newMfaMethod.redactedPhoneNumber && {
       redactedPhoneNumber: newMfaMethod.redactedPhoneNumber,
     }),
@@ -83,10 +83,7 @@ export function getDefaultSmsMfaMethod(
   if (!mfaMethods) return undefined;
   return mfaMethods
     .filter(isSmsMfaMethod)
-    .find(
-      (mfaMethod) =>
-        mfaMethod.priorityIdentifier === MfaMethodPriorityIdentifier.DEFAULT
-    );
+    .find((mfaMethod) => mfaMethod.priority === MfaMethodPriority.DEFAULT);
 }
 
 export function removeDefaultSmsMfaMethod(
@@ -96,7 +93,7 @@ export function removeDefaultSmsMfaMethod(
   return mfaMethod.filter(
     (mfaMethod) =>
       !(
-        mfaMethod.priorityIdentifier === MfaMethodPriorityIdentifier.DEFAULT &&
+        mfaMethod.priority === MfaMethodPriority.DEFAULT &&
         isSmsMfaMethod(mfaMethod)
       )
   );
