@@ -26,7 +26,7 @@
     <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
     <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
     <input type="hidden" name="supportAccountRecovery" value="{{supportAccountRecovery}}"/>
-    <input type="hidden" name="mfaResetPath" value="{{mfaResetPath}}"/>
+    <input type="hidden" name="mfaIssuePath" value="{{mfaIssuePath}}"/>
 
     {{ govukInput({
   label: {
@@ -51,11 +51,19 @@
     </p>
 
     {% if supportAccountRecovery === true or supportAccountRecovery === "true" %}
-        <p class="govuk-body">
-          {{ 'pages.enterMfa.details.changeGetSecurityCodesTextWithIpv' | translate }}
-          <a href={{ mfaResetPath }} class="govuk-link"
-             rel="noreferrer noopener">{{ 'pages.enterMfa.details.changeGetSecurityCodesWithIpvLinkText'| translate }}</a>.
-        </p>
+        {% if hasMultipleMfaMethods %}
+            <p class="govuk-body">
+              {{ 'pages.enterMfa.details.chooseMfaMethodText' | translate }}
+              <a href={{ mfaIssuePath }} class="govuk-link"
+                 rel="noreferrer noopener">{{ 'pages.enterMfa.details.chooseMfaMethodLinkText'| translate }}</a>.
+            </p>
+        {% else %}
+            <p class="govuk-body">
+              {{ 'pages.enterMfa.details.changeGetSecurityCodesTextWithIpv' | translate }}
+              <a href={{ mfaIssuePath }} class="govuk-link"
+                 rel="noreferrer noopener">{{ 'pages.enterMfa.details.changeGetSecurityCodesWithIpvLinkText'| translate }}</a>.
+            </p>
+        {% endif %}
     {% endif %}
     {% endset %}
 

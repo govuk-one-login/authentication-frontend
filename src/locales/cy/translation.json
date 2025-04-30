@@ -608,7 +608,9 @@
         "sendCodeLinkHref": "/resend-code",
         "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn.",
         "changeGetSecurityCodesTextWithIpv": "Os nad oes gennych fynediad i’ch ap dilysu mwyach, ",
-        "changeGetSecurityCodesWithIpvLinkText": "gwiriwch a allwch newid sut rydych yn cael codau diogelwch"
+        "changeGetSecurityCodesWithIpvLinkText": "gwiriwch a allwch newid sut rydych yn cael codau diogelwch",
+        "chooseMfaMethodText": "Os na allwch gael cod i’r rhif ffôn hwn gallwch ",
+        "chooseMfaMethodLinkText": "roi cynnig ar ffordd arall o gael cod diogelwch"
       },
       "upliftRequired": {
         "title": "Rhowch god diogelwch i barhau",

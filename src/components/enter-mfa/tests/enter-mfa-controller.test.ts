@@ -75,7 +75,8 @@ describe("enter mfa controller", () => {
       expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
         phoneNumber: TEST_PHONE_NUMBER,
         supportAccountRecovery: false,
-        mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
+        hasMultipleMfaMethods: false,
+        mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
       });
     });
 
@@ -88,7 +89,8 @@ describe("enter mfa controller", () => {
       expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
         phoneNumber: TEST_PHONE_NUMBER,
         supportAccountRecovery: true,
-        mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
+        hasMultipleMfaMethods: false,
+        mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
       });
     });
 
