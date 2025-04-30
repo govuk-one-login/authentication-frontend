@@ -101,7 +101,6 @@ import { ipvCallbackRouter } from "./components/ipv-callback/ipv-callback-routes
 import { mfaResetWithIpvRouter } from "./components/mfa-reset-with-ipv/mfa-reset-with-ipv-routes.js";
 import { environmentBannerMiddleware } from "./middleware/environment-banner-middleware.js";
 import UID from "uid-safe";
-import { migrateMfaSessionStorageMiddleware } from "./middleware/migrate-mfa-session-storage-middleware.js";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
 
@@ -247,8 +246,6 @@ async function createApp(): Promise<express.Application> {
       },
     })
   );
-
-  app.use(migrateMfaSessionStorageMiddleware); // To be removed shortly
 
   app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
 
