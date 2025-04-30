@@ -6,6 +6,8 @@
 {% block content %}
 
 <form id="form-tracking" action="/how-do-you-want-security-codes" method="post" novalidate="novalidate">
+    {% include "common/errors/errorSummary.njk" %}
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
     {% set items = [] %}
     {% for mfaMethod in mfaMethods %}
         {% if mfaMethod.type == "SMS" %}
@@ -28,7 +30,10 @@
         attributes: {
             "id": "mfa-method"
         },
-        items: items
+        items: items,
+        errorMessage: {
+            text: 'pages.howDoYouWantSecurityCodes.error.empty' | translate
+        } if errors["mfa-method-id"]
     }) }}
 
     {{ govukButton({

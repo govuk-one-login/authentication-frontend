@@ -2644,6 +2644,9 @@
       "mfaReset": {
         "preamble": "If you have permanently lost access to both of these methods, ",
         "link": "check if you can change how you get security codes"
+      },
+      "error": {
+        "empty": "Select how you want to get a security code"
       }
     }
   }

@@ -10,3 +10,10 @@ export function howDoYouWantSecurityCodesGet(
     mfaMethods: req.session.user.mfaMethods || [],
   });
 }
+
+export function howDoYouWantSecurityCodesPost(
+  req: Request,
+  res: Response
+): void {
+  res.send("Unimplemented");
+}

@@ -8,6 +8,22 @@ import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import * as cheerio from "cheerio";
 
+const getTokenAndCookies = async (app: express.Application) => {
+  let cookies, token;
+  await request(
+    app,
+    (test) => test.get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
+    {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }
+  ).then((res) => {
+    const $ = cheerio.load(res.text);
+    token = $("[name=_csrf]").val();
+    cookies = res.headers["set-cookie"];
+  });
+  return { token, cookies };
+};
+
 describe("Integration::how do you want security codes", () => {
   let app: any;
   const DEFAULT_PHONE_NUMBER = "7867";
@@ -101,5 +117,29 @@ describe("Integration::how do you want security codes", () => {
           );
         })
     );
+  });
+
+  it("returns a validation error when no option is selected", async () => {
+    const { token, cookies } = await getTokenAndCookies(app);
+
+    await request(
+      app,
+      (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
+      {
+        expectAnalyticsPropertiesMatchSnapshot: false,
+      }
+    )
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#mfa-method-id-error").text()).to.contains(
+          "Select how you want to get a security code"
+        );
+      })
+      .expect(400);
   });
 });
