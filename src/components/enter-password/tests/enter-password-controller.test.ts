@@ -8,7 +8,11 @@ import {
   enterPasswordPost,
   enterSignInRetryBlockedGet,
 } from "../enter-password-controller.js";
-import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants.js";
+import {
+  JOURNEY_TYPE,
+  MFA_METHOD_TYPE,
+  PATH_NAMES,
+} from "../../../app.constants.js";
 import type { EnterPasswordServiceInterface } from "../types.js";
 import type { MfaServiceInterface } from "../../common/mfa/types.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
@@ -22,6 +26,8 @@ import { commonVariables } from "../../../../test/helpers/common-test-variables.
 import { ReauthJourneyError } from "../../../utils/error.js";
 import { strict as assert } from "assert";
 import esmock from "esmock";
+import type { MfaMethod } from "../../../types.js";
+import { MfaMethodPriority } from "../../../types.js";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
@@ -230,6 +236,47 @@ describe("enter password controller", () => {
         sinon.match.any,
         JOURNEY_TYPE.REAUTHENTICATION
       );
+    });
+
+    it("should record mfaMethods in user session", async () => {
+      const expectedMfaMethods: MfaMethod[] = [
+        {
+          id: "test-id",
+          type: MFA_METHOD_TYPE.SMS,
+          priority: MfaMethodPriority.DEFAULT,
+          redactedPhoneNumber: "******123",
+        },
+      ];
+
+      const fakeService: EnterPasswordServiceInterface = {
+        loginUser: sinon.fake.returns({
+          data: {
+            redactedPhoneNumber: "3456",
+            mfaRequired: true,
+            latestTermsAndConditionsAccepted: true,
+            mfaMethodVerified: true,
+            mfaMethodType: "SMS",
+            mfaMethods: expectedMfaMethods,
+          },
+          success: true,
+        }),
+      } as unknown as EnterPasswordServiceInterface;
+
+      const fakeMfaService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as MfaServiceInterface;
+
+      req.session.user = { email, reauthenticate: "test_data" };
+
+      await enterPasswordPost(
+        false,
+        fakeService,
+        fakeMfaService
+      )(req as Request, res as Response);
+
+      expect(req.session.user.mfaMethods).to.deep.equal(expectedMfaMethods);
     });
 
     describe("enter password when signing in", () => {
