@@ -108,9 +108,6 @@ export function verifyCodePost(
       case NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE:
         nextEvent = USER_JOURNEY_EVENTS.RESET_PASSWORD_CODE_VERIFIED;
         break;
-      case NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES:
-        nextEvent = USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED;
-        break;
       default:
         throw new Error("Unknown notification type");
     }
@@ -119,9 +116,8 @@ export function verifyCodePost(
       !req.session.user.withinForcedPasswordResetJourney
     ) {
       if (
-        nextEvent === USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED ||
-        (nextEvent === USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED &&
-          options.journeyType === JOURNEY_TYPE.PASSWORD_RESET_MFA)
+        nextEvent === USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED &&
+        options.journeyType === JOURNEY_TYPE.PASSWORD_RESET_MFA
       ) {
         const accountInterventionsResponse =
           await accountInterventionsService.accountInterventionStatus(

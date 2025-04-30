@@ -42,7 +42,6 @@ describe("contact us further information controller", () => {
         "contact-us/further-information/index.njk",
         {
           theme: "signing_in",
-          supportMfaResetWithIpv: false,
           referer: encodeURIComponent(REFERER),
           hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
           supportNoPhotoIdContactForms: false,
@@ -60,7 +59,6 @@ describe("contact us further information controller", () => {
         "contact-us/further-information/index.njk",
         {
           theme: "account_creation",
-          supportMfaResetWithIpv: false,
           referer: encodeURIComponent(REFERER),
           hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
           supportNoPhotoIdContactForms: false,

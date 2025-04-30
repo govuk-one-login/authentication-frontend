@@ -607,8 +607,6 @@
         "sendCodeLinkText": "send the code again",
         "sendCodeLinkHref": "/resend-code",
         "text 2": " if the code is not working or you did not receive it.",
-        "changeGetSecurityCodesText": "If you cannot access the phone number for your GOV.UK One Login, you can securely ",
-        "changeGetSecurityCodesLinkText": "change how you get security codes",
         "changeGetSecurityCodesTextWithIpv": "If you no longer have access to this phone number,  ",
         "changeGetSecurityCodesWithIpvLinkText": "check if you can change how you get security codes"
       },
@@ -705,42 +703,10 @@
     "changeSecurityCodesConfirmation": {
       "title": "You’ve changed how you get security codes",
       "header": "You’ve changed how you get security codes",
-      "info": {
-        "paragraphSMS": "We’ll send security codes to your phone number ending with [mobile] when you sign in.",
-        "paragraphAuthApp": "You’ll need to use your authenticator app to get security codes when you sign in."
-      },
       "infoForJourneyWithIpvReset": {
         "confirmationParagraph": "You can now continue to the service you were using.",
         "paragraphSMS": "Next time you sign in, we’ll send security codes to your phone number ending with [mobile].",
         "paragraphAuthApp": "Next time you sign in, you’ll need to use your authenticator app to get security codes."
-      }
-    },
-    "checkYourEmailSecurityCodes": {
-      "title": "Check your email",
-      "header": "Check your email",
-      "info": {
-        "paragraph1": "We need to make sure this is your GOV.UK One Login before you can change how you get security codes."
-      },
-      "text": "We have sent an email to: ",
-      "code": {
-        "paragraph1": "The email contains a 6 digit security code. After you enter the code, you’ll be able to change how you get security codes when you sign in.",
-        "paragraph2": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder.",
-        "paragraph3": "The code will expire after 15 minutes.",
-        "label": "Enter the 6 digit code",
-        "validationError": {
-          "required": "Enter the code",
-          "maxLength": "Enter the code using only 6 digits",
-          "minLength": "Enter the code using only 6 digits",
-          "invalidFormat": "Enter the code using only 6 digits",
-          "invalidCode": "The code you entered is not correct, or may have expired, try entering it again or request a new code"
-        }
-      },
-      "details": {
-        "summaryText": "Problems with the code?",
-        "text1": "We can ",
-        "sendCodeLinkText": "send the code again",
-        "sendCodeLinkHref": "/resend-email-code",
-        "text2": " if the code is not working or you did not receive it."
       }
     },
     "signedOut": {
@@ -1899,7 +1865,6 @@
           "header": "Tell us what happened",
           "radio1": "You did not get a security code",
           "radio2": "The security code did not work",
-          "radio3": "You’ve changed your phone number or lost your phone",
           "radio3MfaReset": "You’ve lost access to the way you get a security code for GOV.UK One Login",
           "radio3MfaResetHint": "You cannot use the phone number or the authenticator app you set up to sign in",
           "radio4": "You’ve forgotten your password",
@@ -2179,9 +2144,7 @@
         }
       },
       "noPhoneNumberAccess": {
-        "title": "You’ve changed your phone number or lost your phone",
         "titleMfaReset": "You’ve lost access to the way you get a security code",
-        "header": "You’ve changed your phone number or lost your phone",
         "headerMfaReset": "You’ve lost access to the way you get a security code",
         "section1": {
           "header": "How do you get security codes to sign in?",
@@ -2563,8 +2526,6 @@
       },
       "details": {
         "summary": "I do not have access to the authenticator app",
-        "text1": "You can securely ",
-        "text2": "change how you get security codes",
         "text1MfaResetWithIpv": "If you no longer have access to your authenticator app, ",
         "text2MfaResetWithIpv": "check if you can change how you get security codes",
         "text3": "."

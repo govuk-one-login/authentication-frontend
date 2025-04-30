@@ -79,7 +79,6 @@ export interface UserSession {
   wrongCodeEnteredPasswordResetMfaLock?: string;
   isAccountRecoveryPermitted?: boolean;
   isAccountRecoveryJourney?: boolean;
-  isAccountRecoveryCodeResent?: boolean;
   accountRecoveryVerifiedMfaType?: string;
   reauthenticate?: string;
   enterEmailMfaType?: string;

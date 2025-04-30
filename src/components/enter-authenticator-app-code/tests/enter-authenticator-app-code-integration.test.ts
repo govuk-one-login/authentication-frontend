@@ -17,6 +17,7 @@ import { createApiResponse } from "../../../utils/http.js";
 import type { NextFunction, Request, Response } from "express";
 import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
 import type { DefaultApiResponse } from "../../../types.js";
+import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import esmock from "esmock";
 
 describe("Integration:: enter authenticator app code", () => {
@@ -25,32 +26,7 @@ describe("Integration:: enter authenticator app code", () => {
   let app: any;
   let baseApi: string;
 
-  async function setupStubbedApp(
-    options: {
-      supportMfaResetWithIpv?: boolean;
-      routeUsersToNewIpvJourney?: boolean;
-    } = {
-      supportMfaResetWithIpv: false,
-      routeUsersToNewIpvJourney: false,
-    }
-  ) {
-    process.env.SUPPORT_MFA_RESET_WITH_IPV = options.supportMfaResetWithIpv
-      ? "1"
-      : "0";
-    process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY =
-      options.routeUsersToNewIpvJourney ? "1" : "0";
-
-    const { getPermittedJourneyForPath } = await esmock(
-      "../../../../test/helpers/session-helper.js",
-      {},
-      {
-        "../../../config.js": {
-          supportMfaResetWithIpv: () => options.supportMfaResetWithIpv,
-          routeUsersToNewIpvJourney: () => options.routeUsersToNewIpvJourney,
-        },
-      }
-    );
-
+  async function setupStubbedApp() {
     const { createApp } = await esmock(
       "../../../app.js",
       {},
@@ -136,13 +112,12 @@ describe("Integration:: enter authenticator app code", () => {
   beforeEach(() => {
     process.env.SUPPORT_REAUTHENTICATION = "0";
     process.env.TEST_SETUP_REAUTH_SESSION = "0";
+    process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
     nock.cleanAll();
   });
 
   after(() => {
     sinon.restore();
-    delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
-    delete process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY;
     app = undefined;
   });
 
@@ -153,95 +128,25 @@ describe("Integration:: enter authenticator app code", () => {
     );
   });
 
-  const TEST_DATA = [
-    {
-      description: "when support mfa reset with ipv is off",
-      supportMfaResetWithIpv: false,
-      routeUsersToNewIpvJourney: false,
-      expectedHref:
-        PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP",
-      expectedLinkText: "change how you get security codes",
-    },
-    {
-      description:
-        "when support mfa reset with ipv is off regardless of route to new journey flag",
-      supportMfaResetWithIpv: false,
-      routeUsersToNewIpvJourney: true,
-      expectedHref:
-        PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP",
-      expectedLinkText: "change how you get security codes",
-    },
-    {
-      description:
-        "when support mfa reset with ipv is on and route users to new journey is on",
-      supportMfaResetWithIpv: true,
-      routeUsersToNewIpvJourney: true,
-      expectedHref: PATH_NAMES.MFA_RESET_WITH_IPV,
-      expectedLinkText: "check if you can change how you get security codes",
-    },
-    {
-      description:
-        "when support mfa reset with ipv is on but route to new journeys is off",
-      supportMfaResetWithIpv: true,
-      routeUsersToNewIpvJourney: false,
-      expectedHref:
-        PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP",
-      expectedLinkText: "change how you get security codes",
-    },
-  ];
-
-  TEST_DATA.forEach((testData) => {
-    it(`should display correct link to reset mfa ${testData.description}`, async () => {
-      await setupStubbedApp({
-        supportMfaResetWithIpv: testData.supportMfaResetWithIpv,
-        routeUsersToNewIpvJourney: testData.routeUsersToNewIpvJourney,
-      });
-      await request(app, (test) =>
-        test
-          .get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-          .expect(200)
-          .expect(function (res) {
-            const $ = cheerio.load(res.text);
-            expect(
-              $("a")
-                .toArray()
-                .some(
-                  (link) =>
-                    $(link).attr("href") === testData.expectedHref &&
-                    $(link).text().trim() === testData.expectedLinkText
-                )
-            ).to.be.true;
-          })
-      );
-    });
-  });
-
-  it("cannot access old journey when new journey enabled", async () => {
-    await setupStubbedApp({
-      supportMfaResetWithIpv: true,
-      routeUsersToNewIpvJourney: true,
-    });
+  it(`should display correct link to reset mfa`, async () => {
+    await setupStubbedApp();
     await request(app, (test) =>
       test
-        .get(
-          PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP"
-        )
-        .expect(302)
-        .expect("Location", PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-    );
-  });
-
-  it("can access old journey when new journey enabled but routing users to IPV is disabled", async () => {
-    await setupStubbedApp({
-      supportMfaResetWithIpv: true,
-      routeUsersToNewIpvJourney: false,
-    });
-    await request(app, (test) =>
-      test
-        .get(
-          PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES + "?type=AUTH_APP"
-        )
+        .get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
         .expect(200)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect(
+            $("a")
+              .toArray()
+              .some(
+                (link) =>
+                  $(link).attr("href") === PATH_NAMES.MFA_RESET_WITH_IPV &&
+                  $(link).text().trim() ===
+                    "check if you can change how you get security codes"
+              )
+          ).to.be.true;
+        })
     );
   });
 

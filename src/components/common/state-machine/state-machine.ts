@@ -5,10 +5,7 @@ import {
   OIDC_PROMPT,
   PATH_NAMES,
 } from "../../../app.constants.js";
-import {
-  routeUsersToNewIpvJourney,
-  supportMfaResetWithIpv,
-} from "../../../config.js";
+
 const USER_JOURNEY_EVENTS = {
   AUTHENTICATED: "AUTHENTICATED",
   CREDENTIALS_VALIDATED: "CREDENTIALS_VALIDATED",
@@ -50,8 +47,6 @@ const USER_JOURNEY_EVENTS = {
   MFA_OPTION_SMS_SELECTED: "MFA_OPTION_SMS_SELECTED",
   VERIFY_AUTH_APP_CODE: "VERIFY_AUTH_APP_CODE",
   AUTH_APP_CODE_VERIFIED: "AUTH_APP_CODE_VERIFIED",
-  CHANGE_SECURITY_CODES_REQUESTED: "CHANGE_SECURITY_CODES_REQUESTED",
-  EMAIL_SECURITY_CODES_CODE_VERIFIED: "EMAIL_SECURITY_CODES_CODE_VERIFIED",
   CHANGE_SECURITY_CODES_COMPLETED: "CHANGE_SECURITY_CODES_COMPLETED",
   TEMPORARILY_BLOCKED_INTERVENTION: "TEMP_SUSPENSION_INTERVENTION",
   PERMANENTLY_BLOCKED_INTERVENTION: "PERMANENTLY_BLOCKED_INTERVENTION",
@@ -182,10 +177,6 @@ const authStateMachine = createMachine(
       [PATH_NAMES.RESEND_EMAIL_CODE]: {
         on: {
           [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [
-            {
-              target: [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES],
-              cond: "isAccountRecoveryJourney",
-            },
             {
               target: [PATH_NAMES.CHECK_YOUR_EMAIL],
             },
@@ -386,9 +377,6 @@ const authStateMachine = createMachine(
             },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
-          [USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_REQUESTED]: [
-            PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
-          ],
         },
         meta: {
           optionalPaths: [
@@ -396,20 +384,9 @@ const authStateMachine = createMachine(
             PATH_NAMES.SECURITY_CODE_WAIT,
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
-            ...(supportMfaResetWithIpv() && !routeUsersToNewIpvJourney()
-              ? [
-                  PATH_NAMES.MFA_RESET_WITH_IPV,
-                  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
-                  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
-                  PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
-                ]
-              : supportMfaResetWithIpv() && routeUsersToNewIpvJourney()
-                ? [
-                    PATH_NAMES.MFA_RESET_WITH_IPV,
-                    PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
-                    PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
-                  ]
-                : [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]),
+            PATH_NAMES.MFA_RESET_WITH_IPV,
+            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
           ],
         },
       },
@@ -431,20 +408,9 @@ const authStateMachine = createMachine(
           optionalPaths: [
             PATH_NAMES.SECURITY_CODE_INVALID,
             PATH_NAMES.CHECK_YOUR_EMAIL,
-            ...(supportMfaResetWithIpv() && !routeUsersToNewIpvJourney()
-              ? [
-                  PATH_NAMES.MFA_RESET_WITH_IPV,
-                  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
-                  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
-                  PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES,
-                ]
-              : supportMfaResetWithIpv() && routeUsersToNewIpvJourney()
-                ? [
-                    PATH_NAMES.MFA_RESET_WITH_IPV,
-                    PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
-                    PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
-                  ]
-                : [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]),
+            PATH_NAMES.MFA_RESET_WITH_IPV,
+            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
           ],
         },
       },
@@ -676,32 +642,6 @@ const authStateMachine = createMachine(
       [PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT]: {
         on: {
           [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.RESEND_EMAIL_CODE],
-        },
-      },
-      [PATH_NAMES.CHECK_YOUR_EMAIL_CHANGE_SECURITY_CODES]: {
-        on: {
-          [USER_JOURNEY_EVENTS.EMAIL_SECURITY_CODES_CODE_VERIFIED]: [
-            PATH_NAMES.GET_SECURITY_CODES,
-          ],
-          [USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION]: [
-            PATH_NAMES.PASSWORD_RESET_REQUIRED,
-          ],
-          [USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION]: [
-            PATH_NAMES.UNAVAILABLE_TEMPORARY,
-          ],
-          [USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION]: [
-            PATH_NAMES.UNAVAILABLE_PERMANENT,
-          ],
-        },
-        meta: {
-          optionalPaths: [
-            PATH_NAMES.ENTER_MFA,
-            PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
-            PATH_NAMES.RESEND_EMAIL_CODE,
-            PATH_NAMES.SECURITY_CODE_WAIT,
-            PATH_NAMES.SECURITY_CODE_INVALID,
-            PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
-          ],
         },
       },
       [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]: {

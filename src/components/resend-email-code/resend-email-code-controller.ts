@@ -51,19 +51,14 @@ export function resendEmailCodePost(
   return async function (req: Request, res: Response) {
     const email = req.session.user.email.toLowerCase();
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const accountRecoveryJourney = isAccountRecoveryJourney(req);
 
-    const journeyType = accountRecoveryJourney
-      ? JOURNEY_TYPE.ACCOUNT_RECOVERY
-      : JOURNEY_TYPE.REGISTRATION;
+    const journeyType = JOURNEY_TYPE.REGISTRATION;
 
     const sendNotificationResponse = await notificationService.sendNotification(
       sessionId,
       clientSessionId,
       email,
-      accountRecoveryJourney
-        ? NOTIFICATION_TYPE.VERIFY_CHANGE_HOW_GET_SECURITY_CODES
-        : NOTIFICATION_TYPE.VERIFY_EMAIL,
+      NOTIFICATION_TYPE.VERIFY_EMAIL,
       persistentSessionId,
       xss(req.cookies.lng as string),
       req,
@@ -85,9 +80,6 @@ export function resendEmailCodePost(
       );
     }
 
-    if (accountRecoveryJourney) {
-      req.session.user.isAccountRecoveryCodeResent = true;
-    }
     if (
       req.session.user.isAccountCreationJourney &&
       req.session.user?.isVerifyEmailCodeResendRequired
@@ -100,9 +92,7 @@ export function resendEmailCodePost(
         req,
         req.path,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
-        {
-          isAccountRecoveryJourney: accountRecoveryJourney,
-        },
+        {},
         sessionId
       )
     );

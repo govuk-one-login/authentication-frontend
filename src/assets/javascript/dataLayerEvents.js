@@ -50,10 +50,6 @@ function getJourneyMapping(url) {
       "password reset",
       "end"
     ),
-    "/check-email-change-security-codes": generateSessionJourney(
-      "change security codes",
-      "start"
-    ),
     "/change-codes-confirmed": generateSessionJourney(
       "change security codes",
       "end"

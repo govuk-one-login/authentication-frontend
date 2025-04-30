@@ -8,7 +8,6 @@ export interface ResetPasswordServiceInterface {
     clientSessionId: string,
     persistentSessionId: string,
     isForcedPasswordReset: boolean,
-    allowMfaResetAfterPasswordReset: boolean,
     req: Request
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

@@ -73,11 +73,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
   });
 
   describe("resetPasswordGet", () => {
-    afterEach(() => {
-      delete process.env.SUPPORT_MFA_RESET_WITH_IPV;
-      delete process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY;
-    });
-
     it("should render change password page", () => {
       resetPasswordGet(req as Request, res as Response);
 
@@ -188,70 +183,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
         expect(fakeLoginService.loginUser).not.to.have.been.called;
 
         expect(req.session.user.passwordResetTime).to.be.undefined;
-      });
-    });
-
-    const TEST_DATA = [
-      {
-        supportMfaResetWithIpv: true,
-        routeUsersToNewIpvJourney: true,
-        expectedValueOfMfaResetFlagSubmitted: true,
-      },
-      {
-        supportMfaResetWithIpv: true,
-        routeUsersToNewIpvJourney: false,
-        expectedValueOfMfaResetFlagSubmitted: false,
-      },
-      {
-        supportMfaResetWithIpv: false,
-        routeUsersToNewIpvJourney: false,
-        expectedValueOfMfaResetFlagSubmitted: false,
-      },
-      {
-        supportMfaResetWithIpv: false,
-        routeUsersToNewIpvJourney: true,
-        expectedValueOfMfaResetFlagSubmitted: false,
-      },
-    ];
-
-    TEST_DATA.forEach(function (testData) {
-      it(`should call the update password service with the value of allowMfaResetAfterPasswordReset correctly based on test data ${JSON.stringify(testData)}`, async () => {
-        if (testData.supportMfaResetWithIpv) {
-          process.env.SUPPORT_MFA_RESET_WITH_IPV = "1";
-        } else {
-          process.env.SUPPORT_MFA_RESET_WITH_IPV = "0";
-        }
-        if (testData.routeUsersToNewIpvJourney) {
-          process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY = "1";
-        } else {
-          process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY = "0";
-        }
-        const fakeResetService = fakeResetServiceReturningSuccess(true);
-        const mfaMethodVerified = false;
-        const passwordChangeRequired = false;
-        const fakeLoginService = fakeLoginServiceReturning(
-          mfaMethodVerified,
-          passwordChangeRequired,
-          MFA_METHOD_TYPE.SMS
-        );
-
-        await resetPasswordPost(fakeResetService, fakeLoginService)(
-          req as Request,
-          res as Response
-        );
-
-        expect(fakeResetService.updatePassword).to.have.been.calledOnceWith(
-          newPassword,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          testData.expectedValueOfMfaResetFlagSubmitted,
-          req
-        );
-        expect(fakeLoginService.loginUser).to.have.been.calledOnce;
-
-        expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
       });
     });
   });

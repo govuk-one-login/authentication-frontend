@@ -607,8 +607,6 @@
         "sendCodeLinkText": "anfon y cod eto",
         "sendCodeLinkHref": "/resend-code",
         "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn.",
-        "changeGetSecurityCodesText": "Os na allwch gyrchu’r rhif ffôn ar gyfer eich GOV.UK One Login, gallwch ",
-        "changeGetSecurityCodesLinkText": "newid yn ddiogel sut rydych yn cael codau diogelwch",
         "changeGetSecurityCodesTextWithIpv": "Os nad oes gennych fynediad i’ch ap dilysu mwyach, ",
         "changeGetSecurityCodesWithIpvLinkText": "gwiriwch a allwch newid sut rydych yn cael codau diogelwch"
       },
@@ -705,42 +703,10 @@
     "changeSecurityCodesConfirmation": {
       "title": "Rydych wedi newid sut rydych yn cael codau diogelwch",
       "header": "Rydych wedi newid sut rydych yn cael codau diogelwch",
-      "info": {
-        "paragraphSMS": "Byddwn yn anfon codau diogelwch i’ch rhif ffôn sy’n gorffen gyda [mobile] pan fyddwch yn mewngofnodi.",
-        "paragraphAuthApp": "Bydd angen i chi ddefnyddio’ch ap dilysydd i gael codau diogelwch pan rydych yn mewngofnodi."
-      },
       "infoForJourneyWithIpvReset": {
         "confirmationParagraph": "Gallwch nawr barhau i’r gwasanaeth roeddech yn ei ddefnyddio.",
         "paragraphSMS": "Y tro nesaf y byddwch yn mewngofnodi, byddwn yn anfon codau diogelwch i’ch rhif ffôn sy’n gorffen gyda [mobile].",
         "paragraphAuthApp": "Y tro nesaf y byddwch yn mewngofnodi, bydd angen i chi ddefnyddio’ch ap dilyswr i gael codau diogelwch."
-      }
-    },
-    "checkYourEmailSecurityCodes": {
-      "title": "Gwiriwch eich e-bost",
-      "header": "Gwiriwch eich e-bost",
-      "info": {
-        "paragraph1": "Mae angen i ni sicrhau mae eich GOV.UK One Login chi yw hwn cyn y gallwch newid sut i gael codau diogelwch."
-      },
-      "text": "Rydym wedi anfon e-bost at: ",
-      "code": {
-        "paragraph1": "Mae’r e-bost yn cynnwys cod diogelwch 6 digid. Ar ôl i chi roi eich cod, byddwch yn gallu newid sut i gael codau diogelwch pan fyddwch yn mewngofnodi.",
-        "paragraph2": "Efallai y bydd eich e-bost yn cymryd ychydig funudau i gyrraedd. Os na chewch e-bost, edrychwch ar eich ffolder spam.",
-        "paragraph3": "Bydd y cod yn dod i ben ar ôl 15 munud.",
-        "label": "Rhowch y cod 6 digid",
-        "validationError": {
-          "required": "Rhowch y cod",
-          "maxLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
-          "minLength": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
-          "invalidFormat": "Rhowch y cod gan ddefnyddio dim ond 6 digid",
-          "invalidCode": "Nid yw’r cod a roddwyd gennych yn gywir, neu efallai ei fod wedi dod i ben, ceisiwch ei roi eto neu ofyn am god newydd"
-        }
-      },
-      "details": {
-        "summaryText": "Problemau gyda’r cod?",
-        "text1": "Gallwn ",
-        "sendCodeLinkText": "anfon y cod eto",
-        "sendCodeLinkHref": "/resend-email-code",
-        "text2": " neu gallwch "
       }
     },
     "signedOut": {
@@ -1899,7 +1865,6 @@
           "header": "Dywedwch wrthym beth ddigwyddodd",
           "radio1": "Ni chawsoch god diogelwch",
           "radio2": "Nid oedd y cod diogelwch yn gweithio",
-          "radio3": "Rydych wedi newid eich rhif ffôn neu wedi colli eich ffôn",
           "radio3MfaReset": "Rydych chi wedi colli mynediad i’r ffordd rydych chi’n cael cod ciogelwch ar gyfer GOV.UK One Login",
           "radio3MfaResetHint": "Ni allwch ddefnyddio’r rhif ffôn na’r ap dilysu y gwnaethoch sefydlu i fewngofnodi",
           "radio4": "Rydych wedi anghofio eich cyfrinair",
@@ -2179,9 +2144,7 @@
         }
       },
       "noPhoneNumberAccess": {
-        "title": "Rydych wedi newid eich rhif ffôn neu wedi colli eich ffôn",
         "titleMfaReset": "Rydych chi wedi colli mynediad i’r ffordd rydych chi’n cael cod diogelwch",
-        "header": "Rydych wedi newid eich rhif ffôn neu wedi colli eich ffôn",
         "headerMfaReset": "Rydych chi wedi colli mynediad i’r ffordd rydych chi’n cael cod diogelwch",
         "section1": {
           "header": "Sut ydych yn cael codau diogelwch i fewngofnodi?",
@@ -2563,8 +2526,6 @@
       },
       "details": {
         "summary": "Nid oes gennyf fynediad i’r ap dilysydd",
-        "text1": "Gallwch newid sut ",
-        "text2": "gallwch gael codau diogelwch yn ddiogel",
         "text1MfaResetWithIpv": "Os nad oes gennych fynediad i’ch ap dilysu mwyach, ",
         "text2MfaResetWithIpv": "gwiriwch a allwch newid sut rydych yn cael codau diogelwch",
         "text3": "."

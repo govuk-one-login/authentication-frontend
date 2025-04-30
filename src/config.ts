@@ -183,14 +183,6 @@ export function isValidChannel(channel: string): boolean {
   return channel === CHANNEL.WEB || channel === CHANNEL.STRATEGIC_APP;
 }
 
-export function supportMfaResetWithIpv(): boolean {
-  return process.env.SUPPORT_MFA_RESET_WITH_IPV === "1";
-}
-
-export function routeUsersToNewIpvJourney(): boolean {
-  return process.env.ROUTE_USERS_TO_NEW_IPV_JOURNEY === "1";
-}
-
 export function showTestBanner(): boolean {
   return getAppEnv() !== "production" || process.env.SHOW_TEST_BANNER === "1";
 }
