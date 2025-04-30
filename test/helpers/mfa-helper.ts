@@ -3,6 +3,7 @@ import { MfaMethodPriority } from "../../src/types.js";
 import { MFA_METHOD_TYPE } from "../../src/app.constants.js";
 
 type PartialMfaMethod = {
+  id?: string;
   phoneNumber?: string;
   redactedPhoneNumber?: string;
 };
@@ -18,6 +19,7 @@ export function buildMfaMethods(
 
     if (partial.redactedPhoneNumber || partial.phoneNumber) {
       return {
+        ...(partial.id ? { id: partial.id } : undefined),
         type: MFA_METHOD_TYPE.SMS,
         priority,
         ...(partial.phoneNumber

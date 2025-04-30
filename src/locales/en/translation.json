@@ -2638,6 +2638,9 @@
     },
     "howDoYouWantSecurityCodes": {
       "title": "How do you want to get a security code?",
+      "choice": {
+        "smsPrefix": "Text message to your phone number ending with "
+      },
       "mfaReset": {
         "preamble": "If you have permanently lost access to both of these methods, ",
         "link": "check if you can change how you get security codes"

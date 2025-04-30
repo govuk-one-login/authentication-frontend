@@ -11,7 +11,9 @@ import * as cheerio from "cheerio";
 describe("Integration::how do you want security codes", () => {
   let app: any;
   const DEFAULT_PHONE_NUMBER = "7867";
+  const DEFAULT_PHONE_NUMBER_ID = "532b14c2-a11d-4882-a83b-e8d7184e0b70";
   const BACKUP_PHONE_NUMBER = "1234";
+  const BACKUP_PHONE_NUMBER_ID = "6ae3be91-708f-45b2-9374-6a595eb76bce";
 
   before(async () => {
     const { createApp } = await esmock(
@@ -30,9 +32,11 @@ describe("Integration::how do you want security codes", () => {
               email: "test@test.com",
               mfaMethods: buildMfaMethods([
                 {
+                  id: DEFAULT_PHONE_NUMBER_ID,
                   redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
                 },
                 {
+                  id: BACKUP_PHONE_NUMBER_ID,
                   redactedPhoneNumber: BACKUP_PHONE_NUMBER,
                 },
               ]),
@@ -84,6 +88,17 @@ describe("Integration::how do you want security codes", () => {
               .toArray()
               .some((link) => $(link).text().trim() === "Continue")
           ).to.be.eq(true, "submit button presence");
+
+          const radioArray = form.first().find("input[type=radio]").toArray();
+          expect(radioArray.length).to.be.eq(2);
+          expect($(radioArray[0]).val() === DEFAULT_PHONE_NUMBER_ID).to.be.eq(
+            true,
+            `radio input presence for ${DEFAULT_PHONE_NUMBER}`
+          );
+          expect($(radioArray[1]).val() === BACKUP_PHONE_NUMBER_ID).to.be.eq(
+            true,
+            `radio input presence for ${BACKUP_PHONE_NUMBER}`
+          );
         })
     );
   });
