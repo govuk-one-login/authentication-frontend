@@ -9,6 +9,14 @@ export interface StartRequestParameters {
   rp_pairwise_id_for_reauth?: string;
   previous_govuk_signin_journey_id?: string;
   reauthenticate?: string;
+  cookie_consent?: string;
+  _ga?: string;
+  rp_client_id: string;
+  scope: string;
+  rp_redirect_uri: string;
+  rp_state: string;
+  requested_level_of_confidence?: string;
+  requested_credential_strength: string;
 }
 
 export interface StartAuthResponse extends DefaultApiResponse {
