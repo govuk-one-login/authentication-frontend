@@ -74,6 +74,16 @@ describe("Integration::how do you want security codes", () => {
                     "check if you can change how you get security codes"
               )
           ).to.be.eq(true, "mfa reset link presence");
+
+          const form = $(`form[action="/how-do-you-want-security-codes"]`);
+          expect(form.toArray().some(Boolean)).to.be.eq(true, "form presence");
+          expect(
+            form
+              .first()
+              .find("button[type=Submit]")
+              .toArray()
+              .some((link) => $(link).text().trim() === "Continue")
+          ).to.be.eq(true, "submit button presence");
         })
     );
   });

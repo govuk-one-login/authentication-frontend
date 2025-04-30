@@ -1,7 +1,16 @@
 {% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 {% set pageTitleName = 'pages.howDoYouWantSecurityCodes.title' | translate %}
 
 {% block content %}
+
+<form id="form-tracking" action="/how-do-you-want-security-codes" method="post" novalidate="novalidate">
+    {{ govukButton({
+        "text": "general.continue.label" | translate,
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+</form>
 
 <p class="govuk-body">
     {{ 'pages.howDoYouWantSecurityCodes.mfaReset.preamble' | translate }}<a href="{{ mfaResetLink }}" class="govuk-link"
