@@ -159,6 +159,7 @@
     "uglify-js": "3.19.3"
   },
   "resolutions": {
-    "minimist": "1.2.6"
+    "minimist": "1.2.6",
+    "formidable": ">=3.5.3"
   }
 }
