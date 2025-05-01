@@ -26,9 +26,22 @@ describe("Integration:: enter mfa", () => {
   let cookies: string;
   let app: any;
   let baseApi: string;
-  const PHONE_NUMBER = "7867";
+  const DEFAULT_PHONE_NUMBER = "7867";
+  const BACKUP_PHONE_NUMBER = "1234";
 
-  async function setupStubbedApp() {
+  async function setupStubbedApp(
+    options: {
+      partialMfaMethods: Array<{
+        redactedPhoneNumber?: string;
+      }>;
+    } = {
+      partialMfaMethods: [
+        {
+          redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
+        },
+      ],
+    }
+  ) {
     const { createApp } = await esmock(
       "../../../app.js",
       {},
@@ -43,10 +56,7 @@ describe("Integration:: enter mfa", () => {
 
             req.session.user = {
               email: "test@test.com",
-              mfaMethods: buildMfaMethods({
-                phoneNumber: PHONE_NUMBER,
-                redactedPhoneNumber: PHONE_NUMBER,
-              }),
+              mfaMethods: buildMfaMethods(options.partialMfaMethods),
               journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
               isAccountRecoveryPermitted: true,
             };
@@ -118,27 +128,50 @@ describe("Integration:: enter mfa", () => {
     await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA).expect(200));
   });
 
-  it(`should include the correct link to change mfa methods`, async () => {
-    await setupStubbedApp();
-    await request(app, (test) =>
-      test
-        .get(PATH_NAMES.ENTER_MFA)
-        .expect(200)
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect(
-            $("a")
-              .toArray()
-              .some(
-                (link) =>
-                  $(link).attr("href") === PATH_NAMES.MFA_RESET_WITH_IPV &&
-                  $(link).text().trim() ===
-                    "check if you can change how you get security codes"
-              )
-          ).to.be.true;
-        })
-    );
-  });
+  [
+    {
+      partialMfaMethods: [
+        {
+          redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
+        },
+      ],
+      expectedLinkHref: PATH_NAMES.MFA_RESET_WITH_IPV,
+      expectedLinkText: "check if you can change how you get security codes",
+    },
+    {
+      partialMfaMethods: [
+        {
+          redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
+        },
+        {
+          redactedPhoneNumber: BACKUP_PHONE_NUMBER,
+        },
+      ],
+      expectedLinkHref: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
+      expectedLinkText: "try another way to get a security code",
+    },
+  ].forEach(({ partialMfaMethods, expectedLinkHref, expectedLinkText }) =>
+    it(`should include the correct link to change mfa methods when the user has ${partialMfaMethods.length} mfaMethods`, async () => {
+      await setupStubbedApp({ partialMfaMethods });
+      await request(app, (test) =>
+        test
+          .get(PATH_NAMES.ENTER_MFA)
+          .expect(200)
+          .expect(function (res) {
+            const $ = cheerio.load(res.text);
+            expect(
+              $("a")
+                .toArray()
+                .some(
+                  (link) =>
+                    $(link).attr("href") === expectedLinkHref &&
+                    $(link).text().trim() === expectedLinkText
+                )
+            ).to.be.true;
+          })
+      );
+    })
+  );
 
   it("following a validation error it should not include link to change security codes where account recovery is not permitted", async () => {
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).once().reply(400, {
@@ -155,7 +188,7 @@ describe("Integration:: enter mfa", () => {
         .send({
           _csrf: token,
           code: "123456",
-          phoneNumber: PHONE_NUMBER,
+          phoneNumber: DEFAULT_PHONE_NUMBER,
           supportAccountRecovery: false,
         })
         .expect(function (res) {
@@ -191,7 +224,7 @@ describe("Integration:: enter mfa", () => {
         .send({
           _csrf: token,
           code: "",
-          phoneNumber: PHONE_NUMBER,
+          phoneNumber: DEFAULT_PHONE_NUMBER,
         })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
@@ -211,7 +244,7 @@ describe("Integration:: enter mfa", () => {
         .send({
           _csrf: token,
           code: "2",
-          phoneNumber: PHONE_NUMBER,
+          phoneNumber: DEFAULT_PHONE_NUMBER,
         })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
@@ -233,7 +266,7 @@ describe("Integration:: enter mfa", () => {
         .send({
           _csrf: token,
           code: "1234567",
-          phoneNumber: PHONE_NUMBER,
+          phoneNumber: DEFAULT_PHONE_NUMBER,
         })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
@@ -255,7 +288,7 @@ describe("Integration:: enter mfa", () => {
         .send({
           _csrf: token,
           code: "12ert-",
-          phoneNumber: PHONE_NUMBER,
+          phoneNumber: DEFAULT_PHONE_NUMBER,
         })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
@@ -282,7 +315,7 @@ describe("Integration:: enter mfa", () => {
         .send({
           _csrf: token,
           code: "123456",
-          phoneNumber: PHONE_NUMBER,
+          phoneNumber: DEFAULT_PHONE_NUMBER,
         })
         .expect("Location", PATH_NAMES.AUTH_CODE)
         .expect(302)
@@ -304,7 +337,7 @@ describe("Integration:: enter mfa", () => {
         .send({
           _csrf: token,
           code: "123455",
-          phoneNumber: PHONE_NUMBER,
+          phoneNumber: DEFAULT_PHONE_NUMBER,
         })
         .expect(function (res) {
           const $ = cheerio.load(res.text);

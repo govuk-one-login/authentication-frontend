@@ -75,6 +75,7 @@ const CONTENT_IDS: {
     }
     return "19601dd7-be55-4ab6-aa44-a6358c4239dc";
   },
+  [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES]: () => "",
   [PATH_NAMES.ENTER_PASSWORD]: (req: Request) =>
     isReauth(req)
       ? "c6f4fed1-ee6d-4d23-a14f-4466e9c1349c"

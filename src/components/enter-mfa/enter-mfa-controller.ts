@@ -49,10 +49,13 @@ export function enterMfaGet(
       ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME
       : ENTER_MFA_DEFAULT_TEMPLATE_NAME;
 
+    const redactedPhoneNumber = getDefaultSmsMfaMethod(
+      req.session.user.mfaMethods
+    )?.redactedPhoneNumber;
+
     if (!isAccountRecoveryEnabledForEnvironment) {
       return res.render(templateName, {
-        phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
-          ?.redactedPhoneNumber,
+        phoneNumber: redactedPhoneNumber,
         supportAccountRecovery: false,
       });
     }
@@ -78,11 +81,15 @@ export function enterMfaGet(
     req.session.user.isAccountRecoveryPermitted =
       accountRecoveryResponse.data.accountRecoveryPermitted;
 
+    const hasMultipleMfaMethods = req.session.user.mfaMethods?.length > 1;
+
     res.render(templateName, {
-      phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
-        ?.redactedPhoneNumber,
+      phoneNumber: redactedPhoneNumber,
       supportAccountRecovery: req.session.user.isAccountRecoveryPermitted,
-      mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
+      hasMultipleMfaMethods,
+      mfaIssuePath: hasMultipleMfaMethods
+        ? PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
+        : PATH_NAMES.MFA_RESET_WITH_IPV,
     });
   };
 }

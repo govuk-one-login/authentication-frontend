@@ -110,14 +110,15 @@ export interface UserSessionClient {
 
 export type ContentIdFunction = (req: Request) => string;
 
-export enum MfaMethodPriorityIdentifier {
+export enum MfaMethodPriority {
   DEFAULT = "DEFAULT",
   BACKUP = "BACKUP",
 }
 
 export type SmsMfaMethod = {
+  id?: string;
   type: MFA_METHOD_TYPE.SMS;
-  priorityIdentifier: MfaMethodPriorityIdentifier;
+  priority: MfaMethodPriority;
   phoneNumber?: string;
   redactedPhoneNumber?: string;
 };
@@ -127,8 +128,9 @@ export const isSmsMfaMethod = (
 ): mfaMethod is SmsMfaMethod => mfaMethod.type === MFA_METHOD_TYPE.SMS;
 
 export type AuthAppMfaMethod = {
+  id?: string;
   type: MFA_METHOD_TYPE.AUTH_APP;
-  priorityIdentifier: MfaMethodPriorityIdentifier;
+  priority: MfaMethodPriority;
 };
 
 export type MfaMethod = SmsMfaMethod | AuthAppMfaMethod;

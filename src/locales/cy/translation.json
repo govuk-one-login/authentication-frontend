@@ -608,7 +608,9 @@
         "sendCodeLinkHref": "/resend-code",
         "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn.",
         "changeGetSecurityCodesTextWithIpv": "Os nad oes gennych fynediad i’ch ap dilysu mwyach, ",
-        "changeGetSecurityCodesWithIpvLinkText": "gwiriwch a allwch newid sut rydych yn cael codau diogelwch"
+        "changeGetSecurityCodesWithIpvLinkText": "gwiriwch a allwch newid sut rydych yn cael codau diogelwch",
+        "chooseMfaMethodText": "Os na allwch gael cod i’r rhif ffôn hwn gallwch ",
+        "chooseMfaMethodLinkText": "roi cynnig ar ffordd arall o gael cod diogelwch"
       },
       "upliftRequired": {
         "title": "Rhowch god diogelwch i barhau",
@@ -2648,6 +2650,19 @@
           "bullet3": "Rhowch eich cyfeiriad e-bost a’ch cyfrinair, yna dewiswch ’Gwiriwch a allwch newid sut rydych yn cael codau diogelwch’."
         },
         "paragraph1": "I barhau ar ôl i chi newid sut rydych chi’n cael codau diogelwch, bydd angen i chi fewngofnodi yn ôl i’r ap rydych chi’n ei ddefnyddio nawr."
+      }
+    },
+    "howDoYouWantSecurityCodes": {
+      "title": "Sut ydych chi am gael cod diogelwch?",
+      "choice": {
+        "smsPrefix": "Neges destun i’ch rhif ffôn sy’n gorffen gyda "
+      },
+      "mfaReset": {
+        "preamble": "Os ydych chi wedi colli mynediad parhaol i’r ddau ddull yma, ",
+        "link": "gwiriwch a allwch chi newid sut rydych yn cael codau diogelwch"
+      },
+      "error": {
+        "empty": "Dewiswch sut ydych chi am gael cod diogelwch"
       }
     }
   }

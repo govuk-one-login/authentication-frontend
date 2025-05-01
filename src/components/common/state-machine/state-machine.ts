@@ -387,6 +387,7 @@ const authStateMachine = createMachine(
             PATH_NAMES.MFA_RESET_WITH_IPV,
             PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
             PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
+            PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
           ],
         },
       },

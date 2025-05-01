@@ -608,7 +608,9 @@
         "sendCodeLinkHref": "/resend-code",
         "text 2": " if the code is not working or you did not receive it.",
         "changeGetSecurityCodesTextWithIpv": "If you no longer have access to this phone number,  ",
-        "changeGetSecurityCodesWithIpvLinkText": "check if you can change how you get security codes"
+        "changeGetSecurityCodesWithIpvLinkText": "check if you can change how you get security codes",
+        "chooseMfaMethodText": "If you cannot get a code to this phone number you can ",
+        "chooseMfaMethodLinkText": "try another way to get a security code"
       },
       "upliftRequired": {
         "title": "Enter a security code to continue",
@@ -2647,6 +2649,19 @@
           "bullet3": "Enter your email address and password, then select ‘Check if you can change how you get security codes’."
         },
         "paragraph1": "To continue after you’ve changed how you get security codes, you’ll need to sign back in to the app you’re using now."
+      }
+    },
+    "howDoYouWantSecurityCodes": {
+      "title": "How do you want to get a security code?",
+      "choice": {
+        "smsPrefix": "Text message to your phone number ending with "
+      },
+      "mfaReset": {
+        "preamble": "If you have permanently lost access to both of these methods, ",
+        "link": "check if you can change how you get security codes"
+      },
+      "error": {
+        "empty": "Select how you want to get a security code"
       }
     }
   }

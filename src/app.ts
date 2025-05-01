@@ -44,6 +44,7 @@ import { landingRouter } from "./components/landing/landing-route.js";
 import { getCSRFCookieOptions } from "./config/cookie.js";
 import { ENVIRONMENT_NAME } from "./app.constants.js";
 import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes.js";
+import { howDoYouWantSecurityCodesRouter } from "./components/how-do-you-want-security-codes/how-do-you-want-security-codes-routes.js";
 import { authCodeRouter } from "./components/auth-code/auth-code-routes.js";
 import { resendMfaCodeRouter } from "./components/resend-mfa-code/resend-mfa-code-routes.js";
 import { resendMfaCodeAccountCreationRouter } from "./components/account-creation/resend-mfa-code/resend-mfa-code-routes.js";
@@ -101,7 +102,6 @@ import { ipvCallbackRouter } from "./components/ipv-callback/ipv-callback-routes
 import { mfaResetWithIpvRouter } from "./components/mfa-reset-with-ipv/mfa-reset-with-ipv-routes.js";
 import { environmentBannerMiddleware } from "./middleware/environment-banner-middleware.js";
 import UID from "uid-safe";
-import { migrateMfaSessionStorageMiddleware } from "./middleware/migrate-mfa-session-storage-middleware.js";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
 
@@ -137,6 +137,7 @@ function registerRoutes(app: express.Application) {
   }
   app.use(securityCodeErrorRouter);
   app.use(enterMfaRouter);
+  app.use(howDoYouWantSecurityCodesRouter);
   app.use(authCodeRouter);
   app.use(resendMfaCodeRouter);
   app.use(resendMfaCodeAccountCreationRouter);
@@ -247,8 +248,6 @@ async function createApp(): Promise<express.Application> {
       },
     })
   );
-
-  app.use(migrateMfaSessionStorageMiddleware); // To be removed shortly
 
   app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
 

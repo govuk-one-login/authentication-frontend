@@ -1,0 +1,53 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% set pageTitleName = 'pages.howDoYouWantSecurityCodes.title' | translate %}
+
+{% block content %}
+
+<form id="form-tracking" action="/how-do-you-want-security-codes" method="post" novalidate="novalidate">
+    {% include "common/errors/errorSummary.njk" %}
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    {% set items = [] %}
+    {% for mfaMethod in mfaMethods %}
+        {% if mfaMethod.type == "SMS" %}
+            {% set _ = items.push({
+                value: mfaMethod.id,
+                html: ('pages.howDoYouWantSecurityCodes.choice.smsPrefix' | translate) + '<span class="govuk-!-font-weight-bold">' + (mfaMethod.redactedPhoneNumber | returnLastCharacters({limit: 3})) + '</span>',
+                checked: false
+            }) %}
+        {% endif %}
+    {% endfor %}
+    {{ govukRadios({
+        name: "mfa-method-id",
+        fieldset: {
+            legend: {
+                text: 'pages.howDoYouWantSecurityCodes.title' | translate,
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--l"
+            }
+        },
+        attributes: {
+            "id": "mfa-method"
+        },
+        items: items,
+        errorMessage: {
+            text: 'pages.howDoYouWantSecurityCodes.error.empty' | translate
+        } if errors["mfa-method-id"]
+    }) }}
+
+    {{ govukButton({
+        "text": "general.continue.label" | translate,
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+</form>
+
+<p class="govuk-body">
+    {{ 'pages.howDoYouWantSecurityCodes.mfaReset.preamble' | translate }}<a href="{{ mfaResetLink }}" class="govuk-link"
+     rel="noreferrer noopener">{{ 'pages.howDoYouWantSecurityCodes.mfaReset.link' | translate }}</a>.
+</p>
+
+{% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
+{%- include "ga4-opl/template.njk" -%}
+{% endblock %}

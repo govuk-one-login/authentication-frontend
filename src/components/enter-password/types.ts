@@ -1,4 +1,8 @@
-import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
+import type {
+  ApiResponseResult,
+  DefaultApiResponse,
+  MfaMethod,
+} from "../../types.js";
 import type { JOURNEY_TYPE } from "../../app.constants.js";
 import type { Request } from "express";
 
@@ -8,6 +12,7 @@ export interface UserLoginResponse extends DefaultApiResponse {
   latestTermsAndConditionsAccepted?: boolean;
   mfaMethodType?: string;
   mfaMethodVerified?: boolean;
+  mfaMethods: MfaMethod[];
   passwordChangeRequired?: boolean;
 }
 
