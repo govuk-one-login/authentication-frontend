@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import {
   getAccountManagementUrl,
   getAnalyticsCookieDomain,
+  getDeviceIntelligenceEnabled,
   getLanguageToggleEnabled,
 } from "../config.js";
 import { generateNonce } from "../utils/strings.js";
@@ -14,5 +15,6 @@ export async function setLocalVarsMiddleware(
   res.locals.accountManagementUrl = getAccountManagementUrl();
   res.locals.analyticsCookieDomain = getAnalyticsCookieDomain();
   res.locals.languageToggleEnabled = getLanguageToggleEnabled();
+  res.locals.deviceIntelligenceEnabled = getDeviceIntelligenceEnabled();
   next();
 }

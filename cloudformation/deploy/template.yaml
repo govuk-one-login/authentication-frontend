@@ -268,6 +268,16 @@ Conditions:
                 ]
               - "Yes"
 
+  DeviceIntelligenceEnabled:
+    Fn::Equals:
+      - !FindInMap [
+        EnvironmentConfiguration,
+        !Ref Environment,
+        DeviceIntelligenceEnabled,
+        DefaultValue: "No",
+      ]
+      - "Yes"
+
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   ElasticLoadBalancerAccountIds:
@@ -290,6 +300,7 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
+      DeviceIntelligenceEnabled: "Yes"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       orchToAuthSigningPublicKey: |
@@ -306,6 +317,7 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
+      DeviceIntelligenceEnabled: "Yes"
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -332,6 +344,7 @@ Mappings:
       UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
+      DeviceIntelligenceEnabled: "Yes"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -358,6 +371,7 @@ Mappings:
       UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
+      DeviceIntelligenceEnabled: "Yes"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -391,6 +405,7 @@ Mappings:
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       UseAlarmActions: "Yes"
+      DeviceIntelligenceEnabled: "Yes"
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -972,6 +987,8 @@ Resources:
               Value: !If [UseMfaResetWithIpv, "1", "0"]
             - Name: ROUTE_USERS_TO_NEW_IPV_JOURNEY
               Value: !If [UseRouteUsersToNewIpvJourney, "1", "0"]
+            - Name: DEVICE_INTELLIGENCE_ENABLED
+              Value: !If [DeviceIntelligenceEnabled, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If

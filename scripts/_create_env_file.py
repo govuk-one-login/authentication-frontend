@@ -92,6 +92,7 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             "LANGUAGE_TOGGLE_ENABLED": 1,
             "SUPPORT_NEW_IPV_SPINNER": 0,
             "SUPPORT_HTTP_KEEP_ALIVE": 0,
+            "DEVICE_INTELLIGENCE_ENABLED": 1,
         },
     },
     {

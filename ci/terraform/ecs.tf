@@ -194,6 +194,10 @@ locals {
       {
         name  = "ROUTE_USERS_TO_NEW_IPV_JOURNEY"
         value = var.route_users_to_new_ipv_journey
+      },
+      {
+        name  = "DEVICE_INTELLIGENCE_ENABLED"
+        value = var.device_intelligence_enabled
       }
     ]
 
