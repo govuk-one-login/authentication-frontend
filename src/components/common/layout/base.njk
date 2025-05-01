@@ -185,6 +185,13 @@
     <script type="text/javascript" src="/public/scripts/application.js"></script>
     <script type="text/javascript" src="/public/scripts/all.js"></script>
     <script type="text/javascript" src="/public/scripts/analytics.js"></script>
+
+    <script type="text/javascript" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
+      import("/public/scripts/device-intelligence.js").then(({setFingerprintCookie}) => {
+        setFingerprintCookie("{{ analyticsCookieDomain }}");
+      })
+    </script>
+
     <script type="text/javascript" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
         if (window.DI) {
             if (window.DI.appInit) {
