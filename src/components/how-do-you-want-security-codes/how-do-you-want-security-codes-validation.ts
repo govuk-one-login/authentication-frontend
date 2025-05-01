@@ -2,6 +2,7 @@ import { validateBodyMiddleware } from "../../middleware/form-validation-middlew
 import type { ValidationChainFunc } from "../../types.js";
 import { body } from "express-validator";
 import { PATH_NAMES } from "../../app.constants.js";
+import { sortMfaMethodsBackupFirst } from "./how-do-you-want-security-codes-controller.js";
 
 export function validateHowDoYouWantSecurityCodesRequest(): ValidationChainFunc {
   return [
@@ -17,7 +18,9 @@ export function validateHowDoYouWantSecurityCodesRequest(): ValidationChainFunc 
       "how-do-you-want-security-codes/index.njk",
       (req) => ({
         mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
-        mfaMethods: req.session.user.mfaMethods || [],
+        mfaMethods: sortMfaMethodsBackupFirst(
+          req.session.user.mfaMethods || []
+        ),
       })
     ),
   ];

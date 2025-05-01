@@ -107,13 +107,13 @@ describe("Integration::how do you want security codes", () => {
 
           const radioArray = form.first().find("input[type=radio]").toArray();
           expect(radioArray.length).to.be.eq(2);
-          expect($(radioArray[0]).val() === DEFAULT_PHONE_NUMBER_ID).to.be.eq(
+          expect($(radioArray[0]).val() === BACKUP_PHONE_NUMBER_ID).to.be.eq(
             true,
-            `radio input presence for ${DEFAULT_PHONE_NUMBER}`
+            `radio input presence for ${BACKUP_PHONE_NUMBER} in correct order`
           );
-          expect($(radioArray[1]).val() === BACKUP_PHONE_NUMBER_ID).to.be.eq(
+          expect($(radioArray[1]).val() === DEFAULT_PHONE_NUMBER_ID).to.be.eq(
             true,
-            `radio input presence for ${BACKUP_PHONE_NUMBER}`
+            `radio input presence for ${DEFAULT_PHONE_NUMBER} in correct order`
           );
         })
     );
