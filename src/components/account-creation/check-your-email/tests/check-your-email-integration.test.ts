@@ -1,15 +1,15 @@
 import { describe } from "mocha";
-import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
+import { expect, sinon, request } from "../../../../../test/utils/test-utils";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
   PATH_NAMES,
-} from "../../../app.constants.js";
-import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
+} from "../../../../app.constants";
+import { ERROR_CODES, SecurityCodeErrorType } from "../../../common/constants";
 import type { NextFunction, Request, Response } from "express";
-import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { getPermittedJourneyForPath } from "../../../../../test/helpers/session-helper";
 import esmock from "esmock";
 describe("Integration:: check your email", () => {
   let token: string | string[];

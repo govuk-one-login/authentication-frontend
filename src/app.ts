@@ -63,7 +63,7 @@ import { setLocalVarsMiddleware } from "./middleware/set-local-vars-middleware.j
 import { resetPasswordRouter } from "./components/reset-password/reset-password-routes.js";
 import { resetPassword2FARouter } from "./components/reset-password-2fa-sms/reset-password-2fa-sms-routes.js";
 import { noCacheMiddleware } from "./middleware/no-cache-middleware.js";
-import { checkYourEmailRouter } from "./components/check-your-email/check-your-email-routes.js";
+import { checkYourEmailRouter } from "./components/account-creation/check-your-email/check-your-email-routes.js";
 import { securityCodeErrorRouter } from "./components/security-code-error/security-code-error-routes.js";
 import { upliftJourneyRouter } from "./components/uplift-journey/uplift-journey-routes.js";
 import { contactUsRouter } from "./components/contact-us/contact-us-routes.js";

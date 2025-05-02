@@ -1,9 +1,9 @@
-import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
-import type { ValidationChainFunc } from "../../types.js";
+import { validateBodyMiddleware } from "../../../middleware/form-validation-middleware.js";
+import type { ValidationChainFunc } from "../../../types.js";
 import {
   validateCode,
   whitespaceSanitizer,
-} from "../common/verify-code/verify-code-validation.js";
+} from "../../common/verify-code/verify-code-validation.js";
 export function validateCheckYourEmailRequest(): ValidationChainFunc {
   return [
     whitespaceSanitizer(),
