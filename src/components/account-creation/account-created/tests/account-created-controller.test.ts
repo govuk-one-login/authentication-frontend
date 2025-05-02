@@ -1,17 +1,17 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 
-import { sinon } from "../../../../test/utils/test-utils.js";
+import { sinon } from "../../../../../test/utils/test-utils";
 import type { Request, Response } from "express";
 
 import {
   accountCreatedGet,
   accountCreatedPost,
-} from "../account-created-controller.js";
-import { PATH_NAMES } from "../../../app.constants.js";
+} from "../account-created-controller";
+import { PATH_NAMES } from "../../../../app.constants";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper";
 describe("account created controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;

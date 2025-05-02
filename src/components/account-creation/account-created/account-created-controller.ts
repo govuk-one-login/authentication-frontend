@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import { getNextPathAndUpdateJourney } from "../common/constants.js";
-import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { getNextPathAndUpdateJourney } from "../../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../../common/state-machine/state-machine.js";
 export function accountCreatedGet(req: Request, res: Response): void {
   const { serviceType, name } = req.session.client;
 
