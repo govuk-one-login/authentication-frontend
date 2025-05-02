@@ -1,12 +1,12 @@
-import type { Http } from "../../utils/http.js";
+import type { Http } from "../../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
-} from "../../utils/http.js";
-import { API_ENDPOINTS } from "../../app.constants.js";
+} from "../../../utils/http.js";
+import { API_ENDPOINTS } from "../../../app.constants.js";
 import type { CreatePasswordServiceInterface } from "./types.js";
-import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
+import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
 import type { Request } from "express";
 
 export function createPasswordService(

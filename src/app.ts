@@ -34,7 +34,7 @@ import { enterEmailRouter } from "./components/enter-email/enter-email-routes.js
 import { enterPasswordRouter } from "./components/enter-password/enter-password-routes.js";
 import { footerRouter } from "./components/common/footer/footer-pages-routes.js";
 import { registerAccountCreatedRouter } from "./components/account-creation/account-created/account-created-routes.js";
-import { createPasswordRouter } from "./components/create-password/create-password-routes.js";
+import { createPasswordRouter } from "./components/account-creation/create-password/create-password-routes.js";
 import { enterPhoneNumberRouter } from "./components/enter-phone-number/enter-phone-number-routes.js";
 import { pageNotFoundHandler } from "./handlers/page-not-found-handler.js";
 import { serverErrorHandler } from "./handlers/internal-server-error-handler.js";

@@ -1,4 +1,4 @@
-import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
+import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
 import type { Request } from "express";
 
 export interface CreatePasswordServiceInterface {

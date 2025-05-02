@@ -1,12 +1,12 @@
-import { PATH_NAMES } from "../../app.constants.js";
+import { PATH_NAMES } from "../../../app.constants.js";
 import * as express from "express";
-import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
+import { validateSessionMiddleware } from "../../../middleware/session-middleware.js";
 import {
   createPasswordGet,
   createPasswordPost,
 } from "./create-password-controller.js";
 import { validateCreatePasswordRequest } from "./create-password-validation.js";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
+import { allowUserJourneyMiddleware } from "../../../middleware/allow-user-journey-middleware.js";
 
 const router = express.Router();
 
