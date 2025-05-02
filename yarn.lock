@@ -1201,16 +1201,15 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@mswjs/interceptors@^0.38.1":
-  version "0.38.2"
-  resolved "https://registry.yarnpkg.com/@mswjs/interceptors/-/interceptors-0.38.2.tgz#2f8f879adee983cda4a0d3844b2727cfdde88a70"
-  integrity sha512-jS/XP42rw1K+WmJPC39i/aAKvNGQrjn7V85RALvozYqBy+KjFkq6pL+ZXSBCM0sNJalFoaCCWqZE0TuK2Mn99g==
+"@mswjs/interceptors@^0.38.5":
+  version "0.38.6"
+  resolved "https://registry.yarnpkg.com/@mswjs/interceptors/-/interceptors-0.38.6.tgz#0646060b5572ff884cf475af90505e757115eddf"
+  integrity sha512-qFlpmObPqeUs4u3oFYv/OM/xyX+pNa5TRAjqjvMhbGYlyMhzSrE5UfncL2rUcEeVfD9Gebgff73hPwqcOwJQNA==
   dependencies:
     "@open-draft/deferred-promise" "^2.2.0"
     "@open-draft/logger" "^0.3.0"
     "@open-draft/until" "^2.0.0"
     is-node-process "^1.2.0"
-    jsdom "^26.0.0"
     outvariant "^1.4.3"
     strict-event-emitter "^0.5.1"
 
@@ -2975,10 +2974,10 @@ concurrently@9.1.2:
     tree-kill "^1.2.2"
     yargs "^17.7.2"
 
-connect-redis@8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/connect-redis/-/connect-redis-8.0.2.tgz#02166c024329285cf128abc5b11d533db83812c5"
-  integrity sha512-8A6rNOkwLQf25kkERnutNRppE3WUJ7B2bTl/DKf0jW9PkhzJQ3+VJYDHsN+NIuTtQrWsQr5n5UX7bm9l8rkTtQ==
+connect-redis@8.0.3:
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/connect-redis/-/connect-redis-8.0.3.tgz#ff82a9f810b3baf3966a5284c66ce92cef892020"
+  integrity sha512-wLIaRv5csDWZsODD/X1vzfF9YKAYVfjJfzxsR6er0jqikM+i4GuBv06kgB8/O3QJWj5ANhYRoym/j1rL459v7g==
 
 content-disposition@0.5.4:
   version "0.5.4"
@@ -4163,10 +4162,10 @@ i18next-fs-backend@*, i18next-fs-backend@2.6.0:
   resolved "https://registry.yarnpkg.com/i18next-fs-backend/-/i18next-fs-backend-2.6.0.tgz#7b6b54c5ffc2a5073e47eda0673c002376fa1a3c"
   integrity sha512-3ZlhNoF9yxnM8pa8bWp5120/Ob6t4lVl1l/tbLmkml/ei3ud8IWySCHt2lrY5xWRlSU5D9IV2sm5bEbGuTqwTw==
 
-i18next-http-middleware@3.7.2:
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/i18next-http-middleware/-/i18next-http-middleware-3.7.2.tgz#60cef9109f22b01fa2e58a86c841c787ad80b124"
-  integrity sha512-t7Ayd+dAF07c+aN2eF16ESsDa9TaF1g8uXRTYpWWUrK4TCJmfiT1rJTjjB4+K87ZdQ+sfXdF8/uLXph+hVHfdw==
+i18next-http-middleware@3.7.4:
+  version "3.7.4"
+  resolved "https://registry.yarnpkg.com/i18next-http-middleware/-/i18next-http-middleware-3.7.4.tgz#a87b74586f0cc0cfce1c3dae176e1d52ecdeb669"
+  integrity sha512-RANEF3XNpR5ExJryg3wKIycrPEYg7IdZiEvWFwb2lyDTwG5nB3AvhD5SfqRFT02Jbn8MHS5+xq7p4W+dX2ZJ8g==
 
 i18next@24.2.3:
   version "24.2.3"
@@ -4548,7 +4547,7 @@ js-yaml@^4.1.0:
   dependencies:
     argparse "^2.0.1"
 
-jsdom@26.0.0, jsdom@^26.0.0:
+jsdom@26.0.0:
   version "26.0.0"
   resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-26.0.0.tgz#446dd1ad8cfc50df7e714e58f1f972c1763b354c"
   integrity sha512-BZYDGVAIriBWTpIxYzrXjv3E/4u8+/pSG5bQdIYCbNCGOvsPkDQfTVLAIXAf9ETdCpduCVTkDe2NNZ8NIwUVzw==
@@ -4632,10 +4631,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-libphonenumber-js@1.12.6:
-  version "1.12.6"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.12.6.tgz#32a211b976dde3ccdf201c3c0b6e60351167c8bf"
-  integrity sha512-PJiS4ETaUfCOFLpmtKzAbqZQjCCKVu2OhTV4SVNNE7c2nu/dACvtCqj4L0i/KWNnIgRv7yrILvBj5Lonv5Ncxw==
+libphonenumber-js@1.12.7:
+  version "1.12.7"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.12.7.tgz#e4372cdee413b64bb1600dfde293a7fdc1ba812a"
+  integrity sha512-0nYZSNj/QEikyhcM5RZFXGlCB/mr4PVamnT1C2sKBnDDTYndrvbybYjvg+PMqAndQHlLbwQ3socolnL3WWTUFA==
 
 locate-path@^5.0.0:
   version "5.0.0"
@@ -4884,12 +4883,12 @@ negotiator@0.6.3:
   resolved "https://registry.npmjs.org/negotiator/-/negotiator-0.6.3.tgz"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
 
-nock@14.0.3:
-  version "14.0.3"
-  resolved "https://registry.yarnpkg.com/nock/-/nock-14.0.3.tgz#e6a7b4945663af3e345774892f9d2c817535fb8d"
-  integrity sha512-sJ9RNmCuYBqXDmGZZHgZ1D1441MqFOU4T5aeLGVGEB4OWI/2LM0mZlkfBQzQKdOfJypL+2nPPBugXKjixBn4kQ==
+nock@14.0.4:
+  version "14.0.4"
+  resolved "https://registry.yarnpkg.com/nock/-/nock-14.0.4.tgz#10a63116d13c37f169a52ad4bbf0173af34c1992"
+  integrity sha512-86fh+gIKH8H02+y0/HKAOZZXn6OwgzXvl6JYwfjvKkoKxUWz54wIIDU/+w24xzMvk/R8pNVXOrvTubyl+Ml6cg==
   dependencies:
-    "@mswjs/interceptors" "^0.38.1"
+    "@mswjs/interceptors" "^0.38.5"
     json-stringify-safe "^5.0.1"
     propagate "^2.0.0"
 
@@ -4908,10 +4907,10 @@ node-releases@^2.0.18:
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.18.tgz#f010e8d35e2fe8d6b2944f03f70213ecedc4ca3f"
   integrity sha512-d9VeXT4SJ7ZeOqGX6R5EM022wpL+eWPooLI+5UpWn2jCT1aosUQEhQP214x33Wkwx3JQMvIm+tIoVOdodFS40g==
 
-nodemon@3.1.9:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-3.1.9.tgz#df502cdc3b120e1c3c0c6e4152349019efa7387b"
-  integrity sha512-hdr1oIb2p6ZSxu3PB2JWWYS7ZQ0qvaZsc3hK8DR8f02kRzc8rjYmxAIvdz+aYC+8F2IjNaB7HMcSDg8nQpJxyg==
+nodemon@3.1.10:
+  version "3.1.10"
+  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-3.1.10.tgz#5015c5eb4fffcb24d98cf9454df14f4fecec9bc1"
+  integrity sha512-WDjw3pJ0/0jMFmyNDp3gvY2YizjLmmOUQo6DEBY+JgdvW/yQ9mEeSw6H5ythl5Ny2ytb7f9C2nIbjSxMNzbJXw==
   dependencies:
     chokidar "^3.5.2"
     debug "^4"
@@ -6096,10 +6095,10 @@ tsscmp@1.0.6:
   resolved "https://registry.npmjs.org/tsscmp/-/tsscmp-1.0.6.tgz"
   integrity sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==
 
-tsx@4.19.3:
-  version "4.19.3"
-  resolved "https://registry.yarnpkg.com/tsx/-/tsx-4.19.3.tgz#2bdbcb87089374d933596f8645615142ed727666"
-  integrity sha512-4H8vUNGNjQ4V2EOoGw005+c+dGuPSnhpPBPHBtsZdGZBk/iJb4kguGlPWaZTZ3q5nMtFOEsY0nRDlh9PJyd6SQ==
+tsx@4.19.4:
+  version "4.19.4"
+  resolved "https://registry.yarnpkg.com/tsx/-/tsx-4.19.4.tgz#647b4141f4fdd9d773a9b564876773d2846901f4"
+  integrity sha512-gK5GVzDkJK1SI1zwHf32Mqxf2tSJkNx+eYcNly5+nHvWqXUJYUkWBQtKauoESz3ymezAI++ZwT855x5p5eop+Q==
   dependencies:
     esbuild "~0.25.0"
     get-tsconfig "^4.7.5"
