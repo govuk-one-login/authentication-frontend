@@ -1494,7 +1494,7 @@
             "item_two": {
               "part_one": "click the unsubscribe link on emails you receive from us, or you can contact ",
               "link_text": "GDS-Privacy-Office@digital.cabinet-office.gov.uk",
-              "link_href": "mailto:GDS-Privay-Office@digital.cabinet-office.gov.uk"
+              "link_href": "mailto:GDS-Privacy-Office@digital.cabinet-office.gov.uk"
             }
           },
           "sub_header_three": "Public Task (UK GDPR Article (6)(1)(e))",
@@ -1667,7 +1667,7 @@
           "paragraph_one": {
             "part_one": "UK Data Protection Law provides you with a number of rights which you can exercise by contacting the",
             "link_text": "GDS Privacy Office",
-            "link_href": "mailto:gds-privacy-office@digital.cabinet-office.gov.uk"
+            "link_href": "mailto:GDS-Privacy-Office@digital.cabinet-office.gov.uk"
           },
           "paragraph_two": "You have the right to:",
           "list_one": {
@@ -1684,7 +1684,7 @@
           "paragraph_one": {
             "part_one": "Contact the",
             "link_text": "GDS Privacy Office",
-            "link_href": "mailto:gds-privacy-office@digital.cabinet-office.gov.uk",
+            "link_href": "mailto:GDS-Privacy-Office@digital.cabinet-office.gov.uk",
             "part_three": "if you:"
           },
           "list_one": {
@@ -1694,9 +1694,9 @@
           },
           "paragraph_two": "You can also contact our Data Protection Officer (DPO) who provides independent advice and monitoring of our use of personal information:",
           "data_protection_officer": {
-            "title": "Data Protection Officer",
-            "link_href": "mailto:DPO@cabinetoffice.gov.uk",
-            "link_text": "DPO@cabinetoffice.gov.uk"
+            "title": "Data Protection Officer at the GDS Privacy Office",
+            "link_href": "mailto:GDS-Privacy-Office@digital.cabinet-office.gov.uk",
+            "link_text": "GDS-Privacy-Office@digital.cabinet-office.gov.uk"
           },
           "information_commissioner": {
             "paragraph_one": "You can also make a complaint to the Information Commissioner, who is an independent regulator.",
