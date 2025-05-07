@@ -1495,7 +1495,7 @@
             "item_two": {
               "part_one": "clicio ar y ddolen dad-danysgrifio ar e-byst a dderbyniwch gennym, neu gallwch gysylltu â ",
               "link_text": "GDS-Privacy-Office@digital.cabinet-office.gov.uk",
-              "link_href": "mailto:GDS-Privay-Office@digital.cabinet-office.gov.uk"
+              "link_href": "mailto:GDS-Privacy-Office@digital.cabinet-office.gov.uk"
             }
           },
           "sub_header_three": "Public Task (UK GDPR Article (6)(1)(e))",
@@ -1668,7 +1668,7 @@
           "paragraph_one": {
             "part_one": "Mae Cyfraith Diogelu Data’r DU yn rhoi nifer o hawliau i chi y gallwch eu harfer drwy gysylltu â",
             "link_text": "Swyddfa Preifatrwydd GDS",
-            "link_href": "mailto:gds-privacy-office@digital.cabinet-office.gov.uk"
+            "link_href": "mailto:GDS-Privacy-Office@digital.cabinet-office.gov.uk"
           },
           "paragraph_two": "Mae gennych yr hawl i:",
           "list_one": {
@@ -1685,7 +1685,7 @@
           "paragraph_one": {
             "part_one": "Cysylltwch â",
             "link_text": "Swyddfa Preifatrwydd GDS",
-            "link_href": "mailto:gds-privacy-office@digital.cabinet-office.gov.uk",
+            "link_href": "mailto:GDS-Privacy-Office@digital.cabinet-office.gov.uk",
             "part_three": "os:"
           },
           "list_one": {
@@ -1695,9 +1695,9 @@
           },
           "paragraph_two": "Gallwch hefyd gysylltu â’n Swyddog Diogelu Data (DPO) sy’n darparu cyngor a monitro annibynnol o’n defnydd o wybodaeth bersonol: ",
           "data_protection_officer": {
-            "title": "Swyddog Diogelu Data",
-            "link_href": "mailto:DPO@cabinetoffice.gov.uk",
-            "link_text": "DPO@cabinetoffice.gov.uk"
+            "title": "Swyddog Diogelu Data, Swyddfa Preifatrwydd GDS",
+            "link_href": "mailto:GDS-Privacy-Office@digital.cabinet-office.gov.uk",
+            "link_text": "GDS-Privacy-Office@digital.cabinet-office.gov.uk"
           },
           "information_commissioner": {
             "paragraph_one": "Gallwch hefyd wneud cwyn i’r Comisiynydd Gwybodaeth, sy’n rheoleiddiwr annibynnol.",
