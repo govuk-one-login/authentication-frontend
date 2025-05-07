@@ -44,7 +44,9 @@
     {% set detailsHTML %}
       {% if hasMultipleMfaMethods %}
         <p class="govuk-body">
-          Choose MFA method <a href="{{ mfaIssuePath }}" class="govuk-link" rel="noreferrer noopener">here</a>.
+          {{'pages.enterAuthenticatorAppCode.details.chooseMfaMethod.text1' | translate}}
+          <a href="{{ mfaIssuePath }}" class="govuk-link"
+             rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.chooseMfaMethod.text2' | translate}}</a>.
         </p>
       {% else %}
         <p class="govuk-body">
