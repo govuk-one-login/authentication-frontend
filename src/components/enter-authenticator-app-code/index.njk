@@ -13,7 +13,7 @@
 
     <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
     <input type="hidden" name="isAccountRecoveryPermitted" value="{{isAccountRecoveryPermitted}}"/>
-    <input type="hidden" name="mfaResetPath" value="{{mfaResetPath}}"/>
+    <input type="hidden" name="mfaIssuePath" value="{{mfaIssuePath}}"/>
 
     {{ govukInput({
       label: {
@@ -42,10 +42,15 @@
 
   {% if isAccountRecoveryPermitted === true or isAccountRecoveryPermitted === "true" %}
     {% set detailsHTML %}
-      <p class="govuk-body">
-        {{'pages.enterAuthenticatorAppCode.details.text1MfaResetWithIpv' | translate}}
-        <a href="{{mfaResetPath}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.text2MfaResetWithIpv'| translate}}</a>{{'pages.enterAuthenticatorAppCode.details.text3' | translate}}
-      </p>
+      {% if hasMultipleMfaMethods %}
+        <p class="govuk-body">
+          Choose MFA method <a href="{{ mfaIssuePath }}" class="govuk-link" rel="noreferrer noopener">here</a>.
+        </p>
+      {% else %}
+        <p class="govuk-body">
+          Reset MFA <a href="{{ mfaIssuePath }}" class="govuk-link" rel="noreferrer noopener">here</a>.
+        </p>
+      {% endif %}
     {% endset %}
 
     {{ govukDetails({
