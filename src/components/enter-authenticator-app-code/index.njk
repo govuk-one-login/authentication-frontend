@@ -48,7 +48,9 @@
         </p>
       {% else %}
         <p class="govuk-body">
-          Reset MFA <a href="{{ mfaIssuePath }}" class="govuk-link" rel="noreferrer noopener">here</a>.
+          {{'pages.enterAuthenticatorAppCode.details.mfaReset.text1' | translate}}
+          <a href="{{ mfaIssuePath }}" class="govuk-link"
+             rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.mfaReset.text2'| translate}}</a>.
         </p>
       {% endif %}
     {% endset %}

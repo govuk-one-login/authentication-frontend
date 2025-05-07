@@ -2544,9 +2544,10 @@
       },
       "details": {
         "summary": "Nid oes gennyf fynediad i’r ap dilysydd",
-        "text1MfaResetWithIpv": "Os nad oes gennych fynediad i’ch ap dilysu mwyach, ",
-        "text2MfaResetWithIpv": "gwiriwch a allwch newid sut rydych yn cael codau diogelwch",
-        "text3": "."
+        "mfaReset": {
+          "text1": "Os nad oes gennych fynediad i’ch ap dilysu mwyach, ",
+          "text2": "gwiriwch a allwch newid sut rydych yn cael codau diogelwch"
+        }
       },
       "upliftRequired": {
         "title": "Rhowch god diogelwch i barhau",
