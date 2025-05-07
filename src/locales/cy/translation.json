@@ -2549,8 +2549,8 @@
           "text2": "gwiriwch a allwch newid sut rydych yn cael codau diogelwch"
         },
         "chooseMfaMethod":  {
-          "text1": "Os na allwch gael cod i’r rhif ffôn hwn gallwch ",
-          "text2": "roi cynnig ar ffordd arall o gael cod diogelwch"
+          "text1": "Gallwch ",
+          "text2": "geisio ffordd arall o gael codau diogelwch"
         }
       },
       "upliftRequired": {
