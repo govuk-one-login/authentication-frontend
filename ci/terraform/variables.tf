@@ -17,11 +17,6 @@ variable "common_state_bucket" {
   type = string
 }
 
-variable "redis_node_size" {
-  default = "cache.t2.small"
-  type    = string
-}
-
 variable "support_account_recovery" {
   type = string
 }
@@ -148,18 +143,6 @@ variable "incoming_traffic_cidr_blocks" {
   default     = ["0.0.0.0/0"]
   type        = list(string)
   description = "The list of CIDR blocks allowed to send requests to the ALB"
-}
-
-variable "new_auth_account_id" {
-  description = "New Auth account id for equivalent environment"
-  default     = ""
-  type        = string
-}
-
-variable "new_auth_protectedsub_cidr_blocks" {
-  type        = list(string)
-  default     = []
-  description = "New Auth equivalent environment protected subnets"
 }
 
 variable "password_reset_code_entered_wrong_blocked_minutes" {
@@ -420,4 +403,10 @@ variable "vpc_environment" {
   description = "The name of the environment this environment is sharing the VPC , this var is only for Authdevs env and must be overide using Authdevs.tfvars, default value should be null always."
   type        = string
   default     = null
+}
+
+variable "device_intelligence_enabled" {
+  type        = string
+  default     = "0"
+  description = "Switch to enable device intelligence"
 }
