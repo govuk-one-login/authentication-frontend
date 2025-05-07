@@ -1906,10 +1906,7 @@ Resources:
         DeploymentStrategy: !Ref DeploymentStrategy
         ContainerName: "frontend-application"
         ContainerPort: "3000"
-        CloudWatchAlarms: !Sub
-          - "${ELB5XXChosenAlarm},${ELB4XXChosenAlarm}"
-          - ELB5XXChosenAlarm: !Ref ELB5XX10PercentAlarm
-            ELB4XXChosenAlarm: !Ref ELB4XXAnomalyAlarm
+        CloudWatchAlarms: !Ref Target5XX10PercentAlarm
 
   #
   # Service down page
