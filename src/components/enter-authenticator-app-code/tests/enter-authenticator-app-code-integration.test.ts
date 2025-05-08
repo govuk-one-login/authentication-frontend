@@ -19,6 +19,8 @@ import type { SendNotificationServiceInterface } from "../../common/send-notific
 import type { DefaultApiResponse } from "../../../types.js";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import esmock from "esmock";
+import type { PartialMfaMethod } from "../../../../test/helpers/mfa-helper.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 describe("Integration:: enter authenticator app code", () => {
   let token: string | string[];
@@ -26,7 +28,17 @@ describe("Integration:: enter authenticator app code", () => {
   let app: any;
   let baseApi: string;
 
-  async function setupStubbedApp() {
+  async function setupStubbedApp(
+    options: {
+      partialMfaMethods: PartialMfaMethod[];
+    } = {
+      partialMfaMethods: [
+        {
+          authApp: true,
+        },
+      ],
+    }
+  ) {
     const { createApp } = await esmock(
       "../../../app.js",
       {},
@@ -47,6 +59,7 @@ describe("Integration:: enter authenticator app code", () => {
             req.session.user = {
               email: "test@test.com",
               isAccountRecoveryPermitted: true,
+              mfaMethods: buildMfaMethods(options.partialMfaMethods),
               journey: getPermittedJourneyForPath(
                 PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
               ),
@@ -128,27 +141,50 @@ describe("Integration:: enter authenticator app code", () => {
     );
   });
 
-  it(`should display correct link to reset mfa`, async () => {
-    await setupStubbedApp();
-    await request(app, (test) =>
-      test
-        .get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-        .expect(200)
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect(
-            $("a")
-              .toArray()
-              .some(
-                (link) =>
-                  $(link).attr("href") === PATH_NAMES.MFA_RESET_WITH_IPV &&
-                  $(link).text().trim() ===
-                    "check if you can change how you get security codes"
-              )
-          ).to.be.true;
-        })
-    );
-  });
+  [
+    {
+      partialMfaMethods: [
+        {
+          authApp: true,
+        },
+      ],
+      expectedLinkHref: PATH_NAMES.MFA_RESET_WITH_IPV,
+      expectedLinkText: "check if you can change how you get security codes",
+    },
+    {
+      partialMfaMethods: [
+        {
+          authApp: true,
+        },
+        {
+          redactedPhoneNumber: "1234",
+        },
+      ],
+      expectedLinkHref: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
+      expectedLinkText: "try another way to get a security code",
+    },
+  ].forEach(({ partialMfaMethods, expectedLinkHref, expectedLinkText }) =>
+    it(`should include the correct link to change/reset mfa methods when the user has ${partialMfaMethods.length} mfaMethods`, async () => {
+      await setupStubbedApp({ partialMfaMethods });
+      await request(app, (test) =>
+        test
+          .get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+          .expect(200)
+          .expect(function (res) {
+            const $ = cheerio.load(res.text);
+            expect(
+              $("a")
+                .toArray()
+                .some(
+                  (link) =>
+                    $(link).attr("href") === expectedLinkHref &&
+                    $(link).text().trim() === expectedLinkText
+                )
+            ).to.be.true;
+          })
+      );
+    })
+  );
 
   it("should return enter authenticator app security code with reauth analytics properties", async () => {
     await setupStubbedApp();

@@ -86,10 +86,14 @@ export function enterAuthenticatorAppCodeGet(
     const isAccountRecoveryPermittedForUser =
       (req.session.user.isAccountRecoveryPermitted =
         accountRecoveryResponse.data.accountRecoveryPermitted);
+    const hasMultipleMfaMethods = req.session.user.mfaMethods?.length > 1;
 
     return res.render(templateName, {
       isAccountRecoveryPermitted: isAccountRecoveryPermittedForUser,
-      mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
+      hasMultipleMfaMethods,
+      mfaIssuePath: hasMultipleMfaMethods
+        ? PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
+        : PATH_NAMES.MFA_RESET_WITH_IPV,
     });
   };
 }
