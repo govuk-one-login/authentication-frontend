@@ -7,6 +7,7 @@ import type { NextFunction, Request, Response } from "express";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import * as cheerio from "cheerio";
+import type { MfaMethod } from "../../../types.js";
 
 const getTokenAndCookies = async (app: any) => {
   let cookies, token;
@@ -23,6 +24,18 @@ const getTokenAndCookies = async (app: any) => {
   });
   return { token, cookies };
 };
+
+const mockSessionMiddleware = (mfaMethods: MfaMethod[]) =>
+  sinon.fake(function (req: Request, res: Response, next: NextFunction) {
+    res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+    req.session.user = {
+      email: "test@test.com",
+      mfaMethods: mfaMethods,
+      journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
+      isAccountRecoveryPermitted: true,
+    };
+    next();
+  });
 
 describe("Integration::how do you want security codes", () => {
   let app: any;
@@ -47,30 +60,18 @@ describe("Integration::how do you want security codes", () => {
       {},
       {
         "../../../middleware/session-middleware.js": {
-          validateSessionMiddleware: sinon.fake(function (
-            req: Request,
-            res: Response,
-            next: NextFunction
-          ): void {
-            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-
-            req.session.user = {
-              email: "test@test.com",
-              mfaMethods: buildMfaMethods([
-                {
-                  id: DEFAULT_PHONE_NUMBER_ID,
-                  redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-                },
-                {
-                  id: BACKUP_PHONE_NUMBER_ID,
-                  redactedPhoneNumber: BACKUP_PHONE_NUMBER,
-                },
-              ]),
-              journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
-              isAccountRecoveryPermitted: true,
-            };
-            next();
-          }),
+          validateSessionMiddleware: mockSessionMiddleware(
+            buildMfaMethods([
+              {
+                id: DEFAULT_PHONE_NUMBER_ID,
+                redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
+              },
+              {
+                id: BACKUP_PHONE_NUMBER_ID,
+                redactedPhoneNumber: BACKUP_PHONE_NUMBER,
+              },
+            ])
+          ),
         },
       }
     );
@@ -124,30 +125,18 @@ describe("Integration::how do you want security codes", () => {
       {},
       {
         "../../../middleware/session-middleware.js": {
-          validateSessionMiddleware: sinon.fake(function (
-            req: Request,
-            res: Response,
-            next: NextFunction
-          ): void {
-            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-
-            req.session.user = {
-              email: "test@test.com",
-              mfaMethods: buildMfaMethods([
-                {
-                  id: DEFAULT_PHONE_NUMBER_ID,
-                  redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-                },
-                {
-                  id: BACKUP_AUTH_APP_ID,
-                  authApp: true,
-                },
-              ]),
-              journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
-              isAccountRecoveryPermitted: true,
-            };
-            next();
-          }),
+          validateSessionMiddleware: mockSessionMiddleware(
+            buildMfaMethods([
+              {
+                id: DEFAULT_PHONE_NUMBER_ID,
+                redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
+              },
+              {
+                id: BACKUP_AUTH_APP_ID,
+                authApp: true,
+              },
+            ])
+          ),
         },
       }
     );
@@ -201,30 +190,18 @@ describe("Integration::how do you want security codes", () => {
       {},
       {
         "../../../middleware/session-middleware.js": {
-          validateSessionMiddleware: sinon.fake(function (
-            req: Request,
-            res: Response,
-            next: NextFunction
-          ): void {
-            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-
-            req.session.user = {
-              email: "test@test.com",
-              mfaMethods: buildMfaMethods([
-                {
-                  id: DEFAULT_PHONE_NUMBER_ID,
-                  redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-                },
-                {
-                  id: BACKUP_PHONE_NUMBER_ID,
-                  redactedPhoneNumber: BACKUP_PHONE_NUMBER,
-                },
-              ]),
-              journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
-              isAccountRecoveryPermitted: true,
-            };
-            next();
-          }),
+          validateSessionMiddleware: mockSessionMiddleware(
+            buildMfaMethods([
+              {
+                id: DEFAULT_PHONE_NUMBER_ID,
+                redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
+              },
+              {
+                id: BACKUP_AUTH_APP_ID,
+                authApp: true,
+              },
+            ])
+          ),
         },
       }
     );
