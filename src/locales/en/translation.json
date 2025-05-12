@@ -2548,7 +2548,7 @@
           "text2": "check if you can change how you get security codes"
         },
         "chooseMfaMethod":  {
-          "text1": "If you cannot get a code to this phone number you can ",
+          "text1": "You can ",
           "text2": "try another way to get a security code"
         }
       },
