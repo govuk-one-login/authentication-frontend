@@ -17,6 +17,13 @@
                 checked: false
             }) %}
         {% endif %}
+        {% if mfaMethod.type == "AUTH_APP" %}
+            {% set _ = items.push({
+                value: mfaMethod.id,
+                html: ('pages.howDoYouWantSecurityCodes.choice.authApp' | translate),
+                checked: false
+            }) %}
+        {% endif %}
     {% endfor %}
     {{ govukRadios({
         name: "mfa-method-id",
