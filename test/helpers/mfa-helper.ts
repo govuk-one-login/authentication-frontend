@@ -4,6 +4,7 @@ import { MFA_METHOD_TYPE } from "../../src/app.constants.js";
 
 type PartialMfaMethod = {
   id?: string;
+  type: MFA_METHOD_TYPE;
   phoneNumber?: string;
   redactedPhoneNumber?: string;
 };
@@ -28,6 +29,12 @@ export function buildMfaMethods(
         ...(partial.redactedPhoneNumber
           ? { redactedPhoneNumber: partial.redactedPhoneNumber }
           : undefined),
+      };
+    } else if (partial.type === MFA_METHOD_TYPE.AUTH_APP) {
+      return {
+        ...(partial.id ? { id: partial.id } : undefined),
+        type: MFA_METHOD_TYPE.AUTH_APP,
+        priority: priority,
       };
     } else return undefined;
   });
