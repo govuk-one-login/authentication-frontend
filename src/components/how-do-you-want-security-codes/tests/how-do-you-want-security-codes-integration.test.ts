@@ -1,6 +1,5 @@
 import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
-import nock from "nock";
 import { PATH_NAMES } from "../../../app.constants.js";
 import esmock from "esmock";
 import type { NextFunction, Request, Response } from "express";
@@ -44,10 +43,6 @@ describe("Integration::how do you want security codes", () => {
   const BACKUP_PHONE_NUMBER = "1234";
   const BACKUP_PHONE_NUMBER_ID = "6ae3be91-708f-45b2-9374-6a595eb76bce";
   const BACKUP_AUTH_APP_ID = "8f40b828-2928-492f-a277-8432d9e76d2a";
-
-  beforeEach(() => {
-    nock.cleanAll();
-  });
 
   after(() => {
     sinon.restore();
