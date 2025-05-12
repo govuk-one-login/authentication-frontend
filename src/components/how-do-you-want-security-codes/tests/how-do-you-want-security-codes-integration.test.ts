@@ -42,6 +42,7 @@ describe("Integration::how do you want security codes", () => {
   const DEFAULT_PHONE_NUMBER_ID = "532b14c2-a11d-4882-a83b-e8d7184e0b70";
   const BACKUP_PHONE_NUMBER = "1234";
   const BACKUP_PHONE_NUMBER_ID = "6ae3be91-708f-45b2-9374-6a595eb76bce";
+  const DEFAULT_AUTH_APP_ID = "9a51c939-3a39-4a30-b388-9543e0f87e3b";
   const BACKUP_AUTH_APP_ID = "8f40b828-2928-492f-a277-8432d9e76d2a";
 
   after(() => {
@@ -74,6 +75,20 @@ describe("Integration::how do you want security codes", () => {
         { id: BACKUP_AUTH_APP_ID, authApp: true },
       ],
       expectedRadioValues: [BACKUP_AUTH_APP_ID, DEFAULT_PHONE_NUMBER_ID],
+    },
+    {
+      description: "AUTH APP user with SMS backup",
+      mfaMethods: [
+        {
+          id: DEFAULT_AUTH_APP_ID,
+          authApp: true,
+        },
+        {
+          id: BACKUP_PHONE_NUMBER_ID,
+          redactedPhoneNumber: BACKUP_PHONE_NUMBER,
+        },
+      ],
+      expectedRadioValues: [BACKUP_PHONE_NUMBER_ID, DEFAULT_AUTH_APP_ID],
     },
   ];
 
