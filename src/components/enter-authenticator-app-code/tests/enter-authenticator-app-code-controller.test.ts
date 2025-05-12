@@ -70,7 +70,8 @@ describe("enter authenticator app code controller", () => {
         "enter-authenticator-app-code/index.njk",
         {
           isAccountRecoveryPermitted: true,
-          mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
+          hasMultipleMfaMethods: false,
+          mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
         }
       );
     });
@@ -85,7 +86,8 @@ describe("enter authenticator app code controller", () => {
         "enter-authenticator-app-code/index.njk",
         {
           isAccountRecoveryPermitted: false,
-          mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
+          hasMultipleMfaMethods: false,
+          mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
         }
       );
     });
@@ -118,7 +120,8 @@ describe("enter authenticator app code controller", () => {
         UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
         {
           isAccountRecoveryPermitted: true,
-          mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
+          hasMultipleMfaMethods: false,
+          mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
         }
       );
     });
@@ -135,7 +138,8 @@ describe("enter authenticator app code controller", () => {
         ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME,
         {
           isAccountRecoveryPermitted: true,
-          mfaResetPath: PATH_NAMES.MFA_RESET_WITH_IPV,
+          hasMultipleMfaMethods: false,
+          mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
         }
       );
     });
