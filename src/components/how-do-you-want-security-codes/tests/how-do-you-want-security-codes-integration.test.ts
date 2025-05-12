@@ -8,7 +8,7 @@ import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import * as cheerio from "cheerio";
 
-const getTokenAndCookies = async (app: express.Application) => {
+const getTokenAndCookies = async (app: any) => {
   let cookies, token;
   await request(
     app,
@@ -82,7 +82,7 @@ describe("Integration::how do you want security codes", () => {
       test
         .get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
         .expect(200)
-        .expect(function (res) {
+        .expect(function (res: any) {
           const $ = cheerio.load(res.text);
           expect(
             $("a")
