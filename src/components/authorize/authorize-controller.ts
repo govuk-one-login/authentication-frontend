@@ -64,6 +64,12 @@ export function authorizeGet(
       throw new BadRequestError(error.message);
     }
 
+    if (claims.govuk_signin_journey_id !== clientSessionId) {
+      logger.warn(
+        `clientSessionId in claims (${claims.govuk_signin_journey_id}) does not match one found in cookie (${clientSessionId})`
+      );
+    }
+
     const startAuthResponse = await authService.start(
       sessionId,
       clientSessionId,
