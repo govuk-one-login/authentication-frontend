@@ -1,0 +1,170 @@
+import { afterEach, describe } from "mocha";
+import { expect, sinon, request } from "../../../test/utils/test-utils.js";
+import * as cheerio from "cheerio";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../app.constants.js";
+import nock from "nock";
+import type { NextFunction, Request, Response } from "express";
+import { getPermittedJourneyForPath } from "../../../test/helpers/session-helper.js";
+import esmock from "esmock";
+
+const REDIRECT_URI = "https://rp.host/redirect";
+
+describe("Integration::csrf checks", () => {
+  let token: string | string[];
+  let cookies: string;
+  let app: any;
+  let baseApi: string;
+
+  before(async () => {
+    const { createApp } = await esmock(
+      "../../app.js",
+      {},
+      {
+        "../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+
+            req.session.user = {
+              journey: getPermittedJourneyForPath(
+                PATH_NAMES.ENTER_EMAIL_SIGN_IN
+              ),
+            };
+
+            req.session.client = {
+              redirectUri: REDIRECT_URI,
+            };
+
+            next();
+          }),
+        },
+      }
+    );
+
+    app = await createApp();
+    baseApi = process.env.FRONTEND_API_BASE_URL;
+
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
+  });
+
+  beforeEach(() => {
+    nock.cleanAll();
+    sinon.restore(); // Restore all stubs before each test
+    process.env.SUPPORT_REAUTHENTICATION = "0";
+    process.env.TEST_SETUP_REAUTH_SESSION = "0";
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    sinon.restore(); // Restore all stubs after each test
+  });
+
+  after(() => {
+    sinon.restore();
+    app = undefined;
+  });
+
+  it("should return error when csrf token does not match that in the session", async () => {
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: "an-invalid-csrf-token",
+          email: "test@test.com",
+        })
+        .expect(403)
+    );
+  });
+
+  it("should return a new csrf token on a subsequent request", async () => {
+    let firstToken;
+    let secondToken;
+
+    await request(app, (test) => test.get(PATH_NAMES.SIGN_IN_OR_CREATE), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    })
+    .set("Cookie", cookies)
+    .then((res) => {
+      const $ = cheerio.load(res.text);
+      firstToken = $("[name=_csrf]").val();
+    });
+
+    await request(app, (test) => test.get(PATH_NAMES.SIGN_IN_OR_CREATE), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    })
+    .set("Cookie", cookies)
+    .then((res) => {
+      const $ = cheerio.load(res.text);
+      secondToken = $("[name=_csrf]").val();
+    });
+
+    expect(firstToken).to.exist;
+    expect(secondToken).to.exist;
+    expect(firstToken).to.not.equal(secondToken);
+  });
+
+  it('should reject a csrf token if it is replayed after use', async () => {
+    const email = "test@test.com";
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.USER_EXISTS)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email,
+        doesUserExist: true,
+      });
+
+    // Make first request.
+
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          email,
+        })
+        .expect(302)
+        .expect("Location", PATH_NAMES.ENTER_PASSWORD)
+    );
+
+    // Refresh page cookies to enable second request.
+
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
+      const $ = cheerio.load(res.text);
+      cookies = res.headers["set-cookie"];
+    });
+
+    // Attempt to reuse the same token (Second request - replay attempt).
+
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          email,
+        })
+        .expect(403)
+    );
+  });
+});
