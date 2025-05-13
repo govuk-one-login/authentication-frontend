@@ -16,7 +16,9 @@ export function howDoYouWantSecurityCodesGet(
 ): void {
   res.render("how-do-you-want-security-codes/index.njk", {
     mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
-    mfaMethods: sortMfaMethodsBackupFirst(req.session.user.mfaMethods || []),
+    sortedMfaMethods: sortMfaMethodsBackupFirst(
+      req.session.user.mfaMethods || []
+    ),
   });
 }
 

@@ -4,6 +4,7 @@ import nock from "nock";
 import { PATH_NAMES } from "../../../app.constants.js";
 import esmock from "esmock";
 import type { NextFunction, Request, Response } from "express";
+import type { PartialMfaMethod } from "../../../../test/helpers/mfa-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import * as cheerio from "cheerio";
@@ -25,13 +26,23 @@ const getTokenAndCookies = async (app: express.Application) => {
 };
 
 describe("Integration::how do you want security codes", () => {
-  let app: any;
-  const DEFAULT_PHONE_NUMBER = "7867";
+  const DEFAULT_REDACTED_PHONE_NUMBER = "7867";
   const DEFAULT_PHONE_NUMBER_ID = "532b14c2-a11d-4882-a83b-e8d7184e0b70";
-  const BACKUP_PHONE_NUMBER = "1234";
+  const BACKUP_REDACTED_PHONE_NUMBER = "1234";
   const BACKUP_PHONE_NUMBER_ID = "6ae3be91-708f-45b2-9374-6a595eb76bce";
 
-  before(async () => {
+  const getMockedApp = async (
+    mfaMethods: PartialMfaMethod[] = [
+      {
+        id: DEFAULT_PHONE_NUMBER_ID,
+        redactedPhoneNumber: DEFAULT_REDACTED_PHONE_NUMBER,
+      },
+      {
+        id: BACKUP_PHONE_NUMBER_ID,
+        redactedPhoneNumber: BACKUP_REDACTED_PHONE_NUMBER,
+      },
+    ]
+  ) => {
     const { createApp } = await esmock(
       "../../../app.js",
       {},
@@ -46,16 +57,7 @@ describe("Integration::how do you want security codes", () => {
 
             req.session.user = {
               email: "test@test.com",
-              mfaMethods: buildMfaMethods([
-                {
-                  id: DEFAULT_PHONE_NUMBER_ID,
-                  redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-                },
-                {
-                  id: BACKUP_PHONE_NUMBER_ID,
-                  redactedPhoneNumber: BACKUP_PHONE_NUMBER,
-                },
-              ]),
+              mfaMethods: buildMfaMethods(mfaMethods),
               journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
               isAccountRecoveryPermitted: true,
             };
@@ -65,8 +67,8 @@ describe("Integration::how do you want security codes", () => {
       }
     );
 
-    app = await createApp();
-  });
+    return await createApp();
+  };
 
   beforeEach(() => {
     nock.cleanAll();
@@ -74,10 +76,11 @@ describe("Integration::how do you want security codes", () => {
 
   after(() => {
     sinon.restore();
-    app = undefined;
   });
 
   it("should return how do you want security codes page as expected", async () => {
+    const app = await getMockedApp();
+
     await request(app, (test) =>
       test
         .get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
@@ -104,22 +107,75 @@ describe("Integration::how do you want security codes", () => {
               .toArray()
               .some((link) => $(link).text().trim() === "Continue")
           ).to.be.eq(true, "submit button presence");
-
-          const radioArray = form.first().find("input[type=radio]").toArray();
-          expect(radioArray.length).to.be.eq(2);
-          expect($(radioArray[0]).val() === BACKUP_PHONE_NUMBER_ID).to.be.eq(
-            true,
-            `radio input presence for ${BACKUP_PHONE_NUMBER} in correct order`
-          );
-          expect($(radioArray[1]).val() === DEFAULT_PHONE_NUMBER_ID).to.be.eq(
-            true,
-            `radio input presence for ${DEFAULT_PHONE_NUMBER} in correct order`
-          );
         })
     );
   });
 
+  describe("radio buttons", () => {
+    [
+      {
+        mfaBackup: {
+          id: "sms-backup",
+          redactedPhoneNumber: BACKUP_REDACTED_PHONE_NUMBER,
+        },
+        mfaDefault: {
+          id: "sms-default",
+          redactedPhoneNumber: DEFAULT_REDACTED_PHONE_NUMBER,
+        },
+      },
+      {
+        mfaBackup: {
+          id: "sms-backup",
+          redactedPhoneNumber: BACKUP_REDACTED_PHONE_NUMBER,
+        },
+        mfaDefault: {
+          id: "auth_app-default",
+          authApp: true,
+        },
+      },
+      {
+        mfaBackup: {
+          id: "auth_app-backup",
+          authApp: true,
+        },
+        mfaDefault: {
+          id: "sms-default",
+          redactedPhoneNumber: DEFAULT_REDACTED_PHONE_NUMBER,
+        },
+      },
+    ].forEach(({ mfaBackup, mfaDefault }) => {
+      it(`should in order display BACKUP ${mfaBackup.id} and DEFAULT ${mfaDefault.id}`, async () => {
+        const app = await getMockedApp([mfaDefault, mfaBackup]);
+
+        await request(app, (test) =>
+          test
+            .get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
+            .expect(200)
+            .expect(function (res) {
+              const $ = cheerio.load(res.text);
+              const form = $(`form[action="/how-do-you-want-security-codes"]`);
+
+              const radioArray = form
+                .first()
+                .find("input[type=radio]")
+                .toArray();
+              expect(radioArray.length).to.be.eq(2);
+              expect($(radioArray[0]).val() === mfaBackup.id).to.be.eq(
+                true,
+                `radio input presence for ${mfaBackup.id} in correct order`
+              );
+              expect($(radioArray[1]).val() === mfaDefault.id).to.be.eq(
+                true,
+                `radio input presence for ${mfaDefault.id} in correct order`
+              );
+            })
+        );
+      });
+    });
+  });
+
   it("returns a validation error when no option is selected", async () => {
+    const app = await getMockedApp();
     const { token, cookies } = await getTokenAndCookies(app);
 
     await request(

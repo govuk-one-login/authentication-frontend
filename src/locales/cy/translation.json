@@ -2660,7 +2660,8 @@
     "howDoYouWantSecurityCodes": {
       "title": "Sut ydych chi am gael cod diogelwch?",
       "choice": {
-        "smsPrefix": "Neges destun i’ch rhif ffôn sy’n gorffen gyda "
+        "smsPrefix": "Neges destun i’ch rhif ffôn sy’n gorffen gyda ",
+        "authApp": "Defnyddiwch eich ap dilysu"
       },
       "mfaReset": {
         "preamble": "Os ydych chi wedi colli mynediad parhaol i’r ddau ddull yma, ",

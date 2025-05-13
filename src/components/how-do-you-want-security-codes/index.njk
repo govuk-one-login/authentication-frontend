@@ -9,11 +9,17 @@
     {% include "common/errors/errorSummary.njk" %}
     <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
     {% set items = [] %}
-    {% for mfaMethod in mfaMethods %}
+    {% for mfaMethod in sortedMfaMethods %}
         {% if mfaMethod.type == "SMS" %}
             {% set _ = items.push({
                 value: mfaMethod.id,
                 html: ('pages.howDoYouWantSecurityCodes.choice.smsPrefix' | translate) + '<span class="govuk-!-font-weight-bold">' + (mfaMethod.redactedPhoneNumber | returnLastCharacters({limit: 3})) + '</span>',
+                checked: false
+            }) %}
+        {% elseif mfaMethod.type == "AUTH_APP" %}
+            {% set _ = items.push({
+                value: mfaMethod.id,
+                text: 'pages.howDoYouWantSecurityCodes.choice.authApp' | translate,
                 checked: false
             }) %}
         {% endif %}
