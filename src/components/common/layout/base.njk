@@ -55,12 +55,14 @@
 {% block header %}
     {% if strategicAppChannel %}
     {{ strategicAppHeader({
-        useTudorCrown: true
+        useTudorCrown: true,
+        classes: phaseBannerClasses
     })}}
     {% else %}
     {{ govukHeader({
         homepageUrl: 'general.header.homepageHref' | translate,
-        useTudorCrown: true
+        useTudorCrown: true,
+        classes: phaseBannerClasses
     })}}
     {% endif %}
 {% endblock %}
