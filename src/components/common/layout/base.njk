@@ -55,14 +55,12 @@
 {% block header %}
     {% if strategicAppChannel %}
     {{ strategicAppHeader({
-        useTudorCrown: true,
-        classes: phaseBannerClasses
+        useTudorCrown: true
     })}}
     {% else %}
     {{ govukHeader({
         homepageUrl: 'general.header.homepageHref' | translate,
-        useTudorCrown: true,
-        classes: phaseBannerClasses
+        useTudorCrown: true
     })}}
     {% endif %}
 {% endblock %}
@@ -183,7 +181,7 @@
     {% block scripts %}{% endblock %}
     <script type="text/javascript" src="/public/scripts/dataLayerEvents.js"></script>
     <script type="text/javascript" src="/public/scripts/application.js"></script>
-    <script type="text/javascript" src="/public/scripts/all.js"></script>
+    <script type="text/javascript" src="/public/scripts/govuk-frontend.min.js"></script>
     <script type="text/javascript" src="/public/scripts/analytics.js"></script>
     <script type="text/javascript" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
         if (window.DI) {

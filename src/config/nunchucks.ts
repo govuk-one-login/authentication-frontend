@@ -30,6 +30,7 @@ export function configureNunjucks(
   );
 
   nunjucksEnv.addGlobal("addLanguageParam", addLanguageParam);
+  nunjucksEnv.addGlobal("govukRebrand", true);
 
   return nunjucksEnv;
 }

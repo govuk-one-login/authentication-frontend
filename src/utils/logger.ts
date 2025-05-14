@@ -51,7 +51,7 @@ const loggerMiddleware = PinoHttp({
       [
         "/public/scripts/analytics.js",
         "/public/scripts/dataLayerEvents.js",
-        "/public/scripts/all.js",
+        "/public/scripts/govuk-frontend.min.js",
         "/public/style.css",
         "/public/scripts",
         "/public/scripts/application.js",
