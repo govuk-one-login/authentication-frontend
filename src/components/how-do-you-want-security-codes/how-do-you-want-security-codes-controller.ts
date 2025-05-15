@@ -1,6 +1,8 @@
 import type { Request, Response } from "express";
-import { PATH_NAMES } from "../../app.constants.js";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants.js";
 import type { MfaMethod } from "../../types.js";
+import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 
 export function sortMfaMethodsBackupFirst(
   mfaMethods: MfaMethod[]
@@ -20,9 +22,24 @@ export function howDoYouWantSecurityCodesGet(
   });
 }
 
-export function howDoYouWantSecurityCodesPost(
+export async function howDoYouWantSecurityCodesPost(
   req: Request,
   res: Response
-): void {
-  res.send("Unimplemented");
+): Promise<void> {
+  const mfaMethodId = req.body["mfa-method-id"];
+  const selectedMethod = req.session.user.mfaMethods.find(
+    (method: MfaMethod) => method.id === mfaMethodId
+  );
+  if (selectedMethod.type === MFA_METHOD_TYPE.SMS) {
+    req.session.user.activeMfaMethodId = mfaMethodId;
+    res.redirect(
+      await getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.SELECT_SMS_MFA_METHOD,
+        null,
+        res.locals.sessionId
+      )
+    );
+  }
 }
