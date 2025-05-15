@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
-import type { ExpressRouteFunc } from "../../types.js";
+import { MfaMethodPriority } from "../../types.js";
+import type { ExpressRouteFunc, MfaMethod } from "../../types.js";
 import {
   formatValidationError,
   renderBadRequest,
@@ -153,6 +154,9 @@ export function enterPasswordPost(
     const isPasswordChangeRequired = userLogin.data.passwordChangeRequired;
 
     req.session.user.mfaMethods = userLogin.data.mfaMethods;
+    req.session.user.activeMfaMethodId = userLogin.data.mfaMethods.find(
+      (method: MfaMethod) => method.priority === MfaMethodPriority.DEFAULT
+    )?.id;
     req.session.user.isAccountPartCreated = !userLogin.data.mfaMethodVerified;
     req.session.user.isLatestTermsAndConditionsAccepted =
       userLogin.data.latestTermsAndConditionsAccepted;
