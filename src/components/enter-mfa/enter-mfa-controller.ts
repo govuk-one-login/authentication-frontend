@@ -3,7 +3,7 @@ import { NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants.js";
 import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
-import type { ExpressRouteFunc } from "../../types.js";
+import type { ExpressRouteFunc, MfaMethod, SmsMfaMethod } from "../../types.js";
 import type { SecurityCodeErrorType } from "../common/constants.js";
 import { ERROR_CODES } from "../common/constants.js";
 import { supportAccountRecovery } from "../../config.js";
@@ -16,7 +16,6 @@ import { accountInterventionService } from "../account-intervention/account-inte
 import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import { isLocked } from "../../utils/lock-helper.js";
 import { isUpliftRequired } from "../../utils/request.js";
-import { getDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 export const ENTER_MFA_DEFAULT_TEMPLATE_NAME = "enter-mfa/index.njk";
 export const UPLIFT_REQUIRED_SMS_TEMPLATE_NAME =
@@ -49,9 +48,10 @@ export function enterMfaGet(
       ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME
       : ENTER_MFA_DEFAULT_TEMPLATE_NAME;
 
-    const redactedPhoneNumber = getDefaultSmsMfaMethod(
-      req.session.user.mfaMethods
-    )?.redactedPhoneNumber;
+    const chosenMethod = req.session.user.mfaMethods.find(
+      (method: MfaMethod) => method.id === req.session.user.defaultMfaMethodId
+    ) as SmsMfaMethod;
+    const redactedPhoneNumber = chosenMethod?.redactedPhoneNumber;
 
     if (!isAccountRecoveryEnabledForEnvironment) {
       return res.render(templateName, {

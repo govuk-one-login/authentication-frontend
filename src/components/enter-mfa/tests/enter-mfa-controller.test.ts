@@ -17,10 +17,11 @@ import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import * as journey from "../../common/journey/journey.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
-import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import esmock from "esmock";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
-const TEST_PHONE_NUMBER = "07582930495";
+const TEST_REDACTED_PHONE_NUMBER = "495";
+const TEST_DEFAULT_MFA_ID = "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7";
 
 const fakeAccountRecoveryPermissionCheckService = (
   desiredAccountRecoveryPermittedResponse: boolean
@@ -41,11 +42,14 @@ describe("enter mfa controller", () => {
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ENTER_MFA);
-    req.session.user = {
-      mfaMethods: buildMfaMethods({ redactedPhoneNumber: TEST_PHONE_NUMBER }),
-    };
     res = mockResponse();
     process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
+
+    req.session.user.mfaMethods = buildMfaMethods({
+      id: TEST_DEFAULT_MFA_ID,
+      phoneNumber: "07582930495",
+      redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER,
+    });
   });
 
   afterEach(() => {
@@ -54,6 +58,7 @@ describe("enter mfa controller", () => {
 
   describe("enterMfaGet", () => {
     it("should render enter mfa code view with supportAccountRecovery false when disabled at environment level", async () => {
+      req.session.user.defaultMfaMethodId = TEST_DEFAULT_MFA_ID;
       process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(true))(
         req as Request,
@@ -61,19 +66,20 @@ describe("enter mfa controller", () => {
       );
 
       expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
-        phoneNumber: TEST_PHONE_NUMBER,
+        phoneNumber: TEST_REDACTED_PHONE_NUMBER,
         supportAccountRecovery: false,
       });
     });
 
     it("should render enter mfa code view with supportAccountRecovery false when enabled at environment level, but user is blocked from account recovery", async () => {
+      req.session.user.defaultMfaMethodId = TEST_DEFAULT_MFA_ID;
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
         req as Request,
         res as Response
       );
 
       expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
-        phoneNumber: TEST_PHONE_NUMBER,
+        phoneNumber: TEST_REDACTED_PHONE_NUMBER,
         supportAccountRecovery: false,
         hasMultipleMfaMethods: false,
         mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
@@ -81,13 +87,14 @@ describe("enter mfa controller", () => {
     });
 
     it("should render enter mfa code view with supportAccountRecovery true when enabled at environment level and user is not blocked from account recovery", async () => {
+      req.session.user.defaultMfaMethodId = TEST_DEFAULT_MFA_ID;
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(true))(
         req as Request,
         res as Response
       );
 
       expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
-        phoneNumber: TEST_PHONE_NUMBER,
+        phoneNumber: TEST_REDACTED_PHONE_NUMBER,
         supportAccountRecovery: true,
         hasMultipleMfaMethods: false,
         mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
@@ -95,6 +102,7 @@ describe("enter mfa controller", () => {
     });
 
     it("should render 2fa service uplift view when uplift is required", async () => {
+      req.session.user.defaultMfaMethodId = TEST_DEFAULT_MFA_ID;
       req.session.user.isUpliftRequired = true;
       process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
 
@@ -104,12 +112,13 @@ describe("enter mfa controller", () => {
       );
 
       expect(res.render).to.have.calledWith(UPLIFT_REQUIRED_SMS_TEMPLATE_NAME, {
-        phoneNumber: TEST_PHONE_NUMBER,
+        phoneNumber: TEST_REDACTED_PHONE_NUMBER,
         supportAccountRecovery: false,
       });
     });
 
     it("should render default template when uplift is not required", async () => {
+      req.session.user.defaultMfaMethodId = TEST_DEFAULT_MFA_ID;
       req.session.user.isUpliftRequired = false;
       process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
 
@@ -119,12 +128,13 @@ describe("enter mfa controller", () => {
       );
 
       expect(res.render).to.have.calledWith(ENTER_MFA_DEFAULT_TEMPLATE_NAME, {
-        phoneNumber: TEST_PHONE_NUMBER,
+        phoneNumber: TEST_REDACTED_PHONE_NUMBER,
         supportAccountRecovery: false,
       });
     });
 
     it("should render index-wait when user is locked out in the current session for too many requested codes", async () => {
+      req.session.user.defaultMfaMethodId = TEST_DEFAULT_MFA_ID;
       req.session.user.isUpliftRequired = false;
       process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
       const tomorrow = new Date();
