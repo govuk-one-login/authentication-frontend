@@ -1,8 +1,14 @@
 import type { Request, Response } from "express";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { supportTypeIsGovService } from "../../../utils/request.js";
+import { getPrivacyNoticeRedirectEnabled } from "../../../config.js";
+
 export function privacyStatementGet(req: Request, res: Response): void {
-  res.render("common/footer/privacy-statement.njk");
+  if (getPrivacyNoticeRedirectEnabled()) {
+    res.redirect("https://www.gov.uk");
+  } else {
+    res.render("common/footer/privacy-statement.njk");
+  }
 }
 
 export function termsConditionsGet(req: Request, res: Response): void {
