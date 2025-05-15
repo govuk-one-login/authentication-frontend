@@ -31,16 +31,29 @@ export async function howDoYouWantSecurityCodesPost(
   req: Request,
   res: Response
 ): Promise<void> {
-  const selectedMfaMethod: MfaMethod | undefined =
-    req.session.user.mfaMethods?.find(
-      (mfaMethod: MfaMethod) => mfaMethod.id === req.body["mfa-method-id"]
-    );
+  const mfaMethodId = req.body["mfa-method-id"];
+  const selectedMethod = req.session.user.mfaMethods.find(
+    (method: MfaMethod) => method.id === mfaMethodId
+  );
 
-  if (!selectedMfaMethod) {
-    throw new BadRequestError("No MFA methods found");
+  if (selectedMethod === undefined) {
+    throw new BadRequestError("No MFA methods found", 500);
   }
 
-  if (selectedMfaMethod.type === MFA_METHOD_TYPE.AUTH_APP) {
+  if (selectedMethod.type === MFA_METHOD_TYPE.SMS) {
+    req.session.user.activeMfaMethodId = mfaMethodId;
+    return res.redirect(
+      await getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.SELECT_SMS_MFA_METHOD,
+        null,
+        res.locals.sessionId
+      )
+    );
+  }
+
+  if (selectedMethod.type === MFA_METHOD_TYPE.AUTH_APP) {
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
@@ -50,7 +63,7 @@ export async function howDoYouWantSecurityCodesPost(
         res.locals.sessionId
       )
     );
-  } else {
-    res.send("Unimplemented");
   }
+
+  throw new BadRequestError("MFA method type does not exist", 500);
 }
