@@ -186,3 +186,7 @@ export function showTestBanner(): boolean {
 export function getDeviceIntelligenceEnabled(): boolean {
   return process.env.DEVICE_INTELLIGENCE_ENABLED === "1";
 }
+
+export function getPrivacyNoticeRedirectEnabled(): boolean {
+  return process.env.PRIVACY_NOTICE_REDIRECT_ENABLED === "1";
+}

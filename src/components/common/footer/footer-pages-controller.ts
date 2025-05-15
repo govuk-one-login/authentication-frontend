@@ -1,8 +1,14 @@
 import type { Request, Response } from "express";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { supportTypeIsGovService } from "../../../utils/request.js";
+import { getPrivacyNoticeRedirectEnabled } from "../../../config.js";
+
 export function privacyStatementGet(req: Request, res: Response): void {
-  res.render("common/footer/privacy-statement.njk");
+  if (getPrivacyNoticeRedirectEnabled()) {
+    redirectToExternalPrivacyNotice(req, res);
+  } else {
+    res.render("common/footer/privacy-statement.njk");
+  }
 }
 
 export function termsConditionsGet(req: Request, res: Response): void {
@@ -29,6 +35,17 @@ export function supportPost(req: Request, res: Response): void {
   } else {
     res.redirect(res.locals.contactUsLinkUrl);
   }
+}
+
+function redirectToExternalPrivacyNotice(req: Request, res: Response) {
+  if (req.i18n.language === "cy") {
+    return res.redirect(
+      "https://gov.uk/government/publications/govuk-one-login-privacy-notice.cy"
+    );
+  }
+  res.redirect(
+    "https://gov.uk/government/publications/govuk-one-login-privacy-notice"
+  );
 }
 
 function appendQueryParam(param: string, value: string, url: string) {
