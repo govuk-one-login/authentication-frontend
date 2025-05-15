@@ -89,6 +89,7 @@ export interface UserSession {
   isVerifyEmailCodeResendRequired?: boolean;
   channel?: string;
   mfaMethodType?: string;
+  defaultMfaMethodId?: string;
 }
 
 export interface UserSessionClient {
