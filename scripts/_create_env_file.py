@@ -83,7 +83,6 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
         "header": "Feature switches",
         "variables": {
             "SUPPORT_MFA_OPTIONS": 1,
-            "SUPPORT_ACCOUNT_RECOVERY": 1,
             "SUPPORT_AUTHORIZE_CONTROLLER": 1,
             "SUPPORT_ACCOUNT_INTERVENTIONS": 1,
             "SUPPORT_REAUTHENTICATION": 1,
