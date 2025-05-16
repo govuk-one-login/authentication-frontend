@@ -176,7 +176,6 @@ const expectations: RequestTaxonomyExpectation[] = [
 
 describe("getRequestTaxonomy", () => {
   beforeEach(() => {
-    process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
     process.env.SUPPORT_REAUTHENTICATION = "1";
   });
 
