@@ -25,7 +25,7 @@
   <form id="form-tracking" action="/enter-code" method="post" novalidate="novalidate">
     <input type="hidden" name="phoneNumber" value="{{phoneNumber}}"/>
     <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-    <input type="hidden" name="supportAccountRecovery" value="{{supportAccountRecovery}}"/>
+    <input type="hidden" name="accountRecoveryPermitted" value="{{accountRecoveryPermitted}}"/>
     <input type="hidden" name="mfaIssuePath" value="{{mfaIssuePath}}"/>
 
     {{ govukInput({
@@ -50,7 +50,7 @@
       {{'pages.enterMfa.details.text 2' | translate}}
     </p>
 
-    {% if supportAccountRecovery === true or supportAccountRecovery === "true" %}
+    {% if accountRecoveryPermitted === true or accountRecoveryPermitted === "true" %}
         {% if hasMultipleMfaMethods %}
             <p class="govuk-body">
               {{ 'pages.enterMfa.details.chooseMfaMethodText' | translate }}

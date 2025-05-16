@@ -6,7 +6,6 @@ import { verifyCodePost } from "../common/verify-code/verify-code-controller.js"
 import type { ExpressRouteFunc } from "../../types.js";
 import type { SecurityCodeErrorType } from "../common/constants.js";
 import { ERROR_CODES } from "../common/constants.js";
-import { supportAccountRecovery } from "../../config.js";
 import type { AccountRecoveryInterface } from "../common/account-recovery/types.js";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service.js";
 import { BadRequestError } from "../../utils/error.js";
@@ -26,8 +25,6 @@ export function enterMfaGet(
   acctRecoveryService: AccountRecoveryInterface = accountRecoveryService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
-
     if (isLocked(req.session.user.wrongCodeEnteredLock)) {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
@@ -52,13 +49,6 @@ export function enterMfaGet(
     const redactedPhoneNumber = getDefaultSmsMfaMethod(
       req.session.user.mfaMethods
     )?.redactedPhoneNumber;
-
-    if (!isAccountRecoveryEnabledForEnvironment) {
-      return res.render(templateName, {
-        phoneNumber: redactedPhoneNumber,
-        supportAccountRecovery: false,
-      });
-    }
 
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
@@ -85,7 +75,7 @@ export function enterMfaGet(
 
     res.render(templateName, {
       phoneNumber: redactedPhoneNumber,
-      supportAccountRecovery: req.session.user.isAccountRecoveryPermitted,
+      accountRecoveryPermitted: req.session.user.isAccountRecoveryPermitted,
       hasMultipleMfaMethods,
       mfaIssuePath: hasMultipleMfaMethods
         ? PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES

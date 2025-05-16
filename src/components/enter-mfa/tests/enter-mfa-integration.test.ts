@@ -113,7 +113,6 @@ describe("Integration:: enter mfa", () => {
   }
 
   beforeEach(() => {
-    process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
     nock.cleanAll();
   });
 
@@ -189,7 +188,7 @@ describe("Integration:: enter mfa", () => {
           _csrf: token,
           code: "123456",
           phoneNumber: DEFAULT_PHONE_NUMBER,
-          supportAccountRecovery: false,
+          accountRecoveryPermitted: false,
         })
         .expect(function (res) {
           const $ = cheerio.load(res.text);

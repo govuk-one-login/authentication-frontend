@@ -45,7 +45,6 @@ describe("enter mfa controller", () => {
       mfaMethods: buildMfaMethods({ redactedPhoneNumber: TEST_PHONE_NUMBER }),
     };
     res = mockResponse();
-    process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
   });
 
   afterEach(() => {
@@ -53,20 +52,7 @@ describe("enter mfa controller", () => {
   });
 
   describe("enterMfaGet", () => {
-    it("should render enter mfa code view with supportAccountRecovery false when disabled at environment level", async () => {
-      process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
-      await enterMfaGet(fakeAccountRecoveryPermissionCheckService(true))(
-        req as Request,
-        res as Response
-      );
-
-      expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
-        phoneNumber: TEST_PHONE_NUMBER,
-        supportAccountRecovery: false,
-      });
-    });
-
-    it("should render enter mfa code view with supportAccountRecovery false when enabled at environment level, but user is blocked from account recovery", async () => {
+    it("should render enter mfa code view with accountRecoveryPermitted false when user is blocked from account recovery", async () => {
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
         req as Request,
         res as Response
@@ -74,13 +60,13 @@ describe("enter mfa controller", () => {
 
       expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
         phoneNumber: TEST_PHONE_NUMBER,
-        supportAccountRecovery: false,
+        accountRecoveryPermitted: false,
         hasMultipleMfaMethods: false,
         mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
       });
     });
 
-    it("should render enter mfa code view with supportAccountRecovery true when enabled at environment level and user is not blocked from account recovery", async () => {
+    it("should render enter mfa code view with accountRecoveryPermitted true when user is not blocked from account recovery", async () => {
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(true))(
         req as Request,
         res as Response
@@ -88,7 +74,7 @@ describe("enter mfa controller", () => {
 
       expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
         phoneNumber: TEST_PHONE_NUMBER,
-        supportAccountRecovery: true,
+        accountRecoveryPermitted: true,
         hasMultipleMfaMethods: false,
         mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
       });
@@ -96,7 +82,6 @@ describe("enter mfa controller", () => {
 
     it("should render 2fa service uplift view when uplift is required", async () => {
       req.session.user.isUpliftRequired = true;
-      process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
 
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
         req as Request,
@@ -105,13 +90,14 @@ describe("enter mfa controller", () => {
 
       expect(res.render).to.have.calledWith(UPLIFT_REQUIRED_SMS_TEMPLATE_NAME, {
         phoneNumber: TEST_PHONE_NUMBER,
-        supportAccountRecovery: false,
+        accountRecoveryPermitted: false,
+        hasMultipleMfaMethods: false,
+        mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
       });
     });
 
     it("should render default template when uplift is not required", async () => {
       req.session.user.isUpliftRequired = false;
-      process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
 
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
         req as Request,
@@ -120,13 +106,14 @@ describe("enter mfa controller", () => {
 
       expect(res.render).to.have.calledWith(ENTER_MFA_DEFAULT_TEMPLATE_NAME, {
         phoneNumber: TEST_PHONE_NUMBER,
-        supportAccountRecovery: false,
+        accountRecoveryPermitted: false,
+        hasMultipleMfaMethods: false,
+        mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
       });
     });
 
     it("should render index-wait when user is locked out in the current session for too many requested codes", async () => {
       req.session.user.isUpliftRequired = false;
-      process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       req.session.user.codeRequestLock = tomorrow.toUTCString();
