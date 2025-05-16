@@ -29,7 +29,7 @@ import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import {
   isAccountRecoveryJourney,
-  isAccountRecoveryJourneyAndEnabled,
+  isAccountRecoveryJourneyAndPermitted,
 } from "../../utils/request.js";
 
 const TEMPLATE = "setup-authenticator-app/index.njk";
@@ -106,7 +106,7 @@ export function setupAuthenticatorAppPost(
     );
 
     const accountRecoveryEnabledJourney =
-      isAccountRecoveryJourneyAndEnabled(req);
+      isAccountRecoveryJourneyAndPermitted(req);
 
     let notificationType = NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
 

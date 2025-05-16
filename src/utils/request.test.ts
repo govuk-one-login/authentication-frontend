@@ -4,7 +4,7 @@ import {
   isReauth,
   isUpliftRequired,
   isAccountRecoveryJourney,
-  isAccountRecoveryJourneyAndEnabled,
+  isAccountRecoveryJourneyAndPermitted,
   isContactUsSuggestionsFeedbackSubtheme,
   clientIsOneLogin,
   clientUsesOneLoginOptionally,
@@ -90,7 +90,6 @@ describe("request utilities", () => {
     let positiveRequest: Request;
 
     beforeEach(() => {
-      process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
       positiveRequest = {
         session: {
           user: {
@@ -102,12 +101,7 @@ describe("request utilities", () => {
     });
 
     it(`returns false when required properties are not in the request`, async () => {
-      expect(isAccountRecoveryJourneyAndEnabled(blankRequest)).to.equal(false);
-    });
-
-    it(`returns false when the feature flag is disabled`, async () => {
-      process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
-      expect(isAccountRecoveryJourneyAndEnabled(positiveRequest)).to.equal(
+      expect(isAccountRecoveryJourneyAndPermitted(blankRequest)).to.equal(
         false
       );
     });
@@ -115,14 +109,14 @@ describe("request utilities", () => {
     it(`returns false when not all used property are true`, async () => {
       const request = positiveRequest;
       request.session.user.isAccountRecoveryJourney = false;
-      expect(isAccountRecoveryJourneyAndEnabled(request)).to.equal(false);
+      expect(isAccountRecoveryJourneyAndPermitted(request)).to.equal(false);
       request.session.user.isAccountRecoveryJourney = true;
       request.session.user.isAccountRecoveryPermitted = false;
-      expect(isAccountRecoveryJourneyAndEnabled(request)).to.equal(false);
+      expect(isAccountRecoveryJourneyAndPermitted(request)).to.equal(false);
     });
 
     it(`returns true when used properties are true`, async () => {
-      expect(isAccountRecoveryJourneyAndEnabled(positiveRequest)).to.equal(
+      expect(isAccountRecoveryJourneyAndPermitted(positiveRequest)).to.equal(
         true
       );
     });

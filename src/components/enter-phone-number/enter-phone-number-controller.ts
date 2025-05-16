@@ -15,7 +15,7 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number.js";
 import xss from "xss";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
-import { isAccountRecoveryJourneyAndEnabled } from "../../utils/request.js";
+import { isAccountRecoveryJourneyAndPermitted } from "../../utils/request.js";
 import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
@@ -46,7 +46,7 @@ export function enterPhoneNumberPost(
       { phoneNumber, redactedPhoneNumber: redactPhoneNumber(phoneNumber) }
     );
 
-    const journeyType = isAccountRecoveryJourneyAndEnabled(req)
+    const journeyType = isAccountRecoveryJourneyAndPermitted(req)
       ? JOURNEY_TYPE.ACCOUNT_RECOVERY
       : JOURNEY_TYPE.REGISTRATION;
 

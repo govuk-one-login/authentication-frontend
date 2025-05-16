@@ -25,7 +25,7 @@ import { BadRequestError } from "../../utils/error.js";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service.js";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import { isLocked } from "../../utils/lock-helper.js";
-import { isAccountRecoveryJourneyAndEnabled } from "../../utils/request.js";
+import { isAccountRecoveryJourneyAndPermitted } from "../../utils/request.js";
 import { getDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";
@@ -93,7 +93,7 @@ export const checkYourPhonePost = (
     }
 
     const accountRecoveryEnabledJourney =
-      isAccountRecoveryJourneyAndEnabled(req);
+      isAccountRecoveryJourneyAndPermitted(req);
 
     let notificationType = NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
 
