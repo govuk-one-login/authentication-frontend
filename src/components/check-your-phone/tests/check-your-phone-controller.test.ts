@@ -27,7 +27,6 @@ describe("check your phone controller", () => {
   let res: ResponseOutput;
 
   beforeEach(() => {
-    process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
     req = createMockRequest(PATH_NAMES.CHECK_YOUR_PHONE);
     res = mockResponse();
   });
