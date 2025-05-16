@@ -25,7 +25,6 @@ import {
   getSessionSecret,
   getVitalSignsIntervalSeconds,
   supportAccountInterventions,
-  supportAccountRecovery,
   supportAuthorizeController,
 } from "./config.js";
 import { logErrorMiddleware } from "./middleware/log-error-middleware.js";
@@ -129,9 +128,7 @@ function registerRoutes(app: express.Application) {
   app.use(registerAccountCreatedRouter);
   app.use(footerRouter);
   app.use(checkYourPhoneRouter);
-  if (supportAccountRecovery()) {
-    app.use(changeSecurityCodesConfirmationRouter);
-  }
+  app.use(changeSecurityCodesConfirmationRouter);
   if (supportAuthorizeController()) {
     app.use(authorizeRouter);
   }
