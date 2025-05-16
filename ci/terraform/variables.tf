@@ -17,10 +17,6 @@ variable "common_state_bucket" {
   type = string
 }
 
-variable "support_account_recovery" {
-  type = string
-}
-
 variable "support_authorize_controller" {
   type    = string
   default = "0"

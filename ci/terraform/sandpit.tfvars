@@ -3,7 +3,6 @@ common_state_bucket = "digital-identity-dev-tfstate"
 aws_region          = "eu-west-2"
 session_expiry      = 300000
 
-support_account_recovery                            = "1"
 support_authorize_controller                        = "1"
 support_account_interventions                       = "1"
 support_reauthentication                            = "1"

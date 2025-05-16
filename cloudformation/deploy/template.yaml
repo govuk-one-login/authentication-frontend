@@ -815,8 +815,6 @@ Resources:
                 - IsNotProduction
                 - !Sub "https://home.${Environment}.account.gov.uk"
                 - "https://home.account.gov.uk"
-            - Name: SUPPORT_ACCOUNT_RECOVERY
-              Value: 1
             - Name: BASE_URL
               Value:
                 !FindInMap [

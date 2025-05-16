@@ -52,10 +52,6 @@ locals {
         value = "https://${local.account_management_fqdn}"
       },
       {
-        name  = "SUPPORT_ACCOUNT_RECOVERY"
-        value = var.support_account_recovery
-      },
-      {
         name  = "BASE_URL"
         value = aws_route53_record.frontend.name
       },
