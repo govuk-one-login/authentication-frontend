@@ -253,7 +253,6 @@ async function createApp(): Promise<express.Application> {
   app.use(environmentBannerMiddleware);
   app.use(getSessionIdMiddleware);
   app.post("*", sanitizeRequestMiddleware);
-  // TODO: AUT-4272: This is intercepting all requests (including script dependencies) which is causing an issue when we refresh the csrf token - should we only apply to pages and not their dependencies?
   app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
   app.use(initialiseSessionMiddleware);
