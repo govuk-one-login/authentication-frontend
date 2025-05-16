@@ -11,7 +11,6 @@ session_expiry          = 300000
 redis_node_size         = "cache.t2.micro"
 vpc_environment         = "dev"
 
-support_account_recovery                            = "1"
 support_authorize_controller                        = "1"
 support_account_interventions                       = "1"
 support_reauthentication                            = "1"

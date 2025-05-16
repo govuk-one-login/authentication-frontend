@@ -16,7 +16,6 @@ alb_idle_timeout = 30
 cloudfront_auth_frontend_enabled = true
 cloudfront_auth_dns_enabled      = true
 
-support_account_recovery                            = "1"
 support_authorize_controller                        = "1"
 support_account_interventions                       = "1"
 support_reauthentication                            = "1"

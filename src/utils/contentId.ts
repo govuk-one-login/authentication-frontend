@@ -5,7 +5,7 @@ import {
   isReauth,
   isUpliftRequired,
   isAccountRecoveryJourney,
-  isAccountRecoveryJourneyAndEnabled,
+  isAccountRecoveryJourneyAndPermitted,
   isContactUsSuggestionsFeedbackSubtheme,
   clientIsOneLogin,
   clientUsesOneLoginOptionally,
@@ -29,7 +29,7 @@ const CONTENT_IDS: {
   [PATH_NAMES.CHECK_YOUR_EMAIL]: () => "054e1ea8-97a8-461a-a964-07345c80098e",
   [PATH_NAMES.CHECK_YOUR_PHONE]: () => "1fef9388-34cd-4ea2-b899-a66b7327d2f7",
   [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: (req: Request) =>
-    isAccountRecoveryJourneyAndEnabled(req)
+    isAccountRecoveryJourneyAndPermitted(req)
       ? "cbca1676-f632-4937-984e-1ae5934d13e2"
       : "0f519eb6-5cd4-476f-968f-d847b3c4c034",
   [PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP]: (req: Request) =>

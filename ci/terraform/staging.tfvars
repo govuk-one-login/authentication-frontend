@@ -13,7 +13,6 @@ frontend_task_definition_memory                     = 4096
 frontend_auto_scaling_min_count                     = 4
 frontend_auto_scaling_max_count                     = 240
 ecs_desired_count                                   = 4
-support_account_recovery                            = "1"
 support_account_interventions                       = "1"
 support_authorize_controller                        = "1"
 code_request_blocked_minutes                        = "120"

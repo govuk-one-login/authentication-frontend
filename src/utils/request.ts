@@ -1,5 +1,5 @@
 import type { Request } from "express";
-import { supportAccountRecovery, supportReauthentication } from "../config.js";
+import { supportReauthentication } from "../config.js";
 import {
   CONTACT_US_THEMES,
   SERVICE_TYPE,
@@ -14,10 +14,9 @@ export const isUpliftRequired = (req: Request): boolean =>
 export const isAccountRecoveryJourney = (req: Request): boolean =>
   Boolean(req.session?.user?.isAccountRecoveryJourney);
 
-export const isAccountRecoveryJourneyAndEnabled = (req: Request): boolean =>
+export const isAccountRecoveryJourneyAndPermitted = (req: Request): boolean =>
   Boolean(
-    supportAccountRecovery() &&
-      req.session?.user?.isAccountRecoveryJourney &&
+    req.session?.user?.isAccountRecoveryJourney &&
       req.session?.user?.isAccountRecoveryPermitted
   );
 

@@ -31,10 +31,6 @@ export function getApiKey(): string {
   return process.env.API_KEY;
 }
 
-export function supportAccountRecovery(): boolean {
-  return process.env.SUPPORT_ACCOUNT_RECOVERY === "1";
-}
-
 export function supportAuthorizeController(): boolean {
   return process.env.SUPPORT_AUTHORIZE_CONTROLLER === "1";
 }

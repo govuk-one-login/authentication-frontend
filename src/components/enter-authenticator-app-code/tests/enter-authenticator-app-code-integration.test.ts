@@ -125,7 +125,6 @@ describe("Integration:: enter authenticator app code", () => {
   beforeEach(() => {
     process.env.SUPPORT_REAUTHENTICATION = "0";
     process.env.TEST_SETUP_REAUTH_SESSION = "0";
-    process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
     nock.cleanAll();
   });
 

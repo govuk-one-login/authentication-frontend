@@ -52,7 +52,6 @@ describe("enter authenticator app code controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE);
     res = mockResponse();
-    process.env.SUPPORT_ACCOUNT_RECOVERY = "1";
   });
 
   afterEach(() => {
@@ -60,7 +59,7 @@ describe("enter authenticator app code controller", () => {
   });
 
   describe("enterAuthenticatorAppCodeGet", () => {
-    it("should render enter mfa code view with isAccountRecoveryPermitted true when user is permitted to perform account recovery, account recovery is enabled for environment", async () => {
+    it("should render enter mfa code view with isAccountRecoveryPermitted true when user is permitted to perform account recovery", async () => {
       await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
         req as Request,
         res as Response
@@ -88,22 +87,6 @@ describe("enter authenticator app code controller", () => {
           isAccountRecoveryPermitted: false,
           hasMultipleMfaMethods: false,
           mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
-        }
-      );
-    });
-
-    it("should render enter mfa code view with isAccountRecoveryPermitted false when account recovery is disable for the environment", async () => {
-      process.env.SUPPORT_ACCOUNT_RECOVERY = "0";
-
-      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
-        req as Request,
-        res as Response
-      );
-
-      expect(res.render).to.have.calledWith(
-        "enter-authenticator-app-code/index.njk",
-        {
-          isAccountRecoveryPermitted: false,
         }
       );
     });

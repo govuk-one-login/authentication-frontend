@@ -1,7 +1,7 @@
 import type { Request } from "express";
 import { CONTACT_US_THEMES, PATH_NAMES } from "../app.constants.js";
 import {
-  isAccountRecoveryJourneyAndEnabled,
+  isAccountRecoveryJourneyAndPermitted,
   isReauth as isReauthTaxonomy,
 } from "./request.js";
 export enum TaxonomyLevel1 {
@@ -122,7 +122,7 @@ const isCreateAccountTaxonomy = (req: Request): boolean =>
 
 const isAccountRecoveryTaxonomy = (req: Request): boolean => {
   return (
-    isAccountRecoveryJourneyAndEnabled(req) ||
+    isAccountRecoveryJourneyAndPermitted(req) ||
     [
       PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION,
       PATH_NAMES.RESET_PASSWORD,

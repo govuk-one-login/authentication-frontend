@@ -11,7 +11,6 @@ import {
 } from "../common/constants.js";
 import {
   getCodeEnteredWrongBlockDurationInMinutes,
-  supportAccountRecovery,
   supportReauthentication,
 } from "../../config.js";
 import type { VerifyMfaCodeInterface } from "./types.js";
@@ -56,14 +55,6 @@ export function enterAuthenticatorAppCodeGet(
           show2HrScreen: true,
         }
       );
-    }
-
-    const isAccountRecoveryEnabledForEnvironment = supportAccountRecovery();
-
-    if (!isAccountRecoveryEnabledForEnvironment) {
-      return res.render(templateName, {
-        isAccountRecoveryPermitted: false,
-      });
     }
 
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
