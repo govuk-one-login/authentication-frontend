@@ -10,31 +10,31 @@ describe("getChannelSpecificTemplate", () => {
     describe("and the webTemplateAndPath is not mapped", () => {
       it("should return the original webTemplateAndPath", () => {
         expect(
-          getChannelSpecificTemplate("notMappedTemplate.njk", false, mappings)
+          getChannelSpecificTemplate("notMappedTemplate.njk", false, false, mappings)
         ).to.equal("notMappedTemplate.njk");
       });
     });
     describe("and the webTemplateAndPath is mapped", () => {
       it("should return the original webTemplateAndPath", () => {
         expect(
-          getChannelSpecificTemplate("webTemplate.njk", false, mappings)
+          getChannelSpecificTemplate("webTemplate.njk", false, false, mappings)
         ).to.equal("webTemplate.njk");
       });
     });
   });
 
-  describe("where the channel is mobile", () => {
+  describe("where the channel is strategic-app", () => {
     describe("and the webTemplateAndPath is not mapped", () => {
       it("should return the original webTemplateAndPath", () => {
         expect(
-          getChannelSpecificTemplate("notMappedTemplate.njk", true, mappings)
+          getChannelSpecificTemplate("notMappedTemplate.njk", true, false, mappings)
         ).to.equal("notMappedTemplate.njk");
       });
     });
     describe("and the webTemplateAndPath is mapped", () => {
       it("should return the original webTemplateAndPath", () => {
         expect(
-          getChannelSpecificTemplate("webTemplate.njk", true, mappings)
+          getChannelSpecificTemplate("webTemplate.njk", true, false, mappings)
         ).to.equal("mobileTemplate.njk");
       });
     });
