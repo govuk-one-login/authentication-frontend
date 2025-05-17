@@ -53,4 +53,26 @@ describe("getChannelSpecificTemplate", () => {
       });
     });
   });
+
+  describe("where the channel is mobile", () => {
+    describe("and the webTemplateAndPath is not mapped", () => {
+      it("should return the original webTemplateAndPath", () => {
+        expect(
+          getChannelSpecificTemplate(
+            "notMappedTemplate.njk",
+            false,
+            true,
+            mappings
+          )
+        ).to.equal("notMappedTemplate.njk");
+      });
+    });
+    describe("and the webTemplateAndPath is mapped", () => {
+      it("should return the original webTemplateAndPath", () => {
+        expect(
+          getChannelSpecificTemplate("webTemplate.njk", true, false, mappings)
+        ).to.equal("mobileTemplate.njk");
+      });
+    });
+  });
 });

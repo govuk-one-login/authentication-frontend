@@ -32,7 +32,19 @@ describe("sign in or create controller", () => {
       expect(res.render).to.have.calledWith("sign-in-or-create/index.njk");
     });
 
-    describe("where the context is mobile", () => {
+    describe("where the channel is strategic app", () => {
+      it("should render the strategic app template", async () => {
+        res.locals.strategicAppChannel = true;
+
+        signInOrCreateGet(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWith(
+          "sign-in-or-create/index-mobile.njk"
+        );
+      });
+    });
+
+    describe("where the channel is mobile", () => {
       it("should render the mobile template", async () => {
         res.locals.strategicAppChannel = true;
 
