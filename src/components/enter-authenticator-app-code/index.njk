@@ -40,23 +40,25 @@
 
   </form>
 
-  {% if isAccountRecoveryPermitted === true or isAccountRecoveryPermitted === "true" %}
+  {% if hasMultipleMfaMethods %}
     {% set detailsHTML %}
-      {% if hasMultipleMfaMethods %}
-        <p class="govuk-body">
-          {{'pages.enterAuthenticatorAppCode.details.chooseMfaMethod.text1' | translate}}
-          <a href="{{ mfaIssuePath }}" class="govuk-link"
-             rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.chooseMfaMethod.text2' | translate}}</a>.
-        </p>
-      {% else %}
-        <p class="govuk-body">
-          {{'pages.enterAuthenticatorAppCode.details.mfaReset.text1' | translate}}
-          <a href="{{ mfaIssuePath }}" class="govuk-link"
-             rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.mfaReset.text2'| translate}}</a>.
-        </p>
-      {% endif %}
+      <p class="govuk-body">
+        {{ 'pages.enterAuthenticatorAppCode.details.chooseMfaMethod.text1' | translate }}
+        <a href="{{ mfaIssuePath }}" class="govuk-link"
+           rel="noreferrer noopener">{{ 'pages.enterAuthenticatorAppCode.details.chooseMfaMethod.text2' | translate }}</a>.
+      </p>
     {% endset %}
+  {% elif isAccountRecoveryPermitted %}
+    {% set detailsHTML %}
+      <p class="govuk-body">
+        {{ 'pages.enterAuthenticatorAppCode.details.mfaReset.text1' | translate }}
+        <a href="{{ mfaIssuePath }}" class="govuk-link"
+           rel="noreferrer noopener">{{ 'pages.enterAuthenticatorAppCode.details.mfaReset.text2'| translate }}</a>.
+      </p>
+    {% endset %}
+  {% endif %}
 
+  {% if detailsHTML %}
     {{ govukDetails({
       summaryText: 'pages.enterAuthenticatorAppCode.details.summary' | translate,
       html: detailsHTML

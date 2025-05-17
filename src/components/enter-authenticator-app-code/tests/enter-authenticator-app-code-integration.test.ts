@@ -29,15 +29,12 @@ describe("Integration:: enter authenticator app code", () => {
   let baseApi: string;
 
   async function setupStubbedApp(
-    options: {
-      partialMfaMethods: PartialMfaMethod[];
-    } = {
-      partialMfaMethods: [
-        {
-          authApp: true,
-        },
-      ],
-    }
+    partialMfaMethods: PartialMfaMethod[] = [
+      {
+        authApp: true,
+      },
+    ],
+    isAccountRecoveryPermitted: boolean = true
   ) {
     const { createApp } = await esmock(
       "../../../app.js",
@@ -58,8 +55,7 @@ describe("Integration:: enter authenticator app code", () => {
 
             req.session.user = {
               email: "test@test.com",
-              isAccountRecoveryPermitted: true,
-              mfaMethods: buildMfaMethods(options.partialMfaMethods),
+              mfaMethods: buildMfaMethods(partialMfaMethods),
               journey: getPermittedJourneyForPath(
                 PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
               ),
@@ -76,7 +72,7 @@ describe("Integration:: enter authenticator app code", () => {
             async function accountRecovery() {
               const fakeAxiosResponse: AxiosResponse = {
                 data: {
-                  accountRecoveryPermitted: true,
+                  accountRecoveryPermitted: isAccountRecoveryPermitted,
                 },
                 status: HTTP_STATUS_CODES.OK,
               } as AxiosResponse;
@@ -147,8 +143,20 @@ describe("Integration:: enter authenticator app code", () => {
           authApp: true,
         },
       ],
-      expectedLinkHref: PATH_NAMES.MFA_RESET_WITH_IPV,
-      expectedLinkText: "check if you can change how you get security codes",
+      isAccountRecoveryPermitted: false,
+      expectedLink: undefined,
+    },
+    {
+      partialMfaMethods: [
+        {
+          authApp: true,
+        },
+      ],
+      isAccountRecoveryPermitted: true,
+      expectedLink: {
+        href: PATH_NAMES.MFA_RESET_WITH_IPV,
+        text: "check if you can change how you get security codes",
+      },
     },
     {
       partialMfaMethods: [
@@ -159,27 +167,44 @@ describe("Integration:: enter authenticator app code", () => {
           redactedPhoneNumber: "1234",
         },
       ],
-      expectedLinkHref: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
-      expectedLinkText: "try another way to get a security code",
+      isAccountRecoveryPermitted: true,
+      expectedLink: {
+        href: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
+        text: "try another way to get a security code",
+      },
     },
-  ].forEach(({ partialMfaMethods, expectedLinkHref, expectedLinkText }) =>
+  ].forEach(({ partialMfaMethods, isAccountRecoveryPermitted, expectedLink }) =>
     it(`should include the correct link to change/reset mfa methods when the user has ${partialMfaMethods.length} mfaMethods`, async () => {
-      await setupStubbedApp({ partialMfaMethods });
+      await setupStubbedApp(partialMfaMethods, isAccountRecoveryPermitted);
       await request(app, (test) =>
         test
           .get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
           .expect(200)
           .expect(function (res) {
             const $ = cheerio.load(res.text);
-            expect(
-              $("a")
-                .toArray()
-                .some(
-                  (link) =>
-                    $(link).attr("href") === expectedLinkHref &&
-                    $(link).text().trim() === expectedLinkText
-                )
-            ).to.be.true;
+
+            if (expectedLink) {
+              expect(
+                $("a")
+                  .toArray()
+                  .some(
+                    (link) =>
+                      $(link).attr("href") === expectedLink.href &&
+                      $(link).text().trim() === expectedLink.text
+                  )
+              ).to.be.true;
+            } else {
+              expect(
+                $("a")
+                  .toArray()
+                  .some(
+                    (link) =>
+                      $(link).attr("href") === PATH_NAMES.MFA_RESET_WITH_IPV ||
+                      $(link).attr("href") ===
+                        PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
+                  )
+              ).to.be.false;
+            }
           })
       );
     })
