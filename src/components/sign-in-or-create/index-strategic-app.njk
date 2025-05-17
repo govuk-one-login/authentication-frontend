@@ -1,0 +1,31 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitleName = 'mobileAppPages.signIn.title' | translate %}
+
+{% block content %}
+
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'mobileAppPages.signIn.header' | translate }} </h1>
+
+    <p class="govuk-body">{{ 'mobileAppPages.signIn.paragraph' | translate }}</p>
+
+    <form action="/sign-in-or-create" method="post" novalidate="novalidate">
+
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        <input type="hidden" name="supportInternationalNumbers" value="{{ supportInternationalNumbers }}" />
+
+        {{ govukButton({
+            text: 'mobileAppPages.signIn.button' | translate,
+            classes: "govuk-button--primary",
+            attributes: {
+                "id": "sign-in-button"
+            }
+        }) }}
+
+        <p class="govuk-body">
+            {{ 'mobileAppPages.signIn.createLinkBefore' | translate }}<a href="/enter-email-create-request" class="govuk-link" rel="noreferrer noopener">{{ 'mobileAppPages.signIn.createLinkInside' | translate }}</a>{{ 'mobileAppPages.signIn.createLinkAfter' | translate }}
+        </p>
+    </form>
+    {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "Home", loggedInStatus: false, dynamic: true } %}
+    {%- include "ga4-opl/template.njk" -%}
+{% endblock %}

@@ -1,19 +1,27 @@
+import type { MobileAndStrategicAppRoutes } from "src/app.constants.js";
 import { logger } from "./logger.js";
+
 export function getChannelSpecificTemplate(
   webTemplateAndPath: string,
   isStrategicAppChannel: boolean,
-  templateMappings: Record<string, string>
+  isMobileAppChannel: boolean,
+  templateMappings: Record<string, MobileAndStrategicAppRoutes>
 ): string {
-  if (!isStrategicAppChannel) {
+  if (!isStrategicAppChannel && !isMobileAppChannel) {
     return webTemplateAndPath;
   }
 
-  const appTemplate = templateMappings[webTemplateAndPath];
-  if (appTemplate === undefined) {
+  const appAndMobileTemplates = templateMappings[webTemplateAndPath];
+  if (appAndMobileTemplates === undefined) {
     logger.warn(
       `No '${webTemplateAndPath}' property found in templateMappings. Falling back to web template`
     );
     return webTemplateAndPath;
   }
-  return appTemplate;
+
+  if (isStrategicAppChannel) {
+    return appAndMobileTemplates.strategicApp;
+  }
+
+  return appAndMobileTemplates.mobile;
 }
