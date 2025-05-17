@@ -1,8 +1,12 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { getChannelSpecificTemplate } from "../../../src/utils/get-channel-specific-template.js";
-const mappings = {
-  "webTemplate.njk": "mobileTemplate.njk",
+import type { MobileAndStrategicAppRoutes } from "../../../src/app.constants.js";
+const mappings: Record<string, MobileAndStrategicAppRoutes> = {
+  "webTemplate.njk": {
+    strategicApp: "strategicAppTemplate.njk",
+    mobile: "mobileTemplate.njk",
+  },
 };
 
 describe("getChannelSpecificTemplate", () => {
@@ -10,7 +14,12 @@ describe("getChannelSpecificTemplate", () => {
     describe("and the webTemplateAndPath is not mapped", () => {
       it("should return the original webTemplateAndPath", () => {
         expect(
-          getChannelSpecificTemplate("notMappedTemplate.njk", false, false, mappings)
+          getChannelSpecificTemplate(
+            "notMappedTemplate.njk",
+            false,
+            false,
+            mappings
+          )
         ).to.equal("notMappedTemplate.njk");
       });
     });
@@ -27,7 +36,12 @@ describe("getChannelSpecificTemplate", () => {
     describe("and the webTemplateAndPath is not mapped", () => {
       it("should return the original webTemplateAndPath", () => {
         expect(
-          getChannelSpecificTemplate("notMappedTemplate.njk", true, false, mappings)
+          getChannelSpecificTemplate(
+            "notMappedTemplate.njk",
+            true,
+            false,
+            mappings
+          )
         ).to.equal("notMappedTemplate.njk");
       });
     });
@@ -35,7 +49,7 @@ describe("getChannelSpecificTemplate", () => {
       it("should return the original webTemplateAndPath", () => {
         expect(
           getChannelSpecificTemplate("webTemplate.njk", true, false, mappings)
-        ).to.equal("mobileTemplate.njk");
+        ).to.equal("strategicAppTemplate.njk");
       });
     });
   });

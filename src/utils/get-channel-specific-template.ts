@@ -1,10 +1,11 @@
+import type { MobileAndStrategicAppRoutes } from "src/app.constants.js";
 import { logger } from "./logger.js";
 
 export function getChannelSpecificTemplate(
   webTemplateAndPath: string,
   isStrategicAppChannel: boolean,
   isMobileAppChannel: boolean,
-  templateMappings: Record<string, string>
+  templateMappings: Record<string, MobileAndStrategicAppRoutes>
 ): string {
   if (!isStrategicAppChannel) {
     return webTemplateAndPath;
@@ -17,5 +18,5 @@ export function getChannelSpecificTemplate(
     );
     return webTemplateAndPath;
   }
-  return appTemplate;
+  return appTemplate.strategicApp;
 }
