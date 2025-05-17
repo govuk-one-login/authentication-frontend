@@ -319,8 +319,8 @@ export const WEB_TO_MOBILE_TEMPLATE_MAPPINGS: Record<
   MobileAndStrategicAppRoutes
 > = {
   "sign-in-or-create/index.njk": {
-    strategicApp: "sign-in-or-create/index-mobile.njk",
-    mobile: "sign-in-or-create/index-mobile.njk",
+    strategicApp: "sign-in-or-create/index-strategic-app.njk",
+    mobile: "sign-in-or-create/index-strategic-app.njk",
   },
   "account-not-found/index-one-login.njk": {
     strategicApp: mobileAccountNotFoundTemplate,
