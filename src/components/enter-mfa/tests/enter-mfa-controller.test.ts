@@ -52,7 +52,7 @@ describe("enter mfa controller", () => {
   });
 
   describe("enterMfaGet", () => {
-    it("should render enter mfa code view with accountRecoveryPermitted false when user is blocked from account recovery", async () => {
+    it("should render enter mfa code view with isAccountRecoveryPermitted false when user is blocked from account recovery", async () => {
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
         req as Request,
         res as Response
@@ -60,13 +60,13 @@ describe("enter mfa controller", () => {
 
       expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
         phoneNumber: TEST_PHONE_NUMBER,
-        accountRecoveryPermitted: false,
+        isAccountRecoveryPermitted: false,
         hasMultipleMfaMethods: false,
         mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
       });
     });
 
-    it("should render enter mfa code view with accountRecoveryPermitted true when user is not blocked from account recovery", async () => {
+    it("should render enter mfa code view with isAccountRecoveryPermitted true when user is not blocked from account recovery", async () => {
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(true))(
         req as Request,
         res as Response
@@ -74,7 +74,7 @@ describe("enter mfa controller", () => {
 
       expect(res.render).to.have.calledWith("enter-mfa/index.njk", {
         phoneNumber: TEST_PHONE_NUMBER,
-        accountRecoveryPermitted: true,
+        isAccountRecoveryPermitted: true,
         hasMultipleMfaMethods: false,
         mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
       });
@@ -90,7 +90,7 @@ describe("enter mfa controller", () => {
 
       expect(res.render).to.have.calledWith(UPLIFT_REQUIRED_SMS_TEMPLATE_NAME, {
         phoneNumber: TEST_PHONE_NUMBER,
-        accountRecoveryPermitted: false,
+        isAccountRecoveryPermitted: false,
         hasMultipleMfaMethods: false,
         mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
       });
@@ -106,7 +106,7 @@ describe("enter mfa controller", () => {
 
       expect(res.render).to.have.calledWith(ENTER_MFA_DEFAULT_TEMPLATE_NAME, {
         phoneNumber: TEST_PHONE_NUMBER,
-        accountRecoveryPermitted: false,
+        isAccountRecoveryPermitted: false,
         hasMultipleMfaMethods: false,
         mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
       });

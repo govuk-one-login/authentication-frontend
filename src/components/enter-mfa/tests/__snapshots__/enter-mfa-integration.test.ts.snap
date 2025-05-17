@@ -33,6 +33,17 @@ Object {
 }
 `;
 
+exports[`Integration:: enter mfa should include the correct link to change mfa methods when the user has 1 mfaMethods 2`] = `
+Object {
+  "contentId": "19601dd7-be55-4ab6-aa44-a6358c4239dc",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "sign in",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
 exports[`Integration:: enter mfa should include the correct link to change mfa methods when the user has 2 mfaMethods 1`] = `
 Object {
   "contentId": "19601dd7-be55-4ab6-aa44-a6358c4239dc",

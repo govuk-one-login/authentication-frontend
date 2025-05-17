@@ -43,42 +43,40 @@
   } if (errors['code'])})
   }}
 
-    {% set detailsHTML %}
-    <p class="govuk-body">
-      {{'pages.enterMfa.details.text1' | translate}}
-      <a href="{{'pages.enterMfa.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterMfa.details.sendCodeLinkText'| translate}}</a>
-      {{'pages.enterMfa.details.text 2' | translate}}
-    </p>
-
-    {% if accountRecoveryPermitted === true or accountRecoveryPermitted === "true" %}
-        {% if hasMultipleMfaMethods %}
-            <p class="govuk-body">
-              {{ 'pages.enterMfa.details.chooseMfaMethodText' | translate }}
-              <a href={{ mfaIssuePath }} class="govuk-link"
-                 rel="noreferrer noopener">{{ 'pages.enterMfa.details.chooseMfaMethodLinkText'| translate }}</a>.
-            </p>
-        {% else %}
-            <p class="govuk-body">
-              {{ 'pages.enterMfa.details.changeGetSecurityCodesTextWithIpv' | translate }}
-              <a href={{ mfaIssuePath }} class="govuk-link"
-                 rel="noreferrer noopener">{{ 'pages.enterMfa.details.changeGetSecurityCodesWithIpvLinkText'| translate }}</a>.
-            </p>
-        {% endif %}
-    {% endif %}
-    {% endset %}
-
     {{ govukButton({
   "text": "general.continue.label" | translate,
   "type": "Submit",
   "preventDoubleClick": true
   }) }}
 
-    {{ govukDetails({
-      summaryText: 'pages.enterMfa.details.summaryText' | translate,
-      html: detailsHTML
-    }) }}
-
   </form>
+
+  {% set detailsHTML %}
+    <p class="govuk-body">
+      {{'pages.enterMfa.details.text1' | translate}}
+      <a href="{{'pages.enterMfa.details.sendCodeLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterMfa.details.sendCodeLinkText'| translate}}</a>
+      {{'pages.enterMfa.details.text 2' | translate}}
+    </p>
+
+    {% if hasMultipleMfaMethods %}
+      <p class="govuk-body">
+        {{ 'pages.enterMfa.details.chooseMfaMethodText' | translate }}
+        <a href={{ mfaIssuePath }} class="govuk-link"
+           rel="noreferrer noopener">{{ 'pages.enterMfa.details.chooseMfaMethodLinkText'| translate }}</a>.
+      </p>
+    {% elif isAccountRecoveryPermitted %}
+      <p class="govuk-body">
+        {{ 'pages.enterMfa.details.changeGetSecurityCodesTextWithIpv' | translate }}
+        <a href={{ mfaIssuePath }} class="govuk-link"
+           rel="noreferrer noopener">{{ 'pages.enterMfa.details.changeGetSecurityCodesWithIpvLinkText'| translate }}</a>.
+      </p>
+    {% endif %}
+  {% endset %}
+
+  {{ govukDetails({
+    summaryText: 'pages.enterMfa.details.summaryText' | translate,
+    html: detailsHTML
+  }) }}
 
 {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
 {%- include "ga4-opl/template.njk" -%}
