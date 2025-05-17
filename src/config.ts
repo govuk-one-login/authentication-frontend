@@ -180,7 +180,11 @@ export function supportHttpKeepAlive(): boolean {
 }
 
 export function isValidChannel(channel: string): boolean {
-  return channel === CHANNEL.WEB || channel === CHANNEL.STRATEGIC_APP;
+  return (
+    channel === CHANNEL.WEB ||
+    channel === CHANNEL.STRATEGIC_APP ||
+    channel === CHANNEL.MOBILE
+  );
 }
 
 export function showTestBanner(): boolean {
