@@ -16,7 +16,7 @@ export async function signInOrCreateGet(
 
   const template = getChannelSpecificTemplate(
     "sign-in-or-create/index.njk",
-    res.locals.strategicAppChannel,
+    res.locals.isApp,
     WEB_TO_MOBILE_TEMPLATE_MAPPINGS
   );
 

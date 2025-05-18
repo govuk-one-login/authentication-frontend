@@ -6,7 +6,7 @@ const mappings = {
 };
 
 describe("getChannelSpecificTemplate", () => {
-  describe("where the channel is not mobile", () => {
+  describe("where the channel is not an app", () => {
     describe("and the webTemplateAndPath is not mapped", () => {
       it("should return the original webTemplateAndPath", () => {
         expect(
@@ -23,7 +23,7 @@ describe("getChannelSpecificTemplate", () => {
     });
   });
 
-  describe("where the channel is mobile", () => {
+  describe("where the channel is an app", () => {
     describe("and the webTemplateAndPath is not mapped", () => {
       it("should return the original webTemplateAndPath", () => {
         expect(

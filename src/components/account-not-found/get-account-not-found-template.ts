@@ -6,7 +6,7 @@ import { getChannelSpecificTemplate } from "../../utils/get-channel-specific-tem
 export function getAccountNotFoundTemplate(
   isOneLoginService: boolean,
   serviceType: string,
-  isStrategicAppChannel: boolean
+  isApp: boolean
 ): string {
   let webTemplate;
 
@@ -20,7 +20,7 @@ export function getAccountNotFoundTemplate(
 
   return getChannelSpecificTemplate(
     webTemplate,
-    isStrategicAppChannel,
+    isApp,
     WEB_TO_MOBILE_TEMPLATE_MAPPINGS
   );
 }

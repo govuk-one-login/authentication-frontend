@@ -17,7 +17,7 @@ export function accountNotFoundGet(req: Request, res: Response): void {
   const template: string = getAccountNotFoundTemplate(
     clientIsOneLogin(req),
     req.session.client.serviceType,
-    res.locals.strategicAppChannel
+    res.locals.isApp
   );
 
   res.render(template, {

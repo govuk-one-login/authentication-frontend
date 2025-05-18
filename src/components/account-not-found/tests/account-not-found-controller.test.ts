@@ -25,7 +25,7 @@ describe("account not found controller", () => {
   });
 
   describe("accountNotFoundGet", () => {
-    describe("when strategicAppChannel is not defined", () => {
+    describe("when isApp is not defined", () => {
       it("should render the account not found mandatory view when serviceType undefined", () => {
         accountNotFoundGet(req, res);
 
@@ -53,9 +53,9 @@ describe("account not found controller", () => {
       });
     });
 
-    describe("when strategicAppChannel is false", () => {
+    describe("when isApp is false", () => {
       beforeEach(() => {
-        res.locals.strategicAppChannel = false;
+        res.locals.isApp = false;
       });
 
       it("should render the account not found mandatory view when serviceType undefined", () => {
@@ -85,9 +85,9 @@ describe("account not found controller", () => {
       });
     });
 
-    describe("when strategicAppChannel is true", () => {
+    describe("when isApp is true", () => {
       beforeEach(() => {
-        res.locals.strategicAppChannel = true;
+        res.locals.isApp = true;
       });
 
       it("should render the account not found mandatory view when serviceType undefined", () => {
@@ -100,6 +100,7 @@ describe("account not found controller", () => {
 
       it("should render the account not found optional view when serviceType optional", () => {
         req.session.client.serviceType = SERVICE_TYPE.OPTIONAL;
+
         accountNotFoundGet(req, res);
 
         expect(res.render).to.have.calledWith(
@@ -109,6 +110,7 @@ describe("account not found controller", () => {
 
       it("should render the account not found optional view when the service is part of One Login", () => {
         req.session.client.isOneLoginService = true;
+
         accountNotFoundGet(req, res);
 
         expect(res.render).to.have.calledWith(
