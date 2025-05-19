@@ -5,6 +5,6 @@ export function csrfMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  res.locals.csrfToken = req.csrfToken?.(true);
+  res.locals.csrfToken = req.csrfToken?.(false);
   next();
 }

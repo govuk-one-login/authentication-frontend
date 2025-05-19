@@ -13,7 +13,7 @@ describe("CSRF middleware", () => {
 
     csrfMiddleware(req, res, nextFunction);
 
-    expect(csrfTokenStub).to.have.been.calledWith(true);
+    expect(csrfTokenStub).to.have.been.calledWith(false);
     expect(res.locals.csrfToken).to.equal(csrfToken);
     expect(nextFunction).to.have.been.called;
   });
