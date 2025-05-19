@@ -8,7 +8,6 @@ import type { SecurityCodeErrorType } from "../common/constants.js";
 import { ERROR_CODES } from "../common/constants.js";
 import type { AccountRecoveryInterface } from "../common/account-recovery/types.js";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service.js";
-import { BadRequestError } from "../../utils/error.js";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import type { AccountInterventionsInterface } from "../account-intervention/types.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
@@ -16,6 +15,7 @@ import { getNewCodePath } from "../security-code-error/security-code-error-contr
 import { isLocked } from "../../utils/lock-helper.js";
 import { isUpliftRequired } from "../../utils/request.js";
 import { getDefaultSmsMfaMethod } from "../../utils/mfa.js";
+import { isAccountRecoveryPermitted } from "../common/account-recovery/account-recovery-helper.js";
 
 export const ENTER_MFA_DEFAULT_TEMPLATE_NAME = "enter-mfa/index.njk";
 export const UPLIFT_REQUIRED_SMS_TEMPLATE_NAME =
@@ -46,41 +46,10 @@ export function enterMfaGet(
       ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME
       : ENTER_MFA_DEFAULT_TEMPLATE_NAME;
 
-    const redactedPhoneNumber = getDefaultSmsMfaMethod(
-      req.session.user.mfaMethods
-    )?.redactedPhoneNumber;
-
-    const { email } = req.session.user;
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
-    const accountRecoveryResponse = await acctRecoveryService.accountRecovery(
-      sessionId,
-      clientSessionId,
-      email,
-      persistentSessionId,
-      req
-    );
-
-    if (!accountRecoveryResponse.success) {
-      throw new BadRequestError(
-        accountRecoveryResponse.data.message,
-        accountRecoveryResponse.data.code
-      );
-    }
-
     req.session.user.isAccountRecoveryPermitted =
-      accountRecoveryResponse.data.accountRecoveryPermitted;
+      await isAccountRecoveryPermitted(req, res, acctRecoveryService);
 
-    const hasMultipleMfaMethods = req.session.user.mfaMethods?.length > 1;
-
-    res.render(templateName, {
-      phoneNumber: redactedPhoneNumber,
-      isAccountRecoveryPermitted: req.session.user.isAccountRecoveryPermitted,
-      hasMultipleMfaMethods,
-      mfaIssuePath: hasMultipleMfaMethods
-        ? PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
-        : PATH_NAMES.MFA_RESET_WITH_IPV,
-    });
+    res.render(templateName, enterMfaTemplateParametersFromRequest(req));
   };
 }
 
@@ -104,9 +73,27 @@ export const enterMfaPost = (
         journeyType: getJourneyTypeFromUserSession(req.session.user, {
           includeReauthentication: true,
         }),
+        postValidationLocalsProvider: enterMfaTemplateParametersFromRequest,
       }
     );
 
     return verifyCodeRequest(req, res);
   };
 };
+
+export function enterMfaTemplateParametersFromRequest(req: Request) {
+  const redactedPhoneNumber = getDefaultSmsMfaMethod(
+    req.session.user.mfaMethods
+  )?.redactedPhoneNumber;
+
+  const hasMultipleMfaMethods = req.session.user.mfaMethods?.length > 1;
+
+  return {
+    phoneNumber: redactedPhoneNumber,
+    isAccountRecoveryPermitted: req.session.user.isAccountRecoveryPermitted,
+    hasMultipleMfaMethods,
+    mfaIssuePath: hasMultipleMfaMethods
+      ? PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
+      : PATH_NAMES.MFA_RESET_WITH_IPV,
+  };
+}

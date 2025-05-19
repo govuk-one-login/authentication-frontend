@@ -45,6 +45,7 @@ describe("enter mfa controller", () => {
       mfaMethods: buildMfaMethods({ redactedPhoneNumber: TEST_PHONE_NUMBER }),
     };
     res = mockResponse();
+    res.render = sinon.spy(res.render);
   });
 
   afterEach(() => {
@@ -203,11 +204,20 @@ describe("enter mfa controller", () => {
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
       req.session.user.email = "test@test.com";
+      req.session.user.isAccountRecoveryPermitted = true;
+      req.session.user.mfaMethods = [{}];
 
       await enterMfaPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
-      expect(res.render).to.have.been.calledWith("enter-mfa/index.njk");
+      expect(res.render).to.have.been.calledWith(
+        "enter-mfa/index.njk",
+        sinon.match({
+          isAccountRecoveryPermitted: true,
+          hasMultipleMfaMethods: false,
+          mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
+        })
+      );
     });
 
     it("should redirect to security code expired when invalid code entered more than max retries", async () => {
