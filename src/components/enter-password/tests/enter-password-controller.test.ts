@@ -34,6 +34,7 @@ describe("enter password controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
   const { email } = commonVariables;
+  const DEFAULT_MFA_METHOD_ID = "test-id1";
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ENTER_PASSWORD);
@@ -72,7 +73,7 @@ describe("enter password controller", () => {
               mfaMethodType: "SMS",
               passwordChangeRequired: false,
               mfaMethods: buildMfaMethods({
-                id: "test-id1",
+                id: DEFAULT_MFA_METHOD_ID,
                 phoneNumber: "07123456789",
               }),
             },
@@ -106,7 +107,7 @@ describe("enter password controller", () => {
               mfaMethodType: "SMS",
               passwordChangeRequired: false,
               mfaMethods: buildMfaMethods({
-                id: "test-id1",
+                id: DEFAULT_MFA_METHOD_ID,
                 phoneNumber: "07123456789",
               }),
             },
@@ -157,6 +158,7 @@ describe("enter password controller", () => {
           sinon.match.any,
           sinon.match.any,
           sinon.match.any,
+          DEFAULT_MFA_METHOD_ID,
           JOURNEY_TYPE.REAUTHENTICATION
         );
       });
@@ -197,7 +199,7 @@ describe("enter password controller", () => {
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
             mfaMethods: buildMfaMethods({
-              id: "test-id1",
+              id: DEFAULT_MFA_METHOD_ID,
               phoneNumber: "07123456789",
             }),
           },
@@ -310,7 +312,7 @@ describe("enter password controller", () => {
               mfaMethodVerified: true,
               mfaMethodType: "SMS",
               mfaMethods: buildMfaMethods({
-                id: "test-id1",
+                id: DEFAULT_MFA_METHOD_ID,
                 phoneNumber: "07123456789",
               }),
             },
@@ -362,7 +364,7 @@ describe("enter password controller", () => {
               mfaMethodVerified: true,
               mfaMethodType: "SMS",
               mfaMethods: buildMfaMethods({
-                id: "test-id1",
+                id: DEFAULT_MFA_METHOD_ID,
                 phoneNumber: "07123456789",
               }),
             },
@@ -430,7 +432,7 @@ describe("enter password controller", () => {
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
             mfaMethods: buildMfaMethods({
-              id: "test-id1",
+              id: DEFAULT_MFA_METHOD_ID,
               phoneNumber: "07123456789",
             }),
           },
@@ -455,7 +457,7 @@ describe("enter password controller", () => {
             mfaMethodVerified: false,
             mfaMethodType: "SMS",
             mfaMethods: buildMfaMethods({
-              id: "test-id1",
+              id: DEFAULT_MFA_METHOD_ID,
               phoneNumber: "07123456789",
             }),
           },
@@ -480,7 +482,7 @@ describe("enter password controller", () => {
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
             mfaMethods: buildMfaMethods({
-              id: "test-id1",
+              id: DEFAULT_MFA_METHOD_ID,
               phoneNumber: "07123456789",
             }),
           },
@@ -533,7 +535,7 @@ describe("enter password controller", () => {
             mfaMethodType: "SMS",
             passwordChangeRequired: true,
             mfaMethods: buildMfaMethods({
-              id: "test-id1",
+              id: DEFAULT_MFA_METHOD_ID,
               phoneNumber: "07123456789",
             }),
           },

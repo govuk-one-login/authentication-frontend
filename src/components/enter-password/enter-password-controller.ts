@@ -205,6 +205,7 @@ export function enterPasswordPost(
         false,
         xss(req.cookies.lng as string),
         req,
+        req.session.user.activeMfaMethodId,
         journeyType
       );
 
