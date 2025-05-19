@@ -31,6 +31,7 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import { isLocked } from "../../utils/lock-helper.js";
 import { isUpliftRequired } from "../../utils/request.js";
+import { isAccountRecoveryPermitted } from "../common/account-recovery/account-recovery-helper.js";
 export const ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME =
   "enter-authenticator-app-code/index.njk";
 export const UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME =
@@ -63,32 +64,6 @@ export function enterAuthenticatorAppCodeGet(
       enterAuthenticatorAppCodeTemplateParametersFromRequest(req)
     );
   };
-}
-
-async function isAccountRecoveryPermitted(
-  req: Request,
-  res: Response,
-  acctRecoveryService: AccountRecoveryInterface
-) {
-  const { email } = req.session.user;
-  const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
-  const accountRecoveryResponse = await acctRecoveryService.accountRecovery(
-    sessionId,
-    clientSessionId,
-    email,
-    persistentSessionId,
-    req
-  );
-
-  if (!accountRecoveryResponse.success) {
-    throw new BadRequestError(
-      accountRecoveryResponse.data.message,
-      accountRecoveryResponse.data.code
-    );
-  }
-
-  return accountRecoveryResponse.data.accountRecoveryPermitted;
 }
 
 function handleReauthFailure(req: Request, res: Response) {

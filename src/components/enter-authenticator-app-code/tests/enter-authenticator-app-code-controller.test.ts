@@ -11,24 +11,13 @@ import {
 } from "../enter-authenticator-app-code-controller.js";
 import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES } from "../../common/constants.js";
-import type { AccountRecoveryInterface } from "../../common/account-recovery/types.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import type { VerifyMfaCodeInterface } from "../types.js";
 import * as journey from "../../common/journey/journey.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import esmock from "esmock";
-
-const fakeAccountRecoveryService = (accountRecoveryPermitted: boolean) => {
-  return {
-    accountRecovery: sinon.fake.returns({
-      success: true,
-      data: {
-        accountRecoveryPermitted: accountRecoveryPermitted,
-      },
-    }),
-  } as unknown as AccountRecoveryInterface;
-};
+import { fakeAccountRecoveryService } from "../../common/account-recovery/tests/account-recovery-helper.test.js";
 
 const fakeVerifyMfaCodeService = (errorCode?: number) => {
   return {
