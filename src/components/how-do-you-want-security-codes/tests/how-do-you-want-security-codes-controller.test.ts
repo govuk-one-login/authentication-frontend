@@ -12,6 +12,7 @@ import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants.js";
 import { sinon } from "../../../../test/utils/test-utils.js";
 import { MfaMethodPriority } from "../../../types.js";
 import type { MfaMethod } from "../../../types.js";
+import type { MfaServiceInterface } from "../../common/mfa/types.js";
 
 describe("how do you want security codes controller", () => {
   let req: RequestOutput;
@@ -57,12 +58,23 @@ describe("how do you want security codes controller", () => {
         },
       ] as MfaMethod[];
 
-      req.body["mfa-method-id"] = backupId;
+      for (const mfaMethodId of [defaultId, backupId]) {
+        const fakeMfaCodeService: MfaServiceInterface = {
+          sendMfaCode: sinon.fake.returns({
+            success: true,
+          }),
+        } as unknown as MfaServiceInterface;
 
-      await howDoYouWantSecurityCodesPost(req as Request, res as Response);
+        req.body["mfa-method-id"] = mfaMethodId;
 
-      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ENTER_MFA);
-      expect(req.session.user.activeMfaMethodId).to.equal(backupId);
+        await howDoYouWantSecurityCodesPost(fakeMfaCodeService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ENTER_MFA);
+        expect(req.session.user.activeMfaMethodId).to.equal(mfaMethodId);
+      }
     });
   });
 });

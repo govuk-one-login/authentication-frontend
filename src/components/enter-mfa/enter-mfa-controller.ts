@@ -3,11 +3,7 @@ import { NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants.js";
 import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
-import type {
-  ExpressRouteFunc,
-  MfaMethod,
-  SmsMfaMethod,
-} from "../../types.js";
+import type { ExpressRouteFunc, MfaMethod, SmsMfaMethod } from "../../types.js";
 import type { SecurityCodeErrorType } from "../common/constants.js";
 import { ERROR_CODES } from "../common/constants.js";
 import type { AccountRecoveryInterface } from "../common/account-recovery/types.js";
