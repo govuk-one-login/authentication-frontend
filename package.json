@@ -72,7 +72,7 @@
     "@govuk-one-login/frontend-language-toggle": "2.2.1",
     "@govuk-one-login/frontend-passthrough-headers": "1.3.0",
     "@govuk-one-login/frontend-vital-signs": "0.1.3",
-    "@govuk-one-login/spinner": "1.1.0",
+    "@govuk-one-login/spinner": "1.1.1",
     "@otplib/core": "12.0.1",
     "@otplib/plugin-base32-enc-dec": "12.0.1",
     "axios": "1.8.4",

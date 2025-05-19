@@ -1028,10 +1028,10 @@
   dependencies:
     pino "^8.20.0"
 
-"@govuk-one-login/spinner@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@govuk-one-login/spinner/-/spinner-1.1.0.tgz#865a5f2a707dc5c47a52f1f59b1d3d491a8bda97"
-  integrity sha512-dRZGqVVNowbUTaa8xXZz3Iy5eFCBhw2TrnkE0b53L16C5MrrP5hb3rmSxAQCqgomKrrsx417uZHGFK07lZJi3A==
+"@govuk-one-login/spinner@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/spinner/-/spinner-1.1.1.tgz#0943a9b966d2253c4f8942cf41ddbf633121238d"
+  integrity sha512-qxL4RQXkkSR2D6U3bJbDPDfWgzA9l3pbBfU7hiRDsvMMEd7cCSYvVCUVgzNLVpbnMYbFYGHgvRXi9Cjnd6GEqA==
 
 "@humanfs/core@^0.19.1":
   version "0.19.1"
