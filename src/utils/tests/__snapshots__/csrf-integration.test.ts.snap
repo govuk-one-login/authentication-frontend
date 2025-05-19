@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration::csrf checks should reject a csrf token if it is replayed after use 1`] = `
+Object {
+  "contentId": undefined,
+  "taxonomyLevel1": undefined,
+  "taxonomyLevel2": undefined,
+  "taxonomyLevel3": undefined,
+  "taxonomyLevel4": undefined,
+  "taxonomyLevel5": undefined,
+}
+`;
+
+exports[`Integration::csrf checks should return error when csrf token does not match that in the session 1`] = `
+Object {
+  "contentId": undefined,
+  "taxonomyLevel1": undefined,
+  "taxonomyLevel2": undefined,
+  "taxonomyLevel3": undefined,
+  "taxonomyLevel4": undefined,
+  "taxonomyLevel5": undefined,
+}
+`;
