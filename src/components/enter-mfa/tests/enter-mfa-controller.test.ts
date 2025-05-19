@@ -42,6 +42,7 @@ describe("enter mfa controller", () => {
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ENTER_MFA);
+    req.session.user.activeMfaMethodId = TEST_DEFAULT_MFA_ID;
     res = mockResponse();
 
     req.session.user.mfaMethods = buildMfaMethods({
@@ -179,6 +180,7 @@ describe("enter mfa controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
+        TEST_DEFAULT_MFA_ID,
         JOURNEY_TYPE.REAUTHENTICATION
       );
     });
@@ -213,7 +215,6 @@ describe("enter mfa controller", () => {
       req.body.code = "678988";
       req.session.user.email = "test@test.com";
       req.session.user.isAccountRecoveryPermitted = true;
-      req.session.user.mfaMethods = [{}];
 
       await enterMfaPost(fakeService)(req as Request, res as Response);
 
