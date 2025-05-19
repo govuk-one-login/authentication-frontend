@@ -52,6 +52,7 @@ describe("enter authenticator app code controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE);
     res = mockResponse();
+    res.render = sinon.spy(res.render);
   });
 
   afterEach(() => {
@@ -196,6 +197,8 @@ describe("enter authenticator app code controller", () => {
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
       res.locals.sessionId = "123456-djjad";
+      req.session.user.isAccountRecoveryPermitted = true;
+      req.session.user.mfaMethods = [{}];
 
       await enterAuthenticatorAppCodePost(fakeService)(
         req as Request,
@@ -204,7 +207,12 @@ describe("enter authenticator app code controller", () => {
 
       expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(res.render).to.have.been.calledWith(
-        "enter-authenticator-app-code/index.njk"
+        "enter-authenticator-app-code/index.njk",
+        sinon.match({
+          isAccountRecoveryPermitted: true,
+          hasMultipleMfaMethods: false,
+          mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
+        })
       );
     });
 
