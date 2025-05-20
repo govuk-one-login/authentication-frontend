@@ -19,7 +19,7 @@ export function mfaResetWithIpvGet(
       );
     }
 
-    if (res.locals.strategicAppChannel === true) {
+    if (res.locals.isApp) {
       const redirectPath = await getNextPathAndUpdateJourney(
         req,
         req.path,
