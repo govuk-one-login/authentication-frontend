@@ -20,7 +20,9 @@ import {
 import { BadRequestError } from "../../utils/error.js";
 import { getCodeEnteredWrongBlockDurationInMinutes } from "../../config.js";
 import { isLocked, timestampNMinutesFromNow } from "../../utils/lock-helper.js";
+
 const TEMPLATE_NAME = "reset-password-2fa-auth-app/index.njk";
+
 export function resetPassword2FAAuthAppGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     if (isLocked(req.session.user.wrongCodeEnteredPasswordResetMfaLock)) {
@@ -33,9 +35,17 @@ export function resetPassword2FAAuthAppGet(): ExpressRouteFunc {
         }
       );
     }
-    return res.render(TEMPLATE_NAME, {});
+
+    const hasMultipleMfaMethods = req.session.user.mfaMethods?.length > 1;
+    const chooseMfaMethodHref = PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES;
+
+    return res.render(TEMPLATE_NAME, {
+      hasMultipleMfaMethods,
+      chooseMfaMethodHref,
+    });
   };
 }
+
 export function resetPassword2FAAuthAppPost(
   service: VerifyMfaCodeInterface = verifyMfaCodeService()
 ): ExpressRouteFunc {

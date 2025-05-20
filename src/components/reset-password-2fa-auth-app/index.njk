@@ -50,11 +50,12 @@
 
   </form>
 
-  {% if isAccountRecoveryPermitted === true %}
+  {% if hasMultipleMfaMethods %}
     {% set detailsHTML %}
       <p class="govuk-body">
-        {{'pages.enterAuthenticatorAppCode.details.text1' | translate}}
-        <a href="{{checkEmailLink}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.text2'| translate}}</a>{{'pages.enterAuthenticatorAppCode.details.text3' | translate}}
+        {{'pages.enterAuthenticatorAppCode.details.chooseMfaMethod.text1' | translate}}
+        <a href="{{ chooseMfaMethodHref }}" class="govuk-link"
+          rel="noreferrer noopener">{{'pages.enterAuthenticatorAppCode.details.chooseMfaMethod.text2' | translate}}</a>.
       </p>
     {% endset %}
 
