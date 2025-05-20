@@ -17,7 +17,7 @@
 <p class="govuk-body">{{'pages.accountLocked.bulletPointSection.title' | translate}}</p>
 <ul class="govuk-list govuk-list--bullet">
     <li><a href="/reset-password-request" class="govuk-link">{{'pages.accountLocked.bulletPointSection.first' | translate}}</a></li>
-    {% if strategicAppChannel === true %}
+    {% if isApp %}
         <li>{{'mobileAppPages.accountLocked.bulletPointSection.second' | translate}}</li>
     {% else %}
         <li>{{'pages.accountLocked.bulletPointSection.second' | translate}}</li>
