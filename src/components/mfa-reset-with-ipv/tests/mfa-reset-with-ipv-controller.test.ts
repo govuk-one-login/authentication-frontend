@@ -70,7 +70,7 @@ describe("mfa reset with ipv controller", () => {
     });
 
     it("should allow redirect to new guidance page when user has come from a strategic app journey", async () => {
-      res.locals.strategicAppChannel = true;
+      res.locals.isApp = true;
       await mfaResetWithIpvGet(fakeMfaResetAuthorizeService(true))(
         req as Request,
         res as Response
