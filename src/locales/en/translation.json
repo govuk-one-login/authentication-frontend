@@ -647,8 +647,8 @@
         "sendCodeLinkText": "send the code again",
         "sendCodeLinkHref": "/resend-code",
         "text 2": " if the code is not working or you did not receive it.",
-        "changeGetSecurityCodesText": "If you cannot access the phone number for your GOV.UK One Login, you can securely ",
-        "changeGetSecurityCodesLinkText": "change how you get security codes"
+        "chooseMfaMethodText": "If you cannot get a code to this phone number you can ",
+        "chooseMfaMethodLinkText": "try another way to get a security code"
       },
       "upliftRequired": {
         "title": "Enter a security code to continue",
