@@ -20,7 +20,7 @@
     }) }}
 {% else %}
 
-    {% if strategicAppChannel === true %}
+    {% if isApp %}
         <p class="govuk-body">{{'mobileAppPages.accountCreated.text' | translate}}</p>
     {% else %}
         <p class="govuk-body">{{'pages.accountCreated.text' | translate}}</p>
