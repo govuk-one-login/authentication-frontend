@@ -23,9 +23,7 @@ export function serverErrorHandler(
   }
 
   if (res.statusCode == HTTP_STATUS_CODES.UNAUTHORIZED) {
-    return res.render("common/errors/session-expired.njk", {
-      strategicAppChannel: res.locals.strategicAppChannel,
-    });
+    return res.render("common/errors/session-expired.njk");
   }
 
   res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR);
