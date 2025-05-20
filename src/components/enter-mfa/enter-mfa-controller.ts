@@ -75,7 +75,7 @@ export function enterMfaGet(
 
     res.render(templateName, {
       phoneNumber: redactedPhoneNumber,
-      accountRecoveryPermitted: req.session.user.isAccountRecoveryPermitted,
+      isAccountRecoveryPermitted: req.session.user.isAccountRecoveryPermitted,
       hasMultipleMfaMethods,
       mfaIssuePath: hasMultipleMfaMethods
         ? PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
