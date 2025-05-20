@@ -53,6 +53,7 @@ export type Claims = {
   scope: string;
   requested_level_of_confidence?: string;
   requested_credential_strength: string;
+  login_hint: string;
 };
 
 export const requiredClaimsKeys = [

@@ -7,6 +7,7 @@ export async function signInOrCreateGet(
   req: Request,
   res: Response
 ): Promise<void> {
+  console.log(req.query);
   req.session.user.isAccountCreationJourney = false;
   req.session.user.isPasswordResetJourney = false;
   req.session.user.isSignInJourney = false;
