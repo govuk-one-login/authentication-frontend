@@ -189,7 +189,7 @@ describe("Integration::enter email (create account)", () => {
       .once()
       .reply(200, {
         email: "test@test.com",
-        userExists: false,
+        doesUserExist: false,
       })
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
       .once()
@@ -233,7 +233,7 @@ describe("Integration::enter email (create account)", () => {
       .once()
       .reply(200, {
         email: "test@test.com",
-        userExists: false,
+        doesUserExist: false,
       })
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
       .once()
@@ -262,7 +262,7 @@ describe("Integration::enter email (create account)", () => {
       .once()
       .reply(200, {
         email: "test@test.com",
-        userExists: false,
+        doesUserExist: false,
       })
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
       .once()
