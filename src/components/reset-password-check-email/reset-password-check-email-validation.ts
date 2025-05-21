@@ -1,6 +1,8 @@
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
 import type { ValidationChainFunc } from "../../types.js";
 import { validateCode } from "../common/verify-code/verify-code-validation.js";
+import { resetPasswordCheckEmailTemplateParametersFromRequest } from "./reset-password-check-email-controller.js";
+
 export function validateResetPasswordCheckEmailRequest(): ValidationChainFunc {
   return [
     validateCode({
@@ -13,6 +15,9 @@ export function validateResetPasswordCheckEmailRequest(): ValidationChainFunc {
       numbersOnlyKey:
         "pages.resetPasswordCheckEmail.code.validationError.invalidFormat",
     }),
-    validateBodyMiddleware("reset-password-check-email/index.njk"),
+    validateBodyMiddleware(
+      "reset-password-check-email/index.njk",
+      resetPasswordCheckEmailTemplateParametersFromRequest
+    ),
   ];
 }
