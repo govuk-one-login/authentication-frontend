@@ -56,9 +56,6 @@ function createStartBody(startRequestParameters: StartRequestParameters) {
 
   body["authenticated"] = startRequestParameters.authenticated;
 
-  if (startRequestParameters.current_credential_strength !== undefined)
-    body["current-credential-strength"] =
-      startRequestParameters.current_credential_strength;
   if (startRequestParameters.previous_session_id !== undefined)
     body["previous-session-id"] = startRequestParameters.previous_session_id;
   if (

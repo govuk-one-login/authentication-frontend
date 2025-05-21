@@ -24,7 +24,6 @@ describe("authorize service", () => {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
   const isAuthenticated = false;
-  const currentCredentialStrength = "MEDIUM_LEVEL";
 
   beforeEach(() => {
     setupApiKeyAndBaseUrlEnvVars();
@@ -141,7 +140,6 @@ describe("authorize service", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
       authenticated: isAuthenticated,
-      current_credential_strength: undefined,
       reauthenticate: undefined,
       previous_session_id: previousSessionId,
       requested_credential_strength: "Cl.Cm",
@@ -177,7 +175,6 @@ describe("authorize service", () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
       authenticated: isAuthenticated,
-      current_credential_strength: undefined,
       reauthenticate: "123456",
       previous_session_id: undefined,
       previous_govuk_signin_journey_id: "previous-journey-id",
@@ -205,44 +202,6 @@ describe("authorize service", () => {
           headers: {
             ...expectedHeadersFromCommonVarsWithSecurityHeaders,
             Reauthenticate: true,
-          },
-          proxy: false,
-        }
-      )
-    ).to.be.true;
-  });
-
-  it("sends a request with the current credential strength in the body when present", () => {
-    process.env.SUPPORT_REAUTHENTICATION = "1";
-    service.start(sessionId, clientSessionId, diPersistentSessionId, req, {
-      authenticated: isAuthenticated,
-      current_credential_strength: currentCredentialStrength,
-      reauthenticate: undefined,
-      previous_session_id: undefined,
-      previous_govuk_signin_journey_id: "previous-journey-id",
-      requested_credential_strength: "Cl.Cm",
-      rp_client_id: "test-client-id",
-      scope: "openid",
-      rp_redirect_uri: "http://example.com/redirect",
-      rp_state: "1234567890",
-    });
-
-    expect(
-      postStub.calledOnceWithExactly(
-        API_ENDPOINTS.START,
-        {
-          "current-credential-strength": currentCredentialStrength,
-          "previous-govuk-signin-journey-id": "previous-journey-id",
-          authenticated: isAuthenticated,
-          requested_credential_strength: "Cl.Cm",
-          client_id: "test-client-id",
-          scope: "openid",
-          redirect_uri: "http://example.com/redirect",
-          state: "1234567890",
-        },
-        {
-          headers: {
-            ...expectedHeadersFromCommonVarsWithSecurityHeaders,
           },
           proxy: false,
         }
