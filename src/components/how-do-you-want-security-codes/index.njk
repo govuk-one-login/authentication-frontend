@@ -50,10 +50,12 @@
     }) }}
 </form>
 
-<p class="govuk-body">
-    {{ 'pages.howDoYouWantSecurityCodes.mfaReset.preamble' | translate }}<a href="{{ mfaResetLink }}" class="govuk-link"
-     rel="noreferrer noopener">{{ 'pages.howDoYouWantSecurityCodes.mfaReset.link' | translate }}</a>.
-</p>
+{% if supportMfaReset %}
+    <p class="govuk-body">
+        {{ 'pages.howDoYouWantSecurityCodes.mfaReset.preamble' | translate }}<a href="{{ mfaResetLink }}" class="govuk-link"
+        rel="noreferrer noopener">{{ 'pages.howDoYouWantSecurityCodes.mfaReset.link' | translate }}</a>.
+    </p>
+{% endif %}
 
 {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
 {%- include "ga4-opl/template.njk" -%}
