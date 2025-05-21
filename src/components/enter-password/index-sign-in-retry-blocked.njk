@@ -16,7 +16,7 @@
 <p class="govuk-body">{{'pages.signInRetryBlocked.paragraph' | translate}}</p>
 
 <h2 class="govuk-heading-m">{{'pages.signInRetryBlocked.subHeader' | translate}}</h2>
-{% if strategicAppChannel === true %}
+{% if isApp %}
     <p class="govuk-body strategic-app-retry-options">
         <a href="/reset-password-request" class="govuk-link">{{ 'mobileAppPages.signInRetryBlocked.whatCanYouDo.resetYourPassword' | translate }}</a>
         <span class="govuk-visually-hidden">.</span><br>
