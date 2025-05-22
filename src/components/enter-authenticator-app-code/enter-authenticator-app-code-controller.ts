@@ -31,6 +31,7 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import { isLocked } from "../../utils/lock-helper.js";
 import { isUpliftRequired } from "../../utils/request.js";
+import { isAccountRecoveryPermitted } from "../common/account-recovery/account-recovery-helper.js";
 export const ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME =
   "enter-authenticator-app-code/index.njk";
 export const UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME =
@@ -40,8 +41,6 @@ export function enterAuthenticatorAppCodeGet(
   acctRecoveryService: AccountRecoveryInterface = accountRecoveryService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session.user;
-
     const templateName = isUpliftRequired(req)
       ? UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
       : ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME;
@@ -57,35 +56,13 @@ export function enterAuthenticatorAppCodeGet(
       );
     }
 
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
-    const accountRecoveryResponse = await acctRecoveryService.accountRecovery(
-      sessionId,
-      clientSessionId,
-      email,
-      persistentSessionId,
-      req
-    );
-
-    if (!accountRecoveryResponse.success) {
-      throw new BadRequestError(
-        accountRecoveryResponse.data.message,
-        accountRecoveryResponse.data.code
-      );
-    }
-
     req.session.user.isAccountRecoveryPermitted =
-      accountRecoveryResponse.data.accountRecoveryPermitted;
+      await isAccountRecoveryPermitted(req, res, acctRecoveryService);
 
-    const hasMultipleMfaMethods = req.session.user.mfaMethods?.length > 1;
-
-    return res.render(templateName, {
-      isAccountRecoveryPermitted: req.session.user.isAccountRecoveryPermitted,
-      hasMultipleMfaMethods,
-      mfaIssuePath: hasMultipleMfaMethods
-        ? PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
-        : PATH_NAMES.MFA_RESET_WITH_IPV,
-    });
+    return res.render(
+      templateName,
+      enterAuthenticatorAppCodeTemplateParametersFromRequest(req)
+    );
   };
 }
 
@@ -153,7 +130,7 @@ export const enterAuthenticatorAppCodePost = (
   };
 };
 
-function handleAuthAppCodePostError(
+async function handleAuthAppCodePostError(
   req: Request,
   res: Response,
   template: string,
@@ -166,7 +143,13 @@ function handleAuthAppCodePostError(
       "code",
       req.t("pages.enterAuthenticatorAppCode.code.validationError.invalidCode")
     );
-    return renderBadRequest(res, req, template, error);
+    return renderBadRequest(
+      res,
+      req,
+      template,
+      error,
+      enterAuthenticatorAppCodeTemplateParametersFromRequest(req)
+    );
   }
 
   const isReauthJourneyInEnvWithReauthConfigured =
@@ -198,4 +181,18 @@ function handleAuthAppCodePostError(
   }
 
   throw new BadRequestError(result.data.message, result.data.code);
+}
+
+export function enterAuthenticatorAppCodeTemplateParametersFromRequest(
+  req: Request
+): Record<string, unknown> {
+  const hasMultipleMfaMethods = req.session.user.mfaMethods?.length > 1;
+
+  return {
+    isAccountRecoveryPermitted: req.session.user.isAccountRecoveryPermitted,
+    hasMultipleMfaMethods,
+    mfaIssuePath: hasMultipleMfaMethods
+      ? PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
+      : PATH_NAMES.MFA_RESET_WITH_IPV,
+  };
 }

@@ -11,24 +11,13 @@ import {
 } from "../enter-authenticator-app-code-controller.js";
 import { JOURNEY_TYPE, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES } from "../../common/constants.js";
-import type { AccountRecoveryInterface } from "../../common/account-recovery/types.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import type { VerifyMfaCodeInterface } from "../types.js";
 import * as journey from "../../common/journey/journey.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import esmock from "esmock";
-
-const fakeAccountRecoveryService = (accountRecoveryPermitted: boolean) => {
-  return {
-    accountRecovery: sinon.fake.returns({
-      success: true,
-      data: {
-        accountRecoveryPermitted: accountRecoveryPermitted,
-      },
-    }),
-  } as unknown as AccountRecoveryInterface;
-};
+import { fakeAccountRecoveryService } from "../../common/account-recovery/tests/account-recovery-helper.test.js";
 
 const fakeVerifyMfaCodeService = (errorCode?: number) => {
   return {
@@ -52,6 +41,7 @@ describe("enter authenticator app code controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE);
     res = mockResponse();
+    res.render = sinon.spy(res.render);
   });
 
   afterEach(() => {
@@ -196,6 +186,8 @@ describe("enter authenticator app code controller", () => {
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
       res.locals.sessionId = "123456-djjad";
+      req.session.user.isAccountRecoveryPermitted = true;
+      req.session.user.mfaMethods = [{}];
 
       await enterAuthenticatorAppCodePost(fakeService)(
         req as Request,
@@ -204,7 +196,12 @@ describe("enter authenticator app code controller", () => {
 
       expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(res.render).to.have.been.calledWith(
-        "enter-authenticator-app-code/index.njk"
+        "enter-authenticator-app-code/index.njk",
+        sinon.match({
+          isAccountRecoveryPermitted: true,
+          hasMultipleMfaMethods: false,
+          mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
+        })
       );
     });
 
