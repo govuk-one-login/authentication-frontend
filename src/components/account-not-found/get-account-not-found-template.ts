@@ -21,6 +21,7 @@ export function getAccountNotFoundTemplate(
   return getChannelSpecificTemplate(
     webTemplate,
     isStrategicAppChannel,
+    false,
     WEB_TO_MOBILE_TEMPLATE_MAPPINGS
   );
 }
