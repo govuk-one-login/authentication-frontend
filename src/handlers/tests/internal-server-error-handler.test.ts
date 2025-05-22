@@ -1,6 +1,7 @@
 import { expect } from "chai";
+import { describe } from "mocha";
 import type { NextFunction, Request, Response } from "express";
-import sinon from "sinon";
+import { sinon } from "../../../test/utils/test-utils.js";
 import { ERROR_MESSAGES, HTTP_STATUS_CODES } from "../../app.constants.js";
 import { serverErrorHandler } from "../internal-server-error-handler.js";
 describe("serverErrorHandler", () => {
@@ -16,9 +17,6 @@ describe("serverErrorHandler", () => {
       render: () => {},
       status: function (newStatus: number) {
         this.statusCode = newStatus;
-      },
-      locals: {
-        strategicAppChannel: false,
       },
     } as unknown as Response;
     next = sinon.spy();
