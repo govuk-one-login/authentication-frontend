@@ -16,6 +16,7 @@ export interface StartRequestParameters {
   rp_state: string;
   requested_level_of_confidence?: string;
   requested_credential_strength: string;
+  client_name: string;
 }
 
 export interface StartAuthResponse extends DefaultApiResponse {
