@@ -11,7 +11,7 @@
     <h2 class="govuk-heading-m govuk-!-margin-bottom-3">
         {{'pages.securityCodeInvalid.2hLockout.signInJourney.info.paragraph2' | translate}}
     </h2>
-    {% if strategicAppChannel === true %}
+    {% if isApp %}
         <p class="govuk-body">{{'mobileAppPages.securityCodeInvalid.2hLockout.signInJourney.info.paragraph3' | translate}}</p>
     {% else %}
         <p class="govuk-body">{{'pages.securityCodeInvalid.2hLockout.signInJourney.info.paragraph3' | translate}}</p>
