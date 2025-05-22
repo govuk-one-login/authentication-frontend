@@ -17,7 +17,7 @@
     {% endif %}
 
     <h2 class="govuk-heading-s">{{'pages.securityCodeWaitToRequest.info.subHeading' | translate}}</h2>
-    {% if strategicAppChannel === true %}
+    {% if isApp %}
         <p class="govuk-body">{{'mobileAppPages.securityCodeWaitToRequest.info.paragraph2' | translate}}</p>
     {% else %}
         <p class="govuk-body">{{'pages.securityCodeWaitToRequest.info.paragraph2' | translate}}</p>
