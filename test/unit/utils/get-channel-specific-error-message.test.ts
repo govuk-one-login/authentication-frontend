@@ -6,7 +6,7 @@ const mappings = {
 };
 
 describe("getChannelSpecificErrorMessage", () => {
-  describe("where the channel is not mobile", () => {
+  describe("where the channel is not an app", () => {
     describe("and the webMessage is not mapped", () => {
       it("should return the original webMessage", () => {
         expect(
@@ -31,7 +31,7 @@ describe("getChannelSpecificErrorMessage", () => {
     });
   });
 
-  describe("where the channel is mobile", () => {
+  describe("where the channel is an app", () => {
     describe("and the webMessage is not mapped", () => {
       it("should return the original webMessage", () => {
         expect(
