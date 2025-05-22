@@ -1,10 +1,10 @@
 import { logger } from "./logger.js";
 export function getChannelSpecificErrorMessage(
   webMessage: string,
-  isStrategicAppChannel: boolean,
+  isAnAppChannel: boolean,
   messageMappings: Record<string, string>
 ): string {
-  if (!isStrategicAppChannel) {
+  if (!isAnAppChannel) {
     return webMessage;
   }
 
