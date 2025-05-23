@@ -49,6 +49,7 @@ export function verifyCodePost(
       clientSessionId,
       persistentSessionId,
       req,
+      req.session.user.activeMfaMethodId,
       options.journeyType
     );
 

@@ -22,7 +22,7 @@ router.post(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   validateHowDoYouWantSecurityCodesRequest(),
-  howDoYouWantSecurityCodesPost
+  howDoYouWantSecurityCodesPost()
 );
 
 export { router as howDoYouWantSecurityCodesRouter };

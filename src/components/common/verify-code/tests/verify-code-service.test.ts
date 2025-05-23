@@ -50,6 +50,7 @@ describe("verify code service", () => {
     const code = "1234";
     const notificationType = NOTIFICATION_TYPE.VERIFY_EMAIL;
     const journeyType = JOURNEY_TYPE.SIGN_IN;
+    const mfaMethodId = "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7";
 
     const result = await service.verifyCode(
       sessionId,
@@ -58,13 +59,14 @@ describe("verify code service", () => {
       clientSessionId,
       diPersistentSessionId,
       req,
+      mfaMethodId,
       journeyType
     );
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.VERIFY_CODE,
       expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
-      expectedBody: { code, notificationType, journeyType },
+      expectedBody: { code, notificationType, journeyType, mfaMethodId },
     };
 
     checkApiCallMadeWithExpectedBodyAndHeaders(

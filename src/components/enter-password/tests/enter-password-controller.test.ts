@@ -28,11 +28,13 @@ import { strict as assert } from "assert";
 import esmock from "esmock";
 import type { MfaMethod } from "../../../types.js";
 import { MfaMethodPriority } from "../../../types.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 describe("enter password controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
   const { email } = commonVariables;
+  const DEFAULT_MFA_METHOD_ID = "test-id1";
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ENTER_PASSWORD);
@@ -70,6 +72,10 @@ describe("enter password controller", () => {
               mfaMethodVerified: true,
               mfaMethodType: "SMS",
               passwordChangeRequired: false,
+              mfaMethods: buildMfaMethods({
+                id: DEFAULT_MFA_METHOD_ID,
+                phoneNumber: "07123456789",
+              }),
             },
             success: true,
           }),
@@ -100,6 +106,10 @@ describe("enter password controller", () => {
               mfaMethodVerified: true,
               mfaMethodType: "SMS",
               passwordChangeRequired: false,
+              mfaMethods: buildMfaMethods({
+                id: DEFAULT_MFA_METHOD_ID,
+                phoneNumber: "07123456789",
+              }),
             },
             success: true,
           }),
@@ -148,6 +158,7 @@ describe("enter password controller", () => {
           sinon.match.any,
           sinon.match.any,
           sinon.match.any,
+          DEFAULT_MFA_METHOD_ID,
           JOURNEY_TYPE.REAUTHENTICATION
         );
       });
@@ -187,6 +198,10 @@ describe("enter password controller", () => {
             latestTermsAndConditionsAccepted: true,
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
+            mfaMethods: buildMfaMethods({
+              id: DEFAULT_MFA_METHOD_ID,
+              phoneNumber: "07123456789",
+            }),
           },
           success: true,
         }),
@@ -277,6 +292,7 @@ describe("enter password controller", () => {
       )(req as Request, res as Response);
 
       expect(req.session.user.mfaMethods).to.deep.equal(expectedMfaMethods);
+      expect(req.session.user.activeMfaMethodId).to.deep.equal("test-id");
     });
 
     describe("enter password when signing in", () => {
@@ -295,6 +311,10 @@ describe("enter password controller", () => {
               latestTermsAndConditionsAccepted: true,
               mfaMethodVerified: true,
               mfaMethodType: "SMS",
+              mfaMethods: buildMfaMethods({
+                id: DEFAULT_MFA_METHOD_ID,
+                phoneNumber: "07123456789",
+              }),
             },
             success: true,
           }),
@@ -343,6 +363,10 @@ describe("enter password controller", () => {
               latestTermsAndConditionsAccepted: true,
               mfaMethodVerified: true,
               mfaMethodType: "SMS",
+              mfaMethods: buildMfaMethods({
+                id: DEFAULT_MFA_METHOD_ID,
+                phoneNumber: "07123456789",
+              }),
             },
             success: true,
           }),
@@ -407,6 +431,10 @@ describe("enter password controller", () => {
             mfaRequired: false,
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
+            mfaMethods: buildMfaMethods({
+              id: DEFAULT_MFA_METHOD_ID,
+              phoneNumber: "07123456789",
+            }),
           },
         }),
       } as unknown as EnterPasswordServiceInterface;
@@ -428,6 +456,10 @@ describe("enter password controller", () => {
             redactedPhoneNumber: "3456",
             mfaMethodVerified: false,
             mfaMethodType: "SMS",
+            mfaMethods: buildMfaMethods({
+              id: DEFAULT_MFA_METHOD_ID,
+              phoneNumber: "07123456789",
+            }),
           },
         }),
       } as unknown as EnterPasswordServiceInterface;
@@ -449,6 +481,10 @@ describe("enter password controller", () => {
             latestTermsAndConditionsAccepted: false,
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
+            mfaMethods: buildMfaMethods({
+              id: DEFAULT_MFA_METHOD_ID,
+              phoneNumber: "07123456789",
+            }),
           },
           success: true,
         }),
@@ -498,6 +534,10 @@ describe("enter password controller", () => {
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
             passwordChangeRequired: true,
+            mfaMethods: buildMfaMethods({
+              id: DEFAULT_MFA_METHOD_ID,
+              phoneNumber: "07123456789",
+            }),
           },
           success: true,
         }),

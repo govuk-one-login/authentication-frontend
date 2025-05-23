@@ -59,6 +59,7 @@ const USER_JOURNEY_EVENTS = {
   IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH:
     "IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH",
   MFA_RESET_ATTEMPTED_VIA_AUTH_APP: "MFA_RESET_ATTEMPTED_VIA_AUTH_APP",
+  SELECT_SMS_MFA_METHOD: "CHANGE_MFA",
 };
 
 const authStateMachine = createMachine(
@@ -723,6 +724,11 @@ const authStateMachine = createMachine(
           [USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE]: [
             PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           ],
+        },
+      },
+      [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES]: {
+        on: {
+          [USER_JOURNEY_EVENTS.SELECT_SMS_MFA_METHOD]: [PATH_NAMES.ENTER_MFA],
         },
       },
     },
