@@ -6,7 +6,7 @@
 
 {% from "../header/macro.njk" import strategicAppHeader %}
 
-{% if strategicAppChannel == true %}
+{% if isApp %}
   {% set htmlClasses = 'govuk-template__mobile' %}
 {% endif %}
 
@@ -53,7 +53,7 @@
 {% set phaseBannerClasses  = "test-banner" if showTestBanner %}
 
 {% block header %}
-    {% if strategicAppChannel %}
+    {% if isApp %}
     {{ strategicAppHeader({
         useTudorCrown: true,
         classes: phaseBannerClasses
@@ -90,7 +90,7 @@
 
 {% block main %}
     <div class="govuk-width-container {{ containerClasses }}">
-        {% if strategicAppChannel === true %}
+        {% if isApp %}
         {% else %}
         {{ govukPhaseBanner({
             tag: {
@@ -140,7 +140,7 @@
 {% endblock %}
 
 {% block footer %}
-{% if strategicAppChannel === true %}
+{% if isApp %}
 
 {% else %}
     {{ govukFooter({

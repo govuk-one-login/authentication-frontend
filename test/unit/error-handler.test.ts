@@ -50,21 +50,5 @@ describe("Error handlers", () => {
         "common/errors/session-expired.njk"
       );
     });
-
-    it("should pass through the strategicAppChannel", () => {
-      res.locals.strategicAppChannel = true;
-
-      const err = new Error("timeout");
-      res.statusCode = 401;
-
-      serverErrorHandler(err, req as Request, res as Response, next);
-
-      expect(res.render).to.have.been.calledOnceWith(
-        "common/errors/session-expired.njk",
-        {
-          strategicAppChannel: true,
-        }
-      );
-    });
   });
 });

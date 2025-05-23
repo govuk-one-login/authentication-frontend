@@ -36,7 +36,7 @@
 
 <p class="govuk-body">{{'pages.createPassword.termsOfUse.paragraph1' | translate}}</p>
 
-{% if strategicAppChannel %}
+{% if isApp %}
   {% set bullet1LinkText = 'pages.createPassword.termsOfUse.bullet1LinkTextApp' %}
   {% set bullet2LinkText = 'pages.createPassword.termsOfUse.bullet2LinkTextApp' %}
 {% else %}

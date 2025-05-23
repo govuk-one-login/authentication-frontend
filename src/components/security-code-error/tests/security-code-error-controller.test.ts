@@ -77,8 +77,6 @@ describe("security code controller", () => {
             newCodeLink: params.newCodeLink,
             isResendCodeRequest: undefined,
             isAccountCreationJourney: params.isAccountCreationJourney,
-
-            strategicAppChannel: res.locals.strategicAppChannel,
           }
         );
       });
@@ -374,8 +372,6 @@ describe("security code controller", () => {
             ),
             isResendCodeRequest: undefined,
             isAccountCreationJourney: undefined,
-
-            strategicAppChannel: res.locals.strategicAppChannel,
           }
         );
         expect(req.session.user.codeRequestLock).to.eq(
@@ -390,7 +386,6 @@ describe("security code controller", () => {
       () => {
         req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
         req.session.user.isPasswordResetJourney = true;
-        res.locals.strategicAppChannel = true;
 
         securityCodeTriesExceededGet(req as Request, res as Response);
 
@@ -404,8 +399,6 @@ describe("security code controller", () => {
             ),
             isResendCodeRequest: undefined,
             isAccountCreationJourney: undefined,
-
-            strategicAppChannel: res.locals.strategicAppChannel,
           }
         );
       }
@@ -417,7 +410,6 @@ describe("security code controller", () => {
       () => {
         req.query.actionType = SecurityCodeErrorType.OtpBlocked;
         req.session.user.isAccountRecoveryJourney = true;
-        res.locals.strategicAppChannel = true;
         securityCodeTriesExceededGet(req as Request, res as Response);
 
         expect(res.render).to.have.calledWith(
@@ -426,8 +418,6 @@ describe("security code controller", () => {
             newCodeLink: getNewCodePath(SecurityCodeErrorType.OtpBlocked),
             isResendCodeRequest: undefined,
             isAccountCreationJourney: undefined,
-
-            strategicAppChannel: res.locals.strategicAppChannel,
           }
         );
       }
@@ -436,7 +426,6 @@ describe("security code controller", () => {
     it("should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent and user is in the account creation journey", () => {
       req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
       req.session.user.isAccountCreationJourney = true;
-      res.locals.strategicAppChannel = true;
       securityCodeTriesExceededGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
@@ -449,8 +438,6 @@ describe("security code controller", () => {
           ),
           isResendCodeRequest: undefined,
           isAccountCreationJourney: true,
-
-          strategicAppChannel: res.locals.strategicAppChannel,
         }
       );
     });

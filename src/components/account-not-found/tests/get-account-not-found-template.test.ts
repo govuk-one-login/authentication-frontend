@@ -3,7 +3,7 @@ import { describe } from "mocha";
 import { getAccountNotFoundTemplate } from "../get-account-not-found-template.js";
 import { SERVICE_TYPE } from "../../../app.constants.js";
 describe("getAccountNotFoundWebTemplate", () => {
-  describe("when isStrategicApp is false", () => {
+  describe("when isApp is false", () => {
     describe("when isOneLoginService is true", () => {
       it("should always return 'account-not-found/index-one-login.njk'", () => {
         [SERVICE_TYPE.OPTIONAL, SERVICE_TYPE.MANDATORY].forEach((i) => {
@@ -31,7 +31,7 @@ describe("getAccountNotFoundWebTemplate", () => {
     });
   });
 
-  describe("when isStrategicApp is true", () => {
+  describe("when isApp is true", () => {
     describe("when isOneLoginService is true", () => {
       it("should always return 'account-not-found/index-mobile.njk'", () => {
         [SERVICE_TYPE.OPTIONAL, SERVICE_TYPE.MANDATORY].forEach((i) => {

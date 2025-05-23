@@ -1,10 +1,10 @@
 import { logger } from "./logger.js";
 export function getChannelSpecificTemplate(
   webTemplateAndPath: string,
-  isStrategicAppChannel: boolean,
+  isApp: boolean,
   templateMappings: Record<string, string>
 ): string {
-  if (!isStrategicAppChannel) {
+  if (!isApp) {
     return webTemplateAndPath;
   }
 

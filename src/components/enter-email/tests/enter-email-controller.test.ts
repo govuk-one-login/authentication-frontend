@@ -55,19 +55,14 @@ describe("enter email controller", () => {
       req.session.user = { email };
     });
 
-    it("should render enter email create account view with the strategic app channel passed through when user selected create account", () => {
-      const STRATEGIC_APP_VALUES = [true, false];
-      STRATEGIC_APP_VALUES.forEach((strategicAppChannel) => {
-        res.locals.strategicAppChannel = strategicAppChannel;
-        req.query.type = JOURNEY_TYPE.CREATE_ACCOUNT;
+    it("should render enter email create account view", () => {
+      req.query.type = JOURNEY_TYPE.CREATE_ACCOUNT;
 
-        enterEmailCreateGet(req as Request, res as Response);
+      enterEmailCreateGet(req as Request, res as Response);
 
-        expect(res.render).to.have.calledWith(
-          "enter-email/index-create-account.njk",
-          { strategicAppChannel: strategicAppChannel }
-        );
-      });
+      expect(res.render).to.have.calledWith(
+        "enter-email/index-create-account.njk"
+      );
     });
 
     it("should render enter email view when supportReauthentication flag is switched off", async () => {
@@ -112,12 +107,13 @@ describe("enter email controller", () => {
 
     it("should render enter password view when isReautheticationRequired is true and check service returns successfully", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
+
       req.session.user = {
         email,
         reauthenticate: "12345",
       };
 
-      await enterEmailGet(req as Request, res as Response);
+      enterEmailGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
         "enter-email/index-re-enter-email-account.njk"

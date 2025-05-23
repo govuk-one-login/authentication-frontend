@@ -59,25 +59,27 @@ describe("Mfa reset with ipv", () => {
     });
 
     it("should redirect to the new guidance page when using the strategic app", async () => {
-      const previousPath = PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE;
-      const app = await setupAppWithSessionMiddleware(
-        previousPath,
-        REQUEST_PATH,
-        true,
-        CHANNEL.STRATEGIC_APP
-      );
+      for (const channel of [CHANNEL.STRATEGIC_APP, CHANNEL.MOBILE]) {
+        const previousPath = PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE;
+        const app = await setupAppWithSessionMiddleware(
+          previousPath,
+          REQUEST_PATH,
+          true,
+          channel
+        );
 
-      const expectedGuidancePage = PATH_NAMES.OPEN_IN_WEB_BROWSER;
+        const expectedGuidancePage = PATH_NAMES.OPEN_IN_WEB_BROWSER;
 
-      const agent = supertest.agent(app);
+        const agent = supertest.agent(app);
 
-      await agent
-        .get(REQUEST_PATH)
-        .set("Cookie", "channel=strategic_app")
-        .expect(302)
-        .expect("Location", expectedGuidancePage);
+        await agent
+          .get(REQUEST_PATH)
+          .set("Cookie", `channel=${channel}`)
+          .expect(302)
+          .expect("Location", expectedGuidancePage);
 
-      await agent.get(expectedGuidancePage).expect(200);
+        await agent.get(expectedGuidancePage).expect(200);
+      }
     });
 
     it("should return a 500 if account recovery is not permitted", async () => {
@@ -105,22 +107,24 @@ describe("Mfa reset with ipv", () => {
     it("should not render the page when coming from an arbitrary page", async () => {
       const previousPath = PATH_NAMES.AUTHORIZE;
 
-      const app = await setupAppWithSessionMiddleware(
-        previousPath,
-        REQUEST_PATH,
-        true,
-        CHANNEL.STRATEGIC_APP
-      );
+      for (const channel of [CHANNEL.STRATEGIC_APP, CHANNEL.MOBILE]) {
+        const app = await setupAppWithSessionMiddleware(
+          previousPath,
+          REQUEST_PATH,
+          true,
+          channel
+        );
 
-      await request(
-        app,
-        (test) =>
-          test
-            .get(PATH_NAMES.OPEN_IN_WEB_BROWSER)
-            .expect(302)
-            .expect("Location", previousPath),
-        { expectAnalyticsPropertiesMatchSnapshot: false }
-      );
+        await request(
+          app,
+          (test) =>
+            test
+              .get(PATH_NAMES.OPEN_IN_WEB_BROWSER)
+              .expect(302)
+              .expect("Location", previousPath),
+          { expectAnalyticsPropertiesMatchSnapshot: false }
+        );
+      }
     });
   });
 
@@ -158,7 +162,10 @@ describe("Mfa reset with ipv", () => {
               res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
               res.locals.strategicAppChannel =
                 channel === CHANNEL.STRATEGIC_APP;
+              res.locals.mobileChannel = channel === CHANNEL.MOBILE;
               res.locals.webChannel = channel == CHANNEL.WEB;
+              res.locals.isApp =
+                channel === CHANNEL.STRATEGIC_APP || channel === CHANNEL.MOBILE;
 
               req.session.user = {
                 email: "test@test.com",
