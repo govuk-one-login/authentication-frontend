@@ -477,6 +477,9 @@ const authStateMachine = createMachine(
             },
           ],
         },
+        meta: {
+          optionalPaths: [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES],
+        },
       },
       [PATH_NAMES.RESET_PASSWORD_2FA_SMS]: {
         on: {
@@ -497,7 +500,10 @@ const authStateMachine = createMachine(
           ],
         },
         meta: {
-          optionalPaths: [PATH_NAMES.RESEND_MFA_CODE],
+          optionalPaths: [
+            PATH_NAMES.RESEND_MFA_CODE,
+            PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
+          ],
         },
       },
       [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]: {

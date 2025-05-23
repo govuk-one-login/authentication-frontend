@@ -11,7 +11,6 @@ import { NOTIFICATION_TYPE } from "../../app.constants.js";
 import type { AccountInterventionsInterface } from "../account-intervention/types.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
 import { isLocked } from "../../utils/lock-helper.js";
-import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
@@ -51,12 +50,10 @@ export function resetPasswordCheckEmailGet(
       );
     }
 
-    if (result.success && req.session.user.enterEmailMfaType === undefined) {
+    if (result.success) {
+      req.session.user.mfaMethods = result.data.mfaMethods;
+
       req.session.user.enterEmailMfaType = result.data.mfaMethodType;
-      req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
-        req.session.user.mfaMethods,
-        { redactedPhoneNumber: result.data.phoneNumberLastThree }
-      );
     }
 
     if (!requestCode || result.success) {

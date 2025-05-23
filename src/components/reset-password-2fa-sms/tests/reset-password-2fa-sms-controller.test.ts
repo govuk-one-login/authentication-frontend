@@ -5,7 +5,7 @@ import type { Request, Response } from "express";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants.js";
-import { ERROR_CODES } from "../../common/constants.js";
+import { ERROR_CODES, pathWithQueryParam } from "../../common/constants.js";
 import {
   resetPassword2FASmsGet,
   resetPassword2FASmsPost,
@@ -15,6 +15,10 @@ import type { MfaServiceInterface } from "../../common/mfa/types.js";
 import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers.js";
 import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+
+const TEST_REDACTED_PHONE_NUMBER = "777";
+
 describe("reset password 2fa auth app controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
@@ -95,6 +99,73 @@ describe("reset password 2fa auth app controller", () => {
 
       expect(res.render).to.have.calledWith(
         "security-code-error/index-wait.njk"
+      );
+    });
+
+    it("should render reset password auth app view with hasMultipleMfaMethods false when user has a single mfa method", async () => {
+      const fakeService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as MfaServiceInterface;
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        mfaMethods: buildMfaMethods([
+          { redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER },
+        ]),
+      };
+
+      await resetPassword2FASmsGet(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        "reset-password-2fa-sms/index.njk",
+        {
+          phoneNumber: TEST_REDACTED_PHONE_NUMBER,
+          resendCodeLink: pathWithQueryParam(
+            PATH_NAMES.RESEND_MFA_CODE,
+            "isResendCodeRequest",
+            "true"
+          ),
+          hasMultipleMfaMethods: false,
+          chooseMfaMethodHref: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
+        }
+      );
+    });
+
+    it("should render reset password auth app view with hasMultipleMfaMethods true when user has more than one mfa method", async () => {
+      const fakeService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as MfaServiceInterface;
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        mfaMethods: buildMfaMethods([
+          { redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER },
+          { authApp: true },
+        ]),
+      };
+
+      await resetPassword2FASmsGet(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        "reset-password-2fa-sms/index.njk",
+        {
+          phoneNumber: TEST_REDACTED_PHONE_NUMBER,
+          resendCodeLink: pathWithQueryParam(
+            PATH_NAMES.RESEND_MFA_CODE,
+            "isResendCodeRequest",
+            "true"
+          ),
+          hasMultipleMfaMethods: true,
+          chooseMfaMethodHref: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
+        }
       );
     });
   });

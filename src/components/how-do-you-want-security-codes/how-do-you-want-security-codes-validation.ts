@@ -16,12 +16,18 @@ export function validateHowDoYouWantSecurityCodesRequest(): ValidationChainFunc 
       }),
     validateBodyMiddleware(
       "how-do-you-want-security-codes/index.njk",
-      (req) => ({
-        mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
-        mfaMethods: sortMfaMethodsBackupFirst(
-          req.session.user.mfaMethods || []
-        ),
-      })
+      (req) => {
+        const { isPasswordResetJourney } = req.session.user;
+        const supportMfaReset = !isPasswordResetJourney;
+
+        return {
+          mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
+          mfaMethods: sortMfaMethodsBackupFirst(
+            req.session.user.mfaMethods || []
+          ),
+          supportMfaReset,
+        };
+      }
     ),
   ];
 }

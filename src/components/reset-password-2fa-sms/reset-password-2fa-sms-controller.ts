@@ -96,10 +96,18 @@ export function resetPassword2FASmsGet(
         mfaResponse.data.code
       );
     }
+
+    const { mfaMethods } = req.session.user;
+
+    const phoneNumber = getDefaultSmsMfaMethod(mfaMethods)?.redactedPhoneNumber;
+    const hasMultipleMfaMethods = mfaMethods?.length > 1;
+    const chooseMfaMethodHref = PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES;
+
     return res.render(TEMPLATE_NAME, {
-      phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
-        ?.redactedPhoneNumber,
+      phoneNumber,
       resendCodeLink: RESEND_CODE_LINK,
+      hasMultipleMfaMethods,
+      chooseMfaMethodHref,
     });
   };
 }

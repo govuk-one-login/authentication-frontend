@@ -22,6 +22,9 @@ import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-cod
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { getDefaultSmsMfaMethod } from "../../../utils/mfa.js";
 import { match } from "sinon";
+import type { PartialMfaMethod } from "../../../../test/helpers/mfa-helper.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+import type { MfaMethod } from "../../../types.js";
 
 describe("reset password check email controller", () => {
   let req: RequestOutput;
@@ -43,11 +46,15 @@ describe("reset password check email controller", () => {
 
   describe("resetPasswordCheckEmailGet", () => {
     it("should render reset password check email view", async () => {
+      const expectedMfaMethods: MfaMethod[] = buildMfaMethods([
+        { redactedPhoneNumber: "123" },
+      ]);
       const fakeService: ResetPasswordCheckEmailServiceInterface = {
         resetPasswordRequest: sinon.fake.returns({
           success: true,
           data: {
             mfaMethodType: "SMS",
+            mfaMethods: expectedMfaMethods,
             phoneNumberLastThree: "123",
           },
         }),
@@ -59,6 +66,7 @@ describe("reset password check email controller", () => {
       );
 
       expect(req.session.user.enterEmailMfaType).to.eq("SMS");
+      expect(req.session.user.mfaMethods).to.deep.eq(expectedMfaMethods);
       expect(
         getDefaultSmsMfaMethod(req.session.user.mfaMethods).redactedPhoneNumber
       ).to.eq("123");
@@ -66,6 +74,37 @@ describe("reset password check email controller", () => {
       expect(res.render).to.have.calledWith(
         "reset-password-check-email/index.njk"
       );
+    });
+
+    it("should record mfaMethods in user session", async () => {
+      const partialMfaMethods: PartialMfaMethod[] = [
+        {
+          redactedPhoneNumber: "777",
+        },
+        {
+          authApp: true,
+        },
+      ];
+      const expectedMfaMethods: MfaMethod[] =
+        buildMfaMethods(partialMfaMethods);
+
+      const fakeService: ResetPasswordCheckEmailServiceInterface = {
+        resetPasswordRequest: sinon.fake.returns({
+          success: true,
+          data: {
+            mfaMethodType: "SMS",
+            mfaMethods: expectedMfaMethods,
+            phoneNumberLastThree: "777",
+          },
+        }),
+      } as unknown as ResetPasswordCheckEmailServiceInterface;
+
+      await resetPasswordCheckEmailGet(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(req.session.user.mfaMethods).to.deep.equal(expectedMfaMethods);
     });
   });
 

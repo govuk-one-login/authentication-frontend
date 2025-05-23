@@ -28,5 +28,35 @@ describe("how do you want security codes controller", () => {
         "how-do-you-want-security-codes/index.njk"
       );
     });
+
+    it("should render reset password auth app view with supportMfaReset false when completing a password reset journey", () => {
+      req.session.user.isPasswordResetJourney = true;
+
+      howDoYouWantSecurityCodesGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "how-do-you-want-security-codes/index.njk",
+        {
+          mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
+          mfaMethods: [],
+          supportMfaReset: false,
+        }
+      );
+    });
+
+    it("should render reset password auth app view with supportMfaReset true when not completing a password reset journey", () => {
+      req.session.user.isPasswordResetJourney = false;
+
+      howDoYouWantSecurityCodesGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "how-do-you-want-security-codes/index.njk",
+        {
+          mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
+          mfaMethods: [],
+          supportMfaReset: true,
+        }
+      );
+    });
   });
 });

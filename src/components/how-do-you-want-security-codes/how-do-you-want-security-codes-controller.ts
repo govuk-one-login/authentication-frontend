@@ -14,9 +14,13 @@ export function howDoYouWantSecurityCodesGet(
   req: Request,
   res: Response
 ): void {
+  const { isPasswordResetJourney } = req.session.user;
+  const supportMfaReset = !isPasswordResetJourney;
+
   res.render("how-do-you-want-security-codes/index.njk", {
     mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
     mfaMethods: sortMfaMethodsBackupFirst(req.session.user.mfaMethods || []),
+    supportMfaReset,
   });
 }
 
