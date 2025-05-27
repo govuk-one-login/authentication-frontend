@@ -48,6 +48,13 @@
                 <a href="{{resendCodeLink}}" class="govuk-link" rel="noreferrer noopener">{{'pages.passwordResetMfaSms.details.sendCodeLinkText'| translate}}</a>
                 {{'pages.passwordResetMfaSms.details.text 2' | translate}}
             </p>
+            {% if hasMultipleMfaMethods %}
+                <p class="govuk-body">
+                    {{ 'pages.passwordResetMfaSms.details.chooseMfaMethodText' | translate }}
+                    <a href="{{ chooseMfaMethodHref }}" class="govuk-link"
+                        rel="noreferrer noopener">{{ 'pages.passwordResetMfaSms.details.chooseMfaMethodLinkText'| translate }}</a>.
+                </p>
+            {% endif %}
         {% endset %}
 
         {{ govukButton({

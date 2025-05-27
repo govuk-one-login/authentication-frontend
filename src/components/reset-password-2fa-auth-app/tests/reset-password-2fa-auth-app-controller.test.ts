@@ -13,6 +13,10 @@ import type { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/
 import { ERROR_CODES } from "../../common/constants.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+
+const TEST_REDACTED_PHONE_NUMBER = "777";
+
 describe("reset password 2fa auth app controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
@@ -35,6 +39,45 @@ describe("reset password 2fa auth app controller", () => {
 
       expect(res.render).to.have.calledWith(
         "reset-password-2fa-auth-app/index.njk"
+      );
+    });
+
+    it("should render reset password auth app view with hasMultipleMfaMethods false when user has a single mfa method", async () => {
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        mfaMethods: buildMfaMethods([
+          { redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER },
+        ]),
+      };
+
+      await resetPassword2FAAuthAppGet()(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "reset-password-2fa-auth-app/index.njk",
+        {
+          hasMultipleMfaMethods: false,
+          chooseMfaMethodHref: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
+        }
+      );
+    });
+
+    it("should render reset password auth app view with hasMultipleMfaMethods true when user has more than one mfa method", async () => {
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        mfaMethods: buildMfaMethods([
+          { redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER },
+          { authApp: true },
+        ]),
+      };
+
+      await resetPassword2FAAuthAppGet()(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "reset-password-2fa-auth-app/index.njk",
+        {
+          hasMultipleMfaMethods: true,
+          chooseMfaMethodHref: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
+        }
       );
     });
   });

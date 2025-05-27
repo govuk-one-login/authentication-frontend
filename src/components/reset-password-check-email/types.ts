@@ -1,4 +1,8 @@
-import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
+import type {
+  ApiResponseResult,
+  DefaultApiResponse,
+  MfaMethod,
+} from "../../types.js";
 import type { Request } from "express";
 
 export interface ResetPasswordCheckEmailServiceInterface {
@@ -14,5 +18,6 @@ export interface ResetPasswordCheckEmailServiceInterface {
 
 export interface ResetPasswordRequestResponse extends DefaultApiResponse {
   mfaMethodType: string;
+  mfaMethods: MfaMethod[];
   phoneNumberLastThree: string;
 }

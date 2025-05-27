@@ -647,8 +647,8 @@
         "sendCodeLinkText": "anfon y cod eto",
         "sendCodeLinkHref": "/resend-code",
         "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn.",
-        "changeGetSecurityCodesText": "Os na allwch gyrchu’r rhif ffôn ar gyfer eich GOV.UK One Login, gallwch ",
-        "changeGetSecurityCodesLinkText": "newid yn ddiogel sut rydych yn cael codau diogelwch"
+        "chooseMfaMethodText": "Os na allwch gael cod i’r rhif ffôn hwn gallwch ",
+        "chooseMfaMethodLinkText": "roi cynnig ar ffordd arall o gael cod diogelwch"
       },
       "upliftRequired": {
         "title": "Rhowch god diogelwch i barhau",
