@@ -1,12 +1,18 @@
 import { describe } from "mocha";
 import type { Request, Response } from "express";
 import { expect } from "chai";
-import { howDoYouWantSecurityCodesGet } from "../how-do-you-want-security-codes-controller.js";
+import { strict as assert } from "assert";
+import {
+  howDoYouWantSecurityCodesGet,
+  howDoYouWantSecurityCodesPost,
+} from "../how-do-you-want-security-codes-controller.js";
 import { mockResponse } from "mock-req-res";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { sinon } from "../../../../test/utils/test-utils.js";
+import { BadRequestError } from "../../../utils/error.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 describe("how do you want security codes controller", () => {
   let req: RequestOutput;
@@ -56,6 +62,35 @@ describe("how do you want security codes controller", () => {
           mfaMethods: [],
           supportMfaReset: true,
         }
+      );
+    });
+  });
+
+  describe("howDoYouWantSecurityCodesPost", () => {
+    it("should throw error if the user has no MFA methods", async () => {
+      req.session.user.mfaMethods = [];
+
+      await assert.rejects(
+        async () => howDoYouWantSecurityCodesPost(req, res),
+        BadRequestError,
+        "No MFA methods found"
+      );
+    });
+
+    it("should redirect to /enter-authenticator-app-code if 'authenticator app' is selected", async () => {
+      req.body["mfa-method-id"] = "testAuthApp";
+      req.session.user.mfaMethods = buildMfaMethods([
+        {
+          id: "testPhone",
+          redactedPhoneNumber: "07000000000",
+        },
+        { id: "testAuthApp", authApp: true },
+      ]);
+
+      await howDoYouWantSecurityCodesPost(req, res);
+
+      expect(res.redirect).to.have.been.calledWith(
+        PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
       );
     });
   });
