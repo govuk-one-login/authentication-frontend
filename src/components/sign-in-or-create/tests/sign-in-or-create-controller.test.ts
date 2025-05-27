@@ -38,7 +38,7 @@ describe("sign in or create controller", () => {
       signInOrCreateGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
-        "sign-in-or-create/index-mobile.njk"
+        "sign-in-or-create/index-strategic-app.njk"
       );
     });
   });

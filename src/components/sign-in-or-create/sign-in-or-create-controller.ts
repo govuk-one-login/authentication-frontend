@@ -38,7 +38,7 @@ export async function signInOrCreatePost(
 
 function getTemplate(isApp: boolean) {
   if (isApp) {
-    return "sign-in-or-create/index-mobile.njk";
+    return "sign-in-or-create/index-strategic-app.njk";
   }
   return "sign-in-or-create/index.njk";
 }
