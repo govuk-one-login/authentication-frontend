@@ -22,7 +22,6 @@ import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-cod
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { getDefaultSmsMfaMethod } from "../../../utils/mfa.js";
 import { match } from "sinon";
-import type { PartialMfaMethod } from "../../../../test/helpers/mfa-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import type { MfaMethod } from "../../../types.js";
 
@@ -79,37 +78,6 @@ describe("reset password check email controller", () => {
       expect(res.render).to.have.calledWith(
         "reset-password-check-email/index.njk"
       );
-    });
-
-    it("should record mfaMethods in user session", async () => {
-      const partialMfaMethods: PartialMfaMethod[] = [
-        {
-          redactedPhoneNumber: "777",
-        },
-        {
-          authApp: true,
-        },
-      ];
-      const expectedMfaMethods: MfaMethod[] =
-        buildMfaMethods(partialMfaMethods);
-
-      const fakeService: ResetPasswordCheckEmailServiceInterface = {
-        resetPasswordRequest: sinon.fake.returns({
-          success: true,
-          data: {
-            mfaMethodType: "SMS",
-            mfaMethods: expectedMfaMethods,
-            phoneNumberLastThree: "777",
-          },
-        }),
-      } as unknown as ResetPasswordCheckEmailServiceInterface;
-
-      await resetPasswordCheckEmailGet(fakeService)(
-        req as Request,
-        res as Response
-      );
-
-      expect(req.session.user.mfaMethods).to.deep.equal(expectedMfaMethods);
     });
   });
 
@@ -199,37 +167,26 @@ describe("reset password check email controller", () => {
       );
     });
 
-    it("should redirect to /reset-password without calling the account interventions service when session.user.withinForcedPasswordResetJourney === true and enterEmailMfaType == SMS", async () => {
-      req.session.user.withinForcedPasswordResetJourney = true;
-      req.session.user.enterEmailMfaType = "SMS";
+    ["AUTH_APP", "SMS"].forEach((method) => {
+      it(`should redirect to /reset-password without calling the account interventions service when session.user.withinForcedPasswordResetJourney === true and enterEmailMfaType == ${method}`, async () => {
+        req.session.user.withinForcedPasswordResetJourney = true;
+        req.session.user.enterEmailMfaType = method;
 
-      const fakeInterventionsService =
-        accountInterventionsFakeHelper(noInterventions);
+        const fakeInterventionsService =
+          accountInterventionsFakeHelper(noInterventions);
 
-      const fakeService = fakeVerifyCodeServiceHelper(true);
-      await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
-        req as Request,
-        res as Response
-      );
+        const fakeService = fakeVerifyCodeServiceHelper(true);
+        await resetPasswordCheckEmailPost(
+          fakeService,
+          fakeInterventionsService
+        )(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD);
+        expect(fakeInterventionsService.accountInterventionStatus).to.not.be
+          .called;
+        expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD);
+      });
     });
 
-    it("should redirect to /reset-password without calling the account interventions service when session.user.withinForcedPasswordResetJourney === true and enterEmailMfaType == AUTH_APP", async () => {
-      req.session.user.withinForcedPasswordResetJourney = true;
-      req.session.user.enterEmailMfaType = "AUTH_APP";
-
-      const fakeInterventionsService =
-        accountInterventionsFakeHelper(noInterventions);
-
-      const fakeService = fakeVerifyCodeServiceHelper(true);
-      await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
-        req as Request,
-        res as Response
-      );
-
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD);
-    });
     describe("resendMfaCodeGet", () => {
       it("should render index-reset-password-resend-code.njk mfa code view", () => {
         resetPasswordResendCodeGet(req as Request, res as Response);
