@@ -13,6 +13,11 @@ import { PATH_NAMES } from "../../../app.constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+
+const TEST_REDACTED_PHONE_NUMBER = "1234";
+const TEST_DEFAULT_MFA_ID = "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7";
+
 describe("resend mfa controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
@@ -20,6 +25,12 @@ describe("resend mfa controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.CHECK_YOUR_PHONE);
     res = mockResponse();
+
+    req.session.user.activeMfaMethodId = TEST_DEFAULT_MFA_ID;
+    req.session.user.mfaMethods = buildMfaMethods({
+      id: TEST_DEFAULT_MFA_ID,
+      redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER,
+    });
   });
 
   afterEach(() => {
@@ -30,7 +41,12 @@ describe("resend mfa controller", () => {
     it("should render resend mfa code view", () => {
       resendMfaCodeGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("resend-mfa-code/index.njk");
+      expect(res.render).to.have.calledWithMatch(
+        "resend-mfa-code/index.njk",
+        sinon.match({
+          redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER,
+        })
+      );
     });
 
     it("should render security-code-error/index-wait.njk if user has been locked out in current session", () => {
@@ -52,15 +68,23 @@ describe("resend mfa controller", () => {
         }),
       } as unknown as MfaServiceInterface;
 
-      req.session.user = {
-        email: "test@test.com",
-      };
+      req.session.user.email = "test@test.com";
       req.path = PATH_NAMES.RESEND_MFA_CODE;
 
       await resendMfaCodePost(fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ENTER_MFA);
-      expect(fakeService.sendMfaCode).to.have.been.calledOnce;
+      expect(fakeService.sendMfaCode).to.have.been.calledOnceWithExactly(
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        TEST_DEFAULT_MFA_ID,
+        sinon.match.any
+      );
     });
   });
 });
