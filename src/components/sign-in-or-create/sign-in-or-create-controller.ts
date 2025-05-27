@@ -37,7 +37,10 @@ export async function signInOrCreatePost(
 }
 
 function getTemplate(res: Response) {
-  if (res.locals.isApp) {
+  if (res.locals.genericApp) {
+    return "sign-in-or-create/index-generic-app.njk";
+  }
+  if (res.locals.strategicAppChannel) {
     return "sign-in-or-create/index-strategic-app.njk";
   }
   return "sign-in-or-create/index.njk";

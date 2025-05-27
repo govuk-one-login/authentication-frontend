@@ -32,8 +32,18 @@ describe("sign in or create controller", () => {
       expect(res.render).to.have.calledWith("sign-in-or-create/index.njk");
     });
 
-    it("should render the mobile template when the channel is an app", async () => {
-      res.locals.isApp = true;
+    it("should render the mobile template when the channel is generic app", async () => {
+      res.locals.genericApp = true;
+
+      signInOrCreateGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "sign-in-or-create/index-generic-app.njk"
+      );
+    });
+
+    it("should render the mobile template when the channel is strategic app", async () => {
+      res.locals.strategicAppChannel = true;
 
       signInOrCreateGet(req as Request, res as Response);
 
