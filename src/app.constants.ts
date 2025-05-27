@@ -139,6 +139,8 @@ export const ERROR_MESSAGES = {
   PAGE_NOT_FOUND: "Request page not found",
 };
 
+export const CSRF_MISSING_CODE = "EBADCSRFTOKEN";
+
 export const ERROR_LOG_LEVEL = {
   ERROR: "Error",
   INFO: "Info",
