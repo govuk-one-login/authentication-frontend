@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { getCSRFCookieOptions } from "../config/cookie.js";
 import csurf from "csurf";
-import { ENVIRONMENT_NAME } from "../app.constants.js";
+import { CSRF_MISSING_CODE, ENVIRONMENT_NAME } from "../app.constants.js";
 import { getNodeEnv } from "../config.js";
 import cloneDeep from "lodash.clonedeep";
 
@@ -11,7 +11,6 @@ export function catchCsrfSyncErrorMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  const CSRF_MISSING_CODE = "EBADCSRFTOKEN";
   if (err.code === CSRF_MISSING_CODE) {
     req.log.info("Falling back to csurf CSRF validation.");
 
