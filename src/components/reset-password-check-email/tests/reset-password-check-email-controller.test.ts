@@ -26,6 +26,8 @@ import type { PartialMfaMethod } from "../../../../test/helpers/mfa-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import type { MfaMethod } from "../../../types.js";
 
+const TEST_DEFAULT_MFA_METHOD_ID = "TEST_DEFAULT_MFA_METHOD_ID";
+
 describe("reset password check email controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
@@ -47,7 +49,7 @@ describe("reset password check email controller", () => {
   describe("resetPasswordCheckEmailGet", () => {
     it("should render reset password check email view", async () => {
       const expectedMfaMethods: MfaMethod[] = buildMfaMethods([
-        { redactedPhoneNumber: "123" },
+        { redactedPhoneNumber: "123", id: TEST_DEFAULT_MFA_METHOD_ID },
       ]);
       const fakeService: ResetPasswordCheckEmailServiceInterface = {
         resetPasswordRequest: sinon.fake.returns({
@@ -67,6 +69,9 @@ describe("reset password check email controller", () => {
 
       expect(req.session.user.enterEmailMfaType).to.eq("SMS");
       expect(req.session.user.mfaMethods).to.deep.eq(expectedMfaMethods);
+      expect(req.session.user.activeMfaMethodId).to.equal(
+        TEST_DEFAULT_MFA_METHOD_ID
+      );
       expect(
         getDefaultSmsMfaMethod(req.session.user.mfaMethods).redactedPhoneNumber
       ).to.eq("123");

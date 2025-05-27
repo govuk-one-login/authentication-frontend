@@ -63,6 +63,7 @@ export function resetPassword2FASmsGet(
       false,
       xss(req.cookies.lng as string),
       req,
+      req.session.user.activeMfaMethodId,
       JOURNEY_TYPE.PASSWORD_RESET_MFA
     );
 
