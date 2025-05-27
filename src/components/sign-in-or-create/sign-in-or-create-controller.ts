@@ -1,8 +1,6 @@
 import type { Request, Response } from "express";
 import { getNextPathAndUpdateJourney } from "../common/constants.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
-import { getChannelSpecificTemplate } from "../../utils/get-channel-specific-template.js";
-import { WEB_TO_MOBILE_TEMPLATE_MAPPINGS } from "../../app.constants.js";
 export async function signInOrCreateGet(
   req: Request,
   res: Response
@@ -14,11 +12,7 @@ export async function signInOrCreateGet(
     return await signInOrCreatePost(req, res);
   }
 
-  const template = getChannelSpecificTemplate(
-    "sign-in-or-create/index.njk",
-    res.locals.isApp,
-    WEB_TO_MOBILE_TEMPLATE_MAPPINGS
-  );
+  const template = getTemplate(res.locals.isApp);
 
   res.render(template, {
     serviceType: req.session.client.serviceType,
@@ -40,4 +34,11 @@ export async function signInOrCreatePost(
       res.locals.sessionId
     )
   );
+}
+
+function getTemplate(isApp: boolean) {
+  if (isApp) {
+    return "sign-in-or-create/index-mobile.njk";
+  }
+  return "sign-in-or-create/index.njk";
 }
