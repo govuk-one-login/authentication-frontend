@@ -12,7 +12,10 @@ export async function signInOrCreateGet(
     return await signInOrCreatePost(req, res);
   }
 
-  const template = getTemplate(res.locals.isApp);
+  const template = getTemplate(
+    res.locals.genericAppChannel,
+    res.locals.strategicAppChannel
+  );
 
   res.render(template, {
     serviceType: req.session.client.serviceType,
@@ -36,8 +39,11 @@ export async function signInOrCreatePost(
   );
 }
 
-function getTemplate(isApp: boolean) {
-  if (isApp) {
+function getTemplate(isGenericApp: boolean, isStrategicApp: boolean) {
+  if (isGenericApp) {
+    return "sign-in-or-create/index-generic-app.njk";
+  }
+  if (isStrategicApp) {
     return "sign-in-or-create/index-strategic-app.njk";
   }
   return "sign-in-or-create/index.njk";
