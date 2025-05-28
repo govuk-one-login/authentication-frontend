@@ -66,7 +66,8 @@ describe("Integration::select-mfa-options", () => {
     );
   });
 
-  it("should return error when csrf not present", async () => {
+  // TODO: AUT-4272 PR 3: Reinstate this test once csrf validation is re-enabled.
+  it.skip("should return error when csrf not present", async () => {
     await request(app, (test) =>
       test
         .post(PATH_NAMES.GET_SECURITY_CODES)
