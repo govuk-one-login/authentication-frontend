@@ -37,7 +37,8 @@ export function howDoYouWantSecurityCodesPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const mfaMethodId = req.body["mfa-method-id"];
-    const selectedMethod = req.session.user.mfaMethods.find(
+    const { email, isPasswordResetJourney, mfaMethods } = req.session.user;
+    const selectedMethod = mfaMethods.find(
       (method: MfaMethod) => method.id === mfaMethodId
     );
 
@@ -48,7 +49,6 @@ export function howDoYouWantSecurityCodesPost(
     if (selectedMethod.type === MFA_METHOD_TYPE.SMS) {
       if (mfaMethodId !== req.session.user.activeMfaMethodId) {
         req.session.user.activeMfaMethodId = mfaMethodId;
-        const { email } = req.session.user;
         const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
         const result = await mfaCodeService.sendMfaCode(
@@ -75,19 +75,20 @@ export function howDoYouWantSecurityCodesPost(
           req,
           req.path,
           USER_JOURNEY_EVENTS.SELECT_SMS_MFA_METHOD,
-          null,
+          { isPasswordResetJourney },
           res.locals.sessionId
         )
       );
     }
 
     if (selectedMethod.type === MFA_METHOD_TYPE.AUTH_APP) {
+      req.session.user.activeMfaMethodId = mfaMethodId;
       return res.redirect(
         await getNextPathAndUpdateJourney(
           req,
           req.path,
           USER_JOURNEY_EVENTS.SELECT_AUTH_APP_MFA_METHOD,
-          null,
+          { isPasswordResetJourney },
           res.locals.sessionId
         )
       );
