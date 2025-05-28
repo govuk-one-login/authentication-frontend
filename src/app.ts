@@ -2,7 +2,6 @@ import type { Application } from "express";
 import express from "express";
 import "express-async-errors";
 import cookieParser from "cookie-parser";
-import csurf from "csurf";
 import type serveStatic from "serve-static";
 import { logger, loggerMiddleware } from "./utils/logger.js";
 import { sanitizeRequestMiddleware } from "./middleware/sanitize-request-middleware.js";
@@ -37,10 +36,8 @@ import { createPasswordRouter } from "./components/create-password/create-passwo
 import { enterPhoneNumberRouter } from "./components/enter-phone-number/enter-phone-number-routes.js";
 import { pageNotFoundHandler } from "./handlers/page-not-found-handler.js";
 import { serverErrorHandler } from "./handlers/internal-server-error-handler.js";
-import { csrfMiddleware } from "./middleware/csrf-middleware.js";
 import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-routes.js";
 import { landingRouter } from "./components/landing/landing-route.js";
-import { getCSRFCookieOptions } from "./config/cookie.js";
 import { ENVIRONMENT_NAME } from "./app.constants.js";
 import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes.js";
 import { howDoYouWantSecurityCodesRouter } from "./components/how-do-you-want-security-codes/how-do-you-want-security-codes-routes.js";
@@ -246,13 +243,10 @@ async function createApp(): Promise<express.Application> {
     })
   );
 
-  app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
-
   app.use(channelMiddleware);
   app.use(environmentBannerMiddleware);
   app.use(getSessionIdMiddleware);
   app.post("*", sanitizeRequestMiddleware);
-  app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
   app.use(initialiseSessionMiddleware);
   app.use(crossDomainTrackingMiddleware);
