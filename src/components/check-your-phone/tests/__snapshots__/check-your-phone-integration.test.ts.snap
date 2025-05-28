@@ -33,17 +33,6 @@ Object {
 }
 `;
 
-exports[`Integration:: check your phone should return error when csrf not present 1`] = `
-Object {
-  "contentId": undefined,
-  "taxonomyLevel1": undefined,
-  "taxonomyLevel2": undefined,
-  "taxonomyLevel3": undefined,
-  "taxonomyLevel4": undefined,
-  "taxonomyLevel5": undefined,
-}
-`;
-
 exports[`Integration:: check your phone should return validation error when code entered contains letters 1`] = `
 Object {
   "contentId": "1fef9388-34cd-4ea2-b899-a66b7327d2f7",

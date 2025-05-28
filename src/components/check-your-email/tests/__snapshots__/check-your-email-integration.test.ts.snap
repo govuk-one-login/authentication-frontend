@@ -11,17 +11,6 @@ Object {
 }
 `;
 
-exports[`Integration:: check your email should return error when csrf not present 1`] = `
-Object {
-  "contentId": undefined,
-  "taxonomyLevel1": undefined,
-  "taxonomyLevel2": undefined,
-  "taxonomyLevel3": undefined,
-  "taxonomyLevel4": undefined,
-  "taxonomyLevel5": undefined,
-}
-`;
-
 exports[`Integration:: check your email should return validation error when code entered contains letters 1`] = `
 Object {
   "contentId": "054e1ea8-97a8-461a-a964-07345c80098e",

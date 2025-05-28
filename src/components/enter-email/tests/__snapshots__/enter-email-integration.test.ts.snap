@@ -22,17 +22,6 @@ Object {
 }
 `;
 
-exports[`Integration::enter email should return error when csrf not present 1`] = `
-Object {
-  "contentId": undefined,
-  "taxonomyLevel1": undefined,
-  "taxonomyLevel2": undefined,
-  "taxonomyLevel3": undefined,
-  "taxonomyLevel4": undefined,
-  "taxonomyLevel5": undefined,
-}
-`;
-
 exports[`Integration::enter email should return internal server error when /user-exists API call response is 500 1`] = `
 Object {
   "contentId": "",
