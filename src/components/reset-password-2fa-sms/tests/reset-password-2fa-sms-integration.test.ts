@@ -11,6 +11,11 @@ import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import esmock from "esmock";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+
+const TEST_MFA_METHOD_ID = "test-id";
+const TEST_REDACTED_PHONE_NUMBER = "495";
+
 describe("Integration::2fa sms (in reset password flow)", () => {
   let app: any;
   let baseApi: string;
@@ -34,6 +39,11 @@ describe("Integration::2fa sms (in reset password flow)", () => {
               journey: getPermittedJourneyForPath(
                 PATH_NAMES.RESET_PASSWORD_2FA_SMS
               ),
+              activeMfaMethodId: TEST_MFA_METHOD_ID,
+              mfaMethods: buildMfaMethods({
+                id: TEST_MFA_METHOD_ID,
+                redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER,
+              }),
             };
 
             next();
