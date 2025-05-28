@@ -5,7 +5,7 @@ import { jestSnapshotPlugin } from "mocha-chai-jest-snapshot";
 import type { Test } from "supertest";
 import supertest from "supertest";
 import { expectAnalyticsPropertiesMatchSnapshot } from "../helpers/expect-response-helpers.js";
-import type TestAgent from "supertest/lib/agent.js";
+import type TestAgent from "supertest/lib/agent";
 
 chai.should();
 chai.use(sinonChai);

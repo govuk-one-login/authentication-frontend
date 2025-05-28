@@ -12,7 +12,7 @@ import * as journey from "../../journey/journey.js";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 import esmock from "esmock";
 import type { SinonSpy } from "sinon";
-import type { ExpressRouteFunc } from "../../../../types.js";
+import type { ExpressRouteFunc } from "../../../../types";
 
 describe("send mfa controller", () => {
   let req: RequestOutput;
@@ -47,7 +47,7 @@ describe("send mfa controller", () => {
   });
 
   describe("sendMfaGeneric", () => {
-    it("can send the journeyType and activeMfaMethodId when requesting the code", async () => {
+    it("can send the journeyType when requesting the code", async () => {
       const fakeService: MfaServiceInterface = {
         sendMfaCode: sinon.fake.returns({
           success: true,
@@ -58,7 +58,6 @@ describe("send mfa controller", () => {
       req.session.user = {
         email: "test@test.com",
         reauthenticate: "test_data",
-        activeMfaMethodId: "active_mfa_method_id",
       };
       req.path = PATH_NAMES.RESEND_MFA_CODE;
 
@@ -80,7 +79,6 @@ describe("send mfa controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        "active_mfa_method_id",
         JOURNEY_TYPE.REAUTHENTICATION
       );
     });
@@ -124,7 +122,6 @@ describe("send mfa controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        sinon.match.any,
         undefined
       );
     });
@@ -161,7 +158,6 @@ describe("send mfa controller", () => {
         JOURNEY_TYPE.REAUTHENTICATION
       );
       expect(fakeService.sendMfaCode).to.have.been.calledOnceWithExactly(
-        sinon.match.any,
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,

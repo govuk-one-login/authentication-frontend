@@ -14,7 +14,6 @@ import {
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import esmock from "esmock";
-import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 describe("Integration::reset password check email ", () => {
   let app: any;
@@ -50,13 +49,7 @@ describe("Integration::reset password check email ", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    nock(baseApi)
-      .post("/reset-password-request")
-      .once()
-      .reply(200, {
-        mfaMethods: buildMfaMethods({ id: "test-id", authApp: true }),
-        mfaMethodType: "AUTH_APP",
-      });
+    nock(baseApi).post("/reset-password-request").once().reply(204);
 
     await request(
       app,
@@ -79,10 +72,7 @@ describe("Integration::reset password check email ", () => {
   });
 
   it("should return reset password check email page", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.RESET_PASSWORD_REQUEST)
-      .once()
-      .reply(200, { mfaMethods: [] });
+    nock(baseApi).post(API_ENDPOINTS.RESET_PASSWORD_REQUEST).once().reply(204);
     await request(app, (test) =>
       test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL).expect(200)
     );

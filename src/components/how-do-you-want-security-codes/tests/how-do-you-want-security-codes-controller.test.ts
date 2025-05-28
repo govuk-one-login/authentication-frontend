@@ -9,13 +9,10 @@ import {
 import { mockResponse } from "mock-req-res";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
-import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants.js";
+import { PATH_NAMES } from "../../../app.constants.js";
 import { sinon } from "../../../../test/utils/test-utils.js";
 import { BadRequestError } from "../../../utils/error.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
-import { MfaMethodPriority } from "../../../types.js";
-import type { MfaMethod } from "../../../types.js";
-import type { MfaServiceInterface } from "../../common/mfa/types.js";
 
 describe("how do you want security codes controller", () => {
   let req: RequestOutput;
@@ -70,53 +67,11 @@ describe("how do you want security codes controller", () => {
   });
 
   describe("howDoYouWantSecurityCodesPost", () => {
-    const defaultId = "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7";
-    const backupId = "9a51c939-3a39-4a30-b388-9543e0f87e3b";
-
-    beforeEach(() => {
-      req.session.user.activeMfaMethodId = defaultId;
-
-      req.session.user.mfaMethods = [
-        {
-          id: defaultId,
-          type: MFA_METHOD_TYPE.SMS,
-          priority: MfaMethodPriority.DEFAULT,
-          redactedPhoneNumber: "456",
-        },
-        {
-          id: backupId,
-          type: MFA_METHOD_TYPE.SMS,
-          priority: MfaMethodPriority.BACKUP,
-          redactedPhoneNumber: "789",
-        },
-      ] as MfaMethod[];
-    });
-
-    for (const mfaMethodId of [defaultId, backupId]) {
-      it("SMS/SMS user should redirect to enter mfa page", async () => {
-        const fakeMfaCodeService: MfaServiceInterface = {
-          sendMfaCode: sinon.fake.returns({
-            success: true,
-          }),
-        } as unknown as MfaServiceInterface;
-
-        req.body["mfa-method-id"] = mfaMethodId;
-
-        await howDoYouWantSecurityCodesPost(fakeMfaCodeService)(
-          req as Request,
-          res as Response
-        );
-
-        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ENTER_MFA);
-        expect(req.session.user.activeMfaMethodId).to.equal(mfaMethodId);
-      });
-    }
-
     it("should throw error if the user has no MFA methods", async () => {
       req.session.user.mfaMethods = [];
 
       await assert.rejects(
-        async () => howDoYouWantSecurityCodesPost()(req, res),
+        async () => howDoYouWantSecurityCodesPost(req, res),
         BadRequestError,
         "No MFA methods found"
       );
@@ -132,7 +87,7 @@ describe("how do you want security codes controller", () => {
         { id: "testAuthApp", authApp: true },
       ]);
 
-      await howDoYouWantSecurityCodesPost()(req, res);
+      await howDoYouWantSecurityCodesPost(req, res);
 
       expect(res.redirect).to.have.been.calledWith(
         PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE

@@ -49,7 +49,6 @@ describe("mfa service", () => {
     const userLanguage = "cy";
     const journeyType = JOURNEY_TYPE.SIGN_IN;
     const isResendCodeRequest = true;
-    const mfaMethodId = "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7";
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.MFA,
@@ -57,7 +56,7 @@ describe("mfa service", () => {
         ...expectedHeadersFromCommonVarsWithSecurityHeaders,
         "User-Language": userLanguage,
       },
-      expectedBody: { email, isResendCodeRequest, journeyType, mfaMethodId },
+      expectedBody: { email, isResendCodeRequest, journeyType },
     };
 
     const result = await service.sendMfaCode(
@@ -68,7 +67,6 @@ describe("mfa service", () => {
       isResendCodeRequest,
       userLanguage,
       req,
-      mfaMethodId,
       journeyType
     );
 

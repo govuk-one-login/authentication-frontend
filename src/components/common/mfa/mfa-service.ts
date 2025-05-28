@@ -19,7 +19,6 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
     isResendCodeRequest: boolean,
     userLanguage: string,
     req: Request,
-    mfaMethodId: string,
     journeyType?: JOURNEY_TYPE
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
@@ -28,7 +27,6 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
         email: emailAddress,
         isResendCodeRequest,
         journeyType,
-        mfaMethodId,
       },
       getInternalRequestConfigWithSecurityHeaders(
         {

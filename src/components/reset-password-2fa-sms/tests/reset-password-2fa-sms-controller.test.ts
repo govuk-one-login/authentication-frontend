@@ -18,9 +18,8 @@ import { createMockRequest } from "../../../../test/helpers/mock-request-helper.
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 const TEST_REDACTED_PHONE_NUMBER = "777";
-const TEST_ACTIVE_MFA_METHOD_ID = "active-mfa-method-id";
 
-describe("reset password 2fa SMS controller", () => {
+describe("reset password 2fa auth app controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
@@ -35,7 +34,7 @@ describe("reset password 2fa SMS controller", () => {
   });
 
   describe("resetPassword2FASmsGet", () => {
-    it("should render reset password SMS view", async () => {
+    it("should render reset password auth app view", async () => {
       const fakeService: MfaServiceInterface = {
         sendMfaCode: sinon.fake.returns({
           success: true,
@@ -43,24 +42,11 @@ describe("reset password 2fa SMS controller", () => {
       } as unknown as MfaServiceInterface;
       req.session.user = {
         email: "joe.bloggs@test.com",
-        activeMfaMethodId: "active-mfa-method-id",
       };
 
       await resetPassword2FASmsGet(fakeService)(
         req as Request,
         res as Response
-      );
-
-      expect(fakeService.sendMfaCode).to.have.been.calledOnceWithExactly(
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        TEST_ACTIVE_MFA_METHOD_ID,
-        sinon.match.any
       );
 
       expect(res.render).to.have.calledWith("reset-password-2fa-sms/index.njk");

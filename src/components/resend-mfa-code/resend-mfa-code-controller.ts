@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { ExpressRouteFunc, MfaMethod, SmsMfaMethod } from "../../types.js";
+import type { ExpressRouteFunc } from "../../types.js";
 import { mfaService } from "../common/mfa/mfa-service.js";
 import type { MfaServiceInterface } from "../common/mfa/types.js";
 import { sendMfaGeneric } from "../common/mfa/send-mfa-controller.js";
@@ -8,6 +8,7 @@ import { pathWithQueryParam } from "../common/constants.js";
 import { supportReauthentication } from "../../config.js";
 import { isLocked } from "../../utils/lock-helper.js";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
+import { getDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
   if (isLocked(req.session.user.wrongCodeEnteredLock)) {
@@ -34,13 +35,9 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
       includeReauthentication: true,
     });
 
-    const activeMfaMethod: SmsMfaMethod = req.session.user.mfaMethods.find(
-      (mfaMethod: MfaMethod) =>
-        mfaMethod.id === req.session.user.activeMfaMethodId
-    );
-
     res.render("resend-mfa-code/index.njk", {
-      redactedPhoneNumber: activeMfaMethod?.redactedPhoneNumber,
+      redactedPhoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
+        ?.redactedPhoneNumber,
       isResendCodeRequest: req.query?.isResendCodeRequest,
       supportReauthentication: supportReauthentication(),
       isReauthJourney: journeyType === JOURNEY_TYPE.REAUTHENTICATION,

@@ -28,16 +28,12 @@ describe("Integration:: enter mfa", () => {
   let baseApi: string;
   const DEFAULT_PHONE_NUMBER = "7867";
   const BACKUP_PHONE_NUMBER = "1234";
-  const DEFAULT_PHONE_NUMBER_ID = "test-id";
-  const BACKUP_PHONE_NUMBER_ID = "test-id-backup";
 
   async function setupStubbedApp(
     partialMfaMethods: {
       redactedPhoneNumber?: string;
-      id: string;
     }[] = [
       {
-        id: DEFAULT_PHONE_NUMBER_ID,
         redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
       },
     ],
@@ -58,7 +54,6 @@ describe("Integration:: enter mfa", () => {
             req.session.user = {
               email: "test@test.com",
               mfaMethods: buildMfaMethods(partialMfaMethods),
-              activeMfaMethodId: DEFAULT_PHONE_NUMBER_ID,
               journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
             };
             next();
@@ -133,7 +128,6 @@ describe("Integration:: enter mfa", () => {
       partialMfaMethods: [
         {
           redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-          id: DEFAULT_PHONE_NUMBER_ID,
         },
       ],
       isAccountRecoveryPermitted: false,
@@ -143,7 +137,6 @@ describe("Integration:: enter mfa", () => {
       partialMfaMethods: [
         {
           redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-          id: DEFAULT_PHONE_NUMBER_ID,
         },
       ],
       isAccountRecoveryPermitted: true,
@@ -156,11 +149,9 @@ describe("Integration:: enter mfa", () => {
       partialMfaMethods: [
         {
           redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-          id: DEFAULT_PHONE_NUMBER_ID,
         },
         {
-          authApp: BACKUP_PHONE_NUMBER,
-          id: BACKUP_PHONE_NUMBER_ID,
+          redactedPhoneNumber: BACKUP_PHONE_NUMBER,
         },
       ],
       isAccountRecoveryPermitted: true,

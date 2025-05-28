@@ -17,7 +17,6 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
     clientSessionId: string,
     persistentSessionId: string,
     req: Request,
-    mfaMethodId: string,
     journeyType?: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
@@ -26,7 +25,6 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
         code,
         notificationType,
         journeyType,
-        mfaMethodId,
       },
       getInternalRequestConfigWithSecurityHeaders(
         {
