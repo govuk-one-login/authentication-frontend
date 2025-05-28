@@ -69,7 +69,7 @@ export function sendMfaGeneric(
   mfaCodeService: MfaServiceInterface
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session.user;
+    const { email, activeMfaMethodId } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const isResendCodeRequest: boolean = req.body.isResendCodeRequest;
 
@@ -81,6 +81,7 @@ export function sendMfaGeneric(
       isResendCodeRequest,
       xss(req.cookies.lng as string),
       req,
+      activeMfaMethodId,
       getJourneyTypeFromUserSession(req.session.user, {
         includeReauthentication: true,
       })

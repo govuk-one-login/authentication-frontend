@@ -11,6 +11,7 @@ import {
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import esmock from "esmock";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 describe("Integration::enter password", () => {
   let token: string | string[];
@@ -127,7 +128,16 @@ describe("Integration::enter password", () => {
   });
 
   it("should redirect to /auth-code when password is correct (VTR Cm)", async () => {
-    nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(200);
+    nock(baseApi)
+      .post(API_ENDPOINTS.LOG_IN_USER)
+      .once()
+      .reply(200, {
+        mfaMethods: buildMfaMethods({
+          id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",
+          phoneNumber: "07123456789",
+          redactedPhoneNumber: "789",
+        }),
+      });
 
     await request(app, (test) =>
       test
@@ -144,11 +154,19 @@ describe("Integration::enter password", () => {
   });
 
   it("should redirect to /reset-password-2fa-sms when password is correct and user's MFA is set to SMS when 2FA is not required", async () => {
-    nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(200, {
-      mfaRequired: false,
-      mfaMethodType: "SMS",
-      passwordChangeRequired: true,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.LOG_IN_USER)
+      .once()
+      .reply(200, {
+        mfaRequired: false,
+        mfaMethodType: "SMS",
+        passwordChangeRequired: true,
+        mfaMethods: buildMfaMethods({
+          id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",
+          phoneNumber: "07123456789",
+          redactedPhoneNumber: "789",
+        }),
+      });
 
     setupAccountInterventionsResponse(baseApi, noInterventions);
 
@@ -167,11 +185,19 @@ describe("Integration::enter password", () => {
   });
 
   it("should redirect to /reset-password-2fa-sms when password is correct and user's MFA is set to SMS when 2FA is required", async () => {
-    nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(200, {
-      mfaRequired: true,
-      mfaMethodType: "SMS",
-      passwordChangeRequired: true,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.LOG_IN_USER)
+      .once()
+      .reply(200, {
+        mfaRequired: true,
+        mfaMethodType: "SMS",
+        passwordChangeRequired: true,
+        mfaMethods: buildMfaMethods({
+          id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",
+          phoneNumber: "07123456789",
+          redactedPhoneNumber: "789",
+        }),
+      });
 
     setupAccountInterventionsResponse(baseApi, noInterventions);
 

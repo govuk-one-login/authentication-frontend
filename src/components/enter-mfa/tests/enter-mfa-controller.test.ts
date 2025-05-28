@@ -17,10 +17,11 @@ import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import * as journey from "../../common/journey/journey.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
-import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import esmock from "esmock";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 const TEST_PHONE_NUMBER = "07582930495";
+const TEST_DEFAULT_MFA_ID = "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7";
 
 const fakeAccountRecoveryPermissionCheckService = (
   desiredAccountRecoveryPermittedResponse: boolean
@@ -41,10 +42,13 @@ describe("enter mfa controller", () => {
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ENTER_MFA);
-    req.session.user = {
-      mfaMethods: buildMfaMethods({ redactedPhoneNumber: TEST_PHONE_NUMBER }),
-    };
+    req.session.user.activeMfaMethodId = TEST_DEFAULT_MFA_ID;
     res = mockResponse();
+
+    req.session.user.mfaMethods = buildMfaMethods({
+      id: TEST_DEFAULT_MFA_ID,
+      redactedPhoneNumber: TEST_PHONE_NUMBER,
+    });
     res.render = sinon.spy(res.render);
   });
 
@@ -54,6 +58,7 @@ describe("enter mfa controller", () => {
 
   describe("enterMfaGet", () => {
     it("should render enter mfa code view with isAccountRecoveryPermitted false when user is blocked from account recovery", async () => {
+      req.session.user.activeMfaMethodId = TEST_DEFAULT_MFA_ID;
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
         req as Request,
         res as Response
@@ -68,6 +73,7 @@ describe("enter mfa controller", () => {
     });
 
     it("should render enter mfa code view with isAccountRecoveryPermitted true when user is not blocked from account recovery", async () => {
+      req.session.user.activeMfaMethodId = TEST_DEFAULT_MFA_ID;
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(true))(
         req as Request,
         res as Response
@@ -82,6 +88,7 @@ describe("enter mfa controller", () => {
     });
 
     it("should render 2fa service uplift view when uplift is required", async () => {
+      req.session.user.activeMfaMethodId = TEST_DEFAULT_MFA_ID;
       req.session.user.isUpliftRequired = true;
 
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
@@ -98,6 +105,7 @@ describe("enter mfa controller", () => {
     });
 
     it("should render default template when uplift is not required", async () => {
+      req.session.user.activeMfaMethodId = TEST_DEFAULT_MFA_ID;
       req.session.user.isUpliftRequired = false;
 
       await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
@@ -114,6 +122,7 @@ describe("enter mfa controller", () => {
     });
 
     it("should render index-wait when user is locked out in the current session for too many requested codes", async () => {
+      req.session.user.activeMfaMethodId = TEST_DEFAULT_MFA_ID;
       req.session.user.isUpliftRequired = false;
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
@@ -171,6 +180,7 @@ describe("enter mfa controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
+        TEST_DEFAULT_MFA_ID,
         JOURNEY_TYPE.REAUTHENTICATION
       );
     });
@@ -205,7 +215,6 @@ describe("enter mfa controller", () => {
       req.body.code = "678988";
       req.session.user.email = "test@test.com";
       req.session.user.isAccountRecoveryPermitted = true;
-      req.session.user.mfaMethods = [{}];
 
       await enterMfaPost(fakeService)(req as Request, res as Response);
 

@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
-import type { ExpressRouteFunc } from "../../types.js";
+import type { ExpressRouteFunc, MfaMethod } from "../../types.js";
+import { MfaMethodPriority } from "../../types.js";
 import type { ResetPasswordCheckEmailServiceInterface } from "./types.js";
 import { resetPasswordCheckEmailService } from "./reset-password-check-email-service.js";
 import { BadRequestError } from "../../utils/error.js";
@@ -51,6 +52,9 @@ export function resetPasswordCheckEmailGet(
     }
 
     if (result.success) {
+      req.session.user.activeMfaMethodId = result.data.mfaMethods.find(
+        (method: MfaMethod) => method.priority === MfaMethodPriority.DEFAULT
+      )?.id;
       req.session.user.mfaMethods = result.data.mfaMethods;
 
       req.session.user.enterEmailMfaType = result.data.mfaMethodType;
