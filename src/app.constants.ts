@@ -244,6 +244,7 @@ export enum JOURNEY_TYPE {
 export enum CHANNEL {
   WEB = "web",
   STRATEGIC_APP = "strategic_app",
+  GENERIC_APP = "generic_app",
 }
 
 export const ENVIRONMENT_NAME = {

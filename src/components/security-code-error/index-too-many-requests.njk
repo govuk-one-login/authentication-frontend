@@ -13,7 +13,7 @@
     <p class="govuk-body">{{ 'pages.securityRequestsExceededExpired.info.paragraph1' | translate }}</p>
     <h2 class="govuk-heading-s">{{ 'pages.securityRequestsExceededExpired.info.subHeading' | translate }}</h2>
 
-    {% if strategicAppChannel === true %}
+    {% if isApp %}
         <p class="govuk-body">{{ 'mobileAppPages.securityRequestsExceededExpired.info.paragraph2' | translate }}</p>
     {% else %}
         <p class="govuk-body">{{ 'pages.securityRequestsExceededExpired.info.paragraph2' | translate }}</p>

@@ -43,8 +43,11 @@ describe("Integration:: base page ", () => {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
             if (channel === CHANNEL.WEB) {
               res.locals.webChannel = true;
-            } else if (channel === CHANNEL.STRATEGIC_APP) {
-              res.locals.strategicAppChannel = true;
+            } else if (
+              channel === CHANNEL.STRATEGIC_APP ||
+              channel === CHANNEL.GENERIC_APP
+            ) {
+              res.locals.isApp = true;
             }
 
             req.session.client = {
@@ -132,41 +135,45 @@ describe("Integration:: base page ", () => {
     });
   });
 
-  describe("Strategic App channel", () => {
+  describe("App (strategic app and generic app) channels", () => {
+    const testCases = [CHANNEL.STRATEGIC_APP, CHANNEL.GENERIC_APP];
     let $: any;
-    before(async () => {
-      await setupApp(CHANNEL.STRATEGIC_APP, true);
-      const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
-      expect(response.status).to.equal(200);
-      $ = cheerio.load(response.text);
-    });
 
-    it("should render the custom header with no links", async () => {
-      expect($("a.govuk-header__link").length).to.equal(0);
-      expect($(".strategic-app-header").length).to.equal(1);
-    });
-
-    it("should not render the footer", async () => {
-      expect($(".govuk-footer").length).to.equal(0);
-    });
-
-    describe("when in a non-production environment", () => {
-      it("should render the test phase header css", async () => {
-        expect($(".govuk-header").hasClass("test-banner")).to.be.true;
-      });
-    });
-
-    describe("when in a production environment", () => {
-      let $: any;
+    testCases.forEach((channel) => {
       before(async () => {
-        await setupApp(CHANNEL.STRATEGIC_APP, false);
+        await setupApp(channel, true);
         const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
         expect(response.status).to.equal(200);
         $ = cheerio.load(response.text);
       });
 
-      it("should not render the test phase header css", async () => {
-        expect($(".govuk-header").hasClass("test-banner")).to.be.false;
+      it("should render the custom header with no links", async () => {
+        expect($("a.govuk-header__link").length).to.equal(0);
+        expect($(".strategic-app-header").length).to.equal(1);
+      });
+
+      it("should not render the footer", async () => {
+        expect($(".govuk-footer").length).to.equal(0);
+      });
+
+      describe("when in a non-production environment", () => {
+        it("should render the test phase header css", async () => {
+          expect($(".govuk-header").hasClass("test-banner")).to.be.true;
+        });
+      });
+
+      describe("when in a production environment", () => {
+        let $: any;
+        before(async () => {
+          await setupApp(CHANNEL.STRATEGIC_APP, false);
+          const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
+          expect(response.status).to.equal(200);
+          $ = cheerio.load(response.text);
+        });
+
+        it("should not render the test phase header css", async () => {
+          expect($(".govuk-header").hasClass("test-banner")).to.be.false;
+        });
       });
     });
   });

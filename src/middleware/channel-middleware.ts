@@ -19,4 +19,7 @@ export function channelMiddleware(
 function setChannelFlags(res: Response, channel?: string): void {
   res.locals.strategicAppChannel = channel === CHANNEL.STRATEGIC_APP;
   res.locals.webChannel = channel === CHANNEL.WEB;
+  res.locals.genericAppChannel = channel === CHANNEL.GENERIC_APP;
+  res.locals.isApp =
+    channel === CHANNEL.STRATEGIC_APP || channel === CHANNEL.GENERIC_APP;
 }

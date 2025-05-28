@@ -18,7 +18,7 @@ describe("session-middleware", () => {
       next = sinon.fake();
     });
 
-    it("should set strategicAppChannel to true for strategic app clients", () => {
+    it("should set strategicAppChannel and isApp to true for strategic app clients", () => {
       const req = mockRequest({
         session: { client: {}, user: { channel: "strategic_app" } },
       });
@@ -26,6 +26,8 @@ describe("session-middleware", () => {
 
       expect(res.locals.strategicAppChannel).to.equal(true);
       expect(res.locals.webChannel).to.equal(false);
+      expect(res.locals.genericAppChannel).to.equal(false);
+      expect(res.locals.isApp).to.equal(true);
       expect(next).to.be.calledOnce;
     });
 
@@ -37,6 +39,21 @@ describe("session-middleware", () => {
 
       expect(res.locals.strategicAppChannel).to.equal(false);
       expect(res.locals.webChannel).to.equal(true);
+      expect(res.locals.genericAppChannel).to.equal(false);
+      expect(res.locals.isApp).to.equal(false);
+      expect(next).to.be.calledOnce;
+    });
+
+    it("should set generic-app and isApp to true for generic-app clients", () => {
+      const req = mockRequest({
+        session: { client: {}, user: { channel: "generic_app" } },
+      });
+      channelMiddleware(req as Request, res as Response, next);
+
+      expect(res.locals.strategicAppChannel).to.equal(false);
+      expect(res.locals.webChannel).to.equal(false);
+      expect(res.locals.genericAppChannel).to.equal(true);
+      expect(res.locals.isApp).to.equal(true);
       expect(next).to.be.calledOnce;
     });
 
@@ -65,6 +82,7 @@ describe("session-middleware", () => {
 
         expect(res.locals.strategicAppChannel).to.equal(true);
         expect(res.locals.webChannel).to.equal(false);
+        expect(res.locals.genericAppChannel).to.equal(false);
         expect(next).to.be.calledOnce;
       });
 
@@ -75,6 +93,7 @@ describe("session-middleware", () => {
 
         expect(res.locals.strategicAppChannel).to.equal(false);
         expect(res.locals.webChannel).to.equal(true);
+        expect(res.locals.genericAppChannel).to.equal(false);
         expect(next).to.be.calledOnce;
       });
     });

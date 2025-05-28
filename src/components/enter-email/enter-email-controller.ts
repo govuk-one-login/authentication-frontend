@@ -48,18 +48,14 @@ export function enterEmailGet(req: Request, res: Response): void {
     if (isLocked(req.session.user.wrongEmailEnteredLock)) {
       return res.render(BLOCKED_TEMPLATE);
     }
-    return res.render(RE_ENTER_EMAIL_TEMPLATE, {
-      isStrategicAppReauth: res.locals.strategicAppChannel,
-    });
+    return res.render(RE_ENTER_EMAIL_TEMPLATE);
   }
 
   return res.render(ENTER_EMAIL_TEMPLATE);
 }
 
 export function enterEmailCreateGet(req: Request, res: Response): void {
-  return res.render("enter-email/index-create-account.njk", {
-    strategicAppChannel: res.locals.strategicAppChannel,
-  });
+  return res.render("enter-email/index-create-account.njk");
 }
 
 export async function enterEmailCreateRequestGet(
@@ -144,7 +140,7 @@ export function enterEmailPost(
 
         const CHANNEL_SPECIFIC_EMAIL_ERROR_KEY = getChannelSpecificErrorMessage(
           EMAIL_ERROR_KEY,
-          req.body.isStrategicAppReauth === "true",
+          res.locals.isApp,
           WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS
         );
 
