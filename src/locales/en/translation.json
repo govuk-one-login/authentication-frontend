@@ -526,7 +526,7 @@
         "text 2": " or you can ",
         "changePhoneNumberLinkText": "use a different phone number",
         "changePhoneNumberLinkHref": "/enter-phone-number",
-        "changeMfaChoiceLinkText": "Get a code another way",
+        "changeMfaChoiceLinkText": "Choose another way to get security codes",
         "changeMfaChoiceLinkHref": "/get-security-codes"
       }
     },

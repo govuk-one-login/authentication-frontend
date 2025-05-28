@@ -526,7 +526,7 @@
         "text 2": " neu gallwch ",
         "changePhoneNumberLinkText": "ddefnyddio rhif ffôn gwahanol",
         "changePhoneNumberLinkHref": "/enter-phone-number",
-        "changeMfaChoiceLinkText": "Cael cod mewn ffordd arall",
+        "changeMfaChoiceLinkText": "Dewiswch ffordd arall o gael codau diogelwch",
         "changeMfaChoiceLinkHref": "/get-security-codes"
       }
     },
