@@ -23,7 +23,8 @@ describe("csrfMissingHandler", () => {
     next = sinon.spy();
   });
 
-  it("should return unauthorized if the error is a csrf missing error", () => {
+  // TODO: AUT-4272 PR 3: Reinstate this test once csrf validation is re-enabled.
+  it.skip("should return unauthorized if the error is a csrf missing error", () => {
     const err = new Error("Invalid CSRF token") as any;
     err.code = "EBADCSRFTOKEN";
 

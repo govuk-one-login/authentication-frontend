@@ -77,7 +77,8 @@ describe("Integration::enter password", () => {
     await request(app, (test) => test.get(ENDPOINT).expect(200));
   });
 
-  it("should return error when csrf not present", async () => {
+  // TODO: AUT-4272 PR 3: Reinstate this test once csrf validation is re-enabled.
+  it.skip("should return error when csrf not present", async () => {
     await request(app, (test) =>
       test
         .post(ENDPOINT)
