@@ -8,6 +8,8 @@ import {
   PATH_NAMES,
 } from "../app.constants.js";
 import { logger } from "../utils/logger.js";
+import type { MfaMethod } from "../types.js";
+import { MfaMethodPriority } from "../types.js";
 
 export function initialiseSessionMiddleware(
   req: Request,
@@ -20,6 +22,9 @@ export function initialiseSessionMiddleware(
     req.session.user = {
       email: req.session?.user?.email,
       mfaMethods: req.session?.user?.mfaMethods,
+      activeMfaMethodId: req.session?.user?.mfaMethods?.find(
+        (method: MfaMethod) => method.priority === MfaMethodPriority.DEFAULT
+      )?.id,
     };
 
     req.session.sessionRestored = true;

@@ -9,9 +9,14 @@ import {
   sessionIsValid,
   validateSessionMiddleware,
 } from "../session-middleware.js";
-import { ERROR_MESSAGES } from "../../app.constants.js";
+import {
+  ERROR_MESSAGES,
+  JOURNEY_TYPE,
+  PATH_NAMES,
+} from "../../app.constants.js";
 import { describe } from "mocha";
 import { mockRequest, mockResponse } from "mock-req-res";
+import { buildMfaMethods } from "../../../test/helpers/mfa-helper";
 
 chai.use(sinonChai);
 
@@ -20,7 +25,7 @@ describe("session-middleware", () => {
   let req: Request;
   let res: Response;
 
-  describe("createSessionMiddleware", () => {
+  describe("initialiseSessionMiddleware", () => {
     beforeEach(() => {
       req = mockRequest({ session: { client: {}, user: {} } });
       res = mockResponse();
@@ -32,6 +37,32 @@ describe("session-middleware", () => {
 
       expect(req.session).to.have.property("user");
       expect(next).to.be.calledOnce;
+    });
+
+    it("should carry over some existing session data when visiting AUTHORIZE", () => {
+      const activeMfaMethodId = "auth-app-id";
+      const mfaMethods = buildMfaMethods([
+        { id: activeMfaMethodId, authApp: true },
+      ]);
+      req.session.user = {
+        // To be ignored
+        isAuthenticated: false,
+        journey: JOURNEY_TYPE.SIGN_IN,
+
+        // To be brought over
+        email: "email@example.com",
+        mfaMethods,
+        activeMfaMethodId,
+      };
+      req.path = PATH_NAMES.AUTHORIZE;
+      initialiseSessionMiddleware(req as Request, res as Response, next);
+
+      expect(req.session).to.have.property("user");
+      expect(req.session.user).to.be.deep.equal({
+        email: "email@example.com",
+        mfaMethods,
+        activeMfaMethodId,
+      });
     });
   });
 
