@@ -77,6 +77,47 @@ export async function enterEmailCreateRequestGet(
   );
 }
 
+async function getExistingUserAndPopulateSessionData(
+  enterEmailService: EnterEmailServiceInterface,
+  req: Request,
+  res: Response,
+  sessionId: string,
+  email: string,
+  clientSessionId: string,
+  persistentSessionId: string
+): Promise<boolean | void> {
+  const result = await enterEmailService.userExists(
+    sessionId,
+    email,
+    clientSessionId,
+    persistentSessionId,
+    req
+  );
+
+  if (!result.success) {
+    if (result.data.code === ERROR_CODES.ACCOUNT_LOCKED) {
+      return res.render("enter-password/index-sign-in-retry-blocked.njk");
+    }
+    throw new BadRequestError(result.data.message, result.data.code);
+  }
+
+  if (
+    result.data.lockoutInformation != null &&
+    result.data.lockoutInformation.length > 0
+  ) {
+    setUpAuthAppLocks(req, result.data.lockoutInformation);
+  }
+
+  req.session.user.enterEmailMfaType = result.data.mfaMethodType;
+  req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
+    req.session.user.mfaMethods,
+    { redactedPhoneNumber: result.data.phoneNumberLastThree }
+  );
+  req.session.user.isAccountCreationJourney = !result.data.doesUserExist;
+
+  return result.data.doesUserExist;
+}
+
 export function enterEmailPost(
   service: EnterEmailServiceInterface = enterEmailService(),
   checkReauthService: CheckReauthServiceInterface = checkReauthUsersService()
@@ -122,36 +163,18 @@ export function enterEmailPost(
       }
     }
 
-    const result = await service.userExists(
+    const doesUserExist = await getExistingUserAndPopulateSessionData(
+      service,
+      req,
+      res,
       sessionId,
       email,
-      res.locals.clientSessionId,
-      res.locals.persistentSessionId,
-      req
+      clientSessionId,
+      persistentSessionId
     );
+    if (doesUserExist === undefined) return;
 
-    if (!result.success) {
-      if (result.data.code === ERROR_CODES.ACCOUNT_LOCKED) {
-        return res.render("enter-password/index-sign-in-retry-blocked.njk");
-      }
-      throw new BadRequestError(result.data.message, result.data.code);
-    }
-
-    if (
-      result.data.lockoutInformation != null &&
-      result.data.lockoutInformation.length > 0
-    ) {
-      setUpAuthAppLocks(req, result.data.lockoutInformation);
-    }
-
-    req.session.user.enterEmailMfaType = result.data.mfaMethodType;
-    req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
-      req.session.user.mfaMethods,
-      { redactedPhoneNumber: result.data.phoneNumberLastThree }
-    );
-    req.session.user.isAccountCreationJourney = !result.data.doesUserExist;
-
-    const nextState = result.data.doesUserExist
+    const nextState = doesUserExist
       ? USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS
       : USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND;
 
@@ -177,22 +200,18 @@ export function enterEmailCreatePost(
 
     req.session.user.email = email;
 
-    const userExistsResponse = await service.userExists(
+    const doesUserExist = await getExistingUserAndPopulateSessionData(
+      service,
+      req,
+      res,
       sessionId,
       email,
       clientSessionId,
-      persistentSessionId,
-      req
+      persistentSessionId
     );
+    if (doesUserExist === undefined) return;
 
-    if (!userExistsResponse.success) {
-      throw new BadRequestError(
-        userExistsResponse.data.message,
-        userExistsResponse.data.code
-      );
-    }
-
-    if (userExistsResponse.data.doesUserExist) {
+    if (doesUserExist) {
       return res.redirect(
         await getNextPathAndUpdateJourney(
           req,

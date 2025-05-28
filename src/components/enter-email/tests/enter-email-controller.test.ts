@@ -482,7 +482,7 @@ describe("enter email controller", () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
           success: true,
-          data: { userExists: false },
+          data: { doesUserExist: false },
         }),
       } as unknown as EnterEmailServiceInterface;
 
@@ -505,7 +505,7 @@ describe("enter email controller", () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
           success: true,
-          data: { userExists: false },
+          data: { doesUserExist: false },
         }),
       } as unknown as EnterEmailServiceInterface;
 
