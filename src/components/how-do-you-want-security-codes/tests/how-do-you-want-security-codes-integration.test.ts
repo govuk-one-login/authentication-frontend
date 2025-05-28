@@ -3,12 +3,13 @@ import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import esmock from "esmock";
 import type { NextFunction, Request, Response } from "express";
+import type express from "express";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import * as cheerio from "cheerio";
 import type { MfaMethod } from "../../../types.js";
 
-const getTokenAndCookies = async (app: any) => {
+const getTokenAndCookies = async (app: express.Application) => {
   let cookies, token;
   await request(
     app,
@@ -50,151 +51,182 @@ describe("Integration::how do you want security codes", () => {
     app = undefined;
   });
 
-  const testCases = [
-    {
-      description: "SMS user with SMS backup",
-      mfaMethods: [
-        {
-          id: DEFAULT_PHONE_NUMBER_ID,
-          redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-        },
-        {
-          id: BACKUP_PHONE_NUMBER_ID,
-          redactedPhoneNumber: BACKUP_PHONE_NUMBER,
-        },
-      ],
-      expectedRadioValues: [BACKUP_PHONE_NUMBER_ID, DEFAULT_PHONE_NUMBER_ID],
-    },
-    {
-      description: "SMS user with AUTH APP backup",
-      mfaMethods: [
-        {
-          id: DEFAULT_PHONE_NUMBER_ID,
-          redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-        },
-        { id: BACKUP_AUTH_APP_ID, authApp: true },
-      ],
-      expectedRadioValues: [BACKUP_AUTH_APP_ID, DEFAULT_PHONE_NUMBER_ID],
-    },
-    {
-      description: "AUTH APP user with SMS backup",
-      mfaMethods: [
-        {
-          id: DEFAULT_AUTH_APP_ID,
-          authApp: true,
-        },
-        {
-          id: BACKUP_PHONE_NUMBER_ID,
-          redactedPhoneNumber: BACKUP_PHONE_NUMBER,
-        },
-      ],
-      expectedRadioValues: [BACKUP_PHONE_NUMBER_ID, DEFAULT_AUTH_APP_ID],
-    },
-  ];
+  describe("GET /how-do-you-want-security-codes", () => {
+    const testCases = [
+      {
+        description: "SMS user with SMS backup",
+        mfaMethods: [
+          {
+            id: DEFAULT_PHONE_NUMBER_ID,
+            redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
+          },
+          {
+            id: BACKUP_PHONE_NUMBER_ID,
+            redactedPhoneNumber: BACKUP_PHONE_NUMBER,
+          },
+        ],
+        expectedRadioValues: [BACKUP_PHONE_NUMBER_ID, DEFAULT_PHONE_NUMBER_ID],
+      },
+      {
+        description: "SMS user with AUTH APP backup",
+        mfaMethods: [
+          {
+            id: DEFAULT_PHONE_NUMBER_ID,
+            redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
+          },
+          { id: BACKUP_AUTH_APP_ID, authApp: true },
+        ],
+        expectedRadioValues: [BACKUP_AUTH_APP_ID, DEFAULT_PHONE_NUMBER_ID],
+      },
+      {
+        description: "AUTH APP user with SMS backup",
+        mfaMethods: [
+          {
+            id: DEFAULT_AUTH_APP_ID,
+            authApp: true,
+          },
+          {
+            id: BACKUP_PHONE_NUMBER_ID,
+            redactedPhoneNumber: BACKUP_PHONE_NUMBER,
+          },
+        ],
+        expectedRadioValues: [BACKUP_PHONE_NUMBER_ID, DEFAULT_AUTH_APP_ID],
+      },
+    ];
 
-  testCases.forEach(({ description, mfaMethods, expectedRadioValues }) => {
-    it(`should return page as expected for ${description}`, async () => {
+    testCases.forEach(({ description, mfaMethods, expectedRadioValues }) => {
+      it(`should return page as expected for ${description}`, async () => {
+        const { createApp } = await esmock(
+          "../../../app.js",
+          {},
+          {
+            "../../../middleware/session-middleware.js": {
+              validateSessionMiddleware: mockSessionMiddleware(
+                buildMfaMethods(mfaMethods)
+              ),
+            },
+          }
+        );
+
+        app = await createApp();
+
+        await request(app, (test) =>
+          test
+            .get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
+            .expect(200)
+            .expect(function (res: any) {
+              const $ = cheerio.load(res.text);
+              expect(
+                $("a")
+                  .toArray()
+                  .some(
+                    (link) =>
+                      $(link).attr("href") === PATH_NAMES.MFA_RESET_WITH_IPV &&
+                      $(link).text().trim() ===
+                        "check if you can change how you get security codes"
+                  )
+              ).to.be.eq(true, "mfa reset link presence");
+
+              const form = $(`form[action="/how-do-you-want-security-codes"]`);
+              expect(form.toArray().some(Boolean)).to.be.eq(
+                true,
+                "form presence"
+              );
+              expect(
+                form
+                  .first()
+                  .find("button[type=Submit]")
+                  .toArray()
+                  .some((link) => $(link).text().trim() === "Continue")
+              ).to.be.eq(true, "submit button presence");
+
+              const radioArray = form
+                .first()
+                .find("input[type=radio]")
+                .toArray();
+              expect(radioArray.length).to.be.eq(2);
+              expectedRadioValues.forEach((name, index) => {
+                expect($(radioArray[index]).val()).to.be.eq(
+                  name,
+                  `radio input presence for ${name} in correct order`
+                );
+              });
+            })
+        );
+      });
+    });
+  });
+
+  describe("POST /how-do-you-want-security-codes", () => {
+    it("returns a validation error when no option is selected", async () => {
+      const app = await createDefaultSmsBackupAppExpressApp();
+      const { token, cookies } = await getTokenAndCookies(app);
+
+      await request(
+        app,
+        (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
+        {
+          expectAnalyticsPropertiesMatchSnapshot: false,
+        }
+      )
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#mfa-method-id-error").text()).to.contains(
+            "Select how you want to get a security code"
+          );
+        })
+        .expect(400);
+    });
+
+    it("redirects to the /enter-authenticator-app-code when 'authenticator app' is selected", async () => {
+      const app = await createDefaultSmsBackupAppExpressApp();
+      const { token, cookies } = await getTokenAndCookies(app);
+
+      await request(
+        app,
+        (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
+        {
+          expectAnalyticsPropertiesMatchSnapshot: false,
+        }
+      )
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          "mfa-method-id": BACKUP_AUTH_APP_ID,
+        })
+        .expect("Location", PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
+        .expect(302);
+    });
+
+    async function createDefaultSmsBackupAppExpressApp(): Promise<express.Application> {
       const { createApp } = await esmock(
         "../../../app.js",
         {},
         {
           "../../../middleware/session-middleware.js": {
             validateSessionMiddleware: mockSessionMiddleware(
-              buildMfaMethods(mfaMethods)
+              buildMfaMethods([
+                {
+                  id: DEFAULT_PHONE_NUMBER_ID,
+                  redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
+                },
+                {
+                  id: BACKUP_AUTH_APP_ID,
+                  authApp: true,
+                },
+              ])
             ),
           },
         }
       );
 
-      app = await createApp();
-
-      await request(app, (test) =>
-        test
-          .get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
-          .expect(200)
-          .expect(function (res: any) {
-            const $ = cheerio.load(res.text);
-            expect(
-              $("a")
-                .toArray()
-                .some(
-                  (link) =>
-                    $(link).attr("href") === PATH_NAMES.MFA_RESET_WITH_IPV &&
-                    $(link).text().trim() ===
-                      "check if you can change how you get security codes"
-                )
-            ).to.be.eq(true, "mfa reset link presence");
-
-            const form = $(`form[action="/how-do-you-want-security-codes"]`);
-            expect(form.toArray().some(Boolean)).to.be.eq(
-              true,
-              "form presence"
-            );
-            expect(
-              form
-                .first()
-                .find("button[type=Submit]")
-                .toArray()
-                .some((link) => $(link).text().trim() === "Continue")
-            ).to.be.eq(true, "submit button presence");
-
-            const radioArray = form.first().find("input[type=radio]").toArray();
-            expect(radioArray.length).to.be.eq(2);
-            expectedRadioValues.forEach((name, index) => {
-              expect($(radioArray[index]).val()).to.be.eq(
-                name,
-                `radio input presence for ${name} in correct order`
-              );
-            });
-          })
-      );
-    });
-  });
-
-  it("returns a validation error when no option is selected", async () => {
-    const { createApp } = await esmock(
-      "../../../app.js",
-      {},
-      {
-        "../../../middleware/session-middleware.js": {
-          validateSessionMiddleware: mockSessionMiddleware(
-            buildMfaMethods([
-              {
-                id: DEFAULT_PHONE_NUMBER_ID,
-                redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-              },
-              {
-                id: BACKUP_AUTH_APP_ID,
-                authApp: true,
-              },
-            ])
-          ),
-        },
-      }
-    );
-
-    app = await createApp();
-
-    const { token, cookies } = await getTokenAndCookies(app);
-
-    await request(
-      app,
-      (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
-      {
-        expectAnalyticsPropertiesMatchSnapshot: false,
-      }
-    )
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#mfa-method-id-error").text()).to.contains(
-          "Select how you want to get a security code"
-        );
-      })
-      .expect(400);
+      return await createApp();
+    }
   });
 });
