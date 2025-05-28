@@ -50,6 +50,7 @@ describe("authorize service", () => {
       scope: "openid",
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
+      client_name: "test-client-name",
     });
 
     expect(
@@ -63,6 +64,7 @@ describe("authorize service", () => {
           scope: "openid",
           redirect_uri: "http://example.com/redirect",
           state: "1234567890",
+          client_name: "test-client-name",
         },
         {
           headers: {
@@ -85,6 +87,7 @@ describe("authorize service", () => {
       scope: "openid",
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
+      client_name: "test-client-name",
     });
 
     expect(
@@ -97,6 +100,7 @@ describe("authorize service", () => {
           scope: "openid",
           redirect_uri: "http://example.com/redirect",
           state: "1234567890",
+          client_name: "test-client-name",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -115,6 +119,7 @@ describe("authorize service", () => {
       scope: "openid",
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
+      client_name: "test-client-name",
     });
 
     expect(
@@ -127,6 +132,7 @@ describe("authorize service", () => {
           scope: "openid",
           redirect_uri: "http://example.com/redirect",
           state: "1234567890",
+          client_name: "test-client-name",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -147,6 +153,7 @@ describe("authorize service", () => {
       scope: "openid",
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
+      client_name: "test-client-name",
     });
 
     expect(
@@ -160,6 +167,7 @@ describe("authorize service", () => {
           scope: "openid",
           redirect_uri: "http://example.com/redirect",
           state: "1234567890",
+          client_name: "test-client-name",
         },
         {
           headers: {
@@ -183,6 +191,7 @@ describe("authorize service", () => {
       scope: "openid",
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
+      client_name: "test-client-name",
     });
 
     expect(
@@ -197,6 +206,7 @@ describe("authorize service", () => {
           scope: "openid",
           redirect_uri: "http://example.com/redirect",
           state: "1234567890",
+          client_name: "test-client-name",
         },
         {
           headers: {
@@ -222,6 +232,7 @@ describe("authorize service", () => {
       rp_state: "1234567890",
       cookie_consent: "accept",
       _ga: "987654321",
+      client_name: "test-client-name",
     });
 
     expect(
@@ -237,6 +248,7 @@ describe("authorize service", () => {
           state: "1234567890",
           cookie_consent: "accept",
           _ga: "987654321",
+          client_name: "test-client-name",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
