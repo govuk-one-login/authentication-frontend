@@ -33,17 +33,6 @@ Object {
 }
 `;
 
-exports[`Integration:: resend email code should return error when csrf not present 1`] = `
-Object {
-  "contentId": undefined,
-  "taxonomyLevel1": undefined,
-  "taxonomyLevel2": undefined,
-  "taxonomyLevel3": undefined,
-  "taxonomyLevel4": undefined,
-  "taxonomyLevel5": undefined,
-}
-`;
-
 exports[`Integration:: resend email code should return resend email code page 1`] = `
 Object {
   "contentId": "3104ec55-1a4e-4811-b927-0531fb315480",

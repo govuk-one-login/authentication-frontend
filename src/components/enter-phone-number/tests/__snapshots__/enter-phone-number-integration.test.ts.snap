@@ -22,17 +22,6 @@ Object {
 }
 `;
 
-exports[`Integration::enter phone number should return error when csrf not present 1`] = `
-Object {
-  "contentId": undefined,
-  "taxonomyLevel1": undefined,
-  "taxonomyLevel2": undefined,
-  "taxonomyLevel3": undefined,
-  "taxonomyLevel4": undefined,
-  "taxonomyLevel5": undefined,
-}
-`;
-
 exports[`Integration::enter phone number should return validation error when international phone number entered contains text 1`] = `
 Object {
   "contentId": "0f519eb6-5cd4-476f-968f-d847b3c4c034",

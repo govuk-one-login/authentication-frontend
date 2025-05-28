@@ -264,17 +264,6 @@ Object {
 }
 `;
 
-exports[`Integration:: contact us - public user should return error when csrf not present 1`] = `
-Object {
-  "contentId": undefined,
-  "taxonomyLevel1": undefined,
-  "taxonomyLevel2": undefined,
-  "taxonomyLevel3": undefined,
-  "taxonomyLevel4": undefined,
-  "taxonomyLevel5": undefined,
-}
-`;
-
 exports[`Integration:: contact us - public user should return validation error when no radio boxes are selected on the proving_identity contact-us-further-information page 1`] = `
 Object {
   "contentId": "a06d6387-d411-47db-8f7d-88871286330b",
