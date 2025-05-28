@@ -14,7 +14,7 @@ import {
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
 } from "../common/constants.js";
-import { BadRequestError, ReauthJourneyError } from "../../utils/error.js";
+import { ReauthJourneyError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import {
   JOURNEY_TYPE,
@@ -28,6 +28,7 @@ import { supportAccountInterventions } from "../../config.js";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
 import type { AccountInterventionsInterface } from "../account-intervention/types.js";
+import { handleSendMfaCodeError } from "../../utils/send-mfa-code-error-helper.js";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -210,27 +211,7 @@ export function enterPasswordPost(
       );
 
       if (!result.success) {
-        if (result.data.code === ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
-          return res.render("security-code-error/index-wait.njk");
-        }
-
-        if (result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
-          return res.render(
-            "security-code-error/index-security-code-entered-exceeded.njk",
-            {
-              show2HrScreen: true,
-              contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
-            }
-          );
-        }
-
-        const path = getErrorPathByCode(result.data.code);
-
-        if (path) {
-          return res.redirect(path);
-        }
-
-        throw new BadRequestError(result.data.message, result.data.code);
+        return handleSendMfaCodeError(result, res);
       }
     }
     return res.redirect(
