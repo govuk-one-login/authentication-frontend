@@ -2532,7 +2532,7 @@
         }
       },
       "continueButtonText": "Parhau",
-      "changeMfaChoiceLinkText": "Cael cod mewn ffordd arall"
+      "changeMfaChoiceLinkText": "Dewiswch ffordd arall o gael codau diogelwch"
     },
     "enterAuthenticatorAppCode": {
       "title": "Rhowch y cod diogelwch 6 digid a ddangosir yn eich ap dilysydd",

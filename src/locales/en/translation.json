@@ -2531,7 +2531,7 @@
         }
       },
       "continueButtonText": "Continue",
-      "changeMfaChoiceLinkText": "Get a code another way"
+      "changeMfaChoiceLinkText": "Choose another way to get security codes"
     },
     "enterAuthenticatorAppCode": {
       "title": "Enter the 6 digit security code shown in your authenticator app",
