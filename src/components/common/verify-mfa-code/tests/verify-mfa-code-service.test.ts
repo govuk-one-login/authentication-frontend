@@ -36,8 +36,7 @@ describe("verify mfa code service", () => {
   });
 
   it("successfully calls the API to verify an mfa code", async () => {
-    const { sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
+    const { sessionId, clientSessionId, diPersistentSessionId } = commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_MFA, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });

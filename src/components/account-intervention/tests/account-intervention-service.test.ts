@@ -16,19 +16,13 @@ import { createMockRequest } from "../../../../test/helpers/mock-request-helper.
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("account interventions service", () => {
   const httpInstance = new Http();
-  const service: AccountInterventionsInterface =
-    accountInterventionService(httpInstance);
+  const service: AccountInterventionsInterface = accountInterventionService(httpInstance);
   let postStub: SinonStub;
-  const { sessionId, clientSessionId, email, diPersistentSessionId } =
-    commonVariables;
+  const { sessionId, clientSessionId, email, diPersistentSessionId } = commonVariables;
   const req = createMockRequest(PATH_NAMES.AUTH_CODE, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
-  const axiosResponse = Promise.resolve({
-    data: {},
-    status: 200,
-    statusText: "OK",
-  });
+  const axiosResponse = Promise.resolve({ data: {}, status: 200, statusText: "OK" });
 
   beforeEach(() => {
     setupApiKeyAndBaseUrlEnvVars();
@@ -79,10 +73,7 @@ describe("account interventions service", () => {
       const expectedApiCallDetails = {
         expectedPath: API_ENDPOINTS.ACCOUNT_INTERVENTIONS,
         expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
-        expectedBody: {
-          email: commonVariables.email,
-          authenticated: isAuthenticated,
-        },
+        expectedBody: { email: commonVariables.email, authenticated: isAuthenticated },
       };
 
       checkApiCallMadeWithExpectedBodyAndHeaders(

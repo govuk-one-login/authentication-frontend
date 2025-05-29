@@ -3,10 +3,7 @@ import { getNextPathAndUpdateJourney } from "../common/constants.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { getChannelSpecificTemplate } from "../../utils/get-channel-specific-template.js";
 import { WEB_TO_MOBILE_TEMPLATE_MAPPINGS } from "../../app.constants.js";
-export async function signInOrCreateGet(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function signInOrCreateGet(req: Request, res: Response): Promise<void> {
   req.session.user.isAccountCreationJourney = false;
   req.session.user.isPasswordResetJourney = false;
   req.session.user.isSignInJourney = false;
@@ -20,15 +17,10 @@ export async function signInOrCreateGet(
     WEB_TO_MOBILE_TEMPLATE_MAPPINGS
   );
 
-  res.render(template, {
-    serviceType: req.session.client.serviceType,
-  });
+  res.render(template, { serviceType: req.session.client.serviceType });
 }
 
-export async function signInOrCreatePost(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function signInOrCreatePost(req: Request, res: Response): Promise<void> {
   res.redirect(
     await getNextPathAndUpdateJourney(
       req,

@@ -119,16 +119,11 @@ export function getReducedBlockDurationInMinutes(): number {
 }
 
 export function getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes(): number {
-  return (
-    Number(process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES) ||
-    15
-  );
+  return Number(process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES) || 15;
 }
 
 export function getPasswordResetCodeEnteredWrongBlockDurationInMinutes(): number {
-  return (
-    Number(process.env.PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES) || 15
-  );
+  return Number(process.env.PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES) || 15;
 }
 
 export function supportNoPhotoIdContactForms(): boolean {

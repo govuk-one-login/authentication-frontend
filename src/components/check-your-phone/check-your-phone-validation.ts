@@ -21,7 +21,5 @@ const postValidationLocals = function locals(): Record<string, unknown> {
     "isResendCodeRequest",
     "true"
   );
-  return {
-    resendCodeLink: resendCodeLinkAsPostValidationLocal,
-  };
+  return { resendCodeLink: resendCodeLinkAsPostValidationLocal };
 };

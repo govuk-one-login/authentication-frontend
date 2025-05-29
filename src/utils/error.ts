@@ -80,11 +80,7 @@ export function createServiceRedirectErrorUrl(
   state: string
 ): string {
   const redirect = new URL(redirectUri);
-  const params = {
-    error: error,
-    error_description: errorDescription,
-    state: state,
-  };
+  const params = { error: error, error_description: errorDescription, state: state };
 
   return (
     redirect +

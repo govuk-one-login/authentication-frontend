@@ -9,11 +9,7 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper.js";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import type { ResetPasswordCheckEmailServiceInterface } from "../types.js";
 import { resetPasswordCheckEmailService } from "../reset-password-check-email-service.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
@@ -41,8 +37,7 @@ describe("reset password check email service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { email, sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
+    const { email, sessionId, clientSessionId, diPersistentSessionId } = commonVariables;
     const req = createMockRequest(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });

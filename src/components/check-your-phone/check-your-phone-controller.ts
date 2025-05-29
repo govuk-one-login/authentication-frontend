@@ -17,10 +17,7 @@ import { sendNotificationService } from "../common/send-notification/send-notifi
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import xss from "xss";
 import type { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types.js";
-import {
-  formatValidationError,
-  renderBadRequest,
-} from "../../utils/validation.js";
+import { formatValidationError, renderBadRequest } from "../../utils/validation.js";
 import { BadRequestError } from "../../utils/error.js";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service.js";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
@@ -43,8 +40,7 @@ export function checkYourPhoneGet(req: Request, res: Response): void {
     });
   }
   return res.render(TEMPLATE_NAME, {
-    phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
-      ?.redactedPhoneNumber,
+    phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)?.redactedPhoneNumber,
     resendCodeLink: RESEND_CODE_LINK,
   });
 }
@@ -92,15 +88,13 @@ export const checkYourPhonePost = (
       throw new BadRequestError(result.data.message, result.data.code);
     }
 
-    const accountRecoveryEnabledJourney =
-      isAccountRecoveryJourneyAndPermitted(req);
+    const accountRecoveryEnabledJourney = isAccountRecoveryJourneyAndPermitted(req);
 
     let notificationType = NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
 
     if (accountRecoveryEnabledJourney) {
       req.session.user.accountRecoveryVerifiedMfaType = MFA_METHOD_TYPE.SMS;
-      notificationType =
-        NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION;
+      notificationType = NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION;
     }
 
     await notificationService.sendNotification(

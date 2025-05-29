@@ -1,17 +1,12 @@
 import { LOCALE } from "../app.constants.js";
 import { getServiceDomain } from "../config.js";
-export function i18nextConfigurationOptions(
-  path: string
-): Record<string, unknown> {
+export function i18nextConfigurationOptions(path: string): Record<string, unknown> {
   return {
     debug: false,
     fallbackLng: LOCALE.EN,
     preload: [LOCALE.EN],
     supportedLngs: [LOCALE.EN, LOCALE.CY],
-    backend: {
-      loadPath: path,
-      allowMultiLoading: true,
-    },
+    backend: { loadPath: path, allowMultiLoading: true },
     detection: {
       lookupCookie: "lng",
       lookupQuerystring: "lng",

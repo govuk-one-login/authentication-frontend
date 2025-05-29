@@ -86,14 +86,11 @@ describe("CrossBrowserService", () => {
       );
 
       const expectedHeaders = {
-        "X-API-Key":
-          expectedHeadersFromCommonVarsWithSecurityHeaders["X-API-Key"],
+        "X-API-Key": expectedHeadersFromCommonVarsWithSecurityHeaders["X-API-Key"],
         "x-forwarded-for":
           expectedHeadersFromCommonVarsWithSecurityHeaders["x-forwarded-for"],
         "txma-audit-encoded":
-          expectedHeadersFromCommonVarsWithSecurityHeaders[
-            "txma-audit-encoded"
-          ],
+          expectedHeadersFromCommonVarsWithSecurityHeaders["txma-audit-encoded"],
       };
       expect(postStub).to.have.been.calledOnceWithExactly(
         "/id-reverification-state",

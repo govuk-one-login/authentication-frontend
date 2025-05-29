@@ -4,10 +4,7 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
 
-import {
-  accountCreatedGet,
-  accountCreatedPost,
-} from "../account-created-controller.js";
+import { accountCreatedGet, accountCreatedPost } from "../account-created-controller.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";

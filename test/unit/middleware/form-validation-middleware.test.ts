@@ -27,28 +27,17 @@ describe("HTML Lang middleware", () => {
 
   describe("validationErrorFormatter", () => {
     it("should format error message", () => {
-      const error = {
-        location: "body",
-        msg: "error message",
-        param: "param",
-      };
+      const error = { location: "body", msg: "error message", param: "param" };
 
       const formattedError = validationErrorFormatter(error);
 
-      expect(formattedError).to.be.eql({
-        text: error.msg,
-        href: `#${error.param}`,
-      });
+      expect(formattedError).to.be.eql({ text: error.msg, href: `#${error.param}` });
     });
   });
 
   describe("validateBodyMiddleware", () => {
     it("should validate request", () => {
-      validateBodyMiddleware("test.html")(
-        req as Request,
-        res as Response,
-        next
-      );
+      validateBodyMiddleware("test.html")(req as Request, res as Response, next);
       expect(next).to.have.been.called;
     });
   });

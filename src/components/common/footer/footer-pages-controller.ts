@@ -20,11 +20,7 @@ export function supportGet(req: Request, res: Response): void {
 export function supportPost(req: Request, res: Response): void {
   if (supportTypeIsGovService(req)) {
     res.redirect(
-      appendQueryParam(
-        "supportType",
-        req.body.supportType,
-        PATH_NAMES.CONTACT_US
-      )
+      appendQueryParam("supportType", req.body.supportType, PATH_NAMES.CONTACT_US)
     );
   } else {
     res.redirect(res.locals.contactUsLinkUrl);

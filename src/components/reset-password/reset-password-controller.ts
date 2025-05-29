@@ -2,14 +2,8 @@ import type { Request, Response } from "express";
 import type { ExpressRouteFunc } from "../../types.js";
 import type { ResetPasswordServiceInterface } from "./types.js";
 import { resetPasswordService } from "./reset-password-service.js";
-import {
-  formatValidationError,
-  renderBadRequest,
-} from "../../utils/validation.js";
-import {
-  ERROR_CODES,
-  getNextPathAndUpdateJourney,
-} from "../common/constants.js";
+import { formatValidationError, renderBadRequest } from "../../utils/validation.js";
+import { ERROR_CODES, getNextPathAndUpdateJourney } from "../common/constants.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { BadRequestError } from "../../utils/error.js";
 import type { EnterPasswordServiceInterface } from "../enter-password/types.js";
@@ -48,8 +42,7 @@ export function resetPasswordPost(
 
     if (!updatePasswordResponse.success) {
       if (
-        updatePasswordResponse.data.code ===
-        ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING
+        updatePasswordResponse.data.code === ERROR_CODES.NEW_PASSWORD_SAME_AS_EXISTING
       ) {
         const error = formatValidationError(
           "password",
@@ -87,20 +80,15 @@ export function resetPasswordPost(
     );
 
     if (!loginResponse.success) {
-      throw new BadRequestError(
-        loginResponse.data.message,
-        loginResponse.data.code
-      );
+      throw new BadRequestError(loginResponse.data.message, loginResponse.data.code);
     }
 
-    req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
-      req.session.user.mfaMethods,
-      { redactedPhoneNumber: loginResponse.data.redactedPhoneNumber }
-    );
+    req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(req.session.user.mfaMethods, {
+      redactedPhoneNumber: loginResponse.data.redactedPhoneNumber,
+    });
     req.session.user.isLatestTermsAndConditionsAccepted =
       loginResponse.data.latestTermsAndConditionsAccepted;
-    req.session.user.isAccountPartCreated =
-      !loginResponse.data.mfaMethodVerified;
+    req.session.user.isAccountPartCreated = !loginResponse.data.mfaMethodVerified;
     if (req.session.user.isPasswordChangeRequired) {
       req.session.user.isPasswordChangeRequired = false;
     }

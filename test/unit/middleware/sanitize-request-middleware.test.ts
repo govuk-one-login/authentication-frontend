@@ -21,11 +21,7 @@ describe("sanitize-request-middleware", () => {
 
   describe("sanitizeRequestMiddleware", () => {
     it("should not change input when no xss present", () => {
-      req = {
-        body: {
-          name: "Test123",
-        },
-      } as Request;
+      req = { body: { name: "Test123" } } as Request;
 
       sanitizeRequestMiddleware(req as Request, res as Response, next);
 
@@ -35,9 +31,7 @@ describe("sanitize-request-middleware", () => {
 
     it("should remove entire script block returning an empty string", () => {
       req = {
-        body: {
-          name: "<SCRIPT SRC=http://xss.rocks/xss.js></SCRIPT>",
-        },
+        body: { name: "<SCRIPT SRC=http://xss.rocks/xss.js></SCRIPT>" },
       } as Request;
 
       sanitizeRequestMiddleware(req as Request, res as Response, next);
@@ -48,9 +42,7 @@ describe("sanitize-request-middleware", () => {
 
     it("should remove entire input returning an empty string", () => {
       req = {
-        body: {
-          name: '<INPUT TYPE="IMAGE" SRC="javascript:alert(\'XSS\');">',
-        },
+        body: { name: '<INPUT TYPE="IMAGE" SRC="javascript:alert(\'XSS\');">' },
       } as Request;
 
       sanitizeRequestMiddleware(req as Request, res as Response, next);
@@ -60,12 +52,7 @@ describe("sanitize-request-middleware", () => {
     });
 
     it("handles multiple fields", () => {
-      req = {
-        body: {
-          name: "Test12",
-          email: "test@test.com",
-        },
-      } as Request;
+      req = { body: { name: "Test12", email: "test@test.com" } } as Request;
 
       sanitizeRequestMiddleware(req as Request, res as Response, next);
 
@@ -75,11 +62,7 @@ describe("sanitize-request-middleware", () => {
     });
 
     it("should trim whitespace from form field", () => {
-      req = {
-        body: {
-          name: "    James Mc'oy \n\t",
-        },
-      } as Request;
+      req = { body: { name: "    James Mc'oy \n\t" } } as Request;
 
       sanitizeRequestMiddleware(req as Request, res as Response, next);
 

@@ -29,9 +29,7 @@ describe("security code controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
     res = mockResponse();
-    sinon.useFakeTimers({
-      now: new Date(Date.UTC(2024, 0, 1, 0)),
-    });
+    sinon.useFakeTimers({ now: new Date(Date.UTC(2024, 0, 1, 0)) });
   });
 
   afterEach(() => {
@@ -45,9 +43,7 @@ describe("security code controller", () => {
     SCENARIOS.SECURITY_CODE_EXPIRED_GET.forEach(
       ({ actionType, expectedRenderOptions }) => {
         it(`should render invalid OTP code for ${actionType} error when email OTP code has been invalid max number of times`, () => {
-          req.session.user = {
-            email: "joe.bloggs@test.com",
-          };
+          req.session.user = { email: "joe.bloggs@test.com" };
           req.query.actionType = actionType;
 
           securityCodeInvalidGet(req as Request, res as Response);
@@ -65,8 +61,7 @@ describe("security code controller", () => {
     SCENARIOS.SECURITY_CODE_TRIES_EXCEEDED_GET.forEach(function (params) {
       it(`should render index-too-many-requests.njk for ${params.actionType} when max number of codes have been sent`, () => {
         req.query.actionType = params.actionType;
-        req.session.user.isAccountCreationJourney =
-          params.isAccountCreationJourney;
+        req.session.user.isAccountCreationJourney = params.isAccountCreationJourney;
         res.locals.strategicAppChannel = true;
 
         securityCodeTriesExceededGet(req as Request, res as Response);
@@ -92,9 +87,7 @@ describe("security code controller", () => {
 
         expect(res.render).to.have.calledWith(
           "security-code-error/index-too-many-requests.njk",
-          {
-            newCodeLink: params.expectedCodeLink,
-          }
+          { newCodeLink: params.expectedCodeLink }
         );
       });
     });
@@ -108,10 +101,7 @@ describe("security code controller", () => {
 
       expect(res.render).to.have.calledWith(
         "security-code-error/index-security-code-entered-exceeded.njk",
-        {
-          newCodeLink: PATH_NAMES.RESEND_MFA_CODE,
-          isAuthApp: false,
-        }
+        { newCodeLink: PATH_NAMES.RESEND_MFA_CODE, isAuthApp: false }
       );
     });
 
@@ -122,10 +112,7 @@ describe("security code controller", () => {
 
       expect(res.render).to.have.calledWith(
         "security-code-error/index-security-code-entered-exceeded.njk",
-        {
-          newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
-          isAuthApp: true,
-        }
+        { newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE, isAuthApp: true }
       );
     });
   });
@@ -183,11 +170,7 @@ describe("security code controller", () => {
         securityCodeInvalidGet(req, res);
 
         expect(res.render).to.have.calledWith("security-code-error/index.njk", {
-          newCodeLink: pathWithQueryParam(
-            params.nextPath,
-            params.queryParam,
-            "true"
-          ),
+          newCodeLink: pathWithQueryParam(params.nextPath, params.queryParam, "true"),
           isAuthApp: false,
           isBlocked: params.isBlocked,
           show2HrScreen: false,
@@ -274,8 +257,7 @@ describe("security code controller", () => {
         "in the account recovery journey",
       () => {
         process.env.ACCOUNT_RECOVERY_CODE_ENTERED_WRONG_BLOCKED_MINUTES = "15";
-        req.query.actionType =
-          SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries;
+        req.query.actionType = SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries;
         req.session.user.isAccountRecoveryJourney = true;
         securityCodeInvalidGet(req as Request, res as Response);
         expect(res.render).to.have.calledWith("security-code-error/index.njk", {
@@ -299,8 +281,7 @@ describe("security code controller", () => {
         "in the reset password journey",
       () => {
         process.env.PASSWORD_RESET_CODE_ENTERED_WRONG_BLOCKED_MINUTES = "120";
-        req.query.actionType =
-          SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries;
+        req.query.actionType = SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries;
         req.session.user.isPasswordResetJourney = true;
         securityCodeInvalidGet(req as Request, res as Response);
         expect(res.render).to.have.calledWith("security-code-error/index.njk", {
@@ -327,9 +308,7 @@ describe("security code controller", () => {
         SecurityCodeErrorType.OtpMaxRetries,
       ].forEach((errorType) => {
         req.query.actionType = errorType;
-        const dateInTheFuture = new Date(
-          date.getTime() + 1 * 1000
-        ).toUTCString();
+        const dateInTheFuture = new Date(date.getTime() + 1 * 1000).toUTCString();
         req.session.user.wrongCodeEnteredPasswordResetLock = dateInTheFuture;
         req.session.user.wrongCodeEnteredAccountRecoveryLock = dateInTheFuture;
         req.session.user.wrongCodeEnteredLock = dateInTheFuture;
@@ -374,9 +353,7 @@ describe("security code controller", () => {
             isAccountCreationJourney: undefined,
           }
         );
-        expect(req.session.user.codeRequestLock).to.eq(
-          "Mon, 01 Jan 2024 00:15:00 GMT"
-        );
+        expect(req.session.user.codeRequestLock).to.eq("Mon, 01 Jan 2024 00:15:00 GMT");
       }
     );
 

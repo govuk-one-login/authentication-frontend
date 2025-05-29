@@ -4,14 +4,8 @@ import { createPasswordService } from "./create-password-service.js";
 import type { CreatePasswordServiceInterface } from "./types.js";
 import { BadRequestError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
-import {
-  ERROR_CODES,
-  getNextPathAndUpdateJourney,
-} from "../common/constants.js";
-import {
-  formatValidationError,
-  renderBadRequest,
-} from "../../utils/validation.js";
+import { ERROR_CODES, getNextPathAndUpdateJourney } from "../common/constants.js";
+import { formatValidationError, renderBadRequest } from "../../utils/validation.js";
 export function createPasswordGet(req: Request, res: Response): void {
   return res.render("create-password/index.njk");
 }
@@ -45,9 +39,7 @@ export function createPasswordPost(
         req,
         req.path,
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
-        {
-          requiresTwoFactorAuth: true,
-        },
+        { requiresTwoFactorAuth: true },
         res.locals.sessionId
       )
     );

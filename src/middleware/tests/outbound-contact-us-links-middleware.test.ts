@@ -19,26 +19,15 @@ describe("Middleware", () => {
       req = {
         cookies: {},
         headers: {},
-        session: {
-          id: "session-id",
-          destroy: sinon.stub().callsArg(0),
-        },
-        log: {
-          error: sinon.stub(),
-          info: sinon.stub(),
-        },
+        session: { id: "session-id", destroy: sinon.stub().callsArg(0) },
+        log: { error: sinon.stub(), info: sinon.stub() },
         get: function (headerName: string) {
           if (headerName === "Referrer") {
             return this.headers["referer"] || this.headers["referrer"];
           }
         },
       } as any;
-      res = {
-        locals: {},
-        status: sinon.stub().returns({
-          json: sinon.stub(),
-        }),
-      } as any;
+      res = { locals: {}, status: sinon.stub().returns({ json: sinon.stub() }) } as any;
       next = sinon.spy();
     });
 
@@ -62,9 +51,7 @@ describe("Middleware", () => {
     beforeEach(() => {
       req = {
         protocol: "https",
-        headers: {
-          host: "home.account.gov.uk",
-        },
+        headers: { host: "home.account.gov.uk" },
         originalUrl: "/contact-gov-uk-one-login",
         get: function (headerName: string) {
           return this.headers[headerName];
@@ -83,15 +70,12 @@ describe("Middleware", () => {
 
   describe("appendFromUrlWhenTriagePageUrl", () => {
     it("should append when there's a match", () => {
-      const matchingUrl =
-          "https://home.account.gov.uk/contact-gov-uk-one-login",
+      const matchingUrl = "https://home.account.gov.uk/contact-gov-uk-one-login",
         fromUrl = "https://signin.account.gov.uk/enter-password";
 
       const result = appendFromUrlWhenTriagePageUrl(matchingUrl, fromUrl);
 
-      expect(result).to.equal(
-        `${matchingUrl}?fromURL=${encodeURIComponent(fromUrl)}`
-      );
+      expect(result).to.equal(`${matchingUrl}?fromURL=${encodeURIComponent(fromUrl)}`);
     });
 
     it("should not append when there isn't a match", () => {

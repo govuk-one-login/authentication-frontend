@@ -18,12 +18,9 @@ import {
 import { getContactUsService } from "./contact-us-service.js";
 import { supportTypeIsGovService } from "../../utils/request.js";
 const themeToPageTitle = {
-  [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:
-    "pages.contactUsQuestions.accountNotFound.title",
-  [CONTACT_US_THEMES.TECHNICAL_ERROR]:
-    "pages.contactUsQuestions.technicalError.title",
-  [CONTACT_US_THEMES.NO_SECURITY_CODE]:
-    "pages.contactUsQuestions.noSecurityCode.title",
+  [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]: "pages.contactUsQuestions.accountNotFound.title",
+  [CONTACT_US_THEMES.TECHNICAL_ERROR]: "pages.contactUsQuestions.technicalError.title",
+  [CONTACT_US_THEMES.NO_SECURITY_CODE]: "pages.contactUsQuestions.noSecurityCode.title",
   [CONTACT_US_THEMES.INVALID_SECURITY_CODE]:
     "pages.contactUsQuestions.invalidSecurityCode.title",
   [CONTACT_US_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE]:
@@ -36,16 +33,13 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.noPhoneNumberAccess.titleMfaReset",
   [CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS]:
     "pages.contactUsQuestions.suspectUnauthorisedAccess.title",
-  [CONTACT_US_THEMES.SOMETHING_ELSE]:
-    "pages.contactUsQuestions.anotherProblem.title",
+  [CONTACT_US_THEMES.SOMETHING_ELSE]: "pages.contactUsQuestions.anotherProblem.title",
   [CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK]:
     "pages.contactUsQuestions.suggestionOrFeedback.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY]:
-    "pages.contactUsQuestions.provingIdentity.title",
+  [CONTACT_US_THEMES.PROVING_IDENTITY]: "pages.contactUsQuestions.provingIdentity.title",
   [CONTACT_US_THEMES.AUTHENTICATOR_APP_PROBLEM]:
     "pages.contactUsQuestions.authenticatorApp.title",
-  [CONTACT_US_THEMES.LINKING_PROBLEM]:
-    "pages.contactUsQuestions.linkingProblem.title",
+  [CONTACT_US_THEMES.LINKING_PROBLEM]: "pages.contactUsQuestions.linkingProblem.title",
   [CONTACT_US_THEMES.TAKING_PHOTO_OF_ID_PROBLEM]:
     "pages.contactUsQuestions.takingPhotoOfIdProblem.title",
   [CONTACT_US_THEMES.FACE_SCANNING_PROBLEM]:
@@ -85,8 +79,7 @@ const themeToPageTitle = {
 };
 
 const somethingElseSubThemeToPageTitle = {
-  [CONTACT_US_THEMES.ACCOUNT_CREATION]:
-    "pages.contactUsQuestions.accountCreation.title",
+  [CONTACT_US_THEMES.ACCOUNT_CREATION]: "pages.contactUsQuestions.accountCreation.title",
   [CONTACT_US_THEMES.SIGNING_IN]: "pages.contactUsQuestions.signingIn.title",
   [CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
     "pages.contactUsQuestions.idCheckAppTechnicalError.title",
@@ -123,9 +116,7 @@ export function contactUsGet(req: Request, res: Response): void {
       );
       logger.info(`referer with referer header param ${referer}`);
     } catch {
-      logger.warn(
-        `unable to parse referer with referer param ${req.get(REFERER)}`
-      );
+      logger.warn(`unable to parse referer with referer param ${req.get(REFERER)}`);
     }
   }
 
@@ -166,18 +157,12 @@ export function prepareBackLink(
   if (req.path.endsWith(PATH_NAMES.CONTACT_US)) {
     hrefBack = supportLinkURL;
   } else if (req.path.endsWith(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)) {
-    if (
-      req.query.fromURL &&
-      req.query.theme === CONTACT_US_THEMES.ID_CHECK_APP
-    ) {
+    if (req.query.fromURL && req.query.theme === CONTACT_US_THEMES.ID_CHECK_APP) {
       hrefBack = supportLinkURL;
     } else {
       hrefBack = PATH_NAMES.CONTACT_US;
     }
-  } else if (
-    req.path.endsWith(PATH_NAMES.CONTACT_US_QUESTIONS) &&
-    !!req.query.subtheme
-  ) {
+  } else if (req.path.endsWith(PATH_NAMES.CONTACT_US_QUESTIONS) && !!req.query.subtheme) {
     hrefBack = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
   } else {
     hrefBack = PATH_NAMES.CONTACT_US;
@@ -270,10 +255,7 @@ export function validateAppId(appSessionId: string): boolean {
   return testResult;
 }
 
-export function validateReferer(
-  referer: string,
-  serviceDomain: string
-): string {
+export function validateReferer(referer: string, serviceDomain: string): string {
   let valid = false;
   let url;
   try {
@@ -335,15 +317,10 @@ export function contactUsFormPost(req: Request, res: Response): void {
   });
 
   if (req.body.fromURL) {
-    queryParams.append(
-      "fromURL",
-      validateReferer(req.body.fromURL, serviceDomain)
-    );
+    queryParams.append("fromURL", validateReferer(req.body.fromURL, serviceDomain));
   }
 
-  res.redirect(
-    getNextUrlBasedOnTheme(req.body.theme) + "?" + queryParams.toString()
-  );
+  res.redirect(getNextUrlBasedOnTheme(req.body.theme) + "?" + queryParams.toString());
 }
 
 export function furtherInformationGet(req: Request, res: Response): void {
@@ -358,13 +335,9 @@ export function furtherInformationGet(req: Request, res: Response): void {
     return res.render("contact-us/further-information/index.njk", {
       theme: req.query.theme,
       hrefBack: backLinkHref,
-      referer: encodeValue(
-        validateReferer(req.query.referer as string, serviceDomain)
-      ),
+      referer: encodeValue(validateReferer(req.query.referer as string, serviceDomain)),
       ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
-        fromURL: encodeValue(
-          validateReferer(req.query.fromURL as string, serviceDomain)
-        ),
+        fromURL: encodeValue(validateReferer(req.query.fromURL as string, serviceDomain)),
       }),
       appSessionId: getAppSessionId(req.query.appSessionId as string),
       ...(getAppErrorCode(req.query.appErrorCode as string) && {
@@ -377,14 +350,10 @@ export function furtherInformationGet(req: Request, res: Response): void {
   return res.render("contact-us/further-information/index.njk", {
     theme: req.query.theme,
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
-      fromURL: encodeValue(
-        validateReferer(req.query.fromURL as string, serviceDomain)
-      ),
+      fromURL: encodeValue(validateReferer(req.query.fromURL as string, serviceDomain)),
     }),
     hrefBack: backLinkHref,
-    referer: encodeValue(
-      validateReferer(req.query.referer as string, serviceDomain)
-    ),
+    referer: encodeValue(validateReferer(req.query.referer as string, serviceDomain)),
     supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
   });
 }
@@ -403,10 +372,7 @@ export function furtherInformationPost(req: Request, res: Response): void {
   if (isAppJourney(req.body.appSessionId)) {
     queryParams.append("appSessionId", getAppSessionId(req.body.appSessionId));
     if (req.body.appErrorCode) {
-      queryParams.append(
-        "appErrorCode",
-        getAppErrorCode(req.body.appErrorCode)
-      );
+      queryParams.append("appErrorCode", getAppErrorCode(req.body.appErrorCode));
     }
   }
 
@@ -435,13 +401,9 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     theme: req.query.theme,
     subtheme: req.query.subtheme,
     backurl: backLinkHref,
-    referer: encodeValue(
-      validateReferer(req.query.referer as string, serviceDomain)
-    ),
+    referer: encodeValue(validateReferer(req.query.referer as string, serviceDomain)),
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
-      fromURL: encodeValue(
-        validateReferer(req.query.fromURL as string, serviceDomain)
-      ),
+      fromURL: encodeValue(validateReferer(req.query.fromURL as string, serviceDomain)),
     }),
     pageTitleHeading: pageTitle,
     contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
@@ -469,16 +431,9 @@ export function contactUsQuestionsFormPostToSmartAgent(
 
     const telephoneNumber = getTelephoneNumber(req);
 
-    const questions = getQuestionsFromFormTypeForMessageBody(
-      req,
-      req.body.formType
-    );
+    const questions = getQuestionsFromFormTypeForMessageBody(req, req.body.formType);
 
-    const themeQuestions = getQuestionFromThemes(
-      req,
-      req.body.theme,
-      req.body.subtheme
-    );
+    const themeQuestions = getQuestionFromThemes(req, req.body.theme, req.body.subtheme);
 
     await service.contactUsSubmitFormSmartAgent({
       descriptions: {
@@ -488,8 +443,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
         moreDetailDescription: req.body.moreDetailDescription,
         serviceTryingToUse: req.body.serviceTryingToUse,
         countryPhoneNumberFrom: req.body.countryPhoneNumberFrom,
-        problemWithNationalInsuranceNumber:
-          req.body.problemWithNationalInsuranceNumber,
+        problemWithNationalInsuranceNumber: req.body.problemWithNationalInsuranceNumber,
       },
       themes: { theme: req.body.theme, subtheme: req.body.subtheme },
       subject: "GOV.UK One Login",
@@ -561,10 +515,9 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.accountCreationProblem.section1.paragraph1",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     accountNotFound: {
       issueDescription: req.t(
@@ -575,10 +528,9 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.accountNotFound.section2.header",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     suspectUnauthorisedAccess: {
       hasReceivedUnwarrantedSecurityCode: req.t(
@@ -589,28 +541,25 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.suspectUnauthorisedAccess.section2.options.unknownActivityHistory",
         { lng: "en" }
       ),
-      email: req.t(
-        "pages.contactUsQuestions.suspectUnauthorisedAccess.section3.header",
-        { lng: "en" }
-      ),
+      email: req.t("pages.contactUsQuestions.suspectUnauthorisedAccess.section3.header", {
+        lng: "en",
+      }),
       phoneNumber: req.t(
         "pages.contactUsQuestions.suspectUnauthorisedAccess.section4.header",
         { lng: "en" }
       ),
     },
     anotherProblem: {
-      issueDescription: req.t(
-        "pages.contactUsQuestions.anotherProblem.section1.header",
-        { lng: "en" }
-      ),
+      issueDescription: req.t("pages.contactUsQuestions.anotherProblem.section1.header", {
+        lng: "en",
+      }),
       additionalDescription: req.t(
         "pages.contactUsQuestions.anotherProblem.section2.header",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     authenticatorApp: {
       issueDescription: req.t(
@@ -621,20 +570,18 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.authenticatorApp.section2.header",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     forgottenPassword: {
       optionalDescription: req.t(
         "pages.contactUsQuestions.forgottenPassword.section1.header",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     invalidSecurityCode: {
       moreDetailDescription: req.t(
@@ -645,10 +592,9 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.invalidSecurityCode.section1.header",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     noPhoneNumberAccess: {
       optionalDescription: req.t(
@@ -659,24 +605,21 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.noPhoneNumberAccess.section1.header",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     noSecurityCode: {
       moreDetailDescription: req.t(
         "pages.contactUsQuestions.noSecurityCode.section2.header",
         { lng: "en" }
       ),
-      radioButtons: req.t(
-        "pages.contactUsQuestions.noSecurityCode.section1.header",
-        { lng: "en" }
-      ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      radioButtons: req.t("pages.contactUsQuestions.noSecurityCode.section1.header", {
+        lng: "en",
+      }),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     signInPhoneNumberIssue: {
       issueDescription: req.t(
@@ -691,20 +634,18 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.signInPhoneNumberIssue.section3.header",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     signingInProblem: {
       issueDescription: req.t(
         "pages.contactUsQuestions.signignInProblem.section1.header",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     suggestionFeedback: {
       issueDescription: req.t(
@@ -713,10 +654,9 @@ function getQuestionsFromFormTypeForMessageBody(
       ),
     },
     technicalError: {
-      issueDescription: req.t(
-        "pages.contactUsQuestions.technicalError.section1.header",
-        { lng: "en" }
-      ),
+      issueDescription: req.t("pages.contactUsQuestions.technicalError.section1.header", {
+        lng: "en",
+      }),
       additionalDescription: req.t(
         "pages.contactUsQuestions.technicalError.section2.header",
         { lng: "en" }
@@ -725,10 +665,9 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.technicalError.section3.header",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     provingIdentity: {
       issueDescription: req.t(
@@ -739,34 +678,25 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.provingIdentity.section2.header",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     idCheckApp: {
-      issueDescription: `${req.t(
-        "pages.contactUsQuestions.whatHappened.header",
-        { lng: "en" }
-      )} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1", {
+      issueDescription: `${req.t("pages.contactUsQuestions.whatHappened.header", {
         lng: "en",
-      })}`,
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      })} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1", { lng: "en" })}`,
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     idCheckAppPhotoProblem: {
-      issueDescription: `${req.t(
-        "pages.contactUsQuestions.whatHappened.header",
-        { lng: "en" }
-      )} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1", {
+      issueDescription: `${req.t("pages.contactUsQuestions.whatHappened.header", {
         lng: "en",
-      })}`,
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      })} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1", { lng: "en" })}`,
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
       radioButtons: req.t(
         "pages.contactUsQuestions.takingPhotoOfIdProblem.identityDocument.header",
         { lng: "en" }
@@ -777,76 +707,61 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.header",
         { lng: "en" }
       ),
-      additionalDescription: req.t(
-        "pages.contactUsQuestions.whatHappened.header",
-        { lng: "en" }
-      ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      additionalDescription: req.t("pages.contactUsQuestions.whatHappened.header", {
+        lng: "en",
+      }),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     idCheckAppSomethingElse: {
       issueDescription: req.t(
         "pages.contactUsQuestions.idCheckAppSomethingElse.section1.header",
         { lng: "en" }
       ),
-      additionalDescription: req.t(
-        "pages.contactUsQuestions.whatHappened.header",
-        { lng: "en" }
-      ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      additionalDescription: req.t("pages.contactUsQuestions.whatHappened.header", {
+        lng: "en",
+      }),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     provingIdentityFaceToFace: {
       issueDescription: req.t(
         "pages.contactUsQuestions.provingIdentityFaceToFaceDetails.whatHappened.label",
-        {
-          lng: "en",
-        }
-      ),
-      additionalDescription: req.t(
-        "pages.contactUsQuestions.whatHappened.header",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      additionalDescription: req.t("pages.contactUsQuestions.whatHappened.header", {
+        lng: "en",
+      }),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     provingIdentityFaceToFaceTechnicalProblem: {
       issueDescription: req.t(
         "pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.section1.title",
-        {
-          lng: "en",
-        }
-      ),
-      additionalDescription: req.t(
-        "pages.contactUsQuestions.whatHappened.header",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      additionalDescription: req.t("pages.contactUsQuestions.whatHappened.header", {
+        lng: "en",
+      }),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     provingIdentityFaceToFaceSomethingElse: {
       issueDescription: req.t(
         "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.section1.header",
-        {
-          lng: "en",
-        }
+        { lng: "en" }
       ),
       additionalDescription: req.t(
         "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.section2.header",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     provingIdentityProblemAnsweringSecurityQuestions: {
       issueDescription: req.t(
@@ -865,10 +780,9 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.provingIdentityProblemWithBankBuildingSocietyDetails.section2.label",
         { lng: "en" }
       ),
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
     provingIdentityNeedToUpdatePersonalInformation: {
       issueDescription: req.t(
@@ -885,10 +799,9 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.whatWereYouTryingToDo.label",
         { lng: "en" }
       ),
-      additionalDescription: req.t(
-        "pages.contactUsQuestions.whatHappened.header",
-        { lng: "en" }
-      ),
+      additionalDescription: req.t("pages.contactUsQuestions.whatHappened.header", {
+        lng: "en",
+      }),
     },
     provingIdentitySomethingElse: {
       issueDescription: req.t(
@@ -901,10 +814,9 @@ function getQuestionsFromFormTypeForMessageBody(
       ),
     },
     provingIdentityProblemWithNationalInsuranceNumber: {
-      serviceTryingToUse: req.t(
-        "pages.contactUsQuestions.serviceTryingToUse.header",
-        { lng: "en" }
-      ),
+      serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
+        lng: "en",
+      }),
     },
   };
 
@@ -920,34 +832,22 @@ function getQuestionFromThemes(
     account_creation: req.t("pages.contactUsPublic.section3.accountCreation", {
       lng: "en",
     }),
-    signing_in: req.t("pages.contactUsPublic.section3.signingIn", {
+    signing_in: req.t("pages.contactUsPublic.section3.signingIn", { lng: "en" }),
+    id_check_app: req.t("pages.contactUsPublic.section3.idCheckApp", { lng: "en" }),
+    id_face_to_face: req.t("pages.contactUsPublic.section3.provingIdentityFaceToFace", {
       lng: "en",
     }),
-    id_check_app: req.t("pages.contactUsPublic.section3.idCheckApp", {
-      lng: "en",
-    }),
-    id_face_to_face: req.t(
-      "pages.contactUsPublic.section3.provingIdentityFaceToFace",
-      {
-        lng: "en",
-      }
-    ),
     proving_identity: req.t("pages.contactUsPublic.section3.provingIdentity", {
       lng: "en",
     }),
     suspect_unauthorised_access: req.t(
       "pages.contactUsPublic.section3.suspectUnauthorisedAccess",
-      {
-        lng: "en",
-      }
-    ),
-    something_else: req.t("pages.contactUsPublic.section3.somethingElse", {
-      lng: "en",
-    }),
-    suggestions_feedback: req.t(
-      "pages.contactUsPublic.section3.suggestionsFeedback",
       { lng: "en" }
     ),
+    something_else: req.t("pages.contactUsPublic.section3.somethingElse", { lng: "en" }),
+    suggestions_feedback: req.t("pages.contactUsPublic.section3.suggestionsFeedback", {
+      lng: "en",
+    }),
   };
 
   const signinSubthemeToQuestions: { [key: string]: any } = {
@@ -979,10 +879,9 @@ function getQuestionFromThemes(
       "pages.contactUsFurtherInformation.signingIn.section1.radio6",
       { lng: "en" }
     ),
-    something_else: req.t(
-      "pages.contactUsFurtherInformation.signingIn.section1.radio7",
-      { lng: "en" }
-    ),
+    something_else: req.t("pages.contactUsFurtherInformation.signingIn.section1.radio7", {
+      lng: "en",
+    }),
   };
 
   const accountCreationSubthemeToQuestions: { [key: string]: any } = {
@@ -1116,8 +1015,5 @@ function getQuestionFromThemes(
       subthemeQuestion = provingIdentitySubthemeToQuestion[subtheme];
     }
   }
-  return {
-    themeQuestion,
-    subthemeQuestion,
-  };
+  return { themeQuestion, subthemeQuestion };
 }

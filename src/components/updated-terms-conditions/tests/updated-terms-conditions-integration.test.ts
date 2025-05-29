@@ -2,11 +2,7 @@ import { beforeEach, describe } from "mocha";
 import { sinon, request } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
@@ -50,11 +46,9 @@ describe("Integration:: updated-terms-code", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
       cookies = res.headers["set-cookie"];
@@ -72,9 +66,7 @@ describe("Integration:: updated-terms-code", () => {
 
   it("should return update terms and conditions page", async () => {
     await request(app, (test) =>
-      test
-        .get(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
-        .expect(HTTP_STATUS_CODES.OK)
+      test.get(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS).expect(HTTP_STATUS_CODES.OK)
     );
   });
 
@@ -83,9 +75,7 @@ describe("Integration:: updated-terms-code", () => {
       test
         .post(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
         .type("form")
-        .send({
-          termsAndConditionsResult: "reject",
-        })
+        .send({ termsAndConditionsResult: "reject" })
         .expect(403)
     );
   });
@@ -101,10 +91,7 @@ describe("Integration:: updated-terms-code", () => {
         .post(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          termsAndConditionsResult: "accept",
-        })
+        .send({ _csrf: token, termsAndConditionsResult: "accept" })
         .expect("Location", PATH_NAMES.AUTH_CODE)
         .expect(302)
     );

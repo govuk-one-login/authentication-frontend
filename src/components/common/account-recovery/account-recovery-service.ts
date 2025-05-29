@@ -6,15 +6,10 @@ import {
   http,
 } from "../../../utils/http.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
-import type {
-  AccountRecoveryInterface,
-  AccountRecoveryResponse,
-} from "./types.js";
+import type { AccountRecoveryInterface, AccountRecoveryResponse } from "./types.js";
 import type { Request } from "express";
 
-export function accountRecoveryService(
-  axios: Http = http
-): AccountRecoveryInterface {
+export function accountRecoveryService(axios: Http = http): AccountRecoveryInterface {
   const accountRecovery = async function (
     sessionId: string,
     clientSessionId: string,
@@ -24,15 +19,9 @@ export function accountRecoveryService(
   ): Promise<ApiResponseResult<AccountRecoveryResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.ACCOUNT_RECOVERY,
-      {
-        email,
-      },
+      { email },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId,
-          clientSessionId,
-          persistentSessionId,
-        },
+        { sessionId, clientSessionId, persistentSessionId },
         req,
         API_ENDPOINTS.ACCOUNT_RECOVERY
       )
@@ -41,7 +30,5 @@ export function accountRecoveryService(
     return createApiResponse<AccountRecoveryResponse>(response);
   };
 
-  return {
-    accountRecovery,
-  };
+  return { accountRecovery };
 }

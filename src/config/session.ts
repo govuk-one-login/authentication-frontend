@@ -13,10 +13,7 @@ export function getSessionStore(redisConfig: RedisConfig): RedisStore {
     usedRedisConfig = redisConfig;
 
     const config: RedisClientOptions = {
-      socket: {
-        host: redisConfig.host,
-        port: redisConfig.port,
-      },
+      socket: { host: redisConfig.host, port: redisConfig.port },
     };
 
     if (redisConfig.tls) {
@@ -31,9 +28,7 @@ export function getSessionStore(redisConfig: RedisConfig): RedisStore {
     usedRedisConfig = redisConfig;
   }
 
-  return new RedisStore({
-    client: redisClient,
-  });
+  return new RedisStore({ client: redisClient });
 }
 
 export async function disconnectRedisClient(): Promise<void> {
@@ -49,20 +44,12 @@ export function getSessionCookieOptions(
   expiry: number,
   secret: string
 ): any {
-  return {
-    name: "aps",
-    maxAge: expiry,
-    secret: secret,
-    signed: true,
-    secure: isProdEnv,
-  };
+  return { name: "aps", maxAge: expiry, secret: secret, signed: true, secure: isProdEnv };
 }
 
 export function isRedisConfigEqual(a: RedisConfig, b: RedisConfig): boolean {
   const keys = new Set<keyof typeof a & keyof typeof b>();
   (Object.keys(a) as (keyof typeof a)[]).forEach((k) => keys.add(k));
   (Object.keys(b) as (keyof typeof b)[]).forEach((k) => keys.add(k));
-  return (
-    Array.from(keys).reduce((acc, k) => acc + (a[k] === b[k] ? 0 : 1), 0) === 0
-  );
+  return Array.from(keys).reduce((acc, k) => acc + (a[k] === b[k] ? 0 : 1), 0) === 0;
 }

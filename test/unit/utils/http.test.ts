@@ -5,10 +5,7 @@ import {
   getAdditionalAxiosConfig,
   getInternalRequestConfigWithSecurityHeaders,
 } from "../../../src/utils/http.js";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-} from "../../../src/app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../src/app.constants.js";
 import { createMockRequest } from "../../helpers/mock-request-helper.js";
 import * as headersLibrary from "@govuk-one-login/frontend-passthrough-headers";
 import type { SinonSpy } from "sinon";
@@ -49,9 +46,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
     ) => AxiosRequestConfig;
 
     beforeEach(async () => {
-      createPersonalDataHeadersSpy = sinon.spy(
-        headersLibrary.createPersonalDataHeaders
-      );
+      createPersonalDataHeadersSpy = sinon.spy(headersLibrary.createPersonalDataHeaders);
 
       ({
         getInternalRequestConfigWithSecurityHeaders:
@@ -120,12 +115,8 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
       };
 
       expect(actualConfig.headers).to.deep.eq(expectedHeaders);
-      expect(
-        createPersonalDataHeadersSpy.calledWith(
-          "https://example.com/start",
-          req
-        )
-      ).to.be.true;
+      expect(createPersonalDataHeadersSpy.calledWith("https://example.com/start", req)).to
+        .be.true;
     });
 
     it("should use the correct base path when calling create personal headers and the options contain a base path", () => {
@@ -136,18 +127,13 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
       };
 
       const actualConfig = mockGetInternalRequestConfigWithSecurityHeaders(
-        {
-          baseURL: "https://some-other-base",
-        },
+        { baseURL: "https://some-other-base" },
         req,
         path
       );
 
       expect(
-        createPersonalDataHeadersSpy.calledWith(
-          "https://some-other-base/start",
-          req
-        )
+        createPersonalDataHeadersSpy.calledWith("https://some-other-base/start", req)
       ).to.be.true;
 
       const expectedHeaders = {
@@ -174,9 +160,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
     const overridingBaseURL = "https://www.example.com";
 
     const actualConfig = getInternalRequestConfigWithSecurityHeaders(
-      {
-        baseURL: overridingBaseURL,
-      },
+      { baseURL: overridingBaseURL },
       req,
       path
     );
@@ -188,17 +172,13 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
     const validStatus = HTTP_STATUS_CODES.OK;
 
     const actualConfig = getInternalRequestConfigWithSecurityHeaders(
-      {
-        validationStatuses: [validStatus],
-      },
+      { validationStatuses: [validStatus] },
       req,
       path
     );
 
     expect(actualConfig.validateStatus(validStatus)).to.eq(true);
-    expect(actualConfig.validateStatus(HTTP_STATUS_CODES.BAD_REQUEST)).to.eq(
-      false
-    );
+    expect(actualConfig.validateStatus(HTTP_STATUS_CODES.BAD_REQUEST)).to.eq(false);
   });
 });
 

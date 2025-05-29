@@ -43,7 +43,5 @@ export function reverificationResultService(
     return createApiResponse<ReverificationResultResponse>(response);
   };
 
-  return {
-    getReverificationResult,
-  };
+  return { getReverificationResult };
 }

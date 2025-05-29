@@ -9,11 +9,7 @@ import {
   sessionIsValid,
   validateSessionMiddleware,
 } from "../session-middleware.js";
-import {
-  ERROR_MESSAGES,
-  JOURNEY_TYPE,
-  PATH_NAMES,
-} from "../../app.constants.js";
+import { ERROR_MESSAGES, JOURNEY_TYPE, PATH_NAMES } from "../../app.constants.js";
 import { describe } from "mocha";
 import { mockRequest, mockResponse } from "mock-req-res";
 import { buildMfaMethods } from "../../../test/helpers/mfa-helper";
@@ -41,9 +37,7 @@ describe("session-middleware", () => {
 
     it("should carry over some existing session data when visiting AUTHORIZE", () => {
       const activeMfaMethodId = "auth-app-id";
-      const mfaMethods = buildMfaMethods([
-        { id: activeMfaMethodId, authApp: true },
-      ]);
+      const mfaMethods = buildMfaMethods([{ id: activeMfaMethodId, authApp: true }]);
       req.session.user = {
         // To be ignored
         isAuthenticated: false,
@@ -89,13 +83,7 @@ describe("session-middleware", () => {
       expect(next).to.be.calledOnce;
     });
     it("should add clientId to response when present on session", () => {
-      req = {
-        session: {
-          client: {
-            rpClientId: "an-rp-client-id",
-          },
-        },
-      } as any;
+      req = { session: { client: { rpClientId: "an-rp-client-id" } } } as any;
       getSessionIdMiddleware(req as Request, res as Response, next);
 
       expect(res.locals).to.have.property("clientId");
@@ -115,14 +103,8 @@ describe("session-middleware", () => {
   describe("sessionIsValid", () => {
     beforeEach(() => {
       req = {
-        session: {
-          id: "session-id",
-          sessionRestored: true,
-        },
-        cookies: {
-          gs: "gs-cookie",
-          aps: "aps-cookie",
-        },
+        session: { id: "session-id", sessionRestored: true },
+        cookies: { gs: "gs-cookie", aps: "aps-cookie" },
       } as any;
     });
 
@@ -177,27 +159,15 @@ describe("session-middleware", () => {
     req = {
       cookies: {},
       headers: {},
-      session: {
-        id: "session-id",
-        destroy: sinon.stub().callsArg(0),
-        user: {},
-      },
-      log: {
-        error: sinon.stub(),
-        info: sinon.stub(),
-      },
+      session: { id: "session-id", destroy: sinon.stub().callsArg(0), user: {} },
+      log: { error: sinon.stub(), info: sinon.stub() },
       get: function (headerName: string) {
         if (headerName === "Referrer") {
           return this.headers["referer"] || this.headers["referrer"];
         }
       },
     } as any;
-    res = {
-      locals: {},
-      status: sinon.stub().returns({
-        json: sinon.stub(),
-      }),
-    } as any;
+    res = { locals: {}, status: sinon.stub().returns({ json: sinon.stub() }) } as any;
     next = sinon.fake();
   };
 

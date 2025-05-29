@@ -1,10 +1,7 @@
 import { describe } from "mocha";
 import { mockResponse } from "mock-req-res";
 import type { Response } from "express";
-import type {
-  ApiResponseResult,
-  DefaultApiResponse,
-} from "../../../src/types.js";
+import type { ApiResponseResult, DefaultApiResponse } from "../../../src/types.js";
 import { ERROR_CODES } from "../../../src/components/common/constants.js";
 import { handleSendMfaCodeError } from "../../../src/utils/send-mfa-code-error-helper.js";
 import { expect } from "../../utils/test-utils.js";
@@ -47,9 +44,7 @@ describe("send mfa code error helper", () => {
       headers: undefined,
       status: 0,
       statusText: "",
-      data: {
-        code: ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_MAX_CODES_SENT,
-      },
+      data: { code: ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_MAX_CODES_SENT },
     });
     handleSendMfaCodeError(result, res);
     expect(res.redirect).to.have.calledWith(

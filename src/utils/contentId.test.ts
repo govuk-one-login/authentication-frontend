@@ -2,15 +2,11 @@ import { getContentId } from "./contentId.js";
 import type { Request } from "express";
 import type { ContentIdFunction } from "../types.js";
 import { expect } from "../../test/utils/test-utils.js";
-const TEST_PATH_NAMES = {
-  CUSTOM_FUNCTION: "/custom-function",
-};
+const TEST_PATH_NAMES = { CUSTOM_FUNCTION: "/custom-function" };
 
 const CUSTOM_FUNCTION_ID = "this-is-a-custom-id";
 
-const TEST_CONTENT_IDS: {
-  [path: string]: ContentIdFunction;
-} = {
+const TEST_CONTENT_IDS: { [path: string]: ContentIdFunction } = {
   [TEST_PATH_NAMES.CUSTOM_FUNCTION]: () => CUSTOM_FUNCTION_ID,
 };
 
@@ -21,9 +17,7 @@ describe("getContentId", () => {
 
   it(`user on path with no associated contentIds returns empty string`, async () => {
     const contentId = getContentId(
-      {
-        path: "/undefined-path-with-no-content-id",
-      } as Request,
+      { path: "/undefined-path-with-no-content-id" } as Request,
       TEST_CONTENT_IDS
     );
     expect(contentId).to.eq("");
@@ -31,9 +25,7 @@ describe("getContentId", () => {
 
   it(`when user is on path with contentId function it returns expected string`, async () => {
     const contentId = getContentId(
-      {
-        path: TEST_PATH_NAMES.CUSTOM_FUNCTION,
-      } as Request,
+      { path: TEST_PATH_NAMES.CUSTOM_FUNCTION } as Request,
       TEST_CONTENT_IDS
     );
     expect(contentId).to.eq(CUSTOM_FUNCTION_ID);

@@ -7,10 +7,7 @@ import {
   COOKIES_CHANNEL,
   CHANNEL,
 } from "../../app.constants.js";
-import {
-  getNextPathAndUpdateJourney,
-  ERROR_CODES,
-} from "../common/constants.js";
+import { getNextPathAndUpdateJourney, ERROR_CODES } from "../common/constants.js";
 import { BadRequestError, QueryParamsError } from "../../utils/error.js";
 import type { ApiResponseResult, ExpressRouteFunc } from "../../types.js";
 import type { CookieConsentServiceInterface } from "../common/cookie-consent/types.js";
@@ -57,9 +54,7 @@ export function authorizeGet(
       const authRequestJweDecryptedAsJwt = await kmsService.decrypt(
         encryptedAuthRequestJWE
       );
-      claims = await jwtService.getPayloadWithValidation(
-        authRequestJweDecryptedAsJwt
-      );
+      claims = await jwtService.getPayloadWithValidation(authRequestJweDecryptedAsJwt);
     } catch (error) {
       throw new BadRequestError(error.message);
     }
@@ -75,9 +70,7 @@ export function authorizeGet(
       clientSessionId,
       persistentSessionId,
       req,
-      {
-        ...claims,
-      }
+      { ...claims }
     );
 
     if (!startAuthResponse.success) {
@@ -87,8 +80,7 @@ export function authorizeGet(
       );
       if (
         startAuthResponse.data.code &&
-        startAuthResponse.data.code ===
-          ERROR_CODES.SESSION_ID_MISSING_OR_INVALID
+        startAuthResponse.data.code === ERROR_CODES.SESSION_ID_MISSING_OR_INVALID
       ) {
         startError.level = ERROR_LOG_LEVEL.INFO;
       }
@@ -109,9 +101,7 @@ export function authorizeGet(
       logger.info(
         `Start response indicates user with session ${res.locals.sessionId} is blocked for reauth, redirecting back to orchestration`
       );
-      return res.redirect(
-        req.session.client.redirectUri.concat("?error=login_required")
-      );
+      return res.redirect(req.session.client.redirectUri.concat("?error=login_required"));
     }
 
     req.session.user.isAccountCreationJourney = undefined;
@@ -221,11 +211,9 @@ function setSessionDataFromAuthResponse(
   req: Request,
   startAuthResponse: ApiResponseResult<StartAuthResponse>
 ) {
-  req.session.user.isIdentityRequired =
-    startAuthResponse.data.user.identityRequired;
+  req.session.user.isIdentityRequired = startAuthResponse.data.user.identityRequired;
   req.session.user.isAuthenticated = startAuthResponse.data.user.authenticated;
-  req.session.user.isUpliftRequired =
-    startAuthResponse.data.user.upliftRequired;
+  req.session.user.isUpliftRequired = startAuthResponse.data.user.upliftRequired;
   if (startAuthResponse.data.featureFlags) {
     req.session.user.featureFlags = startAuthResponse.data.featureFlags;
   }

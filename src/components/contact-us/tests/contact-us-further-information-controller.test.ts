@@ -38,15 +38,12 @@ describe("contact us further information controller", () => {
       req.path = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
       furtherInformationGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "contact-us/further-information/index.njk",
-        {
-          theme: "signing_in",
-          referer: encodeURIComponent(REFERER),
-          hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
-          supportNoPhotoIdContactForms: false,
-        }
-      );
+      expect(res.render).to.have.calledWith("contact-us/further-information/index.njk", {
+        theme: "signing_in",
+        referer: encodeURIComponent(REFERER),
+        hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
+        supportNoPhotoIdContactForms: false,
+      });
     });
 
     it("should render account creation further information if a creating an account radio option was chosen", () => {
@@ -55,15 +52,12 @@ describe("contact us further information controller", () => {
       req.query.referer = REFERER;
       furtherInformationGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "contact-us/further-information/index.njk",
-        {
-          theme: "account_creation",
-          referer: encodeURIComponent(REFERER),
-          hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
-          supportNoPhotoIdContactForms: false,
-        }
-      );
+      expect(res.render).to.have.calledWith("contact-us/further-information/index.njk", {
+        theme: "account_creation",
+        referer: encodeURIComponent(REFERER),
+        hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
+        supportNoPhotoIdContactForms: false,
+      });
     });
 
     it("should redirect to contact-us when no theme is present in request", () => {

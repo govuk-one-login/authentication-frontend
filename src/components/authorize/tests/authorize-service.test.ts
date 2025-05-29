@@ -106,10 +106,7 @@ describe("authorize service", () => {
           client_name: "test-client-name",
           service_type: "essential",
         },
-        {
-          headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
-          proxy: false,
-        }
+        { headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders }, proxy: false }
       )
     ).to.be.true;
   });
@@ -140,10 +137,7 @@ describe("authorize service", () => {
           client_name: "test-client-name",
           service_type: "essential",
         },
-        {
-          headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
-          proxy: false,
-        }
+        { headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders }, proxy: false }
       )
     ).to.be.true;
   });
@@ -177,12 +171,7 @@ describe("authorize service", () => {
           client_name: "test-client-name",
           service_type: "essential",
         },
-        {
-          headers: {
-            ...expectedHeadersFromCommonVarsWithSecurityHeaders,
-          },
-          proxy: false,
-        }
+        { headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders }, proxy: false }
       )
     ).to.be.true;
   });
@@ -262,10 +251,7 @@ describe("authorize service", () => {
           client_name: "test-client-name",
           service_type: "essential",
         },
-        {
-          headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
-          proxy: false,
-        }
+        { headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders }, proxy: false }
       )
     ).to.be.true;
   });

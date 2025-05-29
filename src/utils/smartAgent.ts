@@ -24,12 +24,7 @@ export class SmartAgentService {
           email: payload.email || "Email not provided",
           customAttributes: payload.customAttributes,
         },
-        {
-          headers: {
-            "x-api-key": this.apiKey,
-            "Content-Type": "application/json",
-          },
-        }
+        { headers: { "x-api-key": this.apiKey, "Content-Type": "application/json" } }
       )
       .catch((error) => {
         logger.info(`Error posting to SmartAgent API`);

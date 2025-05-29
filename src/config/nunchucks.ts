@@ -21,12 +21,9 @@ export function configureNunjucks(
     return translate(key, options);
   });
 
-  nunjucksEnv.addFilter(
-    "returnLastCharacters",
-    function (key: string, options?: any) {
-      return returnLastCharactersOnly(key, options);
-    }
-  );
+  nunjucksEnv.addFilter("returnLastCharacters", function (key: string, options?: any) {
+    return returnLastCharactersOnly(key, options);
+  });
 
   nunjucksEnv.addGlobal("addLanguageParam", addLanguageParam);
 

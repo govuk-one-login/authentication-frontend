@@ -1,10 +1,7 @@
 import { describe } from "mocha";
 import { enterPasswordService } from "../enter-password-service.js";
 import type { ApiResponseResult } from "../../../types.js";
-import type {
-  EnterPasswordServiceInterface,
-  UserLoginResponse,
-} from "../types.js";
+import type { EnterPasswordServiceInterface, UserLoginResponse } from "../types.js";
 import { expect } from "chai";
 import type { Request } from "express";
 import { Http } from "../../../utils/http.js";
@@ -16,8 +13,7 @@ import type { SinonStub } from "sinon";
 describe("enter-password-service", () => {
   let req: Partial<Request>;
   const httpInstance = new Http();
-  const service: EnterPasswordServiceInterface =
-    enterPasswordService(httpInstance);
+  const service: EnterPasswordServiceInterface = enterPasswordService(httpInstance);
   const IP_ADDRESS = "123.123.123.123";
   const API_KEY = "api-key";
 
@@ -38,11 +34,7 @@ describe("enter-password-service", () => {
   it("successfully calls the API to log the user in or reauthenticate", async () => {
     const auditEncodedString =
       "R21vLmd3QilNKHJsaGkvTFxhZDZrKF44SStoLFsieG0oSUY3aEhWRVtOMFRNMVw1dyInKzB8OVV5N09hOi8kLmlLcWJjJGQiK1NPUEJPPHBrYWJHP358NDg2ZDVc";
-    const axiosResponse = Promise.resolve({
-      data: {},
-      status: 200,
-      statusText: "OK",
-    });
+    const axiosResponse = Promise.resolve({ data: {}, status: 200, statusText: "OK" });
     postStub.resolves(axiosResponse);
     req = createMockRequest(API_ENDPOINTS.LOG_IN_USER);
     req.ip = IP_ADDRESS;
@@ -50,21 +42,17 @@ describe("enter-password-service", () => {
       "txma-audit-encoded": auditEncodedString,
       "x-forwarded-for": IP_ADDRESS,
     };
-    const expectedBody = {
-      email: "email",
-      password: "password",
-    };
+    const expectedBody = { email: "email", password: "password" };
 
-    const result: ApiResponseResult<UserLoginResponse> =
-      await service.loginUser(
-        "",
-        "email",
-        "password",
-        "",
-        "",
-        req as Request,
-        undefined
-      );
+    const result: ApiResponseResult<UserLoginResponse> = await service.loginUser(
+      "",
+      "email",
+      "password",
+      "",
+      "",
+      req as Request,
+      undefined
+    );
 
     expect(result.success).to.be.true;
     expect(result.data).to.deep.eq({});

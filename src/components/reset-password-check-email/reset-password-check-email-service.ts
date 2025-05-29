@@ -44,7 +44,5 @@ export function resetPasswordCheckEmailService(
       HTTP_STATUS_CODES.NO_CONTENT,
     ]);
   };
-  return {
-    resetPasswordRequest,
-  };
+  return { resetPasswordRequest };
 }

@@ -23,9 +23,7 @@ describe("reset password 2fa auth app controller", () => {
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP);
-    req.session.user = {
-      email: commonVariables.email,
-    };
+    req.session.user = { email: commonVariables.email };
     res = mockResponse();
   });
 
@@ -37,9 +35,7 @@ describe("reset password 2fa auth app controller", () => {
     it("should render reset password auth app view", async () => {
       await resetPassword2FAAuthAppGet()(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "reset-password-2fa-auth-app/index.njk"
-      );
+      expect(res.render).to.have.calledWith("reset-password-2fa-auth-app/index.njk");
     });
 
     it("should render reset password auth app view with hasMultipleMfaMethods false when user has a single mfa method", async () => {
@@ -52,13 +48,10 @@ describe("reset password 2fa auth app controller", () => {
 
       await resetPassword2FAAuthAppGet()(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "reset-password-2fa-auth-app/index.njk",
-        {
-          hasMultipleMfaMethods: false,
-          chooseMfaMethodHref: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
-        }
-      );
+      expect(res.render).to.have.calledWith("reset-password-2fa-auth-app/index.njk", {
+        hasMultipleMfaMethods: false,
+        chooseMfaMethodHref: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
+      });
     });
 
     it("should render reset password auth app view with hasMultipleMfaMethods true when user has more than one mfa method", async () => {
@@ -72,30 +65,22 @@ describe("reset password 2fa auth app controller", () => {
 
       await resetPassword2FAAuthAppGet()(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "reset-password-2fa-auth-app/index.njk",
-        {
-          hasMultipleMfaMethods: true,
-          chooseMfaMethodHref: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
-        }
-      );
+      expect(res.render).to.have.calledWith("reset-password-2fa-auth-app/index.njk", {
+        hasMultipleMfaMethods: true,
+        chooseMfaMethodHref: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
+      });
     });
   });
 
   describe("resetPassword2FAAuthAppPost", () => {
     it("should redirect to reset-password if code entered is correct", async () => {
       const fakeService: VerifyMfaCodeInterface = {
-        verifyMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        verifyMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as VerifyMfaCodeInterface;
       req.session.user.enterEmailMfaType = "AUTH-APP";
       req.body.code = "123456";
 
-      await resetPassword2FAAuthAppPost(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await resetPassword2FAAuthAppPost(fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith("/reset-password");
     });
@@ -104,30 +89,22 @@ describe("reset password 2fa auth app controller", () => {
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
           success: false,
-          data: {
-            code: ERROR_CODES.AUTH_APP_INVALID_CODE,
-          },
+          data: { code: ERROR_CODES.AUTH_APP_INVALID_CODE },
         }),
       } as unknown as VerifyMfaCodeInterface;
       req.session.user.enterEmailMfaType = "AUTH-APP";
       req.body.code = "123456";
 
-      await resetPassword2FAAuthAppPost(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await resetPassword2FAAuthAppPost(fakeService)(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "reset-password-2fa-auth-app/index.njk"
-      );
+      expect(res.render).to.have.calledWith("reset-password-2fa-auth-app/index.njk");
     });
 
     it("should render security-code-error/index-security-code-entered-exceeded.njk when user was locked out in the current session for requesting too many security codes", async () => {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
 
-      req.session.user.wrongCodeEnteredPasswordResetMfaLock =
-        tomorrow.toUTCString();
+      req.session.user.wrongCodeEnteredPasswordResetMfaLock = tomorrow.toUTCString();
 
       await resetPassword2FAAuthAppGet()(req as Request, res as Response);
 

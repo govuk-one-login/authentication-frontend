@@ -1,9 +1,6 @@
 import type { ApiResponseResult, DefaultApiResponse } from "../types.js";
 import type { Response } from "express";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-} from "../components/common/constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../components/common/constants.js";
 import { BadRequestError } from "./error.js";
 
 export const handleSendMfaCodeError = (
@@ -15,13 +12,10 @@ export const handleSendMfaCodeError = (
   }
 
   if (result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
-    return res.render(
-      "security-code-error/index-security-code-entered-exceeded.njk",
-      {
-        show2HrScreen: true,
-        contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
-      }
-    );
+    return res.render("security-code-error/index-security-code-entered-exceeded.njk", {
+      show2HrScreen: true,
+      contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
+    });
   }
 
   const path = getErrorPathByCode(result.data.code);

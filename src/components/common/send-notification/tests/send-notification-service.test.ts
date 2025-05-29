@@ -22,13 +22,8 @@ import { commonVariables } from "../../../../../test/helpers/common-test-variabl
 describe("send notification service", () => {
   let postStub: SinonStub;
   let service: SendNotificationServiceInterface;
-  const axiosResponse = Promise.resolve({
-    data: {},
-    status: 200,
-    statusText: "OK",
-  });
-  const { sessionId, clientSessionId, email, diPersistentSessionId } =
-    commonVariables;
+  const axiosResponse = Promise.resolve({ data: {}, status: 200, statusText: "OK" });
+  const { sessionId, clientSessionId, email, diPersistentSessionId } = commonVariables;
   const req = createMockRequest(PATH_NAMES.RESEND_MFA_CODE, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
@@ -98,13 +93,7 @@ describe("send notification service", () => {
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.SEND_NOTIFICATION,
       expectedHeaders,
-      expectedBody: {
-        email,
-        notificationType,
-        journeyType,
-        phoneNumber,
-        requestNewCode,
-      },
+      expectedBody: { email, notificationType, journeyType, phoneNumber, requestNewCode },
       validateStatus: true,
     };
 

@@ -88,8 +88,5 @@ export function proveIdentityCallbackService(
     return authCodeLocation;
   };
 
-  return {
-    processIdentity: identityProcessed,
-    generateSuccessfulRpReturnUrl,
-  };
+  return { processIdentity: identityProcessed, generateSuccessfulRpReturnUrl };
 }

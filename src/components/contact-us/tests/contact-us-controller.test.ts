@@ -25,11 +25,7 @@ import {
   PATH_NAMES,
   SUPPORT_TYPE,
 } from "../../../app.constants.js";
-import type {
-  ExpressRouteFunc,
-  RequestGet,
-  ResponseRedirect,
-} from "../../../types.js";
+import type { ExpressRouteFunc, RequestGet, ResponseRedirect } from "../../../types.js";
 import { getServiceDomain, getSupportLinkUrl } from "../../../config.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { mockResponse } from "mock-req-res";
@@ -75,9 +71,7 @@ describe("contact us controller", () => {
       req.query.supportType = SUPPORT_TYPE.PUBLIC;
       contactUsGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "contact-us/index-public-contact-us.njk"
-      );
+      expect(res.render).to.have.calledWith("contact-us/index-public-contact-us.njk");
     });
 
     it("should render contact us gov page with no hidden inputs passed in", () => {
@@ -86,14 +80,11 @@ describe("contact us controller", () => {
 
       contactUsGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "contact-us/index-public-contact-us.njk",
-        {
-          referer: "",
-          fromURL: undefined,
-          hrefBack: PATH_NAMES.CONTACT_US,
-        }
-      );
+      expect(res.render).to.have.calledWith("contact-us/index-public-contact-us.njk", {
+        referer: "",
+        fromURL: undefined,
+        hrefBack: PATH_NAMES.CONTACT_US,
+      });
     });
 
     it("should render contact us gov page with hidden inputs passed in", () => {
@@ -104,22 +95,18 @@ describe("contact us controller", () => {
 
       contactUsGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "contact-us/index-public-contact-us.njk",
-        {
-          referer: encodeURIComponent(REFERER),
-          fromURL: fromUrlEncoded,
-          hrefBack: `${PATH_NAMES.CONTACT_US}?fromURL=${fromUrlEncoded}`,
-        }
-      );
+      expect(res.render).to.have.calledWith("contact-us/index-public-contact-us.njk", {
+        referer: encodeURIComponent(REFERER),
+        fromURL: fromUrlEncoded,
+        hrefBack: `${PATH_NAMES.CONTACT_US}?fromURL=${fromUrlEncoded}`,
+      });
     });
 
     it("should render contact us gov page with null referer with injection", () => {
       const serviceDomain = "account.gov.uk";
       const scriptReferers = [
         "accountCreatedEmail<script>alert()</script>/" + serviceDomain,
-        "accountCreatedEmail&lt;script&gt;alert()&lt;/script&gt;/" +
-          serviceDomain,
+        "accountCreatedEmail&lt;script&gt;alert()&lt;/script&gt;/" + serviceDomain,
         "accountCreatedEmail\u003Cscript\u003Ealert()\u003C/script\u003E/" +
           serviceDomain,
       ];
@@ -128,14 +115,11 @@ describe("contact us controller", () => {
 
         contactUsGet(req as Request, res as Response);
 
-        expect(res.render).to.have.calledWith(
-          "contact-us/index-public-contact-us.njk",
-          {
-            referer: "",
-            fromURL: undefined,
-            hrefBack: PATH_NAMES.CONTACT_US,
-          }
-        );
+        expect(res.render).to.have.calledWith("contact-us/index-public-contact-us.njk", {
+          referer: "",
+          fromURL: undefined,
+          hrefBack: PATH_NAMES.CONTACT_US,
+        });
       });
     });
   });
@@ -419,10 +403,7 @@ describe("appErrorCode and appSessionId query parameters", () => {
       "https://account.gov.uk",
     ];
     const badReferers = ["https://app.staging.account.gov", "https://gov.uk"];
-    const referersWithoutScheme = [
-      "app.staging.account.gov.uk",
-      "account.gov.uk",
-    ];
+    const referersWithoutScheme = ["app.staging.account.gov.uk", "account.gov.uk"];
 
     it("should return the referer for all values in the allow list", () => {
       CONTACT_US_REFERER_ALLOWLIST.forEach((item) => {
@@ -487,37 +468,35 @@ describe("prepareBackLink", () => {
 
   it("should return the supportLinkURL when the req.path ends with the CONTACT_US path", () => {
     req.path = PATH_NAMES.CONTACT_US;
-    expect(
-      prepareBackLink(req as Request, supportLinkURL, serviceDomain)
-    ).to.equal(supportLinkURL);
+    expect(prepareBackLink(req as Request, supportLinkURL, serviceDomain)).to.equal(
+      supportLinkURL
+    );
   });
 
   it("should return the CONTACT_US_FURTHER_INFORMATION path when the req.path ends with the CONTACT_US_QUESTIONS path and has req.query.subtheme", () => {
     req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
     req.query.subtheme = "testSubtheme";
-    expect(
-      prepareBackLink(req as Request, supportLinkURL, serviceDomain)
-    ).to.equal(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION);
+    expect(prepareBackLink(req as Request, supportLinkURL, serviceDomain)).to.equal(
+      PATH_NAMES.CONTACT_US_FURTHER_INFORMATION
+    );
   });
 
   it("should return the CONTACT_US path when the req.path ends with the CONTACT_US_QUESTIONS path and doesn't have req.query.subtheme", () => {
     req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
-    expect(
-      prepareBackLink(req as Request, supportLinkURL, serviceDomain)
-    ).to.equal(PATH_NAMES.CONTACT_US);
+    expect(prepareBackLink(req as Request, supportLinkURL, serviceDomain)).to.equal(
+      PATH_NAMES.CONTACT_US
+    );
   });
 
   it("should return the supportLinkURL with a fromURL parameter when one is included in the req.url", () => {
     req.query.fromURL = `https://${getServiceDomain()}${PATH_NAMES.CONTACT_US}`;
     const fromURL =
       "?fromURL=" +
-      encodeURIComponent(
-        `https://${getServiceDomain()}${PATH_NAMES.CONTACT_US}`
-      );
+      encodeURIComponent(`https://${getServiceDomain()}${PATH_NAMES.CONTACT_US}`);
 
-    expect(
-      prepareBackLink(req as Request, supportLinkURL, serviceDomain)
-    ).to.equal(supportLinkURL + fromURL);
+    expect(prepareBackLink(req as Request, supportLinkURL, serviceDomain)).to.equal(
+      supportLinkURL + fromURL
+    );
   });
 
   it("should omit the fromURL from the backlink where the one included in req.url is not valid", () => {
@@ -525,9 +504,9 @@ describe("prepareBackLink", () => {
       PATH_NAMES.CONTACT_US
     }?fromURL=${encodeURIComponent("https://www.example.com")}`;
 
-    expect(
-      prepareBackLink(req as Request, supportLinkURL, serviceDomain)
-    ).to.equal(supportLinkURL);
+    expect(prepareBackLink(req as Request, supportLinkURL, serviceDomain)).to.equal(
+      supportLinkURL
+    );
   });
 
   it("should include the `theme` where the theme is valid", () => {
@@ -538,34 +517,32 @@ describe("prepareBackLink", () => {
 
     const theme = `?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`;
 
-    expect(
-      prepareBackLink(req as Request, supportLinkURL, serviceDomain)
-    ).to.equal(supportLinkURL + theme);
+    expect(prepareBackLink(req as Request, supportLinkURL, serviceDomain)).to.equal(
+      supportLinkURL + theme
+    );
   });
 
   describe("dynamic back links on CONTACT_US_FURTHER_INFORMATION", () => {
     it("should default to returning the CONTACT_US path", () => {
       req.path = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
-      expect(
-        prepareBackLink(req as Request, supportLinkURL, serviceDomain)
-      ).to.equal(PATH_NAMES.CONTACT_US);
+      expect(prepareBackLink(req as Request, supportLinkURL, serviceDomain)).to.equal(
+        PATH_NAMES.CONTACT_US
+      );
     });
     it("should return the `supportLinkURL` if there is a fromURL and the theme is ID_CHECK_APP", () => {
       req.path = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
       req.query.fromURL = PATH_NAMES.DOC_CHECKING_APP;
       req.query.theme = CONTACT_US_THEMES.ID_CHECK_APP;
-      expect(
-        prepareBackLink(req as Request, supportLinkURL, serviceDomain)
-      ).to.equal(`${supportLinkURL}?theme=${CONTACT_US_THEMES.ID_CHECK_APP}`);
+      expect(prepareBackLink(req as Request, supportLinkURL, serviceDomain)).to.equal(
+        `${supportLinkURL}?theme=${CONTACT_US_THEMES.ID_CHECK_APP}`
+      );
     });
   });
 });
 
 describe("getNextUrlBasedOnTheme", () => {
   it("should return the URL for CONTACT_US_FURTHER_INFORMATION where the form has supplemental options", () => {
-    expect(getNextUrlBasedOnTheme("")).to.equal(
-      PATH_NAMES.CONTACT_US_QUESTIONS
-    );
+    expect(getNextUrlBasedOnTheme("")).to.equal(PATH_NAMES.CONTACT_US_QUESTIONS);
     expect(getNextUrlBasedOnTheme(CONTACT_US_THEMES.ACCOUNT_CREATION)).to.equal(
       PATH_NAMES.CONTACT_US_FURTHER_INFORMATION
     );
@@ -590,10 +567,9 @@ describe("contactUsQuestionsFormPostToSmartAgent", () => {
   beforeEach(() => {
     mockContactUsSubmitFormSmartAgent.resetHistory();
 
-    mockContactUsQuestionsFormPostToSmartAgent =
-      contactUsQuestionsFormPostToSmartAgent({
-        contactUsSubmitFormSmartAgent: mockContactUsSubmitFormSmartAgent,
-      });
+    mockContactUsQuestionsFormPostToSmartAgent = contactUsQuestionsFormPostToSmartAgent({
+      contactUsSubmitFormSmartAgent: mockContactUsSubmitFormSmartAgent,
+    });
   });
 
   describe("telephoneNumber", () => {
@@ -634,14 +610,10 @@ describe("contactUsQuestionsFormPostToSmartAgent", () => {
           const mockRequest = createMockRequest("/contact-us-questions");
           mockRequest.body.phoneNumber = phoneNumber;
           mockRequest.body.internationalPhoneNumber = internationalPhoneNumber;
-          mockRequest.body.hasInternationalPhoneNumber =
-            hasInternationalPhoneNumber;
+          mockRequest.body.hasInternationalPhoneNumber = hasInternationalPhoneNumber;
 
           // act
-          await mockContactUsQuestionsFormPostToSmartAgent(
-            mockRequest,
-            mockResponse()
-          );
+          await mockContactUsQuestionsFormPostToSmartAgent(mockRequest, mockResponse());
 
           // assert
           sinon.assert.calledOnce(mockContactUsSubmitFormSmartAgent);

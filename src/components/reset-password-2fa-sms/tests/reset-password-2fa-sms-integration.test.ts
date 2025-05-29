@@ -1,11 +1,7 @@
 import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import nock from "nock";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
@@ -31,9 +27,7 @@ describe("Integration::2fa sms (in reset password flow)", () => {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
             req.session.user = {
               email: "test@test.com",
-              journey: getPermittedJourneyForPath(
-                PATH_NAMES.RESET_PASSWORD_2FA_SMS
-              ),
+              journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD_2FA_SMS),
             };
 
             next();
@@ -68,15 +62,14 @@ describe("Integration::2fa sms (in reset password flow)", () => {
 
   it("should return check your phone page", async () => {
     nock(baseApi).persist().post("/mfa").reply(204);
-    await request(app, (test) =>
-      test.get("/reset-password-2fa-sms").expect(200)
-    );
+    await request(app, (test) => test.get("/reset-password-2fa-sms").expect(200));
   });
 
   it("should render index-security-code-entered-exceeded.njk when user is locked out due to too many incorrect codes", async () => {
-    nock(baseApi).persist().post("/mfa").reply(400, {
-      code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
-    });
+    nock(baseApi)
+      .persist()
+      .post("/mfa")
+      .reply(400, { code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES });
     await request(app, (test) =>
       test
         .get("/reset-password-2fa-sms")
@@ -102,30 +95,24 @@ describe("Integration::2fa sms (in reset password flow)", () => {
         .post(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
+        .send({ _csrf: token, code: "123456" })
         .expect("Location", PATH_NAMES.RESET_PASSWORD)
         .expect(302)
     );
   });
 
   it("should return error page when when user is locked out", async () => {
-    nock(baseApi).persist().post(API_ENDPOINTS.VERIFY_CODE).reply(400, {
-      code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
-      success: false,
-    });
+    nock(baseApi)
+      .persist()
+      .post(API_ENDPOINTS.VERIFY_CODE)
+      .reply(400, { code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES, success: false });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
+        .send({ _csrf: token, code: "123456" })
         .expect(
           "Location",
           `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.MfaMaxRetries}`

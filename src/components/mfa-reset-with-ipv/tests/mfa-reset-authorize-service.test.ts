@@ -18,17 +18,12 @@ describe("mfa reset authorize service", () => {
   const http = new Http();
   const service: MfaResetAuthorizeInterface = mfaResetAuthorizeService(http);
   let postStub: SinonStub;
-  const { sessionId, clientSessionId, email, diPersistentSessionId } =
-    commonVariables;
+  const { sessionId, clientSessionId, email, diPersistentSessionId } = commonVariables;
   const orchestrationRedirectUrl = "http://localhost?state=state";
   const req = createMockRequest(PATH_NAMES.ENTER_MFA, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
-  const axiosResponse = Promise.resolve({
-    data: {},
-    status: 200,
-    statusText: "OK",
-  });
+  const axiosResponse = Promise.resolve({ data: {}, status: 200, statusText: "OK" });
 
   beforeEach(() => {
     setupApiKeyAndBaseUrlEnvVars();

@@ -12,11 +12,7 @@ export function createMockRequest(
 ): RequestOutput {
   const request = mockRequest({
     path: pathName,
-    session: {
-      client: {},
-      user: {},
-      save: (callback: () => void) => callback(),
-    },
+    session: { client: {}, user: {}, save: (callback: () => void) => callback() },
     log: {
       info: sinon.fake(),
       debug: sinon.fake(),

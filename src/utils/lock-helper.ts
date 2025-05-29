@@ -8,7 +8,6 @@ export function timestampNSecondsFromNow(numberOfSeconds: number): string {
 
 export function isLocked(maybeLockTimestamp?: string): boolean {
   return (
-    maybeLockTimestamp &&
-    new Date().getTime() < new Date(maybeLockTimestamp).getTime()
+    maybeLockTimestamp && new Date().getTime() < new Date(maybeLockTimestamp).getTime()
   );
 }

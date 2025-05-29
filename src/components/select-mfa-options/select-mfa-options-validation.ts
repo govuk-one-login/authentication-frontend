@@ -8,20 +8,13 @@ export function validateMultiFactorAuthenticationRequest(): ValidationChainFunc 
     body("mfaOptions")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t("pages.getSecurityCodes.secondFactorRadios.errorMessage", {
-          value,
-        });
+        return req.t("pages.getSecurityCodes.secondFactorRadios.errorMessage", { value });
       }),
-    validateBodyMiddleware(
-      "select-mfa-options/index.njk",
-      postValidationLocals
-    ),
+    validateBodyMiddleware("select-mfa-options/index.njk", postValidationLocals),
   ];
 }
 
-const postValidationLocals = function locals(
-  req: Request
-): Record<string, unknown> {
+const postValidationLocals = function locals(req: Request): Record<string, unknown> {
   return {
     isAccountPartCreated: req.session.user.isAccountPartCreated,
     isAccountRecoveryJourney: isAccountRecoveryJourney(req),

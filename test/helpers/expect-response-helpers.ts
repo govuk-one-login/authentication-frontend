@@ -1,8 +1,6 @@
 import type request from "supertest";
 import { expect } from "../utils/test-utils.js";
-export function expectAnalyticsPropertiesMatchSnapshot(
-  res: request.Response
-): void {
+export function expectAnalyticsPropertiesMatchSnapshot(res: request.Response): void {
   if (res.statusCode < 300 || res.statusCode >= 400) {
     expect({
       taxonomyLevel1: res.text.match(/taxonomy_level1: '([\w\d\s]*)'/)?.[1],

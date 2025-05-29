@@ -15,12 +15,9 @@ export function validateEnterPhoneNumberRequest(): ValidationChainFunc {
       .if(body("hasInternationalPhoneNumber").not().equals("true"))
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t(
-          "sharedFields.phoneNumber.ukPhoneNumber.validationError.required",
-          {
-            value,
-          }
-        );
+        return req.t("sharedFields.phoneNumber.ukPhoneNumber.validationError.required", {
+          value,
+        });
       })
       .custom(ukPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly)
       .custom(ukPhoneNumberMustHaveLengthWithoutSpacesInRange)

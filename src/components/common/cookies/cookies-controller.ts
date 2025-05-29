@@ -14,8 +14,7 @@ export function cookiesGet(req: Request, res: Response): void {
     sanitize(req.cookies.cookies_preferences_set)
   );
   res.locals.originalReferer = sanitize(req.headers.referer);
-  res.locals.analyticsConsent =
-    consentValue.cookie_consent === COOKIE_CONSENT.ACCEPT;
+  res.locals.analyticsConsent = consentValue.cookie_consent === COOKIE_CONSENT.ACCEPT;
   res.locals.updated = false;
   res.render("common/cookies/index.njk");
 }
@@ -27,9 +26,7 @@ export function cookiesPost(req: Request, res: Response): void {
   );
 
   if (consentValue === "false") {
-    const options = {
-      domain: getGoogleAnalyticsAndDynatraceCookieDomain(),
-    };
+    const options = { domain: getGoogleAnalyticsAndDynatraceCookieDomain() };
 
     ANALYTICS_COOKIES.forEach((key) => {
       res.clearCookie(key, options);

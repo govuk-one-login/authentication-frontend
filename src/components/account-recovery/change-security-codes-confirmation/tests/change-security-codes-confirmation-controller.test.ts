@@ -30,12 +30,8 @@ describe("change security codes confirmation controller", () => {
   describe("changeSecurityCodesConfirmationGet", () => {
     const redactedPhoneNumber = "*******1234";
     const testData = [
-      {
-        methodType: MFA_METHOD_TYPE.SMS,
-      },
-      {
-        methodType: MFA_METHOD_TYPE.AUTH_APP,
-      },
+      { methodType: MFA_METHOD_TYPE.SMS },
+      { methodType: MFA_METHOD_TYPE.AUTH_APP },
     ];
     testData.forEach(function (testParams) {
       it(`should render the change security codes codes confirmation page for mfaMethodType ${testParams.methodType}`, async () => {
@@ -43,17 +39,11 @@ describe("change security codes confirmation controller", () => {
         req.session.user.email = "security.codes.changed@testtwofactorauth.org";
         req.session.user.mfaMethods = buildMfaMethods({ redactedPhoneNumber });
 
-        await changeSecurityCodesConfirmationGet()(
-          req as Request,
-          res as Response
-        );
+        await changeSecurityCodesConfirmationGet()(req as Request, res as Response);
 
         expect(res.render).to.have.been.calledWith(
           "account-recovery/change-security-codes-confirmation/index.njk",
-          {
-            mfaMethodType: testParams.methodType,
-            phoneNumber: redactedPhoneNumber,
-          }
+          { mfaMethodType: testParams.methodType, phoneNumber: redactedPhoneNumber }
         );
       });
     });
@@ -62,10 +52,7 @@ describe("change security codes confirmation controller", () => {
   describe("changeSecurityCodesConfirmationPost", () => {
     it("should redirect to auth code after security codes confirmation ", async () => {
       req = createMockRequest(PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION);
-      await changeSecurityCodesConfirmationPost(
-        req as Request,
-        res as Response
-      );
+      await changeSecurityCodesConfirmationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
     });

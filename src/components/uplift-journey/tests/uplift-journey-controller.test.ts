@@ -16,9 +16,7 @@ describe("uplift journey controller", () => {
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.UPLIFT_JOURNEY);
-    req.session.user = {
-      email: "test@test.com",
-    };
+    req.session.user = { email: "test@test.com" };
     res = mockResponse();
   });
 
@@ -29,9 +27,7 @@ describe("uplift journey controller", () => {
   describe("upliftJourneyGet", () => {
     it("should send mfa code and redirect to /enter-code view", async () => {
       const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
 
       await upliftJourneyGet(fakeService)(req as Request, res as Response);
@@ -42,9 +38,7 @@ describe("uplift journey controller", () => {
 
     it("should send mfa code and redirect to /enter-code with _ga param", async () => {
       const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
 
       req.query._ga = "123123.21321313.2388839";

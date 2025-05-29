@@ -4,10 +4,7 @@ import { describe } from "mocha";
 import { sinon } from "../../../../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
 
-import {
-  resendMfaCodeGet,
-  resendMfaCodePost,
-} from "../resend-mfa-code-controller.js";
+import { resendMfaCodeGet, resendMfaCodePost } from "../resend-mfa-code-controller.js";
 import { PATH_NAMES } from "../../../../app.constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
@@ -37,9 +34,7 @@ describe("resend mfa controller", () => {
     it("should render resend mfa code view", () => {
       resendMfaCodeGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "account-creation/resend-mfa-code/index.njk"
-      );
+      expect(res.render).to.have.calledWith("account-creation/resend-mfa-code/index.njk");
     });
   });
 
@@ -63,10 +58,7 @@ describe("resend mfa controller", () => {
     });
 
     it("should request new phone verification code with relevant registration journey type for account recovery journey", async () => {
-      req.session.user = {
-        email,
-        isAccountRecoveryJourney: true,
-      };
+      req.session.user = { email, isAccountRecoveryJourney: true };
       const expectedJourneyType = "ACCOUNT_RECOVERY";
 
       await resendMfaCodePost(fakeService)(req as Request, res as Response);
@@ -84,10 +76,7 @@ describe("resend mfa controller", () => {
     });
 
     it("should request new phone verification code with relevant registration journey type for account creation journey", async () => {
-      req.session.user = {
-        email,
-        isAccountCreationJourney: true,
-      };
+      req.session.user = { email, isAccountCreationJourney: true };
       const expectedJourneyType = "REGISTRATION";
 
       await resendMfaCodePost(fakeService)(req as Request, res as Response);

@@ -41,10 +41,10 @@ export function enterPhoneNumberPost(
       phoneNumber = req.body.phoneNumber;
     }
 
-    req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
-      req.session.user.mfaMethods,
-      { phoneNumber, redactedPhoneNumber: redactPhoneNumber(phoneNumber) }
-    );
+    req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(req.session.user.mfaMethods, {
+      phoneNumber,
+      redactedPhoneNumber: redactPhoneNumber(phoneNumber),
+    });
 
     const journeyType = isAccountRecoveryJourneyAndPermitted(req)
       ? JOURNEY_TYPE.ACCOUNT_RECOVERY
@@ -68,9 +68,7 @@ export function enterPhoneNumberPost(
         ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT
       ) {
         return res.render("security-code-error/index-wait.njk", {
-          newCodeLink: getNewCodePath(
-            req.query.actionType as SecurityCodeErrorType
-          ),
+          newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
           isAccountCreationJourney:
             req.session.user.isAccountCreationJourney ||
             req.session.user.isAccountPartCreated,

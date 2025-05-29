@@ -16,19 +16,13 @@ import { reverificationResultService } from "../reverification-result-service.js
 import type { ReverificationResultInterface } from "../types.js";
 describe("reverification result service", () => {
   const http = new Http();
-  const service: ReverificationResultInterface =
-    reverificationResultService(http);
+  const service: ReverificationResultInterface = reverificationResultService(http);
   let postStub: SinonStub;
-  const { sessionId, clientSessionId, email, diPersistentSessionId } =
-    commonVariables;
+  const { sessionId, clientSessionId, email, diPersistentSessionId } = commonVariables;
   const req = createMockRequest(PATH_NAMES.IPV_CALLBACK, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
-  const axiosResponse = Promise.resolve({
-    data: {},
-    status: 200,
-    statusText: "OK",
-  });
+  const axiosResponse = Promise.resolve({ data: {}, status: 200, statusText: "OK" });
 
   beforeEach(() => {
     setupApiKeyAndBaseUrlEnvVars();

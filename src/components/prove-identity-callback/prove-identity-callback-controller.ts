@@ -3,11 +3,7 @@ import type { ExpressRouteFunc } from "../../types.js";
 import type { ProveIdentityCallbackServiceInterface } from "./types.js";
 import { IdentityProcessingStatus } from "./types.js";
 import { proveIdentityCallbackService } from "./prove-identity-callback-service.js";
-import {
-  HTTP_STATUS_CODES,
-  IPV_ERROR_CODES,
-  OIDC_ERRORS,
-} from "../../app.constants.js";
+import { HTTP_STATUS_CODES, IPV_ERROR_CODES, OIDC_ERRORS } from "../../app.constants.js";
 import { createServiceRedirectErrorUrl } from "../../utils/error.js";
 import { supportNewIpvSpinner } from "../../config.js";
 export function proveIdentityCallbackGetOrPost(
@@ -37,9 +33,7 @@ export function proveIdentityCallbackGetOrPost(
         });
       }
 
-      return res.render("prove-identity-callback/index.njk", {
-        serviceName: clientName,
-      });
+      return res.render("prove-identity-callback/index.njk", { serviceName: clientName });
     }
 
     let redirectPath;
@@ -81,32 +75,32 @@ export function proveIdentityStatusCallbackGet(
       );
 
       if (response.data.status === IdentityProcessingStatus.PROCESSING) {
-        res.status(HTTP_STATUS_CODES.OK).json({
-          status: IdentityProcessingStatus.PROCESSING,
-        });
+        res
+          .status(HTTP_STATUS_CODES.OK)
+          .json({ status: IdentityProcessingStatus.PROCESSING });
       }
 
       if (response.data.status === IdentityProcessingStatus.COMPLETED) {
-        res.status(HTTP_STATUS_CODES.OK).json({
-          status: IdentityProcessingStatus.COMPLETED,
-        });
+        res
+          .status(HTTP_STATUS_CODES.OK)
+          .json({ status: IdentityProcessingStatus.COMPLETED });
       }
 
       if (response.data.status === IdentityProcessingStatus.INTERVENTION) {
-        res.status(HTTP_STATUS_CODES.OK).json({
-          status: IdentityProcessingStatus.INTERVENTION,
-        });
+        res
+          .status(HTTP_STATUS_CODES.OK)
+          .json({ status: IdentityProcessingStatus.INTERVENTION });
       }
 
       if (response.data.status === IdentityProcessingStatus.ERROR) {
-        res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-          status: IdentityProcessingStatus.ERROR,
-        });
+        res
+          .status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
+          .json({ status: IdentityProcessingStatus.ERROR });
       }
     } catch {
-      res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-        status: IdentityProcessingStatus.ERROR,
-      });
+      res
+        .status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
+        .json({ status: IdentityProcessingStatus.ERROR });
     }
     return next();
   };

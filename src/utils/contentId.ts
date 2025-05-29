@@ -12,16 +12,13 @@ import {
   supportTypeIsGovService,
   urlContains,
 } from "./request.js";
-const CONTENT_IDS: {
-  [path: string]: ContentIdFunction;
-} = {
+const CONTENT_IDS: { [path: string]: ContentIdFunction } = {
   [PATH_NAMES.ACCESSIBILITY_STATEMENT]: () => "",
   [PATH_NAMES.ACCOUNT_NOT_FOUND]: (req: Request) =>
     clientIsOneLogin(req) || clientUsesOneLoginOptionally(req)
       ? "a70b71e7-b444-46e5-895c-cd2e27bbe6ba"
       : "10e1b70b-e208-4db8-8863-3679a675b51d",
-  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: () =>
-    "d9290539-0b0c-468f-8f87-22d0400b6431",
+  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: () => "d9290539-0b0c-468f-8f87-22d0400b6431",
   [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: () =>
     "d1b7cd24-f508-49ce-bf0d-ac1fe980c09c",
   [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]: () =>
@@ -44,13 +41,10 @@ const CONTENT_IDS: {
     isContactUsSuggestionsFeedbackSubtheme(req)
       ? "94ff0276-9791-4a74-95c4-8210ec4028f7"
       : "",
-  [PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS]: () =>
-    "0e020971-d828-4679-97fe-23af6e96ab14",
+  [PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS]: () => "0e020971-d828-4679-97fe-23af6e96ab14",
   [PATH_NAMES.COOKIES_POLICY]: () => "",
-  [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]: () =>
-    "8c0cc624-2e97-471d-ad36-6b695f9a038d",
-  [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL]: () =>
-    "6857e410-75b8-4807-b475-3f24fc96c9de",
+  [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]: () => "8c0cc624-2e97-471d-ad36-6b695f9a038d",
+  [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL]: () => "6857e410-75b8-4807-b475-3f24fc96c9de",
   [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE]: (req: Request) => {
     if (isReauth(req)) {
       return "6e5cc49f-4770-4089-8547-06149e0f59b1";
@@ -60,8 +54,7 @@ const CONTENT_IDS: {
     }
     return "89461417-df3f-46a8-9c37-713b9dd78085";
   },
-  [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT]: () =>
-    "390f46f9-1f6b-44f2-8fd7-21a5385a7d3a",
+  [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT]: () => "390f46f9-1f6b-44f2-8fd7-21a5385a7d3a",
   [PATH_NAMES.ENTER_EMAIL_SIGN_IN]: (req: Request) =>
     isReauth(req)
       ? "aff1628e-177d-4afc-825b-56e926b2fc1f"
@@ -97,8 +90,7 @@ const CONTENT_IDS: {
   [PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION]: () =>
     "8247477c-3e33-4dae-9528-22e7ed44efb3",
   [PATH_NAMES.RESET_PASSWORD]: () => "c8520c6c-9f09-4edf-8c99-7123a3991cfc",
-  [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP]: () =>
-    "943b41f4-8262-417f-8866-c0639319ccf0",
+  [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP]: () => "943b41f4-8262-417f-8866-c0639319ccf0",
   [PATH_NAMES.RESET_PASSWORD_2FA_SMS]: () => "",
   [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL]: (req: Request) => {
     if (urlContains(req, "csrf")) {
@@ -109,12 +101,9 @@ const CONTENT_IDS: {
     }
     return "b78d016b-0f2c-4599-9c2f-76b3a6397997";
   },
-  [PATH_NAMES.RESET_PASSWORD_REQUIRED]: () =>
-    "c8520c6c-9f09-4edf-8c99-7123a3991cfc",
-  [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]: () =>
-    "7b663466-8001-436f-b10b-e6ac581d39aa",
-  [PATH_NAMES.SECURITY_CODE_INVALID]: () =>
-    "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
+  [PATH_NAMES.RESET_PASSWORD_REQUIRED]: () => "c8520c6c-9f09-4edf-8c99-7123a3991cfc",
+  [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]: () => "7b663466-8001-436f-b10b-e6ac581d39aa",
+  [PATH_NAMES.SECURITY_CODE_INVALID]: () => "fdbcdd69-a2d5-4aee-97f2-d65d8f307dc5",
   [PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED]: () =>
     "445409a8-2aaf-47fc-82a9-b277eca4601d",
   [PATH_NAMES.SECURITY_CODE_WAIT]: () => "1277915f-ce6e-4a06-89a0-e3458f95631a",
@@ -123,16 +112,13 @@ const CONTENT_IDS: {
   [PATH_NAMES.SUPPORT]: () => "",
   [PATH_NAMES.TERMS_AND_CONDITIONS]: () => "",
   [PATH_NAMES.UNAVAILABLE_PERMANENT]: () => "",
-  [PATH_NAMES.UNAVAILABLE_TEMPORARY]: () =>
-    "895deac9-e21d-4991-b1f7-9509c2d8c10e",
+  [PATH_NAMES.UNAVAILABLE_TEMPORARY]: () => "895deac9-e21d-4991-b1f7-9509c2d8c10e",
   [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS]: () => "",
 };
 
 export function getContentId(
   req: Request,
-  contentIds: {
-    [path: string]: ContentIdFunction;
-  } = CONTENT_IDS
+  contentIds: { [path: string]: ContentIdFunction } = CONTENT_IDS
 ): string {
   const supportedPaths = Object.keys(contentIds);
   const matchedSupportedPath = supportedPaths.find((path) => req.path === path);

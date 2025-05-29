@@ -21,9 +21,7 @@ export function resetPasswordCheckEmailGet(
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
     const sessionId = res.locals.sessionId;
-    const requestCode = !(
-      req.query.requestCode && req.query.requestCode === "false"
-    );
+    const requestCode = !(req.query.requestCode && req.query.requestCode === "false");
     req.session.user.isPasswordResetJourney = true;
     let result;
 
@@ -42,13 +40,10 @@ export function resetPasswordCheckEmailGet(
       const newCodeLink = req.query?.isResendCodeRequest
         ? "/security-code-check-time-limit?isResendCodeRequest=true"
         : "/security-code-check-time-limit";
-      return res.render(
-        "security-code-error/index-security-code-entered-exceeded.njk",
-        {
-          newCodeLink,
-          show2HrScreen: true,
-        }
-      );
+      return res.render("security-code-error/index-security-code-entered-exceeded.njk", {
+        newCodeLink,
+        show2HrScreen: true,
+      });
     }
 
     if (result.success) {
@@ -76,24 +71,17 @@ export function resetPasswordCheckEmailGet(
     ) {
       let errorTemplate: string;
 
-      if (
-        result.data.code === ERROR_CODES.RESET_PASSWORD_LINK_MAX_RETRIES_REACHED
-      ) {
+      if (result.data.code === ERROR_CODES.RESET_PASSWORD_LINK_MAX_RETRIES_REACHED) {
         errorTemplate = "security-code-error/index-too-many-requests.njk";
       } else if (
-        result.data.code ===
-        ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES
+        result.data.code === ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES
       ) {
-        errorTemplate =
-          "security-code-error/index-security-code-entered-exceeded.njk";
+        errorTemplate = "security-code-error/index-security-code-entered-exceeded.njk";
       } else {
         errorTemplate = "security-code-error/index-wait.njk";
       }
 
-      return res.render(errorTemplate, {
-        show2HrScreen: true,
-        contentId: "",
-      });
+      return res.render(errorTemplate, { show2HrScreen: true, contentId: "" });
     } else {
       throw new BadRequestError(result.data.message, result.data.code);
     }
@@ -107,21 +95,16 @@ export function resetPasswordCheckEmailPost(
   return verifyCodePost(service, accountInterventionsService, {
     notificationType: NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE,
     template: TEMPLATE_NAME,
-    validationKey:
-      "pages.resetPasswordCheckEmail.code.validationError.invalidCode",
+    validationKey: "pages.resetPasswordCheckEmail.code.validationError.invalidCode",
     validationErrorCode: ERROR_CODES.RESET_PASSWORD_INVALID_CODE,
-    postValidationLocalsProvider:
-      resetPasswordCheckEmailTemplateParametersFromRequest,
+    postValidationLocalsProvider: resetPasswordCheckEmailTemplateParametersFromRequest,
   });
 }
 
 export function resetPasswordResendCodeGet(req: Request, res: Response): void {
-  res.render(
-    "reset-password-check-email/index-reset-password-resend-code.njk",
-    {
-      email: req.session.user.email,
-    }
-  );
+  res.render("reset-password-check-email/index-reset-password-resend-code.njk", {
+    email: req.session.user.email,
+  });
 }
 
 export function resetPasswordCheckEmailTemplateParametersFromRequest(

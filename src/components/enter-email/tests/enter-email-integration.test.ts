@@ -1,11 +1,7 @@
 import { afterEach, describe } from "mocha";
 import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import nock from "nock";
 import { ERROR_CODES } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
@@ -34,18 +30,14 @@ describe("Integration::enter email", () => {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
             req.session.user = {
-              journey: getPermittedJourneyForPath(
-                PATH_NAMES.ENTER_EMAIL_SIGN_IN
-              ),
+              journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_SIGN_IN),
             };
 
             if (process.env.TEST_SETUP_REAUTH_SESSION === "1") {
               req.session.user.reauthenticate = "12345";
             }
 
-            req.session.client = {
-              redirectUri: REDIRECT_URI,
-            };
+            req.session.client = { redirectUri: REDIRECT_URI };
 
             next();
           }),
@@ -83,17 +75,13 @@ describe("Integration::enter email", () => {
   });
 
   it("should return enter email page with sign in analytics properties", async () => {
-    await request(app, (test) =>
-      test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200)
-    );
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200));
   });
 
   it("should return enter email page with reauth analytics properties", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     process.env.TEST_SETUP_REAUTH_SESSION = "1";
-    await request(app, (test) =>
-      test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200)
-    );
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200));
   });
 
   it("should return error when csrf not present", async () => {
@@ -101,9 +89,7 @@ describe("Integration::enter email", () => {
       test
         .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
         .type("form")
-        .send({
-          email: "test@test.com",
-        })
+        .send({ email: "test@test.com" })
         .expect(403)
     );
   });
@@ -114,15 +100,10 @@ describe("Integration::enter email", () => {
         .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "",
-        })
+        .send({ _csrf: token, email: "" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
-          expect($("#email-error").text()).to.contains(
-            "Enter your email address"
-          );
+          expect($("#email-error").text()).to.contains("Enter your email address");
         })
         .expect(400)
     );
@@ -134,10 +115,7 @@ describe("Integration::enter email", () => {
         .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test.tµrn@example.com",
-        })
+        .send({ _csrf: token, email: "test.tµrn@example.com" })
         .expect(function (res) {
           const page = cheerio.load(res.text);
           expect(page("#email-error").text()).to.contains(
@@ -152,10 +130,7 @@ describe("Integration::enter email", () => {
         .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test.trnexample.com",
-        })
+        .send({ _csrf: token, email: "test.trnexample.com" })
         .expect(function (res) {
           const page = cheerio.load(res.text);
           expect(page("#email-error").text()).to.contains(
@@ -170,10 +145,7 @@ describe("Integration::enter email", () => {
         .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test.trn@examplecom",
-        })
+        .send({ _csrf: token, email: "test.trn@examplecom" })
         .expect(function (res) {
           const page = cheerio.load(res.text);
           expect(page("#email-error").text()).to.contains(
@@ -188,20 +160,14 @@ describe("Integration::enter email", () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
-      .reply(HTTP_STATUS_CODES.OK, {
-        email: "test@test.com",
-        doesUserExist: true,
-      });
+      .reply(HTTP_STATUS_CODES.OK, { email: "test@test.com", doesUserExist: true });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test@test.com",
-        })
+        .send({ _csrf: token, email: "test@test.com" })
         .expect("Location", PATH_NAMES.ENTER_PASSWORD)
         .expect(302)
     );
@@ -211,20 +177,14 @@ describe("Integration::enter email", () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
-      .reply(HTTP_STATUS_CODES.OK, {
-        email: "test@test.com",
-        doesUserExist: false,
-      });
+      .reply(HTTP_STATUS_CODES.OK, { email: "test@test.com", doesUserExist: false });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test@test.com",
-        })
+        .send({ _csrf: token, email: "test@test.com" })
         .expect("Location", PATH_NAMES.ACCOUNT_NOT_FOUND)
         .expect(302)
     );
@@ -234,9 +194,7 @@ describe("Integration::enter email", () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
-      .reply(500, {
-        message: "Internal Server error",
-      })
+      .reply(500, { message: "Internal Server error" })
       .post("/send-notification")
       .once()
       .reply(200, {});
@@ -246,10 +204,7 @@ describe("Integration::enter email", () => {
         .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test@test.com",
-        })
+        .send({ _csrf: token, email: "test@test.com" })
         .expect(500)
     );
   });
@@ -266,20 +221,14 @@ describe("Integration::enter email", () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
-      .reply(HTTP_STATUS_CODES.OK, {
-        email: "test@test.com",
-        doesUserExist: true,
-      });
+      .reply(HTTP_STATUS_CODES.OK, { email: "test@test.com", doesUserExist: true });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test@test.com",
-        })
+        .send({ _csrf: token, email: "test@test.com" })
         .expect("Location", PATH_NAMES.ENTER_PASSWORD)
         .expect(302)
     );
@@ -299,20 +248,14 @@ describe("Integration::enter email", () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
-      .reply(HTTP_STATUS_CODES.OK, {
-        email: "test@test.com",
-        doesUserExist: true,
-      });
+      .reply(HTTP_STATUS_CODES.OK, { email: "test@test.com", doesUserExist: true });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test@test.com",
-        })
+        .send({ _csrf: token, email: "test@test.com" })
         .expect("Location", REDIRECT_URI.concat("?error=login_required"))
         .expect(302)
     );

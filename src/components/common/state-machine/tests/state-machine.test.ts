@@ -9,9 +9,7 @@ describe("state-machine", () => {
         const nextState = getNextState(
           PATH_NAMES.AUTHORIZE,
           USER_JOURNEY_EVENTS.EXISTING_SESSION,
-          {
-            isIdentityRequired: true,
-          }
+          { isIdentityRequired: true }
         );
 
         expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
@@ -57,9 +55,7 @@ describe("state-machine", () => {
         const nextState = getNextState(
           PATH_NAMES.AUTHORIZE,
           USER_JOURNEY_EVENTS.NO_EXISTING_SESSION,
-          {
-            isIdentityRequired: true,
-          }
+          { isIdentityRequired: true }
         );
 
         expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
@@ -242,10 +238,7 @@ describe("state-machine", () => {
         destination: PATH_NAMES.GET_SECURITY_CODES,
       },
       {
-        context: {
-          requiresTwoFactorAuth: false,
-          mfaMethodType: MFA_METHOD_TYPE.SMS,
-        },
+        context: { requiresTwoFactorAuth: false, mfaMethodType: MFA_METHOD_TYPE.SMS },
         destination: PATH_NAMES.AUTH_CODE,
       },
       {

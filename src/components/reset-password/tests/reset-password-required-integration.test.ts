@@ -77,13 +77,7 @@ describe("Integration::reset password required", () => {
 
   it("should return error when csrf not present", async () => {
     await request(app, (test) =>
-      test
-        .post(ENDPOINT)
-        .type("form")
-        .send({
-          password: "password",
-        })
-        .expect(403)
+      test.post(ENDPOINT).type("form").send({ password: "password" }).expect(403)
     );
   });
 
@@ -93,16 +87,10 @@ describe("Integration::reset password required", () => {
         .post(ENDPOINT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          password: "",
-          "confirm-password": "",
-        })
+        .send({ _csrf: token, password: "", "confirm-password": "" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
-          expect($("#password-error").text()).to.contains(
-            "Enter your password"
-          );
+          expect($("#password-error").text()).to.contains("Enter your password");
         })
         .expect(400)
     );
@@ -135,11 +123,7 @@ describe("Integration::reset password required", () => {
         .post(ENDPOINT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          password: "dad",
-          "confirm-password": "",
-        })
+        .send({ _csrf: token, password: "dad", "confirm-password": "" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#password-error").text()).to.contains(

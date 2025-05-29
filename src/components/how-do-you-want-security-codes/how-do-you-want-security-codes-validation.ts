@@ -10,24 +10,17 @@ export function validateHowDoYouWantSecurityCodesRequest(): ValidationChainFunc 
       .if(body("mfa-method-id").not().equals("true"))
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t("pages.howDoYouWantSecurityCodes.error.empty", {
-          value,
-        });
+        return req.t("pages.howDoYouWantSecurityCodes.error.empty", { value });
       }),
-    validateBodyMiddleware(
-      "how-do-you-want-security-codes/index.njk",
-      (req) => {
-        const { isPasswordResetJourney } = req.session.user;
-        const supportMfaReset = !isPasswordResetJourney;
+    validateBodyMiddleware("how-do-you-want-security-codes/index.njk", (req) => {
+      const { isPasswordResetJourney } = req.session.user;
+      const supportMfaReset = !isPasswordResetJourney;
 
-        return {
-          mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
-          mfaMethods: sortMfaMethodsBackupFirst(
-            req.session.user.mfaMethods || []
-          ),
-          supportMfaReset,
-        };
-      }
-    ),
+      return {
+        mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
+        mfaMethods: sortMfaMethodsBackupFirst(req.session.user.mfaMethods || []),
+        supportMfaReset,
+      };
+    }),
   ];
 }

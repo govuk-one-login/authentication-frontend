@@ -1,9 +1,6 @@
 import { PATH_NAMES } from "../../app.constants.js";
 import * as express from "express";
-import {
-  signInOrCreateGet,
-  signInOrCreatePost,
-} from "./sign-in-or-create-controller.js";
+import { signInOrCreateGet, signInOrCreatePost } from "./sign-in-or-create-controller.js";
 import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
 import { allowAndPersistUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
 

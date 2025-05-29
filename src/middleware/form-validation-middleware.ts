@@ -9,10 +9,7 @@ export const validationErrorFormatter = ({
   msg: string;
   param: string;
 }): any => {
-  return {
-    text: msg,
-    href: `#${param}`,
-  };
+  return { text: msg, href: `#${param}` };
 };
 
 export function validateBodyMiddleware(
@@ -20,14 +17,10 @@ export function validateBodyMiddleware(
   postValidationLocals?: (req: Request) => Record<string, unknown>
 ) {
   return (req: Request, res: Response, next: NextFunction): any => {
-    const errors = validationResult(req)
-      .formatWith(validationErrorFormatter)
-      .mapped();
+    const errors = validationResult(req).formatWith(validationErrorFormatter).mapped();
 
     const locals =
-      typeof postValidationLocals !== "undefined"
-        ? postValidationLocals(req)
-        : undefined;
+      typeof postValidationLocals !== "undefined" ? postValidationLocals(req) : undefined;
     if (!isObjectEmpty(errors)) {
       return renderBadRequest(res, req, template, errors, locals);
     }
@@ -43,14 +36,10 @@ export function validateBodyMiddlewareUpliftTemplate(
   return (req: Request, res: Response, next: NextFunction): any => {
     const template = isUpliftRequired(req) ? upliftTemplate : defaultTemplate;
 
-    const errors = validationResult(req)
-      .formatWith(validationErrorFormatter)
-      .mapped();
+    const errors = validationResult(req).formatWith(validationErrorFormatter).mapped();
 
     const locals =
-      typeof postValidationLocals !== "undefined"
-        ? postValidationLocals(req)
-        : undefined;
+      typeof postValidationLocals !== "undefined" ? postValidationLocals(req) : undefined;
     if (!isObjectEmpty(errors)) {
       return renderBadRequest(res, req, template, errors, locals);
     }
@@ -66,14 +55,10 @@ export function validateBodyMiddlewareReauthTemplate(
   return (req: Request, res: Response, next: NextFunction): any => {
     const template = isReauth(req) ? reAuthTemplate : defaultTemplate;
 
-    const errors = validationResult(req)
-      .formatWith(validationErrorFormatter)
-      .mapped();
+    const errors = validationResult(req).formatWith(validationErrorFormatter).mapped();
 
     const locals =
-      typeof postValidationLocals !== "undefined"
-        ? postValidationLocals(req)
-        : undefined;
+      typeof postValidationLocals !== "undefined" ? postValidationLocals(req) : undefined;
     if (!isObjectEmpty(errors)) {
       return renderBadRequest(res, req, template, errors, locals);
     }

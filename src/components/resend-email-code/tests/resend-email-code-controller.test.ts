@@ -38,20 +38,13 @@ describe("resend email controller", () => {
   describe("resendEmailCodePost", () => {
     it("should send email code and redirect to /check-your-email view", async () => {
       const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
+        sendNotification: sinon.fake.returns({ success: true }),
       } as unknown as SendNotificationServiceInterface;
 
-      req.session.user = {
-        email: "test@test.com",
-      };
+      req.session.user = { email: "test@test.com" };
       req.path = PATH_NAMES.RESEND_EMAIL_CODE;
 
-      await resendEmailCodePost(fakeNotificationService)(
-        req as Request,
-        res as Response
-      );
+      await resendEmailCodePost(fakeNotificationService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.CHECK_YOUR_EMAIL);
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
@@ -59,9 +52,7 @@ describe("resend email controller", () => {
 
     it("should remove session flag for email registration soft block due to incorrect retries", async () => {
       const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
+        sendNotification: sinon.fake.returns({ success: true }),
       } as unknown as SendNotificationServiceInterface;
 
       req.session.user = {
@@ -71,10 +62,7 @@ describe("resend email controller", () => {
       };
       req.path = PATH_NAMES.RESEND_EMAIL_CODE;
 
-      await resendEmailCodePost(fakeNotificationService)(
-        req as Request,
-        res as Response
-      );
+      await resendEmailCodePost(fakeNotificationService)(req as Request, res as Response);
       expect(req.session.user.isVerifyEmailCodeResendRequired).to.be.undefined;
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.CHECK_YOUR_EMAIL);
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
@@ -91,12 +79,9 @@ describe("resend email controller", () => {
 
       await securityCodeCheckTimeLimit()(req as Request, res as Response);
 
-      expect(res.render).to.have.been.calledWith(
-        "security-code-error/index-wait.njk",
-        {
-          newCodeLink: "/security-code-check-time-limit",
-        }
-      );
+      expect(res.render).to.have.been.calledWith("security-code-error/index-wait.njk", {
+        newCodeLink: "/security-code-check-time-limit",
+      });
     });
 
     it("should redirect to /resend-email-code if codeRequestLock is set in the past", async () => {
@@ -112,9 +97,7 @@ describe("resend email controller", () => {
     });
 
     it("should redirect to /resend-email-code if codeRequestLock is not set", async () => {
-      req.session.user = {
-        email: "test@test.com",
-      };
+      req.session.user = { email: "test@test.com" };
       req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
 
       await securityCodeCheckTimeLimit()(req as Request, res as Response);

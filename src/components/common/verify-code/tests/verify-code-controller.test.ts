@@ -66,10 +66,7 @@ describe("Verify code controller tests", () => {
       );
 
       req = createMockRequest(PATH_NAMES.CHECK_YOUR_EMAIL);
-      req.session.user = {
-        email: "test@test.com",
-        isAccountCreationJourney: true,
-      };
+      req.session.user = { email: "test@test.com", isAccountCreationJourney: true };
 
       await verifyCodePost(
         verifyCodeService,
@@ -80,9 +77,7 @@ describe("Verify code controller tests", () => {
       expect(noInterventionsService.accountInterventionStatus).to.not.be.called;
 
       expect(res.redirect).to.have.calledWith(
-        getErrorPathByCode(
-          ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES
-        )
+        getErrorPathByCode(ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES)
       );
     });
   });
@@ -108,8 +103,7 @@ describe("Verify code controller tests", () => {
         verifyCodePostOptions
       )(req as Request, res as Response);
 
-      expect(noInterventionsService.accountInterventionStatus).to.have.been
-        .called;
+      expect(noInterventionsService.accountInterventionStatus).to.have.been.called;
       expect(res.redirect).to.have.calledWith("/reset-password");
     });
 
@@ -126,8 +120,7 @@ describe("Verify code controller tests", () => {
         verifyCodePostOptions
       )(req as Request, res as Response);
 
-      expect(accountInterventionService.accountInterventionStatus).to.have.been
-        .called;
+      expect(accountInterventionService.accountInterventionStatus).to.have.been.called;
       expect(res.redirect).to.have.calledWith("/unavailable-temporary");
     });
 
@@ -144,8 +137,7 @@ describe("Verify code controller tests", () => {
         verifyCodePostOptions
       )(req as Request, res as Response);
 
-      expect(accountInterventionService.accountInterventionStatus).to.have.been
-        .called;
+      expect(accountInterventionService.accountInterventionStatus).to.have.been.called;
       expect(res.redirect).to.have.calledWith("/unavailable-permanent");
     });
 
@@ -162,8 +154,7 @@ describe("Verify code controller tests", () => {
         verifyCodePostOptions
       )(req as Request, res as Response);
 
-      expect(accountInterventionService.accountInterventionStatus).to.have.been
-        .called;
+      expect(accountInterventionService.accountInterventionStatus).to.have.been.called;
       expect(res.redirect).to.have.calledWith("/reset-password");
     });
   });
@@ -176,9 +167,7 @@ describe("Verify code controller tests", () => {
         isAccountCreationJourney: false,
         reauthenticate: "123456",
       };
-      req.session.client = {
-        redirectUri: EXAMPLE_REDIRECT_URI,
-      };
+      req.session.client = { redirectUri: EXAMPLE_REDIRECT_URI };
       process.env.SUPPORT_REAUTHENTICATION = "1";
     });
     const verifyCodePostOptions = {

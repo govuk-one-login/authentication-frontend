@@ -29,9 +29,7 @@ describe("Integration::select-mfa-options", () => {
 
             req.session.user = {
               email: "test@test.com",
-              journey: getPermittedJourneyForPath(
-                PATH_NAMES.GET_SECURITY_CODES
-              ),
+              journey: getPermittedJourneyForPath(PATH_NAMES.GET_SECURITY_CODES),
             };
 
             next();
@@ -42,13 +40,11 @@ describe("Integration::select-mfa-options", () => {
 
     app = await createApp();
 
-    await request(app, (test) => test.get(PATH_NAMES.GET_SECURITY_CODES)).then(
-      (res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      }
-    );
+    await request(app, (test) => test.get(PATH_NAMES.GET_SECURITY_CODES)).then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
   });
 
   beforeEach(() => {
@@ -61,9 +57,7 @@ describe("Integration::select-mfa-options", () => {
   });
 
   it("should return get security codes page", async () => {
-    await request(app, (test) =>
-      test.get(PATH_NAMES.GET_SECURITY_CODES).expect(200)
-    );
+    await request(app, (test) => test.get(PATH_NAMES.GET_SECURITY_CODES).expect(200));
   });
 
   it("should return error when csrf not present", async () => {
@@ -71,9 +65,7 @@ describe("Integration::select-mfa-options", () => {
       test
         .post(PATH_NAMES.GET_SECURITY_CODES)
         .type("form")
-        .send({
-          mfaOptions: "SMS",
-        })
+        .send({ mfaOptions: "SMS" })
         .expect(403)
     );
   });
@@ -84,10 +76,7 @@ describe("Integration::select-mfa-options", () => {
         .post(PATH_NAMES.GET_SECURITY_CODES)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          mfaOptions: undefined,
-        })
+        .send({ _csrf: token, mfaOptions: undefined })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#mfaOptions-error").text()).to.contains(
@@ -104,10 +93,7 @@ describe("Integration::select-mfa-options", () => {
         .post(PATH_NAMES.GET_SECURITY_CODES)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          mfaOptions: "AUTH_APP",
-        })
+        .send({ _csrf: token, mfaOptions: "AUTH_APP" })
         .expect("Location", PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
         .expect(302)
     );
@@ -119,10 +105,7 @@ describe("Integration::select-mfa-options", () => {
         .post(PATH_NAMES.GET_SECURITY_CODES)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          mfaOptions: "SMS",
-        })
+        .send({ _csrf: token, mfaOptions: "SMS" })
         .expect("Location", PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
         .expect(302)
     );

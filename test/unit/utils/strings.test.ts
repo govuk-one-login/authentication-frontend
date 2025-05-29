@@ -60,8 +60,7 @@ describe("string-helpers", () => {
   });
 
   describe("splitSecretKeyIntoFragments", () => {
-    const validSecretKey =
-      "8X6D7R4BEYF57BEHMHM9YTZMP46JEKEMSTMNELFO6A54NKMNQVCC";
+    const validSecretKey = "8X6D7R4BEYF57BEHMHM9YTZMP46JEKEMSTMNELFO6A54NKMNQVCC";
 
     const secretKeyFragments = splitSecretKeyIntoFragments(validSecretKey);
 

@@ -88,8 +88,7 @@ describe("prove identity callback service", () => {
     const persistentSessionId = "persistentSessionId";
     const auditEncodedString =
       "R21vLmd3QilNKHJsaGkvTFxhZDZrKF44SStoLFsieG0oSUY3aEhWRVtOMFRNMVw1dyInKzB8OVV5N09hOi8kLmlLcWJjJGQiK1NPUEJPPHBrYWJHP358NDg2ZDVc";
-    const crossDomainGaTrackingId =
-      "2.172053219.3232.1636392870-444224.1635165988";
+    const crossDomainGaTrackingId = "2.172053219.3232.1636392870-444224.1635165988";
     const expectedHeaders = {
       "X-API-Key": apiKey,
       "Session-Id": sessionId,
@@ -99,9 +98,7 @@ describe("prove identity callback service", () => {
       "di-persistent-session-id": persistentSessionId,
     };
     const axiosResponse = Promise.resolve({
-      data: {
-        location: redirectUriReturnedFromResponse,
-      },
+      data: { location: redirectUriReturnedFromResponse },
       status: 200,
       statusText: "OK",
       headers: {},
@@ -150,8 +147,7 @@ describe("prove identity callback service", () => {
       });
 
       it("should redirect to the auth code url with cookie consent param set as not-engaged", async () => {
-        const fakeCookieConsentService =
-          createFakeCookieConsentService("NOT_ENGAGED");
+        const fakeCookieConsentService = createFakeCookieConsentService("NOT_ENGAGED");
 
         const result = await proveIdentityCallbackService(
           httpInstance,
@@ -169,8 +165,7 @@ describe("prove identity callback service", () => {
       });
 
       it("should redirect to the auth code url with cookie consent param set as accept", async () => {
-        const fakeCookieConsentService =
-          createFakeCookieConsentService("ACCEPT");
+        const fakeCookieConsentService = createFakeCookieConsentService("ACCEPT");
 
         const result = await proveIdentityCallbackService(
           httpInstance,
@@ -182,14 +177,11 @@ describe("prove identity callback service", () => {
           req
         );
 
-        expect(result).to.eq(
-          `${redirectUriReturnedFromResponse}&cookie_consent=accept`
-        );
+        expect(result).to.eq(`${redirectUriReturnedFromResponse}&cookie_consent=accept`);
       });
 
       it("should redirect to the auth code url with cookie consent param set as reject", async () => {
-        const fakeCookieConsentService =
-          createFakeCookieConsentService("REJECT");
+        const fakeCookieConsentService = createFakeCookieConsentService("REJECT");
         req.session.client.crossDomainGaTrackingId = crossDomainGaTrackingId;
 
         const result = await proveIdentityCallbackService(
@@ -209,17 +201,14 @@ describe("prove identity callback service", () => {
             proxy: sinon.match.bool,
           })
         ).to.be.true;
-        expect(result).to.eq(
-          `${redirectUriReturnedFromResponse}&cookie_consent=reject`
-        );
+        expect(result).to.eq(`${redirectUriReturnedFromResponse}&cookie_consent=reject`);
       });
 
       it("should redirect to auth code url with cookie consent param set as accept and with the _ga param set", async () => {
         req.session.client.cookieConsentEnabled = true;
         req.session.client.crossDomainGaTrackingId = crossDomainGaTrackingId;
 
-        const fakeCookieConsentService =
-          createFakeCookieConsentService("ACCEPT");
+        const fakeCookieConsentService = createFakeCookieConsentService("ACCEPT");
 
         const result = await proveIdentityCallbackService(
           httpInstance,
@@ -252,8 +241,7 @@ describe("prove identity callback service", () => {
       it("should redirect to auth code url with cookie consent param set as reject and no _ga param", async () => {
         req.session.client.crossDomainGaTrackingId = crossDomainGaTrackingId;
 
-        const fakeCookieConsentService =
-          createFakeCookieConsentService("REJECT");
+        const fakeCookieConsentService = createFakeCookieConsentService("REJECT");
 
         const result = await proveIdentityCallbackService(
           httpInstance,
@@ -282,9 +270,7 @@ function createFakeCookieConsentService(
   consent: keyof typeof COOKIE_CONSENT
 ): CookieConsentServiceInterface {
   return {
-    getCookieConsent: sinon.fake.returns({
-      cookie_consent: COOKIE_CONSENT[consent],
-    }),
+    getCookieConsent: sinon.fake.returns({ cookie_consent: COOKIE_CONSENT[consent] }),
     createConsentCookieValue: sinon.fake(),
   };
 }

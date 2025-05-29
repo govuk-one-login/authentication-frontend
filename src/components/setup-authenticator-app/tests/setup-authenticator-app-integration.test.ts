@@ -2,11 +2,7 @@ import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import esmock from "esmock";
@@ -81,9 +77,7 @@ describe("Integration::setup-authenticator-app", () => {
       test
         .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
         .type("form")
-        .send({
-          code: "123456",
-        })
+        .send({ code: "123456" })
         .expect(403)
     );
   });
@@ -94,9 +88,7 @@ describe("Integration::setup-authenticator-app", () => {
         .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -114,10 +106,7 @@ describe("Integration::setup-authenticator-app", () => {
         .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "12345678910",
-        })
+        .send({ _csrf: token, code: "12345678910" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -135,10 +124,7 @@ describe("Integration::setup-authenticator-app", () => {
         .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "asdfgh",
-        })
+        .send({ _csrf: token, code: "asdfgh" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -165,10 +151,7 @@ describe("Integration::setup-authenticator-app", () => {
         .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
+        .send({ _csrf: token, code: "123456" })
         .expect("Location", PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL)
         .expect(302)
     );

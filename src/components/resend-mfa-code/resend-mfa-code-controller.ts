@@ -12,11 +12,7 @@ import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 export function resendMfaCodeGet(req: Request, res: Response): void {
   if (isLocked(req.session.user.wrongCodeEnteredLock)) {
     const newCodeLink = req.query?.isResendCodeRequest
-      ? pathWithQueryParam(
-          PATH_NAMES.RESEND_MFA_CODE,
-          "isResendCodeRequest",
-          "true"
-        )
+      ? pathWithQueryParam(PATH_NAMES.RESEND_MFA_CODE, "isResendCodeRequest", "true")
       : PATH_NAMES.RESEND_MFA_CODE;
     res.render("security-code-error/index-security-code-entered-exceeded.njk", {
       newCodeLink: newCodeLink,
@@ -26,17 +22,14 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     const newCodeLink = req.query?.isResendCodeRequest
       ? "/resend-code?isResendCodeRequest=true"
       : "/resend-code";
-    res.render("security-code-error/index-wait.njk", {
-      newCodeLink,
-    });
+    res.render("security-code-error/index-wait.njk", { newCodeLink });
   } else {
     const journeyType = getJourneyTypeFromUserSession(req.session.user, {
       includeReauthentication: true,
     });
 
     const activeMfaMethod: SmsMfaMethod = req.session.user.mfaMethods.find(
-      (mfaMethod: MfaMethod) =>
-        mfaMethod.id === req.session.user.activeMfaMethodId
+      (mfaMethod: MfaMethod) => mfaMethod.id === req.session.user.activeMfaMethodId
     );
 
     res.render("resend-mfa-code/index.njk", {

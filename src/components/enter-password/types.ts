@@ -1,8 +1,4 @@
-import type {
-  ApiResponseResult,
-  DefaultApiResponse,
-  MfaMethod,
-} from "../../types.js";
+import type { ApiResponseResult, DefaultApiResponse, MfaMethod } from "../../types.js";
 import type { JOURNEY_TYPE } from "../../app.constants.js";
 import type { Request } from "express";
 

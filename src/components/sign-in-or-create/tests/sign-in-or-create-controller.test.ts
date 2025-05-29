@@ -37,9 +37,7 @@ describe("sign in or create controller", () => {
 
       signInOrCreateGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "sign-in-or-create/index-mobile.njk"
-      );
+      expect(res.render).to.have.calledWith("sign-in-or-create/index-mobile.njk");
     });
   });
 
@@ -49,17 +47,13 @@ describe("sign in or create controller", () => {
 
       await signInOrCreatePost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.been.calledWith(
-        PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT
-      );
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT);
     });
 
     it("should redirect to enter email existing account", async () => {
       await signInOrCreatePost(req as Request, res as Response);
 
-      expect(res.redirect).to.have.been.calledWith(
-        PATH_NAMES.ENTER_EMAIL_SIGN_IN
-      );
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
     });
   });
 });

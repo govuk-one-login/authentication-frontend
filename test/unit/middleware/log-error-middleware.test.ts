@@ -25,12 +25,7 @@ describe("logErrorMiddleware", () => {
 
   describe("logErrorMiddleware", () => {
     it("should log an error", () => {
-      logErrorMiddleware(
-        new Error("An Error"),
-        req as Request,
-        res as Response,
-        next
-      );
+      logErrorMiddleware(new Error("An Error"), req as Request, res as Response, next);
 
       expect(req.log.error).to.be.called.calledOnce;
       expect(req.log.error).to.be.called.calledWith({

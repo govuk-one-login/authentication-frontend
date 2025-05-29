@@ -11,11 +11,7 @@ import {
   supportTypeIsGovService,
   urlContains,
 } from "./request.js";
-import {
-  CONTACT_US_THEMES,
-  SERVICE_TYPE,
-  SUPPORT_TYPE,
-} from "../app.constants.js";
+import { CONTACT_US_THEMES, SERVICE_TYPE, SUPPORT_TYPE } from "../app.constants.js";
 describe("request utilities", () => {
   const blankRequest = {} as Request;
 
@@ -92,18 +88,13 @@ describe("request utilities", () => {
     beforeEach(() => {
       positiveRequest = {
         session: {
-          user: {
-            isAccountRecoveryJourney: true,
-            isAccountRecoveryPermitted: true,
-          },
+          user: { isAccountRecoveryJourney: true, isAccountRecoveryPermitted: true },
         },
       } as any as Request;
     });
 
     it(`returns false when required properties are not in the request`, async () => {
-      expect(isAccountRecoveryJourneyAndPermitted(blankRequest)).to.equal(
-        false
-      );
+      expect(isAccountRecoveryJourneyAndPermitted(blankRequest)).to.equal(false);
     });
 
     it(`returns false when not all used property are true`, async () => {
@@ -116,17 +107,13 @@ describe("request utilities", () => {
     });
 
     it(`returns true when used properties are true`, async () => {
-      expect(isAccountRecoveryJourneyAndPermitted(positiveRequest)).to.equal(
-        true
-      );
+      expect(isAccountRecoveryJourneyAndPermitted(positiveRequest)).to.equal(true);
     });
   });
 
   describe("isContactUsSuggestionsFeedbackTheme", () => {
     it(`returns false when required properties are not in the request`, async () => {
-      expect(isContactUsSuggestionsFeedbackSubtheme(blankRequest)).to.equal(
-        false
-      );
+      expect(isContactUsSuggestionsFeedbackSubtheme(blankRequest)).to.equal(false);
     });
 
     it(`returns true when used property is not as expected`, async () => {
@@ -229,23 +216,13 @@ describe("request utilities", () => {
 
     it(`returns true when used property is not as expected`, async () => {
       expect(
-        urlContains(
-          {
-            originalUrl: "/haystack",
-          } as any as Request,
-          "needle"
-        )
+        urlContains({ originalUrl: "/haystack" } as any as Request, "needle")
       ).to.equal(false);
     });
 
     it(`returns true when used property is as expected`, async () => {
       expect(
-        urlContains(
-          {
-            originalUrl: "/haysneedletack",
-          } as any as Request,
-          "needle"
-        )
+        urlContains({ originalUrl: "/haysneedletack" } as any as Request, "needle")
       ).to.equal(true);
     });
   });

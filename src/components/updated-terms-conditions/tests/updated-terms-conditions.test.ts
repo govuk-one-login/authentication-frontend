@@ -33,9 +33,7 @@ describe("updated terms conditions controller", () => {
     it("should render updated-terms-conditions page", async () => {
       await updatedTermsConditionsGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "updated-terms-conditions/index.njk"
-      );
+      expect(res.render).to.have.calledWith("updated-terms-conditions/index.njk");
     });
   });
 
@@ -51,42 +49,29 @@ describe("updated terms conditions controller", () => {
       req.path = PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS;
       req.body.termsAndConditionsResult = "accept";
 
-      await updatedTermsConditionsPost(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await updatedTermsConditionsPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.updateProfile).to.have.been.calledOnce;
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
     });
 
     it("should redirect to govUK website when termsAndConditionsResult has value govUk", async () => {
-      const fakeService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake(),
-      };
+      const fakeService: UpdateProfileServiceInterface = { updateProfile: sinon.fake() };
 
       req.body.termsAndConditionsResult = "govUk";
 
-      await updatedTermsConditionsPost(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await updatedTermsConditionsPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.updateProfile).not.to.been.called;
       expect(res.redirect).to.have.been.calledWith(EXTERNAL_LINKS.GOV_UK);
     });
 
     it("should redirect to support page when termsAndConditionsResult has value contactUs", async () => {
-      const fakeService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake(),
-      };
+      const fakeService: UpdateProfileServiceInterface = { updateProfile: sinon.fake() };
 
       req.body.termsAndConditionsResult = "contactUs";
 
-      await updatedTermsConditionsPost(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await updatedTermsConditionsPost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.updateProfile).not.to.been.called;
       expect(res.redirect).to.have.calledWith(

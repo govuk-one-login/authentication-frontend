@@ -14,10 +14,7 @@ describe("Integration: prove identity callback", () => {
     it(`should allow visit to /ipv-callback when was on /auth-code`, async () => {
       // arrange
       const redirectPath = "https://test.example.com";
-      app = await stubMiddlewareAndCreateApp(
-        PATH_NAMES.AUTH_CODE,
-        redirectPath
-      );
+      app = await stubMiddlewareAndCreateApp(PATH_NAMES.AUTH_CODE, redirectPath);
 
       // act
       await request(app, (test) =>
@@ -64,9 +61,7 @@ const stubMiddlewareAndCreateApp = async (
           res.locals.clientSessionId = "testClientSessionId";
           res.locals.persistentSessionId = "testPersistentSessionId";
 
-          req.session.client = {
-            name: "testClientName",
-          };
+          req.session.client = { name: "testClientName" };
           req.session.user = {
             email: "test@test.com",
             journey: getPermittedJourneyForPath(previousPath),
@@ -82,8 +77,7 @@ const stubMiddlewareAndCreateApp = async (
                 processIdentity: sinon.fake.resolves({
                   data: { status: IdentityProcessingStatus.COMPLETED },
                 }),
-                generateSuccessfulRpReturnUrl:
-                  sinon.fake.resolves(redirectPath),
+                generateSuccessfulRpReturnUrl: sinon.fake.resolves(redirectPath),
               }),
             },
           }

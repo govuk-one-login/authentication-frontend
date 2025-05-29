@@ -9,9 +9,7 @@ import {
 import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
 import type { Request } from "express";
 
-export function updateProfileService(
-  axios: Http = http
-): UpdateProfileServiceInterface {
+export function updateProfileService(axios: Http = http): UpdateProfileServiceInterface {
   const updateProfile = async function (
     sessionId: string,
     clientSessionId: string,
@@ -28,11 +26,7 @@ export function updateProfileService(
         updateProfileType: requestType.updateProfileType,
       },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId,
-          clientSessionId,
-          persistentSessionId,
-        },
+        { sessionId, clientSessionId, persistentSessionId },
         req,
         API_ENDPOINTS.UPDATE_PROFILE
       )
@@ -43,7 +37,5 @@ export function updateProfileService(
     ]);
   };
 
-  return {
-    updateProfile,
-  };
+  return { updateProfile };
 }

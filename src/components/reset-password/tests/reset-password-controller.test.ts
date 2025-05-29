@@ -18,22 +18,10 @@ import type { EnterPasswordServiceInterface } from "../../enter-password/types.j
 import { ERROR_CODES } from "../../common/constants.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 const TEST_SCENARIO_PARAMETERS = [
-  {
-    supportPasswordResetRequired: "0",
-    passwordChangeRequired: false,
-  },
-  {
-    supportPasswordResetRequired: "0",
-    passwordChangeRequired: true,
-  },
-  {
-    supportPasswordResetRequired: "1",
-    passwordChangeRequired: false,
-  },
-  {
-    supportPasswordResetRequired: "1",
-    passwordChangeRequired: true,
-  },
+  { supportPasswordResetRequired: "0", passwordChangeRequired: false },
+  { supportPasswordResetRequired: "0", passwordChangeRequired: true },
+  { supportPasswordResetRequired: "1", passwordChangeRequired: false },
+  { supportPasswordResetRequired: "1", passwordChangeRequired: true },
 ];
 
 describe("reset password controller (in 6 digit code flow)", () => {
@@ -55,9 +43,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
 
       await resetPasswordRequestGet(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
-      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
     });
   });
 
@@ -102,17 +88,12 @@ describe("reset password controller (in 6 digit code flow)", () => {
       };
       const data = mfaMethodType ? { ...baseData, mfaMethodType } : baseData;
       return {
-        loginUser: sinon.fake.returns({
-          success: true,
-          data,
-        }),
+        loginUser: sinon.fake.returns({ success: true, data }),
       } as unknown as EnterPasswordServiceInterface;
     }
 
     beforeEach(() => {
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
+      req.session.user = { email: "joe.bloggs@test.com" };
       req.body.password = newPassword;
     });
 
@@ -156,9 +137,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
             expect(fakeResetService.updatePassword).to.have.been.calledOnce;
             expect(fakeLoginService.loginUser).to.have.been.calledOnce;
 
-            expect(res.redirect).to.have.calledWith(
-              PATH_NAMES.GET_SECURITY_CODES
-            );
+            expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
           });
         }
       );

@@ -2,11 +2,7 @@ import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES } from "../../common/constants.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import type { NextFunction, Request, Response } from "express";
@@ -54,13 +50,11 @@ describe("Integration:: resend mfa code", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(app, (test) => test.get(PATH_NAMES.RESEND_MFA_CODE)).then(
-      (res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      }
-    );
+    await request(app, (test) => test.get(PATH_NAMES.RESEND_MFA_CODE)).then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
   });
 
   beforeEach(() => {
@@ -139,47 +133,34 @@ describe("Integration:: resend mfa code", () => {
       test
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
-        .send({
-          code: "123456",
-        })
+        .send({ code: "123456" })
         .expect(403)
     );
   });
 
   it("should redirect to /enter-code when new code requested as part of sign in journey", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.MFA)
-      .once()
-      .reply(HTTP_STATUS_CODES.NO_CONTENT);
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(HTTP_STATUS_CODES.NO_CONTENT);
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect("Location", PATH_NAMES.ENTER_MFA)
         .expect(302)
     );
   });
 
   it("should redirect to /check-your-phone when new code requested as part of account creation journey", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.MFA)
-      .once()
-      .reply(HTTP_STATUS_CODES.NO_CONTENT);
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(HTTP_STATUS_CODES.NO_CONTENT);
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          isResendCodeRequest: true,
-        })
+        .send({ _csrf: token, isResendCodeRequest: true })
         .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
         .expect(302)
     );
@@ -198,35 +179,27 @@ describe("Integration:: resend mfa code", () => {
   });
 
   it("should return 500 error screen when API call fails", async () => {
-    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(500, {
-      errorCode: "1234",
-    });
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(500, { errorCode: "1234" });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect(500)
     );
   });
 
   it("should return 400 error screen when API call fails", async () => {
-    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
-      errorCode: "1015",
-    });
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, { errorCode: "1015" });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect(500)
     );
   });
@@ -244,9 +217,7 @@ describe("Integration:: resend mfa code", () => {
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect(
           "Location",
           "/security-code-requested-too-many-times?actionType=mfaMaxCodesSent"
@@ -268,13 +239,8 @@ describe("Integration:: resend mfa code", () => {
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
-        .expect(
-          "Location",
-          "/security-code-invalid-request?actionType=mfaBlocked"
-        )
+        .send({ _csrf: token })
+        .expect("Location", "/security-code-invalid-request?actionType=mfaBlocked")
         .expect(302)
     );
   });

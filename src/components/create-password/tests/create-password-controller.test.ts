@@ -3,10 +3,7 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
-import {
-  createPasswordPost,
-  createPasswordGet,
-} from "../create-password-controller.js";
+import { createPasswordPost, createPasswordGet } from "../create-password-controller.js";
 import type { CreatePasswordServiceInterface } from "../types.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
@@ -37,9 +34,7 @@ describe("create-password controller", () => {
     describe("createPasswordPost", () => {
       it("should redirect to get security codes when 2 factor is required", async () => {
         const fakeService: CreatePasswordServiceInterface = {
-          signUpUser: sinon.fake.returns({
-            success: true,
-          }),
+          signUpUser: sinon.fake.returns({ success: true }),
         } as unknown as CreatePasswordServiceInterface;
 
         req.body.password = "password1";
@@ -53,16 +48,13 @@ describe("create-password controller", () => {
       });
 
       it("should throw error when session is not populated", async () => {
-        const fakeService: CreatePasswordServiceInterface = {
-          signUpUser: sinon.fake(),
-        };
+        const fakeService: CreatePasswordServiceInterface = { signUpUser: sinon.fake() };
 
         req.body.password = "password1";
         req.session.user = undefined;
 
         await assert.rejects(
-          async () =>
-            createPasswordPost(fakeService)(req as Request, res as Response),
+          async () => createPasswordPost(fakeService)(req as Request, res as Response),
           TypeError,
           "Cannot read properties of undefined (reading 'email')"
         );
@@ -70,16 +62,13 @@ describe("create-password controller", () => {
       });
 
       it("should throw error when password field is not in body", async () => {
-        const fakeService: CreatePasswordServiceInterface = {
-          signUpUser: sinon.fake(),
-        };
+        const fakeService: CreatePasswordServiceInterface = { signUpUser: sinon.fake() };
 
         req.body = undefined;
         req.session.user.email = "joe.bloggs@test.com";
 
         await assert.rejects(
-          async () =>
-            createPasswordPost(fakeService)(req as Request, res as Response),
+          async () => createPasswordPost(fakeService)(req as Request, res as Response),
           TypeError,
           "Cannot read properties of undefined (reading 'password')"
         );
@@ -96,8 +85,7 @@ describe("create-password controller", () => {
         req.session.user.email = "joe.bloggs@test.com";
 
         await assert.rejects(
-          async () =>
-            createPasswordPost(fakeService)(req as Request, res as Response),
+          async () => createPasswordPost(fakeService)(req as Request, res as Response),
           Error,
           "Internal server error"
         );

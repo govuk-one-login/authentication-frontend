@@ -1,11 +1,7 @@
 import { describe } from "mocha";
 import { request, sinon } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import nock from "nock";
 import {
   noInterventions,
@@ -36,9 +32,7 @@ describe("Integration::reset password check email ", () => {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
             req.session.user = {
               email: "test@test.com",
-              journey: getPermittedJourneyForPath(
-                PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
-              ),
+              journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL),
             };
             req.session.user.enterEmailMfaType = "AUTH_APP";
             next();
@@ -58,11 +52,9 @@ describe("Integration::reset password check email ", () => {
         mfaMethodType: "AUTH_APP",
       });
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
       cookies = res.headers["set-cookie"];
@@ -101,10 +93,7 @@ describe("Integration::reset password check email ", () => {
         .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
+        .send({ _csrf: token, code: "123456" })
         .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
         .expect(302)
     );

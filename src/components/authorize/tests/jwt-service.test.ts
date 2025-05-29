@@ -1,10 +1,7 @@
 import { beforeEach, describe } from "mocha";
 import { assert, expect } from "chai";
 import { JwtService } from "../jwt-service.js";
-import {
-  JwtValidationError,
-  JwtClaimsValueError,
-} from "../../../utils/error.js";
+import { JwtValidationError, JwtClaimsValueError } from "../../../utils/error.js";
 import type { Claims } from "../claims-config.js";
 import { getKnownClaims } from "../claims-config.js";
 import {
@@ -123,10 +120,7 @@ describe("JWT service", () => {
       });
 
       it("should throw error when jwt isn't signed with the correct public key", async () => {
-        const JwtWrongSig = await createJwt(
-          createMockClaims(),
-          wrongPrivateKey
-        );
+        const JwtWrongSig = await createJwt(createMockClaims(), wrongPrivateKey);
         jwtService = new JwtService(publicKey);
 
         try {
@@ -150,9 +144,7 @@ describe("JWT service", () => {
           assert.fail("Expected error to be thrown");
         } catch (error) {
           expect(error).to.be.an.instanceOf(JwtValidationError);
-          expect(error.message).to.equal(
-            "claim object is not a valid json object"
-          );
+          expect(error.message).to.equal("claim object is not a valid json object");
         }
       });
 
@@ -162,9 +154,7 @@ describe("JWT service", () => {
 
         const jwtWithoutClaimObject = await createJwt(claims, privateKey);
         jwtService = new JwtService(publicKey);
-        const result = await jwtService.getPayloadWithValidation(
-          jwtWithoutClaimObject
-        );
+        const result = await jwtService.getPayloadWithValidation(jwtWithoutClaimObject);
         expect(result).to.deep.equal(claims);
       });
     });
@@ -216,9 +206,7 @@ describe("JWT service", () => {
       it("should return claims if a valid claim object", async () => {
         const claimObject =
           '{"userinfo": {"email_verified": null, "public_subject_id": null, "email": null}}';
-        expect(jwtService.validateClaimObject(claimObject)).to.be.deep.equal(
-          claimObject
-        );
+        expect(jwtService.validateClaimObject(claimObject)).to.be.deep.equal(claimObject);
       });
 
       it("should return claims if a invalid claim object", async () => {
@@ -229,9 +217,7 @@ describe("JWT service", () => {
           assert.fail("Expected error to be thrown");
         } catch (error) {
           expect(error).to.be.an.instanceOf(JwtValidationError);
-          expect(error.message).to.equal(
-            "claim object is not a valid json object"
-          );
+          expect(error.message).to.equal("claim object is not a valid json object");
         }
       });
     });
@@ -243,9 +229,7 @@ describe("JWT service", () => {
       });
 
       it("should return claims if correctly supplied", () => {
-        expect(jwtService.validateCustomClaims(claims)).to.be.deep.equal(
-          claims
-        );
+        expect(jwtService.validateCustomClaims(claims)).to.be.deep.equal(claims);
       });
 
       it("should throw error if incorrect value for claim", () => {

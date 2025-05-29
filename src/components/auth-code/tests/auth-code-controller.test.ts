@@ -15,8 +15,7 @@ describe("auth code controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
-  const AUTH_CODE_DUMMY_URL =
-    "https://test-idp-url.com/callback?code=123-4ddkk0sdkkd-ad";
+  const AUTH_CODE_DUMMY_URL = "https://test-idp-url.com/callback?code=123-4ddkk0sdkkd-ad";
 
   beforeEach(() => {
     req = mockRequest({
@@ -49,9 +48,7 @@ describe("auth code controller", () => {
         }),
       } as unknown as AuthCodeServiceInterface;
       const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake.returns({
-          cookie_consent: COOKIE_CONSENT.ACCEPT,
-        }),
+        getCookieConsent: sinon.fake.returns({ cookie_consent: COOKIE_CONSENT.ACCEPT }),
         createConsentCookieValue: sinon.fake(),
       };
 
@@ -98,9 +95,7 @@ describe("auth code controller", () => {
         }),
       } as unknown as AuthCodeServiceInterface;
       const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake.returns({
-          cookie_consent: COOKIE_CONSENT.ACCEPT,
-        }),
+        getCookieConsent: sinon.fake.returns({ cookie_consent: COOKIE_CONSENT.ACCEPT }),
         createConsentCookieValue: sinon.fake(),
       };
 
@@ -122,9 +117,7 @@ describe("auth code controller", () => {
         }),
       } as unknown as AuthCodeServiceInterface;
       const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake.returns({
-          cookie_consent: COOKIE_CONSENT.REJECT,
-        }),
+        getCookieConsent: sinon.fake.returns({ cookie_consent: COOKIE_CONSENT.REJECT }),
         createConsentCookieValue: sinon.fake(),
       };
 
@@ -164,9 +157,7 @@ describe("auth code controller", () => {
     });
 
     it("should redirect to auth code API endpoint with cookie consent param set as reject and no _ga param", async () => {
-      req.cookies = {
-        cookies_preferences_set: '{"analytics":false}',
-      };
+      req.cookies = { cookies_preferences_set: '{"analytics":false}' };
 
       req.session.client.cookieConsentEnabled = false;
 
@@ -194,9 +185,7 @@ describe("auth code controller", () => {
     });
 
     it("should redirect to auth code API endpoint with cookie consent param set as accept and with the _ga param set", async () => {
-      req.cookies = {
-        cookies_preferences_set: '{"analytics":true}',
-      };
+      req.cookies = { cookies_preferences_set: '{"analytics":true}' };
 
       req.session.client.cookieConsentEnabled = true;
 
@@ -208,9 +197,7 @@ describe("auth code controller", () => {
       } as unknown as AuthCodeServiceInterface;
 
       const fakeCookieConsentService: CookieConsentServiceInterface = {
-        getCookieConsent: sinon.fake.returns({
-          cookie_consent: COOKIE_CONSENT.ACCEPT,
-        }),
+        getCookieConsent: sinon.fake.returns({ cookie_consent: COOKIE_CONSENT.ACCEPT }),
         createConsentCookieValue: sinon.fake(),
       };
 

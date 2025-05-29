@@ -33,9 +33,7 @@ describe("how do you want security codes controller", () => {
   describe("howDoYouWantSecurityCodesGet", () => {
     it("should render the how do you want security codes page", () => {
       howDoYouWantSecurityCodesGet(req as Request, res as Response);
-      expect(res.render).to.have.calledWith(
-        "how-do-you-want-security-codes/index.njk"
-      );
+      expect(res.render).to.have.calledWith("how-do-you-want-security-codes/index.njk");
     });
 
     it("should render reset password auth app view with supportMfaReset false when completing a password reset journey", () => {
@@ -43,14 +41,11 @@ describe("how do you want security codes controller", () => {
 
       howDoYouWantSecurityCodesGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "how-do-you-want-security-codes/index.njk",
-        {
-          mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
-          mfaMethods: [],
-          supportMfaReset: false,
-        }
-      );
+      expect(res.render).to.have.calledWith("how-do-you-want-security-codes/index.njk", {
+        mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
+        mfaMethods: [],
+        supportMfaReset: false,
+      });
     });
 
     it("should render reset password auth app view with supportMfaReset true when not completing a password reset journey", () => {
@@ -58,14 +53,11 @@ describe("how do you want security codes controller", () => {
 
       howDoYouWantSecurityCodesGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "how-do-you-want-security-codes/index.njk",
-        {
-          mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
-          mfaMethods: [],
-          supportMfaReset: true,
-        }
-      );
+      expect(res.render).to.have.calledWith("how-do-you-want-security-codes/index.njk", {
+        mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
+        mfaMethods: [],
+        supportMfaReset: true,
+      });
     });
   });
 
@@ -95,9 +87,7 @@ describe("how do you want security codes controller", () => {
     for (const mfaMethodId of [defaultId, backupId]) {
       it("SMS/SMS user should redirect to enter mfa page", async () => {
         const fakeMfaCodeService: MfaServiceInterface = {
-          sendMfaCode: sinon.fake.returns({
-            success: true,
-          }),
+          sendMfaCode: sinon.fake.returns({ success: true }),
         } as unknown as MfaServiceInterface;
 
         req.body["mfa-method-id"] = mfaMethodId;
@@ -125,10 +115,7 @@ describe("how do you want security codes controller", () => {
     it("should redirect to /enter-authenticator-app-code if 'authenticator app' is selected", async () => {
       req.body["mfa-method-id"] = "testAuthApp";
       req.session.user.mfaMethods = buildMfaMethods([
-        {
-          id: "testPhone",
-          redactedPhoneNumber: "07000000000",
-        },
+        { id: "testPhone", redactedPhoneNumber: "07000000000" },
         { id: "testAuthApp", authApp: true },
       ]);
 

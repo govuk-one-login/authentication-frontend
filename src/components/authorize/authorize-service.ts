@@ -14,9 +14,7 @@ import {
 import { supportReauthentication } from "../../config.js";
 import type { Request } from "express";
 
-export function authorizeService(
-  axios: Http = http
-): AuthorizeServiceInterface {
+export function authorizeService(axios: Http = http): AuthorizeServiceInterface {
   const start = async function (
     sessionId: string,
     clientSessionId: string,
@@ -46,9 +44,7 @@ export function authorizeService(
     return createApiResponse<StartAuthResponse>(response);
   };
 
-  return {
-    start,
-  };
+  return { start };
 }
 
 function createStartBody(startRequestParameters: StartRequestParameters) {
@@ -58,10 +54,7 @@ function createStartBody(startRequestParameters: StartRequestParameters) {
 
   if (startRequestParameters.previous_session_id !== undefined)
     body["previous-session-id"] = startRequestParameters.previous_session_id;
-  if (
-    startRequestParameters.reauthenticate !== undefined &&
-    supportReauthentication()
-  )
+  if (startRequestParameters.reauthenticate !== undefined && supportReauthentication())
     body["rp-pairwise-id-for-reauth"] = startRequestParameters.reauthenticate;
   if (
     startRequestParameters.previous_govuk_signin_journey_id !== undefined &&
@@ -71,8 +64,7 @@ function createStartBody(startRequestParameters: StartRequestParameters) {
       startRequestParameters.previous_govuk_signin_journey_id;
   if (startRequestParameters.cookie_consent !== undefined)
     body["cookie_consent"] = startRequestParameters.cookie_consent;
-  if (startRequestParameters._ga !== undefined)
-    body["_ga"] = startRequestParameters._ga;
+  if (startRequestParameters._ga !== undefined) body["_ga"] = startRequestParameters._ga;
   body["requested_credential_strength"] =
     startRequestParameters.requested_credential_strength;
   if (startRequestParameters.requested_level_of_confidence !== undefined)

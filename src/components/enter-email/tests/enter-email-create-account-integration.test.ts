@@ -2,11 +2,7 @@ import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
@@ -32,9 +28,7 @@ describe("Integration::enter email (create account)", () => {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
             req.session.user = {
-              journey: getPermittedJourneyForPath(
-                PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT
-              ),
+              journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT),
             };
 
             next();
@@ -46,11 +40,9 @@ describe("Integration::enter email (create account)", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
       cookies = res.headers["set-cookie"];
@@ -77,9 +69,7 @@ describe("Integration::enter email (create account)", () => {
       test
         .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
         .type("form")
-        .send({
-          email: "test@test.com",
-        })
+        .send({ email: "test@test.com" })
         .expect(403)
     );
   });
@@ -90,15 +80,10 @@ describe("Integration::enter email (create account)", () => {
         .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "",
-        })
+        .send({ _csrf: token, email: "" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
-          expect($("#email-error").text()).to.contains(
-            "Enter your email address"
-          );
+          expect($("#email-error").text()).to.contains("Enter your email address");
         })
         .expect(400)
     );
@@ -110,10 +95,7 @@ describe("Integration::enter email (create account)", () => {
         .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test.tµrn@example.com",
-        })
+        .send({ _csrf: token, email: "test.tµrn@example.com" })
         .expect(function (res) {
           const page = cheerio.load(res.text);
           expect(page("#email-error").text()).to.contains(
@@ -128,10 +110,7 @@ describe("Integration::enter email (create account)", () => {
         .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test.trnexample.com",
-        })
+        .send({ _csrf: token, email: "test.trnexample.com" })
         .expect(function (res) {
           const page = cheerio.load(res.text);
           expect(page("#email-error").text()).to.contains(
@@ -146,10 +125,7 @@ describe("Integration::enter email (create account)", () => {
         .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test.trn@examplecom",
-        })
+        .send({ _csrf: token, email: "test.trn@examplecom" })
         .expect(function (res) {
           const page = cheerio.load(res.text);
           expect(page("#email-error").text()).to.contains(
@@ -164,20 +140,14 @@ describe("Integration::enter email (create account)", () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
-      .reply(HTTP_STATUS_CODES.OK, {
-        email: "test@test.com",
-        doesUserExist: true,
-      });
+      .reply(HTTP_STATUS_CODES.OK, { email: "test@test.com", doesUserExist: true });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test@test.com",
-        })
+        .send({ _csrf: token, email: "test@test.com" })
         .expect("Location", PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS)
         .expect(302)
     );
@@ -187,10 +157,7 @@ describe("Integration::enter email (create account)", () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
-      .reply(200, {
-        email: "test@test.com",
-        doesUserExist: false,
-      })
+      .reply(200, { email: "test@test.com", doesUserExist: false })
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
@@ -200,29 +167,24 @@ describe("Integration::enter email (create account)", () => {
         .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test@test.com",
-        })
+        .send({ _csrf: token, email: "test@test.com" })
         .expect("Location", PATH_NAMES.CHECK_YOUR_EMAIL)
         .expect(302)
     );
   });
 
   it("should return internal server error when /user-exists API call response is 500", async () => {
-    nock(baseApi).post(API_ENDPOINTS.USER_EXISTS).once().reply(500, {
-      message: "Internal Server error",
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.USER_EXISTS)
+      .once()
+      .reply(500, { message: "Internal Server error" });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test@test.com",
-        })
+        .send({ _csrf: token, email: "test@test.com" })
         .expect(500)
     );
   });
@@ -231,10 +193,7 @@ describe("Integration::enter email (create account)", () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
-      .reply(200, {
-        email: "test@test.com",
-        doesUserExist: false,
-      })
+      .reply(200, { email: "test@test.com", doesUserExist: false })
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
       .once()
       .reply(400, { code: ERROR_CODES.VERIFY_EMAIL_CODE_REQUEST_BLOCKED });
@@ -244,10 +203,7 @@ describe("Integration::enter email (create account)", () => {
         .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test@test.com",
-        })
+        .send({ _csrf: token, email: "test@test.com" })
         .expect(
           "Location",
           `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.EmailBlocked}`
@@ -260,10 +216,7 @@ describe("Integration::enter email (create account)", () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)
       .once()
-      .reply(200, {
-        email: "test@test.com",
-        doesUserExist: false,
-      })
+      .reply(200, { email: "test@test.com", doesUserExist: false })
       .post(API_ENDPOINTS.SEND_NOTIFICATION)
       .once()
       .reply(400, { code: ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT });
@@ -273,14 +226,9 @@ describe("Integration::enter email (create account)", () => {
         .post(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          email: "test@test.com",
-        })
+        .send({ _csrf: token, email: "test@test.com" })
         .expect((res) => {
-          res.text.includes(
-            "you asked to resend the security code too many codes"
-          );
+          res.text.includes("you asked to resend the security code too many codes");
         })
         .expect(200)
     );

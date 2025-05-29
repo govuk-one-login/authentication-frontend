@@ -94,9 +94,7 @@ describe("get correct redis config values", () => {
         await getRedisConfig();
       } catch (error) {
         expect(error).to.be.an("error");
-        expect(error.message).to.be.equal(
-          "Invalid SSM config values for redis"
-        );
+        expect(error.message).to.be.equal("Invalid SSM config values for redis");
       }
     });
 

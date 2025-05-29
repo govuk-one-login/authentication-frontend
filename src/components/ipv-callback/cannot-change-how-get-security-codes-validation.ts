@@ -10,9 +10,7 @@ export function validateCannotChangeHowGetSecurityCodesActionRequest(): Validati
       .withMessage((value, { req }) => {
         return req.t(
           "pages.cannotChangeHowGetSecurityCodeMfaReset.radios.radioValidationError",
-          {
-            value,
-          }
+          { value }
         );
       }),
     validateBodyMiddleware(

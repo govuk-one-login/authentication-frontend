@@ -1,8 +1,4 @@
-import type {
-  ApiResponseResult,
-  UserSession,
-  UserSessionClient,
-} from "../../types.js";
+import type { ApiResponseResult, UserSession, UserSessionClient } from "../../types.js";
 import { API_ENDPOINTS } from "../../app.constants.js";
 import type { Http } from "../../utils/http.js";
 import {
@@ -51,7 +47,5 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
     return createApiResponse<AuthCodeResponse>(response);
   };
 
-  return {
-    getAuthCode,
-  };
+  return { getAuthCode };
 }

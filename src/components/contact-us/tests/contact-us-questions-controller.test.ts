@@ -68,21 +68,18 @@ describe("contact us questions controller", () => {
           req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
           contactUsQuestionsGet(req as Request, res as Response);
 
-          expect(res.render).to.have.calledWith(
-            "contact-us/questions/index.njk",
-            {
-              formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-              theme: theme,
-              subtheme: undefined,
-              backurl: `${PATH_NAMES.CONTACT_US}?theme=${theme}`,
-              referer: encodeURIComponent(REFERER),
-              pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
-              contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-              contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-              appErrorCode: "",
-              appSessionId: "",
-            }
-          );
+          expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+            formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
+            theme: theme,
+            subtheme: undefined,
+            backurl: `${PATH_NAMES.CONTACT_US}?theme=${theme}`,
+            referer: encodeURIComponent(REFERER),
+            pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+            contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
+            contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
+            appErrorCode: "",
+            appSessionId: "",
+          });
         });
       });
 
@@ -135,21 +132,18 @@ describe("contact us questions controller", () => {
           req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
           contactUsQuestionsGet(req as Request, res as Response);
 
-          expect(res.render).to.have.calledWith(
-            "contact-us/questions/index.njk",
-            {
-              formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-              theme: CONTACT_US_THEMES.ACCOUNT_CREATION,
-              subtheme: subTheme,
-              backurl: `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
-              referer: encodeURIComponent(REFERER),
-              pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
-              contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-              contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-              appErrorCode: "",
-              appSessionId: "",
-            }
-          );
+          expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+            formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
+            theme: CONTACT_US_THEMES.ACCOUNT_CREATION,
+            subtheme: subTheme,
+            backurl: `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.ACCOUNT_CREATION}`,
+            referer: encodeURIComponent(REFERER),
+            pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+            contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
+            contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
+            appErrorCode: "",
+            appSessionId: "",
+          });
         });
       });
     });
@@ -200,21 +194,18 @@ describe("contact us questions controller", () => {
           req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
           contactUsQuestionsGet(req as Request, res as Response);
 
-          expect(res.render).to.have.calledWith(
-            "contact-us/questions/index.njk",
-            {
-              formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-              theme: CONTACT_US_THEMES.SIGNING_IN,
-              subtheme: subTheme,
-              backurl: `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
-              referer: encodeURIComponent(REFERER),
-              pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
-              contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-              contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-              appErrorCode: "",
-              appSessionId: "",
-            }
-          );
+          expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+            formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
+            theme: CONTACT_US_THEMES.SIGNING_IN,
+            subtheme: subTheme,
+            backurl: `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.SIGNING_IN}`,
+            referer: encodeURIComponent(REFERER),
+            pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+            contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
+            contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
+            appErrorCode: "",
+            appSessionId: "",
+          });
         });
       });
     });
@@ -235,21 +226,18 @@ describe("contact us questions controller", () => {
           req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
           contactUsQuestionsGet(req as Request, res as Response);
 
-          expect(res.render).to.have.calledWith(
-            "contact-us/questions/index.njk",
-            {
-              formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
-              theme: CONTACT_US_THEMES.PROVING_IDENTITY,
-              subtheme: subTheme,
-              backurl: `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.PROVING_IDENTITY}`,
-              referer: encodeURIComponent(REFERER),
-              pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
-              contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
-              contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
-              appErrorCode: "",
-              appSessionId: "",
-            }
-          );
+          expect(res.render).to.have.calledWith("contact-us/questions/index.njk", {
+            formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
+            theme: CONTACT_US_THEMES.PROVING_IDENTITY,
+            subtheme: subTheme,
+            backurl: `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.PROVING_IDENTITY}`,
+            referer: encodeURIComponent(REFERER),
+            pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+            contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
+            contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
+            appErrorCode: "",
+            appSessionId: "",
+          });
         });
       });
     });
@@ -257,9 +245,7 @@ describe("contact us questions controller", () => {
 
   describe("POST /contact-us-questions", () => {
     it("should redirect /contact-us-submit-success page when ticket posted", async () => {
-      const fakeService = {
-        contactUsSubmitFormSmartAgent: sandbox.fake(),
-      };
+      const fakeService = { contactUsSubmitFormSmartAgent: sandbox.fake() };
 
       await contactUsQuestionsFormPostToSmartAgent(fakeService)(
         req as Request,

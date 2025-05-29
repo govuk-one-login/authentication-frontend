@@ -50,22 +50,18 @@ describe("cookies controller", () => {
           req.body.cookie_preferences
         );
 
-        const consentCookieValue =
-          fakeCookieConsentService.createConsentCookieValue(
-            req.body.cookie_preferences === "true"
-              ? COOKIE_CONSENT.ACCEPT
-              : COOKIE_CONSENT.REJECT
-          );
+        const consentCookieValue = fakeCookieConsentService.createConsentCookieValue(
+          req.body.cookie_preferences === "true"
+            ? COOKIE_CONSENT.ACCEPT
+            : COOKIE_CONSENT.REJECT
+        );
 
         cookiesPost(req as Request, res as Response);
 
         expect(res.cookie).to.have.been.calledWith(
           COOKIES_PREFERENCES_SET,
           consentCookieValue.value,
-          sinon.match({
-            secure: true,
-            httpOnly: false,
-          })
+          sinon.match({ secure: true, httpOnly: false })
         );
       });
 
@@ -90,22 +86,18 @@ describe("cookies controller", () => {
           req.body.cookie_preferences
         );
 
-        const consentCookieValue =
-          fakeCookieConsentService.createConsentCookieValue(
-            req.body.cookie_preferences === "true"
-              ? COOKIE_CONSENT.ACCEPT
-              : COOKIE_CONSENT.REJECT
-          );
+        const consentCookieValue = fakeCookieConsentService.createConsentCookieValue(
+          req.body.cookie_preferences === "true"
+            ? COOKIE_CONSENT.ACCEPT
+            : COOKIE_CONSENT.REJECT
+        );
 
         cookiesPost(req as Request, res as Response);
 
         expect(res.cookie).to.have.been.calledWith(
           COOKIES_PREFERENCES_SET,
           consentCookieValue.value,
-          sinon.match({
-            secure: true,
-            httpOnly: false,
-          })
+          sinon.match({ secure: true, httpOnly: false })
         );
       });
 
@@ -119,22 +111,18 @@ describe("cookies controller", () => {
           req.body.cookie_preferences
         );
 
-        const consentCookieValue =
-          fakeCookieConsentService.createConsentCookieValue(
-            req.body.cookie_preferences === "true"
-              ? COOKIE_CONSENT.ACCEPT
-              : COOKIE_CONSENT.REJECT
-          );
+        const consentCookieValue = fakeCookieConsentService.createConsentCookieValue(
+          req.body.cookie_preferences === "true"
+            ? COOKIE_CONSENT.ACCEPT
+            : COOKIE_CONSENT.REJECT
+        );
 
         cookiesPost(req as Request, res as Response);
 
         expect(res.cookie).to.have.been.calledWith(
           COOKIES_PREFERENCES_SET,
           consentCookieValue.value,
-          sinon.match({
-            secure: true,
-            httpOnly: false,
-          })
+          sinon.match({ secure: true, httpOnly: false })
         );
 
         ANALYTICS_COOKIES.forEach((cookieKey) => {

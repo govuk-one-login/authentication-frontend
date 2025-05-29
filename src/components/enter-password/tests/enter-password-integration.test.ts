@@ -75,13 +75,7 @@ describe("Integration::enter password", () => {
 
   it("should return error when csrf not present", async () => {
     await request(app, (test) =>
-      test
-        .post(ENDPOINT)
-        .type("form")
-        .send({
-          password: "password",
-        })
-        .expect(403)
+      test.post(ENDPOINT).type("form").send({ password: "password" }).expect(403)
     );
   });
 
@@ -91,15 +85,10 @@ describe("Integration::enter password", () => {
         .post(ENDPOINT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          password: "",
-        })
+        .send({ _csrf: token, password: "" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
-          expect($("#password-error").text()).to.contains(
-            "Enter your password"
-          );
+          expect($("#password-error").text()).to.contains("Enter your password");
         })
         .expect(400)
     );
@@ -113,10 +102,7 @@ describe("Integration::enter password", () => {
         .post(ENDPOINT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          password: "pasasd",
-        })
+        .send({ _csrf: token, password: "pasasd" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#password-error").text()).to.contains(
@@ -144,10 +130,7 @@ describe("Integration::enter password", () => {
         .post(ENDPOINT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          password: "password",
-        })
+        .send({ _csrf: token, password: "password" })
         .expect("Location", PATH_NAMES.AUTH_CODE)
         .expect(302)
     );
@@ -175,10 +158,7 @@ describe("Integration::enter password", () => {
         .post(ENDPOINT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          password: "password",
-        })
+        .send({ _csrf: token, password: "password" })
         .expect("Location", PATH_NAMES.RESET_PASSWORD_REQUIRED)
         .expect(302)
     );
@@ -206,29 +186,24 @@ describe("Integration::enter password", () => {
         .post(ENDPOINT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          password: "password",
-        })
+        .send({ _csrf: token, password: "password" })
         .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_SMS)
         .expect(302)
     );
   });
 
   it("should redirect to /account-locked from sign-in flow when incorrect password entered 5 times", async () => {
-    nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).times(6).reply(400, {
-      code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.LOG_IN_USER)
+      .times(6)
+      .reply(400, { code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED });
 
     await request(app, (test) =>
       test
         .post(ENDPOINT)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          password: "password",
-        })
+        .send({ _csrf: token, password: "password" })
         .expect("Location", PATH_NAMES.ACCOUNT_LOCKED)
         .expect(302)
     );

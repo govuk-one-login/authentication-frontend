@@ -16,8 +16,7 @@ import { createMockRequest } from "../../../../../test/helpers/mock-request-help
 import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
 describe("account recovery service", () => {
   const httpInstance = new Http();
-  const service: AccountRecoveryInterface =
-    accountRecoveryService(httpInstance);
+  const service: AccountRecoveryInterface = accountRecoveryService(httpInstance);
   let postStub: SinonStub;
 
   beforeEach(() => {
@@ -31,16 +30,11 @@ describe("account recovery service", () => {
   });
 
   it("successfully calls the API to perform an account recovery request", async () => {
-    const { sessionId, clientSessionId, email, diPersistentSessionId } =
-      commonVariables;
+    const { sessionId, clientSessionId, email, diPersistentSessionId } = commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
-    const axiosResponse = Promise.resolve({
-      data: {},
-      status: 200,
-      statusText: "OK",
-    });
+    const axiosResponse = Promise.resolve({ data: {}, status: 200, statusText: "OK" });
     postStub.resolves(axiosResponse);
 
     const result = await service.accountRecovery(

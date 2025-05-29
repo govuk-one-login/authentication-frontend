@@ -17,16 +17,9 @@ import type { VerifyMfaCodeInterface } from "./types.js";
 import type { AccountRecoveryInterface } from "../common/account-recovery/types.js";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service.js";
 import { BadRequestError, ReauthJourneyError } from "../../utils/error.js";
-import {
-  JOURNEY_TYPE,
-  MFA_METHOD_TYPE,
-  PATH_NAMES,
-} from "../../app.constants.js";
+import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants.js";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service.js";
-import {
-  formatValidationError,
-  renderBadRequest,
-} from "../../utils/validation.js";
+import { formatValidationError, renderBadRequest } from "../../utils/validation.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import { isLocked } from "../../utils/lock-helper.js";
@@ -46,18 +39,18 @@ export function enterAuthenticatorAppCodeGet(
       : ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME;
 
     if (isLocked(req.session.user.wrongCodeEnteredLock)) {
-      return res.render(
-        "security-code-error/index-security-code-entered-exceeded.njk",
-        {
-          newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
-          isAuthApp: true,
-          show2HrScreen: true,
-        }
-      );
+      return res.render("security-code-error/index-security-code-entered-exceeded.njk", {
+        newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+        isAuthApp: true,
+        show2HrScreen: true,
+      });
     }
 
-    req.session.user.isAccountRecoveryPermitted =
-      await isAccountRecoveryPermitted(req, res, acctRecoveryService);
+    req.session.user.isAccountRecoveryPermitted = await isAccountRecoveryPermitted(
+      req,
+      res,
+      acctRecoveryService
+    );
 
     return res.render(
       templateName,
@@ -68,9 +61,7 @@ export function enterAuthenticatorAppCodeGet(
 
 function handleReauthFailure(req: Request, res: Response) {
   if (req.session.client?.redirectUri) {
-    return res.redirect(
-      req.session.client.redirectUri.concat("?error=login_required")
-    );
+    return res.redirect(req.session.client.redirectUri.concat("?error=login_required"));
   } else {
     throw new ReauthJourneyError(
       "Re-auth journey failed due to missing redirect uri in client session."
@@ -105,13 +96,7 @@ export const enterAuthenticatorAppCodePost = (
     );
 
     if (!result.success) {
-      return handleAuthAppCodePostError(
-        req,
-        res,
-        template,
-        journeyType,
-        result
-      );
+      return handleAuthAppCodePostError(req, res, template, journeyType, result);
     }
 
     res.redirect(

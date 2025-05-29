@@ -90,8 +90,7 @@ const htmlContent = `
         </tr>
         ${allSupportedStates
           .map((currentState) => {
-            const allEvents =
-              authStateMachine.config.states[currentState].on || {};
+            const allEvents = authStateMachine.config.states[currentState].on || {};
             const eventNames = Object.keys(allEvents);
             const optionalPaths =
               authStateMachine.config.states[currentState]?.meta?.optionalPaths;
@@ -136,9 +135,7 @@ const htmlContent = `
                           consequence.cond
                             ? ` <i class="condition" title="Definition: ${authStateMachine.options.guards[
                                 consequence.cond
-                              ].toString()}">when ${renderCode(
-                                consequence.cond
-                              )}</i>`
+                              ].toString()}">when ${renderCode(consequence.cond)}</i>`
                             : ""
                         }</li>`;
                       })

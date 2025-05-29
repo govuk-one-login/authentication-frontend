@@ -45,7 +45,5 @@ export function accountInterventionService(
     return createApiResponse<AccountInterventionStatus>(response);
   };
 
-  return {
-    accountInterventionStatus,
-  };
+  return { accountInterventionStatus };
 }

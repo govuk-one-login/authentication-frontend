@@ -8,11 +8,7 @@ import {
   enterPasswordPost,
   enterSignInRetryBlockedGet,
 } from "../enter-password-controller.js";
-import {
-  JOURNEY_TYPE,
-  MFA_METHOD_TYPE,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants.js";
 import type { EnterPasswordServiceInterface } from "../types.js";
 import type { MfaServiceInterface } from "../../common/mfa/types.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
@@ -82,9 +78,7 @@ describe("enter password controller", () => {
         } as unknown as EnterPasswordServiceInterface;
 
         const fakeMfaService: MfaServiceInterface = {
-          sendMfaCode: sinon.fake.returns({
-            success: true,
-          }),
+          sendMfaCode: sinon.fake.returns({ success: true }),
         } as unknown as MfaServiceInterface;
 
         await enterPasswordPost(
@@ -116,9 +110,7 @@ describe("enter password controller", () => {
         } as unknown as EnterPasswordServiceInterface;
 
         const fakeMfaService: MfaServiceInterface = {
-          sendMfaCode: sinon.fake.returns({
-            success: true,
-          }),
+          sendMfaCode: sinon.fake.returns({ success: true }),
         } as unknown as MfaServiceInterface;
 
         const getJourneyTypeFromUserSessionSpy = sinon.spy(
@@ -142,14 +134,13 @@ describe("enter password controller", () => {
           fakeMfaService
         )(req as Request, res as Response);
 
-        expect(
-          getJourneyTypeFromUserSessionSpy
-        ).to.have.been.calledOnceWithExactly(req.session.user, {
-          includeReauthentication: true,
-        });
-        expect(
-          getJourneyTypeFromUserSessionSpy.getCall(0).returnValue
-        ).to.equal(JOURNEY_TYPE.REAUTHENTICATION);
+        expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
+          req.session.user,
+          { includeReauthentication: true }
+        );
+        expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
+          JOURNEY_TYPE.REAUTHENTICATION
+        );
         expect(fakeMfaService.sendMfaCode).to.have.been.calledOnceWithExactly(
           sinon.match.any,
           sinon.match.any,
@@ -167,16 +158,12 @@ describe("enter password controller", () => {
         const fakePasswordService: EnterPasswordServiceInterface = {
           loginUser: sinon.fake.returns({
             success: false,
-            data: {
-              code: ERROR_CODES.SESSION_ID_MISSING_OR_INVALID,
-            },
+            data: { code: ERROR_CODES.SESSION_ID_MISSING_OR_INVALID },
           }),
         } as unknown as EnterPasswordServiceInterface;
 
         const fakeMfaService: MfaServiceInterface = {
-          sendMfaCode: sinon.fake.returns({
-            success: true,
-          }),
+          sendMfaCode: sinon.fake.returns({ success: true }),
         } as unknown as MfaServiceInterface;
 
         await enterPasswordPost(
@@ -208,9 +195,7 @@ describe("enter password controller", () => {
       } as unknown as EnterPasswordServiceInterface;
 
       const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
@@ -234,11 +219,10 @@ describe("enter password controller", () => {
         fakeMfaService
       )(req as Request, res as Response);
 
-      expect(
-        getJourneyTypeFromUserSessionSpy
-      ).to.have.been.calledOnceWithExactly(req.session.user, {
-        includeReauthentication: true,
-      });
+      expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
+        req.session.user,
+        { includeReauthentication: true }
+      );
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.REAUTHENTICATION
       );
@@ -278,9 +262,7 @@ describe("enter password controller", () => {
       } as unknown as EnterPasswordServiceInterface;
 
       const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
 
       req.session.user = { email, reauthenticate: "test_data" };
@@ -297,9 +279,7 @@ describe("enter password controller", () => {
 
     describe("enter password when signing in", () => {
       const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
 
       it("should redirect to enter-code when the password is correct", async () => {
@@ -333,9 +313,7 @@ describe("enter password controller", () => {
       it("should redirect to account locked page when max password attempts exceeded", async () => {
         const fakeService: EnterPasswordServiceInterface = {
           loginUser: sinon.fake.returns({
-            data: {
-              code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED,
-            },
+            data: { code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED },
             success: false,
           }),
         } as unknown as EnterPasswordServiceInterface;
@@ -373,9 +351,7 @@ describe("enter password controller", () => {
         } as unknown as EnterPasswordServiceInterface;
 
         const fakeMfaService: MfaServiceInterface = {
-          sendMfaCode: sinon.fake.returns({
-            success: true,
-          }),
+          sendMfaCode: sinon.fake.returns({ success: true }),
         } as unknown as MfaServiceInterface;
 
         await enterPasswordPost(
@@ -392,17 +368,13 @@ describe("enter password controller", () => {
 
         const fakeService: EnterPasswordServiceInterface = {
           loginUser: sinon.fake.returns({
-            data: {
-              code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED,
-            },
+            data: { code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED },
             success: false,
           }),
         } as unknown as EnterPasswordServiceInterface;
 
         const fakeMfaService: MfaServiceInterface = {
-          sendMfaCode: sinon.fake.returns({
-            success: true,
-          }),
+          sendMfaCode: sinon.fake.returns({ success: true }),
         } as unknown as MfaServiceInterface;
 
         try {
@@ -439,10 +411,7 @@ describe("enter password controller", () => {
         }),
       } as unknown as EnterPasswordServiceInterface;
 
-      await enterPasswordPost(false, fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterPasswordPost(false, fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
       expect(req.session.user.isAccountPartCreated).to.be.eq(false);
@@ -464,10 +433,7 @@ describe("enter password controller", () => {
         }),
       } as unknown as EnterPasswordServiceInterface;
 
-      await enterPasswordPost(false, fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterPasswordPost(false, fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
       expect(req.session.user.isAccountPartCreated).to.be.eq(true);
@@ -490,14 +456,9 @@ describe("enter password controller", () => {
         }),
       } as unknown as EnterPasswordServiceInterface;
 
-      await enterPasswordPost(false, fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterPasswordPost(false, fakeService)(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS
-      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS);
       expect(req.session.user.isAccountPartCreated).to.be.eq(false);
     });
 
@@ -507,9 +468,7 @@ describe("enter password controller", () => {
         loginUser: sinon.fake.throws(error),
       };
 
-      const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake(),
-      };
+      const fakeMfaService: MfaServiceInterface = { sendMfaCode: sinon.fake() };
 
       await assert.rejects(
         async () =>
@@ -544,9 +503,7 @@ describe("enter password controller", () => {
       } as unknown as EnterPasswordServiceInterface;
 
       const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
 
       const testCases = [
@@ -591,9 +548,7 @@ describe("enter password controller", () => {
           fakeInterventionsService
         )(req as Request, res as Response);
 
-        expect(res.redirect).to.have.calledWith(
-          PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
-        );
+        expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
       }
     });
   });
@@ -601,15 +556,10 @@ describe("enter password controller", () => {
   describe("enterSignInRetryBlockedGet", () => {
     it("should render /enter-password view when account is unblocked", async () => {
       const fakeService: EnterEmailServiceInterface = {
-        userExists: sinon.fake.returns({
-          success: true,
-        }),
+        userExists: sinon.fake.returns({ success: true }),
       } as unknown as EnterEmailServiceInterface;
 
-      await enterSignInRetryBlockedGet(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterSignInRetryBlockedGet(fakeService)(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("enter-password/index.njk");
     });
@@ -618,16 +568,11 @@ describe("enter password controller", () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
           success: false,
-          data: {
-            code: ERROR_CODES.ACCOUNT_LOCKED,
-          },
+          data: { code: ERROR_CODES.ACCOUNT_LOCKED },
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      await enterSignInRetryBlockedGet(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterSignInRetryBlockedGet(fakeService)(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
         "enter-password/index-sign-in-retry-blocked.njk"

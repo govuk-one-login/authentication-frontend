@@ -54,8 +54,7 @@ export const PATH_NAMES = {
   DOC_CHECKING_APP: "/doc-checking-app",
   DOC_CHECKING_APP_CALLBACK: "/doc-app-callback",
   PROVE_IDENTITY_CALLBACK: "/ipv-callback",
-  PROVE_IDENTITY_CALLBACK_SESSION_EXPIRY_ERROR:
-    "/ipv-callback-session-expiry-error",
+  PROVE_IDENTITY_CALLBACK_SESSION_EXPIRY_ERROR: "/ipv-callback-session-expiry-error",
   PROVE_IDENTITY_CALLBACK_STATUS: "/prove-identity-status",
   HEALTHCHECK: "/healthcheck",
   GET_SECURITY_CODES: "/get-security-codes",
@@ -139,15 +138,9 @@ export const ERROR_MESSAGES = {
   PAGE_NOT_FOUND: "Request page not found",
 };
 
-export const ERROR_LOG_LEVEL = {
-  ERROR: "Error",
-  INFO: "Info",
-};
+export const ERROR_LOG_LEVEL = { ERROR: "Error", INFO: "Info" };
 
-export const SERVICE_TYPE = {
-  MANDATORY: "MANDATORY",
-  OPTIONAL: "OPTIONAL",
-};
+export const SERVICE_TYPE = { MANDATORY: "MANDATORY", OPTIONAL: "OPTIONAL" };
 
 export const CONTACT_US_THEMES = {
   ACCOUNT_CREATION: "account_creation",
@@ -171,17 +164,13 @@ export const CONTACT_US_THEMES = {
   ID_CHECK_APP_TECHNICAL_ERROR: "id_check_app_technical_problem",
   ID_CHECK_APP_SOMETHING_ELSE: "id_check_app_something_else",
   PROVING_IDENTITY_FACE_TO_FACE: "id_face_to_face",
-  PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS:
-    "face_to_face_details",
+  PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS: "face_to_face_details",
   PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_LETTER: "face_to_face_letter",
-  PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_AT_POST_OFFICE:
-    "face_to_face_post_office",
+  PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_AT_POST_OFFICE: "face_to_face_post_office",
   PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_FINDING_RESULT:
     "face_to_face_post_office_id_results",
-  PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_CONTINUING:
-    "face_to_face_post_office_service",
-  PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM:
-    "face_to_face_technical_problem",
+  PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_CONTINUING: "face_to_face_post_office_service",
+  PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM: "face_to_face_technical_problem",
   PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM: "face_to_face_something_else",
   PROVING_IDENTITY_PROBLEM_ANSWERING_SECURITY_QUESTIONS:
     "proving_identity_problem_answering_security_questions",
@@ -194,8 +183,7 @@ export const CONTACT_US_THEMES = {
   PROVING_IDENTITY_SOMETHING_ELSE: "proving_identity_something_else",
   PROVING_IDENTITY_PROBLEM_WITH_NATIONAL_INSURANCE_NUMBER:
     "proving_identity_problem_with_national_insurance_number",
-  PROVING_IDENTITY_PROBLEM_WITH_ADDRESS:
-    "proving_identity_problem_with_address",
+  PROVING_IDENTITY_PROBLEM_WITH_ADDRESS: "proving_identity_problem_with_address",
   SUSPECT_UNAUTHORISED_ACCESS: "suspect_unauthorised_access",
 };
 
@@ -247,10 +235,7 @@ export enum CHANNEL {
   GENERIC_APP = "generic_app",
 }
 
-export const ENVIRONMENT_NAME = {
-  PROD: "production",
-  DEV: "development",
-};
+export const ENVIRONMENT_NAME = { PROD: "production", DEV: "development" };
 
 export const APP_ENV_NAME = {
   PROD: "production",
@@ -259,18 +244,11 @@ export const APP_ENV_NAME = {
   LOCAL: "local",
 };
 
-export const EXTERNAL_LINKS = {
-  GOV_UK: "https://www.gov.uk/",
-};
+export const EXTERNAL_LINKS = { GOV_UK: "https://www.gov.uk/" };
 
-export const OIDC_PROMPT = {
-  LOGIN: "LOGIN",
-  NONE: "NONE",
-};
+export const OIDC_PROMPT = { LOGIN: "LOGIN", NONE: "NONE" };
 
-export const OIDC_ERRORS = {
-  ACCESS_DENIED: "access_denied",
-};
+export const OIDC_ERRORS = { ACCESS_DENIED: "access_denied" };
 
 export const IPV_ERROR_CODES = {
   ACCOUNT_NOT_CREATED: "Account not created",

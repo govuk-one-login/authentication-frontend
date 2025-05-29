@@ -29,9 +29,7 @@ const fakeAccountRecoveryPermissionCheckService = (
   return {
     accountRecovery: sinon.fake.returns({
       success: true,
-      data: {
-        accountRecoveryPermitted: desiredAccountRecoveryPermittedResponse,
-      },
+      data: { accountRecoveryPermitted: desiredAccountRecoveryPermittedResponse },
     }),
   } as unknown as AccountRecoveryInterface;
 };
@@ -132,18 +130,14 @@ describe("enter mfa controller", () => {
         res as Response
       );
 
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-wait.njk"
-      );
+      expect(res.render).to.have.calledWith("security-code-error/index-wait.njk");
     });
   });
 
   describe("enterMfaPost", () => {
     it("can send the journeyType when verifying the code", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
+        verifyCode: sinon.fake.returns({ success: true }),
       } as unknown as VerifyCodeInterface;
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
@@ -165,11 +159,10 @@ describe("enter mfa controller", () => {
 
       await mockEnterMfaPost(fakeService)(req as Request, res as Response);
 
-      expect(
-        getJourneyTypeFromUserSessionSpy
-      ).to.have.been.calledOnceWithExactly(req.session.user, {
-        includeReauthentication: true,
-      });
+      expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
+        req.session.user,
+        { includeReauthentication: true }
+      );
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.REAUTHENTICATION
       );
@@ -187,9 +180,7 @@ describe("enter mfa controller", () => {
 
     it("should redirect to /auth-code when valid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
+        verifyCode: sinon.fake.returns({ success: true }),
       } as unknown as VerifyCodeInterface;
 
       req.body.code = "123456";
@@ -232,10 +223,7 @@ describe("enter mfa controller", () => {
     it("should redirect to security code expired when invalid code entered more than max retries", async () => {
       const fakeService: VerifyCodeInterface = {
         verifyCode: sinon.fake.returns({
-          data: {
-            code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
-            message: "",
-          },
+          data: { code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES, message: "" },
           success: false,
         }),
       } as unknown as VerifyCodeInterface;

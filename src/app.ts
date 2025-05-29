@@ -275,7 +275,9 @@ async function createApp(): Promise<express.Application> {
   return app;
 }
 
-async function startServer(app: Application): Promise<{
+async function startServer(
+  app: Application
+): Promise<{
   server: Server;
   closeServer: (callback?: (err?: Error) => void) => Promise<void>;
 }> {
@@ -318,17 +320,16 @@ async function startServer(app: Application): Promise<{
   return { server, closeServer };
 }
 
-const shutdownProcess =
-  (closeServer: () => Promise<void>) => async (): Promise<void> => {
-    try {
-      logger.info("closing server");
-      await closeServer();
-      logger.info("server closed");
-      process.exit(0);
-    } catch (error) {
-      logger.error(`error closing server: ${error.message}`);
-      process.exit(1);
-    }
-  };
+const shutdownProcess = (closeServer: () => Promise<void>) => async (): Promise<void> => {
+  try {
+    logger.info("closing server");
+    await closeServer();
+    logger.info("server closed");
+    process.exit(0);
+  } catch (error) {
+    logger.error(`error closing server: ${error.message}`);
+    process.exit(1);
+  }
+};
 
 export { createApp, startServer, shutdownProcess };

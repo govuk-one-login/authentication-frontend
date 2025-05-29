@@ -39,28 +39,19 @@ describe("authorize controller", () => {
   beforeEach(() => {
     mockClaims = createMockClaims();
     req = createMockRequest(PATH_NAMES.AUTHORIZE);
-    req.query = {
-      client_id: getOrchToAuthExpectedClientId(),
-      response_type: "code",
-    };
+    req.query = { client_id: getOrchToAuthExpectedClientId(), response_type: "code" };
     res = mockResponse();
     res.cookie = sinon.spy(res.cookie);
     authServiceResponseData = createAuthServiceReponseData();
 
     fakeAuthorizeService = mockAuthService({
       data: {
-        user: {
-          identityRequired: false,
-          upliftRequired: false,
-          authenticated: true,
-        },
+        user: { identityRequired: false, upliftRequired: false, authenticated: true },
       },
       success: true,
     });
 
-    fakeKmsDecryptionService = {
-      decrypt: sinon.fake.returns(Promise.resolve("jwt")),
-    };
+    fakeKmsDecryptionService = { decrypt: sinon.fake.returns(Promise.resolve("jwt")) };
 
     fakeJwtService = {
       getPayloadWithValidation: sinon.fake.returns(Promise.resolve(mockClaims)),
@@ -88,9 +79,7 @@ describe("authorize controller", () => {
     it("should redirect to /sign-in-or-create page with cookie preferences set", async () => {
       req.body.cookie_preferences = "true";
 
-      authServiceResponseData.data.user = {
-        cookieConsent: COOKIE_CONSENT.ACCEPT,
-      };
+      authServiceResponseData.data.user = { cookieConsent: COOKIE_CONSENT.ACCEPT };
 
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
@@ -98,12 +87,11 @@ describe("authorize controller", () => {
         req.body.cookie_preferences
       );
 
-      const consentCookieValue =
-        fakeCookieConsentService.createConsentCookieValue(
-          req.body.cookie_preferences === "true"
-            ? COOKIE_CONSENT.ACCEPT
-            : COOKIE_CONSENT.REJECT
-        );
+      const consentCookieValue = fakeCookieConsentService.createConsentCookieValue(
+        req.body.cookie_preferences === "true"
+          ? COOKIE_CONSENT.ACCEPT
+          : COOKIE_CONSENT.REJECT
+      );
 
       await authorizeGet(
         fakeAuthorizeService,
@@ -133,9 +121,7 @@ describe("authorize controller", () => {
 
       req.body.cookie_preferences = "true";
 
-      authServiceResponseData.data.user = {
-        cookieConsent: COOKIE_CONSENT.ACCEPT,
-      };
+      authServiceResponseData.data.user = { cookieConsent: COOKIE_CONSENT.ACCEPT };
 
       fakeAuthorizeService = mockAuthService(authServiceResponseData);
 
@@ -143,12 +129,11 @@ describe("authorize controller", () => {
         req.body.cookie_preferences
       );
 
-      const consentCookieValue =
-        fakeCookieConsentService.createConsentCookieValue(
-          req.body.cookie_preferences === "true"
-            ? COOKIE_CONSENT.ACCEPT
-            : COOKIE_CONSENT.REJECT
-        );
+      const consentCookieValue = fakeCookieConsentService.createConsentCookieValue(
+        req.body.cookie_preferences === "true"
+          ? COOKIE_CONSENT.ACCEPT
+          : COOKIE_CONSENT.REJECT
+      );
 
       await authorizeGet(
         fakeAuthorizeService,
@@ -160,10 +145,7 @@ describe("authorize controller", () => {
       expect(res.cookie).to.have.been.calledWith(
         COOKIES_PREFERENCES_SET,
         consentCookieValue.value,
-        sinon.match({
-          secure: true,
-          httpOnly: false,
-        })
+        sinon.match({ secure: true, httpOnly: false })
       );
       expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
     });
@@ -201,9 +183,7 @@ describe("authorize controller", () => {
         fakeJwtService
       )(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
-      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE);
     });
 
     it("should redirect to /auth-code when existing session", async () => {
@@ -279,9 +259,7 @@ describe("authorize controller", () => {
         fakeJwtService
       )(req as Request, res as Response);
 
-      expect(res.redirect).to.have.been.calledWith(
-        redirectUri + "?error=login_required"
-      );
+      expect(res.redirect).to.have.been.calledWith(redirectUri + "?error=login_required");
     });
 
     //note that this is currently the same behaviour with the feature flag on or off. This will change if we decide on a different initial page for the reauth journey
@@ -332,12 +310,11 @@ describe("authorize controller", () => {
         req.body.cookie_preferences
       );
 
-      const consentCookieValue =
-        fakeCookieConsentService.createConsentCookieValue(
-          req.body.cookie_preferences === "true"
-            ? COOKIE_CONSENT.ACCEPT
-            : COOKIE_CONSENT.REJECT
-        );
+      const consentCookieValue = fakeCookieConsentService.createConsentCookieValue(
+        req.body.cookie_preferences === "true"
+          ? COOKIE_CONSENT.ACCEPT
+          : COOKIE_CONSENT.REJECT
+      );
 
       await authorizeGet(
         fakeAuthorizeService,
@@ -349,10 +326,7 @@ describe("authorize controller", () => {
       expect(res.cookie).to.have.been.calledWith(
         COOKIES_PREFERENCES_SET,
         consentCookieValue.value,
-        sinon.match({
-          secure: true,
-          httpOnly: false,
-        })
+        sinon.match({ secure: true, httpOnly: false })
       );
       expect(res.redirect).to.have.calledWith(
         `${PATH_NAMES.SIGN_IN_OR_CREATE}?_ga=${gaTrackingId}`
@@ -362,10 +336,7 @@ describe("authorize controller", () => {
     it("should throw an error with level Info if the authorize service returns a code 1000 Session-Id is missing or invalid", async () => {
       const fakeAuthorizeService: AuthorizeServiceInterface = {
         start: sinon.fake.returns({
-          data: {
-            code: 1000,
-            message: "Session-Id is missing or invalid",
-          },
+          data: { code: 1000, message: "Session-Id is missing or invalid" },
           success: false,
         }),
       } as unknown as AuthorizeServiceInterface;
@@ -386,10 +357,7 @@ describe("authorize controller", () => {
     it("should throw an error without level property if the authorize service returns a code 1001 Request is missing parameters", async () => {
       const fakeAuthorizeService: AuthorizeServiceInterface = {
         start: sinon.fake.returns({
-          data: {
-            code: 1001,
-            message: "Request is missing parameters",
-          },
+          data: { code: 1001, message: "Request is missing parameters" },
           success: false,
         }),
       } as unknown as AuthorizeServiceInterface;
@@ -443,9 +411,7 @@ describe("authorize controller", () => {
         fakeKmsDecryptionService,
         fakeJwtService
       )(req as Request, res as Response);
-      expect(req.session.user.reauthenticate).to.equal(
-        mockClaims.reauthenticate
-      );
+      expect(req.session.user.reauthenticate).to.equal(mockClaims.reauthenticate);
     });
 
     it("should not set session reauthenticate session field from jwt claims when claim is present", async () => {
@@ -468,9 +434,7 @@ describe("authorize controller", () => {
       delete mockClaims.claim;
 
       fakeJwtService = {
-        getPayloadWithValidation: sinon.fake.returns(
-          Promise.resolve(mockClaims)
-        ),
+        getPayloadWithValidation: sinon.fake.returns(Promise.resolve(mockClaims)),
       };
 
       await authorizeGet(
@@ -487,9 +451,7 @@ describe("authorize controller", () => {
       mockClaims.claim = "{}";
 
       fakeJwtService = {
-        getPayloadWithValidation: sinon.fake.returns(
-          Promise.resolve(mockClaims)
-        ),
+        getPayloadWithValidation: sinon.fake.returns(Promise.resolve(mockClaims)),
       };
 
       await authorizeGet(
@@ -603,19 +565,12 @@ describe("authorize controller", () => {
   });
   function mockAuthService(authResponseData: any): AuthorizeServiceInterface {
     return {
-      start: sinon.fake.returns({
-        ...authResponseData,
-      }),
+      start: sinon.fake.returns({ ...authResponseData }),
     } as unknown as AuthorizeServiceInterface;
   }
 
   function createAuthServiceReponseData(): any {
-    return {
-      data: {
-        user: {},
-      },
-      success: true,
-    };
+    return { data: { user: {} }, success: true };
   }
 
   async function assertBadRequestErrorThrownWithErrorMessage(

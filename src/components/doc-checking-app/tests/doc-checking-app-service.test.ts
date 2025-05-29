@@ -11,11 +11,7 @@ import {
 import { Http } from "../../../utils/http.js";
 import type { DocCheckingAppInterface } from "../types.js";
 import { docCheckingAppService } from "../doc-checking-app-service.js";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("mfa service", () => {
@@ -40,8 +36,7 @@ describe("mfa service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
+    const { sessionId, clientSessionId, diPersistentSessionId } = commonVariables;
     const req = createMockRequest(PATH_NAMES.DOC_CHECKING_APP, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });

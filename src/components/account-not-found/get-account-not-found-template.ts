@@ -1,7 +1,4 @@
-import {
-  SERVICE_TYPE,
-  WEB_TO_MOBILE_TEMPLATE_MAPPINGS,
-} from "../../app.constants.js";
+import { SERVICE_TYPE, WEB_TO_MOBILE_TEMPLATE_MAPPINGS } from "../../app.constants.js";
 import { getChannelSpecificTemplate } from "../../utils/get-channel-specific-template.js";
 export function getAccountNotFoundTemplate(
   isOneLoginService: boolean,
@@ -18,9 +15,5 @@ export function getAccountNotFoundTemplate(
     webTemplate = "account-not-found/index-mandatory.njk";
   }
 
-  return getChannelSpecificTemplate(
-    webTemplate,
-    isApp,
-    WEB_TO_MOBILE_TEMPLATE_MAPPINGS
-  );
+  return getChannelSpecificTemplate(webTemplate, isApp, WEB_TO_MOBILE_TEMPLATE_MAPPINGS);
 }

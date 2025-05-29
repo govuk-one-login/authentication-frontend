@@ -9,9 +9,7 @@ import type { EnterEmailServiceInterface, UserExists } from "./types.js";
 import type { ApiResponseResult } from "../../types.js";
 import type { Request } from "express";
 
-export function enterEmailService(
-  axios: Http = http
-): EnterEmailServiceInterface {
+export function enterEmailService(axios: Http = http): EnterEmailServiceInterface {
   const userExists = async function (
     sessionId: string,
     emailAddress: string,
@@ -21,9 +19,7 @@ export function enterEmailService(
   ): Promise<ApiResponseResult<UserExists>> {
     const response = await axios.client.post<UserExists>(
       API_ENDPOINTS.USER_EXISTS,
-      {
-        email: emailAddress.toLowerCase(),
-      },
+      { email: emailAddress.toLowerCase() },
       getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
@@ -38,7 +34,5 @@ export function enterEmailService(
     return createApiResponse<UserExists>(response);
   };
 
-  return {
-    userExists,
-  };
+  return { userExists };
 }

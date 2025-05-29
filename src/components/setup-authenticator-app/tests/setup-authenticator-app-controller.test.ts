@@ -2,11 +2,7 @@ import { expect } from "chai";
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
-import {
-  JOURNEY_TYPE,
-  NOTIFICATION_TYPE,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE, PATH_NAMES } from "../../../app.constants.js";
 import {
   setupAuthenticatorAppGet,
   setupAuthenticatorAppPost,
@@ -42,9 +38,7 @@ describe("setup-authenticator-app controller", () => {
 
       await setupAuthenticatorAppGet(req as Request, res as Response);
 
-      expect(res.render).to.have.been.calledWith(
-        "setup-authenticator-app/index.njk"
-      );
+      expect(res.render).to.have.been.calledWith("setup-authenticator-app/index.njk");
     });
   });
 
@@ -70,24 +64,24 @@ describe("setup-authenticator-app controller", () => {
         journey.getJourneyTypeFromUserSession
       );
 
-      const { setupAuthenticatorAppPost: mockSetupAuthenticatorAppPost } =
-        await esmock("../setup-authenticator-app-controller.js", {
+      const { setupAuthenticatorAppPost: mockSetupAuthenticatorAppPost } = await esmock(
+        "../setup-authenticator-app-controller.js",
+        {
           "../../common/journey/journey.js": {
             getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
           },
-        });
+        }
+      );
 
-      await mockSetupAuthenticatorAppPost(
-        fakeMfAService,
-        fakeNotificationService
-      )(req as Request, res as Response);
+      await mockSetupAuthenticatorAppPost(fakeMfAService, fakeNotificationService)(
+        req as Request,
+        res as Response
+      );
 
-      expect(
-        getJourneyTypeFromUserSessionSpy
-      ).to.have.been.calledOnceWithExactly(req.session.user, {
-        includeAccountRecovery: true,
-        fallbackJourneyType: JOURNEY_TYPE.REGISTRATION,
-      });
+      expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
+        req.session.user,
+        { includeAccountRecovery: true, fallbackJourneyType: JOURNEY_TYPE.REGISTRATION }
+      );
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.ACCOUNT_RECOVERY
       );
@@ -128,9 +122,7 @@ describe("setup-authenticator-app controller", () => {
         req
       );
 
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL
-      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL);
     });
 
     it("should successfully validate access code and redirect to account created for account recovery journey (to be updated)", async () => {
@@ -187,9 +179,7 @@ describe("setup-authenticator-app controller", () => {
       expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.not.have.been.called;
 
-      expect(res.render).to.have.been.calledWith(
-        "setup-authenticator-app/index.njk"
-      );
+      expect(res.render).to.have.been.calledWith("setup-authenticator-app/index.njk");
     });
 
     it("should successfully validate access code and redirect to IPV", async () => {
@@ -221,19 +211,13 @@ describe("setup-authenticator-app controller", () => {
       const fakeMfAService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
           success: false,
-          data: {
-            code: "1234",
-            message: "error",
-          },
+          data: { code: "1234", message: "error" },
         }),
       } as unknown as VerifyMfaCodeInterface;
 
       await assert.rejects(
         async () =>
-          setupAuthenticatorAppPost(fakeMfAService)(
-            req as Request,
-            res as Response
-          ),
+          setupAuthenticatorAppPost(fakeMfAService)(req as Request, res as Response),
         BadRequestError,
         "1234:error"
       );

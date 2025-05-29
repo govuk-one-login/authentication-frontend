@@ -6,9 +6,7 @@ export function validateEnterPasswordRequest(): ValidationChainFunc {
     body("password")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t("pages.enterPassword.password.validationError.required", {
-          value,
-        });
+        return req.t("pages.enterPassword.password.validationError.required", { value });
       }),
     validateBodyMiddleware("enter-password/index.njk"),
   ];
@@ -21,16 +19,11 @@ export function validateEnterPasswordAccountExistsRequest(): ValidationChainFunc
       .withMessage((value, { req }) => {
         return req.t(
           "pages.enterPasswordAccountExists.password.validationError.required",
-          {
-            value,
-          }
+          { value }
         );
       }),
-    validateBodyMiddleware(
-      "enter-password/index-account-exists.njk",
-      (req) => ({
-        email: req.session.user.email,
-      })
-    ),
+    validateBodyMiddleware("enter-password/index-account-exists.njk", (req) => ({
+      email: req.session.user.email,
+    })),
   ];
 }

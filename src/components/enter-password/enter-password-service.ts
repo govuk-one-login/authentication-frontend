@@ -6,16 +6,11 @@ import {
 } from "../../utils/http.js";
 import type { JOURNEY_TYPE } from "../../app.constants.js";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants.js";
-import type {
-  EnterPasswordServiceInterface,
-  UserLoginResponse,
-} from "./types.js";
+import type { EnterPasswordServiceInterface, UserLoginResponse } from "./types.js";
 import type { ApiResponseResult } from "../../types.js";
 import type { Request } from "express";
 
-export function enterPasswordService(
-  axios: Http = http
-): EnterPasswordServiceInterface {
+export function enterPasswordService(axios: Http = http): EnterPasswordServiceInterface {
   const loginUser = async function (
     sessionId: string,
     emailAddress: string,
@@ -25,11 +20,7 @@ export function enterPasswordService(
     req: Request,
     journeyType?: JOURNEY_TYPE
   ): Promise<ApiResponseResult<UserLoginResponse>> {
-    const payload: {
-      email: string;
-      password: string;
-      journeyType?: JOURNEY_TYPE;
-    } = {
+    const payload: { email: string; password: string; journeyType?: JOURNEY_TYPE } = {
       email: emailAddress,
       password: password,
     };
@@ -60,7 +51,5 @@ export function enterPasswordService(
     return createApiResponse<UserLoginResponse>(response);
   };
 
-  return {
-    loginUser,
-  };
+  return { loginUser };
 }

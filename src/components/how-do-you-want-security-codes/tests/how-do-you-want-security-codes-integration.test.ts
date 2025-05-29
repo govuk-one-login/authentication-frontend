@@ -1,10 +1,6 @@
 import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import esmock from "esmock";
 import type { NextFunction, Request, Response } from "express";
 import type express from "express";
@@ -17,13 +13,9 @@ import nock from "nock";
 
 const getTokenAndCookies = async (app: express.Application) => {
   let cookies, token;
-  await request(
-    app,
-    (test) => test.get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
-    {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    }
-  ).then((res) => {
+  await request(app, (test) => test.get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES), {
+    expectAnalyticsPropertiesMatchSnapshot: false,
+  }).then((res) => {
     const $ = cheerio.load(res.text);
     token = $("[name=_csrf]").val();
     cookies = res.headers["set-cookie"];
@@ -72,24 +64,15 @@ describe("Integration::how do you want security codes", () => {
       {
         description: "SMS user with SMS backup",
         mfaMethods: [
-          {
-            id: DEFAULT_PHONE_NUMBER_ID,
-            redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-          },
-          {
-            id: BACKUP_PHONE_NUMBER_ID,
-            redactedPhoneNumber: BACKUP_PHONE_NUMBER,
-          },
+          { id: DEFAULT_PHONE_NUMBER_ID, redactedPhoneNumber: DEFAULT_PHONE_NUMBER },
+          { id: BACKUP_PHONE_NUMBER_ID, redactedPhoneNumber: BACKUP_PHONE_NUMBER },
         ],
         expectedRadioValues: [BACKUP_PHONE_NUMBER_ID, DEFAULT_PHONE_NUMBER_ID],
       },
       {
         description: "SMS user with AUTH APP backup",
         mfaMethods: [
-          {
-            id: DEFAULT_PHONE_NUMBER_ID,
-            redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-          },
+          { id: DEFAULT_PHONE_NUMBER_ID, redactedPhoneNumber: DEFAULT_PHONE_NUMBER },
           { id: BACKUP_AUTH_APP_ID, authApp: true },
         ],
         expectedRadioValues: [BACKUP_AUTH_APP_ID, DEFAULT_PHONE_NUMBER_ID],
@@ -97,14 +80,8 @@ describe("Integration::how do you want security codes", () => {
       {
         description: "AUTH APP user with SMS backup",
         mfaMethods: [
-          {
-            id: DEFAULT_AUTH_APP_ID,
-            authApp: true,
-          },
-          {
-            id: BACKUP_PHONE_NUMBER_ID,
-            redactedPhoneNumber: BACKUP_PHONE_NUMBER,
-          },
+          { id: DEFAULT_AUTH_APP_ID, authApp: true },
+          { id: BACKUP_PHONE_NUMBER_ID, redactedPhoneNumber: BACKUP_PHONE_NUMBER },
         ],
         expectedRadioValues: [BACKUP_PHONE_NUMBER_ID, DEFAULT_AUTH_APP_ID],
       },
@@ -121,8 +98,7 @@ describe("Integration::how do you want security codes", () => {
               validateSessionMiddleware: mockSessionMiddleware(
                 builtMfaMethods,
                 builtMfaMethods.find(
-                  (mfaMethod) =>
-                    mfaMethod.priority === MfaMethodPriority.DEFAULT
+                  (mfaMethod) => mfaMethod.priority === MfaMethodPriority.DEFAULT
                 ).id
               ),
             },
@@ -149,10 +125,7 @@ describe("Integration::how do you want security codes", () => {
               ).to.be.eq(true, "mfa reset link presence");
 
               const form = $(`form[action="/how-do-you-want-security-codes"]`);
-              expect(form.toArray().some(Boolean)).to.be.eq(
-                true,
-                "form presence"
-              );
+              expect(form.toArray().some(Boolean)).to.be.eq(true, "form presence");
               expect(
                 form
                   .first()
@@ -161,10 +134,7 @@ describe("Integration::how do you want security codes", () => {
                   .some((link) => $(link).text().trim() === "Continue")
               ).to.be.eq(true, "submit button presence");
 
-              const radioArray = form
-                .first()
-                .find("input[type=radio]")
-                .toArray();
+              const radioArray = form.first().find("input[type=radio]").toArray();
               expect(radioArray.length).to.be.eq(2);
               expectedRadioValues.forEach((name, index) => {
                 expect($(radioArray[index]).val()).to.be.eq(
@@ -183,18 +153,12 @@ describe("Integration::how do you want security codes", () => {
       const app = await createDefaultSmsBackupAppExpressApp();
       const { token, cookies } = await getTokenAndCookies(app);
 
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
+      await request(app, (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES), {
+        expectAnalyticsPropertiesMatchSnapshot: false,
+      })
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#mfa-method-id-error").text()).to.contains(
@@ -216,10 +180,7 @@ describe("Integration::how do you want security codes", () => {
                   id: DEFAULT_PHONE_NUMBER_ID,
                   redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
                 },
-                {
-                  id: BACKUP_PHONE_NUMBER_ID,
-                  redactedPhoneNumber: BACKUP_PHONE_NUMBER,
-                },
+                { id: BACKUP_PHONE_NUMBER_ID, redactedPhoneNumber: BACKUP_PHONE_NUMBER },
               ]),
               DEFAULT_PHONE_NUMBER_ID
             ),
@@ -229,26 +190,16 @@ describe("Integration::how do you want security codes", () => {
 
       app = await createApp();
 
-      nock(baseApi)
-        .post(API_ENDPOINTS.MFA)
-        .once()
-        .reply(HTTP_STATUS_CODES.NO_CONTENT);
+      nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(HTTP_STATUS_CODES.NO_CONTENT);
 
       const { token, cookies } = await getTokenAndCookies(app);
 
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
+      await request(app, (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES), {
+        expectAnalyticsPropertiesMatchSnapshot: false,
+      })
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          "mfa-method-id": BACKUP_PHONE_NUMBER_ID,
-        })
+        .send({ _csrf: token, "mfa-method-id": BACKUP_PHONE_NUMBER_ID })
         .expect(302);
     });
 
@@ -256,19 +207,12 @@ describe("Integration::how do you want security codes", () => {
       const app = await createDefaultSmsBackupAppExpressApp();
       const { token, cookies } = await getTokenAndCookies(app);
 
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
+      await request(app, (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES), {
+        expectAnalyticsPropertiesMatchSnapshot: false,
+      })
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          "mfa-method-id": BACKUP_AUTH_APP_ID,
-        })
+        .send({ _csrf: token, "mfa-method-id": BACKUP_AUTH_APP_ID })
         .expect("Location", PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
         .expect(302);
     });
@@ -282,14 +226,8 @@ describe("Integration::how do you want security codes", () => {
         "../../../middleware/session-middleware.js": {
           validateSessionMiddleware: mockSessionMiddleware(
             buildMfaMethods([
-              {
-                id: DEFAULT_PHONE_NUMBER_ID,
-                redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-              },
-              {
-                id: BACKUP_AUTH_APP_ID,
-                authApp: true,
-              },
+              { id: DEFAULT_PHONE_NUMBER_ID, redactedPhoneNumber: DEFAULT_PHONE_NUMBER },
+              { id: BACKUP_AUTH_APP_ID, authApp: true },
             ]),
             DEFAULT_PHONE_NUMBER_ID
           ),

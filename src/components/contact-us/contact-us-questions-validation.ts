@@ -26,17 +26,13 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
   return [
     body("location").custom((value, { req }) => {
       if (
-        req.body.subtheme ===
-          CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_ADDRESS &&
+        req.body.subtheme === CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_ADDRESS &&
         value === undefined
       ) {
         throw new Error(
           req.t(
             "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.location.errorMessage",
-            {
-              value,
-              lng: req.i18n.lng,
-            }
+            { value, lng: req.i18n.lng }
           )
         );
       }
@@ -53,10 +49,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
             req.body.formType +
             ".section1.errorMessage" +
             suffix,
-          {
-            value,
-            lng: req.i18n.lng,
-          }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("identityDocumentUsed")
@@ -71,11 +64,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       }),
     body("identityDocumentUsed")
       .if(body("theme").equals("proving_identity"))
-      .if(
-        body("subtheme").equals(
-          "proving_identity_problem_with_identity_document"
-        )
-      )
+      .if(body("subtheme").equals("proving_identity_problem_with_identity_document"))
       .notEmpty()
       .withMessage((value, { req }) => {
         return req.t(
@@ -132,10 +121,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .notEmpty()
       .withMessage((value, { req }) => {
         return req.t(
-          getErrorMessageForAdditionalDescription(
-            req.body.theme,
-            req.body.subtheme
-          ),
+          getErrorMessageForAdditionalDescription(req.body.theme, req.body.subtheme),
           { value, lng: req.i18n.lng }
         );
       }),
@@ -161,19 +147,19 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       .optional()
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t(
-          "pages.contactUsQuestions.optionalDescriptionErrorMessage.message",
-          { value, lng: req.i18n.lng }
-        );
+        return req.t("pages.contactUsQuestions.optionalDescriptionErrorMessage.message", {
+          value,
+          lng: req.i18n.lng,
+        });
       }),
     body("serviceTryingToUse")
       .optional()
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t(
-          "pages.contactUsQuestions.serviceTryingToUse.errorMessage",
-          { value, lng: req.i18n.lng }
-        );
+        return req.t("pages.contactUsQuestions.serviceTryingToUse.errorMessage", {
+          value,
+          lng: req.i18n.lng,
+        });
       }),
     body("moreDetailDescription")
       .optional()
@@ -187,9 +173,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
     body("problemWithNationalInsuranceNumber")
       .if(body("theme").equals("proving_identity"))
       .if(
-        body("subtheme").equals(
-          "proving_identity_problem_with_national_insurance_number"
-        )
+        body("subtheme").equals("proving_identity_problem_with_national_insurance_number")
       )
       .notEmpty()
       .withMessage((value, { req }) => {
@@ -201,9 +185,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
     body("problemWithNationalInsuranceNumber")
       .if(body("theme").equals("proving_identity"))
       .if(
-        body("subtheme").equals(
-          "proving_identity_problem_with_national_insurance_number"
-        )
+        body("subtheme").equals("proving_identity_problem_with_national_insurance_number")
       )
       .isLength({ max: CONTACT_US_FIELD_MAX_LENGTH })
       .withMessage((value, { req }) => {
@@ -214,17 +196,13 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       }),
     body("location").custom((value, { req }) => {
       if (
-        req.body.subtheme ===
-          CONTACT_US_THEMES.PROVING_IDENTITY_SOMETHING_ELSE &&
+        req.body.subtheme === CONTACT_US_THEMES.PROVING_IDENTITY_SOMETHING_ELSE &&
         value === undefined
       ) {
         throw new Error(
           req.t(
             "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.location.errorMessage",
-            {
-              value,
-              lng: req.i18n.lng,
-            }
+            { value, lng: req.i18n.lng }
           )
         );
       }
@@ -240,11 +218,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
         );
       }),
     body("contact")
-      .if(
-        body("theme")
-          .not()
-          .equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS)
-      )
+      .if(body("theme").not().equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS))
       .notEmpty()
       .withMessage((value, { req }) => {
         return req.t(
@@ -269,11 +243,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
         );
       }),
     body("email")
-      .if(
-        body("theme")
-          .not()
-          .equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS)
-      )
+      .if(body("theme").not().equals(CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS))
       .if(body("contact").equals("true"))
       .notEmpty()
       .withMessage((value, { req }) => {
@@ -306,18 +276,12 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
     body("country")
       .optional()
       .custom((value, { req }) => {
-        if (
-          req.body.securityCodeSentMethod ===
-          "text_message_international_number"
-        ) {
+        if (req.body.securityCodeSentMethod === "text_message_international_number") {
           if (!value) {
             throw new Error(
               req.t(
                 "pages.contactUsQuestions.textMessageInternationNumberConditionalSection.errorIfBlank",
-                {
-                  value,
-                  lng: req.i18n.lng,
-                }
+                { value, lng: req.i18n.lng }
               )
             );
           }
@@ -344,9 +308,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
       }),
     //Free text Sanitizers
     body("serviceTryingToUse").customSanitizer(sanitizeFreeTextValue),
-    body("problemWithNationalInsuranceNumber").customSanitizer(
-      sanitizeFreeTextValue
-    ),
+    body("problemWithNationalInsuranceNumber").customSanitizer(sanitizeFreeTextValue),
     body("moreDetailDescription").customSanitizer(sanitizeFreeTextValue),
     body("optionalDescription").customSanitizer(sanitizeFreeTextValue),
     body("additionalDescription").customSanitizer(sanitizeFreeTextValue),
@@ -466,9 +428,7 @@ export function getLengthExceededErrorMessageForIssueDescription(
   subtheme: string
 ): string | undefined {
   if (theme === CONTACT_US_THEMES.ACCOUNT_CREATION) {
-    return getLengthExceededErrorMessageForAccountCreationIssueDescription(
-      subtheme
-    );
+    return getLengthExceededErrorMessageForAccountCreationIssueDescription(subtheme);
   }
   if (theme === CONTACT_US_THEMES.SIGNING_IN) {
     return getLengthExceededErrorMessageForSigningInIssueDescription(subtheme);
@@ -563,15 +523,10 @@ export function getErrorMessageForAdditionalDescription(
   if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
     return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.errorMessage";
   }
-  if (
-    subtheme ===
-    CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM
-  ) {
+  if (subtheme === CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM) {
     return "pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.section2.errorMessage";
   }
-  if (
-    subtheme === CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM
-  ) {
+  if (subtheme === CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM) {
     return "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.section2.errorMessage";
   }
   if (subtheme === CONTACT_US_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE) {

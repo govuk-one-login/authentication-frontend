@@ -28,10 +28,7 @@ export class CrossBrowserService implements CrossBrowserInterface {
       req.query.state
     );
     orchestrationRedirectUrl.searchParams.set("error", "access_denied");
-    orchestrationRedirectUrl.searchParams.set(
-      "error_description",
-      "no_session"
-    );
+    orchestrationRedirectUrl.searchParams.set("error_description", "no_session");
     return orchestrationRedirectUrl.toString();
   }
 
@@ -44,17 +41,13 @@ export class CrossBrowserService implements CrossBrowserInterface {
       req,
       API_ENDPOINTS.ID_REVERIFICATION_STATE
     );
-    const response =
-      await this.axios.client.post<IDReverificationStateResponse>(
-        API_ENDPOINTS.ID_REVERIFICATION_STATE,
-        {
-          authenticationState,
-        },
-        config
-      );
+    const response = await this.axios.client.post<IDReverificationStateResponse>(
+      API_ENDPOINTS.ID_REVERIFICATION_STATE,
+      { authenticationState },
+      config
+    );
 
-    const apiResponse =
-      createApiResponse<IDReverificationStateResponse>(response);
+    const apiResponse = createApiResponse<IDReverificationStateResponse>(response);
     if (!apiResponse.success) {
       throw new BadRequestError(
         `ID Reverification State request failed. Message: ${response.data}, code: ${response.status}`

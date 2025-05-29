@@ -10,10 +10,7 @@ describe("lockout-helper", () => {
   let clock: sinon.SinonFakeTimers;
   const date = new Date(Date.UTC(2024, 1, 1));
   before(() => {
-    clock = sinon.useFakeTimers({
-      now: date.valueOf(),
-      shouldAdvanceTime: true,
-    });
+    clock = sinon.useFakeTimers({ now: date.valueOf(), shouldAdvanceTime: true });
   });
 
   after(() => {
@@ -23,14 +20,8 @@ describe("lockout-helper", () => {
   describe("timestampNMinutesFromNow", () => {
     it("should return the correct timestamp from the current datetime", () => {
       const TEST_SCENARIO_PARAMS = [
-        {
-          numberOfMinutes: 1,
-          expectedTimestamp: "Thu, 01 Feb 2024 00:01:00 GMT",
-        },
-        {
-          numberOfMinutes: 60,
-          expectedTimestamp: "Thu, 01 Feb 2024 01:00:00 GMT",
-        },
+        { numberOfMinutes: 1, expectedTimestamp: "Thu, 01 Feb 2024 00:01:00 GMT" },
+        { numberOfMinutes: 60, expectedTimestamp: "Thu, 01 Feb 2024 01:00:00 GMT" },
       ];
 
       TEST_SCENARIO_PARAMS.forEach((params) => {
@@ -44,14 +35,8 @@ describe("lockout-helper", () => {
   describe("timestampNSecondsFromNow", () => {
     it("should return the correct timestamp from the current datetime", () => {
       const TEST_SCENARIO_PARAMS = [
-        {
-          numberOfSeconds: 60,
-          expectedTimestamp: "Thu, 01 Feb 2024 00:01:00 GMT",
-        },
-        {
-          numberOfSeconds: 1,
-          expectedTimestamp: "Thu, 01 Feb 2024 00:00:01 GMT",
-        },
+        { numberOfSeconds: 60, expectedTimestamp: "Thu, 01 Feb 2024 00:01:00 GMT" },
+        { numberOfSeconds: 1, expectedTimestamp: "Thu, 01 Feb 2024 00:00:01 GMT" },
       ];
 
       TEST_SCENARIO_PARAMS.forEach((params) => {
@@ -73,14 +58,8 @@ describe("lockout-helper", () => {
           lockoutExpiry: new Date(date.getTime() - 1 * 60000).toUTCString(),
           expectedLockedOut: false,
         },
-        {
-          lockoutExpiry: undefined,
-          expectedLockedOut: undefined,
-        },
-        {
-          lockoutExpiry: date.toUTCString(),
-          expectedLockedOut: false,
-        },
+        { lockoutExpiry: undefined, expectedLockedOut: undefined },
+        { lockoutExpiry: date.toUTCString(), expectedLockedOut: false },
       ];
 
       TEST_SCENARIO_PARAMS.forEach((params) => {

@@ -24,10 +24,7 @@ export function sendNotificationService(
     phoneNumber?: string,
     requestNewCode?: boolean
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
-    const payload: any = {
-      email,
-      notificationType,
-    };
+    const payload: any = { email, notificationType };
 
     if (phoneNumber) {
       payload.phoneNumber = phoneNumber;
@@ -66,7 +63,5 @@ export function sendNotificationService(
     ]);
   };
 
-  return {
-    sendNotification,
-  };
+  return { sendNotification };
 }

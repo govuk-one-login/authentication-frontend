@@ -50,17 +50,13 @@ const reverificationSuccessData = {
   message: "",
 };
 
-const failureData = {
-  code: 500,
-  message: "Internal error occurred in backend",
-};
+const failureData = { code: 500, message: "Internal error occurred in backend" };
 
 describe("ipv callback controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
-  const { sessionId, clientSessionId, diPersistentSessionId, email } =
-    commonVariables;
+  const { sessionId, clientSessionId, diPersistentSessionId, email } = commonVariables;
 
   const AUTH_CODE = "5678";
   const STATE = "efghijk";
@@ -72,10 +68,7 @@ describe("ipv callback controller", () => {
     req.session.id = sessionId;
     req.cookies.gs = sessionId + clientSessionId;
     req.cookies.aps = sessionId;
-    req.session.user.journey = {
-      nextPath: PATH_NAMES.IPV_CALLBACK,
-      optionalPaths: [],
-    };
+    req.session.user.journey = { nextPath: PATH_NAMES.IPV_CALLBACK, optionalPaths: [] };
     res = mockResponse();
     res.locals = {
       sessionId,
@@ -94,14 +87,9 @@ describe("ipv callback controller", () => {
         200,
         reverificationSuccessData
       );
-      await ipvCallbackGet(fakeServiceReturningSuccess)(
-        req as Request,
-        res as Response
-      );
+      await ipvCallbackGet(fakeServiceReturningSuccess)(req as Request, res as Response);
 
-      expect(
-        fakeServiceReturningSuccess.getReverificationResult
-      ).to.have.been.calledWith(
+      expect(fakeServiceReturningSuccess.getReverificationResult).to.have.been.calledWith(
         sessionId,
         clientSessionId,
         diPersistentSessionId,
@@ -110,42 +98,27 @@ describe("ipv callback controller", () => {
         AUTH_CODE,
         STATE
       );
-      expect(res.redirect).to.have.been.calledWith(
-        PATH_NAMES.GET_SECURITY_CODES
-      );
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.GET_SECURITY_CODES);
     });
 
     it("get should raise error when reverification result is not successful", async () => {
-      const fakeServiceReturningFailure = reverificationResultService(
-        500,
-        failureData
-      );
+      const fakeServiceReturningFailure = reverificationResultService(500, failureData);
 
       await assert.rejects(
         async () =>
-          ipvCallbackGet(fakeServiceReturningFailure)(
-            req as Request,
-            res as Response
-          ),
+          ipvCallbackGet(fakeServiceReturningFailure)(req as Request, res as Response),
         BadRequestError,
         "500:Internal error occurred in backend"
       );
 
-      expect(fakeServiceReturningFailure.getReverificationResult).to.have.been
-        .called;
+      expect(fakeServiceReturningFailure.getReverificationResult).to.have.been.called;
     });
 
     const ERROR_CODES_REDIRECTING_TO_CANNOT_CHANGE_SECURITY_CODES = [
       ["no_identity_available", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
       ["identity_check_incomplete", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
-      [
-        "identity_did_not_match",
-        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
-      ],
-      [
-        "identity_check_failed",
-        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
-      ],
+      ["identity_did_not_match", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL],
+      ["identity_check_failed", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL],
     ];
     ERROR_CODES_REDIRECTING_TO_CANNOT_CHANGE_SECURITY_CODES.forEach(
       ([errorCode, expectedPath]) => {
@@ -170,21 +143,14 @@ describe("ipv callback controller", () => {
       );
 
       await assert.rejects(
-        async () =>
-          ipvCallbackGet(fakeService)(req as Request, res as Response),
-        {
-          name: "Error",
-          message: "this_is_an_invalid_failure_code",
-        }
+        async () => ipvCallbackGet(fakeService)(req as Request, res as Response),
+        { name: "Error", message: "this_is_an_invalid_failure_code" }
       );
     });
 
     it("get should raise error when auth code param is missing or invalid", async () => {
       const missingOrInvalidQueries = [
-        {
-          query: {},
-          expectedMessage: "400:Request query missing auth code param",
-        },
+        { query: {}, expectedMessage: "400:Request query missing auth code param" },
         {
           query: { code: ["string-in-a-list"] },
           expectedMessage: "400:Invalid auth code param type",
@@ -200,10 +166,7 @@ describe("ipv callback controller", () => {
 
         await assert.rejects(
           async () =>
-            ipvCallbackGet(fakeServiceReturningSuccess)(
-              req as Request,
-              res as Response
-            ),
+            ipvCallbackGet(fakeServiceReturningSuccess)(req as Request, res as Response),
           BadRequestError,
           testCase.expectedMessage
         );
@@ -224,8 +187,7 @@ describe("ipv callback controller", () => {
       it("should redirect to contactUsLinkUrl when help-to-delete-account selected", () => {
         const TEST_CONTACT_US_LINK_URL = "https://example.com/contact-us";
         res.locals.contactUsLinkUrl = TEST_CONTACT_US_LINK_URL;
-        req.body.cannotChangeHowGetSecurityCodeAction =
-          "help-to-delete-account";
+        req.body.cannotChangeHowGetSecurityCodeAction = "help-to-delete-account";
 
         cannotChangeSecurityCodesPost(req as Request, res as Response);
 
@@ -251,9 +213,7 @@ describe("ipv callback controller", () => {
 
         await cannotChangeSecurityCodesPost(req as Request, res as Response);
 
-        expect(res.redirect).to.have.calledWith(
-          PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
-        );
+        expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE);
       });
     });
   });

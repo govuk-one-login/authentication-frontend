@@ -3,11 +3,7 @@ import { request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import type { AxiosResponse } from "axios";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES } from "../../common/constants.js";
 import type {
   AccountRecoveryInterface,
@@ -48,9 +44,7 @@ describe("Integration:: enter mfa", () => {
               reauthenticate: "12345",
               journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
             };
-            req.session.client = {
-              redirectUri: EXAMPLE_REDIRECT_URI,
-            };
+            req.session.client = { redirectUri: EXAMPLE_REDIRECT_URI };
             next();
           }),
         },
@@ -58,15 +52,11 @@ describe("Integration:: enter mfa", () => {
           accountRecoveryService: sinon.fake((): AccountRecoveryInterface => {
             async function accountRecovery() {
               const fakeAxiosResponse: AxiosResponse = {
-                data: {
-                  accountRecoveryPermitted: true,
-                },
+                data: { accountRecoveryPermitted: true },
                 status: HTTP_STATUS_CODES.OK,
               } as AxiosResponse;
 
-              return createApiResponse<AccountRecoveryResponse>(
-                fakeAxiosResponse
-              );
+              return createApiResponse<AccountRecoveryResponse>(fakeAxiosResponse);
             }
 
             return { accountRecovery };
@@ -103,24 +93,18 @@ describe("Integration:: enter mfa", () => {
   });
 
   it("should redirect to rp if user entered 6 incorrect codes in the reauth journey", async () => {
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
-      code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
-      success: false,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.VERIFY_CODE)
+      .times(6)
+      .reply(400, { code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES, success: false });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_MFA)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123455",
-        })
-        .expect(
-          "Location",
-          EXAMPLE_REDIRECT_URI.concat("?error=login_required")
-        )
+        .send({ _csrf: token, code: "123455" })
+        .expect("Location", EXAMPLE_REDIRECT_URI.concat("?error=login_required"))
         .expect(302)
     );
   });

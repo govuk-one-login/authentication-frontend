@@ -4,18 +4,14 @@ import {
   getOrchToAuthExpectedAudience,
   getOrchToAuthExpectedClientId,
 } from "../../config.js";
-export function getKnownClaims(): {
-  [key: string]: string | boolean | number;
-} {
+export function getKnownClaims(): { [key: string]: string | boolean | number } {
   return {
     client_id: getOrchToAuthExpectedClientId(),
     aud: getOrchToAuthExpectedAudience(),
   };
 }
 
-export function getKnownStubClaims(): {
-  [key: string]: string | boolean | number;
-} {
+export function getKnownStubClaims(): { [key: string]: string | boolean | number } {
   return {
     client_id: getOrchStubToAuthExpectedClientId(),
     aud: getOrchStubToAuthExpectedAudience(),

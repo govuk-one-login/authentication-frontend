@@ -48,11 +48,9 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL as string;
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
       cookies = res.headers["set-cookie"];
@@ -79,9 +77,7 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
       test
         .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
         .type("form")
-        .send({
-          code: "123456",
-        })
+        .send({ code: "123456" })
         .expect(403)
     );
   });
@@ -97,28 +93,24 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
         .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          isResendCodeRequest: true,
-        })
+        .send({ _csrf: token, isResendCodeRequest: true })
         .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
         .expect(302)
     );
   });
 
   it("should return 500 error screen when API call fails", async () => {
-    nock(baseApi).post(API_ENDPOINTS.SEND_NOTIFICATION).once().reply(500, {
-      errorCode: "1234",
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.SEND_NOTIFICATION)
+      .once()
+      .reply(500, { errorCode: "1234" });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect(500)
     );
   });

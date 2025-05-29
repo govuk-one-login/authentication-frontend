@@ -1,8 +1,5 @@
 import crypto from "crypto";
-import type {
-  DecryptCommandInput,
-  DecryptCommandOutput,
-} from "@aws-sdk/client-kms";
+import type { DecryptCommandInput, DecryptCommandOutput } from "@aws-sdk/client-kms";
 import { EncryptionAlgorithmSpec, KMS } from "@aws-sdk/client-kms";
 import type { KmsDecryptionServiceInterface } from "./types.js";
 import { getAwsRegion, getKmsKeyId } from "../../config.js";
@@ -14,9 +11,7 @@ export class KmsDecryptionService implements KmsDecryptionServiceInterface {
   private readonly kmsKeyId: string;
 
   constructor(
-    kmsClient = new KMS({
-      region: getAwsRegion(),
-    }),
+    kmsClient = new KMS({ region: getAwsRegion() }),
     encryptionAlgorithm = EncryptionAlgorithmSpec.RSAES_OAEP_SHA_256,
     kmsKeyId = getKmsKeyId()
   ) {
@@ -37,14 +32,11 @@ export class KmsDecryptionService implements KmsDecryptionServiceInterface {
     const jweComponents = encryptedJwe.split(".");
 
     if (jweComponents.length !== 5) {
-      throw new DecryptionError(
-        "Invalid JWE input: 5 component parts expected"
-      );
+      throw new DecryptionError("Invalid JWE input: 5 component parts expected");
     }
 
     try {
-      const [protectedHeader, encryptedKey, iv, ciphertext, tag] =
-        jweComponents;
+      const [protectedHeader, encryptedKey, iv, ciphertext, tag] = jweComponents;
 
       const contentEncryptionKey: Uint8Array =
         await this.getContentEncryptionKey(encryptedKey);
@@ -61,17 +53,14 @@ export class KmsDecryptionService implements KmsDecryptionServiceInterface {
     }
   }
 
-  private async getContentEncryptionKey(
-    encryptedKey: string
-  ): Promise<Uint8Array> {
+  private async getContentEncryptionKey(encryptedKey: string): Promise<Uint8Array> {
     const inputs: DecryptCommandInput = {
       CiphertextBlob: base64DecodeToUint8Array(encryptedKey),
       EncryptionAlgorithm: this.encryptionAlgorithm,
       KeyId: this.kmsKeyId,
     };
 
-    const decryptResponse: DecryptCommandOutput =
-      await this.kmsClient.decrypt(inputs);
+    const decryptResponse: DecryptCommandOutput = await this.kmsClient.decrypt(inputs);
     return decryptResponse.Plaintext;
   }
 

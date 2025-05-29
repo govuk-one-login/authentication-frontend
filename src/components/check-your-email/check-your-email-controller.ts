@@ -20,15 +20,11 @@ export function checkYourEmailGet(req: Request, res: Response): void {
   req.session.user.isAccountCreationJourney = true;
   if (isLocked(req.session.user.codeRequestLock)) {
     return res.render("security-code-error/index-wait.njk", {
-      newCodeLink: getNewCodePath(
-        req.query.actionType as SecurityCodeErrorType
-      ),
+      newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
       isAccountCreationJourney: true,
     });
   }
-  res.render(TEMPLATE_NAME, {
-    email: req.session.user.email,
-  });
+  res.render(TEMPLATE_NAME, { email: req.session.user.email });
 }
 
 export const checkYourEmailPost = (
@@ -46,14 +42,13 @@ export const checkYourEmailPost = (
     if (supportCheckEmailFraud()) {
       const { sessionId, clientSessionId, persistentSessionId } = res.locals;
       try {
-        const checkEmailFraudResponse =
-          await checkEmailFraudService.checkEmailFraudBlock(
-            req.session.user.email,
-            sessionId,
-            clientSessionId,
-            persistentSessionId,
-            req
-          );
+        const checkEmailFraudResponse = await checkEmailFraudService.checkEmailFraudBlock(
+          req.session.user.email,
+          sessionId,
+          clientSessionId,
+          persistentSessionId,
+          req
+        );
         logger.info(
           `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
         );
@@ -61,16 +56,12 @@ export const checkYourEmailPost = (
         logger.error("Error checking email fraud block", e);
       }
     }
-    const verifyCodeRequest = verifyCodePost(
-      service,
-      accountInterventionsService,
-      {
-        notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
-        template: TEMPLATE_NAME,
-        validationKey: "pages.checkYourEmail.code.validationError.invalidCode",
-        validationErrorCode: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE,
-      }
-    );
+    const verifyCodeRequest = verifyCodePost(service, accountInterventionsService, {
+      notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
+      template: TEMPLATE_NAME,
+      validationKey: "pages.checkYourEmail.code.validationError.invalidCode",
+      validationErrorCode: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE,
+    });
     return verifyCodeRequest(req, res);
   };
 };

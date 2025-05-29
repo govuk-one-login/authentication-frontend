@@ -6,9 +6,6 @@ export function fakeVerifyCodeServiceHelper(
   code?: any
 ): VerifyCodeInterface {
   return {
-    verifyCode: sinon.fake.returns({
-      success: success,
-      data: { code: code },
-    }),
+    verifyCode: sinon.fake.returns({ success: success, data: { code: code } }),
   } as unknown as VerifyCodeInterface;
 }

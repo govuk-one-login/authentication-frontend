@@ -3,11 +3,7 @@ import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import type { AxiosResponse } from "axios";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type {
   AccountRecoveryInterface,
@@ -29,11 +25,7 @@ describe("Integration:: enter authenticator app code", () => {
   let baseApi: string;
 
   async function setupStubbedApp(
-    partialMfaMethods: PartialMfaMethod[] = [
-      {
-        authApp: true,
-      },
-    ],
+    partialMfaMethods: PartialMfaMethod[] = [{ authApp: true }],
     isAccountRecoveryPermitted: boolean = true
   ) {
     const { createApp } = await esmock(
@@ -71,35 +63,29 @@ describe("Integration:: enter authenticator app code", () => {
           accountRecoveryService: sinon.fake((): AccountRecoveryInterface => {
             async function accountRecovery() {
               const fakeAxiosResponse: AxiosResponse = {
-                data: {
-                  accountRecoveryPermitted: isAccountRecoveryPermitted,
-                },
+                data: { accountRecoveryPermitted: isAccountRecoveryPermitted },
                 status: HTTP_STATUS_CODES.OK,
               } as AxiosResponse;
 
-              return createApiResponse<AccountRecoveryResponse>(
-                fakeAxiosResponse
-              );
+              return createApiResponse<AccountRecoveryResponse>(fakeAxiosResponse);
             }
 
             return { accountRecovery };
           }),
         },
         "../../common/send-notification/send-notification-service.js": {
-          sendNotificationService: sinon.fake(
-            (): SendNotificationServiceInterface => {
-              async function sendNotification() {
-                const fakeAxiosResponse: AxiosResponse = {
-                  data: "test",
-                  status: HTTP_STATUS_CODES.OK,
-                } as AxiosResponse;
+          sendNotificationService: sinon.fake((): SendNotificationServiceInterface => {
+            async function sendNotification() {
+              const fakeAxiosResponse: AxiosResponse = {
+                data: "test",
+                status: HTTP_STATUS_CODES.OK,
+              } as AxiosResponse;
 
-                return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
-              }
-
-              return { sendNotification };
+              return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
             }
-          ),
+
+            return { sendNotification };
+          }),
         },
       }
     );
@@ -107,11 +93,9 @@ describe("Integration:: enter authenticator app code", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
       cookies = res.headers["set-cookie"];
@@ -138,20 +122,12 @@ describe("Integration:: enter authenticator app code", () => {
 
   [
     {
-      partialMfaMethods: [
-        {
-          authApp: true,
-        },
-      ],
+      partialMfaMethods: [{ authApp: true }],
       isAccountRecoveryPermitted: false,
       expectedLink: undefined,
     },
     {
-      partialMfaMethods: [
-        {
-          authApp: true,
-        },
-      ],
+      partialMfaMethods: [{ authApp: true }],
       isAccountRecoveryPermitted: true,
       expectedLink: {
         href: PATH_NAMES.MFA_RESET_WITH_IPV,
@@ -159,14 +135,7 @@ describe("Integration:: enter authenticator app code", () => {
       },
     },
     {
-      partialMfaMethods: [
-        {
-          authApp: true,
-        },
-        {
-          redactedPhoneNumber: "1234",
-        },
-      ],
+      partialMfaMethods: [{ authApp: true }, { redactedPhoneNumber: "1234" }],
       isAccountRecoveryPermitted: true,
       expectedLink: {
         href: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
@@ -200,8 +169,7 @@ describe("Integration:: enter authenticator app code", () => {
                   .some(
                     (link) =>
                       $(link).attr("href") === PATH_NAMES.MFA_RESET_WITH_IPV ||
-                      $(link).attr("href") ===
-                        PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
+                      $(link).attr("href") === PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
                   )
               ).to.be.false;
             }
@@ -226,9 +194,7 @@ describe("Integration:: enter authenticator app code", () => {
       test
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
         .type("form")
-        .send({
-          code: "123456",
-        })
+        .send({ code: "123456" })
         .expect(403)
     );
   });
@@ -240,10 +206,7 @@ describe("Integration:: enter authenticator app code", () => {
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "",
-        })
+        .send({ _csrf: token, code: "" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains("Enter the code");
@@ -259,10 +222,7 @@ describe("Integration:: enter authenticator app code", () => {
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "2",
-        })
+        .send({ _csrf: token, code: "2" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -280,10 +240,7 @@ describe("Integration:: enter authenticator app code", () => {
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "1234567",
-        })
+        .send({ _csrf: token, code: "1234567" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -301,10 +258,7 @@ describe("Integration:: enter authenticator app code", () => {
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "12ert-",
-        })
+        .send({ _csrf: token, code: "12ert-" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -322,11 +276,7 @@ describe("Integration:: enter authenticator app code", () => {
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "12ert-",
-          isAccountRecoveryPermitted: false,
-        })
+        .send({ _csrf: token, code: "12ert-", isAccountRecoveryPermitted: false })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("body").text()).to.not.contains(
@@ -349,10 +299,7 @@ describe("Integration:: enter authenticator app code", () => {
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
+        .send({ _csrf: token, code: "123456" })
         .expect("Location", PATH_NAMES.AUTH_CODE)
         .expect(302)
     );
@@ -360,20 +307,17 @@ describe("Integration:: enter authenticator app code", () => {
 
   it("should return validation error when incorrect code entered", async () => {
     await setupStubbedApp();
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_MFA_CODE).once().reply(400, {
-      code: ERROR_CODES.AUTH_APP_INVALID_CODE,
-      success: false,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.VERIFY_MFA_CODE)
+      .once()
+      .reply(400, { code: ERROR_CODES.AUTH_APP_INVALID_CODE, success: false });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123455",
-        })
+        .send({ _csrf: token, code: "123455" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -386,20 +330,20 @@ describe("Integration:: enter authenticator app code", () => {
 
   it("should redirect to security code expired when incorrect code has been entered 5 times", async () => {
     await setupStubbedApp();
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_MFA_CODE).times(6).reply(400, {
-      code: ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED,
-      success: false,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.VERIFY_MFA_CODE)
+      .times(6)
+      .reply(400, {
+        code: ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED,
+        success: false,
+      });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123455",
-        })
+        .send({ _csrf: token, code: "123455" })
         .expect(
           "Location",
           `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.AuthAppMfaMaxRetries}`

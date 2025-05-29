@@ -5,10 +5,7 @@ import { sinon } from "../../../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
 
 import type { VerifyCodeInterface } from "../../common/verify-code/types.js";
-import {
-  checkYourEmailGet,
-  checkYourEmailPost,
-} from "../check-your-email-controller.js";
+import { checkYourEmailGet, checkYourEmailPost } from "../check-your-email-controller.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES, getErrorPathByCode } from "../../common/constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
@@ -22,10 +19,9 @@ describe("check your email controller", () => {
   let res: ResponseOutput;
   const { email } = commonVariables;
 
-  const accountInterventionsFakeSuccessfulService: AccountInterventionsInterface =
-    {
-      accountInterventions: sinon.fake.returns({ success: true }),
-    } as unknown as AccountInterventionsInterface;
+  const accountInterventionsFakeSuccessfulService: AccountInterventionsInterface = {
+    accountInterventions: sinon.fake.returns({ success: true }),
+  } as unknown as AccountInterventionsInterface;
 
   const checkEmailFraudFakeSuccessfulService: CheckEmailFraudBlockInterface = {
     checkEmailFraudBlock: sinon.fake.returns({
@@ -55,18 +51,14 @@ describe("check your email controller", () => {
       tomorrow.setDate(tomorrow.getDate() + 1);
       req.session.user.codeRequestLock = tomorrow.toUTCString();
       checkYourEmailGet(req as Request, res as Response);
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-wait.njk"
-      );
+      expect(res.render).to.have.calledWith("security-code-error/index-wait.njk");
     });
   });
 
   describe("checkYourEmailPost", () => {
     it("should redirect to /create-password when valid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
+        verifyCode: sinon.fake.returns({ success: true }),
       } as unknown as VerifyCodeInterface;
 
       req.body.code = "123456";
@@ -80,16 +72,12 @@ describe("check your email controller", () => {
       )(req as Request, res as Response);
 
       expect(fakeService.verifyCode).to.have.been.calledOnce;
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD
-      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
     });
 
     it("should redirect to /create-password when valid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
+        verifyCode: sinon.fake.returns({ success: true }),
       } as unknown as VerifyCodeInterface;
 
       req.session.user.isVerifyEmailCodeResendRequired = true;
@@ -102,9 +90,7 @@ describe("check your email controller", () => {
 
       expect(fakeService.verifyCode).to.have.not.been.called;
       expect(res.redirect).to.have.calledWith(
-        getErrorPathByCode(
-          ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES
-        )
+        getErrorPathByCode(ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES)
       );
     });
 

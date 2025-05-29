@@ -16,12 +16,7 @@ describe("signed out controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.SIGNED_OUT);
     req.session.destroy = sinon.fake();
-    req.cookies = {
-      aps: "123",
-      cookies_preferences_set: "abc",
-      lng: "en",
-      gs: "xyz",
-    };
+    req.cookies = { aps: "123", cookies_preferences_set: "abc", lng: "en", gs: "xyz" };
     res = mockResponse();
   });
 

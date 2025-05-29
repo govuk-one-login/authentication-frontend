@@ -16,9 +16,9 @@ describe("getAccountNotFoundWebTemplate", () => {
 
     describe("when isOneLoginService is false", () => {
       it("should return 'account-not-found/index-optional.njk' when serviceType is equal to SERVICE_TYPE.OPTIONAL", () => {
-        expect(
-          getAccountNotFoundTemplate(false, SERVICE_TYPE.OPTIONAL, false)
-        ).to.equal("account-not-found/index-optional.njk");
+        expect(getAccountNotFoundTemplate(false, SERVICE_TYPE.OPTIONAL, false)).to.equal(
+          "account-not-found/index-optional.njk"
+        );
       });
 
       it("should return 'account-not-found/index-mandatory.njk' when serviceType is not equal to SERVICE_TYPE.OPTIONAL", () => {
@@ -44,9 +44,9 @@ describe("getAccountNotFoundWebTemplate", () => {
 
     describe("when isOneLoginService is false", () => {
       it("should return 'account-not-found/index-mobile.njk' when serviceType is equal to SERVICE_TYPE.OPTIONAL", () => {
-        expect(
-          getAccountNotFoundTemplate(false, SERVICE_TYPE.OPTIONAL, true)
-        ).to.equal("account-not-found/index-mobile.njk");
+        expect(getAccountNotFoundTemplate(false, SERVICE_TYPE.OPTIONAL, true)).to.equal(
+          "account-not-found/index-mobile.njk"
+        );
       });
 
       it("should return 'account-not-found/index-mobile.njk' when serviceType is not equal to SERVICE_TYPE.OPTIONAL", () => {

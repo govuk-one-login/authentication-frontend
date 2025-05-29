@@ -30,9 +30,7 @@ describe("doc checking app controller", () => {
       const fakeService: DocCheckingAppInterface = {
         docCheckingAppAuthorize: sinon.fake.returns({
           success: true,
-          data: {
-            redirectUri: "https://test-doc-checking-authorisation-uri.com",
-          },
+          data: { redirectUri: "https://test-doc-checking-authorisation-uri.com" },
         }),
       } as unknown as DocCheckingAppInterface;
 
@@ -54,8 +52,7 @@ describe("doc checking app controller", () => {
       } as unknown as DocCheckingAppInterface;
 
       await assert.rejects(
-        async () =>
-          docCheckingAppGet(fakeService)(req as Request, res as Response),
+        async () => docCheckingAppGet(fakeService)(req as Request, res as Response),
         Error,
         "1222:Error occurred"
       );

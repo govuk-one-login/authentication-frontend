@@ -36,8 +36,7 @@ export function prepareSecurityCodeSendMethodTitle(
       securityCodeMethod = "Text message to a UK phone number";
       break;
     case "text_message_international_number":
-      securityCodeMethod =
-        "Text message to a phone number from another country";
+      securityCodeMethod = "Text message to a phone number from another country";
       break;
     case "authenticator_app":
       securityCodeMethod = "Authenticator app";
@@ -46,9 +45,7 @@ export function prepareSecurityCodeSendMethodTitle(
 
   return securityCodeMethod;
 }
-export function prepareIdentityDocumentTitle(
-  identityDocumentUsed: string
-): string {
+export function prepareIdentityDocumentTitle(identityDocumentUsed: string): string {
   let documentUsedDescription = "";
   switch (identityDocumentUsed) {
     case "passport":
@@ -71,8 +68,7 @@ export function prepareProblemWithTitle(problemWith: string): string {
       problemWithDescription = "Entering your name";
       break;
     case "bankOrBuildingSocietyDetails":
-      problemWithDescription =
-        "Entering your bank or building society account details";
+      problemWithDescription = "Entering your bank or building society account details";
       break;
   }
 
@@ -160,8 +156,7 @@ export function getContactUsService(
   function createSmartAgentCustomAttributes(contactForm: ContactForm) {
     const customAttributes: SmartAgentCustomAttributes = {};
 
-    customAttributes["sa-ticket-id"] =
-      contactForm.optionalData.ticketIdentifier;
+    customAttributes["sa-ticket-id"] = contactForm.optionalData.ticketIdentifier;
 
     if (contactForm.feedbackContact && contactForm.name) {
       customAttributes["sa-tag-customer-name"] = contactForm.name;
@@ -171,15 +166,13 @@ export function getContactUsService(
       customAttributes["sa-tag-customer-email"] = contactForm.email;
     }
 
-    if (
-      contactForm.themes.theme === CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS
-    ) {
+    if (contactForm.themes.theme === CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS) {
       customAttributes["sa-tag-customer-email"] = contactForm.email;
       customAttributes["sa-tag-telephone-number"] = contactForm.telephoneNumber;
-      customAttributes["sa-tag-has-received-unwarranted-security-code"] =
-        contactForm.suspectUnauthorisedAccess.hasReceivedUnwarrantedSecurityCode
-          ? "yes"
-          : "no";
+      customAttributes["sa-tag-has-received-unwarranted-security-code"] = contactForm
+        .suspectUnauthorisedAccess.hasReceivedUnwarrantedSecurityCode
+        ? "yes"
+        : "no";
       customAttributes["sa-tag-has-unknown-activity-history"] = contactForm
         .suspectUnauthorisedAccess.hasUnknownActivityHistory
         ? "yes"
@@ -201,17 +194,15 @@ export function getContactUsService(
 
     customAttributes["sa-webformrefer"] = getRefererTag(contactForm);
 
-    customAttributes["sa-app-error-code"] =
-      contactForm.optionalData.appErrorCode;
+    customAttributes["sa-app-error-code"] = contactForm.optionalData.appErrorCode;
 
-    customAttributes["sa-tag-preferred-language"] =
-      contactForm.preferredLanguage;
+    customAttributes["sa-tag-preferred-language"] = contactForm.preferredLanguage;
 
-    customAttributes["sa-security-code-sent-method"] =
-      prepareSecurityCodeSendMethodTitle(contactForm.securityCodeSentMethod);
+    customAttributes["sa-security-code-sent-method"] = prepareSecurityCodeSendMethodTitle(
+      contactForm.securityCodeSentMethod
+    );
 
-    customAttributes["sa-security-mobile-country"] =
-      contactForm.optionalData.country;
+    customAttributes["sa-security-mobile-country"] = contactForm.optionalData.country;
 
     customAttributes["sa-tag-location"] = prepareUserLocationTitle(
       contactForm.optionalData.location
@@ -220,11 +211,9 @@ export function getContactUsService(
     customAttributes["sa-tag-secondary-reason-user-selection"] =
       contactForm.themeQuestions.subthemeQuestion;
 
-    customAttributes["sa-themequestion"] =
-      contactForm.themeQuestions.themeQuestion;
+    customAttributes["sa-themequestion"] = contactForm.themeQuestions.themeQuestion;
 
-    customAttributes["sa-subthemequestion"] =
-      contactForm.themeQuestions.subthemeQuestion;
+    customAttributes["sa-subthemequestion"] = contactForm.themeQuestions.subthemeQuestion;
 
     if (contactForm.descriptions.additionalDescription) {
       customAttributes["sa-additional-description"] =
@@ -261,9 +250,7 @@ export function getContactUsService(
         : "denied"
     }`;
 
-    customAttributes["sa-tag-identifier"] = getIdentifierTag(
-      contactForm.themes.theme
-    );
+    customAttributes["sa-tag-identifier"] = getIdentifierTag(contactForm.themes.theme);
 
     customAttributes["sa-tag-theme"] = getThemeTag(contactForm.themes);
 
