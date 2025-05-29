@@ -44,9 +44,7 @@ describe("send mfa code error helper", () => {
       headers: undefined,
       status: 0,
       statusText: "",
-      data: {
-        code: ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_MAX_CODES_SENT,
-      },
+      data: { code: ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_MAX_CODES_SENT },
     });
     handleSendMfaCodeError(result, res);
     expect(res.redirect).to.have.calledWith(

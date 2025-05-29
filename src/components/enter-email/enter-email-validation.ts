@@ -41,9 +41,7 @@ export function validateEnterEmailRequest(
             WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS
           );
 
-          return req.t(errorMessage, {
-            value,
-          });
+          return req.t(errorMessage, { value });
         }
         return true;
       }),

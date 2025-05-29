@@ -58,9 +58,7 @@ describe("check your email controller", () => {
   describe("checkYourEmailPost", () => {
     it("should redirect to /create-password when valid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
+        verifyCode: sinon.fake.returns({ success: true }),
       } as unknown as VerifyCodeInterface;
 
       req.body.code = "123456";
@@ -79,9 +77,7 @@ describe("check your email controller", () => {
 
     it("should redirect to /create-password when valid code entered", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
+        verifyCode: sinon.fake.returns({ success: true }),
       } as unknown as VerifyCodeInterface;
 
       req.session.user.isVerifyEmailCodeResendRequired = true;

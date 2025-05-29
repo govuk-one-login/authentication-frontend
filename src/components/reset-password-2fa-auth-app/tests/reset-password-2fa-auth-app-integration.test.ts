@@ -85,30 +85,27 @@ describe("Integration::2fa auth app (in reset password flow)", () => {
         .post(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
+        .send({ _csrf: token, code: "123456" })
         .expect("Location", PATH_NAMES.RESET_PASSWORD)
         .expect(302)
     );
   });
 
   it("should return error page when when user is locked out", async () => {
-    nock(baseApi).persist().post(API_ENDPOINTS.VERIFY_MFA_CODE).reply(400, {
-      code: ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED,
-      success: false,
-    });
+    nock(baseApi)
+      .persist()
+      .post(API_ENDPOINTS.VERIFY_MFA_CODE)
+      .reply(400, {
+        code: ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED,
+        success: false,
+      });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
+        .send({ _csrf: token, code: "123456" })
         .expect(
           "Location",
           `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.AuthAppMfaMaxRetries}`

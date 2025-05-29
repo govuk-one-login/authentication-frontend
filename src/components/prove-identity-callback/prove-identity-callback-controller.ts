@@ -33,9 +33,7 @@ export function proveIdentityCallbackGetOrPost(
         });
       }
 
-      return res.render("prove-identity-callback/index.njk", {
-        serviceName: clientName,
-      });
+      return res.render("prove-identity-callback/index.njk", { serviceName: clientName });
     }
 
     let redirectPath;
@@ -77,32 +75,32 @@ export function proveIdentityStatusCallbackGet(
       );
 
       if (response.data.status === IdentityProcessingStatus.PROCESSING) {
-        res.status(HTTP_STATUS_CODES.OK).json({
-          status: IdentityProcessingStatus.PROCESSING,
-        });
+        res
+          .status(HTTP_STATUS_CODES.OK)
+          .json({ status: IdentityProcessingStatus.PROCESSING });
       }
 
       if (response.data.status === IdentityProcessingStatus.COMPLETED) {
-        res.status(HTTP_STATUS_CODES.OK).json({
-          status: IdentityProcessingStatus.COMPLETED,
-        });
+        res
+          .status(HTTP_STATUS_CODES.OK)
+          .json({ status: IdentityProcessingStatus.COMPLETED });
       }
 
       if (response.data.status === IdentityProcessingStatus.INTERVENTION) {
-        res.status(HTTP_STATUS_CODES.OK).json({
-          status: IdentityProcessingStatus.INTERVENTION,
-        });
+        res
+          .status(HTTP_STATUS_CODES.OK)
+          .json({ status: IdentityProcessingStatus.INTERVENTION });
       }
 
       if (response.data.status === IdentityProcessingStatus.ERROR) {
-        res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-          status: IdentityProcessingStatus.ERROR,
-        });
+        res
+          .status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
+          .json({ status: IdentityProcessingStatus.ERROR });
       }
     } catch {
-      res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-        status: IdentityProcessingStatus.ERROR,
-      });
+      res
+        .status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
+        .json({ status: IdentityProcessingStatus.ERROR });
     }
     return next();
   };

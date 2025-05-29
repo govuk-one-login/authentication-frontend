@@ -29,16 +29,12 @@ describe("enter email controller", () => {
   const { email } = commonVariables;
 
   const checkReauthSuccessfulFakeService: CheckReauthServiceInterface = {
-    checkReauthUsers: sinon.fake.returns({
-      success: true,
-    }),
+    checkReauthUsers: sinon.fake.returns({ success: true }),
   } as unknown as CheckReauthServiceInterface;
 
   beforeEach(() => {
     res = mockResponse();
-    clock = sinon.useFakeTimers({
-      now: date.valueOf(),
-    });
+    clock = sinon.useFakeTimers({ now: date.valueOf() });
   });
 
   afterEach(() => {
@@ -97,10 +93,7 @@ describe("enter email controller", () => {
     it("should render enter password view when isReautheticationRequired is true and check service returns successfully", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 
-      req.session.user = {
-        email,
-        reauthenticate: "12345",
-      };
+      req.session.user = { email, reauthenticate: "12345" };
 
       enterEmailGet(req as Request, res as Response);
 
@@ -136,10 +129,7 @@ describe("enter email controller", () => {
     });
     it("should redirect to /enter-password when account exists", async () => {
       const fakeService: EnterEmailServiceInterface = {
-        userExists: sinon.fake.returns({
-          success: true,
-          data: { doesUserExist: true },
-        }),
+        userExists: sinon.fake.returns({ success: true, data: { doesUserExist: true } }),
       } as unknown as EnterEmailServiceInterface;
 
       await enterEmailPost(fakeService, checkReauthSuccessfulFakeService)(
@@ -153,10 +143,7 @@ describe("enter email controller", () => {
 
     it("should redirect to /account-not-found when no account exists", async () => {
       const fakeService: EnterEmailServiceInterface = {
-        userExists: sinon.fake.returns({
-          success: true,
-          data: { doesUserExist: false },
-        }),
+        userExists: sinon.fake.returns({ success: true, data: { doesUserExist: false } }),
       } as unknown as EnterEmailServiceInterface;
 
       await enterEmailPost(fakeService, checkReauthSuccessfulFakeService)(
@@ -180,10 +167,7 @@ describe("enter email controller", () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
           success: true,
-          data: {
-            doesUserExist: true,
-            lockoutInformation: [lockoutInformation],
-          },
+          data: { doesUserExist: true, lockoutInformation: [lockoutInformation] },
         }),
       } as unknown as EnterEmailServiceInterface;
 
@@ -217,9 +201,7 @@ describe("enter email controller", () => {
     });
 
     it("should throw error when session is not populated", async () => {
-      const fakeService: EnterEmailServiceInterface = {
-        userExists: sinon.fake(),
-      };
+      const fakeService: EnterEmailServiceInterface = { userExists: sinon.fake() };
 
       req.session.user = undefined;
 
@@ -236,9 +218,7 @@ describe("enter email controller", () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
           success: false,
-          data: {
-            code: ERROR_CODES.ACCOUNT_LOCKED,
-          },
+          data: { code: ERROR_CODES.ACCOUNT_LOCKED },
         }),
       } as unknown as EnterEmailServiceInterface;
 
@@ -253,10 +233,7 @@ describe("enter email controller", () => {
     it("should redirect to /enter-email when re-authentication is required and re-auth check is unsuccessful", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 
-      req.session.user = {
-        email,
-        reauthenticate: "12345",
-      };
+      req.session.user = { email, reauthenticate: "12345" };
 
       req.t = sinon.fake.returns("translated string");
 
@@ -270,9 +247,7 @@ describe("enter email controller", () => {
       const fakeCheckReauthService: CheckReauthServiceInterface = {
         checkReauthUsers: sinon.fake.returns({
           success: false,
-          data: {
-            code: ERROR_CODES.RE_AUTH_CHECK_NO_USER_OR_NO_MATCH,
-          },
+          data: { code: ERROR_CODES.RE_AUTH_CHECK_NO_USER_OR_NO_MATCH },
         }),
       } as unknown as CheckReauthServiceInterface;
 
@@ -290,10 +265,7 @@ describe("enter email controller", () => {
     it("should redirect to /enter-password blocked screen when the user has been blocked for entering max incorrect password during reauth journey", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 
-      req.session.user = {
-        email,
-        reauthenticate: "12345",
-      };
+      req.session.user = { email, reauthenticate: "12345" };
 
       req.t = sinon.fake.returns("translated string");
 
@@ -307,9 +279,7 @@ describe("enter email controller", () => {
       const fakeCheckReauthService: CheckReauthServiceInterface = {
         checkReauthUsers: sinon.fake.returns({
           success: false,
-          data: {
-            code: ERROR_CODES.ACCOUNT_LOCKED,
-          },
+          data: { code: ERROR_CODES.ACCOUNT_LOCKED },
         }),
       } as unknown as CheckReauthServiceInterface;
 
@@ -330,14 +300,9 @@ describe("enter email controller", () => {
       async () => {
         process.env.SUPPORT_REAUTHENTICATION = "1";
 
-        req.session.user = {
-          email,
-          reauthenticate: "12345",
-        };
+        req.session.user = { email, reauthenticate: "12345" };
 
-        req.session.client = {
-          redirectUri: "https://example.com/redirect",
-        };
+        req.session.client = { redirectUri: "https://example.com/redirect" };
 
         req.t = sinon.fake.returns("translated string");
 
@@ -351,9 +316,7 @@ describe("enter email controller", () => {
         const fakeCheckReauthService: CheckReauthServiceInterface = {
           checkReauthUsers: sinon.fake.returns({
             success: false,
-            data: {
-              code: ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED,
-            },
+            data: { code: ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED },
           }),
         } as unknown as CheckReauthServiceInterface;
 
@@ -393,9 +356,7 @@ describe("enter email controller", () => {
       const fakeCheckReauthService: CheckReauthServiceInterface = {
         checkReauthUsers: sinon.fake.returns({
           success: false,
-          data: {
-            code: ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED,
-          },
+          data: { code: ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED },
         }),
       } as unknown as CheckReauthServiceInterface;
 
@@ -412,16 +373,10 @@ describe("enter email controller", () => {
 
     it("should redirect to /enter-password re-auth page when re-authentication is required and service call is successful", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
-      req.session.user = {
-        email,
-        reauthenticate: "12345",
-      };
+      req.session.user = { email, reauthenticate: "12345" };
 
       const fakeService: EnterEmailServiceInterface = {
-        userExists: sinon.fake.returns({
-          success: true,
-          data: { doesUserExist: true },
-        }),
+        userExists: sinon.fake.returns({ success: true, data: { doesUserExist: true } }),
       } as unknown as EnterEmailServiceInterface;
 
       await enterEmailPost(fakeService, checkReauthSuccessfulFakeService)(
@@ -441,10 +396,7 @@ describe("enter email controller", () => {
 
     it("should redirect to /enter-password when account exists", async () => {
       const fakeService: EnterEmailServiceInterface = {
-        userExists: sinon.fake.returns({
-          success: true,
-          data: { doesUserExist: true },
-        }),
+        userExists: sinon.fake.returns({ success: true, data: { doesUserExist: true } }),
       } as unknown as EnterEmailServiceInterface;
 
       await enterEmailCreatePost(fakeService)(req as Request, res as Response);
@@ -455,16 +407,11 @@ describe("enter email controller", () => {
 
     it("should redirect to /check-your-email when no account exists", async () => {
       const fakeService: EnterEmailServiceInterface = {
-        userExists: sinon.fake.returns({
-          success: true,
-          data: { doesUserExist: false },
-        }),
+        userExists: sinon.fake.returns({ success: true, data: { doesUserExist: false } }),
       } as unknown as EnterEmailServiceInterface;
 
       const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
+        sendNotification: sinon.fake.returns({ success: true }),
       } as unknown as SendNotificationServiceInterface;
 
       await enterEmailCreatePost(fakeService, fakeNotificationService)(
@@ -478,18 +425,13 @@ describe("enter email controller", () => {
 
     it("should redirect to security-code-error/index-wait.njk when user requested too many email codes in previous account creation journey", async () => {
       const fakeService: EnterEmailServiceInterface = {
-        userExists: sinon.fake.returns({
-          success: true,
-          data: { doesUserExist: false },
-        }),
+        userExists: sinon.fake.returns({ success: true, data: { doesUserExist: false } }),
       } as unknown as EnterEmailServiceInterface;
 
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake.returns({
           success: false,
-          data: {
-            code: ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT,
-          },
+          data: { code: ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT },
         }),
       } as unknown as SendNotificationServiceInterface;
 

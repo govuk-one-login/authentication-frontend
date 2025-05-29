@@ -128,11 +128,10 @@ describe("Mfa reset with ipv", () => {
   function allowCallToMfaResetAuthorizeEndpointReturningAuthorizeUrl(url: string) {
     const baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    nock(baseApi).post(API_ENDPOINTS.MFA_RESET_AUTHORIZE).once().reply(200, {
-      authorize_url: url,
-      code: 200,
-      success: true,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.MFA_RESET_AUTHORIZE)
+      .once()
+      .reply(200, { authorize_url: url, code: 200, success: true });
   }
 
   async function setupAppWithSessionMiddleware(

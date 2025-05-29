@@ -22,18 +22,9 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.VERIFY_CODE,
-      {
-        code,
-        notificationType,
-        journeyType,
-        mfaMethodId,
-      },
+      { code, notificationType, journeyType, mfaMethodId },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId,
-          clientSessionId,
-          persistentSessionId: persistentSessionId,
-        },
+        { sessionId, clientSessionId, persistentSessionId: persistentSessionId },
         req,
         API_ENDPOINTS.VERIFY_CODE
       )
@@ -42,7 +33,5 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
     return createApiResponse(response, [HTTP_STATUS_CODES.NO_CONTENT]);
   };
 
-  return {
-    verifyCode,
-  };
+  return { verifyCode };
 }

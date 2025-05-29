@@ -39,10 +39,7 @@ export function updatedTermsConditionsPost(
         sessionId,
         clientSessionId,
         email,
-        {
-          updateProfileType: UpdateType.UPDATE_TERMS_CONDS,
-          profileInformation: true,
-        },
+        { updateProfileType: UpdateType.UPDATE_TERMS_CONDS, profileInformation: true },
         persistentSessionId,
         req
       );
@@ -56,9 +53,7 @@ export function updatedTermsConditionsPost(
           req,
           req.path,
           USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED,
-          {
-            isIdentityRequired: req.session.user.isIdentityRequired,
-          },
+          { isIdentityRequired: req.session.user.isIdentityRequired },
           sessionId
         )
       );

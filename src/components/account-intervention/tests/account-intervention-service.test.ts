@@ -22,11 +22,7 @@ describe("account interventions service", () => {
   const req = createMockRequest(PATH_NAMES.AUTH_CODE, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
-  const axiosResponse = Promise.resolve({
-    data: {},
-    status: 200,
-    statusText: "OK",
-  });
+  const axiosResponse = Promise.resolve({ data: {}, status: 200, statusText: "OK" });
 
   beforeEach(() => {
     setupApiKeyAndBaseUrlEnvVars();
@@ -77,10 +73,7 @@ describe("account interventions service", () => {
       const expectedApiCallDetails = {
         expectedPath: API_ENDPOINTS.ACCOUNT_INTERVENTIONS,
         expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
-        expectedBody: {
-          email: commonVariables.email,
-          authenticated: isAuthenticated,
-        },
+        expectedBody: { email: commonVariables.email, authenticated: isAuthenticated },
       };
 
       checkApiCallMadeWithExpectedBodyAndHeaders(

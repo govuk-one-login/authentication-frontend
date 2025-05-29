@@ -64,24 +64,15 @@ describe("Integration::how do you want security codes", () => {
       {
         description: "SMS user with SMS backup",
         mfaMethods: [
-          {
-            id: DEFAULT_PHONE_NUMBER_ID,
-            redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-          },
-          {
-            id: BACKUP_PHONE_NUMBER_ID,
-            redactedPhoneNumber: BACKUP_PHONE_NUMBER,
-          },
+          { id: DEFAULT_PHONE_NUMBER_ID, redactedPhoneNumber: DEFAULT_PHONE_NUMBER },
+          { id: BACKUP_PHONE_NUMBER_ID, redactedPhoneNumber: BACKUP_PHONE_NUMBER },
         ],
         expectedRadioValues: [BACKUP_PHONE_NUMBER_ID, DEFAULT_PHONE_NUMBER_ID],
       },
       {
         description: "SMS user with AUTH APP backup",
         mfaMethods: [
-          {
-            id: DEFAULT_PHONE_NUMBER_ID,
-            redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-          },
+          { id: DEFAULT_PHONE_NUMBER_ID, redactedPhoneNumber: DEFAULT_PHONE_NUMBER },
           { id: BACKUP_AUTH_APP_ID, authApp: true },
         ],
         expectedRadioValues: [BACKUP_AUTH_APP_ID, DEFAULT_PHONE_NUMBER_ID],
@@ -89,14 +80,8 @@ describe("Integration::how do you want security codes", () => {
       {
         description: "AUTH APP user with SMS backup",
         mfaMethods: [
-          {
-            id: DEFAULT_AUTH_APP_ID,
-            authApp: true,
-          },
-          {
-            id: BACKUP_PHONE_NUMBER_ID,
-            redactedPhoneNumber: BACKUP_PHONE_NUMBER,
-          },
+          { id: DEFAULT_AUTH_APP_ID, authApp: true },
+          { id: BACKUP_PHONE_NUMBER_ID, redactedPhoneNumber: BACKUP_PHONE_NUMBER },
         ],
         expectedRadioValues: [BACKUP_PHONE_NUMBER_ID, DEFAULT_AUTH_APP_ID],
       },
@@ -173,9 +158,7 @@ describe("Integration::how do you want security codes", () => {
       })
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#mfa-method-id-error").text()).to.contains(
@@ -197,10 +180,7 @@ describe("Integration::how do you want security codes", () => {
                   id: DEFAULT_PHONE_NUMBER_ID,
                   redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
                 },
-                {
-                  id: BACKUP_PHONE_NUMBER_ID,
-                  redactedPhoneNumber: BACKUP_PHONE_NUMBER,
-                },
+                { id: BACKUP_PHONE_NUMBER_ID, redactedPhoneNumber: BACKUP_PHONE_NUMBER },
               ]),
               DEFAULT_PHONE_NUMBER_ID
             ),
@@ -219,10 +199,7 @@ describe("Integration::how do you want security codes", () => {
       })
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          "mfa-method-id": BACKUP_PHONE_NUMBER_ID,
-        })
+        .send({ _csrf: token, "mfa-method-id": BACKUP_PHONE_NUMBER_ID })
         .expect(302);
     });
 
@@ -235,10 +212,7 @@ describe("Integration::how do you want security codes", () => {
       })
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          "mfa-method-id": BACKUP_AUTH_APP_ID,
-        })
+        .send({ _csrf: token, "mfa-method-id": BACKUP_AUTH_APP_ID })
         .expect("Location", PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
         .expect(302);
     });
@@ -252,14 +226,8 @@ describe("Integration::how do you want security codes", () => {
         "../../../middleware/session-middleware.js": {
           validateSessionMiddleware: mockSessionMiddleware(
             buildMfaMethods([
-              {
-                id: DEFAULT_PHONE_NUMBER_ID,
-                redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-              },
-              {
-                id: BACKUP_AUTH_APP_ID,
-                authApp: true,
-              },
+              { id: DEFAULT_PHONE_NUMBER_ID, redactedPhoneNumber: DEFAULT_PHONE_NUMBER },
+              { id: BACKUP_AUTH_APP_ID, authApp: true },
             ]),
             DEFAULT_PHONE_NUMBER_ID
           ),

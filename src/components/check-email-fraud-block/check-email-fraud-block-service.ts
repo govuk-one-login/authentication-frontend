@@ -24,9 +24,7 @@ export function checkEmailFraudBlockService(
   ): Promise<ApiResponseResult<CheckEmailFraudBlockResponse>> {
     const response = await axios.client.post<CheckEmailFraudBlockResponse>(
       API_ENDPOINTS.CHECK_EMAIL_FRAUD_BLOCK,
-      {
-        email: email.toLowerCase(),
-      },
+      { email: email.toLowerCase() },
       getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
@@ -39,7 +37,5 @@ export function checkEmailFraudBlockService(
     );
     return createApiResponse<CheckEmailFraudBlockResponse>(response);
   };
-  return {
-    checkEmailFraudBlock,
-  };
+  return { checkEmailFraudBlock };
 }

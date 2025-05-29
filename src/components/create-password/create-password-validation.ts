@@ -7,9 +7,7 @@ export function validateCreatePasswordRequest(): ValidationChainFunc {
     body("password")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t("pages.createPassword.password.validationError.required", {
-          value,
-        });
+        return req.t("pages.createPassword.password.validationError.required", { value });
       })
       .isLength({ max: 256 })
       .withMessage((value, { req }) => {

@@ -19,9 +19,7 @@ export function enterEmailService(axios: Http = http): EnterEmailServiceInterfac
   ): Promise<ApiResponseResult<UserExists>> {
     const response = await axios.client.post<UserExists>(
       API_ENDPOINTS.USER_EXISTS,
-      {
-        email: emailAddress.toLowerCase(),
-      },
+      { email: emailAddress.toLowerCase() },
       getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
@@ -36,7 +34,5 @@ export function enterEmailService(axios: Http = http): EnterEmailServiceInterfac
     return createApiResponse<UserExists>(response);
   };
 
-  return {
-    userExists,
-  };
+  return { userExists };
 }

@@ -70,9 +70,7 @@ export function authorizeGet(
       clientSessionId,
       persistentSessionId,
       req,
-      {
-        ...claims,
-      }
+      { ...claims }
     );
 
     if (!startAuthResponse.success) {

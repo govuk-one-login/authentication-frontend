@@ -13,10 +13,7 @@ import { expect } from "chai";
 import { CONTACT_US_THEMES, PATH_NAMES } from "../app.constants.js";
 import type { ParsedQs } from "qs";
 
-type RequestTaxonomyExpectation = {
-  request: Request;
-  taxonomy: Taxonomy;
-};
+type RequestTaxonomyExpectation = { request: Request; taxonomy: Taxonomy };
 
 const signInRequests: Request[] = [
   { session: { user: { isSignInJourney: true } } },
@@ -42,10 +39,7 @@ const createAccountRequests: Request[] = [
 const accountRecoveryRequests: Request[] = [
   {
     session: {
-      user: {
-        isAccountRecoveryJourney: true,
-        isAccountRecoveryPermitted: true,
-      },
+      user: { isAccountRecoveryJourney: true, isAccountRecoveryPermitted: true },
     },
   },
   { path: PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION },
@@ -66,9 +60,7 @@ const feedbackRequests: Request[] = [
 const guidanceRequests: Request[] = [
   {
     path: PATH_NAMES.CONTACT_US_QUESTIONS,
-    query: {
-      theme: CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK,
-    } as ParsedQs,
+    query: { theme: CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK } as ParsedQs,
   },
 ] as Request[];
 const accountInterventionRequests: Request[] = [

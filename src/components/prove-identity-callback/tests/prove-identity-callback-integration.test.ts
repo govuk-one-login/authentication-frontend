@@ -61,9 +61,7 @@ const stubMiddlewareAndCreateApp = async (
           res.locals.clientSessionId = "testClientSessionId";
           res.locals.persistentSessionId = "testPersistentSessionId";
 
-          req.session.client = {
-            name: "testClientName",
-          };
+          req.session.client = { name: "testClientName" };
           req.session.user = {
             email: "test@test.com",
             journey: getPermittedJourneyForPath(previousPath),

@@ -8,9 +8,7 @@ export function validateMultiFactorAuthenticationRequest(): ValidationChainFunc 
     body("mfaOptions")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t("pages.getSecurityCodes.secondFactorRadios.errorMessage", {
-          value,
-        });
+        return req.t("pages.getSecurityCodes.secondFactorRadios.errorMessage", { value });
       }),
     validateBodyMiddleware("select-mfa-options/index.njk", postValidationLocals),
   ];

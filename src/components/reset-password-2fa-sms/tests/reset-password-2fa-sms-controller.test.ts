@@ -37,9 +37,7 @@ describe("reset password 2fa SMS controller", () => {
   describe("resetPassword2FASmsGet", () => {
     it("should render reset password SMS view", async () => {
       const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
       req.session.user = {
         email: "joe.bloggs@test.com",
@@ -65,9 +63,7 @@ describe("reset password 2fa SMS controller", () => {
 
     it("should render index-security-code-entered-exceeded.njk view when user is account is locked from entering security codes", async () => {
       const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: false,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: false }),
       } as unknown as MfaServiceInterface;
 
       const date = new Date();
@@ -87,13 +83,9 @@ describe("reset password 2fa SMS controller", () => {
 
     it("should render security-code-error/index-wait.njk when user was locked out in the current session for requesting too many security codes", async () => {
       const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
+      req.session.user = { email: "joe.bloggs@test.com" };
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       req.session.user.codeRequestLock = tomorrow.toUTCString();
@@ -105,9 +97,7 @@ describe("reset password 2fa SMS controller", () => {
 
     it("should render reset password auth app view with hasMultipleMfaMethods false when user has a single mfa method", async () => {
       const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
       req.session.user = {
         email: "joe.bloggs@test.com",
@@ -132,9 +122,7 @@ describe("reset password 2fa SMS controller", () => {
 
     it("should render reset password auth app view with hasMultipleMfaMethods true when user has more than one mfa method", async () => {
       const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
       req.session.user = {
         email: "joe.bloggs@test.com",
@@ -162,13 +150,9 @@ describe("reset password 2fa SMS controller", () => {
   describe("resetPassword2FASmsPost", () => {
     it("should redirect to reset-password if code entered is correct and feature flag is turned on", async () => {
       const fakeService: VerifyCodeInterface = {
-        verifyCode: sinon.fake.returns({
-          success: true,
-        }),
+        verifyCode: sinon.fake.returns({ success: true }),
       } as unknown as VerifyCodeInterface;
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
+      req.session.user = { email: "joe.bloggs@test.com" };
       req.session.user.enterEmailMfaType = "SMS";
       req.body.code = "123456";
 
@@ -181,14 +165,10 @@ describe("reset password 2fa SMS controller", () => {
       const fakeService: VerifyCodeInterface = {
         verifyCode: sinon.fake.returns({
           success: false,
-          data: {
-            code: ERROR_CODES.INVALID_MFA_CODE,
-          },
+          data: { code: ERROR_CODES.INVALID_MFA_CODE },
         }),
       } as unknown as VerifyCodeInterface;
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
+      req.session.user = { email: "joe.bloggs@test.com" };
       req.session.user.enterEmailMfaType = "SMS";
       req.body.code = "123456";
 
@@ -206,9 +186,7 @@ describe("reset password 2fa SMS controller", () => {
         passwordResetRequired: false,
         reproveIdentity: false,
       });
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
+      req.session.user = { email: "joe.bloggs@test.com" };
       await resetPassword2FASmsPost(fakeService, fakeInterventionsService)(
         req as Request,
         res as Response
@@ -226,9 +204,7 @@ describe("reset password 2fa SMS controller", () => {
         passwordResetRequired: false,
         reproveIdentity: false,
       });
-      req.session.user = {
-        email: "joe.bloggs@test.com",
-      };
+      req.session.user = { email: "joe.bloggs@test.com" };
       await resetPassword2FASmsPost(fakeService, fakeInterventionsService)(
         req as Request,
         res as Response

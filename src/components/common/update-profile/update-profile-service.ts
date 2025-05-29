@@ -26,11 +26,7 @@ export function updateProfileService(axios: Http = http): UpdateProfileServiceIn
         updateProfileType: requestType.updateProfileType,
       },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId,
-          clientSessionId,
-          persistentSessionId,
-        },
+        { sessionId, clientSessionId, persistentSessionId },
         req,
         API_ENDPOINTS.UPDATE_PROFILE
       )
@@ -41,7 +37,5 @@ export function updateProfileService(axios: Http = http): UpdateProfileServiceIn
     ]);
   };
 
-  return {
-    updateProfile,
-  };
+  return { updateProfile };
 }

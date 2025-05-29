@@ -93,10 +93,7 @@ describe("Integration::reset password check email ", () => {
         .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
+        .send({ _csrf: token, code: "123456" })
         .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
         .expect(302)
     );

@@ -28,14 +28,8 @@ describe("Integration:: enter mfa", () => {
   const BACKUP_PHONE_NUMBER_ID = "test-id-backup";
 
   async function setupStubbedApp(
-    partialMfaMethods: {
-      redactedPhoneNumber?: string;
-      id: string;
-    }[] = [
-      {
-        id: DEFAULT_PHONE_NUMBER_ID,
-        redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-      },
+    partialMfaMethods: { redactedPhoneNumber?: string; id: string }[] = [
+      { id: DEFAULT_PHONE_NUMBER_ID, redactedPhoneNumber: DEFAULT_PHONE_NUMBER },
     ],
     isAccountRecoveryPermitted: boolean = true
   ) {
@@ -64,9 +58,7 @@ describe("Integration:: enter mfa", () => {
           accountRecoveryService: sinon.fake((): AccountRecoveryInterface => {
             async function accountRecovery() {
               const fakeAxiosResponse: AxiosResponse = {
-                data: {
-                  accountRecoveryPermitted: isAccountRecoveryPermitted,
-                },
+                data: { accountRecoveryPermitted: isAccountRecoveryPermitted },
                 status: HTTP_STATUS_CODES.OK,
               } as AxiosResponse;
 
@@ -123,20 +115,14 @@ describe("Integration:: enter mfa", () => {
   [
     {
       partialMfaMethods: [
-        {
-          redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-          id: DEFAULT_PHONE_NUMBER_ID,
-        },
+        { redactedPhoneNumber: DEFAULT_PHONE_NUMBER, id: DEFAULT_PHONE_NUMBER_ID },
       ],
       isAccountRecoveryPermitted: false,
       expectedLink: undefined,
     },
     {
       partialMfaMethods: [
-        {
-          redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-          id: DEFAULT_PHONE_NUMBER_ID,
-        },
+        { redactedPhoneNumber: DEFAULT_PHONE_NUMBER, id: DEFAULT_PHONE_NUMBER_ID },
       ],
       isAccountRecoveryPermitted: true,
       expectedLink: {
@@ -146,14 +132,8 @@ describe("Integration:: enter mfa", () => {
     },
     {
       partialMfaMethods: [
-        {
-          redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-          id: DEFAULT_PHONE_NUMBER_ID,
-        },
-        {
-          authApp: BACKUP_PHONE_NUMBER,
-          id: BACKUP_PHONE_NUMBER_ID,
-        },
+        { redactedPhoneNumber: DEFAULT_PHONE_NUMBER, id: DEFAULT_PHONE_NUMBER_ID },
+        { authApp: BACKUP_PHONE_NUMBER, id: BACKUP_PHONE_NUMBER_ID },
       ],
       isAccountRecoveryPermitted: true,
       expectedLink: {
@@ -198,10 +178,10 @@ describe("Integration:: enter mfa", () => {
   );
 
   it("following a validation error it should not include link to change security codes where account recovery is not permitted", async () => {
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).once().reply(400, {
-      code: ERROR_CODES.INVALID_MFA_CODE,
-      success: false,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.VERIFY_CODE)
+      .once()
+      .reply(400, { code: ERROR_CODES.INVALID_MFA_CODE, success: false });
 
     await setupStubbedApp();
     await request(app, (test) =>
@@ -226,13 +206,7 @@ describe("Integration:: enter mfa", () => {
   it("should return error when csrf not present", async () => {
     await setupStubbedApp();
     await request(app, (test) =>
-      test
-        .post(PATH_NAMES.ENTER_MFA)
-        .type("form")
-        .send({
-          code: "123456",
-        })
-        .expect(403)
+      test.post(PATH_NAMES.ENTER_MFA).type("form").send({ code: "123456" }).expect(403)
     );
   });
 
@@ -243,11 +217,7 @@ describe("Integration:: enter mfa", () => {
         .post(PATH_NAMES.ENTER_MFA)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "",
-          phoneNumber: DEFAULT_PHONE_NUMBER,
-        })
+        .send({ _csrf: token, code: "", phoneNumber: DEFAULT_PHONE_NUMBER })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains("Enter the code");
@@ -263,11 +233,7 @@ describe("Integration:: enter mfa", () => {
         .post(PATH_NAMES.ENTER_MFA)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "2",
-          phoneNumber: DEFAULT_PHONE_NUMBER,
-        })
+        .send({ _csrf: token, code: "2", phoneNumber: DEFAULT_PHONE_NUMBER })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -285,11 +251,7 @@ describe("Integration:: enter mfa", () => {
         .post(PATH_NAMES.ENTER_MFA)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "1234567",
-          phoneNumber: DEFAULT_PHONE_NUMBER,
-        })
+        .send({ _csrf: token, code: "1234567", phoneNumber: DEFAULT_PHONE_NUMBER })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -307,11 +269,7 @@ describe("Integration:: enter mfa", () => {
         .post(PATH_NAMES.ENTER_MFA)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "12ert-",
-          phoneNumber: DEFAULT_PHONE_NUMBER,
-        })
+        .send({ _csrf: token, code: "12ert-", phoneNumber: DEFAULT_PHONE_NUMBER })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -334,11 +292,7 @@ describe("Integration:: enter mfa", () => {
         .post(PATH_NAMES.ENTER_MFA)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-          phoneNumber: DEFAULT_PHONE_NUMBER,
-        })
+        .send({ _csrf: token, code: "123456", phoneNumber: DEFAULT_PHONE_NUMBER })
         .expect("Location", PATH_NAMES.AUTH_CODE)
         .expect(302)
     );
@@ -346,21 +300,17 @@ describe("Integration:: enter mfa", () => {
 
   it("should return validation error when incorrect code entered", async () => {
     await setupStubbedApp();
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).once().reply(400, {
-      code: ERROR_CODES.INVALID_MFA_CODE,
-      success: false,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.VERIFY_CODE)
+      .once()
+      .reply(400, { code: ERROR_CODES.INVALID_MFA_CODE, success: false });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_MFA)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123455",
-          phoneNumber: DEFAULT_PHONE_NUMBER,
-        })
+        .send({ _csrf: token, code: "123455", phoneNumber: DEFAULT_PHONE_NUMBER })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -374,20 +324,17 @@ describe("Integration:: enter mfa", () => {
   it("should redirect to security code expired when incorrect code has been entered 5 times", async () => {
     await setupStubbedApp();
     process.env.SUPPORT_REAUTHENTICATION = "0";
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
-      code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
-      success: false,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.VERIFY_CODE)
+      .times(6)
+      .reply(400, { code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES, success: false });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_MFA)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123455",
-        })
+        .send({ _csrf: token, code: "123455" })
         .expect(
           "Location",
           `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.MfaMaxRetries}`
@@ -398,20 +345,17 @@ describe("Integration:: enter mfa", () => {
 
   it("should redirect to security code requests blocked when exceeded request limit", async () => {
     await setupStubbedApp();
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(1).reply(400, {
-      code: ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED,
-      success: false,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.VERIFY_CODE)
+      .times(1)
+      .reply(400, { code: ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED, success: false });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_MFA)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123455",
-        })
+        .send({ _csrf: token, code: "123455" })
         .expect(
           "Location",
           `${PATH_NAMES.SECURITY_CODE_WAIT}?actionType=${SecurityCodeErrorType.MfaBlocked}`
@@ -422,20 +366,17 @@ describe("Integration:: enter mfa", () => {
 
   it("should redirect to security code requested too many times when exceed request limit", async () => {
     await setupStubbedApp();
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
-      code: ERROR_CODES.MFA_SMS_MAX_CODES_SENT,
-      success: false,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.VERIFY_CODE)
+      .times(6)
+      .reply(400, { code: ERROR_CODES.MFA_SMS_MAX_CODES_SENT, success: false });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_MFA)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123455",
-        })
+        .send({ _csrf: token, code: "123455" })
         .expect(
           "Location",
           `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.MfaMaxCodesSent}`
@@ -447,20 +388,17 @@ describe("Integration:: enter mfa", () => {
   it("should lock user if he entered 6 incorrect codes in the reauth journey and the logout switch is turned off", async () => {
     await setupStubbedApp();
     process.env.SUPPORT_REAUTHENTICATION = "0";
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).times(6).reply(400, {
-      code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
-      success: false,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.VERIFY_CODE)
+      .times(6)
+      .reply(400, { code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES, success: false });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.ENTER_MFA)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123455",
-        })
+        .send({ _csrf: token, code: "123455" })
         .expect(
           "Location",
           `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.MfaMaxRetries}`

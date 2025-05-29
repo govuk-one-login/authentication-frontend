@@ -73,10 +73,7 @@ describe("Integration::reset password check email ", () => {
       .post(API_ENDPOINTS.RESET_PASSWORD_REQUEST)
       .once()
       .reply(200, {
-        mfaMethods: buildMfaMethods({
-          redactedPhoneNumber: "123",
-          id: "test-id",
-        }),
+        mfaMethods: buildMfaMethods({ redactedPhoneNumber: "123", id: "test-id" }),
       });
     await request(app, (test) =>
       test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL).expect(200)
@@ -103,9 +100,9 @@ describe("Integration::reset password check email ", () => {
   });
 
   it("should return 2hr error page when 6 incorrect codes entered and flag is turned on", async () => {
-    nock(baseApi).post(API_ENDPOINTS.RESET_PASSWORD_REQUEST).reply(400, {
-      code: ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.RESET_PASSWORD_REQUEST)
+      .reply(400, { code: ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES });
 
     await request(app, (test) =>
       test
@@ -148,10 +145,7 @@ describe("Integration::reset password check email ", () => {
         .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
+        .send({ _csrf: token, code: "123456" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contain(
@@ -169,10 +163,7 @@ describe("Integration::reset password check email ", () => {
         .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "",
-        })
+        .send({ _csrf: token, code: "" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contain("Enter the code");
@@ -200,10 +191,7 @@ describe("Integration::reset password check email ", () => {
         .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
+        .send({ _csrf: token, code: "123456" })
         .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_SMS)
         .expect(302)
     );

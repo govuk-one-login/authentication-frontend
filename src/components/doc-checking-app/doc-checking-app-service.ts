@@ -35,7 +35,5 @@ export function docCheckingAppService(axios: Http = http): DocCheckingAppInterfa
     return createApiResponse<DocCheckingAuthorisationResponse>(response);
   };
 
-  return {
-    docCheckingAppAuthorize: docCheckingAuthorize,
-  };
+  return { docCheckingAppAuthorize: docCheckingAuthorize };
 }

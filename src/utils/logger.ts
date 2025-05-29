@@ -76,9 +76,7 @@ const loggerMiddleware = pinoHttp({
     }
     return `request completed with status code of: ${res.statusCode}`;
   },
-  customAttributeKeys: {
-    responseTime: "timeTaken",
-  },
+  customAttributeKeys: { responseTime: "timeTaken" },
 });
 
 export { logger, loggerMiddleware };

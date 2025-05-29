@@ -11,9 +11,7 @@ export function cookieConsentService(): CookieConsentServiceInterface {
       consentValue =
         parsedCookie.analytics === true ? COOKIE_CONSENT.ACCEPT : COOKIE_CONSENT.REJECT;
     }
-    const cookieValue: any = {
-      cookie_consent: consentValue,
-    };
+    const cookieValue: any = { cookie_consent: consentValue };
 
     return cookieValue;
   };
@@ -25,9 +23,7 @@ export function cookieConsentService(): CookieConsentServiceInterface {
     if ([COOKIE_CONSENT.ACCEPT, COOKIE_CONSENT.REJECT].includes(cookieConsent)) {
       cookieExpires.setFullYear(cookieExpires.getFullYear() + 1);
 
-      cookieValue = {
-        analytics: cookieConsent === COOKIE_CONSENT.ACCEPT,
-      };
+      cookieValue = { analytics: cookieConsent === COOKIE_CONSENT.ACCEPT };
     } else {
       cookieExpires.setFullYear(cookieExpires.getFullYear() - 1);
     }
@@ -35,8 +31,5 @@ export function cookieConsentService(): CookieConsentServiceInterface {
     return { value: JSON.stringify(cookieValue), expires: cookieExpires };
   };
 
-  return {
-    getCookieConsent,
-    createConsentCookieValue,
-  };
+  return { getCookieConsent, createConsentCookieValue };
 }

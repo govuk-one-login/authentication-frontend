@@ -33,12 +33,9 @@ const ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY =
 
 export function enterPasswordGet(req: Request, res: Response): void {
   const isReauthJourney =
-    getJourneyTypeFromUserSession(req.session.user, {
-      includeReauthentication: true,
-    }) == JOURNEY_TYPE.REAUTHENTICATION;
-  res.render(ENTER_PASSWORD_TEMPLATE, {
-    isReauthJourney: isReauthJourney,
-  });
+    getJourneyTypeFromUserSession(req.session.user, { includeReauthentication: true }) ==
+    JOURNEY_TYPE.REAUTHENTICATION;
+  res.render(ENTER_PASSWORD_TEMPLATE, { isReauthJourney: isReauthJourney });
 }
 
 export function enterSignInRetryBlockedGet(
@@ -77,9 +74,7 @@ export function enterPasswordAccountLockedGet(req: Request, res: Response): void
 
 export function enterPasswordAccountExistsGet(req: Request, res: Response): void {
   const { email } = req.session.user;
-  res.render(ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE, {
-    email: email,
-  });
+  res.render(ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE, { email: email });
 }
 
 export function enterPasswordPost(

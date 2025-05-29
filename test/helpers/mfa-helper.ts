@@ -31,10 +31,7 @@ export function buildMfaMethods(
             : undefined),
         };
       } else if (partial.authApp) {
-        return {
-          ...mfaMethodBuilder,
-          type: MFA_METHOD_TYPE.AUTH_APP,
-        };
+        return { ...mfaMethodBuilder, type: MFA_METHOD_TYPE.AUTH_APP };
       } else return undefined;
     }
   );

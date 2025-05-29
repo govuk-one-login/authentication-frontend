@@ -44,9 +44,7 @@ describe("enter phone number controller", () => {
     });
 
     it("should render enter phone number returning user view when user has a partly created account", () => {
-      req.session.user = {
-        isAccountPartCreated: true,
-      };
+      req.session.user = { isAccountPartCreated: true };
       enterPhoneNumberGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("enter-phone-number/index.njk", {
@@ -58,9 +56,7 @@ describe("enter phone number controller", () => {
   describe("enterPhoneNumberPost", () => {
     it("should redirect to /check-your-phone when success with valid UK number", async () => {
       const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
+        sendNotification: sinon.fake.returns({ success: true }),
       } as unknown as SendNotificationServiceInterface;
 
       req.body.phoneNumber = "07738393990";
@@ -80,9 +76,7 @@ describe("enter phone number controller", () => {
 
     it("should redirect to /check-your-phone when success with valid international number", async () => {
       const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
+        sendNotification: sinon.fake.returns({ success: true }),
       } as unknown as SendNotificationServiceInterface;
 
       req.body.phoneNumber = "+33645453322";
@@ -122,9 +116,7 @@ describe("enter phone number controller", () => {
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake.returns({
           success: false,
-          data: {
-            code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT,
-          },
+          data: { code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT },
         }),
       } as unknown as SendNotificationServiceInterface;
 
@@ -147,9 +139,7 @@ describe("enter phone number controller", () => {
         const fakeNotificationService: SendNotificationServiceInterface = {
           sendNotification: sinon.fake.returns({
             success: false,
-            data: {
-              code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT,
-            },
+            data: { code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT },
           }),
         } as unknown as SendNotificationServiceInterface;
         req.body.phoneNumber = "+33645453322";
@@ -177,9 +167,7 @@ describe("enter phone number controller", () => {
         const fakeNotificationService: SendNotificationServiceInterface = {
           sendNotification: sinon.fake.returns({
             success: false,
-            data: {
-              code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT,
-            },
+            data: { code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT },
           }),
         } as unknown as SendNotificationServiceInterface;
         req.body.phoneNumber = "+33645453322";

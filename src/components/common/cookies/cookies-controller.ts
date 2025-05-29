@@ -26,9 +26,7 @@ export function cookiesPost(req: Request, res: Response): void {
   );
 
   if (consentValue === "false") {
-    const options = {
-      domain: getGoogleAnalyticsAndDynatraceCookieDomain(),
-    };
+    const options = { domain: getGoogleAnalyticsAndDynatraceCookieDomain() };
 
     ANALYTICS_COOKIES.forEach((key) => {
       res.clearCookie(key, options);

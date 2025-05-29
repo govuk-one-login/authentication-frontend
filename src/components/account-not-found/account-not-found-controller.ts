@@ -17,9 +17,7 @@ export function accountNotFoundGet(req: Request, res: Response): void {
     res.locals.isApp
   );
 
-  res.render(template, {
-    email: req.session.user.email,
-  });
+  res.render(template, { email: req.session.user.email });
 }
 
 export function accountNotFoundPost(

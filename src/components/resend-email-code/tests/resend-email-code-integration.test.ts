@@ -68,9 +68,7 @@ describe("Integration:: resend email code", () => {
       test
         .post(PATH_NAMES.RESEND_EMAIL_CODE)
         .type("form")
-        .send({
-          code: "123456",
-        })
+        .send({ code: "123456" })
         .expect(403)
     );
   });
@@ -86,9 +84,7 @@ describe("Integration:: resend email code", () => {
         .post(PATH_NAMES.RESEND_EMAIL_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect("Location", PATH_NAMES.CHECK_YOUR_EMAIL)
         .expect(302)
     );
@@ -107,18 +103,17 @@ describe("Integration:: resend email code", () => {
   });
 
   it("should return 500 error screen when API call fails", async () => {
-    nock(baseApi).post(API_ENDPOINTS.SEND_NOTIFICATION).once().reply(500, {
-      errorCode: "1234",
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.SEND_NOTIFICATION)
+      .once()
+      .reply(500, { errorCode: "1234" });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.RESEND_EMAIL_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect(500)
     );
   });
@@ -134,9 +129,7 @@ describe("Integration:: resend email code", () => {
         .post(PATH_NAMES.RESEND_EMAIL_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect("Location", "/security-code-invalid-request?actionType=emailMaxCodesSent")
         .expect(302)
     );
@@ -153,9 +146,7 @@ describe("Integration:: resend email code", () => {
         .post(PATH_NAMES.RESEND_EMAIL_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect(
           "Location",
           "/security-code-requested-too-many-times?actionType=emailBlocked"

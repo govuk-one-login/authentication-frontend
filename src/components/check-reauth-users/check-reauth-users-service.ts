@@ -43,7 +43,5 @@ export function checkReauthUsersService(axios: Http = http): CheckReauthServiceI
     return createApiResponse<DefaultApiResponse>(response);
   };
 
-  return {
-    checkReauthUsers,
-  };
+  return { checkReauthUsers };
 }

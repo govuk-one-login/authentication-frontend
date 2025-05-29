@@ -22,9 +22,7 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     const newCodeLink = req.query?.isResendCodeRequest
       ? "/resend-code?isResendCodeRequest=true"
       : "/resend-code";
-    res.render("security-code-error/index-wait.njk", {
-      newCodeLink,
-    });
+    res.render("security-code-error/index-wait.njk", { newCodeLink });
   } else {
     const journeyType = getJourneyTypeFromUserSession(req.session.user, {
       includeReauthentication: true,

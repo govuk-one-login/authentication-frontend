@@ -39,21 +39,12 @@ describe("validation", () => {
           text: "Enter the name of the service",
           href: "#serviceTryingToUse",
         },
-        contact: {
-          text: "Select yes if we can reply to you by email",
-          href: "#contact",
-        },
+        contact: { text: "Select yes if we can reply to you by email", href: "#contact" },
       };
 
       const expected = [
-        {
-          text: "Enter the name of the service",
-          href: "#serviceTryingToUse",
-        },
-        {
-          text: "Select yes if we can reply to you by email",
-          href: "#contact",
-        },
+        { text: "Enter the name of the service", href: "#serviceTryingToUse" },
+        { text: "Select yes if we can reply to you by email", href: "#contact" },
       ];
 
       expect(deDuplicateErrorList(initialErrorList)).to.eql(expected);

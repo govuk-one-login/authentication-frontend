@@ -35,9 +35,7 @@ describe("reset password check email controller", () => {
     req = createMockRequest(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
     res = mockResponse();
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
-    req.session.user = {
-      email: "joe.bloggs@test.com",
-    };
+    req.session.user = { email: "joe.bloggs@test.com" };
   });
 
   afterEach(() => {
@@ -123,10 +121,7 @@ describe("reset password check email controller", () => {
 
       expect(res.render).to.have.been.calledWithMatch(
         "reset-password-check-email/index.njk",
-        match({
-          email: "joe.bloggs@test.com",
-          isForcedPasswordResetJourney: false,
-        })
+        match({ email: "joe.bloggs@test.com", isForcedPasswordResetJourney: false })
       );
     });
 
@@ -140,10 +135,7 @@ describe("reset password check email controller", () => {
 
       expect(res.render).to.have.been.calledWithMatch(
         "reset-password-check-email/index.njk",
-        match({
-          email: "joe.bloggs@test.com",
-          isForcedPasswordResetJourney: true,
-        })
+        match({ email: "joe.bloggs@test.com", isForcedPasswordResetJourney: true })
       );
     });
 
@@ -171,9 +163,7 @@ describe("reset password check email controller", () => {
 
         expect(res.render).to.have.calledWith(
           "reset-password-check-email/index-reset-password-resend-code.njk",
-          {
-            email: req.session.user.email,
-          }
+          { email: req.session.user.email }
         );
       });
     });

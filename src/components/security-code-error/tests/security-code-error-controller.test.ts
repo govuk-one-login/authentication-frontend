@@ -29,9 +29,7 @@ describe("security code controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
     res = mockResponse();
-    sinon.useFakeTimers({
-      now: new Date(Date.UTC(2024, 0, 1, 0)),
-    });
+    sinon.useFakeTimers({ now: new Date(Date.UTC(2024, 0, 1, 0)) });
   });
 
   afterEach(() => {
@@ -45,9 +43,7 @@ describe("security code controller", () => {
     SCENARIOS.SECURITY_CODE_EXPIRED_GET.forEach(
       ({ actionType, expectedRenderOptions }) => {
         it(`should render invalid OTP code for ${actionType} error when email OTP code has been invalid max number of times`, () => {
-          req.session.user = {
-            email: "joe.bloggs@test.com",
-          };
+          req.session.user = { email: "joe.bloggs@test.com" };
           req.query.actionType = actionType;
 
           securityCodeInvalidGet(req as Request, res as Response);
@@ -91,9 +87,7 @@ describe("security code controller", () => {
 
         expect(res.render).to.have.calledWith(
           "security-code-error/index-too-many-requests.njk",
-          {
-            newCodeLink: params.expectedCodeLink,
-          }
+          { newCodeLink: params.expectedCodeLink }
         );
       });
     });
@@ -107,10 +101,7 @@ describe("security code controller", () => {
 
       expect(res.render).to.have.calledWith(
         "security-code-error/index-security-code-entered-exceeded.njk",
-        {
-          newCodeLink: PATH_NAMES.RESEND_MFA_CODE,
-          isAuthApp: false,
-        }
+        { newCodeLink: PATH_NAMES.RESEND_MFA_CODE, isAuthApp: false }
       );
     });
 
@@ -121,10 +112,7 @@ describe("security code controller", () => {
 
       expect(res.render).to.have.calledWith(
         "security-code-error/index-security-code-entered-exceeded.njk",
-        {
-          newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
-          isAuthApp: true,
-        }
+        { newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE, isAuthApp: true }
       );
     });
   });

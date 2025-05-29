@@ -47,9 +47,7 @@ describe("Integration:: ipv callback", () => {
             .get(requestPath)
             .expect(302)
             .expect("Location", PATH_NAMES.GET_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
+        { expectAnalyticsPropertiesMatchSnapshot: false }
       );
     });
 
@@ -68,9 +66,7 @@ describe("Integration:: ipv callback", () => {
             .get(requestPath)
             .expect(302)
             .expect("Location", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
+        { expectAnalyticsPropertiesMatchSnapshot: false }
       );
     });
   });
@@ -93,10 +89,7 @@ describe("Integration:: ipv callback", () => {
       })
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          cannotChangeHowGetSecurityCodeAction: "",
-        })
+        .send({ _csrf: token, cannotChangeHowGetSecurityCodeAction: "" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#cannotChangeHowGetSecurityCodeAction-error").text()).to.contains(

@@ -34,11 +34,7 @@ describe("enter-password-service", () => {
   it("successfully calls the API to log the user in or reauthenticate", async () => {
     const auditEncodedString =
       "R21vLmd3QilNKHJsaGkvTFxhZDZrKF44SStoLFsieG0oSUY3aEhWRVtOMFRNMVw1dyInKzB8OVV5N09hOi8kLmlLcWJjJGQiK1NPUEJPPHBrYWJHP358NDg2ZDVc";
-    const axiosResponse = Promise.resolve({
-      data: {},
-      status: 200,
-      statusText: "OK",
-    });
+    const axiosResponse = Promise.resolve({ data: {}, status: 200, statusText: "OK" });
     postStub.resolves(axiosResponse);
     req = createMockRequest(API_ENDPOINTS.LOG_IN_USER);
     req.ip = IP_ADDRESS;
@@ -46,10 +42,7 @@ describe("enter-password-service", () => {
       "txma-audit-encoded": auditEncodedString,
       "x-forwarded-for": IP_ADDRESS,
     };
-    const expectedBody = {
-      email: "email",
-      password: "password",
-    };
+    const expectedBody = { email: "email", password: "password" };
 
     const result: ApiResponseResult<UserLoginResponse> = await service.loginUser(
       "",

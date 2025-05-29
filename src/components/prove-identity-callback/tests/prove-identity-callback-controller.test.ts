@@ -43,11 +43,7 @@ describe("prove identity callback controller", () => {
         processIdentity: sinon.fake.returns(
           Promise.resolve({
             success: true,
-            data: {
-              status: IdentityProcessingStatus.COMPLETED,
-              code: 200,
-              message: "",
-            },
+            data: { status: IdentityProcessingStatus.COMPLETED, code: 200, message: "" },
           })
         ),
         generateSuccessfulRpReturnUrl: sinon.fake.returns(Promise.resolve(rpRedirectUrl)),
@@ -64,9 +60,7 @@ describe("prove identity callback controller", () => {
       const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
         processIdentity: sinon.fake.returns({
           success: true,
-          data: {
-            status: IdentityProcessingStatus.PROCESSING,
-          },
+          data: { status: IdentityProcessingStatus.PROCESSING },
         }),
       } as unknown as ProveIdentityCallbackServiceInterface;
 
@@ -85,9 +79,7 @@ describe("prove identity callback controller", () => {
         const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
           processIdentity: sinon.fake.returns({
             success: true,
-            data: {
-              status: IdentityProcessingStatus.PROCESSING,
-            },
+            data: { status: IdentityProcessingStatus.PROCESSING },
           }),
         } as unknown as ProveIdentityCallbackServiceInterface;
 
@@ -106,9 +98,7 @@ describe("prove identity callback controller", () => {
       const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
         processIdentity: sinon.fake.returns({
           success: true,
-          data: {
-            status: IdentityProcessingStatus.ERROR,
-          },
+          data: { status: IdentityProcessingStatus.ERROR },
         }),
       } as unknown as ProveIdentityCallbackServiceInterface;
 
@@ -152,9 +142,7 @@ describe("prove identity callback controller", () => {
       const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
         processIdentity: sinon.fake.returns({
           success: true,
-          data: {
-            status: IdentityProcessingStatus.COMPLETED,
-          },
+          data: { status: IdentityProcessingStatus.COMPLETED },
         }),
       } as unknown as ProveIdentityCallbackServiceInterface;
       await proveIdentityStatusCallbackGet(fakeProveIdentityService)(
@@ -172,9 +160,7 @@ describe("prove identity callback controller", () => {
       const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
         processIdentity: sinon.fake.returns({
           success: true,
-          data: {
-            status: IdentityProcessingStatus.PROCESSING,
-          },
+          data: { status: IdentityProcessingStatus.PROCESSING },
         }),
       } as unknown as ProveIdentityCallbackServiceInterface;
       await proveIdentityStatusCallbackGet(fakeProveIdentityService)(
@@ -192,9 +178,7 @@ describe("prove identity callback controller", () => {
       const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
         processIdentity: sinon.fake.returns({
           success: true,
-          data: {
-            status: IdentityProcessingStatus.INTERVENTION,
-          },
+          data: { status: IdentityProcessingStatus.INTERVENTION },
         }),
       } as unknown as ProveIdentityCallbackServiceInterface;
       await proveIdentityStatusCallbackGet(fakeProveIdentityService)(
@@ -212,9 +196,7 @@ describe("prove identity callback controller", () => {
       const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
         processIdentity: sinon.fake.returns({
           success: true,
-          data: {
-            status: IdentityProcessingStatus.ERROR,
-          },
+          data: { status: IdentityProcessingStatus.ERROR },
         }),
       } as unknown as ProveIdentityCallbackServiceInterface;
       await proveIdentityStatusCallbackGet(fakeProveIdentityService)(

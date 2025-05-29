@@ -24,9 +24,7 @@ export function checkYourEmailGet(req: Request, res: Response): void {
       isAccountCreationJourney: true,
     });
   }
-  res.render(TEMPLATE_NAME, {
-    email: req.session.user.email,
-  });
+  res.render(TEMPLATE_NAME, { email: req.session.user.email });
 }
 
 export const checkYourEmailPost = (

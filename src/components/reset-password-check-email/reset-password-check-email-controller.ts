@@ -81,10 +81,7 @@ export function resetPasswordCheckEmailGet(
         errorTemplate = "security-code-error/index-wait.njk";
       }
 
-      return res.render(errorTemplate, {
-        show2HrScreen: true,
-        contentId: "",
-      });
+      return res.render(errorTemplate, { show2HrScreen: true, contentId: "" });
     } else {
       throw new BadRequestError(result.data.message, result.data.code);
     }

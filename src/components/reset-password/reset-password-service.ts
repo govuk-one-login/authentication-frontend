@@ -41,7 +41,5 @@ export function resetPasswordService(axios: Http = http): ResetPasswordServiceIn
     ]);
   };
 
-  return {
-    updatePassword,
-  };
+  return { updatePassword };
 }

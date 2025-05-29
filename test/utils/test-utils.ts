@@ -16,9 +16,7 @@ const expect = chai.expect;
 const request = (
   app: any,
   callback: (test: TestAgent) => Test,
-  options: {
-    expectAnalyticsPropertiesMatchSnapshot?: boolean;
-  } = {}
+  options: { expectAnalyticsPropertiesMatchSnapshot?: boolean } = {}
 ): supertest.Test => {
   let test = callback(supertest(app));
   if (options.expectAnalyticsPropertiesMatchSnapshot !== false) {

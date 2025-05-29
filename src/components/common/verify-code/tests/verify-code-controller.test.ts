@@ -66,10 +66,7 @@ describe("Verify code controller tests", () => {
       );
 
       req = createMockRequest(PATH_NAMES.CHECK_YOUR_EMAIL);
-      req.session.user = {
-        email: "test@test.com",
-        isAccountCreationJourney: true,
-      };
+      req.session.user = { email: "test@test.com", isAccountCreationJourney: true };
 
       await verifyCodePost(
         verifyCodeService,
@@ -170,9 +167,7 @@ describe("Verify code controller tests", () => {
         isAccountCreationJourney: false,
         reauthenticate: "123456",
       };
-      req.session.client = {
-        redirectUri: EXAMPLE_REDIRECT_URI,
-      };
+      req.session.client = { redirectUri: EXAMPLE_REDIRECT_URI };
       process.env.SUPPORT_REAUTHENTICATION = "1";
     });
     const verifyCodePostOptions = {

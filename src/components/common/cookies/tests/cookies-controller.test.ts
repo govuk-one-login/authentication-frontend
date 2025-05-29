@@ -61,10 +61,7 @@ describe("cookies controller", () => {
         expect(res.cookie).to.have.been.calledWith(
           COOKIES_PREFERENCES_SET,
           consentCookieValue.value,
-          sinon.match({
-            secure: true,
-            httpOnly: false,
-          })
+          sinon.match({ secure: true, httpOnly: false })
         );
       });
 
@@ -100,10 +97,7 @@ describe("cookies controller", () => {
         expect(res.cookie).to.have.been.calledWith(
           COOKIES_PREFERENCES_SET,
           consentCookieValue.value,
-          sinon.match({
-            secure: true,
-            httpOnly: false,
-          })
+          sinon.match({ secure: true, httpOnly: false })
         );
       });
 
@@ -128,10 +122,7 @@ describe("cookies controller", () => {
         expect(res.cookie).to.have.been.calledWith(
           COOKIES_PREFERENCES_SET,
           consentCookieValue.value,
-          sinon.match({
-            secure: true,
-            httpOnly: false,
-          })
+          sinon.match({ secure: true, httpOnly: false })
         );
 
         ANALYTICS_COOKIES.forEach((cookieKey) => {

@@ -19,26 +19,15 @@ describe("Middleware", () => {
       req = {
         cookies: {},
         headers: {},
-        session: {
-          id: "session-id",
-          destroy: sinon.stub().callsArg(0),
-        },
-        log: {
-          error: sinon.stub(),
-          info: sinon.stub(),
-        },
+        session: { id: "session-id", destroy: sinon.stub().callsArg(0) },
+        log: { error: sinon.stub(), info: sinon.stub() },
         get: function (headerName: string) {
           if (headerName === "Referrer") {
             return this.headers["referer"] || this.headers["referrer"];
           }
         },
       } as any;
-      res = {
-        locals: {},
-        status: sinon.stub().returns({
-          json: sinon.stub(),
-        }),
-      } as any;
+      res = { locals: {}, status: sinon.stub().returns({ json: sinon.stub() }) } as any;
       next = sinon.spy();
     });
 
@@ -62,9 +51,7 @@ describe("Middleware", () => {
     beforeEach(() => {
       req = {
         protocol: "https",
-        headers: {
-          host: "home.account.gov.uk",
-        },
+        headers: { host: "home.account.gov.uk" },
         originalUrl: "/contact-gov-uk-one-login",
         get: function (headerName: string) {
           return this.headers[headerName];

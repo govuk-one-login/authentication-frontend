@@ -17,9 +17,7 @@ export async function signInOrCreateGet(req: Request, res: Response): Promise<vo
     WEB_TO_MOBILE_TEMPLATE_MAPPINGS
   );
 
-  res.render(template, {
-    serviceType: req.session.client.serviceType,
-  });
+  res.render(template, { serviceType: req.session.client.serviceType });
 }
 
 export async function signInOrCreatePost(req: Request, res: Response): Promise<void> {

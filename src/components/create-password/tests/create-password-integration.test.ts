@@ -68,10 +68,7 @@ describe("Integration::register create password", () => {
       test
         .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
         .type("form")
-        .send({
-          email: "test@test.com",
-          password: "test@test.com",
-        })
+        .send({ email: "test@test.com", password: "test@test.com" })
         .expect(403)
     );
   });
@@ -82,11 +79,7 @@ describe("Integration::register create password", () => {
         .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          password: "",
-          "confirm-password": "",
-        })
+        .send({ _csrf: token, password: "", "confirm-password": "" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#password-error").text()).to.contains("Enter your password");
@@ -125,11 +118,7 @@ describe("Integration::register create password", () => {
         .post(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          password: "dad",
-          "confirm-password": "",
-        })
+        .send({ _csrf: token, password: "dad", "confirm-password": "" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#password-error").text()).to.contains(

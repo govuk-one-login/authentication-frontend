@@ -10,9 +10,7 @@ export function validateHowDoYouWantSecurityCodesRequest(): ValidationChainFunc 
       .if(body("mfa-method-id").not().equals("true"))
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t("pages.howDoYouWantSecurityCodes.error.empty", {
-          value,
-        });
+        return req.t("pages.howDoYouWantSecurityCodes.error.empty", { value });
       }),
     validateBodyMiddleware("how-do-you-want-security-codes/index.njk", (req) => {
       const { isPasswordResetJourney } = req.session.user;

@@ -52,10 +52,7 @@ describe("update profile service", () => {
       sessionId,
       clientSessionId,
       email,
-      {
-        profileInformation,
-        updateProfileType,
-      },
+      { profileInformation, updateProfileType },
       diPersistentSessionId,
       req
     );

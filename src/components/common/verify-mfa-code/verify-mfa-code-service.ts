@@ -30,11 +30,7 @@ export function verifyMfaCodeService(axios: Http = http): VerifyMfaCodeInterface
         ...(profileInformation && { profileInformation }),
       },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId,
-          clientSessionId,
-          persistentSessionId: persistentSessionId,
-        },
+        { sessionId, clientSessionId, persistentSessionId: persistentSessionId },
         req,
         API_ENDPOINTS.VERIFY_MFA_CODE
       )
@@ -42,7 +38,5 @@ export function verifyMfaCodeService(axios: Http = http): VerifyMfaCodeInterface
     return createApiResponse(response, [HTTP_STATUS_CODES.NO_CONTENT]);
   };
 
-  return {
-    verifyMfaCode,
-  };
+  return { verifyMfaCode };
 }

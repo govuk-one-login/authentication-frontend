@@ -6,10 +6,7 @@ export function i18nextConfigurationOptions(path: string): Record<string, unknow
     fallbackLng: LOCALE.EN,
     preload: [LOCALE.EN],
     supportedLngs: [LOCALE.EN, LOCALE.CY],
-    backend: {
-      loadPath: path,
-      allowMultiLoading: true,
-    },
+    backend: { loadPath: path, allowMultiLoading: true },
     detection: {
       lookupCookie: "lng",
       lookupQuerystring: "lng",

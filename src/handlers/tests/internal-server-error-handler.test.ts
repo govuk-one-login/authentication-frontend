@@ -37,9 +37,7 @@ describe("serverErrorHandler", () => {
     const err = new Error(ERROR_MESSAGES.INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST);
     const renderSpy = sinon.spy(res, "render");
     const expectedTemplate = "common/errors/mid-journey-direct-navigation.njk";
-    const expectedData = {
-      accountManagementUrl: "http://localhost:6001",
-    };
+    const expectedData = { accountManagementUrl: "http://localhost:6001" };
 
     serverErrorHandler(err, req, res, next);
 
@@ -52,9 +50,7 @@ describe("serverErrorHandler", () => {
     const err = new Error(ERROR_MESSAGES.FORBIDDEN);
     const renderSpy = sinon.spy(res, "render");
     const expectedTemplate = "common/errors/mid-journey-direct-navigation.njk";
-    const expectedData = {
-      accountManagementUrl: "http://localhost:6001",
-    };
+    const expectedData = { accountManagementUrl: "http://localhost:6001" };
 
     serverErrorHandler(err, req, res, next);
 

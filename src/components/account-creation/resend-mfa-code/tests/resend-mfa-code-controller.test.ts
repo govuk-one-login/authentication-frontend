@@ -58,10 +58,7 @@ describe("resend mfa controller", () => {
     });
 
     it("should request new phone verification code with relevant registration journey type for account recovery journey", async () => {
-      req.session.user = {
-        email,
-        isAccountRecoveryJourney: true,
-      };
+      req.session.user = { email, isAccountRecoveryJourney: true };
       const expectedJourneyType = "ACCOUNT_RECOVERY";
 
       await resendMfaCodePost(fakeService)(req as Request, res as Response);
@@ -79,10 +76,7 @@ describe("resend mfa controller", () => {
     });
 
     it("should request new phone verification code with relevant registration journey type for account creation journey", async () => {
-      req.session.user = {
-        email,
-        isAccountCreationJourney: true,
-      };
+      req.session.user = { email, isAccountCreationJourney: true };
       const expectedJourneyType = "REGISTRATION";
 
       await resendMfaCodePost(fakeService)(req as Request, res as Response);

@@ -5,12 +5,7 @@ import { expect, sinon } from "../utils/test-utils.js";
 import esmock from "esmock";
 
 describe("session", () => {
-  const redisConfig = {
-    host: "test",
-    port: 12345,
-    password: "string",
-    tls: true,
-  };
+  const redisConfig = { host: "test", port: 12345, password: "string", tls: true };
 
   let connect: () => void;
   let disconnect: () => void;
@@ -25,11 +20,7 @@ describe("session", () => {
 
     ({ getSessionStore, disconnectRedisClient } = await esmock(
       "../../src/config/session.js",
-      {
-        redis: {
-          createClient: redisCreateClient,
-        },
-      }
+      { redis: { createClient: redisCreateClient } }
     ));
   });
 
@@ -79,46 +70,18 @@ describe("session", () => {
     const expectations: { a: RedisConfig; b: RedisConfig; equal: boolean }[] = [
       {
         equal: true,
-        a: {
-          host: "test",
-          port: 12345,
-          password: "string",
-          tls: true,
-        },
-        b: {
-          host: "test",
-          port: 12345,
-          password: "string",
-          tls: true,
-        },
+        a: { host: "test", port: 12345, password: "string", tls: true },
+        b: { host: "test", port: 12345, password: "string", tls: true },
       },
       {
         equal: false,
-        a: {
-          host: "test",
-          port: 12345,
-        },
-        b: {
-          host: "test",
-          port: 12345,
-          password: "string",
-          tls: true,
-        },
+        a: { host: "test", port: 12345 },
+        b: { host: "test", port: 12345, password: "string", tls: true },
       },
       {
         equal: false,
-        a: {
-          host: "test",
-          port: 12345,
-          password: "incorrect",
-          tls: true,
-        },
-        b: {
-          host: "test",
-          port: 12345,
-          password: "string",
-          tls: true,
-        },
+        a: { host: "test", port: 12345, password: "incorrect", tls: true },
+        b: { host: "test", port: 12345, password: "string", tls: true },
       },
     ];
     expectations.forEach((expectation) => {

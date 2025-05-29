@@ -15,9 +15,7 @@ describe("accountInterventionsMiddleware", () => {
   beforeEach(() => {
     req = mockRequest({
       session: {
-        user: {
-          email: "test@test.com",
-        },
+        user: { email: "test@test.com" },
         save: (callback: () => void) => callback(),
       },
       log: { error: sinon.fake(), info: sinon.fake(), debug: sinon.fake() },

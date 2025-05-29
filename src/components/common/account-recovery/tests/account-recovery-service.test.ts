@@ -34,11 +34,7 @@ describe("account recovery service", () => {
     const req = createMockRequest(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
-    const axiosResponse = Promise.resolve({
-      data: {},
-      status: 200,
-      statusText: "OK",
-    });
+    const axiosResponse = Promise.resolve({ data: {}, status: 200, statusText: "OK" });
     postStub.resolves(axiosResponse);
 
     const result = await service.accountRecovery(

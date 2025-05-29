@@ -9,10 +9,7 @@ export const validationErrorFormatter = ({
   msg: string;
   param: string;
 }): any => {
-  return {
-    text: msg,
-    href: `#${param}`,
-  };
+  return { text: msg, href: `#${param}` };
 };
 
 export function validateBodyMiddleware(

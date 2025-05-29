@@ -102,10 +102,7 @@ describe("authorize service", () => {
           state: "1234567890",
           client_name: "test-client-name",
         },
-        {
-          headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
-          proxy: false,
-        }
+        { headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders }, proxy: false }
       )
     ).to.be.true;
   });
@@ -134,10 +131,7 @@ describe("authorize service", () => {
           state: "1234567890",
           client_name: "test-client-name",
         },
-        {
-          headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
-          proxy: false,
-        }
+        { headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders }, proxy: false }
       )
     ).to.be.true;
   });
@@ -169,12 +163,7 @@ describe("authorize service", () => {
           state: "1234567890",
           client_name: "test-client-name",
         },
-        {
-          headers: {
-            ...expectedHeadersFromCommonVarsWithSecurityHeaders,
-          },
-          proxy: false,
-        }
+        { headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders }, proxy: false }
       )
     ).to.be.true;
   });
@@ -250,10 +239,7 @@ describe("authorize service", () => {
           _ga: "987654321",
           client_name: "test-client-name",
         },
-        {
-          headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
-          proxy: false,
-        }
+        { headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders }, proxy: false }
       )
     ).to.be.true;
   });

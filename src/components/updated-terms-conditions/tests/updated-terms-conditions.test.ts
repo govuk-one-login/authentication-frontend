@@ -56,9 +56,7 @@ describe("updated terms conditions controller", () => {
     });
 
     it("should redirect to govUK website when termsAndConditionsResult has value govUk", async () => {
-      const fakeService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake(),
-      };
+      const fakeService: UpdateProfileServiceInterface = { updateProfile: sinon.fake() };
 
       req.body.termsAndConditionsResult = "govUk";
 
@@ -69,9 +67,7 @@ describe("updated terms conditions controller", () => {
     });
 
     it("should redirect to support page when termsAndConditionsResult has value contactUs", async () => {
-      const fakeService: UpdateProfileServiceInterface = {
-        updateProfile: sinon.fake(),
-      };
+      const fakeService: UpdateProfileServiceInterface = { updateProfile: sinon.fake() };
 
       req.body.termsAndConditionsResult = "contactUs";
 

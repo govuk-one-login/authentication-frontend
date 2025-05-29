@@ -66,9 +66,7 @@ describe("Integration:: check your phone", () => {
       test
         .post(PATH_NAMES.CHECK_YOUR_PHONE)
         .type("form")
-        .send({
-          code: "123456",
-        })
+        .send({ code: "123456" })
         .expect(403)
     );
   });
@@ -79,10 +77,7 @@ describe("Integration:: check your phone", () => {
         .post(PATH_NAMES.CHECK_YOUR_PHONE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "",
-        })
+        .send({ _csrf: token, code: "" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains("Enter the code");
@@ -97,10 +92,7 @@ describe("Integration:: check your phone", () => {
         .post(PATH_NAMES.CHECK_YOUR_PHONE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "2",
-        })
+        .send({ _csrf: token, code: "2" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -117,10 +109,7 @@ describe("Integration:: check your phone", () => {
         .post(PATH_NAMES.CHECK_YOUR_PHONE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "1234567",
-        })
+        .send({ _csrf: token, code: "1234567" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -137,10 +126,7 @@ describe("Integration:: check your phone", () => {
         .post(PATH_NAMES.CHECK_YOUR_PHONE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "12ert-",
-        })
+        .send({ _csrf: token, code: "12ert-" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -165,30 +151,24 @@ describe("Integration:: check your phone", () => {
         .post(PATH_NAMES.CHECK_YOUR_PHONE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
+        .send({ _csrf: token, code: "123456" })
         .expect("Location", PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL)
         .expect(302)
     );
   });
 
   it("should return validation error when incorrect code entered", async () => {
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_MFA_CODE).once().reply(400, {
-      code: ERROR_CODES.INVALID_VERIFY_PHONE_NUMBER_CODE,
-      success: false,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.VERIFY_MFA_CODE)
+      .once()
+      .reply(400, { code: ERROR_CODES.INVALID_VERIFY_PHONE_NUMBER_CODE, success: false });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.CHECK_YOUR_PHONE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123455",
-        })
+        .send({ _csrf: token, code: "123455" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#code-error").text()).to.contains(
@@ -200,20 +180,20 @@ describe("Integration:: check your phone", () => {
   });
 
   it("should redirect to security code expired when incorrect code has been entered 5 times", async () => {
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_MFA_CODE).times(6).reply(400, {
-      code: ERROR_CODES.ENTERED_INVALID_VERIFY_PHONE_NUMBER_CODE_MAX_TIMES,
-      success: false,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.VERIFY_MFA_CODE)
+      .times(6)
+      .reply(400, {
+        code: ERROR_CODES.ENTERED_INVALID_VERIFY_PHONE_NUMBER_CODE_MAX_TIMES,
+        success: false,
+      });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.CHECK_YOUR_PHONE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123455",
-        })
+        .send({ _csrf: token, code: "123455" })
         .expect(
           "Location",
           `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.OtpMaxRetries}`
@@ -223,20 +203,19 @@ describe("Integration:: check your phone", () => {
   });
 
   it('should render the "you requested too many codes" pages when incorrect code has requested more than 5 times', async () => {
-    nock(baseApi).post(API_ENDPOINTS.VERIFY_MFA_CODE).reply(400, {
-      code: ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED,
-      success: false,
-    });
+    nock(baseApi)
+      .post(API_ENDPOINTS.VERIFY_MFA_CODE)
+      .reply(400, {
+        code: ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED,
+        success: false,
+      });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.CHECK_YOUR_PHONE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123455",
-        })
+        .send({ _csrf: token, code: "123455" })
         .expect(
           "Location",
           `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.OtpBlocked}`

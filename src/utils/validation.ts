@@ -38,10 +38,7 @@ export function formatValidationError(
   validationMessage: string
 ): { [k: string]: Error } {
   const error: { [k: string]: Error } = {};
-  error[key] = {
-    text: validationMessage,
-    href: `#${key}`,
-  };
+  error[key] = { text: validationMessage, href: `#${key}` };
   return error;
 }
 

@@ -10,9 +10,7 @@ import { createMockRequest } from "../../../../../test/helpers/mock-request-help
 
 describe("account recovery helper", () => {
   const testReq = createMockRequest("/");
-  testReq.session.user = {
-    email: "test@example.com",
-  };
+  testReq.session.user = { email: "test@example.com" };
 
   const testRes = mockResponse();
   testRes.locals.sessionId = "testSessionId";
@@ -64,17 +62,8 @@ export const fakeAccountRecoveryService = (
     accountRecovery: sinon.fake.returns({
       success,
       ...(success
-        ? {
-            data: {
-              accountRecoveryPermitted: accountRecoveryPermitted,
-            },
-          }
-        : {
-            data: {
-              message: TEST_ERROR_MESSAGE,
-              code: TEST_ERROR_CODE,
-            },
-          }),
+        ? { data: { accountRecoveryPermitted: accountRecoveryPermitted } }
+        : { data: { message: TEST_ERROR_MESSAGE, code: TEST_ERROR_CODE } }),
     }),
   } as unknown as AccountRecoveryInterface;
 };

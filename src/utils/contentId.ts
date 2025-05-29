@@ -12,9 +12,7 @@ import {
   supportTypeIsGovService,
   urlContains,
 } from "./request.js";
-const CONTENT_IDS: {
-  [path: string]: ContentIdFunction;
-} = {
+const CONTENT_IDS: { [path: string]: ContentIdFunction } = {
   [PATH_NAMES.ACCESSIBILITY_STATEMENT]: () => "",
   [PATH_NAMES.ACCOUNT_NOT_FOUND]: (req: Request) =>
     clientIsOneLogin(req) || clientUsesOneLoginOptionally(req)
@@ -120,9 +118,7 @@ const CONTENT_IDS: {
 
 export function getContentId(
   req: Request,
-  contentIds: {
-    [path: string]: ContentIdFunction;
-  } = CONTENT_IDS
+  contentIds: { [path: string]: ContentIdFunction } = CONTENT_IDS
 ): string {
   const supportedPaths = Object.keys(contentIds);
   const matchedSupportedPath = supportedPaths.find((path) => req.path === path);

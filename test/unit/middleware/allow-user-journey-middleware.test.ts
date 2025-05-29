@@ -13,10 +13,7 @@ import { authStateMachine } from "../../../src/components/common/state-machine/s
 describe("Allow user journey middleware", () => {
   it("Should call next when use journey is valid", () => {
     const req = createMockRequest(PATH_NAMES.ENTER_MFA);
-    req.session.user.journey = {
-      nextPath: PATH_NAMES.ENTER_MFA,
-      optionalPaths: [],
-    };
+    req.session.user.journey = { nextPath: PATH_NAMES.ENTER_MFA, optionalPaths: [] };
     const res = mockResponse();
     const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;
 
@@ -30,9 +27,7 @@ describe("Allow user journey middleware", () => {
     const pathUserIsOn = PATH_NAMES.ENTER_MFA;
     const nextPath = PATH_NAMES.ENTER_PASSWORD;
     const req = createMockRequest(pathUserIsOn);
-    req.session.user = {
-      journey: { nextPath: nextPath, optionalPaths: [pathUserIsOn] },
-    };
+    req.session.user = { journey: { nextPath: nextPath, optionalPaths: [pathUserIsOn] } };
     const res = mockResponse();
     const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;
 
@@ -44,9 +39,7 @@ describe("Allow user journey middleware", () => {
 
   it("Should redirect back to next path when invalid user journey", () => {
     const req = createMockRequest(PATH_NAMES.ENTER_PASSWORD);
-    req.session.user = {
-      journey: { nextPath: PATH_NAMES.ENTER_MFA, optionalPaths: [] },
-    };
+    req.session.user = { journey: { nextPath: PATH_NAMES.ENTER_MFA, optionalPaths: [] } };
     const res = mockResponse();
     const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;
 
@@ -61,10 +54,7 @@ describe("Allow user journey middleware", () => {
 describe("Allow and persist user journey middleware", () => {
   it("Should call next when use journey is valid", async () => {
     const req = createMockRequest(PATH_NAMES.ENTER_MFA);
-    req.session.user.journey = {
-      nextPath: PATH_NAMES.ENTER_MFA,
-      optionalPaths: [],
-    };
+    req.session.user.journey = { nextPath: PATH_NAMES.ENTER_MFA, optionalPaths: [] };
     const res = mockResponse();
     const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;
 
@@ -78,9 +68,7 @@ describe("Allow and persist user journey middleware", () => {
     const pathUserIsOn = PATH_NAMES.ENTER_MFA;
     const nextPath = PATH_NAMES.ENTER_PASSWORD;
     const req = createMockRequest(pathUserIsOn);
-    req.session.user = {
-      journey: { nextPath: nextPath, optionalPaths: [pathUserIsOn] },
-    };
+    req.session.user = { journey: { nextPath: nextPath, optionalPaths: [pathUserIsOn] } };
     req.session.save = sinon.spy((callback) => callback(null));
     const res = mockResponse();
     const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;
@@ -98,9 +86,7 @@ describe("Allow and persist user journey middleware", () => {
 
   it("Should redirect back to next path when invalid user journey without changing journey", async () => {
     const req = createMockRequest(PATH_NAMES.ENTER_PASSWORD);
-    req.session.user = {
-      journey: { nextPath: PATH_NAMES.ENTER_MFA, optionalPaths: [] },
-    };
+    req.session.user = { journey: { nextPath: PATH_NAMES.ENTER_MFA, optionalPaths: [] } };
     req.session.save = sinon.spy((callback) => callback(null));
     const res = mockResponse();
     const nextFunction: NextFunction = sinon.fake() as unknown as NextFunction;

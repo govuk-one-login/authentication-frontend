@@ -1,9 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { getChannelSpecificTemplate } from "../../../src/utils/get-channel-specific-template.js";
-const mappings = {
-  "webTemplate.njk": "mobileTemplate.njk",
-};
+const mappings = { "webTemplate.njk": "mobileTemplate.njk" };
 
 describe("getChannelSpecificTemplate", () => {
   describe("where the channel is not an app", () => {

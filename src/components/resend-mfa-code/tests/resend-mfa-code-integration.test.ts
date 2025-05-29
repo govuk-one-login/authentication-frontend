@@ -133,9 +133,7 @@ describe("Integration:: resend mfa code", () => {
       test
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
-        .send({
-          code: "123456",
-        })
+        .send({ code: "123456" })
         .expect(403)
     );
   });
@@ -148,9 +146,7 @@ describe("Integration:: resend mfa code", () => {
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect("Location", PATH_NAMES.ENTER_MFA)
         .expect(302)
     );
@@ -164,10 +160,7 @@ describe("Integration:: resend mfa code", () => {
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          isResendCodeRequest: true,
-        })
+        .send({ _csrf: token, isResendCodeRequest: true })
         .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
         .expect(302)
     );
@@ -186,35 +179,27 @@ describe("Integration:: resend mfa code", () => {
   });
 
   it("should return 500 error screen when API call fails", async () => {
-    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(500, {
-      errorCode: "1234",
-    });
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(500, { errorCode: "1234" });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect(500)
     );
   });
 
   it("should return 400 error screen when API call fails", async () => {
-    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
-      errorCode: "1015",
-    });
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, { errorCode: "1015" });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect(500)
     );
   });
@@ -232,9 +217,7 @@ describe("Integration:: resend mfa code", () => {
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect(
           "Location",
           "/security-code-requested-too-many-times?actionType=mfaMaxCodesSent"
@@ -256,9 +239,7 @@ describe("Integration:: resend mfa code", () => {
         .post(PATH_NAMES.RESEND_MFA_CODE)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
+        .send({ _csrf: token })
         .expect("Location", "/security-code-invalid-request?actionType=mfaBlocked")
         .expect(302)
     );

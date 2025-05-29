@@ -12,13 +12,8 @@ describe("healthcheck controller", () => {
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
-    req = {
-      body: {},
-    };
-    res = {
-      status: sandbox.stub().returnsThis(),
-      send: sandbox.fake(),
-    };
+    req = { body: {} };
+    res = { status: sandbox.stub().returnsThis(), send: sandbox.fake() };
   });
 
   afterEach(() => {

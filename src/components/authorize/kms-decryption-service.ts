@@ -11,9 +11,7 @@ export class KmsDecryptionService implements KmsDecryptionServiceInterface {
   private readonly kmsKeyId: string;
 
   constructor(
-    kmsClient = new KMS({
-      region: getAwsRegion(),
-    }),
+    kmsClient = new KMS({ region: getAwsRegion() }),
     encryptionAlgorithm = EncryptionAlgorithmSpec.RSAES_OAEP_SHA_256,
     kmsKeyId = getKmsKeyId()
   ) {

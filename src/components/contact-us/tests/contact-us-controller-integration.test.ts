@@ -26,9 +26,7 @@ describe("Integration:: contact us - public user", () => {
           ): void {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
             req.session.user.email = "test@test.com";
-            req.session.user.mfaMethods = buildMfaMethods({
-              phoneNumber: "7867",
-            });
+            req.session.user.mfaMethods = buildMfaMethods({ phoneNumber: "7867" });
 
             next();
           }),
@@ -224,10 +222,7 @@ describe("Integration:: contact us - public user", () => {
   });
 
   it("should return validation error when no radio boxes are selected on the signing in contact-us-further-information page", async () => {
-    const data = {
-      _csrf: token,
-      theme: "signing_in",
-    };
+    const data = { _csrf: token, theme: "signing_in" };
     await expectValidationErrorOnPost(
       "/contact-us-further-information",
       data,
@@ -237,10 +232,7 @@ describe("Integration:: contact us - public user", () => {
   });
 
   it("should return validation error when no radio boxes are selected on the proving_identity contact-us-further-information page", async () => {
-    const data = {
-      _csrf: token,
-      theme: "proving_identity",
-    };
+    const data = { _csrf: token, theme: "proving_identity" };
     await expectValidationErrorOnPost(
       "/contact-us-further-information",
       data,

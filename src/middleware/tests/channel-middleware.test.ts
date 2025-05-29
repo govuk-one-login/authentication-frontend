@@ -32,9 +32,7 @@ describe("session-middleware", () => {
     });
 
     it("should set webChannel to true for web clients", () => {
-      const req = mockRequest({
-        session: { client: {}, user: { channel: "web" } },
-      });
+      const req = mockRequest({ session: { client: {}, user: { channel: "web" } } });
       channelMiddleware(req as Request, res as Response, next);
 
       expect(res.locals.strategicAppChannel).to.equal(false);
@@ -58,9 +56,7 @@ describe("session-middleware", () => {
     });
 
     it("should set no channel to true if provided an unrecognised channel", () => {
-      const req = mockRequest({
-        session: { client: {}, user: { channel: "unknown" } },
-      });
+      const req = mockRequest({ session: { client: {}, user: { channel: "unknown" } } });
       channelMiddleware(req as Request, res as Response, next);
 
       expect(res.locals.strategicAppChannel).to.equal(false);
@@ -74,9 +70,7 @@ describe("session-middleware", () => {
       // see 'should set strategicAppChannel to true for strategic app clients'
 
       it("should use 'channel' cookie if 'session' is not provided", () => {
-        const req = mockRequest({
-          cookies: { channel: "strategic_app" },
-        });
+        const req = mockRequest({ cookies: { channel: "strategic_app" } });
 
         channelMiddleware(req as Request, res as Response, next);
 

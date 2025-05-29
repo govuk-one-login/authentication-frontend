@@ -44,9 +44,7 @@ export function authorizeService(axios: Http = http): AuthorizeServiceInterface 
     return createApiResponse<StartAuthResponse>(response);
   };
 
-  return {
-    start,
-  };
+  return { start };
 }
 
 function createStartBody(startRequestParameters: StartRequestParameters) {

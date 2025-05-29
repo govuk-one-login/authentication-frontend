@@ -29,10 +29,7 @@ export function resetPassword2FAAuthAppGet(): ExpressRouteFunc {
     const hasMultipleMfaMethods = req.session.user.mfaMethods?.length > 1;
     const chooseMfaMethodHref = PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES;
 
-    return res.render(TEMPLATE_NAME, {
-      hasMultipleMfaMethods,
-      chooseMfaMethodHref,
-    });
+    return res.render(TEMPLATE_NAME, { hasMultipleMfaMethods, chooseMfaMethodHref });
   };
 }
 
@@ -80,9 +77,7 @@ export function resetPassword2FAAuthAppPost(
         req,
         req.path,
         USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED,
-        {
-          isIdentityRequired: req.session.user.isIdentityRequired,
-        },
+        { isIdentityRequired: req.session.user.isIdentityRequired },
         res.locals.sessionId
       )
     );

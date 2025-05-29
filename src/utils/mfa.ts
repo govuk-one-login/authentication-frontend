@@ -61,9 +61,7 @@ export function upsertDefaultSmsMfaMethod(
     ...(newMfaMethod.redactedPhoneNumber && {
       redactedPhoneNumber: newMfaMethod.redactedPhoneNumber,
     }),
-    ...(newMfaMethod.phoneNumber && {
-      phoneNumber: newMfaMethod.phoneNumber,
-    }),
+    ...(newMfaMethod.phoneNumber && { phoneNumber: newMfaMethod.phoneNumber }),
   };
 
   const nextMfaMethods = previousMfaMethods.slice();

@@ -50,9 +50,7 @@ describe("Integration:: base page ", () => {
               res.locals.isApp = true;
             }
 
-            req.session.client = {
-              serviceType: "MANDATORY",
-            };
+            req.session.client = { serviceType: "MANDATORY" };
             req.session.user = {
               email: "test@test.com",
 

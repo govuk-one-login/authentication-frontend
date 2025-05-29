@@ -138,15 +138,9 @@ export const ERROR_MESSAGES = {
   PAGE_NOT_FOUND: "Request page not found",
 };
 
-export const ERROR_LOG_LEVEL = {
-  ERROR: "Error",
-  INFO: "Info",
-};
+export const ERROR_LOG_LEVEL = { ERROR: "Error", INFO: "Info" };
 
-export const SERVICE_TYPE = {
-  MANDATORY: "MANDATORY",
-  OPTIONAL: "OPTIONAL",
-};
+export const SERVICE_TYPE = { MANDATORY: "MANDATORY", OPTIONAL: "OPTIONAL" };
 
 export const CONTACT_US_THEMES = {
   ACCOUNT_CREATION: "account_creation",
@@ -241,10 +235,7 @@ export enum CHANNEL {
   GENERIC_APP = "generic_app",
 }
 
-export const ENVIRONMENT_NAME = {
-  PROD: "production",
-  DEV: "development",
-};
+export const ENVIRONMENT_NAME = { PROD: "production", DEV: "development" };
 
 export const APP_ENV_NAME = {
   PROD: "production",
@@ -253,18 +244,11 @@ export const APP_ENV_NAME = {
   LOCAL: "local",
 };
 
-export const EXTERNAL_LINKS = {
-  GOV_UK: "https://www.gov.uk/",
-};
+export const EXTERNAL_LINKS = { GOV_UK: "https://www.gov.uk/" };
 
-export const OIDC_PROMPT = {
-  LOGIN: "LOGIN",
-  NONE: "NONE",
-};
+export const OIDC_PROMPT = { LOGIN: "LOGIN", NONE: "NONE" };
 
-export const OIDC_ERRORS = {
-  ACCESS_DENIED: "access_denied",
-};
+export const OIDC_ERRORS = { ACCESS_DENIED: "access_denied" };
 
 export const IPV_ERROR_CODES = {
   ACCOUNT_NOT_CREATED: "Account not created",

@@ -98,9 +98,7 @@ describe("prove identity callback service", () => {
       "di-persistent-session-id": persistentSessionId,
     };
     const axiosResponse = Promise.resolve({
-      data: {
-        location: redirectUriReturnedFromResponse,
-      },
+      data: { location: redirectUriReturnedFromResponse },
       status: 200,
       statusText: "OK",
       headers: {},
@@ -272,9 +270,7 @@ function createFakeCookieConsentService(
   consent: keyof typeof COOKIE_CONSENT
 ): CookieConsentServiceInterface {
   return {
-    getCookieConsent: sinon.fake.returns({
-      cookie_consent: COOKIE_CONSENT[consent],
-    }),
+    getCookieConsent: sinon.fake.returns({ cookie_consent: COOKIE_CONSENT[consent] }),
     createConsentCookieValue: sinon.fake(),
   };
 }

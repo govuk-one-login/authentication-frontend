@@ -107,9 +107,7 @@ describe("account not found controller", () => {
 
     beforeEach(() => {
       fakeService = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
+        sendNotification: sinon.fake.returns({ success: true }),
       } as unknown as SendNotificationServiceInterface;
     });
 
@@ -126,9 +124,7 @@ describe("account not found controller", () => {
 
     it("should redirect to GOV.UK service sign-in page when One Login service", async () => {
       const fakeService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
+        sendNotification: sinon.fake.returns({ success: true }),
       } as unknown as SendNotificationServiceInterface;
       req.body.optionSelected = "sign-in-to-a-service";
 

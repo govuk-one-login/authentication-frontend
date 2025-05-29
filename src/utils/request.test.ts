@@ -88,10 +88,7 @@ describe("request utilities", () => {
     beforeEach(() => {
       positiveRequest = {
         session: {
-          user: {
-            isAccountRecoveryJourney: true,
-            isAccountRecoveryPermitted: true,
-          },
+          user: { isAccountRecoveryJourney: true, isAccountRecoveryPermitted: true },
         },
       } as any as Request;
     });
@@ -219,23 +216,13 @@ describe("request utilities", () => {
 
     it(`returns true when used property is not as expected`, async () => {
       expect(
-        urlContains(
-          {
-            originalUrl: "/haystack",
-          } as any as Request,
-          "needle"
-        )
+        urlContains({ originalUrl: "/haystack" } as any as Request, "needle")
       ).to.equal(false);
     });
 
     it(`returns true when used property is as expected`, async () => {
       expect(
-        urlContains(
-          {
-            originalUrl: "/haysneedletack",
-          } as any as Request,
-          "needle"
-        )
+        urlContains({ originalUrl: "/haysneedletack" } as any as Request, "needle")
       ).to.equal(true);
     });
   });

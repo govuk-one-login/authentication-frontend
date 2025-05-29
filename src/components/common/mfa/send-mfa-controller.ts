@@ -75,9 +75,7 @@ export function sendMfaGeneric(mfaCodeService: MfaServiceInterface): ExpressRout
       xss(req.cookies.lng as string),
       req,
       activeMfaMethodId,
-      getJourneyTypeFromUserSession(req.session.user, {
-        includeReauthentication: true,
-      })
+      getJourneyTypeFromUserSession(req.session.user, { includeReauthentication: true })
     );
 
     if (!result.success) {

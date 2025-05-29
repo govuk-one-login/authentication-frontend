@@ -20,21 +20,15 @@ export function validateCode(validationMessageKeys: {
   return body("code")
     .notEmpty()
     .withMessage((value, { req }) => {
-      return req.t(validationMessageKeys.requiredKey, {
-        value,
-      });
+      return req.t(validationMessageKeys.requiredKey, { value });
     })
     .isLength({ max: 6 })
     .withMessage((value, { req }) => {
-      return req.t(validationMessageKeys.maxLengthKey, {
-        value,
-      });
+      return req.t(validationMessageKeys.maxLengthKey, { value });
     })
     .isLength({ min: 6 })
     .withMessage((value, { req }) => {
-      return req.t(validationMessageKeys.minLengthKey, {
-        value,
-      });
+      return req.t(validationMessageKeys.minLengthKey, { value });
     })
     .custom((value, { req }) => {
       if (!containsNumbersOnly(value)) {

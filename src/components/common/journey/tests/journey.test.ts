@@ -26,40 +26,26 @@ describe("journey", () => {
     }[] = [
       // Return REAUTHENTICATION as expected
       {
-        options: {
-          includeReauthentication: true,
-        },
-        userSession: {
-          reauthenticate: "test_data",
-        },
+        options: { includeReauthentication: true },
+        userSession: { reauthenticate: "test_data" },
         expectedJourneyType: JOURNEY_TYPE.REAUTHENTICATION,
       },
       // Return REAUTHENTICATION prevented as not included in options
       {
         options: {},
-        userSession: {
-          reauthenticate: "test_data",
-        },
+        userSession: { reauthenticate: "test_data" },
         expectedJourneyType: undefined,
       },
       // Return ACCOUNT_RECOVERY as expected
       {
-        options: {
-          includeAccountRecovery: true,
-        },
-        userSession: {
-          isAccountRecoveryPermitted: true,
-          isAccountRecoveryJourney: true,
-        },
+        options: { includeAccountRecovery: true },
+        userSession: { isAccountRecoveryPermitted: true, isAccountRecoveryJourney: true },
         expectedJourneyType: JOURNEY_TYPE.ACCOUNT_RECOVERY,
       },
       // Return ACCOUNT_RECOVERY prevented as not included in options
       {
         options: {},
-        userSession: {
-          isAccountRecoveryPermitted: true,
-          isAccountRecoveryJourney: true,
-        },
+        userSession: { isAccountRecoveryPermitted: true, isAccountRecoveryJourney: true },
         expectedJourneyType: undefined,
       },
     ];

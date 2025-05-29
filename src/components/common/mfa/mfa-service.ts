@@ -24,12 +24,7 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.MFA,
-      {
-        email: emailAddress,
-        isResendCodeRequest,
-        journeyType,
-        mfaMethodId,
-      },
+      { email: emailAddress, isResendCodeRequest, journeyType, mfaMethodId },
       getInternalRequestConfigWithSecurityHeaders(
         {
           sessionId: sessionId,
@@ -47,7 +42,5 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
     ]);
   };
 
-  return {
-    sendMfaCode,
-  };
+  return { sendMfaCode };
 }

@@ -43,9 +43,7 @@ export class CrossBrowserService implements CrossBrowserInterface {
     );
     const response = await this.axios.client.post<IDReverificationStateResponse>(
       API_ENDPOINTS.ID_REVERIFICATION_STATE,
-      {
-        authenticationState,
-      },
+      { authenticationState },
       config
     );
 

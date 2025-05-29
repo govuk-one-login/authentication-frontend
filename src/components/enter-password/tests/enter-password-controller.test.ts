@@ -78,9 +78,7 @@ describe("enter password controller", () => {
         } as unknown as EnterPasswordServiceInterface;
 
         const fakeMfaService: MfaServiceInterface = {
-          sendMfaCode: sinon.fake.returns({
-            success: true,
-          }),
+          sendMfaCode: sinon.fake.returns({ success: true }),
         } as unknown as MfaServiceInterface;
 
         await enterPasswordPost(
@@ -112,9 +110,7 @@ describe("enter password controller", () => {
         } as unknown as EnterPasswordServiceInterface;
 
         const fakeMfaService: MfaServiceInterface = {
-          sendMfaCode: sinon.fake.returns({
-            success: true,
-          }),
+          sendMfaCode: sinon.fake.returns({ success: true }),
         } as unknown as MfaServiceInterface;
 
         const getJourneyTypeFromUserSessionSpy = sinon.spy(
@@ -140,9 +136,7 @@ describe("enter password controller", () => {
 
         expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
           req.session.user,
-          {
-            includeReauthentication: true,
-          }
+          { includeReauthentication: true }
         );
         expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
           JOURNEY_TYPE.REAUTHENTICATION
@@ -164,16 +158,12 @@ describe("enter password controller", () => {
         const fakePasswordService: EnterPasswordServiceInterface = {
           loginUser: sinon.fake.returns({
             success: false,
-            data: {
-              code: ERROR_CODES.SESSION_ID_MISSING_OR_INVALID,
-            },
+            data: { code: ERROR_CODES.SESSION_ID_MISSING_OR_INVALID },
           }),
         } as unknown as EnterPasswordServiceInterface;
 
         const fakeMfaService: MfaServiceInterface = {
-          sendMfaCode: sinon.fake.returns({
-            success: true,
-          }),
+          sendMfaCode: sinon.fake.returns({ success: true }),
         } as unknown as MfaServiceInterface;
 
         await enterPasswordPost(
@@ -205,9 +195,7 @@ describe("enter password controller", () => {
       } as unknown as EnterPasswordServiceInterface;
 
       const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
 
       const getJourneyTypeFromUserSessionSpy = sinon.spy(
@@ -233,9 +221,7 @@ describe("enter password controller", () => {
 
       expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
         req.session.user,
-        {
-          includeReauthentication: true,
-        }
+        { includeReauthentication: true }
       );
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.REAUTHENTICATION
@@ -276,9 +262,7 @@ describe("enter password controller", () => {
       } as unknown as EnterPasswordServiceInterface;
 
       const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
 
       req.session.user = { email, reauthenticate: "test_data" };
@@ -295,9 +279,7 @@ describe("enter password controller", () => {
 
     describe("enter password when signing in", () => {
       const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
 
       it("should redirect to enter-code when the password is correct", async () => {
@@ -331,9 +313,7 @@ describe("enter password controller", () => {
       it("should redirect to account locked page when max password attempts exceeded", async () => {
         const fakeService: EnterPasswordServiceInterface = {
           loginUser: sinon.fake.returns({
-            data: {
-              code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED,
-            },
+            data: { code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED },
             success: false,
           }),
         } as unknown as EnterPasswordServiceInterface;
@@ -371,9 +351,7 @@ describe("enter password controller", () => {
         } as unknown as EnterPasswordServiceInterface;
 
         const fakeMfaService: MfaServiceInterface = {
-          sendMfaCode: sinon.fake.returns({
-            success: true,
-          }),
+          sendMfaCode: sinon.fake.returns({ success: true }),
         } as unknown as MfaServiceInterface;
 
         await enterPasswordPost(
@@ -390,17 +368,13 @@ describe("enter password controller", () => {
 
         const fakeService: EnterPasswordServiceInterface = {
           loginUser: sinon.fake.returns({
-            data: {
-              code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED,
-            },
+            data: { code: ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED },
             success: false,
           }),
         } as unknown as EnterPasswordServiceInterface;
 
         const fakeMfaService: MfaServiceInterface = {
-          sendMfaCode: sinon.fake.returns({
-            success: true,
-          }),
+          sendMfaCode: sinon.fake.returns({ success: true }),
         } as unknown as MfaServiceInterface;
 
         try {
@@ -494,9 +468,7 @@ describe("enter password controller", () => {
         loginUser: sinon.fake.throws(error),
       };
 
-      const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake(),
-      };
+      const fakeMfaService: MfaServiceInterface = { sendMfaCode: sinon.fake() };
 
       await assert.rejects(
         async () =>
@@ -531,9 +503,7 @@ describe("enter password controller", () => {
       } as unknown as EnterPasswordServiceInterface;
 
       const fakeMfaService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
 
       const testCases = [
@@ -586,9 +556,7 @@ describe("enter password controller", () => {
   describe("enterSignInRetryBlockedGet", () => {
     it("should render /enter-password view when account is unblocked", async () => {
       const fakeService: EnterEmailServiceInterface = {
-        userExists: sinon.fake.returns({
-          success: true,
-        }),
+        userExists: sinon.fake.returns({ success: true }),
       } as unknown as EnterEmailServiceInterface;
 
       await enterSignInRetryBlockedGet(fakeService)(req as Request, res as Response);
@@ -600,9 +568,7 @@ describe("enter password controller", () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
           success: false,
-          data: {
-            code: ERROR_CODES.ACCOUNT_LOCKED,
-          },
+          data: { code: ERROR_CODES.ACCOUNT_LOCKED },
         }),
       } as unknown as EnterEmailServiceInterface;
 

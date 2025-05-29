@@ -67,19 +67,10 @@ export async function getRedisConfig(): Promise<RedisConfig> {
     }
   }
 
-  return {
-    host: redisHost,
-    port: Number(redisPort),
-    password: redisPassword,
-    tls: true,
-  };
+  return { host: redisHost, port: Number(redisPort), password: redisPassword, tls: true };
 }
 
-function getRedisKeys(): {
-  hostKey: string;
-  portKey: string;
-  passwordKey: string;
-} {
+function getRedisKeys(): { hostKey: string; portKey: string; passwordKey: string } {
   const appEnv = getAppEnv();
   const redisKey = process.env.REDIS_KEY;
   if (!process.env.REDIS_KEY) {
@@ -107,10 +98,7 @@ function getValueFromSSMResult(
 async function fetchParametersFromSSM(
   ssmParams: string[]
 ): Promise<GetParametersCommandOutput> {
-  const params = {
-    Names: ssmParams,
-    WithDecryption: true,
-  };
+  const params = { Names: ssmParams, WithDecryption: true };
 
   const result = await ssm.getParameters(params);
 

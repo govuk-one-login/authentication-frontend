@@ -40,9 +40,7 @@ describe("resend mfa controller", () => {
 
       expect(res.render).to.have.calledWithMatch(
         "resend-mfa-code/index.njk",
-        sinon.match({
-          redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER,
-        })
+        sinon.match({ redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER })
       );
     });
 
@@ -58,9 +56,7 @@ describe("resend mfa controller", () => {
   describe("resendMfaCodePost", () => {
     it("should send mfa code and redirect to /enter-code view", async () => {
       const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        sendMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as MfaServiceInterface;
 
       req.session.user.email = "test@test.com";

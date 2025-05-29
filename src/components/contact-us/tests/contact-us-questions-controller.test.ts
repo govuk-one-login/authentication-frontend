@@ -245,9 +245,7 @@ describe("contact us questions controller", () => {
 
   describe("POST /contact-us-questions", () => {
     it("should redirect /contact-us-submit-success page when ticket posted", async () => {
-      const fakeService = {
-        contactUsSubmitFormSmartAgent: sandbox.fake(),
-      };
+      const fakeService = { contactUsSubmitFormSmartAgent: sandbox.fake() };
 
       await contactUsQuestionsFormPostToSmartAgent(fakeService)(
         req as Request,

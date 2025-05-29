@@ -97,9 +97,7 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
       const newCodeLink = req.query?.isResendCodeRequest
         ? "/security-code-check-time-limit?isResendCodeRequest=true"
         : "/security-code-check-time-limit";
-      return res.render("security-code-error/index-wait.njk", {
-        newCodeLink,
-      });
+      return res.render("security-code-error/index-wait.njk", { newCodeLink });
     }
 
     if (accountRecoveryJourney) {
@@ -111,9 +109,7 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
         req,
         req.path,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
-        {
-          isAccountRecoveryJourney: accountRecoveryJourney,
-        },
+        { isAccountRecoveryJourney: accountRecoveryJourney },
         sessionId
       )
     );

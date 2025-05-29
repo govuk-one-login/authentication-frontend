@@ -30,9 +30,7 @@ describe("doc checking app controller", () => {
       const fakeService: DocCheckingAppInterface = {
         docCheckingAppAuthorize: sinon.fake.returns({
           success: true,
-          data: {
-            redirectUri: "https://test-doc-checking-authorisation-uri.com",
-          },
+          data: { redirectUri: "https://test-doc-checking-authorisation-uri.com" },
         }),
       } as unknown as DocCheckingAppInterface;
 

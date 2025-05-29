@@ -83,10 +83,7 @@ describe("Integration:: cookies controller", () => {
       })
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          cookiePreferences: true,
-        })
+        .send({ _csrf: token, cookiePreferences: true })
         .expect(200);
     });
   });

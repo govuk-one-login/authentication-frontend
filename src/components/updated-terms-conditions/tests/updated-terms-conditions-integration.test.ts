@@ -75,9 +75,7 @@ describe("Integration:: updated-terms-code", () => {
       test
         .post(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
         .type("form")
-        .send({
-          termsAndConditionsResult: "reject",
-        })
+        .send({ termsAndConditionsResult: "reject" })
         .expect(403)
     );
   });
@@ -93,10 +91,7 @@ describe("Integration:: updated-terms-code", () => {
         .post(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          termsAndConditionsResult: "accept",
-        })
+        .send({ _csrf: token, termsAndConditionsResult: "accept" })
         .expect("Location", PATH_NAMES.AUTH_CODE)
         .expect(302)
     );

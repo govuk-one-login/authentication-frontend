@@ -50,10 +50,7 @@ const reverificationSuccessData = {
   message: "",
 };
 
-const failureData = {
-  code: 500,
-  message: "Internal error occurred in backend",
-};
+const failureData = { code: 500, message: "Internal error occurred in backend" };
 
 describe("ipv callback controller", () => {
   let req: RequestOutput;
@@ -71,10 +68,7 @@ describe("ipv callback controller", () => {
     req.session.id = sessionId;
     req.cookies.gs = sessionId + clientSessionId;
     req.cookies.aps = sessionId;
-    req.session.user.journey = {
-      nextPath: PATH_NAMES.IPV_CALLBACK,
-      optionalPaths: [],
-    };
+    req.session.user.journey = { nextPath: PATH_NAMES.IPV_CALLBACK, optionalPaths: [] };
     res = mockResponse();
     res.locals = {
       sessionId,
@@ -150,19 +144,13 @@ describe("ipv callback controller", () => {
 
       await assert.rejects(
         async () => ipvCallbackGet(fakeService)(req as Request, res as Response),
-        {
-          name: "Error",
-          message: "this_is_an_invalid_failure_code",
-        }
+        { name: "Error", message: "this_is_an_invalid_failure_code" }
       );
     });
 
     it("get should raise error when auth code param is missing or invalid", async () => {
       const missingOrInvalidQueries = [
-        {
-          query: {},
-          expectedMessage: "400:Request query missing auth code param",
-        },
+        { query: {}, expectedMessage: "400:Request query missing auth code param" },
         {
           query: { code: ["string-in-a-list"] },
           expectedMessage: "400:Invalid auth code param type",

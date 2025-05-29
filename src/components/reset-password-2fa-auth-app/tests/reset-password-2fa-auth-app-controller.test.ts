@@ -23,9 +23,7 @@ describe("reset password 2fa auth app controller", () => {
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP);
-    req.session.user = {
-      email: commonVariables.email,
-    };
+    req.session.user = { email: commonVariables.email };
     res = mockResponse();
   });
 
@@ -77,9 +75,7 @@ describe("reset password 2fa auth app controller", () => {
   describe("resetPassword2FAAuthAppPost", () => {
     it("should redirect to reset-password if code entered is correct", async () => {
       const fakeService: VerifyMfaCodeInterface = {
-        verifyMfaCode: sinon.fake.returns({
-          success: true,
-        }),
+        verifyMfaCode: sinon.fake.returns({ success: true }),
       } as unknown as VerifyMfaCodeInterface;
       req.session.user.enterEmailMfaType = "AUTH-APP";
       req.body.code = "123456";
@@ -93,9 +89,7 @@ describe("reset password 2fa auth app controller", () => {
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
           success: false,
-          data: {
-            code: ERROR_CODES.AUTH_APP_INVALID_CODE,
-          },
+          data: { code: ERROR_CODES.AUTH_APP_INVALID_CODE },
         }),
       } as unknown as VerifyMfaCodeInterface;
       req.session.user.enterEmailMfaType = "AUTH-APP";

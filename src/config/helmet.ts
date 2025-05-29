@@ -33,12 +33,8 @@ export const helmetConfiguration: HelmetOptions = {
       formAction: null,
     },
   },
-  dnsPrefetchControl: {
-    allow: false,
-  },
-  frameguard: {
-    action: "deny",
-  },
+  dnsPrefetchControl: { allow: false },
+  frameguard: { action: "deny" },
   hsts: {
     maxAge: 31536000, // 1 Year
     preload: true,

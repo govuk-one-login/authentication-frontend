@@ -30,12 +30,8 @@ describe("change security codes confirmation controller", () => {
   describe("changeSecurityCodesConfirmationGet", () => {
     const redactedPhoneNumber = "*******1234";
     const testData = [
-      {
-        methodType: MFA_METHOD_TYPE.SMS,
-      },
-      {
-        methodType: MFA_METHOD_TYPE.AUTH_APP,
-      },
+      { methodType: MFA_METHOD_TYPE.SMS },
+      { methodType: MFA_METHOD_TYPE.AUTH_APP },
     ];
     testData.forEach(function (testParams) {
       it(`should render the change security codes codes confirmation page for mfaMethodType ${testParams.methodType}`, async () => {
@@ -47,10 +43,7 @@ describe("change security codes confirmation controller", () => {
 
         expect(res.render).to.have.been.calledWith(
           "account-recovery/change-security-codes-confirmation/index.njk",
-          {
-            mfaMethodType: testParams.methodType,
-            phoneNumber: redactedPhoneNumber,
-          }
+          { mfaMethodType: testParams.methodType, phoneNumber: redactedPhoneNumber }
         );
       });
     });

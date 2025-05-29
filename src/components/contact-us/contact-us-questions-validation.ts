@@ -32,10 +32,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
         throw new Error(
           req.t(
             "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.location.errorMessage",
-            {
-              value,
-              lng: req.i18n.lng,
-            }
+            { value, lng: req.i18n.lng }
           )
         );
       }
@@ -52,10 +49,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
             req.body.formType +
             ".section1.errorMessage" +
             suffix,
-          {
-            value,
-            lng: req.i18n.lng,
-          }
+          { value, lng: req.i18n.lng }
         );
       }),
     body("identityDocumentUsed")
@@ -208,10 +202,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
         throw new Error(
           req.t(
             "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.location.errorMessage",
-            {
-              value,
-              lng: req.i18n.lng,
-            }
+            { value, lng: req.i18n.lng }
           )
         );
       }
@@ -290,10 +281,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
             throw new Error(
               req.t(
                 "pages.contactUsQuestions.textMessageInternationNumberConditionalSection.errorIfBlank",
-                {
-                  value,
-                  lng: req.i18n.lng,
-                }
+                { value, lng: req.i18n.lng }
               )
             );
           }

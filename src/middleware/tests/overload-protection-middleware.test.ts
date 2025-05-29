@@ -10,9 +10,7 @@ describe("applyOverloadProtection", () => {
     overloadProtectionStub = sinon.stub();
 
     ({ applyOverloadProtection } = await esmock("../overload-protection-middleware.js", {
-      "overload-protection": {
-        default: overloadProtectionStub,
-      },
+      "overload-protection": { default: overloadProtectionStub },
     }));
   });
 

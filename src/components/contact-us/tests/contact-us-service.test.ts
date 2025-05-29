@@ -19,10 +19,7 @@ import { CONTACT_US_THEMES } from "../../../app.constants.js";
 describe("contact-us-service", () => {
   describe("prepareSecurityCodeSendMethodTitle", () => {
     [
-      {
-        securityCodeSentMethod: "email",
-        expectedSecurityCodeSentMethodTitle: "Email",
-      },
+      { securityCodeSentMethod: "email", expectedSecurityCodeSentMethodTitle: "Email" },
       {
         securityCodeSentMethod: "text_message",
         expectedSecurityCodeSentMethodTitle: "Text message",
@@ -40,10 +37,7 @@ describe("contact-us-service", () => {
         securityCodeSentMethod: "authenticator_app",
         expectedSecurityCodeSentMethodTitle: "Authenticator app",
       },
-      {
-        securityCodeSentMethod: "unknown",
-        expectedSecurityCodeSentMethodTitle: "",
-      },
+      { securityCodeSentMethod: "unknown", expectedSecurityCodeSentMethodTitle: "" },
     ].forEach(({ securityCodeSentMethod, expectedSecurityCodeSentMethodTitle }) => {
       it(`should return '${expectedSecurityCodeSentMethodTitle}' for security code method '${securityCodeSentMethod}'`, () => {
         const actualSecurityCodeSentMethodTitle =
@@ -58,10 +52,7 @@ describe("contact-us-service", () => {
 
   describe("prepareIdentityDocumentTitle", () => {
     [
-      {
-        identityDocumentUsed: "passport",
-        expectedIdentityDocumentTitle: "Passport",
-      },
+      { identityDocumentUsed: "passport", expectedIdentityDocumentTitle: "Passport" },
       {
         identityDocumentUsed: "biometricResidencePermit",
         expectedIdentityDocumentTitle: "Biometric residence permit",
@@ -70,10 +61,7 @@ describe("contact-us-service", () => {
         identityDocumentUsed: "drivingLicence",
         expectedIdentityDocumentTitle: "Driving licence",
       },
-      {
-        identityDocumentUsed: "unknown",
-        expectedIdentityDocumentTitle: "",
-      },
+      { identityDocumentUsed: "unknown", expectedIdentityDocumentTitle: "" },
     ].forEach(({ identityDocumentUsed, expectedIdentityDocumentTitle }) => {
       it(`should return '${expectedIdentityDocumentTitle}' for identity document '${identityDocumentUsed}'`, () => {
         const actualIdentityDocumentTitle =
@@ -86,19 +74,13 @@ describe("contact-us-service", () => {
 
   describe("prepareProblemWithTitle", () => {
     [
-      {
-        problemWith: "name",
-        expectedProblemWithTitle: "Entering your name",
-      },
+      { problemWith: "name", expectedProblemWithTitle: "Entering your name" },
       {
         problemWith: "bankOrBuildingSocietyDetails",
         expectedProblemWithTitle:
           "Entering your bank or building society account details",
       },
-      {
-        problemWith: "unknown",
-        expectedProblemWithTitle: "",
-      },
+      { problemWith: "unknown", expectedProblemWithTitle: "" },
     ].forEach(({ problemWith, expectedProblemWithTitle }) => {
       it(`should return '${expectedProblemWithTitle}' for problem with '${problemWith}'`, () => {
         const actualProblemWithTitle = prepareProblemWithTitle(problemWith);
@@ -110,18 +92,12 @@ describe("contact-us-service", () => {
 
   describe("getIdentifierTag", () => {
     [
-      {
-        theme: CONTACT_US_THEMES.ID_CHECK_APP,
-        expectedIdentifierTag: "sign_in_app",
-      },
+      { theme: CONTACT_US_THEMES.ID_CHECK_APP, expectedIdentifierTag: "sign_in_app" },
       {
         theme: CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE,
         expectedIdentifierTag: "id_face_to_face",
       },
-      {
-        theme: "unknown",
-        expectedIdentifierTag: "govuk_sign_in",
-      },
+      { theme: "unknown", expectedIdentifierTag: "govuk_sign_in" },
     ].forEach(({ theme, expectedIdentifierTag }) => {
       it(`should return '${expectedIdentifierTag}' for theme ${theme}`, () => {
         const actualIdentifierTag = getIdentifierTag(theme);
@@ -137,10 +113,7 @@ describe("contact-us-service", () => {
         themes: { theme: CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE },
         expectedThemeTag: "",
       },
-      {
-        themes: { theme: "any_other_theme" },
-        expectedThemeTag: "auth_any_other_theme",
-      },
+      { themes: { theme: "any_other_theme" }, expectedThemeTag: "auth_any_other_theme" },
     ].forEach(({ themes, expectedThemeTag }) => {
       it(`should return '${expectedThemeTag}' for themes '${JSON.stringify(themes)}'`, () => {
         const actualThemeTag = getThemeTag(themes);
@@ -156,10 +129,7 @@ describe("contact-us-service", () => {
         themes: { theme: "test_theme", subtheme: "test_subtheme" },
         expectedSubthemeTag: "auth_test_subtheme",
       },
-      {
-        themes: { theme: "test_theme" },
-        expectedSubthemeTag: "",
-      },
+      { themes: { theme: "test_theme" }, expectedSubthemeTag: "" },
     ].forEach(({ themes, expectedSubthemeTag }) => {
       it(`should return '${expectedSubthemeTag}' for subtheme '${JSON.stringify(themes)}'`, () => {
         const actualSubthemeTag = getSubthemeTag(themes);
@@ -253,9 +223,7 @@ describe("contact-us-service", () => {
       it("produces correct payload for suspect_unauthorised_access submission", async () => {
         const contactForm: ContactForm = {
           // suspect_unauthorised_access fields
-          themes: {
-            theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
-          },
+          themes: { theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS },
           suspectUnauthorisedAccess: {
             hasReceivedUnwarrantedSecurityCode: true,
             hasUnknownActivityHistory: true,
@@ -266,15 +234,11 @@ describe("contact-us-service", () => {
           // other required fields
           descriptions: {},
           feedbackContact: false,
-          optionalData: {
-            userAgent: "testUserAgent",
-          },
+          optionalData: { userAgent: "testUserAgent" },
           questions: {},
           referer: "testReferer",
           subject: "testSubject",
-          themeQuestions: {
-            themeQuestion: "testThemeQuestion",
-          },
+          themeQuestions: { themeQuestion: "testThemeQuestion" },
         };
 
         // act

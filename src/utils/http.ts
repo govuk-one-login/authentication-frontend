@@ -39,10 +39,7 @@ export function createApiResponse<T>(
   response: AxiosResponse,
   status: number[] = [HTTP_STATUS_CODES.OK]
 ): ApiResponseResult<T> {
-  return {
-    success: status.includes(response.status),
-    data: response.data,
-  };
+  return { success: status.includes(response.status), data: response.data };
 }
 
 function getSecurityHeaders(path: string, req: Request, baseUrl?: string) {

@@ -30,16 +30,11 @@ export function mfaResetAuthorizeService(axios: Http = http): MfaResetAuthorizeI
 
     const response = await axios.client.post<MfaResetAuthorizeResponse>(
       API_ENDPOINTS.MFA_RESET_AUTHORIZE,
-      {
-        email,
-        orchestrationRedirectUrl,
-      },
+      { email, orchestrationRedirectUrl },
       config
     );
     return createApiResponse<MfaResetAuthorizeResponse>(response);
   };
 
-  return {
-    ipvRedirectUrl: ipvRedirectUrl,
-  };
+  return { ipvRedirectUrl: ipvRedirectUrl };
 }

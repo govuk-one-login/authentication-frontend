@@ -28,9 +28,7 @@ export function validateContactUsRequest(
     body(bodyType)
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t(getContactUsErrorMessage(req.body.theme), {
-          value,
-        });
+        return req.t(getContactUsErrorMessage(req.body.theme), { value });
       }),
     validateBodyMiddleware(template),
   ];

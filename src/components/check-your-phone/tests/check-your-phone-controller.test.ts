@@ -84,10 +84,7 @@ describe("check your phone controller", () => {
 
       expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
         req.session.user,
-        {
-          includeAccountRecovery: true,
-          fallbackJourneyType: JOURNEY_TYPE.REGISTRATION,
-        }
+        { includeAccountRecovery: true, fallbackJourneyType: JOURNEY_TYPE.REGISTRATION }
       );
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.ACCOUNT_RECOVERY
@@ -167,10 +164,7 @@ describe("check your phone controller", () => {
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
           success: false,
-          data: {
-            code: ERROR_CODES.INVALID_VERIFY_PHONE_NUMBER_CODE,
-            message: "",
-          },
+          data: { code: ERROR_CODES.INVALID_VERIFY_PHONE_NUMBER_CODE, message: "" },
         }),
       } as unknown as VerifyMfaCodeInterface;
 

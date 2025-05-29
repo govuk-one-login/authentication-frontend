@@ -19,15 +19,9 @@ export function accountRecoveryService(axios: Http = http): AccountRecoveryInter
   ): Promise<ApiResponseResult<AccountRecoveryResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.ACCOUNT_RECOVERY,
-      {
-        email,
-      },
+      { email },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId,
-          clientSessionId,
-          persistentSessionId,
-        },
+        { sessionId, clientSessionId, persistentSessionId },
         req,
         API_ENDPOINTS.ACCOUNT_RECOVERY
       )
@@ -36,7 +30,5 @@ export function accountRecoveryService(axios: Http = http): AccountRecoveryInter
     return createApiResponse<AccountRecoveryResponse>(response);
   };
 
-  return {
-    accountRecovery,
-  };
+  return { accountRecovery };
 }

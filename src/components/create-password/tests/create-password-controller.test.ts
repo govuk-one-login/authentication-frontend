@@ -34,9 +34,7 @@ describe("create-password controller", () => {
     describe("createPasswordPost", () => {
       it("should redirect to get security codes when 2 factor is required", async () => {
         const fakeService: CreatePasswordServiceInterface = {
-          signUpUser: sinon.fake.returns({
-            success: true,
-          }),
+          signUpUser: sinon.fake.returns({ success: true }),
         } as unknown as CreatePasswordServiceInterface;
 
         req.body.password = "password1";
@@ -50,9 +48,7 @@ describe("create-password controller", () => {
       });
 
       it("should throw error when session is not populated", async () => {
-        const fakeService: CreatePasswordServiceInterface = {
-          signUpUser: sinon.fake(),
-        };
+        const fakeService: CreatePasswordServiceInterface = { signUpUser: sinon.fake() };
 
         req.body.password = "password1";
         req.session.user = undefined;
@@ -66,9 +62,7 @@ describe("create-password controller", () => {
       });
 
       it("should throw error when password field is not in body", async () => {
-        const fakeService: CreatePasswordServiceInterface = {
-          signUpUser: sinon.fake(),
-        };
+        const fakeService: CreatePasswordServiceInterface = { signUpUser: sinon.fake() };
 
         req.body = undefined;
         req.session.user.email = "joe.bloggs@test.com";

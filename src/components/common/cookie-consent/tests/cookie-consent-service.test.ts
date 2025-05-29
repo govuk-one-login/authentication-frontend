@@ -11,17 +11,13 @@ describe("cookie consent service", () => {
     });
     it("should return cookie consent value rejected when analytics cookie is false", () => {
       const result = cookieConsentService().getCookieConsent(
-        JSON.stringify({
-          analytics: false,
-        })
+        JSON.stringify({ analytics: false })
       );
       expect(result.cookie_consent).to.have.be.equal(COOKIE_CONSENT.REJECT);
     });
     it("should return cookie consent value accept when analytics cookie is true", () => {
       const result = cookieConsentService().getCookieConsent(
-        JSON.stringify({
-          analytics: true,
-        })
+        JSON.stringify({ analytics: true })
       );
       expect(result.cookie_consent).to.have.be.equal(COOKIE_CONSENT.ACCEPT);
     });

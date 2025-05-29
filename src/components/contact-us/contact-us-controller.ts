@@ -685,9 +685,7 @@ function getQuestionsFromFormTypeForMessageBody(
     idCheckApp: {
       issueDescription: `${req.t("pages.contactUsQuestions.whatHappened.header", {
         lng: "en",
-      })} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1", {
-        lng: "en",
-      })}`,
+      })} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1", { lng: "en" })}`,
       serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
         lng: "en",
       }),
@@ -695,9 +693,7 @@ function getQuestionsFromFormTypeForMessageBody(
     idCheckAppPhotoProblem: {
       issueDescription: `${req.t("pages.contactUsQuestions.whatHappened.header", {
         lng: "en",
-      })} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1", {
-        lng: "en",
-      })}`,
+      })} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1", { lng: "en" })}`,
       serviceTryingToUse: req.t("pages.contactUsQuestions.serviceTryingToUse.header", {
         lng: "en",
       }),
@@ -733,9 +729,7 @@ function getQuestionsFromFormTypeForMessageBody(
     provingIdentityFaceToFace: {
       issueDescription: req.t(
         "pages.contactUsQuestions.provingIdentityFaceToFaceDetails.whatHappened.label",
-        {
-          lng: "en",
-        }
+        { lng: "en" }
       ),
       additionalDescription: req.t("pages.contactUsQuestions.whatHappened.header", {
         lng: "en",
@@ -747,9 +741,7 @@ function getQuestionsFromFormTypeForMessageBody(
     provingIdentityFaceToFaceTechnicalProblem: {
       issueDescription: req.t(
         "pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.section1.title",
-        {
-          lng: "en",
-        }
+        { lng: "en" }
       ),
       additionalDescription: req.t("pages.contactUsQuestions.whatHappened.header", {
         lng: "en",
@@ -761,9 +753,7 @@ function getQuestionsFromFormTypeForMessageBody(
     provingIdentityFaceToFaceSomethingElse: {
       issueDescription: req.t(
         "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.section1.header",
-        {
-          lng: "en",
-        }
+        { lng: "en" }
       ),
       additionalDescription: req.t(
         "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.section2.header",
@@ -842,12 +832,8 @@ function getQuestionFromThemes(
     account_creation: req.t("pages.contactUsPublic.section3.accountCreation", {
       lng: "en",
     }),
-    signing_in: req.t("pages.contactUsPublic.section3.signingIn", {
-      lng: "en",
-    }),
-    id_check_app: req.t("pages.contactUsPublic.section3.idCheckApp", {
-      lng: "en",
-    }),
+    signing_in: req.t("pages.contactUsPublic.section3.signingIn", { lng: "en" }),
+    id_check_app: req.t("pages.contactUsPublic.section3.idCheckApp", { lng: "en" }),
     id_face_to_face: req.t("pages.contactUsPublic.section3.provingIdentityFaceToFace", {
       lng: "en",
     }),
@@ -856,13 +842,9 @@ function getQuestionFromThemes(
     }),
     suspect_unauthorised_access: req.t(
       "pages.contactUsPublic.section3.suspectUnauthorisedAccess",
-      {
-        lng: "en",
-      }
+      { lng: "en" }
     ),
-    something_else: req.t("pages.contactUsPublic.section3.somethingElse", {
-      lng: "en",
-    }),
+    something_else: req.t("pages.contactUsPublic.section3.somethingElse", { lng: "en" }),
     suggestions_feedback: req.t("pages.contactUsPublic.section3.suggestionsFeedback", {
       lng: "en",
     }),
@@ -1033,8 +1015,5 @@ function getQuestionFromThemes(
       subthemeQuestion = provingIdentitySubthemeToQuestion[subtheme];
     }
   }
-  return {
-    themeQuestion,
-    subthemeQuestion,
-  };
+  return { themeQuestion, subthemeQuestion };
 }

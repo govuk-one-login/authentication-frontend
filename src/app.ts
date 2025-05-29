@@ -275,7 +275,9 @@ async function createApp(): Promise<express.Application> {
   return app;
 }
 
-async function startServer(app: Application): Promise<{
+async function startServer(
+  app: Application
+): Promise<{
   server: Server;
   closeServer: (callback?: (err?: Error) => void) => Promise<void>;
 }> {

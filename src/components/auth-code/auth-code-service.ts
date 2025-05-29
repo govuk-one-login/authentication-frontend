@@ -47,7 +47,5 @@ export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
     return createApiResponse<AuthCodeResponse>(response);
   };
 
-  return {
-    getAuthCode,
-  };
+  return { getAuthCode };
 }

@@ -22,11 +22,7 @@ describe("reverification result service", () => {
   const req = createMockRequest(PATH_NAMES.IPV_CALLBACK, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
-  const axiosResponse = Promise.resolve({
-    data: {},
-    status: 200,
-    statusText: "OK",
-  });
+  const axiosResponse = Promise.resolve({ data: {}, status: 200, statusText: "OK" });
 
   beforeEach(() => {
     setupApiKeyAndBaseUrlEnvVars();

@@ -74,9 +74,7 @@ describe("Integration::enter phone number", () => {
       test
         .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
         .type("form")
-        .send({
-          phoneNumber: "123456789",
-        })
+        .send({ phoneNumber: "123456789" })
         .expect(403)
     );
   });
@@ -87,10 +85,7 @@ describe("Integration::enter phone number", () => {
         .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          phoneNumber: "",
-        })
+        .send({ _csrf: token, phoneNumber: "" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#phoneNumber-error").text()).to.contains(
@@ -107,10 +102,7 @@ describe("Integration::enter phone number", () => {
         .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          phoneNumber: "123456789",
-        })
+        .send({ _csrf: token, phoneNumber: "123456789" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#phoneNumber-error").text()).to.contains(
@@ -127,10 +119,7 @@ describe("Integration::enter phone number", () => {
         .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          phoneNumber: "123456789dd",
-        })
+        .send({ _csrf: token, phoneNumber: "123456789dd" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#phoneNumber-error").text()).to.contains(
@@ -147,10 +136,7 @@ describe("Integration::enter phone number", () => {
         .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          phoneNumber: "123",
-        })
+        .send({ _csrf: token, phoneNumber: "123" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#phoneNumber-error").text()).to.contains(
@@ -167,10 +153,7 @@ describe("Integration::enter phone number", () => {
         .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          phoneNumber: "123123123123123123",
-        })
+        .send({ _csrf: token, phoneNumber: "123123123123123123" })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
           expect($("#phoneNumber-error").text()).to.contains(
@@ -189,10 +172,7 @@ describe("Integration::enter phone number", () => {
         .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          phoneNumber: "07738394991",
-        })
+        .send({ _csrf: token, phoneNumber: "07738394991" })
         .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
         .expect(302)
     );
@@ -327,20 +307,21 @@ describe("Integration::enter phone number", () => {
   });
 
   it('should render 2hr lockout "You asked for too many codes" error page when request OTP more than 5 times', async () => {
-    nock(baseApi).persist().post("/send-notification").times(6).reply(400, {
-      code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT,
-      success: false,
-    });
+    nock(baseApi)
+      .persist()
+      .post("/send-notification")
+      .times(6)
+      .reply(400, {
+        code: ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT,
+        success: false,
+      });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          phoneNumber: "07738394991",
-        })
+        .send({ _csrf: token, phoneNumber: "07738394991" })
         .expect((res) => {
           res.text.includes("You asked to resend the security code too many times");
         })
@@ -352,20 +333,20 @@ describe("Integration::enter phone number", () => {
   });
 
   it('should redirect to SECURITY_CODE_REQUEST_EXCEEDED and render the 2hr lockout "you cannot create" error page when user has exceeded the OTP request limit', async () => {
-    nock(baseApi).post("/send-notification").once().reply(400, {
-      code: ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED,
-      success: false,
-    });
+    nock(baseApi)
+      .post("/send-notification")
+      .once()
+      .reply(400, {
+        code: ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED,
+        success: false,
+      });
 
     await request(app, (test) =>
       test
         .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
         .type("form")
         .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          phoneNumber: "07738394991",
-        })
+        .send({ _csrf: token, phoneNumber: "07738394991" })
         .expect((res) => {
           res.text.includes("You cannot create a GOV.UK One Login");
         })

@@ -35,9 +35,7 @@ describe("authentication auth code service", () => {
   };
 
   const axiosResponse = Promise.resolve({
-    data: {
-      location: redirectUriReturnedFromResponse,
-    },
+    data: { location: redirectUriReturnedFromResponse },
     status: 200,
     statusText: "OK",
     headers: {},

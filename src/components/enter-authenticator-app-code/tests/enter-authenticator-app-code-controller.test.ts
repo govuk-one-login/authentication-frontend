@@ -23,13 +23,7 @@ const fakeVerifyMfaCodeService = (errorCode?: number) => {
   return {
     verifyMfaCode: sinon.fake.returns({
       success: errorCode === undefined,
-      data:
-        errorCode !== undefined
-          ? {
-              code: errorCode,
-              message: "",
-            }
-          : null,
+      data: errorCode !== undefined ? { code: errorCode, message: "" } : null,
     }),
   } as unknown as VerifyMfaCodeInterface;
 };

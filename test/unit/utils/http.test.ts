@@ -127,9 +127,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
       };
 
       const actualConfig = mockGetInternalRequestConfigWithSecurityHeaders(
-        {
-          baseURL: "https://some-other-base",
-        },
+        { baseURL: "https://some-other-base" },
         req,
         path
       );
@@ -162,9 +160,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
     const overridingBaseURL = "https://www.example.com";
 
     const actualConfig = getInternalRequestConfigWithSecurityHeaders(
-      {
-        baseURL: overridingBaseURL,
-      },
+      { baseURL: overridingBaseURL },
       req,
       path
     );
@@ -176,9 +172,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
     const validStatus = HTTP_STATUS_CODES.OK;
 
     const actualConfig = getInternalRequestConfigWithSecurityHeaders(
-      {
-        validationStatuses: [validStatus],
-      },
+      { validationStatuses: [validStatus] },
       req,
       path
     );

@@ -80,10 +80,7 @@ describe("setup-authenticator-app controller", () => {
 
       expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
         req.session.user,
-        {
-          includeAccountRecovery: true,
-          fallbackJourneyType: JOURNEY_TYPE.REGISTRATION,
-        }
+        { includeAccountRecovery: true, fallbackJourneyType: JOURNEY_TYPE.REGISTRATION }
       );
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.ACCOUNT_RECOVERY
@@ -214,10 +211,7 @@ describe("setup-authenticator-app controller", () => {
       const fakeMfAService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
           success: false,
-          data: {
-            code: "1234",
-            message: "error",
-          },
+          data: { code: "1234", message: "error" },
         }),
       } as unknown as VerifyMfaCodeInterface;
 

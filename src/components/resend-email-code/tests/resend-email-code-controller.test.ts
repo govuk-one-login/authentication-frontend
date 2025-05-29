@@ -38,14 +38,10 @@ describe("resend email controller", () => {
   describe("resendEmailCodePost", () => {
     it("should send email code and redirect to /check-your-email view", async () => {
       const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
+        sendNotification: sinon.fake.returns({ success: true }),
       } as unknown as SendNotificationServiceInterface;
 
-      req.session.user = {
-        email: "test@test.com",
-      };
+      req.session.user = { email: "test@test.com" };
       req.path = PATH_NAMES.RESEND_EMAIL_CODE;
 
       await resendEmailCodePost(fakeNotificationService)(req as Request, res as Response);
@@ -56,9 +52,7 @@ describe("resend email controller", () => {
 
     it("should remove session flag for email registration soft block due to incorrect retries", async () => {
       const fakeNotificationService: SendNotificationServiceInterface = {
-        sendNotification: sinon.fake.returns({
-          success: true,
-        }),
+        sendNotification: sinon.fake.returns({ success: true }),
       } as unknown as SendNotificationServiceInterface;
 
       req.session.user = {
@@ -103,9 +97,7 @@ describe("resend email controller", () => {
     });
 
     it("should redirect to /resend-email-code if codeRequestLock is not set", async () => {
-      req.session.user = {
-        email: "test@test.com",
-      };
+      req.session.user = { email: "test@test.com" };
       req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
 
       await securityCodeCheckTimeLimit()(req as Request, res as Response);

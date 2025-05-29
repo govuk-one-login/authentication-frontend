@@ -147,9 +147,7 @@ export function pathWithQueryParam(
   value?: string | SecurityCodeErrorType
 ): string {
   if (queryParam && value) {
-    const queryParams = new URLSearchParams({
-      [queryParam]: value,
-    }).toString();
+    const queryParams = new URLSearchParams({ [queryParam]: value }).toString();
 
     return path + "?" + queryParams;
   }
@@ -203,7 +201,4 @@ export async function getNextPathAndUpdateJourney(
   return nextState.value;
 }
 
-export const JOURNEY_TYPE = {
-  SIGN_IN: "sign-in",
-  CREATE_ACCOUNT: "create-account",
-};
+export const JOURNEY_TYPE = { SIGN_IN: "sign-in", CREATE_ACCOUNT: "create-account" };

@@ -9,9 +9,7 @@ export function createMockCookieConsentService(
   return {
     getCookieConsent: sinon.fake(),
     createConsentCookieValue: sinon.fake.returns({
-      value: JSON.stringify({
-        analytics: userCookieConsentPreference === "true",
-      }),
+      value: JSON.stringify({ analytics: userCookieConsentPreference === "true" }),
       expires: expiryDate,
     }),
   };

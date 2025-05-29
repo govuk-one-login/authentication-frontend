@@ -94,10 +94,7 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
               cond: "isReauthenticationRequired",
             },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
+            { target: [PATH_NAMES.AUTH_CODE], cond: "isIdentityRequired" },
             { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
           ],
           [USER_JOURNEY_EVENTS.NO_EXISTING_SESSION]: [
@@ -105,10 +102,7 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
               cond: "isReauthenticationRequired",
             },
-            {
-              target: [PATH_NAMES.DOC_CHECKING_APP],
-              cond: "skipAuthentication",
-            },
+            { target: [PATH_NAMES.DOC_CHECKING_APP], cond: "skipAuthentication" },
             { target: [PATH_NAMES.SIGN_IN_OR_CREATE] },
           ],
         },
@@ -120,9 +114,7 @@ const authStateMachine = createMachine(
             PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
           ],
         },
-        meta: {
-          optionalPaths: [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST],
-        },
+        meta: { optionalPaths: [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST] },
       },
       [PATH_NAMES.ENTER_EMAIL_SIGN_IN]: {
         on: {
@@ -134,9 +126,7 @@ const authStateMachine = createMachine(
         },
       },
       [PATH_NAMES.ACCOUNT_NOT_FOUND]: {
-        on: {
-          [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.CHECK_YOUR_EMAIL],
-        },
+        on: { [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.CHECK_YOUR_EMAIL] },
         meta: {
           optionalPaths: [
             PATH_NAMES.ENTER_EMAIL_SIGN_IN,
@@ -154,9 +144,7 @@ const authStateMachine = createMachine(
           ],
           [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.CHECK_YOUR_EMAIL],
         },
-        meta: {
-          optionalPaths: [PATH_NAMES.SIGN_IN_OR_CREATE],
-        },
+        meta: { optionalPaths: [PATH_NAMES.SIGN_IN_OR_CREATE] },
       },
       [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST]: {
         on: {
@@ -168,9 +156,7 @@ const authStateMachine = createMachine(
       [PATH_NAMES.RESEND_EMAIL_CODE]: {
         on: {
           [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [
-            {
-              target: [PATH_NAMES.CHECK_YOUR_EMAIL],
-            },
+            { target: [PATH_NAMES.CHECK_YOUR_EMAIL] },
           ],
         },
       },
@@ -184,10 +170,7 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],
               cond: "isPasswordChangeRequired",
             },
-            {
-              target: [PATH_NAMES.GET_SECURITY_CODES],
-              cond: "isAccountPartCreated",
-            },
+            { target: [PATH_NAMES.GET_SECURITY_CODES], cond: "isAccountPartCreated" },
             {
               target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
               cond: "requiresMFAAuthAppCode",
@@ -229,9 +212,7 @@ const authStateMachine = createMachine(
       [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]: {
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
-            {
-              target: [PATH_NAMES.GET_SECURITY_CODES],
-            },
+            { target: [PATH_NAMES.GET_SECURITY_CODES] },
           ],
         },
       },
@@ -252,21 +233,14 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION],
               cond: "isAccountRecoveryJourney",
             },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
+            { target: [PATH_NAMES.AUTH_CODE], cond: "isIdentityRequired" },
             { target: [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL] },
           ],
         },
-        meta: {
-          optionalPaths: [PATH_NAMES.GET_SECURITY_CODES],
-        },
+        meta: { optionalPaths: [PATH_NAMES.GET_SECURITY_CODES] },
       },
       [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
-        on: {
-          [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [PATH_NAMES.CHECK_YOUR_PHONE],
-        },
+        on: { [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [PATH_NAMES.CHECK_YOUR_PHONE] },
         meta: {
           optionalPaths: [
             PATH_NAMES.SECURITY_CODE_WAIT,
@@ -283,10 +257,7 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION],
               cond: "isAccountRecoveryJourney",
             },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
+            { target: [PATH_NAMES.AUTH_CODE], cond: "isIdentityRequired" },
             { target: [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL] },
           ],
         },
@@ -325,10 +296,7 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],
               cond: "isPasswordChangeRequired",
             },
-            {
-              target: [PATH_NAMES.GET_SECURITY_CODES],
-              cond: "isAccountPartCreated",
-            },
+            { target: [PATH_NAMES.GET_SECURITY_CODES], cond: "isAccountPartCreated" },
             {
               target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
               cond: "requiresMFAAuthAppCode",
@@ -358,10 +326,7 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
               cond: "isLatestTermsAndConditionsAccepted",
             },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
+            { target: [PATH_NAMES.AUTH_CODE], cond: "isIdentityRequired" },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -385,10 +350,7 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
               cond: "isLatestTermsAndConditionsAccepted",
             },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
+            { target: [PATH_NAMES.AUTH_CODE], cond: "isIdentityRequired" },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -404,17 +366,12 @@ const authStateMachine = createMachine(
         },
       },
       [PATH_NAMES.UPLIFT_JOURNEY]: {
-        on: {
-          [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
-        },
+        on: { [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA] },
       },
       [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS]: {
         on: {
           [USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED]: [
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
+            { target: [PATH_NAMES.AUTH_CODE], cond: "isIdentityRequired" },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -440,9 +397,7 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP],
               cond: "requiresResetPasswordMFAAuthAppCode",
             },
-            {
-              target: [PATH_NAMES.RESET_PASSWORD],
-            },
+            { target: [PATH_NAMES.RESET_PASSWORD] },
           ],
         },
         meta: {
@@ -459,14 +414,10 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],
               cond: "isPasswordChangeRequired",
             },
-            {
-              target: [PATH_NAMES.RESET_PASSWORD],
-            },
+            { target: [PATH_NAMES.RESET_PASSWORD] },
           ],
         },
-        meta: {
-          optionalPaths: [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES],
-        },
+        meta: { optionalPaths: [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES] },
       },
       [PATH_NAMES.RESET_PASSWORD_2FA_SMS]: {
         on: {
@@ -481,9 +432,7 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],
               cond: "isPasswordChangeRequired",
             },
-            {
-              target: [PATH_NAMES.RESET_PASSWORD],
-            },
+            { target: [PATH_NAMES.RESET_PASSWORD] },
           ],
         },
         meta: {
@@ -509,10 +458,7 @@ const authStateMachine = createMachine(
             PATH_NAMES.UNAVAILABLE_TEMPORARY,
           ],
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
-            {
-              target: [PATH_NAMES.GET_SECURITY_CODES],
-              cond: "isAccountPartCreated",
-            },
+            { target: [PATH_NAMES.GET_SECURITY_CODES], cond: "isAccountPartCreated" },
             {
               target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
               cond: "requiresMFAAuthAppCode",
@@ -522,10 +468,7 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
               cond: "isLatestTermsAndConditionsAccepted",
             },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
+            { target: [PATH_NAMES.AUTH_CODE], cond: "isIdentityRequired" },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -552,10 +495,7 @@ const authStateMachine = createMachine(
       [PATH_NAMES.RESET_PASSWORD_REQUIRED]: {
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
-            {
-              target: [PATH_NAMES.GET_SECURITY_CODES],
-              cond: "isAccountPartCreated",
-            },
+            { target: [PATH_NAMES.GET_SECURITY_CODES], cond: "isAccountPartCreated" },
             {
               target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
               cond: "requiresMFAAuthAppCode",
@@ -605,12 +545,8 @@ const authStateMachine = createMachine(
         },
       },
       [PATH_NAMES.DOC_CHECKING_APP_CALLBACK]: {
-        on: {
-          [USER_JOURNEY_EVENTS.DOC_CHECKING_AUTH_CALLBACK]: [PATH_NAMES.AUTH_CODE],
-        },
-        meta: {
-          optionalPaths: [PATH_NAMES.DOC_CHECKING_APP],
-        },
+        on: { [USER_JOURNEY_EVENTS.DOC_CHECKING_AUTH_CALLBACK]: [PATH_NAMES.AUTH_CODE] },
+        meta: { optionalPaths: [PATH_NAMES.DOC_CHECKING_APP] },
       },
       [PATH_NAMES.AUTH_CODE]: {
         on: {
@@ -624,14 +560,10 @@ const authStateMachine = createMachine(
             PATH_NAMES.UNAVAILABLE_TEMPORARY,
           ],
         },
-        meta: {
-          optionalPaths: [PATH_NAMES.PROVE_IDENTITY_CALLBACK],
-        },
+        meta: { optionalPaths: [PATH_NAMES.PROVE_IDENTITY_CALLBACK] },
       },
       [PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT]: {
-        on: {
-          [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.RESEND_EMAIL_CODE],
-        },
+        on: { [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.RESEND_EMAIL_CODE] },
       },
       [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]: {
         on: {
@@ -641,16 +573,10 @@ const authStateMachine = createMachine(
         },
       },
       [PATH_NAMES.PASSWORD_RESET_REQUIRED]: {
-        meta: {
-          optionalPaths: [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL],
-        },
+        meta: { optionalPaths: [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL] },
       },
-      [PATH_NAMES.UNAVAILABLE_PERMANENT]: {
-        type: "final",
-      },
-      [PATH_NAMES.UNAVAILABLE_TEMPORARY]: {
-        type: "final",
-      },
+      [PATH_NAMES.UNAVAILABLE_PERMANENT]: { type: "final" },
+      [PATH_NAMES.UNAVAILABLE_TEMPORARY]: { type: "final" },
       [PATH_NAMES.MFA_RESET_WITH_IPV]: {
         on: {
           [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INIT]: [
@@ -670,19 +596,13 @@ const authStateMachine = createMachine(
       [PATH_NAMES.IPV_CALLBACK]: {
         on: {
           [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_COMPLETED]: [
-            {
-              target: [PATH_NAMES.GET_SECURITY_CODES],
-            },
+            { target: [PATH_NAMES.GET_SECURITY_CODES] },
           ],
           [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE]: [
-            {
-              target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
-            },
+            { target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES] },
           ],
           [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH]: [
-            {
-              target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL],
-            },
+            { target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL] },
           ],
         },
         meta: {
@@ -767,11 +687,7 @@ function getNextState(
   ctx?: any
 ): { value: string; events: EventType[]; meta: any } {
   const t = authStateMachine.transition(from, to, ctx);
-  return {
-    value: t.value as string,
-    events: t.nextEvents,
-    meta: t.meta,
-  };
+  return { value: t.value as string, events: t.nextEvents, meta: t.meta };
 }
 
 export { getNextState, USER_JOURNEY_EVENTS, authStateMachine };
