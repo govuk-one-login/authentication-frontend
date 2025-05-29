@@ -100,6 +100,8 @@ import { environmentBannerMiddleware } from "./middleware/environment-banner-mid
 import UID from "uid-safe";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
+import { csrfSynchronisedProtection } from "./utils/csrf.js";
+import { csrfMiddleware } from "./middleware/csrf-middleware.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -243,10 +245,14 @@ async function createApp(): Promise<express.Application> {
     })
   );
 
+  // Must be added to the app after the session and logging, and before the routers.
+  app.use(csrfSynchronisedProtection);
+
   app.use(channelMiddleware);
   app.use(environmentBannerMiddleware);
   app.use(getSessionIdMiddleware);
   app.post("*", sanitizeRequestMiddleware);
+  app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
   app.use(initialiseSessionMiddleware);
   app.use(crossDomainTrackingMiddleware);
