@@ -18,6 +18,7 @@ export interface StartRequestParameters {
   requested_credential_strength: string;
   client_name: string;
   service_type: string;
+  cookie_consent_shared: boolean;
 }
 
 export interface StartAuthResponse extends DefaultApiResponse {
