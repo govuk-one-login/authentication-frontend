@@ -51,6 +51,7 @@ describe("authorize service", () => {
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
       client_name: "test-client-name",
+      service_type: "essential",
     });
 
     expect(
@@ -65,6 +66,7 @@ describe("authorize service", () => {
           redirect_uri: "http://example.com/redirect",
           state: "1234567890",
           client_name: "test-client-name",
+          service_type: "essential",
         },
         {
           headers: {
@@ -88,6 +90,7 @@ describe("authorize service", () => {
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
       client_name: "test-client-name",
+      service_type: "essential",
     });
 
     expect(
@@ -101,6 +104,7 @@ describe("authorize service", () => {
           redirect_uri: "http://example.com/redirect",
           state: "1234567890",
           client_name: "test-client-name",
+          service_type: "essential",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -120,6 +124,7 @@ describe("authorize service", () => {
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
       client_name: "test-client-name",
+      service_type: "essential",
     });
 
     expect(
@@ -133,6 +138,7 @@ describe("authorize service", () => {
           redirect_uri: "http://example.com/redirect",
           state: "1234567890",
           client_name: "test-client-name",
+          service_type: "essential",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -154,6 +160,7 @@ describe("authorize service", () => {
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
       client_name: "test-client-name",
+      service_type: "essential",
     });
 
     expect(
@@ -168,6 +175,7 @@ describe("authorize service", () => {
           redirect_uri: "http://example.com/redirect",
           state: "1234567890",
           client_name: "test-client-name",
+          service_type: "essential",
         },
         {
           headers: {
@@ -192,6 +200,7 @@ describe("authorize service", () => {
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
       client_name: "test-client-name",
+      service_type: "essential",
     });
 
     expect(
@@ -207,6 +216,7 @@ describe("authorize service", () => {
           redirect_uri: "http://example.com/redirect",
           state: "1234567890",
           client_name: "test-client-name",
+          service_type: "essential",
         },
         {
           headers: {
@@ -233,6 +243,7 @@ describe("authorize service", () => {
       cookie_consent: "accept",
       _ga: "987654321",
       client_name: "test-client-name",
+      service_type: "essential",
     });
 
     expect(
@@ -249,6 +260,7 @@ describe("authorize service", () => {
           cookie_consent: "accept",
           _ga: "987654321",
           client_name: "test-client-name",
+          service_type: "essential",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },

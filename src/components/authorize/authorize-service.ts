@@ -83,5 +83,6 @@ function createStartBody(startRequestParameters: StartRequestParameters) {
   body["redirect_uri"] = startRequestParameters.rp_redirect_uri;
   body["state"] = startRequestParameters.rp_state;
   body["client_name"] = startRequestParameters.client_name;
+  body["service_type"] = startRequestParameters.service_type;
   return body;
 }
