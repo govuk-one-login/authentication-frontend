@@ -1,0 +1,50 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% set pageTitleVariableName = 'pages.signInOrCreate.mandatory.title' | translate %}
+
+{% set pageTitleName = pageTitleVariableName | translate %}
+
+{% block content %}
+    {% include "common/errors/errorSummary.njk" %}
+
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.signInOrCreate.mandatory.header' | translate | striptags | safe }} </h1>
+
+    <p class="govuk-body">{{ 'mobileAppPages.signIn.paragraph' | translate }}</p>
+
+    <form action="/sign-in-or-create" method="post" novalidate="novalidate">
+
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        <input type="hidden" name="supportInternationalNumbers" value="{{ supportInternationalNumbers }}" />
+
+        {{ govukButton({
+            text: 'pages.signInOrCreate.createButtonText' | translate,
+            value: "create",
+            name: "optionSelected",
+            classes: "govuk-!-margin-right-3",
+            attributes: {
+                "id": "create-account-link",
+                "data-nav":"true",
+                "data-link": "/enter-email-create"
+            }
+        }) }}
+        <div>
+            {{ govukButton({
+                text: 'pages.signInOrCreate.signInText' | translate,
+                classes: "govuk-button--secondary",
+                attributes: {
+                    "id": "sign-in-button",
+                    "data-nav": "true",
+                    "data-link": "/enter-email"
+                }
+            }) }}
+        </div>
+
+    </form>
+
+{% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "Home", loggedInStatus: false, dynamic: true } %}
+{%- include "ga4-opl/template.njk" -%}
+{% endblock %}

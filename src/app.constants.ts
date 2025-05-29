@@ -308,13 +308,6 @@ const DYNATRACE_RUM_COOKIES = [
 ];
 export const ANALYTICS_COOKIES = [...GA_COOKIES, ...DYNATRACE_RUM_COOKIES];
 
-export const WEB_TO_MOBILE_TEMPLATE_MAPPINGS: Record<string, string> = {
-  "sign-in-or-create/index.njk": "sign-in-or-create/index-mobile.njk",
-  "account-not-found/index-one-login.njk": "account-not-found/index-mobile.njk",
-  "account-not-found/index-optional.njk": "account-not-found/index-mobile.njk",
-  "account-not-found/index-mandatory.njk": "account-not-found/index-mobile.njk",
-};
-
 export const WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS: Record<string, string> = {
   "pages.reEnterEmailAccount.enterYourEmailAddressError":
     "mobileAppPages.reEnterEmailAccount.enterYourEmailAddressError",
