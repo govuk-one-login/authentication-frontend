@@ -3091,6 +3091,13 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.6:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+csrf-sync@4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/csrf-sync/-/csrf-sync-4.2.1.tgz#cadfbd3b9b401a09c1a29afe5e6dabb0f7a3e5d4"
+  integrity sha512-+q9tlUSCi/kbwr1NYwn5+MeuNhwxz3wSv1yl42BgIWfIuErZ3HajRwzvZTkfiyIqt1PZT8lQSlffhSYjCneN7g==
+  dependencies:
+    http-errors "^2.0.0"
+
 csrf@3.1.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/csrf/-/csrf-3.1.0.tgz"
@@ -4122,7 +4129,7 @@ htmlparser2@^9.1.0:
     domutils "^3.1.0"
     entities "^4.5.0"
 
-http-errors@2.0.0:
+http-errors@2.0.0, http-errors@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/http-errors/-/http-errors-2.0.0.tgz"
   integrity sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==
