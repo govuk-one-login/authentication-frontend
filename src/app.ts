@@ -246,7 +246,13 @@ async function createApp(): Promise<express.Application> {
     })
   );
 
-  app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
+  app.use(
+    csurf({
+      cookie: getCSRFCookieOptions(isProduction),
+      // NOTE: Routes only use GET and POST, no PUT, DELETE, PATCH.
+      ignoreMethods: ["GET", "POST", "HEAD", "OPTIONS"],
+    })
+  );
 
   app.use(channelMiddleware);
   app.use(environmentBannerMiddleware);
